@@ -38,7 +38,7 @@ func (ng *NamespaceGenerator) generateFuncs() {
 		if !function.IsIntrospectable() {
 			continue
 		}
-		if ng.mustIgnore(function.Name, function.CIdentifier) {
+		if ng.mustIgnore(&function.Name, &function.CIdentifier) {
 			continue
 		}
 		if !fg.Use(function) {

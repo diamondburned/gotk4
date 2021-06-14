@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -173,6 +174,26 @@ func (t *FrameTimings) RefreshInterval() int64 {
 	_gint64 = (int64)(_cret)
 
 	return _gint64
+}
+
+// Ref increases the reference count of @timings.
+func (t *FrameTimings) Ref() *FrameTimings {
+	var _arg0 *C.GdkFrameTimings // out
+
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
+
+	var _cret *C.GdkFrameTimings // in
+
+	_cret = C.gdk_frame_timings_ref(_arg0)
+
+	var _frameTimings *FrameTimings // out
+
+	_frameTimings = WrapFrameTimings(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _frameTimings
 }
 
 // Unref decreases the reference count of @timings. If @timings is no longer

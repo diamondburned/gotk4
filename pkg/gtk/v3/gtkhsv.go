@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -70,6 +71,19 @@ func marshalHSV(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapHSV(obj), nil
+}
+
+// NewHSV constructs a class HSV.
+func NewHSV() HSV {
+	var _cret C.GtkHSV // in
+
+	_cret = C.gtk_hsv_new()
+
+	var _hsV HSV // out
+
+	_hsV = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HSV)
+
+	return _hsV
 }
 
 // Color queries the current color in an HSV color selector. Returned values

@@ -268,7 +268,7 @@ func (conv *conversionTo) convert(result *ValueConverted) bool {
 	}
 
 	if !conv.converter.convert(result) {
-		conv.log(LogDebug, "C->Go cannot convert type", anyTypeC(result.AnyType))
+		conv.log(LogDebug, "cannot convert type", anyTypeC(result.AnyType))
 		return false
 	}
 
@@ -411,10 +411,6 @@ func (value *ValueConverted) resolveType(conv *conversionTo, inputC bool) bool {
 		return false
 	}
 
-	// Pretend that ignored types don't exist.
-	if conv.ng.mustIgnore(value.AnyType.Type.Name, value.AnyType.Type.CType) {
-		return false
-	}
 	// ResolveType already checks this, but we can early bail.
 	if !value.AnyType.Type.IsIntrospectable() {
 		return false
@@ -425,10 +421,21 @@ func (value *ValueConverted) resolveType(conv *conversionTo, inputC bool) bool {
 		return true
 	}
 
-	value.resolved = conv.ng.ResolveType(*value.AnyType.Type)
+	// Copy Type for mutation.
+	typ := *value.AnyType.Type
+
+	// Proritize hard-coded types over ignored types.
+	value.resolved = conv.ng.ResolveType(typ)
 	if value.resolved == nil {
 		return false
 	}
+
+	// Apply type renamers only. Filtered types will be ignored in ResolveType.
+	conv.ng.mustIgnore(&typ.Name, &typ.CType)
+
+	// Set the type back for use. We're setting the AnyType struct, which is a
+	// copy, so it's fine.
+	value.AnyType.Type = &typ
 
 	if value.resolved.IsCallback() {
 		value.addCallback(value.resolved.Extern.Result.Callback)

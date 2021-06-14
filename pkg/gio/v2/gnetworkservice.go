@@ -80,6 +80,30 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 	return WrapNetworkService(obj), nil
 }
 
+// NewNetworkService constructs a class NetworkService.
+func NewNetworkService(service string, protocol string, domain string) NetworkService {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
+	var _arg3 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(service))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(protocol))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	var _cret C.GNetworkService // in
+
+	_cret = C.g_network_service_new(_arg1, _arg2, _arg3)
+
+	var _networkService NetworkService // out
+
+	_networkService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkService)
+
+	return _networkService
+}
+
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
 // ASCII-encoded, depending on what @srv was created with.
 func (s networkService) Domain() string {

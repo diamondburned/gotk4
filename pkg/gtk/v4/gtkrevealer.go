@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -82,6 +83,8 @@ type Revealer interface {
 	Buildable
 	ConstraintTarget
 
+	// Child gets the child widget of @revealer.
+	Child() Widget
 	// ChildRevealed returns whether the child is fully revealed.
 	//
 	// In other words, this returns whether the transition to the revealed state
@@ -96,6 +99,9 @@ type Revealer interface {
 	// TransitionDuration returns the amount of time (in milliseconds) that
 	// transitions will take.
 	TransitionDuration() uint
+	// TransitionType gets the type of animation that will be used for
+	// transitions in @revealer.
+	TransitionType() RevealerTransitionType
 	// SetChild sets the child widget of @revealer.
 	SetChild(child Widget)
 	// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
@@ -137,6 +143,36 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRevealer(obj), nil
+}
+
+// NewRevealer constructs a class Revealer.
+func NewRevealer() Revealer {
+	var _cret C.GtkRevealer // in
+
+	_cret = C.gtk_revealer_new()
+
+	var _revealer Revealer // out
+
+	_revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Revealer)
+
+	return _revealer
+}
+
+// Child gets the child widget of @revealer.
+func (r revealer) Child() Widget {
+	var _arg0 *C.GtkRevealer // out
+
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_revealer_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // ChildRevealed returns whether the child is fully revealed.
@@ -200,6 +236,24 @@ func (r revealer) TransitionDuration() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// TransitionType gets the type of animation that will be used for
+// transitions in @revealer.
+func (r revealer) TransitionType() RevealerTransitionType {
+	var _arg0 *C.GtkRevealer // out
+
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+
+	var _cret C.GtkRevealerTransitionType // in
+
+	_cret = C.gtk_revealer_get_transition_type(_arg0)
+
+	var _revealerTransitionType RevealerTransitionType // out
+
+	_revealerTransitionType = RevealerTransitionType(_cret)
+
+	return _revealerTransitionType
 }
 
 // SetChild sets the child widget of @revealer.

@@ -2,6 +2,13 @@
 
 package pangoft2
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: pango pangoft2
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoft2.h>

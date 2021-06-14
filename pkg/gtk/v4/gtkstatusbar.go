@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -109,6 +110,19 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapStatusbar(obj), nil
+}
+
+// NewStatusbar constructs a class Statusbar.
+func NewStatusbar() Statusbar {
+	var _cret C.GtkStatusbar // in
+
+	_cret = C.gtk_statusbar_new()
+
+	var _statusbar Statusbar // out
+
+	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Statusbar)
+
+	return _statusbar
 }
 
 // ContextID returns a new context identifier, given a description of the

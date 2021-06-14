@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,6 +29,104 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_settings_backend_get_type()), F: marshalSettingsBackend},
 	})
+}
+
+// NewKeyfileSettingsBackend creates a keyfile-backed Backend.
+//
+// The filename of the keyfile to use is given by @filename.
+//
+// All settings read to or written from the backend must fall under the path
+// given in @root_path (which must start and end with a slash and not contain
+// two consecutive slashes). @root_path may be "/".
+//
+// If @root_group is non-nil then it specifies the name of the keyfile group
+// used for keys that are written directly below @root_path. For example, if
+// @root_path is "/apps/example/" and @root_group is "toplevel", then settings
+// the key "/apps/example/enabled" to a value of true will cause the following
+// to appear in the keyfile:
+//
+//    [toplevel]
+//    enabled=true
+//
+// If @root_group is nil then it is not permitted to store keys directly below
+// the @root_path.
+//
+// For keys not stored directly below @root_path (ie: in a sub-path), the name
+// of the subpath (with the final slash stripped) is used as the name of the
+// keyfile group. To continue the example, if
+// "/apps/example/profiles/default/font-size" were set to 12 then the following
+// would appear in the keyfile:
+//
+//    [profiles/default]
+//    font-size=12
+//
+// The backend will refuse writes (and return writability as being false) for
+// keys outside of @root_path and, in the event that @root_group is nil, also
+// for keys directly under @root_path. Writes will also be refused if the
+// backend detects that it has the inability to rewrite the keyfile (ie: the
+// containing directory is not writable).
+//
+// There is no checking done for your key namespace clashing with the syntax of
+// the key file format. For example, if you have '[' or ']' characters in your
+// path names or '=' in your key names you may be in trouble.
+//
+// The backend reads default values from a keyfile called `defaults` in the
+// directory specified by the SettingsBackend:defaults-dir property, and a list
+// of locked keys from a text file with the name `locks` in the same location.
+func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup string) SettingsBackend {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
+	var _arg3 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(rootPath))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(rootGroup))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	var _cret *C.GSettingsBackend // in
+
+	_cret = C.g_keyfile_settings_backend_new(_arg1, _arg2, _arg3)
+
+	var _settingsBackend SettingsBackend // out
+
+	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SettingsBackend)
+
+	return _settingsBackend
+}
+
+// NewMemorySettingsBackend creates a memory-backed Backend.
+//
+// This backend allows changes to settings, but does not write them to any
+// backing storage, so the next time you run your application, the memory
+// backend will start out with the default values again.
+func NewMemorySettingsBackend() SettingsBackend {
+	var _cret *C.GSettingsBackend // in
+
+	_cret = C.g_memory_settings_backend_new()
+
+	var _settingsBackend SettingsBackend // out
+
+	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SettingsBackend)
+
+	return _settingsBackend
+}
+
+// NewNullSettingsBackend creates a readonly Backend.
+//
+// This backend does not allow changes to settings, so all settings will always
+// have their default values.
+func NewNullSettingsBackend() SettingsBackend {
+	var _cret *C.GSettingsBackend // in
+
+	_cret = C.g_null_settings_backend_new()
+
+	var _settingsBackend SettingsBackend // out
+
+	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SettingsBackend)
+
+	return _settingsBackend
 }
 
 // SettingsBackend: the Backend interface defines a generic interface for
@@ -80,10 +177,6 @@ type SettingsBackend interface {
 	// g_settings_backend_write() then @origin_tag must be set to the same value
 	// that was passed to that call.
 	Changed(key string, originTag interface{})
-	// ChangedTree: this call is a convenience wrapper. It gets the list of
-	// changes from @tree, computes the longest common prefix and calls
-	// g_settings_backend_changed().
-	ChangedTree(tree *glib.Tree, originTag interface{})
 	// KeysChanged signals that a list of keys have possibly changed. Backend
 	// implementations should call this if keys have possibly changed their
 	// values.
@@ -193,21 +286,6 @@ func (b settingsBackend) Changed(key string, originTag interface{}) {
 	_arg2 = C.gpointer(originTag)
 
 	C.g_settings_backend_changed(_arg0, _arg1, _arg2)
-}
-
-// ChangedTree: this call is a convenience wrapper. It gets the list of
-// changes from @tree, computes the longest common prefix and calls
-// g_settings_backend_changed().
-func (b settingsBackend) ChangedTree(tree *glib.Tree, originTag interface{}) {
-	var _arg0 *C.GSettingsBackend // out
-	var _arg1 *C.GTree            // out
-	var _arg2 C.gpointer          // out
-
-	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GTree)(unsafe.Pointer(tree.Native()))
-	_arg2 = C.gpointer(originTag)
-
-	C.g_settings_backend_changed_tree(_arg0, _arg1, _arg2)
 }
 
 // KeysChanged signals that a list of keys have possibly changed. Backend

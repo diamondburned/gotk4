@@ -2,6 +2,14 @@
 
 package gio
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -16,6 +24,53 @@ package gio
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
+
+// BusNameAppearedCallback: invoked when the name being watched is known to have
+// to have an owner.
+type BusNameAppearedCallback func(connection DBusConnection, name string, nameOwner string)
+
+//export gotk4_BusNameAppearedCallback
+func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var connection DBusConnection // out
+	var name string               // out
+	var nameOwner string          // out
+
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
+	name = C.GoString(arg1)
+	nameOwner = C.GoString(arg2)
+
+	fn := v.(BusNameAppearedCallback)
+	fn(connection, name, nameOwner)
+}
+
+// BusNameVanishedCallback: invoked when the name being watched is known not to
+// have to have an owner.
+//
+// This is also invoked when the BusConnection on which the watch was
+// established has been closed. In that case, @connection will be nil.
+type BusNameVanishedCallback func(connection DBusConnection, name string)
+
+//export gotk4_BusNameVanishedCallback
+func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var connection DBusConnection // out
+	var name string               // out
+
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
+	name = C.GoString(arg1)
+
+	fn := v.(BusNameVanishedCallback)
+	fn(connection, name)
+}
 
 // BusUnwatchName stops watching a name.
 //

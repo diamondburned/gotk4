@@ -264,11 +264,6 @@ func (conv *TypeConversionToC) typeConverter(value *ValueConverted) bool {
 		return true
 	}
 
-	// Pretend that ignored types don't exist.
-	if conv.ng.mustIgnore(value.AnyType.Type.Name, value.AnyType.Type.CType) {
-		return false
-	}
-
 	if value.resolved.Extern == nil {
 		return false
 	}

@@ -3,8 +3,11 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_FileProgressCallback(goffset, goffset, gpointer);
 import "C"
 
 func init() {
@@ -34,6 +39,183 @@ func init() {
 // FileOverrider contains methods that are overridable. This
 // interface is a subset of the interface File.
 type FileOverrider interface {
+	// AppendTo gets an output stream for appending data to the file. If the
+	// file doesn't already exist it is created.
+	//
+	// By default files created are generally readable by everyone, but if you
+	// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
+	// the current user, to the level that is supported on the target
+	// filesystem.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// Some file systems don't allow all file names, and may return an
+	// G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
+	// G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
+	// too, and depend on what kind of filesystem the file is on.
+	AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
+	// AppendToFinish finishes an asynchronous file append operation started
+	// with g_file_append_to_async().
+	AppendToFinish(res AsyncResult) (FileOutputStream, error)
+	// Copy copies the file @source to the location specified by @destination.
+	// Can not handle recursive copies of directories.
+	//
+	// If the flag FILE_COPY_OVERWRITE is specified an already existing
+	// @destination file is overwritten.
+	//
+	// If the flag FILE_COPY_NOFOLLOW_SYMLINKS is specified then symlinks will
+	// be copied as symlinks, otherwise the target of the @source symlink will
+	// be copied.
+	//
+	// If the flag FILE_COPY_ALL_METADATA is specified then all the metadata
+	// that is possible to copy is copied, not just the default subset (which,
+	// for instance, does not include the owner, see Info).
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If @progress_callback is not nil, then the operation can be monitored by
+	// setting this to a ProgressCallback function. @progress_callback_data will
+	// be passed to this function. It is guaranteed that this callback will be
+	// called after all data has been transferred with the total number of bytes
+	// copied during the operation.
+	//
+	// If the @source file does not exist, then the G_IO_ERROR_NOT_FOUND error
+	// is returned, independent on the status of the @destination.
+	//
+	// If FILE_COPY_OVERWRITE is not specified and the target exists, then the
+	// error G_IO_ERROR_EXISTS is returned.
+	//
+	// If trying to overwrite a file over a directory, the
+	// G_IO_ERROR_IS_DIRECTORY error is returned. If trying to overwrite a
+	// directory with a directory the G_IO_ERROR_WOULD_MERGE error is returned.
+	//
+	// If the source is a directory and the target does not exist, or
+	// FILE_COPY_OVERWRITE is specified and the target is a file, then the
+	// G_IO_ERROR_WOULD_RECURSE error is returned.
+	//
+	// If you are interested in copying the #GFile object itself (not the
+	// on-disk file), see g_file_dup().
+	Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error
+	// CopyFinish finishes copying the file started with g_file_copy_async().
+	CopyFinish(res AsyncResult) error
+	// Create creates a new file and returns an output stream for writing to it.
+	// The file must not already exist.
+	//
+	// By default files created are generally readable by everyone, but if you
+	// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
+	// the current user, to the level that is supported on the target
+	// filesystem.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If a file or directory with this name already exists the
+	// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
+	// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
+	// if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
+	// Other errors are possible too, and depend on what kind of filesystem the
+	// file is on.
+	Create(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
+	// CreateFinish finishes an asynchronous file create operation started with
+	// g_file_create_async().
+	CreateFinish(res AsyncResult) (FileOutputStream, error)
+	// CreateReadwrite creates a new file and returns a stream for reading and
+	// writing to it. The file must not already exist.
+	//
+	// By default files created are generally readable by everyone, but if you
+	// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
+	// the current user, to the level that is supported on the target
+	// filesystem.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If a file or directory with this name already exists, the
+	// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
+	// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
+	// if the name is too long, G_IO_ERROR_FILENAME_TOO_LONG will be returned.
+	// Other errors are possible too, and depend on what kind of filesystem the
+	// file is on.
+	//
+	// Note that in many non-local file cases read and write streams are not
+	// supported, so make sure you really need to do read and write streaming,
+	// rather than just opening for reading or writing.
+	CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error)
+	// CreateReadwriteFinish finishes an asynchronous file create operation
+	// started with g_file_create_readwrite_async().
+	CreateReadwriteFinish(res AsyncResult) (FileIOStream, error)
+	// DeleteFile deletes a file. If the @file is a directory, it will only be
+	// deleted if it is empty. This has the same semantics as g_unlink().
+	//
+	// If @file doesn’t exist, G_IO_ERROR_NOT_FOUND will be returned. This
+	// allows for deletion to be implemented avoiding time-of-check to
+	// time-of-use races
+	// (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
+	//
+	//    g_autoptr(GError) local_error = NULL;
+	//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
+	//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+	//      {
+	//        // deletion failed for some reason other than the file not existing:
+	//        // so report the error
+	//        g_warning ("Failed to delete s: s",
+	//                   g_file_peek_path (my_file), local_error->message);
+	//      }
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	DeleteFile(cancellable Cancellable) error
+	// DeleteFileFinish finishes deleting a file started with
+	// g_file_delete_async().
+	DeleteFileFinish(result AsyncResult) error
+	// Dup duplicates a #GFile handle. This operation does not duplicate the
+	// actual file or directory represented by the #GFile; see g_file_copy() if
+	// attempting to copy a file.
+	//
+	// g_file_dup() is useful when a second handle is needed to the same
+	// underlying file, for use in a separate thread (#GFile is not
+	// thread-safe). For use within the same thread, use g_object_ref() to
+	// increment the existing object’s reference count.
+	//
+	// This call does no blocking I/O.
+	Dup() File
+	// EjectMountableFinish finishes an asynchronous eject operation started by
+	// g_file_eject_mountable().
+	EjectMountableFinish(result AsyncResult) error
+	// EjectMountableWithOperationFinish finishes an asynchronous eject
+	// operation started by g_file_eject_mountable_with_operation().
+	EjectMountableWithOperationFinish(result AsyncResult) error
+	// EnumerateChildren gets the requested information about the files in a
+	// directory. The result is a Enumerator object that will give out Info
+	// objects for all the files in the directory.
+	//
+	// The @attributes value is a string that specifies the file attributes that
+	// should be gathered. It is not an error if it's not possible to read a
+	// particular requested attribute from a file - it just won't be set.
+	// @attributes should be a comma-separated list of attributes or attribute
+	// wildcards. The wildcard "*" means all attributes, and a wildcard like
+	// "standard::*" means all attributes in the standard namespace. An example
+	// attribute query be "standard::*,owner::user". The standard attributes are
+	// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+	// returned. If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY
+	// error will be returned. Other errors are possible too.
+	EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileEnumerator, error)
+	// EnumerateChildrenFinish finishes an async enumerate children operation.
+	// See g_file_enumerate_children_async().
+	EnumerateChildrenFinish(res AsyncResult) (FileEnumerator, error)
 	// Equal checks if the two given #GFiles refer to the same file.
 	//
 	// Note that two #GFiles that differ can still refer to the same file on the
@@ -41,6 +223,19 @@ type FileOverrider interface {
 	//
 	// This call does no blocking I/O.
 	Equal(file2 File) bool
+	// FindEnclosingMount gets a #GMount for the #GFile.
+	//
+	// #GMount is returned only for user interesting locations, see Monitor. If
+	// the Iface for @file does not have a #mount, @error will be set to
+	// G_IO_ERROR_NOT_FOUND and nil #will be returned.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	FindEnclosingMount(cancellable Cancellable) (Mount, error)
+	// FindEnclosingMountFinish finishes an asynchronous find mount request. See
+	// g_file_find_enclosing_mount_async().
+	FindEnclosingMountFinish(res AsyncResult) (Mount, error)
 	// Basename gets the base name (the last component of the path) for a given
 	// #GFile.
 	//
@@ -56,6 +251,20 @@ type FileOverrider interface {
 	//
 	// This call does no blocking I/O.
 	Basename() string
+	// ChildForDisplayName gets the child of @file for a given @display_name
+	// (i.e. a UTF-8 version of the name). If this function fails, it returns
+	// nil and @error will be set. This is very useful when constructing a
+	// #GFile for a new file and the user entered the filename in the user
+	// interface, for instance when you select a directory and type a filename
+	// in the file selector.
+	//
+	// This call does no blocking I/O.
+	ChildForDisplayName(displayName string) (File, error)
+	// Parent gets the parent directory for the @file. If the @file represents
+	// the root directory of the file system, then nil will be returned.
+	//
+	// This call does no blocking I/O.
+	Parent() File
 	// ParseName gets the parse name of the @file. A parse name is a UTF-8
 	// string that describes the file such that one can get the #GFile back
 	// using g_file_parse_name().
@@ -116,6 +325,130 @@ type FileOverrider interface {
 	//
 	// This call does no blocking I/O.
 	IsNative() bool
+	// MakeDirectory creates a directory. Note that this will only create a
+	// child directory of the immediate parent directory of the path or URI
+	// given by the #GFile. To recursively create directories, see
+	// g_file_make_directory_with_parents(). This function will fail if the
+	// parent directory does not exist, setting @error to G_IO_ERROR_NOT_FOUND.
+	// If the file system doesn't support creating directories, this function
+	// will fail, setting @error to G_IO_ERROR_NOT_SUPPORTED.
+	//
+	// For a local #GFile the newly created directory will have the default
+	// (current) ownership and permissions of the current process.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	MakeDirectory(cancellable Cancellable) error
+	// MakeDirectoryFinish finishes an asynchronous directory creation, started
+	// with g_file_make_directory_async().
+	MakeDirectoryFinish(result AsyncResult) error
+	// MakeSymbolicLink creates a symbolic link named @file which contains the
+	// string @symlink_value.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	MakeSymbolicLink(symlinkValue string, cancellable Cancellable) error
+	// MeasureDiskUsageFinish collects the results from an earlier call to
+	// g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for
+	// more information.
+	MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error)
+	// MonitorDir obtains a directory monitor for the given file. This may fail
+	// if directory monitoring is not supported.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// It does not make sense for @flags to contain
+	// G_FILE_MONITOR_WATCH_HARD_LINKS, since hard links can not be made to
+	// directories. It is not possible to monitor all the files in a directory
+	// for changes made via hard links; if you want to do this then you must
+	// register individual watches with g_file_monitor().
+	MonitorDir(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error)
+	// MonitorFile obtains a file monitor for the given file. If no file
+	// notification mechanism exists, then regular polling of the file is used.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If @flags contains G_FILE_MONITOR_WATCH_HARD_LINKS then the monitor will
+	// also attempt to report changes made to the file via another filename (ie,
+	// a hard link). Without this flag, you can only rely on changes made
+	// through the filename contained in @file to be reported. Using this flag
+	// may result in an increase in resource usage, and may not have any effect
+	// depending on the Monitor backend and/or filesystem type.
+	MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error)
+	// MountEnclosingVolumeFinish finishes a mount operation started by
+	// g_file_mount_enclosing_volume().
+	MountEnclosingVolumeFinish(result AsyncResult) error
+	// MountMountableFinish finishes a mount operation. See
+	// g_file_mount_mountable() for details.
+	//
+	// Finish an asynchronous mount operation that was started with
+	// g_file_mount_mountable().
+	MountMountableFinish(result AsyncResult) (File, error)
+	// Move tries to move the file or directory @source to the location
+	// specified by @destination. If native move operations are supported then
+	// this is used, otherwise a copy + delete fallback is used. The native
+	// implementation may support moving directories (for instance on moves
+	// inside the same filesystem), but the fallback code does not.
+	//
+	// If the flag FILE_COPY_OVERWRITE is specified an already existing
+	// @destination file is overwritten.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If @progress_callback is not nil, then the operation can be monitored by
+	// setting this to a ProgressCallback function. @progress_callback_data will
+	// be passed to this function. It is guaranteed that this callback will be
+	// called after all data has been transferred with the total number of bytes
+	// copied during the operation.
+	//
+	// If the @source file does not exist, then the G_IO_ERROR_NOT_FOUND error
+	// is returned, independent on the status of the @destination.
+	//
+	// If FILE_COPY_OVERWRITE is not specified and the target exists, then the
+	// error G_IO_ERROR_EXISTS is returned.
+	//
+	// If trying to overwrite a file over a directory, the
+	// G_IO_ERROR_IS_DIRECTORY error is returned. If trying to overwrite a
+	// directory with a directory the G_IO_ERROR_WOULD_MERGE error is returned.
+	//
+	// If the source is a directory and the target does not exist, or
+	// FILE_COPY_OVERWRITE is specified and the target is a file, then the
+	// G_IO_ERROR_WOULD_RECURSE error may be returned (if the native move
+	// operation isn't available).
+	Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error
+	// OpenReadwrite opens an existing file for reading and writing. The result
+	// is a IOStream that can be used to read and write the contents of the
+	// file.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
+	// will be returned. Other errors are possible too, and depend on what kind
+	// of filesystem the file is on. Note that in many non-local file cases read
+	// and write streams are not supported, so make sure you really need to do
+	// read and write streaming, rather than just opening for reading or
+	// writing.
+	OpenReadwrite(cancellable Cancellable) (FileIOStream, error)
+	// OpenReadwriteFinish finishes an asynchronous file read operation started
+	// with g_file_open_readwrite_async().
+	OpenReadwriteFinish(res AsyncResult) (FileIOStream, error)
+	// PollMountableFinish finishes a poll operation. See
+	// g_file_poll_mountable() for details.
+	//
+	// Finish an asynchronous poll operation that was polled with
+	// g_file_poll_mountable().
+	PollMountableFinish(result AsyncResult) error
 	// PrefixMatches checks whether @file has the prefix specified by @prefix.
 	//
 	// In other words, if the names of initial elements of @file's pathname
@@ -130,6 +463,245 @@ type FileOverrider interface {
 	// filesystem point of view), because the prefix of @file is an alias of
 	// @prefix.
 	PrefixMatches(file File) bool
+	// QueryFilesystemInfo: similar to g_file_query_info(), but obtains
+	// information about the filesystem the @file is on, rather than the file
+	// itself. For instance the amount of space available and the type of the
+	// filesystem.
+	//
+	// The @attributes value is a string that specifies the attributes that
+	// should be gathered. It is not an error if it's not possible to read a
+	// particular requested attribute from a file - it just won't be set.
+	// @attributes should be a comma-separated list of attributes or attribute
+	// wildcards. The wildcard "*" means all attributes, and a wildcard like
+	// "filesystem::*" means all attributes in the filesystem namespace. The
+	// standard namespace for filesystem attributes is "filesystem". Common
+	// attributes of interest are FILE_ATTRIBUTE_FILESYSTEM_SIZE (the total size
+	// of the filesystem in bytes), FILE_ATTRIBUTE_FILESYSTEM_FREE (number of
+	// bytes available), and FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the
+	// filesystem).
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+	// returned. Other errors are possible too, and depend on what kind of
+	// filesystem the file is on.
+	QueryFilesystemInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
+	// See g_file_query_filesystem_info_async().
+	QueryFilesystemInfoFinish(res AsyncResult) (FileInfo, error)
+	// QueryInfo gets the requested information about specified @file. The
+	// result is a Info object that contains key-value attributes (such as the
+	// type or size of the file).
+	//
+	// The @attributes value is a string that specifies the file attributes that
+	// should be gathered. It is not an error if it's not possible to read a
+	// particular requested attribute from a file - it just won't be set.
+	// @attributes should be a comma-separated list of attributes or attribute
+	// wildcards. The wildcard "*" means all attributes, and a wildcard like
+	// "standard::*" means all attributes in the standard namespace. An example
+	// attribute query be "standard::*,owner::user". The standard attributes are
+	// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// For symlinks, normally the information about the target of the symlink is
+	// returned, rather than information about the symlink itself. However if
+	// you pass FILE_QUERY_INFO_NOFOLLOW_SYMLINKS in @flags the information
+	// about the symlink itself will be returned. Also, for symlinks that point
+	// to non-existing files the information about the symlink itself will be
+	// returned.
+	//
+	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+	// returned. Other errors are possible too, and depend on what kind of
+	// filesystem the file is on.
+	QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoFinish finishes an asynchronous file info query. See
+	// g_file_query_info_async().
+	QueryInfoFinish(res AsyncResult) (FileInfo, error)
+	// QuerySettableAttributes: obtain the list of settable attributes for the
+	// file.
+	//
+	// Returns the type and full attribute name of all the attributes that can
+	// be set on this file. This doesn't mean setting it will always succeed
+	// though, you might get an access failure, or some specific file may not
+	// support a specific attribute.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	QuerySettableAttributes(cancellable Cancellable) (*FileAttributeInfoList, error)
+	// QueryWritableNamespaces: obtain the list of attribute namespaces where
+	// new attributes can be created by a user. An example of this is extended
+	// attributes (in the "xattr" namespace).
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeInfoList, error)
+	// ReadFinish finishes an asynchronous file read operation started with
+	// g_file_read_async().
+	ReadFinish(res AsyncResult) (FileInputStream, error)
+	// ReadFn opens a file for reading. The result is a InputStream that can be
+	// used to read the contents of the file.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
+	// will be returned. Other errors are possible too, and depend on what kind
+	// of filesystem the file is on.
+	ReadFn(cancellable Cancellable) (FileInputStream, error)
+	// Replace returns an output stream for overwriting the file, possibly
+	// creating a backup copy of the file first. If the file doesn't exist, it
+	// will be created.
+	//
+	// This will try to replace the file in the safest way possible so that any
+	// errors during the writing will not affect an already existing copy of the
+	// file. For instance, for local files it may write to a temporary file and
+	// then atomically rename over the destination when the stream is closed.
+	//
+	// By default files created are generally readable by everyone, but if you
+	// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
+	// the current user, to the level that is supported on the target
+	// filesystem.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If you pass in a non-nil @etag value and @file already exists, then this
+	// value is compared to the current entity tag of the file, and if they
+	// differ an G_IO_ERROR_WRONG_ETAG error is returned. This generally means
+	// that the file has been changed since you last read it. You can get the
+	// new etag from g_file_output_stream_get_etag() after you've finished
+	// writing and closed the OutputStream. When you load a new file you can use
+	// g_file_input_stream_query_info() to get the etag of the file.
+	//
+	// If @make_backup is true, this function will attempt to make a backup of
+	// the current file before overwriting it. If this fails a
+	// G_IO_ERROR_CANT_CREATE_BACKUP error will be returned. If you want to
+	// replace anyway, try again with @make_backup set to false.
+	//
+	// If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
+	// returned, and if the file is some other form of non-regular file then a
+	// G_IO_ERROR_NOT_REGULAR_FILE error will be returned. Some file systems
+	// don't allow all file names, and may return an G_IO_ERROR_INVALID_FILENAME
+	// error, and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be
+	// returned. Other errors are possible too, and depend on what kind of
+	// filesystem the file is on.
+	Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
+	// ReplaceFinish finishes an asynchronous file replace operation started
+	// with g_file_replace_async().
+	ReplaceFinish(res AsyncResult) (FileOutputStream, error)
+	// ReplaceReadwrite returns an output stream for overwriting the file in
+	// readwrite mode, possibly creating a backup copy of the file first. If the
+	// file doesn't exist, it will be created.
+	//
+	// For details about the behaviour, see g_file_replace() which does the same
+	// thing but returns an output stream only.
+	//
+	// Note that in many non-local file cases read and write streams are not
+	// supported, so make sure you really need to do read and write streaming,
+	// rather than just opening for reading or writing.
+	ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error)
+	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
+	// started with g_file_replace_readwrite_async().
+	ReplaceReadwriteFinish(res AsyncResult) (FileIOStream, error)
+	// ResolveRelativePath resolves a relative path for @file to an absolute
+	// path.
+	//
+	// This call does no blocking I/O.
+	ResolveRelativePath(relativePath string) File
+	// SetAttribute sets an attribute in the file with attribute name @attribute
+	// to @value_p.
+	//
+	// Some attributes can be unset by setting @type to
+	// G_FILE_ATTRIBUTE_TYPE_INVALID and @value_p to nil.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetAttribute(attribute string, typ FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// SetAttributesFinish finishes setting an attribute started in
+	// g_file_set_attributes_async().
+	SetAttributesFinish(result AsyncResult) (FileInfo, error)
+	// SetAttributesFromInfo tries to set all attributes in the Info on the
+	// target values, not stopping on the first error.
+	//
+	// If there is any error during this operation then @error will be set to
+	// the first error. Error on particular fields are flagged by setting the
+	// "status" field in the attribute value to
+	// G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING, which means you can also detect
+	// further errors.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// SetDisplayName renames @file to the specified display name.
+	//
+	// The display name is converted from UTF-8 to the correct encoding for the
+	// target filesystem if possible and the @file is renamed to this.
+	//
+	// If you want to implement a rename operation in the user interface the
+	// edit name (FILE_ATTRIBUTE_STANDARD_EDIT_NAME) should be used as the
+	// initial value in the rename widget, and then the result after editing
+	// should be passed to g_file_set_display_name().
+	//
+	// On success the resulting converted filename is returned.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetDisplayName(displayName string, cancellable Cancellable) (File, error)
+	// SetDisplayNameFinish finishes setting a display name started with
+	// g_file_set_display_name_async().
+	SetDisplayNameFinish(res AsyncResult) (File, error)
+	// StartMountableFinish finishes a start operation. See
+	// g_file_start_mountable() for details.
+	//
+	// Finish an asynchronous start operation that was started with
+	// g_file_start_mountable().
+	StartMountableFinish(result AsyncResult) error
+	// StopMountableFinish finishes a stop operation, see
+	// g_file_stop_mountable() for details.
+	//
+	// Finish an asynchronous stop operation that was started with
+	// g_file_stop_mountable().
+	StopMountableFinish(result AsyncResult) error
+	// Trash sends @file to the "Trashcan", if possible. This is similar to
+	// deleting it, but the user can recover it before emptying the trashcan.
+	// Not all file systems support trashing, so this call can return the
+	// G_IO_ERROR_NOT_SUPPORTED error. Since GLib 2.66, the `x-gvfs-notrash`
+	// unix mount option can be used to disable g_file_trash() support for
+	// certain mounts, the G_IO_ERROR_NOT_SUPPORTED error will be returned in
+	// that case.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	Trash(cancellable Cancellable) error
+	// TrashFinish finishes an asynchronous file trashing operation, started
+	// with g_file_trash_async().
+	TrashFinish(result AsyncResult) error
+	// UnmountMountableFinish finishes an unmount operation, see
+	// g_file_unmount_mountable() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable().
+	UnmountMountableFinish(result AsyncResult) error
+	// UnmountMountableWithOperationFinish finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	UnmountMountableWithOperationFinish(result AsyncResult) error
 }
 
 // File is a high level abstraction for manipulating files on a virtual file
@@ -213,6 +785,56 @@ type File interface {
 	gextras.Objector
 	FileOverrider
 
+	// BuildAttributeListForCopy prepares the file attribute query string for
+	// copying to @file.
+	//
+	// This function prepares an attribute query string to be passed to
+	// g_file_query_info() to get a list of attributes normally copied with the
+	// file (see g_file_copy_attributes() for the detailed description). This
+	// function is used by the implementation of g_file_copy_attributes() and is
+	// useful when one needs to query and set the attributes in two stages
+	// (e.g., for recursive move of a directory).
+	BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancellable) (string, error)
+	// CopyAttributes copies the file attributes from @source to @destination.
+	//
+	// Normally only a subset of the file attributes are copied, those that are
+	// copies in a normal file copy operation (which for instance does not
+	// include e.g. owner). However if FILE_COPY_ALL_METADATA is specified in
+	// @flags, then all the metadata that is possible to copy is copied. This is
+	// useful when implementing move by copy + delete source.
+	CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) error
+	// Delete deletes a file. If the @file is a directory, it will only be
+	// deleted if it is empty. This has the same semantics as g_unlink().
+	//
+	// If @file doesn’t exist, G_IO_ERROR_NOT_FOUND will be returned. This
+	// allows for deletion to be implemented avoiding time-of-check to
+	// time-of-use races
+	// (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
+	//
+	//    g_autoptr(GError) local_error = NULL;
+	//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
+	//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+	//      {
+	//        // deletion failed for some reason other than the file not existing:
+	//        // so report the error
+	//        g_warning ("Failed to delete s: s",
+	//                   g_file_peek_path (my_file), local_error->message);
+	//      }
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	Delete(cancellable Cancellable) error
+	// DeleteFinish finishes deleting a file started with g_file_delete_async().
+	DeleteFinish(result AsyncResult) error
+	// Child gets a child of @file with basename equal to @name.
+	//
+	// Note that the file with that specific name might not exist, but you can
+	// still have a #GFile that points to it. You can use this for instance to
+	// create that file.
+	//
+	// This call does no blocking I/O.
+	Child(name string) File
 	// HasParent checks if @file has a parent, and optionally, if it is @parent.
 	//
 	// If @parent is nil then this function returns true if @file has any parent
@@ -233,6 +855,61 @@ type File interface {
 	// filesystem point of view), because the prefix of @file is an alias of
 	// @prefix.
 	HasPrefix(prefix File) bool
+	// LoadContents loads the content of the file into memory. The data is
+	// always zero-terminated, but this is not included in the resultant
+	// @length. The returned @contents should be freed with g_free() when no
+	// longer needed.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	LoadContents(cancellable Cancellable) ([]byte, string, error)
+	// LoadContentsFinish finishes an asynchronous load of the @file's contents.
+	// The contents are placed in @contents, and @length is set to the size of
+	// the @contents string. The @contents should be freed with g_free() when no
+	// longer needed. If @etag_out is present, it will be set to the new entity
+	// tag for the @file.
+	LoadContentsFinish(res AsyncResult) ([]byte, string, error)
+	// LoadPartialContentsFinish finishes an asynchronous partial load operation
+	// that was started with g_file_load_partial_contents_async(). The data is
+	// always zero-terminated, but this is not included in the resultant
+	// @length. The returned @contents should be freed with g_free() when no
+	// longer needed.
+	LoadPartialContentsFinish(res AsyncResult) ([]byte, string, error)
+	// MakeDirectoryWithParents creates a directory and any parent directories
+	// that may not exist similar to 'mkdir -p'. If the file system does not
+	// support creating directories, this function will fail, setting @error to
+	// G_IO_ERROR_NOT_SUPPORTED. If the directory itself already exists, this
+	// function will fail setting @error to G_IO_ERROR_EXISTS, unlike the
+	// similar g_mkdir_with_parents().
+	//
+	// For a local #GFile the newly created directories will have the default
+	// (current) ownership and permissions of the current process.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	MakeDirectoryWithParents(cancellable Cancellable) error
+	// Monitor obtains a file or directory monitor for the given file, depending
+	// on the type of the file.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	Monitor(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error)
+	// MonitorDirectory obtains a directory monitor for the given file. This may
+	// fail if directory monitoring is not supported.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// It does not make sense for @flags to contain
+	// G_FILE_MONITOR_WATCH_HARD_LINKS, since hard links can not be made to
+	// directories. It is not possible to monitor all the files in a directory
+	// for changes made via hard links; if you want to do this then you must
+	// register individual watches with g_file_monitor().
+	MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error)
 	// PeekPath: exactly like g_file_get_path(), but caches the result via
 	// g_object_set_qdata_full(). This is useful for example in C applications
 	// which mix `g_file_*` APIs with native ones. It also avoids an extra
@@ -240,6 +917,16 @@ type File interface {
 	//
 	// This call does no blocking I/O.
 	PeekPath() string
+	// QueryDefaultHandler returns the Info that is registered as the default
+	// application to handle the file specified by @file.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	QueryDefaultHandler(cancellable Cancellable) (AppInfo, error)
+	// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
+	// operation.
+	QueryDefaultHandlerFinish(result AsyncResult) (AppInfo, error)
 	// QueryExists: utility function to check if a particular file exists. This
 	// is implemented using g_file_query_info() and as such does blocking I/O.
 	//
@@ -264,6 +951,92 @@ type File interface {
 	// dialog. If you do this, you should make sure to also handle the errors
 	// that can happen due to races when you execute the operation.
 	QueryExists(cancellable Cancellable) bool
+	// QueryFileType: utility function to inspect the Type of a file. This is
+	// implemented using g_file_query_info() and as such does blocking I/O.
+	//
+	// The primary use case of this method is to check if a file is a regular
+	// file, directory, or symlink.
+	QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable) FileType
+	// Read opens a file for reading. The result is a InputStream that can be
+	// used to read the contents of the file.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
+	// will be returned. Other errors are possible too, and depend on what kind
+	// of filesystem the file is on.
+	Read(cancellable Cancellable) (FileInputStream, error)
+	// ReplaceContents replaces the contents of @file with @contents of @length
+	// bytes.
+	//
+	// If @etag is specified (not nil), any existing file must have that etag,
+	// or the error G_IO_ERROR_WRONG_ETAG will be returned.
+	//
+	// If @make_backup is true, this function will attempt to make a backup of
+	// @file. Internally, it uses g_file_replace(), so will try to replace the
+	// file contents in the safest way possible. For example, atomic renames are
+	// used when replacing local files’ contents.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The returned @new_etag can be used to verify that the file hasn't changed
+	// the next time it is saved over.
+	ReplaceContents(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (string, error)
+	// ReplaceContentsFinish finishes an asynchronous replace of the given
+	// @file. See g_file_replace_contents_async(). Sets @new_etag to the new
+	// entity tag for the document, if present.
+	ReplaceContentsFinish(res AsyncResult) (string, error)
+	// SetAttributeByteString sets @attribute of type
+	// G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value. If @attribute is of a
+	// different type, this operation will fail, returning false.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// SetAttributeInt32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
+	// @value. If @attribute is of a different type, this operation will fail.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// SetAttributeInt64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT64 to
+	// @value. If @attribute is of a different type, this operation will fail.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// SetAttributeString sets @attribute of type G_FILE_ATTRIBUTE_TYPE_STRING
+	// to @value. If @attribute is of a different type, this operation will
+	// fail.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// SetAttributeUint32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32
+	// to @value. If @attribute is of a different type, this operation will
+	// fail.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// SetAttributeUint64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64
+	// to @value. If @attribute is of a different type, this operation will
+	// fail.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SupportsThreadContexts checks if @file supports [thread-default
 	// contexts][g-main-context-push-thread-default-context]. If this returns
 	// false, you cannot perform asynchronous operations on @file in a thread
@@ -292,6 +1065,540 @@ func marshalFile(p uintptr) (interface{}, error) {
 	return WrapFile(obj), nil
 }
 
+// AppendTo gets an output stream for appending data to the file. If the
+// file doesn't already exist it is created.
+//
+// By default files created are generally readable by everyone, but if you
+// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
+// the current user, to the level that is supported on the target
+// filesystem.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// Some file systems don't allow all file names, and may return an
+// G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
+// G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
+// too, and depend on what kind of filesystem the file is on.
+func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
+	var _arg0 *C.GFile           // out
+	var _arg1 C.GFileCreateFlags // out
+	var _arg2 *C.GCancellable    // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileCreateFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_file_append_to(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileOutputStream FileOutputStream // out
+	var _goerr error                       // out
+
+	_fileOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileOutputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileOutputStream, _goerr
+}
+
+// AppendToFinish finishes an asynchronous file append operation started
+// with g_file_append_to_async().
+func (f file) AppendToFinish(res AsyncResult) (FileOutputStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_file_append_to_finish(_arg0, _arg1, &_cerr)
+
+	var _fileOutputStream FileOutputStream // out
+	var _goerr error                       // out
+
+	_fileOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileOutputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileOutputStream, _goerr
+}
+
+// BuildAttributeListForCopy prepares the file attribute query string for
+// copying to @file.
+//
+// This function prepares an attribute query string to be passed to
+// g_file_query_info() to get a list of attributes normally copied with the
+// file (see g_file_copy_attributes() for the detailed description). This
+// function is used by the implementation of g_file_copy_attributes() and is
+// useful when one needs to query and set the attributes in two stages
+// (e.g., for recursive move of a directory).
+func (f file) BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancellable) (string, error) {
+	var _arg0 *C.GFile         // out
+	var _arg1 C.GFileCopyFlags // out
+	var _arg2 *C.GCancellable  // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileCopyFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.char   // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_build_attribute_list_for_copy(_arg0, _arg1, _arg2, &_cerr)
+
+	var _utf8 string // out
+	var _goerr error // out
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8, _goerr
+}
+
+// Copy copies the file @source to the location specified by @destination.
+// Can not handle recursive copies of directories.
+//
+// If the flag FILE_COPY_OVERWRITE is specified an already existing
+// @destination file is overwritten.
+//
+// If the flag FILE_COPY_NOFOLLOW_SYMLINKS is specified then symlinks will
+// be copied as symlinks, otherwise the target of the @source symlink will
+// be copied.
+//
+// If the flag FILE_COPY_ALL_METADATA is specified then all the metadata
+// that is possible to copy is copied, not just the default subset (which,
+// for instance, does not include the owner, see Info).
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If @progress_callback is not nil, then the operation can be monitored by
+// setting this to a ProgressCallback function. @progress_callback_data will
+// be passed to this function. It is guaranteed that this callback will be
+// called after all data has been transferred with the total number of bytes
+// copied during the operation.
+//
+// If the @source file does not exist, then the G_IO_ERROR_NOT_FOUND error
+// is returned, independent on the status of the @destination.
+//
+// If FILE_COPY_OVERWRITE is not specified and the target exists, then the
+// error G_IO_ERROR_EXISTS is returned.
+//
+// If trying to overwrite a file over a directory, the
+// G_IO_ERROR_IS_DIRECTORY error is returned. If trying to overwrite a
+// directory with a directory the G_IO_ERROR_WOULD_MERGE error is returned.
+//
+// If the source is a directory and the target does not exist, or
+// FILE_COPY_OVERWRITE is specified and the target is a file, then the
+// G_IO_ERROR_WOULD_RECURSE error is returned.
+//
+// If you are interested in copying the #GFile object itself (not the
+// on-disk file), see g_file_dup().
+func (s file) Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
+	var _arg0 *C.GFile                // out
+	var _arg1 *C.GFile                // out
+	var _arg2 C.GFileCopyFlags        // out
+	var _arg3 *C.GCancellable         // out
+	var _arg4 C.GFileProgressCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg2 = (C.GFileCopyFlags)(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
+	_arg5 = C.gpointer(box.Assign(progressCallback))
+
+	var _cerr *C.GError // in
+
+	C.g_file_copy(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// CopyAttributes copies the file attributes from @source to @destination.
+//
+// Normally only a subset of the file attributes are copied, those that are
+// copies in a normal file copy operation (which for instance does not
+// include e.g. owner). However if FILE_COPY_ALL_METADATA is specified in
+// @flags, then all the metadata that is possible to copy is copied. This is
+// useful when implementing move by copy + delete source.
+func (s file) CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GFile         // out
+	var _arg2 C.GFileCopyFlags // out
+	var _arg3 *C.GCancellable  // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg2 = (C.GFileCopyFlags)(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_copy_attributes(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// CopyFinish finishes copying the file started with g_file_copy_async().
+func (f file) CopyFinish(res AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_copy_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// Create creates a new file and returns an output stream for writing to it.
+// The file must not already exist.
+//
+// By default files created are generally readable by everyone, but if you
+// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
+// the current user, to the level that is supported on the target
+// filesystem.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If a file or directory with this name already exists the
+// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
+// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
+// if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
+// Other errors are possible too, and depend on what kind of filesystem the
+// file is on.
+func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
+	var _arg0 *C.GFile           // out
+	var _arg1 C.GFileCreateFlags // out
+	var _arg2 *C.GCancellable    // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileCreateFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_file_create(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileOutputStream FileOutputStream // out
+	var _goerr error                       // out
+
+	_fileOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileOutputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileOutputStream, _goerr
+}
+
+// CreateFinish finishes an asynchronous file create operation started with
+// g_file_create_async().
+func (f file) CreateFinish(res AsyncResult) (FileOutputStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_file_create_finish(_arg0, _arg1, &_cerr)
+
+	var _fileOutputStream FileOutputStream // out
+	var _goerr error                       // out
+
+	_fileOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileOutputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileOutputStream, _goerr
+}
+
+// CreateReadwrite creates a new file and returns a stream for reading and
+// writing to it. The file must not already exist.
+//
+// By default files created are generally readable by everyone, but if you
+// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
+// the current user, to the level that is supported on the target
+// filesystem.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If a file or directory with this name already exists, the
+// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
+// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
+// if the name is too long, G_IO_ERROR_FILENAME_TOO_LONG will be returned.
+// Other errors are possible too, and depend on what kind of filesystem the
+// file is on.
+//
+// Note that in many non-local file cases read and write streams are not
+// supported, so make sure you really need to do read and write streaming,
+// rather than just opening for reading or writing.
+func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error) {
+	var _arg0 *C.GFile           // out
+	var _arg1 C.GFileCreateFlags // out
+	var _arg2 *C.GCancellable    // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileCreateFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
+
+	_cret = C.g_file_create_readwrite(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileIOStream FileIOStream // out
+	var _goerr error               // out
+
+	_fileIOStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileIOStream, _goerr
+}
+
+// CreateReadwriteFinish finishes an asynchronous file create operation
+// started with g_file_create_readwrite_async().
+func (f file) CreateReadwriteFinish(res AsyncResult) (FileIOStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
+
+	_cret = C.g_file_create_readwrite_finish(_arg0, _arg1, &_cerr)
+
+	var _fileIOStream FileIOStream // out
+	var _goerr error               // out
+
+	_fileIOStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileIOStream, _goerr
+}
+
+// Delete deletes a file. If the @file is a directory, it will only be
+// deleted if it is empty. This has the same semantics as g_unlink().
+//
+// If @file doesn’t exist, G_IO_ERROR_NOT_FOUND will be returned. This
+// allows for deletion to be implemented avoiding time-of-check to
+// time-of-use races
+// (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
+//
+//    g_autoptr(GError) local_error = NULL;
+//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
+//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+//      {
+//        // deletion failed for some reason other than the file not existing:
+//        // so report the error
+//        g_warning ("Failed to delete s: s",
+//                   g_file_peek_path (my_file), local_error->message);
+//      }
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) Delete(cancellable Cancellable) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_delete(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// DeleteFinish finishes deleting a file started with g_file_delete_async().
+func (f file) DeleteFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_delete_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// Dup duplicates a #GFile handle. This operation does not duplicate the
+// actual file or directory represented by the #GFile; see g_file_copy() if
+// attempting to copy a file.
+//
+// g_file_dup() is useful when a second handle is needed to the same
+// underlying file, for use in a separate thread (#GFile is not
+// thread-safe). For use within the same thread, use g_object_ref() to
+// increment the existing object’s reference count.
+//
+// This call does no blocking I/O.
+func (f file) Dup() File {
+	var _arg0 *C.GFile // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_file_dup(_arg0)
+
+	var _ret File // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _ret
+}
+
+// EjectMountableFinish finishes an asynchronous eject operation started by
+// g_file_eject_mountable().
+func (f file) EjectMountableFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_eject_mountable_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// EjectMountableWithOperationFinish finishes an asynchronous eject
+// operation started by g_file_eject_mountable_with_operation().
+func (f file) EjectMountableWithOperationFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_eject_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// EnumerateChildren gets the requested information about the files in a
+// directory. The result is a Enumerator object that will give out Info
+// objects for all the files in the directory.
+//
+// The @attributes value is a string that specifies the file attributes that
+// should be gathered. It is not an error if it's not possible to read a
+// particular requested attribute from a file - it just won't be set.
+// @attributes should be a comma-separated list of attributes or attribute
+// wildcards. The wildcard "*" means all attributes, and a wildcard like
+// "standard::*" means all attributes in the standard namespace. An example
+// attribute query be "standard::*,owner::user". The standard attributes are
+// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+// returned. If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY
+// error will be returned. Other errors are possible too.
+func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileEnumerator, error) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GFileQueryInfoFlags)(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileEnumerator // in
+	var _cerr *C.GError          // in
+
+	_cret = C.g_file_enumerate_children(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _fileEnumerator FileEnumerator // out
+	var _goerr error                   // out
+
+	_fileEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileEnumerator)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileEnumerator, _goerr
+}
+
+// EnumerateChildrenFinish finishes an async enumerate children operation.
+// See g_file_enumerate_children_async().
+func (f file) EnumerateChildrenFinish(res AsyncResult) (FileEnumerator, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileEnumerator // in
+	var _cerr *C.GError          // in
+
+	_cret = C.g_file_enumerate_children_finish(_arg0, _arg1, &_cerr)
+
+	var _fileEnumerator FileEnumerator // out
+	var _goerr error                   // out
+
+	_fileEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileEnumerator)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileEnumerator, _goerr
+}
+
 // Equal checks if the two given #GFiles refer to the same file.
 //
 // Note that two #GFiles that differ can still refer to the same file on the
@@ -316,6 +1623,59 @@ func (f file) Equal(file2 File) bool {
 	}
 
 	return _ok
+}
+
+// FindEnclosingMount gets a #GMount for the #GFile.
+//
+// #GMount is returned only for user interesting locations, see Monitor. If
+// the Iface for @file does not have a #mount, @error will be set to
+// G_IO_ERROR_NOT_FOUND and nil #will be returned.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) FindEnclosingMount(cancellable Cancellable) (Mount, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GMount // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_find_enclosing_mount(_arg0, _arg1, &_cerr)
+
+	var _mount Mount // out
+	var _goerr error // out
+
+	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Mount)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _mount, _goerr
+}
+
+// FindEnclosingMountFinish finishes an asynchronous find mount request. See
+// g_file_find_enclosing_mount_async().
+func (f file) FindEnclosingMountFinish(res AsyncResult) (Mount, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GMount // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_find_enclosing_mount_finish(_arg0, _arg1, &_cerr)
+
+	var _mount Mount // out
+	var _goerr error // out
+
+	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Mount)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _mount, _goerr
 }
 
 // Basename gets the base name (the last component of the path) for a given
@@ -347,6 +1707,82 @@ func (f file) Basename() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
+}
+
+// Child gets a child of @file with basename equal to @name.
+//
+// Note that the file with that specific name might not exist, but you can
+// still have a #GFile that points to it. You can use this for instance to
+// create that file.
+//
+// This call does no blocking I/O.
+func (f file) Child(name string) File {
+	var _arg0 *C.GFile // out
+	var _arg1 *C.char  // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_file_get_child(_arg0, _arg1)
+
+	var _ret File // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _ret
+}
+
+// ChildForDisplayName gets the child of @file for a given @display_name
+// (i.e. a UTF-8 version of the name). If this function fails, it returns
+// nil and @error will be set. This is very useful when constructing a
+// #GFile for a new file and the user entered the filename in the user
+// interface, for instance when you select a directory and type a filename
+// in the file selector.
+//
+// This call does no blocking I/O.
+func (f file) ChildForDisplayName(displayName string) (File, error) {
+	var _arg0 *C.GFile // out
+	var _arg1 *C.char  // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(displayName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GFile  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
+
+	var _ret File    // out
+	var _goerr error // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _ret, _goerr
+}
+
+// Parent gets the parent directory for the @file. If the @file represents
+// the root directory of the file system, then nil will be returned.
+//
+// This call does no blocking I/O.
+func (f file) Parent() File {
+	var _arg0 *C.GFile // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_file_get_parent(_arg0)
+
+	var _ret File // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _ret
 }
 
 // ParseName gets the parse name of the @file. A parse name is a UTF-8
@@ -601,6 +2037,515 @@ func (f file) IsNative() bool {
 	return _ok
 }
 
+// LoadContents loads the content of the file into memory. The data is
+// always zero-terminated, but this is not included in the resultant
+// @length. The returned @contents should be freed with g_free() when no
+// longer needed.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) LoadContents(cancellable Cancellable) ([]byte, string, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg2 *C.char
+	var _arg3 C.gsize   // in
+	var _arg4 *C.char   // in
+	var _cerr *C.GError // in
+
+	C.g_file_load_contents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+
+	var _contents []byte
+	var _etagOut string // out
+	var _goerr error    // out
+
+	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_contents, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	_etagOut = C.GoString(_arg4)
+	defer C.free(unsafe.Pointer(_arg4))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _contents, _etagOut, _goerr
+}
+
+// LoadContentsFinish finishes an asynchronous load of the @file's contents.
+// The contents are placed in @contents, and @length is set to the size of
+// the @contents string. The @contents should be freed with g_free() when no
+// longer needed. If @etag_out is present, it will be set to the new entity
+// tag for the @file.
+func (f file) LoadContentsFinish(res AsyncResult) ([]byte, string, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _arg2 *C.char
+	var _arg3 C.gsize   // in
+	var _arg4 *C.char   // in
+	var _cerr *C.GError // in
+
+	C.g_file_load_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+
+	var _contents []byte
+	var _etagOut string // out
+	var _goerr error    // out
+
+	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_contents, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	_etagOut = C.GoString(_arg4)
+	defer C.free(unsafe.Pointer(_arg4))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _contents, _etagOut, _goerr
+}
+
+// LoadPartialContentsFinish finishes an asynchronous partial load operation
+// that was started with g_file_load_partial_contents_async(). The data is
+// always zero-terminated, but this is not included in the resultant
+// @length. The returned @contents should be freed with g_free() when no
+// longer needed.
+func (f file) LoadPartialContentsFinish(res AsyncResult) ([]byte, string, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _arg2 *C.char
+	var _arg3 C.gsize   // in
+	var _arg4 *C.char   // in
+	var _cerr *C.GError // in
+
+	C.g_file_load_partial_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+
+	var _contents []byte
+	var _etagOut string // out
+	var _goerr error    // out
+
+	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_contents, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	_etagOut = C.GoString(_arg4)
+	defer C.free(unsafe.Pointer(_arg4))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _contents, _etagOut, _goerr
+}
+
+// MakeDirectory creates a directory. Note that this will only create a
+// child directory of the immediate parent directory of the path or URI
+// given by the #GFile. To recursively create directories, see
+// g_file_make_directory_with_parents(). This function will fail if the
+// parent directory does not exist, setting @error to G_IO_ERROR_NOT_FOUND.
+// If the file system doesn't support creating directories, this function
+// will fail, setting @error to G_IO_ERROR_NOT_SUPPORTED.
+//
+// For a local #GFile the newly created directory will have the default
+// (current) ownership and permissions of the current process.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) MakeDirectory(cancellable Cancellable) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_make_directory(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// MakeDirectoryFinish finishes an asynchronous directory creation, started
+// with g_file_make_directory_async().
+func (f file) MakeDirectoryFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_make_directory_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// MakeDirectoryWithParents creates a directory and any parent directories
+// that may not exist similar to 'mkdir -p'. If the file system does not
+// support creating directories, this function will fail, setting @error to
+// G_IO_ERROR_NOT_SUPPORTED. If the directory itself already exists, this
+// function will fail setting @error to G_IO_ERROR_EXISTS, unlike the
+// similar g_mkdir_with_parents().
+//
+// For a local #GFile the newly created directories will have the default
+// (current) ownership and permissions of the current process.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) MakeDirectoryWithParents(cancellable Cancellable) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_make_directory_with_parents(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// MakeSymbolicLink creates a symbolic link named @file which contains the
+// string @symlink_value.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.char         // out
+	var _arg2 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(symlinkValue))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_make_symbolic_link(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// MeasureDiskUsageFinish collects the results from an earlier call to
+// g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for
+// more information.
+func (f file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _arg2 C.guint64 // in
+	var _arg3 C.guint64 // in
+	var _arg4 C.guint64 // in
+	var _cerr *C.GError // in
+
+	C.g_file_measure_disk_usage_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+
+	var _diskUsage uint64 // out
+	var _numDirs uint64   // out
+	var _numFiles uint64  // out
+	var _goerr error      // out
+
+	_diskUsage = (uint64)(_arg2)
+	_numDirs = (uint64)(_arg3)
+	_numFiles = (uint64)(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _diskUsage, _numDirs, _numFiles, _goerr
+}
+
+// Monitor obtains a file or directory monitor for the given file, depending
+// on the type of the file.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) Monitor(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error) {
+	var _arg0 *C.GFile            // out
+	var _arg1 C.GFileMonitorFlags // out
+	var _arg2 *C.GCancellable     // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileMonitorFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileMonitor // in
+	var _cerr *C.GError       // in
+
+	_cret = C.g_file_monitor(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileMonitor FileMonitor // out
+	var _goerr error             // out
+
+	_fileMonitor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileMonitor)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileMonitor, _goerr
+}
+
+// MonitorDirectory obtains a directory monitor for the given file. This may
+// fail if directory monitoring is not supported.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// It does not make sense for @flags to contain
+// G_FILE_MONITOR_WATCH_HARD_LINKS, since hard links can not be made to
+// directories. It is not possible to monitor all the files in a directory
+// for changes made via hard links; if you want to do this then you must
+// register individual watches with g_file_monitor().
+func (f file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error) {
+	var _arg0 *C.GFile            // out
+	var _arg1 C.GFileMonitorFlags // out
+	var _arg2 *C.GCancellable     // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileMonitorFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileMonitor // in
+	var _cerr *C.GError       // in
+
+	_cret = C.g_file_monitor_directory(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileMonitor FileMonitor // out
+	var _goerr error             // out
+
+	_fileMonitor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileMonitor)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileMonitor, _goerr
+}
+
+// MonitorFile obtains a file monitor for the given file. If no file
+// notification mechanism exists, then regular polling of the file is used.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If @flags contains G_FILE_MONITOR_WATCH_HARD_LINKS then the monitor will
+// also attempt to report changes made to the file via another filename (ie,
+// a hard link). Without this flag, you can only rely on changes made
+// through the filename contained in @file to be reported. Using this flag
+// may result in an increase in resource usage, and may not have any effect
+// depending on the Monitor backend and/or filesystem type.
+func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error) {
+	var _arg0 *C.GFile            // out
+	var _arg1 C.GFileMonitorFlags // out
+	var _arg2 *C.GCancellable     // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileMonitorFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileMonitor // in
+	var _cerr *C.GError       // in
+
+	_cret = C.g_file_monitor_file(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileMonitor FileMonitor // out
+	var _goerr error             // out
+
+	_fileMonitor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileMonitor)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileMonitor, _goerr
+}
+
+// MountEnclosingVolumeFinish finishes a mount operation started by
+// g_file_mount_enclosing_volume().
+func (l file) MountEnclosingVolumeFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(l.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_mount_enclosing_volume_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// MountMountableFinish finishes a mount operation. See
+// g_file_mount_mountable() for details.
+//
+// Finish an asynchronous mount operation that was started with
+// g_file_mount_mountable().
+func (f file) MountMountableFinish(result AsyncResult) (File, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.GFile  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_mount_mountable_finish(_arg0, _arg1, &_cerr)
+
+	var _ret File    // out
+	var _goerr error // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _ret, _goerr
+}
+
+// Move tries to move the file or directory @source to the location
+// specified by @destination. If native move operations are supported then
+// this is used, otherwise a copy + delete fallback is used. The native
+// implementation may support moving directories (for instance on moves
+// inside the same filesystem), but the fallback code does not.
+//
+// If the flag FILE_COPY_OVERWRITE is specified an already existing
+// @destination file is overwritten.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If @progress_callback is not nil, then the operation can be monitored by
+// setting this to a ProgressCallback function. @progress_callback_data will
+// be passed to this function. It is guaranteed that this callback will be
+// called after all data has been transferred with the total number of bytes
+// copied during the operation.
+//
+// If the @source file does not exist, then the G_IO_ERROR_NOT_FOUND error
+// is returned, independent on the status of the @destination.
+//
+// If FILE_COPY_OVERWRITE is not specified and the target exists, then the
+// error G_IO_ERROR_EXISTS is returned.
+//
+// If trying to overwrite a file over a directory, the
+// G_IO_ERROR_IS_DIRECTORY error is returned. If trying to overwrite a
+// directory with a directory the G_IO_ERROR_WOULD_MERGE error is returned.
+//
+// If the source is a directory and the target does not exist, or
+// FILE_COPY_OVERWRITE is specified and the target is a file, then the
+// G_IO_ERROR_WOULD_RECURSE error may be returned (if the native move
+// operation isn't available).
+func (s file) Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
+	var _arg0 *C.GFile                // out
+	var _arg1 *C.GFile                // out
+	var _arg2 C.GFileCopyFlags        // out
+	var _arg3 *C.GCancellable         // out
+	var _arg4 C.GFileProgressCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg2 = (C.GFileCopyFlags)(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
+	_arg5 = C.gpointer(box.Assign(progressCallback))
+
+	var _cerr *C.GError // in
+
+	C.g_file_move(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// OpenReadwrite opens an existing file for reading and writing. The result
+// is a IOStream that can be used to read and write the contents of the
+// file.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
+// will be returned. Other errors are possible too, and depend on what kind
+// of filesystem the file is on. Note that in many non-local file cases read
+// and write streams are not supported, so make sure you really need to do
+// read and write streaming, rather than just opening for reading or
+// writing.
+func (f file) OpenReadwrite(cancellable Cancellable) (FileIOStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
+
+	_cret = C.g_file_open_readwrite(_arg0, _arg1, &_cerr)
+
+	var _fileIOStream FileIOStream // out
+	var _goerr error               // out
+
+	_fileIOStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileIOStream, _goerr
+}
+
+// OpenReadwriteFinish finishes an asynchronous file read operation started
+// with g_file_open_readwrite_async().
+func (f file) OpenReadwriteFinish(res AsyncResult) (FileIOStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
+
+	_cret = C.g_file_open_readwrite_finish(_arg0, _arg1, &_cerr)
+
+	var _fileIOStream FileIOStream // out
+	var _goerr error               // out
+
+	_fileIOStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileIOStream, _goerr
+}
+
 // PeekPath: exactly like g_file_get_path(), but caches the result via
 // g_object_set_qdata_full(). This is useful for example in C applications
 // which mix `g_file_*` APIs with native ones. It also avoids an extra
@@ -621,6 +2566,79 @@ func (f file) PeekPath() string {
 	_filename = C.GoString(_cret)
 
 	return _filename
+}
+
+// PollMountableFinish finishes a poll operation. See
+// g_file_poll_mountable() for details.
+//
+// Finish an asynchronous poll operation that was polled with
+// g_file_poll_mountable().
+func (f file) PollMountableFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_poll_mountable_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// QueryDefaultHandler returns the Info that is registered as the default
+// application to handle the file specified by @file.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) QueryDefaultHandler(cancellable Cancellable) (AppInfo, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GAppInfo // in
+	var _cerr *C.GError   // in
+
+	_cret = C.g_file_query_default_handler(_arg0, _arg1, &_cerr)
+
+	var _appInfo AppInfo // out
+	var _goerr error     // out
+
+	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _appInfo, _goerr
+}
+
+// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
+// operation.
+func (f file) QueryDefaultHandlerFinish(result AsyncResult) (AppInfo, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.GAppInfo // in
+	var _cerr *C.GError   // in
+
+	_cret = C.g_file_query_default_handler_finish(_arg0, _arg1, &_cerr)
+
+	var _appInfo AppInfo // out
+	var _goerr error     // out
+
+	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _appInfo, _goerr
 }
 
 // QueryExists: utility function to check if a particular file exists. This
@@ -666,6 +2684,946 @@ func (f file) QueryExists(cancellable Cancellable) bool {
 	return _ok
 }
 
+// QueryFileType: utility function to inspect the Type of a file. This is
+// implemented using g_file_query_info() and as such does blocking I/O.
+//
+// The primary use case of this method is to check if a file is a regular
+// file, directory, or symlink.
+func (f file) QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable) FileType {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GFileQueryInfoFlags // out
+	var _arg2 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileQueryInfoFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.GFileType // in
+
+	_cret = C.g_file_query_file_type(_arg0, _arg1, _arg2)
+
+	var _fileType FileType // out
+
+	_fileType = FileType(_cret)
+
+	return _fileType
+}
+
+// QueryFilesystemInfo: similar to g_file_query_info(), but obtains
+// information about the filesystem the @file is on, rather than the file
+// itself. For instance the amount of space available and the type of the
+// filesystem.
+//
+// The @attributes value is a string that specifies the attributes that
+// should be gathered. It is not an error if it's not possible to read a
+// particular requested attribute from a file - it just won't be set.
+// @attributes should be a comma-separated list of attributes or attribute
+// wildcards. The wildcard "*" means all attributes, and a wildcard like
+// "filesystem::*" means all attributes in the filesystem namespace. The
+// standard namespace for filesystem attributes is "filesystem". Common
+// attributes of interest are FILE_ATTRIBUTE_FILESYSTEM_SIZE (the total size
+// of the filesystem in bytes), FILE_ATTRIBUTE_FILESYSTEM_FREE (number of
+// bytes available), and FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the
+// filesystem).
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+// returned. Other errors are possible too, and depend on what kind of
+// filesystem the file is on.
+func (f file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.char         // out
+	var _arg2 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_file_query_filesystem_info(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileInfo FileInfo // out
+	var _goerr error       // out
+
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInfo, _goerr
+}
+
+// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
+// See g_file_query_filesystem_info_async().
+func (f file) QueryFilesystemInfoFinish(res AsyncResult) (FileInfo, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_file_query_filesystem_info_finish(_arg0, _arg1, &_cerr)
+
+	var _fileInfo FileInfo // out
+	var _goerr error       // out
+
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInfo, _goerr
+}
+
+// QueryInfo gets the requested information about specified @file. The
+// result is a Info object that contains key-value attributes (such as the
+// type or size of the file).
+//
+// The @attributes value is a string that specifies the file attributes that
+// should be gathered. It is not an error if it's not possible to read a
+// particular requested attribute from a file - it just won't be set.
+// @attributes should be a comma-separated list of attributes or attribute
+// wildcards. The wildcard "*" means all attributes, and a wildcard like
+// "standard::*" means all attributes in the standard namespace. An example
+// attribute query be "standard::*,owner::user". The standard attributes are
+// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// For symlinks, normally the information about the target of the symlink is
+// returned, rather than information about the symlink itself. However if
+// you pass FILE_QUERY_INFO_NOFOLLOW_SYMLINKS in @flags the information
+// about the symlink itself will be returned. Also, for symlinks that point
+// to non-existing files the information about the symlink itself will be
+// returned.
+//
+// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+// returned. Other errors are possible too, and depend on what kind of
+// filesystem the file is on.
+func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileInfo, error) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GFileQueryInfoFlags)(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_file_query_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _fileInfo FileInfo // out
+	var _goerr error       // out
+
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInfo, _goerr
+}
+
+// QueryInfoFinish finishes an asynchronous file info query. See
+// g_file_query_info_async().
+func (f file) QueryInfoFinish(res AsyncResult) (FileInfo, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_file_query_info_finish(_arg0, _arg1, &_cerr)
+
+	var _fileInfo FileInfo // out
+	var _goerr error       // out
+
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInfo, _goerr
+}
+
+// QuerySettableAttributes: obtain the list of settable attributes for the
+// file.
+//
+// Returns the type and full attribute name of all the attributes that can
+// be set on this file. This doesn't mean setting it will always succeed
+// though, you might get an access failure, or some specific file may not
+// support a specific attribute.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeInfoList, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileAttributeInfoList // in
+	var _cerr *C.GError                 // in
+
+	_cret = C.g_file_query_settable_attributes(_arg0, _arg1, &_cerr)
+
+	var _fileAttributeInfoList *FileAttributeInfoList // out
+	var _goerr error                                  // out
+
+	_fileAttributeInfoList = WrapFileAttributeInfoList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileAttributeInfoList, _goerr
+}
+
+// QueryWritableNamespaces: obtain the list of attribute namespaces where
+// new attributes can be created by a user. An example of this is extended
+// attributes (in the "xattr" namespace).
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeInfoList, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileAttributeInfoList // in
+	var _cerr *C.GError                 // in
+
+	_cret = C.g_file_query_writable_namespaces(_arg0, _arg1, &_cerr)
+
+	var _fileAttributeInfoList *FileAttributeInfoList // out
+	var _goerr error                                  // out
+
+	_fileAttributeInfoList = WrapFileAttributeInfoList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileAttributeInfoList, _goerr
+}
+
+// Read opens a file for reading. The result is a InputStream that can be
+// used to read the contents of the file.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
+// will be returned. Other errors are possible too, and depend on what kind
+// of filesystem the file is on.
+func (f file) Read(cancellable Cancellable) (FileInputStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileInputStream // in
+	var _cerr *C.GError           // in
+
+	_cret = C.g_file_read(_arg0, _arg1, &_cerr)
+
+	var _fileInputStream FileInputStream // out
+	var _goerr error                     // out
+
+	_fileInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInputStream, _goerr
+}
+
+// ReadFinish finishes an asynchronous file read operation started with
+// g_file_read_async().
+func (f file) ReadFinish(res AsyncResult) (FileInputStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileInputStream // in
+	var _cerr *C.GError           // in
+
+	_cret = C.g_file_read_finish(_arg0, _arg1, &_cerr)
+
+	var _fileInputStream FileInputStream // out
+	var _goerr error                     // out
+
+	_fileInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInputStream, _goerr
+}
+
+// Replace returns an output stream for overwriting the file, possibly
+// creating a backup copy of the file first. If the file doesn't exist, it
+// will be created.
+//
+// This will try to replace the file in the safest way possible so that any
+// errors during the writing will not affect an already existing copy of the
+// file. For instance, for local files it may write to a temporary file and
+// then atomically rename over the destination when the stream is closed.
+//
+// By default files created are generally readable by everyone, but if you
+// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
+// the current user, to the level that is supported on the target
+// filesystem.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If you pass in a non-nil @etag value and @file already exists, then this
+// value is compared to the current entity tag of the file, and if they
+// differ an G_IO_ERROR_WRONG_ETAG error is returned. This generally means
+// that the file has been changed since you last read it. You can get the
+// new etag from g_file_output_stream_get_etag() after you've finished
+// writing and closed the OutputStream. When you load a new file you can use
+// g_file_input_stream_query_info() to get the etag of the file.
+//
+// If @make_backup is true, this function will attempt to make a backup of
+// the current file before overwriting it. If this fails a
+// G_IO_ERROR_CANT_CREATE_BACKUP error will be returned. If you want to
+// replace anyway, try again with @make_backup set to false.
+//
+// If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
+// returned, and if the file is some other form of non-regular file then a
+// G_IO_ERROR_NOT_REGULAR_FILE error will be returned. Some file systems
+// don't allow all file names, and may return an G_IO_ERROR_INVALID_FILENAME
+// error, and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be
+// returned. Other errors are possible too, and depend on what kind of
+// filesystem the file is on.
+func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
+	var _arg0 *C.GFile           // out
+	var _arg1 *C.char            // out
+	var _arg2 C.gboolean         // out
+	var _arg3 C.GFileCreateFlags // out
+	var _arg4 *C.GCancellable    // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(etag))
+	defer C.free(unsafe.Pointer(_arg1))
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = (C.GFileCreateFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_file_replace(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _fileOutputStream FileOutputStream // out
+	var _goerr error                       // out
+
+	_fileOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileOutputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileOutputStream, _goerr
+}
+
+// ReplaceContents replaces the contents of @file with @contents of @length
+// bytes.
+//
+// If @etag is specified (not nil), any existing file must have that etag,
+// or the error G_IO_ERROR_WRONG_ETAG will be returned.
+//
+// If @make_backup is true, this function will attempt to make a backup of
+// @file. Internally, it uses g_file_replace(), so will try to replace the
+// file contents in the safest way possible. For example, atomic renames are
+// used when replacing local files’ contents.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The returned @new_etag can be used to verify that the file hasn't changed
+// the next time it is saved over.
+func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (string, error) {
+	var _arg0 *C.GFile // out
+	var _arg1 *C.char
+	var _arg2 C.gsize
+	var _arg3 *C.char            // out
+	var _arg4 C.gboolean         // out
+	var _arg5 C.GFileCreateFlags // out
+	var _arg7 *C.GCancellable    // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg2 = C.gsize(len(contents))
+	_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+	_arg3 = (*C.char)(C.CString(etag))
+	defer C.free(unsafe.Pointer(_arg3))
+	if makeBackup {
+		_arg4 = C.TRUE
+	}
+	_arg5 = (C.GFileCreateFlags)(flags)
+	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg6 *C.char   // in
+	var _cerr *C.GError // in
+
+	C.g_file_replace_contents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg7, &_arg6, &_cerr)
+
+	var _newEtag string // out
+	var _goerr error    // out
+
+	_newEtag = C.GoString(_arg6)
+	defer C.free(unsafe.Pointer(_arg6))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _newEtag, _goerr
+}
+
+// ReplaceContentsFinish finishes an asynchronous replace of the given
+// @file. See g_file_replace_contents_async(). Sets @new_etag to the new
+// entity tag for the document, if present.
+func (f file) ReplaceContentsFinish(res AsyncResult) (string, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _arg2 *C.char   // in
+	var _cerr *C.GError // in
+
+	C.g_file_replace_contents_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	var _newEtag string // out
+	var _goerr error    // out
+
+	_newEtag = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _newEtag, _goerr
+}
+
+// ReplaceFinish finishes an asynchronous file replace operation started
+// with g_file_replace_async().
+func (f file) ReplaceFinish(res AsyncResult) (FileOutputStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_file_replace_finish(_arg0, _arg1, &_cerr)
+
+	var _fileOutputStream FileOutputStream // out
+	var _goerr error                       // out
+
+	_fileOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileOutputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileOutputStream, _goerr
+}
+
+// ReplaceReadwrite returns an output stream for overwriting the file in
+// readwrite mode, possibly creating a backup copy of the file first. If the
+// file doesn't exist, it will be created.
+//
+// For details about the behaviour, see g_file_replace() which does the same
+// thing but returns an output stream only.
+//
+// Note that in many non-local file cases read and write streams are not
+// supported, so make sure you really need to do read and write streaming,
+// rather than just opening for reading or writing.
+func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error) {
+	var _arg0 *C.GFile           // out
+	var _arg1 *C.char            // out
+	var _arg2 C.gboolean         // out
+	var _arg3 C.GFileCreateFlags // out
+	var _arg4 *C.GCancellable    // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(etag))
+	defer C.free(unsafe.Pointer(_arg1))
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = (C.GFileCreateFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
+
+	_cret = C.g_file_replace_readwrite(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _fileIOStream FileIOStream // out
+	var _goerr error               // out
+
+	_fileIOStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileIOStream, _goerr
+}
+
+// ReplaceReadwriteFinish finishes an asynchronous file replace operation
+// started with g_file_replace_readwrite_async().
+func (f file) ReplaceReadwriteFinish(res AsyncResult) (FileIOStream, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
+
+	_cret = C.g_file_replace_readwrite_finish(_arg0, _arg1, &_cerr)
+
+	var _fileIOStream FileIOStream // out
+	var _goerr error               // out
+
+	_fileIOStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileIOStream, _goerr
+}
+
+// ResolveRelativePath resolves a relative path for @file to an absolute
+// path.
+//
+// This call does no blocking I/O.
+func (f file) ResolveRelativePath(relativePath string) File {
+	var _arg0 *C.GFile // out
+	var _arg1 *C.char  // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(relativePath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
+
+	var _ret File // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _ret
+}
+
+// SetAttribute sets an attribute in the file with attribute name @attribute
+// to @value_p.
+//
+// Some attributes can be unset by setting @type to
+// G_FILE_ATTRIBUTE_TYPE_INVALID and @value_p to nil.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetAttribute(attribute string, typ FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileAttributeType  // out
+	var _arg3 C.gpointer            // out
+	var _arg4 C.GFileQueryInfoFlags // out
+	var _arg5 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GFileAttributeType)(typ)
+	_arg3 = C.gpointer(valueP)
+	_arg4 = (C.GFileQueryInfoFlags)(flags)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_attribute(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SetAttributeByteString sets @attribute of type
+// G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value. If @attribute is of a
+// different type, this operation will fail, returning false.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.char               // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _arg4 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(value))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_attribute_byte_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SetAttributeInt32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
+// @value. If @attribute is of a different type, this operation will fail.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gint32              // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _arg4 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint32(value)
+	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_attribute_int32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SetAttributeInt64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT64 to
+// @value. If @attribute is of a different type, this operation will fail.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gint64              // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _arg4 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint64(value)
+	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_attribute_int64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SetAttributeString sets @attribute of type G_FILE_ATTRIBUTE_TYPE_STRING
+// to @value. If @attribute is of a different type, this operation will
+// fail.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.char               // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _arg4 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(value))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_attribute_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SetAttributeUint32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32
+// to @value. If @attribute is of a different type, this operation will
+// fail.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.guint32             // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _arg4 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint32(value)
+	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_attribute_uint32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SetAttributeUint64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64
+// to @value. If @attribute is of a different type, this operation will
+// fail.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.guint64             // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _arg4 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint64(value)
+	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_attribute_uint64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SetAttributesFinish finishes setting an attribute started in
+// g_file_set_attributes_async().
+func (f file) SetAttributesFinish(result AsyncResult) (FileInfo, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _arg2 *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	C.g_file_set_attributes_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	var _info FileInfo // out
+	var _goerr error   // out
+
+	_info = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _info, _goerr
+}
+
+// SetAttributesFromInfo tries to set all attributes in the Info on the
+// target values, not stopping on the first error.
+//
+// If there is any error during this operation then @error will be set to
+// the first error. Error on particular fields are flagged by setting the
+// "status" field in the attribute value to
+// G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING, which means you can also detect
+// further errors.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GFileInfo          // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 *C.GCancellable       // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg2 = (C.GFileQueryInfoFlags)(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_attributes_from_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SetDisplayName renames @file to the specified display name.
+//
+// The display name is converted from UTF-8 to the correct encoding for the
+// target filesystem if possible and the @file is renamed to this.
+//
+// If you want to implement a rename operation in the user interface the
+// edit name (FILE_ATTRIBUTE_STANDARD_EDIT_NAME) should be used as the
+// initial value in the rename widget, and then the result after editing
+// should be passed to g_file_set_display_name().
+//
+// On success the resulting converted filename is returned.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) SetDisplayName(displayName string, cancellable Cancellable) (File, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.char         // out
+	var _arg2 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(displayName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFile  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_set_display_name(_arg0, _arg1, _arg2, &_cerr)
+
+	var _ret File    // out
+	var _goerr error // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _ret, _goerr
+}
+
+// SetDisplayNameFinish finishes setting a display name started with
+// g_file_set_display_name_async().
+func (f file) SetDisplayNameFinish(res AsyncResult) (File, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GFile  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_set_display_name_finish(_arg0, _arg1, &_cerr)
+
+	var _ret File    // out
+	var _goerr error // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _ret, _goerr
+}
+
+// StartMountableFinish finishes a start operation. See
+// g_file_start_mountable() for details.
+//
+// Finish an asynchronous start operation that was started with
+// g_file_start_mountable().
+func (f file) StartMountableFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_start_mountable_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// StopMountableFinish finishes a stop operation, see
+// g_file_stop_mountable() for details.
+//
+// Finish an asynchronous stop operation that was started with
+// g_file_stop_mountable().
+func (f file) StopMountableFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_stop_mountable_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // SupportsThreadContexts checks if @file supports [thread-default
 // contexts][g-main-context-push-thread-default-context]. If this returns
 // false, you cannot perform asynchronous operations on @file in a thread
@@ -686,4 +3644,99 @@ func (f file) SupportsThreadContexts() bool {
 	}
 
 	return _ok
+}
+
+// Trash sends @file to the "Trashcan", if possible. This is similar to
+// deleting it, but the user can recover it before emptying the trashcan.
+// Not all file systems support trashing, so this call can return the
+// G_IO_ERROR_NOT_SUPPORTED error. Since GLib 2.66, the `x-gvfs-notrash`
+// unix mount option can be used to disable g_file_trash() support for
+// certain mounts, the G_IO_ERROR_NOT_SUPPORTED error will be returned in
+// that case.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+func (f file) Trash(cancellable Cancellable) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_trash(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// TrashFinish finishes an asynchronous file trashing operation, started
+// with g_file_trash_async().
+func (f file) TrashFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_trash_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// UnmountMountableFinish finishes an unmount operation, see
+// g_file_unmount_mountable() for details.
+//
+// Finish an asynchronous unmount operation that was started with
+// g_file_unmount_mountable().
+func (f file) UnmountMountableFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_unmount_mountable_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// UnmountMountableWithOperationFinish finishes an unmount operation, see
+// g_file_unmount_mountable_with_operation() for details.
+//
+// Finish an asynchronous unmount operation that was started with
+// g_file_unmount_mountable_with_operation().
+func (f file) UnmountMountableWithOperationFinish(result AsyncResult) error {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_file_unmount_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

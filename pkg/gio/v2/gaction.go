@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,25 +34,6 @@ func init() {
 // ActionOverrider contains methods that are overridable. This
 // interface is a subset of the interface Action.
 type ActionOverrider interface {
-	// Activate activates the action.
-	//
-	// @parameter must be the correct type of parameter for the action (ie: the
-	// parameter type given at construction time). If the parameter type was nil
-	// then @parameter must also be nil.
-	//
-	// If the @parameter GVariant is floating, it is consumed.
-	Activate(parameter *glib.Variant)
-	// ChangeState: request for the state of @action to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_get_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_get_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	ChangeState(value *glib.Variant)
 	// Enabled checks if @action is currently enabled.
 	//
 	// An action must be enabled in order to be activated or in order to have
@@ -113,43 +93,6 @@ func marshalAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAction(obj), nil
-}
-
-// Activate activates the action.
-//
-// @parameter must be the correct type of parameter for the action (ie: the
-// parameter type given at construction time). If the parameter type was nil
-// then @parameter must also be nil.
-//
-// If the @parameter GVariant is floating, it is consumed.
-func (a action) Activate(parameter *glib.Variant) {
-	var _arg0 *C.GAction  // out
-	var _arg1 *C.GVariant // out
-
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
-
-	C.g_action_activate(_arg0, _arg1)
-}
-
-// ChangeState: request for the state of @action to be changed to @value.
-//
-// The action must be stateful and @value must be of the correct type. See
-// g_action_get_state_type().
-//
-// This call merely requests a change. The action may refuse to change its
-// state or may change its state to something other than @value. See
-// g_action_get_state_hint().
-//
-// If the @value GVariant is floating, it is consumed.
-func (a action) ChangeState(value *glib.Variant) {
-	var _arg0 *C.GAction  // out
-	var _arg1 *C.GVariant // out
-
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	C.g_action_change_state(_arg0, _arg1)
 }
 
 // Enabled checks if @action is currently enabled.

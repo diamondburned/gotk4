@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -41,6 +42,17 @@ type SeekableOverrider interface {
 	CanTruncate() bool
 	// Tell tells the current position within the stream.
 	Tell() int64
+	// TruncateFn sets the length of the stream to @offset. If the stream was
+	// previously larger than @offset, the extra data is discarded. If the
+	// stream was previously shorter than @offset, it is extended with NUL
+	// ('\0') bytes.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	TruncateFn(offset int64, cancellable Cancellable) error
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that
@@ -58,6 +70,18 @@ type SeekableOverrider interface {
 type Seekable interface {
 	gextras.Objector
 	SeekableOverrider
+
+	// Truncate sets the length of the stream to @offset. If the stream was
+	// previously larger than @offset, the extra data is discarded. If the
+	// stream was previously shorter than @offset, it is extended with NUL
+	// ('\0') bytes.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	Truncate(offset int64, cancellable Cancellable) error
 }
 
 // seekable implements the Seekable interface.
@@ -135,4 +159,34 @@ func (s seekable) Tell() int64 {
 	_gint64 = (int64)(_cret)
 
 	return _gint64
+}
+
+// Truncate sets the length of the stream to @offset. If the stream was
+// previously larger than @offset, the extra data is discarded. If the
+// stream was previously shorter than @offset, it is extended with NUL
+// ('\0') bytes.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+// operation was partially finished when the operation was cancelled the
+// partial result will be returned, without an error.
+func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
+	var _arg0 *C.GSeekable    // out
+	var _arg1 C.goffset       // out
+	var _arg2 *C.GCancellable // out
+
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
+	_arg1 = C.goffset(offset)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_seekable_truncate(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

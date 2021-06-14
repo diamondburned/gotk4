@@ -68,6 +68,19 @@ type LayoutManager interface {
 	// and computes the position and sizes of the children of the @widget using
 	// the layout management policy of @manager.
 	Allocate(widget Widget, width int, height int, baseline int)
+	// LayoutChild retrieves a `GtkLayoutChild` instance for the
+	// `GtkLayoutManager`, creating one if necessary.
+	//
+	// The @child widget must be a child of the widget using @manager.
+	//
+	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+	// the given `GtkLayoutManager`.
+	LayoutChild(child Widget) LayoutChild
+	// RequestMode retrieves the request mode of @manager.
+	RequestMode() SizeRequestMode
+	// Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+	Widget() Widget
 	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
 	//
 	// This function should be called by subclasses of `GtkLayoutManager` in
@@ -119,6 +132,66 @@ func (m layoutManager) Allocate(widget Widget, width int, height int, baseline i
 	_arg4 = C.int(baseline)
 
 	C.gtk_layout_manager_allocate(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// LayoutChild retrieves a `GtkLayoutChild` instance for the
+// `GtkLayoutManager`, creating one if necessary.
+//
+// The @child widget must be a child of the widget using @manager.
+//
+// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+// the given `GtkLayoutManager`.
+func (m layoutManager) LayoutChild(child Widget) LayoutChild {
+	var _arg0 *C.GtkLayoutManager // out
+	var _arg1 *C.GtkWidget        // out
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	var _cret *C.GtkLayoutChild // in
+
+	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
+
+	var _layoutChild LayoutChild // out
+
+	_layoutChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LayoutChild)
+
+	return _layoutChild
+}
+
+// RequestMode retrieves the request mode of @manager.
+func (m layoutManager) RequestMode() SizeRequestMode {
+	var _arg0 *C.GtkLayoutManager // out
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
+
+	var _cret C.GtkSizeRequestMode // in
+
+	_cret = C.gtk_layout_manager_get_request_mode(_arg0)
+
+	var _sizeRequestMode SizeRequestMode // out
+
+	_sizeRequestMode = SizeRequestMode(_cret)
+
+	return _sizeRequestMode
+}
+
+// Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+func (m layoutManager) Widget() Widget {
+	var _arg0 *C.GtkLayoutManager // out
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_layout_manager_get_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.

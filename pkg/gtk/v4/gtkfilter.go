@@ -102,8 +102,14 @@ type Filter interface {
 	// This function is intended for implementors of Filter subclasses and
 	// should not be called from other functions.
 	Changed(change FilterChange)
-	// Match checks if the given @item is matched by the filter or not.
-	Match(item gextras.Objector) bool
+	// Strictness gets the known strictness of @filters. If the strictness is
+	// not known, GTK_FILTER_MATCH_SOME is returned.
+	//
+	// This value may change after emission of the Filter::changed signal.
+	//
+	// This function is meant purely for optimization purposes, filters can
+	// choose to omit implementing it, but FilterListModel uses it.
+	Strictness() FilterMatch
 }
 
 // filter implements the Filter class.
@@ -146,23 +152,25 @@ func (s filter) Changed(change FilterChange) {
 	C.gtk_filter_changed(_arg0, _arg1)
 }
 
-// Match checks if the given @item is matched by the filter or not.
-func (s filter) Match(item gextras.Objector) bool {
+// Strictness gets the known strictness of @filters. If the strictness is
+// not known, GTK_FILTER_MATCH_SOME is returned.
+//
+// This value may change after emission of the Filter::changed signal.
+//
+// This function is meant purely for optimization purposes, filters can
+// choose to omit implementing it, but FilterListModel uses it.
+func (s filter) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter // out
-	var _arg1 C.gpointer   // out
 
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
-	var _cret C.gboolean // in
+	var _cret C.GtkFilterMatch // in
 
-	_cret = C.gtk_filter_match(_arg0, _arg1)
+	_cret = C.gtk_filter_get_strictness(_arg0)
 
-	var _ok bool // out
+	var _filterMatch FilterMatch // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+	_filterMatch = FilterMatch(_cret)
 
-	return _ok
+	return _filterMatch
 }

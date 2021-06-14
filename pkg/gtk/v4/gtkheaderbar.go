@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -86,6 +87,10 @@ type HeaderBar interface {
 	// ShowTitleButtons returns whether this header bar shows the standard
 	// window title buttons.
 	ShowTitleButtons() bool
+	// TitleWidget retrieves the title widget of the header.
+	//
+	// See [method@Gtk.HeaderBar.set_title_widget].
+	TitleWidget() Widget
 	// PackEnd adds @child to @bar, packed with reference to the end of the
 	// @bar.
 	PackEnd(child Widget)
@@ -159,6 +164,19 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return WrapHeaderBar(obj), nil
 }
 
+// NewHeaderBar constructs a class HeaderBar.
+func NewHeaderBar() HeaderBar {
+	var _cret C.GtkHeaderBar // in
+
+	_cret = C.gtk_header_bar_new()
+
+	var _headerBar HeaderBar // out
+
+	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HeaderBar)
+
+	return _headerBar
+}
+
 // DecorationLayout gets the decoration layout of the `GtkHeaderBar`.
 func (b headerBar) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
@@ -194,6 +212,25 @@ func (b headerBar) ShowTitleButtons() bool {
 	}
 
 	return _ok
+}
+
+// TitleWidget retrieves the title widget of the header.
+//
+// See [method@Gtk.HeaderBar.set_title_widget].
+func (b headerBar) TitleWidget() Widget {
+	var _arg0 *C.GtkHeaderBar // out
+
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_header_bar_get_title_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // PackEnd adds @child to @bar, packed with reference to the end of the

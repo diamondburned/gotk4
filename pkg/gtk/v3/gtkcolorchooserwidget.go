@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,4 +75,17 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapColorChooserWidget(obj), nil
+}
+
+// NewColorChooserWidget constructs a class ColorChooserWidget.
+func NewColorChooserWidget() ColorChooserWidget {
+	var _cret C.GtkColorChooserWidget // in
+
+	_cret = C.gtk_color_chooser_widget_new()
+
+	var _colorChooserWidget ColorChooserWidget // out
+
+	_colorChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorChooserWidget)
+
+	return _colorChooserWidget
 }

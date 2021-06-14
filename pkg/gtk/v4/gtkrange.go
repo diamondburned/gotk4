@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,6 +37,9 @@ type Range interface {
 	ConstraintTarget
 	Orientable
 
+	// Adjustment: get the adjustment which is the “model” object for
+	// `GtkRange`.
+	Adjustment() Adjustment
 	// FillLevel gets the current position of the fill level indicator.
 	FillLevel() float64
 	// Flippable gets whether the `GtkRange` respects text direction.
@@ -47,11 +50,6 @@ type Range interface {
 	//
 	// See [method@Gtk.Range.set_inverted].
 	Inverted() bool
-	// RangeRect: this function returns the area that contains the range’s
-	// trough, in coordinates relative to @range's origin.
-	//
-	// This function is useful mainly for `GtkRange` subclasses.
-	RangeRect() gdk.Rectangle
 	// RestrictToFillLevel gets whether the range is restricted to the fill
 	// level.
 	RestrictToFillLevel() bool
@@ -185,6 +183,24 @@ func marshalRange(p uintptr) (interface{}, error) {
 	return WrapRange(obj), nil
 }
 
+// Adjustment: get the adjustment which is the “model” object for
+// `GtkRange`.
+func (r _range) Adjustment() Adjustment {
+	var _arg0 *C.GtkRange // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
+
+	var _cret *C.GtkAdjustment // in
+
+	_cret = C.gtk_range_get_adjustment(_arg0)
+
+	var _adjustment Adjustment // out
+
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+
+	return _adjustment
+}
+
 // FillLevel gets the current position of the fill level indicator.
 func (r _range) FillLevel() float64 {
 	var _arg0 *C.GtkRange // out
@@ -242,22 +258,6 @@ func (r _range) Inverted() bool {
 	}
 
 	return _ok
-}
-
-// RangeRect: this function returns the area that contains the range’s
-// trough, in coordinates relative to @range's origin.
-//
-// This function is useful mainly for `GtkRange` subclasses.
-func (r _range) RangeRect() gdk.Rectangle {
-	var _arg0 *C.GtkRange // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-
-	var _rangeRect gdk.Rectangle
-
-	C.gtk_range_get_range_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rangeRect)))
-
-	return _rangeRect
 }
 
 // RestrictToFillLevel gets whether the range is restricted to the fill

@@ -34,6 +34,8 @@ func init() {
 // TLSBackendOverrider contains methods that are overridable. This
 // interface is a subset of the interface TLSBackend.
 type TLSBackendOverrider interface {
+	// DefaultDatabase gets the default Database used to verify TLS connections.
+	DefaultDatabase() TLSDatabase
 	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
 	// available even if TLS support is available, and vice-versa.
 	SupportsDTLS() bool
@@ -131,6 +133,23 @@ func (b tlsBackend) ClientConnectionType() externglib.Type {
 	_gType = externglib.Type(_cret)
 
 	return _gType
+}
+
+// DefaultDatabase gets the default Database used to verify TLS connections.
+func (b tlsBackend) DefaultDatabase() TLSDatabase {
+	var _arg0 *C.GTlsBackend // out
+
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GTlsDatabase // in
+
+	_cret = C.g_tls_backend_get_default_database(_arg0)
+
+	var _tlsDatabase TLSDatabase // out
+
+	_tlsDatabase = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSDatabase)
+
+	return _tlsDatabase
 }
 
 // DTLSClientConnectionType gets the #GType of @backend’s ClientConnection

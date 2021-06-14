@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -113,9 +114,51 @@ func marshalChecksum(p uintptr) (interface{}, error) {
 	return WrapChecksum(unsafe.Pointer(b)), nil
 }
 
+// NewChecksum constructs a struct Checksum.
+func NewChecksum(checksumType ChecksumType) *Checksum {
+	var _arg1 C.GChecksumType // out
+
+	_arg1 = (C.GChecksumType)(checksumType)
+
+	var _cret *C.GChecksum // in
+
+	_cret = C.g_checksum_new(_arg1)
+
+	var _checksum *Checksum // out
+
+	_checksum = WrapChecksum(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_checksum, func(v *Checksum) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _checksum
+}
+
 // Native returns the underlying C source pointer.
 func (c *Checksum) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
+}
+
+// Copy copies a #GChecksum. If @checksum has been closed, by calling
+// g_checksum_get_string() or g_checksum_get_digest(), the copied checksum will
+// be closed as well.
+func (c *Checksum) Copy() *Checksum {
+	var _arg0 *C.GChecksum // out
+
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GChecksum // in
+
+	_cret = C.g_checksum_copy(_arg0)
+
+	var _ret *Checksum // out
+
+	_ret = WrapChecksum(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Checksum) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _ret
 }
 
 // Free frees the memory allocated for @checksum.

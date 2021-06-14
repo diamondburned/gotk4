@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -77,33 +77,6 @@ const (
 
 func marshalDialogFlags(p uintptr) (interface{}, error) {
 	return DialogFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// AlternativeDialogButtonOrder returns true if dialogs are expected to use an
-// alternative button order on the screen @screen. See
-// gtk_dialog_set_alternative_button_order() for more details about alternative
-// button order.
-//
-// If you need to use this function, you should probably connect to the
-// ::notify:gtk-alternative-button-order signal on the Settings object
-// associated to @screen, in order to be notified if the button order setting
-// changes.
-func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
-	var _arg1 *C.GdkScreen // out
-
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_alternative_dialog_button_order(_arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Dialog: dialog boxes are a convenient way to prompt the user for a small
@@ -228,9 +201,24 @@ type Dialog interface {
 	// non-activatable widget, simply pack it into the @action_area field of the
 	// Dialog struct.
 	AddActionWidget(child Widget, responseId int)
+	// AddButton adds a button with the given text and sets things up so that
+	// clicking the button will emit the Dialog::response signal with the given
+	// @response_id. The button is appended to the end of the dialog’s action
+	// area. The button widget is returned, but usually you don’t need it.
+	AddButton(buttonText string, responseId int) Widget
+	// ActionArea returns the action area of @dialog.
+	ActionArea() Box
+	// ContentArea returns the content area of @dialog.
+	ContentArea() Box
+	// HeaderBar returns the header bar of @dialog. Note that the headerbar is
+	// only used by the dialog if the Dialog:use-header-bar property is true.
+	HeaderBar() HeaderBar
 	// ResponseForWidget gets the response id of a widget in the action area of
 	// a dialog.
 	ResponseForWidget(widget Widget) int
+	// WidgetForResponse gets the widget button that uses the given response ID
+	// in the action area of a dialog.
+	WidgetForResponse(responseId int) Widget
 	// Response emits the Dialog::response signal with the given response ID.
 	// Used to indicate that the user has responded to the dialog in some way;
 	// typically either you or gtk_dialog_run() will be monitoring the
@@ -323,6 +311,19 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return WrapDialog(obj), nil
 }
 
+// NewDialog constructs a class Dialog.
+func NewDialog() Dialog {
+	var _cret C.GtkDialog // in
+
+	_cret = C.gtk_dialog_new()
+
+	var _dialog Dialog // out
+
+	_dialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Dialog)
+
+	return _dialog
+}
+
 // AddActionWidget adds an activatable widget to the action area of a
 // Dialog, connecting a signal handler that will emit the Dialog::response
 // signal on the dialog when the widget is activated. The widget is appended
@@ -339,6 +340,83 @@ func (d dialog) AddActionWidget(child Widget, responseId int) {
 	_arg2 = C.gint(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
+}
+
+// AddButton adds a button with the given text and sets things up so that
+// clicking the button will emit the Dialog::response signal with the given
+// @response_id. The button is appended to the end of the dialog’s action
+// area. The button widget is returned, but usually you don’t need it.
+func (d dialog) AddButton(buttonText string, responseId int) Widget {
+	var _arg0 *C.GtkDialog // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gint       // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.gchar)(C.CString(buttonText))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(responseId)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// ActionArea returns the action area of @dialog.
+func (d dialog) ActionArea() Box {
+	var _arg0 *C.GtkDialog // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_dialog_get_action_area(_arg0)
+
+	var _box Box // out
+
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
+
+	return _box
+}
+
+// ContentArea returns the content area of @dialog.
+func (d dialog) ContentArea() Box {
+	var _arg0 *C.GtkDialog // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_dialog_get_content_area(_arg0)
+
+	var _box Box // out
+
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
+
+	return _box
+}
+
+// HeaderBar returns the header bar of @dialog. Note that the headerbar is
+// only used by the dialog if the Dialog:use-header-bar property is true.
+func (d dialog) HeaderBar() HeaderBar {
+	var _arg0 *C.GtkDialog // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_dialog_get_header_bar(_arg0)
+
+	var _headerBar HeaderBar // out
+
+	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HeaderBar)
+
+	return _headerBar
 }
 
 // ResponseForWidget gets the response id of a widget in the action area of
@@ -359,6 +437,26 @@ func (d dialog) ResponseForWidget(widget Widget) int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// WidgetForResponse gets the widget button that uses the given response ID
+// in the action area of a dialog.
+func (d dialog) WidgetForResponse(responseId int) Widget {
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = C.gint(responseId)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Response emits the Dialog::response signal with the given response ID.

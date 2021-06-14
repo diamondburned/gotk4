@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -31,14 +32,57 @@ func init() {
 	})
 }
 
+// VfsFileLookupFunc: this function type is used by g_vfs_register_uri_scheme()
+// to make it possible for a client to associate an URI scheme to a different
+// #GFile implementation.
+//
+// The client should return a reference to the new file that has been created
+// for @uri, or nil to continue with the default implementation.
+type VFSFileLookupFunc func(vfs VFS, identifier string) (file File)
+
+//export gotk4_VFSFileLookupFunc
+func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var vfs VFS           // out
+	var identifier string // out
+
+	vfs = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(VFS)
+	identifier = C.GoString(arg1)
+
+	fn := v.(VFSFileLookupFunc)
+	file := fn(vfs, identifier)
+
+	var cret *C.GFile // out
+
+	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	return cret
+}
+
 // VFS: entry point for using GIO functionality.
 type VFS interface {
 	gextras.Objector
 
+	// FileForPath gets a #GFile for @path.
+	FileForPath(path string) File
+	// FileForURI gets a #GFile for @uri.
+	//
+	// This operation never fails, but the returned object might not support any
+	// I/O operation if the URI is malformed or if the URI scheme is not
+	// supported.
+	FileForURI(uri string) File
 	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
+	// ParseName: this operation never fails, but the returned object might not
+	// support any I/O operations if the @parse_name cannot be parsed by the
+	// #GVfs module.
+	ParseName(parseName string) File
 	// UnregisterURIScheme unregisters the URI handler for @scheme previously
 	// registered with g_vfs_register_uri_scheme().
 	UnregisterURIScheme(scheme string) bool
@@ -63,6 +107,50 @@ func marshalVFS(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapVFS(obj), nil
+}
+
+// FileForPath gets a #GFile for @path.
+func (v vfS) FileForPath(path string) File {
+	var _arg0 *C.GVfs // out
+	var _arg1 *C.char // out
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
+
+	var _file File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _file
+}
+
+// FileForURI gets a #GFile for @uri.
+//
+// This operation never fails, but the returned object might not support any
+// I/O operation if the URI is malformed or if the URI scheme is not
+// supported.
+func (v vfS) FileForURI(uri string) File {
+	var _arg0 *C.GVfs // out
+	var _arg1 *C.char // out
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
+
+	var _file File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _file
 }
 
 // SupportedURISchemes gets a list of URI schemes supported by @vfs.
@@ -113,6 +201,28 @@ func (v vfS) IsActive() bool {
 	}
 
 	return _ok
+}
+
+// ParseName: this operation never fails, but the returned object might not
+// support any I/O operations if the @parse_name cannot be parsed by the
+// #GVfs module.
+func (v vfS) ParseName(parseName string) File {
+	var _arg0 *C.GVfs // out
+	var _arg1 *C.char // out
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(parseName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_vfs_parse_name(_arg0, _arg1)
+
+	var _file File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _file
 }
 
 // UnregisterURIScheme unregisters the URI handler for @scheme previously

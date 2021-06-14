@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -50,9 +51,17 @@ type DriveOverrider interface {
 	Disconnected()
 
 	EjectButton()
+	// EjectFinish finishes ejecting a drive.
+	EjectFinish(result AsyncResult) error
+	// EjectWithOperationFinish finishes ejecting a drive. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
+	EjectWithOperationFinish(result AsyncResult) error
 	// EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
 	// g_drive_get_identifier() to obtain the identifiers themselves.
 	EnumerateIdentifiers() []string
+	// Icon gets the icon for @drive.
+	Icon() Icon
 	// Identifier gets the identifier of the given kind for @drive. The only
 	// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
 	Identifier(kind string) string
@@ -60,6 +69,10 @@ type DriveOverrider interface {
 	Name() string
 	// SortKey gets the sort key for @drive, if any.
 	SortKey() string
+	// StartStopType gets a hint about how a drive can be started/stopped.
+	StartStopType() DriveStartStopType
+	// SymbolicIcon gets the icon for @drive.
+	SymbolicIcon() Icon
 	// HasMedia checks if the @drive has media. Note that the OS may not be
 	// polling the drive for media changes; see
 	// g_drive_is_media_check_automatic() for more details.
@@ -74,8 +87,15 @@ type DriveOverrider interface {
 	// IsRemovable checks if the #GDrive and/or its media is considered
 	// removable by the user. See g_drive_is_media_removable().
 	IsRemovable() bool
+	// PollForMediaFinish finishes an operation started with
+	// g_drive_poll_for_media() on a drive.
+	PollForMediaFinish(result AsyncResult) error
+	// StartFinish finishes starting a drive.
+	StartFinish(result AsyncResult) error
 
 	StopButton()
+	// StopFinish finishes stopping a drive.
+	StopFinish(result AsyncResult) error
 }
 
 // Drive: #GDrive - this represent a piece of hardware connected to the machine.
@@ -223,6 +243,46 @@ func (d drive) CanStop() bool {
 	return _ok
 }
 
+// EjectFinish finishes ejecting a drive.
+func (d drive) EjectFinish(result AsyncResult) error {
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_drive_eject_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// EjectWithOperationFinish finishes ejecting a drive. If any errors
+// occurred during the operation, @error will be set to contain the errors
+// and false will be returned.
+func (d drive) EjectWithOperationFinish(result AsyncResult) error {
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_drive_eject_with_operation_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
 // g_drive_get_identifier() to obtain the identifiers themselves.
 func (d drive) EnumerateIdentifiers() []string {
@@ -254,6 +314,23 @@ func (d drive) EnumerateIdentifiers() []string {
 	}
 
 	return _utf8s
+}
+
+// Icon gets the icon for @drive.
+func (d drive) Icon() Icon {
+	var _arg0 *C.GDrive // out
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_drive_get_icon(_arg0)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
 }
 
 // Identifier gets the identifier of the given kind for @drive. The only
@@ -311,6 +388,40 @@ func (d drive) SortKey() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// StartStopType gets a hint about how a drive can be started/stopped.
+func (d drive) StartStopType() DriveStartStopType {
+	var _arg0 *C.GDrive // out
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+
+	var _cret C.GDriveStartStopType // in
+
+	_cret = C.g_drive_get_start_stop_type(_arg0)
+
+	var _driveStartStopType DriveStartStopType // out
+
+	_driveStartStopType = DriveStartStopType(_cret)
+
+	return _driveStartStopType
+}
+
+// SymbolicIcon gets the icon for @drive.
+func (d drive) SymbolicIcon() Icon {
+	var _arg0 *C.GDrive // out
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_drive_get_symbolic_icon(_arg0)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
 }
 
 // HasMedia checks if the @drive has media. Note that the OS may not be
@@ -410,4 +521,62 @@ func (d drive) IsRemovable() bool {
 	}
 
 	return _ok
+}
+
+// PollForMediaFinish finishes an operation started with
+// g_drive_poll_for_media() on a drive.
+func (d drive) PollForMediaFinish(result AsyncResult) error {
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_drive_poll_for_media_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// StartFinish finishes starting a drive.
+func (d drive) StartFinish(result AsyncResult) error {
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_drive_start_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// StopFinish finishes stopping a drive.
+func (d drive) StopFinish(result AsyncResult) error {
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_drive_stop_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

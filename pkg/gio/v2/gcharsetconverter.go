@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -69,6 +70,30 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCharsetConverter(obj), nil
+}
+
+// NewCharsetConverter constructs a class CharsetConverter.
+func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter, error) {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(toCharset))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(fromCharset))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GCharsetConverter // in
+	var _cerr *C.GError           // in
+
+	_cret = C.g_charset_converter_new(_arg1, _arg2, &_cerr)
+
+	var _charsetConverter CharsetConverter // out
+	var _goerr error                       // out
+
+	_charsetConverter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CharsetConverter)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _charsetConverter, _goerr
 }
 
 // NumFallbacks gets the number of fallbacks that @converter has applied so

@@ -68,6 +68,42 @@ func marshalRuleset(p uintptr) (interface{}, error) {
 	return WrapRuleset(obj), nil
 }
 
+// NewRuleset constructs a class Ruleset.
+func NewRuleset(info Info) Ruleset {
+	var _arg1 *C.PangoOTInfo // out
+
+	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
+
+	var _cret C.PangoOTRuleset // in
+
+	_cret = C.pango_ot_ruleset_new(_arg1)
+
+	var _ruleset Ruleset // out
+
+	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
+
+	return _ruleset
+}
+
+// NewRulesetFromDescription constructs a class Ruleset.
+func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset {
+	var _arg1 *C.PangoOTInfo               // out
+	var _arg2 *C.PangoOTRulesetDescription // out
+
+	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
+	_arg2 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc.Native()))
+
+	var _cret C.PangoOTRuleset // in
+
+	_cret = C.pango_ot_ruleset_new_from_description(_arg1, _arg2)
+
+	var _ruleset Ruleset // out
+
+	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
+
+	return _ruleset
+}
+
 // AddFeature adds a feature to the ruleset.
 func (r ruleset) AddFeature(tableType TableType, featureIndex uint, propertyBit uint32) {
 	var _arg0 *C.PangoOTRuleset  // out

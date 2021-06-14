@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -60,6 +61,22 @@ func marshalResolverNameLookupFlags(p uintptr) (interface{}, error) {
 type Resolver interface {
 	gextras.Objector
 
+	// LookupByAddress: synchronously reverse-resolves @address to determine its
+	// associated hostname.
+	//
+	// If the DNS resolution fails, @error (if non-nil) will be set to a value
+	// from Error.
+	//
+	// If @cancellable is non-nil, it can be used to cancel the operation, in
+	// which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
+	LookupByAddress(address InetAddress, cancellable Cancellable) (string, error)
+	// LookupByAddressFinish retrieves the result of a previous call to
+	// g_resolver_lookup_by_address_async().
+	//
+	// If the DNS resolution failed, @error (if non-nil) will be set to a value
+	// from Error. If the operation was cancelled, @error will be set to
+	// G_IO_ERROR_CANCELLED.
+	LookupByAddressFinish(result AsyncResult) (string, error)
 	// SetDefault sets @resolver to be the application's default resolver
 	// (reffing @resolver, and unreffing the previous default resolver, if any).
 	// Future calls to g_resolver_get_default() will return this resolver.
@@ -91,6 +108,66 @@ func marshalResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapResolver(obj), nil
+}
+
+// LookupByAddress: synchronously reverse-resolves @address to determine its
+// associated hostname.
+//
+// If the DNS resolution fails, @error (if non-nil) will be set to a value
+// from Error.
+//
+// If @cancellable is non-nil, it can be used to cancel the operation, in
+// which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
+func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) (string, error) {
+	var _arg0 *C.GResolver    // out
+	var _arg1 *C.GInetAddress // out
+	var _arg2 *C.GCancellable // out
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, &_cerr)
+
+	var _utf8 string // out
+	var _goerr error // out
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8, _goerr
+}
+
+// LookupByAddressFinish retrieves the result of a previous call to
+// g_resolver_lookup_by_address_async().
+//
+// If the DNS resolution failed, @error (if non-nil) will be set to a value
+// from Error. If the operation was cancelled, @error will be set to
+// G_IO_ERROR_CANCELLED.
+func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
+	var _arg0 *C.GResolver    // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
+
+	var _utf8 string // out
+	var _goerr error // out
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8, _goerr
 }
 
 // SetDefault sets @resolver to be the application's default resolver

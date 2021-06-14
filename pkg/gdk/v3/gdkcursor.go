@@ -202,6 +202,12 @@ func marshalCursorType(p uintptr) (interface{}, error) {
 type Cursor interface {
 	gextras.Objector
 
+	// CursorType returns the cursor type for this cursor.
+	CursorType() CursorType
+	// Display returns the display on which the Cursor is defined.
+	Display() Display
+	// Ref adds a reference to @cursor.
+	Ref() Cursor
 	// Unref removes a reference from @cursor, deallocating the cursor if no
 	// references remain.
 	Unref()
@@ -226,6 +232,113 @@ func marshalCursor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCursor(obj), nil
+}
+
+// NewCursor constructs a class Cursor.
+func NewCursor(cursorType CursorType) Cursor {
+	var _arg1 C.GdkCursorType // out
+
+	_arg1 = (C.GdkCursorType)(cursorType)
+
+	var _cret C.GdkCursor // in
+
+	_cret = C.gdk_cursor_new(_arg1)
+
+	var _cursor Cursor // out
+
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
+
+	return _cursor
+}
+
+// NewCursorForDisplay constructs a class Cursor.
+func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
+	var _arg1 *C.GdkDisplay   // out
+	var _arg2 C.GdkCursorType // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (C.GdkCursorType)(cursorType)
+
+	var _cret C.GdkCursor // in
+
+	_cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
+
+	var _cursor Cursor // out
+
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
+
+	return _cursor
+}
+
+// NewCursorFromName constructs a class Cursor.
+func NewCursorFromName(display Display, name string) Cursor {
+	var _arg1 *C.GdkDisplay // out
+	var _arg2 *C.gchar      // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GdkCursor // in
+
+	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
+
+	var _cursor Cursor // out
+
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
+
+	return _cursor
+}
+
+// CursorType returns the cursor type for this cursor.
+func (c cursor) CursorType() CursorType {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GdkCursorType // in
+
+	_cret = C.gdk_cursor_get_cursor_type(_arg0)
+
+	var _cursorType CursorType // out
+
+	_cursorType = CursorType(_cret)
+
+	return _cursorType
+}
+
+// Display returns the display on which the Cursor is defined.
+func (c cursor) Display() Display {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_cursor_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
+}
+
+// Ref adds a reference to @cursor.
+func (c cursor) Ref() Cursor {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkCursor // in
+
+	_cret = C.gdk_cursor_ref(_arg0)
+
+	var _ret Cursor // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
+
+	return _ret
 }
 
 // Unref removes a reference from @cursor, deallocating the cursor if no

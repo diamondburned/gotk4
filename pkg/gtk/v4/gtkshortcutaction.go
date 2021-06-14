@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -153,6 +152,24 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 	return WrapNamedAction(obj), nil
 }
 
+// NewNamedAction constructs a class NamedAction.
+func NewNamedAction(name string) NamedAction {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkNamedAction // in
+
+	_cret = C.gtk_named_action_new(_arg1)
+
+	var _namedAction NamedAction // out
+
+	_namedAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NamedAction)
+
+	return _namedAction
+}
+
 // ActionName returns the name of the action that will be activated.
 func (s namedAction) ActionName() string {
 	var _arg0 *C.GtkNamedAction // out
@@ -226,14 +243,6 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 type ShortcutAction interface {
 	gextras.Objector
 
-	// Activate activates the action on the @widget with the given @args.
-	//
-	// Note that some actions ignore the passed in @flags, @widget or @args.
-	//
-	// Activation of an action can fail for various reasons. If the action is
-	// not supported by the @widget, if the @args don't match the action or if
-	// the activation otherwise had no effect, false will be returned.
-	Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
 	// String prints the given action into a human-readable string.
 	//
 	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
@@ -262,35 +271,22 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 	return WrapShortcutAction(obj), nil
 }
 
-// Activate activates the action on the @widget with the given @args.
-//
-// Note that some actions ignore the passed in @flags, @widget or @args.
-//
-// Activation of an action can fail for various reasons. If the action is
-// not supported by the @widget, if the @args don't match the action or if
-// the activation otherwise had no effect, false will be returned.
-func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
-	var _arg0 *C.GtkShortcutAction     // out
-	var _arg1 C.GtkShortcutActionFlags // out
-	var _arg2 *C.GtkWidget             // out
-	var _arg3 *C.GVariant              // out
+// NewShortcutActionParseString constructs a class ShortcutAction.
+func NewShortcutActionParseString(string string) ShortcutAction {
+	var _arg1 *C.char // out
 
-	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkShortcutActionFlags)(flags)
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
+	_arg1 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean // in
+	var _cret C.GtkShortcutAction // in
 
-	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_shortcut_action_parse_string(_arg1)
 
-	var _ok bool // out
+	var _shortcutAction ShortcutAction // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+	_shortcutAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutAction)
 
-	return _ok
+	return _shortcutAction
 }
 
 // String prints the given action into a human-readable string.
@@ -344,6 +340,24 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSignalAction(obj), nil
+}
+
+// NewSignalAction constructs a class SignalAction.
+func NewSignalAction(signalName string) SignalAction {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(signalName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkSignalAction // in
+
+	_cret = C.gtk_signal_action_new(_arg1)
+
+	var _signalAction SignalAction // out
+
+	_signalAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SignalAction)
+
+	return _signalAction
 }
 
 // SignalName returns the name of the signal that will be emitted.

@@ -5,6 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,6 +44,16 @@ func init() {
 type FileInputStream interface {
 	InputStream
 	Seekable
+
+	// QueryInfo queries a file input stream the given @attributes. This
+	// function blocks while querying the stream. For the asynchronous
+	// (non-blocking) version of this function, see
+	// g_file_input_stream_query_info_async(). While the stream is blocked, the
+	// stream will set the pending flag internally, and any other operations on
+	// the stream will fail with G_IO_ERROR_PENDING.
+	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoFinish finishes an asynchronous info query operation.
+	QueryInfoFinish(result AsyncResult) (FileInfo, error)
 }
 
 // fileInputStream implements the FileInputStream class.
@@ -65,4 +77,56 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFileInputStream(obj), nil
+}
+
+// QueryInfo queries a file input stream the given @attributes. This
+// function blocks while querying the stream. For the asynchronous
+// (non-blocking) version of this function, see
+// g_file_input_stream_query_info_async(). While the stream is blocked, the
+// stream will set the pending flag internally, and any other operations on
+// the stream will fail with G_IO_ERROR_PENDING.
+func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
+	var _arg0 *C.GFileInputStream // out
+	var _arg1 *C.char             // out
+	var _arg2 *C.GCancellable     // out
+
+	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_file_input_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileInfo FileInfo // out
+	var _goerr error       // out
+
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInfo, _goerr
+}
+
+// QueryInfoFinish finishes an asynchronous info query operation.
+func (s fileInputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
+	var _arg0 *C.GFileInputStream // out
+	var _arg1 *C.GAsyncResult     // out
+
+	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_file_input_stream_query_info_finish(_arg0, _arg1, &_cerr)
+
+	var _fileInfo FileInfo // out
+	var _goerr error       // out
+
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInfo, _goerr
 }

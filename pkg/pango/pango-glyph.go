@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -91,6 +92,20 @@ func (g *GlyphInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
+// Geometry gets the field inside the struct.
+func (g *GlyphInfo) Geometry() GlyphGeometry {
+	var v GlyphGeometry // out
+	v = *WrapGlyphGeometry(unsafe.Pointer(&g.native.geometry))
+	return v
+}
+
+// Attr gets the field inside the struct.
+func (g *GlyphInfo) Attr() GlyphVisAttr {
+	var v GlyphVisAttr // out
+	v = *WrapGlyphVisAttr(unsafe.Pointer(&g.native.attr))
+	return v
+}
+
 // GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
@@ -115,6 +130,22 @@ func marshalGlyphString(p uintptr) (interface{}, error) {
 	return WrapGlyphString(unsafe.Pointer(b)), nil
 }
 
+// NewGlyphString constructs a struct GlyphString.
+func NewGlyphString() *GlyphString {
+	var _cret *C.PangoGlyphString // in
+
+	_cret = C.pango_glyph_string_new()
+
+	var _glyphString *GlyphString // out
+
+	_glyphString = WrapGlyphString(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _glyphString
+}
+
 // Native returns the underlying C source pointer.
 func (g *GlyphString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
@@ -132,6 +163,26 @@ func (g *GlyphString) LogClusters() *int {
 	var v *int // out
 	v = (*int)(g.native.log_clusters)
 	return v
+}
+
+// Copy: copy a glyph string and associated storage.
+func (s *GlyphString) Copy() *GlyphString {
+	var _arg0 *C.PangoGlyphString // out
+
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.PangoGlyphString // in
+
+	_cret = C.pango_glyph_string_copy(_arg0)
+
+	var _glyphString *GlyphString // out
+
+	_glyphString = WrapGlyphString(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _glyphString
 }
 
 // Extents: compute the logical and ink extents of a glyph string.

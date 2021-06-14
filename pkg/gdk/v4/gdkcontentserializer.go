@@ -3,10 +3,11 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,7 +37,6 @@ func init() {
 // Also see [class@Gdk.ContentDeserializer].
 type ContentSerializer interface {
 	gextras.Objector
-	gio.AsyncResult
 
 	// GType gets the `GType` to of the object to serialize.
 	GType() externglib.Type
@@ -53,8 +53,10 @@ type ContentSerializer interface {
 	// UserData gets the user data that was passed when the serializer was
 	// registered.
 	UserData() interface{}
-	// Value gets the `GValue` to read the object to serialize from.
-	Value() **externglib.Value
+	// ReturnError: indicate that the serialization has ended with an error.
+	//
+	// This function consumes @error.
+	ReturnError(err error)
 	// ReturnSuccess: indicate that the serialization has been successfully
 	// completed.
 	ReturnSuccess()
@@ -63,7 +65,6 @@ type ContentSerializer interface {
 // contentSerializer implements the ContentSerializer class.
 type contentSerializer struct {
 	gextras.Objector
-	gio.AsyncResult
 }
 
 var _ ContentSerializer = (*contentSerializer)(nil)
@@ -72,8 +73,7 @@ var _ ContentSerializer = (*contentSerializer)(nil)
 // primarily used internally.
 func WrapContentSerializer(obj *externglib.Object) ContentSerializer {
 	return contentSerializer{
-		Objector:        obj,
-		gio.AsyncResult: gio.WrapAsyncResult(obj),
+		Objector: obj,
 	}
 }
 
@@ -173,21 +173,18 @@ func (s contentSerializer) UserData() interface{} {
 	return _gpointer
 }
 
-// Value gets the `GValue` to read the object to serialize from.
-func (s contentSerializer) Value() **externglib.Value {
+// ReturnError: indicate that the serialization has ended with an error.
+//
+// This function consumes @error.
+func (s contentSerializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentSerializer // out
+	var _arg1 *C.GError               // out
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	defer C.g_error_free(_arg1)
 
-	var _cret *C.GValue // in
-
-	_cret = C.gdk_content_serializer_get_value(_arg0)
-
-	var _value **externglib.Value // out
-
-	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
-
-	return _value
+	C.gdk_content_serializer_return_error(_arg0, _arg1)
 }
 
 // ReturnSuccess: indicate that the serialization has been successfully

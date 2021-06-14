@@ -24,11 +24,13 @@ func init() {
 
 type BooleanCellAccessible interface {
 	RendererCellAccessible
+	Action
 }
 
 // booleanCellAccessible implements the BooleanCellAccessible class.
 type booleanCellAccessible struct {
 	RendererCellAccessible
+	Action
 }
 
 var _ BooleanCellAccessible = (*booleanCellAccessible)(nil)
@@ -38,6 +40,7 @@ var _ BooleanCellAccessible = (*booleanCellAccessible)(nil)
 func WrapBooleanCellAccessible(obj *externglib.Object) BooleanCellAccessible {
 	return booleanCellAccessible{
 		RendererCellAccessible: WrapRendererCellAccessible(obj),
+		Action:                 WrapAction(obj),
 	}
 }
 

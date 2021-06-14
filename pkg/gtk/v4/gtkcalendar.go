@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -124,6 +125,19 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCalendar(obj), nil
+}
+
+// NewCalendar constructs a class Calendar.
+func NewCalendar() Calendar {
+	var _cret C.GtkCalendar // in
+
+	_cret = C.gtk_calendar_new()
+
+	var _calendar Calendar // out
+
+	_calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Calendar)
+
+	return _calendar
 }
 
 // ClearMarks: remove all visual markers.

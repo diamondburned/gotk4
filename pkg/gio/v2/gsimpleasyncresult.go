@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -213,6 +214,13 @@ type SimpleAsyncResult interface {
 	OpResGboolean() bool
 	// OpResGssize gets a gssize from the asynchronous result.
 	OpResGssize() int
+	// PropagateError propagates an error from within the simple asynchronous
+	// result to a given destination.
+	//
+	// If the #GCancellable given to a prior call to
+	// g_simple_async_result_set_check_cancellable() is cancelled then this
+	// function will return true with @dest set appropriately.
+	PropagateError() error
 	// SetCheckCancellable sets a #GCancellable to check before dispatching
 	// results.
 	//
@@ -230,6 +238,8 @@ type SimpleAsyncResult interface {
 	// The checking described above is done regardless of any call to the
 	// unrelated g_simple_async_result_set_handle_cancellation() function.
 	SetCheckCancellable(checkCancellable Cancellable)
+	// SetFromError sets the result from a #GError.
+	SetFromError(err error)
 	// SetHandleCancellation sets whether to handle cancellation within the
 	// asynchronous operation.
 	//
@@ -335,6 +345,28 @@ func (s simpleAsyncResult) OpResGssize() int {
 	return _gssize
 }
 
+// PropagateError propagates an error from within the simple asynchronous
+// result to a given destination.
+//
+// If the #GCancellable given to a prior call to
+// g_simple_async_result_set_check_cancellable() is cancelled then this
+// function will return true with @dest set appropriately.
+func (s simpleAsyncResult) PropagateError() error {
+	var _arg0 *C.GSimpleAsyncResult // out
+
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_simple_async_result_propagate_error(_arg0, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // SetCheckCancellable sets a #GCancellable to check before dispatching
 // results.
 //
@@ -359,6 +391,18 @@ func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable) {
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(checkCancellable.Native()))
 
 	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
+}
+
+// SetFromError sets the result from a #GError.
+func (s simpleAsyncResult) SetFromError(err error) {
+	var _arg0 *C.GSimpleAsyncResult // out
+	var _arg1 *C.GError             // out
+
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	defer C.g_error_free(_arg1)
+
+	C.g_simple_async_result_set_from_error(_arg0, _arg1)
 }
 
 // SetHandleCancellation sets whether to handle cancellation within the

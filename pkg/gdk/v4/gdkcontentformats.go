@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -62,6 +63,22 @@ func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	return WrapContentFormatsBuilder(unsafe.Pointer(b)), nil
 }
 
+// NewContentFormatsBuilder constructs a struct ContentFormatsBuilder.
+func NewContentFormatsBuilder() *ContentFormatsBuilder {
+	var _cret *C.GdkContentFormatsBuilder // in
+
+	_cret = C.gdk_content_formats_builder_new()
+
+	var _contentFormatsBuilder *ContentFormatsBuilder // out
+
+	_contentFormatsBuilder = WrapContentFormatsBuilder(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormatsBuilder, func(v *ContentFormatsBuilder) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _contentFormatsBuilder
+}
+
 // Native returns the underlying C source pointer.
 func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
@@ -100,6 +117,52 @@ func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_content_formats_builder_add_mime_type(_arg0, _arg1)
+}
+
+// Ref acquires a reference on the given @builder.
+//
+// This function is intended primarily for bindings. `GdkContentFormatsBuilder`
+// objects should not be kept around.
+func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
+	var _arg0 *C.GdkContentFormatsBuilder // out
+
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GdkContentFormatsBuilder // in
+
+	_cret = C.gdk_content_formats_builder_ref(_arg0)
+
+	var _contentFormatsBuilder *ContentFormatsBuilder // out
+
+	_contentFormatsBuilder = WrapContentFormatsBuilder(unsafe.Pointer(_cret))
+
+	return _contentFormatsBuilder
+}
+
+// ToFormats creates a new `GdkContentFormats` from the given @builder.
+//
+// The given `GdkContentFormatsBuilder` is reset once this function returns; you
+// cannot call this function multiple times on the same @builder instance.
+//
+// This function is intended primarily for bindings. C code should use
+// [method@Gdk.ContentFormatsBuilder.free_to_formats].
+func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
+	var _arg0 *C.GdkContentFormatsBuilder // out
+
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GdkContentFormats // in
+
+	_cret = C.gdk_content_formats_builder_to_formats(_arg0)
+
+	var _contentFormats *ContentFormats // out
+
+	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _contentFormats
 }
 
 // Unref releases a reference on the given @builder.

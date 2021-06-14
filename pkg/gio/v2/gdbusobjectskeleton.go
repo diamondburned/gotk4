@@ -87,6 +87,24 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 	return WrapDBusObjectSkeleton(obj), nil
 }
 
+// NewDBusObjectSkeleton constructs a class DBusObjectSkeleton.
+func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GDBusObjectSkeleton // in
+
+	_cret = C.g_dbus_object_skeleton_new(_arg1)
+
+	var _dBusObjectSkeleton DBusObjectSkeleton // out
+
+	_dBusObjectSkeleton = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectSkeleton)
+
+	return _dBusObjectSkeleton
+}
+
 // AddInterface adds @interface_ to @object.
 //
 // If @object already contains a BusInterfaceSkeleton with the same

@@ -34,12 +34,6 @@ func init() {
 // ListModelOverrider contains methods that are overridable. This
 // interface is a subset of the interface ListModel.
 type ListModelOverrider interface {
-	// Item: get the item at @position. If @position is greater than the number
-	// of items in @list, nil is returned.
-	//
-	// nil is never returned for an index that is smaller than the length of the
-	// list. See g_list_model_get_n_items().
-	Item(position uint) gextras.Objector
 	// ItemType gets the type of the items in @list. All items returned from
 	// g_list_model_get_type() are of that type or a subtype, or are an
 	// implementation of that interface.
@@ -100,12 +94,6 @@ type ListModel interface {
 	gextras.Objector
 	ListModelOverrider
 
-	// Object: get the item at @position. If @position is greater than the
-	// number of items in @list, nil is returned.
-	//
-	// nil is never returned for an index that is smaller than the length of the
-	// list. See g_list_model_get_n_items().
-	Object(position uint) gextras.Objector
 	// ItemsChanged emits the Model::items-changed signal on @list.
 	//
 	// This function should only be called by classes implementing Model. It has
@@ -189,29 +177,6 @@ func (l listModel) NItems() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// Object: get the item at @position. If @position is greater than the
-// number of items in @list, nil is returned.
-//
-// nil is never returned for an index that is smaller than the length of the
-// list. See g_list_model_get_n_items().
-func (l listModel) Object(position uint) gextras.Objector {
-	var _arg0 *C.GListModel // out
-	var _arg1 C.guint       // out
-
-	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.guint(position)
-
-	var _cret *C.GObject // in
-
-	_cret = C.g_list_model_get_object(_arg0, _arg1)
-
-	var _object gextras.Objector // out
-
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
-
-	return _object
 }
 
 // ItemsChanged emits the Model::items-changed signal on @list.

@@ -2,51 +2,7 @@
 
 package gdkwayland
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
-// #cgo pkg-config: glib-2.0 gtk4 gtk4-wayland
+// #cgo pkg-config: gtk4 gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
-// #include <glib-object.h>
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_seat_get_type()), F: marshalWaylandSeat},
-	})
-}
-
-// WaylandSeat: the Wayland implementation of `GdkSeat`.
-//
-// Beyond the regular [class@Gdk.Seat] API, the Wayland implementation provides
-// access to the Wayland `wl_seat` object with
-// [method@GdkWayland.WaylandSeat.get_wl_seat].
-type WaylandSeat interface {
-	gdk.Seat
-}
-
-// waylandSeat implements the WaylandSeat class.
-type waylandSeat struct {
-	gdk.Seat
-}
-
-var _ WaylandSeat = (*waylandSeat)(nil)
-
-// WrapWaylandSeat wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapWaylandSeat(obj *externglib.Object) WaylandSeat {
-	return waylandSeat{
-		gdk.Seat: gdk.WrapSeat(obj),
-	}
-}
-
-func marshalWaylandSeat(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWaylandSeat(obj), nil
-}

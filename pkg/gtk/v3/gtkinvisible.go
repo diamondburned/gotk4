@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,9 +31,6 @@ func init() {
 type Invisible interface {
 	Widget
 	Buildable
-
-	// SetScreen sets the Screen where the Invisible object will be displayed.
-	SetScreen(screen gdk.Screen)
 }
 
 // invisible implements the Invisible class.
@@ -59,13 +56,15 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 	return WrapInvisible(obj), nil
 }
 
-// SetScreen sets the Screen where the Invisible object will be displayed.
-func (i invisible) SetScreen(screen gdk.Screen) {
-	var _arg0 *C.GtkInvisible // out
-	var _arg1 *C.GdkScreen    // out
+// NewInvisible constructs a class Invisible.
+func NewInvisible() Invisible {
+	var _cret C.GtkInvisible // in
 
-	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_cret = C.gtk_invisible_new()
 
-	C.gtk_invisible_set_screen(_arg0, _arg1)
+	var _invisible Invisible // out
+
+	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Invisible)
+
+	return _invisible
 }

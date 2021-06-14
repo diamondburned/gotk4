@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,10 +40,27 @@ type Layout interface {
 	Buildable
 	Scrollable
 
+	// BinWindow: retrieve the bin window of the layout used for drawing
+	// operations.
+	BinWindow() Window
+	// HAdjustment: this function should only be called after the layout has
+	// been placed in a ScrolledWindow or otherwise configured for scrolling. It
+	// returns the Adjustment used for communication between the horizontal
+	// scrollbar and @layout.
+	//
+	// See ScrolledWindow, Scrollbar, Adjustment for details.
+	HAdjustment() Adjustment
 	// Size gets the size that has been set on the layout, and that determines
 	// the total extents of the layout’s scrollbar area. See gtk_layout_set_size
 	// ().
 	Size() (width uint, height uint)
+	// VAdjustment: this function should only be called after the layout has
+	// been placed in a ScrolledWindow or otherwise configured for scrolling. It
+	// returns the Adjustment used for communication between the vertical
+	// scrollbar and @layout.
+	//
+	// See ScrolledWindow, Scrollbar, Adjustment for details.
+	VAdjustment() Adjustment
 	// Move moves a current child of @layout to a new position.
 	Move(childWidget Widget, x int, y int)
 	// Put adds @child_widget to @layout, at position (@x,@y). @layout becomes
@@ -85,6 +103,65 @@ func marshalLayout(p uintptr) (interface{}, error) {
 	return WrapLayout(obj), nil
 }
 
+// NewLayout constructs a class Layout.
+func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
+	var _arg1 *C.GtkAdjustment // out
+	var _arg2 *C.GtkAdjustment // out
+
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+
+	var _cret C.GtkLayout // in
+
+	_cret = C.gtk_layout_new(_arg1, _arg2)
+
+	var _layout Layout // out
+
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Layout)
+
+	return _layout
+}
+
+// BinWindow: retrieve the bin window of the layout used for drawing
+// operations.
+func (l layout) BinWindow() Window {
+	var _arg0 *C.GtkLayout // out
+
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gtk_layout_get_bin_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// HAdjustment: this function should only be called after the layout has
+// been placed in a ScrolledWindow or otherwise configured for scrolling. It
+// returns the Adjustment used for communication between the horizontal
+// scrollbar and @layout.
+//
+// See ScrolledWindow, Scrollbar, Adjustment for details.
+func (l layout) HAdjustment() Adjustment {
+	var _arg0 *C.GtkLayout // out
+
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.GtkAdjustment // in
+
+	_cret = C.gtk_layout_get_hadjustment(_arg0)
+
+	var _adjustment Adjustment // out
+
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+
+	return _adjustment
+}
+
 // Size gets the size that has been set on the layout, and that determines
 // the total extents of the layout’s scrollbar area. See gtk_layout_set_size
 // ().
@@ -105,6 +182,28 @@ func (l layout) Size() (width uint, height uint) {
 	_height = (uint)(_arg2)
 
 	return _width, _height
+}
+
+// VAdjustment: this function should only be called after the layout has
+// been placed in a ScrolledWindow or otherwise configured for scrolling. It
+// returns the Adjustment used for communication between the vertical
+// scrollbar and @layout.
+//
+// See ScrolledWindow, Scrollbar, Adjustment for details.
+func (l layout) VAdjustment() Adjustment {
+	var _arg0 *C.GtkLayout // out
+
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.GtkAdjustment // in
+
+	_cret = C.gtk_layout_get_vadjustment(_arg0)
+
+	var _adjustment Adjustment // out
+
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+
+	return _adjustment
 }
 
 // Move moves a current child of @layout to a new position.

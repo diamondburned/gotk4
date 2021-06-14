@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,31 +30,6 @@ func init() {
 	})
 }
 
-// RemoteActionGroupOverrider contains methods that are overridable. This
-// interface is a subset of the interface RemoteActionGroup.
-type RemoteActionGroupOverrider interface {
-	// ActivateActionFull activates the remote action.
-	//
-	// This is the same as g_action_group_activate_action() except that it
-	// allows for provision of "platform data" to be sent along with the
-	// activation request. This typically contains details such as the user
-	// interaction timestamp or startup notification information.
-	//
-	// @platform_data must be non-nil and must have the type
-	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
-	// ChangeActionStateFull changes the state of a remote action.
-	//
-	// This is the same as g_action_group_change_action_state() except that it
-	// allows for provision of "platform data" to be sent along with the state
-	// change request. This typically contains details such as the user
-	// interaction timestamp or startup notification information.
-	//
-	// @platform_data must be non-nil and must have the type
-	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
-}
-
 // RemoteActionGroup: the GRemoteActionGroup interface is implemented by Group
 // instances that either transmit action invocations to other processes or
 // receive action invocations in the local process from other processes.
@@ -75,7 +49,6 @@ type RemoteActionGroupOverrider interface {
 // data for action invocations that arrive by way of D-Bus.
 type RemoteActionGroup interface {
 	ActionGroup
-	RemoteActionGroupOverrider
 }
 
 // remoteActionGroup implements the RemoteActionGroup interface.
@@ -97,52 +70,4 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRemoteActionGroup(obj), nil
-}
-
-// ActivateActionFull activates the remote action.
-//
-// This is the same as g_action_group_activate_action() except that it
-// allows for provision of "platform data" to be sent along with the
-// activation request. This typically contains details such as the user
-// interaction timestamp or startup notification information.
-//
-// @platform_data must be non-nil and must have the type
-// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
-	var _arg0 *C.GRemoteActionGroup // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GVariant           // out
-	var _arg3 *C.GVariant           // out
-
-	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
-
-	C.g_remote_action_group_activate_action_full(_arg0, _arg1, _arg2, _arg3)
-}
-
-// ChangeActionStateFull changes the state of a remote action.
-//
-// This is the same as g_action_group_change_action_state() except that it
-// allows for provision of "platform data" to be sent along with the state
-// change request. This typically contains details such as the user
-// interaction timestamp or startup notification information.
-//
-// @platform_data must be non-nil and must have the type
-// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-func (r remoteActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
-	var _arg0 *C.GRemoteActionGroup // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GVariant           // out
-	var _arg3 *C.GVariant           // out
-
-	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
-
-	C.g_remote_action_group_change_action_state_full(_arg0, _arg1, _arg2, _arg3)
 }

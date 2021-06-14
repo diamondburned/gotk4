@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,6 +62,34 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAspectFrame(obj), nil
+}
+
+// NewAspectFrame constructs a class AspectFrame.
+func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
+	var _arg1 *C.gchar   // out
+	var _arg2 C.gfloat   // out
+	var _arg3 C.gfloat   // out
+	var _arg4 C.gfloat   // out
+	var _arg5 C.gboolean // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gfloat(xalign)
+	_arg3 = C.gfloat(yalign)
+	_arg4 = C.gfloat(ratio)
+	if obeyChild {
+		_arg5 = C.TRUE
+	}
+
+	var _cret C.GtkAspectFrame // in
+
+	_cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _aspectFrame AspectFrame // out
+
+	_aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AspectFrame)
+
+	return _aspectFrame
 }
 
 // Set: set parameters for an existing AspectFrame.

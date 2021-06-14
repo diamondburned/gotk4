@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -38,6 +39,22 @@ func WrapPoint(ptr unsafe.Pointer) *Point {
 func marshalPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapPoint(unsafe.Pointer(b)), nil
+}
+
+// NewPointAlloc constructs a struct Point.
+func NewPointAlloc() *Point {
+	var _cret *C.graphene_point_t // in
+
+	_cret = C.graphene_point_alloc()
+
+	var _point *Point // out
+
+	_point = WrapPoint(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_point, func(v *Point) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _point
 }
 
 // Native returns the underlying C source pointer.
@@ -116,6 +133,68 @@ func (p *Point) Free() {
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
 	C.graphene_point_free(_arg0)
+}
+
+// Init initializes @p to the given @x and @y coordinates.
+//
+// It's safe to call this function multiple times.
+func (p *Point) Init(x float32, y float32) *Point {
+	var _arg0 *C.graphene_point_t // out
+	var _arg1 C.float             // out
+	var _arg2 C.float             // out
+
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+
+	var _cret *C.graphene_point_t // in
+
+	_cret = C.graphene_point_init(_arg0, _arg1, _arg2)
+
+	var _point *Point // out
+
+	_point = WrapPoint(unsafe.Pointer(_cret))
+
+	return _point
+}
+
+// InitFromPoint initializes @p with the same coordinates of @src.
+func (p *Point) InitFromPoint(src *Point) *Point {
+	var _arg0 *C.graphene_point_t // out
+	var _arg1 *C.graphene_point_t // out
+
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(src.Native()))
+
+	var _cret *C.graphene_point_t // in
+
+	_cret = C.graphene_point_init_from_point(_arg0, _arg1)
+
+	var _point *Point // out
+
+	_point = WrapPoint(unsafe.Pointer(_cret))
+
+	return _point
+}
+
+// InitFromVec2 initializes @p with the coordinates inside the given
+// #graphene_vec2_t.
+func (p *Point) InitFromVec2(src *Vec2) *Point {
+	var _arg0 *C.graphene_point_t // out
+	var _arg1 *C.graphene_vec2_t  // out
+
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(src.Native()))
+
+	var _cret *C.graphene_point_t // in
+
+	_cret = C.graphene_point_init_from_vec2(_arg0, _arg1)
+
+	var _point *Point // out
+
+	_point = WrapPoint(unsafe.Pointer(_cret))
+
+	return _point
 }
 
 // Interpolate: linearly interpolates the coordinates of @a and @b using the

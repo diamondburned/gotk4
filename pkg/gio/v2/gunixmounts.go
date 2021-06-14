@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -109,6 +110,34 @@ func UnixIsSystemFSType(fsType string) bool {
 	return _ok
 }
 
+// UnixMountAt gets a MountEntry for a given mount path. If @time_read is set,
+// it will be filled with a unix timestamp for checking if the mounts have
+// changed since with g_unix_mounts_changed_since().
+//
+// If more mounts have the same mount path, the last matching mount is returned.
+func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(mountPath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _arg2 C.guint64          // in
+	var _cret *C.GUnixMountEntry // in
+
+	_cret = C.g_unix_mount_at(_arg1, &_arg2)
+
+	var _timeRead uint64                // out
+	var _unixMountEntry *UnixMountEntry // out
+
+	_timeRead = (uint64)(_arg2)
+	_unixMountEntry = WrapUnixMountEntry(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeRead, _unixMountEntry
+}
+
 // UnixMountCompare compares two unix mounts.
 func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
 	var _arg1 *C.GUnixMountEntry // out
@@ -126,6 +155,54 @@ func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// UnixMountCopy makes a copy of @mount_entry.
+func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
+	var _arg1 *C.GUnixMountEntry // out
+
+	_arg1 = (*C.GUnixMountEntry)(unsafe.Pointer(mountEntry.Native()))
+
+	var _cret *C.GUnixMountEntry // in
+
+	_cret = C.g_unix_mount_copy(_arg1)
+
+	var _unixMountEntry *UnixMountEntry // out
+
+	_unixMountEntry = WrapUnixMountEntry(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _unixMountEntry
+}
+
+// UnixMountFor gets a MountEntry for a given file path. If @time_read is set,
+// it will be filled with a unix timestamp for checking if the mounts have
+// changed since with g_unix_mounts_changed_since().
+//
+// If more mounts have the same mount path, the last matching mount is returned.
+func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(filePath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _arg2 C.guint64          // in
+	var _cret *C.GUnixMountEntry // in
+
+	_cret = C.g_unix_mount_for(_arg1, &_arg2)
+
+	var _timeRead uint64                // out
+	var _unixMountEntry *UnixMountEntry // out
+
+	_timeRead = (uint64)(_arg2)
+	_unixMountEntry = WrapUnixMountEntry(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeRead, _unixMountEntry
 }
 
 // UnixMountFree frees a unix mount.
@@ -249,6 +326,23 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 	return _ok
 }
 
+// UnixMountGuessIcon guesses the icon of a Unix mount.
+func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon {
+	var _arg1 *C.GUnixMountEntry // out
+
+	_arg1 = (*C.GUnixMountEntry)(unsafe.Pointer(mountEntry.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_unix_mount_guess_icon(_arg1)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
+}
+
 // UnixMountGuessName guesses the name of a Unix mount. The result is a
 // translated string.
 func UnixMountGuessName(mountEntry *UnixMountEntry) string {
@@ -286,6 +380,23 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 	}
 
 	return _ok
+}
+
+// UnixMountGuessSymbolicIcon guesses the symbolic icon of a Unix mount.
+func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon {
+	var _arg1 *C.GUnixMountEntry // out
+
+	_arg1 = (*C.GUnixMountEntry)(unsafe.Pointer(mountEntry.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_unix_mount_guess_symbolic_icon(_arg1)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
 }
 
 // UnixMountIsReadonly checks if a unix mount is mounted read only.
@@ -405,6 +516,19 @@ func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
 	return WrapUnixMountMonitor(obj), nil
 }
 
+// NewUnixMountMonitor constructs a class UnixMountMonitor.
+func NewUnixMountMonitor() UnixMountMonitor {
+	var _cret C.GUnixMountMonitor // in
+
+	_cret = C.g_unix_mount_monitor_new()
+
+	var _unixMountMonitor UnixMountMonitor // out
+
+	_unixMountMonitor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixMountMonitor)
+
+	return _unixMountMonitor
+}
+
 // SetRateLimit: this function does nothing.
 //
 // Before 2.44, this was a partially-effective way of controlling the rate
@@ -490,6 +614,26 @@ func (m *UnixMountPoint) Compare(mount2 *UnixMountPoint) int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Copy makes a copy of @mount_point.
+func (m *UnixMountPoint) Copy() *UnixMountPoint {
+	var _arg0 *C.GUnixMountPoint // out
+
+	_arg0 = (*C.GUnixMountPoint)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GUnixMountPoint // in
+
+	_cret = C.g_unix_mount_point_copy(_arg0)
+
+	var _unixMountPoint *UnixMountPoint // out
+
+	_unixMountPoint = WrapUnixMountPoint(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _unixMountPoint
 }
 
 // Free frees a unix mount point.
@@ -588,6 +732,23 @@ func (m *UnixMountPoint) GuessCanEject() bool {
 	return _ok
 }
 
+// GuessIcon guesses the icon of a Unix mount point.
+func (m *UnixMountPoint) GuessIcon() Icon {
+	var _arg0 *C.GUnixMountPoint // out
+
+	_arg0 = (*C.GUnixMountPoint)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_unix_mount_point_guess_icon(_arg0)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
+}
+
 // GuessName guesses the name of a Unix mount point. The result is a translated
 // string.
 func (m *UnixMountPoint) GuessName() string {
@@ -605,6 +766,23 @@ func (m *UnixMountPoint) GuessName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// GuessSymbolicIcon guesses the symbolic icon of a Unix mount point.
+func (m *UnixMountPoint) GuessSymbolicIcon() Icon {
+	var _arg0 *C.GUnixMountPoint // out
+
+	_arg0 = (*C.GUnixMountPoint)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_unix_mount_point_guess_symbolic_icon(_arg0)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
 }
 
 // IsLoopback checks if a unix mount point is a loopback device.

@@ -32,10 +32,25 @@ func init() {
 	})
 }
 
+// DesktopAppInfoLookupOverrider contains methods that are overridable. This
+// interface is a subset of the interface DesktopAppInfoLookup.
+type DesktopAppInfoLookupOverrider interface {
+	// DefaultForURIScheme gets the default application for launching
+	// applications using this URI scheme for a particular AppInfoLookup
+	// implementation.
+	//
+	// The AppInfoLookup interface and this function is used to implement
+	// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There
+	// is no reason for applications to use it directly. Applications should use
+	// g_app_info_get_default_for_uri_scheme().
+	DefaultForURIScheme(uriScheme string) AppInfo
+}
+
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
 // using the following functions.
 type DesktopAppInfoLookup interface {
 	gextras.Objector
+	DesktopAppInfoLookupOverrider
 }
 
 // desktopAppInfoLookup implements the DesktopAppInfoLookup interface.
@@ -57,6 +72,33 @@ func marshalDesktopAppInfoLookup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDesktopAppInfoLookup(obj), nil
+}
+
+// DefaultForURIScheme gets the default application for launching
+// applications using this URI scheme for a particular AppInfoLookup
+// implementation.
+//
+// The AppInfoLookup interface and this function is used to implement
+// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There
+// is no reason for applications to use it directly. Applications should use
+// g_app_info_get_default_for_uri_scheme().
+func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
+	var _arg0 *C.GDesktopAppInfoLookup // out
+	var _arg1 *C.char                  // out
+
+	_arg0 = (*C.GDesktopAppInfoLookup)(unsafe.Pointer(l.Native()))
+	_arg1 = (*C.char)(C.CString(uriScheme))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GAppInfo // in
+
+	_cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(_arg0, _arg1)
+
+	var _appInfo AppInfo // out
+
+	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppInfo)
+
+	return _appInfo
 }
 
 // DesktopAppInfo is an implementation of Info based on desktop files.
@@ -172,6 +214,42 @@ func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDesktopAppInfo(obj), nil
+}
+
+// NewDesktopAppInfo constructs a class DesktopAppInfo.
+func NewDesktopAppInfo(desktopId string) DesktopAppInfo {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(desktopId))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GDesktopAppInfo // in
+
+	_cret = C.g_desktop_app_info_new(_arg1)
+
+	var _desktopAppInfo DesktopAppInfo // out
+
+	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
+
+	return _desktopAppInfo
+}
+
+// NewDesktopAppInfoFromFilename constructs a class DesktopAppInfo.
+func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GDesktopAppInfo // in
+
+	_cret = C.g_desktop_app_info_new_from_filename(_arg1)
+
+	var _desktopAppInfo DesktopAppInfo // out
+
+	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
+
+	return _desktopAppInfo
 }
 
 // ActionName gets the user-visible display name of the "additional

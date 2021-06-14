@@ -71,6 +71,8 @@ type DBusObjectManagerServer interface {
 	// path if an object with the given path already exists. As such, the
 	// BusObjectProxy:g-object-path property of @object may be modified.
 	ExportUniquely(object DBusObjectSkeleton)
+	// Connection gets the BusConnection used by @manager.
+	Connection() DBusConnection
 	// IsExported returns whether @object is currently exported on @manager.
 	IsExported(object DBusObjectSkeleton) bool
 	// SetConnection exports all objects managed by @manager on @connection. If
@@ -107,6 +109,24 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerServer(obj), nil
 }
 
+// NewDBusObjectManagerServer constructs a class DBusObjectManagerServer.
+func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GDBusObjectManagerServer // in
+
+	_cret = C.g_dbus_object_manager_server_new(_arg1)
+
+	var _dBusObjectManagerServer DBusObjectManagerServer // out
+
+	_dBusObjectManagerServer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectManagerServer)
+
+	return _dBusObjectManagerServer
+}
+
 // Export exports @object on @manager.
 //
 // If there is already a BusObject exported at the object path, then the old
@@ -139,6 +159,23 @@ func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_object_manager_server_export_uniquely(_arg0, _arg1)
+}
+
+// Connection gets the BusConnection used by @manager.
+func (m dBusObjectManagerServer) Connection() DBusConnection {
+	var _arg0 *C.GDBusObjectManagerServer // out
+
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GDBusConnection // in
+
+	_cret = C.g_dbus_object_manager_server_get_connection(_arg0)
+
+	var _dBusConnection DBusConnection // out
+
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+
+	return _dBusConnection
 }
 
 // IsExported returns whether @object is currently exported on @manager.

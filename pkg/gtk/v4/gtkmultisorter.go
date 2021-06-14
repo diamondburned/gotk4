@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,7 +28,6 @@ func init() {
 // and so on.
 type MultiSorter interface {
 	Sorter
-	gio.ListModel
 	Buildable
 
 	// Append: add @sorter to @self to use for sorting at the end.
@@ -46,7 +45,6 @@ type MultiSorter interface {
 // multiSorter implements the MultiSorter class.
 type multiSorter struct {
 	Sorter
-	gio.ListModel
 	Buildable
 }
 
@@ -56,9 +54,8 @@ var _ MultiSorter = (*multiSorter)(nil)
 // primarily used internally.
 func WrapMultiSorter(obj *externglib.Object) MultiSorter {
 	return multiSorter{
-		Sorter:        WrapSorter(obj),
-		gio.ListModel: gio.WrapListModel(obj),
-		Buildable:     WrapBuildable(obj),
+		Sorter:    WrapSorter(obj),
+		Buildable: WrapBuildable(obj),
 	}
 }
 
@@ -66,6 +63,19 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMultiSorter(obj), nil
+}
+
+// NewMultiSorter constructs a class MultiSorter.
+func NewMultiSorter() MultiSorter {
+	var _cret C.GtkMultiSorter // in
+
+	_cret = C.gtk_multi_sorter_new()
+
+	var _multiSorter MultiSorter // out
+
+	_multiSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MultiSorter)
+
+	return _multiSorter
 }
 
 // Append: add @sorter to @self to use for sorting at the end.

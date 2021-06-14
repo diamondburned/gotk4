@@ -43,6 +43,34 @@ type Drop interface {
 	// The @action must be a single action selected from the actions available
 	// via [method@Gdk.Drop.get_actions].
 	Finish(action DragAction)
+	// Actions returns the possible actions for this `GdkDrop`.
+	//
+	// If this value contains multiple actions - i.e.
+	// [func@Gdk.DragAction.is_unique] returns false for the result -
+	// [method@Gdk.Drop.finish] must choose the action to use when accepting the
+	// drop. This will only happen if you passed GDK_ACTION_ASK as one of the
+	// possible actions in [method@Gdk.Drop.status]. GDK_ACTION_ASK itself will
+	// not be included in the actions returned by this function.
+	//
+	// This value may change over the lifetime of the [class@Gdk.Drop] both as a
+	// response to source side actions as well as to calls to
+	// [method@Gdk.Drop.status] or [method@Gdk.Drop.finish]. The source side
+	// will not change this value anymore once a drop has started.
+	Actions() DragAction
+	// Device returns the `GdkDevice` performing the drop.
+	Device() Device
+	// Display gets the `GdkDisplay` that @self was created for.
+	Display() Display
+	// Drag: if this is an in-app drag-and-drop operation, returns the `GdkDrag`
+	// that corresponds to this drop.
+	//
+	// If it is not, nil is returned.
+	Drag() Drag
+	// Formats returns the `GdkContentFormats` that the drop offers the data to
+	// be read in.
+	Formats() *ContentFormats
+	// Surface returns the `GdkSurface` performing the drop.
+	Surface() Surface
 	// Status selects all actions that are potentially supported by the
 	// destination.
 	//
@@ -93,6 +121,124 @@ func (s drop) Finish(action DragAction) {
 	_arg1 = (C.GdkDragAction)(action)
 
 	C.gdk_drop_finish(_arg0, _arg1)
+}
+
+// Actions returns the possible actions for this `GdkDrop`.
+//
+// If this value contains multiple actions - i.e.
+// [func@Gdk.DragAction.is_unique] returns false for the result -
+// [method@Gdk.Drop.finish] must choose the action to use when accepting the
+// drop. This will only happen if you passed GDK_ACTION_ASK as one of the
+// possible actions in [method@Gdk.Drop.status]. GDK_ACTION_ASK itself will
+// not be included in the actions returned by this function.
+//
+// This value may change over the lifetime of the [class@Gdk.Drop] both as a
+// response to source side actions as well as to calls to
+// [method@Gdk.Drop.status] or [method@Gdk.Drop.finish]. The source side
+// will not change this value anymore once a drop has started.
+func (s drop) Actions() DragAction {
+	var _arg0 *C.GdkDrop // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GdkDragAction // in
+
+	_cret = C.gdk_drop_get_actions(_arg0)
+
+	var _dragAction DragAction // out
+
+	_dragAction = DragAction(_cret)
+
+	return _dragAction
+}
+
+// Device returns the `GdkDevice` performing the drop.
+func (s drop) Device() Device {
+	var _arg0 *C.GdkDrop // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDevice // in
+
+	_cret = C.gdk_drop_get_device(_arg0)
+
+	var _device Device // out
+
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
+
+	return _device
+}
+
+// Display gets the `GdkDisplay` that @self was created for.
+func (s drop) Display() Display {
+	var _arg0 *C.GdkDrop // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_drop_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
+}
+
+// Drag: if this is an in-app drag-and-drop operation, returns the `GdkDrag`
+// that corresponds to this drop.
+//
+// If it is not, nil is returned.
+func (s drop) Drag() Drag {
+	var _arg0 *C.GdkDrop // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDrag // in
+
+	_cret = C.gdk_drop_get_drag(_arg0)
+
+	var _drag Drag // out
+
+	_drag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Drag)
+
+	return _drag
+}
+
+// Formats returns the `GdkContentFormats` that the drop offers the data to
+// be read in.
+func (s drop) Formats() *ContentFormats {
+	var _arg0 *C.GdkDrop // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkContentFormats // in
+
+	_cret = C.gdk_drop_get_formats(_arg0)
+
+	var _contentFormats *ContentFormats // out
+
+	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
+
+	return _contentFormats
+}
+
+// Surface returns the `GdkSurface` performing the drop.
+func (s drop) Surface() Surface {
+	var _arg0 *C.GdkDrop // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkSurface // in
+
+	_cret = C.gdk_drop_get_surface(_arg0)
+
+	var _surface Surface // out
+
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Surface)
+
+	return _surface
 }
 
 // Status selects all actions that are potentially supported by the

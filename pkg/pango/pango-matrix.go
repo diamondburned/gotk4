@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -105,6 +106,26 @@ func (m *Matrix) Concat(newMatrix *Matrix) {
 	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(newMatrix.Native()))
 
 	C.pango_matrix_concat(_arg0, _arg1)
+}
+
+// Copy copies a `PangoMatrix`.
+func (m *Matrix) Copy() *Matrix {
+	var _arg0 *C.PangoMatrix // out
+
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.PangoMatrix // in
+
+	_cret = C.pango_matrix_copy(_arg0)
+
+	var _ret *Matrix // out
+
+	_ret = WrapMatrix(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Matrix) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _ret
 }
 
 // Free: free a `PangoMatrix`.

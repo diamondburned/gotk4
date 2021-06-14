@@ -415,8 +415,8 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 		return nil
 	}
 
-	// Pretend that ignored types don't exist.
-	if ng.mustIgnore(typ.Name, typ.CType) {
+	// Pretend that ignored types don't exist. typ is a copy, so we can do this.
+	if ng.mustIgnore(&typ.Name, &typ.CType) {
 		return nil
 	}
 

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,8 +58,6 @@ type PopoverMenuBar interface {
 	// RemoveChild removes a widget that has previously been added with
 	// gtk_popover_menu_bar_add_child().
 	RemoveChild(child Widget) bool
-	// SetMenuModel sets a menu model from which @bar should take its contents.
-	SetMenuModel(model gio.MenuModel)
 }
 
 // popoverMenuBar implements the PopoverMenuBar class.
@@ -137,15 +134,4 @@ func (b popoverMenuBar) RemoveChild(child Widget) bool {
 	}
 
 	return _ok
-}
-
-// SetMenuModel sets a menu model from which @bar should take its contents.
-func (b popoverMenuBar) SetMenuModel(model gio.MenuModel) {
-	var _arg0 *C.GtkPopoverMenuBar // out
-	var _arg1 *C.GMenuModel        // out
-
-	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_popover_menu_bar_set_menu_model(_arg0, _arg1)
 }

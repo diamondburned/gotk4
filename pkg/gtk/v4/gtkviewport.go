@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,6 +46,8 @@ type Viewport interface {
 	ConstraintTarget
 	Scrollable
 
+	// Child gets the child widget of @viewport.
+	Child() Widget
 	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
 	// child in view.
 	ScrollToFocus() bool
@@ -82,6 +85,42 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapViewport(obj), nil
+}
+
+// NewViewport constructs a class Viewport.
+func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
+	var _arg1 *C.GtkAdjustment // out
+	var _arg2 *C.GtkAdjustment // out
+
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+
+	var _cret C.GtkViewport // in
+
+	_cret = C.gtk_viewport_new(_arg1, _arg2)
+
+	var _viewport Viewport // out
+
+	_viewport = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Viewport)
+
+	return _viewport
+}
+
+// Child gets the child widget of @viewport.
+func (v viewport) Child() Widget {
+	var _arg0 *C.GtkViewport // out
+
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_viewport_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // ScrollToFocus gets whether the viewport is scrolling to keep the focused

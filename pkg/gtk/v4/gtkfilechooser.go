@@ -125,6 +125,8 @@ type FileChooser interface {
 	// Note that the @chooser takes ownership of the filter if it is floating,
 	// so you have to ref and sink it if you want to keep a reference.
 	AddFilter(filter FileFilter)
+	// Action gets the type of operation that the file chooser is performing.
+	Action() FileChooserAction
 	// Choice gets the currently selected option in the 'choice' with the given
 	// ID.
 	Choice(id string) string
@@ -136,6 +138,8 @@ type FileChooser interface {
 	// This is meant to be used in save dialogs, to get the currently typed
 	// filename when the file itself does not exist yet.
 	CurrentName() string
+	// Filter gets the current filter.
+	Filter() FileFilter
 	// SelectMultiple gets whether multiple files can be selected in the file
 	// chooser.
 	SelectMultiple() bool
@@ -278,6 +282,23 @@ func (c fileChooser) AddFilter(filter FileFilter) {
 	C.gtk_file_chooser_add_filter(_arg0, _arg1)
 }
 
+// Action gets the type of operation that the file chooser is performing.
+func (c fileChooser) Action() FileChooserAction {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkFileChooserAction // in
+
+	_cret = C.gtk_file_chooser_get_action(_arg0)
+
+	var _fileChooserAction FileChooserAction // out
+
+	_fileChooserAction = FileChooserAction(_cret)
+
+	return _fileChooserAction
+}
+
 // Choice gets the currently selected option in the 'choice' with the given
 // ID.
 func (c fileChooser) Choice(id string) string {
@@ -338,6 +359,23 @@ func (c fileChooser) CurrentName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// Filter gets the current filter.
+func (c fileChooser) Filter() FileFilter {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkFileFilter // in
+
+	_cret = C.gtk_file_chooser_get_filter(_arg0)
+
+	var _fileFilter FileFilter // out
+
+	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileFilter)
+
+	return _fileFilter
 }
 
 // SelectMultiple gets whether multiple files can be selected in the file

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,6 +73,9 @@ type Expander interface {
 	// LabelFill returns whether the label widget will fill all available
 	// horizontal space allocated to @expander.
 	LabelFill() bool
+	// LabelWidget retrieves the label widget for the frame. See
+	// gtk_expander_set_label_widget().
+	LabelWidget() Widget
 	// ResizeToplevel returns whether the expander will resize the toplevel
 	// widget containing the expander upon resizing and collpasing.
 	ResizeToplevel() bool
@@ -137,6 +141,42 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapExpander(obj), nil
+}
+
+// NewExpander constructs a class Expander.
+func NewExpander(label string) Expander {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkExpander // in
+
+	_cret = C.gtk_expander_new(_arg1)
+
+	var _expander Expander // out
+
+	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expander)
+
+	return _expander
+}
+
+// NewExpanderWithMnemonic constructs a class Expander.
+func NewExpanderWithMnemonic(label string) Expander {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkExpander // in
+
+	_cret = C.gtk_expander_new_with_mnemonic(_arg1)
+
+	var _expander Expander // out
+
+	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expander)
+
+	return _expander
 }
 
 // Expanded queries a Expander and returns its current state. Returns true
@@ -205,6 +245,24 @@ func (e expander) LabelFill() bool {
 	}
 
 	return _ok
+}
+
+// LabelWidget retrieves the label widget for the frame. See
+// gtk_expander_set_label_widget().
+func (e expander) LabelWidget() Widget {
+	var _arg0 *C.GtkExpander // out
+
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_expander_get_label_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // ResizeToplevel returns whether the expander will resize the toplevel

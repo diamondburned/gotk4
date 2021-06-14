@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,14 +61,26 @@ type Button interface {
 	// Settings:gtk-button-images setting and always show the image, if
 	// available.
 	AlwaysShowImage() bool
+	// EventWindow returns the button’s event window if it is realized, nil
+	// otherwise. This function should be rarely needed.
+	EventWindow() Window
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse. See gtk_button_set_focus_on_click().
 	FocusOnClick() bool
+	// Image gets the widget that is currenty set as the image of @button. This
+	// may have been explicitly set by gtk_button_set_image() or constructed by
+	// gtk_button_new_from_stock().
+	Image() Widget
+	// ImagePosition gets the position of the image relative to the text inside
+	// the button.
+	ImagePosition() PositionType
 	// Label fetches the text from the label of the button, as set by
 	// gtk_button_set_label(). If the label text has not been set the return
 	// value will be nil. This will be the case if you create an empty button
 	// with gtk_button_new() to use as a container.
 	Label() string
+	// Relief returns the current relief style of the given Button.
+	Relief() ReliefStyle
 	// UseStock returns whether the button label is a stock item.
 	UseStock() bool
 	// UseUnderline returns whether an embedded underline in the button label
@@ -147,6 +160,93 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return WrapButton(obj), nil
 }
 
+// NewButton constructs a class Button.
+func NewButton() Button {
+	var _cret C.GtkButton // in
+
+	_cret = C.gtk_button_new()
+
+	var _button Button // out
+
+	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+
+	return _button
+}
+
+// NewButtonFromIconName constructs a class Button.
+func NewButtonFromIconName(iconName string, size int) Button {
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
+
+	_arg1 = (*C.gchar)(C.CString(iconName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkIconSize(size)
+
+	var _cret C.GtkButton // in
+
+	_cret = C.gtk_button_new_from_icon_name(_arg1, _arg2)
+
+	var _button Button // out
+
+	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+
+	return _button
+}
+
+// NewButtonFromStock constructs a class Button.
+func NewButtonFromStock(stockId string) Button {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkButton // in
+
+	_cret = C.gtk_button_new_from_stock(_arg1)
+
+	var _button Button // out
+
+	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+
+	return _button
+}
+
+// NewButtonWithLabel constructs a class Button.
+func NewButtonWithLabel(label string) Button {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkButton // in
+
+	_cret = C.gtk_button_new_with_label(_arg1)
+
+	var _button Button // out
+
+	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+
+	return _button
+}
+
+// NewButtonWithMnemonic constructs a class Button.
+func NewButtonWithMnemonic(label string) Button {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkButton // in
+
+	_cret = C.gtk_button_new_with_mnemonic(_arg1)
+
+	var _button Button // out
+
+	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+
+	return _button
+}
+
 // Clicked emits a Button::clicked signal to the given Button.
 func (b button) Clicked() {
 	var _arg0 *C.GtkButton // out
@@ -206,6 +306,24 @@ func (b button) AlwaysShowImage() bool {
 	return _ok
 }
 
+// EventWindow returns the button’s event window if it is realized, nil
+// otherwise. This function should be rarely needed.
+func (b button) EventWindow() Window {
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gtk_button_get_event_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
 // FocusOnClick returns whether the button grabs focus when it is clicked
 // with the mouse. See gtk_button_set_focus_on_click().
 func (b button) FocusOnClick() bool {
@@ -226,6 +344,43 @@ func (b button) FocusOnClick() bool {
 	return _ok
 }
 
+// Image gets the widget that is currenty set as the image of @button. This
+// may have been explicitly set by gtk_button_set_image() or constructed by
+// gtk_button_new_from_stock().
+func (b button) Image() Widget {
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_button_get_image(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// ImagePosition gets the position of the image relative to the text inside
+// the button.
+func (b button) ImagePosition() PositionType {
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+
+	var _cret C.GtkPositionType // in
+
+	_cret = C.gtk_button_get_image_position(_arg0)
+
+	var _positionType PositionType // out
+
+	_positionType = PositionType(_cret)
+
+	return _positionType
+}
+
 // Label fetches the text from the label of the button, as set by
 // gtk_button_set_label(). If the label text has not been set the return
 // value will be nil. This will be the case if you create an empty button
@@ -244,6 +399,23 @@ func (b button) Label() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Relief returns the current relief style of the given Button.
+func (b button) Relief() ReliefStyle {
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+
+	var _cret C.GtkReliefStyle // in
+
+	_cret = C.gtk_button_get_relief(_arg0)
+
+	var _reliefStyle ReliefStyle // out
+
+	_reliefStyle = ReliefStyle(_cret)
+
+	return _reliefStyle
 }
 
 // UseStock returns whether the button label is a stock item.

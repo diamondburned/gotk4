@@ -43,6 +43,12 @@ func init() {
 // a main loop must be running.
 type VolumeMonitor interface {
 	gextras.Objector
+
+	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
+	MountForUUID(uuid string) Mount
+	// VolumeForUUID finds a #GVolume object by its UUID (see
+	// g_volume_get_uuid())
+	VolumeForUUID(uuid string) Volume
 }
 
 // volumeMonitor implements the VolumeMonitor class.
@@ -64,4 +70,45 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapVolumeMonitor(obj), nil
+}
+
+// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
+func (v volumeMonitor) MountForUUID(uuid string) Mount {
+	var _arg0 *C.GVolumeMonitor // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(uuid))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GMount // in
+
+	_cret = C.g_volume_monitor_get_mount_for_uuid(_arg0, _arg1)
+
+	var _mount Mount // out
+
+	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Mount)
+
+	return _mount
+}
+
+// VolumeForUUID finds a #GVolume object by its UUID (see
+// g_volume_get_uuid())
+func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
+	var _arg0 *C.GVolumeMonitor // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(uuid))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GVolume // in
+
+	_cret = C.g_volume_monitor_get_volume_for_uuid(_arg0, _arg1)
+
+	var _volume Volume // out
+
+	_volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Volume)
+
+	return _volume
 }

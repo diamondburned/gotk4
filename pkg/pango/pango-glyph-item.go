@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -51,6 +52,40 @@ func (g *GlyphItem) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
+// Item gets the field inside the struct.
+func (g *GlyphItem) Item() *Item {
+	var v *Item // out
+	v = WrapItem(unsafe.Pointer(g.native.item))
+	return v
+}
+
+// Glyphs gets the field inside the struct.
+func (g *GlyphItem) Glyphs() *GlyphString {
+	var v *GlyphString // out
+	v = WrapGlyphString(unsafe.Pointer(g.native.glyphs))
+	return v
+}
+
+// Copy: make a deep copy of an existing `PangoGlyphItem` structure.
+func (o *GlyphItem) Copy() *GlyphItem {
+	var _arg0 *C.PangoGlyphItem // out
+
+	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o.Native()))
+
+	var _cret *C.PangoGlyphItem // in
+
+	_cret = C.pango_glyph_item_copy(_arg0)
+
+	var _glyphItem *GlyphItem // out
+
+	_glyphItem = WrapGlyphItem(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _glyphItem
+}
+
 // Free frees a `PangoGlyphItem` and resources to which it points.
 func (g *GlyphItem) Free() {
 	var _arg0 *C.PangoGlyphItem // out
@@ -58,6 +93,40 @@ func (g *GlyphItem) Free() {
 	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(g.Native()))
 
 	C.pango_glyph_item_free(_arg0)
+}
+
+// Split modifies @orig to cover only the text after @split_index, and returns a
+// new item that covers the text before @split_index that used to be in @orig.
+//
+// You can think of @split_index as the length of the returned item.
+// @split_index may not be 0, and it may not be greater than or equal to the
+// length of @orig (that is, there must be at least one byte assigned to each
+// item, you can't create a zero-length item).
+//
+// This function is similar in function to pango_item_split() (and uses it
+// internally.)
+func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
+	var _arg0 *C.PangoGlyphItem // out
+	var _arg1 *C.char           // out
+	var _arg2 C.int             // out
+
+	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(splitIndex)
+
+	var _cret *C.PangoGlyphItem // in
+
+	_cret = C.pango_glyph_item_split(_arg0, _arg1, _arg2)
+
+	var _glyphItem *GlyphItem // out
+
+	_glyphItem = WrapGlyphItem(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _glyphItem
 }
 
 // GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
@@ -116,6 +185,13 @@ func (g *GlyphItemIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
+// GlyphItem gets the field inside the struct.
+func (g *GlyphItemIter) GlyphItem() *GlyphItem {
+	var v *GlyphItem // out
+	v = WrapGlyphItem(unsafe.Pointer(g.native.glyph_item))
+	return v
+}
+
 // Text gets the field inside the struct.
 func (g *GlyphItemIter) Text() string {
 	var v string // out
@@ -163,6 +239,26 @@ func (g *GlyphItemIter) EndChar() int {
 	var v int // out
 	v = (int)(g.native.end_char)
 	return v
+}
+
+// Copy: make a shallow copy of an existing `PangoGlyphItemIter` structure.
+func (o *GlyphItemIter) Copy() *GlyphItemIter {
+	var _arg0 *C.PangoGlyphItemIter // out
+
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(o.Native()))
+
+	var _cret *C.PangoGlyphItemIter // in
+
+	_cret = C.pango_glyph_item_iter_copy(_arg0)
+
+	var _glyphItemIter *GlyphItemIter // out
+
+	_glyphItemIter = WrapGlyphItemIter(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphItemIter, func(v *GlyphItemIter) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _glyphItemIter
 }
 
 // Free frees a `PangoGlyphItem`Iter.

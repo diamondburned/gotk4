@@ -3,7 +3,10 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -277,7 +280,232 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 	return _ret
 }
 
-// FileTest returns true if any of the tests in the bitfield @test are true. For
+// FileErrorFromErrno gets a Error constant based on the passed-in @err_no. For
+// example, if you pass in `EEXIST` this function returns FILE_ERROR_EXIST.
+// Unlike `errno` values, you can portably assume that all Error values will
+// exist.
+//
+// Normally a Error value goes into a #GError returned from a function that
+// manipulates files. So you would use g_file_error_from_errno() when
+// constructing a #GError.
+func FileErrorFromErrno(errNo int) FileError {
+	var _arg1 C.gint // out
+
+	_arg1 = C.gint(errNo)
+
+	var _cret C.GFileError // in
+
+	_cret = C.g_file_error_from_errno(_arg1)
+
+	var _fileError FileError // out
+
+	_fileError = FileError(_cret)
+
+	return _fileError
+}
+
+// FileGetContents reads an entire file into allocated memory, with good error
+// checking.
+//
+// If the call was successful, it returns true and sets @contents to the file
+// contents and @length to the length of the file contents in bytes. The string
+// stored in @contents will be nul-terminated, so for text files you can pass
+// nil for the @length argument. If the call was not successful, it returns
+// false and sets @error. The error domain is FILE_ERROR. Possible error codes
+// are those in the Error enumeration. In the error case, @contents is set to
+// nil and @length is set to zero.
+func FileGetContents(filename string) ([]byte, error) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _arg2 *C.gchar
+	var _arg3 C.gsize   // in
+	var _cerr *C.GError // in
+
+	C.g_file_get_contents(_arg1, &_arg2, &_arg3, &_cerr)
+
+	var _contents []byte
+	var _goerr error // out
+
+	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_contents, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _contents, _goerr
+}
+
+// FileOpenTmp opens a file for writing in the preferred directory for temporary
+// files (as returned by g_get_tmp_dir()).
+//
+// @tmpl should be a string in the GLib file name encoding containing a sequence
+// of six 'X' characters, as the parameter to g_mkstemp(). However, unlike these
+// functions, the template should only be a basename, no directory components
+// are allowed. If template is nil, a default template is used.
+//
+// Note that in contrast to g_mkstemp() (and mkstemp()) @tmpl is not modified,
+// and might thus be a read-only literal string.
+//
+// Upon success, and if @name_used is non-nil, the actual name used is returned
+// in @name_used. This string should be freed with g_free() when not needed any
+// longer. The returned name is in the GLib file name encoding.
+func FileOpenTmp(tmpl string) (string, int, error) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(tmpl))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _arg2 *C.gchar  // in
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_open_tmp(_arg1, &_arg2, &_cerr)
+
+	var _nameUsed string // out
+	var _gint int        // out
+	var _goerr error     // out
+
+	_nameUsed = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_gint = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _nameUsed, _gint, _goerr
+}
+
+// FileReadLink reads the contents of the symbolic link @filename like the POSIX
+// readlink() function. The returned string is in the encoding used for
+// filenames. Use g_filename_to_utf8() to convert it to UTF-8.
+func FileReadLink(filename string) (string, error) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_file_read_link(_arg1, &_cerr)
+
+	var _ret string  // out
+	var _goerr error // out
+
+	_ret = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _ret, _goerr
+}
+
+// FileSetContents writes all of @contents to a file named @filename. This is a
+// convenience wrapper around calling g_file_set_contents_full() with `flags`
+// set to `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING`
+// and `mode` set to `0666`.
+func FileSetContents(filename string, contents []byte) error {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar
+	var _arg3 C.gssize
+
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = C.gssize(len(contents))
+	_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_contents(_arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// FileSetContentsFull writes all of @contents to a file named @filename, with
+// good error checking. If a file called @filename already exists it will be
+// overwritten.
+//
+// @flags control the properties of the write operation: whether it’s atomic,
+// and what the tradeoff is between returning quickly or being resilient to
+// system crashes.
+//
+// As this function performs file I/O, it is recommended to not call it anywhere
+// where blocking would cause problems, such as in the main loop of a graphical
+// application. In particular, if @flags has any value other than
+// G_FILE_SET_CONTENTS_NONE then this function may call `fsync()`.
+//
+// If G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the operation is atomic
+// in the sense that it is first written to a temporary file which is then
+// renamed to the final name.
+//
+// Notes:
+//
+// - On UNIX, if @filename already exists hard links to @filename will break.
+// Also since the file is recreated, existing permissions, access control lists,
+// metadata etc. may be lost. If @filename is a symbolic link, the link itself
+// will be replaced, not the linked file.
+//
+// - On UNIX, if @filename already exists and is non-empty, and if the system
+// supports it (via a journalling filesystem or equivalent), and if
+// G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the `fsync()` call (or
+// equivalent) will be used to ensure atomic replacement: @filename will contain
+// either its old contents or @contents, even in the face of system power loss,
+// the disk being unsafely removed, etc.
+//
+// - On UNIX, if @filename does not already exist or is empty, there is a
+// possibility that system power loss etc. after calling this function will
+// leave @filename empty or full of NUL bytes, depending on the underlying
+// filesystem, unless G_FILE_SET_CONTENTS_DURABLE and
+// G_FILE_SET_CONTENTS_CONSISTENT are set in @flags.
+//
+// - On Windows renaming a file will not remove an existing file with the new
+// name, so on Windows there is a race condition between the existing file being
+// removed and the temporary file being renamed.
+//
+// - On Windows there is no way to remove a file that is open to some process,
+// or mapped into memory. Thus, this function will fail if @filename already
+// exists and is open.
+//
+// If the call was successful, it returns true. If the call was not successful,
+// it returns false and sets @error. The error domain is FILE_ERROR. Possible
+// error codes are those in the Error enumeration.
+//
+// Note that the name for the temporary file is constructed by appending up to 7
+// characters to @filename.
+//
+// If the file didn’t exist before and is created, it will be given the
+// permissions from @mode. Otherwise, the permissions of the existing file may
+// be changed to @mode depending on @flags, or they may remain unchanged.
+func FileSetContentsFull(filename string, contents []byte, flags FileSetContentsFlags, mode int) error {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar
+	var _arg3 C.gssize
+	var _arg4 C.GFileSetContentsFlags // out
+	var _arg5 C.int                   // out
+
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = C.gssize(len(contents))
+	_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
+	_arg4 = (C.GFileSetContentsFlags)(flags)
+	_arg5 = C.int(mode)
+
+	var _cerr *C.GError // in
+
+	C.g_file_set_contents_full(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// TestFile returns true if any of the tests in the bitfield @test are true. For
 // example, `(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)` will return true if the
 // file exists; the check whether it's a directory doesn't matter since the
 // existence test is true. With the current set of available tests, there's no
@@ -315,7 +543,7 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 // that the file exists and its name indicates that it is executable, checking
 // for well-known extensions and those listed in the `PATHEXT` environment
 // variable.
-func FileTest(filename string, test FileTest) bool {
+func TestFile(filename string, test FileTest) bool {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GFileTest // out
 

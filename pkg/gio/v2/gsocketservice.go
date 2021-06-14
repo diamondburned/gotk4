@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -103,6 +104,19 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSocketService(obj), nil
+}
+
+// NewSocketService constructs a class SocketService.
+func NewSocketService() SocketService {
+	var _cret C.GSocketService // in
+
+	_cret = C.g_socket_service_new()
+
+	var _socketService SocketService // out
+
+	_socketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketService)
+
+	return _socketService
 }
 
 // IsActive: check whether the service is active or not. An active service

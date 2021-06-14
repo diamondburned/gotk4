@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -183,38 +181,33 @@ type TextView interface {
 	AcceptsTab() bool
 	// BottomMargin gets the bottom margin for text in the @text_view.
 	BottomMargin() int
-	// CursorLocations: determine the positions of the strong and weak cursors
-	// if the insertion point is at @iter.
+	// Buffer returns the `GtkTextBuffer` being displayed by this text view.
 	//
-	// The position of each cursor is stored as a zero-width rectangle. The
-	// strong cursor location is the location where characters of the
-	// directionality equal to the base direction of the paragraph are inserted.
-	// The weak cursor location is the location where characters of the
-	// directionality opposite to the base direction of the paragraph are
-	// inserted.
-	//
-	// If @iter is nil, the actual cursor position is used.
-	//
-	// Note that if @iter happens to be the actual cursor position, and there is
-	// currently an IM preedit sequence being entered, the returned locations
-	// will be adjusted to account for the preedit cursor’s offset within the
-	// preedit sequence.
-	//
-	// The rectangle position is in buffer coordinates; use
-	// [method@Gtk.TextView.buffer_to_window_coords] to convert these
-	// coordinates to coordinates for one of the windows in the text view.
-	CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle)
+	// The reference count on the buffer is not incremented; the caller of this
+	// function won’t own a new reference.
+	Buffer() TextBuffer
 	// CursorVisible: find out whether the cursor should be displayed.
 	CursorVisible() bool
 	// Editable returns the default editability of the `GtkTextView`.
 	//
 	// Tags in the buffer may override this setting for some ranges of text.
 	Editable() bool
+	// Gutter gets a `GtkWidget` that has previously been set as gutter.
+	//
+	// See [method@Gtk.TextView.set_gutter].
+	//
+	// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
+	// GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
+	Gutter(win TextWindowType) Widget
 	// Indent gets the default indentation of paragraphs in @text_view.
 	//
 	// Tags in the view’s buffer may override the default. The indentation may
 	// be negative.
 	Indent() int
+	// InputHints gets the `input-hints` of the `GtkTextView`.
+	InputHints() InputHints
+	// InputPurpose gets the `input-purpose` of the `GtkTextView`.
+	InputPurpose() InputPurpose
 	// IterAtLocation retrieves the iterator at buffer coordinates @x and @y.
 	//
 	// Buffer coordinates are coordinates for the entire buffer, not just the
@@ -234,13 +227,10 @@ type TextView interface {
 	// [method@Gtk.TextView.get_iter_at_location], which returns cursor
 	// locations, i.e. positions between characters.
 	IterAtPosition(x int, y int) (TextIter, int, bool)
-	// IterLocation gets a rectangle which roughly contains the character at
-	// @iter.
+	// Justification gets the default justification of paragraphs in @text_view.
 	//
-	// The rectangle position is in buffer coordinates; use
-	// [method@Gtk.TextView.buffer_to_window_coords] to convert these
-	// coordinates to coordinates for one of the windows in the text view.
-	IterLocation(iter *TextIter) gdk.Rectangle
+	// Tags in the buffer may override the default.
+	Justification() Justification
 	// LeftMargin gets the default left margin size of paragraphs in the
 	// @text_view.
 	//
@@ -284,40 +274,8 @@ type TextView interface {
 	RightMargin() int
 	// TopMargin gets the top margin for text in the @text_view.
 	TopMargin() int
-	// VisibleRect fills @visible_rect with the currently-visible region of the
-	// buffer, in buffer coordinates.
-	//
-	// Convert to window coordinates with
-	// [method@Gtk.TextView.buffer_to_window_coords].
-	VisibleRect() gdk.Rectangle
-	// ImContextFilterKeypress: allow the `GtkTextView` input method to
-	// internally handle key press and release events.
-	//
-	// If this function returns true, then no further processing should be done
-	// for this key event. See [method@Gtk.IMContext.filter_keypress].
-	//
-	// Note that you are expected to call this function from your handler when
-	// overriding key event handling. This is needed in the case when you need
-	// to insert your own key handling between the input method and the default
-	// key event handling of the `GtkTextView`.
-	//
-	// “`c static gboolean gtk_foo_bar_key_press_event (GtkWidget *widget,
-	// GdkEvent *event) { guint keyval;
-	//
-	//    gdk_event_get_keyval ((GdkEvent*)event, &keyval);
-	//
-	//    if (keyval == GDK_KEY_Return || keyval == GDK_KEY_KP_Enter)
-	//      {
-	//        if (gtk_text_view_im_context_filter_keypress (GTK_TEXT_VIEW (widget), event))
-	//          return TRUE;
-	//      }
-	//
-	//    // Do some stuff
-	//
-	//    return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
-	//
-	// } “`
-	ImContextFilterKeypress(event gdk.Event) bool
+	// WrapMode gets the line wrapping for the view.
+	WrapMode() WrapMode
 	// MoveMarkOnscreen moves a mark within the buffer so that it's located
 	// within the currently-visible text area.
 	MoveMarkOnscreen(mark TextMark) bool
@@ -415,11 +373,6 @@ type TextView interface {
 	// You can override this default setting with tags in the buffer, using the
 	// “editable” attribute of tags.
 	SetEditable(setting bool)
-	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for @text_view.
-	//
-	// You can pass nil to remove a previously set extra menu.
-	SetExtraMenu(model gio.MenuModel)
 	// SetGutter places @widget into the gutter specified by @win.
 	//
 	// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
@@ -476,10 +429,6 @@ type TextView interface {
 	// Note that this function is confusingly named. In CSS terms, the value set
 	// here is padding.
 	SetRightMargin(rightMargin int)
-	// SetTabs sets the default tab stops for paragraphs in @text_view.
-	//
-	// Tags in the buffer may override the default.
-	SetTabs(tabs *pango.TabArray)
 	// SetTopMargin sets the top margin for text in @text_view.
 	//
 	// Note that this function is confusingly named. In CSS terms, the value set
@@ -525,6 +474,36 @@ func marshalTextView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTextView(obj), nil
+}
+
+// NewTextView constructs a class TextView.
+func NewTextView() TextView {
+	var _cret C.GtkTextView // in
+
+	_cret = C.gtk_text_view_new()
+
+	var _textView TextView // out
+
+	_textView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextView)
+
+	return _textView
+}
+
+// NewTextViewWithBuffer constructs a class TextView.
+func NewTextViewWithBuffer(buffer TextBuffer) TextView {
+	var _arg1 *C.GtkTextBuffer // out
+
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+
+	var _cret C.GtkTextView // in
+
+	_cret = C.gtk_text_view_new_with_buffer(_arg1)
+
+	var _textView TextView // out
+
+	_textView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextView)
+
+	return _textView
 }
 
 // AddChildAtAnchor adds a child widget in the text buffer, at the given
@@ -750,39 +729,24 @@ func (t textView) BottomMargin() int {
 	return _gint
 }
 
-// CursorLocations: determine the positions of the strong and weak cursors
-// if the insertion point is at @iter.
+// Buffer returns the `GtkTextBuffer` being displayed by this text view.
 //
-// The position of each cursor is stored as a zero-width rectangle. The
-// strong cursor location is the location where characters of the
-// directionality equal to the base direction of the paragraph are inserted.
-// The weak cursor location is the location where characters of the
-// directionality opposite to the base direction of the paragraph are
-// inserted.
-//
-// If @iter is nil, the actual cursor position is used.
-//
-// Note that if @iter happens to be the actual cursor position, and there is
-// currently an IM preedit sequence being entered, the returned locations
-// will be adjusted to account for the preedit cursor’s offset within the
-// preedit sequence.
-//
-// The rectangle position is in buffer coordinates; use
-// [method@Gtk.TextView.buffer_to_window_coords] to convert these
-// coordinates to coordinates for one of the windows in the text view.
-func (t textView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle) {
+// The reference count on the buffer is not incremented; the caller of this
+// function won’t own a new reference.
+func (t textView) Buffer() TextBuffer {
 	var _arg0 *C.GtkTextView // out
-	var _arg1 *C.GtkTextIter // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 
-	var _strong gdk.Rectangle
-	var _weak gdk.Rectangle
+	var _cret *C.GtkTextBuffer // in
 
-	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_strong)), (*C.GdkRectangle)(unsafe.Pointer(&_weak)))
+	_cret = C.gtk_text_view_get_buffer(_arg0)
 
-	return _strong, _weak
+	var _textBuffer TextBuffer // out
+
+	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextBuffer)
+
+	return _textBuffer
 }
 
 // CursorVisible: find out whether the cursor should be displayed.
@@ -825,6 +789,30 @@ func (t textView) Editable() bool {
 	return _ok
 }
 
+// Gutter gets a `GtkWidget` that has previously been set as gutter.
+//
+// See [method@Gtk.TextView.set_gutter].
+//
+// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
+// GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
+func (t textView) Gutter(win TextWindowType) Widget {
+	var _arg0 *C.GtkTextView      // out
+	var _arg1 C.GtkTextWindowType // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
+	_arg1 = (C.GtkTextWindowType)(win)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_text_view_get_gutter(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // Indent gets the default indentation of paragraphs in @text_view.
 //
 // Tags in the view’s buffer may override the default. The indentation may
@@ -843,6 +831,40 @@ func (t textView) Indent() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// InputHints gets the `input-hints` of the `GtkTextView`.
+func (t textView) InputHints() InputHints {
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkInputHints // in
+
+	_cret = C.gtk_text_view_get_input_hints(_arg0)
+
+	var _inputHints InputHints // out
+
+	_inputHints = InputHints(_cret)
+
+	return _inputHints
+}
+
+// InputPurpose gets the `input-purpose` of the `GtkTextView`.
+func (t textView) InputPurpose() InputPurpose {
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkInputPurpose // in
+
+	_cret = C.gtk_text_view_get_input_purpose(_arg0)
+
+	var _inputPurpose InputPurpose // out
+
+	_inputPurpose = InputPurpose(_cret)
+
+	return _inputPurpose
 }
 
 // IterAtLocation retrieves the iterator at buffer coordinates @x and @y.
@@ -911,24 +933,23 @@ func (t textView) IterAtPosition(x int, y int) (TextIter, int, bool) {
 	return _iter, _trailing, _ok
 }
 
-// IterLocation gets a rectangle which roughly contains the character at
-// @iter.
+// Justification gets the default justification of paragraphs in @text_view.
 //
-// The rectangle position is in buffer coordinates; use
-// [method@Gtk.TextView.buffer_to_window_coords] to convert these
-// coordinates to coordinates for one of the windows in the text view.
-func (t textView) IterLocation(iter *TextIter) gdk.Rectangle {
+// Tags in the buffer may override the default.
+func (t textView) Justification() Justification {
 	var _arg0 *C.GtkTextView // out
-	var _arg1 *C.GtkTextIter // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 
-	var _location gdk.Rectangle
+	var _cret C.GtkJustification // in
 
-	C.gtk_text_view_get_iter_location(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_location)))
+	_cret = C.gtk_text_view_get_justification(_arg0)
 
-	return _location
+	var _justification Justification // out
+
+	_justification = Justification(_cret)
+
+	return _justification
 }
 
 // LeftMargin gets the default left margin size of paragraphs in the
@@ -1136,68 +1157,21 @@ func (t textView) TopMargin() int {
 	return _gint
 }
 
-// VisibleRect fills @visible_rect with the currently-visible region of the
-// buffer, in buffer coordinates.
-//
-// Convert to window coordinates with
-// [method@Gtk.TextView.buffer_to_window_coords].
-func (t textView) VisibleRect() gdk.Rectangle {
+// WrapMode gets the line wrapping for the view.
+func (t textView) WrapMode() WrapMode {
 	var _arg0 *C.GtkTextView // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 
-	var _visibleRect gdk.Rectangle
+	var _cret C.GtkWrapMode // in
 
-	C.gtk_text_view_get_visible_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_visibleRect)))
+	_cret = C.gtk_text_view_get_wrap_mode(_arg0)
 
-	return _visibleRect
-}
+	var _wrapMode WrapMode // out
 
-// ImContextFilterKeypress: allow the `GtkTextView` input method to
-// internally handle key press and release events.
-//
-// If this function returns true, then no further processing should be done
-// for this key event. See [method@Gtk.IMContext.filter_keypress].
-//
-// Note that you are expected to call this function from your handler when
-// overriding key event handling. This is needed in the case when you need
-// to insert your own key handling between the input method and the default
-// key event handling of the `GtkTextView`.
-//
-// “`c static gboolean gtk_foo_bar_key_press_event (GtkWidget *widget,
-// GdkEvent *event) { guint keyval;
-//
-//    gdk_event_get_keyval ((GdkEvent*)event, &keyval);
-//
-//    if (keyval == GDK_KEY_Return || keyval == GDK_KEY_KP_Enter)
-//      {
-//        if (gtk_text_view_im_context_filter_keypress (GTK_TEXT_VIEW (widget), event))
-//          return TRUE;
-//      }
-//
-//    // Do some stuff
-//
-//    return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
-//
-// } “`
-func (t textView) ImContextFilterKeypress(event gdk.Event) bool {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 *C.GdkEvent    // out
+	_wrapMode = WrapMode(_cret)
 
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_text_view_im_context_filter_keypress(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+	return _wrapMode
 }
 
 // MoveMarkOnscreen moves a mark within the buffer so that it's located
@@ -1498,20 +1472,6 @@ func (t textView) SetEditable(setting bool) {
 	C.gtk_text_view_set_editable(_arg0, _arg1)
 }
 
-// SetExtraMenu sets a menu model to add when constructing the context menu
-// for @text_view.
-//
-// You can pass nil to remove a previously set extra menu.
-func (t textView) SetExtraMenu(model gio.MenuModel) {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 *C.GMenuModel  // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_text_view_set_extra_menu(_arg0, _arg1)
-}
-
 // SetGutter places @widget into the gutter specified by @win.
 //
 // @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
@@ -1680,19 +1640,6 @@ func (t textView) SetRightMargin(rightMargin int) {
 	_arg1 = C.int(rightMargin)
 
 	C.gtk_text_view_set_right_margin(_arg0, _arg1)
-}
-
-// SetTabs sets the default tab stops for paragraphs in @text_view.
-//
-// Tags in the buffer may override the default.
-func (t textView) SetTabs(tabs *pango.TabArray) {
-	var _arg0 *C.GtkTextView   // out
-	var _arg1 *C.PangoTabArray // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs.Native()))
-
-	C.gtk_text_view_set_tabs(_arg0, _arg1)
 }
 
 // SetTopMargin sets the top margin for text in @text_view.

@@ -24,11 +24,13 @@ func init() {
 
 type SwitchAccessible interface {
 	WidgetAccessible
+	Action
 }
 
 // switchAccessible implements the SwitchAccessible class.
 type switchAccessible struct {
 	WidgetAccessible
+	Action
 }
 
 var _ SwitchAccessible = (*switchAccessible)(nil)
@@ -38,6 +40,7 @@ var _ SwitchAccessible = (*switchAccessible)(nil)
 func WrapSwitchAccessible(obj *externglib.Object) SwitchAccessible {
 	return switchAccessible{
 		WidgetAccessible: WrapWidgetAccessible(obj),
+		Action:           WrapAction(obj),
 	}
 }
 

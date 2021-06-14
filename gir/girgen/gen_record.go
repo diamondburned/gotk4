@@ -115,13 +115,26 @@ func canRecord(ng *NamespaceGenerator, rec gir.Record, logger TypeResolver) bool
 	for _, field := range rec.Fields {
 		// Check the type against the ignored list, since ignores are usually
 		// important, and CGo might still try to resolve an ignored type.
-		if ng.mustIgnoreAny(field.AnyType) {
-			tryLogln(logger, LogSkip, "record", rec.Name, "skipped, field", field.Name)
+		if mustIgnoreAny(ng, field.AnyType) {
+			tryLogln(logger, LogDebug, "record", rec.Name, "ignored, field", field.Name)
 			return false
 		}
 	}
 
 	return true
+}
+
+// mustIgnoreAny banished here because it disregards type renamers.
+func mustIgnoreAny(ng *NamespaceGenerator, any gir.AnyType) bool {
+	switch {
+	case any.Type != nil:
+		name, ctype := any.Type.Name, any.Type.CType
+		return ng.mustIgnore(&name, &ctype)
+	case any.Array != nil:
+		return mustIgnoreAny(ng, any.Array.AnyType)
+	default:
+		return true
+	}
 }
 
 func (rg *recordGenerator) Use(rec gir.Record) bool {
@@ -233,7 +246,7 @@ func (ng *NamespaceGenerator) generateRecords() {
 		if !record.IsIntrospectable() {
 			continue
 		}
-		if ng.mustIgnore(record.Name, record.CType) {
+		if ng.mustIgnore(&record.Name, &record.CType) {
 			continue
 		}
 		if !rg.Use(record) {

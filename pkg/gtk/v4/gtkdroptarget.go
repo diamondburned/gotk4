@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -91,8 +90,6 @@ type DropTarget interface {
 	GTypes() []externglib.Type
 	// Preload gets whether data should be preloaded on hover.
 	Preload() bool
-	// Value gets the current drop data, as a `GValue`.
-	Value() **externglib.Value
 	// Reject rejects the ongoing drop operation.
 	//
 	// If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:drop]
@@ -101,8 +98,6 @@ type DropTarget interface {
 	// This function should be used when delaying the decision on whether to
 	// accept a drag or not until after reading the data.
 	Reject()
-	// SetActions sets the actions that this drop target supports.
-	SetActions(actions gdk.DragAction)
 	// SetGTypes sets the supported `GTypes` for this drop target.
 	SetGTypes(types []externglib.Type)
 	// SetPreload sets whether data should be preloaded on hover.
@@ -175,23 +170,6 @@ func (s dropTarget) Preload() bool {
 	return _ok
 }
 
-// Value gets the current drop data, as a `GValue`.
-func (s dropTarget) Value() **externglib.Value {
-	var _arg0 *C.GtkDropTarget // out
-
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GValue // in
-
-	_cret = C.gtk_drop_target_get_value(_arg0)
-
-	var _value **externglib.Value // out
-
-	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
-
-	return _value
-}
-
 // Reject rejects the ongoing drop operation.
 //
 // If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:drop]
@@ -205,17 +183,6 @@ func (s dropTarget) Reject() {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	C.gtk_drop_target_reject(_arg0)
-}
-
-// SetActions sets the actions that this drop target supports.
-func (s dropTarget) SetActions(actions gdk.DragAction) {
-	var _arg0 *C.GtkDropTarget // out
-	var _arg1 C.GdkDragAction  // out
-
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GdkDragAction)(actions)
-
-	C.gtk_drop_target_set_actions(_arg0, _arg1)
 }
 
 // SetGTypes sets the supported `GTypes` for this drop target.

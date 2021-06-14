@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -66,4 +67,41 @@ func marshalRadioToolButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRadioToolButton(obj), nil
+}
+
+// NewRadioToolButtonFromWidget constructs a class RadioToolButton.
+func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
+	var _arg1 *C.GtkRadioToolButton // out
+
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
+
+	var _cret C.GtkRadioToolButton // in
+
+	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
+
+	var _radioToolButton RadioToolButton // out
+
+	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioToolButton)
+
+	return _radioToolButton
+}
+
+// NewRadioToolButtonWithStockFromWidget constructs a class RadioToolButton.
+func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string) RadioToolButton {
+	var _arg1 *C.GtkRadioToolButton // out
+	var _arg2 *C.gchar              // out
+
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GtkRadioToolButton // in
+
+	_cret = C.gtk_radio_tool_button_new_with_stock_from_widget(_arg1, _arg2)
+
+	var _radioToolButton RadioToolButton // out
+
+	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioToolButton)
+
+	return _radioToolButton
 }

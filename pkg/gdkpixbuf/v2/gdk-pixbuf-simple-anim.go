@@ -5,6 +5,7 @@ package gdkpixbuf
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,6 +55,27 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPixbufSimpleAnim(obj), nil
+}
+
+// NewPixbufSimpleAnim constructs a class PixbufSimpleAnim.
+func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
+	var _arg1 C.gint   // out
+	var _arg2 C.gint   // out
+	var _arg3 C.gfloat // out
+
+	_arg1 = C.gint(width)
+	_arg2 = C.gint(height)
+	_arg3 = C.gfloat(rate)
+
+	var _cret C.GdkPixbufSimpleAnim // in
+
+	_cret = C.gdk_pixbuf_simple_anim_new(_arg1, _arg2, _arg3)
+
+	var _pixbufSimpleAnim PixbufSimpleAnim // out
+
+	_pixbufSimpleAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufSimpleAnim)
+
+	return _pixbufSimpleAnim
 }
 
 // AddFrame adds a new frame to @animation. The @pixbuf must have the

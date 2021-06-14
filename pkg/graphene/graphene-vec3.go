@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -42,6 +43,22 @@ func WrapVec3(ptr unsafe.Pointer) *Vec3 {
 func marshalVec3(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapVec3(unsafe.Pointer(b)), nil
+}
+
+// NewVec3Alloc constructs a struct Vec3.
+func NewVec3Alloc() *Vec3 {
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_alloc()
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_vec3, func(v *Vec3) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _vec3
 }
 
 // Native returns the underlying C source pointer.
@@ -266,6 +283,70 @@ func (v *Vec3) Z() float32 {
 	_gfloat = (float32)(_cret)
 
 	return _gfloat
+}
+
+// Init initializes a #graphene_vec3_t using the given values.
+//
+// This function can be called multiple times.
+func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.float            // out
+	var _arg2 C.float            // out
+	var _arg3 C.float            // out
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
+
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_init(_arg0, _arg1, _arg2, _arg3)
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+
+	return _vec3
+}
+
+// InitFromFloat initializes a #graphene_vec3_t with the values from an array.
+func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.float
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.float)(unsafe.Pointer(&src))
+
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_init_from_float(_arg0, _arg1)
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+
+	return _vec3
+}
+
+// InitFromVec3 initializes a #graphene_vec3_t with the values of another
+// #graphene_vec3_t.
+func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(src.Native()))
+
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_init_from_vec3(_arg0, _arg1)
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+
+	return _vec3
 }
 
 // Interpolate: linearly interpolates @v1 and @v2 using the given @factor.

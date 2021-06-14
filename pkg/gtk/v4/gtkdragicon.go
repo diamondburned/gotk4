@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,6 +40,8 @@ type DragIcon interface {
 	Native
 	Root
 
+	// Child gets the widget currently used as drag icon.
+	Child() Widget
 	// SetChild sets the widget to display as the drag icon.
 	SetChild(child Widget)
 }
@@ -72,6 +75,23 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDragIcon(obj), nil
+}
+
+// Child gets the widget currently used as drag icon.
+func (s dragIcon) Child() Widget {
+	var _arg0 *C.GtkDragIcon // out
+
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_drag_icon_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // SetChild sets the widget to display as the drag icon.

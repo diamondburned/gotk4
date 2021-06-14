@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -79,6 +80,19 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapColorButton(obj), nil
+}
+
+// NewColorButton constructs a class ColorButton.
+func NewColorButton() ColorButton {
+	var _cret C.GtkColorButton // in
+
+	_cret = C.gtk_color_button_new()
+
+	var _colorButton ColorButton // out
+
+	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
+
+	return _colorButton
 }
 
 // Modal gets whether the dialog is modal.

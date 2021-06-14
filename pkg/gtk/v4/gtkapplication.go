@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -111,9 +111,7 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 // HowDoI: Using GtkApplication (https://wiki.gnome.org/HowDoI/GtkApplication),
 // Getting Started with GTK: Basics (getting_started.html#basics)
 type Application interface {
-	gio.Application
-	gio.ActionGroup
-	gio.ActionMap
+	Application
 
 	// AddWindow adds a window to `application`.
 	//
@@ -151,6 +149,18 @@ type Application interface {
 	//
 	// If you are unsure, check it with [func@Gtk.accelerator_parse] first.
 	ActionsForAccel(accel string) []string
+	// ActiveWindow gets the “active” window for the application.
+	//
+	// The active window is the one that was most recently focused (within the
+	// application). This window may not have the focus at the moment if another
+	// application has it — this is just the most recently-focused window within
+	// this application.
+	ActiveWindow() Window
+	// WindowByID returns the [class@Gtk.ApplicationWindow] with the given ID.
+	//
+	// The ID of a `GtkApplicationWindow` can be retrieved with
+	// [method@Gtk.ApplicationWindow.get_id].
+	WindowByID(id uint) Window
 	// Inhibit: inform the session manager that certain types of actions should
 	// be inhibited.
 	//
@@ -201,25 +211,6 @@ type Application interface {
 	// For the `detailed_action_name`, see `g_action_parse_detailed_name()` and
 	// `g_action_print_detailed_name()`.
 	SetAccelsForAction(detailedActionName string, accels []string)
-	// SetMenubar sets or unsets the menubar for windows of `application`.
-	//
-	// This is a menubar in the traditional sense.
-	//
-	// This can only be done in the primary instance of the application, after
-	// it has been registered. `GApplication::startup` is a good place to call
-	// this.
-	//
-	// Depending on the desktop environment, this may appear at the top of each
-	// window, or at the top of the screen. In some environments, if both the
-	// application menu and the menubar are set, the application menu will be
-	// presented as if it were the first item of the menubar. Other environments
-	// treat the two as completely separate — for example, the application menu
-	// may be rendered by the desktop shell while the menubar (if set) remains
-	// in each individual window.
-	//
-	// Use the base `GActionMap` interface to add actions, to respond to the
-	// user selecting these menu items.
-	SetMenubar(menubar gio.MenuModel)
 	// Uninhibit removes an inhibitor that has been previously established.
 	//
 	// See [method@Gtk.Application.inhibit].
@@ -230,9 +221,7 @@ type Application interface {
 
 // application implements the Application class.
 type application struct {
-	gio.Application
-	gio.ActionGroup
-	gio.ActionMap
+	Application
 }
 
 var _ Application = (*application)(nil)
@@ -241,9 +230,7 @@ var _ Application = (*application)(nil)
 // primarily used internally.
 func WrapApplication(obj *externglib.Object) Application {
 	return application{
-		gio.Application: gio.WrapApplication(obj),
-		gio.ActionGroup: gio.WrapActionGroup(obj),
-		gio.ActionMap:   gio.WrapActionMap(obj),
+		Application: WrapApplication(obj),
 	}
 }
 
@@ -362,6 +349,50 @@ func (a application) ActionsForAccel(accel string) []string {
 	}
 
 	return _utf8s
+}
+
+// ActiveWindow gets the “active” window for the application.
+//
+// The active window is the one that was most recently focused (within the
+// application). This window may not have the focus at the moment if another
+// application has it — this is just the most recently-focused window within
+// this application.
+func (a application) ActiveWindow() Window {
+	var _arg0 *C.GtkApplication // out
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GtkWindow // in
+
+	_cret = C.gtk_application_get_active_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// WindowByID returns the [class@Gtk.ApplicationWindow] with the given ID.
+//
+// The ID of a `GtkApplicationWindow` can be retrieved with
+// [method@Gtk.ApplicationWindow.get_id].
+func (a application) WindowByID(id uint) Window {
+	var _arg0 *C.GtkApplication // out
+	var _arg1 C.guint           // out
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = C.guint(id)
+
+	var _cret *C.GtkWindow // in
+
+	_cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
 }
 
 // Inhibit: inform the session manager that certain types of actions should
@@ -494,34 +525,6 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 	}
 
 	C.gtk_application_set_accels_for_action(_arg0, _arg1, _arg2)
-}
-
-// SetMenubar sets or unsets the menubar for windows of `application`.
-//
-// This is a menubar in the traditional sense.
-//
-// This can only be done in the primary instance of the application, after
-// it has been registered. `GApplication::startup` is a good place to call
-// this.
-//
-// Depending on the desktop environment, this may appear at the top of each
-// window, or at the top of the screen. In some environments, if both the
-// application menu and the menubar are set, the application menu will be
-// presented as if it were the first item of the menubar. Other environments
-// treat the two as completely separate — for example, the application menu
-// may be rendered by the desktop shell while the menubar (if set) remains
-// in each individual window.
-//
-// Use the base `GActionMap` interface to add actions, to respond to the
-// user selecting these menu items.
-func (a application) SetMenubar(menubar gio.MenuModel) {
-	var _arg0 *C.GtkApplication // out
-	var _arg1 *C.GMenuModel     // out
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
-
-	C.gtk_application_set_menubar(_arg0, _arg1)
 }
 
 // Uninhibit removes an inhibitor that has been previously established.

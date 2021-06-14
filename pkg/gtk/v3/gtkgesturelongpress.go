@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,4 +52,21 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGestureLongPress(obj), nil
+}
+
+// NewGestureLongPress constructs a class GestureLongPress.
+func NewGestureLongPress(widget Widget) GestureLongPress {
+	var _arg1 *C.GtkWidget // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	var _cret C.GtkGestureLongPress // in
+
+	_cret = C.gtk_gesture_long_press_new(_arg1)
+
+	var _gestureLongPress GestureLongPress // out
+
+	_gestureLongPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureLongPress)
+
+	return _gestureLongPress
 }

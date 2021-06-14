@@ -58,6 +58,19 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	return WrapTextChildAnchor(obj), nil
 }
 
+// NewTextChildAnchor constructs a class TextChildAnchor.
+func NewTextChildAnchor() TextChildAnchor {
+	var _cret C.GtkTextChildAnchor // in
+
+	_cret = C.gtk_text_child_anchor_new()
+
+	var _textChildAnchor TextChildAnchor // out
+
+	_textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
+
+	return _textChildAnchor
+}
+
 // Deleted determines whether a child anchor has been deleted from the
 // buffer. Keep in mind that the child anchor will be unreferenced when
 // removed from the buffer, so you need to hold your own reference (with

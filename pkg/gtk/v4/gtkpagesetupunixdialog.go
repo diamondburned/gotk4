@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,6 +38,10 @@ type PageSetupUnixDialog interface {
 	Root
 	ShortcutManager
 
+	// PageSetup gets the currently selected page setup from the dialog.
+	PageSetup() PageSetup
+	// PrintSettings gets the current print settings from the dialog.
+	PrintSettings() PrintSettings
 	// SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
 	// takes its values.
 	SetPageSetup(pageSetup PageSetup)
@@ -76,6 +81,60 @@ func marshalPageSetupUnixDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPageSetupUnixDialog(obj), nil
+}
+
+// NewPageSetupUnixDialog constructs a class PageSetupUnixDialog.
+func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
+	var _arg1 *C.char      // out
+	var _arg2 *C.GtkWindow // out
+
+	_arg1 = (*C.char)(C.CString(title))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+
+	var _cret C.GtkPageSetupUnixDialog // in
+
+	_cret = C.gtk_page_setup_unix_dialog_new(_arg1, _arg2)
+
+	var _pageSetupUnixDialog PageSetupUnixDialog // out
+
+	_pageSetupUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetupUnixDialog)
+
+	return _pageSetupUnixDialog
+}
+
+// PageSetup gets the currently selected page setup from the dialog.
+func (d pageSetupUnixDialog) PageSetup() PageSetup {
+	var _arg0 *C.GtkPageSetupUnixDialog // out
+
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkPageSetup // in
+
+	_cret = C.gtk_page_setup_unix_dialog_get_page_setup(_arg0)
+
+	var _pageSetup PageSetup // out
+
+	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
+
+	return _pageSetup
+}
+
+// PrintSettings gets the current print settings from the dialog.
+func (d pageSetupUnixDialog) PrintSettings() PrintSettings {
+	var _arg0 *C.GtkPageSetupUnixDialog // out
+
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkPrintSettings // in
+
+	_cret = C.gtk_page_setup_unix_dialog_get_print_settings(_arg0)
+
+	var _printSettings PrintSettings // out
+
+	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+
+	return _printSettings
 }
 
 // SetPageSetup sets the `GtkPageSetup` from which the page setup dialog

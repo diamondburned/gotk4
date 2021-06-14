@@ -52,7 +52,7 @@ func (ng *NamespaceGenerator) generateBitfields() {
 		if !bitfield.IsIntrospectable() {
 			continue
 		}
-		if ng.mustIgnore(bitfield.Name, bitfield.CType) {
+		if ng.mustIgnore(&bitfield.Name, &bitfield.CType) {
 			continue
 		}
 

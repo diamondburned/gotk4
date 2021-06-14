@@ -32,6 +32,25 @@ func (s *Sequence) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
+// Append adds a new item to the end of @seq.
+func (s *Sequence) Append(data interface{}) *SequenceIter {
+	var _arg0 *C.GSequence // out
+	var _arg1 C.gpointer   // out
+
+	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gpointer(data)
+
+	var _cret *C.GSequenceIter // in
+
+	_cret = C.g_sequence_append(_arg0, _arg1)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+
+	return _sequenceIter
+}
+
 // Free frees the memory allocated for @seq. If @seq has a data destroy function
 // associated with it, that function is called on all items in @seq.
 func (s *Sequence) Free() {
@@ -40,6 +59,60 @@ func (s *Sequence) Free() {
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
 	C.g_sequence_free(_arg0)
+}
+
+// BeginIter returns the begin iterator for @seq.
+func (s *Sequence) BeginIter() *SequenceIter {
+	var _arg0 *C.GSequence // out
+
+	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GSequenceIter // in
+
+	_cret = C.g_sequence_get_begin_iter(_arg0)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+
+	return _sequenceIter
+}
+
+// EndIter returns the end iterator for @seg
+func (s *Sequence) EndIter() *SequenceIter {
+	var _arg0 *C.GSequence // out
+
+	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GSequenceIter // in
+
+	_cret = C.g_sequence_get_end_iter(_arg0)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+
+	return _sequenceIter
+}
+
+// IterAtPos returns the iterator at position @pos. If @pos is negative or
+// larger than the number of items in @seq, the end iterator is returned.
+func (s *Sequence) IterAtPos(pos int) *SequenceIter {
+	var _arg0 *C.GSequence // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(pos)
+
+	var _cret *C.GSequenceIter // in
+
+	_cret = C.g_sequence_get_iter_at_pos(_arg0, _arg1)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+
+	return _sequenceIter
 }
 
 // Length returns the positive length (>= 0) of @seq. Note that this method is
@@ -82,6 +155,25 @@ func (s *Sequence) IsEmpty() bool {
 	}
 
 	return _ok
+}
+
+// Prepend adds a new item to the front of @seq
+func (s *Sequence) Prepend(data interface{}) *SequenceIter {
+	var _arg0 *C.GSequence // out
+	var _arg1 C.gpointer   // out
+
+	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gpointer(data)
+
+	var _cret *C.GSequenceIter // in
+
+	_cret = C.g_sequence_prepend(_arg0, _arg1)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+
+	return _sequenceIter
 }
 
 // SequenceIter: the Iter struct is an opaque data type representing an iterator
@@ -144,6 +236,23 @@ func (i *SequenceIter) Position() int {
 	return _gint
 }
 
+// Sequence returns the #GSequence that @iter points into.
+func (i *SequenceIter) Sequence() *Sequence {
+	var _arg0 *C.GSequenceIter // out
+
+	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GSequence // in
+
+	_cret = C.g_sequence_iter_get_sequence(_arg0)
+
+	var _sequence *Sequence // out
+
+	_sequence = WrapSequence(unsafe.Pointer(_cret))
+
+	return _sequence
+}
+
 // IsBegin returns whether @iter is the begin iterator
 func (i *SequenceIter) IsBegin() bool {
 	var _arg0 *C.GSequenceIter // out
@@ -180,4 +289,62 @@ func (i *SequenceIter) IsEnd() bool {
 	}
 
 	return _ok
+}
+
+// Move returns the Iter which is @delta positions away from @iter. If @iter is
+// closer than -@delta positions to the beginning of the sequence, the begin
+// iterator is returned. If @iter is closer than @delta positions to the end of
+// the sequence, the end iterator is returned.
+func (i *SequenceIter) Move(delta int) *SequenceIter {
+	var _arg0 *C.GSequenceIter // out
+	var _arg1 C.gint           // out
+
+	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
+	_arg1 = C.gint(delta)
+
+	var _cret *C.GSequenceIter // in
+
+	_cret = C.g_sequence_iter_move(_arg0, _arg1)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+
+	return _sequenceIter
+}
+
+// Next returns an iterator pointing to the next position after @iter. If @iter
+// is the end iterator, the end iterator is returned.
+func (i *SequenceIter) Next() *SequenceIter {
+	var _arg0 *C.GSequenceIter // out
+
+	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GSequenceIter // in
+
+	_cret = C.g_sequence_iter_next(_arg0)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+
+	return _sequenceIter
+}
+
+// Prev returns an iterator pointing to the previous position before @iter. If
+// @iter is the begin iterator, the begin iterator is returned.
+func (i *SequenceIter) Prev() *SequenceIter {
+	var _arg0 *C.GSequenceIter // out
+
+	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GSequenceIter // in
+
+	_cret = C.g_sequence_iter_prev(_arg0)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+
+	return _sequenceIter
 }

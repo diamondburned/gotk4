@@ -41,35 +41,15 @@ func init() {
 type Accessible interface {
 	gextras.Objector
 
+	// AccessibleRole retrieves the `GtkAccessibleRole` for the given
+	// `GtkAccessible`.
+	AccessibleRole() AccessibleRole
 	// ResetProperty resets the accessible @property to its default value.
 	ResetProperty(property AccessibleProperty)
 	// ResetRelation resets the accessible @relation to its default value.
 	ResetRelation(relation AccessibleRelation)
 	// ResetState resets the accessible @state to its default value.
 	ResetState(state AccessibleState)
-	// UpdatePropertyValue updates an array of accessible properties.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible property change must be communicated to assistive
-	// technologies.
-	//
-	// This function is meant to be used by language bindings.
-	UpdatePropertyValue(properties []AccessibleProperty, values []**externglib.Value)
-	// UpdateRelationValue updates an array of accessible relations.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible relation change must be communicated to assistive
-	// technologies.
-	//
-	// This function is meant to be used by language bindings.
-	UpdateRelationValue(relations []AccessibleRelation, values []**externglib.Value)
-	// UpdateStateValue updates an array of accessible states.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
-	//
-	// This function is meant to be used by language bindings.
-	UpdateStateValue(states []AccessibleState, values []**externglib.Value)
 }
 
 // accessible implements the Accessible interface.
@@ -91,6 +71,24 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAccessible(obj), nil
+}
+
+// AccessibleRole retrieves the `GtkAccessibleRole` for the given
+// `GtkAccessible`.
+func (s accessible) AccessibleRole() AccessibleRole {
+	var _arg0 *C.GtkAccessible // out
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkAccessibleRole // in
+
+	_cret = C.gtk_accessible_get_accessible_role(_arg0)
+
+	var _accessibleRole AccessibleRole // out
+
+	_accessibleRole = AccessibleRole(_cret)
+
+	return _accessibleRole
 }
 
 // ResetProperty resets the accessible @property to its default value.
@@ -124,120 +122,4 @@ func (s accessible) ResetState(state AccessibleState) {
 	_arg1 = (C.GtkAccessibleState)(state)
 
 	C.gtk_accessible_reset_state(_arg0, _arg1)
-}
-
-// UpdatePropertyValue updates an array of accessible properties.
-//
-// This function should be called by `GtkWidget` types whenever an
-// accessible property change must be communicated to assistive
-// technologies.
-//
-// This function is meant to be used by language bindings.
-func (s accessible) UpdatePropertyValue(properties []AccessibleProperty, values []**externglib.Value) {
-	var _arg0 *C.GtkAccessible // out
-	var _arg2 *C.GtkAccessibleProperty
-	var _arg1 C.int
-	var _arg3 *C.GValue
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(len(properties))
-	_arg2 = (*C.GtkAccessibleProperty)(C.malloc(C.ulong(len(properties)) * C.ulong(C.sizeof_GtkAccessibleProperty)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	{
-		out := unsafe.Slice(_arg2, len(properties))
-		for i := range properties {
-			out[i] = (C.GtkAccessibleProperty)(properties[i])
-		}
-	}
-	_arg1 = C.int(len(values))
-	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	{
-		out := unsafe.Slice(_arg3, len(values))
-		for i := range values {
-			out[i] = (*C.GValue)(values[i].GValue)
-		}
-	}
-
-	C.gtk_accessible_update_property_value(_arg0, _arg1, _arg2, _arg3)
-}
-
-// UpdateRelationValue updates an array of accessible relations.
-//
-// This function should be called by `GtkWidget` types whenever an
-// accessible relation change must be communicated to assistive
-// technologies.
-//
-// This function is meant to be used by language bindings.
-func (s accessible) UpdateRelationValue(relations []AccessibleRelation, values []**externglib.Value) {
-	var _arg0 *C.GtkAccessible // out
-	var _arg2 *C.GtkAccessibleRelation
-	var _arg1 C.int
-	var _arg3 *C.GValue
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(len(relations))
-	_arg2 = (*C.GtkAccessibleRelation)(C.malloc(C.ulong(len(relations)) * C.ulong(C.sizeof_GtkAccessibleRelation)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	{
-		out := unsafe.Slice(_arg2, len(relations))
-		for i := range relations {
-			out[i] = (C.GtkAccessibleRelation)(relations[i])
-		}
-	}
-	_arg1 = C.int(len(values))
-	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	{
-		out := unsafe.Slice(_arg3, len(values))
-		for i := range values {
-			out[i] = (*C.GValue)(values[i].GValue)
-		}
-	}
-
-	C.gtk_accessible_update_relation_value(_arg0, _arg1, _arg2, _arg3)
-}
-
-// UpdateStateValue updates an array of accessible states.
-//
-// This function should be called by `GtkWidget` types whenever an
-// accessible state change must be communicated to assistive technologies.
-//
-// This function is meant to be used by language bindings.
-func (s accessible) UpdateStateValue(states []AccessibleState, values []**externglib.Value) {
-	var _arg0 *C.GtkAccessible // out
-	var _arg2 *C.GtkAccessibleState
-	var _arg1 C.int
-	var _arg3 *C.GValue
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(len(states))
-	_arg2 = (*C.GtkAccessibleState)(C.malloc(C.ulong(len(states)) * C.ulong(C.sizeof_GtkAccessibleState)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	{
-		out := unsafe.Slice(_arg2, len(states))
-		for i := range states {
-			out[i] = (C.GtkAccessibleState)(states[i])
-		}
-	}
-	_arg1 = C.int(len(values))
-	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	{
-		out := unsafe.Slice(_arg3, len(values))
-		for i := range values {
-			out[i] = (*C.GValue)(values[i].GValue)
-		}
-	}
-
-	C.gtk_accessible_update_state_value(_arg0, _arg1, _arg2, _arg3)
 }

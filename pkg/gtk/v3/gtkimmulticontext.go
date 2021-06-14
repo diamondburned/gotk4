@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -57,6 +58,19 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapIMMulticontext(obj), nil
+}
+
+// NewIMMulticontext constructs a class IMMulticontext.
+func NewIMMulticontext() IMMulticontext {
+	var _cret C.GtkIMMulticontext // in
+
+	_cret = C.gtk_im_multicontext_new()
+
+	var _imMulticontext IMMulticontext // out
+
+	_imMulticontext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IMMulticontext)
+
+	return _imMulticontext
 }
 
 // AppendMenuitems: add menuitems for various available input methods to a

@@ -286,6 +286,8 @@ type Activatable interface {
 	// property, since this function uses > gtk_activatable_get_related_action()
 	// to retrieve the > previous action.
 	DoSetRelatedAction(action Action)
+	// RelatedAction gets the related Action for @activatable.
+	RelatedAction() Action
 	// UseActionAppearance gets whether this activatable should reset its layout
 	// and appearance when setting the related action or when the action changes
 	// appearance.
@@ -351,6 +353,23 @@ func (a activatable) DoSetRelatedAction(action Action) {
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_activatable_do_set_related_action(_arg0, _arg1)
+}
+
+// RelatedAction gets the related Action for @activatable.
+func (a activatable) RelatedAction() Action {
+	var _arg0 *C.GtkActivatable // out
+
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GtkAction // in
+
+	_cret = C.gtk_activatable_get_related_action(_arg0)
+
+	var _action Action // out
+
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
+
+	return _action
 }
 
 // UseActionAppearance gets whether this activatable should reset its layout

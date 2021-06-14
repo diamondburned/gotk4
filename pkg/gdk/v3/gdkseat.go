@@ -5,6 +5,7 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -46,11 +47,41 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 	return SeatCapabilities(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SeatGrabPrepareFunc: type of the callback used to set up @window so it can be
+// grabbed. A typical action would be ensuring the window is visible, although
+// there's room for other initialization actions.
+type SeatGrabPrepareFunc func(seat Seat, window Window)
+
+//export gotk4_SeatGrabPrepareFunc
+func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var seat Seat     // out
+	var window Window // out
+
+	seat = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Seat)
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Window)
+
+	fn := v.(SeatGrabPrepareFunc)
+	fn(seat, window)
+}
+
 // Seat: the Seat object represents a collection of input devices that belong to
 // a user.
 type Seat interface {
 	gextras.Objector
 
+	// Capabilities returns the capabilities this Seat currently has.
+	Capabilities() SeatCapabilities
+	// Display returns the Display this seat belongs to.
+	Display() Display
+	// Keyboard returns the master device that routes keyboard events.
+	Keyboard() Device
+	// Pointer returns the master device that routes pointer events.
+	Pointer() Device
 	// Ungrab releases a grab added through gdk_seat_grab().
 	Ungrab()
 }
@@ -74,6 +105,74 @@ func marshalSeat(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSeat(obj), nil
+}
+
+// Capabilities returns the capabilities this Seat currently has.
+func (s seat) Capabilities() SeatCapabilities {
+	var _arg0 *C.GdkSeat // out
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GdkSeatCapabilities // in
+
+	_cret = C.gdk_seat_get_capabilities(_arg0)
+
+	var _seatCapabilities SeatCapabilities // out
+
+	_seatCapabilities = SeatCapabilities(_cret)
+
+	return _seatCapabilities
+}
+
+// Display returns the Display this seat belongs to.
+func (s seat) Display() Display {
+	var _arg0 *C.GdkSeat // out
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_seat_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
+}
+
+// Keyboard returns the master device that routes keyboard events.
+func (s seat) Keyboard() Device {
+	var _arg0 *C.GdkSeat // out
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDevice // in
+
+	_cret = C.gdk_seat_get_keyboard(_arg0)
+
+	var _device Device // out
+
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
+
+	return _device
+}
+
+// Pointer returns the master device that routes pointer events.
+func (s seat) Pointer() Device {
+	var _arg0 *C.GdkSeat // out
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDevice // in
+
+	_cret = C.gdk_seat_get_pointer(_arg0)
+
+	var _device Device // out
+
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
+
+	return _device
 }
 
 // Ungrab releases a grab added through gdk_seat_grab().

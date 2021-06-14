@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -126,6 +128,21 @@ type RecentManager interface {
 	// HasItem checks whether there is a recently used resource registered with
 	// @uri inside the recent manager.
 	HasItem(uri string) bool
+	// LookupItem searches for a URI inside the recently used resources list,
+	// and returns a `GtkRecentInfo` containing information about the resource
+	// like its MIME type, or its display name.
+	LookupItem(uri string) (*RecentInfo, error)
+	// MoveItem changes the location of a recently used resource from @uri to
+	// @new_uri.
+	//
+	// Please note that this function will not affect the resource pointed by
+	// the URIs, but only the URI used in the recently used resources list.
+	MoveItem(uri string, newUri string) error
+	// PurgeItems purges every item from the recently used resources list.
+	PurgeItems() (int, error)
+	// RemoveItem removes a resource pointed by @uri from the recently used
+	// resources list handled by a recent manager.
+	RemoveItem(uri string) error
 }
 
 // recentManager implements the RecentManager class.
@@ -147,6 +164,19 @@ func marshalRecentManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRecentManager(obj), nil
+}
+
+// NewRecentManager constructs a class RecentManager.
+func NewRecentManager() RecentManager {
+	var _cret C.GtkRecentManager // in
+
+	_cret = C.gtk_recent_manager_new()
+
+	var _recentManager RecentManager // out
+
+	_recentManager = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentManager)
+
+	return _recentManager
 }
 
 // AddFull adds a new resource, pointed by @uri, into the recently used
@@ -240,6 +270,102 @@ func (m recentManager) HasItem(uri string) bool {
 	}
 
 	return _ok
+}
+
+// LookupItem searches for a URI inside the recently used resources list,
+// and returns a `GtkRecentInfo` containing information about the resource
+// like its MIME type, or its display name.
+func (m recentManager) LookupItem(uri string) (*RecentInfo, error) {
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GtkRecentInfo // in
+	var _cerr *C.GError        // in
+
+	_cret = C.gtk_recent_manager_lookup_item(_arg0, _arg1, &_cerr)
+
+	var _recentInfo *RecentInfo // out
+	var _goerr error            // out
+
+	_recentInfo = WrapRecentInfo(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _recentInfo, _goerr
+}
+
+// MoveItem changes the location of a recently used resource from @uri to
+// @new_uri.
+//
+// Please note that this function will not affect the resource pointed by
+// the URIs, but only the URI used in the recently used resources list.
+func (m recentManager) MoveItem(uri string, newUri string) error {
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+	var _arg2 *C.char             // out
+
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(newUri))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cerr *C.GError // in
+
+	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// PurgeItems purges every item from the recently used resources list.
+func (m recentManager) PurgeItems() (int, error) {
+	var _arg0 *C.GtkRecentManager // out
+
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
+
+	var _cret C.int     // in
+	var _cerr *C.GError // in
+
+	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
+
+	var _gint int    // out
+	var _goerr error // out
+
+	_gint = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gint, _goerr
+}
+
+// RemoveItem removes a resource pointed by @uri from the recently used
+// resources list handled by a recent manager.
+func (m recentManager) RemoveItem(uri string) error {
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cerr *C.GError // in
+
+	C.gtk_recent_manager_remove_item(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
@@ -688,6 +814,26 @@ func (i *RecentInfo) Match(infoB *RecentInfo) bool {
 	}
 
 	return _ok
+}
+
+// Ref increases the reference count of @recent_info by one.
+func (i *RecentInfo) Ref() *RecentInfo {
+	var _arg0 *C.GtkRecentInfo // out
+
+	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GtkRecentInfo // in
+
+	_cret = C.gtk_recent_info_ref(_arg0)
+
+	var _recentInfo *RecentInfo // out
+
+	_recentInfo = WrapRecentInfo(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _recentInfo
 }
 
 // Unref decreases the reference count of @info by one.

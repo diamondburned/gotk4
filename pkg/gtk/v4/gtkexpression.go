@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -36,32 +37,6 @@ func gotk4_ExpressionNotify(arg0 C.gpointer) {
 	fn()
 }
 
-// ValueSetExpression stores the given `GtkExpression` inside `value`.
-//
-// The `GValue` will acquire a reference to the `expression`.
-func ValueSetExpression(value **externglib.Value, expression Expression) {
-	var _arg1 *C.GValue        // out
-	var _arg2 *C.GtkExpression // out
-
-	_arg1 = (*C.GValue)(value.GValue)
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	C.gtk_value_set_expression(_arg1, _arg2)
-}
-
-// ValueTakeExpression stores the given `GtkExpression` inside `value`.
-//
-// This function transfers the ownership of the `expression` to the `GValue`.
-func ValueTakeExpression(value **externglib.Value, expression Expression) {
-	var _arg1 *C.GValue        // out
-	var _arg2 *C.GtkExpression // out
-
-	_arg1 = (*C.GValue)(value.GValue)
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	C.gtk_value_take_expression(_arg1, _arg2)
-}
-
 // ExpressionWatch: an opaque structure representing a watched `GtkExpression`.
 //
 // The contents of `GtkExpressionWatch` should only be accessed through the
@@ -90,29 +65,24 @@ func (e *ExpressionWatch) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Evaluate evaluates the watched expression and on success stores the result in
-// `value`.
-//
-// This is equivalent to calling [method@Gtk.Expression.evaluate] with the
-// expression and this pointer originally used to create `watch`.
-func (w *ExpressionWatch) Evaluate(value **externglib.Value) bool {
+// Ref acquires a reference on the given `GtkExpressionWatch`.
+func (w *ExpressionWatch) Ref() *ExpressionWatch {
 	var _arg0 *C.GtkExpressionWatch // out
-	var _arg1 *C.GValue             // out
 
 	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GValue)(value.GValue)
 
-	var _cret C.gboolean // in
+	var _cret *C.GtkExpressionWatch // in
 
-	_cret = C.gtk_expression_watch_evaluate(_arg0, _arg1)
+	_cret = C.gtk_expression_watch_ref(_arg0)
 
-	var _ok bool // out
+	var _expressionWatch *ExpressionWatch // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+	_expressionWatch = WrapExpressionWatch(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
 
-	return _ok
+	return _expressionWatch
 }
 
 // Unref releases a reference on the given `GtkExpressionWatch`.

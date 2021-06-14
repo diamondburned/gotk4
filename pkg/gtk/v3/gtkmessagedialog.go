@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -91,6 +92,14 @@ type MessageDialog interface {
 	Dialog
 	Buildable
 
+	// Image gets the dialog’s image.
+	Image() Widget
+	// MessageArea returns the message area of the dialog. This is the box where
+	// the dialog’s primary and secondary labels are packed. You can add your
+	// own extra content to that box and it will appear below those labels. See
+	// gtk_dialog_get_content_area() for the corresponding function in the
+	// parent Dialog.
+	MessageArea() Widget
 	// SetImage sets the dialog’s image to @image.
 	SetImage(image Widget)
 	// SetMarkup sets the text of the message dialog to be @str, which is marked
@@ -119,6 +128,44 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMessageDialog(obj), nil
+}
+
+// Image gets the dialog’s image.
+func (d messageDialog) Image() Widget {
+	var _arg0 *C.GtkMessageDialog // out
+
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_message_dialog_get_image(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// MessageArea returns the message area of the dialog. This is the box where
+// the dialog’s primary and secondary labels are packed. You can add your
+// own extra content to that box and it will appear below those labels. See
+// gtk_dialog_get_content_area() for the corresponding function in the
+// parent Dialog.
+func (m messageDialog) MessageArea() Widget {
+	var _arg0 *C.GtkMessageDialog // out
+
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_message_dialog_get_message_area(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // SetImage sets the dialog’s image to @image.

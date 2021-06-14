@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -97,17 +97,10 @@ type Window interface {
 	// [property@Gdk.Toplevel:state] property, or by listening to notifications
 	// of the [property@Gtk.Window:fullscreened] property.
 	Fullscreen()
-	// FullscreenOnMonitor asks to place @window in the fullscreen state on the
-	// given @monitor.
-	//
-	// Note that you shouldn't assume the window is definitely fullscreen
-	// afterward, or that the windowing system allows fullscreen windows on any
-	// given monitor.
-	//
-	// You can track the result of this operation via the
-	// [property@Gdk.Toplevel:state] property, or by listening to notifications
-	// of the [property@Gtk.Window:fullscreened] property.
-	FullscreenOnMonitor(monitor gdk.Monitor)
+	// Application gets the `GtkApplication` associated with the window.
+	Application() Application
+	// Child gets the child widget of @window.
+	Child() Widget
 	// Decorated returns whether the window has been set to have decorations.
 	Decorated() bool
 	// DefaultSize gets the default size of the window.
@@ -116,13 +109,25 @@ type Window interface {
 	// not been explicitly set for that dimension, so the “natural” size of the
 	// window will be used.
 	DefaultSize() (width int, height int)
+	// DefaultWidget returns the default widget for @window.
+	DefaultWidget() Widget
 	// Deletable returns whether the window has been set to have a close button.
 	Deletable() bool
 	// DestroyWithParent returns whether the window will be destroyed with its
 	// transient parent.
 	DestroyWithParent() bool
+	// Focus retrieves the current focused widget within the window.
+	//
+	// Note that this is the widget that would have the focus if the toplevel
+	// window focused; if the toplevel window is not focused then
+	// `gtk_widget_has_focus (widget)` will not be true for the widget.
+	Focus() Widget
 	// FocusVisible gets whether “focus rectangles” are supposed to be visible.
 	FocusVisible() bool
+	// Group returns the group for @window.
+	//
+	// If the window has no group, then the default group is returned.
+	Group() WindowGroup
 	// HandleMenubarAccel returns whether this window reacts to F10 key presses
 	// by activating a menubar it contains.
 	HandleMenubarAccel() bool
@@ -139,6 +144,11 @@ type Window interface {
 	Resizable() bool
 	// Title retrieves the title of the window.
 	Title() string
+	// Titlebar returns the custom titlebar that has been set with
+	// gtk_window_set_titlebar().
+	Titlebar() Widget
+	// TransientFor fetches the transient parent for this window.
+	TransientFor() Window
 	// HasGroup returns whether @window has an explicit window group.
 	HasGroup() bool
 	// IsActive returns whether the window is part of the current active
@@ -305,11 +315,6 @@ type Window interface {
 	// This is useful for dialogs that shouldn’t persist beyond the lifetime of
 	// the main window they are associated with, for example.
 	SetDestroyWithParent(setting bool)
-	// SetDisplay sets the `GdkDisplay` where the @window is displayed.
-	//
-	// If the window is already mapped, it will be unmapped, and then remapped
-	// on the new display.
-	SetDisplay(display gdk.Display)
 	// SetFocus sets the focus widget.
 	//
 	// If @focus is not the current focus widget, and is focusable, sets it as
@@ -468,6 +473,19 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return WrapWindow(obj), nil
 }
 
+// NewWindow constructs a class Window.
+func NewWindow() Window {
+	var _cret C.GtkWindow // in
+
+	_cret = C.gtk_window_new()
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
 // Close requests that the window is closed.
 //
 // This is similar to what happens when a window manager close button is
@@ -509,24 +527,38 @@ func (w window) Fullscreen() {
 	C.gtk_window_fullscreen(_arg0)
 }
 
-// FullscreenOnMonitor asks to place @window in the fullscreen state on the
-// given @monitor.
-//
-// Note that you shouldn't assume the window is definitely fullscreen
-// afterward, or that the windowing system allows fullscreen windows on any
-// given monitor.
-//
-// You can track the result of this operation via the
-// [property@Gdk.Toplevel:state] property, or by listening to notifications
-// of the [property@Gtk.Window:fullscreened] property.
-func (w window) FullscreenOnMonitor(monitor gdk.Monitor) {
-	var _arg0 *C.GtkWindow  // out
-	var _arg1 *C.GdkMonitor // out
+// Application gets the `GtkApplication` associated with the window.
+func (w window) Application() Application {
+	var _arg0 *C.GtkWindow // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
-	C.gtk_window_fullscreen_on_monitor(_arg0, _arg1)
+	var _cret *C.GtkApplication // in
+
+	_cret = C.gtk_window_get_application(_arg0)
+
+	var _application Application // out
+
+	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Application)
+
+	return _application
+}
+
+// Child gets the child widget of @window.
+func (w window) Child() Widget {
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_window_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Decorated returns whether the window has been set to have decorations.
@@ -572,6 +604,23 @@ func (w window) DefaultSize() (width int, height int) {
 	return _width, _height
 }
 
+// DefaultWidget returns the default widget for @window.
+func (w window) DefaultWidget() Widget {
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_window_get_default_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // Deletable returns whether the window has been set to have a close button.
 func (w window) Deletable() bool {
 	var _arg0 *C.GtkWindow // out
@@ -611,6 +660,27 @@ func (w window) DestroyWithParent() bool {
 	return _ok
 }
 
+// Focus retrieves the current focused widget within the window.
+//
+// Note that this is the widget that would have the focus if the toplevel
+// window focused; if the toplevel window is not focused then
+// `gtk_widget_has_focus (widget)` will not be true for the widget.
+func (w window) Focus() Widget {
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_window_get_focus(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // FocusVisible gets whether “focus rectangles” are supposed to be visible.
 func (w window) FocusVisible() bool {
 	var _arg0 *C.GtkWindow // out
@@ -628,6 +698,25 @@ func (w window) FocusVisible() bool {
 	}
 
 	return _ok
+}
+
+// Group returns the group for @window.
+//
+// If the window has no group, then the default group is returned.
+func (w window) Group() WindowGroup {
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GtkWindowGroup // in
+
+	_cret = C.gtk_window_get_group(_arg0)
+
+	var _windowGroup WindowGroup // out
+
+	_windowGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(WindowGroup)
+
+	return _windowGroup
 }
 
 // HandleMenubarAccel returns whether this window reacts to F10 key presses
@@ -759,6 +848,41 @@ func (w window) Title() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Titlebar returns the custom titlebar that has been set with
+// gtk_window_set_titlebar().
+func (w window) Titlebar() Widget {
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_window_get_titlebar(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// TransientFor fetches the transient parent for this window.
+func (w window) TransientFor() Window {
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GtkWindow // in
+
+	_cret = C.gtk_window_get_transient_for(_arg0)
+
+	var _ret Window // out
+
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _ret
 }
 
 // HasGroup returns whether @window has an explicit window group.
@@ -1094,20 +1218,6 @@ func (w window) SetDestroyWithParent(setting bool) {
 	}
 
 	C.gtk_window_set_destroy_with_parent(_arg0, _arg1)
-}
-
-// SetDisplay sets the `GdkDisplay` where the @window is displayed.
-//
-// If the window is already mapped, it will be unmapped, and then remapped
-// on the new display.
-func (w window) SetDisplay(display gdk.Display) {
-	var _arg0 *C.GtkWindow  // out
-	var _arg1 *C.GdkDisplay // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-
-	C.gtk_window_set_display(_arg0, _arg1)
 }
 
 // SetFocus sets the focus widget.

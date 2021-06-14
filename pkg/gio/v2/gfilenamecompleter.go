@@ -67,6 +67,19 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	return WrapFilenameCompleter(obj), nil
 }
 
+// NewFilenameCompleter constructs a class FilenameCompleter.
+func NewFilenameCompleter() FilenameCompleter {
+	var _cret C.GFilenameCompleter // in
+
+	_cret = C.g_filename_completer_new()
+
+	var _filenameCompleter FilenameCompleter // out
+
+	_filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FilenameCompleter)
+
+	return _filenameCompleter
+}
+
 // CompletionSuffix obtains a completion for @initial_text from @completer.
 func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out

@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,14 +29,12 @@ func init() {
 // To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter interface {
 	MultiFilter
-	gio.ListModel
 	Buildable
 }
 
 // anyFilter implements the AnyFilter class.
 type anyFilter struct {
 	MultiFilter
-	gio.ListModel
 	Buildable
 }
 
@@ -46,9 +44,8 @@ var _ AnyFilter = (*anyFilter)(nil)
 // primarily used internally.
 func WrapAnyFilter(obj *externglib.Object) AnyFilter {
 	return anyFilter{
-		MultiFilter:   WrapMultiFilter(obj),
-		gio.ListModel: gio.WrapListModel(obj),
-		Buildable:     WrapBuildable(obj),
+		MultiFilter: WrapMultiFilter(obj),
+		Buildable:   WrapBuildable(obj),
 	}
 }
 
@@ -58,20 +55,31 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 	return WrapAnyFilter(obj), nil
 }
 
+// NewAnyFilter constructs a class AnyFilter.
+func NewAnyFilter() AnyFilter {
+	var _cret C.GtkAnyFilter // in
+
+	_cret = C.gtk_any_filter_new()
+
+	var _anyFilter AnyFilter // out
+
+	_anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AnyFilter)
+
+	return _anyFilter
+}
+
 // EveryFilter: `GtkEveryFilter` matches an item when each of its filters
 // matches.
 //
 // To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter interface {
 	MultiFilter
-	gio.ListModel
 	Buildable
 }
 
 // everyFilter implements the EveryFilter class.
 type everyFilter struct {
 	MultiFilter
-	gio.ListModel
 	Buildable
 }
 
@@ -81,9 +89,8 @@ var _ EveryFilter = (*everyFilter)(nil)
 // primarily used internally.
 func WrapEveryFilter(obj *externglib.Object) EveryFilter {
 	return everyFilter{
-		MultiFilter:   WrapMultiFilter(obj),
-		gio.ListModel: gio.WrapListModel(obj),
-		Buildable:     WrapBuildable(obj),
+		MultiFilter: WrapMultiFilter(obj),
+		Buildable:   WrapBuildable(obj),
 	}
 }
 
@@ -93,11 +100,23 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 	return WrapEveryFilter(obj), nil
 }
 
+// NewEveryFilter constructs a class EveryFilter.
+func NewEveryFilter() EveryFilter {
+	var _cret C.GtkEveryFilter // in
+
+	_cret = C.gtk_every_filter_new()
+
+	var _everyFilter EveryFilter // out
+
+	_everyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EveryFilter)
+
+	return _everyFilter
+}
+
 // MultiFilter: `GtkMultiFilter` is the base class for filters that combine
 // multiple filters.
 type MultiFilter interface {
 	Filter
-	gio.ListModel
 	Buildable
 
 	// Append adds a @filter to @self to use for matching.
@@ -113,7 +132,6 @@ type MultiFilter interface {
 // multiFilter implements the MultiFilter class.
 type multiFilter struct {
 	Filter
-	gio.ListModel
 	Buildable
 }
 
@@ -123,9 +141,8 @@ var _ MultiFilter = (*multiFilter)(nil)
 // primarily used internally.
 func WrapMultiFilter(obj *externglib.Object) MultiFilter {
 	return multiFilter{
-		Filter:        WrapFilter(obj),
-		gio.ListModel: gio.WrapListModel(obj),
-		Buildable:     WrapBuildable(obj),
+		Filter:    WrapFilter(obj),
+		Buildable: WrapBuildable(obj),
 	}
 }
 

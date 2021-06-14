@@ -24,11 +24,13 @@ func init() {
 
 type SpinnerAccessible interface {
 	WidgetAccessible
+	Image
 }
 
 // spinnerAccessible implements the SpinnerAccessible class.
 type spinnerAccessible struct {
 	WidgetAccessible
+	Image
 }
 
 var _ SpinnerAccessible = (*spinnerAccessible)(nil)
@@ -38,6 +40,7 @@ var _ SpinnerAccessible = (*spinnerAccessible)(nil)
 func WrapSpinnerAccessible(obj *externglib.Object) SpinnerAccessible {
 	return spinnerAccessible{
 		WidgetAccessible: WrapWidgetAccessible(obj),
+		Image:            WrapImage(obj),
 	}
 }
 

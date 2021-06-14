@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,6 +61,23 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGestureSwipe(obj), nil
+}
+
+// NewGestureSwipe constructs a class GestureSwipe.
+func NewGestureSwipe(widget Widget) GestureSwipe {
+	var _arg1 *C.GtkWidget // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	var _cret C.GtkGestureSwipe // in
+
+	_cret = C.gtk_gesture_swipe_new(_arg1)
+
+	var _gestureSwipe GestureSwipe // out
+
+	_gestureSwipe = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureSwipe)
+
+	return _gestureSwipe
 }
 
 // Velocity: if the gesture is recognized, this function returns true and

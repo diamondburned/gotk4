@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -64,4 +65,17 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapOffscreenWindow(obj), nil
+}
+
+// NewOffscreenWindow constructs a class OffscreenWindow.
+func NewOffscreenWindow() OffscreenWindow {
+	var _cret C.GtkOffscreenWindow // in
+
+	_cret = C.gtk_offscreen_window_new()
+
+	var _offscreenWindow OffscreenWindow // out
+
+	_offscreenWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OffscreenWindow)
+
+	return _offscreenWindow
 }

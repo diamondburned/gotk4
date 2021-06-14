@@ -38,6 +38,8 @@ type TLSPassword interface {
 	// Description: get a description string about what the password will be
 	// used for.
 	Description() string
+	// Flags: get flags about the password.
+	Flags() TLSPasswordFlags
 	// Value: get the password value. If @length is not nil then it will be
 	// filled in with the length of the password value. (Note that the password
 	// value is not nul-terminated, so you can only pass nil for @length in
@@ -87,6 +89,26 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 	return WrapTLSPassword(obj), nil
 }
 
+// NewTLSPassword constructs a class TLSPassword.
+func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
+	var _arg1 C.GTlsPasswordFlags // out
+	var _arg2 *C.gchar            // out
+
+	_arg1 = (C.GTlsPasswordFlags)(flags)
+	_arg2 = (*C.gchar)(C.CString(description))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GTlsPassword // in
+
+	_cret = C.g_tls_password_new(_arg1, _arg2)
+
+	var _tlsPassword TLSPassword // out
+
+	_tlsPassword = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSPassword)
+
+	return _tlsPassword
+}
+
 // Description: get a description string about what the password will be
 // used for.
 func (p tlsPassword) Description() string {
@@ -103,6 +125,23 @@ func (p tlsPassword) Description() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Flags: get flags about the password.
+func (p tlsPassword) Flags() TLSPasswordFlags {
+	var _arg0 *C.GTlsPassword // out
+
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
+
+	var _cret C.GTlsPasswordFlags // in
+
+	_cret = C.g_tls_password_get_flags(_arg0)
+
+	var _tlsPasswordFlags TLSPasswordFlags // out
+
+	_tlsPasswordFlags = TLSPasswordFlags(_cret)
+
+	return _tlsPasswordFlags
 }
 
 // Value: get the password value. If @length is not nil then it will be

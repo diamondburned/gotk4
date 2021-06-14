@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -78,6 +79,28 @@ func (r *RGBA) Alpha() float32 {
 	var v float32 // out
 	v = (float32)(r.native.alpha)
 	return v
+}
+
+// Copy makes a copy of a `GdkRGBA`.
+//
+// The result must be freed through [method@Gdk.RGBA.free].
+func (r *RGBA) Copy() *RGBA {
+	var _arg0 *C.GdkRGBA // out
+
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+
+	var _cret *C.GdkRGBA // in
+
+	_cret = C.gdk_rgba_copy(_arg0)
+
+	var _rgbA *RGBA // out
+
+	_rgbA = WrapRGBA(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _rgbA
 }
 
 // Equal compares two `GdkRGBA` colors.

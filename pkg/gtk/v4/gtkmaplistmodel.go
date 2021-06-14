@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,34 +19,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModel},
 	})
-}
-
-// MapListModelMapFunc: user function that is called to map an @item of the
-// original model to an item expected by the map model.
-//
-// The returned items must conform to the item type of the model they are used
-// with.
-type MapListModelMapFunc func(item gextras.Objector) (object gextras.Objector)
-
-//export gotk4_MapListModelMapFunc
-func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var item gextras.Objector // out
-
-	item = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
-
-	fn := v.(MapListModelMapFunc)
-	object := fn(item)
-
-	var cret C.gpointer // out
-
-	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
-
-	return cret
 }
 
 // MapListModel: a `GtkMapListModel` maps the items in a list model to different
@@ -73,22 +43,14 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 // are no longer needed and recreate them if necessary.
 type MapListModel interface {
 	gextras.Objector
-	gio.ListModel
 
 	// HasMap checks if a map function is currently set on @self.
 	HasMap() bool
-	// SetModel sets the model to be mapped.
-	//
-	// GTK makes no effort to ensure that @model conforms to the item type
-	// expected by the map function. It assumes that the caller knows what they
-	// are doing and have set up an appropriate map function.
-	SetModel(model gio.ListModel)
 }
 
 // mapListModel implements the MapListModel class.
 type mapListModel struct {
 	gextras.Objector
-	gio.ListModel
 }
 
 var _ MapListModel = (*mapListModel)(nil)
@@ -97,8 +59,7 @@ var _ MapListModel = (*mapListModel)(nil)
 // primarily used internally.
 func WrapMapListModel(obj *externglib.Object) MapListModel {
 	return mapListModel{
-		Objector:      obj,
-		gio.ListModel: gio.WrapListModel(obj),
+		Objector: obj,
 	}
 }
 
@@ -125,19 +86,4 @@ func (s mapListModel) HasMap() bool {
 	}
 
 	return _ok
-}
-
-// SetModel sets the model to be mapped.
-//
-// GTK makes no effort to ensure that @model conforms to the item type
-// expected by the map function. It assumes that the caller knows what they
-// are doing and have set up an appropriate map function.
-func (s mapListModel) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkMapListModel // out
-	var _arg1 *C.GListModel      // out
-
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_map_list_model_set_model(_arg0, _arg1)
 }

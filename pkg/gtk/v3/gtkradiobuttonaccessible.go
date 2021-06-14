@@ -24,11 +24,15 @@ func init() {
 
 type RadioButtonAccessible interface {
 	ToggleButtonAccessible
+	Action
+	Image
 }
 
 // radioButtonAccessible implements the RadioButtonAccessible class.
 type radioButtonAccessible struct {
 	ToggleButtonAccessible
+	Action
+	Image
 }
 
 var _ RadioButtonAccessible = (*radioButtonAccessible)(nil)
@@ -38,6 +42,8 @@ var _ RadioButtonAccessible = (*radioButtonAccessible)(nil)
 func WrapRadioButtonAccessible(obj *externglib.Object) RadioButtonAccessible {
 	return radioButtonAccessible{
 		ToggleButtonAccessible: WrapToggleButtonAccessible(obj),
+		Action:                 WrapAction(obj),
+		Image:                  WrapImage(obj),
 	}
 }
 

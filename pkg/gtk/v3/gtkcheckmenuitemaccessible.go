@@ -24,11 +24,13 @@ func init() {
 
 type CheckMenuItemAccessible interface {
 	MenuItemAccessible
+	Action
 }
 
 // checkMenuItemAccessible implements the CheckMenuItemAccessible class.
 type checkMenuItemAccessible struct {
 	MenuItemAccessible
+	Action
 }
 
 var _ CheckMenuItemAccessible = (*checkMenuItemAccessible)(nil)
@@ -38,6 +40,7 @@ var _ CheckMenuItemAccessible = (*checkMenuItemAccessible)(nil)
 func WrapCheckMenuItemAccessible(obj *externglib.Object) CheckMenuItemAccessible {
 	return checkMenuItemAccessible{
 		MenuItemAccessible: WrapMenuItemAccessible(obj),
+		Action:             WrapAction(obj),
 	}
 }
 

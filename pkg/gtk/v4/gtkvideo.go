@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,11 +45,11 @@ type Video interface {
 	Autoplay() bool
 	// Loop returns true if videos have been set to loop.
 	Loop() bool
+	// MediaStream gets the media stream managed by @self or nil if none.
+	MediaStream() MediaStream
 	// SetAutoplay sets whether @self automatically starts playback when it
 	// becomes visible or when a new file gets loaded.
 	SetAutoplay(autoplay bool)
-	// SetFile makes @self play the given @file.
-	SetFile(file gio.File)
 	// SetFilename makes @self play the given @filename.
 	//
 	// This is a utility function that calls gtk_video_set_file(),
@@ -98,6 +98,72 @@ func marshalVideo(p uintptr) (interface{}, error) {
 	return WrapVideo(obj), nil
 }
 
+// NewVideo constructs a class Video.
+func NewVideo() Video {
+	var _cret C.GtkVideo // in
+
+	_cret = C.gtk_video_new()
+
+	var _video Video // out
+
+	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+
+	return _video
+}
+
+// NewVideoForFilename constructs a class Video.
+func NewVideoForFilename(filename string) Video {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkVideo // in
+
+	_cret = C.gtk_video_new_for_filename(_arg1)
+
+	var _video Video // out
+
+	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+
+	return _video
+}
+
+// NewVideoForMediaStream constructs a class Video.
+func NewVideoForMediaStream(stream MediaStream) Video {
+	var _arg1 *C.GtkMediaStream // out
+
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+
+	var _cret C.GtkVideo // in
+
+	_cret = C.gtk_video_new_for_media_stream(_arg1)
+
+	var _video Video // out
+
+	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+
+	return _video
+}
+
+// NewVideoForResource constructs a class Video.
+func NewVideoForResource(resourcePath string) Video {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkVideo // in
+
+	_cret = C.gtk_video_new_for_resource(_arg1)
+
+	var _video Video // out
+
+	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+
+	return _video
+}
+
 // Autoplay returns true if videos have been set to loop.
 func (s video) Autoplay() bool {
 	var _arg0 *C.GtkVideo // out
@@ -136,6 +202,23 @@ func (s video) Loop() bool {
 	return _ok
 }
 
+// MediaStream gets the media stream managed by @self or nil if none.
+func (s video) MediaStream() MediaStream {
+	var _arg0 *C.GtkVideo // out
+
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkMediaStream // in
+
+	_cret = C.gtk_video_get_media_stream(_arg0)
+
+	var _mediaStream MediaStream // out
+
+	_mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaStream)
+
+	return _mediaStream
+}
+
 // SetAutoplay sets whether @self automatically starts playback when it
 // becomes visible or when a new file gets loaded.
 func (s video) SetAutoplay(autoplay bool) {
@@ -148,17 +231,6 @@ func (s video) SetAutoplay(autoplay bool) {
 	}
 
 	C.gtk_video_set_autoplay(_arg0, _arg1)
-}
-
-// SetFile makes @self play the given @file.
-func (s video) SetFile(file gio.File) {
-	var _arg0 *C.GtkVideo // out
-	var _arg1 *C.GFile    // out
-
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_video_set_file(_arg0, _arg1)
 }
 
 // SetFilename makes @self play the given @filename.

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,6 +77,19 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSpinner(obj), nil
+}
+
+// NewSpinner constructs a class Spinner.
+func NewSpinner() Spinner {
+	var _cret C.GtkSpinner // in
+
+	_cret = C.gtk_spinner_new()
+
+	var _spinner Spinner // out
+
+	_spinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Spinner)
+
+	return _spinner
 }
 
 // Spinning returns whether the spinner is spinning.

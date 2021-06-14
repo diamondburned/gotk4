@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -37,6 +38,14 @@ type DBusInterfaceSkeleton interface {
 	gextras.Objector
 	DBusInterface
 
+	// Export exports @interface_ at @object_path on @connection.
+	//
+	// This can be called multiple times to export the same @interface_ onto
+	// multiple connections however the @object_path provided must be the same
+	// for all connections.
+	//
+	// Use g_dbus_interface_skeleton_unexport() to unexport the object.
+	Export(connection DBusConnection, objectPath string) error
 	// Flush: if @interface_ has outstanding changes, request for these changes
 	// to be emitted immediately.
 	//
@@ -45,6 +54,15 @@ type DBusInterfaceSkeleton interface {
 	// later (e.g. in an idle handler). This technique is useful for collapsing
 	// multiple property changes into one.
 	Flush()
+	// Connection gets the first connection that @interface_ is exported on, if
+	// any.
+	Connection() DBusConnection
+	// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
+	// of @interface_
+	Flags() DBusInterfaceSkeletonFlags
+	// Info gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
+	Info() *DBusInterfaceInfo
 	// ObjectPath gets the object path that @interface_ is exported on, if any.
 	ObjectPath() string
 	// HasConnection checks if @interface_ is exported on @connection.
@@ -87,6 +105,34 @@ func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 	return WrapDBusInterfaceSkeleton(obj), nil
 }
 
+// Export exports @interface_ at @object_path on @connection.
+//
+// This can be called multiple times to export the same @interface_ onto
+// multiple connections however the @object_path provided must be the same
+// for all connections.
+//
+// Use g_dbus_interface_skeleton_unexport() to unexport the object.
+func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) error {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _arg1 *C.GDBusConnection        // out
+	var _arg2 *C.gchar                  // out
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg2 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cerr *C.GError // in
+
+	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // Flush: if @interface_ has outstanding changes, request for these changes
 // to be emitted immediately.
 //
@@ -100,6 +146,60 @@ func (i dBusInterfaceSkeleton) Flush() {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
 	C.g_dbus_interface_skeleton_flush(_arg0)
+}
+
+// Connection gets the first connection that @interface_ is exported on, if
+// any.
+func (i dBusInterfaceSkeleton) Connection() DBusConnection {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GDBusConnection // in
+
+	_cret = C.g_dbus_interface_skeleton_get_connection(_arg0)
+
+	var _dBusConnection DBusConnection // out
+
+	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+
+	return _dBusConnection
+}
+
+// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
+// of @interface_
+func (i dBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+
+	var _cret C.GDBusInterfaceSkeletonFlags // in
+
+	_cret = C.g_dbus_interface_skeleton_get_flags(_arg0)
+
+	var _dBusInterfaceSkeletonFlags DBusInterfaceSkeletonFlags // out
+
+	_dBusInterfaceSkeletonFlags = DBusInterfaceSkeletonFlags(_cret)
+
+	return _dBusInterfaceSkeletonFlags
+}
+
+// Info gets D-Bus introspection information for the D-Bus interface
+// implemented by @interface_.
+func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GDBusInterfaceInfo // in
+
+	_cret = C.g_dbus_interface_skeleton_get_info(_arg0)
+
+	var _dBusInterfaceInfo *DBusInterfaceInfo // out
+
+	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
+
+	return _dBusInterfaceInfo
 }
 
 // ObjectPath gets the object path that @interface_ is exported on, if any.

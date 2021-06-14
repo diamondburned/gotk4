@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,6 +36,8 @@ type AspectFrame interface {
 	Buildable
 	ConstraintTarget
 
+	// Child gets the child widget of @self.
+	Child() Widget
 	// ObeyChild returns whether the child's size request should override the
 	// set aspect ratio of the `GtkAspectFrame`.
 	ObeyChild() bool
@@ -86,6 +89,48 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAspectFrame(obj), nil
+}
+
+// NewAspectFrame constructs a class AspectFrame.
+func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
+	var _arg1 C.float    // out
+	var _arg2 C.float    // out
+	var _arg3 C.float    // out
+	var _arg4 C.gboolean // out
+
+	_arg1 = C.float(xalign)
+	_arg2 = C.float(yalign)
+	_arg3 = C.float(ratio)
+	if obeyChild {
+		_arg4 = C.TRUE
+	}
+
+	var _cret C.GtkAspectFrame // in
+
+	_cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4)
+
+	var _aspectFrame AspectFrame // out
+
+	_aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AspectFrame)
+
+	return _aspectFrame
+}
+
+// Child gets the child widget of @self.
+func (s aspectFrame) Child() Widget {
+	var _arg0 *C.GtkAspectFrame // out
+
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_aspect_frame_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // ObeyChild returns whether the child's size request should override the

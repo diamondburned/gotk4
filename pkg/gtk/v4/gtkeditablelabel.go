@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -89,6 +90,24 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEditableLabel(obj), nil
+}
+
+// NewEditableLabel constructs a class EditableLabel.
+func NewEditableLabel(str string) EditableLabel {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkEditableLabel // in
+
+	_cret = C.gtk_editable_label_new(_arg1)
+
+	var _editableLabel EditableLabel // out
+
+	_editableLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EditableLabel)
+
+	return _editableLabel
 }
 
 // Editing returns whether the label is currently in “editing mode”.

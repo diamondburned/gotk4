@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -69,6 +70,19 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCellRendererToggle(obj), nil
+}
+
+// NewCellRendererToggle constructs a class CellRendererToggle.
+func NewCellRendererToggle() CellRendererToggle {
+	var _cret C.GtkCellRendererToggle // in
+
+	_cret = C.gtk_cell_renderer_toggle_new()
+
+	var _cellRendererToggle CellRendererToggle // out
+
+	_cellRendererToggle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererToggle)
+
+	return _cellRendererToggle
 }
 
 // Activatable returns whether the cell renderer is activatable. See

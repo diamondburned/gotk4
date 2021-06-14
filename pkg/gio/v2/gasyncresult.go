@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -34,8 +35,6 @@ func init() {
 // AsyncResultOverrider contains methods that are overridable. This
 // interface is a subset of the interface AsyncResult.
 type AsyncResultOverrider interface {
-	// SourceObject gets the source object from a Result.
-	SourceObject() gextras.Objector
 	// UserData gets the user data from a Result.
 	UserData() interface{}
 	// IsTagged checks if @res has the given @source_tag (generally a function
@@ -126,6 +125,16 @@ type AsyncResultOverrider interface {
 type AsyncResult interface {
 	gextras.Objector
 	AsyncResultOverrider
+
+	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
+	// g_simple_async_result_propagate_error(). Otherwise it returns false.
+	//
+	// This can be used for legacy error handling in async *_finish() wrapper
+	// functions that traditionally handled AsyncResult error returns themselves
+	// rather than calling into the virtual method. This should not be used in
+	// new code; Result errors that are set by virtual methods should also be
+	// extracted by virtual methods, to enable subclasses to chain up correctly.
+	LegacyPropagateError() error
 }
 
 // asyncResult implements the AsyncResult interface.
@@ -147,23 +156,6 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAsyncResult(obj), nil
-}
-
-// SourceObject gets the source object from a Result.
-func (r asyncResult) SourceObject() gextras.Objector {
-	var _arg0 *C.GAsyncResult // out
-
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GObject // in
-
-	_cret = C.g_async_result_get_source_object(_arg0)
-
-	var _object gextras.Objector // out
-
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
-
-	return _object
 }
 
 // UserData gets the user data from a Result.
@@ -203,4 +195,28 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 	}
 
 	return _ok
+}
+
+// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
+// g_simple_async_result_propagate_error(). Otherwise it returns false.
+//
+// This can be used for legacy error handling in async *_finish() wrapper
+// functions that traditionally handled AsyncResult error returns themselves
+// rather than calling into the virtual method. This should not be used in
+// new code; Result errors that are set by virtual methods should also be
+// extracted by virtual methods, to enable subclasses to chain up correctly.
+func (r asyncResult) LegacyPropagateError() error {
+	var _arg0 *C.GAsyncResult // out
+
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_async_result_legacy_propagate_error(_arg0, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

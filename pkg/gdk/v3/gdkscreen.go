@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,6 +34,22 @@ func init() {
 type Screen interface {
 	gextras.Objector
 
+	// ActiveWindow returns the screen’s currently active window.
+	//
+	// On X11, this is done by inspecting the _NET_ACTIVE_WINDOW property on the
+	// root window, as described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec). If there is no currently
+	// currently active window, or the window manager does not support the
+	// _NET_ACTIVE_WINDOW hint, this function returns nil.
+	//
+	// On other platforms, this function may return nil, depending on whether it
+	// is implementable on that platform.
+	//
+	// The returned window should be unrefed using g_object_unref() when no
+	// longer needed.
+	ActiveWindow() Window
+	// Display gets the display to which the @screen belongs.
+	Display() Display
 	// Height gets the height of @screen in pixels. The returned size is in
 	// ”application pixels”, not in ”device pixels” (see
 	// gdk_screen_get_monitor_scale_factor()).
@@ -113,11 +128,25 @@ type Screen interface {
 	// Resolution gets the resolution for font handling on the screen; see
 	// gdk_screen_set_resolution() for full details.
 	Resolution() float64
-	// Setting retrieves a desktop-wide setting such as double-click time for
-	// the Screen @screen.
+	// RGBAVisual gets a visual to use for creating windows with an alpha
+	// channel. The windowing system on which GTK+ is running may not support
+	// this capability, in which case nil will be returned. Even if a non-nil
+	// value is returned, its possible that the window’s alpha channel won’t be
+	// honored when displaying the window on the screen: in particular, for X an
+	// appropriate windowing manager and compositing manager must be running to
+	// provide appropriate display.
 	//
-	// FIXME needs a list of valid settings here, or a link to more information.
-	Setting(name string, value **externglib.Value) bool
+	// This functionality is not implemented in the Windows backend.
+	//
+	// For setting an overall opacity for a top-level window, see
+	// gdk_window_set_opacity().
+	RGBAVisual() Visual
+	// RootWindow gets the root window of @screen.
+	RootWindow() Window
+	// SystemVisual: get the system’s default visual for @screen. This is the
+	// visual for the root window of the display. The return value should not be
+	// freed.
+	SystemVisual() Visual
 	// Width gets the width of @screen in pixels. The returned size is in
 	// ”application pixels”, not in ”device pixels” (see
 	// gdk_screen_get_monitor_scale_factor()).
@@ -137,11 +166,6 @@ type Screen interface {
 	// MakeDisplayName determines the name to pass to gdk_display_open() to get
 	// a Display with this screen as the default screen.
 	MakeDisplayName() string
-	// SetFontOptions sets the default font options for the screen. These
-	// options will be set on any Context’s newly created with
-	// gdk_pango_context_get_for_screen(). Changing the default set of font
-	// options does not affect contexts that have already been created.
-	SetFontOptions(options *cairo.FontOptions)
 	// SetResolution sets the resolution for font handling on the screen. This
 	// is a scale factor between points specified in a FontDescription and cairo
 	// units. The default value is 96, meaning that a 10 point font will be 13
@@ -168,6 +192,52 @@ func marshalScreen(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapScreen(obj), nil
+}
+
+// ActiveWindow returns the screen’s currently active window.
+//
+// On X11, this is done by inspecting the _NET_ACTIVE_WINDOW property on the
+// root window, as described in the Extended Window Manager Hints
+// (http://www.freedesktop.org/Standards/wm-spec). If there is no currently
+// currently active window, or the window manager does not support the
+// _NET_ACTIVE_WINDOW hint, this function returns nil.
+//
+// On other platforms, this function may return nil, depending on whether it
+// is implementable on that platform.
+//
+// The returned window should be unrefed using g_object_unref() when no
+// longer needed.
+func (s screen) ActiveWindow() Window {
+	var _arg0 *C.GdkScreen // out
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_screen_get_active_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// Display gets the display to which the @screen belongs.
+func (s screen) Display() Display {
+	var _arg0 *C.GdkScreen // out
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_screen_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
 }
 
 // Height gets the height of @screen in pixels. The returned size is in
@@ -469,31 +539,68 @@ func (s screen) Resolution() float64 {
 	return _gdouble
 }
 
-// Setting retrieves a desktop-wide setting such as double-click time for
-// the Screen @screen.
+// RGBAVisual gets a visual to use for creating windows with an alpha
+// channel. The windowing system on which GTK+ is running may not support
+// this capability, in which case nil will be returned. Even if a non-nil
+// value is returned, its possible that the window’s alpha channel won’t be
+// honored when displaying the window on the screen: in particular, for X an
+// appropriate windowing manager and compositing manager must be running to
+// provide appropriate display.
 //
-// FIXME needs a list of valid settings here, or a link to more information.
-func (s screen) Setting(name string, value **externglib.Value) bool {
+// This functionality is not implemented in the Windows backend.
+//
+// For setting an overall opacity for a top-level window, see
+// gdk_window_set_opacity().
+func (s screen) RGBAVisual() Visual {
 	var _arg0 *C.GdkScreen // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GValue    // out
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(value.GValue)
 
-	var _cret C.gboolean // in
+	var _cret *C.GdkVisual // in
 
-	_cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
+	_cret = C.gdk_screen_get_rgba_visual(_arg0)
 
-	var _ok bool // out
+	var _visual Visual // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Visual)
 
-	return _ok
+	return _visual
+}
+
+// RootWindow gets the root window of @screen.
+func (s screen) RootWindow() Window {
+	var _arg0 *C.GdkScreen // out
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_screen_get_root_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// SystemVisual: get the system’s default visual for @screen. This is the
+// visual for the root window of the display. The return value should not be
+// freed.
+func (s screen) SystemVisual() Visual {
+	var _arg0 *C.GdkScreen // out
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkVisual // in
+
+	_cret = C.gdk_screen_get_system_visual(_arg0)
+
+	var _visual Visual // out
+
+	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Visual)
+
+	return _visual
 }
 
 // Width gets the width of @screen in pixels. The returned size is in
@@ -576,20 +683,6 @@ func (s screen) MakeDisplayName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// SetFontOptions sets the default font options for the screen. These
-// options will be set on any Context’s newly created with
-// gdk_pango_context_get_for_screen(). Changing the default set of font
-// options does not affect contexts that have already been created.
-func (s screen) SetFontOptions(options *cairo.FontOptions) {
-	var _arg0 *C.GdkScreen            // out
-	var _arg1 *C.cairo_font_options_t // out
-
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options.Native()))
-
-	C.gdk_screen_set_font_options(_arg0, _arg1)
 }
 
 // SetResolution sets the resolution for font handling on the screen. This

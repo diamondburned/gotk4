@@ -175,6 +175,24 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu **exte
 	return _ok
 }
 
+// SignalGetInvocationHint returns the invocation hint of the innermost signal
+// emission of instance.
+func SignalGetInvocationHint(instance gextras.Objector) *SignalInvocationHint {
+	var _arg1 C.gpointer // out
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
+
+	var _cret *C.GSignalInvocationHint // in
+
+	_cret = C.g_signal_get_invocation_hint(_arg1)
+
+	var _signalInvocationHint *SignalInvocationHint // out
+
+	_signalInvocationHint = WrapSignalInvocationHint(unsafe.Pointer(_cret))
+
+	return _signalInvocationHint
+}
+
 // SignalHandlerBlock blocks a handler of an instance so it will not be called
 // during any signal emissions unless it is unblocked again. Thus "blocking" a
 // signal handler means to temporarily deactivate it, a signal handler has to be
@@ -433,6 +451,13 @@ func (s *SignalInvocationHint) SignalID() uint {
 	return v
 }
 
+// RunType gets the field inside the struct.
+func (s *SignalInvocationHint) RunType() SignalFlags {
+	var v SignalFlags // out
+	v = SignalFlags(s.native.run_type)
+	return v
+}
+
 // SignalQuery: a structure holding in-depth information for a specific signal.
 // It is filled in by the g_signal_query() function.
 type SignalQuery struct {
@@ -472,6 +497,13 @@ func (s *SignalQuery) SignalName() string {
 func (s *SignalQuery) Itype() externglib.Type {
 	var v externglib.Type // out
 	v = externglib.Type(s.native.itype)
+	return v
+}
+
+// SignalFlags gets the field inside the struct.
+func (s *SignalQuery) SignalFlags() SignalFlags {
+	var v SignalFlags // out
+	v = SignalFlags(s.native.signal_flags)
 	return v
 }
 

@@ -127,6 +127,18 @@ func init() {
 // DeviceManager and should be preferred in newly written code.
 type DeviceManager interface {
 	gextras.Objector
+
+	// ClientPointer returns the client pointer, that is, the master pointer
+	// that acts as the core pointer for this application. In X11, window
+	// managers may change this depending on the interaction pattern under the
+	// presence of several pointers.
+	//
+	// You should use this function seldomly, only in code that isn’t triggered
+	// by a Event and there aren’t other means to get a meaningful Device to
+	// operate on.
+	ClientPointer() Device
+	// Display gets the Display associated to @device_manager.
+	Display() Display
 }
 
 // deviceManager implements the DeviceManager class.
@@ -148,4 +160,45 @@ func marshalDeviceManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDeviceManager(obj), nil
+}
+
+// ClientPointer returns the client pointer, that is, the master pointer
+// that acts as the core pointer for this application. In X11, window
+// managers may change this depending on the interaction pattern under the
+// presence of several pointers.
+//
+// You should use this function seldomly, only in code that isn’t triggered
+// by a Event and there aren’t other means to get a meaningful Device to
+// operate on.
+func (d deviceManager) ClientPointer() Device {
+	var _arg0 *C.GdkDeviceManager // out
+
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkDevice // in
+
+	_cret = C.gdk_device_manager_get_client_pointer(_arg0)
+
+	var _device Device // out
+
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
+
+	return _device
+}
+
+// Display gets the Display associated to @device_manager.
+func (d deviceManager) Display() Display {
+	var _arg0 *C.GdkDeviceManager // out
+
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_device_manager_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
 }

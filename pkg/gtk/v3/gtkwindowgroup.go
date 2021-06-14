@@ -42,6 +42,9 @@ type WindowGroup interface {
 
 	// AddWindow adds a window to a WindowGroup.
 	AddWindow(window Window)
+	// CurrentGrab gets the current grab widget of the given group, see
+	// gtk_grab_add().
+	CurrentGrab() Widget
 	// RemoveWindow removes a window from a WindowGroup.
 	RemoveWindow(window Window)
 }
@@ -67,6 +70,19 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 	return WrapWindowGroup(obj), nil
 }
 
+// NewWindowGroup constructs a class WindowGroup.
+func NewWindowGroup() WindowGroup {
+	var _cret C.GtkWindowGroup // in
+
+	_cret = C.gtk_window_group_new()
+
+	var _windowGroup WindowGroup // out
+
+	_windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(WindowGroup)
+
+	return _windowGroup
+}
+
 // AddWindow adds a window to a WindowGroup.
 func (w windowGroup) AddWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
@@ -76,6 +92,24 @@ func (w windowGroup) AddWindow(window Window) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
+}
+
+// CurrentGrab gets the current grab widget of the given group, see
+// gtk_grab_add().
+func (w windowGroup) CurrentGrab() Widget {
+	var _arg0 *C.GtkWindowGroup // out
+
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_window_group_get_current_grab(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // RemoveWindow removes a window from a WindowGroup.

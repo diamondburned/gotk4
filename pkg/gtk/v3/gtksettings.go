@@ -196,10 +196,3 @@ func (s *SettingsValue) Origin() string {
 	v = C.GoString(s.native.origin)
 	return v
 }
-
-// Value gets the field inside the struct.
-func (s *SettingsValue) Value() **externglib.Value {
-	var v **externglib.Value // out
-	v = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
-	return v
-}

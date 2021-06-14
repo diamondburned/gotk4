@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,6 +69,24 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapShortcutLabel(obj), nil
+}
+
+// NewShortcutLabel constructs a class ShortcutLabel.
+func NewShortcutLabel(accelerator string) ShortcutLabel {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(accelerator))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkShortcutLabel // in
+
+	_cret = C.gtk_shortcut_label_new(_arg1)
+
+	var _shortcutLabel ShortcutLabel // out
+
+	_shortcutLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutLabel)
+
+	return _shortcutLabel
 }
 
 // Accelerator retrieves the current accelerator of @self.

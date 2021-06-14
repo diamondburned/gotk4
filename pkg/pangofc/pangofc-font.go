@@ -5,7 +5,6 @@ package pangofc
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,7 +28,7 @@ func init() {
 // shutdown() along with the get_glyph_extents() virtual function from
 // `PangoFont`.
 type Font interface {
-	pango.Font
+	Font
 
 	// Glyph gets the glyph index for a given Unicode character for @font.
 	//
@@ -38,11 +37,6 @@ type Font interface {
 	Glyph(wc uint32) uint
 	// HasChar determines whether @font has a glyph for the codepoint @wc.
 	HasChar(wc uint32) bool
-	// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
-	// @glyphs according to kerning information in @font.
-	//
-	// Since 1.44, it does nothing.
-	KernGlyphs(glyphs *pango.GlyphString)
 	// UnlockFace releases a font previously obtained with
 	// [method@PangoFc.Font.lock_face].
 	UnlockFace()
@@ -50,7 +44,7 @@ type Font interface {
 
 // font implements the Font class.
 type font struct {
-	pango.Font
+	Font
 }
 
 var _ Font = (*font)(nil)
@@ -59,7 +53,7 @@ var _ Font = (*font)(nil)
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
 	return font{
-		pango.Font: pango.WrapFont(obj),
+		Font: WrapFont(obj),
 	}
 }
 
@@ -110,20 +104,6 @@ func (f font) HasChar(wc uint32) bool {
 	}
 
 	return _ok
-}
-
-// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
-// @glyphs according to kerning information in @font.
-//
-// Since 1.44, it does nothing.
-func (f font) KernGlyphs(glyphs *pango.GlyphString) {
-	var _arg0 *C.PangoFcFont      // out
-	var _arg1 *C.PangoGlyphString // out
-
-	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
-
-	C.pango_fc_font_kern_glyphs(_arg0, _arg1)
 }
 
 // UnlockFace releases a font previously obtained with

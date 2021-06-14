@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -88,6 +89,19 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSearchBar(obj), nil
+}
+
+// NewSearchBar constructs a class SearchBar.
+func NewSearchBar() SearchBar {
+	var _cret C.GtkSearchBar // in
+
+	_cret = C.gtk_search_bar_new()
+
+	var _searchBar SearchBar // out
+
+	_searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SearchBar)
+
+	return _searchBar
 }
 
 // ConnectEntry connects the Entry widget passed as the one to be used in

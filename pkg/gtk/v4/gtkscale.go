@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,6 +20,31 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_scale_get_type()), F: marshalScale},
 	})
+}
+
+type ScaleFormatValueFunc func(scale Scale, value float64) (utf8 string)
+
+//export gotk4_ScaleFormatValueFunc
+func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var scale Scale   // out
+	var value float64 // out
+
+	scale = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Scale)
+	value = (float64)(arg1)
+
+	fn := v.(ScaleFormatValueFunc)
+	utf8 := fn(scale, value)
+
+	var cret *C.char // out
+
+	cret = (*C.char)(C.CString(utf8))
+
+	return cret
 }
 
 // Scale: a `GtkScale` is a slider control used to select a numeric value.
@@ -123,6 +150,8 @@ type Scale interface {
 	// If the [property@GtkScale:draw-value] property is false, the return
 	// values are undefined.
 	LayoutOffsets() (x int, y int)
+	// ValuePos gets the position in which the current value is displayed.
+	ValuePos() PositionType
 	// SetDigits sets the number of decimal places that are displayed in the
 	// value.
 	//
@@ -177,6 +206,48 @@ func marshalScale(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapScale(obj), nil
+}
+
+// NewScale constructs a class Scale.
+func NewScale(orientation Orientation, adjustment Adjustment) Scale {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 *C.GtkAdjustment // out
+
+	_arg1 = (C.GtkOrientation)(orientation)
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+
+	var _cret C.GtkScale // in
+
+	_cret = C.gtk_scale_new(_arg1, _arg2)
+
+	var _scale Scale // out
+
+	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scale)
+
+	return _scale
+}
+
+// NewScaleWithRange constructs a class Scale.
+func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) Scale {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 C.double         // out
+	var _arg3 C.double         // out
+	var _arg4 C.double         // out
+
+	_arg1 = (C.GtkOrientation)(orientation)
+	_arg2 = C.double(min)
+	_arg3 = C.double(max)
+	_arg4 = C.double(step)
+
+	var _cret C.GtkScale // in
+
+	_cret = C.gtk_scale_new_with_range(_arg1, _arg2, _arg3, _arg4)
+
+	var _scale Scale // out
+
+	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scale)
+
+	return _scale
 }
 
 // AddMark adds a mark at @value.
@@ -293,6 +364,23 @@ func (s scale) LayoutOffsets() (x int, y int) {
 	_y = (int)(_arg2)
 
 	return _x, _y
+}
+
+// ValuePos gets the position in which the current value is displayed.
+func (s scale) ValuePos() PositionType {
+	var _arg0 *C.GtkScale // out
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkPositionType // in
+
+	_cret = C.gtk_scale_get_value_pos(_arg0)
+
+	var _positionType PositionType // out
+
+	_positionType = PositionType(_cret)
+
+	return _positionType
 }
 
 // SetDigits sets the number of decimal places that are displayed in the

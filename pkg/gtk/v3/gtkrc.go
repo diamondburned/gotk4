@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -209,31 +207,6 @@ func RCFindModuleInPath(moduleFile string) string {
 	return _filename
 }
 
-// RCFindPixmapInPath looks up a file in pixmap path for the specified Settings.
-// If the file is not found, it outputs a warning message using g_warning() and
-// returns nil.
-func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) string {
-	var _arg1 *C.GtkSettings // out
-	var _arg2 *C.GScanner    // out
-	var _arg3 *C.gchar       // out
-
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
-	_arg3 = (*C.gchar)(C.CString(pixmapFile))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret *C.gchar // in
-
-	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
-
-	var _filename string // out
-
-	_filename = C.GoString(_cret)
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _filename
-}
-
 // RCGetDefaultFiles retrieves the current list of RC files that will be parsed
 // at the end of gtk_init().
 func RCGetDefaultFiles() []string {
@@ -311,6 +284,63 @@ func RCGetModuleDir() string {
 	return _filename
 }
 
+// RCGetStyle finds all matching RC styles for a given widget, composites them
+// together, and then creates a Style representing the composite appearance.
+// (GTK+ actually keeps a cache of previously created styles, so a new style may
+// not be created.)
+func RCGetStyle(widget Widget) Style {
+	var _arg1 *C.GtkWidget // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	var _cret *C.GtkStyle // in
+
+	_cret = C.gtk_rc_get_style(_arg1)
+
+	var _style Style // out
+
+	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Style)
+
+	return _style
+}
+
+// RCGetStyleByPaths creates up a Style from styles defined in a RC file by
+// providing the raw components used in matching. This function may be useful
+// when creating pseudo-widgets that should be themed like widgets but don’t
+// actually have corresponding GTK+ widgets. An example of this would be items
+// inside a GNOME canvas widget.
+//
+// The action of gtk_rc_get_style() is similar to:
+//
+//    gtk_widget_path (widget, NULL, &path, NULL);
+//    gtk_widget_class_path (widget, NULL, &class_path, NULL);
+//    gtk_rc_get_style_by_paths (gtk_widget_get_settings (widget),
+//                               path, class_path,
+//                               G_OBJECT_TYPE (widget));
+func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, typ externglib.Type) Style {
+	var _arg1 *C.GtkSettings // out
+	var _arg2 *C.char        // out
+	var _arg3 *C.char        // out
+	var _arg4 C.GType        // out
+
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg2 = (*C.char)(C.CString(widgetPath))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.char)(C.CString(classPath))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.GType(typ)
+
+	var _cret *C.GtkStyle // in
+
+	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)
+
+	var _style Style // out
+
+	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Style)
+
+	return _style
+}
+
 // RCGetThemeDir returns the standard directory in which themes should be
 // installed. (GTK+ does not actually use this directory itself.)
 func RCGetThemeDir() string {
@@ -334,69 +364,6 @@ func RCParse(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse(_arg1)
-}
-
-// RCParseColor parses a color in the format expected in a RC file.
-//
-// Note that theme engines should use gtk_rc_parse_color_full() in order to
-// support symbolic colors.
-func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
-	var _arg1 *C.GScanner // out
-
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
-
-	var _color gdk.Color
-	var _cret C.guint // in
-
-	_cret = C.gtk_rc_parse_color(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
-
-	var _guint uint // out
-
-	_guint = (uint)(_cret)
-
-	return _color, _guint
-}
-
-// RCParseColorFull parses a color in the format expected in a RC file. If
-// @style is not nil, it will be consulted to resolve references to symbolic
-// colors.
-func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
-	var _arg1 *C.GScanner   // out
-	var _arg2 *C.GtkRcStyle // out
-
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
-	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
-
-	var _color gdk.Color
-	var _cret C.guint // in
-
-	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, (*C.GdkColor)(unsafe.Pointer(&_color)))
-
-	var _guint uint // out
-
-	_guint = (uint)(_cret)
-
-	return _color, _guint
-}
-
-// RCParsePriority parses a PathPriorityType variable from the format expected
-// in a RC file.
-func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
-	var _arg1 *C.GScanner            // out
-	var _arg2 *C.GtkPathPriorityType // out
-
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
-	_arg2 = (*C.GtkPathPriorityType)(priority)
-
-	var _cret C.guint // in
-
-	_cret = C.gtk_rc_parse_priority(_arg1, _arg2)
-
-	var _guint uint // out
-
-	_guint = (uint)(_cret)
-
-	return _guint
 }
 
 // RCParseString parses resource information directly from a string.
@@ -491,6 +458,10 @@ func RCSetDefaultFiles(filenames []string) {
 // RcStyle-struct<!-- -->s to form a Style.
 type RCStyle interface {
 	gextras.Objector
+
+	// Copy makes a copy of the specified RcStyle. This function will correctly
+	// copy an RC style that is a member of a class derived from RcStyle.
+	Copy() RCStyle
 }
 
 // rcStyle implements the RCStyle class.
@@ -512,6 +483,37 @@ func marshalRCStyle(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRCStyle(obj), nil
+}
+
+// NewRCStyle constructs a class RCStyle.
+func NewRCStyle() RCStyle {
+	var _cret C.GtkRcStyle // in
+
+	_cret = C.gtk_rc_style_new()
+
+	var _rcStyle RCStyle // out
+
+	_rcStyle = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RCStyle)
+
+	return _rcStyle
+}
+
+// Copy makes a copy of the specified RcStyle. This function will correctly
+// copy an RC style that is a member of a class derived from RcStyle.
+func (o rcStyle) Copy() RCStyle {
+	var _arg0 *C.GtkRcStyle // out
+
+	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(o.Native()))
+
+	var _cret *C.GtkRcStyle // in
+
+	_cret = C.gtk_rc_style_copy(_arg0)
+
+	var _rcStyle RCStyle // out
+
+	_rcStyle = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RCStyle)
+
+	return _rcStyle
 }
 
 type RCContext struct {
@@ -557,12 +559,5 @@ func (r *RCProperty) Native() unsafe.Pointer {
 func (r *RCProperty) Origin() string {
 	var v string // out
 	v = C.GoString(r.native.origin)
-	return v
-}
-
-// Value gets the field inside the struct.
-func (r *RCProperty) Value() **externglib.Value {
-	var v **externglib.Value // out
-	v = externglib.ValueFromNative(unsafe.Pointer(r.native.value))
 	return v
 }

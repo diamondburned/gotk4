@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -101,6 +102,37 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontButton(obj), nil
+}
+
+// NewFontButton constructs a class FontButton.
+func NewFontButton() FontButton {
+	var _cret C.GtkFontButton // in
+
+	_cret = C.gtk_font_button_new()
+
+	var _fontButton FontButton // out
+
+	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontButton)
+
+	return _fontButton
+}
+
+// NewFontButtonWithFont constructs a class FontButton.
+func NewFontButtonWithFont(fontname string) FontButton {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(fontname))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkFontButton // in
+
+	_cret = C.gtk_font_button_new_with_font(_arg1)
+
+	var _fontButton FontButton // out
+
+	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontButton)
+
+	return _fontButton
 }
 
 // FontName retrieves the name of the currently selected font. This name

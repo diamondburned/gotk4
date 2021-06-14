@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,6 +64,8 @@ type Box interface {
 
 	// Append adds @child as the last child to @box.
 	Append(child Widget)
+	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
+	BaselinePosition() BaselinePosition
 	// Homogeneous returns whether the box is homogeneous (all children are the
 	// same size).
 	Homogeneous() bool
@@ -128,6 +131,25 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return WrapBox(obj), nil
 }
 
+// NewBox constructs a class Box.
+func NewBox(orientation Orientation, spacing int) Box {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 C.int            // out
+
+	_arg1 = (C.GtkOrientation)(orientation)
+	_arg2 = C.int(spacing)
+
+	var _cret C.GtkBox // in
+
+	_cret = C.gtk_box_new(_arg1, _arg2)
+
+	var _box Box // out
+
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
+
+	return _box
+}
+
 // Append adds @child as the last child to @box.
 func (b box) Append(child Widget) {
 	var _arg0 *C.GtkBox    // out
@@ -137,6 +159,23 @@ func (b box) Append(child Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_append(_arg0, _arg1)
+}
+
+// BaselinePosition gets the value set by gtk_box_set_baseline_position().
+func (b box) BaselinePosition() BaselinePosition {
+	var _arg0 *C.GtkBox // out
+
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+
+	var _cret C.GtkBaselinePosition // in
+
+	_cret = C.gtk_box_get_baseline_position(_arg0)
+
+	var _baselinePosition BaselinePosition // out
+
+	_baselinePosition = BaselinePosition(_cret)
+
+	return _baselinePosition
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the

@@ -265,7 +265,7 @@ func (ng *NamespaceGenerator) generateCallbacks() {
 		if !callback.IsIntrospectable() {
 			continue
 		}
-		if ng.mustIgnore(callback.Name, callback.CIdentifier) {
+		if ng.mustIgnore(&callback.Name, &callback.CIdentifier) {
 			continue
 		}
 		if !cg.Use(callback) {

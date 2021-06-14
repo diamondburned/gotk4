@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -348,44 +347,20 @@ type Settings interface {
 	// g_settings_delay(). In the normal case settings are always applied
 	// immediately.
 	Apply()
-	// Bind: create a binding between the @key in the @settings object and the
-	// property @property of @object.
+	// CreateAction creates a #GAction corresponding to a given #GSettings key.
 	//
-	// The binding uses the default GIO mapping functions to map between the
-	// settings and property values. These functions handle booleans, numeric
-	// types and string types in a straightforward way. Use
-	// g_settings_bind_with_mapping() if you need a custom mapping, or map
-	// between types that are not supported by the default mapping functions.
+	// The action has the same name as the key.
 	//
-	// Unless the @flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function
-	// also establishes a binding between the writability of @key and the
-	// "sensitive" property of @object (if @object has a boolean property by
-	// that name). See g_settings_bind_writable() for more details about
-	// writable bindings.
+	// The value of the key becomes the state of the action and the action is
+	// enabled when the key is writable. Changing the state of the action
+	// results in the key being written to. Changes to the value or writability
+	// of the key cause appropriate change notifications to be emitted for the
+	// action.
 	//
-	// Note that the lifecycle of the binding is tied to @object, and that you
-	// can have only one binding per object property. If you bind the same
-	// property twice on the same object, the second binding overrides the first
-	// one.
-	Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags)
-	// BindWritable: create a binding between the writability of @key in the
-	// @settings object and the property @property of @object. The property must
-	// be boolean; "sensitive" or "visible" properties of widgets are the most
-	// likely candidates.
-	//
-	// Writable bindings are always uni-directional; changes of the writability
-	// of the setting will be propagated to the object property, not the other
-	// way.
-	//
-	// When the @inverted argument is true, the binding inverts the value as it
-	// passes from the setting to the object, i.e. @property will be set to true
-	// if the key is not writable.
-	//
-	// Note that the lifecycle of the binding is tied to @object, and that you
-	// can have only one binding per object property. If you bind the same
-	// property twice on the same object, the second binding overrides the first
-	// one.
-	BindWritable(key string, object gextras.Objector, property string, inverted bool)
+	// For boolean-valued keys, action activations take no parameter and result
+	// in the toggling of the value. For all other types, activations take the
+	// new value for the key (which must have the correct type).
+	CreateAction(key string) Action
 	// Delay changes the #GSettings object into 'delay-apply' mode. In this
 	// mode, changes to @settings are not immediately propagated to the backend,
 	// but kept locally until g_settings_apply() is called.
@@ -397,6 +372,12 @@ type Settings interface {
 	// It is a programmer error to give a @key that isn't specified as having a
 	// boolean type in the schema for @settings.
 	Boolean(key string) bool
+	// Child creates a child settings object which has a base path of
+	// `base-path/@name`, where `base-path` is the base path of @settings.
+	//
+	// The schema for the child settings object must have been declared in the
+	// schema of @settings using a <child> element.
+	Child(name string) Settings
 	// Double gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for doubles.
@@ -494,9 +475,6 @@ type Settings interface {
 	// You should free the return value with g_strfreev() when you are done with
 	// it.
 	ListKeys() []string
-	// RangeCheck checks if the given @value is of the correct type and within
-	// the permitted range for @key.
-	RangeCheck(key string, value *glib.Variant) bool
 	// Reset resets @key to its default value.
 	//
 	// This call resets the key, as much as possible, to its default value. That
@@ -589,14 +567,6 @@ type Settings interface {
 	// It is a programmer error to give a @key that isn't specified as having a
 	// uint64 type in the schema for @settings.
 	SetUint64(key string, value uint64) bool
-	// SetValue sets @key in @settings to @value.
-	//
-	// It is a programmer error to give a @key that isn't contained in the
-	// schema for @settings or for @value to have the incorrect type, per the
-	// schema.
-	//
-	// If @value is floating then this function consumes the reference.
-	SetValue(key string, value *glib.Variant) bool
 }
 
 // settings implements the Settings class.
@@ -620,6 +590,110 @@ func marshalSettings(p uintptr) (interface{}, error) {
 	return WrapSettings(obj), nil
 }
 
+// NewSettings constructs a class Settings.
+func NewSettings(schemaId string) Settings {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(schemaId))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GSettings // in
+
+	_cret = C.g_settings_new(_arg1)
+
+	var _settings Settings // out
+
+	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+
+	return _settings
+}
+
+// NewSettingsFull constructs a class Settings.
+func NewSettingsFull(schema *SettingsSchema, backend SettingsBackend, path string) Settings {
+	var _arg1 *C.GSettingsSchema  // out
+	var _arg2 *C.GSettingsBackend // out
+	var _arg3 *C.gchar            // out
+
+	_arg1 = (*C.GSettingsSchema)(unsafe.Pointer(schema.Native()))
+	_arg2 = (*C.GSettingsBackend)(unsafe.Pointer(backend.Native()))
+	_arg3 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	var _cret C.GSettings // in
+
+	_cret = C.g_settings_new_full(_arg1, _arg2, _arg3)
+
+	var _settings Settings // out
+
+	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+
+	return _settings
+}
+
+// NewSettingsWithBackend constructs a class Settings.
+func NewSettingsWithBackend(schemaId string, backend SettingsBackend) Settings {
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.GSettingsBackend // out
+
+	_arg1 = (*C.gchar)(C.CString(schemaId))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GSettingsBackend)(unsafe.Pointer(backend.Native()))
+
+	var _cret C.GSettings // in
+
+	_cret = C.g_settings_new_with_backend(_arg1, _arg2)
+
+	var _settings Settings // out
+
+	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+
+	return _settings
+}
+
+// NewSettingsWithBackendAndPath constructs a class Settings.
+func NewSettingsWithBackendAndPath(schemaId string, backend SettingsBackend, path string) Settings {
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.GSettingsBackend // out
+	var _arg3 *C.gchar            // out
+
+	_arg1 = (*C.gchar)(C.CString(schemaId))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GSettingsBackend)(unsafe.Pointer(backend.Native()))
+	_arg3 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	var _cret C.GSettings // in
+
+	_cret = C.g_settings_new_with_backend_and_path(_arg1, _arg2, _arg3)
+
+	var _settings Settings // out
+
+	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+
+	return _settings
+}
+
+// NewSettingsWithPath constructs a class Settings.
+func NewSettingsWithPath(schemaId string, path string) Settings {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(schemaId))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GSettings // in
+
+	_cret = C.g_settings_new_with_path(_arg1, _arg2)
+
+	var _settings Settings // out
+
+	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+
+	return _settings
+}
+
 // Apply applies any changes that have been made to the settings. This
 // function does nothing unless @settings is in 'delay-apply' mode; see
 // g_settings_delay(). In the normal case settings are always applied
@@ -632,78 +706,36 @@ func (s settings) Apply() {
 	C.g_settings_apply(_arg0)
 }
 
-// Bind: create a binding between the @key in the @settings object and the
-// property @property of @object.
+// CreateAction creates a #GAction corresponding to a given #GSettings key.
 //
-// The binding uses the default GIO mapping functions to map between the
-// settings and property values. These functions handle booleans, numeric
-// types and string types in a straightforward way. Use
-// g_settings_bind_with_mapping() if you need a custom mapping, or map
-// between types that are not supported by the default mapping functions.
+// The action has the same name as the key.
 //
-// Unless the @flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function
-// also establishes a binding between the writability of @key and the
-// "sensitive" property of @object (if @object has a boolean property by
-// that name). See g_settings_bind_writable() for more details about
-// writable bindings.
+// The value of the key becomes the state of the action and the action is
+// enabled when the key is writable. Changing the state of the action
+// results in the key being written to. Changes to the value or writability
+// of the key cause appropriate change notifications to be emitted for the
+// action.
 //
-// Note that the lifecycle of the binding is tied to @object, and that you
-// can have only one binding per object property. If you bind the same
-// property twice on the same object, the second binding overrides the first
-// one.
-func (s settings) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
-	var _arg0 *C.GSettings         // out
-	var _arg1 *C.gchar             // out
-	var _arg2 C.gpointer           // out
-	var _arg3 *C.gchar             // out
-	var _arg4 C.GSettingsBindFlags // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg3 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.GSettingsBindFlags)(flags)
-
-	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// BindWritable: create a binding between the writability of @key in the
-// @settings object and the property @property of @object. The property must
-// be boolean; "sensitive" or "visible" properties of widgets are the most
-// likely candidates.
-//
-// Writable bindings are always uni-directional; changes of the writability
-// of the setting will be propagated to the object property, not the other
-// way.
-//
-// When the @inverted argument is true, the binding inverts the value as it
-// passes from the setting to the object, i.e. @property will be set to true
-// if the key is not writable.
-//
-// Note that the lifecycle of the binding is tied to @object, and that you
-// can have only one binding per object property. If you bind the same
-// property twice on the same object, the second binding overrides the first
-// one.
-func (s settings) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
+// For boolean-valued keys, action activations take no parameter and result
+// in the toggling of the value. For all other types, activations take the
+// new value for the key (which must have the correct type).
+func (s settings) CreateAction(key string) Action {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
-	var _arg2 C.gpointer   // out
-	var _arg3 *C.gchar     // out
-	var _arg4 C.gboolean   // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg3 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(_arg3))
-	if inverted {
-		_arg4 = C.TRUE
-	}
 
-	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
+	var _cret *C.GAction // in
+
+	_cret = C.g_settings_create_action(_arg0, _arg1)
+
+	var _action Action // out
+
+	_action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Action)
+
+	return _action
 }
 
 // Delay changes the #GSettings object into 'delay-apply' mode. In this
@@ -742,6 +774,30 @@ func (s settings) Boolean(key string) bool {
 	}
 
 	return _ok
+}
+
+// Child creates a child settings object which has a base path of
+// `base-path/@name`, where `base-path` is the base path of @settings.
+//
+// The schema for the child settings object must have been declared in the
+// schema of @settings using a <child> element.
+func (s settings) Child(name string) Settings {
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GSettings // in
+
+	_cret = C.g_settings_get_child(_arg0, _arg1)
+
+	var _ret Settings // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+
+	return _ret
 }
 
 // Double gets the value that is stored at @key in @settings.
@@ -1116,31 +1172,6 @@ func (s settings) ListKeys() []string {
 	return _utf8s
 }
 
-// RangeCheck checks if the given @value is of the correct type and within
-// the permitted range for @key.
-func (s settings) RangeCheck(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GVariant  // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Reset resets @key to its default value.
 //
 // This call resets the key, as much as possible, to its default value. That
@@ -1472,36 +1503,6 @@ func (s settings) SetUint64(key string, value uint64) bool {
 	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetValue sets @key in @settings to @value.
-//
-// It is a programmer error to give a @key that isn't contained in the
-// schema for @settings or for @value to have the incorrect type, per the
-// schema.
-//
-// If @value is floating then this function consumes the reference.
-func (s settings) SetValue(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GVariant  // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
 
 	var _ok bool // out
 

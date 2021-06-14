@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,8 +43,9 @@ func init() {
 // with an infinitely growing widget.
 type WidgetPaintable interface {
 	gextras.Objector
-	gdk.Paintable
 
+	// Widget returns the widget that is observed or nil if none.
+	Widget() Widget
 	// SetWidget sets the widget that should be observed.
 	SetWidget(widget Widget)
 }
@@ -53,7 +53,6 @@ type WidgetPaintable interface {
 // widgetPaintable implements the WidgetPaintable class.
 type widgetPaintable struct {
 	gextras.Objector
-	gdk.Paintable
 }
 
 var _ WidgetPaintable = (*widgetPaintable)(nil)
@@ -62,8 +61,7 @@ var _ WidgetPaintable = (*widgetPaintable)(nil)
 // primarily used internally.
 func WrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
 	return widgetPaintable{
-		Objector:      obj,
-		gdk.Paintable: gdk.WrapPaintable(obj),
+		Objector: obj,
 	}
 }
 
@@ -71,6 +69,40 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapWidgetPaintable(obj), nil
+}
+
+// NewWidgetPaintable constructs a class WidgetPaintable.
+func NewWidgetPaintable(widget Widget) WidgetPaintable {
+	var _arg1 *C.GtkWidget // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	var _cret C.GtkWidgetPaintable // in
+
+	_cret = C.gtk_widget_paintable_new(_arg1)
+
+	var _widgetPaintable WidgetPaintable // out
+
+	_widgetPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(WidgetPaintable)
+
+	return _widgetPaintable
+}
+
+// Widget returns the widget that is observed or nil if none.
+func (s widgetPaintable) Widget() Widget {
+	var _arg0 *C.GtkWidgetPaintable // out
+
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_widget_paintable_get_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // SetWidget sets the widget that should be observed.

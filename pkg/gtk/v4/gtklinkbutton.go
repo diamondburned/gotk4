@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -101,6 +102,45 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapLinkButton(obj), nil
+}
+
+// NewLinkButton constructs a class LinkButton.
+func NewLinkButton(uri string) LinkButton {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkLinkButton // in
+
+	_cret = C.gtk_link_button_new(_arg1)
+
+	var _linkButton LinkButton // out
+
+	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LinkButton)
+
+	return _linkButton
+}
+
+// NewLinkButtonWithLabel constructs a class LinkButton.
+func NewLinkButtonWithLabel(uri string, label string) LinkButton {
+	var _arg1 *C.char // out
+	var _arg2 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GtkLinkButton // in
+
+	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
+
+	var _linkButton LinkButton // out
+
+	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LinkButton)
+
+	return _linkButton
 }
 
 // URI retrieves the URI of the `GtkLinkButton`.

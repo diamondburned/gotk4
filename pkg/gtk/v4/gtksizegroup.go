@@ -93,6 +93,8 @@ type SizeGroup interface {
 	// When the widget is destroyed or no longer referenced elsewhere, it will
 	// be removed from the size group.
 	AddWidget(widget Widget)
+	// Mode gets the current mode of the size group.
+	Mode() SizeGroupMode
 	// RemoveWidget removes a widget from a `GtkSizeGroup`.
 	RemoveWidget(widget Widget)
 	// SetMode sets the `GtkSizeGroupMode` of the size group.
@@ -128,6 +130,23 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return WrapSizeGroup(obj), nil
 }
 
+// NewSizeGroup constructs a class SizeGroup.
+func NewSizeGroup(mode SizeGroupMode) SizeGroup {
+	var _arg1 C.GtkSizeGroupMode // out
+
+	_arg1 = (C.GtkSizeGroupMode)(mode)
+
+	var _cret C.GtkSizeGroup // in
+
+	_cret = C.gtk_size_group_new(_arg1)
+
+	var _sizeGroup SizeGroup // out
+
+	_sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SizeGroup)
+
+	return _sizeGroup
+}
+
 // AddWidget adds a widget to a `GtkSizeGroup`.
 //
 // In the future, the requisition of the widget will be determined as the
@@ -146,6 +165,23 @@ func (s sizeGroup) AddWidget(widget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_add_widget(_arg0, _arg1)
+}
+
+// Mode gets the current mode of the size group.
+func (s sizeGroup) Mode() SizeGroupMode {
+	var _arg0 *C.GtkSizeGroup // out
+
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkSizeGroupMode // in
+
+	_cret = C.gtk_size_group_get_mode(_arg0)
+
+	var _sizeGroupMode SizeGroupMode // out
+
+	_sizeGroupMode = SizeGroupMode(_cret)
+
+	return _sizeGroupMode
 }
 
 // RemoveWidget removes a widget from a `GtkSizeGroup`.

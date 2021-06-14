@@ -36,6 +36,9 @@ type FileIcon interface {
 	gextras.Objector
 	Icon
 	LoadableIcon
+
+	// File gets the #GFile associated with the given @icon.
+	File() File
 }
 
 // fileIcon implements the FileIcon class.
@@ -61,4 +64,38 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFileIcon(obj), nil
+}
+
+// NewFileIcon constructs a class FileIcon.
+func NewFileIcon(file File) FileIcon {
+	var _arg1 *C.GFile // out
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cret C.GFileIcon // in
+
+	_cret = C.g_file_icon_new(_arg1)
+
+	var _fileIcon FileIcon // out
+
+	_fileIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIcon)
+
+	return _fileIcon
+}
+
+// File gets the #GFile associated with the given @icon.
+func (i fileIcon) File() File {
+	var _arg0 *C.GFileIcon // out
+
+	_arg0 = (*C.GFileIcon)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_file_icon_get_file(_arg0)
+
+	var _file File // out
+
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _file
 }

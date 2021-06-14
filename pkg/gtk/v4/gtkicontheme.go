@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,7 +63,6 @@ func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 // `GtkIconPaintable` implements `GdkPaintable`.
 type IconPaintable interface {
 	gextras.Objector
-	gdk.Paintable
 
 	// IconName: get the icon name being used for this icon.
 	//
@@ -89,7 +86,6 @@ type IconPaintable interface {
 // iconPaintable implements the IconPaintable class.
 type iconPaintable struct {
 	gextras.Objector
-	gdk.Paintable
 }
 
 var _ IconPaintable = (*iconPaintable)(nil)
@@ -98,8 +94,7 @@ var _ IconPaintable = (*iconPaintable)(nil)
 // primarily used internally.
 func WrapIconPaintable(obj *externglib.Object) IconPaintable {
 	return iconPaintable{
-		Objector:      obj,
-		gdk.Paintable: gdk.WrapPaintable(obj),
+		Objector: obj,
 	}
 }
 
@@ -218,12 +213,26 @@ type IconTheme interface {
 	//
 	// Returns (transfer full): the current icon theme name,
 	ThemeName() string
-	// HasGIcon checks whether an icon theme includes an icon for a particular
-	// `GIcon`.
-	HasGIcon(gicon gio.Icon) bool
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
+	// LookupIcon looks up a named icon for a desired size and window scale,
+	// returning a `GtkIconPaintable`.
+	//
+	// The icon can then be rendered by using it as a `GdkPaintable`, or you can
+	// get information such as the filename and size.
+	//
+	// If the available @icon_name is not available and @fallbacks are provided,
+	// they will be tried in order.
+	//
+	// If no matching icon is found, then a paintable that renders the "missing
+	// icon" icon is returned. If you need to do something else for missing
+	// icons you need to use [method@Gtk.IconTheme.has_icon].
+	//
+	// Note that you probably want to listen for icon theme changes and update
+	// the icon. This is usually done by overriding the
+	// GtkWidgetClass.css-changed() function.
+	LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
 	// SetResourcePath sets the resource paths that will be looked at when
 	// looking for icons, similar to search paths.
 	//
@@ -278,6 +287,19 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapIconTheme(obj), nil
+}
+
+// NewIconTheme constructs a class IconTheme.
+func NewIconTheme() IconTheme {
+	var _cret C.GtkIconTheme // in
+
+	_cret = C.gtk_icon_theme_new()
+
+	var _iconTheme IconTheme // out
+
+	_iconTheme = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconTheme)
+
+	return _iconTheme
 }
 
 // AddResourcePath adds a resource path that will be looked at when looking
@@ -470,28 +492,6 @@ func (s iconTheme) ThemeName() string {
 	return _utf8
 }
 
-// HasGIcon checks whether an icon theme includes an icon for a particular
-// `GIcon`.
-func (s iconTheme) HasGIcon(gicon gio.Icon) bool {
-	var _arg0 *C.GtkIconTheme // out
-	var _arg1 *C.GIcon        // out
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // HasIcon checks whether an icon theme includes an icon for a particular
 // name.
 func (s iconTheme) HasIcon(iconName string) bool {
@@ -513,6 +513,60 @@ func (s iconTheme) HasIcon(iconName string) bool {
 	}
 
 	return _ok
+}
+
+// LookupIcon looks up a named icon for a desired size and window scale,
+// returning a `GtkIconPaintable`.
+//
+// The icon can then be rendered by using it as a `GdkPaintable`, or you can
+// get information such as the filename and size.
+//
+// If the available @icon_name is not available and @fallbacks are provided,
+// they will be tried in order.
+//
+// If no matching icon is found, then a paintable that renders the "missing
+// icon" icon is returned. If you need to do something else for missing
+// icons you need to use [method@Gtk.IconTheme.has_icon].
+//
+// Note that you probably want to listen for icon theme changes and update
+// the icon. This is usually done by overriding the
+// GtkWidgetClass.css-changed() function.
+func (s iconTheme) LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+	var _arg2 **C.char
+	var _arg3 C.int                // out
+	var _arg4 C.int                // out
+	var _arg5 C.GtkTextDirection   // out
+	var _arg6 C.GtkIconLookupFlags // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(iconName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.char)(C.malloc(C.ulong((len(fallbacks) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	{
+		out := unsafe.Slice(_arg2, len(fallbacks))
+		for i := range fallbacks {
+			out[i] = (*C.char)(C.CString(fallbacks[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg3 = C.int(size)
+	_arg4 = C.int(scale)
+	_arg5 = (C.GtkTextDirection)(direction)
+	_arg6 = (C.GtkIconLookupFlags)(flags)
+
+	var _cret *C.GtkIconPaintable // in
+
+	_cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _iconPaintable IconPaintable // out
+
+	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
+
+	return _iconPaintable
 }
 
 // SetResourcePath sets the resource paths that will be looked at when

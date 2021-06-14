@@ -78,6 +78,19 @@ func marshalSocketListener(p uintptr) (interface{}, error) {
 	return WrapSocketListener(obj), nil
 }
 
+// NewSocketListener constructs a class SocketListener.
+func NewSocketListener() SocketListener {
+	var _cret C.GSocketListener // in
+
+	_cret = C.g_socket_listener_new()
+
+	var _socketListener SocketListener // out
+
+	_socketListener = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketListener)
+
+	return _socketListener
+}
+
 // Close closes all the sockets in the listener.
 func (l socketListener) Close() {
 	var _arg0 *C.GSocketListener // out

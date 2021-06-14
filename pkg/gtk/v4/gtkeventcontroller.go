@@ -42,6 +42,13 @@ type EventController interface {
 	CurrentEventTime() uint32
 	// Name gets the name of @controller.
 	Name() string
+	// PropagationLimit gets the propagation limit of the event controller.
+	PropagationLimit() PropagationLimit
+	// PropagationPhase gets the propagation phase at which @controller handles
+	// events.
+	PropagationPhase() PropagationPhase
+	// Widget returns the Widget this controller relates to.
+	Widget() Widget
 	// Reset resets the @controller to a clean state.
 	Reset()
 	// SetName sets a name on the controller that can be used for debugging.
@@ -115,6 +122,58 @@ func (c eventController) Name() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// PropagationLimit gets the propagation limit of the event controller.
+func (c eventController) PropagationLimit() PropagationLimit {
+	var _arg0 *C.GtkEventController // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkPropagationLimit // in
+
+	_cret = C.gtk_event_controller_get_propagation_limit(_arg0)
+
+	var _propagationLimit PropagationLimit // out
+
+	_propagationLimit = PropagationLimit(_cret)
+
+	return _propagationLimit
+}
+
+// PropagationPhase gets the propagation phase at which @controller handles
+// events.
+func (c eventController) PropagationPhase() PropagationPhase {
+	var _arg0 *C.GtkEventController // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkPropagationPhase // in
+
+	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
+
+	var _propagationPhase PropagationPhase // out
+
+	_propagationPhase = PropagationPhase(_cret)
+
+	return _propagationPhase
+}
+
+// Widget returns the Widget this controller relates to.
+func (c eventController) Widget() Widget {
+	var _arg0 *C.GtkEventController // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_event_controller_get_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Reset resets the @controller to a clean state.

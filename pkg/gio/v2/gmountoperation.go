@@ -69,6 +69,8 @@ type MountOperation interface {
 	IsTcryptSystemVolume() bool
 	// Password gets a password from the mount operation.
 	Password() string
+	// PasswordSave gets the state of saving passwords for the mount operation.
+	PasswordSave() PasswordSave
 	// Pim gets a PIM from the mount operation.
 	Pim() uint
 	// Username: get the user name from the mount operation.
@@ -118,6 +120,19 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMountOperation(obj), nil
+}
+
+// NewMountOperation constructs a class MountOperation.
+func NewMountOperation() MountOperation {
+	var _cret C.GMountOperation // in
+
+	_cret = C.g_mount_operation_new()
+
+	var _mountOperation MountOperation // out
+
+	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MountOperation)
+
+	return _mountOperation
 }
 
 // Anonymous: check to see whether the mount operation is being used for an
@@ -229,6 +244,23 @@ func (o mountOperation) Password() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// PasswordSave gets the state of saving passwords for the mount operation.
+func (o mountOperation) PasswordSave() PasswordSave {
+	var _arg0 *C.GMountOperation // out
+
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+
+	var _cret C.GPasswordSave // in
+
+	_cret = C.g_mount_operation_get_password_save(_arg0)
+
+	var _passwordSave PasswordSave // out
+
+	_passwordSave = PasswordSave(_cret)
+
+	return _passwordSave
 }
 
 // Pim gets a PIM from the mount operation.

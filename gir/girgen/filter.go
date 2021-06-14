@@ -14,7 +14,20 @@ import (
 type FilterMatcher interface {
 	// Filter matches for the girType within the given namespace from the
 	// namespace generator. The GIR type will never have a namespace prefix.
-	Filter(ng *NamespaceGenerator, girType, cType string) (keep bool)
+	Filter(*NamespaceGenerator, *FilterTypeName) (keep bool)
+}
+
+// FilterTypeName is the pair of names for type filtering. The filter can
+// override the fields to rename the types.
+type FilterTypeName struct {
+	GIRType string // GIRType
+	CType   string
+}
+
+// Name returns the GIR type without the namespace.
+func (names FilterTypeName) Name() string {
+	_, name := gir.SplitGIRType(names.GIRType)
+	return name
 }
 
 type absoluteFilter struct {
@@ -32,16 +45,48 @@ func AbsoluteFilter(abs string) FilterMatcher {
 	return absoluteFilter{parts[0], parts[1]}
 }
 
-func (abs absoluteFilter) Filter(ng *NamespaceGenerator, girType, cType string) (keep bool) {
-	switch abs.namespace {
-	case "C":
-		return cType != abs.matcher
-	case "*":
-		return girType != abs.matcher
+func (abs absoluteFilter) Filter(ng *NamespaceGenerator, names *FilterTypeName) (keep bool) {
+	if abs.namespace == "C" {
+		return names.CType != abs.matcher
 	}
 
-	typ, eq := EqNamespace(abs.namespace, ng.Namespace().Namespace, girType)
+	typ, eq := EqNamespace(abs.namespace, names.GIRType)
 	return !eq || typ != abs.matcher
+}
+
+type typeRenamer struct {
+	namespace string
+	from, to  string
+}
+
+// TypeRenamer creates a new filter matcher that renames a type. The given GIR
+// type must contain the namespace, but the given name must not. The GIR type is
+// absolutely matched, similarly to AbsoluteFilter.
+func TypeRenamer(girType, newName string) FilterMatcher {
+	parts := strings.SplitN(girType, ".", 2)
+	if len(parts) != 2 {
+		log.Panicf("missing namespace for TypeRenamer %q", girType)
+	}
+	return typeRenamer{parts[0], parts[1], newName}
+}
+
+func (ren typeRenamer) Filter(ng *NamespaceGenerator, names *FilterTypeName) (keep bool) {
+	var matches bool
+	if ren.namespace == "C" && names.CType == ren.from {
+		matches = true
+	}
+	if !matches {
+		typ, eq := EqNamespace(ren.namespace, names.GIRType)
+		matches = eq && typ == ren.from
+	}
+
+	if matches {
+		fullName, _ := gir.SplitGIRType(names.GIRType)
+		namespace, _ := gir.ParseVersionName(fullName)
+		names.GIRType = namespace + "." + ren.to
+	}
+
+	return true
 }
 
 type regexFilter struct {
@@ -77,15 +122,15 @@ func wholeMatchRegex(regex string) string {
 }
 
 // Filter implements FilterMatcher.
-func (rf *regexFilter) Filter(ng *NamespaceGenerator, girType, cType string) (keep bool) {
+func (rf *regexFilter) Filter(ng *NamespaceGenerator, names *FilterTypeName) (keep bool) {
 	switch rf.namespace {
 	case "C":
-		return !rf.matcher.MatchString(cType)
+		return !rf.matcher.MatchString(names.CType)
 	case "*":
-		return !rf.matcher.MatchString(girType)
+		return !rf.matcher.MatchString(names.GIRType)
 	}
 
-	typ, eq := EqNamespace(rf.namespace, ng.Namespace().Namespace, girType)
+	typ, eq := EqNamespace(rf.namespace, names.GIRType)
 	if !eq {
 		return true
 	}
@@ -94,7 +139,7 @@ func (rf *regexFilter) Filter(ng *NamespaceGenerator, girType, cType string) (ke
 }
 
 // EqNamespace is used for FilterMatchers to compare types and namespaces.
-func EqNamespace(nsp string, current *gir.Namespace, girType string) (typ string, ok bool) {
+func EqNamespace(nsp, girType string) (typ string, ok bool) {
 	fullName, typ := gir.SplitGIRType(girType)
 	namespace, _ := gir.ParseVersionName(fullName)
 	return typ, namespace != nsp
@@ -109,8 +154,8 @@ func FileFilter(regex string) FilterMatcher {
 	return fileFilter{regexp.MustCompile(regex)}
 }
 
-func (ff fileFilter) Filter(ng *NamespaceGenerator, girType, _ string) (keep bool) {
-	res := ng.FindType(girType)
+func (ff fileFilter) Filter(ng *NamespaceGenerator, names *FilterTypeName) (keep bool) {
+	res := ng.FindType(names.GIRType)
 	if res == nil {
 		return true
 	}

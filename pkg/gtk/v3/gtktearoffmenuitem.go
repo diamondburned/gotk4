@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,4 +69,17 @@ func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTearoffMenuItem(obj), nil
+}
+
+// NewTearoffMenuItem constructs a class TearoffMenuItem.
+func NewTearoffMenuItem() TearoffMenuItem {
+	var _cret C.GtkTearoffMenuItem // in
+
+	_cret = C.gtk_tearoff_menu_item_new()
+
+	var _tearoffMenuItem TearoffMenuItem // out
+
+	_tearoffMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TearoffMenuItem)
+
+	return _tearoffMenuItem
 }

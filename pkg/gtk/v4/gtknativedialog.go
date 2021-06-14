@@ -55,6 +55,8 @@ type NativeDialog interface {
 	Modal() bool
 	// Title gets the title of the `GtkNativeDialog`.
 	Title() string
+	// TransientFor fetches the transient parent for this window.
+	TransientFor() Window
 	// Visible determines whether the dialog is visible.
 	Visible() bool
 	// Hide hides the dialog if it is visible, aborting any interaction.
@@ -167,6 +169,23 @@ func (s nativeDialog) Title() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// TransientFor fetches the transient parent for this window.
+func (s nativeDialog) TransientFor() Window {
+	var _arg0 *C.GtkNativeDialog // out
+
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWindow // in
+
+	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
 }
 
 // Visible determines whether the dialog is visible.

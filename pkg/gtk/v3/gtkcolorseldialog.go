@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,6 +26,10 @@ func init() {
 type ColorSelectionDialog interface {
 	Dialog
 	Buildable
+
+	// ColorSelection retrieves the ColorSelection widget embedded in the
+	// dialog.
+	ColorSelection() Widget
 }
 
 // colorSelectionDialog implements the ColorSelectionDialog class.
@@ -48,4 +53,40 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapColorSelectionDialog(obj), nil
+}
+
+// NewColorSelectionDialog constructs a class ColorSelectionDialog.
+func NewColorSelectionDialog(title string) ColorSelectionDialog {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(title))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkColorSelectionDialog // in
+
+	_cret = C.gtk_color_selection_dialog_new(_arg1)
+
+	var _colorSelectionDialog ColorSelectionDialog // out
+
+	_colorSelectionDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorSelectionDialog)
+
+	return _colorSelectionDialog
+}
+
+// ColorSelection retrieves the ColorSelection widget embedded in the
+// dialog.
+func (c colorSelectionDialog) ColorSelection() Widget {
+	var _arg0 *C.GtkColorSelectionDialog // out
+
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }

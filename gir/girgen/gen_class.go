@@ -159,7 +159,7 @@ func (ng *NamespaceGenerator) generateClasses() {
 		if !class.IsIntrospectable() {
 			continue
 		}
-		if ng.mustIgnore(class.Name, class.CType) {
+		if ng.mustIgnore(&class.Name, &class.CType) {
 			continue
 		}
 		if !cg.Use(class) {

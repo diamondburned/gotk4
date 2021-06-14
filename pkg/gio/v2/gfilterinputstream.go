@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,6 +38,8 @@ func init() {
 type FilterInputStream interface {
 	InputStream
 
+	// BaseStream gets the base stream for the filter stream.
+	BaseStream() InputStream
 	// CloseBaseStream returns whether the base stream will be closed when
 	// @stream is closed.
 	CloseBaseStream() bool
@@ -64,6 +67,23 @@ func marshalFilterInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFilterInputStream(obj), nil
+}
+
+// BaseStream gets the base stream for the filter stream.
+func (s filterInputStream) BaseStream() InputStream {
+	var _arg0 *C.GFilterInputStream // out
+
+	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GInputStream // in
+
+	_cret = C.g_filter_input_stream_get_base_stream(_arg0)
+
+	var _inputStream InputStream // out
+
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InputStream)
+
+	return _inputStream
 }
 
 // CloseBaseStream returns whether the base stream will be closed when

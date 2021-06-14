@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,6 +37,8 @@ type InetSocketAddress interface {
 	SocketAddress
 	SocketConnectable
 
+	// Address gets @address's Address.
+	Address() InetAddress
 	// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
 	// IPv6 address.
 	Flowinfo() uint32
@@ -67,6 +70,62 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapInetSocketAddress(obj), nil
+}
+
+// NewInetSocketAddress constructs a class InetSocketAddress.
+func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
+	var _arg1 *C.GInetAddress // out
+	var _arg2 C.guint16       // out
+
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg2 = C.guint16(port)
+
+	var _cret C.GInetSocketAddress // in
+
+	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
+
+	var _inetSocketAddress InetSocketAddress // out
+
+	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetSocketAddress)
+
+	return _inetSocketAddress
+}
+
+// NewInetSocketAddressFromString constructs a class InetSocketAddress.
+func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
+	var _arg1 *C.char // out
+	var _arg2 C.guint // out
+
+	_arg1 = (*C.char)(C.CString(address))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(port)
+
+	var _cret C.GInetSocketAddress // in
+
+	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
+
+	var _inetSocketAddress InetSocketAddress // out
+
+	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetSocketAddress)
+
+	return _inetSocketAddress
+}
+
+// Address gets @address's Address.
+func (a inetSocketAddress) Address() InetAddress {
+	var _arg0 *C.GInetSocketAddress // out
+
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GInetAddress // in
+
+	_cret = C.g_inet_socket_address_get_address(_arg0)
+
+	var _inetAddress InetAddress // out
+
+	_inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InetAddress)
+
+	return _inetAddress
 }
 
 // Flowinfo gets the `sin6_flowinfo` field from @address, which must be an

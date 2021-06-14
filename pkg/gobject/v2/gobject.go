@@ -69,6 +69,13 @@ func (o *ObjectConstructParam) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
+// Pspec gets the field inside the struct.
+func (o *ObjectConstructParam) Pspec() ParamSpec {
+	var v ParamSpec // out
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.pspec.Native()))).(ParamSpec)
+	return v
+}
+
 // Value gets the field inside the struct.
 func (o *ObjectConstructParam) Value() **externglib.Value {
 	var v **externglib.Value // out

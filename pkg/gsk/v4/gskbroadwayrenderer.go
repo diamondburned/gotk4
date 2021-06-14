@@ -5,20 +5,14 @@ package gsk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gtk4
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gsk/gsk.h>
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_broadway_renderer_get_type()), F: marshalBroadwayRenderer},
-	})
-}
 
 type BroadwayRenderer interface {
 	Renderer
@@ -43,4 +37,17 @@ func marshalBroadwayRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBroadwayRenderer(obj), nil
+}
+
+// NewBroadwayRenderer constructs a class BroadwayRenderer.
+func NewBroadwayRenderer() BroadwayRenderer {
+	var _cret C.GskBroadwayRenderer // in
+
+	_cret = C.gsk_broadway_renderer_new()
+
+	var _broadwayRenderer BroadwayRenderer // out
+
+	_broadwayRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BroadwayRenderer)
+
+	return _broadwayRenderer
 }

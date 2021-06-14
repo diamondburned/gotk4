@@ -45,6 +45,8 @@ type EmblemedIcon interface {
 	AddEmblem(emblem Emblem)
 	// ClearEmblems removes all the emblems from @icon.
 	ClearEmblems()
+	// Icon gets the main icon for @emblemed.
+	Icon() Icon
 }
 
 // emblemedIcon implements the EmblemedIcon class.
@@ -70,6 +72,25 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	return WrapEmblemedIcon(obj), nil
 }
 
+// NewEmblemedIcon constructs a class EmblemedIcon.
+func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
+	var _arg1 *C.GIcon   // out
+	var _arg2 *C.GEmblem // out
+
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+
+	var _cret C.GEmblemedIcon // in
+
+	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
+
+	var _emblemedIcon EmblemedIcon // out
+
+	_emblemedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EmblemedIcon)
+
+	return _emblemedIcon
+}
+
 // AddEmblem adds @emblem to the #GList of #GEmblems.
 func (e emblemedIcon) AddEmblem(emblem Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
@@ -88,4 +109,21 @@ func (e emblemedIcon) ClearEmblems() {
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
 	C.g_emblemed_icon_clear_emblems(_arg0)
+}
+
+// Icon gets the main icon for @emblemed.
+func (e emblemedIcon) Icon() Icon {
+	var _arg0 *C.GEmblemedIcon // out
+
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_emblemed_icon_get_icon(_arg0)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
 }

@@ -107,6 +107,26 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 	return WrapEntryBuffer(obj), nil
 }
 
+// NewEntryBuffer constructs a class EntryBuffer.
+func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
+	var _arg1 *C.gchar // out
+	var _arg2 C.gint   // out
+
+	_arg1 = (*C.gchar)(C.CString(initialChars))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(nInitialChars)
+
+	var _cret C.GtkEntryBuffer // in
+
+	_cret = C.gtk_entry_buffer_new(_arg1, _arg2)
+
+	var _entryBuffer EntryBuffer // out
+
+	_entryBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryBuffer)
+
+	return _entryBuffer
+}
+
 // DeleteText deletes a sequence of characters from the buffer. @n_chars
 // characters are deleted starting at @position. If @n_chars is negative,
 // then all characters until the end of the text are deleted.

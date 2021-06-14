@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,10 +53,16 @@ type ToolButton interface {
 	// IconName returns the name of the themed icon for the tool button, see
 	// gtk_tool_button_set_icon_name().
 	IconName() string
+	// IconWidget: return the widget used as icon widget on @button. See
+	// gtk_tool_button_set_icon_widget().
+	IconWidget() Widget
 	// Label returns the label used by the tool button, or nil if the tool
 	// button doesn’t have a label. or uses a the label from a stock item. The
 	// returned string is owned by GTK+, and must not be modified or freed.
 	Label() string
+	// LabelWidget returns the widget used as label on @button. See
+	// gtk_tool_button_set_label_widget().
+	LabelWidget() Widget
 	// StockID returns the name of the stock item. See
 	// gtk_tool_button_set_stock_id(). The returned string is owned by GTK+ and
 	// must not be freed or modifed.
@@ -131,6 +138,44 @@ func marshalToolButton(p uintptr) (interface{}, error) {
 	return WrapToolButton(obj), nil
 }
 
+// NewToolButton constructs a class ToolButton.
+func NewToolButton(iconWidget Widget, label string) ToolButton {
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.gchar     // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GtkToolButton // in
+
+	_cret = C.gtk_tool_button_new(_arg1, _arg2)
+
+	var _toolButton ToolButton // out
+
+	_toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolButton)
+
+	return _toolButton
+}
+
+// NewToolButtonFromStock constructs a class ToolButton.
+func NewToolButtonFromStock(stockId string) ToolButton {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkToolButton // in
+
+	_cret = C.gtk_tool_button_new_from_stock(_arg1)
+
+	var _toolButton ToolButton // out
+
+	_toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolButton)
+
+	return _toolButton
+}
+
 // IconName returns the name of the themed icon for the tool button, see
 // gtk_tool_button_set_icon_name().
 func (b toolButton) IconName() string {
@@ -147,6 +192,24 @@ func (b toolButton) IconName() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// IconWidget: return the widget used as icon widget on @button. See
+// gtk_tool_button_set_icon_widget().
+func (b toolButton) IconWidget() Widget {
+	var _arg0 *C.GtkToolButton // out
+
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_tool_button_get_icon_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Label returns the label used by the tool button, or nil if the tool
@@ -166,6 +229,24 @@ func (b toolButton) Label() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// LabelWidget returns the widget used as label on @button. See
+// gtk_tool_button_set_label_widget().
+func (b toolButton) LabelWidget() Widget {
+	var _arg0 *C.GtkToolButton // out
+
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_tool_button_get_label_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // StockID returns the name of the stock item. See

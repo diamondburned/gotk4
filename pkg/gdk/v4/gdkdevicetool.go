@@ -53,6 +53,8 @@ func marshalDeviceToolType(p uintptr) (interface{}, error) {
 type DeviceTool interface {
 	gextras.Objector
 
+	// Axes gets the axes of the tool.
+	Axes() AxisFlags
 	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
 	//
 	// When non-zero, the identificator is unique for the given tool model,
@@ -70,6 +72,8 @@ type DeviceTool interface {
 	// This value can be used to identify a physical tool (eg. a tablet pen)
 	// across program executions.
 	Serial() uint64
+	// ToolType gets the `GdkDeviceToolType` of the tool.
+	ToolType() DeviceToolType
 }
 
 // deviceTool implements the DeviceTool class.
@@ -91,6 +95,23 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDeviceTool(obj), nil
+}
+
+// Axes gets the axes of the tool.
+func (t deviceTool) Axes() AxisFlags {
+	var _arg0 *C.GdkDeviceTool // out
+
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GdkAxisFlags // in
+
+	_cret = C.gdk_device_tool_get_axes(_arg0)
+
+	var _axisFlags AxisFlags // out
+
+	_axisFlags = AxisFlags(_cret)
+
+	return _axisFlags
 }
 
 // HardwareID gets the hardware ID of this tool, or 0 if it's not known.
@@ -138,4 +159,21 @@ func (t deviceTool) Serial() uint64 {
 	_guint64 = (uint64)(_cret)
 
 	return _guint64
+}
+
+// ToolType gets the `GdkDeviceToolType` of the tool.
+func (t deviceTool) ToolType() DeviceToolType {
+	var _arg0 *C.GdkDeviceTool // out
+
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GdkDeviceToolType // in
+
+	_cret = C.gdk_device_tool_get_tool_type(_arg0)
+
+	var _deviceToolType DeviceToolType // out
+
+	_deviceToolType = DeviceToolType(_cret)
+
+	return _deviceToolType
 }

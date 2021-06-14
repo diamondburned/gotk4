@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -113,19 +112,22 @@ type StyleContext interface {
 	AddProvider(provider StyleProvider, priority uint)
 	// Border gets the border for a given state as a `GtkBorder`.
 	Border() Border
-	// Color gets the foreground color for a given state.
-	Color() gdk.RGBA
 	// Margin gets the margin for a given state as a `GtkBorder`.
 	Margin() Border
 	// Padding gets the padding for a given state as a `GtkBorder`.
 	Padding() Border
 	// Scale returns the scale used for assets.
 	Scale() int
+	// State returns the state used for style matching.
+	//
+	// This method should only be used to retrieve the `GtkStateFlags` to pass
+	// to `GtkStyleContext` methods, like [method@Gtk.StyleContext.get_padding].
+	// If you need to retrieve the current state of a `GtkWidget`, use
+	// [method@Gtk.Widget.get_state_flags].
+	State() StateFlags
 	// HasClass returns true if @context currently has defined the given class
 	// name.
 	HasClass(className string) bool
-	// LookupColor looks up and resolves a color name in the @context color map.
-	LookupColor(colorName string) (gdk.RGBA, bool)
 	// RemoveClass removes @class_name from @context.
 	RemoveClass(className string)
 	// RemoveProvider removes @provider from the style providers list in
@@ -146,15 +148,6 @@ type StyleContext interface {
 	// The matching call to [method@Gtk.StyleContext.restore] must be done
 	// before GTK returns to the main loop.
 	Save()
-	// SetDisplay attaches @context to the given display.
-	//
-	// The display is used to add style information from “global” style
-	// providers, such as the display's `GtkSettings` instance.
-	//
-	// If you are using a `GtkStyleContext` returned from
-	// [method@Gtk.Widget.get_style_context], you do not need to call this
-	// yourself.
-	SetDisplay(display gdk.Display)
 	// SetScale sets the scale to use when getting image assets for the style.
 	SetScale(scale int)
 	// SetState sets the state to be used for style matching.
@@ -248,19 +241,6 @@ func (c styleContext) Border() Border {
 	return _border
 }
 
-// Color gets the foreground color for a given state.
-func (c styleContext) Color() gdk.RGBA {
-	var _arg0 *C.GtkStyleContext // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _color gdk.RGBA
-
-	C.gtk_style_context_get_color(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
-
-	return _color
-}
-
 // Margin gets the margin for a given state as a `GtkBorder`.
 func (c styleContext) Margin() Border {
 	var _arg0 *C.GtkStyleContext // out
@@ -304,6 +284,28 @@ func (c styleContext) Scale() int {
 	return _gint
 }
 
+// State returns the state used for style matching.
+//
+// This method should only be used to retrieve the `GtkStateFlags` to pass
+// to `GtkStyleContext` methods, like [method@Gtk.StyleContext.get_padding].
+// If you need to retrieve the current state of a `GtkWidget`, use
+// [method@Gtk.Widget.get_state_flags].
+func (c styleContext) State() StateFlags {
+	var _arg0 *C.GtkStyleContext // out
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkStateFlags // in
+
+	_cret = C.gtk_style_context_get_state(_arg0)
+
+	var _stateFlags StateFlags // out
+
+	_stateFlags = StateFlags(_cret)
+
+	return _stateFlags
+}
+
 // HasClass returns true if @context currently has defined the given class
 // name.
 func (c styleContext) HasClass(className string) bool {
@@ -325,29 +327,6 @@ func (c styleContext) HasClass(className string) bool {
 	}
 
 	return _ok
-}
-
-// LookupColor looks up and resolves a color name in the @context color map.
-func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.char            // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.char)(C.CString(colorName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _color gdk.RGBA
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _color, _ok
 }
 
 // RemoveClass removes @class_name from @context.
@@ -401,24 +380,6 @@ func (c styleContext) Save() {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
 	C.gtk_style_context_save(_arg0)
-}
-
-// SetDisplay attaches @context to the given display.
-//
-// The display is used to add style information from “global” style
-// providers, such as the display's `GtkSettings` instance.
-//
-// If you are using a `GtkStyleContext` returned from
-// [method@Gtk.Widget.get_style_context], you do not need to call this
-// yourself.
-func (c styleContext) SetDisplay(display gdk.Display) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.GdkDisplay      // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-
-	C.gtk_style_context_set_display(_arg0, _arg1)
 }
 
 // SetScale sets the scale to use when getting image assets for the style.

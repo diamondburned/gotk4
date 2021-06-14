@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,6 +72,29 @@ func init() {
 type Socket interface {
 	Container
 	Buildable
+
+	// AddID adds an XEMBED client, such as a Plug, to the Socket. The client
+	// may be in the same process or in a different process.
+	//
+	// To embed a Plug in a Socket, you can either create the Plug with
+	// `gtk_plug_new (0)`, call gtk_plug_get_id() to get the window ID of the
+	// plug, and then pass that to the gtk_socket_add_id(), or you can call
+	// gtk_socket_get_id() to get the window ID for the socket, and call
+	// gtk_plug_new() passing in that ID.
+	//
+	// The Socket must have already be added into a toplevel window before you
+	// can make this call.
+	AddID(window Window)
+	// ID gets the window ID of a Socket widget, which can then be used to
+	// create a client embedded inside the socket, for instance with
+	// gtk_plug_new().
+	//
+	// The Socket must have already be added into a toplevel window before you
+	// can make this call.
+	ID() Window
+	// PlugWindow retrieves the window of the plug. Use this to check if the
+	// plug has been created inside of the socket.
+	PlugWindow() Window
 }
 
 // socket implements the Socket class.
@@ -94,4 +118,78 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSocket(obj), nil
+}
+
+// NewSocket constructs a class Socket.
+func NewSocket() Socket {
+	var _cret C.GtkSocket // in
+
+	_cret = C.gtk_socket_new()
+
+	var _socket Socket // out
+
+	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Socket)
+
+	return _socket
+}
+
+// AddID adds an XEMBED client, such as a Plug, to the Socket. The client
+// may be in the same process or in a different process.
+//
+// To embed a Plug in a Socket, you can either create the Plug with
+// `gtk_plug_new (0)`, call gtk_plug_get_id() to get the window ID of the
+// plug, and then pass that to the gtk_socket_add_id(), or you can call
+// gtk_socket_get_id() to get the window ID for the socket, and call
+// gtk_plug_new() passing in that ID.
+//
+// The Socket must have already be added into a toplevel window before you
+// can make this call.
+func (s socket) AddID(window Window) {
+	var _arg0 *C.GtkSocket // out
+	var _arg1 C.Window     // out
+
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.Window)(unsafe.Pointer(window.Native()))
+
+	C.gtk_socket_add_id(_arg0, _arg1)
+}
+
+// ID gets the window ID of a Socket widget, which can then be used to
+// create a client embedded inside the socket, for instance with
+// gtk_plug_new().
+//
+// The Socket must have already be added into a toplevel window before you
+// can make this call.
+func (s socket) ID() Window {
+	var _arg0 *C.GtkSocket // out
+
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
+
+	var _cret C.Window // in
+
+	_cret = C.gtk_socket_get_id(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// PlugWindow retrieves the window of the plug. Use this to check if the
+// plug has been created inside of the socket.
+func (s socket) PlugWindow() Window {
+	var _arg0 *C.GtkSocket // out
+
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gtk_socket_get_plug_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
 }

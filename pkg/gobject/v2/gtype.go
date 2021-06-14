@@ -5,6 +5,7 @@ package gobject
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -399,6 +400,23 @@ func TypeGetInstanceCount(typ externglib.Type) int {
 	return _gint
 }
 
+// TypeGetPlugin returns the Plugin structure for @type.
+func TypeGetPlugin(typ externglib.Type) TypePlugin {
+	var _arg1 C.GType // out
+
+	_arg1 = C.GType(typ)
+
+	var _cret *C.GTypePlugin // in
+
+	_cret = C.g_type_get_plugin(_arg1)
+
+	var _typePlugin TypePlugin // out
+
+	_typePlugin = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TypePlugin)
+
+	return _typePlugin
+}
+
 // TypeGetTypeRegistrationSerial returns an opaque serial number that represents
 // the state of the set of registered types. Any time a type is registered this
 // serial changes, which means you can cache information based on type lookups
@@ -736,6 +754,13 @@ func WrapTypeFundamentalInfo(ptr unsafe.Pointer) *TypeFundamentalInfo {
 // Native returns the underlying C source pointer.
 func (t *TypeFundamentalInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// TypeFlags gets the field inside the struct.
+func (t *TypeFundamentalInfo) TypeFlags() TypeFundamentalFlags {
+	var v TypeFundamentalFlags // out
+	v = TypeFundamentalFlags(t.native.type_flags)
+	return v
 }
 
 // TypeInfo: this structure is used to provide the type system with the

@@ -95,6 +95,8 @@ type FrameClock interface {
 	// EndUpdating stops updates for an animation. See the documentation for
 	// gdk_frame_clock_begin_updating().
 	EndUpdating()
+	// CurrentTimings gets the frame timings for the current frame.
+	CurrentTimings() *FrameTimings
 	// FrameCounter: a FrameClock maintains a 64-bit counter that increments for
 	// each frame drawn.
 	FrameCounter() int64
@@ -116,6 +118,10 @@ type FrameClock interface {
 	// presentation time that is a multiple of the refresh interval after the
 	// last presentation time, and later than @base_time.
 	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
+	// Timings retrieves a FrameTimings object holding timing information for
+	// the current frame or a recent frame. The FrameTimings object may not yet
+	// be complete: see gdk_frame_timings_get_complete().
+	Timings(frameCounter int64) *FrameTimings
 	// RequestPhase asks the frame clock to run a particular phase. The signal
 	// corresponding the requested phase will be emitted the next time the frame
 	// clock processes. Multiple calls to gdk_frame_clock_request_phase() will
@@ -169,6 +175,23 @@ func (f frameClock) EndUpdating() {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
 	C.gdk_frame_clock_end_updating(_arg0)
+}
+
+// CurrentTimings gets the frame timings for the current frame.
+func (f frameClock) CurrentTimings() *FrameTimings {
+	var _arg0 *C.GdkFrameClock // out
+
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.GdkFrameTimings // in
+
+	_cret = C.gdk_frame_clock_get_current_timings(_arg0)
+
+	var _frameTimings *FrameTimings // out
+
+	_frameTimings = WrapFrameTimings(unsafe.Pointer(_cret))
+
+	return _frameTimings
 }
 
 // FrameCounter: a FrameClock maintains a 64-bit counter that increments for
@@ -255,6 +278,27 @@ func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, pr
 	_presentationTimeReturn = (int64)(_arg3)
 
 	return _refreshIntervalReturn, _presentationTimeReturn
+}
+
+// Timings retrieves a FrameTimings object holding timing information for
+// the current frame or a recent frame. The FrameTimings object may not yet
+// be complete: see gdk_frame_timings_get_complete().
+func (f frameClock) Timings(frameCounter int64) *FrameTimings {
+	var _arg0 *C.GdkFrameClock // out
+	var _arg1 C.gint64         // out
+
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg1 = C.gint64(frameCounter)
+
+	var _cret *C.GdkFrameTimings // in
+
+	_cret = C.gdk_frame_clock_get_timings(_arg0, _arg1)
+
+	var _frameTimings *FrameTimings // out
+
+	_frameTimings = WrapFrameTimings(unsafe.Pointer(_cret))
+
+	return _frameTimings
 }
 
 // RequestPhase asks the frame clock to run a particular phase. The signal

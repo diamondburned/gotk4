@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -151,6 +152,55 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCheckButton(obj), nil
+}
+
+// NewCheckButton constructs a class CheckButton.
+func NewCheckButton() CheckButton {
+	var _cret C.GtkCheckButton // in
+
+	_cret = C.gtk_check_button_new()
+
+	var _checkButton CheckButton // out
+
+	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
+
+	return _checkButton
+}
+
+// NewCheckButtonWithLabel constructs a class CheckButton.
+func NewCheckButtonWithLabel(label string) CheckButton {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkCheckButton // in
+
+	_cret = C.gtk_check_button_new_with_label(_arg1)
+
+	var _checkButton CheckButton // out
+
+	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
+
+	return _checkButton
+}
+
+// NewCheckButtonWithMnemonic constructs a class CheckButton.
+func NewCheckButtonWithMnemonic(label string) CheckButton {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkCheckButton // in
+
+	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
+
+	var _checkButton CheckButton // out
+
+	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
+
+	return _checkButton
 }
 
 // Active returns whether the check button is active.

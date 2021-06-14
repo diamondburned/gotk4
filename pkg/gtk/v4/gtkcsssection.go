@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -46,6 +47,85 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (c *CSSSection) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
+}
+
+// EndLocation returns the location in the CSS document where this section ends.
+func (s *CSSSection) EndLocation() *CSSLocation {
+	var _arg0 *C.GtkCssSection // out
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkCssLocation // in
+
+	_cret = C.gtk_css_section_get_end_location(_arg0)
+
+	var _cssLocation *CSSLocation // out
+
+	_cssLocation = WrapCSSLocation(unsafe.Pointer(_cret))
+
+	return _cssLocation
+}
+
+// Parent gets the parent section for the given `section`.
+//
+// The parent section is the section that contains this `section`. A special
+// case are sections of type `GTK_CSS_SECTION_DOCUMEN`T. Their parent will
+// either be `NULL` if they are the original CSS document that was loaded by
+// [method@Gtk.CssProvider.load_from_file] or a section of type
+// `GTK_CSS_SECTION_IMPORT` if it was loaded with an `@import` rule from a
+// different file.
+func (s *CSSSection) Parent() *CSSSection {
+	var _arg0 *C.GtkCssSection // out
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkCssSection // in
+
+	_cret = C.gtk_css_section_get_parent(_arg0)
+
+	var _cssSection *CSSSection // out
+
+	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
+
+	return _cssSection
+}
+
+// StartLocation returns the location in the CSS document where this section
+// starts.
+func (s *CSSSection) StartLocation() *CSSLocation {
+	var _arg0 *C.GtkCssSection // out
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkCssLocation // in
+
+	_cret = C.gtk_css_section_get_start_location(_arg0)
+
+	var _cssLocation *CSSLocation // out
+
+	_cssLocation = WrapCSSLocation(unsafe.Pointer(_cret))
+
+	return _cssLocation
+}
+
+// Ref increments the reference count on `section`.
+func (s *CSSSection) Ref() *CSSSection {
+	var _arg0 *C.GtkCssSection // out
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkCssSection // in
+
+	_cret = C.gtk_css_section_ref(_arg0)
+
+	var _cssSection *CSSSection // out
+
+	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _cssSection
 }
 
 // String prints the section into a human-readable text form using

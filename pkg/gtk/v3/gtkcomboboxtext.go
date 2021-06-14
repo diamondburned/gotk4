@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -147,6 +148,32 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapComboBoxText(obj), nil
+}
+
+// NewComboBoxText constructs a class ComboBoxText.
+func NewComboBoxText() ComboBoxText {
+	var _cret C.GtkComboBoxText // in
+
+	_cret = C.gtk_combo_box_text_new()
+
+	var _comboBoxText ComboBoxText // out
+
+	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBoxText)
+
+	return _comboBoxText
+}
+
+// NewComboBoxTextWithEntry constructs a class ComboBoxText.
+func NewComboBoxTextWithEntry() ComboBoxText {
+	var _cret C.GtkComboBoxText // in
+
+	_cret = C.gtk_combo_box_text_new_with_entry()
+
+	var _comboBoxText ComboBoxText // out
+
+	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBoxText)
+
+	return _comboBoxText
 }
 
 // Append appends @text to the list of strings stored in @combo_box. If @id

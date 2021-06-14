@@ -4,6 +4,9 @@ package gio
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -129,6 +132,24 @@ func ContentTypeGetGenericIconName(typ string) string {
 	return _utf8
 }
 
+// ContentTypeGetIcon gets the icon for a content type.
+func ContentTypeGetIcon(typ string) Icon {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(typ))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_content_type_get_icon(_arg1)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
+}
+
 // ContentTypeGetMIMEDirs: get the list of directories which MIME data is loaded
 // from. See g_content_type_set_mime_dirs() for details.
 func ContentTypeGetMIMEDirs() []string {
@@ -175,6 +196,24 @@ func ContentTypeGetMIMEType(typ string) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
+func ContentTypeGetSymbolicIcon(typ string) Icon {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(typ))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_content_type_get_symbolic_icon(_arg1)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
 }
 
 // ContentTypeGuess guesses the content type based on example data. If the

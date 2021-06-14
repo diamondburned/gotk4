@@ -149,7 +149,7 @@ func (ng *NamespaceGenerator) generateIfaces() {
 		if !iface.IsIntrospectable() {
 			continue
 		}
-		if ng.mustIgnore(iface.Name, iface.CType) {
+		if ng.mustIgnore(&iface.Name, &iface.CType) {
 			continue
 		}
 

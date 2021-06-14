@@ -5,8 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -17,52 +15,6 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// BindingsActivate: find a key binding matching @keyval and @modifiers and
-// activate the binding on @object.
-func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.ModifierType) bool {
-	var _arg1 *C.GObject        // out
-	var _arg2 C.guint           // out
-	var _arg3 C.GdkModifierType // out
-
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = C.guint(keyval)
-	_arg3 = (C.GdkModifierType)(modifiers)
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// BindingsActivateEvent looks up key bindings for @object to find one matching
-// @event, and if one was found, activate it.
-func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
-	var _arg1 *C.GObject     // out
-	var _arg2 *C.GdkEventKey // out
-
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
 
 // BindingArg: a BindingArg holds the data associated with an argument for a key
 // binding signal emission as stored in BindingSignal.
@@ -120,6 +72,27 @@ func (b *BindingEntry) Keyval() uint {
 	return v
 }
 
+// SetNext gets the field inside the struct.
+func (b *BindingEntry) SetNext() *BindingEntry {
+	var v *BindingEntry // out
+	v = WrapBindingEntry(unsafe.Pointer(b.native.set_next))
+	return v
+}
+
+// HashNext gets the field inside the struct.
+func (b *BindingEntry) HashNext() *BindingEntry {
+	var v *BindingEntry // out
+	v = WrapBindingEntry(unsafe.Pointer(b.native.hash_next))
+	return v
+}
+
+// Signals gets the field inside the struct.
+func (b *BindingEntry) Signals() *BindingSignal {
+	var v *BindingSignal // out
+	v = WrapBindingSignal(unsafe.Pointer(b.native.signals))
+	return v
+}
+
 // BindingSignal: a GtkBindingSignal stores the necessary information to
 // activate a widget in response to a key press via a signal emission.
 type BindingSignal struct {
@@ -139,6 +112,13 @@ func WrapBindingSignal(ptr unsafe.Pointer) *BindingSignal {
 // Native returns the underlying C source pointer.
 func (b *BindingSignal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
+}
+
+// Next gets the field inside the struct.
+func (b *BindingSignal) Next() *BindingSignal {
+	var v *BindingSignal // out
+	v = WrapBindingSignal(unsafe.Pointer(b.native.next))
+	return v
 }
 
 // SignalName gets the field inside the struct.

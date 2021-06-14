@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -82,6 +83,19 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSwitch(obj), nil
+}
+
+// NewSwitch constructs a class Switch.
+func NewSwitch() Switch {
+	var _cret C.GtkSwitch // in
+
+	_cret = C.gtk_switch_new()
+
+	var __switch Switch // out
+
+	__switch = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Switch)
+
+	return __switch
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.

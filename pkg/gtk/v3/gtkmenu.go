@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -83,8 +83,16 @@ type Menu interface {
 	// This function will call the callback function, @detacher, provided when
 	// the gtk_menu_attach_to_widget() function was called.
 	Detach()
+	// AccelGroup gets the AccelGroup which holds global accelerators for the
+	// menu. See gtk_menu_set_accel_group().
+	AccelGroup() AccelGroup
 	// AccelPath retrieves the accelerator path set on the menu.
 	AccelPath() string
+	// Active returns the selected menu item from the menu. This is used by the
+	// ComboBox.
+	Active() Widget
+	// AttachWidget returns the Widget that the menu is attached to.
+	AttachWidget() Widget
 	// Monitor retrieves the number of the monitor on which to show the menu.
 	Monitor() int
 	// ReserveToggleSize returns whether the menu reserves space for toggles and
@@ -95,8 +103,6 @@ type Menu interface {
 	TearoffState() bool
 	// Title returns the title of the menu. See gtk_menu_set_title().
 	Title() string
-	// PlaceOnMonitor places @menu on the given monitor.
-	PlaceOnMonitor(monitor gdk.Monitor)
 	// Popdown removes the menu from the screen.
 	Popdown()
 	// ReorderChild moves @child to a new @position in the list of @menu
@@ -147,8 +153,6 @@ type Menu interface {
 	// SetReserveToggleSize sets whether the menu should reserve space for
 	// drawing toggles or icons, regardless of their actual presence.
 	SetReserveToggleSize(reserveToggleSize bool)
-	// SetScreen sets the Screen on which the menu will be displayed.
-	SetScreen(screen gdk.Screen)
 	// SetTearoffState changes the tearoff state of the menu. A menu is normally
 	// displayed as drop down menu which persists as long as the menu is active.
 	// It can also be displayed as a tearoff menu which persists until it is
@@ -183,6 +187,19 @@ func marshalMenu(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMenu(obj), nil
+}
+
+// NewMenu constructs a class Menu.
+func NewMenu() Menu {
+	var _cret C.GtkMenu // in
+
+	_cret = C.gtk_menu_new()
+
+	var _menu Menu // out
+
+	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Menu)
+
+	return _menu
 }
 
 // Attach adds a new MenuItem to a (table) menu. The number of “cells” that
@@ -221,6 +238,24 @@ func (m menu) Detach() {
 	C.gtk_menu_detach(_arg0)
 }
 
+// AccelGroup gets the AccelGroup which holds global accelerators for the
+// menu. See gtk_menu_set_accel_group().
+func (m menu) AccelGroup() AccelGroup {
+	var _arg0 *C.GtkMenu // out
+
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkAccelGroup // in
+
+	_cret = C.gtk_menu_get_accel_group(_arg0)
+
+	var _accelGroup AccelGroup // out
+
+	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
+
+	return _accelGroup
+}
+
 // AccelPath retrieves the accelerator path set on the menu.
 func (m menu) AccelPath() string {
 	var _arg0 *C.GtkMenu // out
@@ -236,6 +271,41 @@ func (m menu) AccelPath() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Active returns the selected menu item from the menu. This is used by the
+// ComboBox.
+func (m menu) Active() Widget {
+	var _arg0 *C.GtkMenu // out
+
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_menu_get_active(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// AttachWidget returns the Widget that the menu is attached to.
+func (m menu) AttachWidget() Widget {
+	var _arg0 *C.GtkMenu // out
+
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_menu_get_attach_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Monitor retrieves the number of the monitor on which to show the menu.
@@ -310,17 +380,6 @@ func (m menu) Title() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// PlaceOnMonitor places @menu on the given monitor.
-func (m menu) PlaceOnMonitor(monitor gdk.Monitor) {
-	var _arg0 *C.GtkMenu    // out
-	var _arg1 *C.GdkMonitor // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
-
-	C.gtk_menu_place_on_monitor(_arg0, _arg1)
 }
 
 // Popdown removes the menu from the screen.
@@ -444,17 +503,6 @@ func (m menu) SetReserveToggleSize(reserveToggleSize bool) {
 	}
 
 	C.gtk_menu_set_reserve_toggle_size(_arg0, _arg1)
-}
-
-// SetScreen sets the Screen on which the menu will be displayed.
-func (m menu) SetScreen(screen gdk.Screen) {
-	var _arg0 *C.GtkMenu   // out
-	var _arg1 *C.GdkScreen // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-
-	C.gtk_menu_set_screen(_arg0, _arg1)
 }
 
 // SetTearoffState changes the tearoff state of the menu. A menu is normally

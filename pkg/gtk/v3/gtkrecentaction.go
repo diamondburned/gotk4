@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,6 +68,62 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRecentAction(obj), nil
+}
+
+// NewRecentAction constructs a class RecentAction.
+func NewRecentAction(name string, label string, tooltip string, stockId string) RecentAction {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
+	var _arg3 *C.gchar // out
+	var _arg4 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(tooltip))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	var _cret C.GtkRecentAction // in
+
+	_cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
+
+	var _recentAction RecentAction // out
+
+	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentAction)
+
+	return _recentAction
+}
+
+// NewRecentActionForManager constructs a class RecentAction.
+func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) RecentAction {
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.gchar            // out
+	var _arg3 *C.gchar            // out
+	var _arg4 *C.gchar            // out
+	var _arg5 *C.GtkRecentManager // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(tooltip))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+
+	var _cret C.GtkRecentAction // in
+
+	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _recentAction RecentAction // out
+
+	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentAction)
+
+	return _recentAction
 }
 
 // ShowNumbers returns the value set by

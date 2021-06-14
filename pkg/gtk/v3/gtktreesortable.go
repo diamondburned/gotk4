@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,9 +24,50 @@ func init() {
 	})
 }
 
+// TreeIterCompareFunc: a GtkTreeIterCompareFunc should return a negative
+// integer, zero, or a positive integer if @a sorts before @b, @a sorts with @b,
+// or @a sorts after @b respectively. If two iters compare as equal, their order
+// in the sorted model is undefined. In order to ensure that the TreeSortable
+// behaves as expected, the GtkTreeIterCompareFunc must define a partial order
+// on the model, i.e. it must be reflexive, antisymmetric and transitive.
+//
+// For example, if @model is a product catalogue, then a compare function for
+// the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
+type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter) (gint int)
+
+//export gotk4_TreeIterCompareFunc
+func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gint {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var model TreeModel // out
+	var a *TreeIter     // out
+	var b *TreeIter     // out
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
+	a = WrapTreeIter(unsafe.Pointer(arg1))
+	b = WrapTreeIter(unsafe.Pointer(arg2))
+
+	fn := v.(TreeIterCompareFunc)
+	gint := fn(model, a, b)
+
+	var cret C.gint // out
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
 // TreeSortableOverrider contains methods that are overridable. This
 // interface is a subset of the interface TreeSortable.
 type TreeSortableOverrider interface {
+	// SortColumnID fills in @sort_column_id and @order with the current sort
+	// column and the order. It returns true unless the @sort_column_id is
+	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
+	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
+	SortColumnID() (int, SortType, bool)
 	// HasDefaultSortFunc returns true if the model has a default sort function.
 	// This is used primarily by GtkTreeViewColumns in order to determine if a
 	// model can go back to the default state, or not.
@@ -71,6 +114,34 @@ func marshalTreeSortable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTreeSortable(obj), nil
+}
+
+// SortColumnID fills in @sort_column_id and @order with the current sort
+// column and the order. It returns true unless the @sort_column_id is
+// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
+// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
+func (s treeSortable) SortColumnID() (int, SortType, bool) {
+	var _arg0 *C.GtkTreeSortable // out
+
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
+
+	var _arg1 C.gint        // in
+	var _arg2 C.GtkSortType // in
+	var _cret C.gboolean    // in
+
+	_cret = C.gtk_tree_sortable_get_sort_column_id(_arg0, &_arg1, &_arg2)
+
+	var _sortColumnId int // out
+	var _order SortType   // out
+	var _ok bool          // out
+
+	_sortColumnId = (int)(_arg1)
+	_order = SortType(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _sortColumnId, _order, _ok
 }
 
 // HasDefaultSortFunc returns true if the model has a default sort function.

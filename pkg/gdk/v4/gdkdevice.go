@@ -65,10 +65,18 @@ type Device interface {
 	//
 	// This is only relevant for keyboard devices.
 	CapsLockState() bool
+	// DeviceTool retrieves the current tool for @device.
+	DeviceTool() DeviceTool
+	// Display returns the `GdkDisplay` to which @device pertains.
+	Display() Display
 	// HasCursor determines whether the pointer follows device motion.
 	//
 	// This is not meaningful for keyboard devices, which don't have a pointer.
 	HasCursor() bool
+	// ModifierState retrieves the current modifier state of the keyboard.
+	//
+	// This is only relevant for keyboard devices.
+	ModifierState() ModifierType
 	// Name: the name of the device, suitable for showing in a user interface.
 	Name() string
 	// NumLockState retrieves whether the Num Lock modifier of the keyboard is
@@ -88,6 +96,16 @@ type Device interface {
 	//
 	// This is only relevant for keyboard devices.
 	ScrollLockState() bool
+	// Seat returns the `GdkSeat` the device belongs to.
+	Seat() Seat
+	// Source determines the type of the device.
+	Source() InputSource
+	// SurfaceAtPosition obtains the surface underneath @device, returning the
+	// location of the device in @win_x and @win_y
+	//
+	// Returns nil if the surface tree under @device is not known to GDK (for
+	// example, belongs to another application).
+	SurfaceAtPosition() (winX float64, winY float64, surface Surface)
 	// Timestamp returns the timestamp of the last activity for this device.
 	//
 	// In practice, this means the timestamp of the last event that was received
@@ -168,6 +186,40 @@ func (d device) CapsLockState() bool {
 	return _ok
 }
 
+// DeviceTool retrieves the current tool for @device.
+func (d device) DeviceTool() DeviceTool {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkDeviceTool // in
+
+	_cret = C.gdk_device_get_device_tool(_arg0)
+
+	var _deviceTool DeviceTool // out
+
+	_deviceTool = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DeviceTool)
+
+	return _deviceTool
+}
+
+// Display returns the `GdkDisplay` to which @device pertains.
+func (d device) Display() Display {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_device_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
+}
+
 // HasCursor determines whether the pointer follows device motion.
 //
 // This is not meaningful for keyboard devices, which don't have a pointer.
@@ -187,6 +239,25 @@ func (d device) HasCursor() bool {
 	}
 
 	return _ok
+}
+
+// ModifierState retrieves the current modifier state of the keyboard.
+//
+// This is only relevant for keyboard devices.
+func (d device) ModifierState() ModifierType {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret C.GdkModifierType // in
+
+	_cret = C.gdk_device_get_modifier_state(_arg0)
+
+	var _modifierType ModifierType // out
+
+	_modifierType = ModifierType(_cret)
+
+	return _modifierType
 }
 
 // Name: the name of the device, suitable for showing in a user interface.
@@ -285,6 +356,67 @@ func (d device) ScrollLockState() bool {
 	}
 
 	return _ok
+}
+
+// Seat returns the `GdkSeat` the device belongs to.
+func (d device) Seat() Seat {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkSeat // in
+
+	_cret = C.gdk_device_get_seat(_arg0)
+
+	var _seat Seat // out
+
+	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Seat)
+
+	return _seat
+}
+
+// Source determines the type of the device.
+func (d device) Source() InputSource {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret C.GdkInputSource // in
+
+	_cret = C.gdk_device_get_source(_arg0)
+
+	var _inputSource InputSource // out
+
+	_inputSource = InputSource(_cret)
+
+	return _inputSource
+}
+
+// SurfaceAtPosition obtains the surface underneath @device, returning the
+// location of the device in @win_x and @win_y
+//
+// Returns nil if the surface tree under @device is not known to GDK (for
+// example, belongs to another application).
+func (d device) SurfaceAtPosition() (winX float64, winY float64, surface Surface) {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _arg1 C.double      // in
+	var _arg2 C.double      // in
+	var _cret *C.GdkSurface // in
+
+	_cret = C.gdk_device_get_surface_at_position(_arg0, &_arg1, &_arg2)
+
+	var _winX float64    // out
+	var _winY float64    // out
+	var _surface Surface // out
+
+	_winX = (float64)(_arg1)
+	_winY = (float64)(_arg2)
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Surface)
+
+	return _winX, _winY, _surface
 }
 
 // Timestamp returns the timestamp of the last activity for this device.
@@ -393,6 +525,13 @@ func (t *TimeCoord) Native() unsafe.Pointer {
 func (t *TimeCoord) Time() uint32 {
 	var v uint32 // out
 	v = (uint32)(t.native.time)
+	return v
+}
+
+// Flags gets the field inside the struct.
+func (t *TimeCoord) Flags() AxisFlags {
+	var v AxisFlags // out
+	v = AxisFlags(t.native.flags)
 	return v
 }
 

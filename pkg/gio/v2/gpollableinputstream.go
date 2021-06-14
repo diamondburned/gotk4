@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,6 +50,18 @@ type PollableInputStreamOverrider interface {
 	// you should always use g_pollable_input_stream_read_nonblocking(), which
 	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 	IsReadable() bool
+	// ReadNonblocking attempts to read up to @count bytes from @stream into
+	// @buffer, as with g_input_stream_read(). If @stream is not currently
+	// readable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+	// can use g_pollable_input_stream_create_source() to create a #GSource that
+	// will be triggered when @stream is readable.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	ReadNonblocking(buffer []byte) (int, error)
 }
 
 // PollableInputStream is implemented by Streams that can be polled for
@@ -128,4 +141,40 @@ func (s pollableInputStream) IsReadable() bool {
 	}
 
 	return _ok
+}
+
+// ReadNonblocking attempts to read up to @count bytes from @stream into
+// @buffer, as with g_input_stream_read(). If @stream is not currently
+// readable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+// can use g_pollable_input_stream_create_source() to create a #GSource that
+// will be triggered when @stream is readable.
+//
+// Note that since this method never blocks, you cannot actually use
+// @cancellable to cancel it. However, it will return an error if
+// @cancellable has already been cancelled when you call, which may happen
+// if you call this method after a source triggers due to having been
+// cancelled.
+func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GPollableInputStream // out
+	var _arg1 *C.void
+	var _arg2 C.gsize
+	var _arg3 *C.GCancellable // out
+
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gsize(len(buffer))
+	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gssize, _goerr
 }

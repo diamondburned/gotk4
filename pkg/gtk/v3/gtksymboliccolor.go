@@ -3,9 +3,8 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0

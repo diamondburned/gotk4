@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -69,9 +70,13 @@ type TLSClientConnection interface {
 	TLSConnection
 	TLSClientConnectionOverrider
 
+	// ServerIdentity gets @conn's expected server identity
+	ServerIdentity() SocketConnectable
 	// UseSSL3: SSL 3.0 is no longer supported. See
 	// g_tls_client_connection_set_use_ssl3() for details.
 	UseSSL3() bool
+	// ValidationFlags gets @conn's validation flags
+	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets @conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
 	// also to let @conn know what name to look for in the certificate when
@@ -151,6 +156,23 @@ func (c tlsClientConnection) CopySessionState(source TLSClientConnection) {
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
 }
 
+// ServerIdentity gets @conn's expected server identity
+func (c tlsClientConnection) ServerIdentity() SocketConnectable {
+	var _arg0 *C.GTlsClientConnection // out
+
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GSocketConnectable // in
+
+	_cret = C.g_tls_client_connection_get_server_identity(_arg0)
+
+	var _socketConnectable SocketConnectable // out
+
+	_socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SocketConnectable)
+
+	return _socketConnectable
+}
+
 // UseSSL3: SSL 3.0 is no longer supported. See
 // g_tls_client_connection_set_use_ssl3() for details.
 func (c tlsClientConnection) UseSSL3() bool {
@@ -169,6 +191,23 @@ func (c tlsClientConnection) UseSSL3() bool {
 	}
 
 	return _ok
+}
+
+// ValidationFlags gets @conn's validation flags
+func (c tlsClientConnection) ValidationFlags() TLSCertificateFlags {
+	var _arg0 *C.GTlsClientConnection // out
+
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GTlsCertificateFlags // in
+
+	_cret = C.g_tls_client_connection_get_validation_flags(_arg0)
+
+	var _tlsCertificateFlags TLSCertificateFlags // out
+
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
+
+	return _tlsCertificateFlags
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used

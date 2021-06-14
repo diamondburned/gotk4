@@ -3,12 +3,17 @@
 package glib
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
+//
+// void gotk4_SpawnChildSetupFunc(gpointer);
 import "C"
 
 // SpawnError: error codes returned by spawning processes.
@@ -139,4 +144,255 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 
 	fn := v.(SpawnChildSetupFunc)
 	fn()
+}
+
+// SpawnCheckExitStatus: set @error if @exit_status indicates the child exited
+// abnormally (e.g. with a nonzero exit code, or via a fatal signal).
+//
+// The g_spawn_sync() and g_child_watch_add() family of APIs return an exit
+// status for subprocesses encoded in a platform-specific way. On Unix, this is
+// guaranteed to be in the same format waitpid() returns, and on Windows it is
+// guaranteed to be the result of GetExitCodeProcess().
+//
+// Prior to the introduction of this function in GLib 2.34, interpreting
+// @exit_status required use of platform-specific APIs, which is problematic for
+// software using GLib as a cross-platform layer.
+//
+// Additionally, many programs simply want to determine whether or not the child
+// exited successfully, and either propagate a #GError or print a message to
+// standard error. In that common case, this function can be used. Note that the
+// error message in @error will contain human-readable information about the
+// exit status.
+//
+// The @domain and @code of @error have special semantics in the case where the
+// process has an "exit code", as opposed to being killed by a signal. On Unix,
+// this happens if WIFEXITED() would be true of @exit_status. On Windows, it is
+// always the case.
+//
+// The special semantics are that the actual exit code will be the code set in
+// @error, and the domain will be G_SPAWN_EXIT_ERROR. This allows you to
+// differentiate between different exit codes.
+//
+// If the process was terminated by some means other than an exit status, the
+// domain will be G_SPAWN_ERROR, and the code will be G_SPAWN_ERROR_FAILED.
+//
+// This function just offers convenience; you can of course also check the
+// available platform via a macro such as G_OS_UNIX, and use WIFEXITED() and
+// WEXITSTATUS() on @exit_status directly. Do not attempt to scan or parse the
+// error message string; it may be translated and/or change in future versions
+// of GLib.
+func SpawnCheckExitStatus(exitStatus int) error {
+	var _arg1 C.gint // out
+
+	_arg1 = C.gint(exitStatus)
+
+	var _cerr *C.GError // in
+
+	C.g_spawn_check_exit_status(_arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
+// command line with g_shell_parse_argv() and passes it to g_spawn_async(). Runs
+// a command line in the background. Unlike g_spawn_async(), the
+// G_SPAWN_SEARCH_PATH flag is enabled, other flags are not. Note that
+// G_SPAWN_SEARCH_PATH can have security implications, so consider using
+// g_spawn_async() directly if appropriate. Possible errors are those from
+// g_shell_parse_argv() and g_spawn_async().
+//
+// The same concerns on Windows apply as for g_spawn_command_line_sync().
+func SpawnCommandLineAsync(commandLine string) error {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cerr *C.GError // in
+
+	C.g_spawn_command_line_async(_arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
+// parameters removed, taking a command line instead of an argument vector. See
+// g_spawn_sync() for full details. @command_line will be parsed by
+// g_shell_parse_argv(). Unlike g_spawn_sync(), the G_SPAWN_SEARCH_PATH flag is
+// enabled. Note that G_SPAWN_SEARCH_PATH can have security implications, so
+// consider using g_spawn_sync() directly if appropriate. Possible errors are
+// those from g_spawn_sync() and those from g_shell_parse_argv().
+//
+// If @exit_status is non-nil, the platform-specific exit status of the child is
+// stored there; see the documentation of g_spawn_check_exit_status() for how to
+// use and interpret this.
+//
+// On Windows, please note the implications of g_shell_parse_argv() parsing
+// @command_line. Parsing is done according to Unix shell rules, not Windows
+// command interpreter rules. Space is a separator, and backslashes are special.
+// Thus you cannot simply pass a @command_line containing canonical Windows
+// paths, like "c:\\program files\\app\\app.exe", as the backslashes will be
+// eaten, and the space will act as a separator. You need to enclose such paths
+// with single quotes, like "'c:\\program files\\app\\app.exe'
+// 'e:\\folder\\argument.txt'".
+func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
+	var _arg4 C.gint    // in
+	var _cerr *C.GError // in
+
+	C.g_spawn_command_line_sync(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+
+	var _standardOutput []byte
+	var _standardError []byte
+	var _exitStatus int // out
+	var _goerr error    // out
+
+	{
+		var length int
+		for p := _arg2; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_arg2, length)
+		_standardOutput = make([]byte, length)
+		for i := range src {
+			_standardOutput[i] = (byte)(src[i])
+		}
+	}
+	{
+		var length int
+		for p := _arg3; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_arg3, length)
+		_standardError = make([]byte, length)
+		for i := range src {
+			_standardError[i] = (byte)(src[i])
+		}
+	}
+	_exitStatus = (int)(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _standardOutput, _standardError, _exitStatus, _goerr
+}
+
+// SpawnSync executes a child synchronously (waits for the child to exit before
+// returning). All output from the child is stored in @standard_output and
+// @standard_error, if those parameters are non-nil. Note that you must set the
+// G_SPAWN_STDOUT_TO_DEV_NULL and G_SPAWN_STDERR_TO_DEV_NULL flags when passing
+// nil for @standard_output and @standard_error.
+//
+// If @exit_status is non-nil, the platform-specific exit status of the child is
+// stored there; see the documentation of g_spawn_check_exit_status() for how to
+// use and interpret this. Note that it is invalid to pass
+// G_SPAWN_DO_NOT_REAP_CHILD in @flags, and on POSIX platforms, the same
+// restrictions as for g_child_watch_source_new() apply.
+//
+// If an error occurs, no data is returned in @standard_output, @standard_error,
+// or @exit_status.
+//
+// This function calls g_spawn_async_with_pipes() internally; see that function
+// for full details on the other parameters and details on how these functions
+// work on Windows.
+func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
+	var _arg1 *C.gchar // out
+	var _arg2 **C.gchar
+	var _arg3 **C.gchar
+	var _arg4 C.GSpawnFlags          // out
+	var _arg5 C.GSpawnChildSetupFunc // out
+	var _arg6 C.gpointer
+
+	_arg1 = (*C.gchar)(C.CString(workingDirectory))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong((len(argv) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	{
+		out := unsafe.Slice(_arg2, len(argv))
+		for i := range argv {
+			out[i] = (*C.gchar)(C.CString(argv[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg3 = (**C.gchar)(C.malloc(C.ulong((len(envp) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	{
+		out := unsafe.Slice(_arg3, len(envp))
+		for i := range envp {
+			out[i] = (*C.gchar)(C.CString(envp[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg4 = (C.GSpawnFlags)(flags)
+	_arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	_arg6 = C.gpointer(box.Assign(childSetup))
+
+	var _arg7 *C.gchar
+	var _arg8 *C.gchar
+	var _arg9 C.gint    // in
+	var _cerr *C.GError // in
+
+	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)
+
+	var _standardOutput []byte
+	var _standardError []byte
+	var _exitStatus int // out
+	var _goerr error    // out
+
+	{
+		var length int
+		for p := _arg7; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_arg7, length)
+		_standardOutput = make([]byte, length)
+		for i := range src {
+			_standardOutput[i] = (byte)(src[i])
+		}
+	}
+	{
+		var length int
+		for p := _arg8; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_arg8, length)
+		_standardError = make([]byte, length)
+		for i := range src {
+			_standardError[i] = (byte)(src[i])
+		}
+	}
+	_exitStatus = (int)(_arg9)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _standardOutput, _standardError, _exitStatus, _goerr
 }

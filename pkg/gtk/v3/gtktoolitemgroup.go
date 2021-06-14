@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,19 +38,25 @@ type ToolItemGroup interface {
 
 	// Collapsed gets whether @group is collapsed or expanded.
 	Collapsed() bool
+	// DropItem gets the tool item at position (x, y).
+	DropItem(x int, y int) ToolItem
+	// HeaderRelief gets the relief mode of the header button of @group.
+	HeaderRelief() ReliefStyle
 	// ItemPosition gets the position of @item in @group as index.
 	ItemPosition(item ToolItem) int
 	// Label gets the label of @group.
 	Label() string
+	// LabelWidget gets the label widget of @group. See
+	// gtk_tool_item_group_set_label_widget().
+	LabelWidget() Widget
 	// NItems gets the number of tool items in @group.
 	NItems() uint
+	// NthItem gets the tool item at @index in group.
+	NthItem(index uint) ToolItem
 	// Insert inserts @item at @position in the list of children of @group.
 	Insert(item ToolItem, position int)
 	// SetCollapsed sets whether the @group should be collapsed or expanded.
 	SetCollapsed(collapsed bool)
-	// SetEllipsize sets the ellipsization mode which should be used by labels
-	// in @group.
-	SetEllipsize(ellipsize pango.EllipsizeMode)
 	// SetHeaderRelief: set the button relief of the group header. See
 	// gtk_button_set_relief() for details.
 	SetHeaderRelief(style ReliefStyle)
@@ -90,6 +96,24 @@ func marshalToolItemGroup(p uintptr) (interface{}, error) {
 	return WrapToolItemGroup(obj), nil
 }
 
+// NewToolItemGroup constructs a class ToolItemGroup.
+func NewToolItemGroup(label string) ToolItemGroup {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkToolItemGroup // in
+
+	_cret = C.gtk_tool_item_group_new(_arg1)
+
+	var _toolItemGroup ToolItemGroup // out
+
+	_toolItemGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItemGroup)
+
+	return _toolItemGroup
+}
+
 // Collapsed gets whether @group is collapsed or expanded.
 func (g toolItemGroup) Collapsed() bool {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -107,6 +131,44 @@ func (g toolItemGroup) Collapsed() bool {
 	}
 
 	return _ok
+}
+
+// DropItem gets the tool item at position (x, y).
+func (g toolItemGroup) DropItem(x int, y int) ToolItem {
+	var _arg0 *C.GtkToolItemGroup // out
+	var _arg1 C.gint              // out
+	var _arg2 C.gint              // out
+
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(g.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+
+	var _cret *C.GtkToolItem // in
+
+	_cret = C.gtk_tool_item_group_get_drop_item(_arg0, _arg1, _arg2)
+
+	var _toolItem ToolItem // out
+
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+
+	return _toolItem
+}
+
+// HeaderRelief gets the relief mode of the header button of @group.
+func (g toolItemGroup) HeaderRelief() ReliefStyle {
+	var _arg0 *C.GtkToolItemGroup // out
+
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(g.Native()))
+
+	var _cret C.GtkReliefStyle // in
+
+	_cret = C.gtk_tool_item_group_get_header_relief(_arg0)
+
+	var _reliefStyle ReliefStyle // out
+
+	_reliefStyle = ReliefStyle(_cret)
+
+	return _reliefStyle
 }
 
 // ItemPosition gets the position of @item in @group as index.
@@ -145,6 +207,24 @@ func (g toolItemGroup) Label() string {
 	return _utf8
 }
 
+// LabelWidget gets the label widget of @group. See
+// gtk_tool_item_group_set_label_widget().
+func (g toolItemGroup) LabelWidget() Widget {
+	var _arg0 *C.GtkToolItemGroup // out
+
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(g.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_tool_item_group_get_label_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // NItems gets the number of tool items in @group.
 func (g toolItemGroup) NItems() uint {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -160,6 +240,25 @@ func (g toolItemGroup) NItems() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// NthItem gets the tool item at @index in group.
+func (g toolItemGroup) NthItem(index uint) ToolItem {
+	var _arg0 *C.GtkToolItemGroup // out
+	var _arg1 C.guint             // out
+
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(g.Native()))
+	_arg1 = C.guint(index)
+
+	var _cret *C.GtkToolItem // in
+
+	_cret = C.gtk_tool_item_group_get_nth_item(_arg0, _arg1)
+
+	var _toolItem ToolItem // out
+
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+
+	return _toolItem
 }
 
 // Insert inserts @item at @position in the list of children of @group.
@@ -186,18 +285,6 @@ func (g toolItemGroup) SetCollapsed(collapsed bool) {
 	}
 
 	C.gtk_tool_item_group_set_collapsed(_arg0, _arg1)
-}
-
-// SetEllipsize sets the ellipsization mode which should be used by labels
-// in @group.
-func (g toolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
-	var _arg0 *C.GtkToolItemGroup  // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.PangoEllipsizeMode)(ellipsize)
-
-	C.gtk_tool_item_group_set_ellipsize(_arg0, _arg1)
 }
 
 // SetHeaderRelief: set the button relief of the group header. See

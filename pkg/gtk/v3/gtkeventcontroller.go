@@ -29,6 +29,11 @@ func init() {
 type EventController interface {
 	gextras.Objector
 
+	// PropagationPhase gets the propagation phase at which @controller handles
+	// events.
+	PropagationPhase() PropagationPhase
+	// Widget returns the Widget this controller relates to.
+	Widget() Widget
 	// Reset resets the @controller to a clean state. Every interaction the
 	// controller did through EventController::handle-event will be dropped at
 	// this point.
@@ -61,6 +66,41 @@ func marshalEventController(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEventController(obj), nil
+}
+
+// PropagationPhase gets the propagation phase at which @controller handles
+// events.
+func (c eventController) PropagationPhase() PropagationPhase {
+	var _arg0 *C.GtkEventController // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkPropagationPhase // in
+
+	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
+
+	var _propagationPhase PropagationPhase // out
+
+	_propagationPhase = PropagationPhase(_cret)
+
+	return _propagationPhase
+}
+
+// Widget returns the Widget this controller relates to.
+func (c eventController) Widget() Widget {
+	var _arg0 *C.GtkEventController // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_event_controller_get_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Reset resets the @controller to a clean state. Every interaction the

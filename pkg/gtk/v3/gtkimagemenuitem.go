@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,6 +57,9 @@ type ImageMenuItem interface {
 	// AlwaysShowImage returns whether the menu item will ignore the
 	// Settings:gtk-menu-images setting and always show the image, if available.
 	AlwaysShowImage() bool
+	// Image gets the widget that is currently set as the image of
+	// @image_menu_item. See gtk_image_menu_item_set_image().
+	Image() Widget
 	// UseStock checks whether the label set in the menuitem is used as a stock
 	// id to select the stock item for the item.
 	UseStock() bool
@@ -109,6 +113,75 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 	return WrapImageMenuItem(obj), nil
 }
 
+// NewImageMenuItem constructs a class ImageMenuItem.
+func NewImageMenuItem() ImageMenuItem {
+	var _cret C.GtkImageMenuItem // in
+
+	_cret = C.gtk_image_menu_item_new()
+
+	var _imageMenuItem ImageMenuItem // out
+
+	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ImageMenuItem)
+
+	return _imageMenuItem
+}
+
+// NewImageMenuItemFromStock constructs a class ImageMenuItem.
+func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuItem {
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GtkAccelGroup // out
+
+	_arg1 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+
+	var _cret C.GtkImageMenuItem // in
+
+	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
+
+	var _imageMenuItem ImageMenuItem // out
+
+	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ImageMenuItem)
+
+	return _imageMenuItem
+}
+
+// NewImageMenuItemWithLabel constructs a class ImageMenuItem.
+func NewImageMenuItemWithLabel(label string) ImageMenuItem {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkImageMenuItem // in
+
+	_cret = C.gtk_image_menu_item_new_with_label(_arg1)
+
+	var _imageMenuItem ImageMenuItem // out
+
+	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ImageMenuItem)
+
+	return _imageMenuItem
+}
+
+// NewImageMenuItemWithMnemonic constructs a class ImageMenuItem.
+func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkImageMenuItem // in
+
+	_cret = C.gtk_image_menu_item_new_with_mnemonic(_arg1)
+
+	var _imageMenuItem ImageMenuItem // out
+
+	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ImageMenuItem)
+
+	return _imageMenuItem
+}
+
 // AlwaysShowImage returns whether the menu item will ignore the
 // Settings:gtk-menu-images setting and always show the image, if available.
 func (i imageMenuItem) AlwaysShowImage() bool {
@@ -127,6 +200,24 @@ func (i imageMenuItem) AlwaysShowImage() bool {
 	}
 
 	return _ok
+}
+
+// Image gets the widget that is currently set as the image of
+// @image_menu_item. See gtk_image_menu_item_set_image().
+func (i imageMenuItem) Image() Widget {
+	var _arg0 *C.GtkImageMenuItem // out
+
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_image_menu_item_get_image(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // UseStock checks whether the label set in the menuitem is used as a stock

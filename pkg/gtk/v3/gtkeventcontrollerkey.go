@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,6 +33,8 @@ type EventControllerKey interface {
 	Forward(widget Widget) bool
 
 	Group() uint
+	// ImContext gets the IM context of a key controller.
+	ImContext() IMContext
 
 	SetImContext(imContext IMContext)
 }
@@ -55,6 +58,23 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEventControllerKey(obj), nil
+}
+
+// NewEventControllerKey constructs a class EventControllerKey.
+func NewEventControllerKey(widget Widget) EventControllerKey {
+	var _arg1 *C.GtkWidget // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	var _cret C.GtkEventControllerKey // in
+
+	_cret = C.gtk_event_controller_key_new(_arg1)
+
+	var _eventControllerKey EventControllerKey // out
+
+	_eventControllerKey = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerKey)
+
+	return _eventControllerKey
 }
 
 func (c eventControllerKey) Forward(widget Widget) bool {
@@ -91,6 +111,23 @@ func (c eventControllerKey) Group() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// ImContext gets the IM context of a key controller.
+func (c eventControllerKey) ImContext() IMContext {
+	var _arg0 *C.GtkEventControllerKey // out
+
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkIMContext // in
+
+	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
+
+	var _imContext IMContext // out
+
+	_imContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IMContext)
+
+	return _imContext
 }
 
 func (c eventControllerKey) SetImContext(imContext IMContext) {

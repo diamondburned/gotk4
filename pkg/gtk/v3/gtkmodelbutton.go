@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -140,4 +141,17 @@ func marshalModelButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapModelButton(obj), nil
+}
+
+// NewModelButton constructs a class ModelButton.
+func NewModelButton() ModelButton {
+	var _cret C.GtkModelButton // in
+
+	_cret = C.gtk_model_button_new()
+
+	var _modelButton ModelButton // out
+
+	_modelButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ModelButton)
+
+	return _modelButton
 }

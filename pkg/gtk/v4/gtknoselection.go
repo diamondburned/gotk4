@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,20 +28,11 @@ func init() {
 // a `GtkSelectionModel` is required.
 type NoSelection interface {
 	gextras.Objector
-	gio.ListModel
-	SelectionModel
-
-	// SetModel sets the model that @self should wrap.
-	//
-	// If @model is nil, this model will be empty.
-	SetModel(model gio.ListModel)
 }
 
 // noSelection implements the NoSelection class.
 type noSelection struct {
 	gextras.Objector
-	gio.ListModel
-	SelectionModel
 }
 
 var _ NoSelection = (*noSelection)(nil)
@@ -51,9 +41,7 @@ var _ NoSelection = (*noSelection)(nil)
 // primarily used internally.
 func WrapNoSelection(obj *externglib.Object) NoSelection {
 	return noSelection{
-		Objector:       obj,
-		gio.ListModel:  gio.WrapListModel(obj),
-		SelectionModel: WrapSelectionModel(obj),
+		Objector: obj,
 	}
 }
 
@@ -61,17 +49,4 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNoSelection(obj), nil
-}
-
-// SetModel sets the model that @self should wrap.
-//
-// If @model is nil, this model will be empty.
-func (s noSelection) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkNoSelection // out
-	var _arg1 *C.GListModel     // out
-
-	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_no_selection_set_model(_arg0, _arg1)
 }

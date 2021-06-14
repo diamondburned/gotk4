@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,6 +42,22 @@ func WrapQuaternion(ptr unsafe.Pointer) *Quaternion {
 func marshalQuaternion(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapQuaternion(unsafe.Pointer(b)), nil
+}
+
+// NewQuaternionAlloc constructs a struct Quaternion.
+func NewQuaternionAlloc() *Quaternion {
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_alloc()
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_quaternion, func(v *Quaternion) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _quaternion
 }
 
 // Native returns the underlying C source pointer.
@@ -110,6 +127,202 @@ func (q *Quaternion) Free() {
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
 	C.graphene_quaternion_free(_arg0)
+}
+
+// Init initializes a #graphene_quaternion_t using the given four values.
+func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 C.float                  // out
+	var _arg2 C.float                  // out
+	var _arg3 C.float                  // out
+	var _arg4 C.float                  // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
+	_arg4 = C.float(w)
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
+}
+
+// InitFromAngleVec3 initializes a #graphene_quaternion_t using an @angle on a
+// specific @axis.
+func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 C.float                  // out
+	var _arg2 *C.graphene_vec3_t       // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg1 = C.float(angle)
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init_from_angle_vec3(_arg0, _arg1, _arg2)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
+}
+
+// InitFromAngles initializes a #graphene_quaternion_t using the values of the
+// Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
+//
+// See also: graphene_quaternion_init_from_euler()
+func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 C.float                  // out
+	var _arg2 C.float                  // out
+	var _arg3 C.float                  // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg1 = C.float(degX)
+	_arg2 = C.float(degY)
+	_arg3 = C.float(degZ)
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init_from_angles(_arg0, _arg1, _arg2, _arg3)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
+}
+
+// InitFromEuler initializes a #graphene_quaternion_t using the given
+// #graphene_euler_t.
+func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_euler_t      // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init_from_euler(_arg0, _arg1)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
+}
+
+// InitFromMatrix initializes a #graphene_quaternion_t using the rotation
+// components of a transformation matrix.
+func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_matrix_t     // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init_from_matrix(_arg0, _arg1)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
+}
+
+// InitFromQuaternion initializes a #graphene_quaternion_t with the values from
+// @src.
+func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_quaternion_t // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(src.Native()))
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init_from_quaternion(_arg0, _arg1)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
+}
+
+// InitFromRadians initializes a #graphene_quaternion_t using the values of the
+// Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
+//
+// See also: graphene_quaternion_init_from_euler()
+func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 C.float                  // out
+	var _arg2 C.float                  // out
+	var _arg3 C.float                  // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg1 = C.float(radX)
+	_arg2 = C.float(radY)
+	_arg3 = C.float(radZ)
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init_from_radians(_arg0, _arg1, _arg2, _arg3)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
+}
+
+// InitFromVec4 initializes a #graphene_quaternion_t with the values from @src.
+func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_vec4_t       // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(src.Native()))
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init_from_vec4(_arg0, _arg1)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
+}
+
+// InitIdentity initializes a #graphene_quaternion_t using the identity
+// transformation.
+func (q *Quaternion) InitIdentity() *Quaternion {
+	var _arg0 *C.graphene_quaternion_t // out
+
+	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+
+	var _cret *C.graphene_quaternion_t // in
+
+	_cret = C.graphene_quaternion_init_identity(_arg0)
+
+	var _quaternion *Quaternion // out
+
+	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+
+	return _quaternion
 }
 
 // Invert inverts a #graphene_quaternion_t, and returns the conjugate quaternion

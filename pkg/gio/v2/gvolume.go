@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -40,22 +41,61 @@ type VolumeOverrider interface {
 	CanMount() bool
 
 	Changed()
+	// EjectFinish finishes ejecting a volume. If any errors occurred during the
+	// operation, @error will be set to contain the errors and false will be
+	// returned.
+	EjectFinish(result AsyncResult) error
+	// EjectWithOperationFinish finishes ejecting a volume. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
+	EjectWithOperationFinish(result AsyncResult) error
 	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
 	// that @volume has. Use g_volume_get_identifier() to obtain the identifiers
 	// themselves.
 	EnumerateIdentifiers() []string
+	// ActivationRoot gets the activation root for a #GVolume if it is known
+	// ahead of mount time. Returns nil otherwise. If not nil and if @volume is
+	// mounted, then the result of g_mount_get_root() on the #GMount object
+	// obtained from g_volume_get_mount() will always either be equal or a
+	// prefix of what this function returns. In other words, in code
+	//
+	//    (g_file_has_prefix (volume_activation_root, mount_root) ||
+	//     g_file_equal (volume_activation_root, mount_root))
+	//
+	// will always be true.
+	//
+	// Activation roots are typically used in Monitor implementations to find
+	// the underlying mount to shadow, see g_mount_is_shadowed() for more
+	// details.
+	ActivationRoot() File
+	// Drive gets the drive for the @volume.
+	Drive() Drive
+	// Icon gets the icon for @volume.
+	Icon() Icon
 	// Identifier gets the identifier of the given kind for @volume. See the
 	// [introduction][volume-identifier] for more information about volume
 	// identifiers.
 	Identifier(kind string) string
+	// Mount gets the mount for the @volume.
+	Mount() Mount
 	// Name gets the name of @volume.
 	Name() string
 	// SortKey gets the sort key for @volume, if any.
 	SortKey() string
+	// SymbolicIcon gets the symbolic icon for @volume.
+	SymbolicIcon() Icon
 	// UUID gets the UUID for the @volume. The reference is typically based on
 	// the file system UUID for the volume in question and should be considered
 	// an opaque string. Returns nil if there is no UUID available.
 	UUID() string
+	// MountFinish finishes mounting a volume. If any errors occurred during the
+	// operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// If the mount operation succeeded, g_volume_get_mount() on @volume is
+	// guaranteed to return the mount right after calling this function; there's
+	// no need to listen for the 'mount-added' signal on Monitor.
+	MountFinish(result AsyncResult) error
 
 	Removed()
 	// ShouldAutomount returns whether the volume should be automatically
@@ -160,6 +200,48 @@ func (v volume) CanMount() bool {
 	return _ok
 }
 
+// EjectFinish finishes ejecting a volume. If any errors occurred during the
+// operation, @error will be set to contain the errors and false will be
+// returned.
+func (v volume) EjectFinish(result AsyncResult) error {
+	var _arg0 *C.GVolume      // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// EjectWithOperationFinish finishes ejecting a volume. If any errors
+// occurred during the operation, @error will be set to contain the errors
+// and false will be returned.
+func (v volume) EjectWithOperationFinish(result AsyncResult) error {
+	var _arg0 *C.GVolume      // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
 // that @volume has. Use g_volume_get_identifier() to obtain the identifiers
 // themselves.
@@ -194,6 +276,70 @@ func (v volume) EnumerateIdentifiers() []string {
 	return _utf8s
 }
 
+// ActivationRoot gets the activation root for a #GVolume if it is known
+// ahead of mount time. Returns nil otherwise. If not nil and if @volume is
+// mounted, then the result of g_mount_get_root() on the #GMount object
+// obtained from g_volume_get_mount() will always either be equal or a
+// prefix of what this function returns. In other words, in code
+//
+//    (g_file_has_prefix (volume_activation_root, mount_root) ||
+//     g_file_equal (volume_activation_root, mount_root))
+//
+// will always be true.
+//
+// Activation roots are typically used in Monitor implementations to find
+// the underlying mount to shadow, see g_mount_is_shadowed() for more
+// details.
+func (v volume) ActivationRoot() File {
+	var _arg0 *C.GVolume // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_volume_get_activation_root(_arg0)
+
+	var _file File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _file
+}
+
+// Drive gets the drive for the @volume.
+func (v volume) Drive() Drive {
+	var _arg0 *C.GVolume // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.GDrive // in
+
+	_cret = C.g_volume_get_drive(_arg0)
+
+	var _drive Drive // out
+
+	_drive = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Drive)
+
+	return _drive
+}
+
+// Icon gets the icon for @volume.
+func (v volume) Icon() Icon {
+	var _arg0 *C.GVolume // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_volume_get_icon(_arg0)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
+}
+
 // Identifier gets the identifier of the given kind for @volume. See the
 // [introduction][volume-identifier] for more information about volume
 // identifiers.
@@ -215,6 +361,23 @@ func (v volume) Identifier(kind string) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// Mount gets the mount for the @volume.
+func (v volume) Mount() Mount {
+	var _arg0 *C.GVolume // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.GMount // in
+
+	_cret = C.g_volume_get_mount(_arg0)
+
+	var _mount Mount // out
+
+	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Mount)
+
+	return _mount
 }
 
 // Name gets the name of @volume.
@@ -252,6 +415,23 @@ func (v volume) SortKey() string {
 	return _utf8
 }
 
+// SymbolicIcon gets the symbolic icon for @volume.
+func (v volume) SymbolicIcon() Icon {
+	var _arg0 *C.GVolume // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.g_volume_get_symbolic_icon(_arg0)
+
+	var _icon Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+
+	return _icon
+}
+
 // UUID gets the UUID for the @volume. The reference is typically based on
 // the file system UUID for the volume in question and should be considered
 // an opaque string. Returns nil if there is no UUID available.
@@ -270,6 +450,31 @@ func (v volume) UUID() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// MountFinish finishes mounting a volume. If any errors occurred during the
+// operation, @error will be set to contain the errors and false will be
+// returned.
+//
+// If the mount operation succeeded, g_volume_get_mount() on @volume is
+// guaranteed to return the mount right after calling this function; there's
+// no need to listen for the 'mount-added' signal on Monitor.
+func (v volume) MountFinish(result AsyncResult) error {
+	var _arg0 *C.GVolume      // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // ShouldAutomount returns whether the volume should be automatically

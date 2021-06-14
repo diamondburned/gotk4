@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,20 +25,11 @@ func init() {
 // selecting multiple elements.
 type MultiSelection interface {
 	gextras.Objector
-	gio.ListModel
-	SelectionModel
-
-	// SetModel sets the model that @self should wrap.
-	//
-	// If @model is nil, @self will be empty.
-	SetModel(model gio.ListModel)
 }
 
 // multiSelection implements the MultiSelection class.
 type multiSelection struct {
 	gextras.Objector
-	gio.ListModel
-	SelectionModel
 }
 
 var _ MultiSelection = (*multiSelection)(nil)
@@ -48,9 +38,7 @@ var _ MultiSelection = (*multiSelection)(nil)
 // primarily used internally.
 func WrapMultiSelection(obj *externglib.Object) MultiSelection {
 	return multiSelection{
-		Objector:       obj,
-		gio.ListModel:  gio.WrapListModel(obj),
-		SelectionModel: WrapSelectionModel(obj),
+		Objector: obj,
 	}
 }
 
@@ -58,17 +46,4 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMultiSelection(obj), nil
-}
-
-// SetModel sets the model that @self should wrap.
-//
-// If @model is nil, @self will be empty.
-func (s multiSelection) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkMultiSelection // out
-	var _arg1 *C.GListModel        // out
-
-	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_multi_selection_set_model(_arg0, _arg1)
 }

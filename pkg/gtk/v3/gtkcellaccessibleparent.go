@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,11 +32,11 @@ type CellAccessibleParentOverrider interface {
 
 	ExpandCollapse(cell CellAccessible)
 
-	CellArea(cell CellAccessible) gdk.Rectangle
-
 	CellPosition(cell CellAccessible) (row int, column int)
 
 	ChildIndex(cell CellAccessible) int
+
+	RendererState(cell CellAccessible) CellRendererState
 
 	GrabFocus(cell CellAccessible) bool
 }
@@ -98,20 +97,6 @@ func (p cellAccessibleParent) ExpandCollapse(cell CellAccessible) {
 	C.gtk_cell_accessible_parent_expand_collapse(_arg0, _arg1)
 }
 
-func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
-	var _arg0 *C.GtkCellAccessibleParent // out
-	var _arg1 *C.GtkCellAccessible       // out
-
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	var _cellRect gdk.Rectangle
-
-	C.gtk_cell_accessible_parent_get_cell_area(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_cellRect)))
-
-	return _cellRect
-}
-
 func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -149,6 +134,24 @@ func (p cellAccessibleParent) ChildIndex(cell CellAccessible) int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+func (p cellAccessibleParent) RendererState(cell CellAccessible) CellRendererState {
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+
+	var _cret C.GtkCellRendererState // in
+
+	_cret = C.gtk_cell_accessible_parent_get_renderer_state(_arg0, _arg1)
+
+	var _cellRendererState CellRendererState // out
+
+	_cellRendererState = CellRendererState(_cret)
+
+	return _cellRendererState
 }
 
 func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {

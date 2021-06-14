@@ -18,7 +18,7 @@ func (ng *NamespaceGenerator) generateAliases() {
 		if !alias.IsIntrospectable() {
 			continue
 		}
-		if ng.mustIgnore(alias.Name, alias.CType) {
+		if ng.mustIgnore(&alias.Name, &alias.CType) {
 			continue
 		}
 

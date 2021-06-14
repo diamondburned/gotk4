@@ -41,6 +41,16 @@ func init() {
 type Clipboard interface {
 	gextras.Objector
 
+	// Content returns the `GdkContentProvider` currently set on @clipboard.
+	//
+	// If the @clipboard is empty or its contents are not owned by the current
+	// process, nil will be returned.
+	Content() ContentProvider
+	// Display gets the `GdkDisplay` that the clipboard was created for.
+	Display() Display
+	// Formats gets the formats that the clipboard can provide its current
+	// contents in.
+	Formats() *ContentFormats
 	// IsLocal returns if the clipboard is local.
 	//
 	// A clipboard is considered local if it was last claimed by the running
@@ -62,8 +72,6 @@ type Clipboard interface {
 	// @clipboard's read functions, @clipboard will select the best format to
 	// transfer the contents and then request that format from @provider.
 	SetContent(provider ContentProvider) bool
-	// SetValue sets the @clipboard to contain the given @value.
-	SetValue(value **externglib.Value)
 }
 
 // clipboard implements the Clipboard class.
@@ -85,6 +93,61 @@ func marshalClipboard(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapClipboard(obj), nil
+}
+
+// Content returns the `GdkContentProvider` currently set on @clipboard.
+//
+// If the @clipboard is empty or its contents are not owned by the current
+// process, nil will be returned.
+func (c clipboard) Content() ContentProvider {
+	var _arg0 *C.GdkClipboard // out
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkContentProvider // in
+
+	_cret = C.gdk_clipboard_get_content(_arg0)
+
+	var _contentProvider ContentProvider // out
+
+	_contentProvider = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ContentProvider)
+
+	return _contentProvider
+}
+
+// Display gets the `GdkDisplay` that the clipboard was created for.
+func (c clipboard) Display() Display {
+	var _arg0 *C.GdkClipboard // out
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_clipboard_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
+}
+
+// Formats gets the formats that the clipboard can provide its current
+// contents in.
+func (c clipboard) Formats() *ContentFormats {
+	var _arg0 *C.GdkClipboard // out
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkContentFormats // in
+
+	_cret = C.gdk_clipboard_get_formats(_arg0)
+
+	var _contentFormats *ContentFormats // out
+
+	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
+
+	return _contentFormats
 }
 
 // IsLocal returns if the clipboard is local.
@@ -142,15 +205,4 @@ func (c clipboard) SetContent(provider ContentProvider) bool {
 	}
 
 	return _ok
-}
-
-// SetValue sets the @clipboard to contain the given @value.
-func (c clipboard) SetValue(value **externglib.Value) {
-	var _arg0 *C.GdkClipboard // out
-	var _arg1 *C.GValue       // out
-
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GValue)(value.GValue)
-
-	C.gdk_clipboard_set_value(_arg0, _arg1)
 }

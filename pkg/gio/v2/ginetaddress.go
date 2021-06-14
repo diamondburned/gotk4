@@ -43,6 +43,8 @@ type InetAddress interface {
 
 	// Equal checks if two Address instances are equal, e.g. the same address.
 	Equal(otherAddress InetAddress) bool
+	// Family gets @address's family
+	Family() SocketFamily
 	// IsAny tests whether @address is the "any" address for its family.
 	IsAny() bool
 	// IsLinkLocal tests whether @address is a link-local address (that is, if
@@ -97,6 +99,58 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 	return WrapInetAddress(obj), nil
 }
 
+// NewInetAddressAny constructs a class InetAddress.
+func NewInetAddressAny(family SocketFamily) InetAddress {
+	var _arg1 C.GSocketFamily // out
+
+	_arg1 = (C.GSocketFamily)(family)
+
+	var _cret C.GInetAddress // in
+
+	_cret = C.g_inet_address_new_any(_arg1)
+
+	var _inetAddress InetAddress // out
+
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
+
+	return _inetAddress
+}
+
+// NewInetAddressFromString constructs a class InetAddress.
+func NewInetAddressFromString(string string) InetAddress {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GInetAddress // in
+
+	_cret = C.g_inet_address_new_from_string(_arg1)
+
+	var _inetAddress InetAddress // out
+
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
+
+	return _inetAddress
+}
+
+// NewInetAddressLoopback constructs a class InetAddress.
+func NewInetAddressLoopback(family SocketFamily) InetAddress {
+	var _arg1 C.GSocketFamily // out
+
+	_arg1 = (C.GSocketFamily)(family)
+
+	var _cret C.GInetAddress // in
+
+	_cret = C.g_inet_address_new_loopback(_arg1)
+
+	var _inetAddress InetAddress // out
+
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
+
+	return _inetAddress
+}
+
 // Equal checks if two Address instances are equal, e.g. the same address.
 func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	var _arg0 *C.GInetAddress // out
@@ -116,6 +170,23 @@ func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	}
 
 	return _ok
+}
+
+// Family gets @address's family
+func (a inetAddress) Family() SocketFamily {
+	var _arg0 *C.GInetAddress // out
+
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+
+	var _cret C.GSocketFamily // in
+
+	_cret = C.g_inet_address_get_family(_arg0)
+
+	var _socketFamily SocketFamily // out
+
+	_socketFamily = SocketFamily(_cret)
+
+	return _socketFamily
 }
 
 // IsAny tests whether @address is the "any" address for its family.

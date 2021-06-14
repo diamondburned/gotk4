@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,6 +77,27 @@ func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapUnixOutputStream(obj), nil
+}
+
+// NewUnixOutputStream constructs a class UnixOutputStream.
+func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
+	var _arg1 C.gint     // out
+	var _arg2 C.gboolean // out
+
+	_arg1 = C.gint(fd)
+	if closeFd {
+		_arg2 = C.TRUE
+	}
+
+	var _cret C.GUnixOutputStream // in
+
+	_cret = C.g_unix_output_stream_new(_arg1, _arg2)
+
+	var _unixOutputStream UnixOutputStream // out
+
+	_unixOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixOutputStream)
+
+	return _unixOutputStream
 }
 
 // CloseFd returns whether the file descriptor of @stream will be closed

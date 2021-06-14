@@ -67,6 +67,19 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 	return WrapWindowGroup(obj), nil
 }
 
+// NewWindowGroup constructs a class WindowGroup.
+func NewWindowGroup() WindowGroup {
+	var _cret C.GtkWindowGroup // in
+
+	_cret = C.gtk_window_group_new()
+
+	var _windowGroup WindowGroup // out
+
+	_windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(WindowGroup)
+
+	return _windowGroup
+}
+
 // AddWindow adds a window to a `GtkWindowGroup`.
 func (w windowGroup) AddWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out

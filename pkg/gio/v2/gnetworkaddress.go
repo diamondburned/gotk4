@@ -75,6 +75,43 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	return WrapNetworkAddress(obj), nil
 }
 
+// NewNetworkAddress constructs a class NetworkAddress.
+func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
+	var _arg1 *C.gchar  // out
+	var _arg2 C.guint16 // out
+
+	_arg1 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(port)
+
+	var _cret C.GNetworkAddress // in
+
+	_cret = C.g_network_address_new(_arg1, _arg2)
+
+	var _networkAddress NetworkAddress // out
+
+	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkAddress)
+
+	return _networkAddress
+}
+
+// NewNetworkAddressLoopback constructs a class NetworkAddress.
+func NewNetworkAddressLoopback(port uint16) NetworkAddress {
+	var _arg1 C.guint16 // out
+
+	_arg1 = C.guint16(port)
+
+	var _cret C.GNetworkAddress // in
+
+	_cret = C.g_network_address_new_loopback(_arg1)
+
+	var _networkAddress NetworkAddress // out
+
+	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkAddress)
+
+	return _networkAddress
+}
+
 // Hostname gets @addr's hostname. This might be either UTF-8 or
 // ASCII-encoded, depending on what @addr was created with.
 func (a networkAddress) Hostname() string {

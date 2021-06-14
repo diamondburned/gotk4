@@ -3,7 +3,10 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -49,37 +52,6 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// DeviceGrabAdd adds a GTK+ grab on @device, so all the events on @device and
-// its associated pointer or keyboard (if any) are delivered to @widget. If the
-// @block_others parameter is true, any other devices will be unable to interact
-// with @widget during the grab.
-func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
-	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.GdkDevice // out
-	var _arg3 C.gboolean   // out
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	if blockOthers {
-		_arg3 = C.TRUE
-	}
-
-	C.gtk_device_grab_add(_arg1, _arg2, _arg3)
-}
-
-// DeviceGrabRemove removes a device grab from the given widget.
-//
-// You have to pair calls to gtk_device_grab_add() and gtk_device_grab_remove().
-func DeviceGrabRemove(widget Widget, device gdk.Device) {
-	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.GdkDevice // out
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	C.gtk_device_grab_remove(_arg1, _arg2)
 }
 
 // DisableSetlocale prevents gtk_init(), gtk_init_check(), gtk_init_with_args()
@@ -180,6 +152,36 @@ func GetInterfaceAge() uint {
 	return _guint
 }
 
+// GetLocaleDirection: get the direction of the current locale. This is the
+// expected reading direction for text and UI.
+//
+// This function depends on the current locale being set with setlocale() and
+// will default to setting the GTK_TEXT_DIR_LTR direction otherwise.
+// GTK_TEXT_DIR_NONE will never be returned.
+//
+// GTK+ sets the default text direction according to the locale during
+// gtk_init(), and you should normally use gtk_widget_get_direction() or
+// gtk_widget_get_default_direction() to obtain the current direcion.
+//
+// This function is only needed rare cases when the locale is changed after GTK+
+// has already been initialized. In this case, you can use it to update the
+// default text direction as follows:
+//
+//    setlocale (LC_ALL, new_locale);
+//    direction = gtk_get_locale_direction ();
+//    gtk_widget_set_default_direction (direction);
+func GetLocaleDirection() TextDirection {
+	var _cret C.GtkTextDirection // in
+
+	_cret = C.gtk_get_locale_direction()
+
+	var _textDirection TextDirection // out
+
+	_textDirection = TextDirection(_cret)
+
+	return _textDirection
+}
+
 // GetMajorVersion returns the major version number of the GTK+ library. (e.g.
 // in GTK+ version 3.1.5 this is 3.)
 //
@@ -235,6 +237,19 @@ func GetMinorVersion() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// GrabGetCurrent queries the current grab of the default window group.
+func GrabGetCurrent() Widget {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_grab_get_current()
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // KeySnooperRemove removes the key snooper function with the given id.

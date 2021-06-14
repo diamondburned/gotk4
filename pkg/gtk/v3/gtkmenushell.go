@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,37 +55,6 @@ type MenuShell interface {
 	ActivateItem(menuItem Widget, forceDeactivate bool)
 	// Append adds a new MenuItem to the end of the menu shell's item list.
 	Append(child MenuItem)
-	// BindModel establishes a binding between a MenuShell and a Model.
-	//
-	// The contents of @shell are removed and then refilled with menu items
-	// according to @model. When @model changes, @shell is updated. Calling this
-	// function twice on @shell with different @model will cause the first
-	// binding to be replaced with a binding to the new model. If @model is nil
-	// then any previous binding is undone and all children are removed.
-	//
-	// @with_separators determines if toplevel items (eg: sections) have
-	// separators inserted between them. This is typically desired for menus but
-	// doesn’t make sense for menubars.
-	//
-	// If @action_namespace is non-nil then the effect is as if all actions
-	// mentioned in the @model have their names prefixed with the namespace,
-	// plus a dot. For example, if the action “quit” is mentioned and
-	// @action_namespace is “app” then the effective action name is “app.quit”.
-	//
-	// This function uses Actionable to define the action name and target values
-	// on the created menu items. If you want to use an action group other than
-	// “app” and “win”, or if you want to use a MenuShell outside of a
-	// ApplicationWindow, then you will need to attach your own action group to
-	// the widget hierarchy using gtk_widget_insert_action_group(). As an
-	// example, if you created a group with a “quit” action and inserted it with
-	// the name “mygroup” then you would use the action name “mygroup.quit” in
-	// your Model.
-	//
-	// For most cases you are probably better off using
-	// gtk_menu_new_from_model() or gtk_menu_bar_new_from_model() or just
-	// directly passing the Model to gtk_application_set_app_menu() or
-	// gtk_application_set_menubar().
-	BindModel(model gio.MenuModel, actionNamespace string, withSeparators bool)
 	// Cancel cancels the selection within the menu shell.
 	Cancel()
 	// Deactivate deactivates the menu shell.
@@ -95,6 +64,13 @@ type MenuShell interface {
 	// Deselect deselects the currently selected item from the menu shell, if
 	// any.
 	Deselect()
+	// ParentShell gets the parent menu shell.
+	//
+	// The parent menu shell of a submenu is the Menu or MenuBar from which it
+	// was opened up.
+	ParentShell() Widget
+	// SelectedItem gets the currently selected item.
+	SelectedItem() Widget
 	// TakeFocus returns true if the menu shell will take the keyboard focus on
 	// popup.
 	TakeFocus() bool
@@ -185,53 +161,6 @@ func (m menuShell) Append(child MenuItem) {
 	C.gtk_menu_shell_append(_arg0, _arg1)
 }
 
-// BindModel establishes a binding between a MenuShell and a Model.
-//
-// The contents of @shell are removed and then refilled with menu items
-// according to @model. When @model changes, @shell is updated. Calling this
-// function twice on @shell with different @model will cause the first
-// binding to be replaced with a binding to the new model. If @model is nil
-// then any previous binding is undone and all children are removed.
-//
-// @with_separators determines if toplevel items (eg: sections) have
-// separators inserted between them. This is typically desired for menus but
-// doesn’t make sense for menubars.
-//
-// If @action_namespace is non-nil then the effect is as if all actions
-// mentioned in the @model have their names prefixed with the namespace,
-// plus a dot. For example, if the action “quit” is mentioned and
-// @action_namespace is “app” then the effective action name is “app.quit”.
-//
-// This function uses Actionable to define the action name and target values
-// on the created menu items. If you want to use an action group other than
-// “app” and “win”, or if you want to use a MenuShell outside of a
-// ApplicationWindow, then you will need to attach your own action group to
-// the widget hierarchy using gtk_widget_insert_action_group(). As an
-// example, if you created a group with a “quit” action and inserted it with
-// the name “mygroup” then you would use the action name “mygroup.quit” in
-// your Model.
-//
-// For most cases you are probably better off using
-// gtk_menu_new_from_model() or gtk_menu_bar_new_from_model() or just
-// directly passing the Model to gtk_application_set_app_menu() or
-// gtk_application_set_menubar().
-func (m menuShell) BindModel(model gio.MenuModel, actionNamespace string, withSeparators bool) {
-	var _arg0 *C.GtkMenuShell // out
-	var _arg1 *C.GMenuModel   // out
-	var _arg2 *C.gchar        // out
-	var _arg3 C.gboolean      // out
-
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.gchar)(C.CString(actionNamespace))
-	defer C.free(unsafe.Pointer(_arg2))
-	if withSeparators {
-		_arg3 = C.TRUE
-	}
-
-	C.gtk_menu_shell_bind_model(_arg0, _arg1, _arg2, _arg3)
-}
-
 // Cancel cancels the selection within the menu shell.
 func (m menuShell) Cancel() {
 	var _arg0 *C.GtkMenuShell // out
@@ -260,6 +189,43 @@ func (m menuShell) Deselect() {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_shell_deselect(_arg0)
+}
+
+// ParentShell gets the parent menu shell.
+//
+// The parent menu shell of a submenu is the Menu or MenuBar from which it
+// was opened up.
+func (m menuShell) ParentShell() Widget {
+	var _arg0 *C.GtkMenuShell // out
+
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_menu_shell_get_parent_shell(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// SelectedItem gets the currently selected item.
+func (m menuShell) SelectedItem() Widget {
+	var _arg0 *C.GtkMenuShell // out
+
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_menu_shell_get_selected_item(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // TakeFocus returns true if the menu shell will take the keyboard focus on

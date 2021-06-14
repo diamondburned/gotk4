@@ -59,11 +59,32 @@ type Display interface {
 	// This is most useful for X11. On windowing systems where requests are
 	// handled synchronously, this function will do nothing.
 	Flush()
+	// AppLaunchContext returns a AppLaunchContext suitable for launching
+	// applications on the given display.
+	AppLaunchContext() AppLaunchContext
 	// DefaultCursorSize returns the default size to use for cursors on
 	// @display.
 	DefaultCursorSize() uint
+	// DefaultGroup returns the default group leader window for all toplevel
+	// windows on @display. This window is implicitly created by GDK. See
+	// gdk_window_set_group().
+	DefaultGroup() Window
+	// DefaultScreen: get the default Screen for @display.
+	DefaultScreen() Screen
+	// DefaultSeat returns the default Seat for this display.
+	DefaultSeat() Seat
+	// DeviceManager returns the DeviceManager associated to @display.
+	DeviceManager() DeviceManager
 	// MaximalCursorSize gets the maximal size to use for cursors on @display.
 	MaximalCursorSize() (width uint, height uint)
+	// Monitor gets a monitor associated with this display.
+	Monitor(monitorNum int) Monitor
+	// MonitorAtPoint gets the monitor in which the point (@x, @y) is located,
+	// or a nearby monitor if the point is not in any monitor.
+	MonitorAtPoint(x int, y int) Monitor
+	// MonitorAtWindow gets the monitor in which the largest area of @window
+	// resides, or a monitor close to @window if it is outside of all monitors.
+	MonitorAtWindow(window Window) Monitor
 	// NMonitors gets the number of monitors that belong to @display.
 	//
 	// The returned number is valid until the next emission of the
@@ -73,6 +94,23 @@ type Display interface {
 	NScreens() int
 	// Name gets the name of the display.
 	Name() string
+	// Pointer gets the current location of the pointer and the current modifier
+	// mask for a given display.
+	Pointer() (screen Screen, x int, y int, mask ModifierType)
+	// PrimaryMonitor gets the primary monitor for the display.
+	//
+	// The primary monitor is considered the monitor where the “main desktop”
+	// lives. While normal application windows typically allow the window
+	// manager to place the windows, specialized desktop applications such as
+	// panels should place themselves on the primary monitor.
+	PrimaryMonitor() Monitor
+	// Screen returns a screen object for one of the screens of the display.
+	Screen(screenNum int) Screen
+	// WindowAtPointer obtains the window underneath the mouse pointer,
+	// returning the location of the pointer in that window in @win_x, @win_y
+	// for @screen. Returns nil if the window under the mouse pointer is not
+	// known to GDK (for example, belongs to another application).
+	WindowAtPointer() (winX int, winY int, window Window)
 	// HasPending returns whether the display has events that are waiting to be
 	// processed.
 	HasPending() bool
@@ -240,6 +278,24 @@ func (d display) Flush() {
 	C.gdk_display_flush(_arg0)
 }
 
+// AppLaunchContext returns a AppLaunchContext suitable for launching
+// applications on the given display.
+func (d display) AppLaunchContext() AppLaunchContext {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkAppLaunchContext // in
+
+	_cret = C.gdk_display_get_app_launch_context(_arg0)
+
+	var _appLaunchContext AppLaunchContext // out
+
+	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppLaunchContext)
+
+	return _appLaunchContext
+}
+
 // DefaultCursorSize returns the default size to use for cursors on
 // @display.
 func (d display) DefaultCursorSize() uint {
@@ -256,6 +312,76 @@ func (d display) DefaultCursorSize() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// DefaultGroup returns the default group leader window for all toplevel
+// windows on @display. This window is implicitly created by GDK. See
+// gdk_window_set_group().
+func (d display) DefaultGroup() Window {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_display_get_default_group(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// DefaultScreen: get the default Screen for @display.
+func (d display) DefaultScreen() Screen {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkScreen // in
+
+	_cret = C.gdk_display_get_default_screen(_arg0)
+
+	var _screen Screen // out
+
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
+
+	return _screen
+}
+
+// DefaultSeat returns the default Seat for this display.
+func (d display) DefaultSeat() Seat {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkSeat // in
+
+	_cret = C.gdk_display_get_default_seat(_arg0)
+
+	var _seat Seat // out
+
+	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Seat)
+
+	return _seat
+}
+
+// DeviceManager returns the DeviceManager associated to @display.
+func (d display) DeviceManager() DeviceManager {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkDeviceManager // in
+
+	_cret = C.gdk_display_get_device_manager(_arg0)
+
+	var _deviceManager DeviceManager // out
+
+	_deviceManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DeviceManager)
+
+	return _deviceManager
 }
 
 // MaximalCursorSize gets the maximal size to use for cursors on @display.
@@ -276,6 +402,67 @@ func (d display) MaximalCursorSize() (width uint, height uint) {
 	_height = (uint)(_arg2)
 
 	return _width, _height
+}
+
+// Monitor gets a monitor associated with this display.
+func (d display) Monitor(monitorNum int) Monitor {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.int         // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(monitorNum)
+
+	var _cret *C.GdkMonitor // in
+
+	_cret = C.gdk_display_get_monitor(_arg0, _arg1)
+
+	var _monitor Monitor // out
+
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+
+	return _monitor
+}
+
+// MonitorAtPoint gets the monitor in which the point (@x, @y) is located,
+// or a nearby monitor if the point is not in any monitor.
+func (d display) MonitorAtPoint(x int, y int) Monitor {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.int         // out
+	var _arg2 C.int         // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+
+	var _cret *C.GdkMonitor // in
+
+	_cret = C.gdk_display_get_monitor_at_point(_arg0, _arg1, _arg2)
+
+	var _monitor Monitor // out
+
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+
+	return _monitor
+}
+
+// MonitorAtWindow gets the monitor in which the largest area of @window
+// resides, or a monitor close to @window if it is outside of all monitors.
+func (d display) MonitorAtWindow(window Window) Monitor {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.GdkWindow  // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+
+	var _cret *C.GdkMonitor // in
+
+	_cret = C.gdk_display_get_monitor_at_window(_arg0, _arg1)
+
+	var _monitor Monitor // out
+
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+
+	return _monitor
 }
 
 // NMonitors gets the number of monitors that belong to @display.
@@ -330,6 +517,100 @@ func (d display) Name() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Pointer gets the current location of the pointer and the current modifier
+// mask for a given display.
+func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _arg1 *C.GdkScreen      // in
+	var _arg2 C.gint            // in
+	var _arg3 C.gint            // in
+	var _arg4 C.GdkModifierType // in
+
+	C.gdk_display_get_pointer(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+
+	var _screen Screen     // out
+	var _x int             // out
+	var _y int             // out
+	var _mask ModifierType // out
+
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(Screen)
+	_x = (int)(_arg2)
+	_y = (int)(_arg3)
+	_mask = ModifierType(_arg4)
+
+	return _screen, _x, _y, _mask
+}
+
+// PrimaryMonitor gets the primary monitor for the display.
+//
+// The primary monitor is considered the monitor where the “main desktop”
+// lives. While normal application windows typically allow the window
+// manager to place the windows, specialized desktop applications such as
+// panels should place themselves on the primary monitor.
+func (d display) PrimaryMonitor() Monitor {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GdkMonitor // in
+
+	_cret = C.gdk_display_get_primary_monitor(_arg0)
+
+	var _monitor Monitor // out
+
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+
+	return _monitor
+}
+
+// Screen returns a screen object for one of the screens of the display.
+func (d display) Screen(screenNum int) Screen {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.gint        // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.gint(screenNum)
+
+	var _cret *C.GdkScreen // in
+
+	_cret = C.gdk_display_get_screen(_arg0, _arg1)
+
+	var _screen Screen // out
+
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
+
+	return _screen
+}
+
+// WindowAtPointer obtains the window underneath the mouse pointer,
+// returning the location of the pointer in that window in @win_x, @win_y
+// for @screen. Returns nil if the window under the mouse pointer is not
+// known to GDK (for example, belongs to another application).
+func (d display) WindowAtPointer() (winX int, winY int, window Window) {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_display_get_window_at_pointer(_arg0, &_arg1, &_arg2)
+
+	var _winX int      // out
+	var _winY int      // out
+	var _window Window // out
+
+	_winX = (int)(_arg1)
+	_winY = (int)(_arg2)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _winX, _winY, _window
 }
 
 // HasPending returns whether the display has events that are waiting to be

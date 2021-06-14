@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -38,6 +39,22 @@ func WrapTriangle(ptr unsafe.Pointer) *Triangle {
 func marshalTriangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapTriangle(unsafe.Pointer(b)), nil
+}
+
+// NewTriangleAlloc constructs a struct Triangle.
+func NewTriangleAlloc() *Triangle {
+	var _cret *C.graphene_triangle_t // in
+
+	_cret = C.graphene_triangle_alloc()
+
+	var _triangle *Triangle // out
+
+	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_triangle, func(v *Triangle) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _triangle
 }
 
 // Native returns the underlying C source pointer.
@@ -277,4 +294,77 @@ func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
 	C.graphene_triangle_get_vertices(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_a)), (*C.graphene_vec3_t)(unsafe.Pointer(&_b)), (*C.graphene_vec3_t)(unsafe.Pointer(&_c)))
 
 	return _a, _b, _c
+}
+
+// InitFromFloat initializes a #graphene_triangle_t using the three given arrays
+// of floating point values, each representing the coordinates of a point in 3D
+// space.
+func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Triangle {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 *C.float
+	var _arg2 *C.float
+	var _arg3 *C.float
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.float)(unsafe.Pointer(&a))
+	_arg2 = (*C.float)(unsafe.Pointer(&b))
+	_arg3 = (*C.float)(unsafe.Pointer(&c))
+
+	var _cret *C.graphene_triangle_t // in
+
+	_cret = C.graphene_triangle_init_from_float(_arg0, _arg1, _arg2, _arg3)
+
+	var _triangle *Triangle // out
+
+	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+
+	return _triangle
+}
+
+// InitFromPoint3D initializes a #graphene_triangle_t using the three given 3D
+// points.
+func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 *C.graphene_point3d_t  // out
+	var _arg2 *C.graphene_point3d_t  // out
+	var _arg3 *C.graphene_point3d_t  // out
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(a.Native()))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
+	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.graphene_triangle_t // in
+
+	_cret = C.graphene_triangle_init_from_point3d(_arg0, _arg1, _arg2, _arg3)
+
+	var _triangle *Triangle // out
+
+	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+
+	return _triangle
+}
+
+// InitFromVec3 initializes a #graphene_triangle_t using the three given
+// vectors.
+func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 *C.graphene_vec3_t     // out
+	var _arg2 *C.graphene_vec3_t     // out
+	var _arg3 *C.graphene_vec3_t     // out
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(a.Native()))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
+	_arg3 = (*C.graphene_vec3_t)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.graphene_triangle_t // in
+
+	_cret = C.graphene_triangle_init_from_vec3(_arg0, _arg1, _arg2, _arg3)
+
+	var _triangle *Triangle // out
+
+	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+
+	return _triangle
 }

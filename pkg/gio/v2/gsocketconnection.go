@@ -5,6 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,6 +50,25 @@ func init() {
 type SocketConnection interface {
 	IOStream
 
+	// Connect: connect @connection to the specified remote address.
+	Connect(address SocketAddress, cancellable Cancellable) error
+	// ConnectFinish gets the result of a g_socket_connection_connect_async()
+	// call.
+	ConnectFinish(result AsyncResult) error
+	// LocalAddress: try to get the local address of a socket connection.
+	LocalAddress() (SocketAddress, error)
+	// RemoteAddress: try to get the remote address of a socket connection.
+	//
+	// Since GLib 2.40, when used with g_socket_client_connect() or
+	// g_socket_client_connect_async(), during emission of
+	// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
+	// that will be used for the connection. This allows applications to print
+	// e.g. "Connecting to example.com (10.42.77.3)...".
+	RemoteAddress() (SocketAddress, error)
+	// Socket gets the underlying #GSocket object of the connection. This can be
+	// useful if you want to do something unusual on it not supported by the
+	// Connection APIs.
+	Socket() Socket
 	// IsConnected checks if @connection is connected. This is equivalent to
 	// calling g_socket_is_connected() on @connection's underlying #GSocket.
 	IsConnected() bool
@@ -72,6 +93,112 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSocketConnection(obj), nil
+}
+
+// Connect: connect @connection to the specified remote address.
+func (c socketConnection) Connect(address SocketAddress, cancellable Cancellable) error {
+	var _arg0 *C.GSocketConnection // out
+	var _arg1 *C.GSocketAddress    // out
+	var _arg2 *C.GCancellable      // out
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_socket_connection_connect(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// ConnectFinish gets the result of a g_socket_connection_connect_async()
+// call.
+func (c socketConnection) ConnectFinish(result AsyncResult) error {
+	var _arg0 *C.GSocketConnection // out
+	var _arg1 *C.GAsyncResult      // out
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_socket_connection_connect_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// LocalAddress: try to get the local address of a socket connection.
+func (c socketConnection) LocalAddress() (SocketAddress, error) {
+	var _arg0 *C.GSocketConnection // out
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GSocketAddress // in
+	var _cerr *C.GError         // in
+
+	_cret = C.g_socket_connection_get_local_address(_arg0, &_cerr)
+
+	var _socketAddress SocketAddress // out
+	var _goerr error                 // out
+
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketAddress, _goerr
+}
+
+// RemoteAddress: try to get the remote address of a socket connection.
+//
+// Since GLib 2.40, when used with g_socket_client_connect() or
+// g_socket_client_connect_async(), during emission of
+// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
+// that will be used for the connection. This allows applications to print
+// e.g. "Connecting to example.com (10.42.77.3)...".
+func (c socketConnection) RemoteAddress() (SocketAddress, error) {
+	var _arg0 *C.GSocketConnection // out
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GSocketAddress // in
+	var _cerr *C.GError         // in
+
+	_cret = C.g_socket_connection_get_remote_address(_arg0, &_cerr)
+
+	var _socketAddress SocketAddress // out
+	var _goerr error                 // out
+
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketAddress, _goerr
+}
+
+// Socket gets the underlying #GSocket object of the connection. This can be
+// useful if you want to do something unusual on it not supported by the
+// Connection APIs.
+func (c socketConnection) Socket() Socket {
+	var _arg0 *C.GSocketConnection // out
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GSocket // in
+
+	_cret = C.g_socket_connection_get_socket(_arg0)
+
+	var _socket Socket // out
+
+	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Socket)
+
+	return _socket
 }
 
 // IsConnected checks if @connection is connected. This is equivalent to

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,6 +24,31 @@ func init() {
 	})
 }
 
+// CellLayoutDataFunc: a function which should set the value of @cell_layout’s
+// cell renderer(s) as appropriate.
+type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
+
+//export gotk4_CellLayoutDataFunc
+func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
+	v := box.Get(uintptr(arg4))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var cellLayout CellLayout // out
+	var cell CellRenderer     // out
+	var treeModel TreeModel   // out
+	var iter *TreeIter        // out
+
+	cellLayout = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(CellLayout)
+	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(CellRenderer)
+	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(TreeModel)
+	iter = WrapTreeIter(unsafe.Pointer(arg3))
+
+	fn := v.(CellLayoutDataFunc)
+	fn(cellLayout, cell, treeModel, iter)
+}
+
 // CellLayoutOverrider contains methods that are overridable. This
 // interface is a subset of the interface CellLayout.
 type CellLayoutOverrider interface {
@@ -39,6 +65,10 @@ type CellLayoutOverrider interface {
 	// ClearAttributes clears all existing attributes previously set with
 	// gtk_cell_layout_set_attributes().
 	ClearAttributes(cell CellRenderer)
+	// Area returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	Area() CellArea
 	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
 	// then the @cell is allocated no more space than it needs. Any unused space
 	// is divided evenly between cells for which @expand is true.
@@ -211,6 +241,25 @@ func (c cellLayout) ClearAttributes(cell CellRenderer) {
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_layout_clear_attributes(_arg0, _arg1)
+}
+
+// Area returns the underlying CellArea which might be @cell_layout if
+// called on a CellArea or might be nil if no CellArea is used by
+// @cell_layout.
+func (c cellLayout) Area() CellArea {
+	var _arg0 *C.GtkCellLayout // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkCellArea // in
+
+	_cret = C.gtk_cell_layout_get_area(_arg0)
+
+	var _cellArea CellArea // out
+
+	_cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellArea)
+
+	return _cellArea
 }
 
 // PackEnd adds the @cell to the end of @cell_layout. If @expand is false,

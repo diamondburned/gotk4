@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -29,6 +30,14 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_async_initable_get_type()), F: marshalAsyncInitable},
 	})
+}
+
+// AsyncInitableOverrider contains methods that are overridable. This
+// interface is a subset of the interface AsyncInitable.
+type AsyncInitableOverrider interface {
+	// InitFinish finishes asynchronous initialization and returns the result.
+	// See g_async_initable_init_async().
+	InitFinish(res AsyncResult) error
 }
 
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
@@ -130,6 +139,7 @@ func init() {
 //    }
 type AsyncInitable interface {
 	gextras.Objector
+	AsyncInitableOverrider
 }
 
 // asyncInitable implements the AsyncInitable interface.
@@ -151,4 +161,24 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAsyncInitable(obj), nil
+}
+
+// InitFinish finishes asynchronous initialization and returns the result.
+// See g_async_initable_init_async().
+func (i asyncInitable) InitFinish(res AsyncResult) error {
+	var _arg0 *C.GAsyncInitable // out
+	var _arg1 *C.GAsyncResult   // out
+
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,6 +42,22 @@ func WrapItem(ptr unsafe.Pointer) *Item {
 func marshalItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapItem(unsafe.Pointer(b)), nil
+}
+
+// NewItem constructs a struct Item.
+func NewItem() *Item {
+	var _cret *C.PangoItem // in
+
+	_cret = C.pango_item_new()
+
+	var _item *Item // out
+
+	_item = WrapItem(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_item, func(v *Item) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _item
 }
 
 // Native returns the underlying C source pointer.
@@ -89,6 +106,26 @@ func (i *Item) ApplyAttrs(iter *AttrIterator) {
 	C.pango_item_apply_attrs(_arg0, _arg1)
 }
 
+// Copy: copy an existing `PangoItem` structure.
+func (i *Item) Copy() *Item {
+	var _arg0 *C.PangoItem // out
+
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.PangoItem // in
+
+	_cret = C.pango_item_copy(_arg0)
+
+	var _ret *Item // out
+
+	_ret = WrapItem(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Item) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _ret
+}
+
 // Free: free a `PangoItem` and all associated memory.
 func (i *Item) Free() {
 	var _arg0 *C.PangoItem // out
@@ -96,4 +133,37 @@ func (i *Item) Free() {
 	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 
 	C.pango_item_free(_arg0)
+}
+
+// Split modifies @orig to cover only the text after @split_index, and returns a
+// new item that covers the text before @split_index that used to be in @orig.
+//
+// You can think of @split_index as the length of the returned item.
+// @split_index may not be 0, and it may not be greater than or equal to the
+// length of @orig (that is, there must be at least one byte assigned to each
+// item, you can't create a zero-length item). @split_offset is the length of
+// the first item in chars, and must be provided because the text used to
+// generate the item isn't available, so `pango_item_split()` can't count the
+// char length of the split items itself.
+func (o *Item) Split(splitIndex int, splitOffset int) *Item {
+	var _arg0 *C.PangoItem // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(o.Native()))
+	_arg1 = C.int(splitIndex)
+	_arg2 = C.int(splitOffset)
+
+	var _cret *C.PangoItem // in
+
+	_cret = C.pango_item_split(_arg0, _arg1, _arg2)
+
+	var _item *Item // out
+
+	_item = WrapItem(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_item, func(v *Item) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _item
 }

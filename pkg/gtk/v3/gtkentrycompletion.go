@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -21,6 +22,41 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_entry_completion_get_type()), F: marshalEntryCompletion},
 	})
+}
+
+// EntryCompletionMatchFunc: a function which decides whether the row indicated
+// by @iter matches a given @key, and should be displayed as a possible
+// completion for @key. Note that @key is normalized and case-folded (see
+// g_utf8_normalize() and g_utf8_casefold()). If this is not appropriate, match
+// functions have access to the unmodified key via `gtk_entry_get_text
+// (GTK_ENTRY (gtk_entry_completion_get_entry ()))`.
+type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter *TreeIter) (ok bool)
+
+//export gotk4_EntryCompletionMatchFunc
+func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var completion EntryCompletion // out
+	var key string                 // out
+	var iter *TreeIter             // out
+
+	completion = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(EntryCompletion)
+	key = C.GoString(arg1)
+	iter = WrapTreeIter(unsafe.Pointer(arg2))
+
+	fn := v.(EntryCompletionMatchFunc)
+	ok := fn(completion, key, iter)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // EntryCompletion is an auxiliary object to be used in conjunction with Entry
@@ -84,6 +120,8 @@ type EntryCompletion interface {
 	// CompletionPrefix: get the original text entered by the user that
 	// triggered the completion or nil if there’s no completion ongoing.
 	CompletionPrefix() string
+	// Entry gets the entry @completion has been attached to.
+	Entry() Widget
 	// InlineCompletion returns whether the common prefix of the possible
 	// completions should be automatically inserted in the entry.
 	InlineCompletion() bool
@@ -91,6 +129,9 @@ type EntryCompletion interface {
 	InlineSelection() bool
 	// MinimumKeyLength returns the minimum key length as set for @completion.
 	MinimumKeyLength() int
+	// Model returns the model the EntryCompletion is using as data source.
+	// Returns nil if the model is unset.
+	Model() TreeModel
 	// PopupCompletion returns whether the completions should be presented in a
 	// popup window.
 	PopupCompletion() bool
@@ -179,6 +220,36 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 	return WrapEntryCompletion(obj), nil
 }
 
+// NewEntryCompletion constructs a class EntryCompletion.
+func NewEntryCompletion() EntryCompletion {
+	var _cret C.GtkEntryCompletion // in
+
+	_cret = C.gtk_entry_completion_new()
+
+	var _entryCompletion EntryCompletion // out
+
+	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryCompletion)
+
+	return _entryCompletion
+}
+
+// NewEntryCompletionWithArea constructs a class EntryCompletion.
+func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
+	var _arg1 *C.GtkCellArea // out
+
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+
+	var _cret C.GtkEntryCompletion // in
+
+	_cret = C.gtk_entry_completion_new_with_area(_arg1)
+
+	var _entryCompletion EntryCompletion // out
+
+	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryCompletion)
+
+	return _entryCompletion
+}
+
 // Complete requests a completion operation, or in other words a refiltering
 // of the current list with completions, using the current key. The
 // completion list view will be updated accordingly.
@@ -247,6 +318,23 @@ func (c entryCompletion) CompletionPrefix() string {
 	return _utf8
 }
 
+// Entry gets the entry @completion has been attached to.
+func (c entryCompletion) Entry() Widget {
+	var _arg0 *C.GtkEntryCompletion // out
+
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_entry_completion_get_entry(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // InlineCompletion returns whether the common prefix of the possible
 // completions should be automatically inserted in the entry.
 func (c entryCompletion) InlineCompletion() bool {
@@ -301,6 +389,24 @@ func (c entryCompletion) MinimumKeyLength() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Model returns the model the EntryCompletion is using as data source.
+// Returns nil if the model is unset.
+func (c entryCompletion) Model() TreeModel {
+	var _arg0 *C.GtkEntryCompletion // out
+
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkTreeModel // in
+
+	_cret = C.gtk_entry_completion_get_model(_arg0)
+
+	var _treeModel TreeModel // out
+
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+
+	return _treeModel
 }
 
 // PopupCompletion returns whether the completions should be presented in a

@@ -74,6 +74,24 @@ func marshalTexture(p uintptr) (interface{}, error) {
 	return WrapTexture(obj), nil
 }
 
+// NewTextureFromResource constructs a class Texture.
+func NewTextureFromResource(resourcePath string) Texture {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GdkTexture // in
+
+	_cret = C.gdk_texture_new_from_resource(_arg1)
+
+	var _texture Texture // out
+
+	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
+
+	return _texture
+}
+
 // Height returns the height of the @texture, in pixels.
 func (t texture) Height() int {
 	var _arg0 *C.GdkTexture // out

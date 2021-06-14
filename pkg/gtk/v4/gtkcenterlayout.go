@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,6 +32,16 @@ func init() {
 type CenterLayout interface {
 	LayoutManager
 
+	// BaselinePosition returns the baseline position of the layout.
+	BaselinePosition() BaselinePosition
+	// CenterWidget returns the center widget of the layout.
+	CenterWidget() Widget
+	// EndWidget returns the end widget of the layout.
+	EndWidget() Widget
+	// Orientation gets the current orienration of the layout manager.
+	Orientation() Orientation
+	// StartWidget returns the start widget fo the layout.
+	StartWidget() Widget
 	// SetBaselinePosition sets the new baseline position of @self
 	SetBaselinePosition(baselinePosition BaselinePosition)
 	// SetCenterWidget sets the new center widget of @self.
@@ -68,6 +79,104 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCenterLayout(obj), nil
+}
+
+// NewCenterLayout constructs a class CenterLayout.
+func NewCenterLayout() CenterLayout {
+	var _cret C.GtkCenterLayout // in
+
+	_cret = C.gtk_center_layout_new()
+
+	var _centerLayout CenterLayout // out
+
+	_centerLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CenterLayout)
+
+	return _centerLayout
+}
+
+// BaselinePosition returns the baseline position of the layout.
+func (s centerLayout) BaselinePosition() BaselinePosition {
+	var _arg0 *C.GtkCenterLayout // out
+
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkBaselinePosition // in
+
+	_cret = C.gtk_center_layout_get_baseline_position(_arg0)
+
+	var _baselinePosition BaselinePosition // out
+
+	_baselinePosition = BaselinePosition(_cret)
+
+	return _baselinePosition
+}
+
+// CenterWidget returns the center widget of the layout.
+func (s centerLayout) CenterWidget() Widget {
+	var _arg0 *C.GtkCenterLayout // out
+
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_center_layout_get_center_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// EndWidget returns the end widget of the layout.
+func (s centerLayout) EndWidget() Widget {
+	var _arg0 *C.GtkCenterLayout // out
+
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_center_layout_get_end_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// Orientation gets the current orienration of the layout manager.
+func (s centerLayout) Orientation() Orientation {
+	var _arg0 *C.GtkCenterLayout // out
+
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkOrientation // in
+
+	_cret = C.gtk_center_layout_get_orientation(_arg0)
+
+	var _orientation Orientation // out
+
+	_orientation = Orientation(_cret)
+
+	return _orientation
+}
+
+// StartWidget returns the start widget fo the layout.
+func (s centerLayout) StartWidget() Widget {
+	var _arg0 *C.GtkCenterLayout // out
+
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_center_layout_get_start_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // SetBaselinePosition sets the new baseline position of @self

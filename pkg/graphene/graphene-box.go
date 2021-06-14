@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -39,6 +40,22 @@ func WrapBox(ptr unsafe.Pointer) *Box {
 func marshalBox(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapBox(unsafe.Pointer(b)), nil
+}
+
+// NewBoxAlloc constructs a struct Box.
+func NewBoxAlloc() *Box {
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_alloc()
+
+	var _box *Box // out
+
+	_box = WrapBox(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_box, func(v *Box) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _box
 }
 
 // Native returns the underlying C source pointer.
@@ -271,6 +288,23 @@ func (b *Box) Size() Vec3 {
 	return _size
 }
 
+// Vertices computes the vertices of the given #graphene_box_t.
+func (b *Box) Vertices() [8]Vec3 {
+	var _arg0 *C.graphene_box_t // out
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+
+	var _arg1 [8]C.graphene_vec3_t
+
+	C.graphene_box_get_vertices(_arg0, &_arg1[0])
+
+	var _vertices [8]Vec3
+
+	_vertices = *(*[8]Vec3)(unsafe.Pointer(&_arg1))
+
+	return _vertices
+}
+
 // Width retrieves the size of the @box on the X axis.
 func (b *Box) Width() float32 {
 	var _arg0 *C.graphene_box_t // out
@@ -286,6 +320,118 @@ func (b *Box) Width() float32 {
 	_gfloat = (float32)(_cret)
 
 	return _gfloat
+}
+
+// Init initializes the given #graphene_box_t with two vertices.
+func (b *Box) Init(min *Point3D, max *Point3D) *Box {
+	var _arg0 *C.graphene_box_t     // out
+	var _arg1 *C.graphene_point3d_t // out
+	var _arg2 *C.graphene_point3d_t // out
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(min.Native()))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(max.Native()))
+
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_init(_arg0, _arg1, _arg2)
+
+	var _ret *Box // out
+
+	_ret = WrapBox(unsafe.Pointer(_cret))
+
+	return _ret
+}
+
+// InitFromBox initializes the given #graphene_box_t with the vertices of
+// another #graphene_box_t.
+func (b *Box) InitFromBox(src *Box) *Box {
+	var _arg0 *C.graphene_box_t // out
+	var _arg1 *C.graphene_box_t // out
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(src.Native()))
+
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_init_from_box(_arg0, _arg1)
+
+	var _ret *Box // out
+
+	_ret = WrapBox(unsafe.Pointer(_cret))
+
+	return _ret
+}
+
+// InitFromPoints initializes the given #graphene_box_t with the given array of
+// vertices.
+//
+// If @n_points is 0, the returned box is initialized with graphene_box_empty().
+func (b *Box) InitFromPoints(points []Point3D) *Box {
+	var _arg0 *C.graphene_box_t // out
+	var _arg2 *C.graphene_point3d_t
+	var _arg1 C.uint
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+	_arg1 = C.uint(len(points))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
+
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_init_from_points(_arg0, _arg1, _arg2)
+
+	var _ret *Box // out
+
+	_ret = WrapBox(unsafe.Pointer(_cret))
+
+	return _ret
+}
+
+// InitFromVec3 initializes the given #graphene_box_t with two vertices stored
+// inside #graphene_vec3_t.
+func (b *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
+	var _arg0 *C.graphene_box_t  // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 *C.graphene_vec3_t // out
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(min.Native()))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(max.Native()))
+
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_init_from_vec3(_arg0, _arg1, _arg2)
+
+	var _ret *Box // out
+
+	_ret = WrapBox(unsafe.Pointer(_cret))
+
+	return _ret
+}
+
+// InitFromVectors initializes the given #graphene_box_t with the given array of
+// vertices.
+//
+// If @n_vectors is 0, the returned box is initialized with
+// graphene_box_empty().
+func (b *Box) InitFromVectors(vectors []Vec3) *Box {
+	var _arg0 *C.graphene_box_t // out
+	var _arg2 *C.graphene_vec3_t
+	var _arg1 C.uint
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+	_arg1 = C.uint(len(vectors))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_init_from_vectors(_arg0, _arg1, _arg2)
+
+	var _ret *Box // out
+
+	_ret = WrapBox(unsafe.Pointer(_cret))
+
+	return _ret
 }
 
 // Intersection intersects the two given #graphene_box_t.

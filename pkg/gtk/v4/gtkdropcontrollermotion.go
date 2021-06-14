@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,6 +59,19 @@ func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDropControllerMotion(obj), nil
+}
+
+// NewDropControllerMotion constructs a class DropControllerMotion.
+func NewDropControllerMotion() DropControllerMotion {
+	var _cret C.GtkDropControllerMotion // in
+
+	_cret = C.gtk_drop_controller_motion_new()
+
+	var _dropControllerMotion DropControllerMotion // out
+
+	_dropControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DropControllerMotion)
+
+	return _dropControllerMotion
 }
 
 // ContainsPointer returns if a Drag-and-Drop operation is within the widget

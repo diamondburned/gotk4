@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -222,6 +223,19 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapConstraintLayout(obj), nil
+}
+
+// NewConstraintLayout constructs a class ConstraintLayout.
+func NewConstraintLayout() ConstraintLayout {
+	var _cret C.GtkConstraintLayout // in
+
+	_cret = C.gtk_constraint_layout_new()
+
+	var _constraintLayout ConstraintLayout // out
+
+	_constraintLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ConstraintLayout)
+
+	return _constraintLayout
 }
 
 // AddConstraint adds a constraint to the layout manager.

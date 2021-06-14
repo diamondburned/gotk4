@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,4 +69,25 @@ func marshalHBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapHBox(obj), nil
+}
+
+// NewHBox constructs a class HBox.
+func NewHBox(homogeneous bool, spacing int) HBox {
+	var _arg1 C.gboolean // out
+	var _arg2 C.gint     // out
+
+	if homogeneous {
+		_arg1 = C.TRUE
+	}
+	_arg2 = C.gint(spacing)
+
+	var _cret C.GtkHBox // in
+
+	_cret = C.gtk_hbox_new(_arg1, _arg2)
+
+	var _hBox HBox // out
+
+	_hBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HBox)
+
+	return _hBox
 }

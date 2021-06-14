@@ -105,6 +105,13 @@ func init() {
 type ApplicationCommandLine interface {
 	gextras.Objector
 
+	// CreateFileForArg creates a #GFile corresponding to a filename that was
+	// given as part of the invocation of @cmdline.
+	//
+	// This differs from g_file_new_for_commandline_arg() in that it resolves
+	// relative pathnames using the current working directory of the invoking
+	// process rather than the local process.
+	CreateFileForArg(arg string) File
 	// Arguments gets the list of arguments that was passed on the command line.
 	//
 	// The strings in the array may contain non-UTF-8 data on UNIX (such as
@@ -147,6 +154,16 @@ type ApplicationCommandLine interface {
 	ExitStatus() int
 	// IsRemote determines if @cmdline represents a remote invocation.
 	IsRemote() bool
+	// Stdin gets the stdin of the invoking process.
+	//
+	// The Stream can be used to read data passed to the standard input of the
+	// invoking process. This doesn't work on all platforms. Presently, it is
+	// only available on UNIX when using a D-Bus daemon capable of passing file
+	// descriptors. If stdin is not available then nil will be returned. In the
+	// future, support may be expanded to other platforms.
+	//
+	// You must only call this function once per commandline invocation.
+	Stdin() InputStream
 	// env gets the value of a particular environment variable of the command
 	// line invocation, as would be returned by g_getenv(). The strings may
 	// contain non-utf8 data.
@@ -202,6 +219,31 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapApplicationCommandLine(obj), nil
+}
+
+// CreateFileForArg creates a #GFile corresponding to a filename that was
+// given as part of the invocation of @cmdline.
+//
+// This differs from g_file_new_for_commandline_arg() in that it resolves
+// relative pathnames using the current working directory of the invoking
+// process rather than the local process.
+func (c applicationCommandLine) CreateFileForArg(arg string) File {
+	var _arg0 *C.GApplicationCommandLine // out
+	var _arg1 *C.gchar                   // out
+
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(arg))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GFile // in
+
+	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
+
+	var _file File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+
+	return _file
 }
 
 // Arguments gets the list of arguments that was passed on the command line.
@@ -344,6 +386,31 @@ func (c applicationCommandLine) IsRemote() bool {
 	}
 
 	return _ok
+}
+
+// Stdin gets the stdin of the invoking process.
+//
+// The Stream can be used to read data passed to the standard input of the
+// invoking process. This doesn't work on all platforms. Presently, it is
+// only available on UNIX when using a D-Bus daemon capable of passing file
+// descriptors. If stdin is not available then nil will be returned. In the
+// future, support may be expanded to other platforms.
+//
+// You must only call this function once per commandline invocation.
+func (c applicationCommandLine) Stdin() InputStream {
+	var _arg0 *C.GApplicationCommandLine // out
+
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GInputStream // in
+
+	_cret = C.g_application_command_line_get_stdin(_arg0)
+
+	var _inputStream InputStream // out
+
+	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
+
+	return _inputStream
 }
 
 // env gets the value of a particular environment variable of the command

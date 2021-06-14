@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -151,6 +152,29 @@ func marshalTable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTable(obj), nil
+}
+
+// NewTable constructs a class Table.
+func NewTable(rows uint, columns uint, homogeneous bool) Table {
+	var _arg1 C.guint    // out
+	var _arg2 C.guint    // out
+	var _arg3 C.gboolean // out
+
+	_arg1 = C.guint(rows)
+	_arg2 = C.guint(columns)
+	if homogeneous {
+		_arg3 = C.TRUE
+	}
+
+	var _cret C.GtkTable // in
+
+	_cret = C.gtk_table_new(_arg1, _arg2, _arg3)
+
+	var _table Table // out
+
+	_table = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Table)
+
+	return _table
 }
 
 // Attach adds a widget to a table. The number of “cells” that a widget will
@@ -433,6 +457,13 @@ func WrapTableChild(ptr unsafe.Pointer) *TableChild {
 // Native returns the underlying C source pointer.
 func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// Widget gets the field inside the struct.
+func (t *TableChild) Widget() Widget {
+	var v Widget // out
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget.Native()))).(Widget)
+	return v
 }
 
 // LeftAttach gets the field inside the struct.

@@ -5,6 +5,7 @@ package gobject
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -206,6 +207,59 @@ func (p *ParamSpecPool) Insert(pspec ParamSpec, ownerType externglib.Type) {
 	_arg2 = C.GType(ownerType)
 
 	C.g_param_spec_pool_insert(_arg0, _arg1, _arg2)
+}
+
+// List gets an array of all Specs owned by @owner_type in the pool.
+func (p *ParamSpecPool) List(ownerType externglib.Type) []ParamSpec {
+	var _arg0 *C.GParamSpecPool // out
+	var _arg1 C.GType           // out
+
+	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
+	_arg1 = C.GType(ownerType)
+
+	var _cret **C.GParamSpec
+	var _arg2 C.guint // in
+
+	_cret = C.g_param_spec_pool_list(_arg0, _arg1, &_arg2)
+
+	var _paramSpecs []ParamSpec
+
+	{
+		src := unsafe.Slice(_cret, _arg2)
+		defer C.free(unsafe.Pointer(_cret))
+		_paramSpecs = make([]ParamSpec, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_paramSpecs[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i].Native()))).(ParamSpec)
+		}
+	}
+
+	return _paramSpecs
+}
+
+// Lookup looks up a Spec in the pool.
+func (p *ParamSpecPool) Lookup(paramName string, ownerType externglib.Type, walkAncestors bool) ParamSpec {
+	var _arg0 *C.GParamSpecPool // out
+	var _arg1 *C.gchar          // out
+	var _arg2 C.GType           // out
+	var _arg3 C.gboolean        // out
+
+	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(paramName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GType(ownerType)
+	if walkAncestors {
+		_arg3 = C.TRUE
+	}
+
+	var _cret *C.GParamSpec // in
+
+	_cret = C.g_param_spec_pool_lookup(_arg0, _arg1, _arg2, _arg3)
+
+	var _paramSpec ParamSpec // out
+
+	_paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
+
+	return _paramSpec
 }
 
 // Remove removes a Spec from the pool.

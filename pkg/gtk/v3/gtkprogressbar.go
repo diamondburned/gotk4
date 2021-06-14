@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -85,9 +85,6 @@ type ProgressBar interface {
 	// block to move by a little bit (the amount of movement per pulse is
 	// determined by gtk_progress_bar_set_pulse_step()).
 	Pulse()
-	// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") the
-	// text if there is not enough space to render the entire string.
-	SetEllipsize(mode pango.EllipsizeMode)
 	// SetFraction causes the progress bar to “fill in” the given fraction of
 	// the bar. The fraction should be between 0.0 and 1.0, inclusive.
 	SetFraction(fraction float64)
@@ -141,6 +138,19 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapProgressBar(obj), nil
+}
+
+// NewProgressBar constructs a class ProgressBar.
+func NewProgressBar() ProgressBar {
+	var _cret C.GtkProgressBar // in
+
+	_cret = C.gtk_progress_bar_new()
+
+	var _progressBar ProgressBar // out
+
+	_progressBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ProgressBar)
+
+	return _progressBar
 }
 
 // Fraction returns the current fraction of the task that’s been completed.
@@ -247,18 +257,6 @@ func (p progressBar) Pulse() {
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	C.gtk_progress_bar_pulse(_arg0)
-}
-
-// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") the
-// text if there is not enough space to render the entire string.
-func (p progressBar) SetEllipsize(mode pango.EllipsizeMode) {
-	var _arg0 *C.GtkProgressBar    // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.PangoEllipsizeMode)(mode)
-
-	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
 }
 
 // SetFraction causes the progress bar to “fill in” the given fraction of

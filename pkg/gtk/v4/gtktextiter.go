@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -645,6 +647,31 @@ func (l *TextIter) Compare(rhs *TextIter) int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Copy creates a dynamically-allocated copy of an iterator.
+//
+// This function is not useful in applications, because iterators can be copied
+// with a simple assignment (`GtkTextIter i = j;`).
+//
+// The function is used by language bindings.
+func (i *TextIter) Copy() *TextIter {
+	var _arg0 *C.GtkTextIter // out
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GtkTextIter // in
+
+	_cret = C.gtk_text_iter_copy(_arg0)
+
+	var _textIter *TextIter // out
+
+	_textIter = WrapTextIter(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_textIter, func(v *TextIter) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _textIter
 }
 
 // Editable returns whether the character at @iter is within an editable region
@@ -1351,6 +1378,23 @@ func (i *TextIter) Free() {
 	C.gtk_text_iter_free(_arg0)
 }
 
+// Buffer returns the `GtkTextBuffer` this iterator is associated with.
+func (i *TextIter) Buffer() TextBuffer {
+	var _arg0 *C.GtkTextIter // out
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GtkTextBuffer // in
+
+	_cret = C.gtk_text_iter_get_buffer(_arg0)
+
+	var _textBuffer TextBuffer // out
+
+	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextBuffer)
+
+	return _textBuffer
+}
+
 // BytesInLine returns the number of bytes in the line containing @iter,
 // including the paragraph delimiters.
 func (i *TextIter) BytesInLine() int {
@@ -1409,6 +1453,26 @@ func (i *TextIter) CharsInLine() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// ChildAnchor: if the location at @iter contains a child anchor, the anchor is
+// returned.
+//
+// Otherwise, nil is returned.
+func (i *TextIter) ChildAnchor() TextChildAnchor {
+	var _arg0 *C.GtkTextIter // out
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GtkTextChildAnchor // in
+
+	_cret = C.gtk_text_iter_get_child_anchor(_arg0)
+
+	var _textChildAnchor TextChildAnchor // out
+
+	_textChildAnchor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
+
+	return _textChildAnchor
 }
 
 // Line returns the line number containing the iterator.

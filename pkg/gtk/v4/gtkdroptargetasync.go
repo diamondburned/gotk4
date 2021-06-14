@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,16 +55,6 @@ func init() {
 // be used by themes to style the widget as a drop target.
 type DropTargetAsync interface {
 	EventController
-
-	// RejectDrop sets the @drop as not accepted on this drag site.
-	//
-	// This function should be used when delaying the decision on whether to
-	// accept a drag or not until after reading the data.
-	RejectDrop(drop gdk.Drop)
-	// SetActions sets the actions that this drop target supports.
-	SetActions(actions gdk.DragAction)
-	// SetFormats sets the data formats that this drop target will accept.
-	SetFormats(formats *gdk.ContentFormats)
 }
 
 // dropTargetAsync implements the DropTargetAsync class.
@@ -87,40 +76,4 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDropTargetAsync(obj), nil
-}
-
-// RejectDrop sets the @drop as not accepted on this drag site.
-//
-// This function should be used when delaying the decision on whether to
-// accept a drag or not until after reading the data.
-func (s dropTargetAsync) RejectDrop(drop gdk.Drop) {
-	var _arg0 *C.GtkDropTargetAsync // out
-	var _arg1 *C.GdkDrop            // out
-
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkDrop)(unsafe.Pointer(drop.Native()))
-
-	C.gtk_drop_target_async_reject_drop(_arg0, _arg1)
-}
-
-// SetActions sets the actions that this drop target supports.
-func (s dropTargetAsync) SetActions(actions gdk.DragAction) {
-	var _arg0 *C.GtkDropTargetAsync // out
-	var _arg1 C.GdkDragAction       // out
-
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GdkDragAction)(actions)
-
-	C.gtk_drop_target_async_set_actions(_arg0, _arg1)
-}
-
-// SetFormats sets the data formats that this drop target will accept.
-func (s dropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
-	var _arg0 *C.GtkDropTargetAsync // out
-	var _arg1 *C.GdkContentFormats  // out
-
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
-
-	C.gtk_drop_target_async_set_formats(_arg0, _arg1)
 }

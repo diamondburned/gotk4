@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,17 +37,6 @@ type Renderer interface {
 
 	// IsRealized checks whether the @renderer is realized or not.
 	IsRealized() bool
-	// Render renders the scene graph, described by a tree of `GskRenderNode`
-	// instances, ensuring that the given @region gets redrawn.
-	//
-	// Renderers must ensure that changes of the contents given by the @root
-	// node as well as the area given by @region are redrawn. They are however
-	// free to not redraw any pixel outside of @region if they can guarantee
-	// that it didn't change.
-	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
-	Render(root RenderNode, region *cairo.Region)
 	// Unrealize releases all the resources created by gsk_renderer_realize().
 	Unrealize()
 }
@@ -91,28 +79,6 @@ func (r renderer) IsRealized() bool {
 	}
 
 	return _ok
-}
-
-// Render renders the scene graph, described by a tree of `GskRenderNode`
-// instances, ensuring that the given @region gets redrawn.
-//
-// Renderers must ensure that changes of the contents given by the @root
-// node as well as the area given by @region are redrawn. They are however
-// free to not redraw any pixel outside of @region if they can guarantee
-// that it didn't change.
-//
-// The @renderer will acquire a reference on the `GskRenderNode` tree while
-// the rendering is in progress.
-func (r renderer) Render(root RenderNode, region *cairo.Region) {
-	var _arg0 *C.GskRenderer    // out
-	var _arg1 *C.GskRenderNode  // out
-	var _arg2 *C.cairo_region_t // out
-
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
-	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
-
-	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
 // Unrealize releases all the resources created by gsk_renderer_realize().

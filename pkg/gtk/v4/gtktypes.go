@@ -55,6 +55,44 @@ func marshalBitset(p uintptr) (interface{}, error) {
 	return WrapBitset(unsafe.Pointer(b)), nil
 }
 
+// NewBitsetEmpty constructs a struct Bitset.
+func NewBitsetEmpty() *Bitset {
+	var _cret *C.GtkBitset // in
+
+	_cret = C.gtk_bitset_new_empty()
+
+	var _bitset *Bitset // out
+
+	_bitset = WrapBitset(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _bitset
+}
+
+// NewBitsetRange constructs a struct Bitset.
+func NewBitsetRange(start uint, nItems uint) *Bitset {
+	var _arg1 C.guint // out
+	var _arg2 C.guint // out
+
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(nItems)
+
+	var _cret *C.GtkBitset // in
+
+	_cret = C.gtk_bitset_new_range(_arg1, _arg2)
+
+	var _bitset *Bitset // out
+
+	_bitset = WrapBitset(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _bitset
+}
+
 // Native returns the underlying C source pointer.
 func (b *Bitset) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
@@ -147,6 +185,26 @@ func (s *Bitset) Contains(value uint) bool {
 	}
 
 	return _ok
+}
+
+// Copy creates a copy of @self.
+func (s *Bitset) Copy() *Bitset {
+	var _arg0 *C.GtkBitset // out
+
+	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkBitset // in
+
+	_cret = C.gtk_bitset_copy(_arg0)
+
+	var _bitset *Bitset // out
+
+	_bitset = WrapBitset(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _bitset
 }
 
 // Difference sets @self to be the symmetric difference of @self and @other.
@@ -329,6 +387,23 @@ func (s *Bitset) IsEmpty() bool {
 	}
 
 	return _ok
+}
+
+// Ref acquires a reference on the given `GtkBitset`.
+func (s *Bitset) Ref() *Bitset {
+	var _arg0 *C.GtkBitset // out
+
+	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkBitset // in
+
+	_cret = C.gtk_bitset_ref(_arg0)
+
+	var _bitset *Bitset // out
+
+	_bitset = WrapBitset(unsafe.Pointer(_cret))
+
+	return _bitset
 }
 
 // Remove removes @value from @self if it was part of it before.

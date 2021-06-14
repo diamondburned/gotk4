@@ -35,6 +35,13 @@ func init() {
 type ZlibDecompressor interface {
 	gextras.Objector
 	Converter
+
+	// FileInfo retrieves the Info constructed from the GZIP header data of
+	// compressed data processed by @compressor, or nil if @decompressor's
+	// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
+	// header data was not fully processed yet, or it not present in the data
+	// stream at all.
+	FileInfo() FileInfo
 }
 
 // zlibDecompressor implements the ZlibDecompressor class.
@@ -58,4 +65,42 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapZlibDecompressor(obj), nil
+}
+
+// NewZlibDecompressor constructs a class ZlibDecompressor.
+func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
+	var _arg1 C.GZlibCompressorFormat // out
+
+	_arg1 = (C.GZlibCompressorFormat)(format)
+
+	var _cret C.GZlibDecompressor // in
+
+	_cret = C.g_zlib_decompressor_new(_arg1)
+
+	var _zlibDecompressor ZlibDecompressor // out
+
+	_zlibDecompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ZlibDecompressor)
+
+	return _zlibDecompressor
+}
+
+// FileInfo retrieves the Info constructed from the GZIP header data of
+// compressed data processed by @compressor, or nil if @decompressor's
+// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
+// header data was not fully processed yet, or it not present in the data
+// stream at all.
+func (d zlibDecompressor) FileInfo() FileInfo {
+	var _arg0 *C.GZlibDecompressor // out
+
+	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GFileInfo // in
+
+	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
+
+	var _fileInfo FileInfo // out
+
+	_fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileInfo)
+
+	return _fileInfo
 }

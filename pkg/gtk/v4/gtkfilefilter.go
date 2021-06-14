@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -105,6 +106,19 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFileFilter(obj), nil
+}
+
+// NewFileFilter constructs a class FileFilter.
+func NewFileFilter() FileFilter {
+	var _cret C.GtkFileFilter // in
+
+	_cret = C.gtk_file_filter_new()
+
+	var _fileFilter FileFilter // out
+
+	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileFilter)
+
+	return _fileFilter
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.

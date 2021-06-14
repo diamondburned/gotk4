@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -110,6 +111,24 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAppChooserWidget(obj), nil
+}
+
+// NewAppChooserWidget constructs a class AppChooserWidget.
+func NewAppChooserWidget(contentType string) AppChooserWidget {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(contentType))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkAppChooserWidget // in
+
+	_cret = C.gtk_app_chooser_widget_new(_arg1)
+
+	var _appChooserWidget AppChooserWidget // out
+
+	_appChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserWidget)
+
+	return _appChooserWidget
 }
 
 // DefaultText returns the text that is shown if there are not applications

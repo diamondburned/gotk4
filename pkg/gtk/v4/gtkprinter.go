@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -64,6 +65,35 @@ func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 	return PrintCapabilities(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrinterFunc: the type of function passed to gtk_enumerate_printers().
+//
+// Note that you need to ref @printer, if you want to keep a reference to it
+// after the function has returned.
+type PrinterFunc func(printer Printer) (ok bool)
+
+//export gotk4_PrinterFunc
+func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var printer Printer // out
+
+	printer = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Printer)
+
+	fn := v.(PrinterFunc)
+	ok := fn(printer)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // Printer: a `GtkPrinter` object represents a printer.
 //
 // You only need to deal directly with printers if you use the non-portable
@@ -82,6 +112,20 @@ type Printer interface {
 	AcceptsPS() bool
 	// Compare compares two printers.
 	Compare(b Printer) int
+	// Backend returns the backend of the printer.
+	Backend() *PrintBackend
+	// Capabilities returns the printer’s capabilities.
+	//
+	// This is useful when you’re using `GtkPrintUnixDialog`’s
+	// manual-capabilities setting and need to know which settings the printer
+	// can handle and which you must handle yourself.
+	//
+	// This will return 0 unless the printer’s details are available, see
+	// [method@Gtk.Printer.has_details] and
+	// [method@Gtk.Printer.request_details].
+	Capabilities() PrintCapabilities
+	// DefaultPageSize returns default page size of @printer.
+	DefaultPageSize() PageSetup
 	// Description gets the description of the printer.
 	Description() string
 	// HardMargins: retrieve the hard margins of @printer.
@@ -159,6 +203,30 @@ func marshalPrinter(p uintptr) (interface{}, error) {
 	return WrapPrinter(obj), nil
 }
 
+// NewPrinter constructs a class Printer.
+func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
+	var _arg1 *C.char            // out
+	var _arg2 *C.GtkPrintBackend // out
+	var _arg3 C.gboolean         // out
+
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkPrintBackend)(unsafe.Pointer(backend.Native()))
+	if virtual_ {
+		_arg3 = C.TRUE
+	}
+
+	var _cret C.GtkPrinter // in
+
+	_cret = C.gtk_printer_new(_arg1, _arg2, _arg3)
+
+	var _printer Printer // out
+
+	_printer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Printer)
+
+	return _printer
+}
+
 // AcceptsPDF returns whether the printer accepts input in PDF format.
 func (p printer) AcceptsPDF() bool {
 	var _arg0 *C.GtkPrinter // out
@@ -214,6 +282,65 @@ func (a printer) Compare(b Printer) int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Backend returns the backend of the printer.
+func (p printer) Backend() *PrintBackend {
+	var _arg0 *C.GtkPrinter // out
+
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GtkPrintBackend // in
+
+	_cret = C.gtk_printer_get_backend(_arg0)
+
+	var _printBackend *PrintBackend // out
+
+	_printBackend = WrapPrintBackend(unsafe.Pointer(_cret))
+
+	return _printBackend
+}
+
+// Capabilities returns the printer’s capabilities.
+//
+// This is useful when you’re using `GtkPrintUnixDialog`’s
+// manual-capabilities setting and need to know which settings the printer
+// can handle and which you must handle yourself.
+//
+// This will return 0 unless the printer’s details are available, see
+// [method@Gtk.Printer.has_details] and
+// [method@Gtk.Printer.request_details].
+func (p printer) Capabilities() PrintCapabilities {
+	var _arg0 *C.GtkPrinter // out
+
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+
+	var _cret C.GtkPrintCapabilities // in
+
+	_cret = C.gtk_printer_get_capabilities(_arg0)
+
+	var _printCapabilities PrintCapabilities // out
+
+	_printCapabilities = PrintCapabilities(_cret)
+
+	return _printCapabilities
+}
+
+// DefaultPageSize returns default page size of @printer.
+func (p printer) DefaultPageSize() PageSetup {
+	var _arg0 *C.GtkPrinter // out
+
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GtkPageSetup // in
+
+	_cret = C.gtk_printer_get_default_page_size(_arg0)
+
+	var _pageSetup PageSetup // out
+
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
+
+	return _pageSetup
 }
 
 // Description gets the description of the printer.

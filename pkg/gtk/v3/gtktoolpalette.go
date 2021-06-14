@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -92,10 +92,14 @@ type ToolPalette interface {
 	Orientable
 	Scrollable
 
-	// AddDragDest sets @palette as drag source (see
-	// gtk_tool_palette_set_drag_source()) and sets @widget as a drag
-	// destination for drags from @palette. See gtk_drag_dest_set().
-	AddDragDest(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction)
+	// DragItem: get the dragged item from the selection. This could be a
+	// ToolItem or a ToolItemGroup.
+	DragItem(selection *SelectionData) Widget
+	// DropGroup gets the group at position (x, y).
+	DropGroup(x int, y int) ToolItemGroup
+	// DropItem gets the item at position (x, y). See
+	// gtk_tool_palette_get_drop_group().
+	DropItem(x int, y int) ToolItem
 	// Exclusive gets whether @group is exclusive or not. See
 	// gtk_tool_palette_set_exclusive().
 	Exclusive(group ToolItemGroup) bool
@@ -105,9 +109,15 @@ type ToolPalette interface {
 	// GroupPosition gets the position of @group in @palette as index. See
 	// gtk_tool_palette_set_group_position().
 	GroupPosition(group ToolItemGroup) int
+	// HAdjustment gets the horizontal adjustment of the tool palette.
+	HAdjustment() Adjustment
 	// IconSize gets the size of icons in the tool palette. See
 	// gtk_tool_palette_set_icon_size().
 	IconSize() int
+	// Style gets the style (icons, text or both) of items in the tool palette.
+	Style() ToolbarStyle
+	// VAdjustment gets the vertical adjustment of the tool palette.
+	VAdjustment() Adjustment
 	// SetDragSource sets the tool palette as a drag source. Enables all groups
 	// and items in the tool palette as drag sources on button 1 and button 3
 	// press with copy and move actions. See gtk_drag_source_set().
@@ -162,23 +172,80 @@ func marshalToolPalette(p uintptr) (interface{}, error) {
 	return WrapToolPalette(obj), nil
 }
 
-// AddDragDest sets @palette as drag source (see
-// gtk_tool_palette_set_drag_source()) and sets @widget as a drag
-// destination for drags from @palette. See gtk_drag_dest_set().
-func (p toolPalette) AddDragDest(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
-	var _arg0 *C.GtkToolPalette           // out
-	var _arg1 *C.GtkWidget                // out
-	var _arg2 C.GtkDestDefaults           // out
-	var _arg3 C.GtkToolPaletteDragTargets // out
-	var _arg4 C.GdkDragAction             // out
+// NewToolPalette constructs a class ToolPalette.
+func NewToolPalette() ToolPalette {
+	var _cret C.GtkToolPalette // in
+
+	_cret = C.gtk_tool_palette_new()
+
+	var _toolPalette ToolPalette // out
+
+	_toolPalette = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolPalette)
+
+	return _toolPalette
+}
+
+// DragItem: get the dragged item from the selection. This could be a
+// ToolItem or a ToolItemGroup.
+func (p toolPalette) DragItem(selection *SelectionData) Widget {
+	var _arg0 *C.GtkToolPalette   // out
+	var _arg1 *C.GtkSelectionData // out
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.GtkDestDefaults)(flags)
-	_arg3 = (C.GtkToolPaletteDragTargets)(targets)
-	_arg4 = (C.GdkDragAction)(actions)
+	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selection.Native()))
 
-	C.gtk_tool_palette_add_drag_dest(_arg0, _arg1, _arg2, _arg3, _arg4)
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_tool_palette_get_drag_item(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// DropGroup gets the group at position (x, y).
+func (p toolPalette) DropGroup(x int, y int) ToolItemGroup {
+	var _arg0 *C.GtkToolPalette // out
+	var _arg1 C.gint            // out
+	var _arg2 C.gint            // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+
+	var _cret *C.GtkToolItemGroup // in
+
+	_cret = C.gtk_tool_palette_get_drop_group(_arg0, _arg1, _arg2)
+
+	var _toolItemGroup ToolItemGroup // out
+
+	_toolItemGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItemGroup)
+
+	return _toolItemGroup
+}
+
+// DropItem gets the item at position (x, y). See
+// gtk_tool_palette_get_drop_group().
+func (p toolPalette) DropItem(x int, y int) ToolItem {
+	var _arg0 *C.GtkToolPalette // out
+	var _arg1 C.gint            // out
+	var _arg2 C.gint            // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+
+	var _cret *C.GtkToolItem // in
+
+	_cret = C.gtk_tool_palette_get_drop_item(_arg0, _arg1, _arg2)
+
+	var _toolItem ToolItem // out
+
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+
+	return _toolItem
 }
 
 // Exclusive gets whether @group is exclusive or not. See
@@ -245,6 +312,23 @@ func (p toolPalette) GroupPosition(group ToolItemGroup) int {
 	return _gint
 }
 
+// HAdjustment gets the horizontal adjustment of the tool palette.
+func (p toolPalette) HAdjustment() Adjustment {
+	var _arg0 *C.GtkToolPalette // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GtkAdjustment // in
+
+	_cret = C.gtk_tool_palette_get_hadjustment(_arg0)
+
+	var _adjustment Adjustment // out
+
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+
+	return _adjustment
+}
+
 // IconSize gets the size of icons in the tool palette. See
 // gtk_tool_palette_set_icon_size().
 func (p toolPalette) IconSize() int {
@@ -261,6 +345,40 @@ func (p toolPalette) IconSize() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Style gets the style (icons, text or both) of items in the tool palette.
+func (p toolPalette) Style() ToolbarStyle {
+	var _arg0 *C.GtkToolPalette // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
+
+	var _cret C.GtkToolbarStyle // in
+
+	_cret = C.gtk_tool_palette_get_style(_arg0)
+
+	var _toolbarStyle ToolbarStyle // out
+
+	_toolbarStyle = ToolbarStyle(_cret)
+
+	return _toolbarStyle
+}
+
+// VAdjustment gets the vertical adjustment of the tool palette.
+func (p toolPalette) VAdjustment() Adjustment {
+	var _arg0 *C.GtkToolPalette // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GtkAdjustment // in
+
+	_cret = C.gtk_tool_palette_get_vadjustment(_arg0)
+
+	var _adjustment Adjustment // out
+
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+
+	return _adjustment
 }
 
 // SetDragSource sets the tool palette as a drag source. Enables all groups

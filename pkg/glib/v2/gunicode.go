@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -549,6 +551,87 @@ const (
 	UnicodeTypeSpaceSeparator UnicodeType = 29
 )
 
+// Ucs4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
+// added to the result after the converted text.
+func Ucs4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
+	var _arg1 *C.gunichar // out
+	var _arg2 C.glong     // out
+
+	_arg1 = *C.gunichar(str)
+	_arg2 = C.glong(len)
+
+	var _arg3 C.glong      // in
+	var _arg4 C.glong      // in
+	var _cret *C.gunichar2 // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_ucs4_to_utf16(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	var _itemsRead int32    // out
+	var _itemsWritten int32 // out
+	var _guint16 *uint16    // out
+	var _goerr error        // out
+
+	_itemsRead = (int32)(_arg3)
+	_itemsWritten = (int32)(_arg4)
+	_guint16 = (*uint16)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _itemsRead, _itemsWritten, _guint16, _goerr
+}
+
+// Ucs4ToUTF8: convert a string from a 32-bit fixed width representation as
+// UCS-4. to UTF-8. The result will be terminated with a 0 byte.
+func Ucs4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
+	var _arg1 *C.gunichar // out
+	var _arg2 C.glong     // out
+
+	_arg1 = *C.gunichar(str)
+	_arg2 = C.glong(len)
+
+	var _arg3 C.glong   // in
+	var _arg4 C.glong   // in
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_ucs4_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	var _itemsRead int32    // out
+	var _itemsWritten int32 // out
+	var _utf8 string        // out
+	var _goerr error        // out
+
+	_itemsRead = (int32)(_arg3)
+	_itemsWritten = (int32)(_arg4)
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _itemsRead, _itemsWritten, _utf8, _goerr
+}
+
+// UnicharBreakType determines the break type of @c. @c should be a Unicode
+// character (to derive a character from UTF-8 encoded text, use
+// g_utf8_get_char()). The break type is used to find word and line breaks
+// ("text boundaries"), Pango implements the Unicode boundary resolution
+// algorithms and normally you would use a function such as pango_break()
+// instead of caring about break types yourself.
+func UnicharBreakType(c uint32) UnicodeBreakType {
+	var _arg1 C.gunichar // out
+
+	_arg1 = C.gunichar(c)
+
+	var _cret C.GUnicodeBreakType // in
+
+	_cret = C.g_unichar_break_type(_arg1)
+
+	var _unicodeBreakType UnicodeBreakType // out
+
+	_unicodeBreakType = UnicodeBreakType(_cret)
+
+	return _unicodeBreakType
+}
+
 // UnicharCombiningClass determines the canonical combining class of a Unicode
 // character.
 func UnicharCombiningClass(uc uint32) int {
@@ -727,6 +810,28 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	}
 
 	return _ok
+}
+
+// UnicharGetScript looks up the Script for a particular character (as defined
+// by Unicode Standard Annex \#24). No check is made for @ch being a valid
+// Unicode character; if you pass in invalid character, the result is undefined.
+//
+// This function is equivalent to pango_script_for_unichar() and the two are
+// interchangeable.
+func UnicharGetScript(ch uint32) UnicodeScript {
+	var _arg1 C.gunichar // out
+
+	_arg1 = C.gunichar(ch)
+
+	var _cret C.GUnicodeScript // in
+
+	_cret = C.g_unichar_get_script(_arg1)
+
+	var _unicodeScript UnicodeScript // out
+
+	_unicodeScript = UnicodeScript(_cret)
+
+	return _unicodeScript
 }
 
 // UnicharIsalnum determines whether a character is alphanumeric. Given some
@@ -1168,6 +1273,23 @@ func UnicharToUpper(c uint32) uint32 {
 	return _gunichar
 }
 
+// UnicharType classifies a Unicode character by type.
+func UnicharType(c uint32) UnicodeType {
+	var _arg1 C.gunichar // out
+
+	_arg1 = C.gunichar(c)
+
+	var _cret C.GUnicodeType // in
+
+	_cret = C.g_unichar_type(_arg1)
+
+	var _unicodeType UnicodeType // out
+
+	_unicodeType = UnicodeType(_cret)
+
+	return _unicodeType
+}
+
 // UnicharValidate checks whether @ch is a valid Unicode character. Some
 // possible integer values of @ch will not be valid. 0 is considered a valid
 // character, though it's normally a string terminator.
@@ -1240,6 +1362,30 @@ func UnicodeCanonicalOrdering(string *uint32, len uint) {
 	C.g_unicode_canonical_ordering(_arg1, _arg2)
 }
 
+// UnicodeScriptFromIso15924 looks up the Unicode script for @iso15924. ISO
+// 15924 assigns four-letter codes to scripts. For example, the code for Arabic
+// is 'Arab'. This function accepts four letter codes encoded as a @guint32 in a
+// big-endian fashion. That is, the code expected for Arabic is 0x41726162 (0x41
+// is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
+//
+// See Codes for the representation of names of scripts
+// (http://unicode.org/iso15924/codelists.html) for details.
+func UnicodeScriptFromIso15924(iso15924 uint32) UnicodeScript {
+	var _arg1 C.guint32 // out
+
+	_arg1 = C.guint32(iso15924)
+
+	var _cret C.GUnicodeScript // in
+
+	_cret = C.g_unicode_script_from_iso15924(_arg1)
+
+	var _unicodeScript UnicodeScript // out
+
+	_unicodeScript = UnicodeScript(_cret)
+
+	return _unicodeScript
+}
+
 // UnicodeScriptToIso15924 looks up the ISO 15924 code for @script. ISO 15924
 // assigns four-letter codes to scripts. For example, the code for Arabic is
 // 'Arab'. The four letter codes are encoded as a @guint32 by this function in a
@@ -1262,6 +1408,74 @@ func UnicodeScriptToIso15924(script UnicodeScript) uint32 {
 	_guint32 = (uint32)(_cret)
 
 	return _guint32
+}
+
+// UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
+// nul-terminated.
+func UTF16ToUcs4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
+	var _arg1 *C.gunichar2 // out
+	var _arg2 C.glong      // out
+
+	_arg1 = *C.gunichar2(str)
+	_arg2 = C.glong(len)
+
+	var _arg3 C.glong     // in
+	var _arg4 C.glong     // in
+	var _cret *C.gunichar // in
+	var _cerr *C.GError   // in
+
+	_cret = C.g_utf16_to_ucs4(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	var _itemsRead int32    // out
+	var _itemsWritten int32 // out
+	var _gunichar *uint32   // out
+	var _goerr error        // out
+
+	_itemsRead = (int32)(_arg3)
+	_itemsWritten = (int32)(_arg4)
+	_gunichar = (*uint32)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _itemsRead, _itemsWritten, _gunichar, _goerr
+}
+
+// UTF16ToUTF8: convert a string from UTF-16 to UTF-8. The result will be
+// terminated with a 0 byte.
+//
+// Note that the input is expected to be already in native endianness, an
+// initial byte-order-mark character is not handled specially. g_convert() can
+// be used to convert a byte buffer of UTF-16 data of ambiguous endianness.
+//
+// Further note that this function does not validate the result string; it may
+// e.g. include embedded NUL characters. The only validation done by this
+// function is to ensure that the input can be correctly interpreted as UTF-16,
+// i.e. it doesn't contain unpaired surrogates or partial character sequences.
+func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
+	var _arg1 *C.gunichar2 // out
+	var _arg2 C.glong      // out
+
+	_arg1 = *C.gunichar2(str)
+	_arg2 = C.glong(len)
+
+	var _arg3 C.glong   // in
+	var _arg4 C.glong   // in
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_utf16_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	var _itemsRead int32    // out
+	var _itemsWritten int32 // out
+	var _utf8 string        // out
+	var _goerr error        // out
+
+	_itemsRead = (int32)(_arg3)
+	_itemsWritten = (int32)(_arg4)
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _itemsRead, _itemsWritten, _utf8, _goerr
 }
 
 // UTF8Casefold converts a string into a form that is independent of case. The
@@ -1834,6 +2048,37 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 	return _utf8
 }
 
+// UTF8ToUcs4: convert a string from UTF-8 to a 32-bit fixed width
+// representation as UCS-4. A trailing 0 character will be added to the string
+// after the converted text.
+func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
+	var _arg1 *C.gchar // out
+	var _arg2 C.glong  // out
+
+	_arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.glong(len)
+
+	var _arg3 C.glong     // in
+	var _arg4 C.glong     // in
+	var _cret *C.gunichar // in
+	var _cerr *C.GError   // in
+
+	_cret = C.g_utf8_to_ucs4(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	var _itemsRead int32    // out
+	var _itemsWritten int32 // out
+	var _gunichar *uint32   // out
+	var _goerr error        // out
+
+	_itemsRead = (int32)(_arg3)
+	_itemsWritten = (int32)(_arg4)
+	_gunichar = (*uint32)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _itemsRead, _itemsWritten, _gunichar, _goerr
+}
+
 // UTF8ToUcs4Fast: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4, assuming valid UTF-8 input. This function is roughly
 // twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
@@ -1858,6 +2103,36 @@ func UTF8ToUcs4Fast(str string, len int32) (int32, *uint32) {
 	_gunichar = (*uint32)(_cret)
 
 	return _itemsWritten, _gunichar
+}
+
+// UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
+// added to the result after the converted text.
+func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
+	var _arg1 *C.gchar // out
+	var _arg2 C.glong  // out
+
+	_arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.glong(len)
+
+	var _arg3 C.glong      // in
+	var _arg4 C.glong      // in
+	var _cret *C.gunichar2 // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_utf8_to_utf16(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	var _itemsRead int32    // out
+	var _itemsWritten int32 // out
+	var _guint16 *uint16    // out
+	var _goerr error        // out
+
+	_itemsRead = (int32)(_arg3)
+	_itemsWritten = (int32)(_arg4)
+	_guint16 = (*uint16)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _itemsRead, _itemsWritten, _guint16, _goerr
 }
 
 // UTF8Validate validates UTF-8 encoded text. @str is the text to validate; if

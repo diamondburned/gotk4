@@ -85,6 +85,34 @@ func (n *Node) Data() interface{} {
 	return v
 }
 
+// Next gets the field inside the struct.
+func (n *Node) Next() *Node {
+	var v *Node // out
+	v = WrapNode(unsafe.Pointer(n.native.next))
+	return v
+}
+
+// Prev gets the field inside the struct.
+func (n *Node) Prev() *Node {
+	var v *Node // out
+	v = WrapNode(unsafe.Pointer(n.native.prev))
+	return v
+}
+
+// Parent gets the field inside the struct.
+func (n *Node) Parent() *Node {
+	var v *Node // out
+	v = WrapNode(unsafe.Pointer(n.native.parent))
+	return v
+}
+
+// Children gets the field inside the struct.
+func (n *Node) Children() *Node {
+	var v *Node // out
+	v = WrapNode(unsafe.Pointer(n.native.children))
+	return v
+}
+
 // ChildIndex gets the position of the first child of a #GNode which contains
 // the given data.
 func (n *Node) ChildIndex(data interface{}) int {

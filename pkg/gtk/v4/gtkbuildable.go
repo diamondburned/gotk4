@@ -24,24 +24,9 @@ func init() {
 // BuildableOverrider contains methods that are overridable. This
 // interface is a subset of the interface Buildable.
 type BuildableOverrider interface {
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	AddChild(builder Builder, child gextras.Objector, typ string)
-	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
-	// once for each custom tag handled by the @buildable.
-	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagEnd: called at the end of each custom element handled by the
-	// buildable.
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-
 	ID() string
-	// InternalChild retrieves the internal child called @childname of the
-	// @buildable object.
-	InternalChild(builder Builder, childname string) gextras.Objector
 
 	ParserFinished(builder Builder)
-
-	SetBuildableProperty(builder Builder, name string, value **externglib.Value)
 
 	SetID(id string)
 }

@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,4 +64,17 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMemoryInputStream(obj), nil
+}
+
+// NewMemoryInputStream constructs a class MemoryInputStream.
+func NewMemoryInputStream() MemoryInputStream {
+	var _cret C.GMemoryInputStream // in
+
+	_cret = C.g_memory_input_stream_new()
+
+	var _memoryInputStream MemoryInputStream // out
+
+	_memoryInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryInputStream)
+
+	return _memoryInputStream
 }

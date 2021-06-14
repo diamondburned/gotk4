@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -57,9 +58,53 @@ func marshalTabArray(p uintptr) (interface{}, error) {
 	return WrapTabArray(unsafe.Pointer(b)), nil
 }
 
+// NewTabArray constructs a struct TabArray.
+func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
+	var _arg1 C.gint     // out
+	var _arg2 C.gboolean // out
+
+	_arg1 = C.gint(initialSize)
+	if positionsInPixels {
+		_arg2 = C.TRUE
+	}
+
+	var _cret *C.PangoTabArray // in
+
+	_cret = C.pango_tab_array_new(_arg1, _arg2)
+
+	var _tabArray *TabArray // out
+
+	_tabArray = WrapTabArray(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _tabArray
+}
+
 // Native returns the underlying C source pointer.
 func (t *TabArray) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// Copy copies a `PangoTabArray`.
+func (s *TabArray) Copy() *TabArray {
+	var _arg0 *C.PangoTabArray // out
+
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.PangoTabArray // in
+
+	_cret = C.pango_tab_array_copy(_arg0)
+
+	var _tabArray *TabArray // out
+
+	_tabArray = WrapTabArray(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _tabArray
 }
 
 // Free frees a tab array and associated resources.
@@ -106,6 +151,28 @@ func (t *TabArray) Size() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Tab gets the alignment and position of a tab stop.
+func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
+	var _arg0 *C.PangoTabArray // out
+	var _arg1 C.gint           // out
+
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gint(tabIndex)
+
+	var _arg2 C.PangoTabAlign // in
+	var _arg3 C.gint          // in
+
+	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _alignment TabAlign // out
+	var _location int       // out
+
+	_alignment = TabAlign(_arg2)
+	_location = (int)(_arg3)
+
+	return _alignment, _location
 }
 
 // Resize resizes a tab array.

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -136,6 +137,45 @@ func (s *CSSSection) EndPosition() uint {
 	return _guint
 }
 
+// Parent gets the parent section for the given @section. The parent section is
+// the section that contains this @section. A special case are sections of type
+// K_CSS_SECTION_DOCUMENT. Their parent will either be nil if they are the
+// original CSS document that was loaded by gtk_css_provider_load_from_file() or
+// a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
+// from a different file.
+func (s *CSSSection) Parent() *CSSSection {
+	var _arg0 *C.GtkCssSection // out
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkCssSection // in
+
+	_cret = C.gtk_css_section_get_parent(_arg0)
+
+	var _cssSection *CSSSection // out
+
+	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
+
+	return _cssSection
+}
+
+// SectionType gets the type of information that @section describes.
+func (s *CSSSection) SectionType() CSSSectionType {
+	var _arg0 *C.GtkCssSection // out
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkCssSectionType // in
+
+	_cret = C.gtk_css_section_get_section_type(_arg0)
+
+	var _cssSectionType CSSSectionType // out
+
+	_cssSectionType = CSSSectionType(_cret)
+
+	return _cssSectionType
+}
+
 // StartLine returns the line in the CSS document where this section starts. The
 // line number is 0-indexed, so the first line of the document will return 0.
 func (s *CSSSection) StartLine() uint {
@@ -170,6 +210,26 @@ func (s *CSSSection) StartPosition() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// Ref increments the reference count on @section.
+func (s *CSSSection) Ref() *CSSSection {
+	var _arg0 *C.GtkCssSection // out
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkCssSection // in
+
+	_cret = C.gtk_css_section_ref(_arg0)
+
+	var _cssSection *CSSSection // out
+
+	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _cssSection
 }
 
 // Unref decrements the reference count on @section, freeing the structure if

@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -88,9 +87,16 @@ type Text interface {
 	// ActivatesDefault retrieves the value set by
 	// gtk_text_set_activates_default().
 	ActivatesDefault() bool
+	// Buffer: get the `GtkEntryBuffer` object which holds the text for this
+	// self.
+	Buffer() EntryBuffer
 	// EnableEmojiCompletion returns whether Emoji completion is enabled for
 	// this `GtkText` widget.
 	EnableEmojiCompletion() bool
+	// InputHints gets the input hints of the `GtkText`.
+	InputHints() InputHints
+	// InputPurpose gets the input purpose of the `GtkText`.
+	InputPurpose() InputPurpose
 	// InvisibleChar retrieves the character displayed in place of the real
 	// characters for entries with visibility set to false.
 	//
@@ -136,8 +142,6 @@ type Text interface {
 	// This usually means that the dialog containing the `GtkText` will be
 	// closed, since the default widget is usually one of the dialog buttons.
 	SetActivatesDefault(activates bool)
-	// SetAttributes sets attributes that are applied to the text.
-	SetAttributes(attrs *pango.AttrList)
 	// SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
 	// widget.
 	SetBuffer(buffer EntryBuffer)
@@ -146,9 +150,6 @@ type Text interface {
 	// If it is, typing ':', followed by a recognized keyword, will pop up a
 	// window with suggested Emojis matching the keyword.
 	SetEnableEmojiCompletion(enableEmojiCompletion bool)
-	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for @self.
-	SetExtraMenu(model gio.MenuModel)
 	// SetInputHints sets input hints that allow input methods to fine-tune
 	// their behaviour.
 	SetInputHints(hints InputHints)
@@ -184,8 +185,6 @@ type Text interface {
 	// SetPropagateTextWidth sets whether the `GtkText` should grow and shrink
 	// with the content.
 	SetPropagateTextWidth(propagateTextWidth bool)
-	// SetTabs sets tabstops that are applied to the text.
-	SetTabs(tabs *pango.TabArray)
 	// SetTruncateMultiline sets whether the `GtkText` should truncate
 	// multi-line text that is pasted into the widget.
 	SetTruncateMultiline(truncateMultiline bool)
@@ -240,6 +239,36 @@ func marshalText(p uintptr) (interface{}, error) {
 	return WrapText(obj), nil
 }
 
+// NewText constructs a class Text.
+func NewText() Text {
+	var _cret C.GtkText // in
+
+	_cret = C.gtk_text_new()
+
+	var _text Text // out
+
+	_text = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Text)
+
+	return _text
+}
+
+// NewTextWithBuffer constructs a class Text.
+func NewTextWithBuffer(buffer EntryBuffer) Text {
+	var _arg1 *C.GtkEntryBuffer // out
+
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
+
+	var _cret C.GtkText // in
+
+	_cret = C.gtk_text_new_with_buffer(_arg1)
+
+	var _text Text // out
+
+	_text = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Text)
+
+	return _text
+}
+
 // ActivatesDefault retrieves the value set by
 // gtk_text_set_activates_default().
 func (s text) ActivatesDefault() bool {
@@ -260,6 +289,24 @@ func (s text) ActivatesDefault() bool {
 	return _ok
 }
 
+// Buffer: get the `GtkEntryBuffer` object which holds the text for this
+// self.
+func (s text) Buffer() EntryBuffer {
+	var _arg0 *C.GtkText // out
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkEntryBuffer // in
+
+	_cret = C.gtk_text_get_buffer(_arg0)
+
+	var _entryBuffer EntryBuffer // out
+
+	_entryBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EntryBuffer)
+
+	return _entryBuffer
+}
+
 // EnableEmojiCompletion returns whether Emoji completion is enabled for
 // this `GtkText` widget.
 func (s text) EnableEmojiCompletion() bool {
@@ -278,6 +325,40 @@ func (s text) EnableEmojiCompletion() bool {
 	}
 
 	return _ok
+}
+
+// InputHints gets the input hints of the `GtkText`.
+func (s text) InputHints() InputHints {
+	var _arg0 *C.GtkText // out
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkInputHints // in
+
+	_cret = C.gtk_text_get_input_hints(_arg0)
+
+	var _inputHints InputHints // out
+
+	_inputHints = InputHints(_cret)
+
+	return _inputHints
+}
+
+// InputPurpose gets the input purpose of the `GtkText`.
+func (s text) InputPurpose() InputPurpose {
+	var _arg0 *C.GtkText // out
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkInputPurpose // in
+
+	_cret = C.gtk_text_get_input_purpose(_arg0)
+
+	var _inputPurpose InputPurpose // out
+
+	_inputPurpose = InputPurpose(_cret)
+
+	return _inputPurpose
 }
 
 // InvisibleChar retrieves the character displayed in place of the real
@@ -481,17 +562,6 @@ func (s text) SetActivatesDefault(activates bool) {
 	C.gtk_text_set_activates_default(_arg0, _arg1)
 }
 
-// SetAttributes sets attributes that are applied to the text.
-func (s text) SetAttributes(attrs *pango.AttrList) {
-	var _arg0 *C.GtkText       // out
-	var _arg1 *C.PangoAttrList // out
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
-
-	C.gtk_text_set_attributes(_arg0, _arg1)
-}
-
 // SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
 // widget.
 func (s text) SetBuffer(buffer EntryBuffer) {
@@ -518,18 +588,6 @@ func (s text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 	}
 
 	C.gtk_text_set_enable_emoji_completion(_arg0, _arg1)
-}
-
-// SetExtraMenu sets a menu model to add when constructing the context menu
-// for @self.
-func (s text) SetExtraMenu(model gio.MenuModel) {
-	var _arg0 *C.GtkText    // out
-	var _arg1 *C.GMenuModel // out
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_text_set_extra_menu(_arg0, _arg1)
 }
 
 // SetInputHints sets input hints that allow input methods to fine-tune
@@ -633,17 +691,6 @@ func (s text) SetPropagateTextWidth(propagateTextWidth bool) {
 	}
 
 	C.gtk_text_set_propagate_text_width(_arg0, _arg1)
-}
-
-// SetTabs sets tabstops that are applied to the text.
-func (s text) SetTabs(tabs *pango.TabArray) {
-	var _arg0 *C.GtkText       // out
-	var _arg1 *C.PangoTabArray // out
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs.Native()))
-
-	C.gtk_text_set_tabs(_arg0, _arg1)
 }
 
 // SetTruncateMultiline sets whether the `GtkText` should truncate

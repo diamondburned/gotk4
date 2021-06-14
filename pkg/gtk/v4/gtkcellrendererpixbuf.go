@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,4 +57,17 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCellRendererPixbuf(obj), nil
+}
+
+// NewCellRendererPixbuf constructs a class CellRendererPixbuf.
+func NewCellRendererPixbuf() CellRendererPixbuf {
+	var _cret C.GtkCellRendererPixbuf // in
+
+	_cret = C.gtk_cell_renderer_pixbuf_new()
+
+	var _cellRendererPixbuf CellRendererPixbuf // out
+
+	_cellRendererPixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererPixbuf)
+
+	return _cellRendererPixbuf
 }

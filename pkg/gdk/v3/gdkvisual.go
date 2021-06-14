@@ -80,6 +80,30 @@ func QueryDepths() []int {
 	return _depths
 }
 
+// QueryVisualTypes: this function returns the available visual types for the
+// default screen. It’s equivalent to listing the visuals (gdk_list_visuals())
+// and then looking at the type field in each visual, removing duplicates.
+//
+// The array returned by this function should not be freed.
+func QueryVisualTypes() []VisualType {
+	var _arg1 *C.GdkVisualType
+	var _arg2 C.gint // in
+
+	C.gdk_query_visual_types(&_arg1, &_arg2)
+
+	var _visualTypes []VisualType
+
+	{
+		src := unsafe.Slice(_arg1, _arg2)
+		_visualTypes = make([]VisualType, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_visualTypes[i] = VisualType(src[i])
+		}
+	}
+
+	return _visualTypes
+}
+
 // Visual: a Visual contains information about a particular visual.
 type Visual interface {
 	gextras.Objector
@@ -96,6 +120,12 @@ type Visual interface {
 	// "precision" refers to how much precision the pixel value contains for a
 	// particular primary.
 	BluePixelDetails() (mask uint32, shift int, precision int)
+	// ByteOrder returns the byte order of this visual.
+	//
+	// The information returned by this function is only relevant when working
+	// with XImages, and not all backends return meaningful information for
+	// this.
+	ByteOrder() ByteOrder
 	// ColormapSize returns the size of a colormap for this visual.
 	//
 	// You have to use platform-specific APIs to manipulate colormaps.
@@ -116,6 +146,11 @@ type Visual interface {
 	// "precision" refers to how much precision the pixel value contains for a
 	// particular primary.
 	RedPixelDetails() (mask uint32, shift int, precision int)
+	// Screen gets the screen to which this visual belongs
+	Screen() Screen
+	// VisualType returns the type of visual this is (PseudoColor, TrueColor,
+	// etc).
+	VisualType() VisualType
 }
 
 // visual implements the Visual class.
@@ -185,6 +220,27 @@ func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 	_precision = (int)(_arg3)
 
 	return _mask, _shift, _precision
+}
+
+// ByteOrder returns the byte order of this visual.
+//
+// The information returned by this function is only relevant when working
+// with XImages, and not all backends return meaningful information for
+// this.
+func (v visual) ByteOrder() ByteOrder {
+	var _arg0 *C.GdkVisual // out
+
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+
+	var _cret C.GdkByteOrder // in
+
+	_cret = C.gdk_visual_get_byte_order(_arg0)
+
+	var _byteOrder ByteOrder // out
+
+	_byteOrder = ByteOrder(_cret)
+
+	return _byteOrder
 }
 
 // ColormapSize returns the size of a colormap for this visual.
@@ -277,4 +333,39 @@ func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 	_precision = (int)(_arg3)
 
 	return _mask, _shift, _precision
+}
+
+// Screen gets the screen to which this visual belongs
+func (v visual) Screen() Screen {
+	var _arg0 *C.GdkVisual // out
+
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.GdkScreen // in
+
+	_cret = C.gdk_visual_get_screen(_arg0)
+
+	var _screen Screen // out
+
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
+
+	return _screen
+}
+
+// VisualType returns the type of visual this is (PseudoColor, TrueColor,
+// etc).
+func (v visual) VisualType() VisualType {
+	var _arg0 *C.GdkVisual // out
+
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+
+	var _cret C.GdkVisualType // in
+
+	_cret = C.gdk_visual_get_visual_type(_arg0)
+
+	var _visualType VisualType // out
+
+	_visualType = VisualType(_cret)
+
+	return _visualType
 }

@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,6 +48,19 @@ func init() {
 type UnixFDMessage interface {
 	SocketControlMessage
 
+	// AppendFd adds a file descriptor to @message.
+	//
+	// The file descriptor is duplicated using dup(). You keep your copy of the
+	// descriptor and the copy contained in @message will be closed when
+	// @message is finalized.
+	//
+	// A possible cause of failure is exceeding the per-process or system-wide
+	// file descriptor limit.
+	AppendFd(fd int) error
+	// FdList gets the FDList contained in @message. This function does not
+	// return a reference to the caller, but the returned list is valid for the
+	// lifetime of @message.
+	FdList() UnixFDList
 	// StealFds returns the array of file descriptors that is contained in this
 	// object.
 	//
@@ -83,6 +98,81 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapUnixFDMessage(obj), nil
+}
+
+// NewUnixFDMessage constructs a class UnixFDMessage.
+func NewUnixFDMessage() UnixFDMessage {
+	var _cret C.GUnixFDMessage // in
+
+	_cret = C.g_unix_fd_message_new()
+
+	var _unixFDMessage UnixFDMessage // out
+
+	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDMessage)
+
+	return _unixFDMessage
+}
+
+// NewUnixFDMessageWithFdList constructs a class UnixFDMessage.
+func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
+	var _arg1 *C.GUnixFDList // out
+
+	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+
+	var _cret C.GUnixFDMessage // in
+
+	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
+
+	var _unixFDMessage UnixFDMessage // out
+
+	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDMessage)
+
+	return _unixFDMessage
+}
+
+// AppendFd adds a file descriptor to @message.
+//
+// The file descriptor is duplicated using dup(). You keep your copy of the
+// descriptor and the copy contained in @message will be closed when
+// @message is finalized.
+//
+// A possible cause of failure is exceeding the per-process or system-wide
+// file descriptor limit.
+func (m unixFDMessage) AppendFd(fd int) error {
+	var _arg0 *C.GUnixFDMessage // out
+	var _arg1 C.gint            // out
+
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gint(fd)
+
+	var _cerr *C.GError // in
+
+	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// FdList gets the FDList contained in @message. This function does not
+// return a reference to the caller, but the returned list is valid for the
+// lifetime of @message.
+func (m unixFDMessage) FdList() UnixFDList {
+	var _arg0 *C.GUnixFDMessage // out
+
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GUnixFDList // in
+
+	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
+
+	var _unixFDList UnixFDList // out
+
+	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(UnixFDList)
+
+	return _unixFDList
 }
 
 // StealFds returns the array of file descriptors that is contained in this

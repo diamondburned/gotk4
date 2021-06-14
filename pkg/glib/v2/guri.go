@@ -3,8 +3,10 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -286,6 +288,23 @@ func (u *URI) AuthParams() string {
 	return _utf8
 }
 
+// Flags gets @uri's flags set upon construction.
+func (u *URI) Flags() URIFlags {
+	var _arg0 *C.GUri // out
+
+	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+
+	var _cret C.GUriFlags // in
+
+	_cret = C.g_uri_get_flags(_arg0)
+
+	var _uriFlags URIFlags // out
+
+	_uriFlags = URIFlags(_cret)
+
+	return _uriFlags
+}
+
 // Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
 // the flags with which @uri was created.
 func (u *URI) Fragment() string {
@@ -460,6 +479,37 @@ func (u *URI) Userinfo() string {
 	return _utf8
 }
 
+// ParseRelative parses @uri_ref according to @flags and, if it is a [relative
+// URI][relative-absolute-uris], resolves it relative to @base_uri. If the
+// result is not a valid absolute URI, it will be discarded, and an error
+// returned.
+func (b *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
+	var _arg0 *C.GUri     // out
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GUriFlags // out
+
+	_arg0 = (*C.GUri)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.gchar)(C.CString(uriRef))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GUriFlags)(flags)
+
+	var _cret *C.GUri   // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_uri_parse_relative(_arg0, _arg1, _arg2, &_cerr)
+
+	var _uri *URI    // out
+	var _goerr error // out
+
+	_uri = WrapURI(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_uri, func(v *URI) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _uri, _goerr
+}
+
 // String returns a string representing @uri.
 //
 // This is not guaranteed to return a string which is identical to the string
@@ -585,4 +635,36 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 	_arg4 = (C.GUriParamsFlags)(flags)
 
 	C.g_uri_params_iter_init(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// Next advances @iter and retrieves the next attribute/value. false is returned
+// if an error has occurred (in which case @error is set), or if the end of the
+// iteration is reached (in which case @attribute and @value are set to nil and
+// the iterator becomes invalid). If true is returned, g_uri_params_iter_next()
+// may be called again to receive another attribute/value pair.
+//
+// Note that the same @attribute may be returned multiple times, since URIs
+// allow repeated attributes.
+func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
+	var _arg0 *C.GUriParamsIter // out
+
+	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
+
+	var _arg1 *C.gchar  // in
+	var _arg2 *C.gchar  // in
+	var _cerr *C.GError // in
+
+	C.g_uri_params_iter_next(_arg0, &_arg1, &_arg2, &_cerr)
+
+	var _attribute string // out
+	var _value string     // out
+	var _goerr error      // out
+
+	_attribute = C.GoString(_arg1)
+	defer C.free(unsafe.Pointer(_arg1))
+	_value = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _attribute, _value, _goerr
 }

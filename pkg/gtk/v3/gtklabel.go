@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,10 +52,19 @@ type Label interface {
 	// This function is intended for use in a Label::activate-link handler or
 	// for use in a Widget::query-tooltip handler.
 	CurrentURI() string
+	// Justify returns the justification of the label. See
+	// gtk_label_set_justify().
+	Justify() Justification
 	// Label fetches the text from a label widget including any embedded
 	// underlines indicating mnemonics and Pango markup. (See
 	// gtk_label_get_text()).
 	Label() string
+	// Layout gets the Layout used to display the label. The layout is useful to
+	// e.g. convert text positions to pixel positions, in combination with
+	// gtk_label_get_layout_offsets(). The returned layout is owned by the
+	// @label so need not be freed by the caller. The @label is free to recreate
+	// its layout at any time, so it should be considered read-only.
+	Layout() Layout
 	// LayoutOffsets obtains the coordinates where the label will draw the
 	// Layout representing the text in the label; useful to convert mouse events
 	// into coordinates inside the Layout, e.g. to take some action if some part
@@ -68,6 +77,9 @@ type Label interface {
 	// LineWrap returns whether lines in the label are automatically wrapped.
 	// See gtk_label_set_line_wrap().
 	LineWrap() bool
+	// LineWrapMode returns line wrap mode used by the label. See
+	// gtk_label_set_line_wrap_mode().
+	LineWrapMode() WrapMode
 	// Lines gets the number of lines to which an ellipsized, wrapping label
 	// should be limited. See gtk_label_set_lines().
 	Lines() int
@@ -78,6 +90,9 @@ type Label interface {
 	// this function returns the keyval used for the mnemonic accelerator. If
 	// there is no mnemonic set up it returns K_KEY_VoidSymbol.
 	MnemonicKeyval() uint
+	// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
+	// of this label. See gtk_label_set_mnemonic_widget().
+	MnemonicWidget() Widget
 	// Selectable gets the value set by gtk_label_set_selectable().
 	Selectable() bool
 	// SelectionBounds gets the selected range of characters in the label,
@@ -116,19 +131,6 @@ type Label interface {
 	// setting for the label is ignored if the label is selectable, wrapped, or
 	// ellipsized.
 	SetAngle(angle float64)
-	// SetAttributes sets a AttrList; the attributes in the list are applied to
-	// the label text.
-	//
-	// The attributes set with this function will be applied and merged with any
-	// other attributes previously effected by way of the Label:use-underline or
-	// Label:use-markup properties. While it is not recommended to mix markup
-	// strings with manually set attributes, if you must; know that the
-	// attributes will be applied to the label after the markup string is
-	// parsed.
-	SetAttributes(attrs *pango.AttrList)
-	// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to
-	// the text if there is not enough space to render the entire string.
-	SetEllipsize(mode pango.EllipsizeMode)
 	// SetJustify sets the alignment of the lines in the text of the label
 	// relative to each other. GTK_JUSTIFY_LEFT is the default value when the
 	// widget is first created with gtk_label_new(). If you instead want to set
@@ -153,7 +155,7 @@ type Label interface {
 	// SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap())
 	// this controls how the line wrapping is done. The default is
 	// PANGO_WRAP_WORD which means wrap on word boundaries.
-	SetLineWrapMode(wrapMode pango.WrapMode)
+	SetLineWrapMode(wrapMode WrapMode)
 	// SetLines sets the number of lines to which an ellipsized, wrapping label
 	// should be limited. This has no effect if the label is not wrapping or
 	// ellipsized. Set this to -1 if you don’t want to limit the number of
@@ -277,6 +279,42 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return WrapLabel(obj), nil
 }
 
+// NewLabel constructs a class Label.
+func NewLabel(str string) Label {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkLabel // in
+
+	_cret = C.gtk_label_new(_arg1)
+
+	var _label Label // out
+
+	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
+
+	return _label
+}
+
+// NewLabelWithMnemonic constructs a class Label.
+func NewLabelWithMnemonic(str string) Label {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkLabel // in
+
+	_cret = C.gtk_label_new_with_mnemonic(_arg1)
+
+	var _label Label // out
+
+	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
+
+	return _label
+}
+
 // Angle gets the angle of rotation for the label. See
 // gtk_label_set_angle().
 func (l label) Angle() float64 {
@@ -317,6 +355,24 @@ func (l label) CurrentURI() string {
 	return _utf8
 }
 
+// Justify returns the justification of the label. See
+// gtk_label_set_justify().
+func (l label) Justify() Justification {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
+
+	var _cret C.GtkJustification // in
+
+	_cret = C.gtk_label_get_justify(_arg0)
+
+	var _justification Justification // out
+
+	_justification = Justification(_cret)
+
+	return _justification
+}
+
 // Label fetches the text from a label widget including any embedded
 // underlines indicating mnemonics and Pango markup. (See
 // gtk_label_get_text()).
@@ -334,6 +390,27 @@ func (l label) Label() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Layout gets the Layout used to display the label. The layout is useful to
+// e.g. convert text positions to pixel positions, in combination with
+// gtk_label_get_layout_offsets(). The returned layout is owned by the
+// @label so need not be freed by the caller. The @label is free to recreate
+// its layout at any time, so it should be considered read-only.
+func (l label) Layout() Layout {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.PangoLayout // in
+
+	_cret = C.gtk_label_get_layout(_arg0)
+
+	var _layout Layout // out
+
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Layout)
+
+	return _layout
 }
 
 // LayoutOffsets obtains the coordinates where the label will draw the
@@ -381,6 +458,24 @@ func (l label) LineWrap() bool {
 	}
 
 	return _ok
+}
+
+// LineWrapMode returns line wrap mode used by the label. See
+// gtk_label_set_line_wrap_mode().
+func (l label) LineWrapMode() WrapMode {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
+
+	var _cret C.PangoWrapMode // in
+
+	_cret = C.gtk_label_get_line_wrap_mode(_arg0)
+
+	var _wrapMode WrapMode // out
+
+	_wrapMode = WrapMode(_cret)
+
+	return _wrapMode
 }
 
 // Lines gets the number of lines to which an ellipsized, wrapping label
@@ -436,6 +531,24 @@ func (l label) MnemonicKeyval() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
+// of this label. See gtk_label_set_mnemonic_widget().
+func (l label) MnemonicWidget() Widget {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_label_get_mnemonic_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Selectable gets the value set by gtk_label_set_selectable().
@@ -664,37 +777,6 @@ func (l label) SetAngle(angle float64) {
 	C.gtk_label_set_angle(_arg0, _arg1)
 }
 
-// SetAttributes sets a AttrList; the attributes in the list are applied to
-// the label text.
-//
-// The attributes set with this function will be applied and merged with any
-// other attributes previously effected by way of the Label:use-underline or
-// Label:use-markup properties. While it is not recommended to mix markup
-// strings with manually set attributes, if you must; know that the
-// attributes will be applied to the label after the markup string is
-// parsed.
-func (l label) SetAttributes(attrs *pango.AttrList) {
-	var _arg0 *C.GtkLabel      // out
-	var _arg1 *C.PangoAttrList // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
-
-	C.gtk_label_set_attributes(_arg0, _arg1)
-}
-
-// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to
-// the text if there is not enough space to render the entire string.
-func (l label) SetEllipsize(mode pango.EllipsizeMode) {
-	var _arg0 *C.GtkLabel          // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.PangoEllipsizeMode)(mode)
-
-	C.gtk_label_set_ellipsize(_arg0, _arg1)
-}
-
 // SetJustify sets the alignment of the lines in the text of the label
 // relative to each other. GTK_JUSTIFY_LEFT is the default value when the
 // widget is first created with gtk_label_new(). If you instead want to set
@@ -749,7 +831,7 @@ func (l label) SetLineWrap(wrap bool) {
 // SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap())
 // this controls how the line wrapping is done. The default is
 // PANGO_WRAP_WORD which means wrap on word boundaries.
-func (l label) SetLineWrapMode(wrapMode pango.WrapMode) {
+func (l label) SetLineWrapMode(wrapMode WrapMode) {
 	var _arg0 *C.GtkLabel     // out
 	var _arg1 C.PangoWrapMode // out
 

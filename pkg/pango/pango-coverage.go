@@ -61,10 +61,16 @@ func marshalCoverageLevel(p uintptr) (interface{}, error) {
 type Coverage interface {
 	gextras.Objector
 
+	// Copy: copy an existing `PangoCoverage`.
+	Copy() Coverage
+	// Get: determine whether a particular index is covered by @coverage.
+	Get(index_ int) CoverageLevel
 	// Max: set the coverage for each index in @coverage to be the max (better)
 	// value of the current coverage for the index and the coverage for the
 	// corresponding index in @other.
 	Max(other Coverage)
+	// Ref: increase the reference count on the `PangoCoverage` by one.
+	Ref() Coverage
 	// Set: modify a particular index within @coverage
 	Set(index_ int, level CoverageLevel)
 	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
@@ -96,6 +102,55 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 	return WrapCoverage(obj), nil
 }
 
+// NewCoverage constructs a class Coverage.
+func NewCoverage() Coverage {
+	var _cret C.PangoCoverage // in
+
+	_cret = C.pango_coverage_new()
+
+	var _coverage Coverage // out
+
+	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
+
+	return _coverage
+}
+
+// Copy: copy an existing `PangoCoverage`.
+func (c coverage) Copy() Coverage {
+	var _arg0 *C.PangoCoverage // out
+
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.PangoCoverage // in
+
+	_cret = C.pango_coverage_copy(_arg0)
+
+	var _ret Coverage // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
+
+	return _ret
+}
+
+// Get: determine whether a particular index is covered by @coverage.
+func (c coverage) Get(index_ int) CoverageLevel {
+	var _arg0 *C.PangoCoverage // out
+	var _arg1 C.int            // out
+
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(index_)
+
+	var _cret C.PangoCoverageLevel // in
+
+	_cret = C.pango_coverage_get(_arg0, _arg1)
+
+	var _coverageLevel CoverageLevel // out
+
+	_coverageLevel = CoverageLevel(_cret)
+
+	return _coverageLevel
+}
+
 // Max: set the coverage for each index in @coverage to be the max (better)
 // value of the current coverage for the index and the coverage for the
 // corresponding index in @other.
@@ -107,6 +162,23 @@ func (c coverage) Max(other Coverage) {
 	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
 
 	C.pango_coverage_max(_arg0, _arg1)
+}
+
+// Ref: increase the reference count on the `PangoCoverage` by one.
+func (c coverage) Ref() Coverage {
+	var _arg0 *C.PangoCoverage // out
+
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.PangoCoverage // in
+
+	_cret = C.pango_coverage_ref(_arg0)
+
+	var _ret Coverage // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
+
+	return _ret
 }
 
 // Set: modify a particular index within @coverage

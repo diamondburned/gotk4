@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,6 +68,8 @@ type Overlay interface {
 	// The position at which @widget is placed is determined from its
 	// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
 	AddOverlay(widget Widget)
+	// Child gets the child widget of @overlay.
+	Child() Widget
 	// ClipOverlay gets whether @widget should be clipped within the parent.
 	ClipOverlay(widget Widget) bool
 	// MeasureOverlay gets whether @widget's size is included in the measurement
@@ -115,6 +118,19 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return WrapOverlay(obj), nil
 }
 
+// NewOverlay constructs a class Overlay.
+func NewOverlay() Overlay {
+	var _cret C.GtkOverlay // in
+
+	_cret = C.gtk_overlay_new()
+
+	var _overlay Overlay // out
+
+	_overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Overlay)
+
+	return _overlay
+}
+
 // AddOverlay adds @widget to @overlay.
 //
 // The widget will be stacked on top of the main widget added with
@@ -130,6 +146,23 @@ func (o overlay) AddOverlay(widget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
+}
+
+// Child gets the child widget of @overlay.
+func (o overlay) Child() Widget {
+	var _arg0 *C.GtkOverlay // out
+
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_overlay_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // ClipOverlay gets whether @widget should be clipped within the parent.

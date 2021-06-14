@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,11 +27,6 @@ func init() {
 // provided signals just provide the basic information
 type GestureStylus interface {
 	GestureSingle
-
-	// Axis returns the current value for the requested @axis. This function
-	// must be called from either the GestureStylus:down, GestureStylus:motion,
-	// GestureStylus:up or GestureStylus:proximity signals.
-	Axis(axis gdk.AxisUse) (float64, bool)
 }
 
 // gestureStylus implements the GestureStylus class.
@@ -55,28 +50,19 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return WrapGestureStylus(obj), nil
 }
 
-// Axis returns the current value for the requested @axis. This function
-// must be called from either the GestureStylus:down, GestureStylus:motion,
-// GestureStylus:up or GestureStylus:proximity signals.
-func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
-	var _arg0 *C.GtkGestureStylus // out
-	var _arg1 C.GdkAxisUse        // out
+// NewGestureStylus constructs a class GestureStylus.
+func NewGestureStylus(widget Widget) GestureStylus {
+	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.GdkAxisUse)(axis)
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _arg2 C.gdouble  // in
-	var _cret C.gboolean // in
+	var _cret C.GtkGestureStylus // in
 
-	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_gesture_stylus_new(_arg1)
 
-	var _value float64 // out
-	var _ok bool       // out
+	var _gestureStylus GestureStylus // out
 
-	_value = (float64)(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
+	_gestureStylus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureStylus)
 
-	return _value, _ok
+	return _gestureStylus
 }

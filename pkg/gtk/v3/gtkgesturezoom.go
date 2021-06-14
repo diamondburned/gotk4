@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,6 +54,23 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGestureZoom(obj), nil
+}
+
+// NewGestureZoom constructs a class GestureZoom.
+func NewGestureZoom(widget Widget) GestureZoom {
+	var _arg1 *C.GtkWidget // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	var _cret C.GtkGestureZoom // in
+
+	_cret = C.gtk_gesture_zoom_new(_arg1)
+
+	var _gestureZoom GestureZoom // out
+
+	_gestureZoom = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureZoom)
+
+	return _gestureZoom
 }
 
 // ScaleDelta: if @gesture is active, this function returns the zooming

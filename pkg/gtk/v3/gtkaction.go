@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,6 +92,19 @@ type Action interface {
 	// been called and doesn’t remove the accelerator until
 	// gtk_action_disconnect_accelerator() has been called as many times.
 	ConnectAccelerator()
+	// CreateIcon: this function is intended for use by action implementations
+	// to create icons displayed in the proxy widgets.
+	CreateIcon(iconSize int) Widget
+	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
+	// item or the toolbar item it creates, this function returns an instance of
+	// that menu.
+	CreateMenu() Widget
+	// CreateMenuItem creates a menu item widget that proxies for the given
+	// action.
+	CreateMenuItem() Widget
+	// CreateToolItem creates a toolbar item widget that proxies for the given
+	// action.
+	CreateToolItem() Widget
 	// DisconnectAccelerator undoes the effect of one call to
 	// gtk_action_connect_accelerator().
 	DisconnectAccelerator()
@@ -149,8 +161,6 @@ type Action interface {
 	// Use this if the menu item would be useless or hard to use without their
 	// image.
 	SetAlwaysShowImage(alwaysShow bool)
-	// SetGIcon sets the icon of @action.
-	SetGIcon(icon gio.Icon)
 	// SetIconName sets the icon name on @action
 	SetIconName(iconName string)
 	// SetIsImportant sets whether the action is important, this attribute is
@@ -203,6 +213,33 @@ func marshalAction(p uintptr) (interface{}, error) {
 	return WrapAction(obj), nil
 }
 
+// NewAction constructs a class Action.
+func NewAction(name string, label string, tooltip string, stockId string) Action {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
+	var _arg3 *C.gchar // out
+	var _arg4 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(tooltip))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	var _cret C.GtkAction // in
+
+	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
+
+	var _action Action // out
+
+	_action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Action)
+
+	return _action
+}
+
 // Activate emits the “activate” signal on the specified action, if it isn't
 // insensitive. This gets called by the proxy widgets when they get
 // activated.
@@ -244,6 +281,81 @@ func (a action) ConnectAccelerator() {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	C.gtk_action_connect_accelerator(_arg0)
+}
+
+// CreateIcon: this function is intended for use by action implementations
+// to create icons displayed in the proxy widgets.
+func (a action) CreateIcon(iconSize int) Widget {
+	var _arg0 *C.GtkAction  // out
+	var _arg1 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg1 = C.GtkIconSize(iconSize)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_action_create_icon(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// CreateMenu: if @action provides a Menu widget as a submenu for the menu
+// item or the toolbar item it creates, this function returns an instance of
+// that menu.
+func (a action) CreateMenu() Widget {
+	var _arg0 *C.GtkAction // out
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_action_create_menu(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// CreateMenuItem creates a menu item widget that proxies for the given
+// action.
+func (a action) CreateMenuItem() Widget {
+	var _arg0 *C.GtkAction // out
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_action_create_menu_item(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// CreateToolItem creates a toolbar item widget that proxies for the given
+// action.
+func (a action) CreateToolItem() Widget {
+	var _arg0 *C.GtkAction // out
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_action_create_tool_item(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // DisconnectAccelerator undoes the effect of one call to
@@ -578,17 +690,6 @@ func (a action) SetAlwaysShowImage(alwaysShow bool) {
 	}
 
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
-}
-
-// SetGIcon sets the icon of @action.
-func (a action) SetGIcon(icon gio.Icon) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.GIcon     // out
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_action_set_gicon(_arg0, _arg1)
 }
 
 // SetIconName sets the icon name on @action

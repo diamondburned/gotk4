@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,6 +48,8 @@ type UnixSocketAddress interface {
 	SocketAddress
 	SocketConnectable
 
+	// AddressType gets @address's type.
+	AddressType() UnixSocketAddressType
 	// IsAbstract tests if @address is abstract.
 	IsAbstract() bool
 	// Path gets @address's path, or for abstract sockets the "name".
@@ -83,6 +86,81 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapUnixSocketAddress(obj), nil
+}
+
+// NewUnixSocketAddress constructs a class UnixSocketAddress.
+func NewUnixSocketAddress(path string) UnixSocketAddress {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GUnixSocketAddress // in
+
+	_cret = C.g_unix_socket_address_new(_arg1)
+
+	var _unixSocketAddress UnixSocketAddress // out
+
+	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
+
+	return _unixSocketAddress
+}
+
+// NewUnixSocketAddressAbstract constructs a class UnixSocketAddress.
+func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
+	var _arg1 *C.gchar
+	var _arg2 C.gint
+
+	_arg2 = C.gint(len(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+
+	var _cret C.GUnixSocketAddress // in
+
+	_cret = C.g_unix_socket_address_new_abstract(_arg1, _arg2)
+
+	var _unixSocketAddress UnixSocketAddress // out
+
+	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
+
+	return _unixSocketAddress
+}
+
+// NewUnixSocketAddressWithType constructs a class UnixSocketAddress.
+func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSocketAddress {
+	var _arg1 *C.gchar
+	var _arg2 C.gint
+	var _arg3 C.GUnixSocketAddressType // out
+
+	_arg2 = C.gint(len(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+	_arg3 = (C.GUnixSocketAddressType)(typ)
+
+	var _cret C.GUnixSocketAddress // in
+
+	_cret = C.g_unix_socket_address_new_with_type(_arg1, _arg2, _arg3)
+
+	var _unixSocketAddress UnixSocketAddress // out
+
+	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
+
+	return _unixSocketAddress
+}
+
+// AddressType gets @address's type.
+func (a unixSocketAddress) AddressType() UnixSocketAddressType {
+	var _arg0 *C.GUnixSocketAddress // out
+
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+
+	var _cret C.GUnixSocketAddressType // in
+
+	_cret = C.g_unix_socket_address_get_address_type(_arg0)
+
+	var _unixSocketAddressType UnixSocketAddressType // out
+
+	_unixSocketAddressType = UnixSocketAddressType(_cret)
+
+	return _unixSocketAddressType
 }
 
 // IsAbstract tests if @address is abstract.

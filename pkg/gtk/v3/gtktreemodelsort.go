@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -97,9 +98,23 @@ type TreeModelSort interface {
 	// If @sort_iter was not set, false is returned. Note: a boolean is only
 	// returned since 2.14.
 	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	// ConvertChildPathToPath converts @child_path to a path relative to
+	// @tree_model_sort. That is, @child_path points to a path in the child
+	// model. The returned path will point to the same row in the sorted model.
+	// If @child_path isn’t a valid path on the child model, then nil is
+	// returned.
+	ConvertChildPathToPath(childPath *TreePath) *TreePath
 	// ConvertIterToChildIter sets @child_iter to point to the row pointed to by
 	// @sorted_iter.
 	ConvertIterToChildIter(sortedIter *TreeIter) TreeIter
+	// ConvertPathToChildPath converts @sorted_path to a path on the child model
+	// of @tree_model_sort. That is, @sorted_path points to a location in
+	// @tree_model_sort. The returned path will point to the same location in
+	// the model not being sorted. If @sorted_path does not point to a location
+	// in the child model, nil is returned.
+	ConvertPathToChildPath(sortedPath *TreePath) *TreePath
+	// Model returns the model the TreeModelSort is sorting.
+	Model() TreeModel
 	// IterIsValid: > This function is slow. Only use it for debugging and/or
 	// testing > purposes.
 	//
@@ -137,6 +152,23 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTreeModelSort(obj), nil
+}
+
+// NewTreeModelSortWithModel constructs a class TreeModelSort.
+func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort {
+	var _arg1 *C.GtkTreeModel // out
+
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(childModel.Native()))
+
+	var _cret C.GtkTreeModelSort // in
+
+	_cret = C.gtk_tree_model_sort_new_with_model(_arg1)
+
+	var _treeModelSort TreeModelSort // out
+
+	_treeModelSort = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeModelSort)
+
+	return _treeModelSort
 }
 
 // ClearCache: this function should almost never be called. It clears the
@@ -178,6 +210,32 @@ func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bo
 	return _sortIter, _ok
 }
 
+// ConvertChildPathToPath converts @child_path to a path relative to
+// @tree_model_sort. That is, @child_path points to a path in the child
+// model. The returned path will point to the same row in the sorted model.
+// If @child_path isn’t a valid path on the child model, then nil is
+// returned.
+func (t treeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath {
+	var _arg0 *C.GtkTreeModelSort // out
+	var _arg1 *C.GtkTreePath      // out
+
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(childPath.Native()))
+
+	var _cret *C.GtkTreePath // in
+
+	_cret = C.gtk_tree_model_sort_convert_child_path_to_path(_arg0, _arg1)
+
+	var _treePath *TreePath // out
+
+	_treePath = WrapTreePath(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v *TreePath) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _treePath
+}
+
 // ConvertIterToChildIter sets @child_iter to point to the row pointed to by
 // @sorted_iter.
 func (t treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter {
@@ -192,6 +250,49 @@ func (t treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter {
 	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_childIter)))
 
 	return _childIter
+}
+
+// ConvertPathToChildPath converts @sorted_path to a path on the child model
+// of @tree_model_sort. That is, @sorted_path points to a location in
+// @tree_model_sort. The returned path will point to the same location in
+// the model not being sorted. If @sorted_path does not point to a location
+// in the child model, nil is returned.
+func (t treeModelSort) ConvertPathToChildPath(sortedPath *TreePath) *TreePath {
+	var _arg0 *C.GtkTreeModelSort // out
+	var _arg1 *C.GtkTreePath      // out
+
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(sortedPath.Native()))
+
+	var _cret *C.GtkTreePath // in
+
+	_cret = C.gtk_tree_model_sort_convert_path_to_child_path(_arg0, _arg1)
+
+	var _treePath *TreePath // out
+
+	_treePath = WrapTreePath(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v *TreePath) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _treePath
+}
+
+// Model returns the model the TreeModelSort is sorting.
+func (t treeModelSort) Model() TreeModel {
+	var _arg0 *C.GtkTreeModelSort // out
+
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
+
+	var _cret *C.GtkTreeModel // in
+
+	_cret = C.gtk_tree_model_sort_get_model(_arg0)
+
+	var _treeModel TreeModel // out
+
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+
+	return _treeModel
 }
 
 // IterIsValid: > This function is slow. Only use it for debugging and/or

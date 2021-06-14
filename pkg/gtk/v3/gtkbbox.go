@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,6 +63,9 @@ type ButtonBox interface {
 	// ChildSecondary returns whether @child should appear in a secondary group
 	// of children.
 	ChildSecondary(child Widget) bool
+	// Layout retrieves the method being used to arrange the buttons in a button
+	// box.
+	Layout() ButtonBoxStyle
 	// SetChildNonHomogeneous sets whether the child is exempted from homogeous
 	// sizing.
 	SetChildNonHomogeneous(child Widget, nonHomogeneous bool)
@@ -107,6 +111,23 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 	return WrapButtonBox(obj), nil
 }
 
+// NewButtonBox constructs a class ButtonBox.
+func NewButtonBox(orientation Orientation) ButtonBox {
+	var _arg1 C.GtkOrientation // out
+
+	_arg1 = (C.GtkOrientation)(orientation)
+
+	var _cret C.GtkButtonBox // in
+
+	_cret = C.gtk_button_box_new(_arg1)
+
+	var _buttonBox ButtonBox // out
+
+	_buttonBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ButtonBox)
+
+	return _buttonBox
+}
+
 // ChildNonHomogeneous returns whether the child is exempted from homogenous
 // sizing.
 func (w buttonBox) ChildNonHomogeneous(child Widget) bool {
@@ -149,6 +170,24 @@ func (w buttonBox) ChildSecondary(child Widget) bool {
 	}
 
 	return _ok
+}
+
+// Layout retrieves the method being used to arrange the buttons in a button
+// box.
+func (w buttonBox) Layout() ButtonBoxStyle {
+	var _arg0 *C.GtkButtonBox // out
+
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+
+	var _cret C.GtkButtonBoxStyle // in
+
+	_cret = C.gtk_button_box_get_layout(_arg0)
+
+	var _buttonBoxStyle ButtonBoxStyle // out
+
+	_buttonBoxStyle = ButtonBoxStyle(_cret)
+
+	return _buttonBoxStyle
 }
 
 // SetChildNonHomogeneous sets whether the child is exempted from homogeous

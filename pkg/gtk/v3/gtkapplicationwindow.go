@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -118,10 +118,12 @@ func init() {
 // user-visible string to display - "icon": icon name to display
 type ApplicationWindow interface {
 	Window
-	gio.ActionGroup
-	gio.ActionMap
+	ActionGroup
 	Buildable
 
+	// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
+	// call to gtk_application_window_set_help_overlay().
+	HelpOverlay() ShortcutsWindow
 	// ID returns the unique ID of the window. If the window has not yet been
 	// added to a Application, returns `0`.
 	ID() uint
@@ -141,8 +143,7 @@ type ApplicationWindow interface {
 // applicationWindow implements the ApplicationWindow class.
 type applicationWindow struct {
 	Window
-	gio.ActionGroup
-	gio.ActionMap
+	ActionGroup
 	Buildable
 }
 
@@ -152,10 +153,9 @@ var _ ApplicationWindow = (*applicationWindow)(nil)
 // primarily used internally.
 func WrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
 	return applicationWindow{
-		Window:          WrapWindow(obj),
-		gio.ActionGroup: gio.WrapActionGroup(obj),
-		gio.ActionMap:   gio.WrapActionMap(obj),
-		Buildable:       WrapBuildable(obj),
+		Window:      WrapWindow(obj),
+		ActionGroup: WrapActionGroup(obj),
+		Buildable:   WrapBuildable(obj),
 	}
 }
 
@@ -163,6 +163,41 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapApplicationWindow(obj), nil
+}
+
+// NewApplicationWindow constructs a class ApplicationWindow.
+func NewApplicationWindow(application Application) ApplicationWindow {
+	var _arg1 *C.GtkApplication // out
+
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+
+	var _cret C.GtkApplicationWindow // in
+
+	_cret = C.gtk_application_window_new(_arg1)
+
+	var _applicationWindow ApplicationWindow // out
+
+	_applicationWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ApplicationWindow)
+
+	return _applicationWindow
+}
+
+// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
+// call to gtk_application_window_set_help_overlay().
+func (w applicationWindow) HelpOverlay() ShortcutsWindow {
+	var _arg0 *C.GtkApplicationWindow // out
+
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GtkShortcutsWindow // in
+
+	_cret = C.gtk_application_window_get_help_overlay(_arg0)
+
+	var _shortcutsWindow ShortcutsWindow // out
+
+	_shortcutsWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutsWindow)
+
+	return _shortcutsWindow
 }
 
 // ID returns the unique ID of the window. If the window has not yet been

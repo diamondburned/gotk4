@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -74,6 +75,12 @@ type CSSProvider interface {
 	gextras.Objector
 	StyleProvider
 
+	// LoadFromData loads @data into @css_provider, and by doing so clears any
+	// previously loaded information.
+	LoadFromData(data []byte) error
+	// LoadFromPath loads the data contained in @path into @css_provider, making
+	// it clear any previously loaded information.
+	LoadFromPath(path string) error
 	// LoadFromResource loads the data contained in the resource at
 	// @resource_path into the CssProvider, clearing any previously loaded
 	// information.
@@ -110,6 +117,62 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCSSProvider(obj), nil
+}
+
+// NewCSSProvider constructs a class CSSProvider.
+func NewCSSProvider() CSSProvider {
+	var _cret C.GtkCssProvider // in
+
+	_cret = C.gtk_css_provider_new()
+
+	var _cssProvider CSSProvider // out
+
+	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CSSProvider)
+
+	return _cssProvider
+}
+
+// LoadFromData loads @data into @css_provider, and by doing so clears any
+// previously loaded information.
+func (c cssProvider) LoadFromData(data []byte) error {
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
+
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg2 = C.gssize(len(data))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
+
+	var _cerr *C.GError // in
+
+	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// LoadFromPath loads the data contained in @path into @css_provider, making
+// it clear any previously loaded information.
+func (c cssProvider) LoadFromPath(path string) error {
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cerr *C.GError // in
+
+	C.gtk_css_provider_load_from_path(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // LoadFromResource loads the data contained in the resource at

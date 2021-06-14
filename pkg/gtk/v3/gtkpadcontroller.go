@@ -181,6 +181,13 @@ func (p *PadActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// Type gets the field inside the struct.
+func (p *PadActionEntry) Type() PadActionType {
+	var v PadActionType // out
+	v = PadActionType(p.native._type)
+	return v
+}
+
 // Index gets the field inside the struct.
 func (p *PadActionEntry) Index() int {
 	var v int // out

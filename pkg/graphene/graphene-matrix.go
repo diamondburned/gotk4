@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,6 +42,22 @@ func WrapMatrix(ptr unsafe.Pointer) *Matrix {
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapMatrix(unsafe.Pointer(b)), nil
+}
+
+// NewMatrixAlloc constructs a struct Matrix.
+func NewMatrixAlloc() *Matrix {
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_alloc()
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_matrix, func(v *Matrix) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _matrix
 }
 
 // Native returns the underlying C source pointer.
@@ -302,6 +319,338 @@ func (m *Matrix) ZTranslation() float32 {
 	_gfloat = (float32)(_cret)
 
 	return _gfloat
+}
+
+// InitFrom2D initializes a #graphene_matrix_t from the values of an affine
+// transformation matrix.
+//
+// The arguments map to the following matrix layout:
+//
+//    ⎛ xx  yx ⎞   ⎛  a   b  0 ⎞
+//    ⎜ xy  yy ⎟ = ⎜  c   d  0 ⎟
+//    ⎝ x0  y0 ⎠   ⎝ tx  ty  1 ⎠
+//
+// This function can be used to convert between an affine matrix type from other
+// libraries and a #graphene_matrix_t.
+func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 float64, y0 float64) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 C.double             // out
+	var _arg2 C.double             // out
+	var _arg3 C.double             // out
+	var _arg4 C.double             // out
+	var _arg5 C.double             // out
+	var _arg6 C.double             // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.double(xx)
+	_arg2 = C.double(yx)
+	_arg3 = C.double(xy)
+	_arg4 = C.double(yy)
+	_arg5 = C.double(x0)
+	_arg6 = C.double(y0)
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_from_2d(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitFromFloat initializes a #graphene_matrix_t with the given array of
+// floating point values.
+func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 *C.float
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.float)(unsafe.Pointer(&v))
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_from_float(_arg0, _arg1)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitFromMatrix initializes a #graphene_matrix_t using the values of the given
+// matrix.
+func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 *C.graphene_matrix_t // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(src.Native()))
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_from_matrix(_arg0, _arg1)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitFromVec4 initializes a #graphene_matrix_t with the given four row
+// vectors.
+func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 *C.graphene_vec4_t   // out
+	var _arg2 *C.graphene_vec4_t   // out
+	var _arg3 *C.graphene_vec4_t   // out
+	var _arg4 *C.graphene_vec4_t   // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v0.Native()))
+	_arg2 = (*C.graphene_vec4_t)(unsafe.Pointer(v1.Native()))
+	_arg3 = (*C.graphene_vec4_t)(unsafe.Pointer(v2.Native()))
+	_arg4 = (*C.graphene_vec4_t)(unsafe.Pointer(v3.Native()))
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_from_vec4(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitFrustum initializes a #graphene_matrix_t compatible with
+// #graphene_frustum_t.
+//
+// See also: graphene_frustum_init_from_matrix()
+func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top float32, zNear float32, zFar float32) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 C.float              // out
+	var _arg2 C.float              // out
+	var _arg3 C.float              // out
+	var _arg4 C.float              // out
+	var _arg5 C.float              // out
+	var _arg6 C.float              // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(left)
+	_arg2 = C.float(right)
+	_arg3 = C.float(bottom)
+	_arg4 = C.float(top)
+	_arg5 = C.float(zNear)
+	_arg6 = C.float(zFar)
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_frustum(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitIdentity initializes a #graphene_matrix_t with the identity matrix.
+func (m *Matrix) InitIdentity() *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_identity(_arg0)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitLookAt initializes a #graphene_matrix_t so that it positions the "camera"
+// at the given @eye coordinates towards an object at the @center coordinates.
+// The top of the camera is aligned to the direction of the @up vector.
+//
+// Before the transform, the camera is assumed to be placed at the origin,
+// looking towards the negative Z axis, with the top side of the camera facing
+// in the direction of the Y axis and the right side in the direction of the X
+// axis.
+//
+// In theory, one could use @m to transform a model of such a camera into
+// world-space. However, it is more common to use the inverse of @m to transform
+// another object from world coordinates to the view coordinates of the camera.
+// Typically you would then apply the camera projection transform to get from
+// view to screen coordinates.
+func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 *C.graphene_vec3_t   // out
+	var _arg2 *C.graphene_vec3_t   // out
+	var _arg3 *C.graphene_vec3_t   // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(eye.Native()))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(center.Native()))
+	_arg3 = (*C.graphene_vec3_t)(unsafe.Pointer(up.Native()))
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_look_at(_arg0, _arg1, _arg2, _arg3)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitOrtho initializes a #graphene_matrix_t with an orthographic projection.
+func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom float32, zNear float32, zFar float32) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 C.float              // out
+	var _arg2 C.float              // out
+	var _arg3 C.float              // out
+	var _arg4 C.float              // out
+	var _arg5 C.float              // out
+	var _arg6 C.float              // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(left)
+	_arg2 = C.float(right)
+	_arg3 = C.float(top)
+	_arg4 = C.float(bottom)
+	_arg5 = C.float(zNear)
+	_arg6 = C.float(zFar)
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_ortho(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitPerspective initializes a #graphene_matrix_t with a perspective
+// projection.
+func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zFar float32) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 C.float              // out
+	var _arg2 C.float              // out
+	var _arg3 C.float              // out
+	var _arg4 C.float              // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(fovy)
+	_arg2 = C.float(aspect)
+	_arg3 = C.float(zNear)
+	_arg4 = C.float(zFar)
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_perspective(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitRotate initializes @m to represent a rotation of @angle degrees on the
+// axis represented by the @axis vector.
+func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 C.float              // out
+	var _arg2 *C.graphene_vec3_t   // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(angle)
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_rotate(_arg0, _arg1, _arg2)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitScale initializes a #graphene_matrix_t with the given scaling factors.
+func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 C.float              // out
+	var _arg2 C.float              // out
+	var _arg3 C.float              // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_scale(_arg0, _arg1, _arg2, _arg3)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitSkew initializes a #graphene_matrix_t with a skew transformation with the
+// given factors.
+func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
+	var _arg0 *C.graphene_matrix_t // out
+	var _arg1 C.float              // out
+	var _arg2 C.float              // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(xSkew)
+	_arg2 = C.float(ySkew)
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_skew(_arg0, _arg1, _arg2)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
+}
+
+// InitTranslate initializes a #graphene_matrix_t with a translation to the
+// given coordinates.
+func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
+	var _arg0 *C.graphene_matrix_t  // out
+	var _arg1 *C.graphene_point3d_t // out
+
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.graphene_matrix_t // in
+
+	_cret = C.graphene_matrix_init_translate(_arg0, _arg1)
+
+	var _matrix *Matrix // out
+
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+
+	return _matrix
 }
 
 // Interpolate: linearly interpolates the two given #graphene_matrix_t by

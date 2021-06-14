@@ -200,6 +200,8 @@ type Binding interface {
 	// a strong reference to the target. If the target is destroyed before the
 	// binding then this function will return nil.
 	DupTarget() gextras.Objector
+	// Flags retrieves the flags passed when constructing the #GBinding.
+	Flags() BindingFlags
 	// Source retrieves the #GObject instance used as the source of the binding.
 	//
 	// A #GBinding can outlive the source #GObject as the binding does not hold
@@ -305,6 +307,23 @@ func (b binding) DupTarget() gextras.Objector {
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
 	return _object
+}
+
+// Flags retrieves the flags passed when constructing the #GBinding.
+func (b binding) Flags() BindingFlags {
+	var _arg0 *C.GBinding // out
+
+	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
+
+	var _cret C.GBindingFlags // in
+
+	_cret = C.g_binding_get_flags(_arg0)
+
+	var _bindingFlags BindingFlags // out
+
+	_bindingFlags = BindingFlags(_cret)
+
+	return _bindingFlags
 }
 
 // Source retrieves the #GObject instance used as the source of the binding.

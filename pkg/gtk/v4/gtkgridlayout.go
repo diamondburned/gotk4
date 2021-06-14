@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,6 +48,12 @@ type GridLayout interface {
 	// ColumnSpacing retrieves the spacing set with
 	// gtk_grid_layout_set_column_spacing().
 	ColumnSpacing() uint
+	// RowBaselinePosition returns the baseline position of @row.
+	//
+	// If no value has been set with
+	// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
+	// GTK_BASELINE_POSITION_CENTER is returned.
+	RowBaselinePosition(row int) BaselinePosition
 	// RowHomogeneous checks whether all rows of @grid should have the same
 	// height.
 	RowHomogeneous() bool
@@ -96,6 +103,19 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGridLayout(obj), nil
+}
+
+// NewGridLayout constructs a class GridLayout.
+func NewGridLayout() GridLayout {
+	var _cret C.GtkGridLayout // in
+
+	_cret = C.gtk_grid_layout_new()
+
+	var _gridLayout GridLayout // out
+
+	_gridLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GridLayout)
+
+	return _gridLayout
 }
 
 // BaselineRow retrieves the row set with
@@ -152,6 +172,29 @@ func (g gridLayout) ColumnSpacing() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// RowBaselinePosition returns the baseline position of @row.
+//
+// If no value has been set with
+// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
+// GTK_BASELINE_POSITION_CENTER is returned.
+func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
+	var _arg0 *C.GtkGridLayout // out
+	var _arg1 C.int            // out
+
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(row)
+
+	var _cret C.GtkBaselinePosition // in
+
+	_cret = C.gtk_grid_layout_get_row_baseline_position(_arg0, _arg1)
+
+	var _baselinePosition BaselinePosition // out
+
+	_baselinePosition = BaselinePosition(_cret)
+
+	return _baselinePosition
 }
 
 // RowHomogeneous checks whether all rows of @grid should have the same

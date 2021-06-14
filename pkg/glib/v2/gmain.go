@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -208,6 +209,22 @@ func WrapMainContext(ptr unsafe.Pointer) *MainContext {
 func marshalMainContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapMainContext(unsafe.Pointer(b)), nil
+}
+
+// NewMainContext constructs a struct MainContext.
+func NewMainContext() *MainContext {
+	var _cret *C.GMainContext // in
+
+	_cret = C.g_main_context_new()
+
+	var _mainContext *MainContext // out
+
+	_mainContext = WrapMainContext(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _mainContext
 }
 
 // Native returns the underlying C source pointer.
@@ -449,6 +466,26 @@ func (c *MainContext) PushThreadDefault() {
 	C.g_main_context_push_thread_default(_arg0)
 }
 
+// Ref increases the reference count on a Context object by one.
+func (c *MainContext) Ref() *MainContext {
+	var _arg0 *C.GMainContext // out
+
+	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GMainContext // in
+
+	_cret = C.g_main_context_ref(_arg0)
+
+	var _mainContext *MainContext // out
+
+	_mainContext = WrapMainContext(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _mainContext
+}
+
 // Release releases ownership of a context previously acquired by this thread
 // with g_main_context_acquire(). If the context was acquired multiple times,
 // the ownership will be released only when g_main_context_release() is called
@@ -527,9 +564,50 @@ func marshalMainLoop(p uintptr) (interface{}, error) {
 	return WrapMainLoop(unsafe.Pointer(b)), nil
 }
 
+// NewMainLoop constructs a struct MainLoop.
+func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
+	var _arg1 *C.GMainContext // out
+	var _arg2 C.gboolean      // out
+
+	_arg1 = (*C.GMainContext)(unsafe.Pointer(context.Native()))
+	if isRunning {
+		_arg2 = C.TRUE
+	}
+
+	var _cret *C.GMainLoop // in
+
+	_cret = C.g_main_loop_new(_arg1, _arg2)
+
+	var _mainLoop *MainLoop // out
+
+	_mainLoop = WrapMainLoop(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _mainLoop
+}
+
 // Native returns the underlying C source pointer.
 func (m *MainLoop) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
+}
+
+// Context returns the Context of @loop.
+func (l *MainLoop) Context() *MainContext {
+	var _arg0 *C.GMainLoop // out
+
+	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.GMainContext // in
+
+	_cret = C.g_main_loop_get_context(_arg0)
+
+	var _mainContext *MainContext // out
+
+	_mainContext = WrapMainContext(unsafe.Pointer(_cret))
+
+	return _mainContext
 }
 
 // IsRunning checks to see if the main loop is currently being run via
@@ -563,6 +641,26 @@ func (l *MainLoop) Quit() {
 	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
 
 	C.g_main_loop_quit(_arg0)
+}
+
+// Ref increases the reference count on a Loop object by one.
+func (l *MainLoop) Ref() *MainLoop {
+	var _arg0 *C.GMainLoop // out
+
+	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.GMainLoop // in
+
+	_cret = C.g_main_loop_ref(_arg0)
+
+	var _mainLoop *MainLoop // out
+
+	_mainLoop = WrapMainLoop(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _mainLoop
 }
 
 // Run runs a main loop until g_main_loop_quit() is called on the loop. If this

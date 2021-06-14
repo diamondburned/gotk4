@@ -102,6 +102,9 @@ type SizeGroup interface {
 	// IgnoreHidden returns if invisible widgets are ignored when calculating
 	// the size.
 	IgnoreHidden() bool
+	// Mode gets the current mode of the size group. See
+	// gtk_size_group_set_mode().
+	Mode() SizeGroupMode
 	// RemoveWidget removes a widget from a SizeGroup.
 	RemoveWidget(widget Widget)
 	// SetIgnoreHidden sets whether unmapped widgets should be ignored when
@@ -136,6 +139,23 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSizeGroup(obj), nil
+}
+
+// NewSizeGroup constructs a class SizeGroup.
+func NewSizeGroup(mode SizeGroupMode) SizeGroup {
+	var _arg1 C.GtkSizeGroupMode // out
+
+	_arg1 = (C.GtkSizeGroupMode)(mode)
+
+	var _cret C.GtkSizeGroup // in
+
+	_cret = C.gtk_size_group_new(_arg1)
+
+	var _sizeGroup SizeGroup // out
+
+	_sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SizeGroup)
+
+	return _sizeGroup
 }
 
 // AddWidget adds a widget to a SizeGroup. In the future, the requisition of
@@ -174,6 +194,24 @@ func (s sizeGroup) IgnoreHidden() bool {
 	}
 
 	return _ok
+}
+
+// Mode gets the current mode of the size group. See
+// gtk_size_group_set_mode().
+func (s sizeGroup) Mode() SizeGroupMode {
+	var _arg0 *C.GtkSizeGroup // out
+
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkSizeGroupMode // in
+
+	_cret = C.gtk_size_group_get_mode(_arg0)
+
+	var _sizeGroupMode SizeGroupMode // out
+
+	_sizeGroupMode = SizeGroupMode(_cret)
+
+	return _sizeGroupMode
 }
 
 // RemoveWidget removes a widget from a SizeGroup.

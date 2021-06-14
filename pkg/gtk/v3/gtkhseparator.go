@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,4 +62,17 @@ func marshalHSeparator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapHSeparator(obj), nil
+}
+
+// NewHSeparator constructs a class HSeparator.
+func NewHSeparator() HSeparator {
+	var _cret C.GtkHSeparator // in
+
+	_cret = C.gtk_hseparator_new()
+
+	var _hSeparator HSeparator // out
+
+	_hSeparator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HSeparator)
+
+	return _hSeparator
 }

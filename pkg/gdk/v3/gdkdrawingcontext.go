@@ -34,6 +34,8 @@ func init() {
 type DrawingContext interface {
 	gextras.Objector
 
+	// Window retrieves the window that created the drawing @context.
+	Window() Window
 	// IsValid checks whether the given DrawingContext is valid.
 	IsValid() bool
 }
@@ -57,6 +59,23 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDrawingContext(obj), nil
+}
+
+// Window retrieves the window that created the drawing @context.
+func (c drawingContext) Window() Window {
+	var _arg0 *C.GdkDrawingContext // out
+
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_drawing_context_get_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
 }
 
 // IsValid checks whether the given DrawingContext is valid.

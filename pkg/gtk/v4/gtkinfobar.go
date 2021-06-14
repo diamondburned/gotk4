@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -91,8 +92,17 @@ type InfoBar interface {
 	// is activated. The widget is appended to the end of the message areas
 	// action area.
 	AddActionWidget(child Widget, responseId int)
+	// AddButton adds a button with the given text.
+	//
+	// Clicking the button will emit the [signal@Gtk.InfoBar::response] signal
+	// with the given response_id. The button is appended to the end of the info
+	// bars's action area. The button widget is returned, but usually you don't
+	// need it.
+	AddButton(buttonText string, responseId int) Button
 	// AddChild adds a widget to the content area of the info bar.
 	AddChild(widget Widget)
+	// MessageType returns the message type of the message area.
+	MessageType() MessageType
 	// Revealed returns whether the info bar is currently revealed.
 	Revealed() bool
 	// ShowCloseButton returns whether the widget will display a standard close
@@ -169,6 +179,19 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 	return WrapInfoBar(obj), nil
 }
 
+// NewInfoBar constructs a class InfoBar.
+func NewInfoBar() InfoBar {
+	var _cret C.GtkInfoBar // in
+
+	_cret = C.gtk_info_bar_new()
+
+	var _infoBar InfoBar // out
+
+	_infoBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InfoBar)
+
+	return _infoBar
+}
+
 // AddActionWidget: add an activatable widget to the action area of a
 // `GtkInfoBar`.
 //
@@ -188,6 +211,33 @@ func (i infoBar) AddActionWidget(child Widget, responseId int) {
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
 }
 
+// AddButton adds a button with the given text.
+//
+// Clicking the button will emit the [signal@Gtk.InfoBar::response] signal
+// with the given response_id. The button is appended to the end of the info
+// bars's action area. The button widget is returned, but usually you don't
+// need it.
+func (i infoBar) AddButton(buttonText string, responseId int) Button {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 *C.char       // out
+	var _arg2 C.int         // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.char)(C.CString(buttonText))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(responseId)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
+
+	var _button Button // out
+
+	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+
+	return _button
+}
+
 // AddChild adds a widget to the content area of the info bar.
 func (i infoBar) AddChild(widget Widget) {
 	var _arg0 *C.GtkInfoBar // out
@@ -197,6 +247,23 @@ func (i infoBar) AddChild(widget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_info_bar_add_child(_arg0, _arg1)
+}
+
+// MessageType returns the message type of the message area.
+func (i infoBar) MessageType() MessageType {
+	var _arg0 *C.GtkInfoBar // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+
+	var _cret C.GtkMessageType // in
+
+	_cret = C.gtk_info_bar_get_message_type(_arg0)
+
+	var _messageType MessageType // out
+
+	_messageType = MessageType(_cret)
+
+	return _messageType
 }
 
 // Revealed returns whether the info bar is currently revealed.

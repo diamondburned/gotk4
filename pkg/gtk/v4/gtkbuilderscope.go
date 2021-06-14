@@ -132,3 +132,16 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBuilderCScope(obj), nil
 }
+
+// NewBuilderCScope constructs a class BuilderCScope.
+func NewBuilderCScope() BuilderCScope {
+	var _cret C.GtkBuilderCScope // in
+
+	_cret = C.gtk_builder_cscope_new()
+
+	var _builderCScope BuilderCScope // out
+
+	_builderCScope = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BuilderCScope)
+
+	return _builderCScope
+}

@@ -5,7 +5,6 @@ package pangoxft
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,7 +24,7 @@ func init() {
 // Font is an implementation of FcFont using the Xft library for rendering. It
 // is used in conjunction with XftFontMap.
 type Font interface {
-	pangofc.Font
+	Font
 
 	// Glyph gets the glyph index for a given Unicode character for @font. If
 	// you only want to determine whether the font has the glyph, use
@@ -41,7 +40,7 @@ type Font interface {
 
 // font implements the Font class.
 type font struct {
-	pangofc.Font
+	Font
 }
 
 var _ Font = (*font)(nil)
@@ -50,7 +49,7 @@ var _ Font = (*font)(nil)
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
 	return font{
-		pangofc.Font: pangofc.WrapFont(obj),
+		Font: WrapFont(obj),
 	}
 }
 
@@ -109,12 +108,12 @@ func (f font) HasChar(wc uint32) bool {
 // FontMap is an implementation of FcFontMap suitable for the Xft library as the
 // renderer. It is used in to create fonts of type XftFont.
 type FontMap interface {
-	pangofc.FontMap
+	FontMap
 }
 
 // fontMap implements the FontMap class.
 type fontMap struct {
-	pangofc.FontMap
+	FontMap
 }
 
 var _ FontMap = (*fontMap)(nil)
@@ -123,7 +122,7 @@ var _ FontMap = (*fontMap)(nil)
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
 	return fontMap{
-		pangofc.FontMap: pangofc.WrapFontMap(obj),
+		FontMap: WrapFontMap(obj),
 	}
 }
 

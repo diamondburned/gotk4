@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -113,15 +114,22 @@ type Notebook interface {
 	// informs the notebook that the removal is happening as part of a tab DND
 	// operation, which should not be cancelled.
 	DetachTab(child Widget)
+	// ActionWidget gets one of the action widgets. See
+	// gtk_notebook_set_action_widget().
+	ActionWidget(packType PackType) Widget
 	// CurrentPage returns the page number of the current page.
 	CurrentPage() int
 	// GroupName gets the current group name for @notebook.
 	GroupName() string
+	// MenuLabel retrieves the menu label widget of the page containing @child.
+	MenuLabel(child Widget) Widget
 	// MenuLabelText retrieves the text of the menu label for the page
 	// containing @child.
 	MenuLabelText(child Widget) string
 	// NPages gets the number of pages in a notebook.
 	NPages() int
+	// NthPage returns the child widget contained in page number @page_num.
+	NthPage(pageNum int) Widget
 	// Scrollable returns whether the tab label area has arrows for scrolling.
 	// See gtk_notebook_set_scrollable().
 	Scrollable() bool
@@ -136,9 +144,16 @@ type Notebook interface {
 	TabDetachable(child Widget) bool
 	// TabHborder returns the horizontal width of a tab border.
 	TabHborder() uint16
+	// TabLabel returns the tab label widget for the page @child. nil is
+	// returned if @child is not in @notebook or if no tab label has
+	// specifically been set for @child.
+	TabLabel(child Widget) Widget
 	// TabLabelText retrieves the text of the tab label for the page containing
 	// @child.
 	TabLabelText(child Widget) string
+	// TabPos gets the edge at which the tabs for switching pages in the
+	// notebook are drawn.
+	TabPos() PositionType
 	// TabReorderable gets whether the tab can be reordered via drag and drop or
 	// not.
 	TabReorderable(child Widget) bool
@@ -290,6 +305,19 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return WrapNotebook(obj), nil
 }
 
+// NewNotebook constructs a class Notebook.
+func NewNotebook() Notebook {
+	var _cret C.GtkNotebook // in
+
+	_cret = C.gtk_notebook_new()
+
+	var _notebook Notebook // out
+
+	_notebook = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Notebook)
+
+	return _notebook
+}
+
 // AppendPage appends a page to @notebook.
 func (n notebook) AppendPage(child Widget, tabLabel Widget) int {
 	var _arg0 *C.GtkNotebook // out
@@ -350,6 +378,26 @@ func (n notebook) DetachTab(child Widget) {
 	C.gtk_notebook_detach_tab(_arg0, _arg1)
 }
 
+// ActionWidget gets one of the action widgets. See
+// gtk_notebook_set_action_widget().
+func (n notebook) ActionWidget(packType PackType) Widget {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 C.GtkPackType  // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
+	_arg1 = (C.GtkPackType)(packType)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_notebook_get_action_widget(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // CurrentPage returns the page number of the current page.
 func (n notebook) CurrentPage() int {
 	var _arg0 *C.GtkNotebook // out
@@ -382,6 +430,25 @@ func (n notebook) GroupName() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// MenuLabel retrieves the menu label widget of the page containing @child.
+func (n notebook) MenuLabel(child Widget) Widget {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_notebook_get_menu_label(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // MenuLabelText retrieves the text of the menu label for the page
@@ -419,6 +486,25 @@ func (n notebook) NPages() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// NthPage returns the child widget contained in page number @page_num.
+func (n notebook) NthPage(pageNum int) Widget {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 C.gint         // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
+	_arg1 = C.gint(pageNum)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_notebook_get_nth_page(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Scrollable returns whether the tab label area has arrows for scrolling.
@@ -520,6 +606,27 @@ func (n notebook) TabHborder() uint16 {
 	return _guint16
 }
 
+// TabLabel returns the tab label widget for the page @child. nil is
+// returned if @child is not in @notebook or if no tab label has
+// specifically been set for @child.
+func (n notebook) TabLabel(child Widget) Widget {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_notebook_get_tab_label(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // TabLabelText retrieves the text of the tab label for the page containing
 // @child.
 func (n notebook) TabLabelText(child Widget) string {
@@ -538,6 +645,24 @@ func (n notebook) TabLabelText(child Widget) string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// TabPos gets the edge at which the tabs for switching pages in the
+// notebook are drawn.
+func (n notebook) TabPos() PositionType {
+	var _arg0 *C.GtkNotebook // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
+
+	var _cret C.GtkPositionType // in
+
+	_cret = C.gtk_notebook_get_tab_pos(_arg0)
+
+	var _positionType PositionType // out
+
+	_positionType = PositionType(_cret)
+
+	return _positionType
 }
 
 // TabReorderable gets whether the tab can be reordered via drag and drop or

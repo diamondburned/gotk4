@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +37,6 @@ func init() {
 // [method@Gtk.MediaStream.error], [method@Gtk.MediaStream.error_valist].
 type MediaStream interface {
 	gextras.Objector
-	gdk.Paintable
 
 	// Ended pauses the media stream and marks it as ended.
 	//
@@ -45,12 +44,39 @@ type MediaStream interface {
 	//
 	// The media stream must be prepared when this function is called.
 	Ended()
+	// Gerror sets @self into an error state.
+	//
+	// This will pause the stream (you can check for an error via
+	// [method@Gtk.MediaStream.get_error] in your GtkMediaStream.pause()
+	// implementation), abort pending seeks and mark the stream as prepared.
+	//
+	// if the stream is already in an error state, this call will be ignored and
+	// the existing error will be retained.
+	//
+	// To unset an error, the stream must be reset via a call to
+	// [method@Gtk.MediaStream.unprepared].
+	Gerror(err error)
 	// Duration gets the duration of the stream.
 	//
 	// If the duration is not known, 0 will be returned.
 	Duration() int64
 	// GetEnded returns whether the streams playback is finished.
 	GetEnded() bool
+	// Error: if the stream is in an error state, returns the `GError`
+	// explaining that state.
+	//
+	// Any type of error can be reported here depending on the implementation of
+	// the media stream.
+	//
+	// A media stream in an error cannot be operated on, calls like
+	// [method@Gtk.MediaStream.play] or [method@Gtk.MediaStream.seek] will not
+	// have any effect.
+	//
+	// `GtkMediaStream` itself does not provide a way to unset an error, but
+	// implementations may provide options. For example, a [class@Gtk.MediaFile]
+	// will unset errors when a new source is set, e.g. with
+	// [method@Gtk.MediaFile.set_file].
+	Error() error
 	// Loop returns whether the stream is set to loop.
 	//
 	// See [method@Gtk.MediaStream.set_loop] for details.
@@ -106,23 +132,6 @@ type MediaStream interface {
 	// This function may not be called again until the stream has been reset via
 	// [method@Gtk.MediaStream.unprepared].
 	Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64)
-	// Realize: called by users to attach the media stream to a `GdkSurface`
-	// they manage.
-	//
-	// The stream can then access the resources of @surface for its rendering
-	// purposes. In particular, media streams might want to create a
-	// `GdkGLContext` or sync to the `GdkFrameClock`.
-	//
-	// Whoever calls this function is responsible for calling
-	// [method@Gtk.MediaStream.unrealize] before either the stream or @surface
-	// get destroyed.
-	//
-	// Multiple calls to this function may happen from different users of the
-	// video, even with the same @surface. Each of these calls must be followed
-	// by its own call to [method@Gtk.MediaStream.unrealize].
-	//
-	// It is not required to call this function to make a media stream work.
-	Realize(surface gdk.Surface)
 	// Seek: start a seek operation on @self to @timestamp.
 	//
 	// If @timestamp is out of range, it will be clamped.
@@ -187,11 +196,6 @@ type MediaStream interface {
 	//
 	// This function will also reset any error state the stream was in.
 	Unprepared()
-	// Unrealize undoes a previous call to gtk_media_stream_realize().
-	//
-	// This causes the stream to release all resources it had allocated from
-	// @surface.
-	Unrealize(surface gdk.Surface)
 	// Update: media stream implementations should regularly call this function
 	// to update the timestamp reported by the stream.
 	//
@@ -205,7 +209,6 @@ type MediaStream interface {
 // mediaStream implements the MediaStream class.
 type mediaStream struct {
 	gextras.Objector
-	gdk.Paintable
 }
 
 var _ MediaStream = (*mediaStream)(nil)
@@ -214,8 +217,7 @@ var _ MediaStream = (*mediaStream)(nil)
 // primarily used internally.
 func WrapMediaStream(obj *externglib.Object) MediaStream {
 	return mediaStream{
-		Objector:      obj,
-		gdk.Paintable: gdk.WrapPaintable(obj),
+		Objector: obj,
 	}
 }
 
@@ -236,6 +238,27 @@ func (s mediaStream) Ended() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	C.gtk_media_stream_ended(_arg0)
+}
+
+// Gerror sets @self into an error state.
+//
+// This will pause the stream (you can check for an error via
+// [method@Gtk.MediaStream.get_error] in your GtkMediaStream.pause()
+// implementation), abort pending seeks and mark the stream as prepared.
+//
+// if the stream is already in an error state, this call will be ignored and
+// the existing error will be retained.
+//
+// To unset an error, the stream must be reset via a call to
+// [method@Gtk.MediaStream.unprepared].
+func (s mediaStream) Gerror(err error) {
+	var _arg0 *C.GtkMediaStream // out
+	var _arg1 *C.GError         // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+
+	C.gtk_media_stream_gerror(_arg0, _arg1)
 }
 
 // Duration gets the duration of the stream.
@@ -274,6 +297,36 @@ func (s mediaStream) GetEnded() bool {
 	}
 
 	return _ok
+}
+
+// Error: if the stream is in an error state, returns the `GError`
+// explaining that state.
+//
+// Any type of error can be reported here depending on the implementation of
+// the media stream.
+//
+// A media stream in an error cannot be operated on, calls like
+// [method@Gtk.MediaStream.play] or [method@Gtk.MediaStream.seek] will not
+// have any effect.
+//
+// `GtkMediaStream` itself does not provide a way to unset an error, but
+// implementations may provide options. For example, a [class@Gtk.MediaFile]
+// will unset errors when a new source is set, e.g. with
+// [method@Gtk.MediaFile.set_file].
+func (s mediaStream) Error() error {
+	var _arg0 *C.GtkMediaStream // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GError // in
+
+	_cret = C.gtk_media_stream_get_error(_arg0)
+
+	var _err error // out
+
+	_err = gerror.Take(unsafe.Pointer(_cret))
+
+	return _err
 }
 
 // Loop returns whether the stream is set to loop.
@@ -532,32 +585,6 @@ func (s mediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, durat
 	C.gtk_media_stream_prepared(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// Realize: called by users to attach the media stream to a `GdkSurface`
-// they manage.
-//
-// The stream can then access the resources of @surface for its rendering
-// purposes. In particular, media streams might want to create a
-// `GdkGLContext` or sync to the `GdkFrameClock`.
-//
-// Whoever calls this function is responsible for calling
-// [method@Gtk.MediaStream.unrealize] before either the stream or @surface
-// get destroyed.
-//
-// Multiple calls to this function may happen from different users of the
-// video, even with the same @surface. Each of these calls must be followed
-// by its own call to [method@Gtk.MediaStream.unrealize].
-//
-// It is not required to call this function to make a media stream work.
-func (s mediaStream) Realize(surface gdk.Surface) {
-	var _arg0 *C.GtkMediaStream // out
-	var _arg1 *C.GdkSurface     // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	C.gtk_media_stream_realize(_arg0, _arg1)
-}
-
 // Seek: start a seek operation on @self to @timestamp.
 //
 // If @timestamp is out of range, it will be clamped.
@@ -692,20 +719,6 @@ func (s mediaStream) Unprepared() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	C.gtk_media_stream_unprepared(_arg0)
-}
-
-// Unrealize undoes a previous call to gtk_media_stream_realize().
-//
-// This causes the stream to release all resources it had allocated from
-// @surface.
-func (s mediaStream) Unrealize(surface gdk.Surface) {
-	var _arg0 *C.GtkMediaStream // out
-	var _arg1 *C.GdkSurface     // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	C.gtk_media_stream_unrealize(_arg0, _arg1)
 }
 
 // Update: media stream implementations should regularly call this function

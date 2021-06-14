@@ -24,11 +24,15 @@ func init() {
 
 type ToggleButtonAccessible interface {
 	ButtonAccessible
+	Action
+	Image
 }
 
 // toggleButtonAccessible implements the ToggleButtonAccessible class.
 type toggleButtonAccessible struct {
 	ButtonAccessible
+	Action
+	Image
 }
 
 var _ ToggleButtonAccessible = (*toggleButtonAccessible)(nil)
@@ -38,6 +42,8 @@ var _ ToggleButtonAccessible = (*toggleButtonAccessible)(nil)
 func WrapToggleButtonAccessible(obj *externglib.Object) ToggleButtonAccessible {
 	return toggleButtonAccessible{
 		ButtonAccessible: WrapButtonAccessible(obj),
+		Action:           WrapAction(obj),
+		Image:            WrapImage(obj),
 	}
 }
 

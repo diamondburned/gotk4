@@ -89,36 +89,30 @@ func (ng *NamespaceGenerator) file(goFile string) *FileGenerator {
 	return &ng.files[i]
 }
 
-func (ng *NamespaceGenerator) mustIgnoreAny(any gir.AnyType) bool {
-	switch {
-	case any.Type != nil:
-		return ng.mustIgnore(any.Type.Name, any.Type.CType)
-	case any.Array != nil:
-		return ng.mustIgnoreAny(any.Array.AnyType)
-	default:
-		return true
-	}
-}
-
 // mustIgnore checks the generator's filters to see if the given girType in this
 // namespace should be ignored.
-func (ng *NamespaceGenerator) mustIgnore(girType, cType string) (ignore bool) {
-	girType = ensureNamespace(ng.Namespace(), girType)
+func (ng *NamespaceGenerator) mustIgnore(girName, cType *string) (ignore bool) {
+	girType := ensureNamespace(ng.Namespace(), *girName)
+	names := FilterTypeName{girType, *cType}
 
 	for _, filter := range ng.gen.Filters {
-		if !filter.Filter(ng, girType, cType) {
+		if !filter.Filter(ng, &names) {
 			// Filter returns keep=false.
 			ng.Logln(LogDebug, "ignoring", girType)
 			return true
 		}
 	}
 
+	*girName = names.Name()
+	*cType = names.CType
+
 	return false
 }
 
 // mustIgnoreC is similar to mustIgnore but only works on C types.
 func (ng *NamespaceGenerator) mustIgnoreC(cType string) (ignore bool) {
-	return ng.mustIgnore("\x00", cType)
+	nul := "\x00"
+	return ng.mustIgnore(&nul, &cType)
 }
 
 // fullGIR returns the full GIR type name if it doesn't contain a namespace.

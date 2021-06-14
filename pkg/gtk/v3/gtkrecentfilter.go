@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -48,6 +49,33 @@ const (
 
 func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 	return RecentFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RecentFilterFunc: the type of function that is used with custom filters, see
+// gtk_recent_filter_add_custom().
+type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
+
+//export gotk4_RecentFilterFunc
+func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var filterInfo *RecentFilterInfo // out
+
+	filterInfo = WrapRecentFilterInfo(unsafe.Pointer(arg0))
+
+	fn := v.(RecentFilterFunc)
+	ok := fn(filterInfo)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // RecentFilter: a RecentFilter can be used to restrict the files being shown in
@@ -130,6 +158,12 @@ type RecentFilter interface {
 	// Name gets the human-readable name for the filter. See
 	// gtk_recent_filter_set_name().
 	Name() string
+	// Needed gets the fields that need to be filled in for the RecentFilterInfo
+	// passed to gtk_recent_filter_filter()
+	//
+	// This function will not typically be used by applications; it is intended
+	// principally for use in the implementation of RecentChooser.
+	Needed() RecentFilterFlags
 	// SetName sets the human-readable name of the filter; this is the string
 	// that will be displayed in the recently used resources selector user
 	// interface if there is a selectable list of filters.
@@ -157,6 +191,19 @@ func marshalRecentFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRecentFilter(obj), nil
+}
+
+// NewRecentFilter constructs a class RecentFilter.
+func NewRecentFilter() RecentFilter {
+	var _cret C.GtkRecentFilter // in
+
+	_cret = C.gtk_recent_filter_new()
+
+	var _recentFilter RecentFilter // out
+
+	_recentFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentFilter)
+
+	return _recentFilter
 }
 
 // AddAge adds a rule that allows resources based on their age - that is,
@@ -279,6 +326,27 @@ func (f recentFilter) Name() string {
 	return _utf8
 }
 
+// Needed gets the fields that need to be filled in for the RecentFilterInfo
+// passed to gtk_recent_filter_filter()
+//
+// This function will not typically be used by applications; it is intended
+// principally for use in the implementation of RecentChooser.
+func (f recentFilter) Needed() RecentFilterFlags {
+	var _arg0 *C.GtkRecentFilter // out
+
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+
+	var _cret C.GtkRecentFilterFlags // in
+
+	_cret = C.gtk_recent_filter_get_needed(_arg0)
+
+	var _recentFilterFlags RecentFilterFlags // out
+
+	_recentFilterFlags = RecentFilterFlags(_cret)
+
+	return _recentFilterFlags
+}
+
 // SetName sets the human-readable name of the filter; this is the string
 // that will be displayed in the recently used resources selector user
 // interface if there is a selectable list of filters.
@@ -312,6 +380,13 @@ func WrapRecentFilterInfo(ptr unsafe.Pointer) *RecentFilterInfo {
 // Native returns the underlying C source pointer.
 func (r *RecentFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// Contains gets the field inside the struct.
+func (r *RecentFilterInfo) Contains() RecentFilterFlags {
+	var v RecentFilterFlags // out
+	v = RecentFilterFlags(r.native.contains)
+	return v
 }
 
 // URI gets the field inside the struct.

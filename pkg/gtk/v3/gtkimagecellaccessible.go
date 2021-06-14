@@ -24,11 +24,15 @@ func init() {
 
 type ImageCellAccessible interface {
 	RendererCellAccessible
+	Action
+	Image
 }
 
 // imageCellAccessible implements the ImageCellAccessible class.
 type imageCellAccessible struct {
 	RendererCellAccessible
+	Action
+	Image
 }
 
 var _ ImageCellAccessible = (*imageCellAccessible)(nil)
@@ -38,6 +42,8 @@ var _ ImageCellAccessible = (*imageCellAccessible)(nil)
 func WrapImageCellAccessible(obj *externglib.Object) ImageCellAccessible {
 	return imageCellAccessible{
 		RendererCellAccessible: WrapRendererCellAccessible(obj),
+		Action:                 WrapAction(obj),
+		Image:                  WrapImage(obj),
 	}
 }
 

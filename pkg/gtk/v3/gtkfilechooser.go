@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -180,6 +180,20 @@ type FileChooser interface {
 	// Note that the @chooser takes ownership of the filter, so you have to ref
 	// and sink it if you want to keep a reference.
 	AddFilter(filter FileFilter)
+	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
+	// in a file chooser. Note that shortcut folders do not get saved, as they
+	// are provided by the application. For example, you can use this to add a
+	// “/usr/share/mydrawprogram/Clipart” folder to the volume list.
+	AddShortcutFolder(folder string) error
+	// AddShortcutFolderURI adds a folder URI to be displayed with the shortcut
+	// folders in a file chooser. Note that shortcut folders do not get saved,
+	// as they are provided by the application. For example, you can use this to
+	// add a “file:///usr/share/mydrawprogram/Clipart” folder to the volume
+	// list.
+	AddShortcutFolderURI(uri string) error
+	// Action gets the type of operation that the file chooser is performing;
+	// see gtk_file_chooser_set_action().
+	Action() FileChooserAction
 	// Choice gets the currently selected option in the 'choice' with the given
 	// ID.
 	Choice(id string) string
@@ -220,6 +234,9 @@ type FileChooser interface {
 	// DoOverwriteConfirmation queries whether a file chooser is set to confirm
 	// for overwriting when the user types a file name that already exists.
 	DoOverwriteConfirmation() bool
+	// ExtraWidget gets the current extra widget; see
+	// gtk_file_chooser_set_extra_widget().
+	ExtraWidget() Widget
 	// Filename gets the filename for the currently selected file in the file
 	// selector. The filename is returned as an absolute path. If multiple files
 	// are selected, one of the filenames will be returned at random.
@@ -227,6 +244,8 @@ type FileChooser interface {
 	// If the file chooser is in folder mode, this function returns the selected
 	// folder.
 	Filename() string
+	// Filter gets the current filter; see gtk_file_chooser_set_filter().
+	Filter() FileFilter
 	// LocalOnly gets whether only local files can be selected in the file
 	// selector. See gtk_file_chooser_set_local_only()
 	LocalOnly() bool
@@ -236,6 +255,9 @@ type FileChooser interface {
 	// PreviewURI gets the URI that should be previewed in a custom preview
 	// widget. See gtk_file_chooser_set_preview_widget().
 	PreviewURI() string
+	// PreviewWidget gets the current preview widget; see
+	// gtk_file_chooser_set_preview_widget().
+	PreviewWidget() Widget
 	// PreviewWidgetActive gets whether the preview widget set by
 	// gtk_file_chooser_set_preview_widget() should be shown for the current
 	// filename. See gtk_file_chooser_set_preview_widget_active().
@@ -262,6 +284,12 @@ type FileChooser interface {
 	// RemoveFilter removes @filter from the list of filters that the user can
 	// select between.
 	RemoveFilter(filter FileFilter)
+	// RemoveShortcutFolder removes a folder from a file chooser’s list of
+	// shortcut folders.
+	RemoveShortcutFolder(folder string) error
+	// RemoveShortcutFolderURI removes a folder URI from a file chooser’s list
+	// of shortcut folders.
+	RemoveShortcutFolderURI(uri string) error
 	// SelectAll selects all the files in the current folder of a file chooser.
 	SelectAll()
 	// SelectFilename selects a filename. If the file name isn’t in the current
@@ -450,10 +478,6 @@ type FileChooser interface {
 	// UnselectAll unselects all the files in the current folder of a file
 	// chooser.
 	UnselectAll()
-	// UnselectFile unselects the file referred to by @file. If the file is not
-	// in the current directory, does not exist, or is otherwise not currently
-	// selected, does nothing.
-	UnselectFile(file gio.File)
 	// UnselectFilename unselects a currently selected filename. If the filename
 	// is not in the current directory, does not exist, or is otherwise not
 	// currently selected, does nothing.
@@ -542,6 +566,71 @@ func (c fileChooser) AddFilter(filter FileFilter) {
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_add_filter(_arg0, _arg1)
+}
+
+// AddShortcutFolder adds a folder to be displayed with the shortcut folders
+// in a file chooser. Note that shortcut folders do not get saved, as they
+// are provided by the application. For example, you can use this to add a
+// “/usr/share/mydrawprogram/Clipart” folder to the volume list.
+func (c fileChooser) AddShortcutFolder(folder string) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.char)(C.CString(folder))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cerr *C.GError // in
+
+	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// AddShortcutFolderURI adds a folder URI to be displayed with the shortcut
+// folders in a file chooser. Note that shortcut folders do not get saved,
+// as they are provided by the application. For example, you can use this to
+// add a “file:///usr/share/mydrawprogram/Clipart” folder to the volume
+// list.
+func (c fileChooser) AddShortcutFolderURI(uri string) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cerr *C.GError // in
+
+	C.gtk_file_chooser_add_shortcut_folder_uri(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// Action gets the type of operation that the file chooser is performing;
+// see gtk_file_chooser_set_action().
+func (c fileChooser) Action() FileChooserAction {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkFileChooserAction // in
+
+	_cret = C.gtk_file_chooser_get_action(_arg0)
+
+	var _fileChooserAction FileChooserAction // out
+
+	_fileChooserAction = FileChooserAction(_cret)
+
+	return _fileChooserAction
 }
 
 // Choice gets the currently selected option in the 'choice' with the given
@@ -684,6 +773,24 @@ func (c fileChooser) DoOverwriteConfirmation() bool {
 	return _ok
 }
 
+// ExtraWidget gets the current extra widget; see
+// gtk_file_chooser_set_extra_widget().
+func (c fileChooser) ExtraWidget() Widget {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_file_chooser_get_extra_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // Filename gets the filename for the currently selected file in the file
 // selector. The filename is returned as an absolute path. If multiple files
 // are selected, one of the filenames will be returned at random.
@@ -705,6 +812,23 @@ func (c fileChooser) Filename() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
+}
+
+// Filter gets the current filter; see gtk_file_chooser_set_filter().
+func (c fileChooser) Filter() FileFilter {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkFileFilter // in
+
+	_cret = C.gtk_file_chooser_get_filter(_arg0)
+
+	var _fileFilter FileFilter // out
+
+	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileFilter)
+
+	return _fileFilter
 }
 
 // LocalOnly gets whether only local files can be selected in the file
@@ -763,6 +887,24 @@ func (c fileChooser) PreviewURI() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// PreviewWidget gets the current preview widget; see
+// gtk_file_chooser_set_preview_widget().
+func (c fileChooser) PreviewWidget() Widget {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_file_chooser_get_preview_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // PreviewWidgetActive gets whether the preview widget set by
@@ -892,6 +1034,48 @@ func (c fileChooser) RemoveFilter(filter FileFilter) {
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_remove_filter(_arg0, _arg1)
+}
+
+// RemoveShortcutFolder removes a folder from a file chooser’s list of
+// shortcut folders.
+func (c fileChooser) RemoveShortcutFolder(folder string) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.char)(C.CString(folder))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cerr *C.GError // in
+
+	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// RemoveShortcutFolderURI removes a folder URI from a file chooser’s list
+// of shortcut folders.
+func (c fileChooser) RemoveShortcutFolderURI(uri string) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cerr *C.GError // in
+
+	C.gtk_file_chooser_remove_shortcut_folder_uri(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // SelectAll selects all the files in the current folder of a file chooser.
@@ -1350,19 +1534,6 @@ func (c fileChooser) UnselectAll() {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	C.gtk_file_chooser_unselect_all(_arg0)
-}
-
-// UnselectFile unselects the file referred to by @file. If the file is not
-// in the current directory, does not exist, or is otherwise not currently
-// selected, does nothing.
-func (c fileChooser) UnselectFile(file gio.File) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_file_chooser_unselect_file(_arg0, _arg1)
 }
 
 // UnselectFilename unselects a currently selected filename. If the filename

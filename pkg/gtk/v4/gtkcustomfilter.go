@@ -5,8 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -20,36 +18,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_custom_filter_get_type()), F: marshalCustomFilter},
 	})
-}
-
-// CustomFilterFunc: user function that is called to determine if the @item
-// should be matched.
-//
-// If the filter matches the item, this function must return true. If the item
-// should be filtered out, false must be returned.
-type CustomFilterFunc func(item gextras.Objector) (ok bool)
-
-//export gotk4_CustomFilterFunc
-func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var item gextras.Objector // out
-
-	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
-
-	fn := v.(CustomFilterFunc)
-	ok := fn(item)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // CustomFilter: `GtkCustomFilter` determines whether to include items with a

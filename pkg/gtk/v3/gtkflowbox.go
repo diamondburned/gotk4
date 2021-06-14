@@ -16,6 +16,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 func init() {
@@ -25,27 +27,77 @@ func init() {
 	})
 }
 
-// FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
-// gtk_flow_box_bind_model() for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item gextras.Objector) (widget Widget)
+// FlowBoxFilterFunc: a function that will be called whenrever a child changes
+// or is added. It lets you control if the child should be visible or not.
+type FlowBoxFilterFunc func(child FlowBoxChild) (ok bool)
 
-//export gotk4_FlowBoxCreateWidgetFunc
-func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+//export gotk4_FlowBoxFilterFunc
+func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var item gextras.Objector // out
+	var child FlowBoxChild // out
 
-	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
+	child = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(FlowBoxChild)
 
-	fn := v.(FlowBoxCreateWidgetFunc)
-	widget := fn(item)
+	fn := v.(FlowBoxFilterFunc)
+	ok := fn(child)
 
-	var cret *C.GtkWidget // out
+	var cret C.gboolean // out
 
-	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach(). It
+// will be called on every selected child of the @box.
+type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
+
+//export gotk4_FlowBoxForeachFunc
+func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var box FlowBox        // out
+	var child FlowBoxChild // out
+
+	box = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(FlowBox)
+	child = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(FlowBoxChild)
+
+	fn := v.(FlowBoxForeachFunc)
+	fn(box, child)
+}
+
+// FlowBoxSortFunc: a function to compare two children to determine which should
+// come first.
+type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild) (gint int)
+
+//export gotk4_FlowBoxSortFunc
+func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.gint {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var child1 FlowBoxChild // out
+	var child2 FlowBoxChild // out
+
+	child1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(FlowBoxChild)
+	child2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(FlowBoxChild)
+
+	fn := v.(FlowBoxSortFunc)
+	gint := fn(child1, child2)
+
+	var cret C.gint // out
+
+	cret = C.gint(gint)
 
 	return cret
 }
@@ -96,6 +148,10 @@ type FlowBox interface {
 
 	// ActivateOnSingleClick returns whether children activate on single clicks.
 	ActivateOnSingleClick() bool
+	// ChildAtIndex gets the nth child in the @box.
+	ChildAtIndex(idx int) FlowBoxChild
+	// ChildAtPos gets the child in the (@x, @y) position.
+	ChildAtPos(x int, y int) FlowBoxChild
 	// ColumnSpacing gets the horizontal spacing.
 	ColumnSpacing() uint
 	// Homogeneous returns whether the box is homogeneous (all children are the
@@ -107,6 +163,8 @@ type FlowBox interface {
 	MinChildrenPerLine() uint
 	// RowSpacing gets the vertical spacing.
 	RowSpacing() uint
+	// SelectionMode gets the selection mode of @box.
+	SelectionMode() SelectionMode
 	// Insert inserts the @widget into @box at @position.
 	//
 	// If a sort function is set, the widget will actually be inserted at the
@@ -133,6 +191,10 @@ type FlowBox interface {
 	// SelectChild selects a single child of @box, if the selection mode allows
 	// it.
 	SelectChild(child FlowBoxChild)
+	// SelectedForeach calls a function for each selected child.
+	//
+	// Note that the selection cannot be modified from within this function.
+	SelectedForeach(fn FlowBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, children will be activated
 	// when you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -209,6 +271,19 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 	return WrapFlowBox(obj), nil
 }
 
+// NewFlowBox constructs a class FlowBox.
+func NewFlowBox() FlowBox {
+	var _cret C.GtkFlowBox // in
+
+	_cret = C.gtk_flow_box_new()
+
+	var _flowBox FlowBox // out
+
+	_flowBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBox)
+
+	return _flowBox
+}
+
 // ActivateOnSingleClick returns whether children activate on single clicks.
 func (b flowBox) ActivateOnSingleClick() bool {
 	var _arg0 *C.GtkFlowBox // out
@@ -226,6 +301,46 @@ func (b flowBox) ActivateOnSingleClick() bool {
 	}
 
 	return _ok
+}
+
+// ChildAtIndex gets the nth child in the @box.
+func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.gint        // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
+	_arg1 = C.gint(idx)
+
+	var _cret *C.GtkFlowBoxChild // in
+
+	_cret = C.gtk_flow_box_get_child_at_index(_arg0, _arg1)
+
+	var _flowBoxChild FlowBoxChild // out
+
+	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
+
+	return _flowBoxChild
+}
+
+// ChildAtPos gets the child in the (@x, @y) position.
+func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.gint        // out
+	var _arg2 C.gint        // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+
+	var _cret *C.GtkFlowBoxChild // in
+
+	_cret = C.gtk_flow_box_get_child_at_pos(_arg0, _arg1, _arg2)
+
+	var _flowBoxChild FlowBoxChild // out
+
+	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
+
+	return _flowBoxChild
 }
 
 // ColumnSpacing gets the horizontal spacing.
@@ -316,6 +431,23 @@ func (b flowBox) RowSpacing() uint {
 	return _guint
 }
 
+// SelectionMode gets the selection mode of @box.
+func (b flowBox) SelectionMode() SelectionMode {
+	var _arg0 *C.GtkFlowBox // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
+
+	var _cret C.GtkSelectionMode // in
+
+	_cret = C.gtk_flow_box_get_selection_mode(_arg0)
+
+	var _selectionMode SelectionMode // out
+
+	_selectionMode = SelectionMode(_cret)
+
+	return _selectionMode
+}
+
 // Insert inserts the @widget into @box at @position.
 //
 // If a sort function is set, the widget will actually be inserted at the
@@ -381,6 +513,21 @@ func (b flowBox) SelectChild(child FlowBoxChild) {
 	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	C.gtk_flow_box_select_child(_arg0, _arg1)
+}
+
+// SelectedForeach calls a function for each selected child.
+//
+// Note that the selection cannot be modified from within this function.
+func (b flowBox) SelectedForeach(fn FlowBoxForeachFunc) {
+	var _arg0 *C.GtkFlowBox           // out
+	var _arg1 C.GtkFlowBoxForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_FlowBoxForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetActivateOnSingleClick: if @single is true, children will be activated
@@ -581,6 +728,19 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFlowBoxChild(obj), nil
+}
+
+// NewFlowBoxChild constructs a class FlowBoxChild.
+func NewFlowBoxChild() FlowBoxChild {
+	var _cret C.GtkFlowBoxChild // in
+
+	_cret = C.gtk_flow_box_child_new()
+
+	var _flowBoxChild FlowBoxChild // out
+
+	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
+
+	return _flowBoxChild
 }
 
 // Changed marks @child as changed, causing any state that depends on this

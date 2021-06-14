@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -118,19 +118,6 @@ func (b *Buffer) Glyphs() []Glyph {
 	})
 
 	return _glyphs
-}
-
-// Output exports the glyphs in a OTBuffer into a GlyphString. This is typically
-// used after the OpenType layout processing is over, to convert the resulting
-// glyphs into a generic Pango glyph string.
-func (b *Buffer) Output(glyphs *pango.GlyphString) {
-	var _arg0 *C.PangoOTBuffer    // out
-	var _arg1 *C.PangoGlyphString // out
-
-	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
-
-	C.pango_ot_buffer_output(_arg0, _arg1)
 }
 
 // SetRTL sets whether glyphs will be rendered right-to-left. This setting is
@@ -293,10 +280,24 @@ func (r *RulesetDescription) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// StaticGsubFeatures gets the field inside the struct.
+func (r *RulesetDescription) StaticGsubFeatures() *FeatureMap {
+	var v *FeatureMap // out
+	v = WrapFeatureMap(unsafe.Pointer(r.native.static_gsub_features))
+	return v
+}
+
 // NStaticGsubFeatures gets the field inside the struct.
 func (r *RulesetDescription) NStaticGsubFeatures() uint {
 	var v uint // out
 	v = (uint)(r.native.n_static_gsub_features)
+	return v
+}
+
+// StaticGposFeatures gets the field inside the struct.
+func (r *RulesetDescription) StaticGposFeatures() *FeatureMap {
+	var v *FeatureMap // out
+	v = WrapFeatureMap(unsafe.Pointer(r.native.static_gpos_features))
 	return v
 }
 
@@ -307,11 +308,41 @@ func (r *RulesetDescription) NStaticGposFeatures() uint {
 	return v
 }
 
+// OtherFeatures gets the field inside the struct.
+func (r *RulesetDescription) OtherFeatures() *FeatureMap {
+	var v *FeatureMap // out
+	v = WrapFeatureMap(unsafe.Pointer(r.native.other_features))
+	return v
+}
+
 // NOtherFeatures gets the field inside the struct.
 func (r *RulesetDescription) NOtherFeatures() uint {
 	var v uint // out
 	v = (uint)(r.native.n_other_features)
 	return v
+}
+
+// Copy creates a copy of @desc, which should be freed with
+// pango_ot_ruleset_description_free(). Primarily used internally by
+// pango_ot_ruleset_get_for_description() to cache rulesets for ruleset
+// descriptions.
+func (d *RulesetDescription) Copy() *RulesetDescription {
+	var _arg0 *C.PangoOTRulesetDescription // out
+
+	_arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.PangoOTRulesetDescription // in
+
+	_cret = C.pango_ot_ruleset_description_copy(_arg0)
+
+	var _rulesetDescription *RulesetDescription // out
+
+	_rulesetDescription = WrapRulesetDescription(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_rulesetDescription, func(v *RulesetDescription) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _rulesetDescription
 }
 
 // Equal compares two ruleset descriptions for equality. Two ruleset

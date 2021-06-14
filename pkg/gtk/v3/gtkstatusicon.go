@@ -6,9 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -86,6 +83,10 @@ type StatusIcon interface {
 	// GTK_IMAGE_STOCK (see gtk_status_icon_get_storage_type()). The returned
 	// string is owned by the StatusIcon and should not be freed or modified.
 	Stock() string
+	// StorageType gets the type of representation being used by the StatusIcon
+	// to store image data. If the StatusIcon has no image data, the return
+	// value will be GTK_IMAGE_EMPTY.
+	StorageType() ImageType
 	// Title gets the title of this tray icon. See gtk_status_icon_set_title().
 	Title() string
 	// TooltipMarkup gets the contents of the tooltip for @status_icon.
@@ -114,16 +115,10 @@ type StatusIcon interface {
 	// SetFromFile makes @status_icon display the file @filename. See
 	// gtk_status_icon_new_from_file() for details.
 	SetFromFile(filename string)
-	// SetFromGIcon makes @status_icon display the #GIcon. See
-	// gtk_status_icon_new_from_gicon() for details.
-	SetFromGIcon(icon gio.Icon)
 	// SetFromIconName makes @status_icon display the icon named @icon_name from
 	// the current icon theme. See gtk_status_icon_new_from_icon_name() for
 	// details.
 	SetFromIconName(iconName string)
-	// SetFromPixbuf makes @status_icon display @pixbuf. See
-	// gtk_status_icon_new_from_pixbuf() for details.
-	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
 	// SetFromStock makes @status_icon display the stock icon with the id
 	// @stock_id. See gtk_status_icon_new_from_stock() for details.
 	SetFromStock(stockId string)
@@ -134,9 +129,6 @@ type StatusIcon interface {
 	// identifying this icon. It is may be used for sorting the icons in the
 	// tray and will not be shown to the user.
 	SetName(name string)
-	// SetScreen sets the Screen where @status_icon is displayed; if the icon is
-	// already mapped, it will be unmapped, and then remapped on the new screen.
-	SetScreen(screen gdk.Screen)
 	// SetTitle sets the title of this tray icon. This should be a short,
 	// human-readable, localized string describing the tray icon. It may be used
 	// by tools like screen readers to render the tray icon.
@@ -180,6 +172,73 @@ func marshalStatusIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapStatusIcon(obj), nil
+}
+
+// NewStatusIcon constructs a class StatusIcon.
+func NewStatusIcon() StatusIcon {
+	var _cret C.GtkStatusIcon // in
+
+	_cret = C.gtk_status_icon_new()
+
+	var _statusIcon StatusIcon // out
+
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+
+	return _statusIcon
+}
+
+// NewStatusIconFromFile constructs a class StatusIcon.
+func NewStatusIconFromFile(filename string) StatusIcon {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkStatusIcon // in
+
+	_cret = C.gtk_status_icon_new_from_file(_arg1)
+
+	var _statusIcon StatusIcon // out
+
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+
+	return _statusIcon
+}
+
+// NewStatusIconFromIconName constructs a class StatusIcon.
+func NewStatusIconFromIconName(iconName string) StatusIcon {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(iconName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkStatusIcon // in
+
+	_cret = C.gtk_status_icon_new_from_icon_name(_arg1)
+
+	var _statusIcon StatusIcon // out
+
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+
+	return _statusIcon
+}
+
+// NewStatusIconFromStock constructs a class StatusIcon.
+func NewStatusIconFromStock(stockId string) StatusIcon {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkStatusIcon // in
+
+	_cret = C.gtk_status_icon_new_from_stock(_arg1)
+
+	var _statusIcon StatusIcon // out
+
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+
+	return _statusIcon
 }
 
 // HasTooltip returns the current value of the has-tooltip property. See
@@ -264,6 +323,25 @@ func (s statusIcon) Stock() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// StorageType gets the type of representation being used by the StatusIcon
+// to store image data. If the StatusIcon has no image data, the return
+// value will be GTK_IMAGE_EMPTY.
+func (s statusIcon) StorageType() ImageType {
+	var _arg0 *C.GtkStatusIcon // out
+
+	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkImageType // in
+
+	_cret = C.gtk_status_icon_get_storage_type(_arg0)
+
+	var _imageType ImageType // out
+
+	_imageType = ImageType(_cret)
+
+	return _imageType
 }
 
 // Title gets the title of this tray icon. See gtk_status_icon_set_title().
@@ -400,18 +478,6 @@ func (s statusIcon) SetFromFile(filename string) {
 	C.gtk_status_icon_set_from_file(_arg0, _arg1)
 }
 
-// SetFromGIcon makes @status_icon display the #GIcon. See
-// gtk_status_icon_new_from_gicon() for details.
-func (s statusIcon) SetFromGIcon(icon gio.Icon) {
-	var _arg0 *C.GtkStatusIcon // out
-	var _arg1 *C.GIcon         // out
-
-	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_status_icon_set_from_gicon(_arg0, _arg1)
-}
-
 // SetFromIconName makes @status_icon display the icon named @icon_name from
 // the current icon theme. See gtk_status_icon_new_from_icon_name() for
 // details.
@@ -424,18 +490,6 @@ func (s statusIcon) SetFromIconName(iconName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_icon_name(_arg0, _arg1)
-}
-
-// SetFromPixbuf makes @status_icon display @pixbuf. See
-// gtk_status_icon_new_from_pixbuf() for details.
-func (s statusIcon) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
-	var _arg0 *C.GtkStatusIcon // out
-	var _arg1 *C.GdkPixbuf     // out
-
-	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	C.gtk_status_icon_set_from_pixbuf(_arg0, _arg1)
 }
 
 // SetFromStock makes @status_icon display the stock icon with the id
@@ -477,18 +531,6 @@ func (s statusIcon) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_name(_arg0, _arg1)
-}
-
-// SetScreen sets the Screen where @status_icon is displayed; if the icon is
-// already mapped, it will be unmapped, and then remapped on the new screen.
-func (s statusIcon) SetScreen(screen gdk.Screen) {
-	var _arg0 *C.GtkStatusIcon // out
-	var _arg1 *C.GdkScreen     // out
-
-	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-
-	C.gtk_status_icon_set_screen(_arg0, _arg1)
 }
 
 // SetTitle sets the title of this tray icon. This should be a short,

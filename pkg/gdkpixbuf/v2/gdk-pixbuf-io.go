@@ -3,9 +3,11 @@
 package gdkpixbuf
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,6 +36,30 @@ const (
 	// modules that are not marked as threadsafe. (Since 2.28).
 	PixbufFormatFlagsThreadsafe PixbufFormatFlags = 4
 )
+
+// PixbufModulePreparedFunc defines the type of the function that gets called
+// once the initial setup of @pixbuf is done.
+//
+// PixbufLoader uses a function of this type to emit the "<link
+// linkend="GdkPixbufLoader-area-prepared">area_prepared</link>" signal.
+type PixbufModulePreparedFunc func(pixbuf Pixbuf, anim PixbufAnimation)
+
+//export gotk4_PixbufModulePreparedFunc
+func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var pixbuf Pixbuf        // out
+	var anim PixbufAnimation // out
+
+	pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Pixbuf)
+	anim = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(PixbufAnimation)
+
+	fn := v.(PixbufModulePreparedFunc)
+	fn(pixbuf, anim)
+}
 
 // PixbufModuleSizeFunc defines the type of the function that gets called once
 // the size of the loaded image is known.
@@ -67,6 +93,36 @@ func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 	fn(width, height)
 }
 
+// PixbufModuleUpdatedFunc defines the type of the function that gets called
+// every time a region of @pixbuf is updated.
+//
+// PixbufLoader uses a function of this type to emit the "<link
+// linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
+type PixbufModuleUpdatedFunc func(pixbuf Pixbuf, x int, y int, width int, height int)
+
+//export gotk4_PixbufModuleUpdatedFunc
+func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
+	v := box.Get(uintptr(arg5))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var pixbuf Pixbuf // out
+	var x int         // out
+	var y int         // out
+	var width int     // out
+	var height int    // out
+
+	pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Pixbuf)
+	x = (int)(arg1)
+	y = (int)(arg2)
+	width = (int)(arg3)
+	height = (int)(arg4)
+
+	fn := v.(PixbufModuleUpdatedFunc)
+	fn(pixbuf, x, y, width, height)
+}
+
 // PixbufFormat: a `GdkPixbufFormat` contains information about the image format
 // accepted by a module.
 //
@@ -96,6 +152,13 @@ func (p *PixbufFormat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// Signature gets the field inside the struct.
+func (p *PixbufFormat) Signature() *PixbufModulePattern {
+	var v *PixbufModulePattern // out
+	v = WrapPixbufModulePattern(unsafe.Pointer(p.native.signature))
+	return v
+}
+
 // Domain gets the field inside the struct.
 func (p *PixbufFormat) Domain() string {
 	var v string // out
@@ -117,6 +180,26 @@ func (p *PixbufFormat) Disabled() bool {
 		v = true
 	}
 	return v
+}
+
+// Copy creates a copy of `format`.
+func (f *PixbufFormat) Copy() *PixbufFormat {
+	var _arg0 *C.GdkPixbufFormat // out
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.GdkPixbufFormat // in
+
+	_cret = C.gdk_pixbuf_format_copy(_arg0)
+
+	var _pixbufFormat *PixbufFormat // out
+
+	_pixbufFormat = WrapPixbufFormat(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_pixbufFormat, func(v *PixbufFormat) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _pixbufFormat
 }
 
 // Free frees the resources allocated when copying a `GdkPixbufFormat` using
@@ -358,67 +441,4 @@ func (f *PixbufFormat) SetDisabled(disabled bool) {
 	}
 
 	C.gdk_pixbuf_format_set_disabled(_arg0, _arg1)
-}
-
-// PixbufModulePattern: the signature prefix for a module.
-//
-// The signature of a module is a set of prefixes. Prefixes are encoded as pairs
-// of ordinary strings, where the second string, called the mask, if not `NULL`,
-// must be of the same length as the first one and may contain ' ', '!', 'x',
-// 'z', and 'n' to indicate bytes that must be matched, not matched,
-// "don't-care"-bytes, zeros and non-zeros, respectively.
-//
-// Each prefix has an associated integer that describes the relevance of the
-// prefix, with 0 meaning a mismatch and 100 a "perfect match".
-//
-// Starting with gdk-pixbuf 2.8, the first byte of the mask may be '*',
-// indicating an unanchored pattern that matches not only at the beginning, but
-// also in the middle. Versions prior to 2.8 will interpret the '*' like an 'x'.
-//
-// The signature of a module is stored as an array of `GdkPixbufModulePatterns`.
-// The array is terminated by a pattern where the `prefix` is `NULL`.
-//
-// “`c GdkPixbufModulePattern *signature[] = { { "abcdx", " !x z", 100 }, {
-// "bla", NULL, 90 }, { NULL, NULL, 0 } }; “`
-//
-// In the example above, the signature matches e.g. "auud\0" with relevance 100,
-// and "blau" with relevance 90.
-type PixbufModulePattern struct {
-	native C.GdkPixbufModulePattern
-}
-
-// WrapPixbufModulePattern wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPixbufModulePattern(ptr unsafe.Pointer) *PixbufModulePattern {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PixbufModulePattern)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (p *PixbufModulePattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}
-
-// Prefix gets the field inside the struct.
-func (p *PixbufModulePattern) Prefix() string {
-	var v string // out
-	v = C.GoString(p.native.prefix)
-	return v
-}
-
-// Mask gets the field inside the struct.
-func (p *PixbufModulePattern) Mask() string {
-	var v string // out
-	v = C.GoString(p.native.mask)
-	return v
-}
-
-// Relevance gets the field inside the struct.
-func (p *PixbufModulePattern) Relevance() int {
-	var v int // out
-	v = (int)(p.native.relevance)
-	return v
 }

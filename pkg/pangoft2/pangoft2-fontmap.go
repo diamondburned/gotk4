@@ -5,7 +5,6 @@ package pangoft2
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,7 +23,7 @@ func init() {
 // FontMap: the `PangoFT2FontMap` is the `PangoFontMap` implementation for
 // FreeType fonts.
 type FontMap interface {
-	pangofc.FontMap
+	FontMap
 
 	// SetResolution sets the horizontal and vertical resolutions for the
 	// fontmap.
@@ -40,7 +39,7 @@ type FontMap interface {
 
 // fontMap implements the FontMap class.
 type fontMap struct {
-	pangofc.FontMap
+	FontMap
 }
 
 var _ FontMap = (*fontMap)(nil)
@@ -49,7 +48,7 @@ var _ FontMap = (*fontMap)(nil)
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
 	return fontMap{
-		pangofc.FontMap: pangofc.WrapFontMap(obj),
+		FontMap: WrapFontMap(obj),
 	}
 }
 
@@ -57,6 +56,19 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontMap(obj), nil
+}
+
+// NewFontMap constructs a class FontMap.
+func NewFontMap() FontMap {
+	var _cret C.PangoFT2FontMap // in
+
+	_cret = C.pango_ft2_font_map_new()
+
+	var _fontMap FontMap // out
+
+	_fontMap = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FontMap)
+
+	return _fontMap
 }
 
 // SetResolution sets the horizontal and vertical resolutions for the

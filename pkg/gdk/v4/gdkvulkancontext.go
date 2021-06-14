@@ -5,7 +5,6 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,13 +31,11 @@ func init() {
 // fail, returning nil context.
 type VulkanContext interface {
 	DrawContext
-	gio.Initable
 }
 
 // vulkanContext implements the VulkanContext class.
 type vulkanContext struct {
 	DrawContext
-	gio.Initable
 }
 
 var _ VulkanContext = (*vulkanContext)(nil)
@@ -47,8 +44,7 @@ var _ VulkanContext = (*vulkanContext)(nil)
 // primarily used internally.
 func WrapVulkanContext(obj *externglib.Object) VulkanContext {
 	return vulkanContext{
-		DrawContext:  WrapDrawContext(obj),
-		gio.Initable: gio.WrapInitable(obj),
+		DrawContext: WrapDrawContext(obj),
 	}
 }
 

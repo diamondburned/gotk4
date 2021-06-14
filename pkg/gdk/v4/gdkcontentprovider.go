@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -36,6 +37,17 @@ type ContentProvider interface {
 
 	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
+	// RefFormats gets the formats that the provider can provide its current
+	// contents in.
+	RefFormats() *ContentFormats
+	// RefStorableFormats gets the formats that the provider suggests other
+	// applications to store the data in.
+	//
+	// An example of such an application would be a clipboard manager.
+	//
+	// This can be assumed to be a subset of
+	// [method@Gdk.ContentProvider.ref_formats].
+	RefStorableFormats() *ContentFormats
 }
 
 // contentProvider implements the ContentProvider class.
@@ -59,6 +71,31 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 	return WrapContentProvider(obj), nil
 }
 
+// NewContentProviderUnion constructs a class ContentProvider.
+func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
+	var _arg1 **C.GdkContentProvider
+	var _arg2 C.gsize
+
+	_arg2 = C.gsize(len(providers))
+	_arg1 = (**C.GdkContentProvider)(C.malloc(C.ulong(len(providers)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice(_arg1, len(providers))
+		for i := range providers {
+			out[i] = (*C.GdkContentProvider)(unsafe.Pointer(providers[i].Native()))
+		}
+	}
+
+	var _cret C.GdkContentProvider // in
+
+	_cret = C.gdk_content_provider_new_union(_arg1, _arg2)
+
+	var _contentProvider ContentProvider // out
+
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContentProvider)
+
+	return _contentProvider
+}
+
 // ContentChanged emits the ::content-changed signal.
 func (p contentProvider) ContentChanged() {
 	var _arg0 *C.GdkContentProvider // out
@@ -66,4 +103,51 @@ func (p contentProvider) ContentChanged() {
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
 	C.gdk_content_provider_content_changed(_arg0)
+}
+
+// RefFormats gets the formats that the provider can provide its current
+// contents in.
+func (p contentProvider) RefFormats() *ContentFormats {
+	var _arg0 *C.GdkContentProvider // out
+
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GdkContentFormats // in
+
+	_cret = C.gdk_content_provider_ref_formats(_arg0)
+
+	var _contentFormats *ContentFormats // out
+
+	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _contentFormats
+}
+
+// RefStorableFormats gets the formats that the provider suggests other
+// applications to store the data in.
+//
+// An example of such an application would be a clipboard manager.
+//
+// This can be assumed to be a subset of
+// [method@Gdk.ContentProvider.ref_formats].
+func (p contentProvider) RefStorableFormats() *ContentFormats {
+	var _arg0 *C.GdkContentProvider // out
+
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GdkContentFormats // in
+
+	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
+
+	var _contentFormats *ContentFormats // out
+
+	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _contentFormats
 }

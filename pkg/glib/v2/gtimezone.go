@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -56,6 +57,100 @@ func WrapTimeZone(ptr unsafe.Pointer) *TimeZone {
 func marshalTimeZone(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapTimeZone(unsafe.Pointer(b)), nil
+}
+
+// NewTimeZone constructs a struct TimeZone.
+func NewTimeZone(identifier string) *TimeZone {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(identifier))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GTimeZone // in
+
+	_cret = C.g_time_zone_new(_arg1)
+
+	var _timeZone *TimeZone // out
+
+	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeZone
+}
+
+// NewTimeZoneIdentifier constructs a struct TimeZone.
+func NewTimeZoneIdentifier(identifier string) *TimeZone {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(identifier))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GTimeZone // in
+
+	_cret = C.g_time_zone_new_identifier(_arg1)
+
+	var _timeZone *TimeZone // out
+
+	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeZone
+}
+
+// NewTimeZoneLocal constructs a struct TimeZone.
+func NewTimeZoneLocal() *TimeZone {
+	var _cret *C.GTimeZone // in
+
+	_cret = C.g_time_zone_new_local()
+
+	var _timeZone *TimeZone // out
+
+	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeZone
+}
+
+// NewTimeZoneOffset constructs a struct TimeZone.
+func NewTimeZoneOffset(seconds int32) *TimeZone {
+	var _arg1 C.gint32 // out
+
+	_arg1 = C.gint32(seconds)
+
+	var _cret *C.GTimeZone // in
+
+	_cret = C.g_time_zone_new_offset(_arg1)
+
+	var _timeZone *TimeZone // out
+
+	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeZone
+}
+
+// NewTimeZoneUtc constructs a struct TimeZone.
+func NewTimeZoneUtc() *TimeZone {
+	var _cret *C.GTimeZone // in
+
+	_cret = C.g_time_zone_new_utc()
+
+	var _timeZone *TimeZone // out
+
+	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeZone
 }
 
 // Native returns the underlying C source pointer.
@@ -224,6 +319,26 @@ func (t *TimeZone) IsDst(interval int) bool {
 	}
 
 	return _ok
+}
+
+// Ref increases the reference count on @tz.
+func (t *TimeZone) Ref() *TimeZone {
+	var _arg0 *C.GTimeZone // out
+
+	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
+
+	var _cret *C.GTimeZone // in
+
+	_cret = C.g_time_zone_ref(_arg0)
+
+	var _timeZone *TimeZone // out
+
+	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeZone
 }
 
 // Unref decreases the reference count on @tz.

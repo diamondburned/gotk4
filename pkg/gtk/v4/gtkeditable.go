@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,6 +43,11 @@ type EditableOverrider interface {
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DoDeleteText(startPos int, endPos int)
+	// Delegate gets the `GtkEditable` that @editable is delegating its
+	// implementation to.
+	//
+	// Typically, the delegate is a [class@Gtk.Text] widget.
+	Delegate() Editable
 	// SelectionBounds retrieves the selection bound of the editable.
 	//
 	// @start_pos will be filled with the start of the selection and @end_pos
@@ -362,6 +368,26 @@ func (e editable) Chars(startPos int, endPos int) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// Delegate gets the `GtkEditable` that @editable is delegating its
+// implementation to.
+//
+// Typically, the delegate is a [class@Gtk.Text] widget.
+func (e editable) Delegate() Editable {
+	var _arg0 *C.GtkEditable // out
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+
+	var _cret *C.GtkEditable // in
+
+	_cret = C.gtk_editable_get_delegate(_arg0)
+
+	var _ret Editable // out
+
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Editable)
+
+	return _ret
 }
 
 // Editable retrieves whether @editable is editable.

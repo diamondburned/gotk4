@@ -4,6 +4,11 @@ package gio
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -20,6 +25,294 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
+
+// DBusMessageFilterFunction: signature for function used in
+// g_dbus_connection_add_filter().
+//
+// A filter function is passed a BusMessage and expected to return a BusMessage
+// too. Passive filter functions that don't modify the message can simply return
+// the @message object:
+//
+//    static GDBusMessage *
+//    passive_filter (GDBusConnection *connection
+//                    GDBusMessage    *message,
+//                    gboolean         incoming,
+//                    gpointer         user_data)
+//    {
+//      // inspect @message
+//      return message;
+//    }
+//
+// Filter functions that wants to drop a message can simply return nil:
+//
+//    static GDBusMessage *
+//    drop_filter (GDBusConnection *connection
+//                 GDBusMessage    *message,
+//                 gboolean         incoming,
+//                 gpointer         user_data)
+//    {
+//      if (should_drop_message)
+//        {
+//          g_object_unref (message);
+//          message = NULL;
+//        }
+//      return message;
+//    }
+//
+// Finally, a filter function may modify a message by copying it:
+//
+//    static GDBusMessage *
+//    modifying_filter (GDBusConnection *connection
+//                      GDBusMessage    *message,
+//                      gboolean         incoming,
+//                      gpointer         user_data)
+//    {
+//      GDBusMessage *copy;
+//      GError *error;
+//
+//      error = NULL;
+//      copy = g_dbus_message_copy (message, &error);
+//      // handle @error being set
+//      g_object_unref (message);
+//
+//      // modify @copy
+//
+//      return copy;
+//    }
+//
+// If the returned BusMessage is different from @message and cannot be sent on
+// @connection (it could use features, such as file descriptors, not compatible
+// with @connection), then a warning is logged to standard error. Applications
+// can check this ahead of time using g_dbus_message_to_blob() passing a
+// BusCapabilityFlags value obtained from @connection.
+type DBusMessageFilterFunction func(connection DBusConnection, message DBusMessage, incoming bool) (dBusMessage DBusMessage)
+
+//export gotk4_DBusMessageFilterFunction
+func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, arg2 C.gboolean, arg3 C.gpointer) *C.GDBusMessage {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var connection DBusConnection // out
+	var message DBusMessage       // out
+	var incoming bool             // out
+
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
+	message = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(DBusMessage)
+	if arg2 != 0 {
+		incoming = true
+	}
+
+	fn := v.(DBusMessageFilterFunction)
+	dBusMessage := fn(connection, message, incoming)
+
+	var cret *C.GDBusMessage // out
+
+	cret = (*C.GDBusMessage)(unsafe.Pointer(dBusMessage.Native()))
+
+	return cret
+}
+
+// DBusSubtreeDispatchFunc: the type of the @dispatch function in
+// BusSubtreeVTable.
+//
+// Subtrees are flat. @node, if non-nil, is always exactly one segment of the
+// object path (ie: it never contains a slash).
+type DBusSubtreeDispatchFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, node string, outUserData *interface{}) (dBusInterfaceVTable *DBusInterfaceVTable)
+
+//export gotk4_DBusSubtreeDispatchFunc
+func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gpointer, arg6 C.gpointer) *C.GDBusInterfaceVTable {
+	v := box.Get(uintptr(arg6))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var connection DBusConnection // out
+	var sender string             // out
+	var objectPath string         // out
+	var interfaceName string      // out
+	var node string               // out
+	var outUserData *interface{}  // out
+
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
+	sender = C.GoString(arg1)
+	objectPath = C.GoString(arg2)
+	interfaceName = C.GoString(arg3)
+	node = C.GoString(arg4)
+	outUserData = (*interface{})(arg5)
+
+	fn := v.(DBusSubtreeDispatchFunc)
+	dBusInterfaceVTable := fn(connection, sender, objectPath, interfaceName, node, outUserData)
+
+	var cret *C.GDBusInterfaceVTable // out
+
+	cret = (*C.GDBusInterfaceVTable)(unsafe.Pointer(dBusInterfaceVTable.Native()))
+
+	return cret
+}
+
+// DBusSubtreeEnumerateFunc: the type of the @enumerate function in
+// BusSubtreeVTable.
+//
+// This function is called when generating introspection data and also when
+// preparing to dispatch incoming messages in the event that the
+// G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES flag is not specified
+// (ie: to verify that the object path is valid).
+//
+// Hierarchies are not supported; the items that you return should not contain
+// the `/` character.
+//
+// The return value will be freed with g_strfreev().
+type DBusSubtreeEnumerateFunc func(connection DBusConnection, sender string, objectPath string) (utf8s []string)
+
+//export gotk4_DBusSubtreeEnumerateFunc
+func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) **C.gchar {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var connection DBusConnection // out
+	var sender string             // out
+	var objectPath string         // out
+
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
+	sender = C.GoString(arg1)
+	objectPath = C.GoString(arg2)
+
+	fn := v.(DBusSubtreeEnumerateFunc)
+	utf8s := fn(connection, sender, objectPath)
+
+	var cret **C.gchar
+
+	cret = (**C.gchar)(C.malloc(C.ulong((len(utf8s) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice(cret, len(utf8s))
+		for i := range utf8s {
+			out[i] = (*C.gchar)(C.CString(utf8s[i]))
+		}
+	}
+
+	return cret
+}
+
+// DBusSubtreeIntrospectFunc: the type of the @introspect function in
+// BusSubtreeVTable.
+//
+// Subtrees are flat. @node, if non-nil, is always exactly one segment of the
+// object path (ie: it never contains a slash).
+//
+// This function should return nil to indicate that there is no object at this
+// node.
+//
+// If this function returns non-nil, the return value is expected to be a
+// nil-terminated array of pointers to BusInterfaceInfo structures describing
+// the interfaces implemented by @node. This array will have
+// g_dbus_interface_info_unref() called on each item before being freed with
+// g_free().
+//
+// The difference between returning nil and an array containing zero items is
+// that the standard DBus interfaces will returned to the remote introspector in
+// the empty array case, but not in the nil case.
+type DBusSubtreeIntrospectFunc func(connection DBusConnection, sender string, objectPath string, node string) (dBusInterfaceInfos []*DBusInterfaceInfo)
+
+//export gotk4_DBusSubtreeIntrospectFunc
+func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) **C.GDBusInterfaceInfo {
+	v := box.Get(uintptr(arg4))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var connection DBusConnection // out
+	var sender string             // out
+	var objectPath string         // out
+	var node string               // out
+
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
+	sender = C.GoString(arg1)
+	objectPath = C.GoString(arg2)
+	node = C.GoString(arg3)
+
+	fn := v.(DBusSubtreeIntrospectFunc)
+	dBusInterfaceInfos := fn(connection, sender, objectPath, node)
+
+	var cret **C.GDBusInterfaceInfo
+
+	cret = (**C.GDBusInterfaceInfo)(C.malloc(C.ulong((len(dBusInterfaceInfos) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice(cret, len(dBusInterfaceInfos))
+		for i := range dBusInterfaceInfos {
+			out[i] = (*C.GDBusInterfaceInfo)(unsafe.Pointer(dBusInterfaceInfos[i].Native()))
+		}
+	}
+
+	return cret
+}
+
+// BusGetFinish finishes an operation started with g_bus_get().
+//
+// The returned object is a singleton, that is, shared with other callers of
+// g_bus_get() and g_bus_get_sync() for @bus_type. In the event that you need a
+// private message bus connection, use g_dbus_address_get_for_bus_sync() and
+// g_dbus_connection_new_for_address().
+//
+// Note that the returned BusConnection object will (usually) have the
+// BusConnection:exit-on-close property set to true.
+func BusGetFinish(res AsyncResult) (DBusConnection, error) {
+	var _arg1 *C.GAsyncResult // out
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GDBusConnection // in
+	var _cerr *C.GError          // in
+
+	_cret = C.g_bus_get_finish(_arg1, &_cerr)
+
+	var _dBusConnection DBusConnection // out
+	var _goerr error                   // out
+
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _dBusConnection, _goerr
+}
+
+// BusGetSync: synchronously connects to the message bus specified by @bus_type.
+// Note that the returned object may shared with other callers, e.g. if two
+// separate parts of a process calls this function with the same @bus_type, they
+// will share the same object.
+//
+// This is a synchronous failable function. See g_bus_get() and
+// g_bus_get_finish() for the asynchronous version.
+//
+// The returned object is a singleton, that is, shared with other callers of
+// g_bus_get() and g_bus_get_sync() for @bus_type. In the event that you need a
+// private message bus connection, use g_dbus_address_get_for_bus_sync() and
+// g_dbus_connection_new_for_address().
+//
+// Note that the returned BusConnection object will (usually) have the
+// BusConnection:exit-on-close property set to true.
+func BusGetSync(busType BusType, cancellable Cancellable) (DBusConnection, error) {
+	var _arg1 C.GBusType      // out
+	var _arg2 *C.GCancellable // out
+
+	_arg1 = (C.GBusType)(busType)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GDBusConnection // in
+	var _cerr *C.GError          // in
+
+	_cret = C.g_bus_get_sync(_arg1, _arg2, &_cerr)
+
+	var _dBusConnection DBusConnection // out
+	var _goerr error                   // out
+
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _dBusConnection, _goerr
+}
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls
 // for a D-Bus interface.

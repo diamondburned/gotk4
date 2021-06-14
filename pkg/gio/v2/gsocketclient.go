@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -65,9 +66,126 @@ type SocketClient interface {
 	// will be skipped. This is required to let the application do the proxy
 	// specific handshake.
 	AddApplicationProXY(protocol string)
+	// Connect tries to resolve the @connectable and make a network connection
+	// to it.
+	//
+	// Upon a successful connection, a new Connection is constructed and
+	// returned. The caller owns this new object and must drop their reference
+	// to it when finished with it.
+	//
+	// The type of the Connection object returned depends on the type of the
+	// underlying socket that is used. For instance, for a TCP/IP connection it
+	// will be a Connection.
+	//
+	// The socket created will be the same family as the address that the
+	// @connectable resolves to, unless family is set with
+	// g_socket_client_set_family() or indirectly via
+	// g_socket_client_set_local_address(). The socket type defaults to
+	// G_SOCKET_TYPE_STREAM but can be set with
+	// g_socket_client_set_socket_type().
+	//
+	// If a local address is specified with g_socket_client_set_local_address()
+	// the socket will be bound to this address before connecting.
+	Connect(connectable SocketConnectable, cancellable Cancellable) (SocketConnection, error)
+	// ConnectFinish finishes an async connect operation. See
+	// g_socket_client_connect_async()
+	ConnectFinish(result AsyncResult) (SocketConnection, error)
+	// ConnectToHost: this is a helper function for g_socket_client_connect().
+	//
+	// Attempts to create a TCP connection to the named host.
+	//
+	// @host_and_port may be in any of a number of recognized formats; an IPv6
+	// address, an IPv4 address, or a domain name (in which case a DNS lookup is
+	// performed). Quoting with [] is supported for all address types. A port
+	// override may be specified in the usual way with a colon. Ports may be
+	// given as decimal numbers or symbolic names (in which case an
+	// /etc/services lookup is performed).
+	//
+	// If no port override is given in @host_and_port then @default_port will be
+	// used as the port number to connect to.
+	//
+	// In general, @host_and_port is expected to be provided by the user
+	// (allowing them to give the hostname, and a port override if necessary)
+	// and @default_port is expected to be provided by the application.
+	//
+	// In the case that an IP address is given, a single connection attempt is
+	// made. In the case that a name is given, multiple connection attempts may
+	// be made, in turn and according to the number of address records in DNS,
+	// until a connection succeeds.
+	//
+	// Upon a successful connection, a new Connection is constructed and
+	// returned. The caller owns this new object and must drop their reference
+	// to it when finished with it.
+	//
+	// In the event of any failure (DNS error, service not found, no hosts
+	// connectable) nil is returned and @error (if non-nil) is set accordingly.
+	ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error)
+	// ConnectToHostFinish finishes an async connect operation. See
+	// g_socket_client_connect_to_host_async()
+	ConnectToHostFinish(result AsyncResult) (SocketConnection, error)
+	// ConnectToService attempts to create a TCP connection to a service.
+	//
+	// This call looks up the SRV record for @service at @domain for the "tcp"
+	// protocol. It then attempts to connect, in turn, to each of the hosts
+	// providing the service until either a connection succeeds or there are no
+	// hosts remaining.
+	//
+	// Upon a successful connection, a new Connection is constructed and
+	// returned. The caller owns this new object and must drop their reference
+	// to it when finished with it.
+	//
+	// In the event of any failure (DNS error, service not found, no hosts
+	// connectable) nil is returned and @error (if non-nil) is set accordingly.
+	ConnectToService(domain string, service string, cancellable Cancellable) (SocketConnection, error)
+	// ConnectToServiceFinish finishes an async connect operation. See
+	// g_socket_client_connect_to_service_async()
+	ConnectToServiceFinish(result AsyncResult) (SocketConnection, error)
+	// ConnectToURI: this is a helper function for g_socket_client_connect().
+	//
+	// Attempts to create a TCP connection with a network URI.
+	//
+	// @uri may be any valid URI containing an "authority" (hostname/port)
+	// component. If a port is not specified in the URI, @default_port will be
+	// used. TLS will be negotiated if Client:tls is true. (Client does not know
+	// to automatically assume TLS for certain URI schemes.)
+	//
+	// Using this rather than g_socket_client_connect() or
+	// g_socket_client_connect_to_host() allows Client to determine when to use
+	// application-specific proxy protocols.
+	//
+	// Upon a successful connection, a new Connection is constructed and
+	// returned. The caller owns this new object and must drop their reference
+	// to it when finished with it.
+	//
+	// In the event of any failure (DNS error, service not found, no hosts
+	// connectable) nil is returned and @error (if non-nil) is set accordingly.
+	ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error)
+	// ConnectToURIFinish finishes an async connect operation. See
+	// g_socket_client_connect_to_uri_async()
+	ConnectToURIFinish(result AsyncResult) (SocketConnection, error)
 	// EnableProXY gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
 	EnableProXY() bool
+	// Family gets the socket family of the socket client.
+	//
+	// See g_socket_client_set_family() for details.
+	Family() SocketFamily
+	// LocalAddress gets the local address of the socket client.
+	//
+	// See g_socket_client_set_local_address() for details.
+	LocalAddress() SocketAddress
+	// Protocol gets the protocol name type of the socket client.
+	//
+	// See g_socket_client_set_protocol() for details.
+	Protocol() SocketProtocol
+	// ProXYResolver gets the Resolver being used by @client. Normally, this
+	// will be the resolver returned by g_proxy_resolver_get_default(), but you
+	// can override it with g_socket_client_set_proxy_resolver().
+	ProXYResolver() ProXYResolver
+	// SocketType gets the socket type of the socket client.
+	//
+	// See g_socket_client_set_socket_type() for details.
+	SocketType() SocketType
 	// Timeout gets the I/O timeout time for sockets created by @client.
 	//
 	// See g_socket_client_set_timeout() for details.
@@ -75,6 +193,9 @@ type SocketClient interface {
 	// TLS gets whether @client creates TLS connections. See
 	// g_socket_client_set_tls() for details.
 	TLS() bool
+	// TLSValidationFlags gets the TLS validation flags used creating TLS
+	// connections via @client.
+	TLSValidationFlags() TLSCertificateFlags
 	// SetEnableProXY sets whether or not @client attempts to make connections
 	// via a proxy server. When enabled (the default), Client will use a
 	// Resolver to determine if a proxy protocol such as SOCKS is needed, and
@@ -168,6 +289,19 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 	return WrapSocketClient(obj), nil
 }
 
+// NewSocketClient constructs a class SocketClient.
+func NewSocketClient() SocketClient {
+	var _cret C.GSocketClient // in
+
+	_cret = C.g_socket_client_new()
+
+	var _socketClient SocketClient // out
+
+	_socketClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketClient)
+
+	return _socketClient
+}
+
 // AddApplicationProXY: enable proxy protocols to be handled by the
 // application. When the indicated proxy protocol is returned by the
 // Resolver, Client will consider this protocol as supported but will not
@@ -197,6 +331,281 @@ func (c socketClient) AddApplicationProXY(protocol string) {
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
 }
 
+// Connect tries to resolve the @connectable and make a network connection
+// to it.
+//
+// Upon a successful connection, a new Connection is constructed and
+// returned. The caller owns this new object and must drop their reference
+// to it when finished with it.
+//
+// The type of the Connection object returned depends on the type of the
+// underlying socket that is used. For instance, for a TCP/IP connection it
+// will be a Connection.
+//
+// The socket created will be the same family as the address that the
+// @connectable resolves to, unless family is set with
+// g_socket_client_set_family() or indirectly via
+// g_socket_client_set_local_address(). The socket type defaults to
+// G_SOCKET_TYPE_STREAM but can be set with
+// g_socket_client_set_socket_type().
+//
+// If a local address is specified with g_socket_client_set_local_address()
+// the socket will be bound to this address before connecting.
+func (c socketClient) Connect(connectable SocketConnectable, cancellable Cancellable) (SocketConnection, error) {
+	var _arg0 *C.GSocketClient      // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg2 *C.GCancellable       // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_socket_client_connect(_arg0, _arg1, _arg2, &_cerr)
+
+	var _socketConnection SocketConnection // out
+	var _goerr error                       // out
+
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketConnection, _goerr
+}
+
+// ConnectFinish finishes an async connect operation. See
+// g_socket_client_connect_async()
+func (c socketClient) ConnectFinish(result AsyncResult) (SocketConnection, error) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.GAsyncResult  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_socket_client_connect_finish(_arg0, _arg1, &_cerr)
+
+	var _socketConnection SocketConnection // out
+	var _goerr error                       // out
+
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketConnection, _goerr
+}
+
+// ConnectToHost: this is a helper function for g_socket_client_connect().
+//
+// Attempts to create a TCP connection to the named host.
+//
+// @host_and_port may be in any of a number of recognized formats; an IPv6
+// address, an IPv4 address, or a domain name (in which case a DNS lookup is
+// performed). Quoting with [] is supported for all address types. A port
+// override may be specified in the usual way with a colon. Ports may be
+// given as decimal numbers or symbolic names (in which case an
+// /etc/services lookup is performed).
+//
+// If no port override is given in @host_and_port then @default_port will be
+// used as the port number to connect to.
+//
+// In general, @host_and_port is expected to be provided by the user
+// (allowing them to give the hostname, and a port override if necessary)
+// and @default_port is expected to be provided by the application.
+//
+// In the case that an IP address is given, a single connection attempt is
+// made. In the case that a name is given, multiple connection attempts may
+// be made, in turn and according to the number of address records in DNS,
+// until a connection succeeds.
+//
+// Upon a successful connection, a new Connection is constructed and
+// returned. The caller owns this new object and must drop their reference
+// to it when finished with it.
+//
+// In the event of any failure (DNS error, service not found, no hosts
+// connectable) nil is returned and @error (if non-nil) is set accordingly.
+func (c socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.gchar         // out
+	var _arg2 C.guint16        // out
+	var _arg3 *C.GCancellable  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(hostAndPort))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_socket_client_connect_to_host(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _socketConnection SocketConnection // out
+	var _goerr error                       // out
+
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketConnection, _goerr
+}
+
+// ConnectToHostFinish finishes an async connect operation. See
+// g_socket_client_connect_to_host_async()
+func (c socketClient) ConnectToHostFinish(result AsyncResult) (SocketConnection, error) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.GAsyncResult  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_socket_client_connect_to_host_finish(_arg0, _arg1, &_cerr)
+
+	var _socketConnection SocketConnection // out
+	var _goerr error                       // out
+
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketConnection, _goerr
+}
+
+// ConnectToService attempts to create a TCP connection to a service.
+//
+// This call looks up the SRV record for @service at @domain for the "tcp"
+// protocol. It then attempts to connect, in turn, to each of the hosts
+// providing the service until either a connection succeeds or there are no
+// hosts remaining.
+//
+// Upon a successful connection, a new Connection is constructed and
+// returned. The caller owns this new object and must drop their reference
+// to it when finished with it.
+//
+// In the event of any failure (DNS error, service not found, no hosts
+// connectable) nil is returned and @error (if non-nil) is set accordingly.
+func (c socketClient) ConnectToService(domain string, service string, cancellable Cancellable) (SocketConnection, error) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
+	var _arg3 *C.GCancellable  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(service))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_socket_client_connect_to_service(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _socketConnection SocketConnection // out
+	var _goerr error                       // out
+
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketConnection, _goerr
+}
+
+// ConnectToServiceFinish finishes an async connect operation. See
+// g_socket_client_connect_to_service_async()
+func (c socketClient) ConnectToServiceFinish(result AsyncResult) (SocketConnection, error) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.GAsyncResult  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_socket_client_connect_to_service_finish(_arg0, _arg1, &_cerr)
+
+	var _socketConnection SocketConnection // out
+	var _goerr error                       // out
+
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketConnection, _goerr
+}
+
+// ConnectToURI: this is a helper function for g_socket_client_connect().
+//
+// Attempts to create a TCP connection with a network URI.
+//
+// @uri may be any valid URI containing an "authority" (hostname/port)
+// component. If a port is not specified in the URI, @default_port will be
+// used. TLS will be negotiated if Client:tls is true. (Client does not know
+// to automatically assume TLS for certain URI schemes.)
+//
+// Using this rather than g_socket_client_connect() or
+// g_socket_client_connect_to_host() allows Client to determine when to use
+// application-specific proxy protocols.
+//
+// Upon a successful connection, a new Connection is constructed and
+// returned. The caller owns this new object and must drop their reference
+// to it when finished with it.
+//
+// In the event of any failure (DNS error, service not found, no hosts
+// connectable) nil is returned and @error (if non-nil) is set accordingly.
+func (c socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.gchar         // out
+	var _arg2 C.guint16        // out
+	var _arg3 *C.GCancellable  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _socketConnection SocketConnection // out
+	var _goerr error                       // out
+
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketConnection, _goerr
+}
+
+// ConnectToURIFinish finishes an async connect operation. See
+// g_socket_client_connect_to_uri_async()
+func (c socketClient) ConnectToURIFinish(result AsyncResult) (SocketConnection, error) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.GAsyncResult  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_cret = C.g_socket_client_connect_to_uri_finish(_arg0, _arg1, &_cerr)
+
+	var _socketConnection SocketConnection // out
+	var _goerr error                       // out
+
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socketConnection, _goerr
+}
+
 // EnableProXY gets the proxy enable state; see
 // g_socket_client_set_enable_proxy()
 func (c socketClient) EnableProXY() bool {
@@ -215,6 +624,101 @@ func (c socketClient) EnableProXY() bool {
 	}
 
 	return _ok
+}
+
+// Family gets the socket family of the socket client.
+//
+// See g_socket_client_set_family() for details.
+func (c socketClient) Family() SocketFamily {
+	var _arg0 *C.GSocketClient // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GSocketFamily // in
+
+	_cret = C.g_socket_client_get_family(_arg0)
+
+	var _socketFamily SocketFamily // out
+
+	_socketFamily = SocketFamily(_cret)
+
+	return _socketFamily
+}
+
+// LocalAddress gets the local address of the socket client.
+//
+// See g_socket_client_set_local_address() for details.
+func (c socketClient) LocalAddress() SocketAddress {
+	var _arg0 *C.GSocketClient // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GSocketAddress // in
+
+	_cret = C.g_socket_client_get_local_address(_arg0)
+
+	var _socketAddress SocketAddress // out
+
+	_socketAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+
+	return _socketAddress
+}
+
+// Protocol gets the protocol name type of the socket client.
+//
+// See g_socket_client_set_protocol() for details.
+func (c socketClient) Protocol() SocketProtocol {
+	var _arg0 *C.GSocketClient // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GSocketProtocol // in
+
+	_cret = C.g_socket_client_get_protocol(_arg0)
+
+	var _socketProtocol SocketProtocol // out
+
+	_socketProtocol = SocketProtocol(_cret)
+
+	return _socketProtocol
+}
+
+// ProXYResolver gets the Resolver being used by @client. Normally, this
+// will be the resolver returned by g_proxy_resolver_get_default(), but you
+// can override it with g_socket_client_set_proxy_resolver().
+func (c socketClient) ProXYResolver() ProXYResolver {
+	var _arg0 *C.GSocketClient // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GProxyResolver // in
+
+	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
+
+	var _proxyResolver ProXYResolver // out
+
+	_proxyResolver = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ProXYResolver)
+
+	return _proxyResolver
+}
+
+// SocketType gets the socket type of the socket client.
+//
+// See g_socket_client_set_socket_type() for details.
+func (c socketClient) SocketType() SocketType {
+	var _arg0 *C.GSocketClient // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GSocketType // in
+
+	_cret = C.g_socket_client_get_socket_type(_arg0)
+
+	var _socketType SocketType // out
+
+	_socketType = SocketType(_cret)
+
+	return _socketType
 }
 
 // Timeout gets the I/O timeout time for sockets created by @client.
@@ -254,6 +758,24 @@ func (c socketClient) TLS() bool {
 	}
 
 	return _ok
+}
+
+// TLSValidationFlags gets the TLS validation flags used creating TLS
+// connections via @client.
+func (c socketClient) TLSValidationFlags() TLSCertificateFlags {
+	var _arg0 *C.GSocketClient // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GTlsCertificateFlags // in
+
+	_cret = C.g_socket_client_get_tls_validation_flags(_arg0)
+
+	var _tlsCertificateFlags TLSCertificateFlags // out
+
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
+
+	return _tlsCertificateFlags
 }
 
 // SetEnableProXY sets whether or not @client attempts to make connections

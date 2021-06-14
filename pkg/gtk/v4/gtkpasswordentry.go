@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,9 +61,6 @@ type PasswordEntry interface {
 	// ShowPeekIcon returns whether the entry is showing an icon to reveal the
 	// contents.
 	ShowPeekIcon() bool
-	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for @entry.
-	SetExtraMenu(model gio.MenuModel)
 	// SetShowPeekIcon sets whether the entry should have a clickable icon to
 	// reveal the contents.
 	//
@@ -100,6 +97,19 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	return WrapPasswordEntry(obj), nil
 }
 
+// NewPasswordEntry constructs a class PasswordEntry.
+func NewPasswordEntry() PasswordEntry {
+	var _cret C.GtkPasswordEntry // in
+
+	_cret = C.gtk_password_entry_new()
+
+	var _passwordEntry PasswordEntry // out
+
+	_passwordEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PasswordEntry)
+
+	return _passwordEntry
+}
+
 // ShowPeekIcon returns whether the entry is showing an icon to reveal the
 // contents.
 func (e passwordEntry) ShowPeekIcon() bool {
@@ -118,18 +128,6 @@ func (e passwordEntry) ShowPeekIcon() bool {
 	}
 
 	return _ok
-}
-
-// SetExtraMenu sets a menu model to add when constructing the context menu
-// for @entry.
-func (e passwordEntry) SetExtraMenu(model gio.MenuModel) {
-	var _arg0 *C.GtkPasswordEntry // out
-	var _arg1 *C.GMenuModel       // out
-
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
 }
 
 // SetShowPeekIcon sets whether the entry should have a clickable icon to

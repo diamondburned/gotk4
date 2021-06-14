@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,6 +63,8 @@ type Statusbar interface {
 	// ContextID returns a new context identifier, given a description of the
 	// actual context. Note that the description is not shown in the UI.
 	ContextID(contextDescription string) uint
+	// MessageArea retrieves the box containing the label widget.
+	MessageArea() Box
 	// Pop removes the first message in the Statusbar’s stack with the given
 	// context id.
 	//
@@ -103,6 +106,19 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return WrapStatusbar(obj), nil
 }
 
+// NewStatusbar constructs a class Statusbar.
+func NewStatusbar() Statusbar {
+	var _cret C.GtkStatusbar // in
+
+	_cret = C.gtk_statusbar_new()
+
+	var _statusbar Statusbar // out
+
+	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Statusbar)
+
+	return _statusbar
+}
+
 // ContextID returns a new context identifier, given a description of the
 // actual context. Note that the description is not shown in the UI.
 func (s statusbar) ContextID(contextDescription string) uint {
@@ -122,6 +138,23 @@ func (s statusbar) ContextID(contextDescription string) uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// MessageArea retrieves the box containing the label widget.
+func (s statusbar) MessageArea() Box {
+	var _arg0 *C.GtkStatusbar // out
+
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_statusbar_get_message_area(_arg0)
+
+	var _box Box // out
+
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
+
+	return _box
 }
 
 // Pop removes the first message in the Statusbar’s stack with the given

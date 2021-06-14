@@ -42,10 +42,9 @@ type ListItem interface {
 	// Activatable checks if a list item has been set to be activatable via
 	// gtk_list_item_set_activatable().
 	Activatable() bool
-	// Item gets the model item that associated with @self.
-	//
-	// If @self is unbound, this function returns nil.
-	Item() gextras.Objector
+	// Child gets the child previously set via gtk_list_item_set_child() or nil
+	// if none was set.
+	Child() Widget
 	// Position gets the position in the model that @self currently displays.
 	//
 	// If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
@@ -130,23 +129,22 @@ func (s listItem) Activatable() bool {
 	return _ok
 }
 
-// Item gets the model item that associated with @self.
-//
-// If @self is unbound, this function returns nil.
-func (s listItem) Item() gextras.Objector {
+// Child gets the child previously set via gtk_list_item_set_child() or nil
+// if none was set.
+func (s listItem) Child() Widget {
 	var _arg0 *C.GtkListItem // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gpointer // in
+	var _cret *C.GtkWidget // in
 
-	_cret = C.gtk_list_item_get_item(_arg0)
+	_cret = C.gtk_list_item_get_child(_arg0)
 
-	var _object gextras.Objector // out
+	var _widget Widget // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return _object
+	return _widget
 }
 
 // Position gets the position in the model that @self currently displays.

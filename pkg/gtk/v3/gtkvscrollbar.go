@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,4 +59,21 @@ func marshalVScrollbar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapVScrollbar(obj), nil
+}
+
+// NewVScrollbar constructs a class VScrollbar.
+func NewVScrollbar(adjustment Adjustment) VScrollbar {
+	var _arg1 *C.GtkAdjustment // out
+
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+
+	var _cret C.GtkVScrollbar // in
+
+	_cret = C.gtk_vscrollbar_new(_arg1)
+
+	var _vScrollbar VScrollbar // out
+
+	_vScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VScrollbar)
+
+	return _vScrollbar
 }

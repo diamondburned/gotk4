@@ -41,7 +41,7 @@ func (ng *NamespaceGenerator) generateEnums() {
 		if !enum.IsIntrospectable() {
 			continue
 		}
-		if ng.mustIgnore(enum.Name, enum.CType) {
+		if ng.mustIgnore(&enum.Name, &enum.CType) {
 			continue
 		}
 

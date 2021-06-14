@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -42,6 +43,33 @@ const (
 
 func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 	return FileFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileFilterFunc: the type of function that is used with custom filters, see
+// gtk_file_filter_add_custom().
+type FileFilterFunc func(filterInfo *FileFilterInfo) (ok bool)
+
+//export gotk4_FileFilterFunc
+func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var filterInfo *FileFilterInfo // out
+
+	filterInfo = WrapFileFilterInfo(unsafe.Pointer(arg0))
+
+	fn := v.(FileFilterFunc)
+	ok := fn(filterInfo)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // FileFilter: a GtkFileFilter can be used to restrict the files being shown in
@@ -102,6 +130,12 @@ type FileFilter interface {
 	// Name gets the human-readable name for the filter. See
 	// gtk_file_filter_set_name().
 	Name() string
+	// Needed gets the fields that need to be filled in for the FileFilterInfo
+	// passed to gtk_file_filter_filter()
+	//
+	// This function will not typically be used by applications; it is intended
+	// principally for use in the implementation of FileChooser.
+	Needed() FileFilterFlags
 	// SetName sets the human-readable name of the filter; this is the string
 	// that will be displayed in the file selector user interface if there is a
 	// selectable list of filters.
@@ -129,6 +163,19 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFileFilter(obj), nil
+}
+
+// NewFileFilter constructs a class FileFilter.
+func NewFileFilter() FileFilter {
+	var _cret C.GtkFileFilter // in
+
+	_cret = C.gtk_file_filter_new()
+
+	var _fileFilter FileFilter // out
+
+	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileFilter)
+
+	return _fileFilter
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.
@@ -209,6 +256,27 @@ func (f fileFilter) Name() string {
 	return _utf8
 }
 
+// Needed gets the fields that need to be filled in for the FileFilterInfo
+// passed to gtk_file_filter_filter()
+//
+// This function will not typically be used by applications; it is intended
+// principally for use in the implementation of FileChooser.
+func (f fileFilter) Needed() FileFilterFlags {
+	var _arg0 *C.GtkFileFilter // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+
+	var _cret C.GtkFileFilterFlags // in
+
+	_cret = C.gtk_file_filter_get_needed(_arg0)
+
+	var _fileFilterFlags FileFilterFlags // out
+
+	_fileFilterFlags = FileFilterFlags(_cret)
+
+	return _fileFilterFlags
+}
+
 // SetName sets the human-readable name of the filter; this is the string
 // that will be displayed in the file selector user interface if there is a
 // selectable list of filters.
@@ -242,6 +310,13 @@ func WrapFileFilterInfo(ptr unsafe.Pointer) *FileFilterInfo {
 // Native returns the underlying C source pointer.
 func (f *FileFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
+}
+
+// Contains gets the field inside the struct.
+func (f *FileFilterInfo) Contains() FileFilterFlags {
+	var v FileFilterFlags // out
+	v = FileFilterFlags(f.native.contains)
+	return v
 }
 
 // Filename gets the field inside the struct.

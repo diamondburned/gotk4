@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -240,17 +241,92 @@ func marshalBuilderError(p uintptr) (interface{}, error) {
 type Builder interface {
 	gextras.Objector
 
-	// ExposeObject: add @object to the @builder object pool so it can be
-	// referenced just like any other object built by builder.
-	ExposeObject(name string, object gextras.Objector)
-	// CurrentObject gets the current object set via
-	// gtk_builder_set_current_object().
-	CurrentObject() gextras.Objector
-	// Object gets the object named @name.
+	// AddFromFile parses a file containing a UI definition and merges it with
+	// the current contents of @builder.
 	//
-	// Note that this function does not increment the reference count of the
-	// returned object.
-	Object(name string) gextras.Objector
+	// This function is useful if you need to call
+	// [method@Gtk.Builder.set_current_object]) to add user data to callbacks
+	// before loading GtkBuilder UI. Otherwise, you probably want
+	// [ctor@Gtk.Builder.new_from_file] instead.
+	//
+	// If an error occurs, 0 will be returned and @error will be assigned a
+	// `GError` from the `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`
+	// domains.
+	//
+	// It’s not really reasonable to attempt to handle failures of this call.
+	// You should not use this function with untrusted files (ie: files that are
+	// not part of your application). Broken `GtkBuilder` files can easily crash
+	// your program, and it’s possible that memory was leaked leading up to the
+	// reported failure. The only reasonable thing to do when an error is
+	// detected is to call `g_error()`.
+	AddFromFile(filename string) error
+	// AddFromResource parses a resource file containing a UI definition and
+	// merges it with the current contents of @builder.
+	//
+	// This function is useful if you need to call
+	// [method@Gtk.Builder.set_current_object] to add user data to callbacks
+	// before loading GtkBuilder UI. Otherwise, you probably want
+	// [ctor@Gtk.Builder.new_from_resource] instead.
+	//
+	// If an error occurs, 0 will be returned and @error will be assigned a
+	// `GError` from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_RESOURCE_ERROR
+	// domain.
+	//
+	// It’s not really reasonable to attempt to handle failures of this call.
+	// The only reasonable thing to do when an error is detected is to call
+	// g_error().
+	AddFromResource(resourcePath string) error
+	// AddFromString parses a string containing a UI definition and merges it
+	// with the current contents of @builder.
+	//
+	// This function is useful if you need to call
+	// [method@Gtk.Builder.set_current_object] to add user data to callbacks
+	// before loading `GtkBuilder` UI. Otherwise, you probably want
+	// [ctor@Gtk.Builder.new_from_string] instead.
+	//
+	// Upon errors false will be returned and @error will be assigned a `GError`
+	// from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_VARIANT_PARSE_ERROR
+	// domain.
+	//
+	// It’s not really reasonable to attempt to handle failures of this call.
+	// The only reasonable thing to do when an error is detected is to call
+	// g_error().
+	AddFromString(buffer string, length int) error
+	// AddObjectsFromFile parses a file containing a UI definition building only
+	// the requested objects and merges them with the current contents of
+	// @builder.
+	//
+	// Upon errors, 0 will be returned and @error will be assigned a `GError`
+	// from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_FILE_ERROR domain.
+	//
+	// If you are adding an object that depends on an object that is not its
+	// child (for instance a `GtkTreeView` that depends on its `GtkTreeModel`),
+	// you have to explicitly list all of them in @object_ids.
+	AddObjectsFromFile(filename string, objectIds []string) error
+	// AddObjectsFromResource parses a resource file containing a UI definition,
+	// building only the requested objects and merges them with the current
+	// contents of @builder.
+	//
+	// Upon errors, 0 will be returned and @error will be assigned a `GError`
+	// from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_RESOURCE_ERROR domain.
+	//
+	// If you are adding an object that depends on an object that is not its
+	// child (for instance a `GtkTreeView` that depends on its `GtkTreeModel`),
+	// you have to explicitly list all of them in @object_ids.
+	AddObjectsFromResource(resourcePath string, objectIds []string) error
+	// AddObjectsFromString parses a string containing a UI definition, building
+	// only the requested objects and merges them with the current contents of
+	// @builder.
+	//
+	// Upon errors false will be returned and @error will be assigned a `GError`
+	// from the GTK_BUILDER_ERROR or G_MARKUP_ERROR domain.
+	//
+	// If you are adding an object that depends on an object that is not its
+	// child (for instance a `GtkTreeView` that depends on its `GtkTreeModel`),
+	// you have to explicitly list all of them in @object_ids.
+	AddObjectsFromString(buffer string, length int, objectIds []string) error
+	// Scope gets the scope in use that was set via gtk_builder_set_scope().
+	Scope() BuilderScope
 	// TranslationDomain gets the translation domain of @builder.
 	TranslationDomain() string
 	// TypeFromName looks up a type by name.
@@ -259,16 +335,6 @@ type Builder interface {
 	// purpose. This is mainly used when implementing the `GtkBuildable`
 	// interface on a type.
 	TypeFromName(typeName string) externglib.Type
-	// SetCurrentObject sets the current object for the @builder.
-	//
-	// The current object can be thought of as the `this` object that the
-	// builder is working for and will often be used as the default object when
-	// an object is optional.
-	//
-	// [method@Gtk.Widget.init_template] for example will set the current object
-	// to the widget the template is inited for. For functions like
-	// [ctor@Gtk.Builder.new_from_resource], the current object will be nil.
-	SetCurrentObject(currentObject gextras.Objector)
 	// SetScope sets the scope the builder should operate in.
 	//
 	// If @scope is nil a new [class@Gtk.BuilderCScope] will be created.
@@ -298,60 +364,319 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 	return WrapBuilder(obj), nil
 }
 
-// ExposeObject: add @object to the @builder object pool so it can be
-// referenced just like any other object built by builder.
-func (b builder) ExposeObject(name string, object gextras.Objector) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.char       // out
-	var _arg2 *C.GObject    // out
+// NewBuilder constructs a class Builder.
+func NewBuilder() Builder {
+	var _cret C.GtkBuilder // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_cret = C.gtk_builder_new()
+
+	var _builder Builder // out
+
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
+
+	return _builder
+}
+
+// NewBuilderFromFile constructs a class Builder.
+func NewBuilderFromFile(filename string) Builder {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
-	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
+	var _cret C.GtkBuilder // in
+
+	_cret = C.gtk_builder_new_from_file(_arg1)
+
+	var _builder Builder // out
+
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
+
+	return _builder
 }
 
-// CurrentObject gets the current object set via
-// gtk_builder_set_current_object().
-func (b builder) CurrentObject() gextras.Objector {
-	var _arg0 *C.GtkBuilder // out
+// NewBuilderFromResource constructs a class Builder.
+func NewBuilderFromResource(resourcePath string) Builder {
+	var _arg1 *C.char // out
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.GObject // in
+	var _cret C.GtkBuilder // in
 
-	_cret = C.gtk_builder_get_current_object(_arg0)
+	_cret = C.gtk_builder_new_from_resource(_arg1)
 
-	var _object gextras.Objector // out
+	var _builder Builder // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
 
-	return _object
+	return _builder
 }
 
-// Object gets the object named @name.
+// NewBuilderFromString constructs a class Builder.
+func NewBuilderFromString(string string, length int) Builder {
+	var _arg1 *C.char  // out
+	var _arg2 C.gssize // out
+
+	_arg1 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
+
+	var _cret C.GtkBuilder // in
+
+	_cret = C.gtk_builder_new_from_string(_arg1, _arg2)
+
+	var _builder Builder // out
+
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
+
+	return _builder
+}
+
+// AddFromFile parses a file containing a UI definition and merges it with
+// the current contents of @builder.
 //
-// Note that this function does not increment the reference count of the
-// returned object.
-func (b builder) Object(name string) gextras.Objector {
+// This function is useful if you need to call
+// [method@Gtk.Builder.set_current_object]) to add user data to callbacks
+// before loading GtkBuilder UI. Otherwise, you probably want
+// [ctor@Gtk.Builder.new_from_file] instead.
+//
+// If an error occurs, 0 will be returned and @error will be assigned a
+// `GError` from the `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`
+// domains.
+//
+// It’s not really reasonable to attempt to handle failures of this call.
+// You should not use this function with untrusted files (ie: files that are
+// not part of your application). Broken `GtkBuilder` files can easily crash
+// your program, and it’s possible that memory was leaked leading up to the
+// reported failure. The only reasonable thing to do when an error is
+// detected is to call `g_error()`.
+func (b builder) AddFromFile(filename string) error {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.GObject // in
+	var _cerr *C.GError // in
 
-	_cret = C.gtk_builder_get_object(_arg0, _arg1)
+	C.gtk_builder_add_from_file(_arg0, _arg1, &_cerr)
 
-	var _object gextras.Objector // out
+	var _goerr error // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return _object
+	return _goerr
+}
+
+// AddFromResource parses a resource file containing a UI definition and
+// merges it with the current contents of @builder.
+//
+// This function is useful if you need to call
+// [method@Gtk.Builder.set_current_object] to add user data to callbacks
+// before loading GtkBuilder UI. Otherwise, you probably want
+// [ctor@Gtk.Builder.new_from_resource] instead.
+//
+// If an error occurs, 0 will be returned and @error will be assigned a
+// `GError` from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_RESOURCE_ERROR
+// domain.
+//
+// It’s not really reasonable to attempt to handle failures of this call.
+// The only reasonable thing to do when an error is detected is to call
+// g_error().
+func (b builder) AddFromResource(resourcePath string) error {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.char       // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cerr *C.GError // in
+
+	C.gtk_builder_add_from_resource(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// AddFromString parses a string containing a UI definition and merges it
+// with the current contents of @builder.
+//
+// This function is useful if you need to call
+// [method@Gtk.Builder.set_current_object] to add user data to callbacks
+// before loading `GtkBuilder` UI. Otherwise, you probably want
+// [ctor@Gtk.Builder.new_from_string] instead.
+//
+// Upon errors false will be returned and @error will be assigned a `GError`
+// from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_VARIANT_PARSE_ERROR
+// domain.
+//
+// It’s not really reasonable to attempt to handle failures of this call.
+// The only reasonable thing to do when an error is detected is to call
+// g_error().
+func (b builder) AddFromString(buffer string, length int) error {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.char       // out
+	var _arg2 C.gssize      // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
+
+	var _cerr *C.GError // in
+
+	C.gtk_builder_add_from_string(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// AddObjectsFromFile parses a file containing a UI definition building only
+// the requested objects and merges them with the current contents of
+// @builder.
+//
+// Upon errors, 0 will be returned and @error will be assigned a `GError`
+// from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_FILE_ERROR domain.
+//
+// If you are adding an object that depends on an object that is not its
+// child (for instance a `GtkTreeView` that depends on its `GtkTreeModel`),
+// you have to explicitly list all of them in @object_ids.
+func (b builder) AddObjectsFromFile(filename string, objectIds []string) error {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.char       // out
+	var _arg2 **C.char
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.char)(C.malloc(C.ulong((len(objectIds) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	{
+		out := unsafe.Slice(_arg2, len(objectIds))
+		for i := range objectIds {
+			out[i] = (*C.gchar)(C.CString(objectIds[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	var _cerr *C.GError // in
+
+	C.gtk_builder_add_objects_from_file(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// AddObjectsFromResource parses a resource file containing a UI definition,
+// building only the requested objects and merges them with the current
+// contents of @builder.
+//
+// Upon errors, 0 will be returned and @error will be assigned a `GError`
+// from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_RESOURCE_ERROR domain.
+//
+// If you are adding an object that depends on an object that is not its
+// child (for instance a `GtkTreeView` that depends on its `GtkTreeModel`),
+// you have to explicitly list all of them in @object_ids.
+func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string) error {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.char       // out
+	var _arg2 **C.char
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.char)(C.malloc(C.ulong((len(objectIds) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	{
+		out := unsafe.Slice(_arg2, len(objectIds))
+		for i := range objectIds {
+			out[i] = (*C.gchar)(C.CString(objectIds[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	var _cerr *C.GError // in
+
+	C.gtk_builder_add_objects_from_resource(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// AddObjectsFromString parses a string containing a UI definition, building
+// only the requested objects and merges them with the current contents of
+// @builder.
+//
+// Upon errors false will be returned and @error will be assigned a `GError`
+// from the GTK_BUILDER_ERROR or G_MARKUP_ERROR domain.
+//
+// If you are adding an object that depends on an object that is not its
+// child (for instance a `GtkTreeView` that depends on its `GtkTreeModel`),
+// you have to explicitly list all of them in @object_ids.
+func (b builder) AddObjectsFromString(buffer string, length int, objectIds []string) error {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.char       // out
+	var _arg2 C.gssize      // out
+	var _arg3 **C.char
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
+	_arg3 = (**C.char)(C.malloc(C.ulong((len(objectIds) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	{
+		out := unsafe.Slice(_arg3, len(objectIds))
+		for i := range objectIds {
+			out[i] = (*C.gchar)(C.CString(objectIds[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	var _cerr *C.GError // in
+
+	C.gtk_builder_add_objects_from_string(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// Scope gets the scope in use that was set via gtk_builder_set_scope().
+func (b builder) Scope() BuilderScope {
+	var _arg0 *C.GtkBuilder // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GtkBuilderScope // in
+
+	_cret = C.gtk_builder_get_scope(_arg0)
+
+	var _builderScope BuilderScope // out
+
+	_builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(BuilderScope)
+
+	return _builderScope
 }
 
 // TranslationDomain gets the translation domain of @builder.
@@ -393,25 +718,6 @@ func (b builder) TypeFromName(typeName string) externglib.Type {
 	_gType = externglib.Type(_cret)
 
 	return _gType
-}
-
-// SetCurrentObject sets the current object for the @builder.
-//
-// The current object can be thought of as the `this` object that the
-// builder is working for and will often be used as the default object when
-// an object is optional.
-//
-// [method@Gtk.Widget.init_template] for example will set the current object
-// to the widget the template is inited for. For functions like
-// [ctor@Gtk.Builder.new_from_resource], the current object will be nil.
-func (b builder) SetCurrentObject(currentObject gextras.Objector) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.GObject    // out
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
-
-	C.gtk_builder_set_current_object(_arg0, _arg1)
 }
 
 // SetScope sets the scope the builder should operate in.

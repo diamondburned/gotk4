@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,27 +53,6 @@ type FontChooserOverrider interface {
 	FontActivated(fontname string)
 	// FontSize: the selected font size.
 	FontSize() int
-	// SetFontMap sets a custom font map to use for this font chooser widget. A
-	// custom font map can be used to present application-specific fonts instead
-	// of or in addition to the normal system fonts.
-	//
-	//    FcConfig *config;
-	//    PangoFontMap *fontmap;
-	//
-	//    config = FcInitLoadConfigAndFonts ();
-	//    FcConfigAppFontAddFile (config, my_app_font_file);
-	//
-	//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
-	//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
-	//
-	//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
-	//
-	// Note that other GTK+ widgets will only be able to use the
-	// application-specific font if it is present in the font map they use:
-	//
-	//    context = gtk_widget_get_pango_context (label);
-	//    pango_context_set_font_map (context, fontmap);
-	SetFontMap(fontmap pango.FontMap)
 }
 
 // FontChooser is an interface that can be implemented by widgets displaying the
@@ -100,14 +78,14 @@ type FontChooser interface {
 	FontFeatures() string
 	// Language gets the language that is used for font features.
 	Language() string
+	// Level returns the current level of granularity for selecting fonts.
+	Level() FontChooserLevel
 	// PreviewText gets the text displayed in the preview area.
 	PreviewText() string
 	// ShowPreviewEntry returns whether the preview entry is shown or not.
 	ShowPreviewEntry() bool
 	// SetFont sets the currently-selected font.
 	SetFont(fontname string)
-	// SetFontDesc sets the currently-selected font from @font_desc.
-	SetFontDesc(fontDesc *pango.FontDescription)
 	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
 	// SetLevel sets the desired level of granularity for selecting fonts.
@@ -220,6 +198,23 @@ func (f fontChooser) Language() string {
 	return _utf8
 }
 
+// Level returns the current level of granularity for selecting fonts.
+func (f fontChooser) Level() FontChooserLevel {
+	var _arg0 *C.GtkFontChooser // out
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
+
+	var _cret C.GtkFontChooserLevel // in
+
+	_cret = C.gtk_font_chooser_get_level(_arg0)
+
+	var _fontChooserLevel FontChooserLevel // out
+
+	_fontChooserLevel = FontChooserLevel(_cret)
+
+	return _fontChooserLevel
+}
+
 // PreviewText gets the text displayed in the preview area.
 func (f fontChooser) PreviewText() string {
 	var _arg0 *C.GtkFontChooser // out
@@ -267,47 +262,6 @@ func (f fontChooser) SetFont(fontname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_font(_arg0, _arg1)
-}
-
-// SetFontDesc sets the currently-selected font from @font_desc.
-func (f fontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
-	var _arg0 *C.GtkFontChooser       // out
-	var _arg1 *C.PangoFontDescription // out
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(fontDesc.Native()))
-
-	C.gtk_font_chooser_set_font_desc(_arg0, _arg1)
-}
-
-// SetFontMap sets a custom font map to use for this font chooser widget. A
-// custom font map can be used to present application-specific fonts instead
-// of or in addition to the normal system fonts.
-//
-//    FcConfig *config;
-//    PangoFontMap *fontmap;
-//
-//    config = FcInitLoadConfigAndFonts ();
-//    FcConfigAppFontAddFile (config, my_app_font_file);
-//
-//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
-//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
-//
-//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
-//
-// Note that other GTK+ widgets will only be able to use the
-// application-specific font if it is present in the font map they use:
-//
-//    context = gtk_widget_get_pango_context (label);
-//    pango_context_set_font_map (context, fontmap);
-func (f fontChooser) SetFontMap(fontmap pango.FontMap) {
-	var _arg0 *C.GtkFontChooser // out
-	var _arg1 *C.PangoFontMap   // out
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
-
-	C.gtk_font_chooser_set_font_map(_arg0, _arg1)
 }
 
 // SetLanguage sets the language to use for font features.

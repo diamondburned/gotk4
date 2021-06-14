@@ -5,6 +5,8 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -78,6 +80,8 @@ type GLContext interface {
 	//
 	// See [method@Gdk.GLContext.set_debug_enabled].
 	DebugEnabled() bool
+	// Display retrieves the display the @context is created for
+	Display() Display
 	// ForwardCompatible retrieves whether the context is forward-compatible.
 	//
 	// See [method@Gdk.GLContext.set_forward_compatible].
@@ -86,6 +90,11 @@ type GLContext interface {
 	//
 	// See [method@Gdk.GLContext.set_required_version].
 	RequiredVersion() (major int, minor int)
+	// SharedContext retrieves the `GdkGLContext` that this @context share data
+	// with.
+	SharedContext() GLContext
+	// Surface retrieves the surface used by the @context.
+	Surface() Surface
 	// UseES checks whether the @context is using an OpenGL or OpenGL ES
 	// profile.
 	UseES() bool
@@ -112,6 +121,10 @@ type GLContext interface {
 	IsLegacy() bool
 	// MakeCurrent makes the @context the current one.
 	MakeCurrent()
+	// Realize realizes the given `GdkGLContext`.
+	//
+	// It is safe to call this function on a realized `GdkGLContext`.
+	Realize() error
 	// SetDebugEnabled sets whether the `GdkGLContext` should perform extra
 	// validations and runtime checking.
 	//
@@ -198,6 +211,23 @@ func (c glContext) DebugEnabled() bool {
 	return _ok
 }
 
+// Display retrieves the display the @context is created for
+func (c glContext) Display() Display {
+	var _arg0 *C.GdkGLContext // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_gl_context_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
+}
+
 // ForwardCompatible retrieves whether the context is forward-compatible.
 //
 // See [method@Gdk.GLContext.set_forward_compatible].
@@ -239,6 +269,41 @@ func (c glContext) RequiredVersion() (major int, minor int) {
 	_minor = (int)(_arg2)
 
 	return _major, _minor
+}
+
+// SharedContext retrieves the `GdkGLContext` that this @context share data
+// with.
+func (c glContext) SharedContext() GLContext {
+	var _arg0 *C.GdkGLContext // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkGLContext // in
+
+	_cret = C.gdk_gl_context_get_shared_context(_arg0)
+
+	var _glContext GLContext // out
+
+	_glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(GLContext)
+
+	return _glContext
+}
+
+// Surface retrieves the surface used by the @context.
+func (c glContext) Surface() Surface {
+	var _arg0 *C.GdkGLContext // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkSurface // in
+
+	_cret = C.gdk_gl_context_get_surface(_arg0)
+
+	var _surface Surface // out
+
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Surface)
+
+	return _surface
 }
 
 // UseES checks whether the @context is using an OpenGL or OpenGL ES
@@ -324,6 +389,25 @@ func (c glContext) MakeCurrent() {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	C.gdk_gl_context_make_current(_arg0)
+}
+
+// Realize realizes the given `GdkGLContext`.
+//
+// It is safe to call this function on a realized `GdkGLContext`.
+func (c glContext) Realize() error {
+	var _arg0 *C.GdkGLContext // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+
+	var _cerr *C.GError // in
+
+	C.gdk_gl_context_realize(_arg0, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // SetDebugEnabled sets whether the `GdkGLContext` should perform extra

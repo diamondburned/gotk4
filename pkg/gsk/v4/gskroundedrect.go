@@ -4,8 +4,6 @@ package gsk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
 // #cgo pkg-config: gtk4
@@ -45,69 +43,26 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// ContainsPoint checks if the given @point is inside the rounded rectangle.
-func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
-	var _arg0 *C.GskRoundedRect   // out
-	var _arg1 *C.graphene_point_t // out
+// InitCopy initializes @self using the given @src rectangle.
+//
+// This function will not normalize the `GskRoundedRect`, so make sure the
+// source is normalized.
+func (s *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
+	var _arg0 *C.GskRoundedRect // out
+	var _arg1 *C.GskRoundedRect // out
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
+	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(src.Native()))
 
-	var _cret C.gboolean // in
+	var _cret *C.GskRoundedRect // in
 
-	_cret = C.gsk_rounded_rect_contains_point(_arg0, _arg1)
+	_cret = C.gsk_rounded_rect_init_copy(_arg0, _arg1)
 
-	var _ok bool // out
+	var _roundedRect *RoundedRect // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
 
-	return _ok
-}
-
-// ContainsRect checks if the given @rect is contained inside the rounded
-// rectangle.
-func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
-	var _arg0 *C.GskRoundedRect  // out
-	var _arg1 *C.graphene_rect_t // out
-
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gsk_rounded_rect_contains_rect(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IntersectsRect checks if part of the given @rect is contained inside the
-// rounded rectangle.
-func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
-	var _arg0 *C.GskRoundedRect  // out
-	var _arg1 *C.graphene_rect_t // out
-
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gsk_rounded_rect_intersects_rect(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+	return _roundedRect
 }
 
 // IsRectilinear checks if all corners of @self are right angles and the
@@ -131,4 +86,79 @@ func (s *RoundedRect) IsRectilinear() bool {
 	}
 
 	return _ok
+}
+
+// Normalize normalizes the passed rectangle.
+//
+// This function will ensure that the bounds of the rectangle are normalized and
+// ensure that the corner values are positive and the corners do not overlap.
+func (s *RoundedRect) Normalize() *RoundedRect {
+	var _arg0 *C.GskRoundedRect // out
+
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GskRoundedRect // in
+
+	_cret = C.gsk_rounded_rect_normalize(_arg0)
+
+	var _roundedRect *RoundedRect // out
+
+	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+
+	return _roundedRect
+}
+
+// Offset offsets the bound's origin by @dx and @dy.
+//
+// The size and corners of the rectangle are unchanged.
+func (s *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
+	var _arg0 *C.GskRoundedRect // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
+	_arg1 = C.float(dx)
+	_arg2 = C.float(dy)
+
+	var _cret *C.GskRoundedRect // in
+
+	_cret = C.gsk_rounded_rect_offset(_arg0, _arg1, _arg2)
+
+	var _roundedRect *RoundedRect // out
+
+	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+
+	return _roundedRect
+}
+
+// Shrink shrinks (or grows) the given rectangle by moving the 4 sides according
+// to the offsets given.
+//
+// The corner radii will be changed in a way that tries to keep the center of
+// the corner circle intact. This emulates CSS behavior.
+//
+// This function also works for growing rectangles if you pass negative values
+// for the @top, @right, @bottom or @left.
+func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) *RoundedRect {
+	var _arg0 *C.GskRoundedRect // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
+	_arg1 = C.float(top)
+	_arg2 = C.float(right)
+	_arg3 = C.float(bottom)
+	_arg4 = C.float(left)
+
+	var _cret *C.GskRoundedRect // in
+
+	_cret = C.gsk_rounded_rect_shrink(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _roundedRect *RoundedRect // out
+
+	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+
+	return _roundedRect
 }

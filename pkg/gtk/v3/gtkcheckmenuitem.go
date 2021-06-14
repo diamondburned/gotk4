@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -94,6 +95,55 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCheckMenuItem(obj), nil
+}
+
+// NewCheckMenuItem constructs a class CheckMenuItem.
+func NewCheckMenuItem() CheckMenuItem {
+	var _cret C.GtkCheckMenuItem // in
+
+	_cret = C.gtk_check_menu_item_new()
+
+	var _checkMenuItem CheckMenuItem // out
+
+	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
+
+	return _checkMenuItem
+}
+
+// NewCheckMenuItemWithLabel constructs a class CheckMenuItem.
+func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkCheckMenuItem // in
+
+	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
+
+	var _checkMenuItem CheckMenuItem // out
+
+	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
+
+	return _checkMenuItem
+}
+
+// NewCheckMenuItemWithMnemonic constructs a class CheckMenuItem.
+func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkCheckMenuItem // in
+
+	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
+
+	var _checkMenuItem CheckMenuItem // out
+
+	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
+
+	return _checkMenuItem
 }
 
 // Active returns whether the check menu item is active. See

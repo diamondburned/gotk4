@@ -4,24 +4,12 @@ package gdk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
-
-// AddOptionEntriesLibgtkOnly appends gdk option entries to the passed in option
-// group. This is not public API and must not be used by applications.
-func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
-	var _arg1 *C.GOptionGroup // out
-
-	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
-
-	C.gdk_add_option_entries_libgtk_only(_arg1)
-}
 
 // Beep emits a short beep on the default display.
 func Beep() {
@@ -148,6 +136,35 @@ func GetProgramClass() string {
 	return _utf8
 }
 
+// KeyboardGrab grabs the keyboard so that all events are passed to this
+// application until the keyboard is ungrabbed with gdk_keyboard_ungrab(). This
+// overrides any previous keyboard grab by this client.
+//
+// If you set up anything at the time you take the grab that needs to be cleaned
+// up when the grab ends, you should handle the EventGrabBroken events that are
+// emitted when the grab ends unvoluntarily.
+func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.gboolean   // out
+	var _arg3 C.guint32    // out
+
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	if ownerEvents {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.guint32(time_)
+
+	var _cret C.GdkGrabStatus // in
+
+	_cret = C.gdk_keyboard_grab(_arg1, _arg2, _arg3)
+
+	var _grabStatus GrabStatus // out
+
+	_grabStatus = GrabStatus(_cret)
+
+	return _grabStatus
+}
+
 // KeyboardUngrab ungrabs the keyboard on the default display, if it is grabbed
 // by this application.
 func KeyboardUngrab(time_ uint32) {
@@ -182,6 +199,54 @@ func NotifyStartupCompleteWithID(startupId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_notify_startup_complete_with_id(_arg1)
+}
+
+// PointerGrab grabs the pointer (usually a mouse) so that all events are passed
+// to this application until the pointer is ungrabbed with gdk_pointer_ungrab(),
+// or the grab window becomes unviewable. This overrides any previous pointer
+// grab by this client.
+//
+// Pointer grabs are used for operations which need complete control over mouse
+// events, even if the mouse leaves the application. For example in GTK+ it is
+// used for Drag and Drop, for dragging the handle in the HPaned and VPaned
+// widgets.
+//
+// Note that if the event mask of an X window has selected both button press and
+// button release events, then a button press event will cause an automatic
+// pointer grab until the button is released. X does this automatically since
+// most applications expect to receive button press and release events in pairs.
+// It is equivalent to a pointer grab on the window with @owner_events set to
+// true.
+//
+// If you set up anything at the time you take the grab that needs to be cleaned
+// up when the grab ends, you should handle the EventGrabBroken events that are
+// emitted when the grab ends unvoluntarily.
+func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo Window, cursor Cursor, time_ uint32) GrabStatus {
+	var _arg1 *C.GdkWindow   // out
+	var _arg2 C.gboolean     // out
+	var _arg3 C.GdkEventMask // out
+	var _arg4 *C.GdkWindow   // out
+	var _arg5 *C.GdkCursor   // out
+	var _arg6 C.guint32      // out
+
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	if ownerEvents {
+		_arg2 = C.TRUE
+	}
+	_arg3 = (C.GdkEventMask)(eventMask)
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
+	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg6 = C.guint32(time_)
+
+	var _cret C.GdkGrabStatus // in
+
+	_cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _grabStatus GrabStatus // out
+
+	_grabStatus = GrabStatus(_cret)
+
+	return _grabStatus
 }
 
 // PointerIsGrabbed returns true if the pointer on the default display is

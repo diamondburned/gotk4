@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,21 +43,6 @@ type MenuAttributeIter interface {
 	//
 	// The iterator is not advanced.
 	Name() string
-	// GetNext: this function combines g_menu_attribute_iter_next() with
-	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
-	//
-	// First the iterator is advanced to the next (possibly first) attribute. If
-	// that fails, then false is returned and there are no other effects.
-	//
-	// If successful, @name and @value are set to the name and value of the
-	// attribute that has just been advanced to. At this point,
-	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
-	// will return the same values again.
-	//
-	// The value returned in @name remains valid for as long as the iterator
-	// remains at the current position. The value returned in @value must be
-	// unreffed using g_variant_unref() when it is no longer in use.
-	GetNext() (string, *glib.Variant, bool)
 	// Next attempts to advance the iterator to the next (possibly first)
 	// attribute.
 	//
@@ -111,44 +95,6 @@ func (i menuAttributeIter) Name() string {
 	return _utf8
 }
 
-// GetNext: this function combines g_menu_attribute_iter_next() with
-// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
-//
-// First the iterator is advanced to the next (possibly first) attribute. If
-// that fails, then false is returned and there are no other effects.
-//
-// If successful, @name and @value are set to the name and value of the
-// attribute that has just been advanced to. At this point,
-// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
-// will return the same values again.
-//
-// The value returned in @name remains valid for as long as the iterator
-// remains at the current position. The value returned in @value must be
-// unreffed using g_variant_unref() when it is no longer in use.
-func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
-	var _arg0 *C.GMenuAttributeIter // out
-
-	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
-
-	var _arg1 *C.gchar // in
-	var _value *glib.Variant
-	var _cret C.gboolean // in
-
-	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, (**C.GVariant)(unsafe.Pointer(&_value)))
-
-	var _outName string // out
-
-	var _ok bool // out
-
-	_outName = C.GoString(_arg1)
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _outName, _value, _ok
-}
-
 // Next attempts to advance the iterator to the next (possibly first)
 // attribute.
 //
@@ -184,6 +130,25 @@ type MenuLinkIter interface {
 	//
 	// The iterator is not advanced.
 	Name() string
+	// GetNext: this function combines g_menu_link_iter_next() with
+	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
+	//
+	// First the iterator is advanced to the next (possibly first) link. If that
+	// fails, then false is returned and there are no other effects.
+	//
+	// If successful, @out_link and @value are set to the name and Model of the
+	// link that has just been advanced to. At this point,
+	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value() will return
+	// the same values again.
+	//
+	// The value returned in @out_link remains valid for as long as the iterator
+	// remains at the current position. The value returned in @value must be
+	// unreffed using g_object_unref() when it is no longer in use.
+	GetNext() (string, MenuModel, bool)
+	// Value gets the linked Model at the current iterator position.
+	//
+	// The iterator is not advanced.
+	Value() MenuModel
 	// Next attempts to advance the iterator to the next (possibly first) link.
 	//
 	// true is returned on success, or false if there are no more links.
@@ -232,6 +197,63 @@ func (i menuLinkIter) Name() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// GetNext: this function combines g_menu_link_iter_next() with
+// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
+//
+// First the iterator is advanced to the next (possibly first) link. If that
+// fails, then false is returned and there are no other effects.
+//
+// If successful, @out_link and @value are set to the name and Model of the
+// link that has just been advanced to. At this point,
+// g_menu_link_iter_get_name() and g_menu_link_iter_get_value() will return
+// the same values again.
+//
+// The value returned in @out_link remains valid for as long as the iterator
+// remains at the current position. The value returned in @value must be
+// unreffed using g_object_unref() when it is no longer in use.
+func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
+	var _arg0 *C.GMenuLinkIter // out
+
+	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
+
+	var _arg1 *C.gchar      // in
+	var _arg2 *C.GMenuModel // in
+	var _cret C.gboolean    // in
+
+	_cret = C.g_menu_link_iter_get_next(_arg0, &_arg1, &_arg2)
+
+	var _outLink string  // out
+	var _value MenuModel // out
+	var _ok bool         // out
+
+	_outLink = C.GoString(_arg1)
+	_value = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2.Native()))).(MenuModel)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _outLink, _value, _ok
+}
+
+// Value gets the linked Model at the current iterator position.
+//
+// The iterator is not advanced.
+func (i menuLinkIter) Value() MenuModel {
+	var _arg0 *C.GMenuLinkIter // out
+
+	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GMenuModel // in
+
+	_cret = C.g_menu_link_iter_get_value(_arg0)
+
+	var _menuModel MenuModel // out
+
+	_menuModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuModel)
+
+	return _menuModel
 }
 
 // Next attempts to advance the iterator to the next (possibly first) link.
@@ -372,6 +394,12 @@ func (i menuLinkIter) Next() bool {
 type MenuModel interface {
 	gextras.Objector
 
+	// ItemLink queries the item at position @item_index in @model for the link
+	// specified by @link.
+	//
+	// If the link exists, the linked Model is returned. If the link does not
+	// exist, nil is returned.
+	ItemLink(itemIndex int, link string) MenuModel
 	// NItems: query the number of items in @model.
 	NItems() int
 	// IsMutable queries if @model is mutable.
@@ -396,6 +424,16 @@ type MenuModel interface {
 	// Said another way: the menu must not change while user code is running
 	// without returning to the mainloop.
 	ItemsChanged(position int, removed int, added int)
+	// IterateItemAttributes creates a AttributeIter to iterate over the
+	// attributes of the item at position @item_index in @model.
+	//
+	// You must free the iterator with g_object_unref() when you are done.
+	IterateItemAttributes(itemIndex int) MenuAttributeIter
+	// IterateItemLinks creates a LinkIter to iterate over the links of the item
+	// at position @item_index in @model.
+	//
+	// You must free the iterator with g_object_unref() when you are done.
+	IterateItemLinks(itemIndex int) MenuLinkIter
 }
 
 // menuModel implements the MenuModel class.
@@ -417,6 +455,32 @@ func marshalMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMenuModel(obj), nil
+}
+
+// ItemLink queries the item at position @item_index in @model for the link
+// specified by @link.
+//
+// If the link exists, the linked Model is returned. If the link does not
+// exist, nil is returned.
+func (m menuModel) ItemLink(itemIndex int, link string) MenuModel {
+	var _arg0 *C.GMenuModel // out
+	var _arg1 C.gint        // out
+	var _arg2 *C.gchar      // out
+
+	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gint(itemIndex)
+	_arg2 = (*C.gchar)(C.CString(link))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret *C.GMenuModel // in
+
+	_cret = C.g_menu_model_get_item_link(_arg0, _arg1, _arg2)
+
+	var _menuModel MenuModel // out
+
+	_menuModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuModel)
+
+	return _menuModel
 }
 
 // NItems: query the number of items in @model.
@@ -486,4 +550,48 @@ func (m menuModel) ItemsChanged(position int, removed int, added int) {
 	_arg3 = C.gint(added)
 
 	C.g_menu_model_items_changed(_arg0, _arg1, _arg2, _arg3)
+}
+
+// IterateItemAttributes creates a AttributeIter to iterate over the
+// attributes of the item at position @item_index in @model.
+//
+// You must free the iterator with g_object_unref() when you are done.
+func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
+	var _arg0 *C.GMenuModel // out
+	var _arg1 C.gint        // out
+
+	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gint(itemIndex)
+
+	var _cret *C.GMenuAttributeIter // in
+
+	_cret = C.g_menu_model_iterate_item_attributes(_arg0, _arg1)
+
+	var _menuAttributeIter MenuAttributeIter // out
+
+	_menuAttributeIter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuAttributeIter)
+
+	return _menuAttributeIter
+}
+
+// IterateItemLinks creates a LinkIter to iterate over the links of the item
+// at position @item_index in @model.
+//
+// You must free the iterator with g_object_unref() when you are done.
+func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
+	var _arg0 *C.GMenuModel // out
+	var _arg1 C.gint        // out
+
+	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gint(itemIndex)
+
+	var _cret *C.GMenuLinkIter // in
+
+	_cret = C.g_menu_model_iterate_item_links(_arg0, _arg1)
+
+	var _menuLinkIter MenuLinkIter // out
+
+	_menuLinkIter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuLinkIter)
+
+	return _menuLinkIter
 }

@@ -3,6 +3,7 @@
 package gobject
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -13,6 +14,12 @@ import (
 // #include <glib-object.h>
 // #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.g_value_array_get_type()), F: marshalValueArray},
+	})
+}
 
 // ValueArray: a Array contains an array of #GValue elements.
 type ValueArray struct {
@@ -34,6 +41,26 @@ func marshalValueArray(p uintptr) (interface{}, error) {
 	return WrapValueArray(unsafe.Pointer(b)), nil
 }
 
+// NewValueArray constructs a struct ValueArray.
+func NewValueArray(nPrealloced uint) *ValueArray {
+	var _arg1 C.guint // out
+
+	_arg1 = C.guint(nPrealloced)
+
+	var _cret *C.GValueArray // in
+
+	_cret = C.g_value_array_new(_arg1)
+
+	var _valueArray *ValueArray // out
+
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_valueArray, func(v *ValueArray) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _valueArray
+}
+
 // Native returns the underlying C source pointer.
 func (v *ValueArray) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
@@ -53,6 +80,46 @@ func (v *ValueArray) Values() **externglib.Value {
 	return v
 }
 
+// Append: insert a copy of @value as last element of @value_array. If @value is
+// nil, an uninitialized value is appended.
+func (v *ValueArray) Append(value **externglib.Value) *ValueArray {
+	var _arg0 *C.GValueArray // out
+	var _arg1 *C.GValue      // out
+
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.GValue)(value.GValue)
+
+	var _cret *C.GValueArray // in
+
+	_cret = C.g_value_array_append(_arg0, _arg1)
+
+	var _valueArray *ValueArray // out
+
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
+
+	return _valueArray
+}
+
+// Copy: construct an exact copy of a Array by duplicating all its contents.
+func (v *ValueArray) Copy() *ValueArray {
+	var _arg0 *C.GValueArray // out
+
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.GValueArray // in
+
+	_cret = C.g_value_array_copy(_arg0)
+
+	var _valueArray *ValueArray // out
+
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_valueArray, func(v *ValueArray) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _valueArray
+}
+
 // Nth: return a pointer to the value at @index_ containd in @value_array.
 func (v *ValueArray) Nth(index_ uint) **externglib.Value {
 	var _arg0 *C.GValueArray // out
@@ -70,4 +137,65 @@ func (v *ValueArray) Nth(index_ uint) **externglib.Value {
 	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
 	return _value
+}
+
+// Insert: insert a copy of @value at specified position into @value_array. If
+// @value is nil, an uninitialized value is inserted.
+func (v *ValueArray) Insert(index_ uint, value **externglib.Value) *ValueArray {
+	var _arg0 *C.GValueArray // out
+	var _arg1 C.guint        // out
+	var _arg2 *C.GValue      // out
+
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = C.guint(index_)
+	_arg2 = (*C.GValue)(value.GValue)
+
+	var _cret *C.GValueArray // in
+
+	_cret = C.g_value_array_insert(_arg0, _arg1, _arg2)
+
+	var _valueArray *ValueArray // out
+
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
+
+	return _valueArray
+}
+
+// Prepend: insert a copy of @value as first element of @value_array. If @value
+// is nil, an uninitialized value is prepended.
+func (v *ValueArray) Prepend(value **externglib.Value) *ValueArray {
+	var _arg0 *C.GValueArray // out
+	var _arg1 *C.GValue      // out
+
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.GValue)(value.GValue)
+
+	var _cret *C.GValueArray // in
+
+	_cret = C.g_value_array_prepend(_arg0, _arg1)
+
+	var _valueArray *ValueArray // out
+
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
+
+	return _valueArray
+}
+
+// Remove: remove the value at position @index_ from @value_array.
+func (v *ValueArray) Remove(index_ uint) *ValueArray {
+	var _arg0 *C.GValueArray // out
+	var _arg1 C.guint        // out
+
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = C.guint(index_)
+
+	var _cret *C.GValueArray // in
+
+	_cret = C.g_value_array_remove(_arg0, _arg1)
+
+	var _valueArray *ValueArray // out
+
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
+
+	return _valueArray
 }

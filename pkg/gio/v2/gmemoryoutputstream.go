@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -95,6 +96,19 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMemoryOutputStream(obj), nil
+}
+
+// NewMemoryOutputStreamResizable constructs a class MemoryOutputStream.
+func NewMemoryOutputStreamResizable() MemoryOutputStream {
+	var _cret C.GMemoryOutputStream // in
+
+	_cret = C.g_memory_output_stream_new_resizable()
+
+	var _memoryOutputStream MemoryOutputStream // out
+
+	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryOutputStream)
+
+	return _memoryOutputStream
 }
 
 // Data gets any loaded data from the @ostream.

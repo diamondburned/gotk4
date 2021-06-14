@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -100,11 +101,18 @@ type Grid interface {
 	AttachNextTo(child Widget, sibling Widget, side PositionType, width int, height int)
 	// BaselineRow returns which row defines the global baseline of @grid.
 	BaselineRow() int
+	// ChildAt gets the child of @grid whose area covers the grid cell at
+	// @column, @row.
+	ChildAt(column int, row int) Widget
 	// ColumnHomogeneous returns whether all columns of @grid have the same
 	// width.
 	ColumnHomogeneous() bool
 	// ColumnSpacing returns the amount of space between the columns of @grid.
 	ColumnSpacing() uint
+	// RowBaselinePosition returns the baseline position of @row.
+	//
+	// See [method@Gtk.Grid.set_row_baseline_position].
+	RowBaselinePosition(row int) BaselinePosition
 	// RowHomogeneous returns whether all rows of @grid have the same height.
 	RowHomogeneous() bool
 	// RowSpacing returns the amount of space between the rows of @grid.
@@ -200,6 +208,19 @@ func marshalGrid(p uintptr) (interface{}, error) {
 	return WrapGrid(obj), nil
 }
 
+// NewGrid constructs a class Grid.
+func NewGrid() Grid {
+	var _cret C.GtkGrid // in
+
+	_cret = C.gtk_grid_new()
+
+	var _grid Grid // out
+
+	_grid = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Grid)
+
+	return _grid
+}
+
 // Attach adds a widget to the grid.
 //
 // The position of @child is determined by @column and @row. The number of
@@ -266,6 +287,28 @@ func (g grid) BaselineRow() int {
 	return _gint
 }
 
+// ChildAt gets the child of @grid whose area covers the grid cell at
+// @column, @row.
+func (g grid) ChildAt(column int, row int) Widget {
+	var _arg0 *C.GtkGrid // out
+	var _arg1 C.int      // out
+	var _arg2 C.int      // out
+
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(column)
+	_arg2 = C.int(row)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_grid_get_child_at(_arg0, _arg1, _arg2)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
 // ColumnHomogeneous returns whether all columns of @grid have the same
 // width.
 func (g grid) ColumnHomogeneous() bool {
@@ -301,6 +344,27 @@ func (g grid) ColumnSpacing() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// RowBaselinePosition returns the baseline position of @row.
+//
+// See [method@Gtk.Grid.set_row_baseline_position].
+func (g grid) RowBaselinePosition(row int) BaselinePosition {
+	var _arg0 *C.GtkGrid // out
+	var _arg1 C.int      // out
+
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(row)
+
+	var _cret C.GtkBaselinePosition // in
+
+	_cret = C.gtk_grid_get_row_baseline_position(_arg0, _arg1)
+
+	var _baselinePosition BaselinePosition // out
+
+	_baselinePosition = BaselinePosition(_cret)
+
+	return _baselinePosition
 }
 
 // RowHomogeneous returns whether all rows of @grid have the same height.

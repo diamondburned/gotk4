@@ -24,11 +24,13 @@ func init() {
 
 type ComboBoxAccessible interface {
 	ContainerAccessible
+	Action
 }
 
 // comboBoxAccessible implements the ComboBoxAccessible class.
 type comboBoxAccessible struct {
 	ContainerAccessible
+	Action
 }
 
 var _ ComboBoxAccessible = (*comboBoxAccessible)(nil)
@@ -38,6 +40,7 @@ var _ ComboBoxAccessible = (*comboBoxAccessible)(nil)
 func WrapComboBoxAccessible(obj *externglib.Object) ComboBoxAccessible {
 	return comboBoxAccessible{
 		ContainerAccessible: WrapContainerAccessible(obj),
+		Action:              WrapAction(obj),
 	}
 }
 

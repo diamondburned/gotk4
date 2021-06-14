@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -98,6 +99,19 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEventBox(obj), nil
+}
+
+// NewEventBox constructs a class EventBox.
+func NewEventBox() EventBox {
+	var _cret C.GtkEventBox // in
+
+	_cret = C.gtk_event_box_new()
+
+	var _eventBox EventBox // out
+
+	_eventBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EventBox)
+
+	return _eventBox
 }
 
 // AboveChild returns whether the event box window is above or below the

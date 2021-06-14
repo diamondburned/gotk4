@@ -5,6 +5,7 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -73,12 +74,16 @@ type GLContext interface {
 	// DebugEnabled retrieves the value set using
 	// gdk_gl_context_set_debug_enabled().
 	DebugEnabled() bool
+	// Display retrieves the Display the @context is created for
+	Display() Display
 	// ForwardCompatible retrieves the value set using
 	// gdk_gl_context_set_forward_compatible().
 	ForwardCompatible() bool
 	// RequiredVersion retrieves the major and minor version requested by
 	// calling gdk_gl_context_set_required_version().
 	RequiredVersion() (major int, minor int)
+	// SharedContext retrieves the GLContext that this @context share data with.
+	SharedContext() GLContext
 	// UseES checks whether the @context is using an OpenGL or OpenGL ES
 	// profile.
 	UseES() bool
@@ -86,6 +91,8 @@ type GLContext interface {
 	//
 	// The @context must be realized prior to calling this function.
 	Version() (major int, minor int)
+	// Window retrieves the Window used by the @context.
+	Window() Window
 	// IsLegacy: whether the GLContext is in legacy mode or not.
 	//
 	// The GLContext must be realized before calling this function.
@@ -105,6 +112,10 @@ type GLContext interface {
 	IsLegacy() bool
 	// MakeCurrent makes the @context the current one.
 	MakeCurrent()
+	// Realize realizes the given GLContext.
+	//
+	// It is safe to call this function on a realized GLContext.
+	Realize() error
 	// SetDebugEnabled sets whether the GLContext should perform extra
 	// validations and run time checking. This is useful during development, but
 	// has additional overhead.
@@ -186,6 +197,23 @@ func (c glContext) DebugEnabled() bool {
 	return _ok
 }
 
+// Display retrieves the Display the @context is created for
+func (c glContext) Display() Display {
+	var _arg0 *C.GdkGLContext // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_gl_context_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
+}
+
 // ForwardCompatible retrieves the value set using
 // gdk_gl_context_set_forward_compatible().
 func (c glContext) ForwardCompatible() bool {
@@ -225,6 +253,23 @@ func (c glContext) RequiredVersion() (major int, minor int) {
 	_minor = (int)(_arg2)
 
 	return _major, _minor
+}
+
+// SharedContext retrieves the GLContext that this @context share data with.
+func (c glContext) SharedContext() GLContext {
+	var _arg0 *C.GdkGLContext // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkGLContext // in
+
+	_cret = C.gdk_gl_context_get_shared_context(_arg0)
+
+	var _glContext GLContext // out
+
+	_glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(GLContext)
+
+	return _glContext
 }
 
 // UseES checks whether the @context is using an OpenGL or OpenGL ES
@@ -269,6 +314,23 @@ func (c glContext) Version() (major int, minor int) {
 	return _major, _minor
 }
 
+// Window retrieves the Window used by the @context.
+func (c glContext) Window() Window {
+	var _arg0 *C.GdkGLContext // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_gl_context_get_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
 // IsLegacy: whether the GLContext is in legacy mode or not.
 //
 // The GLContext must be realized before calling this function.
@@ -310,6 +372,25 @@ func (c glContext) MakeCurrent() {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	C.gdk_gl_context_make_current(_arg0)
+}
+
+// Realize realizes the given GLContext.
+//
+// It is safe to call this function on a realized GLContext.
+func (c glContext) Realize() error {
+	var _arg0 *C.GdkGLContext // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+
+	var _cerr *C.GError // in
+
+	C.gdk_gl_context_realize(_arg0, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // SetDebugEnabled sets whether the GLContext should perform extra

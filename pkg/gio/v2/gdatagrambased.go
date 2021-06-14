@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -29,6 +30,107 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBased},
 	})
+}
+
+// DatagramBasedOverrider contains methods that are overridable. This
+// interface is a subset of the interface DatagramBased.
+type DatagramBasedOverrider interface {
+	// ReceiveMessages: receive one or more data messages from @datagram_based
+	// in one go.
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains a pointer to an
+	// array of Vector structs describing the buffers that the data received in
+	// each message will be written to.
+	//
+	// @flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If @timeout is negative the call will block until @num_messages have been
+	// received, the connection is closed remotely (EOS), @cancellable is
+	// cancelled, or an error occurs.
+	//
+	// If @timeout is 0 the call will return up to @num_messages without
+	// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+	// operating system to be received.
+	//
+	// If @timeout is positive the call will block on the same conditions as if
+	// @timeout were negative. If the timeout is reached before any messages are
+	// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages received before timing out. (Note: This is effectively
+	// the behaviour of `MSG_WAITFORONE` with recvmmsg().)
+	//
+	// To be notified when messages are available, wait for the G_IO_IN
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_receive_messages() even if you were previously
+	// notified of a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// underlying receive buffer will be returned, and subsequent calls to
+	// g_datagram_based_receive_messages() will return 0 (with no error set).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be received; otherwise the number of
+	// messages successfully received before the error will be returned. If
+	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
+	// SendMessages: send one or more data messages from @datagram_based in one
+	// go.
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains an address to
+	// send the data to, and a pointer to an array of Vector structs to describe
+	// the buffers that the data to be sent for each message will be gathered
+	// from.
+	//
+	// @flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If @timeout is negative the call will block until @num_messages have been
+	// sent, @cancellable is cancelled, or an error occurs.
+	//
+	// If @timeout is 0 the call will send up to @num_messages without blocking,
+	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
+	// messages.
+	//
+	// If @timeout is positive the call will block on the same conditions as if
+	// @timeout were negative. If the timeout is reached before any messages are
+	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages sent before timing out.
+	//
+	// To be notified when messages can be sent, wait for the G_IO_OUT
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_send_messages() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be sent; otherwise the number of
+	// messages successfully sent before the error will be returned. If
+	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
 }
 
 // DatagramBased: a Based is a networking interface for representing
@@ -79,6 +181,7 @@ func init() {
 // locking.
 type DatagramBased interface {
 	gextras.Objector
+	DatagramBasedOverrider
 }
 
 // datagramBased implements the DatagramBased interface.
@@ -100,4 +203,156 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDatagramBased(obj), nil
+}
+
+// ReceiveMessages: receive one or more data messages from @datagram_based
+// in one go.
+//
+// @messages must point to an array of Message structs and @num_messages
+// must be the length of this array. Each Message contains a pointer to an
+// array of Vector structs describing the buffers that the data received in
+// each message will be written to.
+//
+// @flags modify how all messages are received. The commonly available
+// arguments for this are available in the MsgFlags enum, but the values
+// there are the same as the system values, and the flags are passed in
+// as-is, so you can pass in system-specific flags too. These flags affect
+// the overall receive operation. Flags affecting individual messages are
+// returned in Message.flags.
+//
+// The other members of Message are treated as described in its
+// documentation.
+//
+// If @timeout is negative the call will block until @num_messages have been
+// received, the connection is closed remotely (EOS), @cancellable is
+// cancelled, or an error occurs.
+//
+// If @timeout is 0 the call will return up to @num_messages without
+// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+// operating system to be received.
+//
+// If @timeout is positive the call will block on the same conditions as if
+// @timeout were negative. If the timeout is reached before any messages are
+// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+// number of messages received before timing out. (Note: This is effectively
+// the behaviour of `MSG_WAITFORONE` with recvmmsg().)
+//
+// To be notified when messages are available, wait for the G_IO_IN
+// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+// from g_datagram_based_receive_messages() even if you were previously
+// notified of a G_IO_IN condition.
+//
+// If the remote peer closes the connection, any messages queued in the
+// underlying receive buffer will be returned, and subsequent calls to
+// g_datagram_based_receive_messages() will return 0 (with no error set).
+//
+// If the connection is shut down or closed (by calling g_socket_close() or
+// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+// example), all calls to this function will return G_IO_ERROR_CLOSED.
+//
+// On error -1 is returned and @error is set accordingly. An error will only
+// be returned if zero messages could be received; otherwise the number of
+// messages successfully received before the error will be returned. If
+// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+// other error.
+func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 *C.GInputMessage
+	var _arg2 C.guint
+	var _arg3 C.gint          // out
+	var _arg4 C.gint64        // out
+	var _arg5 *C.GCancellable // out
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg2 = C.guint(len(messages))
+	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
+	_arg3 = C.gint(flags)
+	_arg4 = C.gint64(timeout)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _gint int    // out
+	var _goerr error // out
+
+	_gint = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gint, _goerr
+}
+
+// SendMessages: send one or more data messages from @datagram_based in one
+// go.
+//
+// @messages must point to an array of Message structs and @num_messages
+// must be the length of this array. Each Message contains an address to
+// send the data to, and a pointer to an array of Vector structs to describe
+// the buffers that the data to be sent for each message will be gathered
+// from.
+//
+// @flags modify how the message is sent. The commonly available arguments
+// for this are available in the MsgFlags enum, but the values there are the
+// same as the system values, and the flags are passed in as-is, so you can
+// pass in system-specific flags too.
+//
+// The other members of Message are treated as described in its
+// documentation.
+//
+// If @timeout is negative the call will block until @num_messages have been
+// sent, @cancellable is cancelled, or an error occurs.
+//
+// If @timeout is 0 the call will send up to @num_messages without blocking,
+// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
+// messages.
+//
+// If @timeout is positive the call will block on the same conditions as if
+// @timeout were negative. If the timeout is reached before any messages are
+// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+// number of messages sent before timing out.
+//
+// To be notified when messages can be sent, wait for the G_IO_OUT
+// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+// from g_datagram_based_send_messages() even if you were previously
+// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+// common due to the way the underlying APIs work.)
+//
+// If the connection is shut down or closed (by calling g_socket_close() or
+// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
+// example), all calls to this function will return G_IO_ERROR_CLOSED.
+//
+// On error -1 is returned and @error is set accordingly. An error will only
+// be returned if zero messages could be sent; otherwise the number of
+// messages successfully sent before the error will be returned. If
+// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+// other error.
+func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 *C.GOutputMessage
+	var _arg2 C.guint
+	var _arg3 C.gint          // out
+	var _arg4 C.gint64        // out
+	var _arg5 *C.GCancellable // out
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg2 = C.guint(len(messages))
+	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
+	_arg3 = C.gint(flags)
+	_arg4 = C.gint64(timeout)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _gint int    // out
+	var _goerr error // out
+
+	_gint = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gint, _goerr
 }

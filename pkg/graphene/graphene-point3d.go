@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -38,6 +39,22 @@ func WrapPoint3D(ptr unsafe.Pointer) *Point3D {
 func marshalPoint3D(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapPoint3D(unsafe.Pointer(b)), nil
+}
+
+// NewPoint3DAlloc constructs a struct Point3D.
+func NewPoint3DAlloc() *Point3D {
+	var _cret *C.graphene_point3d_t // in
+
+	_cret = C.graphene_point3d_alloc()
+
+	var _point3D *Point3D // out
+
+	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_point3D, func(v *Point3D) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _point3D
 }
 
 // Native returns the underlying C source pointer.
@@ -148,6 +165,69 @@ func (p *Point3D) Free() {
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
 	C.graphene_point3d_free(_arg0)
+}
+
+// Init initializes a #graphene_point3d_t with the given coordinates.
+func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
+	var _arg0 *C.graphene_point3d_t // out
+	var _arg1 C.float               // out
+	var _arg2 C.float               // out
+	var _arg3 C.float               // out
+
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
+
+	var _cret *C.graphene_point3d_t // in
+
+	_cret = C.graphene_point3d_init(_arg0, _arg1, _arg2, _arg3)
+
+	var _point3D *Point3D // out
+
+	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+
+	return _point3D
+}
+
+// InitFromPoint initializes a #graphene_point3d_t using the coordinates of
+// another #graphene_point3d_t.
+func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
+	var _arg0 *C.graphene_point3d_t // out
+	var _arg1 *C.graphene_point3d_t // out
+
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(src.Native()))
+
+	var _cret *C.graphene_point3d_t // in
+
+	_cret = C.graphene_point3d_init_from_point(_arg0, _arg1)
+
+	var _point3D *Point3D // out
+
+	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+
+	return _point3D
+}
+
+// InitFromVec3 initializes a #graphene_point3d_t using the components of a
+// #graphene_vec3_t.
+func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
+	var _arg0 *C.graphene_point3d_t // out
+	var _arg1 *C.graphene_vec3_t    // out
+
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
+
+	var _cret *C.graphene_point3d_t // in
+
+	_cret = C.graphene_point3d_init_from_vec3(_arg0, _arg1)
+
+	var _point3D *Point3D // out
+
+	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+
+	return _point3D
 }
 
 // Interpolate: linearly interpolates each component of @a and @b using the

@@ -43,6 +43,20 @@ func marshalPaintableFlags(p uintptr) (interface{}, error) {
 // PaintableOverrider contains methods that are overridable. This
 // interface is a subset of the interface Paintable.
 type PaintableOverrider interface {
+	// CurrentImage gets an immutable paintable for the current contents
+	// displayed by @paintable.
+	//
+	// This is useful when you want to retain the current state of an animation,
+	// for example to take a screenshot of a running animation.
+	//
+	// If the @paintable is already immutable, it will return itself.
+	CurrentImage() Paintable
+	// Flags: get flags for the paintable.
+	//
+	// This is oftentimes useful for optimizations.
+	//
+	// See [flags@Gdk.PaintableFlags] for the flags and what they mean.
+	Flags() PaintableFlags
 	// IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
 	// like to be displayed at.
 	//
@@ -237,6 +251,50 @@ func (p paintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight f
 	_concreteHeight = (float64)(_arg6)
 
 	return _concreteWidth, _concreteHeight
+}
+
+// CurrentImage gets an immutable paintable for the current contents
+// displayed by @paintable.
+//
+// This is useful when you want to retain the current state of an animation,
+// for example to take a screenshot of a running animation.
+//
+// If the @paintable is already immutable, it will return itself.
+func (p paintable) CurrentImage() Paintable {
+	var _arg0 *C.GdkPaintable // out
+
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GdkPaintable // in
+
+	_cret = C.gdk_paintable_get_current_image(_arg0)
+
+	var _ret Paintable // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Paintable)
+
+	return _ret
+}
+
+// Flags: get flags for the paintable.
+//
+// This is oftentimes useful for optimizations.
+//
+// See [flags@Gdk.PaintableFlags] for the flags and what they mean.
+func (p paintable) Flags() PaintableFlags {
+	var _arg0 *C.GdkPaintable // out
+
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
+
+	var _cret C.GdkPaintableFlags // in
+
+	_cret = C.gdk_paintable_get_flags(_arg0)
+
+	var _paintableFlags PaintableFlags // out
+
+	_paintableFlags = PaintableFlags(_cret)
+
+	return _paintableFlags
 }
 
 // IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would

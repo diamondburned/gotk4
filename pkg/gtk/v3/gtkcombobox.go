@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -89,6 +89,9 @@ type ComboBox interface {
 	ActiveIter() (TreeIter, bool)
 	// AddTearoffs gets the current value of the :add-tearoffs property.
 	AddTearoffs() bool
+	// ButtonSensitivity returns whether the combo box sets the dropdown button
+	// sensitive or not when there are no items in the model.
+	ButtonSensitivity() SensitivityType
 	// ColumnSpanColumn returns the column with column span information for
 	// @combo_box.
 	ColumnSpanColumn() int
@@ -103,6 +106,9 @@ type ComboBox interface {
 	// IDColumn returns the column which @combo_box is using to get string IDs
 	// for values from.
 	IDColumn() int
+	// Model returns the TreeModel which is acting as data source for
+	// @combo_box.
+	Model() TreeModel
 	// PopupFixedWidth gets whether the popup uses a fixed width matching the
 	// allocated width of the combo box.
 	PopupFixedWidth() bool
@@ -128,10 +134,6 @@ type ComboBox interface {
 	//
 	// Before calling this, @combo_box must be mapped, or nothing will happen.
 	Popup()
-	// PopupForDevice pops up the menu or dropdown list of @combo_box, the popup
-	// window will be grabbed so only @device and its associated
-	// pointer/keyboard are the only Devices able to send events to it.
-	PopupForDevice(device gdk.Device)
 	// SetActive sets the active item of @combo_box to be the item at @index.
 	SetActive(index_ int)
 	// SetActiveID changes the active row of @combo_box to the one that has an
@@ -222,6 +224,100 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 	return WrapComboBox(obj), nil
 }
 
+// NewComboBox constructs a class ComboBox.
+func NewComboBox() ComboBox {
+	var _cret C.GtkComboBox // in
+
+	_cret = C.gtk_combo_box_new()
+
+	var _comboBox ComboBox // out
+
+	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+
+	return _comboBox
+}
+
+// NewComboBoxWithArea constructs a class ComboBox.
+func NewComboBoxWithArea(area CellArea) ComboBox {
+	var _arg1 *C.GtkCellArea // out
+
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+
+	var _cret C.GtkComboBox // in
+
+	_cret = C.gtk_combo_box_new_with_area(_arg1)
+
+	var _comboBox ComboBox // out
+
+	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+
+	return _comboBox
+}
+
+// NewComboBoxWithAreaAndEntry constructs a class ComboBox.
+func NewComboBoxWithAreaAndEntry(area CellArea) ComboBox {
+	var _arg1 *C.GtkCellArea // out
+
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+
+	var _cret C.GtkComboBox // in
+
+	_cret = C.gtk_combo_box_new_with_area_and_entry(_arg1)
+
+	var _comboBox ComboBox // out
+
+	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+
+	return _comboBox
+}
+
+// NewComboBoxWithEntry constructs a class ComboBox.
+func NewComboBoxWithEntry() ComboBox {
+	var _cret C.GtkComboBox // in
+
+	_cret = C.gtk_combo_box_new_with_entry()
+
+	var _comboBox ComboBox // out
+
+	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+
+	return _comboBox
+}
+
+// NewComboBoxWithModel constructs a class ComboBox.
+func NewComboBoxWithModel(model TreeModel) ComboBox {
+	var _arg1 *C.GtkTreeModel // out
+
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+
+	var _cret C.GtkComboBox // in
+
+	_cret = C.gtk_combo_box_new_with_model(_arg1)
+
+	var _comboBox ComboBox // out
+
+	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+
+	return _comboBox
+}
+
+// NewComboBoxWithModelAndEntry constructs a class ComboBox.
+func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
+	var _arg1 *C.GtkTreeModel // out
+
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+
+	var _cret C.GtkComboBox // in
+
+	_cret = C.gtk_combo_box_new_with_model_and_entry(_arg1)
+
+	var _comboBox ComboBox // out
+
+	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+
+	return _comboBox
+}
+
 // Active returns the index of the currently active item, or -1 if there’s
 // no active item. If the model is a non-flat treemodel, and the active item
 // is not an immediate child of the root of the tree, this function returns
@@ -308,6 +404,24 @@ func (c comboBox) AddTearoffs() bool {
 	}
 
 	return _ok
+}
+
+// ButtonSensitivity returns whether the combo box sets the dropdown button
+// sensitive or not when there are no items in the model.
+func (c comboBox) ButtonSensitivity() SensitivityType {
+	var _arg0 *C.GtkComboBox // out
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkSensitivityType // in
+
+	_cret = C.gtk_combo_box_get_button_sensitivity(_arg0)
+
+	var _sensitivityType SensitivityType // out
+
+	_sensitivityType = SensitivityType(_cret)
+
+	return _sensitivityType
 }
 
 // ColumnSpanColumn returns the column with column span information for
@@ -401,6 +515,24 @@ func (c comboBox) IDColumn() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Model returns the TreeModel which is acting as data source for
+// @combo_box.
+func (c comboBox) Model() TreeModel {
+	var _arg0 *C.GtkComboBox // out
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkTreeModel // in
+
+	_cret = C.gtk_combo_box_get_model(_arg0)
+
+	var _treeModel TreeModel // out
+
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+
+	return _treeModel
 }
 
 // PopupFixedWidth gets whether the popup uses a fixed width matching the
@@ -502,19 +634,6 @@ func (c comboBox) Popup() {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
 	C.gtk_combo_box_popup(_arg0)
-}
-
-// PopupForDevice pops up the menu or dropdown list of @combo_box, the popup
-// window will be grabbed so only @device and its associated
-// pointer/keyboard are the only Devices able to send events to it.
-func (c comboBox) PopupForDevice(device gdk.Device) {
-	var _arg0 *C.GtkComboBox // out
-	var _arg1 *C.GdkDevice   // out
-
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	C.gtk_combo_box_popup_for_device(_arg0, _arg1)
 }
 
 // SetActive sets the active item of @combo_box to be the item at @index.

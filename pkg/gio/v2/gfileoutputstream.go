@@ -5,6 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,6 +52,26 @@ type FileOutputStream interface {
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
 	Etag() string
+	// QueryInfo queries a file output stream for the given @attributes. This
+	// function blocks while querying the stream. For the asynchronous version
+	// of this function, see g_file_output_stream_query_info_async(). While the
+	// stream is blocked, the stream will set the pending flag internally, and
+	// any other operations on the stream will fail with G_IO_ERROR_PENDING.
+	//
+	// Can fail if the stream was already closed (with @error being set to
+	// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
+	// set to G_IO_ERROR_PENDING), or if querying info is not supported for the
+	// stream's interface (with @error being set to G_IO_ERROR_NOT_SUPPORTED).
+	// In all cases of failure, nil will be returned.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
+	// be returned.
+	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoFinish finalizes the asynchronous query started by
+	// g_file_output_stream_query_info_async().
+	QueryInfoFinish(result AsyncResult) (FileInfo, error)
 }
 
 // fileOutputStream implements the FileOutputStream class.
@@ -93,4 +115,67 @@ func (s fileOutputStream) Etag() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// QueryInfo queries a file output stream for the given @attributes. This
+// function blocks while querying the stream. For the asynchronous version
+// of this function, see g_file_output_stream_query_info_async(). While the
+// stream is blocked, the stream will set the pending flag internally, and
+// any other operations on the stream will fail with G_IO_ERROR_PENDING.
+//
+// Can fail if the stream was already closed (with @error being set to
+// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
+// set to G_IO_ERROR_PENDING), or if querying info is not supported for the
+// stream's interface (with @error being set to G_IO_ERROR_NOT_SUPPORTED).
+// In all cases of failure, nil will be returned.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
+// be returned.
+func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
+	var _arg0 *C.GFileOutputStream // out
+	var _arg1 *C.char              // out
+	var _arg2 *C.GCancellable      // out
+
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_file_output_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
+
+	var _fileInfo FileInfo // out
+	var _goerr error       // out
+
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInfo, _goerr
+}
+
+// QueryInfoFinish finalizes the asynchronous query started by
+// g_file_output_stream_query_info_async().
+func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
+	var _arg0 *C.GFileOutputStream // out
+	var _arg1 *C.GAsyncResult      // out
+
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret *C.GFileInfo // in
+	var _cerr *C.GError    // in
+
+	_cret = C.g_file_output_stream_query_info_finish(_arg0, _arg1, &_cerr)
+
+	var _fileInfo FileInfo // out
+	var _goerr error       // out
+
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fileInfo, _goerr
 }

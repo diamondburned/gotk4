@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -21,6 +23,35 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_tree_model_filter_get_type()), F: marshalTreeModelFilter},
 	})
+}
+
+// TreeModelFilterVisibleFunc: a function which decides whether the row
+// indicated by @iter is visible.
+type TreeModelFilterVisibleFunc func(model TreeModel, iter *TreeIter) (ok bool)
+
+//export gotk4_TreeModelFilterVisibleFunc
+func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var model TreeModel // out
+	var iter *TreeIter  // out
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
+	iter = WrapTreeIter(unsafe.Pointer(arg1))
+
+	fn := v.(TreeModelFilterVisibleFunc)
+	ok := fn(model, iter)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // TreeModelFilter: a TreeModelFilter is a tree model which wraps another tree
@@ -100,9 +131,23 @@ type TreeModelFilter interface {
 	// that corresponds to the row pointed at by @child_iter. If @filter_iter
 	// was not set, false is returned.
 	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	// ConvertChildPathToPath converts @child_path to a path relative to
+	// @filter. That is, @child_path points to a path in the child model. The
+	// rerturned path will point to the same row in the filtered model. If
+	// @child_path isn’t a valid path on the child model or points to a row
+	// which is not visible in @filter, then nil is returned.
+	ConvertChildPathToPath(childPath *TreePath) *TreePath
 	// ConvertIterToChildIter sets @child_iter to point to the row pointed to by
 	// @filter_iter.
 	ConvertIterToChildIter(filterIter *TreeIter) TreeIter
+	// ConvertPathToChildPath converts @filter_path to a path on the child model
+	// of @filter. That is, @filter_path points to a location in @filter. The
+	// returned path will point to the same location in the model not being
+	// filtered. If @filter_path does not point to a location in the child
+	// model, nil is returned.
+	ConvertPathToChildPath(filterPath *TreePath) *TreePath
+	// Model returns a pointer to the child model of @filter.
+	Model() TreeModel
 	// Refilter emits ::row_changed for each row in the child model, which
 	// causes the filter to re-evaluate whether a row is visible or not.
 	Refilter()
@@ -180,6 +225,32 @@ func (f treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, 
 	return _filterIter, _ok
 }
 
+// ConvertChildPathToPath converts @child_path to a path relative to
+// @filter. That is, @child_path points to a path in the child model. The
+// rerturned path will point to the same row in the filtered model. If
+// @child_path isn’t a valid path on the child model or points to a row
+// which is not visible in @filter, then nil is returned.
+func (f treeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreePath {
+	var _arg0 *C.GtkTreeModelFilter // out
+	var _arg1 *C.GtkTreePath        // out
+
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(childPath.Native()))
+
+	var _cret *C.GtkTreePath // in
+
+	_cret = C.gtk_tree_model_filter_convert_child_path_to_path(_arg0, _arg1)
+
+	var _treePath *TreePath // out
+
+	_treePath = WrapTreePath(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v *TreePath) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _treePath
+}
+
 // ConvertIterToChildIter sets @child_iter to point to the row pointed to by
 // @filter_iter.
 func (f treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
@@ -194,6 +265,49 @@ func (f treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
 	C.gtk_tree_model_filter_convert_iter_to_child_iter(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_childIter)))
 
 	return _childIter
+}
+
+// ConvertPathToChildPath converts @filter_path to a path on the child model
+// of @filter. That is, @filter_path points to a location in @filter. The
+// returned path will point to the same location in the model not being
+// filtered. If @filter_path does not point to a location in the child
+// model, nil is returned.
+func (f treeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *TreePath {
+	var _arg0 *C.GtkTreeModelFilter // out
+	var _arg1 *C.GtkTreePath        // out
+
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(filterPath.Native()))
+
+	var _cret *C.GtkTreePath // in
+
+	_cret = C.gtk_tree_model_filter_convert_path_to_child_path(_arg0, _arg1)
+
+	var _treePath *TreePath // out
+
+	_treePath = WrapTreePath(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v *TreePath) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _treePath
+}
+
+// Model returns a pointer to the child model of @filter.
+func (f treeModelFilter) Model() TreeModel {
+	var _arg0 *C.GtkTreeModelFilter // out
+
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.GtkTreeModel // in
+
+	_cret = C.gtk_tree_model_filter_get_model(_arg0)
+
+	var _treeModel TreeModel // out
+
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+
+	return _treeModel
 }
 
 // Refilter emits ::row_changed for each row in the child model, which

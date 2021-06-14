@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,9 +57,6 @@ type LockButton interface {
 	Actionable
 	Activatable
 	Buildable
-
-	// SetPermission sets the #GPermission object that controls @button.
-	SetPermission(permission gio.Permission)
 }
 
 // lockButton implements the LockButton class.
@@ -88,15 +84,4 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapLockButton(obj), nil
-}
-
-// SetPermission sets the #GPermission object that controls @button.
-func (b lockButton) SetPermission(permission gio.Permission) {
-	var _arg0 *C.GtkLockButton // out
-	var _arg1 *C.GPermission   // out
-
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-
-	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }

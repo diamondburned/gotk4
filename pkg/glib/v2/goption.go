@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -260,6 +261,23 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 	return _ok
 }
 
+// MainGroup returns a pointer to the main group of @context.
+func (c *OptionContext) MainGroup() *OptionGroup {
+	var _arg0 *C.GOptionContext // out
+
+	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GOptionGroup // in
+
+	_cret = C.g_option_context_get_main_group(_arg0)
+
+	var _optionGroup *OptionGroup // out
+
+	_optionGroup = WrapOptionGroup(unsafe.Pointer(_cret))
+
+	return _optionGroup
+}
+
 // StrictPosix returns whether strict POSIX code is enabled.
 //
 // See g_option_context_set_strict_posix() for more information.
@@ -470,6 +488,13 @@ func (o *OptionEntry) Flags() int {
 	return v
 }
 
+// Arg gets the field inside the struct.
+func (o *OptionEntry) Arg() OptionArg {
+	var v OptionArg // out
+	v = OptionArg(o.native.arg)
+	return v
+}
+
 // ArgData gets the field inside the struct.
 func (o *OptionEntry) ArgData() interface{} {
 	var v interface{} // out
@@ -549,6 +574,26 @@ func (g *OptionGroup) Free() {
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 
 	C.g_option_group_free(_arg0)
+}
+
+// Ref increments the reference count of @group by one.
+func (g *OptionGroup) Ref() *OptionGroup {
+	var _arg0 *C.GOptionGroup // out
+
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
+
+	var _cret *C.GOptionGroup // in
+
+	_cret = C.g_option_group_ref(_arg0)
+
+	var _optionGroup *OptionGroup // out
+
+	_optionGroup = WrapOptionGroup(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_optionGroup, func(v *OptionGroup) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _optionGroup
 }
 
 // SetTranslationDomain: a convenience function to use gettext() for translating

@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,13 +54,6 @@ type Tooltip interface {
 	// tooltip, which can be configured using gtk_tooltip_set_markup() and
 	// gtk_tooltip_set_icon().
 	SetCustom(customWidget Widget)
-	// SetIcon sets the icon of the tooltip (which is in front of the text) to
-	// be @paintable. If @paintable is nil, the image will be hidden.
-	SetIcon(paintable gdk.Paintable)
-	// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
-	// text) to be the icon indicated by @gicon with the size indicated by
-	// @size. If @gicon is nil, the image will be hidden.
-	SetIconFromGIcon(gicon gio.Icon)
 	// SetIconFromIconName sets the icon of the tooltip (which is in front of
 	// the text) to be the icon indicated by @icon_name with the size indicated
 	// by @size. If @icon_name is nil, the image will be hidden.
@@ -77,15 +68,6 @@ type Tooltip interface {
 	// If @text is nil, the label will be hidden. See also
 	// [method@Gtk.Tooltip.set_markup].
 	SetText(text string)
-	// SetTipArea sets the area of the widget, where the contents of this
-	// tooltip apply, to be @rect (in widget coordinates). This is especially
-	// useful for properly setting tooltips on TreeView rows and cells,
-	// IconViews, etc.
-	//
-	// For setting tooltips on TreeView, please refer to the convenience
-	// functions for this: gtk_tree_view_set_tooltip_row() and
-	// gtk_tree_view_set_tooltip_cell().
-	SetTipArea(rect *gdk.Rectangle)
 }
 
 // tooltip implements the Tooltip class.
@@ -122,31 +104,6 @@ func (t tooltip) SetCustom(customWidget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
 
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
-}
-
-// SetIcon sets the icon of the tooltip (which is in front of the text) to
-// be @paintable. If @paintable is nil, the image will be hidden.
-func (t tooltip) SetIcon(paintable gdk.Paintable) {
-	var _arg0 *C.GtkTooltip   // out
-	var _arg1 *C.GdkPaintable // out
-
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-
-	C.gtk_tooltip_set_icon(_arg0, _arg1)
-}
-
-// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
-// text) to be the icon indicated by @gicon with the size indicated by
-// @size. If @gicon is nil, the image will be hidden.
-func (t tooltip) SetIconFromGIcon(gicon gio.Icon) {
-	var _arg0 *C.GtkTooltip // out
-	var _arg1 *C.GIcon      // out
-
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
-
-	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1)
 }
 
 // SetIconFromIconName sets the icon of the tooltip (which is in front of
@@ -191,22 +148,4 @@ func (t tooltip) SetText(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tooltip_set_text(_arg0, _arg1)
-}
-
-// SetTipArea sets the area of the widget, where the contents of this
-// tooltip apply, to be @rect (in widget coordinates). This is especially
-// useful for properly setting tooltips on TreeView rows and cells,
-// IconViews, etc.
-//
-// For setting tooltips on TreeView, please refer to the convenience
-// functions for this: gtk_tree_view_set_tooltip_row() and
-// gtk_tree_view_set_tooltip_cell().
-func (t tooltip) SetTipArea(rect *gdk.Rectangle) {
-	var _arg0 *C.GtkTooltip   // out
-	var _arg1 *C.GdkRectangle // out
-
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
-
-	C.gtk_tooltip_set_tip_area(_arg0, _arg1)
 }

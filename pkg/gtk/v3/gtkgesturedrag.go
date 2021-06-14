@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,6 +60,23 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGestureDrag(obj), nil
+}
+
+// NewGestureDrag constructs a class GestureDrag.
+func NewGestureDrag(widget Widget) GestureDrag {
+	var _arg1 *C.GtkWidget // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	var _cret C.GtkGestureDrag // in
+
+	_cret = C.gtk_gesture_drag_new(_arg1)
+
+	var _gestureDrag GestureDrag // out
+
+	_gestureDrag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureDrag)
+
+	return _gestureDrag
 }
 
 // Offset: if the @gesture is active, this function returns true and fills

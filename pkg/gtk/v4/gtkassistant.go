@@ -159,10 +159,16 @@ type Assistant interface {
 	CurrentPage() int
 	// NPages returns the number of pages in the @assistant
 	NPages() int
+	// NthPage returns the child widget contained in page number @page_num.
+	NthPage(pageNum int) Widget
+	// Page returns the `GtkAssistantPage` object for @child.
+	Page(child Widget) AssistantPage
 	// PageComplete gets whether @page is complete.
 	PageComplete(page Widget) bool
 	// PageTitle gets the title for @page.
 	PageTitle(page Widget) string
+	// PageType gets the page type of @page.
+	PageType(page Widget) AssistantPageType
 	// InsertPage inserts a page in the @assistant at a given position.
 	InsertPage(page Widget, position int) int
 	// NextPage: navigate to the next page.
@@ -252,6 +258,19 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return WrapAssistant(obj), nil
 }
 
+// NewAssistant constructs a class Assistant.
+func NewAssistant() Assistant {
+	var _cret C.GtkAssistant // in
+
+	_cret = C.gtk_assistant_new()
+
+	var _assistant Assistant // out
+
+	_assistant = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Assistant)
+
+	return _assistant
+}
+
 // AddActionWidget adds a widget to the action area of a `GtkAssistant`.
 func (a assistant) AddActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant // out
@@ -333,6 +352,44 @@ func (a assistant) NPages() int {
 	return _gint
 }
 
+// NthPage returns the child widget contained in page number @page_num.
+func (a assistant) NthPage(pageNum int) Widget {
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 C.int           // out
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = C.int(pageNum)
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// Page returns the `GtkAssistantPage` object for @child.
+func (a assistant) Page(child Widget) AssistantPage {
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	var _cret *C.GtkAssistantPage // in
+
+	_cret = C.gtk_assistant_get_page(_arg0, _arg1)
+
+	var _assistantPage AssistantPage // out
+
+	_assistantPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AssistantPage)
+
+	return _assistantPage
+}
+
 // PageComplete gets whether @page is complete.
 func (a assistant) PageComplete(page Widget) bool {
 	var _arg0 *C.GtkAssistant // out
@@ -371,6 +428,25 @@ func (a assistant) PageTitle(page Widget) string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// PageType gets the page type of @page.
+func (a assistant) PageType(page Widget) AssistantPageType {
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
+
+	var _cret C.GtkAssistantPageType // in
+
+	_cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
+
+	var _assistantPageType AssistantPageType // out
+
+	_assistantPageType = AssistantPageType(_cret)
+
+	return _assistantPageType
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
@@ -551,6 +627,9 @@ func (a assistant) UpdateButtonsState() {
 // `GtkAssistant.
 type AssistantPage interface {
 	gextras.Objector
+
+	// Child returns the child to which @page belongs.
+	Child() Widget
 }
 
 // assistantPage implements the AssistantPage class.
@@ -572,4 +651,21 @@ func marshalAssistantPage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAssistantPage(obj), nil
+}
+
+// Child returns the child to which @page belongs.
+func (p assistantPage) Child() Widget {
+	var _arg0 *C.GtkAssistantPage // out
+
+	_arg0 = (*C.GtkAssistantPage)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_assistant_page_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }

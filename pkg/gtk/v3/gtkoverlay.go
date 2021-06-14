@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -99,6 +100,19 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapOverlay(obj), nil
+}
+
+// NewOverlay constructs a class Overlay.
+func NewOverlay() Overlay {
+	var _cret C.GtkOverlay // in
+
+	_cret = C.gtk_overlay_new()
+
+	var _overlay Overlay // out
+
+	_overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Overlay)
+
+	return _overlay
 }
 
 // AddOverlay adds @widget to @overlay.

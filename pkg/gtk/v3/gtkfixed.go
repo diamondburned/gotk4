@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -92,6 +93,19 @@ func marshalFixed(p uintptr) (interface{}, error) {
 	return WrapFixed(obj), nil
 }
 
+// NewFixed constructs a class Fixed.
+func NewFixed() Fixed {
+	var _cret C.GtkFixed // in
+
+	_cret = C.gtk_fixed_new()
+
+	var _fixed Fixed // out
+
+	_fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Fixed)
+
+	return _fixed
+}
+
 // Move moves a child of a Fixed container to the given position.
 func (f fixed) Move(widget Widget, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
@@ -139,6 +153,13 @@ func WrapFixedChild(ptr unsafe.Pointer) *FixedChild {
 // Native returns the underlying C source pointer.
 func (f *FixedChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
+}
+
+// Widget gets the field inside the struct.
+func (f *FixedChild) Widget() Widget {
+	var v Widget // out
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget.Native()))).(Widget)
+	return v
 }
 
 // X gets the field inside the struct.

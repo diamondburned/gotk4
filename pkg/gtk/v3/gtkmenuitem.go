@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,6 +66,9 @@ type MenuItem interface {
 	// RightJustified gets whether the menu item appears justified at the right
 	// side of the menu bar.
 	RightJustified() bool
+	// Submenu gets the submenu underneath this menu item, if any. See
+	// gtk_menu_item_set_submenu().
+	Submenu() Widget
 	// UseUnderline checks if an underline in the text indicates the next
 	// character should be used for the mnemonic accelerator key.
 	UseUnderline() bool
@@ -138,6 +142,55 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMenuItem(obj), nil
+}
+
+// NewMenuItem constructs a class MenuItem.
+func NewMenuItem() MenuItem {
+	var _cret C.GtkMenuItem // in
+
+	_cret = C.gtk_menu_item_new()
+
+	var _menuItem MenuItem // out
+
+	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuItem)
+
+	return _menuItem
+}
+
+// NewMenuItemWithLabel constructs a class MenuItem.
+func NewMenuItemWithLabel(label string) MenuItem {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkMenuItem // in
+
+	_cret = C.gtk_menu_item_new_with_label(_arg1)
+
+	var _menuItem MenuItem // out
+
+	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuItem)
+
+	return _menuItem
+}
+
+// NewMenuItemWithMnemonic constructs a class MenuItem.
+func NewMenuItemWithMnemonic(label string) MenuItem {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkMenuItem // in
+
+	_cret = C.gtk_menu_item_new_with_mnemonic(_arg1)
+
+	var _menuItem MenuItem // out
+
+	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuItem)
+
+	return _menuItem
 }
 
 // Activate emits the MenuItem::activate signal on the given item
@@ -233,6 +286,24 @@ func (m menuItem) RightJustified() bool {
 	}
 
 	return _ok
+}
+
+// Submenu gets the submenu underneath this menu item, if any. See
+// gtk_menu_item_set_submenu().
+func (m menuItem) Submenu() Widget {
+	var _arg0 *C.GtkMenuItem // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_menu_item_get_submenu(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // UseUnderline checks if an underline in the text indicates the next

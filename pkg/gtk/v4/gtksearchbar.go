@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,6 +74,10 @@ type SearchBar interface {
 	// manually is only required if the entry isn’t the direct child of the
 	// search bar (as in our main example).
 	ConnectEntry(entry Editable)
+	// Child gets the child widget of @bar.
+	Child() Widget
+	// KeyCaptureWidget gets the widget that @bar is capturing key events from.
+	KeyCaptureWidget() Widget
 	// SearchMode returns whether the search mode is on or off.
 	SearchMode() bool
 	// ShowCloseButton returns whether the close button is shown.
@@ -128,6 +133,19 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	return WrapSearchBar(obj), nil
 }
 
+// NewSearchBar constructs a class SearchBar.
+func NewSearchBar() SearchBar {
+	var _cret C.GtkSearchBar // in
+
+	_cret = C.gtk_search_bar_new()
+
+	var _searchBar SearchBar // out
+
+	_searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SearchBar)
+
+	return _searchBar
+}
+
 // ConnectEntry connects the `GtkEditable widget passed as the one to be
 // used in this search bar.
 //
@@ -142,6 +160,40 @@ func (b searchBar) ConnectEntry(entry Editable) {
 	_arg1 = (*C.GtkEditable)(unsafe.Pointer(entry.Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
+}
+
+// Child gets the child widget of @bar.
+func (b searchBar) Child() Widget {
+	var _arg0 *C.GtkSearchBar // out
+
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_search_bar_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// KeyCaptureWidget gets the widget that @bar is capturing key events from.
+func (b searchBar) KeyCaptureWidget() Widget {
+	var _arg0 *C.GtkSearchBar // out
+
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // SearchMode returns whether the search mode is on or off.

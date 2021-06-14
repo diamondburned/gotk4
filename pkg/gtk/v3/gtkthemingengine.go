@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,29 +33,27 @@ func init() {
 type ThemingEngine interface {
 	gextras.Objector
 
-	// BackgroundColor gets the background color for a given state.
-	BackgroundColor(state StateFlags) gdk.RGBA
 	// Border gets the border for a given state as a Border.
 	Border(state StateFlags) Border
-	// BorderColor gets the border color for a given state.
-	BorderColor(state StateFlags) gdk.RGBA
-	// Color gets the foreground color for a given state.
-	Color(state StateFlags) gdk.RGBA
+	// Direction returns the widget direction used for rendering.
+	Direction() TextDirection
+	// JunctionSides returns the widget direction used for rendering.
+	JunctionSides() JunctionSides
 	// Margin gets the margin for a given state as a Border.
 	Margin(state StateFlags) Border
 	// Padding gets the padding for a given state as a Border.
 	Padding(state StateFlags) Border
-	// Property gets a property value as retrieved from the style settings that
-	// apply to the currently rendered element.
-	Property(property string, state StateFlags) *externglib.Value
-	// StyleProperty gets the value for a widget style property.
-	StyleProperty(propertyName string) *externglib.Value
+	// Path returns the widget path used for style matching.
+	Path() *WidgetPath
+	// State returns the state used when rendering.
+	State() StateFlags
 	// HasClass returns true if the currently rendered contents have defined the
 	// given class name.
 	HasClass(styleClass string) bool
-	// LookupColor looks up and resolves a color name in the current style’s
-	// color map.
-	LookupColor(colorName string) (gdk.RGBA, bool)
+	// HasRegion returns true if the currently rendered contents have the region
+	// defined. If @flags_return is not nil, it is set to the flags affecting
+	// the region.
+	HasRegion(styleRegion string) (RegionFlags, bool)
 	// StateIsRunning returns true if there is a transition animation running
 	// for the current region (see gtk_style_context_push_animatable_region()).
 	//
@@ -89,21 +86,6 @@ func marshalThemingEngine(p uintptr) (interface{}, error) {
 	return WrapThemingEngine(obj), nil
 }
 
-// BackgroundColor gets the background color for a given state.
-func (e themingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkStateFlags)(state)
-
-	var _color gdk.RGBA
-
-	C.gtk_theming_engine_get_background_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
-
-	return _color
-}
-
 // Border gets the border for a given state as a Border.
 func (e themingEngine) Border(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
@@ -119,34 +101,38 @@ func (e themingEngine) Border(state StateFlags) Border {
 	return _border
 }
 
-// BorderColor gets the border color for a given state.
-func (e themingEngine) BorderColor(state StateFlags) gdk.RGBA {
+// Direction returns the widget direction used for rendering.
+func (e themingEngine) Direction() TextDirection {
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkStateFlags)(state)
 
-	var _color gdk.RGBA
+	var _cret C.GtkTextDirection // in
 
-	C.gtk_theming_engine_get_border_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_theming_engine_get_direction(_arg0)
 
-	return _color
+	var _textDirection TextDirection // out
+
+	_textDirection = TextDirection(_cret)
+
+	return _textDirection
 }
 
-// Color gets the foreground color for a given state.
-func (e themingEngine) Color(state StateFlags) gdk.RGBA {
+// JunctionSides returns the widget direction used for rendering.
+func (e themingEngine) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkStateFlags)(state)
 
-	var _color gdk.RGBA
+	var _cret C.GtkJunctionSides // in
 
-	C.gtk_theming_engine_get_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_theming_engine_get_junction_sides(_arg0)
 
-	return _color
+	var _junctionSides JunctionSides // out
+
+	_junctionSides = JunctionSides(_cret)
+
+	return _junctionSides
 }
 
 // Margin gets the margin for a given state as a Border.
@@ -179,50 +165,38 @@ func (e themingEngine) Padding(state StateFlags) Border {
 	return _padding
 }
 
-// Property gets a property value as retrieved from the style settings that
-// apply to the currently rendered element.
-func (e themingEngine) Property(property string, state StateFlags) *externglib.Value {
+// Path returns the widget path used for style matching.
+func (e themingEngine) Path() *WidgetPath {
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 *C.gchar            // out
-	var _arg2 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GtkStateFlags)(state)
 
-	var _arg3 C.GValue // in
+	var _cret *C.GtkWidgetPath // in
 
-	C.gtk_theming_engine_get_property(_arg0, _arg1, _arg2, &_arg3)
+	_cret = C.gtk_theming_engine_get_path(_arg0)
 
-	var _value *externglib.Value // out
+	var _widgetPath *WidgetPath // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
-	runtime.SetFinalizer(_value, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(v.GValue))
-	})
+	_widgetPath = WrapWidgetPath(unsafe.Pointer(_cret))
 
-	return _value
+	return _widgetPath
 }
 
-// StyleProperty gets the value for a widget style property.
-func (e themingEngine) StyleProperty(propertyName string) *externglib.Value {
+// State returns the state used when rendering.
+func (e themingEngine) State() StateFlags {
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.gchar)(C.CString(propertyName))
-	defer C.free(unsafe.Pointer(_arg1))
 
-	var _arg2 C.GValue // in
+	var _cret C.GtkStateFlags // in
 
-	C.gtk_theming_engine_get_style_property(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_theming_engine_get_state(_arg0)
 
-	var _value *externglib.Value // out
+	var _stateFlags StateFlags // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg2))
+	_stateFlags = StateFlags(_cret)
 
-	return _value
+	return _stateFlags
 }
 
 // HasClass returns true if the currently rendered contents have defined the
@@ -248,28 +222,31 @@ func (e themingEngine) HasClass(styleClass string) bool {
 	return _ok
 }
 
-// LookupColor looks up and resolves a color name in the current style’s
-// color map.
-func (e themingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
+// HasRegion returns true if the currently rendered contents have the region
+// defined. If @flags_return is not nil, it is set to the flags affecting
+// the region.
+func (e themingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.gchar)(C.CString(colorName))
+	_arg1 = (*C.gchar)(C.CString(styleRegion))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _color gdk.RGBA
-	var _cret C.gboolean // in
+	var _arg2 C.GtkRegionFlags // in
+	var _cret C.gboolean       // in
 
-	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_theming_engine_has_region(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _flags RegionFlags // out
+	var _ok bool           // out
 
+	_flags = RegionFlags(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
 
-	return _color, _ok
+	return _flags, _ok
 }
 
 // StateIsRunning returns true if there is a transition animation running

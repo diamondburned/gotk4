@@ -328,6 +328,23 @@ func (v *Value) Object() gextras.Objector {
 	return _object
 }
 
+// Param: get the contents of a G_TYPE_PARAM #GValue.
+func (v *Value) Param() ParamSpec {
+	var _arg0 *C.GValue // out
+
+	_arg0 = (*C.GValue)(v.GValue)
+
+	var _cret *C.GParamSpec // in
+
+	_cret = C.g_value_get_param(_arg0)
+
+	var _paramSpec ParamSpec // out
+
+	_paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
+
+	return _paramSpec
+}
+
 // Pointer: get the contents of a pointer #GValue.
 func (v *Value) Pointer() interface{} {
 	var _arg0 *C.GValue // out
@@ -835,18 +852,6 @@ func (v *Value) SetUlong(vUlong uint32) {
 	C.g_value_set_ulong(_arg0, _arg1)
 }
 
-// SetVariant: set the contents of a variant #GValue to @variant. If the variant
-// is floating, it is consumed.
-func (v *Value) SetVariant(variant *glib.Variant) {
-	var _arg0 *C.GValue   // out
-	var _arg1 *C.GVariant // out
-
-	_arg0 = (*C.GValue)(v.GValue)
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	C.g_value_set_variant(_arg0, _arg1)
-}
-
 // TakeBoxed sets the contents of a G_TYPE_BOXED derived #GValue to @v_boxed and
 // takes over the ownership of the caller’s reference to @v_boxed; the caller
 // doesn’t have to unref it any more.
@@ -870,28 +875,6 @@ func (v *Value) TakeString(vString string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_value_take_string(_arg0, _arg1)
-}
-
-// TakeVariant: set the contents of a variant #GValue to @variant, and takes
-// over the ownership of the caller's reference to @variant; the caller doesn't
-// have to unref it any more (i.e. the reference count of the variant is not
-// increased).
-//
-// If @variant was floating then its floating reference is converted to a hard
-// reference.
-//
-// If you want the #GValue to hold its own reference to @variant, use
-// g_value_set_variant() instead.
-//
-// This is an internal function introduced mainly for C marshallers.
-func (v *Value) TakeVariant(variant *glib.Variant) {
-	var _arg0 *C.GValue   // out
-	var _arg1 *C.GVariant // out
-
-	_arg0 = (*C.GValue)(v.GValue)
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	C.g_value_take_variant(_arg0, _arg1)
 }
 
 // Transform tries to cast the contents of @src_value into a type appropriate to

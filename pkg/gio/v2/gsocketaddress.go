@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -38,9 +39,18 @@ type SocketAddress interface {
 	gextras.Objector
 	SocketConnectable
 
+	// Family gets the socket family type of @address.
+	Family() SocketFamily
 	// NativeSize gets the size of @address's native struct sockaddr. You can
 	// use this to allocate memory to pass to g_socket_address_to_native().
 	NativeSize() int
+	// ToNative converts a Address to a native struct sockaddr, which can be
+	// passed to low-level functions like connect() or bind().
+	//
+	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
+	// returned. If the address type is not known on the system then a
+	// G_IO_ERROR_NOT_SUPPORTED error is returned.
+	ToNative(dest interface{}, destlen uint) error
 }
 
 // socketAddress implements the SocketAddress class.
@@ -66,6 +76,42 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 	return WrapSocketAddress(obj), nil
 }
 
+// NewSocketAddressFromNative constructs a class SocketAddress.
+func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
+	var _arg1 C.gpointer // out
+	var _arg2 C.gsize    // out
+
+	_arg1 = C.gpointer(native)
+	_arg2 = C.gsize(len)
+
+	var _cret C.GSocketAddress // in
+
+	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
+
+	var _socketAddress SocketAddress // out
+
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+
+	return _socketAddress
+}
+
+// Family gets the socket family type of @address.
+func (a socketAddress) Family() SocketFamily {
+	var _arg0 *C.GSocketAddress // out
+
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+
+	var _cret C.GSocketFamily // in
+
+	_cret = C.g_socket_address_get_family(_arg0)
+
+	var _socketFamily SocketFamily // out
+
+	_socketFamily = SocketFamily(_cret)
+
+	return _socketFamily
+}
+
 // NativeSize gets the size of @address's native struct sockaddr. You can
 // use this to allocate memory to pass to g_socket_address_to_native().
 func (a socketAddress) NativeSize() int {
@@ -82,4 +128,30 @@ func (a socketAddress) NativeSize() int {
 	_gssize = (int)(_cret)
 
 	return _gssize
+}
+
+// ToNative converts a Address to a native struct sockaddr, which can be
+// passed to low-level functions like connect() or bind().
+//
+// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
+// returned. If the address type is not known on the system then a
+// G_IO_ERROR_NOT_SUPPORTED error is returned.
+func (a socketAddress) ToNative(dest interface{}, destlen uint) error {
+	var _arg0 *C.GSocketAddress // out
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
+
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg1 = C.gpointer(dest)
+	_arg2 = C.gsize(destlen)
+
+	var _cerr *C.GError // in
+
+	C.g_socket_address_to_native(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

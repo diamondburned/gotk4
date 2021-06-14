@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -75,12 +75,6 @@ type Fixed interface {
 	Put(widget Widget, x float64, y float64)
 	// Remove removes a child from @fixed.
 	Remove(widget Widget)
-	// SetChildTransform sets the transformation for @widget.
-	//
-	// This is a convenience function that retrieves the
-	// [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
-	// [method@Gtk.FixedLayoutChild.set_transform].
-	SetChildTransform(widget Widget, transform *gsk.Transform)
 }
 
 // fixed implements the Fixed class.
@@ -108,6 +102,19 @@ func marshalFixed(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFixed(obj), nil
+}
+
+// NewFixed constructs a class Fixed.
+func NewFixed() Fixed {
+	var _cret C.GtkFixed // in
+
+	_cret = C.gtk_fixed_new()
+
+	var _fixed Fixed // out
+
+	_fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Fixed)
+
+	return _fixed
 }
 
 // ChildPosition retrieves the translation transformation of the given child
@@ -175,21 +182,4 @@ func (f fixed) Remove(widget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_fixed_remove(_arg0, _arg1)
-}
-
-// SetChildTransform sets the transformation for @widget.
-//
-// This is a convenience function that retrieves the
-// [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
-// [method@Gtk.FixedLayoutChild.set_transform].
-func (f fixed) SetChildTransform(widget Widget, transform *gsk.Transform) {
-	var _arg0 *C.GtkFixed     // out
-	var _arg1 *C.GtkWidget    // out
-	var _arg2 *C.GskTransform // out
-
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))
-
-	C.gtk_fixed_set_child_transform(_arg0, _arg1, _arg2)
 }

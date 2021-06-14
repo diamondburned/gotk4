@@ -73,8 +73,28 @@ type Constraint interface {
 	// Multiplier retrieves the multiplication factor applied to the source
 	// attribute's value.
 	Multiplier() float64
+	// Relation: the order relation between the terms of the constraint.
+	Relation() ConstraintRelation
+	// Source retrieves the [iface@Gtk.ConstraintTarget] used as the source for
+	// the constraint.
+	//
+	// If the source is set to `NULL` at creation, the constraint will use the
+	// widget using the [class@Gtk.ConstraintLayout] as the source.
+	Source() ConstraintTarget
+	// SourceAttribute retrieves the attribute of the source to be read by the
+	// constraint.
+	SourceAttribute() ConstraintAttribute
 	// Strength retrieves the strength of the constraint.
 	Strength() int
+	// Target retrieves the [iface@Gtk.ConstraintTarget] used as the target for
+	// the constraint.
+	//
+	// If the targe is set to `NULL` at creation, the constraint will use the
+	// widget using the [class@Gtk.ConstraintLayout] as the target.
+	Target() ConstraintTarget
+	// TargetAttribute retrieves the attribute of the target to be set by the
+	// constraint.
+	TargetAttribute() ConstraintAttribute
 	// IsAttached checks whether the constraint is attached to a
 	// [class@Gtk.ConstraintLayout], and it is contributing to the layout.
 	IsAttached() bool
@@ -105,6 +125,62 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapConstraint(obj), nil
+}
+
+// NewConstraint constructs a class Constraint.
+func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTarget, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint {
+	var _arg1 C.gpointer               // out
+	var _arg2 C.GtkConstraintAttribute // out
+	var _arg3 C.GtkConstraintRelation  // out
+	var _arg4 C.gpointer               // out
+	var _arg5 C.GtkConstraintAttribute // out
+	var _arg6 C.double                 // out
+	var _arg7 C.double                 // out
+	var _arg8 C.int                    // out
+
+	_arg1 = (C.gpointer)(unsafe.Pointer(target.Native()))
+	_arg2 = (C.GtkConstraintAttribute)(targetAttribute)
+	_arg3 = (C.GtkConstraintRelation)(relation)
+	_arg4 = (C.gpointer)(unsafe.Pointer(source.Native()))
+	_arg5 = (C.GtkConstraintAttribute)(sourceAttribute)
+	_arg6 = C.double(multiplier)
+	_arg7 = C.double(constant)
+	_arg8 = C.int(strength)
+
+	var _cret C.GtkConstraint // in
+
+	_cret = C.gtk_constraint_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+
+	var _constraint Constraint // out
+
+	_constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Constraint)
+
+	return _constraint
+}
+
+// NewConstraintConstant constructs a class Constraint.
+func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint {
+	var _arg1 C.gpointer               // out
+	var _arg2 C.GtkConstraintAttribute // out
+	var _arg3 C.GtkConstraintRelation  // out
+	var _arg4 C.double                 // out
+	var _arg5 C.int                    // out
+
+	_arg1 = (C.gpointer)(unsafe.Pointer(target.Native()))
+	_arg2 = (C.GtkConstraintAttribute)(targetAttribute)
+	_arg3 = (C.GtkConstraintRelation)(relation)
+	_arg4 = C.double(constant)
+	_arg5 = C.int(strength)
+
+	var _cret C.GtkConstraint // in
+
+	_cret = C.gtk_constraint_new_constant(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _constraint Constraint // out
+
+	_constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Constraint)
+
+	return _constraint
 }
 
 // Constant retrieves the constant factor added to the source attributes'
@@ -143,6 +219,62 @@ func (c constraint) Multiplier() float64 {
 	return _gdouble
 }
 
+// Relation: the order relation between the terms of the constraint.
+func (c constraint) Relation() ConstraintRelation {
+	var _arg0 *C.GtkConstraint // out
+
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkConstraintRelation // in
+
+	_cret = C.gtk_constraint_get_relation(_arg0)
+
+	var _constraintRelation ConstraintRelation // out
+
+	_constraintRelation = ConstraintRelation(_cret)
+
+	return _constraintRelation
+}
+
+// Source retrieves the [iface@Gtk.ConstraintTarget] used as the source for
+// the constraint.
+//
+// If the source is set to `NULL` at creation, the constraint will use the
+// widget using the [class@Gtk.ConstraintLayout] as the source.
+func (c constraint) Source() ConstraintTarget {
+	var _arg0 *C.GtkConstraint // out
+
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkConstraintTarget // in
+
+	_cret = C.gtk_constraint_get_source(_arg0)
+
+	var _constraintTarget ConstraintTarget // out
+
+	_constraintTarget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ConstraintTarget)
+
+	return _constraintTarget
+}
+
+// SourceAttribute retrieves the attribute of the source to be read by the
+// constraint.
+func (c constraint) SourceAttribute() ConstraintAttribute {
+	var _arg0 *C.GtkConstraint // out
+
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkConstraintAttribute // in
+
+	_cret = C.gtk_constraint_get_source_attribute(_arg0)
+
+	var _constraintAttribute ConstraintAttribute // out
+
+	_constraintAttribute = ConstraintAttribute(_cret)
+
+	return _constraintAttribute
+}
+
 // Strength retrieves the strength of the constraint.
 func (c constraint) Strength() int {
 	var _arg0 *C.GtkConstraint // out
@@ -158,6 +290,45 @@ func (c constraint) Strength() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Target retrieves the [iface@Gtk.ConstraintTarget] used as the target for
+// the constraint.
+//
+// If the targe is set to `NULL` at creation, the constraint will use the
+// widget using the [class@Gtk.ConstraintLayout] as the target.
+func (c constraint) Target() ConstraintTarget {
+	var _arg0 *C.GtkConstraint // out
+
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GtkConstraintTarget // in
+
+	_cret = C.gtk_constraint_get_target(_arg0)
+
+	var _constraintTarget ConstraintTarget // out
+
+	_constraintTarget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ConstraintTarget)
+
+	return _constraintTarget
+}
+
+// TargetAttribute retrieves the attribute of the target to be set by the
+// constraint.
+func (c constraint) TargetAttribute() ConstraintAttribute {
+	var _arg0 *C.GtkConstraint // out
+
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GtkConstraintAttribute // in
+
+	_cret = C.gtk_constraint_get_target_attribute(_arg0)
+
+	var _constraintAttribute ConstraintAttribute // out
+
+	_constraintAttribute = ConstraintAttribute(_cret)
+
+	return _constraintAttribute
 }
 
 // IsAttached checks whether the constraint is attached to a

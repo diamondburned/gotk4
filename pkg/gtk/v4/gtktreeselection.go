@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -13,12 +14,77 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+//
+// void gotk4_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_tree_selection_get_type()), F: marshalTreeSelection},
 	})
+}
+
+// TreeSelectionForeachFunc: a function used by
+// gtk_tree_selection_selected_foreach() to map all selected rows. It will be
+// called on every selected row in the view.
+type TreeSelectionForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter)
+
+//export gotk4_TreeSelectionForeachFunc
+func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var model TreeModel // out
+	var path *TreePath  // out
+	var iter *TreeIter  // out
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
+	path = WrapTreePath(unsafe.Pointer(arg1))
+	iter = WrapTreeIter(unsafe.Pointer(arg2))
+
+	fn := v.(TreeSelectionForeachFunc)
+	fn(model, path, iter)
+}
+
+// TreeSelectionFunc: a function used by
+// gtk_tree_selection_set_select_function() to filter whether or not a row may
+// be selected. It is called whenever a row's state might change.
+//
+// A return value of true indicates to @selection that it is okay to change the
+// selection.
+type TreeSelectionFunc func(selection TreeSelection, model TreeModel, path *TreePath, pathCurrentlySelected bool) (ok bool)
+
+//export gotk4_TreeSelectionFunc
+func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg4))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var selection TreeSelection    // out
+	var model TreeModel            // out
+	var path *TreePath             // out
+	var pathCurrentlySelected bool // out
+
+	selection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeSelection)
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(TreeModel)
+	path = WrapTreePath(unsafe.Pointer(arg2))
+	if arg3 != 0 {
+		pathCurrentlySelected = true
+	}
+
+	fn := v.(TreeSelectionFunc)
+	ok := fn(selection, model, path, pathCurrentlySelected)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // TreeSelection: the selection object for GtkTreeView
@@ -50,6 +116,17 @@ type TreeSelection interface {
 	// CountSelectedRows returns the number of rows that have been selected in
 	// @tree.
 	CountSelectedRows() int
+	// Mode gets the selection mode for @selection. See
+	// gtk_tree_selection_set_mode().
+	Mode() SelectionMode
+	// Selected sets @iter to the currently selected node if @selection is set
+	// to K_SELECTION_SINGLE or K_SELECTION_BROWSE. @iter may be NULL if you
+	// just want to test if @selection has any selected nodes. @model is filled
+	// with the current model as a convenience. This function will not work if
+	// you use @selection is K_SELECTION_MULTIPLE.
+	Selected() (TreeModel, TreeIter, bool)
+	// TreeView returns the tree view associated with @selection.
+	TreeView() TreeView
 	// IterIsSelected returns true if the row at @iter is currently selected.
 	IterIsSelected(iter *TreeIter) bool
 	// PathIsSelected returns true if the row pointed to by @path is currently
@@ -65,6 +142,10 @@ type TreeSelection interface {
 	// SelectRange selects a range of nodes, determined by @start_path and
 	// @end_path inclusive. @selection must be set to K_SELECTION_MULTIPLE mode.
 	SelectRange(startPath *TreePath, endPath *TreePath)
+	// SelectedForeach calls a function for each selected node. Note that you
+	// cannot modify the tree or selection from within this function. As a
+	// result, gtk_tree_selection_get_selected_rows() might be more useful.
+	SelectedForeach(fn TreeSelectionForeachFunc)
 	// SetMode sets the selection mode of the @selection. If the previous type
 	// was K_SELECTION_MULTIPLE, then the anchor is kept selected, if it was
 	// previously selected.
@@ -117,6 +198,70 @@ func (s treeSelection) CountSelectedRows() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Mode gets the selection mode for @selection. See
+// gtk_tree_selection_set_mode().
+func (s treeSelection) Mode() SelectionMode {
+	var _arg0 *C.GtkTreeSelection // out
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkSelectionMode // in
+
+	_cret = C.gtk_tree_selection_get_mode(_arg0)
+
+	var _selectionMode SelectionMode // out
+
+	_selectionMode = SelectionMode(_cret)
+
+	return _selectionMode
+}
+
+// Selected sets @iter to the currently selected node if @selection is set
+// to K_SELECTION_SINGLE or K_SELECTION_BROWSE. @iter may be NULL if you
+// just want to test if @selection has any selected nodes. @model is filled
+// with the current model as a convenience. This function will not work if
+// you use @selection is K_SELECTION_MULTIPLE.
+func (s treeSelection) Selected() (TreeModel, TreeIter, bool) {
+	var _arg0 *C.GtkTreeSelection // out
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
+
+	var _arg1 *C.GtkTreeModel // in
+	var _iter TreeIter
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+
+	var _model TreeModel // out
+
+	var _ok bool // out
+
+	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(TreeModel)
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _model, _iter, _ok
+}
+
+// TreeView returns the tree view associated with @selection.
+func (s treeSelection) TreeView() TreeView {
+	var _arg0 *C.GtkTreeSelection // out
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkTreeView // in
+
+	_cret = C.gtk_tree_selection_get_tree_view(_arg0)
+
+	var _treeView TreeView // out
+
+	_treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeView)
+
+	return _treeView
 }
 
 // IterIsSelected returns true if the row at @iter is currently selected.
@@ -206,6 +351,21 @@ func (s treeSelection) SelectRange(startPath *TreePath, endPath *TreePath) {
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(endPath.Native()))
 
 	C.gtk_tree_selection_select_range(_arg0, _arg1, _arg2)
+}
+
+// SelectedForeach calls a function for each selected node. Note that you
+// cannot modify the tree or selection from within this function. As a
+// result, gtk_tree_selection_get_selected_rows() might be more useful.
+func (s treeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
+	var _arg0 *C.GtkTreeSelection           // out
+	var _arg1 C.GtkTreeSelectionForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_TreeSelectionForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.gtk_tree_selection_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetMode sets the selection mode of the @selection. If the previous type

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,6 +74,8 @@ type LevelBar interface {
 	MaxValue() float64
 	// MinValue returns the value of the LevelBar:min-value property.
 	MinValue() float64
+	// Mode returns the value of the LevelBar:mode property.
+	Mode() LevelBarMode
 	// OffsetValue fetches the value specified for the offset marker @name in
 	// @self, returning true in case an offset named @name was found.
 	OffsetValue(name string) (float64, bool)
@@ -122,6 +125,38 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapLevelBar(obj), nil
+}
+
+// NewLevelBar constructs a class LevelBar.
+func NewLevelBar() LevelBar {
+	var _cret C.GtkLevelBar // in
+
+	_cret = C.gtk_level_bar_new()
+
+	var _levelBar LevelBar // out
+
+	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LevelBar)
+
+	return _levelBar
+}
+
+// NewLevelBarForInterval constructs a class LevelBar.
+func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
+
+	_arg1 = C.gdouble(minValue)
+	_arg2 = C.gdouble(maxValue)
+
+	var _cret C.GtkLevelBar // in
+
+	_cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
+
+	var _levelBar LevelBar // out
+
+	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LevelBar)
+
+	return _levelBar
 }
 
 // AddOffsetValue adds a new offset marker on @self at the position
@@ -194,6 +229,23 @@ func (s levelBar) MinValue() float64 {
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
+}
+
+// Mode returns the value of the LevelBar:mode property.
+func (s levelBar) Mode() LevelBarMode {
+	var _arg0 *C.GtkLevelBar // out
+
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkLevelBarMode // in
+
+	_cret = C.gtk_level_bar_get_mode(_arg0)
+
+	var _levelBarMode LevelBarMode // out
+
+	_levelBarMode = LevelBarMode(_cret)
+
+	return _levelBarMode
 }
 
 // OffsetValue fetches the value specified for the offset marker @name in

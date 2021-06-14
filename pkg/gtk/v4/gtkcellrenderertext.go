@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,6 +62,19 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCellRendererText(obj), nil
+}
+
+// NewCellRendererText constructs a class CellRendererText.
+func NewCellRendererText() CellRendererText {
+	var _cret C.GtkCellRendererText // in
+
+	_cret = C.gtk_cell_renderer_text_new()
+
+	var _cellRendererText CellRendererText // out
+
+	_cellRendererText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererText)
+
+	return _cellRendererText
 }
 
 // SetFixedHeightFromFont sets the height of a renderer to explicitly be

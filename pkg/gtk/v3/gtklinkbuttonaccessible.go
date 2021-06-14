@@ -24,11 +24,15 @@ func init() {
 
 type LinkButtonAccessible interface {
 	ButtonAccessible
+	Action
+	Image
 }
 
 // linkButtonAccessible implements the LinkButtonAccessible class.
 type linkButtonAccessible struct {
 	ButtonAccessible
+	Action
+	Image
 }
 
 var _ LinkButtonAccessible = (*linkButtonAccessible)(nil)
@@ -38,6 +42,8 @@ var _ LinkButtonAccessible = (*linkButtonAccessible)(nil)
 func WrapLinkButtonAccessible(obj *externglib.Object) LinkButtonAccessible {
 	return linkButtonAccessible{
 		ButtonAccessible: WrapButtonAccessible(obj),
+		Action:           WrapAction(obj),
+		Image:            WrapImage(obj),
 	}
 }
 

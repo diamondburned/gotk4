@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,24 +41,6 @@ type ActionableOverrider interface {
 	// This is the same form used for actions in the #GMenu associated with the
 	// window.
 	SetActionName(actionName string)
-	// SetActionTargetValue sets the target value of an actionable widget.
-	//
-	// If @target_value is nil then the target value is unset.
-	//
-	// The target value has two purposes. First, it is used as the parameter to
-	// activation of the action associated with the Actionable widget. Second,
-	// it is used to determine if the widget should be rendered as “active” —
-	// the widget is active if the state is equal to the given target.
-	//
-	// Consider the example of associating a set of buttons with a #GAction with
-	// string state in a typical “radio button” situation. Each button will be
-	// associated with the same action, but with a different target value for
-	// that action. Clicking on a particular button will activate the action
-	// with the target of that button, which will typically cause the action’s
-	// state to change to that value. Since the action’s state is now equal to
-	// the target value of the button, the button will now be rendered as active
-	// (and the other buttons, with different targets, rendered inactive).
-	SetActionTargetValue(targetValue *glib.Variant)
 }
 
 // Actionable: this interface provides a convenient way of associating widgets
@@ -151,33 +132,6 @@ func (a actionable) SetActionName(actionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_actionable_set_action_name(_arg0, _arg1)
-}
-
-// SetActionTargetValue sets the target value of an actionable widget.
-//
-// If @target_value is nil then the target value is unset.
-//
-// The target value has two purposes. First, it is used as the parameter to
-// activation of the action associated with the Actionable widget. Second,
-// it is used to determine if the widget should be rendered as “active” —
-// the widget is active if the state is equal to the given target.
-//
-// Consider the example of associating a set of buttons with a #GAction with
-// string state in a typical “radio button” situation. Each button will be
-// associated with the same action, but with a different target value for
-// that action. Clicking on a particular button will activate the action
-// with the target of that button, which will typically cause the action’s
-// state to change to that value. Since the action’s state is now equal to
-// the target value of the button, the button will now be rendered as active
-// (and the other buttons, with different targets, rendered inactive).
-func (a actionable) SetActionTargetValue(targetValue *glib.Variant) {
-	var _arg0 *C.GtkActionable // out
-	var _arg1 *C.GVariant      // out
-
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(targetValue.Native()))
-
-	C.gtk_actionable_set_action_target_value(_arg0, _arg1)
 }
 
 // SetDetailedActionName sets the action-name and associated string target

@@ -2,6 +2,13 @@
 
 package gdk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -20,6 +27,46 @@ func SelectionConvert(requestor Window, selection Atom, target Atom, time_ uint3
 	_arg4 = C.guint32(time_)
 
 	C.gdk_selection_convert(_arg1, _arg2, _arg3, _arg4)
+}
+
+// SelectionOwnerGet determines the owner of the given selection.
+func SelectionOwnerGet(selection Atom) Window {
+	var _arg1 C.GdkAtom // out
+
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_selection_owner_get(_arg1)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// SelectionOwnerGetForDisplay: determine the owner of the given selection.
+//
+// Note that the return value may be owned by a different process if a foreign
+// window was previously created for that window, but a new foreign window will
+// never be created by this call.
+func SelectionOwnerGetForDisplay(display Display, selection Atom) Window {
+	var _arg1 *C.GdkDisplay // out
+	var _arg2 C.GdkAtom     // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_selection_owner_get_for_display(_arg1, _arg2)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
 }
 
 // SelectionOwnerSet sets the owner of the given selection.

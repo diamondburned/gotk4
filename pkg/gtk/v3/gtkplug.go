@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,8 +43,17 @@ type Plug interface {
 	Window
 	Buildable
 
+	// Construct: finish the initialization of @plug for a given Socket
+	// identified by @socket_id. This function will generally only be used by
+	// classes deriving from Plug.
+	Construct(socketId Window)
 	// Embedded determines whether the plug is embedded in a socket.
 	Embedded() bool
+	// ID gets the window ID of a Plug widget, which can then be used to embed
+	// this window inside another window, for instance with gtk_socket_add_id().
+	ID() Window
+	// SocketWindow retrieves the socket the plug is embedded in.
+	SocketWindow() Window
 }
 
 // plug implements the Plug class.
@@ -69,6 +79,36 @@ func marshalPlug(p uintptr) (interface{}, error) {
 	return WrapPlug(obj), nil
 }
 
+// NewPlug constructs a class Plug.
+func NewPlug(socketId Window) Plug {
+	var _arg1 C.Window // out
+
+	_arg1 = (C.Window)(unsafe.Pointer(socketId.Native()))
+
+	var _cret C.GtkPlug // in
+
+	_cret = C.gtk_plug_new(_arg1)
+
+	var _plug Plug // out
+
+	_plug = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Plug)
+
+	return _plug
+}
+
+// Construct: finish the initialization of @plug for a given Socket
+// identified by @socket_id. This function will generally only be used by
+// classes deriving from Plug.
+func (p plug) Construct(socketId Window) {
+	var _arg0 *C.GtkPlug // out
+	var _arg1 C.Window   // out
+
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
+	_arg1 = (C.Window)(unsafe.Pointer(socketId.Native()))
+
+	C.gtk_plug_construct(_arg0, _arg1)
+}
+
 // Embedded determines whether the plug is embedded in a socket.
 func (p plug) Embedded() bool {
 	var _arg0 *C.GtkPlug // out
@@ -86,4 +126,39 @@ func (p plug) Embedded() bool {
 	}
 
 	return _ok
+}
+
+// ID gets the window ID of a Plug widget, which can then be used to embed
+// this window inside another window, for instance with gtk_socket_add_id().
+func (p plug) ID() Window {
+	var _arg0 *C.GtkPlug // out
+
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
+
+	var _cret C.Window // in
+
+	_cret = C.gtk_plug_get_id(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// SocketWindow retrieves the socket the plug is embedded in.
+func (p plug) SocketWindow() Window {
+	var _arg0 *C.GtkPlug // out
+
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gtk_plug_get_socket_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
 }

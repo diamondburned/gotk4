@@ -48,6 +48,22 @@ func marshalTransform(p uintptr) (interface{}, error) {
 	return WrapTransform(unsafe.Pointer(b)), nil
 }
 
+// NewTransform constructs a struct Transform.
+func NewTransform() *Transform {
+	var _cret *C.GskTransform // in
+
+	_cret = C.gsk_transform_new()
+
+	var _transform *Transform // out
+
+	_transform = WrapTransform(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_transform, func(v *Transform) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _transform
+}
+
 // Native returns the underlying C source pointer.
 func (t *Transform) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
@@ -72,6 +88,166 @@ func (f *Transform) Equal(second *Transform) bool {
 	}
 
 	return _ok
+}
+
+// Category returns the category this transform belongs to.
+func (s *Transform) Category() TransformCategory {
+	var _arg0 *C.GskTransform // out
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GskTransformCategory // in
+
+	_cret = C.gsk_transform_get_category(_arg0)
+
+	var _transformCategory TransformCategory // out
+
+	_transformCategory = TransformCategory(_cret)
+
+	return _transformCategory
+}
+
+// Invert inverts the given transform.
+//
+// If @self is not invertible, nil is returned. Note that inverting nil also
+// returns nil, which is the correct inverse of nil. If you need to
+// differentiate between those cases, you should check @self is not nil before
+// calling this function.
+func (s *Transform) Invert() *Transform {
+	var _arg0 *C.GskTransform // out
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GskTransform // in
+
+	_cret = C.gsk_transform_invert(_arg0)
+
+	var _transform *Transform // out
+
+	_transform = WrapTransform(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_transform, func(v *Transform) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _transform
+}
+
+// Perspective applies a perspective projection transform.
+//
+// This transform scales points in X and Y based on their Z value, scaling
+// points with positive Z values away from the origin, and those with negative Z
+// values towards the origin. Points on the z=0 plane are unchanged.
+func (n *Transform) Perspective(depth float32) *Transform {
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
+	_arg1 = C.float(depth)
+
+	var _cret *C.GskTransform // in
+
+	_cret = C.gsk_transform_perspective(_arg0, _arg1)
+
+	var _transform *Transform // out
+
+	_transform = WrapTransform(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_transform, func(v *Transform) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _transform
+}
+
+// Ref acquires a reference on the given `GskTransform`.
+func (s *Transform) Ref() *Transform {
+	var _arg0 *C.GskTransform // out
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GskTransform // in
+
+	_cret = C.gsk_transform_ref(_arg0)
+
+	var _transform *Transform // out
+
+	_transform = WrapTransform(unsafe.Pointer(_cret))
+
+	return _transform
+}
+
+// Rotate rotates @next @angle degrees in 2D - or in 3D-speak, around the z
+// axis.
+func (n *Transform) Rotate(angle float32) *Transform {
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
+	_arg1 = C.float(angle)
+
+	var _cret *C.GskTransform // in
+
+	_cret = C.gsk_transform_rotate(_arg0, _arg1)
+
+	var _transform *Transform // out
+
+	_transform = WrapTransform(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_transform, func(v *Transform) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _transform
+}
+
+// Scale scales @next in 2-dimensional space by the given factors.
+//
+// Use [method@Gsk.Transform.scale_3d] to scale in all 3 dimensions.
+func (n *Transform) Scale(factorX float32, factorY float32) *Transform {
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+	var _arg2 C.float         // out
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+
+	var _cret *C.GskTransform // in
+
+	_cret = C.gsk_transform_scale(_arg0, _arg1, _arg2)
+
+	var _transform *Transform // out
+
+	_transform = WrapTransform(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_transform, func(v *Transform) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _transform
+}
+
+// Scale3D scales @next by the given factors.
+func (n *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+	var _arg2 C.float         // out
+	var _arg3 C.float         // out
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	_arg3 = C.float(factorZ)
+
+	var _cret *C.GskTransform // in
+
+	_cret = C.gsk_transform_scale_3d(_arg0, _arg1, _arg2, _arg3)
+
+	var _transform *Transform // out
+
+	_transform = WrapTransform(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_transform, func(v *Transform) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _transform
 }
 
 // To2D converts a `GskTransform` to a 2D transformation matrix.
@@ -145,21 +321,6 @@ func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx floa
 	return _outScaleX, _outScaleY, _outDx, _outDy
 }
 
-// ToMatrix computes the actual value of @self and stores it in @out_matrix.
-//
-// The previous value of @out_matrix will be ignored.
-func (s *Transform) ToMatrix() graphene.Matrix {
-	var _arg0 *C.GskTransform // out
-
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _outMatrix graphene.Matrix
-
-	C.gsk_transform_to_matrix(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_outMatrix)))
-
-	return _outMatrix
-}
-
 // String converts a matrix into a string that is suitable for printing.
 //
 // The resulting string can be parsed with [func@Gsk.Transform.parse].
@@ -205,38 +366,26 @@ func (s *Transform) ToTranslate() (outDx float32, outDy float32) {
 	return _outDx, _outDy
 }
 
-// TransformBounds transforms a `graphene_rect_t` using the given transform
-// @self.
-//
-// The result is the bounding box containing the coplanar quad.
-func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
-	var _arg0 *C.GskTransform    // out
-	var _arg1 *C.graphene_rect_t // out
+// Transform applies all the operations from @other to @next.
+func (n *Transform) Transform(other *Transform) *Transform {
+	var _arg0 *C.GskTransform // out
+	var _arg1 *C.GskTransform // out
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
+	_arg1 = (*C.GskTransform)(unsafe.Pointer(other.Native()))
 
-	var _outRect graphene.Rect
+	var _cret *C.GskTransform // in
 
-	C.gsk_transform_transform_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_outRect)))
+	_cret = C.gsk_transform_transform(_arg0, _arg1)
 
-	return _outRect
-}
+	var _transform *Transform // out
 
-// TransformPoint transforms a `graphene_point_t` using the given transform
-// @self.
-func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
-	var _arg0 *C.GskTransform     // out
-	var _arg1 *C.graphene_point_t // out
+	_transform = WrapTransform(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_transform, func(v *Transform) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
-
-	var _outPoint graphene.Point
-
-	C.gsk_transform_transform_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_outPoint)))
-
-	return _outPoint
+	return _transform
 }
 
 // Unref releases a reference on the given `GskTransform`.

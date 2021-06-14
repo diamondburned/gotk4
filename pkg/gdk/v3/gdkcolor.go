@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -72,6 +73,28 @@ func (c *Color) Blue() uint16 {
 	var v uint16 // out
 	v = (uint16)(c.native.blue)
 	return v
+}
+
+// Copy makes a copy of a Color.
+//
+// The result must be freed using gdk_color_free().
+func (c *Color) Copy() *Color {
+	var _arg0 *C.GdkColor // out
+
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkColor // in
+
+	_cret = C.gdk_color_copy(_arg0)
+
+	var _ret *Color // out
+
+	_ret = WrapColor(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Color) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _ret
 }
 
 // Equal compares two colors.

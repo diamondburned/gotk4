@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,6 +55,19 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGestureRotate(obj), nil
+}
+
+// NewGestureRotate constructs a class GestureRotate.
+func NewGestureRotate() GestureRotate {
+	var _cret C.GtkGestureRotate // in
+
+	_cret = C.gtk_gesture_rotate_new()
+
+	var _gestureRotate GestureRotate // out
+
+	_gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureRotate)
+
+	return _gestureRotate
 }
 
 // AngleDelta gets the angle delta in radians.

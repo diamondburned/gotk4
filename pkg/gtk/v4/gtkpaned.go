@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -85,6 +86,10 @@ type Paned interface {
 	ConstraintTarget
 	Orientable
 
+	// EndChild retrieves the end child of the given `GtkPaned`.
+	//
+	// See also: `GtkPaned`:end-child
+	EndChild() Widget
 	// Position obtains the position of the divider between the two panes.
 	Position() int
 	// ResizeEndChild returns whether the end child can be resized.
@@ -95,6 +100,10 @@ type Paned interface {
 	ShrinkEndChild() bool
 	// ShrinkStartChild returns whether the start child can be shrunk.
 	ShrinkStartChild() bool
+	// StartChild retrieves the start child of the given `GtkPaned`.
+	//
+	// See also: `GtkPaned`:start-child
+	StartChild() Widget
 	// WideHandle gets whether the separator should be wide.
 	WideHandle() bool
 	// SetEndChild sets the end child of @paned to @child.
@@ -142,6 +151,42 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPaned(obj), nil
+}
+
+// NewPaned constructs a class Paned.
+func NewPaned(orientation Orientation) Paned {
+	var _arg1 C.GtkOrientation // out
+
+	_arg1 = (C.GtkOrientation)(orientation)
+
+	var _cret C.GtkPaned // in
+
+	_cret = C.gtk_paned_new(_arg1)
+
+	var _paned Paned // out
+
+	_paned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Paned)
+
+	return _paned
+}
+
+// EndChild retrieves the end child of the given `GtkPaned`.
+//
+// See also: `GtkPaned`:end-child
+func (p paned) EndChild() Widget {
+	var _arg0 *C.GtkPaned // out
+
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_paned_get_end_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Position obtains the position of the divider between the two panes.
@@ -235,6 +280,25 @@ func (p paned) ShrinkStartChild() bool {
 	}
 
 	return _ok
+}
+
+// StartChild retrieves the start child of the given `GtkPaned`.
+//
+// See also: `GtkPaned`:start-child
+func (p paned) StartChild() Widget {
+	var _arg0 *C.GtkPaned // out
+
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_paned_get_start_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // WideHandle gets whether the separator should be wide.

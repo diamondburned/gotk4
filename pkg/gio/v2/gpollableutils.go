@@ -2,6 +2,12 @@
 
 package gio
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+)
+
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -16,3 +22,125 @@ package gio
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
+
+// PollableStreamRead tries to read from @stream, as with g_input_stream_read()
+// (if @blocking is true) or g_pollable_input_stream_read_nonblocking() (if
+// @blocking is false). This can be used to more easily share code between
+// blocking and non-blocking implementations of a method.
+//
+// If @blocking is false, then @stream must be a InputStream for which
+// g_pollable_input_stream_can_poll() returns true, or else the behavior is
+// undefined. If @blocking is true, then @stream does not need to be a
+// InputStream.
+func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
+	var _arg1 *C.GInputStream // out
+	var _arg2 *C.void
+	var _arg3 C.gsize
+	var _arg4 C.gboolean      // out
+	var _arg5 *C.GCancellable // out
+
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg3 = C.gsize(len(buffer))
+	_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if blocking {
+		_arg4 = C.TRUE
+	}
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_pollable_stream_read(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gssize, _goerr
+}
+
+// PollableStreamWrite tries to write to @stream, as with
+// g_output_stream_write() (if @blocking is true) or
+// g_pollable_output_stream_write_nonblocking() (if @blocking is false). This
+// can be used to more easily share code between blocking and non-blocking
+// implementations of a method.
+//
+// If @blocking is false, then @stream must be a OutputStream for which
+// g_pollable_output_stream_can_poll() returns true or else the behavior is
+// undefined. If @blocking is true, then @stream does not need to be a
+// OutputStream.
+func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
+	var _arg1 *C.GOutputStream // out
+	var _arg2 *C.void
+	var _arg3 C.gsize
+	var _arg4 C.gboolean      // out
+	var _arg5 *C.GCancellable // out
+
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg3 = C.gsize(len(buffer))
+	_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if blocking {
+		_arg4 = C.TRUE
+	}
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
+
+	_cret = C.g_pollable_stream_write(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gssize, _goerr
+}
+
+// PollableStreamWriteAll tries to write @count bytes to @stream, as with
+// g_output_stream_write_all(), but using g_pollable_stream_write() rather than
+// g_output_stream_write().
+//
+// On a successful write of @count bytes, true is returned, and @bytes_written
+// is set to @count.
+//
+// If there is an error during the operation (including G_IO_ERROR_WOULD_BLOCK
+// in the non-blocking case), false is returned and @error is set to indicate
+// the error status, @bytes_written is updated to contain the number of bytes
+// written into the stream before the error occurred.
+//
+// As with g_pollable_stream_write(), if @blocking is false, then @stream must
+// be a OutputStream for which g_pollable_output_stream_can_poll() returns true
+// or else the behavior is undefined. If @blocking is true, then @stream does
+// not need to be a OutputStream.
+func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (uint, error) {
+	var _arg1 *C.GOutputStream // out
+	var _arg2 *C.void
+	var _arg3 C.gsize
+	var _arg4 C.gboolean      // out
+	var _arg6 *C.GCancellable // out
+
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg3 = C.gsize(len(buffer))
+	_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if blocking {
+		_arg4 = C.TRUE
+	}
+	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg5 C.gsize   // in
+	var _cerr *C.GError // in
+
+	C.g_pollable_stream_write_all(_arg1, _arg2, _arg3, _arg4, _arg6, &_arg5, &_cerr)
+
+	var _bytesWritten uint // out
+	var _goerr error       // out
+
+	_bytesWritten = (uint)(_arg5)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _bytesWritten, _goerr
+}

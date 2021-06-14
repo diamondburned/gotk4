@@ -53,6 +53,8 @@ type DeviceTool interface {
 	// Serial gets the serial of this tool, this value can be used to identify a
 	// physical tool (eg. a tablet pen) across program executions.
 	Serial() uint64
+	// ToolType gets the DeviceToolType of the tool.
+	ToolType() DeviceToolType
 }
 
 // deviceTool implements the DeviceTool class.
@@ -119,9 +121,47 @@ func (t deviceTool) Serial() uint64 {
 	return _guint64
 }
 
+// ToolType gets the DeviceToolType of the tool.
+func (t deviceTool) ToolType() DeviceToolType {
+	var _arg0 *C.GdkDeviceTool // out
+
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GdkDeviceToolType // in
+
+	_cret = C.gdk_device_tool_get_tool_type(_arg0)
+
+	var _deviceToolType DeviceToolType // out
+
+	_deviceToolType = DeviceToolType(_cret)
+
+	return _deviceToolType
+}
+
 type DragContext interface {
 	gextras.Objector
 
+	// Actions determines the bitmask of actions proposed by the source if
+	// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
+	Actions() DragAction
+	// DestWindow returns the destination window for the DND operation.
+	DestWindow() Window
+	// Device returns the Device associated to the drag context.
+	Device() Device
+	// DragWindow returns the window on which the drag icon should be rendered
+	// during the drag operation. Note that the window may not be available
+	// until the drag operation has begun. GDK will move the window in
+	// accordance with the ongoing drag operation. The window is owned by
+	// @context and will be destroyed when the drag operation is over.
+	DragWindow() Window
+	// Protocol returns the drag protocol that is used by this context.
+	Protocol() DragProtocol
+	// SelectedAction determines the action chosen by the drag destination.
+	SelectedAction() DragAction
+	// SourceWindow returns the Window where the DND operation started.
+	SourceWindow() Window
+	// SuggestedAction determines the suggested drag action of the context.
+	SuggestedAction() DragAction
 	// ManageDnd requests the drag and drop operation to be managed by @context.
 	// When a drag and drop operation becomes managed, the DragContext will
 	// internally handle all input and source-side EventDND events as required
@@ -166,6 +206,147 @@ func marshalDragContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDragContext(obj), nil
+}
+
+// Actions determines the bitmask of actions proposed by the source if
+// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
+func (c dragContext) Actions() DragAction {
+	var _arg0 *C.GdkDragContext // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GdkDragAction // in
+
+	_cret = C.gdk_drag_context_get_actions(_arg0)
+
+	var _dragAction DragAction // out
+
+	_dragAction = DragAction(_cret)
+
+	return _dragAction
+}
+
+// DestWindow returns the destination window for the DND operation.
+func (c dragContext) DestWindow() Window {
+	var _arg0 *C.GdkDragContext // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_drag_context_get_dest_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// Device returns the Device associated to the drag context.
+func (c dragContext) Device() Device {
+	var _arg0 *C.GdkDragContext // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkDevice // in
+
+	_cret = C.gdk_drag_context_get_device(_arg0)
+
+	var _device Device // out
+
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
+
+	return _device
+}
+
+// DragWindow returns the window on which the drag icon should be rendered
+// during the drag operation. Note that the window may not be available
+// until the drag operation has begun. GDK will move the window in
+// accordance with the ongoing drag operation. The window is owned by
+// @context and will be destroyed when the drag operation is over.
+func (c dragContext) DragWindow() Window {
+	var _arg0 *C.GdkDragContext // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_drag_context_get_drag_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// Protocol returns the drag protocol that is used by this context.
+func (c dragContext) Protocol() DragProtocol {
+	var _arg0 *C.GdkDragContext // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GdkDragProtocol // in
+
+	_cret = C.gdk_drag_context_get_protocol(_arg0)
+
+	var _dragProtocol DragProtocol // out
+
+	_dragProtocol = DragProtocol(_cret)
+
+	return _dragProtocol
+}
+
+// SelectedAction determines the action chosen by the drag destination.
+func (c dragContext) SelectedAction() DragAction {
+	var _arg0 *C.GdkDragContext // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GdkDragAction // in
+
+	_cret = C.gdk_drag_context_get_selected_action(_arg0)
+
+	var _dragAction DragAction // out
+
+	_dragAction = DragAction(_cret)
+
+	return _dragAction
+}
+
+// SourceWindow returns the Window where the DND operation started.
+func (c dragContext) SourceWindow() Window {
+	var _arg0 *C.GdkDragContext // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_drag_context_get_source_window(_arg0)
+
+	var _window Window // out
+
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+
+	return _window
+}
+
+// SuggestedAction determines the suggested drag action of the context.
+func (c dragContext) SuggestedAction() DragAction {
+	var _arg0 *C.GdkDragContext // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GdkDragAction // in
+
+	_cret = C.gdk_drag_context_get_suggested_action(_arg0)
+
+	var _dragAction DragAction // out
+
+	_dragAction = DragAction(_cret)
+
+	return _dragAction
 }
 
 // ManageDnd requests the drag and drop operation to be managed by @context.

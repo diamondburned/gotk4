@@ -24,6 +24,38 @@ func init() {
 	})
 }
 
+// TreeGetRowDragData obtains a @tree_model and @path from selection data of
+// target type GTK_TREE_MODEL_ROW. Normally called from a drag_data_received
+// handler. This function can only be used if @selection_data originates from
+// the same process that’s calling this function, because a pointer to the tree
+// model is being passed around. If you aren’t in the same process, then you'll
+// get memory corruption. In the TreeDragDest drag_data_received handler, you
+// can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
+// current process. The returned path must be freed with gtk_tree_path_free().
+func TreeGetRowDragData(selectionData *SelectionData) (TreeModel, *TreePath, bool) {
+	var _arg1 *C.GtkSelectionData // out
+
+	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
+
+	var _arg2 *C.GtkTreeModel // in
+	var _path *TreePath
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)))
+
+	var _treeModel TreeModel // out
+
+	var _ok bool // out
+
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(TreeModel)
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _treeModel, _path, _ok
+}
+
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
 // Normally used in a drag_data_get handler.
 func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path *TreePath) bool {

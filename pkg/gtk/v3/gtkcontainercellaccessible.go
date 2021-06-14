@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,6 +25,7 @@ func init() {
 
 type ContainerCellAccessible interface {
 	CellAccessible
+	Action
 
 	AddChild(child CellAccessible)
 
@@ -33,6 +35,7 @@ type ContainerCellAccessible interface {
 // containerCellAccessible implements the ContainerCellAccessible class.
 type containerCellAccessible struct {
 	CellAccessible
+	Action
 }
 
 var _ ContainerCellAccessible = (*containerCellAccessible)(nil)
@@ -42,6 +45,7 @@ var _ ContainerCellAccessible = (*containerCellAccessible)(nil)
 func WrapContainerCellAccessible(obj *externglib.Object) ContainerCellAccessible {
 	return containerCellAccessible{
 		CellAccessible: WrapCellAccessible(obj),
+		Action:         WrapAction(obj),
 	}
 }
 
@@ -49,6 +53,19 @@ func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapContainerCellAccessible(obj), nil
+}
+
+// NewContainerCellAccessible constructs a class ContainerCellAccessible.
+func NewContainerCellAccessible() ContainerCellAccessible {
+	var _cret C.GtkContainerCellAccessible // in
+
+	_cret = C.gtk_container_cell_accessible_new()
+
+	var _containerCellAccessible ContainerCellAccessible // out
+
+	_containerCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContainerCellAccessible)
+
+	return _containerCellAccessible
 }
 
 func (c containerCellAccessible) AddChild(child CellAccessible) {

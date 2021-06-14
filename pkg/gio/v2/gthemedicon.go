@@ -78,6 +78,70 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 	return WrapThemedIcon(obj), nil
 }
 
+// NewThemedIcon constructs a class ThemedIcon.
+func NewThemedIcon(iconname string) ThemedIcon {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(iconname))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GThemedIcon // in
+
+	_cret = C.g_themed_icon_new(_arg1)
+
+	var _themedIcon ThemedIcon // out
+
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
+
+	return _themedIcon
+}
+
+// NewThemedIconFromNames constructs a class ThemedIcon.
+func NewThemedIconFromNames(iconnames []string) ThemedIcon {
+	var _arg1 **C.char
+	var _arg2 C.int
+
+	_arg2 = C.int(len(iconnames))
+	_arg1 = (**C.char)(C.malloc(C.ulong(len(iconnames)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	{
+		out := unsafe.Slice(_arg1, len(iconnames))
+		for i := range iconnames {
+			out[i] = (*C.char)(C.CString(iconnames[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	var _cret C.GThemedIcon // in
+
+	_cret = C.g_themed_icon_new_from_names(_arg1, _arg2)
+
+	var _themedIcon ThemedIcon // out
+
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
+
+	return _themedIcon
+}
+
+// NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
+func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(iconname))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GThemedIcon // in
+
+	_cret = C.g_themed_icon_new_with_default_fallbacks(_arg1)
+
+	var _themedIcon ThemedIcon // out
+
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
+
+	return _themedIcon
+}
+
 // AppendName: append a name to the list of icons from within @icon.
 //
 // Note that doing so invalidates the hash computed by prior calls to

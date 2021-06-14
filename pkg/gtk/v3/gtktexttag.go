@@ -82,6 +82,24 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 	return WrapTextTag(obj), nil
 }
 
+// NewTextTag constructs a class TextTag.
+func NewTextTag(name string) TextTag {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkTextTag // in
+
+	_cret = C.gtk_text_tag_new(_arg1)
+
+	var _textTag TextTag // out
+
+	_textTag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextTag)
+
+	return _textTag
+}
+
 // Changed emits the TextTagTable::tag-changed signal on the TextTagTable
 // where the tag is included.
 //

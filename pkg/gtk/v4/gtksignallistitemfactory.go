@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -84,4 +85,17 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSignalListItemFactory(obj), nil
+}
+
+// NewSignalListItemFactory constructs a class SignalListItemFactory.
+func NewSignalListItemFactory() SignalListItemFactory {
+	var _cret C.GtkSignalListItemFactory // in
+
+	_cret = C.gtk_signal_list_item_factory_new()
+
+	var _signalListItemFactory SignalListItemFactory // out
+
+	_signalListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SignalListItemFactory)
+
+	return _signalListItemFactory
 }

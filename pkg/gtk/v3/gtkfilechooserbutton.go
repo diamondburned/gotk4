@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -105,6 +106,43 @@ func marshalFileChooserButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFileChooserButton(obj), nil
+}
+
+// NewFileChooserButton constructs a class FileChooserButton.
+func NewFileChooserButton(title string, action FileChooserAction) FileChooserButton {
+	var _arg1 *C.gchar               // out
+	var _arg2 C.GtkFileChooserAction // out
+
+	_arg1 = (*C.gchar)(C.CString(title))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GtkFileChooserAction)(action)
+
+	var _cret C.GtkFileChooserButton // in
+
+	_cret = C.gtk_file_chooser_button_new(_arg1, _arg2)
+
+	var _fileChooserButton FileChooserButton // out
+
+	_fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileChooserButton)
+
+	return _fileChooserButton
+}
+
+// NewFileChooserButtonWithDialog constructs a class FileChooserButton.
+func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
+	var _arg1 *C.GtkWidget // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(dialog.Native()))
+
+	var _cret C.GtkFileChooserButton // in
+
+	_cret = C.gtk_file_chooser_button_new_with_dialog(_arg1)
+
+	var _fileChooserButton FileChooserButton // out
+
+	_fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileChooserButton)
+
+	return _fileChooserButton
 }
 
 // FocusOnClick returns whether the button grabs focus when it is clicked

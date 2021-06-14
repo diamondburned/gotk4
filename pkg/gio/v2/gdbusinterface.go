@@ -34,6 +34,11 @@ func init() {
 // DBusInterfaceOverrider contains methods that are overridable. This
 // interface is a subset of the interface DBusInterface.
 type DBusInterfaceOverrider interface {
+	// DupObject gets the BusObject that @interface_ belongs to, if any.
+	DupObject() DBusObject
+	// Info gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
+	Info() *DBusInterfaceInfo
 	// SetObject sets the BusObject for @interface_ to @object.
 	//
 	// Note that @interface_ will hold a weak reference to @object.
@@ -67,6 +72,41 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusInterface(obj), nil
+}
+
+// DupObject gets the BusObject that @interface_ belongs to, if any.
+func (i dBusInterface) DupObject() DBusObject {
+	var _arg0 *C.GDBusInterface // out
+
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GDBusObject // in
+
+	_cret = C.g_dbus_interface_dup_object(_arg0)
+
+	var _dBusObject DBusObject // out
+
+	_dBusObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObject)
+
+	return _dBusObject
+}
+
+// Info gets D-Bus introspection information for the D-Bus interface
+// implemented by @interface_.
+func (i dBusInterface) Info() *DBusInterfaceInfo {
+	var _arg0 *C.GDBusInterface // out
+
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GDBusInterfaceInfo // in
+
+	_cret = C.g_dbus_interface_get_info(_arg0)
+
+	var _dBusInterfaceInfo *DBusInterfaceInfo // out
+
+	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
+
+	return _dBusInterfaceInfo
 }
 
 // SetObject sets the BusObject for @interface_ to @object.

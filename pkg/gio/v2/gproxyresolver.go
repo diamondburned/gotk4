@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -38,6 +39,23 @@ type ProXYResolverOverrider interface {
 	// internally; g_proxy_resolver_get_default() will only return a proxy
 	// resolver that returns true for this method.)
 	IsSupported() bool
+	// Lookup looks into the system proxy configuration to determine what proxy,
+	// if any, to use to connect to @uri. The returned proxy URIs are of the
+	// form `<protocol>://[user[:password]@]host:port` or `direct://`, where
+	// <protocol> could be http, rtsp, socks or other proxying protocol.
+	//
+	// If you don't know what network protocol is being used on the socket, you
+	// should use `none` as the URI protocol. In this case, the resolver might
+	// still return a generic proxy type (such as SOCKS), but would not return
+	// protocol-specific proxy types (such as http).
+	//
+	// `direct://` is used when no proxy is needed. Direct connection should not
+	// be attempted unless it is part of the returned array of proxies.
+	Lookup(uri string, cancellable Cancellable) ([]string, error)
+	// LookupFinish: call this function to obtain the array of proxy URIs when
+	// g_proxy_resolver_lookup_async() is complete. See
+	// g_proxy_resolver_lookup() for more details.
+	LookupFinish(result AsyncResult) ([]string, error)
 }
 
 // ProXYResolver provides synchronous and asynchronous network proxy resolution.
@@ -92,4 +110,94 @@ func (r proXYResolver) IsSupported() bool {
 	}
 
 	return _ok
+}
+
+// Lookup looks into the system proxy configuration to determine what proxy,
+// if any, to use to connect to @uri. The returned proxy URIs are of the
+// form `<protocol>://[user[:password]@]host:port` or `direct://`, where
+// <protocol> could be http, rtsp, socks or other proxying protocol.
+//
+// If you don't know what network protocol is being used on the socket, you
+// should use `none` as the URI protocol. In this case, the resolver might
+// still return a generic proxy type (such as SOCKS), but would not return
+// protocol-specific proxy types (such as http).
+//
+// `direct://` is used when no proxy is needed. Direct connection should not
+// be attempted unless it is part of the returned array of proxies.
+func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
+	var _arg0 *C.GProxyResolver // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.GCancellable   // out
+
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret **C.gchar
+	var _cerr *C.GError // in
+
+	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
+
+	var _utf8s []string
+	var _goerr error // out
+
+	{
+		var length int
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_cret, length)
+		_utf8s = make([]string, length)
+		for i := range src {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8s, _goerr
+}
+
+// LookupFinish: call this function to obtain the array of proxy URIs when
+// g_proxy_resolver_lookup_async() is complete. See
+// g_proxy_resolver_lookup() for more details.
+func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
+	var _arg0 *C.GProxyResolver // out
+	var _arg1 *C.GAsyncResult   // out
+
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cret **C.gchar
+	var _cerr *C.GError // in
+
+	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
+
+	var _utf8s []string
+	var _goerr error // out
+
+	{
+		var length int
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_cret, length)
+		_utf8s = make([]string, length)
+		for i := range src {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8s, _goerr
 }

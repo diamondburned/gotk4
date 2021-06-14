@@ -56,6 +56,8 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 type Monitor interface {
 	gextras.Objector
 
+	// Display gets the display that this monitor belongs to.
+	Display() Display
 	// Geometry retrieves the size and position of an individual monitor within
 	// the display coordinate space. The returned geometry is in ”application
 	// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
@@ -84,6 +86,9 @@ type Monitor interface {
 	// monitor, but most of the time you’re drawing to a window where it is
 	// better to use gdk_window_get_scale_factor() instead.
 	ScaleFactor() int
+	// SubpixelLayout gets information about the layout of red, green and blue
+	// primaries for each pixel in this monitor, if available.
+	SubpixelLayout() SubpixelLayout
 	// WidthMm gets the width in millimeters of the monitor.
 	WidthMm() int
 	// Workarea retrieves the size and position of the “work area” on a monitor
@@ -123,6 +128,23 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMonitor(obj), nil
+}
+
+// Display gets the display that this monitor belongs to.
+func (m monitor) Display() Display {
+	var _arg0 *C.GdkMonitor // out
+
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_monitor_get_display(_arg0)
+
+	var _display Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+
+	return _display
 }
 
 // Geometry retrieves the size and position of an individual monitor within
@@ -237,6 +259,24 @@ func (m monitor) ScaleFactor() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// SubpixelLayout gets information about the layout of red, green and blue
+// primaries for each pixel in this monitor, if available.
+func (m monitor) SubpixelLayout() SubpixelLayout {
+	var _arg0 *C.GdkMonitor // out
+
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+
+	var _cret C.GdkSubpixelLayout // in
+
+	_cret = C.gdk_monitor_get_subpixel_layout(_arg0)
+
+	var _subpixelLayout SubpixelLayout // out
+
+	_subpixelLayout = SubpixelLayout(_cret)
+
+	return _subpixelLayout
 }
 
 // WidthMm gets the width in millimeters of the monitor.

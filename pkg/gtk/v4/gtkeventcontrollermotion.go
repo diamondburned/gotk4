@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,6 +60,19 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEventControllerMotion(obj), nil
+}
+
+// NewEventControllerMotion constructs a class EventControllerMotion.
+func NewEventControllerMotion() EventControllerMotion {
+	var _cret C.GtkEventControllerMotion // in
+
+	_cret = C.gtk_event_controller_motion_new()
+
+	var _eventControllerMotion EventControllerMotion // out
+
+	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerMotion)
+
+	return _eventControllerMotion
 }
 
 // ContainsPointer returns if a pointer is within @self or one of its

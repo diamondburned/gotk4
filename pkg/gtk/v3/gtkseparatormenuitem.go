@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,4 +63,17 @@ func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSeparatorMenuItem(obj), nil
+}
+
+// NewSeparatorMenuItem constructs a class SeparatorMenuItem.
+func NewSeparatorMenuItem() SeparatorMenuItem {
+	var _cret C.GtkSeparatorMenuItem // in
+
+	_cret = C.gtk_separator_menu_item_new()
+
+	var _separatorMenuItem SeparatorMenuItem // out
+
+	_separatorMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SeparatorMenuItem)
+
+	return _separatorMenuItem
 }

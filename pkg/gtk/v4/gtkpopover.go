@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -97,6 +97,8 @@ type Popover interface {
 	// CascadePopdown returns whether the popover will close after a modal child
 	// is closed.
 	CascadePopdown() bool
+	// Child gets the child widget of @popover.
+	Child() Widget
 	// HasArrow gets whether this popover is showing an arrow pointing at the
 	// widget that it is relative to.
 	HasArrow() bool
@@ -104,12 +106,8 @@ type Popover interface {
 	MnemonicsVisible() bool
 	// Offset gets the offset previous set with gtk_popover_set_offset().
 	Offset() (xOffset int, yOffset int)
-	// PointingTo gets the rectangle that the popover points to.
-	//
-	// If a rectangle to point to has been set, this function will return true
-	// and fill in @rect with such rectangle, otherwise it will return false and
-	// fill in @rect with the parent widget coordinates.
-	PointingTo() (gdk.Rectangle, bool)
+	// Position returns the preferred position of @popover.
+	Position() PositionType
 	// Popdown pops @popover down.
 	//
 	// This is different from a [method@Gtk.Widget.hide] call in that it may
@@ -157,10 +155,6 @@ type Popover interface {
 	// These values are used when preparing the [struct@Gdk.PopupLayout] for
 	// positioning the popover.
 	SetOffset(xOffset int, yOffset int)
-	// SetPointingTo sets the rectangle that @popover points to.
-	//
-	// This is in the coordinate space of the @popover parent.
-	SetPointingTo(rect *gdk.Rectangle)
 	// SetPosition sets the preferred position for @popover to appear.
 	//
 	// If the @popover is currently visible, it will be immediately updated.
@@ -202,6 +196,19 @@ func marshalPopover(p uintptr) (interface{}, error) {
 	return WrapPopover(obj), nil
 }
 
+// NewPopover constructs a class Popover.
+func NewPopover() Popover {
+	var _cret C.GtkPopover // in
+
+	_cret = C.gtk_popover_new()
+
+	var _popover Popover // out
+
+	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Popover)
+
+	return _popover
+}
+
 // Autohide returns whether the popover is modal.
 //
 // See [method@Gtk.Popover.set_autohide] for the implications of this.
@@ -241,6 +248,23 @@ func (p popover) CascadePopdown() bool {
 	}
 
 	return _ok
+}
+
+// Child gets the child widget of @popover.
+func (p popover) Child() Widget {
+	var _arg0 *C.GtkPopover // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_popover_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // HasArrow gets whether this popover is showing an arrow pointing at the
@@ -302,28 +326,21 @@ func (p popover) Offset() (xOffset int, yOffset int) {
 	return _xOffset, _yOffset
 }
 
-// PointingTo gets the rectangle that the popover points to.
-//
-// If a rectangle to point to has been set, this function will return true
-// and fill in @rect with such rectangle, otherwise it will return false and
-// fill in @rect with the parent widget coordinates.
-func (p popover) PointingTo() (gdk.Rectangle, bool) {
+// Position returns the preferred position of @popover.
+func (p popover) Position() PositionType {
 	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var _rect gdk.Rectangle
-	var _cret C.gboolean // in
+	var _cret C.GtkPositionType // in
 
-	_cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_popover_get_position(_arg0)
 
-	var _ok bool // out
+	var _positionType PositionType // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+	_positionType = PositionType(_cret)
 
-	return _rect, _ok
+	return _positionType
 }
 
 // Popdown pops @popover down.
@@ -465,19 +482,6 @@ func (p popover) SetOffset(xOffset int, yOffset int) {
 	_arg2 = C.int(yOffset)
 
 	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
-}
-
-// SetPointingTo sets the rectangle that @popover points to.
-//
-// This is in the coordinate space of the @popover parent.
-func (p popover) SetPointingTo(rect *gdk.Rectangle) {
-	var _arg0 *C.GtkPopover   // out
-	var _arg1 *C.GdkRectangle // out
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
-
-	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }
 
 // SetPosition sets the preferred position for @popover to appear.

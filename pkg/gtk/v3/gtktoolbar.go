@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,14 +74,26 @@ type Toolbar interface {
 	//
 	// @x and @y are in @toolbar coordinates.
 	DropIndex(x int, y int) int
+	// IconSize retrieves the icon size for the toolbar. See
+	// gtk_toolbar_set_icon_size().
+	IconSize() IconSize
 	// ItemIndex returns the position of @item on the toolbar, starting from 0.
 	// It is an error if @item is not a child of the toolbar.
 	ItemIndex(item ToolItem) int
 	// NItems returns the number of items on the toolbar.
 	NItems() int
+	// NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
+	// not contain an @n'th item.
+	NthItem(n int) ToolItem
+	// ReliefStyle returns the relief style of buttons on @toolbar. See
+	// gtk_button_set_relief().
+	ReliefStyle() ReliefStyle
 	// ShowArrow returns whether the toolbar has an overflow menu. See
 	// gtk_toolbar_set_show_arrow().
 	ShowArrow() bool
+	// Style retrieves whether the toolbar has text, icons, or both . See
+	// gtk_toolbar_set_style().
+	Style() ToolbarStyle
 	// Insert: insert a ToolItem into the toolbar at position @pos. If @pos is 0
 	// the item is prepended to the start of the toolbar. If @pos is negative,
 	// the item is appended to the end of the toolbar.
@@ -149,6 +162,19 @@ func marshalToolbar(p uintptr) (interface{}, error) {
 	return WrapToolbar(obj), nil
 }
 
+// NewToolbar constructs a class Toolbar.
+func NewToolbar() Toolbar {
+	var _cret C.GtkToolbar // in
+
+	_cret = C.gtk_toolbar_new()
+
+	var _toolbar Toolbar // out
+
+	_toolbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Toolbar)
+
+	return _toolbar
+}
+
 // DropIndex returns the position corresponding to the indicated point on
 // @toolbar. This is useful when dragging items to the toolbar: this
 // function returns the position a new item should be inserted.
@@ -172,6 +198,24 @@ func (t toolbar) DropIndex(x int, y int) int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// IconSize retrieves the icon size for the toolbar. See
+// gtk_toolbar_set_icon_size().
+func (t toolbar) IconSize() IconSize {
+	var _arg0 *C.GtkToolbar // out
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkIconSize // in
+
+	_cret = C.gtk_toolbar_get_icon_size(_arg0)
+
+	var _iconSize IconSize // out
+
+	_iconSize = IconSize(_cret)
+
+	return _iconSize
 }
 
 // ItemIndex returns the position of @item on the toolbar, starting from 0.
@@ -211,6 +255,44 @@ func (t toolbar) NItems() int {
 	return _gint
 }
 
+// NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
+// not contain an @n'th item.
+func (t toolbar) NthItem(n int) ToolItem {
+	var _arg0 *C.GtkToolbar // out
+	var _arg1 C.gint        // out
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gint(n)
+
+	var _cret *C.GtkToolItem // in
+
+	_cret = C.gtk_toolbar_get_nth_item(_arg0, _arg1)
+
+	var _toolItem ToolItem // out
+
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+
+	return _toolItem
+}
+
+// ReliefStyle returns the relief style of buttons on @toolbar. See
+// gtk_button_set_relief().
+func (t toolbar) ReliefStyle() ReliefStyle {
+	var _arg0 *C.GtkToolbar // out
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkReliefStyle // in
+
+	_cret = C.gtk_toolbar_get_relief_style(_arg0)
+
+	var _reliefStyle ReliefStyle // out
+
+	_reliefStyle = ReliefStyle(_cret)
+
+	return _reliefStyle
+}
+
 // ShowArrow returns whether the toolbar has an overflow menu. See
 // gtk_toolbar_set_show_arrow().
 func (t toolbar) ShowArrow() bool {
@@ -229,6 +311,24 @@ func (t toolbar) ShowArrow() bool {
 	}
 
 	return _ok
+}
+
+// Style retrieves whether the toolbar has text, icons, or both . See
+// gtk_toolbar_set_style().
+func (t toolbar) Style() ToolbarStyle {
+	var _arg0 *C.GtkToolbar // out
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkToolbarStyle // in
+
+	_cret = C.gtk_toolbar_get_style(_arg0)
+
+	var _toolbarStyle ToolbarStyle // out
+
+	_toolbarStyle = ToolbarStyle(_cret)
+
+	return _toolbarStyle
 }
 
 // Insert: insert a ToolItem into the toolbar at position @pos. If @pos is 0

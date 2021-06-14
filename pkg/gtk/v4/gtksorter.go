@@ -101,6 +101,12 @@ type Sorter interface {
 	// This function is intended for implementors of `GtkSorter` subclasses and
 	// should not be called from other functions.
 	Changed(change SorterChange)
+	// Order gets the order that @self conforms to.
+	//
+	// See [enum@Gtk.SorterOrder] for details of the possible return values.
+	//
+	// This function is intended to allow optimizations.
+	Order() SorterOrder
 }
 
 // sorter implements the Sorter class.
@@ -144,4 +150,25 @@ func (s sorter) Changed(change SorterChange) {
 	_arg1 = (C.GtkSorterChange)(change)
 
 	C.gtk_sorter_changed(_arg0, _arg1)
+}
+
+// Order gets the order that @self conforms to.
+//
+// See [enum@Gtk.SorterOrder] for details of the possible return values.
+//
+// This function is intended to allow optimizations.
+func (s sorter) Order() SorterOrder {
+	var _arg0 *C.GtkSorter // out
+
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkSorterOrder // in
+
+	_cret = C.gtk_sorter_get_order(_arg0)
+
+	var _sorterOrder SorterOrder // out
+
+	_sorterOrder = SorterOrder(_cret)
+
+	return _sorterOrder
 }

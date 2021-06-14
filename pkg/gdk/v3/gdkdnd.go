@@ -5,6 +5,7 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -165,6 +166,55 @@ func DragDropSucceeded(context DragContext) bool {
 	}
 
 	return _ok
+}
+
+// DragFindWindowForScreen finds the destination window and DND protocol to use
+// at the given pointer position.
+//
+// This function is called by the drag source to obtain the @dest_window and
+// @protocol parameters for gdk_drag_motion().
+func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Screen, xRoot int, yRoot int) (Window, DragProtocol) {
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.GdkWindow      // out
+	var _arg3 *C.GdkScreen      // out
+	var _arg4 C.gint            // out
+	var _arg5 C.gint            // out
+
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
+	_arg3 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg4 = C.gint(xRoot)
+	_arg5 = C.gint(yRoot)
+
+	var _arg6 *C.GdkWindow      // in
+	var _arg7 C.GdkDragProtocol // in
+
+	C.gdk_drag_find_window_for_screen(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7)
+
+	var _destWindow Window     // out
+	var _protocol DragProtocol // out
+
+	_destWindow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6.Native()))).(Window)
+	_protocol = DragProtocol(_arg7)
+
+	return _destWindow, _protocol
+}
+
+// DragGetSelection returns the selection atom for the current source window.
+func DragGetSelection(context DragContext) Atom {
+	var _arg1 *C.GdkDragContext // out
+
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+
+	var _cret C.GdkAtom // in
+
+	_cret = C.gdk_drag_get_selection(_arg1)
+
+	var _atom Atom // out
+
+	_atom = *WrapAtom(unsafe.Pointer(&_cret))
+
+	return _atom
 }
 
 // DragMotion updates the drag context when the pointer moves or the set of

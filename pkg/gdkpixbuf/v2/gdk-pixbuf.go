@@ -6,14 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-pixbuf-2.0
+// #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuf},
+	})
+}
 
 // Pixbuf: a pixel buffer.
 //
@@ -141,8 +147,32 @@ import "C"
 // allows to e.g. write the image to a socket or store it in a database.
 type Pixbuf interface {
 	gextras.Objector
-	gio.Icon
 
+	// AddAlpha takes an existing pixbuf and adds an alpha channel to it.
+	//
+	// If the existing pixbuf already had an alpha channel, the channel values
+	// are copied from the original; otherwise, the alpha channel is initialized
+	// to 255 (full opacity).
+	//
+	// If `substitute_color` is `TRUE`, then the color specified by the (`r`,
+	// `g`, `b`) arguments will be assigned zero opacity. That is, if you pass
+	// `(255, 255, 255)` for the substitute color, all white pixels will become
+	// fully transparent.
+	//
+	// If `substitute_color` is `FALSE`, then the (`r`, `g`, `b`) arguments will
+	// be ignored.
+	AddAlpha(substituteColor bool, r byte, g byte, b byte) Pixbuf
+	// ApplyEmbeddedOrientation takes an existing pixbuf and checks for the
+	// presence of an associated "orientation" option.
+	//
+	// The orientation option may be provided by the JPEG loader (which reads
+	// the exif orientation tag) or the TIFF loader (which reads the TIFF
+	// orientation tag, and compensates it for the partial transforms performed
+	// by libtiff).
+	//
+	// If an orientation option/tag is present, the appropriate transform will
+	// be performed so that the pixbuf is oriented correctly.
+	ApplyEmbeddedOrientation() Pixbuf
 	// Composite creates a transformation of the source image @src by scaling by
 	// @scale_x and @scale_y then translating by @offset_x and @offset_y.
 	//
@@ -169,6 +199,16 @@ type Pixbuf interface {
 	// See gdk_pixbuf_composite_color_simple() for a simpler variant of this
 	// function suitable for many tasks.
 	CompositeColor(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
+	// CompositeColorSimple creates a new pixbuf by scaling `src` to
+	// `dest_width` x `dest_height` and alpha blending the result with a
+	// checkboard of colors `color1` and `color2`.
+	CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf
+	// Copy creates a new `GdkPixbuf` with a copy of the information in the
+	// specified `pixbuf`.
+	//
+	// Note that this does not copy the options set on the original `GdkPixbuf`,
+	// use gdk_pixbuf_copy_options() for this.
+	Copy() Pixbuf
 	// CopyArea copies a rectangular area from `src_pixbuf` to `dest_pixbuf`.
 	//
 	// Conversion of pixbuf formats is done automatically.
@@ -190,10 +230,15 @@ type Pixbuf interface {
 	// The alpha component will be ignored if the pixbuf doesn't have an alpha
 	// channel.
 	Fill(pixel uint32)
+	// Flip flips a pixbuf horizontally or vertically and returns the result in
+	// a new pixbuf.
+	Flip(horizontal bool) Pixbuf
 	// BitsPerSample queries the number of bits per color sample in a pixbuf.
 	BitsPerSample() int
 	// ByteLength returns the length of the pixel data, in bytes.
 	ByteLength() uint
+	// Colorspace queries the color space of a pixbuf.
+	Colorspace() Colorspace
 	// HasAlpha queries whether a pixbuf has an alpha channel (opacity
 	// information).
 	HasAlpha() bool
@@ -229,6 +274,16 @@ type Pixbuf interface {
 	Rowstride() int
 	// Width queries the width of a pixbuf.
 	Width() int
+	// NewSubpixbuf creates a new pixbuf which represents a sub-region of
+	// `src_pixbuf`.
+	//
+	// The new pixbuf shares its pixels with the original pixbuf, so writing to
+	// one affects both. The new pixbuf holds a reference to `src_pixbuf`, so
+	// `src_pixbuf` will not be finalized until the new pixbuf is finalized.
+	//
+	// Note that if `src_pixbuf` is read-only, this function will force it to be
+	// mutable.
+	NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf
 	// ReadPixels provides a read-only pointer to the raw pixel data.
 	//
 	// This function allows skipping the implicit copy that must be made if
@@ -236,6 +291,11 @@ type Pixbuf interface {
 	ReadPixels() *byte
 	// RemoveOption removes the key/value pair option attached to a `GdkPixbuf`.
 	RemoveOption(key string) bool
+	// RotateSimple rotates a pixbuf by a multiple of 90 degrees, and returns
+	// the result in a new pixbuf.
+	//
+	// If `angle` is 0, this function will return a copy of `src`.
+	RotateSimple(angle PixbufRotation) Pixbuf
 	// SaturateAndPixelate modifies saturation and optionally pixelates `src`,
 	// placing the result in `dest`.
 	//
@@ -252,6 +312,31 @@ type Pixbuf interface {
 	// If `pixelate` is `TRUE`, then pixels are faded in a checkerboard pattern
 	// to create a pixelated image.
 	SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool)
+	// SaveToBufferv: vector version of `gdk_pixbuf_save_to_buffer()`.
+	//
+	// Saves pixbuf to a new buffer in format @type, which is currently "jpeg",
+	// "tiff", "png", "ico" or "bmp".
+	//
+	// See [method@GdkPixbuf.Pixbuf.save_to_buffer] for more details.
+	SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error)
+	// SaveToCallbackv: vector version of `gdk_pixbuf_save_to_callback()`.
+	//
+	// Saves pixbuf to a callback in format @type, which is currently "jpeg",
+	// "png", "tiff", "ico" or "bmp".
+	//
+	// If @error is set, `FALSE` will be returned.
+	//
+	// See [method@GdkPixbuf.Pixbuf.save_to_callback] for more details.
+	SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error
+	// Savev: vector version of `gdk_pixbuf_save()`.
+	//
+	// Saves pixbuf to a file in `type`, which is currently "jpeg", "png",
+	// "tiff", "ico" or "bmp".
+	//
+	// If @error is set, `FALSE` will be returned.
+	//
+	// See [method@GdkPixbuf.Pixbuf.save] for more details.
+	Savev(filename string, typ string, optionKeys []string, optionValues []string) error
 	// Scale creates a transformation of the source image @src by scaling by
 	// @scale_x and @scale_y then translating by @offset_x and @offset_y, then
 	// renders the rectangle (@dest_x, @dest_y, @dest_width, @dest_height) of
@@ -266,6 +351,25 @@ type Pixbuf interface {
 	// pixbuf, it will be overwritten during the scaling which results in
 	// rendering artifacts.
 	Scale(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
+	// ScaleSimple: create a new pixbuf containing a copy of `src` scaled to
+	// `dest_width` x `dest_height`.
+	//
+	// This function leaves `src` unaffected.
+	//
+	// The `interp_type` should be `GDK_INTERP_NEAREST` if you want maximum
+	// speed (but when scaling down `GDK_INTERP_NEAREST` is usually unusably
+	// ugly). The default `interp_type` should be `GDK_INTERP_BILINEAR` which
+	// offers reasonable quality and speed.
+	//
+	// You can scale a sub-portion of `src` by creating a sub-pixbuf pointing
+	// into `src`; see [method@GdkPixbuf.Pixbuf.new_subpixbuf].
+	//
+	// If `dest_width` and `dest_height` are equal to the width and height of
+	// `src`, this function will return an unscaled copy of `src`.
+	//
+	// For more complicated scaling/alpha blending see
+	// [method@GdkPixbuf.Pixbuf.scale] and [method@GdkPixbuf.Pixbuf.composite].
+	ScaleSimple(destWidth int, destHeight int, interpType InterpType) Pixbuf
 	// SetOption attaches a key/value pair as an option to a `GdkPixbuf`.
 	//
 	// If `key` already exists in the list of options attached to the `pixbuf`,
@@ -276,7 +380,6 @@ type Pixbuf interface {
 // pixbuf implements the Pixbuf class.
 type pixbuf struct {
 	gextras.Objector
-	gio.Icon
 }
 
 var _ Pixbuf = (*pixbuf)(nil)
@@ -286,7 +389,6 @@ var _ Pixbuf = (*pixbuf)(nil)
 func WrapPixbuf(obj *externglib.Object) Pixbuf {
 	return pixbuf{
 		Objector: obj,
-		gio.Icon: gio.WrapIcon(obj),
 	}
 }
 
@@ -294,6 +396,275 @@ func marshalPixbuf(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPixbuf(obj), nil
+}
+
+// NewPixbuf constructs a class Pixbuf.
+func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int) Pixbuf {
+	var _arg1 C.GdkColorspace // out
+	var _arg2 C.gboolean      // out
+	var _arg3 C.int           // out
+	var _arg4 C.int           // out
+	var _arg5 C.int           // out
+
+	_arg1 = (C.GdkColorspace)(colorspace)
+	if hasAlpha {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.int(bitsPerSample)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
+
+	var _cret C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _pixbuf Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _pixbuf
+}
+
+// NewPixbufFromFile constructs a class Pixbuf.
+func NewPixbufFromFile(filename string) (Pixbuf, error) {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_file(_arg1, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromFileAtScale constructs a class Pixbuf.
+func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAspectRatio bool) (Pixbuf, error) {
+	var _arg1 *C.char    // out
+	var _arg2 C.int      // out
+	var _arg3 C.int      // out
+	var _arg4 C.gboolean // out
+
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	if preserveAspectRatio {
+		_arg4 = C.TRUE
+	}
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_file_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromFileAtSize constructs a class Pixbuf.
+func NewPixbufFromFileAtSize(filename string, width int, height int) (Pixbuf, error) {
+	var _arg1 *C.char // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_file_at_size(_arg1, _arg2, _arg3, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromInline constructs a class Pixbuf.
+func NewPixbufFromInline(data []byte, copyPixels bool) (Pixbuf, error) {
+	var _arg2 *C.guint8
+	var _arg1 C.gint
+	var _arg3 C.gboolean // out
+
+	_arg1 = C.gint(len(data))
+	_arg2 = (*C.guint8)(unsafe.Pointer(&data[0]))
+	if copyPixels {
+		_arg3 = C.TRUE
+	}
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_inline(_arg1, _arg2, _arg3, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromResource constructs a class Pixbuf.
+func NewPixbufFromResource(resourcePath string) (Pixbuf, error) {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_resource(_arg1, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromResourceAtScale constructs a class Pixbuf.
+func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, preserveAspectRatio bool) (Pixbuf, error) {
+	var _arg1 *C.char    // out
+	var _arg2 C.int      // out
+	var _arg3 C.int      // out
+	var _arg4 C.gboolean // out
+
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	if preserveAspectRatio {
+		_arg4 = C.TRUE
+	}
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_resource_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromXpmData constructs a class Pixbuf.
+func NewPixbufFromXpmData(data []string) Pixbuf {
+	var _arg1 **C.char
+
+	_arg1 = (**C.char)(C.malloc(C.ulong((len(data) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	{
+		out := unsafe.Slice(_arg1, len(data))
+		for i := range data {
+			out[i] = (*C.char)(C.CString(data[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	var _cret C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_new_from_xpm_data(_arg1)
+
+	var _pixbuf Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _pixbuf
+}
+
+// AddAlpha takes an existing pixbuf and adds an alpha channel to it.
+//
+// If the existing pixbuf already had an alpha channel, the channel values
+// are copied from the original; otherwise, the alpha channel is initialized
+// to 255 (full opacity).
+//
+// If `substitute_color` is `TRUE`, then the color specified by the (`r`,
+// `g`, `b`) arguments will be assigned zero opacity. That is, if you pass
+// `(255, 255, 255)` for the substitute color, all white pixels will become
+// fully transparent.
+//
+// If `substitute_color` is `FALSE`, then the (`r`, `g`, `b`) arguments will
+// be ignored.
+func (p pixbuf) AddAlpha(substituteColor bool, r byte, g byte, b byte) Pixbuf {
+	var _arg0 *C.GdkPixbuf // out
+	var _arg1 C.gboolean   // out
+	var _arg2 C.guchar     // out
+	var _arg3 C.guchar     // out
+	var _arg4 C.guchar     // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	if substituteColor {
+		_arg1 = C.TRUE
+	}
+	_arg2 = C.guchar(r)
+	_arg3 = C.guchar(g)
+	_arg4 = C.guchar(b)
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_add_alpha(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _ret Pixbuf // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _ret
+}
+
+// ApplyEmbeddedOrientation takes an existing pixbuf and checks for the
+// presence of an associated "orientation" option.
+//
+// The orientation option may be provided by the JPEG loader (which reads
+// the exif orientation tag) or the TIFF loader (which reads the TIFF
+// orientation tag, and compensates it for the partial transforms performed
+// by libtiff).
+//
+// If an orientation option/tag is present, the appropriate transform will
+// be performed so that the pixbuf is oriented correctly.
+func (s pixbuf) ApplyEmbeddedOrientation() Pixbuf {
+	var _arg0 *C.GdkPixbuf // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_apply_embedded_orientation(_arg0)
+
+	var _pixbuf Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _pixbuf
 }
 
 // Composite creates a transformation of the source image @src by scaling by
@@ -390,6 +761,60 @@ func (s pixbuf) CompositeColor(dest Pixbuf, destX int, destY int, destWidth int,
 	C.gdk_pixbuf_composite_color(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13, _arg14, _arg15, _arg16)
 }
 
+// CompositeColorSimple creates a new pixbuf by scaling `src` to
+// `dest_width` x `dest_height` and alpha blending the result with a
+// checkboard of colors `color1` and `color2`.
+func (s pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf {
+	var _arg0 *C.GdkPixbuf    // out
+	var _arg1 C.int           // out
+	var _arg2 C.int           // out
+	var _arg3 C.GdkInterpType // out
+	var _arg4 C.int           // out
+	var _arg5 C.int           // out
+	var _arg6 C.guint32       // out
+	var _arg7 C.guint32       // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(destWidth)
+	_arg2 = C.int(destHeight)
+	_arg3 = (C.GdkInterpType)(interpType)
+	_arg4 = C.int(overallAlpha)
+	_arg5 = C.int(checkSize)
+	_arg6 = C.guint32(color1)
+	_arg7 = C.guint32(color2)
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_composite_color_simple(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+
+	var _pixbuf Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _pixbuf
+}
+
+// Copy creates a new `GdkPixbuf` with a copy of the information in the
+// specified `pixbuf`.
+//
+// Note that this does not copy the options set on the original `GdkPixbuf`,
+// use gdk_pixbuf_copy_options() for this.
+func (p pixbuf) Copy() Pixbuf {
+	var _arg0 *C.GdkPixbuf // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_copy(_arg0)
+
+	var _ret Pixbuf // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _ret
+}
+
 // CopyArea copies a rectangular area from `src_pixbuf` to `dest_pixbuf`.
 //
 // Conversion of pixbuf formats is done automatically.
@@ -460,6 +885,28 @@ func (p pixbuf) Fill(pixel uint32) {
 	C.gdk_pixbuf_fill(_arg0, _arg1)
 }
 
+// Flip flips a pixbuf horizontally or vertically and returns the result in
+// a new pixbuf.
+func (s pixbuf) Flip(horizontal bool) Pixbuf {
+	var _arg0 *C.GdkPixbuf // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	if horizontal {
+		_arg1 = C.TRUE
+	}
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_flip(_arg0, _arg1)
+
+	var _pixbuf Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _pixbuf
+}
+
 // BitsPerSample queries the number of bits per color sample in a pixbuf.
 func (p pixbuf) BitsPerSample() int {
 	var _arg0 *C.GdkPixbuf // out
@@ -492,6 +939,23 @@ func (p pixbuf) ByteLength() uint {
 	_gsize = (uint)(_cret)
 
 	return _gsize
+}
+
+// Colorspace queries the color space of a pixbuf.
+func (p pixbuf) Colorspace() Colorspace {
+	var _arg0 *C.GdkPixbuf // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+
+	var _cret C.GdkColorspace // in
+
+	_cret = C.gdk_pixbuf_get_colorspace(_arg0)
+
+	var _colorspace Colorspace // out
+
+	_colorspace = Colorspace(_cret)
+
+	return _colorspace
 }
 
 // HasAlpha queries whether a pixbuf has an alpha channel (opacity
@@ -646,6 +1110,39 @@ func (p pixbuf) Width() int {
 	return _gint
 }
 
+// NewSubpixbuf creates a new pixbuf which represents a sub-region of
+// `src_pixbuf`.
+//
+// The new pixbuf shares its pixels with the original pixbuf, so writing to
+// one affects both. The new pixbuf holds a reference to `src_pixbuf`, so
+// `src_pixbuf` will not be finalized until the new pixbuf is finalized.
+//
+// Note that if `src_pixbuf` is read-only, this function will force it to be
+// mutable.
+func (s pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf {
+	var _arg0 *C.GdkPixbuf // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+	var _arg3 C.int        // out
+	var _arg4 C.int        // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(srcX)
+	_arg2 = C.int(srcY)
+	_arg3 = C.int(width)
+	_arg4 = C.int(height)
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_new_subpixbuf(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _pixbuf Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _pixbuf
+}
+
 // ReadPixels provides a read-only pointer to the raw pixel data.
 //
 // This function allows skipping the implicit copy that must be made if
@@ -688,6 +1185,28 @@ func (p pixbuf) RemoveOption(key string) bool {
 	return _ok
 }
 
+// RotateSimple rotates a pixbuf by a multiple of 90 degrees, and returns
+// the result in a new pixbuf.
+//
+// If `angle` is 0, this function will return a copy of `src`.
+func (s pixbuf) RotateSimple(angle PixbufRotation) Pixbuf {
+	var _arg0 *C.GdkPixbuf        // out
+	var _arg1 C.GdkPixbufRotation // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GdkPixbufRotation)(angle)
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_rotate_simple(_arg0, _arg1)
+
+	var _pixbuf Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _pixbuf
+}
+
 // SaturateAndPixelate modifies saturation and optionally pixelates `src`,
 // placing the result in `dest`.
 //
@@ -717,6 +1236,165 @@ func (s pixbuf) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bo
 	}
 
 	C.gdk_pixbuf_saturate_and_pixelate(_arg0, _arg1, _arg2, _arg3)
+}
+
+// SaveToBufferv: vector version of `gdk_pixbuf_save_to_buffer()`.
+//
+// Saves pixbuf to a new buffer in format @type, which is currently "jpeg",
+// "tiff", "png", "ico" or "bmp".
+//
+// See [method@GdkPixbuf.Pixbuf.save_to_buffer] for more details.
+func (p pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
+	var _arg0 *C.GdkPixbuf // out
+	var _arg3 *C.char      // out
+	var _arg4 **C.char
+	var _arg5 **C.char
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg3 = (*C.char)(C.CString(typ))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (**C.char)(C.malloc(C.ulong((len(optionKeys) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	{
+		out := unsafe.Slice(_arg4, len(optionKeys))
+		for i := range optionKeys {
+			out[i] = (*C.gchar)(C.CString(optionKeys[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg5 = (**C.char)(C.malloc(C.ulong((len(optionValues) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg5))
+
+	{
+		out := unsafe.Slice(_arg5, len(optionValues))
+		for i := range optionValues {
+			out[i] = (*C.gchar)(C.CString(optionValues[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	var _arg1 *C.gchar
+	var _arg2 C.gsize   // in
+	var _cerr *C.GError // in
+
+	C.gdk_pixbuf_save_to_bufferv(_arg0, _arg3, _arg4, _arg5, &_arg1, &_arg2, &_cerr)
+
+	var _buffer []byte
+	var _goerr error // out
+
+	_buffer = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_buffer, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _buffer, _goerr
+}
+
+// SaveToCallbackv: vector version of `gdk_pixbuf_save_to_callback()`.
+//
+// Saves pixbuf to a callback in format @type, which is currently "jpeg",
+// "png", "tiff", "ico" or "bmp".
+//
+// If @error is set, `FALSE` will be returned.
+//
+// See [method@GdkPixbuf.Pixbuf.save_to_callback] for more details.
+func (p pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
+	var _arg0 *C.GdkPixbuf        // out
+	var _arg1 C.GdkPixbufSaveFunc // out
+	var _arg2 C.gpointer
+	var _arg3 *C.char // out
+	var _arg4 **C.char
+	var _arg5 **C.char
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_PixbufSaveFunc)
+	_arg2 = C.gpointer(box.Assign(saveFunc))
+	_arg3 = (*C.char)(C.CString(typ))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (**C.char)(C.malloc(C.ulong((len(optionKeys) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	{
+		out := unsafe.Slice(_arg4, len(optionKeys))
+		for i := range optionKeys {
+			out[i] = (*C.gchar)(C.CString(optionKeys[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg5 = (**C.char)(C.malloc(C.ulong((len(optionValues) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg5))
+
+	{
+		out := unsafe.Slice(_arg5, len(optionValues))
+		for i := range optionValues {
+			out[i] = (*C.gchar)(C.CString(optionValues[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	var _cerr *C.GError // in
+
+	C.gdk_pixbuf_save_to_callbackv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// Savev: vector version of `gdk_pixbuf_save()`.
+//
+// Saves pixbuf to a file in `type`, which is currently "jpeg", "png",
+// "tiff", "ico" or "bmp".
+//
+// If @error is set, `FALSE` will be returned.
+//
+// See [method@GdkPixbuf.Pixbuf.save] for more details.
+func (p pixbuf) Savev(filename string, typ string, optionKeys []string, optionValues []string) error {
+	var _arg0 *C.GdkPixbuf // out
+	var _arg1 *C.char      // out
+	var _arg2 *C.char      // out
+	var _arg3 **C.char
+	var _arg4 **C.char
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(typ))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (**C.char)(C.malloc(C.ulong((len(optionKeys) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	{
+		out := unsafe.Slice(_arg3, len(optionKeys))
+		for i := range optionKeys {
+			out[i] = (*C.gchar)(C.CString(optionKeys[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg4 = (**C.char)(C.malloc(C.ulong((len(optionValues) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	{
+		out := unsafe.Slice(_arg4, len(optionValues))
+		for i := range optionValues {
+			out[i] = (*C.gchar)(C.CString(optionValues[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	var _cerr *C.GError // in
+
+	C.gdk_pixbuf_savev(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // Scale creates a transformation of the source image @src by scaling by
@@ -758,6 +1436,46 @@ func (s pixbuf) Scale(dest Pixbuf, destX int, destY int, destWidth int, destHeig
 	_arg10 = (C.GdkInterpType)(interpType)
 
 	C.gdk_pixbuf_scale(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+}
+
+// ScaleSimple: create a new pixbuf containing a copy of `src` scaled to
+// `dest_width` x `dest_height`.
+//
+// This function leaves `src` unaffected.
+//
+// The `interp_type` should be `GDK_INTERP_NEAREST` if you want maximum
+// speed (but when scaling down `GDK_INTERP_NEAREST` is usually unusably
+// ugly). The default `interp_type` should be `GDK_INTERP_BILINEAR` which
+// offers reasonable quality and speed.
+//
+// You can scale a sub-portion of `src` by creating a sub-pixbuf pointing
+// into `src`; see [method@GdkPixbuf.Pixbuf.new_subpixbuf].
+//
+// If `dest_width` and `dest_height` are equal to the width and height of
+// `src`, this function will return an unscaled copy of `src`.
+//
+// For more complicated scaling/alpha blending see
+// [method@GdkPixbuf.Pixbuf.scale] and [method@GdkPixbuf.Pixbuf.composite].
+func (s pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpType) Pixbuf {
+	var _arg0 *C.GdkPixbuf    // out
+	var _arg1 C.int           // out
+	var _arg2 C.int           // out
+	var _arg3 C.GdkInterpType // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(destWidth)
+	_arg2 = C.int(destHeight)
+	_arg3 = (C.GdkInterpType)(interpType)
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_pixbuf_scale_simple(_arg0, _arg1, _arg2, _arg3)
+
+	var _pixbuf Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+
+	return _pixbuf
 }
 
 // SetOption attaches a key/value pair as an option to a `GdkPixbuf`.

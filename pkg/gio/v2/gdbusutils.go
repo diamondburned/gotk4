@@ -4,12 +4,9 @@ package gio
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -22,7 +19,6 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
-// #include <glib-object.h>
 import "C"
 
 // DBusEscapeObjectPath: this is a language binding friendly version of
@@ -100,33 +96,6 @@ func DBusGenerateGuid() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// DBusGVariantToGValue converts a #GVariant to a #GValue. If @value is
-// floating, it is consumed.
-//
-// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
-// this function is essentially its reverse form. So, a #GVariant containing any
-// basic or string array type will be converted to a #GValue containing a basic
-// value or string array. Any other #GVariant (handle, variant, tuple, dict
-// entry) will be converted to a #GValue containing that #GVariant.
-//
-// The conversion never fails - a valid #GValue is always returned in
-// @out_gvalue.
-func DBusGVariantToGValue(value *glib.Variant) *externglib.Value {
-	var _arg1 *C.GVariant // out
-
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	var _arg2 C.GValue // in
-
-	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
-
-	var _outGvalue *externglib.Value // out
-
-	_outGvalue = externglib.ValueFromNative(unsafe.Pointer(_arg2))
-
-	return _outGvalue
 }
 
 // DBusIsGuid checks if @string is a D-Bus GUID.

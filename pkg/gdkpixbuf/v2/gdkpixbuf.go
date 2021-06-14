@@ -46,6 +46,23 @@ func marshalPixbufNonAnim(p uintptr) (interface{}, error) {
 	return WrapPixbufNonAnim(obj), nil
 }
 
+// NewPixbufNonAnim constructs a class PixbufNonAnim.
+func NewPixbufNonAnim(pixbuf Pixbuf) PixbufNonAnim {
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	var _cret C.GdkPixbufNonAnim // in
+
+	_cret = C.gdk_pixbuf_non_anim_new(_arg1)
+
+	var _pixbufNonAnim PixbufNonAnim // out
+
+	_pixbufNonAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufNonAnim)
+
+	return _pixbufNonAnim
+}
+
 type PixbufSimpleAnimIter interface {
 	PixbufAnimationIter
 }

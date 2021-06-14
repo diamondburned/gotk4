@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,7 +30,6 @@ func init() {
 // added: `recent::private` (boolean) and `recent:applications` (stringv).
 type BookmarkList interface {
 	gextras.Objector
-	gio.ListModel
 
 	// Attributes gets the attributes queried on the children.
 	Attributes() string
@@ -60,7 +58,6 @@ type BookmarkList interface {
 // bookmarkList implements the BookmarkList class.
 type bookmarkList struct {
 	gextras.Objector
-	gio.ListModel
 }
 
 var _ BookmarkList = (*bookmarkList)(nil)
@@ -69,8 +66,7 @@ var _ BookmarkList = (*bookmarkList)(nil)
 // primarily used internally.
 func WrapBookmarkList(obj *externglib.Object) BookmarkList {
 	return bookmarkList{
-		Objector:      obj,
-		gio.ListModel: gio.WrapListModel(obj),
+		Objector: obj,
 	}
 }
 
@@ -78,6 +74,27 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBookmarkList(obj), nil
+}
+
+// NewBookmarkList constructs a class BookmarkList.
+func NewBookmarkList(filename string, attributes string) BookmarkList {
+	var _arg1 *C.char // out
+	var _arg2 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GtkBookmarkList // in
+
+	_cret = C.gtk_bookmark_list_new(_arg1, _arg2)
+
+	var _bookmarkList BookmarkList // out
+
+	_bookmarkList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BookmarkList)
+
+	return _bookmarkList
 }
 
 // Attributes gets the attributes queried on the children.

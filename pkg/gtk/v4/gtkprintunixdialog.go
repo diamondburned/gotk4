@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -78,8 +79,21 @@ type PrintUnixDialog interface {
 	EmbedPageSetup() bool
 	// HasSelection gets whether there is a selection.
 	HasSelection() bool
+	// ManualCapabilities gets the capabilities that have been set on this
+	// `GtkPrintUnixDialog`.
+	ManualCapabilities() PrintCapabilities
+	// PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
+	PageSetup() PageSetup
 	// PageSetupSet gets whether a page setup was set by the user.
 	PageSetupSet() bool
+	// SelectedPrinter gets the currently selected printer.
+	SelectedPrinter() Printer
+	// Settings gets a new `GtkPrintSettings` object that represents the current
+	// values in the print dialog.
+	//
+	// Note that this creates a new object, and you need to unref it if don’t
+	// want to keep it.
+	Settings() PrintSettings
 	// SupportSelection gets whether the print dialog allows user to print a
 	// selection.
 	SupportSelection() bool
@@ -144,6 +158,26 @@ func marshalPrintUnixDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPrintUnixDialog(obj), nil
+}
+
+// NewPrintUnixDialog constructs a class PrintUnixDialog.
+func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
+	var _arg1 *C.char      // out
+	var _arg2 *C.GtkWindow // out
+
+	_arg1 = (*C.char)(C.CString(title))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+
+	var _cret C.GtkPrintUnixDialog // in
+
+	_cret = C.gtk_print_unix_dialog_new(_arg1, _arg2)
+
+	var _printUnixDialog PrintUnixDialog // out
+
+	_printUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintUnixDialog)
+
+	return _printUnixDialog
 }
 
 // AddCustomTab adds a custom tab to the print dialog.
@@ -214,6 +248,41 @@ func (d printUnixDialog) HasSelection() bool {
 	return _ok
 }
 
+// ManualCapabilities gets the capabilities that have been set on this
+// `GtkPrintUnixDialog`.
+func (d printUnixDialog) ManualCapabilities() PrintCapabilities {
+	var _arg0 *C.GtkPrintUnixDialog // out
+
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret C.GtkPrintCapabilities // in
+
+	_cret = C.gtk_print_unix_dialog_get_manual_capabilities(_arg0)
+
+	var _printCapabilities PrintCapabilities // out
+
+	_printCapabilities = PrintCapabilities(_cret)
+
+	return _printCapabilities
+}
+
+// PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
+func (d printUnixDialog) PageSetup() PageSetup {
+	var _arg0 *C.GtkPrintUnixDialog // out
+
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkPageSetup // in
+
+	_cret = C.gtk_print_unix_dialog_get_page_setup(_arg0)
+
+	var _pageSetup PageSetup // out
+
+	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
+
+	return _pageSetup
+}
+
 // PageSetupSet gets whether a page setup was set by the user.
 func (d printUnixDialog) PageSetupSet() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
@@ -231,6 +300,44 @@ func (d printUnixDialog) PageSetupSet() bool {
 	}
 
 	return _ok
+}
+
+// SelectedPrinter gets the currently selected printer.
+func (d printUnixDialog) SelectedPrinter() Printer {
+	var _arg0 *C.GtkPrintUnixDialog // out
+
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkPrinter // in
+
+	_cret = C.gtk_print_unix_dialog_get_selected_printer(_arg0)
+
+	var _printer Printer // out
+
+	_printer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Printer)
+
+	return _printer
+}
+
+// Settings gets a new `GtkPrintSettings` object that represents the current
+// values in the print dialog.
+//
+// Note that this creates a new object, and you need to unref it if don’t
+// want to keep it.
+func (d printUnixDialog) Settings() PrintSettings {
+	var _arg0 *C.GtkPrintUnixDialog // out
+
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GtkPrintSettings // in
+
+	_cret = C.gtk_print_unix_dialog_get_settings(_arg0)
+
+	var _printSettings PrintSettings // out
+
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+
+	return _printSettings
 }
 
 // SupportSelection gets whether the print dialog allows user to print a

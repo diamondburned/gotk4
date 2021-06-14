@@ -289,9 +289,11 @@ func (conv *TypeConversionToGo) typeConverter(value *ValueConverted) bool {
 	case result.Enum != nil, result.Bitfield != nil:
 		// Resolve castable number types.
 		value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
+		return true
 
 	case result.Class != nil, result.Interface != nil:
 		value.cgoSetObject()
+		return true
 
 	case result.Record != nil:
 		// We can slightly cheat here. Since Go structs are declared by wrapping
@@ -330,6 +332,7 @@ func (conv *TypeConversionToGo) typeConverter(value *ValueConverted) bool {
 			value.p.Linef("  C.free(unsafe.Pointer(v.Native()))")
 			value.p.Linef("})")
 		}
+		return true
 
 	case result.Alias != nil:
 		// underlying := conv.ng.FindType(result.Alias.Name)
@@ -345,7 +348,7 @@ func (conv *TypeConversionToGo) typeConverter(value *ValueConverted) bool {
 		// putting this inside a block.
 
 		// TODO
-		return false
+		// return false
 
 		// case value.AllowNone:
 		// 	value.outDecl.Linef("var %s %s // unsupported", value.OutName, value.OutType)

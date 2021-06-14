@@ -53,6 +53,9 @@ func init() {
 type TextMark interface {
 	gextras.Objector
 
+	// Buffer gets the buffer this mark is located inside, or nil if the mark is
+	// deleted.
+	Buffer() TextBuffer
 	// Deleted returns true if the mark has been removed from its buffer with
 	// gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way
 	// to add it to a buffer again.
@@ -91,6 +94,46 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTextMark(obj), nil
+}
+
+// NewTextMark constructs a class TextMark.
+func NewTextMark(name string, leftGravity bool) TextMark {
+	var _arg1 *C.gchar   // out
+	var _arg2 C.gboolean // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	if leftGravity {
+		_arg2 = C.TRUE
+	}
+
+	var _cret C.GtkTextMark // in
+
+	_cret = C.gtk_text_mark_new(_arg1, _arg2)
+
+	var _textMark TextMark // out
+
+	_textMark = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextMark)
+
+	return _textMark
+}
+
+// Buffer gets the buffer this mark is located inside, or nil if the mark is
+// deleted.
+func (m textMark) Buffer() TextBuffer {
+	var _arg0 *C.GtkTextMark // out
+
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GtkTextBuffer // in
+
+	_cret = C.gtk_text_mark_get_buffer(_arg0)
+
+	var _textBuffer TextBuffer // out
+
+	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextBuffer)
+
+	return _textBuffer
 }
 
 // Deleted returns true if the mark has been removed from its buffer with

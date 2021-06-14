@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,10 +51,46 @@ type ToolItem interface {
 	// IsImportant returns whether @tool_item is considered important. See
 	// gtk_tool_item_set_is_important()
 	IsImportant() bool
+	// Orientation returns the orientation used for @tool_item. Custom
+	// subclasses of ToolItem should call this function to find out what size
+	// icons they should use.
+	Orientation() Orientation
+	// ProXYMenuItem: if @menu_item_id matches the string passed to
+	// gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
+	//
+	// Custom subclasses of ToolItem should use this function to update their
+	// menu item when the ToolItem changes. That the @menu_item_ids must match
+	// ensures that a ToolItem will not inadvertently change a menu item that
+	// they did not create.
+	ProXYMenuItem(menuItemId string) Widget
+	// ReliefStyle returns the relief style of @tool_item. See
+	// gtk_button_set_relief(). Custom subclasses of ToolItem should call this
+	// function in the handler of the ToolItem::toolbar_reconfigured signal to
+	// find out the relief style of buttons.
+	ReliefStyle() ReliefStyle
 	// TextAlignment returns the text alignment used for @tool_item. Custom
 	// subclasses of ToolItem should call this function to find out how text
 	// should be aligned.
 	TextAlignment() float32
+	// TextOrientation returns the text orientation used for @tool_item. Custom
+	// subclasses of ToolItem should call this function to find out how text
+	// should be orientated.
+	TextOrientation() Orientation
+	// TextSizeGroup returns the size group used for labels in @tool_item.
+	// Custom subclasses of ToolItem should call this function and use the size
+	// group for labels.
+	TextSizeGroup() SizeGroup
+	// ToolbarStyle returns the toolbar style used for @tool_item. Custom
+	// subclasses of ToolItem should call this function in the handler of the
+	// GtkToolItem::toolbar_reconfigured signal to find out in what style the
+	// toolbar is displayed and change themselves accordingly
+	//
+	// Possibilities are: - GTK_TOOLBAR_BOTH, meaning the tool item should show
+	// both an icon and a label, stacked vertically - GTK_TOOLBAR_ICONS, meaning
+	// the toolbar shows only icons - GTK_TOOLBAR_TEXT, meaning the tool item
+	// should only show text - GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item
+	// should show both an icon and a label, arranged horizontally
+	ToolbarStyle() ToolbarStyle
 	// UseDragWindow returns whether @tool_item has a drag window. See
 	// gtk_tool_item_set_use_drag_window().
 	UseDragWindow() bool
@@ -70,6 +107,10 @@ type ToolItem interface {
 	// The function must be called when the tool item changes what it will do in
 	// response to the ToolItem::create-menu-proxy signal.
 	RebuildMenu()
+	// RetrieveProXYMenuItem returns the MenuItem that was last set by
+	// gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to
+	// appear in the overflow menu.
+	RetrieveProXYMenuItem() Widget
 	// SetExpand sets whether @tool_item is allocated extra space when there is
 	// more room on the toolbar then needed for the items. The effect is that
 	// the item gets bigger when the toolbar gets bigger and smaller when the
@@ -139,6 +180,19 @@ func marshalToolItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapToolItem(obj), nil
+}
+
+// NewToolItem constructs a class ToolItem.
+func NewToolItem() ToolItem {
+	var _cret C.GtkToolItem // in
+
+	_cret = C.gtk_tool_item_new()
+
+	var _toolItem ToolItem // out
+
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+
+	return _toolItem
 }
 
 // Expand returns whether @tool_item is allocated extra space. See
@@ -220,6 +274,71 @@ func (t toolItem) IsImportant() bool {
 	return _ok
 }
 
+// Orientation returns the orientation used for @tool_item. Custom
+// subclasses of ToolItem should call this function to find out what size
+// icons they should use.
+func (t toolItem) Orientation() Orientation {
+	var _arg0 *C.GtkToolItem // out
+
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkOrientation // in
+
+	_cret = C.gtk_tool_item_get_orientation(_arg0)
+
+	var _orientation Orientation // out
+
+	_orientation = Orientation(_cret)
+
+	return _orientation
+}
+
+// ProXYMenuItem: if @menu_item_id matches the string passed to
+// gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
+//
+// Custom subclasses of ToolItem should use this function to update their
+// menu item when the ToolItem changes. That the @menu_item_ids must match
+// ensures that a ToolItem will not inadvertently change a menu item that
+// they did not create.
+func (t toolItem) ProXYMenuItem(menuItemId string) Widget {
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 *C.gchar       // out
+
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.gchar)(C.CString(menuItemId))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_tool_item_get_proxy_menu_item(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
+}
+
+// ReliefStyle returns the relief style of @tool_item. See
+// gtk_button_set_relief(). Custom subclasses of ToolItem should call this
+// function in the handler of the ToolItem::toolbar_reconfigured signal to
+// find out the relief style of buttons.
+func (t toolItem) ReliefStyle() ReliefStyle {
+	var _arg0 *C.GtkToolItem // out
+
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkReliefStyle // in
+
+	_cret = C.gtk_tool_item_get_relief_style(_arg0)
+
+	var _reliefStyle ReliefStyle // out
+
+	_reliefStyle = ReliefStyle(_cret)
+
+	return _reliefStyle
+}
+
 // TextAlignment returns the text alignment used for @tool_item. Custom
 // subclasses of ToolItem should call this function to find out how text
 // should be aligned.
@@ -237,6 +356,70 @@ func (t toolItem) TextAlignment() float32 {
 	_gfloat = (float32)(_cret)
 
 	return _gfloat
+}
+
+// TextOrientation returns the text orientation used for @tool_item. Custom
+// subclasses of ToolItem should call this function to find out how text
+// should be orientated.
+func (t toolItem) TextOrientation() Orientation {
+	var _arg0 *C.GtkToolItem // out
+
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkOrientation // in
+
+	_cret = C.gtk_tool_item_get_text_orientation(_arg0)
+
+	var _orientation Orientation // out
+
+	_orientation = Orientation(_cret)
+
+	return _orientation
+}
+
+// TextSizeGroup returns the size group used for labels in @tool_item.
+// Custom subclasses of ToolItem should call this function and use the size
+// group for labels.
+func (t toolItem) TextSizeGroup() SizeGroup {
+	var _arg0 *C.GtkToolItem // out
+
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
+
+	var _cret *C.GtkSizeGroup // in
+
+	_cret = C.gtk_tool_item_get_text_size_group(_arg0)
+
+	var _sizeGroup SizeGroup // out
+
+	_sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SizeGroup)
+
+	return _sizeGroup
+}
+
+// ToolbarStyle returns the toolbar style used for @tool_item. Custom
+// subclasses of ToolItem should call this function in the handler of the
+// GtkToolItem::toolbar_reconfigured signal to find out in what style the
+// toolbar is displayed and change themselves accordingly
+//
+// Possibilities are: - GTK_TOOLBAR_BOTH, meaning the tool item should show
+// both an icon and a label, stacked vertically - GTK_TOOLBAR_ICONS, meaning
+// the toolbar shows only icons - GTK_TOOLBAR_TEXT, meaning the tool item
+// should only show text - GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item
+// should show both an icon and a label, arranged horizontally
+func (t toolItem) ToolbarStyle() ToolbarStyle {
+	var _arg0 *C.GtkToolItem // out
+
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
+
+	var _cret C.GtkToolbarStyle // in
+
+	_cret = C.gtk_tool_item_get_toolbar_style(_arg0)
+
+	var _toolbarStyle ToolbarStyle // out
+
+	_toolbarStyle = ToolbarStyle(_cret)
+
+	return _toolbarStyle
 }
 
 // UseDragWindow returns whether @tool_item has a drag window. See
@@ -311,6 +494,25 @@ func (t toolItem) RebuildMenu() {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	C.gtk_tool_item_rebuild_menu(_arg0)
+}
+
+// RetrieveProXYMenuItem returns the MenuItem that was last set by
+// gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to
+// appear in the overflow menu.
+func (t toolItem) RetrieveProXYMenuItem() Widget {
+	var _arg0 *C.GtkToolItem // out
+
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_tool_item_retrieve_proxy_menu_item(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // SetExpand sets whether @tool_item is allocated extra space when there is

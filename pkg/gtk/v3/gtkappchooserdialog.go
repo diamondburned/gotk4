@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,6 +39,8 @@ type AppChooserDialog interface {
 
 	// Heading returns the text to display at the top of the dialog.
 	Heading() string
+	// Widget returns the AppChooserWidget of this dialog.
+	Widget() Widget
 	// SetHeading sets the text to display at the top of the dialog. If the
 	// heading is not set, the dialog displays a default text.
 	SetHeading(heading string)
@@ -68,6 +71,28 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return WrapAppChooserDialog(obj), nil
 }
 
+// NewAppChooserDialogForContentType constructs a class AppChooserDialog.
+func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, contentType string) AppChooserDialog {
+	var _arg1 *C.GtkWindow     // out
+	var _arg2 C.GtkDialogFlags // out
+	var _arg3 *C.gchar         // out
+
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (C.GtkDialogFlags)(flags)
+	_arg3 = (*C.gchar)(C.CString(contentType))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	var _cret C.GtkAppChooserDialog // in
+
+	_cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
+
+	var _appChooserDialog AppChooserDialog // out
+
+	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserDialog)
+
+	return _appChooserDialog
+}
+
 // Heading returns the text to display at the top of the dialog.
 func (s appChooserDialog) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog // out
@@ -83,6 +108,23 @@ func (s appChooserDialog) Heading() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Widget returns the AppChooserWidget of this dialog.
+func (s appChooserDialog) Widget() Widget {
+	var _arg0 *C.GtkAppChooserDialog // out
+
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // SetHeading sets the text to display at the top of the dialog. If the

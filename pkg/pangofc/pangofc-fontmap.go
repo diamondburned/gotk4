@@ -5,7 +5,6 @@ package pangofc
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,7 +28,7 @@ func init() {
 // will take advantage of the wide range of shapers implemented using FreeType
 // that come with Pango.
 type FontMap interface {
-	pango.FontMap
+	FontMap
 
 	// CacheClear: clear all cached information and fontsets for this font map.
 	//
@@ -64,7 +63,7 @@ type FontMap interface {
 
 // fontMap implements the FontMap class.
 type fontMap struct {
-	pango.FontMap
+	FontMap
 }
 
 var _ FontMap = (*fontMap)(nil)
@@ -73,7 +72,7 @@ var _ FontMap = (*fontMap)(nil)
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
 	return fontMap{
-		pango.FontMap: pango.WrapFontMap(obj),
+		FontMap: WrapFontMap(obj),
 	}
 }
 

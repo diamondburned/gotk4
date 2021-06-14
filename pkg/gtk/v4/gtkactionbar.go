@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,6 +43,8 @@ type ActionBar interface {
 	Buildable
 	ConstraintTarget
 
+	// CenterWidget retrieves the center bar widget of the bar.
+	CenterWidget() Widget
 	// Revealed gets whether the contents of the action bar are revealed.
 	Revealed() bool
 	// PackEnd adds @child to @action_bar, packed with reference to the end of
@@ -87,6 +90,36 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapActionBar(obj), nil
+}
+
+// NewActionBar constructs a class ActionBar.
+func NewActionBar() ActionBar {
+	var _cret C.GtkActionBar // in
+
+	_cret = C.gtk_action_bar_new()
+
+	var _actionBar ActionBar // out
+
+	_actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ActionBar)
+
+	return _actionBar
+}
+
+// CenterWidget retrieves the center bar widget of the bar.
+func (a actionBar) CenterWidget() Widget {
+	var _arg0 *C.GtkActionBar // out
+
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_action_bar_get_center_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Revealed gets whether the contents of the action bar are revealed.

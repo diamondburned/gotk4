@@ -108,6 +108,128 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	return _value, _possibleValues, _ok
 }
 
+// ParseStretch parses a font stretch.
+//
+// The allowed values are "ultra_condensed", "extra_condensed", "condensed",
+// "semi_condensed", "normal", "semi_expanded", "expanded", "extra_expanded" and
+// "ultra_expanded". Case variations are ignored and the '_' characters may be
+// omitted.
+func ParseStretch(str string, warn bool) (Stretch, bool) {
+	var _arg1 *C.char    // out
+	var _arg3 C.gboolean // out
+
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+	if warn {
+		_arg3 = C.TRUE
+	}
+
+	var _arg2 C.PangoStretch // in
+	var _cret C.gboolean     // in
+
+	_cret = C.pango_parse_stretch(_arg1, _arg3, &_arg2)
+
+	var _stretch Stretch // out
+	var _ok bool         // out
+
+	_stretch = Stretch(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _stretch, _ok
+}
+
+// ParseStyle parses a font style.
+//
+// The allowed values are "normal", "italic" and "oblique", case variations
+// being ignored.
+func ParseStyle(str string, warn bool) (Style, bool) {
+	var _arg1 *C.char    // out
+	var _arg3 C.gboolean // out
+
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+	if warn {
+		_arg3 = C.TRUE
+	}
+
+	var _arg2 C.PangoStyle // in
+	var _cret C.gboolean   // in
+
+	_cret = C.pango_parse_style(_arg1, _arg3, &_arg2)
+
+	var _style Style // out
+	var _ok bool     // out
+
+	_style = Style(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _style, _ok
+}
+
+// ParseVariant parses a font variant.
+//
+// The allowed values are "normal" and "smallcaps" or "small_caps", case
+// variations being ignored.
+func ParseVariant(str string, warn bool) (Variant, bool) {
+	var _arg1 *C.char    // out
+	var _arg3 C.gboolean // out
+
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+	if warn {
+		_arg3 = C.TRUE
+	}
+
+	var _arg2 C.PangoVariant // in
+	var _cret C.gboolean     // in
+
+	_cret = C.pango_parse_variant(_arg1, _arg3, &_arg2)
+
+	var _variant Variant // out
+	var _ok bool         // out
+
+	_variant = Variant(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _variant, _ok
+}
+
+// ParseWeight parses a font weight.
+//
+// The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
+// "ultraleight" and integers. Case variations are ignored.
+func ParseWeight(str string, warn bool) (Weight, bool) {
+	var _arg1 *C.char    // out
+	var _arg3 C.gboolean // out
+
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+	if warn {
+		_arg3 = C.TRUE
+	}
+
+	var _arg2 C.PangoWeight // in
+	var _cret C.gboolean    // in
+
+	_cret = C.pango_parse_weight(_arg1, _arg3, &_arg2)
+
+	var _weight Weight // out
+	var _ok bool       // out
+
+	_weight = Weight(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _weight, _ok
+}
+
 // SplitFileList splits a G_SEARCHPATH_SEPARATOR-separated list of files,
 // stripping white space and substituting ~/ with $HOME/.
 func SplitFileList(str string) []string {

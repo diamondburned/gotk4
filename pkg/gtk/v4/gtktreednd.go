@@ -22,28 +22,9 @@ func init() {
 	})
 }
 
-// TreeDragDestOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeDragDest.
-type TreeDragDestOverrider interface {
-	// DragDataReceived asks the TreeDragDest to insert a row before the path
-	// @dest, deriving the contents of the row from @value. If @dest is outside
-	// the tree so that inserting before it is impossible, false will be
-	// returned. Also, false may be returned if the new row is not created for
-	// some model-specific reason. Should robustly handle a @dest no longer
-	// found in the model!
-	DragDataReceived(dest *TreePath, value **externglib.Value) bool
-	// RowDropPossible determines whether a drop is possible before the given
-	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
-	// in @value at that location. @dest_path does not have to exist; the return
-	// value will almost certainly be false if the parent of @dest_path doesn’t
-	// exist, though.
-	RowDropPossible(destPath *TreePath, value **externglib.Value) bool
-}
-
 // TreeDragDest: interface for Drag-and-Drop destinations in `GtkTreeView`.
 type TreeDragDest interface {
 	gextras.Objector
-	TreeDragDestOverrider
 }
 
 // treeDragDest implements the TreeDragDest interface.
@@ -65,61 +46,6 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTreeDragDest(obj), nil
-}
-
-// DragDataReceived asks the TreeDragDest to insert a row before the path
-// @dest, deriving the contents of the row from @value. If @dest is outside
-// the tree so that inserting before it is impossible, false will be
-// returned. Also, false may be returned if the new row is not created for
-// some model-specific reason. Should robustly handle a @dest no longer
-// found in the model!
-func (d treeDragDest) DragDataReceived(dest *TreePath, value **externglib.Value) bool {
-	var _arg0 *C.GtkTreeDragDest // out
-	var _arg1 *C.GtkTreePath     // out
-	var _arg2 *C.GValue          // out
-
-	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(dest.Native()))
-	_arg2 = (*C.GValue)(value.GValue)
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// RowDropPossible determines whether a drop is possible before the given
-// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
-// in @value at that location. @dest_path does not have to exist; the return
-// value will almost certainly be false if the parent of @dest_path doesn’t
-// exist, though.
-func (d treeDragDest) RowDropPossible(destPath *TreePath, value **externglib.Value) bool {
-	var _arg0 *C.GtkTreeDragDest // out
-	var _arg1 *C.GtkTreePath     // out
-	var _arg2 *C.GValue          // out
-
-	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(destPath.Native()))
-	_arg2 = (*C.GValue)(value.GValue)
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // TreeDragSourceOverrider contains methods that are overridable. This

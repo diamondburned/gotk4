@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -298,6 +299,29 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 	return WrapScriptIter(unsafe.Pointer(b)), nil
 }
 
+// NewScriptIter constructs a struct ScriptIter.
+func NewScriptIter(text string, length int) *ScriptIter {
+	var _arg1 *C.char // out
+	var _arg2 C.int   // out
+
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+
+	var _cret *C.PangoScriptIter // in
+
+	_cret = C.pango_script_iter_new(_arg1, _arg2)
+
+	var _scriptIter *ScriptIter // out
+
+	_scriptIter = WrapScriptIter(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_scriptIter, func(v *ScriptIter) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _scriptIter
+}
+
 // Native returns the underlying C source pointer.
 func (s *ScriptIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
@@ -310,6 +334,37 @@ func (i *ScriptIter) Free() {
 	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
 	C.pango_script_iter_free(_arg0)
+}
+
+// Range gets information about the range to which @iter currently points. The
+// range is the set of locations p where *start <= p < *end. (That is, it
+// doesn't include the character stored at *end)
+//
+// Note that while the type of the @script argument is declared as PangoScript,
+// as of Pango 1.18, this function simply returns GUnicodeScript values. Callers
+// must be prepared to handle unknown values.
+func (i *ScriptIter) Range() (start string, end string, script Script) {
+	var _arg0 *C.PangoScriptIter // out
+
+	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
+
+	var _arg1 *C.char       // in
+	var _arg2 *C.char       // in
+	var _arg3 C.PangoScript // in
+
+	C.pango_script_iter_get_range(_arg0, &_arg1, &_arg2, &_arg3)
+
+	var _start string  // out
+	var _end string    // out
+	var _script Script // out
+
+	_start = C.GoString(_arg1)
+	defer C.free(unsafe.Pointer(_arg1))
+	_end = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_script = Script(_arg3)
+
+	return _start, _end, _script
 }
 
 // Next advances a ScriptIter to the next range. If @iter is already at the end,

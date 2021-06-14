@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -193,6 +192,10 @@ type Label interface {
 	// This function is intended for use in a [signal@Gtk.Label::activate-link]
 	// handler or for use in a [signal@Gtk.Widget::query-tooltip] handler.
 	CurrentURI() string
+	// Justify returns the justification of the label.
+	//
+	// See [method@Gtk.Label.set_justify].
+	Justify() Justification
 	// Label fetches the text from a label.
 	//
 	// The returned text includes any embedded underlines indicating mnemonics
@@ -223,6 +226,11 @@ type Label interface {
 	// returns the keyval used for the mnemonic accelerator. If there is no
 	// mnemonic set up it returns `GDK_KEY_VoidSymbol`.
 	MnemonicKeyval() uint
+	// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
+	// of this label.
+	//
+	// See [method@Gtk.Label.set_mnemonic_widget].
+	MnemonicWidget() Widget
 	// Selectable returns whether the label is selectable.
 	Selectable() bool
 	// SelectionBounds gets the selected range of characters in the label.
@@ -253,6 +261,10 @@ type Label interface {
 	//
 	// See [method@Gtk.Label.set_wrap].
 	Wrap() bool
+	// WrapMode returns line wrap mode used by the label.
+	//
+	// See [method@Gtk.Label.set_wrap_mode].
+	WrapMode() WrapMode
 	// Xalign gets the `xalign` of the label.
 	//
 	// See the [property@Gtk.Label:xalign] property.
@@ -268,23 +280,6 @@ type Label interface {
 	// this function has no effect. If @start_offset or @end_offset are -1, then
 	// the end of the label will be substituted.
 	SelectRegion(startOffset int, endOffset int)
-	// SetAttributes: apply attributes to the label text.
-	//
-	// The attributes set with this function will be applied and merged with any
-	// other attributes previously effected by way of the
-	// [property@Gtk.Label:use-underline] or [property@Gtk.Label:use-markup]
-	// properties. While it is not recommended to mix markup strings with
-	// manually set attributes, if you must; know that the attributes will be
-	// applied to the label after the markup string is parsed.
-	SetAttributes(attrs *pango.AttrList)
-	// SetEllipsize sets the mode used to ellipsizei the text.
-	//
-	// The text will be ellipsized if there is not enough space to render the
-	// entire string.
-	SetEllipsize(mode pango.EllipsizeMode)
-	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for @label.
-	SetExtraMenu(model gio.MenuModel)
 	// SetJustify sets the alignment of the lines in the text of the label
 	// relative to each other.
 	//
@@ -415,7 +410,7 @@ type Label interface {
 	// This only affects the label if line wrapping is on. (See
 	// [method@Gtk.Label.set_wrap]) The default is PANGO_WRAP_WORD which means
 	// wrap on word boundaries.
-	SetWrapMode(wrapMode pango.WrapMode)
+	SetWrapMode(wrapMode WrapMode)
 	// SetXalign sets the `xalign` of the label.
 	//
 	// See the [property@Gtk.Label:xalign] property.
@@ -453,6 +448,42 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return WrapLabel(obj), nil
 }
 
+// NewLabel constructs a class Label.
+func NewLabel(str string) Label {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkLabel // in
+
+	_cret = C.gtk_label_new(_arg1)
+
+	var _label Label // out
+
+	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
+
+	return _label
+}
+
+// NewLabelWithMnemonic constructs a class Label.
+func NewLabelWithMnemonic(str string) Label {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkLabel // in
+
+	_cret = C.gtk_label_new_with_mnemonic(_arg1)
+
+	var _label Label // out
+
+	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
+
+	return _label
+}
+
 // CurrentURI returns the URI for the currently active link in the label.
 //
 // The active link is the one under the mouse pointer or, in a selectable
@@ -474,6 +505,25 @@ func (s label) CurrentURI() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Justify returns the justification of the label.
+//
+// See [method@Gtk.Label.set_justify].
+func (s label) Justify() Justification {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkJustification // in
+
+	_cret = C.gtk_label_get_justify(_arg0)
+
+	var _justification Justification // out
+
+	_justification = Justification(_cret)
+
+	return _justification
 }
 
 // Label fetches the text from a label.
@@ -582,6 +632,26 @@ func (s label) MnemonicKeyval() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
+// of this label.
+//
+// See [method@Gtk.Label.set_mnemonic_widget].
+func (s label) MnemonicWidget() Widget {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_label_get_mnemonic_widget(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Selectable returns whether the label is selectable.
@@ -752,6 +822,25 @@ func (s label) Wrap() bool {
 	return _ok
 }
 
+// WrapMode returns line wrap mode used by the label.
+//
+// See [method@Gtk.Label.set_wrap_mode].
+func (s label) WrapMode() WrapMode {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+
+	var _cret C.PangoWrapMode // in
+
+	_cret = C.gtk_label_get_wrap_mode(_arg0)
+
+	var _wrapMode WrapMode // out
+
+	_wrapMode = WrapMode(_cret)
+
+	return _wrapMode
+}
+
 // Xalign gets the `xalign` of the label.
 //
 // See the [property@Gtk.Label:xalign] property.
@@ -806,50 +895,6 @@ func (s label) SelectRegion(startOffset int, endOffset int) {
 	_arg2 = C.int(endOffset)
 
 	C.gtk_label_select_region(_arg0, _arg1, _arg2)
-}
-
-// SetAttributes: apply attributes to the label text.
-//
-// The attributes set with this function will be applied and merged with any
-// other attributes previously effected by way of the
-// [property@Gtk.Label:use-underline] or [property@Gtk.Label:use-markup]
-// properties. While it is not recommended to mix markup strings with
-// manually set attributes, if you must; know that the attributes will be
-// applied to the label after the markup string is parsed.
-func (s label) SetAttributes(attrs *pango.AttrList) {
-	var _arg0 *C.GtkLabel      // out
-	var _arg1 *C.PangoAttrList // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
-
-	C.gtk_label_set_attributes(_arg0, _arg1)
-}
-
-// SetEllipsize sets the mode used to ellipsizei the text.
-//
-// The text will be ellipsized if there is not enough space to render the
-// entire string.
-func (s label) SetEllipsize(mode pango.EllipsizeMode) {
-	var _arg0 *C.GtkLabel          // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.PangoEllipsizeMode)(mode)
-
-	C.gtk_label_set_ellipsize(_arg0, _arg1)
-}
-
-// SetExtraMenu sets a menu model to add when constructing the context menu
-// for @label.
-func (s label) SetExtraMenu(model gio.MenuModel) {
-	var _arg0 *C.GtkLabel   // out
-	var _arg1 *C.GMenuModel // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_label_set_extra_menu(_arg0, _arg1)
 }
 
 // SetJustify sets the alignment of the lines in the text of the label
@@ -1132,7 +1177,7 @@ func (s label) SetWrap(wrap bool) {
 // This only affects the label if line wrapping is on. (See
 // [method@Gtk.Label.set_wrap]) The default is PANGO_WRAP_WORD which means
 // wrap on word boundaries.
-func (s label) SetWrapMode(wrapMode pango.WrapMode) {
+func (s label) SetWrapMode(wrapMode WrapMode) {
 	var _arg0 *C.GtkLabel     // out
 	var _arg1 C.PangoWrapMode // out
 

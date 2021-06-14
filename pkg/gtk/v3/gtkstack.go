@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -114,6 +115,9 @@ type Stack interface {
 	// The @title will be used by StackSwitcher to represent @child in a tab
 	// bar, so it should be short.
 	AddTitled(child Widget, name string, title string)
+	// ChildByName finds the child of the Stack with the name given as the
+	// argument. Returns nil if there is no child with this name.
+	ChildByName(name string) Widget
 	// Hhomogeneous gets whether @stack is horizontally homogeneous. See
 	// gtk_stack_set_hhomogeneous().
 	Hhomogeneous() bool
@@ -129,9 +133,15 @@ type Stack interface {
 	// TransitionRunning returns whether the @stack is currently in a transition
 	// from one page to another.
 	TransitionRunning() bool
+	// TransitionType gets the type of animation that will be used for
+	// transitions between pages in @stack.
+	TransitionType() StackTransitionType
 	// Vhomogeneous gets whether @stack is vertically homogeneous. See
 	// gtk_stack_set_vhomogeneous().
 	Vhomogeneous() bool
+	// VisibleChild gets the currently visible child of @stack, or nil if there
+	// are no visible children.
+	VisibleChild() Widget
 	// VisibleChildName returns the name of the currently visible child of
 	// @stack, or nil if there is no visible child.
 	VisibleChildName() string
@@ -218,6 +228,19 @@ func marshalStack(p uintptr) (interface{}, error) {
 	return WrapStack(obj), nil
 }
 
+// NewStack constructs a class Stack.
+func NewStack() Stack {
+	var _cret C.GtkStack // in
+
+	_cret = C.gtk_stack_new()
+
+	var _stack Stack // out
+
+	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
+
+	return _stack
+}
+
 // AddNamed adds a child to @stack. The child is identified by the @name.
 func (s stack) AddNamed(child Widget, name string) {
 	var _arg0 *C.GtkStack  // out
@@ -249,6 +272,27 @@ func (s stack) AddTitled(child Widget, name string, title string) {
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
+}
+
+// ChildByName finds the child of the Stack with the name given as the
+// argument. Returns nil if there is no child with this name.
+func (s stack) ChildByName(name string) Widget {
+	var _arg0 *C.GtkStack // out
+	var _arg1 *C.gchar    // out
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // Hhomogeneous gets whether @stack is horizontally homogeneous. See
@@ -349,6 +393,24 @@ func (s stack) TransitionRunning() bool {
 	return _ok
 }
 
+// TransitionType gets the type of animation that will be used for
+// transitions between pages in @stack.
+func (s stack) TransitionType() StackTransitionType {
+	var _arg0 *C.GtkStack // out
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GtkStackTransitionType // in
+
+	_cret = C.gtk_stack_get_transition_type(_arg0)
+
+	var _stackTransitionType StackTransitionType // out
+
+	_stackTransitionType = StackTransitionType(_cret)
+
+	return _stackTransitionType
+}
+
 // Vhomogeneous gets whether @stack is vertically homogeneous. See
 // gtk_stack_set_vhomogeneous().
 func (s stack) Vhomogeneous() bool {
@@ -367,6 +429,24 @@ func (s stack) Vhomogeneous() bool {
 	}
 
 	return _ok
+}
+
+// VisibleChild gets the currently visible child of @stack, or nil if there
+// are no visible children.
+func (s stack) VisibleChild() Widget {
+	var _arg0 *C.GtkStack // out
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_stack_get_visible_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // VisibleChildName returns the name of the currently visible child of

@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -137,6 +137,9 @@ type AboutDialog interface {
 	Documenters() []string
 	// License returns the license information.
 	License() string
+	// LicenseType retrieves the license set using
+	// gtk_about_dialog_set_license_type()
+	LicenseType() License
 	// LogoIconName returns the icon name displayed as logo in the about dialog.
 	LogoIconName() string
 	// ProgramName returns the program name displayed in the about dialog.
@@ -177,10 +180,6 @@ type AboutDialog interface {
 	// This function overrides the license set using
 	// gtk_about_dialog_set_license().
 	SetLicenseType(licenseType License)
-	// SetLogo sets the pixbuf to be displayed as logo in the about dialog. If
-	// it is nil, the default window icon set with gtk_window_set_default_icon()
-	// will be used.
-	SetLogo(logo gdkpixbuf.Pixbuf)
 	// SetLogoIconName sets the pixbuf to be displayed as logo in the about
 	// dialog. If it is nil, the default window icon set with
 	// gtk_window_set_default_icon() will be used.
@@ -236,6 +235,19 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAboutDialog(obj), nil
+}
+
+// NewAboutDialog constructs a class AboutDialog.
+func NewAboutDialog() AboutDialog {
+	var _cret C.GtkAboutDialog // in
+
+	_cret = C.gtk_about_dialog_new()
+
+	var _aboutDialog AboutDialog // out
+
+	_aboutDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AboutDialog)
+
+	return _aboutDialog
 }
 
 // AddCreditSection creates a new section in the Credits page.
@@ -406,6 +418,24 @@ func (a aboutDialog) License() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// LicenseType retrieves the license set using
+// gtk_about_dialog_set_license_type()
+func (a aboutDialog) LicenseType() License {
+	var _arg0 *C.GtkAboutDialog // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+
+	var _cret C.GtkLicense // in
+
+	_cret = C.gtk_about_dialog_get_license_type(_arg0)
+
+	var _license License // out
+
+	_license = License(_cret)
+
+	return _license
 }
 
 // LogoIconName returns the icon name displayed as logo in the about dialog.
@@ -646,19 +676,6 @@ func (a aboutDialog) SetLicenseType(licenseType License) {
 	_arg1 = (C.GtkLicense)(licenseType)
 
 	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
-}
-
-// SetLogo sets the pixbuf to be displayed as logo in the about dialog. If
-// it is nil, the default window icon set with gtk_window_set_default_icon()
-// will be used.
-func (a aboutDialog) SetLogo(logo gdkpixbuf.Pixbuf) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.GdkPixbuf      // out
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(logo.Native()))
-
-	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }
 
 // SetLogoIconName sets the pixbuf to be displayed as logo in the about

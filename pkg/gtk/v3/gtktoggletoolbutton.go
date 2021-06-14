@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,6 +72,37 @@ func marshalToggleToolButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapToggleToolButton(obj), nil
+}
+
+// NewToggleToolButton constructs a class ToggleToolButton.
+func NewToggleToolButton() ToggleToolButton {
+	var _cret C.GtkToggleToolButton // in
+
+	_cret = C.gtk_toggle_tool_button_new()
+
+	var _toggleToolButton ToggleToolButton // out
+
+	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleToolButton)
+
+	return _toggleToolButton
+}
+
+// NewToggleToolButtonFromStock constructs a class ToggleToolButton.
+func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkToggleToolButton // in
+
+	_cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
+
+	var _toggleToolButton ToggleToolButton // out
+
+	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleToolButton)
+
+	return _toggleToolButton
 }
 
 // Active queries a ToggleToolButton and returns its current state. Returns

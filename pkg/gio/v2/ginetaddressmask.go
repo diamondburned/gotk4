@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -41,6 +42,10 @@ type InetAddressMask interface {
 
 	// Equal tests if @mask and @mask2 are the same mask.
 	Equal(mask2 InetAddressMask) bool
+	// Address gets @mask's base address
+	Address() InetAddress
+	// Family gets the Family of @mask's address
+	Family() SocketFamily
 	// Length gets @mask's length
 	Length() uint
 	// Matches tests if @address falls within the range described by @mask.
@@ -72,6 +77,49 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 	return WrapInetAddressMask(obj), nil
 }
 
+// NewInetAddressMask constructs a class InetAddressMask.
+func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) {
+	var _arg1 *C.GInetAddress // out
+	var _arg2 C.guint         // out
+
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(addr.Native()))
+	_arg2 = C.guint(length)
+
+	var _cret C.GInetAddressMask // in
+	var _cerr *C.GError          // in
+
+	_cret = C.g_inet_address_mask_new(_arg1, _arg2, &_cerr)
+
+	var _inetAddressMask InetAddressMask // out
+	var _goerr error                     // out
+
+	_inetAddressMask = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddressMask)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _inetAddressMask, _goerr
+}
+
+// NewInetAddressMaskFromString constructs a class InetAddressMask.
+func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(maskString))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GInetAddressMask // in
+	var _cerr *C.GError          // in
+
+	_cret = C.g_inet_address_mask_new_from_string(_arg1, &_cerr)
+
+	var _inetAddressMask InetAddressMask // out
+	var _goerr error                     // out
+
+	_inetAddressMask = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddressMask)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _inetAddressMask, _goerr
+}
+
 // Equal tests if @mask and @mask2 are the same mask.
 func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
@@ -91,6 +139,40 @@ func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 	}
 
 	return _ok
+}
+
+// Address gets @mask's base address
+func (m inetAddressMask) Address() InetAddress {
+	var _arg0 *C.GInetAddressMask // out
+
+	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GInetAddress // in
+
+	_cret = C.g_inet_address_mask_get_address(_arg0)
+
+	var _inetAddress InetAddress // out
+
+	_inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InetAddress)
+
+	return _inetAddress
+}
+
+// Family gets the Family of @mask's address
+func (m inetAddressMask) Family() SocketFamily {
+	var _arg0 *C.GInetAddressMask // out
+
+	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
+
+	var _cret C.GSocketFamily // in
+
+	_cret = C.g_inet_address_mask_get_family(_arg0)
+
+	var _socketFamily SocketFamily // out
+
+	_socketFamily = SocketFamily(_cret)
+
+	return _socketFamily
 }
 
 // Length gets @mask's length

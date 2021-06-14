@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -82,6 +83,42 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBufferedOutputStream(obj), nil
+}
+
+// NewBufferedOutputStream constructs a class BufferedOutputStream.
+func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
+	var _arg1 *C.GOutputStream // out
+
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
+
+	var _cret C.GBufferedOutputStream // in
+
+	_cret = C.g_buffered_output_stream_new(_arg1)
+
+	var _bufferedOutputStream BufferedOutputStream // out
+
+	_bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BufferedOutputStream)
+
+	return _bufferedOutputStream
+}
+
+// NewBufferedOutputStreamSized constructs a class BufferedOutputStream.
+func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOutputStream {
+	var _arg1 *C.GOutputStream // out
+	var _arg2 C.gsize          // out
+
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg2 = C.gsize(size)
+
+	var _cret C.GBufferedOutputStream // in
+
+	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
+
+	var _bufferedOutputStream BufferedOutputStream // out
+
+	_bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BufferedOutputStream)
+
+	return _bufferedOutputStream
 }
 
 // AutoGrow checks if the buffer automatically grows as data is added.

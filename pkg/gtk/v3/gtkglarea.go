@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -90,6 +92,8 @@ type GLArea interface {
 	AttachBuffers()
 	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
+	// Error gets the current error set on the @area.
+	Error() error
 	// HasAlpha returns whether the area has an alpha component.
 	HasAlpha() bool
 	// HasDepthBuffer returns whether the area has a depth buffer.
@@ -125,6 +129,10 @@ type GLArea interface {
 	// be called. This mode is useful when the scene changes seldomly, but takes
 	// a long time to redraw.
 	SetAutoRender(autoRender bool)
+	// SetError sets an error on the area which will be shown instead of the GL
+	// rendering. This is useful in the GLArea::create-context signal if GL
+	// context creation fails.
+	SetError(err error)
 	// SetHasAlpha: if @has_alpha is true the buffer allocated by the widget
 	// will have an alpha channel component, and when rendering to the window
 	// the result will be composited over whatever is below the widget.
@@ -176,6 +184,19 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return WrapGLArea(obj), nil
 }
 
+// NewGLArea constructs a class GLArea.
+func NewGLArea() GLArea {
+	var _cret C.GtkGLArea // in
+
+	_cret = C.gtk_gl_area_new()
+
+	var _glArea GLArea // out
+
+	_glArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(GLArea)
+
+	return _glArea
+}
+
 // AttachBuffers ensures that the @area framebuffer object is made the
 // current draw and read target, and that all the required buffers for the
 // @area are created and bound to the frambuffer.
@@ -207,6 +228,23 @@ func (a glArea) AutoRender() bool {
 	}
 
 	return _ok
+}
+
+// Error gets the current error set on the @area.
+func (a glArea) Error() error {
+	var _arg0 *C.GtkGLArea // out
+
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GError // in
+
+	_cret = C.gtk_gl_area_get_error(_arg0)
+
+	var _err error // out
+
+	_err = gerror.Take(unsafe.Pointer(_cret))
+
+	return _err
 }
 
 // HasAlpha returns whether the area has an alpha component.
@@ -353,6 +391,20 @@ func (a glArea) SetAutoRender(autoRender bool) {
 	}
 
 	C.gtk_gl_area_set_auto_render(_arg0, _arg1)
+}
+
+// SetError sets an error on the area which will be shown instead of the GL
+// rendering. This is useful in the GLArea::create-context signal if GL
+// context creation fails.
+func (a glArea) SetError(err error) {
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 *C.GError    // out
+
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	defer C.g_error_free(_arg1)
+
+	C.gtk_gl_area_set_error(_arg0, _arg1)
 }
 
 // SetHasAlpha: if @has_alpha is true the buffer allocated by the widget

@@ -91,6 +91,10 @@ type ActionGroup interface {
 	//
 	// Accel paths are set to `<Actions>/group-name/action-name`.
 	AddActionWithAccel(action Action, accelerator string)
+	// AccelGroup gets the accelerator group.
+	AccelGroup() AccelGroup
+	// Action looks up an action in the action group by name.
+	Action(actionName string) Action
 	// Name gets the name of the action group.
 	Name() string
 	// Sensitive returns true if the group is sensitive. The constituent actions
@@ -147,6 +151,24 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 	return WrapActionGroup(obj), nil
 }
 
+// NewActionGroup constructs a class ActionGroup.
+func NewActionGroup(name string) ActionGroup {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GtkActionGroup // in
+
+	_cret = C.gtk_action_group_new(_arg1)
+
+	var _actionGroup ActionGroup // out
+
+	_actionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ActionGroup)
+
+	return _actionGroup
+}
+
 // AddAction adds an action object to the action group. Note that this
 // function does not set up the accel path of the action, which can lead to
 // problems if a user tries to modify the accelerator of a menuitem
@@ -181,6 +203,43 @@ func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
+}
+
+// AccelGroup gets the accelerator group.
+func (a actionGroup) AccelGroup() AccelGroup {
+	var _arg0 *C.GtkActionGroup // out
+
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GtkAccelGroup // in
+
+	_cret = C.gtk_action_group_get_accel_group(_arg0)
+
+	var _accelGroup AccelGroup // out
+
+	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
+
+	return _accelGroup
+}
+
+// Action looks up an action in the action group by name.
+func (a actionGroup) Action(actionName string) Action {
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GtkAction // in
+
+	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
+
+	var _action Action // out
+
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
+
+	return _action
 }
 
 // Name gets the name of the action group.

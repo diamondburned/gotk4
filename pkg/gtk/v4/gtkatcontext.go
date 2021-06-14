@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,6 +56,27 @@ func marshalATContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapATContext(obj), nil
+}
+
+// NewATContextCreate constructs a class ATContext.
+func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, display gdk.Display) ATContext {
+	var _arg1 C.GtkAccessibleRole // out
+	var _arg2 *C.GtkAccessible    // out
+	var _arg3 *C.GdkDisplay       // out
+
+	_arg1 = (C.GtkAccessibleRole)(accessibleRole)
+	_arg2 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
+	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+
+	var _cret C.GtkATContext // in
+
+	_cret = C.gtk_at_context_create(_arg1, _arg2, _arg3)
+
+	var _atContext ATContext // out
+
+	_atContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ATContext)
+
+	return _atContext
 }
 
 // Accessible retrieves the `GtkAccessible` using this context.

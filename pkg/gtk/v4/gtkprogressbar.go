@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,6 +74,10 @@ type ProgressBar interface {
 	ConstraintTarget
 	Orientable
 
+	// Ellipsize returns the ellipsizing position of the progress bar.
+	//
+	// See [method@Gtk.ProgressBar.set_ellipsize].
+	Ellipsize() pango.EllipsizeMode
 	// Fraction returns the current fraction of the task that’s been completed.
 	Fraction() float64
 	// Inverted returns whether the progress bar is inverted.
@@ -98,6 +103,11 @@ type ProgressBar interface {
 	// block to move by a little bit (the amount of movement per pulse is
 	// determined by [method@Gtk.ProgressBar.set_pulse_step]).
 	Pulse()
+	// SetEllipsize sets the mode used to ellipsize the text.
+	//
+	// The text is ellipsized if there is not enough space to render the entire
+	// string.
+	SetEllipsize(mode pango.EllipsizeMode)
 	// SetFraction causes the progress bar to “fill in” the given fraction of
 	// the bar.
 	//
@@ -179,6 +189,25 @@ func NewProgressBar() ProgressBar {
 	_progressBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ProgressBar)
 
 	return _progressBar
+}
+
+// Ellipsize returns the ellipsizing position of the progress bar.
+//
+// See [method@Gtk.ProgressBar.set_ellipsize].
+func (p progressBar) Ellipsize() pango.EllipsizeMode {
+	var _arg0 *C.GtkProgressBar // out
+
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
+
+	var _cret C.PangoEllipsizeMode // in
+
+	_cret = C.gtk_progress_bar_get_ellipsize(_arg0)
+
+	var _ellipsizeMode pango.EllipsizeMode // out
+
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
+
+	return _ellipsizeMode
 }
 
 // Fraction returns the current fraction of the task that’s been completed.
@@ -290,6 +319,20 @@ func (p progressBar) Pulse() {
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	C.gtk_progress_bar_pulse(_arg0)
+}
+
+// SetEllipsize sets the mode used to ellipsize the text.
+//
+// The text is ellipsized if there is not enough space to render the entire
+// string.
+func (p progressBar) SetEllipsize(mode pango.EllipsizeMode) {
+	var _arg0 *C.GtkProgressBar    // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
+	_arg1 = (C.PangoEllipsizeMode)(mode)
+
+	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
 }
 
 // SetFraction causes the progress bar to “fill in” the given fraction of

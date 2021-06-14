@@ -32,25 +32,6 @@ func (s *Sequence) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// Append adds a new item to the end of @seq.
-func (s *Sequence) Append(data interface{}) *SequenceIter {
-	var _arg0 *C.GSequence // out
-	var _arg1 C.gpointer   // out
-
-	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gpointer(data)
-
-	var _cret *C.GSequenceIter // in
-
-	_cret = C.g_sequence_append(_arg0, _arg1)
-
-	var _sequenceIter *SequenceIter // out
-
-	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
-
-	return _sequenceIter
-}
-
 // Free frees the memory allocated for @seq. If @seq has a data destroy function
 // associated with it, that function is called on all items in @seq.
 func (s *Sequence) Free() {
@@ -155,25 +136,6 @@ func (s *Sequence) IsEmpty() bool {
 	}
 
 	return _ok
-}
-
-// Prepend adds a new item to the front of @seq
-func (s *Sequence) Prepend(data interface{}) *SequenceIter {
-	var _arg0 *C.GSequence // out
-	var _arg1 C.gpointer   // out
-
-	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gpointer(data)
-
-	var _cret *C.GSequenceIter // in
-
-	_cret = C.g_sequence_prepend(_arg0, _arg1)
-
-	var _sequenceIter *SequenceIter // out
-
-	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
-
-	return _sequenceIter
 }
 
 // SequenceIter: the Iter struct is an opaque data type representing an iterator

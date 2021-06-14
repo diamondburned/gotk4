@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -88,6 +90,15 @@ func init() {
 type PrintContext interface {
 	gextras.Objector
 
+	// CreatePangoContext creates a new `PangoContext` that can be used with the
+	// `GtkPrintContext`.
+	CreatePangoContext() pango.Context
+	// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
+	// with the `GtkPrintContext`.
+	CreatePangoLayout() pango.Layout
+	// CairoContext obtains the cairo context that is associated with the
+	// `GtkPrintContext`.
+	CairoContext() *cairo.Context
 	// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
 	// per inch.
 	DPIX() float64
@@ -102,8 +113,17 @@ type PrintContext interface {
 	// PageSetup obtains the `GtkPageSetup` that determines the page dimensions
 	// of the `GtkPrintContext`.
 	PageSetup() PageSetup
+	// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
+	// `GtkPrintContext`.
+	PangoFontmap() pango.FontMap
 	// Width obtains the width of the `GtkPrintContext`, in pixels.
 	Width() float64
+	// SetCairoContext sets a new cairo context on a print context.
+	//
+	// This function is intended to be used when implementing an internal print
+	// preview, it is not needed for printing, since GTK itself creates a
+	// suitable cairo context in that case.
+	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
 // printContext implements the PrintContext class.
@@ -125,6 +145,60 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPrintContext(obj), nil
+}
+
+// CreatePangoContext creates a new `PangoContext` that can be used with the
+// `GtkPrintContext`.
+func (c printContext) CreatePangoContext() pango.Context {
+	var _arg0 *C.GtkPrintContext // out
+
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.PangoContext // in
+
+	_cret = C.gtk_print_context_create_pango_context(_arg0)
+
+	var _ret pango.Context // out
+
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
+
+	return _ret
+}
+
+// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
+// with the `GtkPrintContext`.
+func (c printContext) CreatePangoLayout() pango.Layout {
+	var _arg0 *C.GtkPrintContext // out
+
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.PangoLayout // in
+
+	_cret = C.gtk_print_context_create_pango_layout(_arg0)
+
+	var _layout pango.Layout // out
+
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+
+	return _layout
+}
+
+// CairoContext obtains the cairo context that is associated with the
+// `GtkPrintContext`.
+func (c printContext) CairoContext() *cairo.Context {
+	var _arg0 *C.GtkPrintContext // out
+
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.cairo_t // in
+
+	_cret = C.gtk_print_context_get_cairo_context(_arg0)
+
+	var _ret *cairo.Context // out
+
+	_ret = cairo.WrapContext(unsafe.Pointer(_cret))
+
+	return _ret
 }
 
 // DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
@@ -230,6 +304,24 @@ func (c printContext) PageSetup() PageSetup {
 	return _pageSetup
 }
 
+// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
+// `GtkPrintContext`.
+func (c printContext) PangoFontmap() pango.FontMap {
+	var _arg0 *C.GtkPrintContext // out
+
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.PangoFontMap // in
+
+	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
+
+	var _fontMap pango.FontMap // out
+
+	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontMap)
+
+	return _fontMap
+}
+
 // Width obtains the width of the `GtkPrintContext`, in pixels.
 func (c printContext) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
@@ -245,4 +337,23 @@ func (c printContext) Width() float64 {
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
+}
+
+// SetCairoContext sets a new cairo context on a print context.
+//
+// This function is intended to be used when implementing an internal print
+// preview, it is not needed for printing, since GTK itself creates a
+// suitable cairo context in that case.
+func (c printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
+	var _arg0 *C.GtkPrintContext // out
+	var _arg1 *C.cairo_t         // out
+	var _arg2 C.double           // out
+	var _arg3 C.double           // out
+
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.double(dpiX)
+	_arg3 = C.double(dpiY)
+
+	C.gtk_print_context_set_cairo_context(_arg0, _arg1, _arg2, _arg3)
 }

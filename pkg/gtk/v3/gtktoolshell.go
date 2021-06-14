@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,6 +27,11 @@ func init() {
 // ToolShellOverrider contains methods that are overridable. This
 // interface is a subset of the interface ToolShell.
 type ToolShellOverrider interface {
+	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_ellipsize_mode() instead.
+	EllipsizeMode() pango.EllipsizeMode
+
 	IconSize() IconSize
 	// Orientation retrieves the current orientation for the tool shell. Tool
 	// items must not call this function directly, but rely on
@@ -87,6 +93,25 @@ func marshalToolShell(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapToolShell(obj), nil
+}
+
+// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
+// Tool items must not call this function directly, but rely on
+// gtk_tool_item_get_ellipsize_mode() instead.
+func (s toolShell) EllipsizeMode() pango.EllipsizeMode {
+	var _arg0 *C.GtkToolShell // out
+
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+
+	var _cret C.PangoEllipsizeMode // in
+
+	_cret = C.gtk_tool_shell_get_ellipsize_mode(_arg0)
+
+	var _ellipsizeMode pango.EllipsizeMode // out
+
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
+
+	return _ellipsizeMode
 }
 
 // IconSize retrieves the icon size for the tool shell. Tool items must not

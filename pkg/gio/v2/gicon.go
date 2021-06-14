@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,6 +40,13 @@ type IconOverrider interface {
 	Equal(icon2 Icon) bool
 	// Hash gets a hash for an icon.
 	Hash() uint
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	Serialize() *glib.Variant
 }
 
 // Icon is a very minimal interface for icons. It provides functions for
@@ -127,6 +136,31 @@ func (i icon) Equal(icon2 Icon) bool {
 	}
 
 	return _ok
+}
+
+// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+// be retrieved back by calling g_icon_deserialize() on the returned value.
+// As serialization will avoid using raw icon data when possible, it only
+// makes sense to transfer the #GVariant between processes on the same
+// machine, (as opposed to over the network), and within the same file
+// system namespace.
+func (i icon) Serialize() *glib.Variant {
+	var _arg0 *C.GIcon // out
+
+	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_icon_serialize(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
 }
 
 // String generates a textual representation of @icon that can be used for

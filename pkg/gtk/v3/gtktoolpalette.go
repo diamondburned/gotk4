@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -92,6 +93,10 @@ type ToolPalette interface {
 	Orientable
 	Scrollable
 
+	// AddDragDest sets @palette as drag source (see
+	// gtk_tool_palette_set_drag_source()) and sets @widget as a drag
+	// destination for drags from @palette. See gtk_drag_dest_set().
+	AddDragDest(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction)
 	// DragItem: get the dragged item from the selection. This could be a
 	// ToolItem or a ToolItemGroup.
 	DragItem(selection *SelectionData) Widget
@@ -183,6 +188,25 @@ func NewToolPalette() ToolPalette {
 	_toolPalette = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolPalette)
 
 	return _toolPalette
+}
+
+// AddDragDest sets @palette as drag source (see
+// gtk_tool_palette_set_drag_source()) and sets @widget as a drag
+// destination for drags from @palette. See gtk_drag_dest_set().
+func (p toolPalette) AddDragDest(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
+	var _arg0 *C.GtkToolPalette           // out
+	var _arg1 *C.GtkWidget                // out
+	var _arg2 C.GtkDestDefaults           // out
+	var _arg3 C.GtkToolPaletteDragTargets // out
+	var _arg4 C.GdkDragAction             // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (C.GtkDestDefaults)(flags)
+	_arg3 = (C.GtkToolPaletteDragTargets)(targets)
+	_arg4 = (C.GdkDragAction)(actions)
+
+	C.gtk_tool_palette_add_drag_dest(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // DragItem: get the dragged item from the selection. This could be a

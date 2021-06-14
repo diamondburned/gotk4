@@ -32,13 +32,6 @@ func (c *CClosure) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// Callback gets the field inside the struct.
-func (c *CClosure) Callback() interface{} {
-	var v interface{} // out
-	v = (interface{})(c.native.callback)
-	return v
-}
-
 type ClosureNotifyData struct {
 	native C.GClosureNotifyData
 }
@@ -56,11 +49,4 @@ func WrapClosureNotifyData(ptr unsafe.Pointer) *ClosureNotifyData {
 // Native returns the underlying C source pointer.
 func (c *ClosureNotifyData) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
-}
-
-// Data gets the field inside the struct.
-func (c *ClosureNotifyData) Data() interface{} {
-	var v interface{} // out
-	v = (interface{})(c.native.data)
-	return v
 }

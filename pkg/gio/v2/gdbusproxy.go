@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,6 +76,55 @@ type DBusProXY interface {
 	DBusInterface
 	Initable
 
+	// CallFinish finishes an operation started with g_dbus_proxy_call().
+	CallFinish(res AsyncResult) (*glib.Variant, error)
+	// CallSync: synchronously invokes the @method_name method on @proxy.
+	//
+	// If @method_name contains any dots, then @name is split into interface and
+	// method name parts. This allows using @proxy for invoking methods on other
+	// interfaces.
+	//
+	// If the BusConnection associated with @proxy is disconnected then the
+	// operation will fail with G_IO_ERROR_CLOSED. If @cancellable is canceled,
+	// the operation will fail with G_IO_ERROR_CANCELLED. If @parameters
+	// contains a value not compatible with the D-Bus protocol, the operation
+	// fails with G_IO_ERROR_INVALID_ARGUMENT.
+	//
+	// If the @parameters #GVariant is floating, it is consumed. This allows
+	// convenient 'inline' use of g_variant_new(), e.g.:
+	//
+	//    g_dbus_proxy_call_sync (proxy,
+	//                            "TwoStrings",
+	//                            g_variant_new ("(ss)",
+	//                                           "Thing One",
+	//                                           "Thing Two"),
+	//                            G_DBUS_CALL_FLAGS_NONE,
+	//                            -1,
+	//                            NULL,
+	//                            &error);
+	//
+	// The calling thread is blocked until a reply is received. See
+	// g_dbus_proxy_call() for the asynchronous version of this method.
+	//
+	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+	// @method_name is referenced by it, then the return value is checked
+	// against the return type.
+	CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
+	// CallWithUnixFdListFinish finishes an operation started with
+	// g_dbus_proxy_call_with_unix_fd_list().
+	CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error)
+	// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
+	// returns FDList objects.
+	//
+	// This method is only available on UNIX.
+	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
+	// CachedProperty looks up the value for a property from the cache. This
+	// call does no blocking IO.
+	//
+	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+	// @property_name is referenced by it, then @value is checked against the
+	// type of the property.
+	CachedProperty(propertyName string) *glib.Variant
 	// CachedPropertyNames gets the names of all cached properties on @proxy.
 	CachedPropertyNames() []string
 	// Connection gets the connection @proxy is for.
@@ -101,6 +152,38 @@ type DBusProXY interface {
 	NameOwner() string
 	// ObjectPath gets the object path @proxy is for.
 	ObjectPath() string
+	// SetCachedProperty: if @value is not nil, sets the cached value for the
+	// property with name @property_name to the value in @value.
+	//
+	// If @value is nil, then the cached value is removed from the property
+	// cache.
+	//
+	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+	// @property_name is referenced by it, then @value is checked against the
+	// type of the property.
+	//
+	// If the @value #GVariant is floating, it is consumed. This allows
+	// convenient 'inline' use of g_variant_new(), e.g.
+	//
+	//    g_dbus_proxy_set_cached_property (proxy,
+	//                                      "SomeProperty",
+	//                                      g_variant_new ("(si)",
+	//                                                    "A String",
+	//                                                    42));
+	//
+	// Normally you will not need to use this method since @proxy is tracking
+	// changes using the `org.freedesktop.DBus.Properties.PropertiesChanged`
+	// D-Bus signal. However, for performance reasons an object may decide to
+	// not use this signal for some properties and instead use a proprietary
+	// out-of-band mechanism to transmit changes.
+	//
+	// As a concrete example, consider an object with a property
+	// `ChatroomParticipants` which is an array of strings. Instead of
+	// transmitting the same (long) array every time the property changes, it is
+	// more efficient to only transmit the delta using e.g. signals
+	// `ChatroomParticipantJoined(String name)` and
+	// `ChatroomParticipantParted(String name)`.
+	SetCachedProperty(propertyName string, value *glib.Variant)
 	// SetDefaultTimeout sets the timeout to use if -1 (specifying default
 	// timeout) is passed as @timeout_msec in the g_dbus_proxy_call() and
 	// g_dbus_proxy_call_sync() functions.
@@ -250,6 +333,194 @@ func NewDBusProXYSync(connection DBusConnection, flags DBusProXYFlags, info *DBu
 	return _dBusProxy, _goerr
 }
 
+// CallFinish finishes an operation started with g_dbus_proxy_call().
+func (p dBusProXY) CallFinish(res AsyncResult) (*glib.Variant, error) {
+	var _arg0 *C.GDBusProxy   // out
+	var _arg1 *C.GAsyncResult // out
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GVariant // in
+	var _cerr *C.GError   // in
+
+	_cret = C.g_dbus_proxy_call_finish(_arg0, _arg1, &_cerr)
+
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _variant, _goerr
+}
+
+// CallSync: synchronously invokes the @method_name method on @proxy.
+//
+// If @method_name contains any dots, then @name is split into interface and
+// method name parts. This allows using @proxy for invoking methods on other
+// interfaces.
+//
+// If the BusConnection associated with @proxy is disconnected then the
+// operation will fail with G_IO_ERROR_CLOSED. If @cancellable is canceled,
+// the operation will fail with G_IO_ERROR_CANCELLED. If @parameters
+// contains a value not compatible with the D-Bus protocol, the operation
+// fails with G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If the @parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//    g_dbus_proxy_call_sync (proxy,
+//                            "TwoStrings",
+//                            g_variant_new ("(ss)",
+//                                           "Thing One",
+//                                           "Thing Two"),
+//                            G_DBUS_CALL_FLAGS_NONE,
+//                            -1,
+//                            NULL,
+//                            &error);
+//
+// The calling thread is blocked until a reply is received. See
+// g_dbus_proxy_call() for the asynchronous version of this method.
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @method_name is referenced by it, then the return value is checked
+// against the return type.
+func (p dBusProXY) CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
+	var _arg0 *C.GDBusProxy    // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GVariant      // out
+	var _arg3 C.GDBusCallFlags // out
+	var _arg4 C.gint           // out
+	var _arg5 *C.GCancellable  // out
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(methodName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg3 = (C.GDBusCallFlags)(flags)
+	_arg4 = C.gint(timeoutMsec)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GVariant // in
+	var _cerr *C.GError   // in
+
+	_cret = C.g_dbus_proxy_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _variant, _goerr
+}
+
+// CallWithUnixFdListFinish finishes an operation started with
+// g_dbus_proxy_call_with_unix_fd_list().
+func (p dBusProXY) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
+	var _arg0 *C.GDBusProxy   // out
+	var _arg2 *C.GAsyncResult // out
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _arg1 *C.GUnixFDList // in
+	var _cret *C.GVariant    // in
+	var _cerr *C.GError      // in
+
+	_cret = C.g_dbus_proxy_call_with_unix_fd_list_finish(_arg0, _arg2, &_arg1, &_cerr)
+
+	var _outFdList UnixFDList  // out
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1.Native()))).(UnixFDList)
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _outFdList, _variant, _goerr
+}
+
+// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
+// returns FDList objects.
+//
+// This method is only available on UNIX.
+func (p dBusProXY) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
+	var _arg0 *C.GDBusProxy    // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GVariant      // out
+	var _arg3 C.GDBusCallFlags // out
+	var _arg4 C.gint           // out
+	var _arg5 *C.GUnixFDList   // out
+	var _arg7 *C.GCancellable  // out
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(methodName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg3 = (C.GDBusCallFlags)(flags)
+	_arg4 = C.gint(timeoutMsec)
+	_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg6 *C.GUnixFDList // in
+	var _cret *C.GVariant    // in
+	var _cerr *C.GError      // in
+
+	_cret = C.g_dbus_proxy_call_with_unix_fd_list_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg7, &_arg6, &_cerr)
+
+	var _outFdList UnixFDList  // out
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6.Native()))).(UnixFDList)
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _outFdList, _variant, _goerr
+}
+
+// CachedProperty looks up the value for a property from the cache. This
+// call does no blocking IO.
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @property_name is referenced by it, then @value is checked against the
+// type of the property.
+func (p dBusProXY) CachedProperty(propertyName string) *glib.Variant {
+	var _arg0 *C.GDBusProxy // out
+	var _arg1 *C.gchar      // out
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(propertyName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_dbus_proxy_get_cached_property(_arg0, _arg1)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
+}
+
 // CachedPropertyNames gets the names of all cached properties on @proxy.
 func (p dBusProXY) CachedPropertyNames() []string {
 	var _arg0 *C.GDBusProxy // out
@@ -263,16 +534,13 @@ func (p dBusProXY) CachedPropertyNames() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -426,6 +694,50 @@ func (p dBusProXY) ObjectPath() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// SetCachedProperty: if @value is not nil, sets the cached value for the
+// property with name @property_name to the value in @value.
+//
+// If @value is nil, then the cached value is removed from the property
+// cache.
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @property_name is referenced by it, then @value is checked against the
+// type of the property.
+//
+// If the @value #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.
+//
+//    g_dbus_proxy_set_cached_property (proxy,
+//                                      "SomeProperty",
+//                                      g_variant_new ("(si)",
+//                                                    "A String",
+//                                                    42));
+//
+// Normally you will not need to use this method since @proxy is tracking
+// changes using the `org.freedesktop.DBus.Properties.PropertiesChanged`
+// D-Bus signal. However, for performance reasons an object may decide to
+// not use this signal for some properties and instead use a proprietary
+// out-of-band mechanism to transmit changes.
+//
+// As a concrete example, consider an object with a property
+// `ChatroomParticipants` which is an array of strings. Instead of
+// transmitting the same (long) array every time the property changes, it is
+// more efficient to only transmit the delta using e.g. signals
+// `ChatroomParticipantJoined(String name)` and
+// `ChatroomParticipantParted(String name)`.
+func (p dBusProXY) SetCachedProperty(propertyName string, value *glib.Variant) {
+	var _arg0 *C.GDBusProxy // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GVariant   // out
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(propertyName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+
+	C.g_dbus_proxy_set_cached_property(_arg0, _arg1, _arg2)
 }
 
 // SetDefaultTimeout sets the timeout to use if -1 (specifying default

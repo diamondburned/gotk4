@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,11 +30,18 @@ func init() {
 // opened.
 type SliceListModel interface {
 	gextras.Objector
+	gio.ListModel
 
+	// Model gets the model that is currently being used or nil if none.
+	Model() gio.ListModel
 	// Offset gets the offset set via gtk_slice_list_model_set_offset().
 	Offset() uint
 	// Size gets the size set via gtk_slice_list_model_set_size().
 	Size() uint
+	// SetModel sets the model to show a slice of.
+	//
+	// The model's item type must conform to @self's item type.
+	SetModel(model gio.ListModel)
 	// SetOffset sets the offset into the original model for this slice.
 	//
 	// If the offset is too large for the sliced model, @self will end up empty.
@@ -49,6 +57,7 @@ type SliceListModel interface {
 // sliceListModel implements the SliceListModel class.
 type sliceListModel struct {
 	gextras.Objector
+	gio.ListModel
 }
 
 var _ SliceListModel = (*sliceListModel)(nil)
@@ -57,7 +66,8 @@ var _ SliceListModel = (*sliceListModel)(nil)
 // primarily used internally.
 func WrapSliceListModel(obj *externglib.Object) SliceListModel {
 	return sliceListModel{
-		Objector: obj,
+		Objector:      obj,
+		gio.ListModel: gio.WrapListModel(obj),
 	}
 }
 
@@ -65,6 +75,44 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSliceListModel(obj), nil
+}
+
+// NewSliceListModel constructs a class SliceListModel.
+func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListModel {
+	var _arg1 *C.GListModel // out
+	var _arg2 C.guint       // out
+	var _arg3 C.guint       // out
+
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg2 = C.guint(offset)
+	_arg3 = C.guint(size)
+
+	var _cret C.GtkSliceListModel // in
+
+	_cret = C.gtk_slice_list_model_new(_arg1, _arg2, _arg3)
+
+	var _sliceListModel SliceListModel // out
+
+	_sliceListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SliceListModel)
+
+	return _sliceListModel
+}
+
+// Model gets the model that is currently being used or nil if none.
+func (s sliceListModel) Model() gio.ListModel {
+	var _arg0 *C.GtkSliceListModel // out
+
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_slice_list_model_get_model(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
 }
 
 // Offset gets the offset set via gtk_slice_list_model_set_offset().
@@ -99,6 +147,19 @@ func (s sliceListModel) Size() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// SetModel sets the model to show a slice of.
+//
+// The model's item type must conform to @self's item type.
+func (s sliceListModel) SetModel(model gio.ListModel) {
+	var _arg0 *C.GtkSliceListModel // out
+	var _arg1 *C.GListModel        // out
+
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_slice_list_model_set_model(_arg0, _arg1)
 }
 
 // SetOffset sets the offset into the original model for this slice.

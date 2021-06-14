@@ -2,6 +2,10 @@
 
 package gtk
 
+import (
+	"github.com/diamondburned/gotk4/pkg/pango"
+)
+
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -17,6 +21,25 @@ import "C"
 // Most programs should not need to call this function.
 func DisableSetlocale() {
 	C.gtk_disable_setlocale()
+}
+
+// GetDefaultLanguage returns the Language for the default language currently in
+// effect. (Note that this can change over the life of an application.) The
+// default language is derived from the current locale. It determines, for
+// example, whether GTK uses the right-to-left or left-to-right text direction.
+//
+// This function is equivalent to pango_language_get_default(). See that
+// function for details.
+func GetDefaultLanguage() *pango.Language {
+	var _cret *C.PangoLanguage // in
+
+	_cret = C.gtk_get_default_language()
+
+	var _language *pango.Language // out
+
+	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
+
+	return _language
 }
 
 // GetLocaleDirection: get the direction of the current locale. This is the

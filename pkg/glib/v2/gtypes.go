@@ -4,84 +4,12 @@ package glib
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
 import "C"
-
-// CompareDataFunc specifies the type of a comparison function used to compare
-// two values. The function should return a negative integer if the first value
-// comes before the second, 0 if they are equal, or a positive integer if the
-// first value comes after the second.
-type CompareDataFunc func(a interface{}, b interface{}) (gint int)
-
-//export gotk4_CompareDataFunc
-func gotk4_CompareDataFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gint {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var a interface{} // out
-	var b interface{} // out
-
-	a = (interface{})(arg0)
-	b = (interface{})(arg1)
-
-	fn := v.(CompareDataFunc)
-	gint := fn(a, b)
-
-	var cret C.gint // out
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-// Func specifies the type of functions passed to g_list_foreach() and
-// g_slist_foreach().
-type Func func(data interface{})
-
-//export gotk4_Func
-func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var data interface{} // out
-
-	data = (interface{})(arg0)
-
-	fn := v.(Func)
-	fn(data)
-}
-
-// HFunc specifies the type of the function passed to g_hash_table_foreach(). It
-// is called with each key/value pair, together with the @user_data parameter
-// which is passed to g_hash_table_foreach().
-type HFunc func(key interface{}, value interface{})
-
-//export gotk4_HFunc
-func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var key interface{}   // out
-	var value interface{} // out
-
-	key = (interface{})(arg0)
-	value = (interface{})(arg1)
-
-	fn := v.(HFunc)
-	fn(key, value)
-}
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to
 // the struct timeval returned by the gettimeofday() UNIX system call.

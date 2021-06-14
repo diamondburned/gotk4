@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,6 +28,16 @@ func init() {
 // provided signals just provide the basic information
 type GestureStylus interface {
 	GestureSingle
+
+	// Axis returns the current value for the requested @axis. This function
+	// must be called from either the GestureStylus:down, GestureStylus:motion,
+	// GestureStylus:up or GestureStylus:proximity signals.
+	Axis(axis gdk.AxisUse) (float64, bool)
+	// DeviceTool returns the DeviceTool currently driving input through this
+	// gesture. This function must be called from either the
+	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
+	// GestureStylus::proximity signal handlers.
+	DeviceTool() gdk.DeviceTool
 }
 
 // gestureStylus implements the GestureStylus class.
@@ -65,4 +76,50 @@ func NewGestureStylus(widget Widget) GestureStylus {
 	_gestureStylus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureStylus)
 
 	return _gestureStylus
+}
+
+// Axis returns the current value for the requested @axis. This function
+// must be called from either the GestureStylus:down, GestureStylus:motion,
+// GestureStylus:up or GestureStylus:proximity signals.
+func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
+	var _arg0 *C.GtkGestureStylus // out
+	var _arg1 C.GdkAxisUse        // out
+
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
+	_arg1 = (C.GdkAxisUse)(axis)
+
+	var _arg2 C.gdouble  // in
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
+
+	var _value float64 // out
+	var _ok bool       // out
+
+	_value = (float64)(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// DeviceTool returns the DeviceTool currently driving input through this
+// gesture. This function must be called from either the
+// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
+// GestureStylus::proximity signal handlers.
+func (g gestureStylus) DeviceTool() gdk.DeviceTool {
+	var _arg0 *C.GtkGestureStylus // out
+
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
+
+	var _cret *C.GdkDeviceTool // in
+
+	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
+
+	var _deviceTool gdk.DeviceTool // out
+
+	_deviceTool = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.DeviceTool)
+
+	return _deviceTool
 }

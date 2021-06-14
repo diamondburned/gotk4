@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -671,6 +672,41 @@ func ParamSpecUnichar(name string, nick string, blurb string, defaultValue uint3
 	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_unichar(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _paramSpec ParamSpec // out
+
+	_paramSpec = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ParamSpec)
+
+	return _paramSpec
+}
+
+// ParamSpecVariant creates a new SpecVariant instance specifying a #GVariant
+// property.
+//
+// If @default_value is floating, it is consumed.
+//
+// See g_param_spec_internal() for details on property names.
+func ParamSpecVariant(name string, nick string, blurb string, typ *glib.VariantType, defaultValue *glib.Variant, flags ParamFlags) ParamSpec {
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.gchar        // out
+	var _arg3 *C.gchar        // out
+	var _arg4 *C.GVariantType // out
+	var _arg5 *C.GVariant     // out
+	var _arg6 C.GParamFlags   // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(nick))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(blurb))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
+	_arg5 = (*C.GVariant)(unsafe.Pointer(defaultValue.Native()))
+	_arg6 = (C.GParamFlags)(flags)
+
+	var _cret *C.GParamSpec // in
+
+	_cret = C.g_param_spec_variant(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _paramSpec ParamSpec // out
 

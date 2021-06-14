@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -104,6 +105,13 @@ func marshalCellRendererState(p uintptr) (interface{}, error) {
 type CellRenderer interface {
 	gextras.Objector
 
+	// Activate passes an activate event to the cell renderer for possible
+	// processing. Some cell renderers may use events; for example,
+	// CellRendererToggle toggles when it gets a mouse click.
+	Activate(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	// AlignedArea gets the aligned area used by @cell inside @cell_area. Used
+	// for finding the appropriate edit and focus rectangle.
+	AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// Alignment fills in @xalign and @yalign with the appropriate values of
 	// @cell.
 	Alignment() (xalign float32, yalign float32)
@@ -158,6 +166,18 @@ type CellRenderer interface {
 	SetSensitive(sensitive bool)
 	// SetVisible sets the cell renderer’s visibility.
 	SetVisible(visible bool)
+	// Snapshot invokes the virtual render function of the CellRenderer. The
+	// three passed-in rectangles are areas in @cr. Most renderers will draw
+	// within @cell_area; the xalign, yalign, xpad, and ypad fields of the
+	// CellRenderer should be honored with respect to @cell_area.
+	// @background_area includes the blank space around the cell, and also the
+	// area containing the tree expander; so the @background_area rectangles for
+	// all cells tile to cover the entire @window.
+	Snapshot(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	// StartEditing starts editing the contents of this @cell, through a new
+	// CellEditable widget created by the CellRendererClass.start_editing
+	// virtual function.
+	StartEditing(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable
 	// StopEditing informs the cell renderer that the editing is stopped. If
 	// @canceled is true, the cell renderer will emit the
 	// CellRenderer::editing-canceled signal.
@@ -186,6 +206,60 @@ func marshalCellRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCellRenderer(obj), nil
+}
+
+// Activate passes an activate event to the cell renderer for possible
+// processing. Some cell renderers may use events; for example,
+// CellRendererToggle toggles when it gets a mouse click.
+func (c cellRenderer) Activate(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool {
+	var _arg0 *C.GtkCellRenderer     // out
+	var _arg1 *C.GdkEvent            // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.char                // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 *C.GdkRectangle        // out
+	var _arg6 C.GtkCellRendererState // out
+
+	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
+	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
+	_arg6 = (C.GtkCellRendererState)(flags)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_cell_renderer_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// AlignedArea gets the aligned area used by @cell inside @cell_area. Used
+// for finding the appropriate edit and focus rectangle.
+func (c cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle {
+	var _arg0 *C.GtkCellRenderer     // out
+	var _arg1 *C.GtkWidget           // out
+	var _arg2 C.GtkCellRendererState // out
+	var _arg3 *C.GdkRectangle        // out
+
+	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (C.GtkCellRendererState)(flags)
+	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
+
+	var _alignedArea gdk.Rectangle
+
+	C.gtk_cell_renderer_get_aligned_area(_arg0, _arg1, _arg2, _arg3, (*C.GdkRectangle)(unsafe.Pointer(&_alignedArea)))
+
+	return _alignedArea
 }
 
 // Alignment fills in @xalign and @yalign with the appropriate values of
@@ -588,6 +662,63 @@ func (c cellRenderer) SetVisible(visible bool) {
 	}
 
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
+}
+
+// Snapshot invokes the virtual render function of the CellRenderer. The
+// three passed-in rectangles are areas in @cr. Most renderers will draw
+// within @cell_area; the xalign, yalign, xpad, and ypad fields of the
+// CellRenderer should be honored with respect to @cell_area.
+// @background_area includes the blank space around the cell, and also the
+// area containing the tree expander; so the @background_area rectangles for
+// all cells tile to cover the entire @window.
+func (c cellRenderer) Snapshot(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
+	var _arg0 *C.GtkCellRenderer     // out
+	var _arg1 *C.GtkSnapshot         // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkRectangle        // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellRendererState // out
+
+	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
+	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
+	_arg5 = (C.GtkCellRendererState)(flags)
+
+	C.gtk_cell_renderer_snapshot(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// StartEditing starts editing the contents of this @cell, through a new
+// CellEditable widget created by the CellRendererClass.start_editing
+// virtual function.
+func (c cellRenderer) StartEditing(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable {
+	var _arg0 *C.GtkCellRenderer     // out
+	var _arg1 *C.GdkEvent            // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.char                // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 *C.GdkRectangle        // out
+	var _arg6 C.GtkCellRendererState // out
+
+	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
+	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
+	_arg6 = (C.GtkCellRendererState)(flags)
+
+	var _cret *C.GtkCellEditable // in
+
+	_cret = C.gtk_cell_renderer_start_editing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _cellEditable CellEditable // out
+
+	_cellEditable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellEditable)
+
+	return _cellEditable
 }
 
 // StopEditing informs the cell renderer that the editing is stopped. If

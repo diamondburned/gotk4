@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -97,6 +98,17 @@ type Window interface {
 	// [property@Gdk.Toplevel:state] property, or by listening to notifications
 	// of the [property@Gtk.Window:fullscreened] property.
 	Fullscreen()
+	// FullscreenOnMonitor asks to place @window in the fullscreen state on the
+	// given @monitor.
+	//
+	// Note that you shouldn't assume the window is definitely fullscreen
+	// afterward, or that the windowing system allows fullscreen windows on any
+	// given monitor.
+	//
+	// You can track the result of this operation via the
+	// [property@Gdk.Toplevel:state] property, or by listening to notifications
+	// of the [property@Gtk.Window:fullscreened] property.
+	FullscreenOnMonitor(monitor gdk.Monitor)
 	// Application gets the `GtkApplication` associated with the window.
 	Application() Application
 	// Child gets the child widget of @window.
@@ -315,6 +327,11 @@ type Window interface {
 	// This is useful for dialogs that shouldn’t persist beyond the lifetime of
 	// the main window they are associated with, for example.
 	SetDestroyWithParent(setting bool)
+	// SetDisplay sets the `GdkDisplay` where the @window is displayed.
+	//
+	// If the window is already mapped, it will be unmapped, and then remapped
+	// on the new display.
+	SetDisplay(display gdk.Display)
 	// SetFocus sets the focus widget.
 	//
 	// If @focus is not the current focus widget, and is focusable, sets it as
@@ -525,6 +542,26 @@ func (w window) Fullscreen() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_fullscreen(_arg0)
+}
+
+// FullscreenOnMonitor asks to place @window in the fullscreen state on the
+// given @monitor.
+//
+// Note that you shouldn't assume the window is definitely fullscreen
+// afterward, or that the windowing system allows fullscreen windows on any
+// given monitor.
+//
+// You can track the result of this operation via the
+// [property@Gdk.Toplevel:state] property, or by listening to notifications
+// of the [property@Gtk.Window:fullscreened] property.
+func (w window) FullscreenOnMonitor(monitor gdk.Monitor) {
+	var _arg0 *C.GtkWindow  // out
+	var _arg1 *C.GdkMonitor // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
+
+	C.gtk_window_fullscreen_on_monitor(_arg0, _arg1)
 }
 
 // Application gets the `GtkApplication` associated with the window.
@@ -1218,6 +1255,20 @@ func (w window) SetDestroyWithParent(setting bool) {
 	}
 
 	C.gtk_window_set_destroy_with_parent(_arg0, _arg1)
+}
+
+// SetDisplay sets the `GdkDisplay` where the @window is displayed.
+//
+// If the window is already mapped, it will be unmapped, and then remapped
+// on the new display.
+func (w window) SetDisplay(display gdk.Display) {
+	var _arg0 *C.GtkWindow  // out
+	var _arg1 *C.GdkDisplay // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+
+	C.gtk_window_set_display(_arg0, _arg1)
 }
 
 // SetFocus sets the focus widget.

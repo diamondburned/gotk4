@@ -78,13 +78,6 @@ func (n *Node) Native() unsafe.Pointer {
 	return unsafe.Pointer(&n.native)
 }
 
-// Data gets the field inside the struct.
-func (n *Node) Data() interface{} {
-	var v interface{} // out
-	v = (interface{})(n.native.data)
-	return v
-}
-
 // Next gets the field inside the struct.
 func (n *Node) Next() *Node {
 	var v *Node // out
@@ -111,26 +104,6 @@ func (n *Node) Children() *Node {
 	var v *Node // out
 	v = WrapNode(unsafe.Pointer(n.native.children))
 	return v
-}
-
-// ChildIndex gets the position of the first child of a #GNode which contains
-// the given data.
-func (n *Node) ChildIndex(data interface{}) int {
-	var _arg0 *C.GNode   // out
-	var _arg1 C.gpointer // out
-
-	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
-	_arg1 = C.gpointer(data)
-
-	var _cret C.gint // in
-
-	_cret = C.g_node_child_index(_arg0, _arg1)
-
-	var _gint int // out
-
-	_gint = (int)(_cret)
-
-	return _gint
 }
 
 // ChildPosition gets the position of a #GNode with respect to its siblings.

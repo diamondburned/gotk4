@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,35 +45,6 @@ func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
 	return TreeViewColumnSizing(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TreeCellDataFunc: a function to set the properties of a cell instead of just
-// using the straight mapping between the cell and the model. This is useful for
-// customizing the cell renderer. For example, a function might get an integer
-// from the @tree_model, and render it to the “text” attribute of “cell” by
-// converting it to its written equivalent. This is set by calling
-// gtk_tree_view_column_set_cell_data_func()
-type TreeCellDataFunc func(treeColumn TreeViewColumn, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
-
-//export gotk4_TreeCellDataFunc
-func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var treeColumn TreeViewColumn // out
-	var cell CellRenderer         // out
-	var treeModel TreeModel       // out
-	var iter *TreeIter            // out
-
-	treeColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeViewColumn)
-	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(CellRenderer)
-	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(TreeModel)
-	iter = WrapTreeIter(unsafe.Pointer(arg3))
-
-	fn := v.(TreeCellDataFunc)
-	fn(treeColumn, cell, treeModel, iter)
-}
-
 // TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a
 // TreeView widget. It allows to set properties of the column header, and
 // functions as a holding pen for the cell renderers which determine how the
@@ -97,6 +68,9 @@ type TreeViewColumn interface {
 	// column. If the cell is not found in the column, @start_pos and @width are
 	// not changed and false is returned.
 	CellGetPosition(cellRenderer CellRenderer) (xOffset int, width int, ok bool)
+	// CellGetSize obtains the width and height needed to render the column.
+	// This is used primarily by the TreeView.
+	CellGetSize(cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int)
 	// CellIsVisible returns true if any of the cells packed into the
 	// @tree_column are visible. For this to be meaningful, you must first
 	// initialize the cells with gtk_tree_view_column_cell_set_cell_data()
@@ -364,6 +338,35 @@ func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int,
 	}
 
 	return _xOffset, _width, _ok
+}
+
+// CellGetSize obtains the width and height needed to render the column.
+// This is used primarily by the TreeView.
+func (t treeViewColumn) CellGetSize(cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int) {
+	var _arg0 *C.GtkTreeViewColumn // out
+	var _arg1 *C.GdkRectangle      // out
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
+
+	var _arg2 C.gint // in
+	var _arg3 C.gint // in
+	var _arg4 C.gint // in
+	var _arg5 C.gint // in
+
+	C.gtk_tree_view_column_cell_get_size(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+
+	var _xOffset int // out
+	var _yOffset int // out
+	var _width int   // out
+	var _height int  // out
+
+	_xOffset = (int)(_arg2)
+	_yOffset = (int)(_arg3)
+	_width = (int)(_arg4)
+	_height = (int)(_arg5)
+
+	return _xOffset, _yOffset, _width, _height
 }
 
 // CellIsVisible returns true if any of the cells packed into the

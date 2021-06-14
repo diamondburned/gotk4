@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,6 +36,52 @@ func init() {
 // DatagramBasedOverrider contains methods that are overridable. This
 // interface is a subset of the interface DatagramBased.
 type DatagramBasedOverrider interface {
+	// ConditionCheck checks on the readiness of @datagram_based to perform
+	// operations. The operations specified in @condition are checked for and
+	// masked against the currently-satisfied conditions on @datagram_based. The
+	// result is returned.
+	//
+	// G_IO_IN will be set in the return value if data is available to read with
+	// g_datagram_based_receive_messages(), or if the connection is closed
+	// remotely (EOS); and if the datagram_based has not been closed locally
+	// using some implementation-specific method (such as g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// G_IO_OUT will be set if it is expected that at least one byte can be sent
+	// using g_datagram_based_send_messages() without blocking. It will not be
+	// set if the datagram_based has been closed locally.
+	//
+	// G_IO_HUP will be set if the connection has been closed locally.
+	//
+	// G_IO_ERR will be set if there was an asynchronous error in transmitting
+	// data previously enqueued using g_datagram_based_send_messages().
+	//
+	// Note that on Windows, it is possible for an operation to return
+	// G_IO_ERROR_WOULD_BLOCK even immediately after
+	// g_datagram_based_condition_check() has claimed that the Based is ready
+	// for writing. Rather than calling g_datagram_based_condition_check() and
+	// then writing to the Based if it succeeds, it is generally better to
+	// simply try writing right away, and try again later if the initial attempt
+	// returns G_IO_ERROR_WOULD_BLOCK.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be set in the output if they are true. Apart from
+	// these flags, the output is guaranteed to be masked by @condition.
+	//
+	// This call never blocks.
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	// ConditionWait waits for up to @timeout microseconds for condition to
+	// become true on @datagram_based. If the condition is met, true is
+	// returned.
+	//
+	// If @cancellable is cancelled before the condition is met, or if @timeout
+	// is reached before the condition is met, then false is returned and @error
+	// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error
 	// ReceiveMessages: receive one or more data messages from @datagram_based
 	// in one go.
 	//
@@ -203,6 +250,90 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDatagramBased(obj), nil
+}
+
+// ConditionCheck checks on the readiness of @datagram_based to perform
+// operations. The operations specified in @condition are checked for and
+// masked against the currently-satisfied conditions on @datagram_based. The
+// result is returned.
+//
+// G_IO_IN will be set in the return value if data is available to read with
+// g_datagram_based_receive_messages(), or if the connection is closed
+// remotely (EOS); and if the datagram_based has not been closed locally
+// using some implementation-specific method (such as g_socket_close() or
+// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
+//
+// If the connection is shut down or closed (by calling g_socket_close() or
+// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+// example), all calls to this function will return G_IO_ERROR_CLOSED.
+//
+// G_IO_OUT will be set if it is expected that at least one byte can be sent
+// using g_datagram_based_send_messages() without blocking. It will not be
+// set if the datagram_based has been closed locally.
+//
+// G_IO_HUP will be set if the connection has been closed locally.
+//
+// G_IO_ERR will be set if there was an asynchronous error in transmitting
+// data previously enqueued using g_datagram_based_send_messages().
+//
+// Note that on Windows, it is possible for an operation to return
+// G_IO_ERROR_WOULD_BLOCK even immediately after
+// g_datagram_based_condition_check() has claimed that the Based is ready
+// for writing. Rather than calling g_datagram_based_condition_check() and
+// then writing to the Based if it succeeds, it is generally better to
+// simply try writing right away, and try again later if the initial attempt
+// returns G_IO_ERROR_WOULD_BLOCK.
+//
+// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+// conditions will always be set in the output if they are true. Apart from
+// these flags, the output is guaranteed to be masked by @condition.
+//
+// This call never blocks.
+func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 C.GIOCondition    // out
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GIOCondition)(condition)
+
+	var _cret C.GIOCondition // in
+
+	_cret = C.g_datagram_based_condition_check(_arg0, _arg1)
+
+	var _ioCondition glib.IOCondition // out
+
+	_ioCondition = glib.IOCondition(_cret)
+
+	return _ioCondition
+}
+
+// ConditionWait waits for up to @timeout microseconds for condition to
+// become true on @datagram_based. If the condition is met, true is
+// returned.
+//
+// If @cancellable is cancelled before the condition is met, or if @timeout
+// is reached before the condition is met, then false is returned and @error
+// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 C.GIOCondition    // out
+	var _arg2 C.gint64          // out
+	var _arg3 *C.GCancellable   // out
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GIOCondition)(condition)
+	_arg2 = C.gint64(timeout)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // ReceiveMessages: receive one or more data messages from @datagram_based

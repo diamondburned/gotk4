@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -92,6 +93,8 @@ type GLArea interface {
 	AttachBuffers()
 	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
+	// Context retrieves the GLContext used by @area.
+	Context() gdk.GLContext
 	// Error gets the current error set on the @area.
 	Error() error
 	// HasAlpha returns whether the area has an alpha component.
@@ -228,6 +231,23 @@ func (a glArea) AutoRender() bool {
 	}
 
 	return _ok
+}
+
+// Context retrieves the GLContext used by @area.
+func (a glArea) Context() gdk.GLContext {
+	var _arg0 *C.GtkGLArea // out
+
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GdkGLContext // in
+
+	_cret = C.gtk_gl_area_get_context(_arg0)
+
+	var _glContext gdk.GLContext // out
+
+	_glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.GLContext)
+
+	return _glContext
 }
 
 // Error gets the current error set on the @area.

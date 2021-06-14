@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,6 +46,12 @@ type Label interface {
 	// Angle gets the angle of rotation for the label. See
 	// gtk_label_set_angle().
 	Angle() float64
+	// Attributes gets the attribute list that was set on the label using
+	// gtk_label_set_attributes(), if any. This function does not reflect
+	// attributes that come from the labels markup (see gtk_label_set_markup()).
+	// If you want to get the effective attributes for the label, use
+	// pango_layout_get_attribute (gtk_label_get_layout (label)).
+	Attributes() *pango.AttrList
 	// CurrentURI returns the URI for the currently active link in the label.
 	// The active link is the one under the mouse pointer or, in a selectable
 	// label, the link in which the text cursor is currently positioned.
@@ -52,6 +59,9 @@ type Label interface {
 	// This function is intended for use in a Label::activate-link handler or
 	// for use in a Widget::query-tooltip handler.
 	CurrentURI() string
+	// Ellipsize returns the ellipsizing position of the label. See
+	// gtk_label_set_ellipsize().
+	Ellipsize() pango.EllipsizeMode
 	// Justify returns the justification of the label. See
 	// gtk_label_set_justify().
 	Justify() Justification
@@ -64,7 +74,7 @@ type Label interface {
 	// gtk_label_get_layout_offsets(). The returned layout is owned by the
 	// @label so need not be freed by the caller. The @label is free to recreate
 	// its layout at any time, so it should be considered read-only.
-	Layout() Layout
+	Layout() pango.Layout
 	// LayoutOffsets obtains the coordinates where the label will draw the
 	// Layout representing the text in the label; useful to convert mouse events
 	// into coordinates inside the Layout, e.g. to take some action if some part
@@ -79,7 +89,7 @@ type Label interface {
 	LineWrap() bool
 	// LineWrapMode returns line wrap mode used by the label. See
 	// gtk_label_set_line_wrap_mode().
-	LineWrapMode() WrapMode
+	LineWrapMode() pango.WrapMode
 	// Lines gets the number of lines to which an ellipsized, wrapping label
 	// should be limited. See gtk_label_set_lines().
 	Lines() int
@@ -131,6 +141,19 @@ type Label interface {
 	// setting for the label is ignored if the label is selectable, wrapped, or
 	// ellipsized.
 	SetAngle(angle float64)
+	// SetAttributes sets a AttrList; the attributes in the list are applied to
+	// the label text.
+	//
+	// The attributes set with this function will be applied and merged with any
+	// other attributes previously effected by way of the Label:use-underline or
+	// Label:use-markup properties. While it is not recommended to mix markup
+	// strings with manually set attributes, if you must; know that the
+	// attributes will be applied to the label after the markup string is
+	// parsed.
+	SetAttributes(attrs *pango.AttrList)
+	// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to
+	// the text if there is not enough space to render the entire string.
+	SetEllipsize(mode pango.EllipsizeMode)
 	// SetJustify sets the alignment of the lines in the text of the label
 	// relative to each other. GTK_JUSTIFY_LEFT is the default value when the
 	// widget is first created with gtk_label_new(). If you instead want to set
@@ -155,7 +178,7 @@ type Label interface {
 	// SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap())
 	// this controls how the line wrapping is done. The default is
 	// PANGO_WRAP_WORD which means wrap on word boundaries.
-	SetLineWrapMode(wrapMode WrapMode)
+	SetLineWrapMode(wrapMode pango.WrapMode)
 	// SetLines sets the number of lines to which an ellipsized, wrapping label
 	// should be limited. This has no effect if the label is not wrapping or
 	// ellipsized. Set this to -1 if you don’t want to limit the number of
@@ -333,6 +356,27 @@ func (l label) Angle() float64 {
 	return _gdouble
 }
 
+// Attributes gets the attribute list that was set on the label using
+// gtk_label_set_attributes(), if any. This function does not reflect
+// attributes that come from the labels markup (see gtk_label_set_markup()).
+// If you want to get the effective attributes for the label, use
+// pango_layout_get_attribute (gtk_label_get_layout (label)).
+func (l label) Attributes() *pango.AttrList {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.PangoAttrList // in
+
+	_cret = C.gtk_label_get_attributes(_arg0)
+
+	var _attrList *pango.AttrList // out
+
+	_attrList = pango.WrapAttrList(unsafe.Pointer(_cret))
+
+	return _attrList
+}
+
 // CurrentURI returns the URI for the currently active link in the label.
 // The active link is the one under the mouse pointer or, in a selectable
 // label, the link in which the text cursor is currently positioned.
@@ -353,6 +397,24 @@ func (l label) CurrentURI() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Ellipsize returns the ellipsizing position of the label. See
+// gtk_label_set_ellipsize().
+func (l label) Ellipsize() pango.EllipsizeMode {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
+
+	var _cret C.PangoEllipsizeMode // in
+
+	_cret = C.gtk_label_get_ellipsize(_arg0)
+
+	var _ellipsizeMode pango.EllipsizeMode // out
+
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
+
+	return _ellipsizeMode
 }
 
 // Justify returns the justification of the label. See
@@ -397,7 +459,7 @@ func (l label) Label() string {
 // gtk_label_get_layout_offsets(). The returned layout is owned by the
 // @label so need not be freed by the caller. The @label is free to recreate
 // its layout at any time, so it should be considered read-only.
-func (l label) Layout() Layout {
+func (l label) Layout() pango.Layout {
 	var _arg0 *C.GtkLabel // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
@@ -406,9 +468,9 @@ func (l label) Layout() Layout {
 
 	_cret = C.gtk_label_get_layout(_arg0)
 
-	var _layout Layout // out
+	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Layout)
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
 
 	return _layout
 }
@@ -462,7 +524,7 @@ func (l label) LineWrap() bool {
 
 // LineWrapMode returns line wrap mode used by the label. See
 // gtk_label_set_line_wrap_mode().
-func (l label) LineWrapMode() WrapMode {
+func (l label) LineWrapMode() pango.WrapMode {
 	var _arg0 *C.GtkLabel // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
@@ -471,9 +533,9 @@ func (l label) LineWrapMode() WrapMode {
 
 	_cret = C.gtk_label_get_line_wrap_mode(_arg0)
 
-	var _wrapMode WrapMode // out
+	var _wrapMode pango.WrapMode // out
 
-	_wrapMode = WrapMode(_cret)
+	_wrapMode = pango.WrapMode(_cret)
 
 	return _wrapMode
 }
@@ -777,6 +839,37 @@ func (l label) SetAngle(angle float64) {
 	C.gtk_label_set_angle(_arg0, _arg1)
 }
 
+// SetAttributes sets a AttrList; the attributes in the list are applied to
+// the label text.
+//
+// The attributes set with this function will be applied and merged with any
+// other attributes previously effected by way of the Label:use-underline or
+// Label:use-markup properties. While it is not recommended to mix markup
+// strings with manually set attributes, if you must; know that the
+// attributes will be applied to the label after the markup string is
+// parsed.
+func (l label) SetAttributes(attrs *pango.AttrList) {
+	var _arg0 *C.GtkLabel      // out
+	var _arg1 *C.PangoAttrList // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
+	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
+
+	C.gtk_label_set_attributes(_arg0, _arg1)
+}
+
+// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to
+// the text if there is not enough space to render the entire string.
+func (l label) SetEllipsize(mode pango.EllipsizeMode) {
+	var _arg0 *C.GtkLabel          // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
+	_arg1 = (C.PangoEllipsizeMode)(mode)
+
+	C.gtk_label_set_ellipsize(_arg0, _arg1)
+}
+
 // SetJustify sets the alignment of the lines in the text of the label
 // relative to each other. GTK_JUSTIFY_LEFT is the default value when the
 // widget is first created with gtk_label_new(). If you instead want to set
@@ -831,7 +924,7 @@ func (l label) SetLineWrap(wrap bool) {
 // SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap())
 // this controls how the line wrapping is done. The default is
 // PANGO_WRAP_WORD which means wrap on word boundaries.
-func (l label) SetLineWrapMode(wrapMode WrapMode) {
+func (l label) SetLineWrapMode(wrapMode pango.WrapMode) {
 	var _arg0 *C.GtkLabel     // out
 	var _arg1 C.PangoWrapMode // out
 

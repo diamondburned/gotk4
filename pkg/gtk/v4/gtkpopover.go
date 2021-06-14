@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -106,6 +107,12 @@ type Popover interface {
 	MnemonicsVisible() bool
 	// Offset gets the offset previous set with gtk_popover_set_offset().
 	Offset() (xOffset int, yOffset int)
+	// PointingTo gets the rectangle that the popover points to.
+	//
+	// If a rectangle to point to has been set, this function will return true
+	// and fill in @rect with such rectangle, otherwise it will return false and
+	// fill in @rect with the parent widget coordinates.
+	PointingTo() (gdk.Rectangle, bool)
 	// Position returns the preferred position of @popover.
 	Position() PositionType
 	// Popdown pops @popover down.
@@ -155,6 +162,10 @@ type Popover interface {
 	// These values are used when preparing the [struct@Gdk.PopupLayout] for
 	// positioning the popover.
 	SetOffset(xOffset int, yOffset int)
+	// SetPointingTo sets the rectangle that @popover points to.
+	//
+	// This is in the coordinate space of the @popover parent.
+	SetPointingTo(rect *gdk.Rectangle)
 	// SetPosition sets the preferred position for @popover to appear.
 	//
 	// If the @popover is currently visible, it will be immediately updated.
@@ -326,6 +337,30 @@ func (p popover) Offset() (xOffset int, yOffset int) {
 	return _xOffset, _yOffset
 }
 
+// PointingTo gets the rectangle that the popover points to.
+//
+// If a rectangle to point to has been set, this function will return true
+// and fill in @rect with such rectangle, otherwise it will return false and
+// fill in @rect with the parent widget coordinates.
+func (p popover) PointingTo() (gdk.Rectangle, bool) {
+	var _arg0 *C.GtkPopover // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+
+	var _rect gdk.Rectangle
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _rect, _ok
+}
+
 // Position returns the preferred position of @popover.
 func (p popover) Position() PositionType {
 	var _arg0 *C.GtkPopover // out
@@ -482,6 +517,19 @@ func (p popover) SetOffset(xOffset int, yOffset int) {
 	_arg2 = C.int(yOffset)
 
 	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
+}
+
+// SetPointingTo sets the rectangle that @popover points to.
+//
+// This is in the coordinate space of the @popover parent.
+func (p popover) SetPointingTo(rect *gdk.Rectangle) {
+	var _arg0 *C.GtkPopover   // out
+	var _arg1 *C.GdkRectangle // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
+
+	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }
 
 // SetPosition sets the preferred position for @popover to appear.

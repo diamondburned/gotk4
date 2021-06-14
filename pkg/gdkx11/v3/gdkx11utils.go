@@ -2,10 +2,34 @@
 
 package gdkx11
 
+import (
+	"runtime"
+
+	"github.com/diamondburned/gotk4/pkg/cairo"
+)
+
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdkx.h>
 import "C"
+
+// X11GetParentRelativePattern: used with gdk_window_set_background_pattern() to
+// inherit background from parent window. Useful for imitating transparency when
+// compositing is not available. Otherwise behaves like a transparent pattern.
+func X11GetParentRelativePattern() *cairo.Pattern {
+	var _cret *C.cairo_pattern_t // in
+
+	_cret = C.gdk_x11_get_parent_relative_pattern()
+
+	var _pattern *cairo.Pattern // out
+
+	_pattern = cairo.WrapPattern(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _pattern
+}
 
 // X11GrabServer: call gdk_x11_display_grab() on the default display. To ungrab
 // the server again, use gdk_x11_ungrab_server().

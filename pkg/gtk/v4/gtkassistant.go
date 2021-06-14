@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,36 +62,6 @@ const (
 
 func marshalAssistantPageType(p uintptr) (interface{}, error) {
 	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// AssistantPageFunc: type of callback used to calculate the next page in a
-// `GtkAssistant`.
-//
-// It’s called both for computing the next page when the user presses the
-// “forward” button and for handling the behavior of the “last” button.
-//
-// See [method@Gtk.Assistant.set_forward_page_func].
-type AssistantPageFunc func(currentPage int) (gint int)
-
-//export gotk4_AssistantPageFunc
-func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var currentPage int // out
-
-	currentPage = (int)(arg0)
-
-	fn := v.(AssistantPageFunc)
-	gint := fn(currentPage)
-
-	var cret C.int // out
-
-	cret = C.int(gint)
-
-	return cret
 }
 
 // Assistant: `GtkAssistant` is used to represent a complex as a series of
@@ -169,6 +139,8 @@ type Assistant interface {
 	PageTitle(page Widget) string
 	// PageType gets the page type of @page.
 	PageType(page Widget) AssistantPageType
+	// Pages gets a list model of the assistant pages.
+	Pages() gio.ListModel
 	// InsertPage inserts a page in the @assistant at a given position.
 	InsertPage(page Widget, position int) int
 	// NextPage: navigate to the next page.
@@ -447,6 +419,23 @@ func (a assistant) PageType(page Widget) AssistantPageType {
 	_assistantPageType = AssistantPageType(_cret)
 
 	return _assistantPageType
+}
+
+// Pages gets a list model of the assistant pages.
+func (a assistant) Pages() gio.ListModel {
+	var _arg0 *C.GtkAssistant // out
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_assistant_get_pages(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
 }
 
 // InsertPage inserts a page in the @assistant at a given position.

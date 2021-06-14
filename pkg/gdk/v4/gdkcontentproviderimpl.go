@@ -9,7 +9,8 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"

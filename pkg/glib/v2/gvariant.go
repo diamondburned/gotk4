@@ -506,29 +506,6 @@ func NewVariantDouble(value float64) *Variant {
 	return _variant
 }
 
-// NewVariantFixedArray constructs a struct Variant.
-func NewVariantFixedArray(elementType *VariantType, elements interface{}, nElements uint, elementSize uint) *Variant {
-	var _arg1 *C.GVariantType // out
-	var _arg2 C.gpointer      // out
-	var _arg3 C.gsize         // out
-	var _arg4 C.gsize         // out
-
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(elementType.Native()))
-	_arg2 = C.gpointer(elements)
-	_arg3 = C.gsize(nElements)
-	_arg4 = C.gsize(elementSize)
-
-	var _cret *C.GVariant // in
-
-	_cret = C.g_variant_new_fixed_array(_arg1, _arg2, _arg3, _arg4)
-
-	var _variant *Variant // out
-
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-
-	return _variant
-}
-
 // NewVariantHandle constructs a struct Variant.
 func NewVariantHandle(value int32) *Variant {
 	var _arg1 C.gint32 // out
@@ -1185,16 +1162,13 @@ func (v *Variant) Bytestring() []byte {
 	var _guint8s []byte
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_guint8s = make([]byte, length)
+		src := unsafe.Slice(_cret, i)
+		_guint8s = make([]byte, i)
 		for i := range src {
 			_guint8s[i] = (byte)(src[i])
 		}
@@ -1277,44 +1251,6 @@ func (v *Variant) ChildValue(index_ uint) *Variant {
 	})
 
 	return _variant
-}
-
-// Data returns a pointer to the serialised form of a #GVariant instance. The
-// returned data may not be in fully-normalised form if read from an untrusted
-// source. The returned data must not be freed; it remains valid for as long as
-// @value exists.
-//
-// If @value is a fixed-sized value that was deserialised from a corrupted
-// serialised container then nil may be returned. In this case, the proper thing
-// to do is typically to use the appropriate number of nul bytes in place of
-// @value. If @value is not fixed-sized then nil is never returned.
-//
-// In the case that @value is already in serialised form, this function is O(1).
-// If the value is not already in serialised form, serialisation occurs
-// implicitly and is approximately O(n) in the size of the result.
-//
-// To deserialise the data returned by this function, in addition to the
-// serialised data, you must know the type of the #GVariant, and (if the machine
-// might be different) the endianness of the machine that stored it. As a
-// result, file formats or network messages that incorporate serialised
-// #GVariants must include this information either implicitly (for instance "the
-// file always contains a G_VARIANT_TYPE_VARIANT and it is always in
-// little-endian order") or explicitly (by storing the type and/or endianness in
-// addition to the serialised data).
-func (v *Variant) Data() interface{} {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_variant_get_data(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
 }
 
 // Double returns the double precision floating point value of @value.
@@ -2007,28 +1943,6 @@ func (v *Variant) RefSink() *Variant {
 	})
 
 	return _variant
-}
-
-// Store stores the serialised form of @value at @data. @data should be large
-// enough. See g_variant_get_size().
-//
-// The stored data is in machine native byte order but may not be in
-// fully-normalised form if read from an untrusted source. See
-// g_variant_get_normal_form() for a solution.
-//
-// As with g_variant_get_data(), to be able to deserialise the serialised
-// variant successfully, its type and (if the destination machine might be
-// different) its endianness must also be available.
-//
-// This function is approximately O(n) in the size of @data.
-func (v *Variant) Store(data interface{}) {
-	var _arg0 *C.GVariant // out
-	var _arg1 C.gpointer  // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-	_arg1 = C.gpointer(data)
-
-	C.g_variant_store(_arg0, _arg1)
 }
 
 // TakeRef: if @value is floating, sink it. Otherwise, do nothing.

@@ -65,6 +65,14 @@ type TreeExpander interface {
 
 	// Child gets the child widget displayed by @self.
 	Child() Widget
+	// Item forwards the item set on the `GtkTreeListRow` that @self is
+	// managing.
+	//
+	// This call is essentially equivalent to calling:
+	//
+	// “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+	// “`
+	Item() gextras.Objector
 	// ListRow gets the list row managed by @self.
 	ListRow() TreeListRow
 	// SetChild sets the content widget to display.
@@ -128,6 +136,29 @@ func (s treeExpander) Child() Widget {
 	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
 	return _widget
+}
+
+// Item forwards the item set on the `GtkTreeListRow` that @self is
+// managing.
+//
+// This call is essentially equivalent to calling:
+//
+// “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+// “`
+func (s treeExpander) Item() gextras.Objector {
+	var _arg0 *C.GtkTreeExpander // out
+
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
+
+	var _cret C.gpointer // in
+
+	_cret = C.gtk_tree_expander_get_item(_arg0)
+
+	var _object gextras.Objector // out
+
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+
+	return _object
 }
 
 // ListRow gets the list row managed by @self.

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,6 +51,9 @@ type Screen interface {
 	ActiveWindow() Window
 	// Display gets the display to which the @screen belongs.
 	Display() Display
+	// FontOptions gets any options previously set with
+	// gdk_screen_set_font_options().
+	FontOptions() *cairo.FontOptions
 	// Height gets the height of @screen in pixels. The returned size is in
 	// ”application pixels”, not in ”device pixels” (see
 	// gdk_screen_get_monitor_scale_factor()).
@@ -143,6 +147,11 @@ type Screen interface {
 	RGBAVisual() Visual
 	// RootWindow gets the root window of @screen.
 	RootWindow() Window
+	// Setting retrieves a desktop-wide setting such as double-click time for
+	// the Screen @screen.
+	//
+	// FIXME needs a list of valid settings here, or a link to more information.
+	Setting(name string, value **externglib.Value) bool
 	// SystemVisual: get the system’s default visual for @screen. This is the
 	// visual for the root window of the display. The return value should not be
 	// freed.
@@ -166,6 +175,11 @@ type Screen interface {
 	// MakeDisplayName determines the name to pass to gdk_display_open() to get
 	// a Display with this screen as the default screen.
 	MakeDisplayName() string
+	// SetFontOptions sets the default font options for the screen. These
+	// options will be set on any Context’s newly created with
+	// gdk_pango_context_get_for_screen(). Changing the default set of font
+	// options does not affect contexts that have already been created.
+	SetFontOptions(options *cairo.FontOptions)
 	// SetResolution sets the resolution for font handling on the screen. This
 	// is a scale factor between points specified in a FontDescription and cairo
 	// units. The default value is 96, meaning that a 10 point font will be 13
@@ -238,6 +252,24 @@ func (s screen) Display() Display {
 	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
 	return _display
+}
+
+// FontOptions gets any options previously set with
+// gdk_screen_set_font_options().
+func (s screen) FontOptions() *cairo.FontOptions {
+	var _arg0 *C.GdkScreen // out
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.cairo_font_options_t // in
+
+	_cret = C.gdk_screen_get_font_options(_arg0)
+
+	var _fontOptions *cairo.FontOptions // out
+
+	_fontOptions = cairo.WrapFontOptions(unsafe.Pointer(_cret))
+
+	return _fontOptions
 }
 
 // Height gets the height of @screen in pixels. The returned size is in
@@ -584,6 +616,33 @@ func (s screen) RootWindow() Window {
 	return _window
 }
 
+// Setting retrieves a desktop-wide setting such as double-click time for
+// the Screen @screen.
+//
+// FIXME needs a list of valid settings here, or a link to more information.
+func (s screen) Setting(name string, value **externglib.Value) bool {
+	var _arg0 *C.GdkScreen // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GValue    // out
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GValue)(value.GValue)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // SystemVisual: get the system’s default visual for @screen. This is the
 // visual for the root window of the display. The return value should not be
 // freed.
@@ -683,6 +742,20 @@ func (s screen) MakeDisplayName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// SetFontOptions sets the default font options for the screen. These
+// options will be set on any Context’s newly created with
+// gdk_pango_context_get_for_screen(). Changing the default set of font
+// options does not affect contexts that have already been created.
+func (s screen) SetFontOptions(options *cairo.FontOptions) {
+	var _arg0 *C.GdkScreen            // out
+	var _arg1 *C.cairo_font_options_t // out
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options.Native()))
+
+	C.gdk_screen_set_font_options(_arg0, _arg1)
 }
 
 // SetResolution sets the resolution for font handling on the screen. This

@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -195,6 +196,14 @@ type Task interface {
 	// true after the task’s callback is invoked, and will return false if
 	// called from inside the callback.
 	Completed() bool
+	// Context gets the Context that @task will return its result in (that is,
+	// the context that was the [thread-default main
+	// context][g-main-context-push-thread-default] at the point when @task was
+	// created).
+	//
+	// This will always return a non-nil value, even if the task's context is
+	// the default Context.
+	Context() *glib.MainContext
 	// Name gets @task’s name. See g_task_set_name().
 	Name() string
 	// Priority gets @task's priority
@@ -202,10 +211,9 @@ type Task interface {
 	// ReturnOnCancel gets @task's return-on-cancel flag. See
 	// g_task_set_return_on_cancel() for more details.
 	ReturnOnCancel() bool
-	// SourceTag gets @task's source tag. See g_task_set_source_tag().
-	SourceTag() interface{}
-	// TaskData gets @task's `task_data`.
-	TaskData() interface{}
+	// SourceObject gets the source object from @task. Like
+	// g_async_result_get_source_object(), but does not ref the object.
+	SourceObject() gextras.Objector
 	// HadError tests if @task resulted in an error.
 	HadError() bool
 	// PropagateBoolean gets the result of @task as a #gboolean.
@@ -224,15 +232,17 @@ type Task interface {
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
 	PropagateInt() (int, error)
-	// PropagatePointer gets the result of @task as a pointer, and transfers
-	// ownership of that value to the caller.
+	// PropagateValue gets the result of @task as a #GValue, and transfers
+	// ownership of that value to the caller. As with g_task_return_value(),
+	// this is a generic low-level method; g_task_propagate_pointer() and the
+	// like will usually be more useful for C code.
 	//
 	// If the task resulted in an error, or was cancelled, then this will
-	// instead return nil and set @error.
+	// instead set @error and return false.
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagatePointer() (interface{}, error)
+	PropagateValue() (*externglib.Value, error)
 	// ReturnBoolean sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnBoolean(result bool)
@@ -255,6 +265,16 @@ type Task interface {
 	// ReturnInt sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnInt(result int)
+	// ReturnValue sets @task's result to @result (by copying it) and completes
+	// the task.
+	//
+	// If @result is nil then a #GValue of type TYPE_POINTER with a value of nil
+	// will be used for the result.
+	//
+	// This is a very generic low-level method intended primarily for use by
+	// language bindings; for C code, g_task_return_pointer() and the like will
+	// normally be much easier to use.
+	ReturnValue(result **externglib.Value)
 	// SetCheckCancellable sets or clears @task's check-cancellable flag. If
 	// this is true (the default), then g_task_propagate_pointer(), etc, and
 	// g_task_had_error() will check the task's #GCancellable first, and if it
@@ -313,12 +333,6 @@ type Task interface {
 	// will still be run (for consistency), but the task will also be completed
 	// right away.
 	SetReturnOnCancel(returnOnCancel bool) bool
-	// SetSourceTag sets @task's source tag. You can use this to tag a task
-	// return value with a particular pointer (usually a pointer to the function
-	// doing the tagging) and then later check it using g_task_get_source_tag()
-	// (or g_async_result_is_tagged()) in the task's "finish" function, to
-	// figure out if the response came from a particular place.
-	SetSourceTag(sourceTag interface{})
 }
 
 // task implements the Task class.
@@ -402,6 +416,29 @@ func (t task) Completed() bool {
 	return _ok
 }
 
+// Context gets the Context that @task will return its result in (that is,
+// the context that was the [thread-default main
+// context][g-main-context-push-thread-default] at the point when @task was
+// created).
+//
+// This will always return a non-nil value, even if the task's context is
+// the default Context.
+func (t task) Context() *glib.MainContext {
+	var _arg0 *C.GTask // out
+
+	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+
+	var _cret *C.GMainContext // in
+
+	_cret = C.g_task_get_context(_arg0)
+
+	var _mainContext *glib.MainContext // out
+
+	_mainContext = glib.WrapMainContext(unsafe.Pointer(_cret))
+
+	return _mainContext
+}
+
 // Name gets @task’s name. See g_task_set_name().
 func (t task) Name() string {
 	var _arg0 *C.GTask // out
@@ -456,38 +493,22 @@ func (t task) ReturnOnCancel() bool {
 	return _ok
 }
 
-// SourceTag gets @task's source tag. See g_task_set_source_tag().
-func (t task) SourceTag() interface{} {
+// SourceObject gets the source object from @task. Like
+// g_async_result_get_source_object(), but does not ref the object.
+func (t task) SourceObject() gextras.Objector {
 	var _arg0 *C.GTask // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var _cret C.gpointer // in
 
-	_cret = C.g_task_get_source_tag(_arg0)
+	_cret = C.g_task_get_source_object(_arg0)
 
-	var _gpointer interface{} // out
+	var _object gextras.Objector // out
 
-	_gpointer = (interface{})(_cret)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return _gpointer
-}
-
-// TaskData gets @task's `task_data`.
-func (t task) TaskData() interface{} {
-	var _arg0 *C.GTask // out
-
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_task_get_task_data(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
+	return _object
 }
 
 // HadError tests if @task resulted in an error.
@@ -558,31 +579,33 @@ func (t task) PropagateInt() (int, error) {
 	return _gssize, _goerr
 }
 
-// PropagatePointer gets the result of @task as a pointer, and transfers
-// ownership of that value to the caller.
+// PropagateValue gets the result of @task as a #GValue, and transfers
+// ownership of that value to the caller. As with g_task_return_value(),
+// this is a generic low-level method; g_task_propagate_pointer() and the
+// like will usually be more useful for C code.
 //
 // If the task resulted in an error, or was cancelled, then this will
-// instead return nil and set @error.
+// instead set @error and return false.
 //
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
-func (t task) PropagatePointer() (interface{}, error) {
+func (t task) PropagateValue() (*externglib.Value, error) {
 	var _arg0 *C.GTask // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gpointer // in
-	var _cerr *C.GError  // in
+	var _arg1 C.GValue  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_task_propagate_pointer(_arg0, &_cerr)
+	C.g_task_propagate_value(_arg0, &_arg1, &_cerr)
 
-	var _gpointer interface{} // out
-	var _goerr error          // out
+	var _value *externglib.Value // out
+	var _goerr error             // out
 
-	_gpointer = (interface{})(_cret)
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg1))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return _gpointer, _goerr
+	return _value, _goerr
 }
 
 // ReturnBoolean sets @task's result to @result and completes the task (see
@@ -651,6 +674,25 @@ func (t task) ReturnInt(result int) {
 	_arg1 = C.gssize(result)
 
 	C.g_task_return_int(_arg0, _arg1)
+}
+
+// ReturnValue sets @task's result to @result (by copying it) and completes
+// the task.
+//
+// If @result is nil then a #GValue of type TYPE_POINTER with a value of nil
+// will be used for the result.
+//
+// This is a very generic low-level method intended primarily for use by
+// language bindings; for C code, g_task_return_pointer() and the like will
+// normally be much easier to use.
+func (t task) ReturnValue(result **externglib.Value) {
+	var _arg0 *C.GTask  // out
+	var _arg1 *C.GValue // out
+
+	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GValue)(result.GValue)
+
+	C.g_task_return_value(_arg0, _arg1)
 }
 
 // SetCheckCancellable sets or clears @task's check-cancellable flag. If
@@ -760,19 +802,4 @@ func (t task) SetReturnOnCancel(returnOnCancel bool) bool {
 	}
 
 	return _ok
-}
-
-// SetSourceTag sets @task's source tag. You can use this to tag a task
-// return value with a particular pointer (usually a pointer to the function
-// doing the tagging) and then later check it using g_task_get_source_tag()
-// (or g_async_result_is_tagged()) in the task's "finish" function, to
-// figure out if the response came from a particular place.
-func (t task) SetSourceTag(sourceTag interface{}) {
-	var _arg0 *C.GTask   // out
-	var _arg1 C.gpointer // out
-
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gpointer(sourceTag)
-
-	C.g_task_set_source_tag(_arg0, _arg1)
 }

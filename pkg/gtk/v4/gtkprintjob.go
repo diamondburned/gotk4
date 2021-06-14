@@ -5,9 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,29 +21,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_print_job_get_type()), F: marshalPrintJob},
 	})
-}
-
-// PrintJobCompleteFunc: the type of callback that is passed to
-// gtk_print_job_send().
-//
-// It is called when the print job has been completely sent.
-type PrintJobCompleteFunc func(printJob PrintJob, err error)
-
-//export gotk4_PrintJobCompleteFunc
-func gotk4_PrintJobCompleteFunc(arg0 *C.GtkPrintJob, arg1 C.gpointer, arg2 *C.GError) {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var printJob PrintJob // out
-	var err error         // out
-
-	printJob = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(PrintJob)
-	err = gerror.Take(unsafe.Pointer(arg2))
-
-	fn := v.(PrintJobCompleteFunc)
-	fn(printJob, err)
 }
 
 // PrintJob: a `GtkPrintJob` object represents a job that is sent to a printer.
@@ -85,6 +62,9 @@ type PrintJob interface {
 	Settings() PrintSettings
 	// Status gets the status of the print job.
 	Status() PrintStatus
+	// Surface gets a cairo surface onto which the pages of the print job should
+	// be rendered.
+	Surface() (*cairo.Surface, error)
 	// Title gets the job title.
 	Title() string
 	// TrackPrintStatus returns whether jobs will be tracked after printing.
@@ -419,6 +399,27 @@ func (j printJob) Status() PrintStatus {
 	_printStatus = PrintStatus(_cret)
 
 	return _printStatus
+}
+
+// Surface gets a cairo surface onto which the pages of the print job should
+// be rendered.
+func (j printJob) Surface() (*cairo.Surface, error) {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret *C.cairo_surface_t // in
+	var _cerr *C.GError          // in
+
+	_cret = C.gtk_print_job_get_surface(_arg0, &_cerr)
+
+	var _surface *cairo.Surface // out
+	var _goerr error            // out
+
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _surface, _goerr
 }
 
 // Title gets the job title.

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,6 +32,11 @@ func init() {
 type Invisible interface {
 	Widget
 	Buildable
+
+	// Screen returns the Screen object associated with @invisible
+	Screen() gdk.Screen
+	// SetScreen sets the Screen where the Invisible object will be displayed.
+	SetScreen(screen gdk.Screen)
 }
 
 // invisible implements the Invisible class.
@@ -67,4 +73,49 @@ func NewInvisible() Invisible {
 	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Invisible)
 
 	return _invisible
+}
+
+// NewInvisibleForScreen constructs a class Invisible.
+func NewInvisibleForScreen(screen gdk.Screen) Invisible {
+	var _arg1 *C.GdkScreen // out
+
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	var _cret C.GtkInvisible // in
+
+	_cret = C.gtk_invisible_new_for_screen(_arg1)
+
+	var _invisible Invisible // out
+
+	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Invisible)
+
+	return _invisible
+}
+
+// Screen returns the Screen object associated with @invisible
+func (i invisible) Screen() gdk.Screen {
+	var _arg0 *C.GtkInvisible // out
+
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GdkScreen // in
+
+	_cret = C.gtk_invisible_get_screen(_arg0)
+
+	var _screen gdk.Screen // out
+
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+
+	return _screen
+}
+
+// SetScreen sets the Screen where the Invisible object will be displayed.
+func (i invisible) SetScreen(screen gdk.Screen) {
+	var _arg0 *C.GtkInvisible // out
+	var _arg1 *C.GdkScreen    // out
+
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	C.gtk_invisible_set_screen(_arg0, _arg1)
 }

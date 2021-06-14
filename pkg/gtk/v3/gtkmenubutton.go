@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -115,6 +116,8 @@ type MenuButton interface {
 	// Direction returns the direction the popup will be pointing at when popped
 	// up.
 	Direction() ArrowType
+	// MenuModel returns the Model used to generate the popup.
+	MenuModel() gio.MenuModel
 	// Popover returns the Popover that pops out of the button. If the button is
 	// not using a Popover, this function returns nil.
 	Popover() Popover
@@ -143,6 +146,18 @@ type MenuButton interface {
 	// If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if
 	// you passed GTK_ARROW_DOWN (although you won’t see any arrows).
 	SetDirection(direction ArrowType)
+	// SetMenuModel sets the Model from which the popup will be constructed, or
+	// nil to dissociate any existing menu model and disable the button.
+	//
+	// Depending on the value of MenuButton:use-popover, either a Menu will be
+	// created with gtk_menu_new_from_model(), or a Popover with
+	// gtk_popover_new_from_model(). In either case, actions will be connected
+	// as documented for these functions.
+	//
+	// If MenuButton:popup or MenuButton:popover are already set, those widgets
+	// are dissociated from the @menu_button, and those properties are set to
+	// nil.
+	SetMenuModel(menuModel gio.MenuModel)
 	// SetPopover sets the Popover that will be popped up when the @menu_button
 	// is clicked, or nil to dissociate any existing popover and disable the
 	// button.
@@ -237,6 +252,23 @@ func (m menuButton) Direction() ArrowType {
 	return _arrowType
 }
 
+// MenuModel returns the Model used to generate the popup.
+func (m menuButton) MenuModel() gio.MenuModel {
+	var _arg0 *C.GtkMenuButton // out
+
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GMenuModel // in
+
+	_cret = C.gtk_menu_button_get_menu_model(_arg0)
+
+	var _menuModel gio.MenuModel // out
+
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+
+	return _menuModel
+}
+
 // Popover returns the Popover that pops out of the button. If the button is
 // not using a Popover, this function returns nil.
 func (m menuButton) Popover() Popover {
@@ -328,6 +360,27 @@ func (m menuButton) SetDirection(direction ArrowType) {
 	_arg1 = (C.GtkArrowType)(direction)
 
 	C.gtk_menu_button_set_direction(_arg0, _arg1)
+}
+
+// SetMenuModel sets the Model from which the popup will be constructed, or
+// nil to dissociate any existing menu model and disable the button.
+//
+// Depending on the value of MenuButton:use-popover, either a Menu will be
+// created with gtk_menu_new_from_model(), or a Popover with
+// gtk_popover_new_from_model(). In either case, actions will be connected
+// as documented for these functions.
+//
+// If MenuButton:popup or MenuButton:popover are already set, those widgets
+// are dissociated from the @menu_button, and those properties are set to
+// nil.
+func (m menuButton) SetMenuModel(menuModel gio.MenuModel) {
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 *C.GMenuModel    // out
+
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+
+	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
 
 // SetPopover sets the Popover that will be popped up when the @menu_button

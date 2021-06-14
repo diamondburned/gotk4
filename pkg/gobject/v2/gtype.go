@@ -15,10 +15,6 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// Type: a numerical value which represents the unique identifier of a
-// registered type.
-type Type uint
-
 // TypeDebugFlags: these flags used to be passed to
 // g_type_init_with_debug_flags() which is now deprecated.
 //
@@ -728,13 +724,6 @@ func (i *InterfaceInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// InterfaceData gets the field inside the struct.
-func (i *InterfaceInfo) InterfaceData() interface{} {
-	var v interface{} // out
-	v = (interface{})(i.native.interface_data)
-	return v
-}
-
 // TypeFundamentalInfo: a structure that provides information to the type system
 // which is used specifically for managing fundamental types.
 type TypeFundamentalInfo struct {
@@ -798,13 +787,6 @@ func (t *TypeInfo) ClassSize() uint16 {
 	return v
 }
 
-// ClassData gets the field inside the struct.
-func (t *TypeInfo) ClassData() interface{} {
-	var v interface{} // out
-	v = (interface{})(t.native.class_data)
-	return v
-}
-
 // InstanceSize gets the field inside the struct.
 func (t *TypeInfo) InstanceSize() uint16 {
 	var v uint16 // out
@@ -837,24 +819,6 @@ func WrapTypeInstance(ptr unsafe.Pointer) *TypeInstance {
 // Native returns the underlying C source pointer.
 func (t *TypeInstance) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-func (i *TypeInstance) Private(privateType externglib.Type) interface{} {
-	var _arg0 *C.GTypeInstance // out
-	var _arg1 C.GType          // out
-
-	_arg0 = (*C.GTypeInstance)(unsafe.Pointer(i.Native()))
-	_arg1 = C.GType(privateType)
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_type_instance_get_private(_arg0, _arg1)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
 }
 
 // TypeQuery: a structure holding information for a specific type. It is filled

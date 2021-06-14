@@ -11,3 +11,10 @@ future.
 ## Contributing to gotk4
 
 For contributing guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## Wishes
+
+- I wish I generated models first before generating functions
+- I wish I used a registry of converted model types with their respective Go
+  names to ease translation
+- I wish I used common struct types that share names and such.

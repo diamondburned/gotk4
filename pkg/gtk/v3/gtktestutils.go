@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -238,6 +239,65 @@ func TestTextSet(widget Widget, string string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_test_text_set(_arg1, _arg2)
+}
+
+// TestWidgetClick: this function will generate a @button click (button press
+// and button release event) in the middle of the first GdkWindow found that
+// belongs to @widget. For windowless widgets like Button (which returns false
+// from gtk_widget_get_has_window()), this will often be an input-only event
+// window. For other widgets, this is usually widget->window. Certain caveats
+// should be considered when using this function, in particular because the
+// mouse pointer is warped to the button click location, see
+// gdk_test_simulate_button() for details.
+func TestWidgetClick(widget Widget, button uint, modifiers gdk.ModifierType) bool {
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = C.guint(button)
+	_arg3 = (C.GdkModifierType)(modifiers)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_test_widget_click(_arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TestWidgetSendKey: this function will generate keyboard press and release
+// events in the middle of the first GdkWindow found that belongs to @widget.
+// For windowless widgets like Button (which returns false from
+// gtk_widget_get_has_window()), this will often be an input-only event window.
+// For other widgets, this is usually widget->window. Certain caveats should be
+// considered when using this function, in particular because the mouse pointer
+// is warped to the key press location, see gdk_test_simulate_key() for details.
+func TestWidgetSendKey(widget Widget, keyval uint, modifiers gdk.ModifierType) bool {
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = C.guint(keyval)
+	_arg3 = (C.GdkModifierType)(modifiers)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_test_widget_send_key(_arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // TestWidgetWaitForDraw enters the main loop and waits for @widget to be

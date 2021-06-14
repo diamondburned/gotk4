@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,10 +41,15 @@ type Shortcut interface {
 
 	// Action gets the action that is activated by this shortcut.
 	Action() ShortcutAction
+	// Arguments gets the arguments that are passed when activating the
+	// shortcut.
+	Arguments() *glib.Variant
 	// Trigger gets the trigger used to trigger @self.
 	Trigger() ShortcutTrigger
 	// SetAction sets the new action for @self to be @action.
 	SetAction(action ShortcutAction)
+	// SetArguments sets the arguments to pass when activating the shortcut.
+	SetArguments(args *glib.Variant)
 	// SetTrigger sets the new trigger for @self to be @trigger.
 	SetTrigger(trigger ShortcutTrigger)
 }
@@ -105,6 +111,24 @@ func (s shortcut) Action() ShortcutAction {
 	return _shortcutAction
 }
 
+// Arguments gets the arguments that are passed when activating the
+// shortcut.
+func (s shortcut) Arguments() *glib.Variant {
+	var _arg0 *C.GtkShortcut // out
+
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.gtk_shortcut_get_arguments(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
+}
+
 // Trigger gets the trigger used to trigger @self.
 func (s shortcut) Trigger() ShortcutTrigger {
 	var _arg0 *C.GtkShortcut // out
@@ -131,6 +155,17 @@ func (s shortcut) SetAction(action ShortcutAction) {
 	_arg1 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_shortcut_set_action(_arg0, _arg1)
+}
+
+// SetArguments sets the arguments to pass when activating the shortcut.
+func (s shortcut) SetArguments(args *glib.Variant) {
+	var _arg0 *C.GtkShortcut // out
+	var _arg1 *C.GVariant    // out
+
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(args.Native()))
+
+	C.gtk_shortcut_set_arguments(_arg0, _arg1)
 }
 
 // SetTrigger sets the new trigger for @self to be @trigger.

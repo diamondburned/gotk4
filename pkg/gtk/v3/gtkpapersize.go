@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -104,6 +106,26 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 	return _paperSize
 }
 
+// NewPaperSizeFromGVariant constructs a struct PaperSize.
+func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
+	var _arg1 *C.GVariant // out
+
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+
+	var _cret *C.GtkPaperSize // in
+
+	_cret = C.gtk_paper_size_new_from_gvariant(_arg1)
+
+	var _paperSize *PaperSize // out
+
+	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _paperSize
+}
+
 // NewPaperSizeFromIpp constructs a struct PaperSize.
 func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSize {
 	var _arg1 *C.gchar  // out
@@ -127,6 +149,32 @@ func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSi
 	})
 
 	return _paperSize
+}
+
+// NewPaperSizeFromKeyFile constructs a struct PaperSize.
+func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSize, error) {
+	var _arg1 *C.GKeyFile // out
+	var _arg2 *C.gchar    // out
+
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+	_arg2 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret *C.GtkPaperSize // in
+	var _cerr *C.GError       // in
+
+	_cret = C.gtk_paper_size_new_from_key_file(_arg1, _arg2, &_cerr)
+
+	var _paperSize *PaperSize // out
+	var _goerr error          // out
+
+	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _paperSize, _goerr
 }
 
 // NewPaperSizeFromPpd constructs a struct PaperSize.
@@ -428,4 +476,35 @@ func (s *PaperSize) SetSize(width float64, height float64, unit Unit) {
 	_arg3 = (C.GtkUnit)(unit)
 
 	C.gtk_paper_size_set_size(_arg0, _arg1, _arg2, _arg3)
+}
+
+// ToGVariant: serialize a paper size to an a{sv} variant.
+func (p *PaperSize) ToGVariant() *glib.Variant {
+	var _arg0 *C.GtkPaperSize // out
+
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.gtk_paper_size_to_gvariant(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
+}
+
+// ToKeyFile: this function adds the paper size from @size to @key_file.
+func (s *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 *C.GKeyFile     // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+	_arg2 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_paper_size_to_key_file(_arg0, _arg1, _arg2)
 }

@@ -6,6 +6,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -118,6 +122,9 @@ type Entry interface {
 	ActivatesDefault() bool
 	// Alignment gets the value set by gtk_entry_set_alignment().
 	Alignment() float32
+	// Attributes gets the attribute list that was set on the entry using
+	// gtk_entry_set_attributes(), if any.
+	Attributes() *pango.AttrList
 	// Buffer: get the EntryBuffer object which holds the text for this widget.
 	Buffer() EntryBuffer
 	// Completion returns the auxiliary completion object currently in use by
@@ -135,15 +142,35 @@ type Entry interface {
 	HasFrame() bool
 	// IconActivatable returns whether the icon is activatable.
 	IconActivatable(iconPos EntryIconPosition) bool
+	// IconArea gets the area where entry’s icon at @icon_pos is drawn. This
+	// function is useful when drawing something to the entry in a draw
+	// callback.
+	//
+	// If the entry is not realized or has no icon at the given position,
+	// @icon_area is filled with zeros. Otherwise, @icon_area will be filled
+	// with the icon’s allocation, relative to @entry’s allocation.
+	//
+	// See also gtk_entry_get_text_area()
+	IconArea(iconPos EntryIconPosition) gdk.Rectangle
 	// IconAtPos finds the icon at the given position and return its index. The
 	// position’s coordinates are relative to the @entry’s top left corner. If
 	// @x, @y doesn’t lie inside an icon, -1 is returned. This function is
 	// intended for use in a Widget::query-tooltip signal handler.
 	IconAtPos(x int, y int) int
+	// IconGIcon retrieves the #GIcon used for the icon, or nil if there is no
+	// icon or if the icon was set by some other method (e.g., by stock, pixbuf,
+	// or icon name).
+	IconGIcon(iconPos EntryIconPosition) gio.Icon
 	// IconName retrieves the icon name used for the icon, or nil if there is no
 	// icon or if the icon was set by some other method (e.g., by pixbuf, stock
 	// or gicon).
 	IconName(iconPos EntryIconPosition) string
+	// IconPixbuf retrieves the image used for the icon.
+	//
+	// Unlike the other methods of setting and getting icon data, this method
+	// will work regardless of whether the icon was set using a Pixbuf, a
+	// #GIcon, a stock item, or an icon name.
+	IconPixbuf(iconPos EntryIconPosition) gdkpixbuf.Pixbuf
 	// IconSensitive returns whether the icon appears sensitive or insensitive.
 	IconSensitive(iconPos EntryIconPosition) bool
 	// IconStock retrieves the stock id used for the icon, or nil if there is no
@@ -180,7 +207,7 @@ type Entry interface {
 	// gtk_entry_layout_index_to_text_index() and
 	// gtk_entry_text_index_to_layout_index() are needed to convert byte indices
 	// in the layout to byte indices in the entry contents.
-	Layout() Layout
+	Layout() pango.Layout
 	// LayoutOffsets obtains the position of the Layout used to render text in
 	// the entry, in widget coordinates. Useful if you want to line up the text
 	// in an entry with some other text, e.g. when using the entry to implement
@@ -219,12 +246,22 @@ type Entry interface {
 	// ProgressPulseStep retrieves the pulse step set with
 	// gtk_entry_set_progress_pulse_step().
 	ProgressPulseStep() float64
+	// Tabs gets the tabstops that were set on the entry using
+	// gtk_entry_set_tabs(), if any.
+	Tabs() *pango.TabArray
 	// Text retrieves the contents of the entry widget. See also
 	// gtk_editable_get_chars().
 	//
 	// This is equivalent to getting @entry's EntryBuffer and calling
 	// gtk_entry_buffer_get_text() on it.
 	Text() string
+	// TextArea gets the area where the entry’s text is drawn. This function is
+	// useful when drawing something to the entry in a draw callback.
+	//
+	// If the entry is not realized, @text_area is filled with zeros.
+	//
+	// See also gtk_entry_get_icon_area().
+	TextArea() gdk.Rectangle
 	// TextLength retrieves the current length of the text in @entry.
 	//
 	// This is equivalent to getting @entry's EntryBuffer and calling
@@ -242,6 +279,17 @@ type Entry interface {
 	// entries which the user usually doesn't want to replace all text in, such
 	// as search-as-you-type entries.
 	GrabFocusWithoutSelecting()
+	// ImContextFilterKeypress: allow the Entry input method to internally
+	// handle key press and release events. If this function returns true, then
+	// no further processing should be done for this key event. See
+	// gtk_im_context_filter_keypress().
+	//
+	// Note that you are expected to call this function from your handler when
+	// overriding key event handling. This is needed in the case when you need
+	// to insert your own key handling between the input method and the default
+	// key event handling of the Entry. See gtk_text_view_reset_im_context() for
+	// an example of use.
+	ImContextFilterKeypress(event *gdk.EventKey) bool
 	// LayoutIndexToTextIndex converts from a position in the entry’s Layout
 	// (returned by gtk_entry_get_layout()) to a position in the entry contents
 	// (returned by gtk_entry_get_text()).
@@ -271,6 +319,9 @@ type Entry interface {
 	// controls the horizontal positioning of the contents when the displayed
 	// text is shorter than the width of the entry.
 	SetAlignment(xalign float32)
+	// SetAttributes sets a AttrList; the attributes in the list are applied to
+	// the entry text.
+	SetAttributes(attrs *pango.AttrList)
 	// SetBuffer: set the EntryBuffer object which holds the text for this
 	// widget.
 	SetBuffer(buffer EntryBuffer)
@@ -291,6 +342,25 @@ type Entry interface {
 	SetHasFrame(setting bool)
 	// SetIconActivatable sets whether the icon is activatable.
 	SetIconActivatable(iconPos EntryIconPosition, activatable bool)
+	// SetIconDragSource sets up the icon at the given position so that GTK+
+	// will start a drag operation when the user clicks and drags the icon.
+	//
+	// To handle the drag operation, you need to connect to the usual
+	// Widget::drag-data-get (or possibly Widget::drag-data-delete) signal, and
+	// use gtk_entry_get_current_icon_drag_source() in your signal handler to
+	// find out if the drag was started from an icon.
+	//
+	// By default, GTK+ uses the icon as the drag icon. You can use the
+	// Widget::drag-begin signal to set a different icon. Note that you have to
+	// use g_signal_connect_after() to ensure that your signal handler gets
+	// executed after the default handler.
+	SetIconDragSource(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction)
+	// SetIconFromGIcon sets the icon shown in the entry at the specified
+	// position from the current icon theme. If the icon isn’t known, a “broken
+	// image” icon will be displayed instead.
+	//
+	// If @icon is nil, no icon will be shown in the specified position.
+	SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Icon)
 	// SetIconFromIconName sets the icon shown in the entry at the specified
 	// position from the current icon theme.
 	//
@@ -299,6 +369,11 @@ type Entry interface {
 	//
 	// If @icon_name is nil, no icon will be shown in the specified position.
 	SetIconFromIconName(iconPos EntryIconPosition, iconName string)
+	// SetIconFromPixbuf sets the icon shown in the specified position using a
+	// pixbuf.
+	//
+	// If @pixbuf is nil, no icon will be shown in the specified position.
+	SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf gdkpixbuf.Pixbuf)
 	// SetIconFromStock sets the icon shown in the entry at the specified
 	// position from a stock image.
 	//
@@ -381,6 +456,9 @@ type Entry interface {
 	// SetProgressPulseStep sets the fraction of total entry width to move the
 	// progress bouncing block for each call to gtk_entry_progress_pulse().
 	SetProgressPulseStep(fraction float64)
+	// SetTabs sets a TabArray; the tabstops in the array are applied to the
+	// entry text.
+	SetTabs(tabs *pango.TabArray)
 	// SetText sets the text in the widget to the given value, replacing the
 	// current contents.
 	//
@@ -509,6 +587,24 @@ func (e entry) Alignment() float32 {
 	return _gfloat
 }
 
+// Attributes gets the attribute list that was set on the entry using
+// gtk_entry_set_attributes(), if any.
+func (e entry) Attributes() *pango.AttrList {
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+
+	var _cret *C.PangoAttrList // in
+
+	_cret = C.gtk_entry_get_attributes(_arg0)
+
+	var _attrList *pango.AttrList // out
+
+	_attrList = pango.WrapAttrList(unsafe.Pointer(_cret))
+
+	return _attrList
+}
+
 // Buffer: get the EntryBuffer object which holds the text for this widget.
 func (e entry) Buffer() EntryBuffer {
 	var _arg0 *C.GtkEntry // out
@@ -622,6 +718,29 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 	return _ok
 }
 
+// IconArea gets the area where entry’s icon at @icon_pos is drawn. This
+// function is useful when drawing something to the entry in a draw
+// callback.
+//
+// If the entry is not realized or has no icon at the given position,
+// @icon_area is filled with zeros. Otherwise, @icon_area will be filled
+// with the icon’s allocation, relative to @entry’s allocation.
+//
+// See also gtk_entry_get_text_area()
+func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+
+	var _iconArea gdk.Rectangle
+
+	C.gtk_entry_get_icon_area(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_iconArea)))
+
+	return _iconArea
+}
+
 // IconAtPos finds the icon at the given position and return its index. The
 // position’s coordinates are relative to the @entry’s top left corner. If
 // @x, @y doesn’t lie inside an icon, -1 is returned. This function is
@@ -646,6 +765,27 @@ func (e entry) IconAtPos(x int, y int) int {
 	return _gint
 }
 
+// IconGIcon retrieves the #GIcon used for the icon, or nil if there is no
+// icon or if the icon was set by some other method (e.g., by stock, pixbuf,
+// or icon name).
+func (e entry) IconGIcon(iconPos EntryIconPosition) gio.Icon {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+
+	var _cret *C.GIcon // in
+
+	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
+
+	var _icon gio.Icon // out
+
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+
+	return _icon
+}
+
 // IconName retrieves the icon name used for the icon, or nil if there is no
 // icon or if the icon was set by some other method (e.g., by pixbuf, stock
 // or gicon).
@@ -665,6 +805,29 @@ func (e entry) IconName(iconPos EntryIconPosition) string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// IconPixbuf retrieves the image used for the icon.
+//
+// Unlike the other methods of setting and getting icon data, this method
+// will work regardless of whether the icon was set using a Pixbuf, a
+// #GIcon, a stock item, or an icon name.
+func (e entry) IconPixbuf(iconPos EntryIconPosition) gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gtk_entry_get_icon_pixbuf(_arg0, _arg1)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return _pixbuf
 }
 
 // IconSensitive returns whether the icon appears sensitive or insensitive.
@@ -852,7 +1015,7 @@ func (e entry) InvisibleChar() uint32 {
 // gtk_entry_layout_index_to_text_index() and
 // gtk_entry_text_index_to_layout_index() are needed to convert byte indices
 // in the layout to byte indices in the entry contents.
-func (e entry) Layout() Layout {
+func (e entry) Layout() pango.Layout {
 	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
@@ -861,9 +1024,9 @@ func (e entry) Layout() Layout {
 
 	_cret = C.gtk_entry_get_layout(_arg0)
 
-	var _layout Layout // out
+	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Layout)
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
 
 	return _layout
 }
@@ -1016,6 +1179,24 @@ func (e entry) ProgressPulseStep() float64 {
 	return _gdouble
 }
 
+// Tabs gets the tabstops that were set on the entry using
+// gtk_entry_set_tabs(), if any.
+func (e entry) Tabs() *pango.TabArray {
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+
+	var _cret *C.PangoTabArray // in
+
+	_cret = C.gtk_entry_get_tabs(_arg0)
+
+	var _tabArray *pango.TabArray // out
+
+	_tabArray = pango.WrapTabArray(unsafe.Pointer(_cret))
+
+	return _tabArray
+}
+
 // Text retrieves the contents of the entry widget. See also
 // gtk_editable_get_chars().
 //
@@ -1035,6 +1216,24 @@ func (e entry) Text() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// TextArea gets the area where the entry’s text is drawn. This function is
+// useful when drawing something to the entry in a draw callback.
+//
+// If the entry is not realized, @text_area is filled with zeros.
+//
+// See also gtk_entry_get_icon_area().
+func (e entry) TextArea() gdk.Rectangle {
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+
+	var _textArea gdk.Rectangle
+
+	C.gtk_entry_get_text_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_textArea)))
+
+	return _textArea
 }
 
 // TextLength retrieves the current length of the text in @entry.
@@ -1106,6 +1305,36 @@ func (e entry) GrabFocusWithoutSelecting() {
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	C.gtk_entry_grab_focus_without_selecting(_arg0)
+}
+
+// ImContextFilterKeypress: allow the Entry input method to internally
+// handle key press and release events. If this function returns true, then
+// no further processing should be done for this key event. See
+// gtk_im_context_filter_keypress().
+//
+// Note that you are expected to call this function from your handler when
+// overriding key event handling. This is needed in the case when you need
+// to insert your own key handling between the input method and the default
+// key event handling of the Entry. See gtk_text_view_reset_im_context() for
+// an example of use.
+func (e entry) ImContextFilterKeypress(event *gdk.EventKey) bool {
+	var _arg0 *C.GtkEntry    // out
+	var _arg1 *C.GdkEventKey // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_entry_im_context_filter_keypress(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // LayoutIndexToTextIndex converts from a position in the entry’s Layout
@@ -1188,6 +1417,18 @@ func (e entry) SetAlignment(xalign float32) {
 	C.gtk_entry_set_alignment(_arg0, _arg1)
 }
 
+// SetAttributes sets a AttrList; the attributes in the list are applied to
+// the entry text.
+func (e entry) SetAttributes(attrs *pango.AttrList) {
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.PangoAttrList // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
+
+	C.gtk_entry_set_attributes(_arg0, _arg1)
+}
+
 // SetBuffer: set the EntryBuffer object which holds the text for this
 // widget.
 func (e entry) SetBuffer(buffer EntryBuffer) {
@@ -1259,6 +1500,49 @@ func (e entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool) {
 	C.gtk_entry_set_icon_activatable(_arg0, _arg1, _arg2)
 }
 
+// SetIconDragSource sets up the icon at the given position so that GTK+
+// will start a drag operation when the user clicks and drags the icon.
+//
+// To handle the drag operation, you need to connect to the usual
+// Widget::drag-data-get (or possibly Widget::drag-data-delete) signal, and
+// use gtk_entry_get_current_icon_drag_source() in your signal handler to
+// find out if the drag was started from an icon.
+//
+// By default, GTK+ uses the icon as the drag icon. You can use the
+// Widget::drag-begin signal to set a different icon. Note that you have to
+// use g_signal_connect_after() to ensure that your signal handler gets
+// executed after the default handler.
+func (e entry) SetIconDragSource(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GtkTargetList       // out
+	var _arg3 C.GdkDragAction        // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg2 = (*C.GtkTargetList)(unsafe.Pointer(targetList.Native()))
+	_arg3 = (C.GdkDragAction)(actions)
+
+	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
+}
+
+// SetIconFromGIcon sets the icon shown in the entry at the specified
+// position from the current icon theme. If the icon isn’t known, a “broken
+// image” icon will be displayed instead.
+//
+// If @icon is nil, no icon will be shown in the specified position.
+func (e entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Icon) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GIcon               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
+}
+
 // SetIconFromIconName sets the icon shown in the entry at the specified
 // position from the current icon theme.
 //
@@ -1277,6 +1561,22 @@ func (e entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_set_icon_from_icon_name(_arg0, _arg1, _arg2)
+}
+
+// SetIconFromPixbuf sets the icon shown in the specified position using a
+// pixbuf.
+//
+// If @pixbuf is nil, no icon will be shown in the specified position.
+func (e entry) SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GdkPixbuf           // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	C.gtk_entry_set_icon_from_pixbuf(_arg0, _arg1, _arg2)
 }
 
 // SetIconFromStock sets the icon shown in the entry at the specified
@@ -1501,6 +1801,18 @@ func (e entry) SetProgressPulseStep(fraction float64) {
 	_arg1 = C.gdouble(fraction)
 
 	C.gtk_entry_set_progress_pulse_step(_arg0, _arg1)
+}
+
+// SetTabs sets a TabArray; the tabstops in the array are applied to the
+// entry text.
+func (e entry) SetTabs(tabs *pango.TabArray) {
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.PangoTabArray // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs.Native()))
+
+	C.gtk_entry_set_tabs(_arg0, _arg1)
 }
 
 // SetText sets the text in the widget to the given value, replacing the

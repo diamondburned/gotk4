@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,6 +51,11 @@ type Range interface {
 	//
 	// See [method@Gtk.Range.set_inverted].
 	Inverted() bool
+	// RangeRect: this function returns the area that contains the range’s
+	// trough, in coordinates relative to @range's origin.
+	//
+	// This function is useful mainly for `GtkRange` subclasses.
+	RangeRect() gdk.Rectangle
 	// RestrictToFillLevel gets whether the range is restricted to the fill
 	// level.
 	RestrictToFillLevel() bool
@@ -258,6 +264,22 @@ func (r _range) Inverted() bool {
 	}
 
 	return _ok
+}
+
+// RangeRect: this function returns the area that contains the range’s
+// trough, in coordinates relative to @range's origin.
+//
+// This function is useful mainly for `GtkRange` subclasses.
+func (r _range) RangeRect() gdk.Rectangle {
+	var _arg0 *C.GtkRange // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
+
+	var _rangeRect gdk.Rectangle
+
+	C.gtk_range_get_range_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rangeRect)))
+
+	return _rangeRect
 }
 
 // RestrictToFillLevel gets whether the range is restricted to the fill

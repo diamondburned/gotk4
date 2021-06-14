@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -102,9 +104,35 @@ type PlacesSidebar interface {
 	ScrolledWindow
 	Buildable
 
+	// AddShortcut applications may want to present some folders in the places
+	// sidebar if they could be immediately useful to users. For example, a
+	// drawing program could add a “/usr/share/clipart” location when the
+	// sidebar is being used in an “Insert Clipart” dialog box.
+	//
+	// This function adds the specified @location to a special place for
+	// immutable shortcuts. The shortcuts are application-specific; they are not
+	// shared across applications, and they are not persistent. If this function
+	// is called multiple times with different locations, then they are added to
+	// the sidebar’s list in the same order as the function is called.
+	AddShortcut(location gio.File)
 	// LocalOnly returns the value previously set with
 	// gtk_places_sidebar_set_local_only().
 	LocalOnly() bool
+	// Location gets the currently selected location in the @sidebar. This can
+	// be nil when nothing is selected, for example, when
+	// gtk_places_sidebar_set_location() has been called with a location that is
+	// not among the sidebar’s list of places to show.
+	//
+	// You can use this function to get the selection in the @sidebar. Also, if
+	// you connect to the PlacesSidebar::populate-popup signal, you can use this
+	// function to get the location that is being referred to during the
+	// callbacks for your menu items.
+	Location() gio.File
+	// NthBookmark: this function queries the bookmarks added by the user to the
+	// places sidebar, and returns one of them. This function is used by
+	// FileChooser to implement the “Alt-1”, “Alt-2”, etc. shortcuts, which
+	// activate the cooresponding bookmark.
+	NthBookmark(n int) gio.File
 	// OpenFlags gets the open flags.
 	OpenFlags() PlacesOpenFlags
 	// ShowConnectToServer returns the value previously set with
@@ -128,8 +156,29 @@ type PlacesSidebar interface {
 	// ShowTrash returns the value previously set with
 	// gtk_places_sidebar_set_show_trash()
 	ShowTrash() bool
+	// RemoveShortcut removes an application-specific shortcut that has been
+	// previously been inserted with gtk_places_sidebar_add_shortcut(). If the
+	// @location is not a shortcut in the sidebar, then nothing is done.
+	RemoveShortcut(location gio.File)
+	// SetDropTargetsVisible: make the GtkPlacesSidebar show drop targets, so it
+	// can show the available drop targets and a "new bookmark" row. This
+	// improves the Drag-and-Drop experience of the user and allows applications
+	// to show all available drop targets at once.
+	//
+	// This needs to be called when the application is aware of an ongoing drag
+	// that might target the sidebar. The drop-targets-visible state will be
+	// unset automatically if the drag finishes in the GtkPlacesSidebar. You
+	// only need to unset the state when the drag ends on some other widget on
+	// your application.
+	SetDropTargetsVisible(visible bool, context gdk.DragContext)
 	// SetLocalOnly sets whether the @sidebar should only show local files.
 	SetLocalOnly(localOnly bool)
+	// SetLocation sets the location that is being shown in the widgets
+	// surrounding the @sidebar, for example, in a folder view in a file
+	// manager. In turn, the @sidebar will highlight that location if it is
+	// being shown in the list of places, or it will unhighlight everything if
+	// the @location is not among the places in the list.
+	SetLocation(location gio.File)
 	// SetOpenFlags sets the way in which the calling application can open new
 	// locations from the places sidebar. For example, some applications only
 	// open locations “directly” into their main view, while others may support
@@ -226,6 +275,26 @@ func NewPlacesSidebar() PlacesSidebar {
 	return _placesSidebar
 }
 
+// AddShortcut applications may want to present some folders in the places
+// sidebar if they could be immediately useful to users. For example, a
+// drawing program could add a “/usr/share/clipart” location when the
+// sidebar is being used in an “Insert Clipart” dialog box.
+//
+// This function adds the specified @location to a special place for
+// immutable shortcuts. The shortcuts are application-specific; they are not
+// shared across applications, and they are not persistent. If this function
+// is called multiple times with different locations, then they are added to
+// the sidebar’s list in the same order as the function is called.
+func (s placesSidebar) AddShortcut(location gio.File) {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 *C.GFile            // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+
+	C.gtk_places_sidebar_add_shortcut(_arg0, _arg1)
+}
+
 // LocalOnly returns the value previously set with
 // gtk_places_sidebar_set_local_only().
 func (s placesSidebar) LocalOnly() bool {
@@ -244,6 +313,53 @@ func (s placesSidebar) LocalOnly() bool {
 	}
 
 	return _ok
+}
+
+// Location gets the currently selected location in the @sidebar. This can
+// be nil when nothing is selected, for example, when
+// gtk_places_sidebar_set_location() has been called with a location that is
+// not among the sidebar’s list of places to show.
+//
+// You can use this function to get the selection in the @sidebar. Also, if
+// you connect to the PlacesSidebar::populate-popup signal, you can use this
+// function to get the location that is being referred to during the
+// callbacks for your menu items.
+func (s placesSidebar) Location() gio.File {
+	var _arg0 *C.GtkPlacesSidebar // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_places_sidebar_get_location(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
+}
+
+// NthBookmark: this function queries the bookmarks added by the user to the
+// places sidebar, and returns one of them. This function is used by
+// FileChooser to implement the “Alt-1”, “Alt-2”, etc. shortcuts, which
+// activate the cooresponding bookmark.
+func (s placesSidebar) NthBookmark(n int) gio.File {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 C.gint              // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(n)
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_places_sidebar_get_nth_bookmark(_arg0, _arg1)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
 }
 
 // OpenFlags gets the open flags.
@@ -403,6 +519,43 @@ func (s placesSidebar) ShowTrash() bool {
 	return _ok
 }
 
+// RemoveShortcut removes an application-specific shortcut that has been
+// previously been inserted with gtk_places_sidebar_add_shortcut(). If the
+// @location is not a shortcut in the sidebar, then nothing is done.
+func (s placesSidebar) RemoveShortcut(location gio.File) {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 *C.GFile            // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+
+	C.gtk_places_sidebar_remove_shortcut(_arg0, _arg1)
+}
+
+// SetDropTargetsVisible: make the GtkPlacesSidebar show drop targets, so it
+// can show the available drop targets and a "new bookmark" row. This
+// improves the Drag-and-Drop experience of the user and allows applications
+// to show all available drop targets at once.
+//
+// This needs to be called when the application is aware of an ongoing drag
+// that might target the sidebar. The drop-targets-visible state will be
+// unset automatically if the drag finishes in the GtkPlacesSidebar. You
+// only need to unset the state when the drag ends on some other widget on
+// your application.
+func (s placesSidebar) SetDropTargetsVisible(visible bool, context gdk.DragContext) {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 C.gboolean          // out
+	var _arg2 *C.GdkDragContext   // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	if visible {
+		_arg1 = C.TRUE
+	}
+	_arg2 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+
+	C.gtk_places_sidebar_set_drop_targets_visible(_arg0, _arg1, _arg2)
+}
+
 // SetLocalOnly sets whether the @sidebar should only show local files.
 func (s placesSidebar) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
@@ -414,6 +567,21 @@ func (s placesSidebar) SetLocalOnly(localOnly bool) {
 	}
 
 	C.gtk_places_sidebar_set_local_only(_arg0, _arg1)
+}
+
+// SetLocation sets the location that is being shown in the widgets
+// surrounding the @sidebar, for example, in a folder view in a file
+// manager. In turn, the @sidebar will highlight that location if it is
+// being shown in the list of places, or it will unhighlight everything if
+// the @location is not among the places in the list.
+func (s placesSidebar) SetLocation(location gio.File) {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 *C.GFile            // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+
+	C.gtk_places_sidebar_set_location(_arg0, _arg1)
 }
 
 // SetOpenFlags sets the way in which the calling application can open new

@@ -6,20 +6,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
+// #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
-// #include <glib-object.h>
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuf},
-	})
-}
 
 // Pixbuf: a pixel buffer.
 //
@@ -147,6 +141,7 @@ func init() {
 // allows to e.g. write the image to a socket or store it in a database.
 type Pixbuf interface {
 	gextras.Objector
+	gio.Icon
 
 	// AddAlpha takes an existing pixbuf and adds an alpha channel to it.
 	//
@@ -261,6 +256,11 @@ type Pixbuf interface {
 	// contains image density information in dots per inch. Since 2.36.6, the
 	// JPEG loader sets the "comment" option with the comment EXIF tag.
 	Option(key string) string
+	// Options returns a `GHashTable` with a list of all the options that may
+	// have been attached to the `pixbuf` when it was loaded, or that may have
+	// been attached by another function using
+	// [method@GdkPixbuf.Pixbuf.set_option].
+	Options() *glib.HashTable
 	// PixelsWithLength queries a pointer to the pixel data of a pixbuf.
 	//
 	// This function will cause an implicit copy of the pixbuf data if the
@@ -319,15 +319,13 @@ type Pixbuf interface {
 	//
 	// See [method@GdkPixbuf.Pixbuf.save_to_buffer] for more details.
 	SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error)
-	// SaveToCallbackv: vector version of `gdk_pixbuf_save_to_callback()`.
+	// SaveToStreamv saves `pixbuf` to an output stream.
 	//
-	// Saves pixbuf to a callback in format @type, which is currently "jpeg",
-	// "png", "tiff", "ico" or "bmp".
+	// Supported file formats are currently "jpeg", "tiff", "png", "ico" or
+	// "bmp".
 	//
-	// If @error is set, `FALSE` will be returned.
-	//
-	// See [method@GdkPixbuf.Pixbuf.save_to_callback] for more details.
-	SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error
+	// See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details.
+	SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error
 	// Savev: vector version of `gdk_pixbuf_save()`.
 	//
 	// Saves pixbuf to a file in `type`, which is currently "jpeg", "png",
@@ -380,6 +378,7 @@ type Pixbuf interface {
 // pixbuf implements the Pixbuf class.
 type pixbuf struct {
 	gextras.Objector
+	gio.Icon
 }
 
 var _ Pixbuf = (*pixbuf)(nil)
@@ -389,6 +388,7 @@ var _ Pixbuf = (*pixbuf)(nil)
 func WrapPixbuf(obj *externglib.Object) Pixbuf {
 	return pixbuf{
 		Objector: obj,
+		gio.Icon: gio.WrapIcon(obj),
 	}
 }
 
@@ -566,6 +566,78 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	var _cerr *C.GError   // in
 
 	_cret = C.gdk_pixbuf_new_from_resource_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromStream constructs a class Pixbuf.
+func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (Pixbuf, error) {
+	var _arg1 *C.GInputStream // out
+	var _arg2 *C.GCancellable // out
+
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_stream(_arg1, _arg2, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromStreamAtScale constructs a class Pixbuf.
+func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, preserveAspectRatio bool, cancellable gio.Cancellable) (Pixbuf, error) {
+	var _arg1 *C.GInputStream // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gboolean      // out
+	var _arg5 *C.GCancellable // out
+
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg2 = C.gint(width)
+	_arg3 = C.gint(height)
+	if preserveAspectRatio {
+		_arg4 = C.TRUE
+	}
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_stream_at_scale(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _pixbuf Pixbuf // out
+	var _goerr error   // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromStreamFinish constructs a class Pixbuf.
+func NewPixbufFromStreamFinish(asyncResult gio.AsyncResult) (Pixbuf, error) {
+	var _arg1 *C.GAsyncResult // out
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
+
+	var _cret C.GdkPixbuf // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gdk_pixbuf_new_from_stream_finish(_arg1, &_cerr)
 
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
@@ -1045,6 +1117,29 @@ func (p pixbuf) Option(key string) string {
 	return _utf8
 }
 
+// Options returns a `GHashTable` with a list of all the options that may
+// have been attached to the `pixbuf` when it was loaded, or that may have
+// been attached by another function using
+// [method@GdkPixbuf.Pixbuf.set_option].
+func (p pixbuf) Options() *glib.HashTable {
+	var _arg0 *C.GdkPixbuf // out
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GHashTable // in
+
+	_cret = C.gdk_pixbuf_get_options(_arg0)
+
+	var _hashTable *glib.HashTable // out
+
+	_hashTable = glib.WrapHashTable(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_hashTable, func(v *glib.HashTable) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _hashTable
+}
+
 // PixelsWithLength queries a pointer to the pixel data of a pixbuf.
 //
 // This function will cause an implicit copy of the pixbuf data if the
@@ -1292,51 +1387,49 @@ func (p pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValues []st
 	return _buffer, _goerr
 }
 
-// SaveToCallbackv: vector version of `gdk_pixbuf_save_to_callback()`.
+// SaveToStreamv saves `pixbuf` to an output stream.
 //
-// Saves pixbuf to a callback in format @type, which is currently "jpeg",
-// "png", "tiff", "ico" or "bmp".
+// Supported file formats are currently "jpeg", "tiff", "png", "ico" or
+// "bmp".
 //
-// If @error is set, `FALSE` will be returned.
-//
-// See [method@GdkPixbuf.Pixbuf.save_to_callback] for more details.
-func (p pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
-	var _arg0 *C.GdkPixbuf        // out
-	var _arg1 C.GdkPixbufSaveFunc // out
-	var _arg2 C.gpointer
-	var _arg3 *C.char // out
+// See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details.
+func (p pixbuf) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error {
+	var _arg0 *C.GdkPixbuf     // out
+	var _arg1 *C.GOutputStream // out
+	var _arg2 *C.char          // out
+	var _arg3 **C.char
 	var _arg4 **C.char
-	var _arg5 **C.char
+	var _arg5 *C.GCancellable // out
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_PixbufSaveFunc)
-	_arg2 = C.gpointer(box.Assign(saveFunc))
-	_arg3 = (*C.char)(C.CString(typ))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg2 = (*C.char)(C.CString(typ))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (**C.char)(C.malloc(C.ulong((len(optionKeys) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (**C.char)(C.malloc(C.ulong((len(optionKeys) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg4))
 
 	{
-		out := unsafe.Slice(_arg4, len(optionKeys))
+		out := unsafe.Slice(_arg3, len(optionKeys))
 		for i := range optionKeys {
 			out[i] = (*C.gchar)(C.CString(optionKeys[i]))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-	_arg5 = (**C.char)(C.malloc(C.ulong((len(optionValues) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg5))
+	_arg4 = (**C.char)(C.malloc(C.ulong((len(optionValues) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg4))
 
 	{
-		out := unsafe.Slice(_arg5, len(optionValues))
+		out := unsafe.Slice(_arg4, len(optionValues))
 		for i := range optionValues {
 			out[i] = (*C.gchar)(C.CString(optionValues[i]))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var _cerr *C.GError // in
 
-	C.gdk_pixbuf_save_to_callbackv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	C.gdk_pixbuf_save_to_streamv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
 	var _goerr error // out
 

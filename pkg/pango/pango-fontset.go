@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -15,8 +14,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
-//
-// gboolean gotk4_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 func init() {
@@ -24,35 +21,6 @@ func init() {
 		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontset},
 		{T: externglib.Type(C.pango_fontset_simple_get_type()), F: marshalFontsetSimple},
 	})
-}
-
-// FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
-// fonts in a fontset.
-type FontsetForeachFunc func(fontset Fontset, font Font) (ok bool)
-
-//export gotk4_FontsetForeachFunc
-func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var fontset Fontset // out
-	var font Font       // out
-
-	fontset = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Fontset)
-	font = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Font)
-
-	fn := v.(FontsetForeachFunc)
-	ok := fn(fontset, font)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // Fontset: a `PangoFontset` represents a set of `PangoFont` to use when
@@ -65,11 +33,6 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 type Fontset interface {
 	gextras.Objector
 
-	// Foreach iterates through all the fonts in a fontset, calling @func for
-	// each one.
-	//
-	// If @func returns true, that stops the iteration.
-	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	Font(wc uint) Font
@@ -96,22 +59,6 @@ func marshalFontset(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontset(obj), nil
-}
-
-// Foreach iterates through all the fonts in a fontset, calling @func for
-// each one.
-//
-// If @func returns true, that stops the iteration.
-func (f fontset) Foreach(fn FontsetForeachFunc) {
-	var _arg0 *C.PangoFontset           // out
-	var _arg1 C.PangoFontsetForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
 }
 
 // Font returns the font in the fontset that contains the best glyph for a

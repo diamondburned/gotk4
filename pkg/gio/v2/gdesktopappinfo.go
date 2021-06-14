@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -252,6 +253,23 @@ func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
 	return _desktopAppInfo
 }
 
+// NewDesktopAppInfoFromKeyfile constructs a class DesktopAppInfo.
+func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
+	var _arg1 *C.GKeyFile // out
+
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+
+	var _cret C.GDesktopAppInfo // in
+
+	_cret = C.g_desktop_app_info_new_from_keyfile(_arg1)
+
+	var _desktopAppInfo DesktopAppInfo // out
+
+	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
+
+	return _desktopAppInfo
+}
+
 // ActionName gets the user-visible display name of the "additional
 // application action" specified by @action_name.
 //
@@ -387,16 +405,13 @@ func (i desktopAppInfo) Keywords() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 		}
@@ -623,16 +638,13 @@ func (i desktopAppInfo) ListActions() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 		}

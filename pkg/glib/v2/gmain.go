@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,33 +20,6 @@ func init() {
 		{T: externglib.Type(C.g_main_context_get_type()), F: marshalMainContext},
 		{T: externglib.Type(C.g_main_loop_get_type()), F: marshalMainLoop},
 	})
-}
-
-// SourceFunc specifies the type of function passed to g_timeout_add(),
-// g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
-//
-// When calling g_source_set_callback(), you may need to cast a function of a
-// different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
-// incompatible function types.
-type SourceFunc func() (ok bool)
-
-//export gotk4_SourceFunc
-func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg0))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(SourceFunc)
-	ok := fn()
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
@@ -100,25 +72,6 @@ func GetRealTime() int64 {
 	_gint64 = (int64)(_cret)
 
 	return _gint64
-}
-
-// IdleRemoveByData removes the idle function with the given data.
-func IdleRemoveByData(data interface{}) bool {
-	var _arg1 C.gpointer // out
-
-	_arg1 = C.gpointer(data)
-
-	var _cret C.gboolean // in
-
-	_cret = C.g_idle_remove_by_data(_arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // MainDepth returns the depth of the stack of calls to

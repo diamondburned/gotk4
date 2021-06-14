@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,6 +24,25 @@ func init() {
 	})
 }
 
+// ContentDeserializeFinish finishes a content deserialization operation.
+func ContentDeserializeFinish(result gio.AsyncResult, value **externglib.Value) error {
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.GValue       // out
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg2 = (*C.GValue)(value.GValue)
+
+	var _cerr *C.GError // in
+
+	C.gdk_content_deserialize_finish(_arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // ContentDeserializer: a `GdkContentDeserializer` is used to deserialize
 // content received via inter-application data transfers.
 //
@@ -36,22 +56,27 @@ func init() {
 // Also see [class@Gdk.ContentSerializer].
 type ContentDeserializer interface {
 	gextras.Objector
+	gio.AsyncResult
 
+	// Cancellable gets the cancellable for the current operation.
+	//
+	// This is the `GCancellable` that was passed to
+	// [func@content_deserialize_async].
+	Cancellable() gio.Cancellable
 	// GType gets the GType to create an instance of.
 	GType() externglib.Type
+	// InputStream gets the input stream for the current operation.
+	//
+	// This is the stream that was passed to [func@content_deserialize_async].
+	InputStream() gio.InputStream
 	// MIMEType gets the mime type to deserialize from.
 	MIMEType() string
 	// Priority gets the I/O priority for the current operation.
 	//
 	// This is the priority that was passed to [funccontent_deserialize_async].
 	Priority() int
-	// TaskData gets the data that was associated with the current operation.
-	//
-	// See [method@Gdk.ContentDeserializer.set_task_data].
-	TaskData() interface{}
-	// UserData gets the user data that was passed when the deserializer was
-	// registered.
-	UserData() interface{}
+	// Value gets the `GValue` to store the deserialized object in.
+	Value() **externglib.Value
 	// ReturnError: indicate that the deserialization has ended with an error.
 	//
 	// This function consumes @error.
@@ -64,6 +89,7 @@ type ContentDeserializer interface {
 // contentDeserializer implements the ContentDeserializer class.
 type contentDeserializer struct {
 	gextras.Objector
+	gio.AsyncResult
 }
 
 var _ ContentDeserializer = (*contentDeserializer)(nil)
@@ -72,7 +98,8 @@ var _ ContentDeserializer = (*contentDeserializer)(nil)
 // primarily used internally.
 func WrapContentDeserializer(obj *externglib.Object) ContentDeserializer {
 	return contentDeserializer{
-		Objector: obj,
+		Objector:        obj,
+		gio.AsyncResult: gio.WrapAsyncResult(obj),
 	}
 }
 
@@ -80,6 +107,26 @@ func marshalContentDeserializer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapContentDeserializer(obj), nil
+}
+
+// Cancellable gets the cancellable for the current operation.
+//
+// This is the `GCancellable` that was passed to
+// [func@content_deserialize_async].
+func (d contentDeserializer) Cancellable() gio.Cancellable {
+	var _arg0 *C.GdkContentDeserializer // out
+
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GCancellable // in
+
+	_cret = C.gdk_content_deserializer_get_cancellable(_arg0)
+
+	var _cancellable gio.Cancellable // out
+
+	_cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Cancellable)
+
+	return _cancellable
 }
 
 // GType gets the GType to create an instance of.
@@ -97,6 +144,25 @@ func (d contentDeserializer) GType() externglib.Type {
 	_gType = externglib.Type(_cret)
 
 	return _gType
+}
+
+// InputStream gets the input stream for the current operation.
+//
+// This is the stream that was passed to [func@content_deserialize_async].
+func (d contentDeserializer) InputStream() gio.InputStream {
+	var _arg0 *C.GdkContentDeserializer // out
+
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.GInputStream // in
+
+	_cret = C.gdk_content_deserializer_get_input_stream(_arg0)
+
+	var _inputStream gio.InputStream // out
+
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.InputStream)
+
+	return _inputStream
 }
 
 // MIMEType gets the mime type to deserialize from.
@@ -135,41 +201,21 @@ func (d contentDeserializer) Priority() int {
 	return _gint
 }
 
-// TaskData gets the data that was associated with the current operation.
-//
-// See [method@Gdk.ContentDeserializer.set_task_data].
-func (d contentDeserializer) TaskData() interface{} {
+// Value gets the `GValue` to store the deserialized object in.
+func (d contentDeserializer) Value() **externglib.Value {
 	var _arg0 *C.GdkContentDeserializer // out
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gpointer // in
+	var _cret *C.GValue // in
 
-	_cret = C.gdk_content_deserializer_get_task_data(_arg0)
+	_cret = C.gdk_content_deserializer_get_value(_arg0)
 
-	var _gpointer interface{} // out
+	var _value **externglib.Value // out
 
-	_gpointer = (interface{})(_cret)
+	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
-	return _gpointer
-}
-
-// UserData gets the user data that was passed when the deserializer was
-// registered.
-func (d contentDeserializer) UserData() interface{} {
-	var _arg0 *C.GdkContentDeserializer // out
-
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.gdk_content_deserializer_get_user_data(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
+	return _value
 }
 
 // ReturnError: indicate that the deserialization has ended with an error.

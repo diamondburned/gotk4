@@ -48,16 +48,13 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 	var _goerr error // out
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))

@@ -3,11 +3,12 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -317,34 +318,6 @@ func marshalWindowHints(p uintptr) (interface{}, error) {
 	return WindowHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// WindowChildFunc: a function of this type is passed to
-// gdk_window_invalidate_maybe_recurse(). It gets called for each child of the
-// window to determine whether to recursively invalidate it or now.
-type WindowChildFunc func(window Window) (ok bool)
-
-//export gotk4_WindowChildFunc
-func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var window Window // out
-
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Window)
-
-	fn := v.(WindowChildFunc)
-	ok := fn(window)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // GetDefaultRootWindow obtains the root window (parent all other windows are
 // inside) for the default display and screen.
 func GetDefaultRootWindow() Window {
@@ -376,6 +349,25 @@ func OffscreenWindowGetEmbedder(window Window) Window {
 	return _ret
 }
 
+// OffscreenWindowGetSurface gets the offscreen surface that an offscreen window
+// renders into. If you need to keep this around over window resizes, you need
+// to add a reference to it.
+func OffscreenWindowGetSurface(window Window) *cairo.Surface {
+	var _arg1 *C.GdkWindow // out
+
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+
+	var _cret *C.cairo_surface_t // in
+
+	_cret = C.gdk_offscreen_window_get_surface(_arg1)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+
+	return _surface
+}
+
 // OffscreenWindowSetEmbedder sets @window to be embedded in @embedder.
 //
 // To fully embed an offscreen window, in addition to calling this function, it
@@ -399,6 +391,33 @@ type Window interface {
 	// if supported. Otherwise, emits a short beep on the display just as
 	// gdk_display_beep().
 	Beep()
+	// BeginDrawFrame indicates that you are beginning the process of redrawing
+	// @region on @window, and provides you with a DrawingContext.
+	//
+	// If @window is a top level Window, backed by a native window
+	// implementation, a backing store (offscreen buffer) large enough to
+	// contain @region will be created. The backing store will be initialized
+	// with the background color or background surface for @window. Then, all
+	// drawing operations performed on @window will be diverted to the backing
+	// store. When you call gdk_window_end_frame(), the contents of the backing
+	// store will be copied to @window, making it visible on screen. Only the
+	// part of @window contained in @region will be modified; that is, drawing
+	// operations are clipped to @region.
+	//
+	// The net result of all this is to remove flicker, because the user sees
+	// the finished product appear all at once when you call
+	// gdk_window_end_draw_frame(). If you draw to @window directly without
+	// calling gdk_window_begin_draw_frame(), the user may see flicker as
+	// individual drawing operations are performed in sequence.
+	//
+	// When using GTK+, the widget system automatically places calls to
+	// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() around
+	// emissions of the `GtkWidget::draw` signal. That is, if you’re drawing the
+	// contents of the widget yourself, you can assume that the widget has a
+	// cleared background, is already set as the clip region, and already has a
+	// backing store. Therefore in most cases, application code in GTK does not
+	// need to call gdk_window_begin_draw_frame() explicitly.
+	BeginDrawFrame(region *cairo.Region) DrawingContext
 	// BeginMoveDrag begins a window move operation (for a toplevel window).
 	//
 	// This function assumes that the drag is controlled by the client pointer
@@ -416,6 +435,43 @@ type Window interface {
 	// gdk_window_begin_paint_region() which creates a rectangular region for
 	// you. See gdk_window_begin_paint_region() for details.
 	BeginPaintRect(rectangle *Rectangle)
+	// BeginPaintRegion indicates that you are beginning the process of
+	// redrawing @region. A backing store (offscreen buffer) large enough to
+	// contain @region will be created. The backing store will be initialized
+	// with the background color or background surface for @window. Then, all
+	// drawing operations performed on @window will be diverted to the backing
+	// store. When you call gdk_window_end_paint(), the backing store will be
+	// copied to @window, making it visible onscreen. Only the part of @window
+	// contained in @region will be modified; that is, drawing operations are
+	// clipped to @region.
+	//
+	// The net result of all this is to remove flicker, because the user sees
+	// the finished product appear all at once when you call
+	// gdk_window_end_paint(). If you draw to @window directly without calling
+	// gdk_window_begin_paint_region(), the user may see flicker as individual
+	// drawing operations are performed in sequence. The clipping and
+	// background-initializing features of gdk_window_begin_paint_region() are
+	// conveniences for the programmer, so you can avoid doing that work
+	// yourself.
+	//
+	// When using GTK+, the widget system automatically places calls to
+	// gdk_window_begin_paint_region() and gdk_window_end_paint() around
+	// emissions of the expose_event signal. That is, if you’re writing an
+	// expose event handler, you can assume that the exposed area in EventExpose
+	// has already been cleared to the window background, is already set as the
+	// clip region, and already has a backing store. Therefore in most cases,
+	// application code need not call gdk_window_begin_paint_region(). (You can
+	// disable the automatic calls around expose events on a widget-by-widget
+	// basis by calling gtk_widget_set_double_buffered().)
+	//
+	// If you call this function multiple times before calling the matching
+	// gdk_window_end_paint(), the backing stores are pushed onto a stack.
+	// gdk_window_end_paint() copies the topmost backing store onscreen,
+	// subtracts the topmost region from all other regions in the stack, and
+	// pops the stack. All drawing operations affect only the topmost backing
+	// store in the stack. One matching call to gdk_window_end_paint() is
+	// required for each call to gdk_window_begin_paint_region().
+	BeginPaintRegion(region *cairo.Region)
 	// BeginResizeDrag begins a window resize operation (for a toplevel window).
 	//
 	// This function assumes that the drag is controlled by the client pointer
@@ -472,6 +528,42 @@ type Window interface {
 	// Before using the returned GLContext, you will need to call
 	// gdk_gl_context_make_current() or gdk_gl_context_realize().
 	CreateGLContext() (GLContext, error)
+	// CreateSimilarImageSurface: create a new image surface that is efficient
+	// to draw on the given @window.
+	//
+	// Initially the surface contents are all 0 (transparent if contents have
+	// transparency, black otherwise.)
+	//
+	// The @width and @height of the new surface are not affected by the scaling
+	// factor of the @window, or by the @scale argument; they are the size of
+	// the surface in device pixels. If you wish to create an image surface
+	// capable of holding the contents of @window you can use:
+	//
+	//      int scale = gdk_window_get_scale_factor (window);
+	//      int width = gdk_window_get_width (window) * scale;
+	//      int height = gdk_window_get_height (window) * scale;
+	//
+	//      // format is set elsewhere
+	//      cairo_surface_t *surface =
+	//        gdk_window_create_similar_image_surface (window,
+	//                                                 format,
+	//                                                 width, height,
+	//                                                 scale);
+	//
+	// Note that unlike cairo_surface_create_similar_image(), the new surface's
+	// device scale is set to @scale, or to the scale factor of @window if
+	// @scale is 0.
+	CreateSimilarImageSurface(format cairo.Format, width int, height int, scale int) *cairo.Surface
+	// CreateSimilarSurface: create a new surface that is as compatible as
+	// possible with the given @window. For example the new surface will have
+	// the same fallback resolution and font options as @window. Generally, the
+	// new surface will also use the same backend as @window, unless that is not
+	// possible for some reason. The type of the returned surface may be
+	// examined with cairo_surface_get_type().
+	//
+	// Initially the surface contents are all 0 (transparent if contents have
+	// transparency, black otherwise.)
+	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
 	// Deiconify: attempt to deiconify (unminimize) @window. On X11 the window
 	// manager may choose to ignore the request to deiconify. When using GTK+,
 	// use gtk_window_deiconify() instead of the Window variant. Or better yet,
@@ -563,6 +655,14 @@ type Window interface {
 	// AcceptFocus determines whether or not the desktop environment shuld be
 	// hinted that the window does not want to receive input focus.
 	AcceptFocus() bool
+	// BackgroundPattern gets the pattern used to clear the background on
+	// @window.
+	BackgroundPattern() *cairo.Pattern
+	// ClipRegion computes the region of a window that potentially can be
+	// written to by drawing primitives. This region may not take into account
+	// other factors such as if the window is obscured by other windows, but no
+	// area outside of this region will be affected by drawing primitives.
+	ClipRegion() *cairo.Region
 	// Composited determines whether @window is composited.
 	//
 	// See gdk_window_set_composited().
@@ -740,9 +840,17 @@ type Window interface {
 	Toplevel() Window
 	// TypeHint: this function returns the type hint set for a window.
 	TypeHint() WindowTypeHint
-	// UserData retrieves the user data for @window, which is normally the
-	// widget that @window belongs to. See gdk_window_set_user_data().
-	UserData() interface{}
+	// UpdateArea transfers ownership of the update area from @window to the
+	// caller of the function. That is, after calling this function, @window
+	// will no longer have an invalid/dirty region; the update area is removed
+	// from @window and handed to you. If a window has no update area,
+	// gdk_window_get_update_area() returns nil. You are responsible for calling
+	// cairo_region_destroy() on the returned region if it’s non-nil.
+	UpdateArea() *cairo.Region
+	// VisibleRegion computes the region of the @window that is potentially
+	// visible. This does not necessarily take into account if the window is
+	// obscured by other windows, but no area outside of this region is visible.
+	VisibleRegion() *cairo.Region
 	// Visual gets the Visual describing the pixel format of @window.
 	Visual() Visual
 	// Width returns the width of the given @window.
@@ -766,10 +874,43 @@ type Window interface {
 	//
 	// This function only makes sense when @window is a toplevel window.
 	Iconify()
+	// InputShapeCombineRegion: like gdk_window_shape_combine_region(), but the
+	// shape applies only to event handling. Mouse events which happen while the
+	// pointer position corresponds to an unset bit in the mask will be passed
+	// on the window below @window.
+	//
+	// An input shape is typically used with RGBA windows. The alpha channel of
+	// the window defines which pixels are invisible and allows for nicely
+	// antialiased borders, and the input shape controls where the window is
+	// “clickable”.
+	//
+	// On the X11 platform, this requires version 1.1 of the shape extension.
+	//
+	// On the Win32 platform, this functionality is not present and the function
+	// does nothing.
+	InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int)
 	// InvalidateRect: a convenience wrapper around
 	// gdk_window_invalidate_region() which invalidates a rectangular region.
 	// See gdk_window_invalidate_region() for details.
 	InvalidateRect(rect *Rectangle, invalidateChildren bool)
+	// InvalidateRegion adds @region to the update area for @window. The update
+	// area is the region that needs to be redrawn, or “dirty region.” The call
+	// gdk_window_process_updates() sends one or more expose events to the
+	// window, which together cover the entire update area. An application would
+	// normally redraw the contents of @window in response to those expose
+	// events.
+	//
+	// GDK will call gdk_window_process_all_updates() on your behalf whenever
+	// your program returns to the main loop and becomes idle, so normally
+	// there’s no need to do that manually, you just need to invalidate regions
+	// that you know should be redrawn.
+	//
+	// The @invalidate_children parameter controls whether the region of each
+	// child window that intersects @region will also be invalidated. If false,
+	// then the update area for child windows will remain unaffected. See
+	// gdk_window_invalidate_maybe_recurse if you need fine grained control over
+	// which children are invalidated.
+	InvalidateRegion(region *cairo.Region, invalidateChildren bool)
 	// IsDestroyed: check to see if a window is destroyed..
 	IsDestroyed() bool
 	// IsInputOnly determines whether or not the window is an input only window.
@@ -794,6 +935,16 @@ type Window interface {
 	// Note that gdk_window_show() raises the window again, so don’t call this
 	// function before gdk_window_show(). (Try gdk_window_show_unraised().)
 	Lower()
+	// MarkPaintFromClip: if you call this during a paint (e.g. between
+	// gdk_window_begin_paint_region() and gdk_window_end_paint() then GDK will
+	// mark the current clip region of the window as being drawn. This is
+	// required when mixing GL rendering via gdk_cairo_draw_from_gl() and cairo
+	// rendering, as otherwise GDK has no way of knowing when something paints
+	// over the GL-drawn regions.
+	//
+	// This is typically called automatically by GTK+ and you don't need to care
+	// about this.
+	MarkPaintFromClip(cr *cairo.Context)
 	// Maximize maximizes the window. If the window was already maximized, then
 	// this function does nothing.
 	//
@@ -832,6 +983,12 @@ type Window interface {
 	// gdk_window_move_resize() to both move and resize simultaneously, for a
 	// nicer visual effect.
 	Move(x int, y int)
+	// MoveRegion: move the part of @window indicated by @region by @dy pixels
+	// in the Y direction and @dx pixels in the X direction. The portions of
+	// @region that not covered by the new position of @region are invalidated.
+	//
+	// Child windows are not moved.
+	MoveRegion(region *cairo.Region, dx int, dy int)
 	// MoveResize: equivalent to calling gdk_window_move() and
 	// gdk_window_resize(), except that both operations are performed at once,
 	// avoiding strange visual effects. (i.e. the user may be able to see the
@@ -921,6 +1078,15 @@ type Window interface {
 	// gtk_style_context_set_background() — if you're implementing a custom
 	// widget.
 	SetBackground(color *Color)
+	// SetBackgroundPattern sets the background of @window.
+	//
+	// A background of nil means that the window won't have any background. On
+	// the X11 backend it's also possible to inherit the background from the
+	// parent window using gdk_x11_get_parent_relative_pattern().
+	//
+	// The windowing system will normally fill a window with its background when
+	// the window is obscured then exposed.
+	SetBackgroundPattern(pattern *cairo.Pattern)
 	// SetBackgroundRGBA sets the background color of @window.
 	//
 	// See also gdk_window_set_background_pattern().
@@ -1144,6 +1310,19 @@ type Window interface {
 	//
 	// Support for non-toplevel windows was added in 3.8.
 	SetOpacity(opacity float64)
+	// SetOpaqueRegion: for optimisation purposes, compositing window managers
+	// may like to not draw obscured regions of windows, or turn off blending
+	// during for these regions. With RGB windows with no transparency, this is
+	// just the shape of the window, but with ARGB32 windows, the compositor
+	// does not know what regions of the window are transparent or not.
+	//
+	// This function only works for toplevel windows.
+	//
+	// GTK+ will update this property automatically if the @window background is
+	// opaque, as we know where the opaque regions are. If your window
+	// background is not opaque, please update this property in your
+	// Widget::style-updated handler.
+	SetOpaqueRegion(region *cairo.Region)
 	// SetOverrideRedirect: an override redirect window is not under the control
 	// of the window manager. This means it won’t have a titlebar, won’t be
 	// minimizable, etc. - it will be entirely under the control of the
@@ -1251,6 +1430,28 @@ type Window interface {
 	// SetUrgencyHint toggles whether a window needs the user's urgent
 	// attention.
 	SetUrgencyHint(urgent bool)
+	// SetUserData: for most purposes this function is deprecated in favor of
+	// g_object_set_data(). However, for historical reasons GTK+ stores the
+	// Widget that owns a Window as user data on the Window. So, custom widget
+	// implementations should use this function for that. If GTK+ receives an
+	// event for a Window, and the user data for the window is non-nil, GTK+
+	// will assume the user data is a Widget, and forward the event to that
+	// widget.
+	SetUserData(userData gextras.Objector)
+	// ShapeCombineRegion makes pixels in @window outside @shape_region be
+	// transparent, so that the window may be nonrectangular.
+	//
+	// If @shape_region is nil, the shape will be unset, so the whole window
+	// will be opaque again. @offset_x and @offset_y are ignored if
+	// @shape_region is nil.
+	//
+	// On the X11 platform, this uses an X server extension which is widely
+	// available on most common platforms, but not available on very old X
+	// servers, and occasionally the implementation will be buggy. On servers
+	// without the shape extension, this function will do nothing.
+	//
+	// This function works on both toplevel and child windows.
+	ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int)
 	// Show: like gdk_window_show_unraised(), but also raises the window to the
 	// top of the window stack (moves the window to the front of the Z-order).
 	//
@@ -1370,6 +1571,50 @@ func (w window) Beep() {
 	C.gdk_window_beep(_arg0)
 }
 
+// BeginDrawFrame indicates that you are beginning the process of redrawing
+// @region on @window, and provides you with a DrawingContext.
+//
+// If @window is a top level Window, backed by a native window
+// implementation, a backing store (offscreen buffer) large enough to
+// contain @region will be created. The backing store will be initialized
+// with the background color or background surface for @window. Then, all
+// drawing operations performed on @window will be diverted to the backing
+// store. When you call gdk_window_end_frame(), the contents of the backing
+// store will be copied to @window, making it visible on screen. Only the
+// part of @window contained in @region will be modified; that is, drawing
+// operations are clipped to @region.
+//
+// The net result of all this is to remove flicker, because the user sees
+// the finished product appear all at once when you call
+// gdk_window_end_draw_frame(). If you draw to @window directly without
+// calling gdk_window_begin_draw_frame(), the user may see flicker as
+// individual drawing operations are performed in sequence.
+//
+// When using GTK+, the widget system automatically places calls to
+// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() around
+// emissions of the `GtkWidget::draw` signal. That is, if you’re drawing the
+// contents of the widget yourself, you can assume that the widget has a
+// cleared background, is already set as the clip region, and already has a
+// backing store. Therefore in most cases, application code in GTK does not
+// need to call gdk_window_begin_draw_frame() explicitly.
+func (w window) BeginDrawFrame(region *cairo.Region) DrawingContext {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	var _cret *C.GdkDrawingContext // in
+
+	_cret = C.gdk_window_begin_draw_frame(_arg0, _arg1)
+
+	var _drawingContext DrawingContext // out
+
+	_drawingContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DrawingContext)
+
+	return _drawingContext
+}
+
 // BeginMoveDrag begins a window move operation (for a toplevel window).
 //
 // This function assumes that the drag is controlled by the client pointer
@@ -1426,6 +1671,52 @@ func (w window) BeginPaintRect(rectangle *Rectangle) {
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rectangle.Native()))
 
 	C.gdk_window_begin_paint_rect(_arg0, _arg1)
+}
+
+// BeginPaintRegion indicates that you are beginning the process of
+// redrawing @region. A backing store (offscreen buffer) large enough to
+// contain @region will be created. The backing store will be initialized
+// with the background color or background surface for @window. Then, all
+// drawing operations performed on @window will be diverted to the backing
+// store. When you call gdk_window_end_paint(), the backing store will be
+// copied to @window, making it visible onscreen. Only the part of @window
+// contained in @region will be modified; that is, drawing operations are
+// clipped to @region.
+//
+// The net result of all this is to remove flicker, because the user sees
+// the finished product appear all at once when you call
+// gdk_window_end_paint(). If you draw to @window directly without calling
+// gdk_window_begin_paint_region(), the user may see flicker as individual
+// drawing operations are performed in sequence. The clipping and
+// background-initializing features of gdk_window_begin_paint_region() are
+// conveniences for the programmer, so you can avoid doing that work
+// yourself.
+//
+// When using GTK+, the widget system automatically places calls to
+// gdk_window_begin_paint_region() and gdk_window_end_paint() around
+// emissions of the expose_event signal. That is, if you’re writing an
+// expose event handler, you can assume that the exposed area in EventExpose
+// has already been cleared to the window background, is already set as the
+// clip region, and already has a backing store. Therefore in most cases,
+// application code need not call gdk_window_begin_paint_region(). (You can
+// disable the automatic calls around expose events on a widget-by-widget
+// basis by calling gtk_widget_set_double_buffered().)
+//
+// If you call this function multiple times before calling the matching
+// gdk_window_end_paint(), the backing stores are pushed onto a stack.
+// gdk_window_end_paint() copies the topmost backing store onscreen,
+// subtracts the topmost region from all other regions in the stack, and
+// pops the stack. All drawing operations affect only the topmost backing
+// store in the stack. One matching call to gdk_window_end_paint() is
+// required for each call to gdk_window_begin_paint_region().
+func (w window) BeginPaintRegion(region *cairo.Region) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	C.gdk_window_begin_paint_region(_arg0, _arg1)
 }
 
 // BeginResizeDrag begins a window resize operation (for a toplevel window).
@@ -1587,6 +1878,92 @@ func (w window) CreateGLContext() (GLContext, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
+}
+
+// CreateSimilarImageSurface: create a new image surface that is efficient
+// to draw on the given @window.
+//
+// Initially the surface contents are all 0 (transparent if contents have
+// transparency, black otherwise.)
+//
+// The @width and @height of the new surface are not affected by the scaling
+// factor of the @window, or by the @scale argument; they are the size of
+// the surface in device pixels. If you wish to create an image surface
+// capable of holding the contents of @window you can use:
+//
+//      int scale = gdk_window_get_scale_factor (window);
+//      int width = gdk_window_get_width (window) * scale;
+//      int height = gdk_window_get_height (window) * scale;
+//
+//      // format is set elsewhere
+//      cairo_surface_t *surface =
+//        gdk_window_create_similar_image_surface (window,
+//                                                 format,
+//                                                 width, height,
+//                                                 scale);
+//
+// Note that unlike cairo_surface_create_similar_image(), the new surface's
+// device scale is set to @scale, or to the scale factor of @window if
+// @scale is 0.
+func (w window) CreateSimilarImageSurface(format cairo.Format, width int, height int, scale int) *cairo.Surface {
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 C.cairo_format_t // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
+	var _arg4 C.int            // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (C.cairo_format_t)(format)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	_arg4 = C.int(scale)
+
+	var _cret *C.cairo_surface_t // in
+
+	_cret = C.gdk_window_create_similar_image_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _surface
+}
+
+// CreateSimilarSurface: create a new surface that is as compatible as
+// possible with the given @window. For example the new surface will have
+// the same fallback resolution and font options as @window. Generally, the
+// new surface will also use the same backend as @window, unless that is not
+// possible for some reason. The type of the returned surface may be
+// examined with cairo_surface_get_type().
+//
+// Initially the surface contents are all 0 (transparent if contents have
+// transparency, black otherwise.)
+func (w window) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 C.cairo_content_t // out
+	var _arg2 C.int             // out
+	var _arg3 C.int             // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (C.cairo_content_t)(content)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+
+	var _cret *C.cairo_surface_t // in
+
+	_cret = C.gdk_window_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _surface
 }
 
 // Deiconify: attempt to deiconify (unminimize) @window. On X11 the window
@@ -1808,6 +2185,47 @@ func (w window) AcceptFocus() bool {
 	}
 
 	return _ok
+}
+
+// BackgroundPattern gets the pattern used to clear the background on
+// @window.
+func (w window) BackgroundPattern() *cairo.Pattern {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.cairo_pattern_t // in
+
+	_cret = C.gdk_window_get_background_pattern(_arg0)
+
+	var _pattern *cairo.Pattern // out
+
+	_pattern = cairo.WrapPattern(unsafe.Pointer(_cret))
+
+	return _pattern
+}
+
+// ClipRegion computes the region of a window that potentially can be
+// written to by drawing primitives. This region may not take into account
+// other factors such as if the window is obscured by other windows, but no
+// area outside of this region will be affected by drawing primitives.
+func (w window) ClipRegion() *cairo.Region {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.cairo_region_t // in
+
+	_cret = C.gdk_window_get_clip_region(_arg0)
+
+	var _region *cairo.Region // out
+
+	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _region
 }
 
 // Composited determines whether @window is composited.
@@ -2593,22 +3011,51 @@ func (w window) TypeHint() WindowTypeHint {
 	return _windowTypeHint
 }
 
-// UserData retrieves the user data for @window, which is normally the
-// widget that @window belongs to. See gdk_window_set_user_data().
-func (w window) UserData() interface{} {
+// UpdateArea transfers ownership of the update area from @window to the
+// caller of the function. That is, after calling this function, @window
+// will no longer have an invalid/dirty region; the update area is removed
+// from @window and handed to you. If a window has no update area,
+// gdk_window_get_update_area() returns nil. You are responsible for calling
+// cairo_region_destroy() on the returned region if it’s non-nil.
+func (w window) UpdateArea() *cairo.Region {
 	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _arg1 C.gpointer // in
+	var _cret *C.cairo_region_t // in
 
-	C.gdk_window_get_user_data(_arg0, &_arg1)
+	_cret = C.gdk_window_get_update_area(_arg0)
 
-	var _data interface{} // out
+	var _region *cairo.Region // out
 
-	_data = (interface{})(_arg1)
+	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
 
-	return _data
+	return _region
+}
+
+// VisibleRegion computes the region of the @window that is potentially
+// visible. This does not necessarily take into account if the window is
+// obscured by other windows, but no area outside of this region is visible.
+func (w window) VisibleRegion() *cairo.Region {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.cairo_region_t // in
+
+	_cret = C.gdk_window_get_visible_region(_arg0)
+
+	var _region *cairo.Region // out
+
+	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _region
 }
 
 // Visual gets the Visual describing the pixel format of @window.
@@ -2710,6 +3157,34 @@ func (w window) Iconify() {
 	C.gdk_window_iconify(_arg0)
 }
 
+// InputShapeCombineRegion: like gdk_window_shape_combine_region(), but the
+// shape applies only to event handling. Mouse events which happen while the
+// pointer position corresponds to an unset bit in the mask will be passed
+// on the window below @window.
+//
+// An input shape is typically used with RGBA windows. The alpha channel of
+// the window defines which pixels are invisible and allows for nicely
+// antialiased borders, and the input shape controls where the window is
+// “clickable”.
+//
+// On the X11 platform, this requires version 1.1 of the shape extension.
+//
+// On the Win32 platform, this functionality is not present and the function
+// does nothing.
+func (w window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
+	_arg2 = C.gint(offsetX)
+	_arg3 = C.gint(offsetY)
+
+	C.gdk_window_input_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
+}
+
 // InvalidateRect: a convenience wrapper around
 // gdk_window_invalidate_region() which invalidates a rectangular region.
 // See gdk_window_invalidate_region() for details.
@@ -2725,6 +3200,37 @@ func (w window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 	}
 
 	C.gdk_window_invalidate_rect(_arg0, _arg1, _arg2)
+}
+
+// InvalidateRegion adds @region to the update area for @window. The update
+// area is the region that needs to be redrawn, or “dirty region.” The call
+// gdk_window_process_updates() sends one or more expose events to the
+// window, which together cover the entire update area. An application would
+// normally redraw the contents of @window in response to those expose
+// events.
+//
+// GDK will call gdk_window_process_all_updates() on your behalf whenever
+// your program returns to the main loop and becomes idle, so normally
+// there’s no need to do that manually, you just need to invalidate regions
+// that you know should be redrawn.
+//
+// The @invalidate_children parameter controls whether the region of each
+// child window that intersects @region will also be invalidated. If false,
+// then the update area for child windows will remain unaffected. See
+// gdk_window_invalidate_maybe_recurse if you need fine grained control over
+// which children are invalidated.
+func (w window) InvalidateRegion(region *cairo.Region, invalidateChildren bool) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gboolean        // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	if invalidateChildren {
+		_arg2 = C.TRUE
+	}
+
+	C.gdk_window_invalidate_region(_arg0, _arg1, _arg2)
 }
 
 // IsDestroyed: check to see if a window is destroyed..
@@ -2843,6 +3349,25 @@ func (w window) Lower() {
 	C.gdk_window_lower(_arg0)
 }
 
+// MarkPaintFromClip: if you call this during a paint (e.g. between
+// gdk_window_begin_paint_region() and gdk_window_end_paint() then GDK will
+// mark the current clip region of the window as being drawn. This is
+// required when mixing GL rendering via gdk_cairo_draw_from_gl() and cairo
+// rendering, as otherwise GDK has no way of knowing when something paints
+// over the GL-drawn regions.
+//
+// This is typically called automatically by GTK+ and you don't need to care
+// about this.
+func (w window) MarkPaintFromClip(cr *cairo.Context) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.cairo_t   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+
+	C.gdk_window_mark_paint_from_clip(_arg0, _arg1)
+}
+
 // Maximize maximizes the window. If the window was already maximized, then
 // this function does nothing.
 //
@@ -2911,6 +3436,25 @@ func (w window) Move(x int, y int) {
 	_arg2 = C.gint(y)
 
 	C.gdk_window_move(_arg0, _arg1, _arg2)
+}
+
+// MoveRegion: move the part of @window indicated by @region by @dy pixels
+// in the Y direction and @dx pixels in the X direction. The portions of
+// @region that not covered by the new position of @region are invalidated.
+//
+// Child windows are not moved.
+func (w window) MoveRegion(region *cairo.Region, dx int, dy int) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg2 = C.gint(dx)
+	_arg3 = C.gint(dy)
+
+	C.gdk_window_move_region(_arg0, _arg1, _arg2, _arg3)
 }
 
 // MoveResize: equivalent to calling gdk_window_move() and
@@ -3127,6 +3671,24 @@ func (w window) SetBackground(color *Color) {
 	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
 
 	C.gdk_window_set_background(_arg0, _arg1)
+}
+
+// SetBackgroundPattern sets the background of @window.
+//
+// A background of nil means that the window won't have any background. On
+// the X11 backend it's also possible to inherit the background from the
+// parent window using gdk_x11_get_parent_relative_pattern().
+//
+// The windowing system will normally fill a window with its background when
+// the window is obscured then exposed.
+func (w window) SetBackgroundPattern(pattern *cairo.Pattern) {
+	var _arg0 *C.GdkWindow       // out
+	var _arg1 *C.cairo_pattern_t // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_pattern_t)(unsafe.Pointer(pattern.Native()))
+
+	C.gdk_window_set_background_pattern(_arg0, _arg1)
 }
 
 // SetBackgroundRGBA sets the background color of @window.
@@ -3547,6 +4109,28 @@ func (w window) SetOpacity(opacity float64) {
 	C.gdk_window_set_opacity(_arg0, _arg1)
 }
 
+// SetOpaqueRegion: for optimisation purposes, compositing window managers
+// may like to not draw obscured regions of windows, or turn off blending
+// during for these regions. With RGB windows with no transparency, this is
+// just the shape of the window, but with ARGB32 windows, the compositor
+// does not know what regions of the window are transparent or not.
+//
+// This function only works for toplevel windows.
+//
+// GTK+ will update this property automatically if the @window background is
+// opaque, as we know where the opaque regions are. If your window
+// background is not opaque, please update this property in your
+// Widget::style-updated handler.
+func (w window) SetOpaqueRegion(region *cairo.Region) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	C.gdk_window_set_opaque_region(_arg0, _arg1)
+}
+
 // SetOverrideRedirect: an override redirect window is not under the control
 // of the window manager. This means it won’t have a titlebar, won’t be
 // minimizable, etc. - it will be entirely under the control of the
@@ -3813,6 +4397,50 @@ func (w window) SetUrgencyHint(urgent bool) {
 	}
 
 	C.gdk_window_set_urgency_hint(_arg0, _arg1)
+}
+
+// SetUserData: for most purposes this function is deprecated in favor of
+// g_object_set_data(). However, for historical reasons GTK+ stores the
+// Widget that owns a Window as user data on the Window. So, custom widget
+// implementations should use this function for that. If GTK+ receives an
+// event for a Window, and the user data for the window is non-nil, GTK+
+// will assume the user data is a Widget, and forward the event to that
+// widget.
+func (w window) SetUserData(userData gextras.Objector) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gpointer   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(userData.Native()))
+
+	C.gdk_window_set_user_data(_arg0, _arg1)
+}
+
+// ShapeCombineRegion makes pixels in @window outside @shape_region be
+// transparent, so that the window may be nonrectangular.
+//
+// If @shape_region is nil, the shape will be unset, so the whole window
+// will be opaque again. @offset_x and @offset_y are ignored if
+// @shape_region is nil.
+//
+// On the X11 platform, this uses an X server extension which is widely
+// available on most common platforms, but not available on very old X
+// servers, and occasionally the implementation will be buggy. On servers
+// without the shape extension, this function will do nothing.
+//
+// This function works on both toplevel and child windows.
+func (w window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
+	_arg2 = C.gint(offsetX)
+	_arg3 = C.gint(offsetY)
+
+	C.gdk_window_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Show: like gdk_window_show_unraised(), but also raises the window to the

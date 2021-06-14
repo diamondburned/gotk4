@@ -5,6 +5,8 @@ package pangofc
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,7 +30,7 @@ func init() {
 // will take advantage of the wide range of shapers implemented using FreeType
 // that come with Pango.
 type FontMap interface {
-	FontMap
+	pango.FontMap
 
 	// CacheClear: clear all cached information and fontsets for this font map.
 	//
@@ -43,6 +45,13 @@ type FontMap interface {
 	// that list of fonts, etc will be regenerated using the updated
 	// configuration.
 	ConfigChanged()
+	// CreateContext creates a new context for this fontmap.
+	//
+	// This function is intended only for backend implementations deriving from
+	// `PangoFcFontMap`; it is possible that a backend will store additional
+	// information needed for correct operation on the `PangoContext` after
+	// calling this function.
+	CreateContext() pango.Context
 	// Shutdown clears all cached information for the fontmap and marks all
 	// fonts open for the fontmap as dead.
 	//
@@ -63,7 +72,7 @@ type FontMap interface {
 
 // fontMap implements the FontMap class.
 type fontMap struct {
-	FontMap
+	pango.FontMap
 }
 
 var _ FontMap = (*fontMap)(nil)
@@ -72,7 +81,7 @@ var _ FontMap = (*fontMap)(nil)
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
 	return fontMap{
-		FontMap: WrapFontMap(obj),
+		pango.FontMap: pango.WrapFontMap(obj),
 	}
 }
 
@@ -107,6 +116,28 @@ func (f fontMap) ConfigChanged() {
 	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
 	C.pango_fc_font_map_config_changed(_arg0)
+}
+
+// CreateContext creates a new context for this fontmap.
+//
+// This function is intended only for backend implementations deriving from
+// `PangoFcFontMap`; it is possible that a backend will store additional
+// information needed for correct operation on the `PangoContext` after
+// calling this function.
+func (f fontMap) CreateContext() pango.Context {
+	var _arg0 *C.PangoFcFontMap // out
+
+	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.PangoContext // in
+
+	_cret = C.pango_fc_font_map_create_context(_arg0)
+
+	var _context pango.Context // out
+
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
+
+	return _context
 }
 
 // Shutdown clears all cached information for the fontmap and marks all

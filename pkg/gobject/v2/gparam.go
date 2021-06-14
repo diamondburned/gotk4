@@ -272,38 +272,3 @@ func (p *ParamSpecPool) Remove(pspec ParamSpec) {
 
 	C.g_param_spec_pool_remove(_arg0, _arg1)
 }
-
-// Parameter: the GParameter struct is an auxiliary structure used to hand
-// parameter name/value pairs to g_object_newv().
-type Parameter struct {
-	native C.GParameter
-}
-
-// WrapParameter wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapParameter(ptr unsafe.Pointer) *Parameter {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Parameter)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (p *Parameter) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}
-
-// Name gets the field inside the struct.
-func (p *Parameter) Name() string {
-	var v string // out
-	v = C.GoString(p.native.name)
-	return v
-}
-
-// Value gets the field inside the struct.
-func (p *Parameter) Value() **externglib.Value {
-	var v **externglib.Value // out
-	v = externglib.ValueFromNative(unsafe.Pointer(p.native.value))
-	return v
-}

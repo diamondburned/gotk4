@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -64,31 +63,6 @@ const (
 
 func marshalRecentSortType(p uintptr) (interface{}, error) {
 	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type RecentSortFunc func(a *RecentInfo, b *RecentInfo) (gint int)
-
-//export gotk4_RecentSortFunc
-func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) C.gint {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var a *RecentInfo // out
-	var b *RecentInfo // out
-
-	a = WrapRecentInfo(unsafe.Pointer(arg0))
-	b = WrapRecentInfo(unsafe.Pointer(arg1))
-
-	fn := v.(RecentSortFunc)
-	gint := fn(a, b)
-
-	var cret C.gint // out
-
-	cret = C.gint(gint)
-
-	return cret
 }
 
 // RecentChooserOverrider contains methods that are overridable. This

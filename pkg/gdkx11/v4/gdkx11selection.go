@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 )
 

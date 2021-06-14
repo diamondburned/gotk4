@@ -25,13 +25,11 @@ func init() {
 
 type RendererCellAccessible interface {
 	CellAccessible
-	Action
 }
 
 // rendererCellAccessible implements the RendererCellAccessible class.
 type rendererCellAccessible struct {
 	CellAccessible
-	Action
 }
 
 var _ RendererCellAccessible = (*rendererCellAccessible)(nil)
@@ -41,7 +39,6 @@ var _ RendererCellAccessible = (*rendererCellAccessible)(nil)
 func WrapRendererCellAccessible(obj *externglib.Object) RendererCellAccessible {
 	return rendererCellAccessible{
 		CellAccessible: WrapCellAccessible(obj),
-		Action:         WrapAction(obj),
 	}
 }
 

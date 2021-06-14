@@ -45,6 +45,10 @@ type ListItem interface {
 	// Child gets the child previously set via gtk_list_item_set_child() or nil
 	// if none was set.
 	Child() Widget
+	// Item gets the model item that associated with @self.
+	//
+	// If @self is unbound, this function returns nil.
+	Item() gextras.Objector
 	// Position gets the position in the model that @self currently displays.
 	//
 	// If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
@@ -145,6 +149,25 @@ func (s listItem) Child() Widget {
 	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
 	return _widget
+}
+
+// Item gets the model item that associated with @self.
+//
+// If @self is unbound, this function returns nil.
+func (s listItem) Item() gextras.Objector {
+	var _arg0 *C.GtkListItem // out
+
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
+
+	var _cret C.gpointer // in
+
+	_cret = C.gtk_list_item_get_item(_arg0)
+
+	var _object gextras.Objector // out
+
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+
+	return _object
 }
 
 // Position gets the position in the model that @self currently displays.

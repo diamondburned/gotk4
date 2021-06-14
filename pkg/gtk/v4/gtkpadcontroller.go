@@ -5,6 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -117,6 +120,25 @@ func marshalPadController(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPadController(obj), nil
+}
+
+// NewPadController constructs a class PadController.
+func NewPadController(group gio.ActionGroup, pad gdk.Device) PadController {
+	var _arg1 *C.GActionGroup // out
+	var _arg2 *C.GdkDevice    // out
+
+	_arg1 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
+
+	var _cret C.GtkPadController // in
+
+	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
+
+	var _padController PadController // out
+
+	_padController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PadController)
+
+	return _padController
 }
 
 // SetAction adds an individual action to @controller.

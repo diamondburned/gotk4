@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,6 +36,25 @@ func init() {
 // ActionOverrider contains methods that are overridable. This
 // interface is a subset of the interface Action.
 type ActionOverrider interface {
+	// Activate activates the action.
+	//
+	// @parameter must be the correct type of parameter for the action (ie: the
+	// parameter type given at construction time). If the parameter type was nil
+	// then @parameter must also be nil.
+	//
+	// If the @parameter GVariant is floating, it is consumed.
+	Activate(parameter *glib.Variant)
+	// ChangeState: request for the state of @action to be changed to @value.
+	//
+	// The action must be stateful and @value must be of the correct type. See
+	// g_action_get_state_type().
+	//
+	// This call merely requests a change. The action may refuse to change its
+	// state or may change its state to something other than @value. See
+	// g_action_get_state_hint().
+	//
+	// If the @value GVariant is floating, it is consumed.
+	ChangeState(value *glib.Variant)
 	// Enabled checks if @action is currently enabled.
 	//
 	// An action must be enabled in order to be activated or in order to have
@@ -41,6 +62,55 @@ type ActionOverrider interface {
 	Enabled() bool
 	// Name queries the name of @action.
 	Name() string
+	// ParameterType queries the type of the parameter that must be given when
+	// activating @action.
+	//
+	// When activating the action using g_action_activate(), the #GVariant given
+	// to that function must be of the type returned by this function.
+	//
+	// In the case that this function returns nil, you must not give any
+	// #GVariant, but nil instead.
+	ParameterType() *glib.VariantType
+	// State queries the current state of @action.
+	//
+	// If the action is not stateful then nil will be returned. If the action is
+	// stateful then the type of the return value is the type given by
+	// g_action_get_state_type().
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	State() *glib.Variant
+	// StateHint requests a hint about the valid range of values for the state
+	// of @action.
+	//
+	// If nil is returned it either means that the action is not stateful or
+	// that there is no hint about the valid range of values for the state of
+	// the action.
+	//
+	// If a #GVariant array is returned then each item in the array is a
+	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
+	// returned then the tuple specifies the inclusive lower and upper bound of
+	// valid values for the state.
+	//
+	// In any case, the information is merely a hint. It may be possible to have
+	// a state value outside of the hinted range and setting a value within the
+	// range may fail.
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	StateHint() *glib.Variant
+	// StateType queries the type of the state of @action.
+	//
+	// If the action is stateful (e.g. created with
+	// g_simple_action_new_stateful()) then this function returns the Type of
+	// the state. This is the type of the initial value given as the state. All
+	// calls to g_action_change_state() must give a #GVariant of this type and
+	// g_action_get_state() will return a #GVariant of the same type.
+	//
+	// If the action is not stateful (e.g. created with g_simple_action_new())
+	// then this function will return nil. In that case, g_action_get_state()
+	// will return nil and you must not call g_action_change_state().
+	StateType() *glib.VariantType
 }
 
 // Action represents a single named action.
@@ -95,6 +165,43 @@ func marshalAction(p uintptr) (interface{}, error) {
 	return WrapAction(obj), nil
 }
 
+// Activate activates the action.
+//
+// @parameter must be the correct type of parameter for the action (ie: the
+// parameter type given at construction time). If the parameter type was nil
+// then @parameter must also be nil.
+//
+// If the @parameter GVariant is floating, it is consumed.
+func (a action) Activate(parameter *glib.Variant) {
+	var _arg0 *C.GAction  // out
+	var _arg1 *C.GVariant // out
+
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
+
+	C.g_action_activate(_arg0, _arg1)
+}
+
+// ChangeState: request for the state of @action to be changed to @value.
+//
+// The action must be stateful and @value must be of the correct type. See
+// g_action_get_state_type().
+//
+// This call merely requests a change. The action may refuse to change its
+// state or may change its state to something other than @value. See
+// g_action_get_state_hint().
+//
+// If the @value GVariant is floating, it is consumed.
+func (a action) ChangeState(value *glib.Variant) {
+	var _arg0 *C.GAction  // out
+	var _arg1 *C.GVariant // out
+
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+
+	C.g_action_change_state(_arg0, _arg1)
+}
+
 // Enabled checks if @action is currently enabled.
 //
 // An action must be enabled in order to be activated or in order to have
@@ -132,4 +239,119 @@ func (a action) Name() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// ParameterType queries the type of the parameter that must be given when
+// activating @action.
+//
+// When activating the action using g_action_activate(), the #GVariant given
+// to that function must be of the type returned by this function.
+//
+// In the case that this function returns nil, you must not give any
+// #GVariant, but nil instead.
+func (a action) ParameterType() *glib.VariantType {
+	var _arg0 *C.GAction // out
+
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GVariantType // in
+
+	_cret = C.g_action_get_parameter_type(_arg0)
+
+	var _variantType *glib.VariantType // out
+
+	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
+
+	return _variantType
+}
+
+// State queries the current state of @action.
+//
+// If the action is not stateful then nil will be returned. If the action is
+// stateful then the type of the return value is the type given by
+// g_action_get_state_type().
+//
+// The return value (if non-nil) should be freed with g_variant_unref() when
+// it is no longer required.
+func (a action) State() *glib.Variant {
+	var _arg0 *C.GAction // out
+
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_action_get_state(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
+}
+
+// StateHint requests a hint about the valid range of values for the state
+// of @action.
+//
+// If nil is returned it either means that the action is not stateful or
+// that there is no hint about the valid range of values for the state of
+// the action.
+//
+// If a #GVariant array is returned then each item in the array is a
+// possible value for the state. If a #GVariant pair (ie: two-tuple) is
+// returned then the tuple specifies the inclusive lower and upper bound of
+// valid values for the state.
+//
+// In any case, the information is merely a hint. It may be possible to have
+// a state value outside of the hinted range and setting a value within the
+// range may fail.
+//
+// The return value (if non-nil) should be freed with g_variant_unref() when
+// it is no longer required.
+func (a action) StateHint() *glib.Variant {
+	var _arg0 *C.GAction // out
+
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_action_get_state_hint(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
+}
+
+// StateType queries the type of the state of @action.
+//
+// If the action is stateful (e.g. created with
+// g_simple_action_new_stateful()) then this function returns the Type of
+// the state. This is the type of the initial value given as the state. All
+// calls to g_action_change_state() must give a #GVariant of this type and
+// g_action_get_state() will return a #GVariant of the same type.
+//
+// If the action is not stateful (e.g. created with g_simple_action_new())
+// then this function will return nil. In that case, g_action_get_state()
+// will return nil and you must not call g_action_change_state().
+func (a action) StateType() *glib.VariantType {
+	var _arg0 *C.GAction // out
+
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GVariantType // in
+
+	_cret = C.g_action_get_state_type(_arg0)
+
+	var _variantType *glib.VariantType // out
+
+	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
+
+	return _variantType
 }

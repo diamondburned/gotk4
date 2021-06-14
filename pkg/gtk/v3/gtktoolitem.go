@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,6 +39,10 @@ type ToolItem interface {
 	Activatable
 	Buildable
 
+	// EllipsizeMode returns the ellipsize mode used for @tool_item. Custom
+	// subclasses of ToolItem should call this function to find out how text
+	// should be ellipsized.
+	EllipsizeMode() pango.EllipsizeMode
 	// Expand returns whether @tool_item is allocated extra space. See
 	// gtk_tool_item_set_expand().
 	Expand() bool
@@ -193,6 +198,25 @@ func NewToolItem() ToolItem {
 	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
 
 	return _toolItem
+}
+
+// EllipsizeMode returns the ellipsize mode used for @tool_item. Custom
+// subclasses of ToolItem should call this function to find out how text
+// should be ellipsized.
+func (t toolItem) EllipsizeMode() pango.EllipsizeMode {
+	var _arg0 *C.GtkToolItem // out
+
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
+
+	var _cret C.PangoEllipsizeMode // in
+
+	_cret = C.gtk_tool_item_get_ellipsize_mode(_arg0)
+
+	var _ellipsizeMode pango.EllipsizeMode // out
+
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
+
+	return _ellipsizeMode
 }
 
 // Expand returns whether @tool_item is allocated extra space. See

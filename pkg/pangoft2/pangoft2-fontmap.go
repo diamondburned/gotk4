@@ -5,6 +5,7 @@ package pangoft2
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +24,7 @@ func init() {
 // FontMap: the `PangoFT2FontMap` is the `PangoFontMap` implementation for
 // FreeType fonts.
 type FontMap interface {
-	FontMap
+	pangofc.FontMap
 
 	// SetResolution sets the horizontal and vertical resolutions for the
 	// fontmap.
@@ -39,7 +40,7 @@ type FontMap interface {
 
 // fontMap implements the FontMap class.
 type fontMap struct {
-	FontMap
+	pangofc.FontMap
 }
 
 var _ FontMap = (*fontMap)(nil)
@@ -48,7 +49,7 @@ var _ FontMap = (*fontMap)(nil)
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
 	return fontMap{
-		FontMap: WrapFontMap(obj),
+		pangofc.FontMap: pangofc.WrapFontMap(obj),
 	}
 }
 

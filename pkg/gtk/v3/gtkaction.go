@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -113,6 +114,8 @@ type Action interface {
 	// AlwaysShowImage returns whether @action's menu item proxies will always
 	// show their image, if available.
 	AlwaysShowImage() bool
+	// GIcon gets the gicon of @action.
+	GIcon() gio.Icon
 	// IconName gets the icon name of @action.
 	IconName() string
 	// IsImportant checks whether @action is important or not
@@ -161,6 +164,8 @@ type Action interface {
 	// Use this if the menu item would be useless or hard to use without their
 	// image.
 	SetAlwaysShowImage(alwaysShow bool)
+	// SetGIcon sets the icon of @action.
+	SetGIcon(icon gio.Icon)
 	// SetIconName sets the icon name on @action
 	SetIconName(iconName string)
 	// SetIsImportant sets whether the action is important, this attribute is
@@ -403,6 +408,23 @@ func (a action) AlwaysShowImage() bool {
 	}
 
 	return _ok
+}
+
+// GIcon gets the gicon of @action.
+func (a action) GIcon() gio.Icon {
+	var _arg0 *C.GtkAction // out
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.gtk_action_get_gicon(_arg0)
+
+	var _icon gio.Icon // out
+
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+
+	return _icon
 }
 
 // IconName gets the icon name of @action.
@@ -690,6 +712,17 @@ func (a action) SetAlwaysShowImage(alwaysShow bool) {
 	}
 
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
+}
+
+// SetGIcon sets the icon of @action.
+func (a action) SetGIcon(icon gio.Icon) {
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.GIcon     // out
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gtk_action_set_gicon(_arg0, _arg1)
 }
 
 // SetIconName sets the icon name on @action

@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,6 +45,10 @@ type GestureSingle interface {
 	// CurrentButton returns the button number currently interacting with
 	// @gesture, or 0 if there is none.
 	CurrentButton() uint
+	// CurrentSequence returns the event sequence currently interacting with
+	// @gesture. This is only meaningful if gtk_gesture_is_active() returns
+	// true.
+	CurrentSequence() *gdk.EventSequence
 	// Exclusive gets whether a gesture is exclusive. For more information, see
 	// gtk_gesture_single_set_exclusive().
 	Exclusive() bool
@@ -117,6 +123,28 @@ func (g gestureSingle) CurrentButton() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// CurrentSequence returns the event sequence currently interacting with
+// @gesture. This is only meaningful if gtk_gesture_is_active() returns
+// true.
+func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
+	var _arg0 *C.GtkGestureSingle // out
+
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+
+	var _cret *C.GdkEventSequence // in
+
+	_cret = C.gtk_gesture_single_get_current_sequence(_arg0)
+
+	var _eventSequence *gdk.EventSequence // out
+
+	_eventSequence = gdk.WrapEventSequence(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_eventSequence, func(v *gdk.EventSequence) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _eventSequence
 }
 
 // Exclusive gets whether a gesture is exclusive. For more information, see

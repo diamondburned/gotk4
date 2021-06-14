@@ -67,8 +67,6 @@ type Settings interface {
 
 	SetLongProperty(name string, vLong int32, origin string)
 
-	SetPropertyValue(name string, svalue *SettingsValue)
-
 	SetStringProperty(name string, vString string, origin string)
 }
 
@@ -141,19 +139,6 @@ func (s settings) SetLongProperty(name string, vLong int32, origin string) {
 	C.gtk_settings_set_long_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s settings) SetPropertyValue(name string, svalue *SettingsValue) {
-	var _arg0 *C.GtkSettings      // out
-	var _arg1 *C.gchar            // out
-	var _arg2 *C.GtkSettingsValue // out
-
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkSettingsValue)(unsafe.Pointer(svalue.Native()))
-
-	C.gtk_settings_set_property_value(_arg0, _arg1, _arg2)
-}
-
 func (s settings) SetStringProperty(name string, vString string, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
@@ -169,30 +154,4 @@ func (s settings) SetStringProperty(name string, vString string, origin string) 
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
-}
-
-type SettingsValue struct {
-	native C.GtkSettingsValue
-}
-
-// WrapSettingsValue wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsValue(ptr unsafe.Pointer) *SettingsValue {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SettingsValue)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
-// Origin gets the field inside the struct.
-func (s *SettingsValue) Origin() string {
-	var v string // out
-	v = C.GoString(s.native.origin)
-	return v
 }

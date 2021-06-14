@@ -7,6 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,6 +58,26 @@ func WrapBuffer(ptr unsafe.Pointer) *Buffer {
 func marshalBuffer(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapBuffer(unsafe.Pointer(b)), nil
+}
+
+// NewBuffer constructs a struct Buffer.
+func NewBuffer(font pangofc.Font) *Buffer {
+	var _arg1 *C.PangoFcFont // out
+
+	_arg1 = (*C.PangoFcFont)(unsafe.Pointer(font.Native()))
+
+	var _cret *C.PangoOTBuffer // in
+
+	_cret = C.pango_ot_buffer_new(_arg1)
+
+	var _buffer *Buffer // out
+
+	_buffer = WrapBuffer(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_buffer, func(v *Buffer) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _buffer
 }
 
 // Native returns the underlying C source pointer.
@@ -118,6 +140,19 @@ func (b *Buffer) Glyphs() []Glyph {
 	})
 
 	return _glyphs
+}
+
+// Output exports the glyphs in a OTBuffer into a GlyphString. This is typically
+// used after the OpenType layout processing is over, to convert the resulting
+// glyphs into a generic Pango glyph string.
+func (b *Buffer) Output(glyphs *pango.GlyphString) {
+	var _arg0 *C.PangoOTBuffer    // out
+	var _arg1 *C.PangoGlyphString // out
+
+	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
+
+	C.pango_ot_buffer_output(_arg0, _arg1)
 }
 
 // SetRTL sets whether glyphs will be rendered right-to-left. This setting is
@@ -278,6 +313,20 @@ func marshalRulesetDescription(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *RulesetDescription) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// Script gets the field inside the struct.
+func (r *RulesetDescription) Script() pango.Script {
+	var v pango.Script // out
+	v = pango.Script(r.native.script)
+	return v
+}
+
+// Language gets the field inside the struct.
+func (r *RulesetDescription) Language() *pango.Language {
+	var v *pango.Language // out
+	v = pango.WrapLanguage(unsafe.Pointer(r.native.language))
+	return v
 }
 
 // StaticGsubFeatures gets the field inside the struct.

@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,21 +28,26 @@ func init() {
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
 type MountOperation interface {
-	MountOperation
+	gio.MountOperation
 
 	// Parent gets the transient parent used by the MountOperation
 	Parent() Window
+	// Screen gets the screen on which windows of the MountOperation will be
+	// shown.
+	Screen() gdk.Screen
 	// IsShowing returns whether the MountOperation is currently displaying a
 	// window.
 	IsShowing() bool
 	// SetParent sets the transient parent for windows shown by the
 	// MountOperation.
 	SetParent(parent Window)
+	// SetScreen sets the screen to show windows of the MountOperation on.
+	SetScreen(screen gdk.Screen)
 }
 
 // mountOperation implements the MountOperation class.
 type mountOperation struct {
-	MountOperation
+	gio.MountOperation
 }
 
 var _ MountOperation = (*mountOperation)(nil)
@@ -49,7 +56,7 @@ var _ MountOperation = (*mountOperation)(nil)
 // primarily used internally.
 func WrapMountOperation(obj *externglib.Object) MountOperation {
 	return mountOperation{
-		MountOperation: WrapMountOperation(obj),
+		gio.MountOperation: gio.WrapMountOperation(obj),
 	}
 }
 
@@ -93,6 +100,24 @@ func (o mountOperation) Parent() Window {
 	return _window
 }
 
+// Screen gets the screen on which windows of the MountOperation will be
+// shown.
+func (o mountOperation) Screen() gdk.Screen {
+	var _arg0 *C.GtkMountOperation // out
+
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+
+	var _cret *C.GdkScreen // in
+
+	_cret = C.gtk_mount_operation_get_screen(_arg0)
+
+	var _screen gdk.Screen // out
+
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+
+	return _screen
+}
+
 // IsShowing returns whether the MountOperation is currently displaying a
 // window.
 func (o mountOperation) IsShowing() bool {
@@ -123,4 +148,15 @@ func (o mountOperation) SetParent(parent Window) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
+}
+
+// SetScreen sets the screen to show windows of the MountOperation on.
+func (o mountOperation) SetScreen(screen gdk.Screen) {
+	var _arg0 *C.GtkMountOperation // out
+	var _arg1 *C.GdkScreen         // out
+
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	C.gtk_mount_operation_set_screen(_arg0, _arg1)
 }

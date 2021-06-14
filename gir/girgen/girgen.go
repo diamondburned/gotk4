@@ -165,7 +165,9 @@ func (g *Generator) Logln(level LogLevel, v ...interface{}) {
 		if g.Color {
 			prefix = level.colorf(prefix)
 		}
-		v = append([]interface{}{prefix}, v...)
+		v = append(v, nil)
+		copy(v[1:], v)
+		v[0] = prefix
 	}
 
 	g.Logger.Println(v...)

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -50,38 +49,6 @@ const (
 
 func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 	return CalendarDisplayOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// CalendarDetailFunc: this kind of functions provide Pango markup with detail
-// information for the specified day. Examples for such details are holidays or
-// appointments. The function returns nil when no information is available.
-type CalendarDetailFunc func(calendar Calendar, year uint, month uint, day uint) (utf8 string)
-
-//export gotk4_CalendarDetailFunc
-func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) *C.gchar {
-	v := box.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var calendar Calendar // out
-	var year uint         // out
-	var month uint        // out
-	var day uint          // out
-
-	calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Calendar)
-	year = (uint)(arg1)
-	month = (uint)(arg2)
-	day = (uint)(arg3)
-
-	fn := v.(CalendarDetailFunc)
-	utf8 := fn(calendar, year, month, day)
-
-	var cret *C.gchar // out
-
-	cret = (*C.gchar)(C.CString(utf8))
-
-	return cret
 }
 
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,6 +53,11 @@ type Range interface {
 	//
 	// See gtk_range_set_min_slider_size().
 	MinSliderSize() int
+	// RangeRect: this function returns the area that contains the range’s
+	// trough and its steppers, in widget->window coordinates.
+	//
+	// This function is useful mainly for Range subclasses.
+	RangeRect() gdk.Rectangle
 	// RestrictToFillLevel gets whether the range is restricted to the fill
 	// level.
 	RestrictToFillLevel() bool
@@ -284,6 +290,22 @@ func (r _range) MinSliderSize() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// RangeRect: this function returns the area that contains the range’s
+// trough and its steppers, in widget->window coordinates.
+//
+// This function is useful mainly for Range subclasses.
+func (r _range) RangeRect() gdk.Rectangle {
+	var _arg0 *C.GtkRange // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
+
+	var _rangeRect gdk.Rectangle
+
+	C.gtk_range_get_range_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rangeRect)))
+
+	return _rangeRect
 }
 
 // RestrictToFillLevel gets whether the range is restricted to the fill

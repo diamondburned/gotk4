@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,33 +43,6 @@ const (
 
 func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 	return FileFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// FileFilterFunc: the type of function that is used with custom filters, see
-// gtk_file_filter_add_custom().
-type FileFilterFunc func(filterInfo *FileFilterInfo) (ok bool)
-
-//export gotk4_FileFilterFunc
-func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var filterInfo *FileFilterInfo // out
-
-	filterInfo = WrapFileFilterInfo(unsafe.Pointer(arg0))
-
-	fn := v.(FileFilterFunc)
-	ok := fn(filterInfo)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // FileFilter: a GtkFileFilter can be used to restrict the files being shown in
@@ -140,6 +113,8 @@ type FileFilter interface {
 	// that will be displayed in the file selector user interface if there is a
 	// selectable list of filters.
 	SetName(name string)
+	// ToGVariant: serialize a file filter to an a{sv} variant.
+	ToGVariant() *glib.Variant
 }
 
 // fileFilter implements the FileFilter class.
@@ -174,6 +149,23 @@ func NewFileFilter() FileFilter {
 	var _fileFilter FileFilter // out
 
 	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileFilter)
+
+	return _fileFilter
+}
+
+// NewFileFilterFromGVariant constructs a class FileFilter.
+func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
+	var _arg1 *C.GVariant // out
+
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+
+	var _cret C.GtkFileFilter // in
+
+	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
+
+	var _fileFilter FileFilter // out
+
+	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileFilter)
 
 	return _fileFilter
 }
@@ -289,6 +281,23 @@ func (f fileFilter) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
+}
+
+// ToGVariant: serialize a file filter to an a{sv} variant.
+func (f fileFilter) ToGVariant() *glib.Variant {
+	var _arg0 *C.GtkFileFilter // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.gtk_file_filter_to_gvariant(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
 }
 
 // FileFilterInfo: a FileFilterInfo-struct is used to pass information about the

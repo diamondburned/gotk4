@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -81,6 +82,44 @@ type DragSource interface {
 
 	// DragCancel cancels a currently ongoing drag operation.
 	DragCancel()
+	// Actions gets the actions that are currently set on the `GtkDragSource`.
+	Actions() gdk.DragAction
+	// Content gets the current content provider of a `GtkDragSource`.
+	Content() gdk.ContentProvider
+	// Drag returns the underlying `GdkDrag` object for an ongoing drag.
+	Drag() gdk.Drag
+	// SetActions sets the actions on the `GtkDragSource`.
+	//
+	// During a DND operation, the actions are offered to potential drop
+	// targets. If @actions include GDK_ACTION_MOVE, you need to listen to the
+	// [signal@Gtk.DragSource::drag-end] signal and handle @delete_data being
+	// true.
+	//
+	// This function can be called before a drag is started, or in a handler for
+	// the [signal@Gtk.DragSource::prepare] signal.
+	SetActions(actions gdk.DragAction)
+	// SetContent sets a content provider on a `GtkDragSource`.
+	//
+	// When the data is requested in the cause of a DND operation, it will be
+	// obtained from the content provider.
+	//
+	// This function can be called before a drag is started, or in a handler for
+	// the [signal@Gtk.DragSource::prepare] signal.
+	//
+	// You may consider setting the content provider back to nil in a
+	// [signal@Gtk.DragSource::drag-end] signal handler.
+	SetContent(content gdk.ContentProvider)
+	// SetIcon sets a paintable to use as icon during DND operations.
+	//
+	// The hotspot coordinates determine the point on the icon that gets aligned
+	// with the hotspot of the cursor.
+	//
+	// If @paintable is nil, a default icon is used.
+	//
+	// This function can be called before a drag is started, or in a
+	// [signal@Gtk.DragSource::prepare] or [signal@Gtk.DragSource::drag-begin]
+	// signal handler.
+	SetIcon(paintable gdk.Paintable, hotX int, hotY int)
 }
 
 // dragSource implements the DragSource class.
@@ -124,4 +163,118 @@ func (s dragSource) DragCancel() {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	C.gtk_drag_source_drag_cancel(_arg0)
+}
+
+// Actions gets the actions that are currently set on the `GtkDragSource`.
+func (s dragSource) Actions() gdk.DragAction {
+	var _arg0 *C.GtkDragSource // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GdkDragAction // in
+
+	_cret = C.gtk_drag_source_get_actions(_arg0)
+
+	var _dragAction gdk.DragAction // out
+
+	_dragAction = gdk.DragAction(_cret)
+
+	return _dragAction
+}
+
+// Content gets the current content provider of a `GtkDragSource`.
+func (s dragSource) Content() gdk.ContentProvider {
+	var _arg0 *C.GtkDragSource // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkContentProvider // in
+
+	_cret = C.gtk_drag_source_get_content(_arg0)
+
+	var _contentProvider gdk.ContentProvider // out
+
+	_contentProvider = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
+
+	return _contentProvider
+}
+
+// Drag returns the underlying `GdkDrag` object for an ongoing drag.
+func (s dragSource) Drag() gdk.Drag {
+	var _arg0 *C.GtkDragSource // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDrag // in
+
+	_cret = C.gtk_drag_source_get_drag(_arg0)
+
+	var _drag gdk.Drag // out
+
+	_drag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Drag)
+
+	return _drag
+}
+
+// SetActions sets the actions on the `GtkDragSource`.
+//
+// During a DND operation, the actions are offered to potential drop
+// targets. If @actions include GDK_ACTION_MOVE, you need to listen to the
+// [signal@Gtk.DragSource::drag-end] signal and handle @delete_data being
+// true.
+//
+// This function can be called before a drag is started, or in a handler for
+// the [signal@Gtk.DragSource::prepare] signal.
+func (s dragSource) SetActions(actions gdk.DragAction) {
+	var _arg0 *C.GtkDragSource // out
+	var _arg1 C.GdkDragAction  // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GdkDragAction)(actions)
+
+	C.gtk_drag_source_set_actions(_arg0, _arg1)
+}
+
+// SetContent sets a content provider on a `GtkDragSource`.
+//
+// When the data is requested in the cause of a DND operation, it will be
+// obtained from the content provider.
+//
+// This function can be called before a drag is started, or in a handler for
+// the [signal@Gtk.DragSource::prepare] signal.
+//
+// You may consider setting the content provider back to nil in a
+// [signal@Gtk.DragSource::drag-end] signal handler.
+func (s dragSource) SetContent(content gdk.ContentProvider) {
+	var _arg0 *C.GtkDragSource      // out
+	var _arg1 *C.GdkContentProvider // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
+
+	C.gtk_drag_source_set_content(_arg0, _arg1)
+}
+
+// SetIcon sets a paintable to use as icon during DND operations.
+//
+// The hotspot coordinates determine the point on the icon that gets aligned
+// with the hotspot of the cursor.
+//
+// If @paintable is nil, a default icon is used.
+//
+// This function can be called before a drag is started, or in a
+// [signal@Gtk.DragSource::prepare] or [signal@Gtk.DragSource::drag-begin]
+// signal handler.
+func (s dragSource) SetIcon(paintable gdk.Paintable, hotX int, hotY int) {
+	var _arg0 *C.GtkDragSource // out
+	var _arg1 *C.GdkPaintable  // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg2 = C.int(hotX)
+	_arg3 = C.int(hotY)
+
+	C.gtk_drag_source_set_icon(_arg0, _arg1, _arg2, _arg3)
 }

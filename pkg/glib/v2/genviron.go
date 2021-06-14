@@ -71,16 +71,13 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -113,16 +110,13 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -150,16 +144,13 @@ func GetEnviron() []string {
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -208,16 +199,13 @@ func Listenv() []string {
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))

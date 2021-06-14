@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -324,29 +325,9 @@ type Builder interface {
 	// child (for instance a TreeView that depends on its TreeModel), you have
 	// to explicitly list all of them in @object_ids.
 	AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error)
-	// ConnectSignals: this method is a simpler variation of
-	// gtk_builder_connect_signals_full(). It uses symbols explicitly added to
-	// @builder with prior calls to gtk_builder_add_callback_symbol(). In the
-	// case that symbols are not explicitly added; it uses #GModule’s
-	// introspective features (by opening the module nil) to look at the
-	// application’s symbol table. From here it tries to match the signal
-	// handler names given in the interface description with symbols in the
-	// application and connects the signals. Note that this function can only be
-	// called once, subsequent calls will do nothing.
-	//
-	// Note that unless gtk_builder_add_callback_symbol() is called for all
-	// signal callbacks which are referenced by the loaded XML, this function
-	// will require that #GModule be supported on the platform.
-	//
-	// If you rely on #GModule support to lookup callbacks in the symbol table,
-	// the following details should be noted:
-	//
-	// When compiling applications for Windows, you must declare signal
-	// callbacks with MODULE_EXPORT, or they will not be put in the symbol
-	// table. On Linux and Unices, this is not necessary; applications should
-	// instead be compiled with the -Wl,--export-dynamic CFLAGS, and linked
-	// against gmodule-export-2.0.
-	ConnectSignals(userData interface{})
+	// ExposeObject: add @object to the @builder object pool so it can be
+	// referenced just like any other object built by builder.
+	ExposeObject(name string, object gextras.Objector)
 	// ExtendWithTemplate: main private entry point for building composite
 	// container components from template XML.
 	//
@@ -362,6 +343,9 @@ type Builder interface {
 	// g_application_get_default(). If you want to use another application for
 	// constructing proxies, use gtk_builder_set_application().
 	Application() Application
+	// Object gets the object named @name. Note that this function does not
+	// increment the reference count of the returned object.
+	Object(name string) gextras.Objector
 	// TranslationDomain gets the translation domain of @builder.
 	TranslationDomain() string
 	// TypeFromName looks up a type by name, using the virtual function that
@@ -376,6 +360,25 @@ type Builder interface {
 	// SetTranslationDomain sets the translation domain of @builder. See
 	// Builder:translation-domain.
 	SetTranslationDomain(domain string)
+	// ValueFromString: this function demarshals a value from a string. This
+	// function calls g_value_init() on the @value argument, so it need not be
+	// initialised beforehand.
+	//
+	// This function can handle char, uchar, boolean, int, uint, long, ulong,
+	// enum, flags, float, double, string, Color, RGBA and Adjustment type
+	// values. Support for Widget type values is still to come.
+	//
+	// Upon errors false will be returned and @error will be assigned a #GError
+	// from the K_BUILDER_ERROR domain.
+	ValueFromString(pspec gobject.ParamSpec, string string) (*externglib.Value, error)
+	// ValueFromStringType: like gtk_builder_value_from_string(), this function
+	// demarshals a value from a string, but takes a #GType instead of Spec.
+	// This function calls g_value_init() on the @value argument, so it need not
+	// be initialised beforehand.
+	//
+	// Upon errors false will be returned and @error will be assigned a #GError
+	// from the K_BUILDER_ERROR domain.
+	ValueFromStringType(typ externglib.Type, string string) (*externglib.Value, error)
 }
 
 // builder implements the Builder class.
@@ -706,36 +709,19 @@ func (b builder) AddObjectsFromString(buffer string, length uint, objectIds []st
 	return _guint, _goerr
 }
 
-// ConnectSignals: this method is a simpler variation of
-// gtk_builder_connect_signals_full(). It uses symbols explicitly added to
-// @builder with prior calls to gtk_builder_add_callback_symbol(). In the
-// case that symbols are not explicitly added; it uses #GModule’s
-// introspective features (by opening the module nil) to look at the
-// application’s symbol table. From here it tries to match the signal
-// handler names given in the interface description with symbols in the
-// application and connects the signals. Note that this function can only be
-// called once, subsequent calls will do nothing.
-//
-// Note that unless gtk_builder_add_callback_symbol() is called for all
-// signal callbacks which are referenced by the loaded XML, this function
-// will require that #GModule be supported on the platform.
-//
-// If you rely on #GModule support to lookup callbacks in the symbol table,
-// the following details should be noted:
-//
-// When compiling applications for Windows, you must declare signal
-// callbacks with MODULE_EXPORT, or they will not be put in the symbol
-// table. On Linux and Unices, this is not necessary; applications should
-// instead be compiled with the -Wl,--export-dynamic CFLAGS, and linked
-// against gmodule-export-2.0.
-func (b builder) ConnectSignals(userData interface{}) {
+// ExposeObject: add @object to the @builder object pool so it can be
+// referenced just like any other object built by builder.
+func (b builder) ExposeObject(name string, object gextras.Objector) {
 	var _arg0 *C.GtkBuilder // out
-	var _arg1 C.gpointer    // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GObject    // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = C.gpointer(userData)
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
-	C.gtk_builder_connect_signals(_arg0, _arg1)
+	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
 }
 
 // ExtendWithTemplate: main private entry point for building composite
@@ -793,6 +779,27 @@ func (b builder) Application() Application {
 	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Application)
 
 	return _application
+}
+
+// Object gets the object named @name. Note that this function does not
+// increment the reference count of the returned object.
+func (b builder) Object(name string) gextras.Objector {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.gchar      // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GObject // in
+
+	_cret = C.gtk_builder_get_object(_arg0, _arg1)
+
+	var _object gextras.Objector // out
+
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+
+	return _object
 }
 
 // TranslationDomain gets the translation domain of @builder.
@@ -859,4 +866,69 @@ func (b builder) SetTranslationDomain(domain string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_set_translation_domain(_arg0, _arg1)
+}
+
+// ValueFromString: this function demarshals a value from a string. This
+// function calls g_value_init() on the @value argument, so it need not be
+// initialised beforehand.
+//
+// This function can handle char, uchar, boolean, int, uint, long, ulong,
+// enum, flags, float, double, string, Color, RGBA and Adjustment type
+// values. Support for Widget type values is still to come.
+//
+// Upon errors false will be returned and @error will be assigned a #GError
+// from the K_BUILDER_ERROR domain.
+func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (*externglib.Value, error) {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.GParamSpec // out
+	var _arg2 *C.gchar      // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _arg3 C.GValue  // in
+	var _cerr *C.GError // in
+
+	C.gtk_builder_value_from_string(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+
+	var _value *externglib.Value // out
+	var _goerr error             // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _value, _goerr
+}
+
+// ValueFromStringType: like gtk_builder_value_from_string(), this function
+// demarshals a value from a string, but takes a #GType instead of Spec.
+// This function calls g_value_init() on the @value argument, so it need not
+// be initialised beforehand.
+//
+// Upon errors false will be returned and @error will be assigned a #GError
+// from the K_BUILDER_ERROR domain.
+func (b builder) ValueFromStringType(typ externglib.Type, string string) (*externglib.Value, error) {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 C.GType       // out
+	var _arg2 *C.gchar      // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = C.GType(typ)
+	_arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _arg3 C.GValue  // in
+	var _cerr *C.GError // in
+
+	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+
+	var _value *externglib.Value // out
+	var _goerr error             // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _value, _goerr
 }

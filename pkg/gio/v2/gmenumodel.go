@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,6 +45,25 @@ type MenuAttributeIter interface {
 	//
 	// The iterator is not advanced.
 	Name() string
+	// GetNext: this function combines g_menu_attribute_iter_next() with
+	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
+	//
+	// First the iterator is advanced to the next (possibly first) attribute. If
+	// that fails, then false is returned and there are no other effects.
+	//
+	// If successful, @name and @value are set to the name and value of the
+	// attribute that has just been advanced to. At this point,
+	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
+	// will return the same values again.
+	//
+	// The value returned in @name remains valid for as long as the iterator
+	// remains at the current position. The value returned in @value must be
+	// unreffed using g_variant_unref() when it is no longer in use.
+	GetNext() (string, *glib.Variant, bool)
+	// Value gets the value of the attribute at the current iterator position.
+	//
+	// The iterator is not advanced.
+	Value() *glib.Variant
 	// Next attempts to advance the iterator to the next (possibly first)
 	// attribute.
 	//
@@ -93,6 +114,66 @@ func (i menuAttributeIter) Name() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// GetNext: this function combines g_menu_attribute_iter_next() with
+// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
+//
+// First the iterator is advanced to the next (possibly first) attribute. If
+// that fails, then false is returned and there are no other effects.
+//
+// If successful, @name and @value are set to the name and value of the
+// attribute that has just been advanced to. At this point,
+// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
+// will return the same values again.
+//
+// The value returned in @name remains valid for as long as the iterator
+// remains at the current position. The value returned in @value must be
+// unreffed using g_variant_unref() when it is no longer in use.
+func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
+	var _arg0 *C.GMenuAttributeIter // out
+
+	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
+
+	var _arg1 *C.gchar // in
+	var _value *glib.Variant
+	var _cret C.gboolean // in
+
+	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, (**C.GVariant)(unsafe.Pointer(&_value)))
+
+	var _outName string // out
+
+	var _ok bool // out
+
+	_outName = C.GoString(_arg1)
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _outName, _value, _ok
+}
+
+// Value gets the value of the attribute at the current iterator position.
+//
+// The iterator is not advanced.
+func (i menuAttributeIter) Value() *glib.Variant {
+	var _arg0 *C.GMenuAttributeIter // out
+
+	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_menu_attribute_iter_get_value(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
 }
 
 // Next attempts to advance the iterator to the next (possibly first)
@@ -394,6 +475,18 @@ func (i menuLinkIter) Next() bool {
 type MenuModel interface {
 	gextras.Objector
 
+	// ItemAttributeValue queries the item at position @item_index in @model for
+	// the attribute specified by @attribute.
+	//
+	// If @expected_type is non-nil then it specifies the expected type of the
+	// attribute. If it is nil then any type will be accepted.
+	//
+	// If the attribute exists and matches @expected_type (or if the expected
+	// type is unspecified) then the value is returned.
+	//
+	// If the attribute does not exist, or does not match the expected type then
+	// nil is returned.
+	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemLink queries the item at position @item_index in @model for the link
 	// specified by @link.
 	//
@@ -455,6 +548,43 @@ func marshalMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMenuModel(obj), nil
+}
+
+// ItemAttributeValue queries the item at position @item_index in @model for
+// the attribute specified by @attribute.
+//
+// If @expected_type is non-nil then it specifies the expected type of the
+// attribute. If it is nil then any type will be accepted.
+//
+// If the attribute exists and matches @expected_type (or if the expected
+// type is unspecified) then the value is returned.
+//
+// If the attribute does not exist, or does not match the expected type then
+// nil is returned.
+func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
+	var _arg0 *C.GMenuModel   // out
+	var _arg1 C.gint          // out
+	var _arg2 *C.gchar        // out
+	var _arg3 *C.GVariantType // out
+
+	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gint(itemIndex)
+	_arg2 = (*C.gchar)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_menu_model_get_item_attribute_value(_arg0, _arg1, _arg2, _arg3)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
 }
 
 // ItemLink queries the item at position @item_index in @model for the link

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -49,33 +48,6 @@ const (
 
 func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 	return RecentFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// RecentFilterFunc: the type of function that is used with custom filters, see
-// gtk_recent_filter_add_custom().
-type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
-
-//export gotk4_RecentFilterFunc
-func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var filterInfo *RecentFilterInfo // out
-
-	filterInfo = WrapRecentFilterInfo(unsafe.Pointer(arg0))
-
-	fn := v.(RecentFilterFunc)
-	ok := fn(filterInfo)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // RecentFilter: a RecentFilter can be used to restrict the files being shown in
@@ -414,16 +386,13 @@ func (r *RecentFilterInfo) MIMEType() string {
 func (r *RecentFilterInfo) Applications() []string {
 	var v []string
 	{
-		var length int
-		for p := r.native.applications; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := r.native.applications; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(r.native.applications, length)
-		v = make([]string, length)
+		src := unsafe.Slice(r.native.applications, i)
+		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString(src[i])
 		}
@@ -435,16 +404,13 @@ func (r *RecentFilterInfo) Applications() []string {
 func (r *RecentFilterInfo) Groups() []string {
 	var v []string
 	{
-		var length int
-		for p := r.native.groups; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := r.native.groups; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(r.native.groups, length)
-		v = make([]string, length)
+		src := unsafe.Slice(r.native.groups, i)
+		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString(src[i])
 		}

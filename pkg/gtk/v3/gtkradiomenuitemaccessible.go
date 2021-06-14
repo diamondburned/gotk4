@@ -24,13 +24,11 @@ func init() {
 
 type RadioMenuItemAccessible interface {
 	CheckMenuItemAccessible
-	Action
 }
 
 // radioMenuItemAccessible implements the RadioMenuItemAccessible class.
 type radioMenuItemAccessible struct {
 	CheckMenuItemAccessible
-	Action
 }
 
 var _ RadioMenuItemAccessible = (*radioMenuItemAccessible)(nil)
@@ -40,7 +38,6 @@ var _ RadioMenuItemAccessible = (*radioMenuItemAccessible)(nil)
 func WrapRadioMenuItemAccessible(obj *externglib.Object) RadioMenuItemAccessible {
 	return radioMenuItemAccessible{
 		CheckMenuItemAccessible: WrapCheckMenuItemAccessible(obj),
-		Action:                  WrapAction(obj),
 	}
 }
 

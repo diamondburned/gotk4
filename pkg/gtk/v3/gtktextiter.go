@@ -6,8 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -17,8 +18,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// gboolean gotk4_TextCharPredicate(gunichar, gpointer);
 import "C"
 
 func init() {
@@ -49,31 +48,6 @@ const (
 
 func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type TextCharPredicate func(ch uint32) (ok bool)
-
-//export gotk4_TextCharPredicate
-func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var ch uint32 // out
-
-	ch = (uint32)(arg0)
-
-	fn := v.(TextCharPredicate)
-	ok := fn(ch)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // TextIter: you may wish to begin by reading the [text widget conceptual
@@ -196,32 +170,6 @@ func (i *TextIter) BackwardCursorPositions(count int) bool {
 	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_iter_backward_cursor_positions(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// BackwardFindChar: same as gtk_text_iter_forward_find_char(), but goes
-// backward from @iter.
-func (i *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
-	var _arg0 *C.GtkTextIter         // out
-	var _arg1 C.GtkTextCharPredicate // out
-	var _arg2 C.gpointer
-	var _arg3 *C.GtkTextIter // out
-
-	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
-	_arg2 = C.gpointer(box.Assign(pred))
-	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_text_iter_backward_find_char(_arg0, _arg1, _arg2, _arg3)
 
 	var _ok bool // out
 
@@ -919,33 +867,6 @@ func (i *TextIter) ForwardCursorPositions(count int) bool {
 	return _ok
 }
 
-// ForwardFindChar advances @iter, calling @pred on each character. If @pred
-// returns true, returns true and stops scanning. If @pred never returns true,
-// @iter is set to @limit if @limit is non-nil, otherwise to the end iterator.
-func (i *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
-	var _arg0 *C.GtkTextIter         // out
-	var _arg1 C.GtkTextCharPredicate // out
-	var _arg2 C.gpointer
-	var _arg3 *C.GtkTextIter // out
-
-	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
-	_arg2 = C.gpointer(box.Assign(pred))
-	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_text_iter_forward_find_char(_arg0, _arg1, _arg2, _arg3)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // ForwardLine moves @iter to the start of the next line. If the iter is already
 // on the last line of the buffer, moves the iter to the end of the current
 // line. If after the operation, the iter is at the end of the buffer and not
@@ -1445,6 +1366,29 @@ func (i *TextIter) ChildAnchor() TextChildAnchor {
 	return _textChildAnchor
 }
 
+// Language: a convenience wrapper around gtk_text_iter_get_attributes(), which
+// returns the language in effect at @iter. If no tags affecting language apply
+// to @iter, the return value is identical to that of
+// gtk_get_default_language().
+func (i *TextIter) Language() *pango.Language {
+	var _arg0 *C.GtkTextIter // out
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.PangoLanguage // in
+
+	_cret = C.gtk_text_iter_get_language(_arg0)
+
+	var _language *pango.Language // out
+
+	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_language, func(v *pango.Language) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _language
+}
+
 // Line returns the line number containing the iterator. Lines in a TextBuffer
 // are numbered beginning with 0 for the first line in the buffer.
 func (i *TextIter) Line() int {
@@ -1519,6 +1463,24 @@ func (i *TextIter) Offset() int {
 	_gint = (int)(_cret)
 
 	return _gint
+}
+
+// Pixbuf: if the element at @iter is a pixbuf, the pixbuf is returned (with no
+// new reference count added). Otherwise, nil is returned.
+func (i *TextIter) Pixbuf() gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkTextIter // out
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gtk_text_iter_get_pixbuf(_arg0)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return _pixbuf
 }
 
 // Slice returns the text in the given range. A “slice” is an array of

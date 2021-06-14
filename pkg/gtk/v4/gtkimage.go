@@ -6,6 +6,9 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -96,6 +99,12 @@ type Image interface {
 
 	// Clear resets the image to be empty.
 	Clear()
+	// GIcon gets the `GIcon` being displayed by the `GtkImage`.
+	//
+	// The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON
+	// (see [method@Gtk.Image.get_storage_type]). The caller of this function
+	// does not own a reference to the returned `GIcon`.
+	GIcon() gio.Icon
 	// IconName gets the icon name and size being displayed by the `GtkImage`.
 	//
 	// The storage type of the image must be GTK_IMAGE_EMPTY or
@@ -104,6 +113,13 @@ type Image interface {
 	IconName() string
 	// IconSize gets the icon size used by the @image when rendering icons.
 	IconSize() IconSize
+	// Paintable gets the image `GdkPaintable` being displayed by the
+	// `GtkImage`.
+	//
+	// The storage type of the image must be GTK_IMAGE_EMPTY or
+	// GTK_IMAGE_PAINTABLE (see [method@Gtk.Image.get_storage_type]). The caller
+	// of this function does not own a reference to the returned paintable.
+	Paintable() gdk.Paintable
 	// PixelSize gets the pixel size used for named icons.
 	PixelSize() int
 	// StorageType gets the type of representation being used by the `GtkImage`
@@ -116,10 +132,25 @@ type Image interface {
 	//
 	// See [ctor@Gtk.Image.new_from_file] for details.
 	SetFromFile(filename string)
+	// SetFromGIcon sets a `GtkImage` to show a `GIcon`.
+	//
+	// See [ctor@Gtk.Image.new_from_gicon] for details.
+	SetFromGIcon(icon gio.Icon)
 	// SetFromIconName sets a `GtkImage` to show a named icon.
 	//
 	// See [ctor@Gtk.Image.new_from_icon_name] for details.
 	SetFromIconName(iconName string)
+	// SetFromPaintable sets a `GtkImage` to show a `GdkPaintable`.
+	//
+	// See [ctor@Gtk.Image.new_from_paintable] for details.
+	SetFromPaintable(paintable gdk.Paintable)
+	// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
+	//
+	// See [ctor@Gtk.Image.new_from_pixbuf] for details.
+	//
+	// Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
+	// can't get back the exact pixbuf once this is called, only a paintable.
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
 	// SetFromResource sets a `GtkImage` to show a resource.
 	//
 	// See [ctor@Gtk.Image.new_from_resource] for details.
@@ -191,6 +222,23 @@ func NewImageFromFile(filename string) Image {
 	return _image
 }
 
+// NewImageFromGIcon constructs a class Image.
+func NewImageFromGIcon(icon gio.Icon) Image {
+	var _arg1 *C.GIcon // out
+
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	var _cret C.GtkImage // in
+
+	_cret = C.gtk_image_new_from_gicon(_arg1)
+
+	var _image Image // out
+
+	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+
+	return _image
+}
+
 // NewImageFromIconName constructs a class Image.
 func NewImageFromIconName(iconName string) Image {
 	var _arg1 *C.char // out
@@ -201,6 +249,40 @@ func NewImageFromIconName(iconName string) Image {
 	var _cret C.GtkImage // in
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1)
+
+	var _image Image // out
+
+	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+
+	return _image
+}
+
+// NewImageFromPaintable constructs a class Image.
+func NewImageFromPaintable(paintable gdk.Paintable) Image {
+	var _arg1 *C.GdkPaintable // out
+
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+
+	var _cret C.GtkImage // in
+
+	_cret = C.gtk_image_new_from_paintable(_arg1)
+
+	var _image Image // out
+
+	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+
+	return _image
+}
+
+// NewImageFromPixbuf constructs a class Image.
+func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	var _cret C.GtkImage // in
+
+	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
 	var _image Image // out
 
@@ -234,6 +316,27 @@ func (i image) Clear() {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	C.gtk_image_clear(_arg0)
+}
+
+// GIcon gets the `GIcon` being displayed by the `GtkImage`.
+//
+// The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON
+// (see [method@Gtk.Image.get_storage_type]). The caller of this function
+// does not own a reference to the returned `GIcon`.
+func (i image) GIcon() gio.Icon {
+	var _arg0 *C.GtkImage // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.gtk_image_get_gicon(_arg0)
+
+	var _icon gio.Icon // out
+
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+
+	return _icon
 }
 
 // IconName gets the icon name and size being displayed by the `GtkImage`.
@@ -272,6 +375,28 @@ func (i image) IconSize() IconSize {
 	_iconSize = IconSize(_cret)
 
 	return _iconSize
+}
+
+// Paintable gets the image `GdkPaintable` being displayed by the
+// `GtkImage`.
+//
+// The storage type of the image must be GTK_IMAGE_EMPTY or
+// GTK_IMAGE_PAINTABLE (see [method@Gtk.Image.get_storage_type]). The caller
+// of this function does not own a reference to the returned paintable.
+func (i image) Paintable() gdk.Paintable {
+	var _arg0 *C.GtkImage // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GdkPaintable // in
+
+	_cret = C.gtk_image_get_paintable(_arg0)
+
+	var _paintable gdk.Paintable // out
+
+	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+
+	return _paintable
 }
 
 // PixelSize gets the pixel size used for named icons.
@@ -326,6 +451,19 @@ func (i image) SetFromFile(filename string) {
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
 
+// SetFromGIcon sets a `GtkImage` to show a `GIcon`.
+//
+// See [ctor@Gtk.Image.new_from_gicon] for details.
+func (i image) SetFromGIcon(icon gio.Icon) {
+	var _arg0 *C.GtkImage // out
+	var _arg1 *C.GIcon    // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gtk_image_set_from_gicon(_arg0, _arg1)
+}
+
 // SetFromIconName sets a `GtkImage` to show a named icon.
 //
 // See [ctor@Gtk.Image.new_from_icon_name] for details.
@@ -338,6 +476,35 @@ func (i image) SetFromIconName(iconName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_icon_name(_arg0, _arg1)
+}
+
+// SetFromPaintable sets a `GtkImage` to show a `GdkPaintable`.
+//
+// See [ctor@Gtk.Image.new_from_paintable] for details.
+func (i image) SetFromPaintable(paintable gdk.Paintable) {
+	var _arg0 *C.GtkImage     // out
+	var _arg1 *C.GdkPaintable // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+
+	C.gtk_image_set_from_paintable(_arg0, _arg1)
+}
+
+// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
+//
+// See [ctor@Gtk.Image.new_from_pixbuf] for details.
+//
+// Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
+// can't get back the exact pixbuf once this is called, only a paintable.
+func (i image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkImage  // out
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }
 
 // SetFromResource sets a `GtkImage` to show a resource.

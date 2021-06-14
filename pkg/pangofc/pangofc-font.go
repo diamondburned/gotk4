@@ -5,6 +5,7 @@ package pangofc
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,15 +29,27 @@ func init() {
 // shutdown() along with the get_glyph_extents() virtual function from
 // `PangoFont`.
 type Font interface {
-	Font
+	pango.Font
 
 	// Glyph gets the glyph index for a given Unicode character for @font.
 	//
 	// If you only want to determine whether the font has the glyph, use
 	// [method@PangoFc.Font.has_char].
 	Glyph(wc uint32) uint
+	// Languages returns the languages that are supported by @font.
+	//
+	// This corresponds to the FC_LANG member of the FcPattern.
+	//
+	// The returned array is only valid as long as the font and its fontmap are
+	// valid.
+	Languages() **pango.Language
 	// HasChar determines whether @font has a glyph for the codepoint @wc.
 	HasChar(wc uint32) bool
+	// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
+	// @glyphs according to kerning information in @font.
+	//
+	// Since 1.44, it does nothing.
+	KernGlyphs(glyphs *pango.GlyphString)
 	// UnlockFace releases a font previously obtained with
 	// [method@PangoFc.Font.lock_face].
 	UnlockFace()
@@ -44,7 +57,7 @@ type Font interface {
 
 // font implements the Font class.
 type font struct {
-	Font
+	pango.Font
 }
 
 var _ Font = (*font)(nil)
@@ -53,7 +66,7 @@ var _ Font = (*font)(nil)
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
 	return font{
-		Font: WrapFont(obj),
+		pango.Font: pango.WrapFont(obj),
 	}
 }
 
@@ -85,6 +98,28 @@ func (f font) Glyph(wc uint32) uint {
 	return _guint
 }
 
+// Languages returns the languages that are supported by @font.
+//
+// This corresponds to the FC_LANG member of the FcPattern.
+//
+// The returned array is only valid as long as the font and its fontmap are
+// valid.
+func (f font) Languages() **pango.Language {
+	var _arg0 *C.PangoFcFont // out
+
+	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+
+	var _cret **C.PangoLanguage // in
+
+	_cret = C.pango_fc_font_get_languages(_arg0)
+
+	var _language **pango.Language // out
+
+	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
+
+	return _language
+}
+
 // HasChar determines whether @font has a glyph for the codepoint @wc.
 func (f font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFcFont // out
@@ -104,6 +139,20 @@ func (f font) HasChar(wc uint32) bool {
 	}
 
 	return _ok
+}
+
+// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
+// @glyphs according to kerning information in @font.
+//
+// Since 1.44, it does nothing.
+func (f font) KernGlyphs(glyphs *pango.GlyphString) {
+	var _arg0 *C.PangoFcFont      // out
+	var _arg1 *C.PangoGlyphString // out
+
+	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
+
+	C.pango_fc_font_kern_glyphs(_arg0, _arg1)
 }
 
 // UnlockFace releases a font previously obtained with

@@ -24,9 +24,18 @@ func init() {
 // BuildableOverrider contains methods that are overridable. This
 // interface is a subset of the interface Buildable.
 type BuildableOverrider interface {
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	AddChild(builder Builder, child gextras.Objector, typ string)
+
 	ID() string
+	// InternalChild retrieves the internal child called @childname of the
+	// @buildable object.
+	InternalChild(builder Builder, childname string) gextras.Objector
 
 	ParserFinished(builder Builder)
+
+	SetBuildableProperty(builder Builder, name string, value **externglib.Value)
 
 	SetID(id string)
 }
@@ -160,16 +169,13 @@ func (c *BuildableParseContext) ElementStack() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (*C.GPtrArray)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 		}
@@ -199,32 +205,4 @@ func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 	_charNumber = (int)(_arg2)
 
 	return _lineNumber, _charNumber
-}
-
-// Pop completes the process of a temporary sub-parser redirection.
-//
-// This function exists to collect the user_data allocated by a matching call to
-// gtk_buildable_parse_context_push(). It must be called in the end_element
-// handler corresponding to the start_element handler during which
-// gtk_buildable_parse_context_push() was called. You must not call this
-// function from the error callback -- the @user_data is provided directly to
-// the callback in that case.
-//
-// This function is not intended to be directly called by users interested in
-// invoking subparsers. Instead, it is intended to be used by the subparsers
-// themselves to implement a higher-level interface.
-func (c *BuildableParseContext) Pop() interface{} {
-	var _arg0 *C.GtkBuildableParseContext // out
-
-	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.gtk_buildable_parse_context_pop(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
 }

@@ -2,43 +2,7 @@
 
 package gobject
 
-import (
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
-// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <glib-object.h>
 import "C"
-
-// BoxedCopy: provide a copy of a boxed structure @src_boxed which is of type
-// @boxed_type.
-func BoxedCopy(boxedType externglib.Type, srcBoxed interface{}) interface{} {
-	var _arg1 C.GType    // out
-	var _arg2 C.gpointer // out
-
-	_arg1 = C.GType(boxedType)
-	_arg2 = C.gpointer(srcBoxed)
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_boxed_copy(_arg1, _arg2)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
-}
-
-// BoxedFree: free the boxed structure @boxed which is of type @boxed_type.
-func BoxedFree(boxedType externglib.Type, boxed interface{}) {
-	var _arg1 C.GType    // out
-	var _arg2 C.gpointer // out
-
-	_arg1 = C.GType(boxedType)
-	_arg2 = C.gpointer(boxed)
-
-	C.g_boxed_free(_arg1, _arg2)
-}

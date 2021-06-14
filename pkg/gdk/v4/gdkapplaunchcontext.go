@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,7 +44,7 @@ func init() {
 //
 // g_object_unref (context); “`
 type AppLaunchContext interface {
-	AppLaunchContext
+	gio.AppLaunchContext
 
 	// Display gets the `GdkDisplay` that @context is for.
 	Display() Display
@@ -57,6 +58,14 @@ type AppLaunchContext interface {
 	// the window manager to pick one, typically it will be the current
 	// workspace.
 	SetDesktop(desktop int)
+	// SetIcon sets the icon for applications that are launched with this
+	// context.
+	//
+	// Window Managers can use this information when displaying startup
+	// notification.
+	//
+	// See also [method@Gdk.AppLaunchContext.set_icon_name].
+	SetIcon(icon gio.Icon)
 	// SetIconName sets the icon for applications that are launched with this
 	// context.
 	//
@@ -81,7 +90,7 @@ type AppLaunchContext interface {
 
 // appLaunchContext implements the AppLaunchContext class.
 type appLaunchContext struct {
-	AppLaunchContext
+	gio.AppLaunchContext
 }
 
 var _ AppLaunchContext = (*appLaunchContext)(nil)
@@ -90,7 +99,7 @@ var _ AppLaunchContext = (*appLaunchContext)(nil)
 // primarily used internally.
 func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
 	return appLaunchContext{
-		AppLaunchContext: WrapAppLaunchContext(obj),
+		gio.AppLaunchContext: gio.WrapAppLaunchContext(obj),
 	}
 }
 
@@ -134,6 +143,23 @@ func (c appLaunchContext) SetDesktop(desktop int) {
 	_arg1 = C.int(desktop)
 
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
+}
+
+// SetIcon sets the icon for applications that are launched with this
+// context.
+//
+// Window Managers can use this information when displaying startup
+// notification.
+//
+// See also [method@Gdk.AppLaunchContext.set_icon_name].
+func (c appLaunchContext) SetIcon(icon gio.Icon) {
+	var _arg0 *C.GdkAppLaunchContext // out
+	var _arg1 *C.GIcon               // out
+
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }
 
 // SetIconName sets the icon for applications that are launched with this

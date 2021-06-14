@@ -6,8 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -17,8 +18,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// void gotk4_Callback(GtkWidget*, gpointer);
 import "C"
 
 func init() {
@@ -216,6 +215,9 @@ type Container interface {
 	Add(widget Widget)
 
 	CheckResize()
+	// ChildGetProperty gets the value of a child property for @child and
+	// @container.
+	ChildGetProperty(child Widget, propertyName string, value **externglib.Value)
 	// ChildNotify emits a Widget::child-notify signal for the [child
 	// property][child-properties] @child_property on the child.
 	//
@@ -223,30 +225,18 @@ type Container interface {
 	//
 	// Also see gtk_widget_child_notify().
 	ChildNotify(child Widget, childProperty string)
+	// ChildNotifyByPspec emits a Widget::child-notify signal for the [child
+	// property][child-properties] specified by @pspec on the child.
+	//
+	// This is an analogue of g_object_notify_by_pspec() for child properties.
+	ChildNotifyByPspec(child Widget, pspec gobject.ParamSpec)
+	// ChildSetProperty sets a child property for @child and @container.
+	ChildSetProperty(child Widget, propertyName string, value **externglib.Value)
 	// ChildType returns the type of the children supported by the container.
 	//
 	// Note that this may return G_TYPE_NONE to indicate that no more children
 	// can be added, e.g. for a Paned which already has two children.
 	ChildType() externglib.Type
-	// Forall invokes @callback on each direct child of @container, including
-	// children that are considered “internal” (implementation details of the
-	// container). “Internal” children generally weren’t added by the user of
-	// the container, but were added by the container implementation itself.
-	//
-	// Most applications should use gtk_container_foreach(), rather than
-	// gtk_container_forall().
-	Forall(callback Callback)
-	// Foreach invokes @callback on each non-internal child of @container. See
-	// gtk_container_forall() for details on what constitutes an “internal”
-	// child. For all practical purposes, this function should iterate over
-	// precisely those child widgets that were added to the container by the
-	// application with explicit add() calls.
-	//
-	// It is permissible to remove the child from the @callback handler.
-	//
-	// Most applications should use gtk_container_foreach(), rather than
-	// gtk_container_forall().
-	Foreach(callback Callback)
 	// BorderWidth retrieves the border width of the container. See
 	// gtk_container_set_border_width().
 	BorderWidth() uint
@@ -266,6 +256,22 @@ type Container interface {
 	// ResizeMode returns the resize mode for the container. See
 	// gtk_container_set_resize_mode ().
 	ResizeMode() ResizeMode
+	// PropagateDraw: when a container receives a call to the draw function, it
+	// must send synthetic Widget::draw calls to all children that don’t have
+	// their own Windows. This function provides a convenient way of doing this.
+	// A container, when it receives a call to its Widget::draw function, calls
+	// gtk_container_propagate_draw() once for each child, passing in the @cr
+	// the container received.
+	//
+	// gtk_container_propagate_draw() takes care of translating the origin of
+	// @cr, and deciding whether the draw needs to be sent to the child. It is a
+	// convenient and optimized way of getting the same effect as calling
+	// gtk_widget_draw() on the child directly.
+	//
+	// In most cases, a container can simply either inherit the Widget::draw
+	// implementation from Container, or do some drawing and then chain to the
+	// ::draw implementation from Container.
+	PropagateDraw(child Widget, cr *cairo.Context)
 	// Remove removes @widget from @container. @widget must be inside
 	// @container. Note that @container will own a reference to @widget, and
 	// that this may be the last reference held; so removing a widget from its
@@ -386,6 +392,23 @@ func (c container) CheckResize() {
 	C.gtk_container_check_resize(_arg0)
 }
 
+// ChildGetProperty gets the value of a child property for @child and
+// @container.
+func (c container) ChildGetProperty(child Widget, propertyName string, value **externglib.Value) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.gchar        // out
+	var _arg3 *C.GValue       // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.gchar)(C.CString(propertyName))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(value.GValue)
+
+	C.gtk_container_child_get_property(_arg0, _arg1, _arg2, _arg3)
+}
+
 // ChildNotify emits a Widget::child-notify signal for the [child
 // property][child-properties] @child_property on the child.
 //
@@ -403,6 +426,38 @@ func (c container) ChildNotify(child Widget, childProperty string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
+}
+
+// ChildNotifyByPspec emits a Widget::child-notify signal for the [child
+// property][child-properties] specified by @pspec on the child.
+//
+// This is an analogue of g_object_notify_by_pspec() for child properties.
+func (c container) ChildNotifyByPspec(child Widget, pspec gobject.ParamSpec) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.GParamSpec   // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+
+	C.gtk_container_child_notify_by_pspec(_arg0, _arg1, _arg2)
+}
+
+// ChildSetProperty sets a child property for @child and @container.
+func (c container) ChildSetProperty(child Widget, propertyName string, value **externglib.Value) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.gchar        // out
+	var _arg3 *C.GValue       // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.gchar)(C.CString(propertyName))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(value.GValue)
+
+	C.gtk_container_child_set_property(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ChildType returns the type of the children supported by the container.
@@ -423,47 +478,6 @@ func (c container) ChildType() externglib.Type {
 	_gType = externglib.Type(_cret)
 
 	return _gType
-}
-
-// Forall invokes @callback on each direct child of @container, including
-// children that are considered “internal” (implementation details of the
-// container). “Internal” children generally weren’t added by the user of
-// the container, but were added by the container implementation itself.
-//
-// Most applications should use gtk_container_foreach(), rather than
-// gtk_container_forall().
-func (c container) Forall(callback Callback) {
-	var _arg0 *C.GtkContainer // out
-	var _arg1 C.GtkCallback   // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_Callback)
-	_arg2 = C.gpointer(box.Assign(callback))
-
-	C.gtk_container_forall(_arg0, _arg1, _arg2)
-}
-
-// Foreach invokes @callback on each non-internal child of @container. See
-// gtk_container_forall() for details on what constitutes an “internal”
-// child. For all practical purposes, this function should iterate over
-// precisely those child widgets that were added to the container by the
-// application with explicit add() calls.
-//
-// It is permissible to remove the child from the @callback handler.
-//
-// Most applications should use gtk_container_foreach(), rather than
-// gtk_container_forall().
-func (c container) Foreach(callback Callback) {
-	var _arg0 *C.GtkContainer // out
-	var _arg1 C.GtkCallback   // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_Callback)
-	_arg2 = C.gpointer(box.Assign(callback))
-
-	C.gtk_container_foreach(_arg0, _arg1, _arg2)
 }
 
 // BorderWidth retrieves the border width of the container. See
@@ -578,6 +592,33 @@ func (c container) ResizeMode() ResizeMode {
 	_resizeMode = ResizeMode(_cret)
 
 	return _resizeMode
+}
+
+// PropagateDraw: when a container receives a call to the draw function, it
+// must send synthetic Widget::draw calls to all children that don’t have
+// their own Windows. This function provides a convenient way of doing this.
+// A container, when it receives a call to its Widget::draw function, calls
+// gtk_container_propagate_draw() once for each child, passing in the @cr
+// the container received.
+//
+// gtk_container_propagate_draw() takes care of translating the origin of
+// @cr, and deciding whether the draw needs to be sent to the child. It is a
+// convenient and optimized way of getting the same effect as calling
+// gtk_widget_draw() on the child directly.
+//
+// In most cases, a container can simply either inherit the Widget::draw
+// implementation from Container, or do some drawing and then chain to the
+// ::draw implementation from Container.
+func (c container) PropagateDraw(child Widget, cr *cairo.Context) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.cairo_t      // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+
+	C.gtk_container_propagate_draw(_arg0, _arg1, _arg2)
 }
 
 // Remove removes @widget from @container. @widget must be inside

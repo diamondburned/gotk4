@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -486,6 +487,51 @@ func (b *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 	_arg2 = C.guint32(value)
 
 	C.gsk_shader_args_builder_set_uint(_arg0, _arg1, _arg2)
+}
+
+// SetVec2 sets the value of the uniform @idx.
+//
+// The uniform must be of vec2 type.
+func (b *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
+	var _arg0 *C.GskShaderArgsBuilder // out
+	var _arg1 C.int                   // out
+	var _arg2 *C.graphene_vec2_t      // out
+
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = C.int(idx)
+	_arg2 = (*C.graphene_vec2_t)(unsafe.Pointer(value.Native()))
+
+	C.gsk_shader_args_builder_set_vec2(_arg0, _arg1, _arg2)
+}
+
+// SetVec3 sets the value of the uniform @idx.
+//
+// The uniform must be of vec3 type.
+func (b *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
+	var _arg0 *C.GskShaderArgsBuilder // out
+	var _arg1 C.int                   // out
+	var _arg2 *C.graphene_vec3_t      // out
+
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = C.int(idx)
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(value.Native()))
+
+	C.gsk_shader_args_builder_set_vec3(_arg0, _arg1, _arg2)
+}
+
+// SetVec4 sets the value of the uniform @idx.
+//
+// The uniform must be of vec4 type.
+func (b *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
+	var _arg0 *C.GskShaderArgsBuilder // out
+	var _arg1 C.int                   // out
+	var _arg2 *C.graphene_vec4_t      // out
+
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = C.int(idx)
+	_arg2 = (*C.graphene_vec4_t)(unsafe.Pointer(value.Native()))
+
+	C.gsk_shader_args_builder_set_vec4(_arg0, _arg1, _arg2)
 }
 
 // Unref decreases the reference count of a `GskShaderArgBuilder` by one.

@@ -3,9 +3,13 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,6 +56,37 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// DeviceGrabAdd adds a GTK+ grab on @device, so all the events on @device and
+// its associated pointer or keyboard (if any) are delivered to @widget. If the
+// @block_others parameter is true, any other devices will be unable to interact
+// with @widget during the grab.
+func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.GdkDevice // out
+	var _arg3 C.gboolean   // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	if blockOthers {
+		_arg3 = C.TRUE
+	}
+
+	C.gtk_device_grab_add(_arg1, _arg2, _arg3)
+}
+
+// DeviceGrabRemove removes a device grab from the given widget.
+//
+// You have to pair calls to gtk_device_grab_add() and gtk_device_grab_remove().
+func DeviceGrabRemove(widget Widget, device gdk.Device) {
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.GdkDevice // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	C.gtk_device_grab_remove(_arg1, _arg2)
 }
 
 // DisableSetlocale prevents gtk_init(), gtk_init_check(), gtk_init_with_args()
@@ -123,6 +158,39 @@ func GetBinaryAge() uint {
 	return _guint
 }
 
+// GetCurrentEventDevice: if there is a current event and it has a device,
+// return that device, otherwise return nil.
+func GetCurrentEventDevice() gdk.Device {
+	var _cret *C.GdkDevice // in
+
+	_cret = C.gtk_get_current_event_device()
+
+	var _device gdk.Device // out
+
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Device)
+
+	return _device
+}
+
+// GetCurrentEventState: if there is a current event and it has a state field,
+// place that state field in @state and return true, otherwise return false.
+func GetCurrentEventState() (gdk.ModifierType, bool) {
+	var _arg1 C.GdkModifierType // in
+	var _cret C.gboolean        // in
+
+	_cret = C.gtk_get_current_event_state(&_arg1)
+
+	var _state gdk.ModifierType // out
+	var _ok bool                // out
+
+	_state = gdk.ModifierType(_arg1)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _state, _ok
+}
+
 // GetCurrentEventTime: if there is a current event and it has a timestamp,
 // return that timestamp, otherwise return GDK_CURRENT_TIME.
 func GetCurrentEventTime() uint32 {
@@ -135,6 +203,25 @@ func GetCurrentEventTime() uint32 {
 	_guint32 = (uint32)(_cret)
 
 	return _guint32
+}
+
+// GetDefaultLanguage returns the Language for the default language currently in
+// effect. (Note that this can change over the life of an application.) The
+// default language is derived from the current locale. It determines, for
+// example, whether GTK+ uses the right-to-left or left-to-right text direction.
+//
+// This function is equivalent to pango_language_get_default(). See that
+// function for details.
+func GetDefaultLanguage() *pango.Language {
+	var _cret *C.PangoLanguage // in
+
+	_cret = C.gtk_get_default_language()
+
+	var _language *pango.Language // out
+
+	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
+
+	return _language
 }
 
 // GetInterfaceAge returns the interface age as passed to `libtool` when
@@ -237,6 +324,33 @@ func GetMinorVersion() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
+}
+
+// GetOptionGroup returns a Group for the commandline arguments recognized by
+// GTK+ and GDK.
+//
+// You should add this group to your Context with g_option_context_add_group(),
+// if you are using g_option_context_parse() to parse your commandline
+// arguments.
+func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
+	var _arg1 C.gboolean // out
+
+	if openDefaultDisplay {
+		_arg1 = C.TRUE
+	}
+
+	var _cret *C.GOptionGroup // in
+
+	_cret = C.gtk_get_option_group(_arg1)
+
+	var _optionGroup *glib.OptionGroup // out
+
+	_optionGroup = glib.WrapOptionGroup(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _optionGroup
 }
 
 // GrabGetCurrent queries the current grab of the default window group.

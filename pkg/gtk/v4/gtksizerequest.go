@@ -59,13 +59,6 @@ func (r *RequestedSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Data gets the field inside the struct.
-func (r *RequestedSize) Data() interface{} {
-	var v interface{} // out
-	v = (interface{})(r.native.data)
-	return v
-}
-
 // MinimumSize gets the field inside the struct.
 func (r *RequestedSize) MinimumSize() int {
 	var v int // out

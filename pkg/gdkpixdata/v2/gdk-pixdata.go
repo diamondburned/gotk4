@@ -7,6 +7,9 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
@@ -79,6 +82,33 @@ const (
 	// PixdataTypeEncodingMask: mask for the encoding flags of the enum.
 	PixdataTypeEncodingMask PixdataType = 251658240
 )
+
+// PixbufFromPixdata converts a `GdkPixdata` to a `GdkPixbuf`.
+//
+// If `copy_pixels` is `TRUE` or if the pixel data is run-length-encoded, the
+// pixel data is copied into newly-allocated memory; otherwise it is reused.
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, error) {
+	var _arg1 *C.GdkPixdata // out
+	var _arg2 C.gboolean    // out
+
+	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata.Native()))
+	if copyPixels {
+		_arg2 = C.TRUE
+	}
+
+	var _cret *C.GdkPixbuf // in
+	var _cerr *C.GError    // in
+
+	_cret = C.gdk_pixbuf_from_pixdata(_arg1, _arg2, &_cerr)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+	var _goerr error             // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
 
 // Pixdata: a pixel buffer suitable for serialization and streaming.
 //

@@ -140,6 +140,10 @@ type AsyncInitableOverrider interface {
 type AsyncInitable interface {
 	gextras.Objector
 	AsyncInitableOverrider
+
+	// NewFinish finishes the async construction for the various
+	// g_async_initable_new calls, returning the created object or nil on error.
+	NewFinish(res AsyncResult) (gextras.Objector, error)
 }
 
 // asyncInitable implements the AsyncInitable interface.
@@ -181,4 +185,27 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// NewFinish finishes the async construction for the various
+// g_async_initable_new calls, returning the created object or nil on error.
+func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
+	var _arg0 *C.GAsyncInitable // out
+	var _arg1 *C.GAsyncResult   // out
+
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GObject // in
+	var _cerr *C.GError  // in
+
+	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
+
+	var _object gextras.Objector // out
+	var _goerr error             // out
+
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _object, _goerr
 }

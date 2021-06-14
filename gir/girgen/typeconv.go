@@ -215,6 +215,14 @@ func newConversionTo(
 
 // AddCCallParam adds call parameters for C functions.
 func AddCCallParam(params *pen.Joints, goc *TypeConversionToC, cgo *TypeConversionToGo) {
+	// TODO: find a less awful hack, which is a very non-trivial hack, because
+	// we're splitting input and output parameters onto its own slice and
+	// convert them separately.
+	//
+	// A good way to solve this would be to combine them into the same routine,
+	// probably by using a list of []TypeConversion interfaces and invoke
+	// different routines depending on the type.
+
 	for _, result := range goc.results {
 		params.Add(result.OutCall)
 	}

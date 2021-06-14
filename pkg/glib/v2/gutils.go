@@ -395,16 +395,13 @@ func GetSystemConfigDirs() []string {
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 		}
@@ -452,16 +449,13 @@ func GetSystemDataDirs() []string {
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 		}
@@ -645,15 +639,6 @@ func GetUserSpecialDir(directory UserDirectory) string {
 	_filename = C.GoString(_cret)
 
 	return _filename
-}
-
-// NullifyPointer: set the pointer at the specified location to nil.
-func NullifyPointer(nullifyLocation *interface{}) {
-	var _arg1 *C.gpointer // out
-
-	_arg1 = *C.gpointer(nullifyLocation)
-
-	C.g_nullify_pointer(_arg1)
 }
 
 // ParseDebugString parses a string containing debugging options into a guint

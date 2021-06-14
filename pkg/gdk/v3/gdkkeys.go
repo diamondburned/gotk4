@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -202,6 +203,8 @@ type Keymap interface {
 
 	// CapsLockState returns whether the Caps Lock modifer is locked.
 	CapsLockState() bool
+	// Direction returns the direction of effective layout of the keymap.
+	Direction() pango.Direction
 	// EntriesForKeycode returns the keyvals bound to @hardware_keycode. The Nth
 	// KeymapKey in @keys is bound to the Nth keyval in @keyvals. Free the
 	// returned arrays with g_free(). When a keycode is pressed by the user, the
@@ -313,6 +316,23 @@ func (k keymap) CapsLockState() bool {
 	}
 
 	return _ok
+}
+
+// Direction returns the direction of effective layout of the keymap.
+func (k keymap) Direction() pango.Direction {
+	var _arg0 *C.GdkKeymap // out
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+
+	var _cret C.PangoDirection // in
+
+	_cret = C.gdk_keymap_get_direction(_arg0)
+
+	var _direction pango.Direction // out
+
+	_direction = pango.Direction(_cret)
+
+	return _direction
 }
 
 // EntriesForKeycode returns the keyvals bound to @hardware_keycode. The Nth

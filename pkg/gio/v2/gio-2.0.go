@@ -337,12 +337,77 @@ type DBusConnection interface {
 	AsyncInitable
 	Initable
 
+	// CallFinish finishes an operation started with g_dbus_connection_call().
+	CallFinish(res AsyncResult) (*glib.Variant, error)
+	// CallSync: synchronously invokes the @method_name method on the
+	// @interface_name D-Bus interface on the remote object at @object_path
+	// owned by @bus_name.
+	//
+	// If @connection is closed then the operation will fail with
+	// G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
+	// with G_IO_ERROR_CANCELLED. If @parameters contains a value not compatible
+	// with the D-Bus protocol, the operation fails with
+	// G_IO_ERROR_INVALID_ARGUMENT.
+	//
+	// If @reply_type is non-nil then the reply will be checked for having this
+	// type and an error will be raised if it does not match. Said another way,
+	// if you give a @reply_type then any non-nil return value will be of this
+	// type.
+	//
+	// If the @parameters #GVariant is floating, it is consumed. This allows
+	// convenient 'inline' use of g_variant_new(), e.g.:
+	//
+	//    g_dbus_connection_call_sync (connection,
+	//                                 "org.freedesktop.StringThings",
+	//                                 "/org/freedesktop/StringThings",
+	//                                 "org.freedesktop.StringThings",
+	//                                 "TwoStrings",
+	//                                 g_variant_new ("(ss)",
+	//                                                "Thing One",
+	//                                                "Thing Two"),
+	//                                 NULL,
+	//                                 G_DBUS_CALL_FLAGS_NONE,
+	//                                 -1,
+	//                                 NULL,
+	//                                 &error);
+	//
+	// The calling thread is blocked until a reply is received. See
+	// g_dbus_connection_call() for the asynchronous version of this method.
+	CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
+	// CallWithUnixFdListFinish finishes an operation started with
+	// g_dbus_connection_call_with_unix_fd_list().
+	//
+	// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+	// in the body of the message. For example, if g_variant_get_handle()
+	// returns 5, that is intended to be a reference to the file descriptor that
+	// can be accessed by `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
+	//
+	// When designing D-Bus APIs that are intended to be interoperable, please
+	// note that non-GDBus implementations of D-Bus can usually only access file
+	// descriptors if they are referenced in this way by a value of type
+	// G_VARIANT_TYPE_HANDLE in the body of the message.
+	CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error)
+	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
+	// and returns FDList objects. See
+	// g_dbus_connection_call_with_unix_fd_list() and
+	// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
+	//
+	// This method is only available on UNIX.
+	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
 	// CloseFinish finishes an operation started with g_dbus_connection_close().
 	CloseFinish(res AsyncResult) error
 	// CloseSync: synchronously closes @connection. The calling thread is
 	// blocked until this is done. See g_dbus_connection_close() for the
 	// asynchronous version of this method and more details about what it does.
 	CloseSync(cancellable Cancellable) error
+	// EmitSignal emits a signal.
+	//
+	// If the parameters GVariant is floating, it is consumed.
+	//
+	// This can only fail if @parameters is not compatible with the D-Bus
+	// protocol (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
+	// (G_IO_ERROR_CLOSED).
+	EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
 	// ExportActionGroup exports @action_group on @connection at @object_path.
 	//
 	// The implemented D-Bus API should be considered private. It is subject to
@@ -660,6 +725,203 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	return _dBusConnection, _goerr
 }
 
+// CallFinish finishes an operation started with g_dbus_connection_call().
+func (c dBusConnection) CallFinish(res AsyncResult) (*glib.Variant, error) {
+	var _arg0 *C.GDBusConnection // out
+	var _arg1 *C.GAsyncResult    // out
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _cret *C.GVariant // in
+	var _cerr *C.GError   // in
+
+	_cret = C.g_dbus_connection_call_finish(_arg0, _arg1, &_cerr)
+
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _variant, _goerr
+}
+
+// CallSync: synchronously invokes the @method_name method on the
+// @interface_name D-Bus interface on the remote object at @object_path
+// owned by @bus_name.
+//
+// If @connection is closed then the operation will fail with
+// G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
+// with G_IO_ERROR_CANCELLED. If @parameters contains a value not compatible
+// with the D-Bus protocol, the operation fails with
+// G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If @reply_type is non-nil then the reply will be checked for having this
+// type and an error will be raised if it does not match. Said another way,
+// if you give a @reply_type then any non-nil return value will be of this
+// type.
+//
+// If the @parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//    g_dbus_connection_call_sync (connection,
+//                                 "org.freedesktop.StringThings",
+//                                 "/org/freedesktop/StringThings",
+//                                 "org.freedesktop.StringThings",
+//                                 "TwoStrings",
+//                                 g_variant_new ("(ss)",
+//                                                "Thing One",
+//                                                "Thing Two"),
+//                                 NULL,
+//                                 G_DBUS_CALL_FLAGS_NONE,
+//                                 -1,
+//                                 NULL,
+//                                 &error);
+//
+// The calling thread is blocked until a reply is received. See
+// g_dbus_connection_call() for the asynchronous version of this method.
+func (c dBusConnection) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
+	var _arg0 *C.GDBusConnection // out
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.gchar           // out
+	var _arg3 *C.gchar           // out
+	var _arg4 *C.gchar           // out
+	var _arg5 *C.GVariant        // out
+	var _arg6 *C.GVariantType    // out
+	var _arg7 C.GDBusCallFlags   // out
+	var _arg8 C.gint             // out
+	var _arg9 *C.GCancellable    // out
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(busName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(interfaceName))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(methodName))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType.Native()))
+	_arg7 = (C.GDBusCallFlags)(flags)
+	_arg8 = C.gint(timeoutMsec)
+	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.GVariant // in
+	var _cerr *C.GError   // in
+
+	_cret = C.g_dbus_connection_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, &_cerr)
+
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _variant, _goerr
+}
+
+// CallWithUnixFdListFinish finishes an operation started with
+// g_dbus_connection_call_with_unix_fd_list().
+//
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+// in the body of the message. For example, if g_variant_get_handle()
+// returns 5, that is intended to be a reference to the file descriptor that
+// can be accessed by `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please
+// note that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced in this way by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
+func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
+	var _arg0 *C.GDBusConnection // out
+	var _arg2 *C.GAsyncResult    // out
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	var _arg1 *C.GUnixFDList // in
+	var _cret *C.GVariant    // in
+	var _cerr *C.GError      // in
+
+	_cret = C.g_dbus_connection_call_with_unix_fd_list_finish(_arg0, _arg2, &_arg1, &_cerr)
+
+	var _outFdList UnixFDList  // out
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1.Native()))).(UnixFDList)
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _outFdList, _variant, _goerr
+}
+
+// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
+// and returns FDList objects. See
+// g_dbus_connection_call_with_unix_fd_list() and
+// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
+//
+// This method is only available on UNIX.
+func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
+	var _arg0 *C.GDBusConnection // out
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.gchar           // out
+	var _arg3 *C.gchar           // out
+	var _arg4 *C.gchar           // out
+	var _arg5 *C.GVariant        // out
+	var _arg6 *C.GVariantType    // out
+	var _arg7 C.GDBusCallFlags   // out
+	var _arg8 C.gint             // out
+	var _arg9 *C.GUnixFDList     // out
+	var _arg11 *C.GCancellable   // out
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(busName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(interfaceName))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(methodName))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType.Native()))
+	_arg7 = (C.GDBusCallFlags)(flags)
+	_arg8 = C.gint(timeoutMsec)
+	_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg11 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg10 *C.GUnixFDList // in
+	var _cret *C.GVariant     // in
+	var _cerr *C.GError       // in
+
+	_cret = C.g_dbus_connection_call_with_unix_fd_list_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg11, &_arg10, &_cerr)
+
+	var _outFdList UnixFDList  // out
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg10.Native()))).(UnixFDList)
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _outFdList, _variant, _goerr
+}
+
 // CloseFinish finishes an operation started with g_dbus_connection_close().
 func (c dBusConnection) CloseFinish(res AsyncResult) error {
 	var _arg0 *C.GDBusConnection // out
@@ -692,6 +954,43 @@ func (c dBusConnection) CloseSync(cancellable Cancellable) error {
 	var _cerr *C.GError // in
 
 	C.g_dbus_connection_close_sync(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// EmitSignal emits a signal.
+//
+// If the parameters GVariant is floating, it is consumed.
+//
+// This can only fail if @parameters is not compatible with the D-Bus
+// protocol (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
+// (G_IO_ERROR_CLOSED).
+func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
+	var _arg0 *C.GDBusConnection // out
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.gchar           // out
+	var _arg3 *C.gchar           // out
+	var _arg4 *C.gchar           // out
+	var _arg5 *C.GVariant        // out
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(destinationBusName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(interfaceName))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(signalName))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_dbus_connection_emit_signal(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
 	var _goerr error // out
 
@@ -1317,6 +1616,8 @@ type DBusMessage interface {
 	Copy() (DBusMessage, error)
 	// Arg0: convenience to get the first item in the body of @message.
 	Arg0() string
+	// Body gets the body of a message.
+	Body() *glib.Variant
 	// ByteOrder gets the byte order of @message.
 	ByteOrder() DBusMessageByteOrder
 	// Destination: convenience getter for the
@@ -1327,6 +1628,11 @@ type DBusMessage interface {
 	ErrorName() string
 	// Flags gets the flags for @message.
 	Flags() DBusMessageFlags
+	// Header gets a header field on @message.
+	//
+	// The caller is responsible for checking the type of the returned #GVariant
+	// matches what is expected.
+	Header(headerField DBusMessageHeaderField) *glib.Variant
 	// HeaderFields gets an array of all header fields on @message that are set.
 	HeaderFields() []byte
 	// Interface: convenience getter for the
@@ -1408,6 +1714,12 @@ type DBusMessage interface {
 	//    UNIX File Descriptors:
 	//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
 	Print(indent uint) string
+	// SetBody sets the body @message. As a side-effect the
+	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the type
+	// string of @body (or cleared if @body is nil).
+	//
+	// If @body is floating, @message assumes ownership of @body.
+	SetBody(body *glib.Variant)
 	// SetByteOrder sets the byte order of @message.
 	SetByteOrder(byteOrder DBusMessageByteOrder)
 	// SetDestination: convenience setter for the
@@ -1418,6 +1730,10 @@ type DBusMessage interface {
 	SetErrorName(value string)
 	// SetFlags sets the flags to set on @message.
 	SetFlags(flags DBusMessageFlags)
+	// SetHeader sets a header field on @message.
+	//
+	// If @value is floating, @message assumes ownership of @value.
+	SetHeader(headerField DBusMessageHeaderField, value *glib.Variant)
 	// SetInterface: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
 	SetInterface(value string)
@@ -1617,6 +1933,23 @@ func (m dBusMessage) Arg0() string {
 	return _utf8
 }
 
+// Body gets the body of a message.
+func (m dBusMessage) Body() *glib.Variant {
+	var _arg0 *C.GDBusMessage // out
+
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_dbus_message_get_body(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
+}
+
 // ByteOrder gets the byte order of @message.
 func (m dBusMessage) ByteOrder() DBusMessageByteOrder {
 	var _arg0 *C.GDBusMessage // out
@@ -1687,6 +2020,28 @@ func (m dBusMessage) Flags() DBusMessageFlags {
 	return _dBusMessageFlags
 }
 
+// Header gets a header field on @message.
+//
+// The caller is responsible for checking the type of the returned #GVariant
+// matches what is expected.
+func (m dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
+	var _arg0 *C.GDBusMessage           // out
+	var _arg1 C.GDBusMessageHeaderField // out
+
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
+	_arg1 = (C.GDBusMessageHeaderField)(headerField)
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_dbus_message_get_header(_arg0, _arg1)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
+}
+
 // HeaderFields gets an array of all header fields on @message that are set.
 func (m dBusMessage) HeaderFields() []byte {
 	var _arg0 *C.GDBusMessage // out
@@ -1700,16 +2055,13 @@ func (m dBusMessage) HeaderFields() []byte {
 	var _guint8s []byte
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (*C.guchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_guint8s = make([]byte, length)
+		src := unsafe.Slice(_cret, i)
+		_guint8s = make([]byte, i)
 		for i := range src {
 			_guint8s[i] = (byte)(src[i])
 		}
@@ -2025,6 +2377,21 @@ func (m dBusMessage) Print(indent uint) string {
 	return _utf8
 }
 
+// SetBody sets the body @message. As a side-effect the
+// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the type
+// string of @body (or cleared if @body is nil).
+//
+// If @body is floating, @message assumes ownership of @body.
+func (m dBusMessage) SetBody(body *glib.Variant) {
+	var _arg0 *C.GDBusMessage // out
+	var _arg1 *C.GVariant     // out
+
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(body.Native()))
+
+	C.g_dbus_message_set_body(_arg0, _arg1)
+}
+
 // SetByteOrder sets the byte order of @message.
 func (m dBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	var _arg0 *C.GDBusMessage         // out
@@ -2071,6 +2438,21 @@ func (m dBusMessage) SetFlags(flags DBusMessageFlags) {
 	_arg1 = (C.GDBusMessageFlags)(flags)
 
 	C.g_dbus_message_set_flags(_arg0, _arg1)
+}
+
+// SetHeader sets a header field on @message.
+//
+// If @value is floating, @message assumes ownership of @value.
+func (m dBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
+	var _arg0 *C.GDBusMessage           // out
+	var _arg1 C.GDBusMessageHeaderField // out
+	var _arg2 *C.GVariant               // out
+
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
+	_arg1 = (C.GDBusMessageHeaderField)(headerField)
+	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+
+	C.g_dbus_message_set_header(_arg0, _arg1, _arg2)
 }
 
 // SetInterface: convenience setter for the
@@ -2293,6 +2675,10 @@ type DBusMethodInvocation interface {
 	MethodName() string
 	// ObjectPath gets the object path the method was invoked on.
 	ObjectPath() string
+	// Parameters gets the parameters of the method invocation. If there are no
+	// input parameters then this will return a GVariant with 0 children rather
+	// than NULL.
+	Parameters() *glib.Variant
 	// PropertyInfo gets information about the property that this method call is
 	// for, if any.
 	//
@@ -2319,6 +2705,44 @@ type DBusMethodInvocation interface {
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
 	ReturnGerror(err error)
+	// ReturnValue finishes handling a D-Bus method call by returning
+	// @parameters. If the @parameters GVariant is floating, it is consumed.
+	//
+	// It is an error if @parameters is not of the right format: it must be a
+	// tuple containing the out-parameters of the D-Bus method. Even if the
+	// method has a single out-parameter, it must be contained in a tuple. If
+	// the method has no out-parameters, @parameters may be nil or an empty
+	// tuple.
+	//
+	//    GDBusMethodInvocation *invocation = some_invocation;
+	//    g_autofree gchar *result_string = NULL;
+	//    g_autoptr (GError) error = NULL;
+	//
+	//    result_string = calculate_result (&error);
+	//
+	//    if (error != NULL)
+	//      g_dbus_method_invocation_return_gerror (invocation, error);
+	//    else
+	//      g_dbus_method_invocation_return_value (invocation,
+	//                                             g_variant_new ("(s)", result_string));
+	//
+	//    // Do not free @invocation here; returning a value does that
+	//
+	// This method will take ownership of @invocation. See BusInterfaceVTable
+	// for more information about the ownership of @invocation.
+	//
+	// Since 2.48, if the method call requested for a reply not to be sent then
+	// this call will sink @parameters and free @invocation, but otherwise do
+	// nothing (as per the recommendations of the D-Bus specification).
+	ReturnValue(parameters *glib.Variant)
+	// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value()
+	// but also takes a FDList.
+	//
+	// This method is only available on UNIX.
+	//
+	// This method will take ownership of @invocation. See BusInterfaceVTable
+	// for more information about the ownership of @invocation.
+	ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList)
 }
 
 // dBusMethodInvocation implements the DBusMethodInvocation class.
@@ -2461,6 +2885,25 @@ func (i dBusMethodInvocation) ObjectPath() string {
 	return _utf8
 }
 
+// Parameters gets the parameters of the method invocation. If there are no
+// input parameters then this will return a GVariant with 0 children rather
+// than NULL.
+func (i dBusMethodInvocation) Parameters() *glib.Variant {
+	var _arg0 *C.GDBusMethodInvocation // out
+
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_dbus_method_invocation_get_parameters(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
+}
+
 // PropertyInfo gets information about the property that this method call is
 // for, if any.
 //
@@ -2538,6 +2981,64 @@ func (i dBusMethodInvocation) ReturnGerror(err error) {
 	defer C.g_error_free(_arg1)
 
 	C.g_dbus_method_invocation_return_gerror(_arg0, _arg1)
+}
+
+// ReturnValue finishes handling a D-Bus method call by returning
+// @parameters. If the @parameters GVariant is floating, it is consumed.
+//
+// It is an error if @parameters is not of the right format: it must be a
+// tuple containing the out-parameters of the D-Bus method. Even if the
+// method has a single out-parameter, it must be contained in a tuple. If
+// the method has no out-parameters, @parameters may be nil or an empty
+// tuple.
+//
+//    GDBusMethodInvocation *invocation = some_invocation;
+//    g_autofree gchar *result_string = NULL;
+//    g_autoptr (GError) error = NULL;
+//
+//    result_string = calculate_result (&error);
+//
+//    if (error != NULL)
+//      g_dbus_method_invocation_return_gerror (invocation, error);
+//    else
+//      g_dbus_method_invocation_return_value (invocation,
+//                                             g_variant_new ("(s)", result_string));
+//
+//    // Do not free @invocation here; returning a value does that
+//
+// This method will take ownership of @invocation. See BusInterfaceVTable
+// for more information about the ownership of @invocation.
+//
+// Since 2.48, if the method call requested for a reply not to be sent then
+// this call will sink @parameters and free @invocation, but otherwise do
+// nothing (as per the recommendations of the D-Bus specification).
+func (i dBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _arg1 *C.GVariant              // out
+
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+
+	C.g_dbus_method_invocation_return_value(_arg0, _arg1)
+}
+
+// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value()
+// but also takes a FDList.
+//
+// This method is only available on UNIX.
+//
+// This method will take ownership of @invocation. See BusInterfaceVTable
+// for more information about the ownership of @invocation.
+func (i dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList) {
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _arg1 *C.GVariant              // out
+	var _arg2 *C.GUnixFDList           // out
+
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg2 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+
+	C.g_dbus_method_invocation_return_value_with_unix_fd_list(_arg0, _arg1, _arg2)
 }
 
 // DBusServer is a helper for listening to and accepting D-Bus connections. This
@@ -3106,8 +3607,70 @@ func (m menu) RemoveAll() {
 type MenuItem interface {
 	gextras.Objector
 
+	// AttributeValue queries the named @attribute on @menu_item.
+	//
+	// If @expected_type is specified and the attribute does not have this type,
+	// nil is returned. nil is also returned if the attribute simply does not
+	// exist.
+	AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
 	// Link queries the named @link on @menu_item.
 	Link(link string) MenuModel
+	// SetActionAndTargetValue sets or unsets the "action" and "target"
+	// attributes of @menu_item.
+	//
+	// If @action is nil then both the "action" and "target" attributes are
+	// unset (and @target_value is ignored).
+	//
+	// If @action is non-nil then the "action" attribute is set. The "target"
+	// attribute is then set to the value of @target_value if it is non-nil or
+	// unset otherwise.
+	//
+	// Normal menu items (ie: not submenu, section or other custom item types)
+	// are expected to have the "action" attribute set to identify the action
+	// that they are associated with. The state type of the action help to
+	// determine the disposition of the menu item. See #GAction and Group for an
+	// overview of actions.
+	//
+	// In general, clicking on the menu item will result in activation of the
+	// named action with the "target" attribute given as the parameter to the
+	// action invocation. If the "target" attribute is not set then the action
+	// is invoked with no parameter.
+	//
+	// If the action has no state then the menu item is usually drawn as a plain
+	// menu item (ie: with no additional decoration).
+	//
+	// If the action has a boolean state then the menu item is usually drawn as
+	// a toggle menu item (ie: with a checkmark or equivalent indication). The
+	// item should be marked as 'toggled' or 'checked' when the boolean state is
+	// true.
+	//
+	// If the action has a string state then the menu item is usually drawn as a
+	// radio menu item (ie: with a radio bullet or equivalent indication). The
+	// item should be marked as 'selected' when the string state is equal to the
+	// value of the @target property.
+	//
+	// See g_menu_item_set_action_and_target() or
+	// g_menu_item_set_detailed_action() for two equivalent calls that are
+	// probably more convenient for most uses.
+	SetActionAndTargetValue(action string, targetValue *glib.Variant)
+	// SetAttributeValue sets or unsets an attribute on @menu_item.
+	//
+	// The attribute to set or unset is specified by @attribute. This can be one
+	// of the standard attribute names G_MENU_ATTRIBUTE_LABEL,
+	// G_MENU_ATTRIBUTE_ACTION, G_MENU_ATTRIBUTE_TARGET, or a custom attribute
+	// name. Attribute names are restricted to lowercase characters, numbers and
+	// '-'. Furthermore, the names must begin with a lowercase character, must
+	// not end with a '-', and must not contain consecutive dashes.
+	//
+	// must consist only of lowercase ASCII characters, digits and '-'.
+	//
+	// If @value is non-nil then it is used as the new value for the attribute.
+	// If @value is nil then the attribute is unset. If the @value #GVariant is
+	// floating, it is consumed.
+	//
+	// See also g_menu_item_set_attribute() for a more convenient way to do the
+	// same.
+	SetAttributeValue(attribute string, value *glib.Variant)
 	// SetDetailedAction sets the "action" and possibly the "target" attribute
 	// of @menu_item.
 	//
@@ -3268,6 +3831,35 @@ func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 	return _menuItem
 }
 
+// AttributeValue queries the named @attribute on @menu_item.
+//
+// If @expected_type is specified and the attribute does not have this type,
+// nil is returned. nil is also returned if the attribute simply does not
+// exist.
+func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
+	var _arg0 *C.GMenuItem    // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariantType // out
+
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_menu_item_get_attribute_value(_arg0, _arg1, _arg2)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
+}
+
 // Link queries the named @link on @menu_item.
 func (m menuItem) Link(link string) MenuModel {
 	var _arg0 *C.GMenuItem // out
@@ -3286,6 +3878,86 @@ func (m menuItem) Link(link string) MenuModel {
 	_menuModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuModel)
 
 	return _menuModel
+}
+
+// SetActionAndTargetValue sets or unsets the "action" and "target"
+// attributes of @menu_item.
+//
+// If @action is nil then both the "action" and "target" attributes are
+// unset (and @target_value is ignored).
+//
+// If @action is non-nil then the "action" attribute is set. The "target"
+// attribute is then set to the value of @target_value if it is non-nil or
+// unset otherwise.
+//
+// Normal menu items (ie: not submenu, section or other custom item types)
+// are expected to have the "action" attribute set to identify the action
+// that they are associated with. The state type of the action help to
+// determine the disposition of the menu item. See #GAction and Group for an
+// overview of actions.
+//
+// In general, clicking on the menu item will result in activation of the
+// named action with the "target" attribute given as the parameter to the
+// action invocation. If the "target" attribute is not set then the action
+// is invoked with no parameter.
+//
+// If the action has no state then the menu item is usually drawn as a plain
+// menu item (ie: with no additional decoration).
+//
+// If the action has a boolean state then the menu item is usually drawn as
+// a toggle menu item (ie: with a checkmark or equivalent indication). The
+// item should be marked as 'toggled' or 'checked' when the boolean state is
+// true.
+//
+// If the action has a string state then the menu item is usually drawn as a
+// radio menu item (ie: with a radio bullet or equivalent indication). The
+// item should be marked as 'selected' when the string state is equal to the
+// value of the @target property.
+//
+// See g_menu_item_set_action_and_target() or
+// g_menu_item_set_detailed_action() for two equivalent calls that are
+// probably more convenient for most uses.
+func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
+	var _arg0 *C.GMenuItem // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GVariant  // out
+
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(action))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(targetValue.Native()))
+
+	C.g_menu_item_set_action_and_target_value(_arg0, _arg1, _arg2)
+}
+
+// SetAttributeValue sets or unsets an attribute on @menu_item.
+//
+// The attribute to set or unset is specified by @attribute. This can be one
+// of the standard attribute names G_MENU_ATTRIBUTE_LABEL,
+// G_MENU_ATTRIBUTE_ACTION, G_MENU_ATTRIBUTE_TARGET, or a custom attribute
+// name. Attribute names are restricted to lowercase characters, numbers and
+// '-'. Furthermore, the names must begin with a lowercase character, must
+// not end with a '-', and must not contain consecutive dashes.
+//
+// must consist only of lowercase ASCII characters, digits and '-'.
+//
+// If @value is non-nil then it is used as the new value for the attribute.
+// If @value is nil then the attribute is unset. If the @value #GVariant is
+// floating, it is consumed.
+//
+// See also g_menu_item_set_attribute() for a more convenient way to do the
+// same.
+func (m menuItem) SetAttributeValue(attribute string, value *glib.Variant) {
+	var _arg0 *C.GMenuItem // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GVariant  // out
+
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+
+	C.g_menu_item_set_attribute_value(_arg0, _arg1, _arg2)
 }
 
 // SetDetailedAction sets the "action" and possibly the "target" attribute
@@ -3435,6 +4107,13 @@ type Notification interface {
 	// See g_action_parse_detailed_name() for a description of the format for
 	// @detailed_action.
 	AddButton(label string, detailedAction string)
+	// AddButtonWithTargetValue adds a button to @notification that activates
+	// @action when clicked. @action must be an application-wide action (it must
+	// start with "app.").
+	//
+	// If @target is non-nil, @action will be activated with @target as its
+	// parameter.
+	AddButtonWithTargetValue(label string, action string, target *glib.Variant)
 	// SetBody sets the body of @notification to @body.
 	SetBody(body string)
 	// SetDefaultAction sets the default action of @notification to
@@ -3450,6 +4129,16 @@ type Notification interface {
 	// When no default action is set, the application that the notification was
 	// sent on is activated.
 	SetDefaultAction(detailedAction string)
+	// SetDefaultActionAndTargetValue sets the default action of @notification
+	// to @action. This action is activated when the notification is clicked on.
+	// It must be an application-wide action (start with "app.").
+	//
+	// If @target is non-nil, @action will be activated with @target as its
+	// parameter.
+	//
+	// When no default action is set, the application that the notification was
+	// sent on is activated.
+	SetDefaultActionAndTargetValue(action string, target *glib.Variant)
 	// SetIcon sets the icon of @notification to @icon.
 	SetIcon(icon Icon)
 	// SetPriority sets the priority of @notification to @priority. See Priority
@@ -3521,6 +4210,28 @@ func (n notification) AddButton(label string, detailedAction string) {
 	C.g_notification_add_button(_arg0, _arg1, _arg2)
 }
 
+// AddButtonWithTargetValue adds a button to @notification that activates
+// @action when clicked. @action must be an application-wide action (it must
+// start with "app.").
+//
+// If @target is non-nil, @action will be activated with @target as its
+// parameter.
+func (n notification) AddButtonWithTargetValue(label string, action string, target *glib.Variant) {
+	var _arg0 *C.GNotification // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
+	var _arg3 *C.GVariant      // out
+
+	_arg0 = (*C.GNotification)(unsafe.Pointer(n.Native()))
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(action))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(target.Native()))
+
+	C.g_notification_add_button_with_target_value(_arg0, _arg1, _arg2, _arg3)
+}
+
 // SetBody sets the body of @notification to @body.
 func (n notification) SetBody(body string) {
 	var _arg0 *C.GNotification // out
@@ -3554,6 +4265,28 @@ func (n notification) SetDefaultAction(detailedAction string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_notification_set_default_action(_arg0, _arg1)
+}
+
+// SetDefaultActionAndTargetValue sets the default action of @notification
+// to @action. This action is activated when the notification is clicked on.
+// It must be an application-wide action (start with "app.").
+//
+// If @target is non-nil, @action will be activated with @target as its
+// parameter.
+//
+// When no default action is set, the application that the notification was
+// sent on is activated.
+func (n notification) SetDefaultActionAndTargetValue(action string, target *glib.Variant) {
+	var _arg0 *C.GNotification // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GVariant      // out
+
+	_arg0 = (*C.GNotification)(unsafe.Pointer(n.Native()))
+	_arg1 = (*C.gchar)(C.CString(action))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(target.Native()))
+
+	C.g_notification_set_default_action_and_target_value(_arg0, _arg1, _arg2)
 }
 
 // SetIcon sets the icon of @notification to @icon.
@@ -3680,6 +4413,29 @@ func marshalPropertyAction(p uintptr) (interface{}, error) {
 	return WrapPropertyAction(obj), nil
 }
 
+// NewPropertyAction constructs a class PropertyAction.
+func NewPropertyAction(name string, object gextras.Objector, propertyName string) PropertyAction {
+	var _arg1 *C.gchar   // out
+	var _arg2 C.gpointer // out
+	var _arg3 *C.gchar   // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg3 = (*C.gchar)(C.CString(propertyName))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	var _cret C.GPropertyAction // in
+
+	_cret = C.g_property_action_new(_arg1, _arg2, _arg3)
+
+	var _propertyAction PropertyAction // out
+
+	_propertyAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PropertyAction)
+
+	return _propertyAction
+}
+
 // SimpleAction: a Action is the obvious simple implementation of the #GAction
 // interface. This is the easiest way to create an action for purposes of adding
 // it to a ActionGroup.
@@ -3697,6 +4453,21 @@ type SimpleAction interface {
 	// This should only be called by the implementor of the action. Users of the
 	// action should not attempt to modify its enabled flag.
 	SetEnabled(enabled bool)
+	// SetState sets the state of the action.
+	//
+	// This directly updates the 'state' property to the given value.
+	//
+	// This should only be called by the implementor of the action. Users of the
+	// action should not attempt to directly modify the 'state' property.
+	// Instead, they should call g_action_change_state() to request the change.
+	//
+	// If the @value GVariant is floating, it is consumed.
+	SetState(value *glib.Variant)
+	// SetStateHint sets the state hint for the action.
+	//
+	// See g_action_get_state_hint() for more information about action state
+	// hints.
+	SetStateHint(stateHint *glib.Variant)
 }
 
 // simpleAction implements the SimpleAction class.
@@ -3722,6 +4493,48 @@ func marshalSimpleAction(p uintptr) (interface{}, error) {
 	return WrapSimpleAction(obj), nil
 }
 
+// NewSimpleAction constructs a class SimpleAction.
+func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction {
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariantType // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariantType)(unsafe.Pointer(parameterType.Native()))
+
+	var _cret C.GSimpleAction // in
+
+	_cret = C.g_simple_action_new(_arg1, _arg2)
+
+	var _simpleAction SimpleAction // out
+
+	_simpleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SimpleAction)
+
+	return _simpleAction
+}
+
+// NewSimpleActionStateful constructs a class SimpleAction.
+func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) SimpleAction {
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariantType // out
+	var _arg3 *C.GVariant     // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariantType)(unsafe.Pointer(parameterType.Native()))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(state.Native()))
+
+	var _cret C.GSimpleAction // in
+
+	_cret = C.g_simple_action_new_stateful(_arg1, _arg2, _arg3)
+
+	var _simpleAction SimpleAction // out
+
+	_simpleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SimpleAction)
+
+	return _simpleAction
+}
+
 // SetEnabled sets the action as enabled or not.
 //
 // An action must be enabled in order to be activated or in order to have
@@ -3739,6 +4552,39 @@ func (s simpleAction) SetEnabled(enabled bool) {
 	}
 
 	C.g_simple_action_set_enabled(_arg0, _arg1)
+}
+
+// SetState sets the state of the action.
+//
+// This directly updates the 'state' property to the given value.
+//
+// This should only be called by the implementor of the action. Users of the
+// action should not attempt to directly modify the 'state' property.
+// Instead, they should call g_action_change_state() to request the change.
+//
+// If the @value GVariant is floating, it is consumed.
+func (s simpleAction) SetState(value *glib.Variant) {
+	var _arg0 *C.GSimpleAction // out
+	var _arg1 *C.GVariant      // out
+
+	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+
+	C.g_simple_action_set_state(_arg0, _arg1)
+}
+
+// SetStateHint sets the state hint for the action.
+//
+// See g_action_get_state_hint() for more information about action state
+// hints.
+func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
+	var _arg0 *C.GSimpleAction // out
+	var _arg1 *C.GVariant      // out
+
+	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(stateHint.Native()))
+
+	C.g_simple_action_set_state_hint(_arg0, _arg1)
 }
 
 // SimpleIOStream: GSimpleIOStream creates a OStream from an arbitrary Stream

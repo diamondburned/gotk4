@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,6 +48,7 @@ func init() {
 // when operating with a `GtkListView` or similar.
 type DirectoryList interface {
 	gextras.Objector
+	gio.ListModel
 
 	// Attributes gets the attributes queried on the children.
 	Attributes() string
@@ -59,6 +61,8 @@ type DirectoryList interface {
 	// An error being set does not mean that no files were loaded, and all
 	// successfully queried files will remain in the list.
 	Error() error
+	// File gets the file whose children are currently enumerated.
+	File() gio.File
 	// IOPriority gets the IO priority set via
 	// gtk_directory_list_set_io_priority().
 	IOPriority() int
@@ -77,6 +81,10 @@ type DirectoryList interface {
 	// If @attributes is nil, no attributes will be queried, but a list of
 	// `GFileInfo`s will still be created.
 	SetAttributes(attributes string)
+	// SetFile sets the @file to be enumerated and starts the enumeration.
+	//
+	// If @file is nil, the result will be an empty list.
+	SetFile(file gio.File)
 	// SetIOPriority sets the IO priority to use while loading directories.
 	//
 	// Setting the priority while @self is loading will reprioritize the ongoing
@@ -100,6 +108,7 @@ type DirectoryList interface {
 // directoryList implements the DirectoryList class.
 type directoryList struct {
 	gextras.Objector
+	gio.ListModel
 }
 
 var _ DirectoryList = (*directoryList)(nil)
@@ -108,7 +117,8 @@ var _ DirectoryList = (*directoryList)(nil)
 // primarily used internally.
 func WrapDirectoryList(obj *externglib.Object) DirectoryList {
 	return directoryList{
-		Objector: obj,
+		Objector:      obj,
+		gio.ListModel: gio.WrapListModel(obj),
 	}
 }
 
@@ -116,6 +126,26 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDirectoryList(obj), nil
+}
+
+// NewDirectoryList constructs a class DirectoryList.
+func NewDirectoryList(attributes string, file gio.File) DirectoryList {
+	var _arg1 *C.char  // out
+	var _arg2 *C.GFile // out
+
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cret C.GtkDirectoryList // in
+
+	_cret = C.gtk_directory_list_new(_arg1, _arg2)
+
+	var _directoryList DirectoryList // out
+
+	_directoryList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DirectoryList)
+
+	return _directoryList
 }
 
 // Attributes gets the attributes queried on the children.
@@ -157,6 +187,23 @@ func (s directoryList) Error() error {
 	_err = gerror.Take(unsafe.Pointer(_cret))
 
 	return _err
+}
+
+// File gets the file whose children are currently enumerated.
+func (s directoryList) File() gio.File {
+	var _arg0 *C.GtkDirectoryList // out
+
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_directory_list_get_file(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
 }
 
 // IOPriority gets the IO priority set via
@@ -234,6 +281,19 @@ func (s directoryList) SetAttributes(attributes string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_directory_list_set_attributes(_arg0, _arg1)
+}
+
+// SetFile sets the @file to be enumerated and starts the enumeration.
+//
+// If @file is nil, the result will be an empty list.
+func (s directoryList) SetFile(file gio.File) {
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 *C.GFile            // out
+
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_directory_list_set_file(_arg0, _arg1)
 }
 
 // SetIOPriority sets the IO priority to use while loading directories.

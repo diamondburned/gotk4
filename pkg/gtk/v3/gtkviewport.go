@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,7 +48,7 @@ type Viewport interface {
 	Scrollable
 
 	// BinWindow gets the bin window of the Viewport.
-	BinWindow() Window
+	BinWindow() gdk.Window
 	// HAdjustment returns the horizontal adjustment of the viewport.
 	HAdjustment() Adjustment
 	// ShadowType gets the shadow type of the Viewport. See
@@ -56,7 +57,7 @@ type Viewport interface {
 	// VAdjustment returns the vertical adjustment of the viewport.
 	VAdjustment() Adjustment
 	// ViewWindow gets the view window of the Viewport.
-	ViewWindow() Window
+	ViewWindow() gdk.Window
 	// SetHAdjustment sets the horizontal adjustment of the viewport.
 	SetHAdjustment(adjustment Adjustment)
 	// SetShadowType sets the shadow type of the viewport.
@@ -110,7 +111,7 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 }
 
 // BinWindow gets the bin window of the Viewport.
-func (v viewport) BinWindow() Window {
+func (v viewport) BinWindow() gdk.Window {
 	var _arg0 *C.GtkViewport // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
@@ -119,9 +120,9 @@ func (v viewport) BinWindow() Window {
 
 	_cret = C.gtk_viewport_get_bin_window(_arg0)
 
-	var _window Window // out
+	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
 
 	return _window
 }
@@ -179,7 +180,7 @@ func (v viewport) VAdjustment() Adjustment {
 }
 
 // ViewWindow gets the view window of the Viewport.
-func (v viewport) ViewWindow() Window {
+func (v viewport) ViewWindow() gdk.Window {
 	var _arg0 *C.GtkViewport // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
@@ -188,9 +189,9 @@ func (v viewport) ViewWindow() Window {
 
 	_cret = C.gtk_viewport_get_view_window(_arg0)
 
-	var _window Window // out
+	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
 
 	return _window
 }

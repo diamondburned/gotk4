@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -63,35 +62,6 @@ const (
 
 func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 	return PrintCapabilities(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// PrinterFunc: the type of function passed to gtk_enumerate_printers().
-//
-// Note that you need to ref @printer, if you want to keep a reference to it
-// after the function has returned.
-type PrinterFunc func(printer Printer) (ok bool)
-
-//export gotk4_PrinterFunc
-func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var printer Printer // out
-
-	printer = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Printer)
-
-	fn := v.(PrinterFunc)
-	ok := fn(printer)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // Printer: a `GtkPrinter` object represents a printer.

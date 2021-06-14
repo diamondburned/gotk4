@@ -4,12 +4,24 @@ package gdk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
+
+// AddOptionEntriesLibgtkOnly appends gdk option entries to the passed in option
+// group. This is not public API and must not be used by applications.
+func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
+	var _arg1 *C.GOptionGroup // out
+
+	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
+
+	C.gdk_add_option_entries_libgtk_only(_arg1)
+}
 
 // Beep emits a short beep on the default display.
 func Beep() {

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -15,8 +14,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-//
-// void gotk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
 import "C"
 
 func init() {
@@ -128,28 +125,6 @@ func marshalPrintStatus(p uintptr) (interface{}, error) {
 	return PrintStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PageSetupDoneFunc: the type of function that is passed to
-// gtk_print_run_page_setup_dialog_async().
-//
-// This function will be called when the page setup dialog is dismissed, and
-// also serves as destroy notify for @data.
-type PageSetupDoneFunc func(pageSetup PageSetup)
-
-//export gotk4_PageSetupDoneFunc
-func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var pageSetup PageSetup // out
-
-	pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(PageSetup)
-
-	fn := v.(PageSetupDoneFunc)
-	fn(pageSetup)
-}
-
 // PrintRunPageSetupDialog runs a page setup dialog, letting the user modify the
 // values from @page_setup. If the user cancels the dialog, the returned
 // PageSetup is identical to the passed in @page_setup, otherwise it contains
@@ -175,28 +150,6 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
 
 	return _pageSetup
-}
-
-// PrintRunPageSetupDialogAsync runs a page setup dialog, letting the user
-// modify the values from @page_setup.
-//
-// In contrast to gtk_print_run_page_setup_dialog(), this function returns after
-// showing the page setup dialog on platforms that support this, and calls
-// @done_cb from a signal handler for the ::response signal of the dialog.
-func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings PrintSettings, doneCb PageSetupDoneFunc) {
-	var _arg1 *C.GtkWindow           // out
-	var _arg2 *C.GtkPageSetup        // out
-	var _arg3 *C.GtkPrintSettings    // out
-	var _arg4 C.GtkPageSetupDoneFunc // out
-	var _arg5 C.gpointer
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
-	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_PageSetupDoneFunc)
-	_arg5 = C.gpointer(box.Assign(doneCb))
-
-	C.gtk_print_run_page_setup_dialog_async(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // PrintOperation: `GtkPrintOperation` is the high-level, portable printing API.

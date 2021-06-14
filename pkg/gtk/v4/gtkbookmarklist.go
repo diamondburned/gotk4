@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,6 +31,7 @@ func init() {
 // added: `recent::private` (boolean) and `recent:applications` (stringv).
 type BookmarkList interface {
 	gextras.Objector
+	gio.ListModel
 
 	// Attributes gets the attributes queried on the children.
 	Attributes() string
@@ -58,6 +60,7 @@ type BookmarkList interface {
 // bookmarkList implements the BookmarkList class.
 type bookmarkList struct {
 	gextras.Objector
+	gio.ListModel
 }
 
 var _ BookmarkList = (*bookmarkList)(nil)
@@ -66,7 +69,8 @@ var _ BookmarkList = (*bookmarkList)(nil)
 // primarily used internally.
 func WrapBookmarkList(obj *externglib.Object) BookmarkList {
 	return bookmarkList{
-		Objector: obj,
+		Objector:      obj,
+		gio.ListModel: gio.WrapListModel(obj),
 	}
 }
 

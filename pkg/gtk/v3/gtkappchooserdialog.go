@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -69,6 +70,27 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAppChooserDialog(obj), nil
+}
+
+// NewAppChooserDialog constructs a class AppChooserDialog.
+func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppChooserDialog {
+	var _arg1 *C.GtkWindow     // out
+	var _arg2 C.GtkDialogFlags // out
+	var _arg3 *C.GFile         // out
+
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (C.GtkDialogFlags)(flags)
+	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cret C.GtkAppChooserDialog // in
+
+	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
+
+	var _appChooserDialog AppChooserDialog // out
+
+	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserDialog)
+
+	return _appChooserDialog
 }
 
 // NewAppChooserDialogForContentType constructs a class AppChooserDialog.

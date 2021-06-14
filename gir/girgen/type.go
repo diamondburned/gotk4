@@ -263,18 +263,5 @@ func GoType(resolver TypeResolver, typ gir.Type, pub bool) (string, bool) {
 // ResolveTypeName resolves the given GIR type name. The resolved type will
 // always have no pointer.
 func ResolveTypeName(resolver TypeResolver, girType string) *ResolvedType {
-	var cType string
-
-	// FindType is cached, so we can afford to do this.
-	result := resolver.FindType(girType)
-	if result != nil {
-		// Use the CType result ONLY. The returned Name from Info does NOT have
-		// the namespace prepended.
-		_, cType = result.Info()
-	}
-
-	return resolver.ResolveType(gir.Type{
-		Name:  girType,
-		CType: cType,
-	})
+	return resolver.ResolveType(gir.Type{Name: girType})
 }

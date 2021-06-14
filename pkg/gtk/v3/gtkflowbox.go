@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -16,8 +15,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 func init() {
@@ -25,81 +22,6 @@ func init() {
 		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBox},
 		{T: externglib.Type(C.gtk_flow_box_child_get_type()), F: marshalFlowBoxChild},
 	})
-}
-
-// FlowBoxFilterFunc: a function that will be called whenrever a child changes
-// or is added. It lets you control if the child should be visible or not.
-type FlowBoxFilterFunc func(child FlowBoxChild) (ok bool)
-
-//export gotk4_FlowBoxFilterFunc
-func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var child FlowBoxChild // out
-
-	child = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(FlowBoxChild)
-
-	fn := v.(FlowBoxFilterFunc)
-	ok := fn(child)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach(). It
-// will be called on every selected child of the @box.
-type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
-
-//export gotk4_FlowBoxForeachFunc
-func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var box FlowBox        // out
-	var child FlowBoxChild // out
-
-	box = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(FlowBox)
-	child = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(FlowBoxChild)
-
-	fn := v.(FlowBoxForeachFunc)
-	fn(box, child)
-}
-
-// FlowBoxSortFunc: a function to compare two children to determine which should
-// come first.
-type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild) (gint int)
-
-//export gotk4_FlowBoxSortFunc
-func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.gint {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var child1 FlowBoxChild // out
-	var child2 FlowBoxChild // out
-
-	child1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(FlowBoxChild)
-	child2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(FlowBoxChild)
-
-	fn := v.(FlowBoxSortFunc)
-	gint := fn(child1, child2)
-
-	var cret C.gint // out
-
-	cret = C.gint(gint)
-
-	return cret
 }
 
 // FlowBox: a GtkFlowBox positions child widgets in sequence according to its
@@ -191,10 +113,6 @@ type FlowBox interface {
 	// SelectChild selects a single child of @box, if the selection mode allows
 	// it.
 	SelectChild(child FlowBoxChild)
-	// SelectedForeach calls a function for each selected child.
-	//
-	// Note that the selection cannot be modified from within this function.
-	SelectedForeach(fn FlowBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, children will be activated
 	// when you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -513,21 +431,6 @@ func (b flowBox) SelectChild(child FlowBoxChild) {
 	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	C.gtk_flow_box_select_child(_arg0, _arg1)
-}
-
-// SelectedForeach calls a function for each selected child.
-//
-// Note that the selection cannot be modified from within this function.
-func (b flowBox) SelectedForeach(fn FlowBoxForeachFunc) {
-	var _arg0 *C.GtkFlowBox           // out
-	var _arg1 C.GtkFlowBoxForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_FlowBoxForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetActivateOnSingleClick: if @single is true, children will be activated

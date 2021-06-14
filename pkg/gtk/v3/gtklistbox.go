@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -16,8 +15,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// void gotk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 import "C"
 
 func init() {
@@ -25,103 +22,6 @@ func init() {
 		{T: externglib.Type(C.gtk_list_box_get_type()), F: marshalListBox},
 		{T: externglib.Type(C.gtk_list_box_row_get_type()), F: marshalListBoxRow},
 	})
-}
-
-// ListBoxFilterFunc: will be called whenever the row changes or is added and
-// lets you control if the row should be visible or not.
-type ListBoxFilterFunc func(row ListBoxRow) (ok bool)
-
-//export gotk4_ListBoxFilterFunc
-func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var row ListBoxRow // out
-
-	row = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(ListBoxRow)
-
-	fn := v.(ListBoxFilterFunc)
-	ok := fn(row)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// ListBoxForeachFunc: a function used by gtk_list_box_selected_foreach(). It
-// will be called on every selected child of the @box.
-type ListBoxForeachFunc func(box ListBox, row ListBoxRow)
-
-//export gotk4_ListBoxForeachFunc
-func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var box ListBox    // out
-	var row ListBoxRow // out
-
-	box = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(ListBox)
-	row = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(ListBoxRow)
-
-	fn := v.(ListBoxForeachFunc)
-	fn(box, row)
-}
-
-// ListBoxSortFunc: compare two rows to determine which should be first.
-type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow) (gint int)
-
-//export gotk4_ListBoxSortFunc
-func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.gint {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var row1 ListBoxRow // out
-	var row2 ListBoxRow // out
-
-	row1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(ListBoxRow)
-	row2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(ListBoxRow)
-
-	fn := v.(ListBoxSortFunc)
-	gint := fn(row1, row2)
-
-	var cret C.gint // out
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-// ListBoxUpdateHeaderFunc: whenever @row changes or which row is before @row
-// changes this is called, which lets you update the header on @row. You may
-// remove or set a new one via gtk_list_box_row_set_header() or just change the
-// state of the current header widget.
-type ListBoxUpdateHeaderFunc func(row ListBoxRow, before ListBoxRow)
-
-//export gotk4_ListBoxUpdateHeaderFunc
-func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var row ListBoxRow    // out
-	var before ListBoxRow // out
-
-	row = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(ListBoxRow)
-	before = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(ListBoxRow)
-
-	fn := v.(ListBoxUpdateHeaderFunc)
-	fn(row, before)
 }
 
 // ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
@@ -219,10 +119,6 @@ type ListBox interface {
 	SelectAll()
 	// SelectRow: make @row the currently selected row.
 	SelectRow(row ListBoxRow)
-	// SelectedForeach calls a function for each selected child.
-	//
-	// Note that the selection cannot be modified from within this function.
-	SelectedForeach(fn ListBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, rows will be activated when
 	// you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -507,21 +403,6 @@ func (b listBox) SelectRow(row ListBoxRow) {
 	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	C.gtk_list_box_select_row(_arg0, _arg1)
-}
-
-// SelectedForeach calls a function for each selected child.
-//
-// Note that the selection cannot be modified from within this function.
-func (b listBox) SelectedForeach(fn ListBoxForeachFunc) {
-	var _arg0 *C.GtkListBox           // out
-	var _arg1 C.GtkListBoxForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_ListBoxForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetActivateOnSingleClick: if @single is true, rows will be activated when

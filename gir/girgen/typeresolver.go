@@ -3,7 +3,6 @@ package girgen
 import (
 	"path"
 	"strings"
-	"unicode"
 
 	"github.com/diamondburned/gotk4/gir"
 )
@@ -343,12 +342,6 @@ func ensureNamespace(nsp *gir.NamespaceFindResult, girType string) string {
 		return girType
 	}
 
-	caps := strings.IndexFunc(girType, unicode.IsUpper)
-	// First letter isn't capitalized; this isn't exported.
-	if caps != 0 {
-		return girType
-	}
-
 	return nsp.Namespace.Name + "." + girType
 }
 
@@ -375,7 +368,7 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	// Try and dig out the CType if we have none.
 	if typ.CType == "" {
 		if result := ng.FindType(typ.Name); result != nil {
-			_, typ.CType = result.Info()
+			typ.CType = result.CType()
 		}
 		// Last resort.
 		if typ.CType == "" {
@@ -415,6 +408,8 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 		return nil
 	}
 
+	ng.Logln(LogDebug, "for gir type before ignoring:", typ.Name)
+
 	// Pretend that ignored types don't exist. typ is a copy, so we can do this.
 	if ng.mustIgnore(&typ.Name, &typ.CType) {
 		return nil
@@ -424,6 +419,13 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	if result == nil {
 		warnUnknownType(ng, typ.Name)
 		return nil
+	}
+
+	if ng.current.Namespace.Name == "PangoCairo" {
+		if name := result.Name(false); name == "Font" {
+			name = result.Name(true)
+			ng.Logln(LogDebug, "found result", name, "from", typ.Name)
+		}
 	}
 
 	// TODO: these checks shouldn't use as much load as they should, since that

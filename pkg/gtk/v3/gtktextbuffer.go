@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -156,6 +157,34 @@ type TextBuffer interface {
 	// @interactive is true, the editability of the selection will be considered
 	// (users can’t delete uneditable text).
 	DeleteSelection(interactive bool, defaultEditable bool) bool
+	// Deserialize: this function deserializes rich text in format @format and
+	// inserts it at @iter.
+	//
+	// @formats to be used must be registered using
+	// gtk_text_buffer_register_deserialize_format() or
+	// gtk_text_buffer_register_deserialize_tagset() beforehand.
+	Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error
+	// DeserializeGetCanCreateTags: this functions returns the value set with
+	// gtk_text_buffer_deserialize_set_can_create_tags()
+	DeserializeGetCanCreateTags(format gdk.Atom) bool
+	// DeserializeSetCanCreateTags: use this function to allow a rich text
+	// deserialization function to create new tags in the receiving buffer. Note
+	// that using this function is almost always a bad idea, because the rich
+	// text functions you register should know how to map the rich text format
+	// they handler to your text buffers set of tags.
+	//
+	// The ability of creating new (arbitrary!) tags in the receiving buffer is
+	// meant for special rich text formats like the internal one that is
+	// registered using gtk_text_buffer_register_deserialize_tagset(), because
+	// that format is essentially a dump of the internal structure of the source
+	// buffer, including its tag names.
+	//
+	// You should allow creation of tags only if you know what you are doing,
+	// e.g. if you defined a tagset name for your application suite’s text
+	// buffers and you know that it’s fine to receive new tags from these
+	// buffers, because you know that your application can handle the newly
+	// created tags.
+	DeserializeSetCanCreateTags(format gdk.Atom, canCreateTags bool)
 	// EndUserAction: should be paired with a call to
 	// gtk_text_buffer_begin_user_action(). See that function for a full
 	// explanation.
@@ -174,6 +203,11 @@ type TextBuffer interface {
 	// gtk_target_list_add_rich_text_targets() and
 	// gtk_target_list_add_text_targets().
 	CopyTargetList() *TargetList
+	// DeserializeFormats: this function returns the rich text deserialize
+	// formats registered with @buffer using
+	// gtk_text_buffer_register_deserialize_format() or
+	// gtk_text_buffer_register_deserialize_tagset()
+	DeserializeFormats() []gdk.Atom
 	// EndIter initializes @iter with the “end iterator,” one past the last
 	// valid character in the text buffer. If dereferenced with
 	// gtk_text_iter_get_char(), the end iterator has a character value of 0.
@@ -256,6 +290,10 @@ type TextBuffer interface {
 	// be in ascending order. If @start and @end are NULL, then they are not
 	// filled in, but the return value still indicates whether text is selected.
 	SelectionBounds() (start TextIter, end TextIter, ok bool)
+	// SerializeFormats: this function returns the rich text serialize formats
+	// registered with @buffer using gtk_text_buffer_register_serialize_format()
+	// or gtk_text_buffer_register_serialize_tagset()
+	SerializeFormats() []gdk.Atom
 	// Slice returns the text in the range [@start,@end). Excludes undisplayed
 	// text (text marked with tags that set the invisibility attribute) if
 	// @include_hidden_chars is false. The returned string includes a 0xFFFC
@@ -322,6 +360,14 @@ type TextBuffer interface {
 	// insertion actually occurs in the default handler for the signal. @iter
 	// will point to the end of the inserted text on return.
 	InsertMarkup(iter *TextIter, markup string, len int)
+	// InsertPixbuf inserts an image into the text buffer at @iter. The image
+	// will be counted as one character in character counts, and when obtaining
+	// the buffer contents as a string, will be represented by the Unicode
+	// “object replacement character” 0xFFFC. Note that the “slice” variants for
+	// obtaining portions of the buffer as a string include this character for
+	// pixbufs, but the “text” variants do not. e.g. see
+	// gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
+	InsertPixbuf(iter *TextIter, pixbuf gdkpixbuf.Pixbuf)
 	// InsertRange copies text, tags, and pixbufs between @start and @end (the
 	// order of @start and @end doesn’t matter) and inserts the copy at @iter.
 	// Used instead of simply getting/inserting text because it preserves images
@@ -358,6 +404,28 @@ type TextBuffer interface {
 	// since the temporarily-selected region will force stuff to be
 	// recalculated. This function moves them as a unit, which can be optimized.
 	PlaceCursor(where *TextIter)
+	// RegisterDeserializeTagset: this function registers GTK+’s internal rich
+	// text serialization format with the passed @buffer. See
+	// gtk_text_buffer_register_serialize_tagset() for details.
+	RegisterDeserializeTagset(tagsetName string) gdk.Atom
+	// RegisterSerializeTagset: this function registers GTK+’s internal rich
+	// text serialization format with the passed @buffer. The internal format
+	// does not comply to any standard rich text format and only works between
+	// TextBuffer instances. It is capable of serializing all of a text buffer’s
+	// tags and embedded pixbufs.
+	//
+	// This function is just a wrapper around
+	// gtk_text_buffer_register_serialize_format(). The mime type used for
+	// registering is “application/x-gtk-text-buffer-rich-text”, or
+	// “application/x-gtk-text-buffer-rich-text;format=@tagset_name” if a
+	// @tagset_name was passed.
+	//
+	// The @tagset_name can be used to restrict the transfer of rich text to
+	// buffers with compatible sets of tags, in order to avoid unknown tags from
+	// being pasted. It is probably the common case to pass an identifier != nil
+	// here, since the nil tagset requires the receiving buffer to deal with
+	// with pasting of arbitrary tags.
+	RegisterSerializeTagset(tagsetName string) gdk.Atom
 	// RemoveAllTags removes all tags in the range between @start and @end. Be
 	// careful with this function; it could remove tags added in code unrelated
 	// to the code you’re currently writing. That is, using this function is
@@ -381,6 +449,13 @@ type TextBuffer interface {
 	// since the temporarily-selected region will force stuff to be
 	// recalculated. This function moves them as a unit, which can be optimized.
 	SelectRange(ins *TextIter, bound *TextIter)
+	// Serialize: this function serializes the portion of text between @start
+	// and @end in the rich text format represented by @format.
+	//
+	// @formats to be used must be registered using
+	// gtk_text_buffer_register_serialize_format() or
+	// gtk_text_buffer_register_serialize_tagset() beforehand.
+	Serialize(contentBuffer TextBuffer, format gdk.Atom, start *TextIter, end *TextIter) []byte
 	// SetModified: used to keep track of whether the buffer has been modified
 	// since the last time it was saved. Whenever the buffer is saved to disk,
 	// call gtk_text_buffer_set_modified (@buffer, FALSE). When the buffer is
@@ -391,6 +466,16 @@ type TextBuffer interface {
 	// SetText deletes current contents of @buffer, and inserts @text instead.
 	// If @len is -1, @text must be nul-terminated. @text must be valid UTF-8.
 	SetText(text string, len int)
+	// UnregisterDeserializeFormat: this function unregisters a rich text format
+	// that was previously registered using
+	// gtk_text_buffer_register_deserialize_format() or
+	// gtk_text_buffer_register_deserialize_tagset().
+	UnregisterDeserializeFormat(format gdk.Atom)
+	// UnregisterSerializeFormat: this function unregisters a rich text format
+	// that was previously registered using
+	// gtk_text_buffer_register_serialize_format() or
+	// gtk_text_buffer_register_serialize_tagset()
+	UnregisterSerializeFormat(format gdk.Atom)
 }
 
 // textBuffer implements the TextBuffer class.
@@ -760,6 +845,91 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 	return _ok
 }
 
+// Deserialize: this function deserializes rich text in format @format and
+// inserts it at @iter.
+//
+// @formats to be used must be registered using
+// gtk_text_buffer_register_deserialize_format() or
+// gtk_text_buffer_register_deserialize_tagset() beforehand.
+func (r textBuffer) Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextBuffer // out
+	var _arg2 C.GdkAtom        // out
+	var _arg3 *C.GtkTextIter   // out
+	var _arg4 *C.guint8
+	var _arg5 C.gsize
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(contentBuffer.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
+	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
+	_arg5 = C.gsize(len(data))
+	_arg4 = (*C.guint8)(unsafe.Pointer(&data[0]))
+
+	var _cerr *C.GError // in
+
+	C.gtk_text_buffer_deserialize(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// DeserializeGetCanCreateTags: this functions returns the value set with
+// gtk_text_buffer_deserialize_set_can_create_tags()
+func (b textBuffer) DeserializeGetCanCreateTags(format gdk.Atom) bool {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 C.GdkAtom        // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_text_buffer_deserialize_get_can_create_tags(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// DeserializeSetCanCreateTags: use this function to allow a rich text
+// deserialization function to create new tags in the receiving buffer. Note
+// that using this function is almost always a bad idea, because the rich
+// text functions you register should know how to map the rich text format
+// they handler to your text buffers set of tags.
+//
+// The ability of creating new (arbitrary!) tags in the receiving buffer is
+// meant for special rich text formats like the internal one that is
+// registered using gtk_text_buffer_register_deserialize_tagset(), because
+// that format is essentially a dump of the internal structure of the source
+// buffer, including its tag names.
+//
+// You should allow creation of tags only if you know what you are doing,
+// e.g. if you defined a tagset name for your application suite’s text
+// buffers and you know that it’s fine to receive new tags from these
+// buffers, because you know that your application can handle the newly
+// created tags.
+func (b textBuffer) DeserializeSetCanCreateTags(format gdk.Atom, canCreateTags bool) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 C.GdkAtom        // out
+	var _arg2 C.gboolean       // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
+	if canCreateTags {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_text_buffer_deserialize_set_can_create_tags(_arg0, _arg1, _arg2)
+}
+
 // EndUserAction: should be paired with a call to
 // gtk_text_buffer_begin_user_action(). See that function for a full
 // explanation.
@@ -825,6 +995,30 @@ func (b textBuffer) CopyTargetList() *TargetList {
 	_targetList = WrapTargetList(unsafe.Pointer(_cret))
 
 	return _targetList
+}
+
+// DeserializeFormats: this function returns the rich text deserialize
+// formats registered with @buffer using
+// gtk_text_buffer_register_deserialize_format() or
+// gtk_text_buffer_register_deserialize_tagset()
+func (b textBuffer) DeserializeFormats() []gdk.Atom {
+	var _arg0 *C.GtkTextBuffer // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GdkAtom
+	var _arg1 C.gint // in
+
+	_cret = C.gtk_text_buffer_get_deserialize_formats(_arg0, &_arg1)
+
+	var _atoms []gdk.Atom
+
+	_atoms = unsafe.Slice((*gdk.Atom)(unsafe.Pointer(_cret)), _arg1)
+	runtime.SetFinalizer(&_atoms, func(v *[]gdk.Atom) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+
+	return _atoms
 }
 
 // EndIter initializes @iter with the “end iterator,” one past the last
@@ -1133,6 +1327,29 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 	return _start, _end, _ok
 }
 
+// SerializeFormats: this function returns the rich text serialize formats
+// registered with @buffer using gtk_text_buffer_register_serialize_format()
+// or gtk_text_buffer_register_serialize_tagset()
+func (b textBuffer) SerializeFormats() []gdk.Atom {
+	var _arg0 *C.GtkTextBuffer // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GdkAtom
+	var _arg1 C.gint // in
+
+	_cret = C.gtk_text_buffer_get_serialize_formats(_arg0, &_arg1)
+
+	var _atoms []gdk.Atom
+
+	_atoms = unsafe.Slice((*gdk.Atom)(unsafe.Pointer(_cret)), _arg1)
+	runtime.SetFinalizer(&_atoms, func(v *[]gdk.Atom) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+
+	return _atoms
+}
+
 // Slice returns the text in the range [@start,@end). Excludes undisplayed
 // text (text marked with tags that set the invisibility attribute) if
 // @include_hidden_chars is false. The returned string includes a 0xFFFC
@@ -1378,6 +1595,25 @@ func (b textBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
 }
 
+// InsertPixbuf inserts an image into the text buffer at @iter. The image
+// will be counted as one character in character counts, and when obtaining
+// the buffer contents as a string, will be represented by the Unicode
+// “object replacement character” 0xFFFC. Note that the “slice” variants for
+// obtaining portions of the buffer as a string include this character for
+// pixbufs, but the “text” variants do not. e.g. see
+// gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
+func (b textBuffer) InsertPixbuf(iter *TextIter, pixbuf gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.GdkPixbuf     // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	C.gtk_text_buffer_insert_pixbuf(_arg0, _arg1, _arg2)
+}
+
 // InsertRange copies text, tags, and pixbufs between @start and @end (the
 // order of @start and @end doesn’t matter) and inserts the copy at @iter.
 // Used instead of simply getting/inserting text because it preserves images
@@ -1501,6 +1737,64 @@ func (b textBuffer) PlaceCursor(where *TextIter) {
 	C.gtk_text_buffer_place_cursor(_arg0, _arg1)
 }
 
+// RegisterDeserializeTagset: this function registers GTK+’s internal rich
+// text serialization format with the passed @buffer. See
+// gtk_text_buffer_register_serialize_tagset() for details.
+func (b textBuffer) RegisterDeserializeTagset(tagsetName string) gdk.Atom {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.gchar         // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.gchar)(C.CString(tagsetName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GdkAtom // in
+
+	_cret = C.gtk_text_buffer_register_deserialize_tagset(_arg0, _arg1)
+
+	var _atom gdk.Atom // out
+
+	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+
+	return _atom
+}
+
+// RegisterSerializeTagset: this function registers GTK+’s internal rich
+// text serialization format with the passed @buffer. The internal format
+// does not comply to any standard rich text format and only works between
+// TextBuffer instances. It is capable of serializing all of a text buffer’s
+// tags and embedded pixbufs.
+//
+// This function is just a wrapper around
+// gtk_text_buffer_register_serialize_format(). The mime type used for
+// registering is “application/x-gtk-text-buffer-rich-text”, or
+// “application/x-gtk-text-buffer-rich-text;format=@tagset_name” if a
+// @tagset_name was passed.
+//
+// The @tagset_name can be used to restrict the transfer of rich text to
+// buffers with compatible sets of tags, in order to avoid unknown tags from
+// being pasted. It is probably the common case to pass an identifier != nil
+// here, since the nil tagset requires the receiving buffer to deal with
+// with pasting of arbitrary tags.
+func (b textBuffer) RegisterSerializeTagset(tagsetName string) gdk.Atom {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.gchar         // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.gchar)(C.CString(tagsetName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.GdkAtom // in
+
+	_cret = C.gtk_text_buffer_register_serialize_tagset(_arg0, _arg1)
+
+	var _atom gdk.Atom // out
+
+	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+
+	return _atom
+}
+
 // RemoveAllTags removes all tags in the range between @start and @end. Be
 // careful with this function; it could remove tags added in code unrelated
 // to the code you’re currently writing. That is, using this function is
@@ -1582,6 +1876,40 @@ func (b textBuffer) SelectRange(ins *TextIter, bound *TextIter) {
 	C.gtk_text_buffer_select_range(_arg0, _arg1, _arg2)
 }
 
+// Serialize: this function serializes the portion of text between @start
+// and @end in the rich text format represented by @format.
+//
+// @formats to be used must be registered using
+// gtk_text_buffer_register_serialize_format() or
+// gtk_text_buffer_register_serialize_tagset() beforehand.
+func (r textBuffer) Serialize(contentBuffer TextBuffer, format gdk.Atom, start *TextIter, end *TextIter) []byte {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextBuffer // out
+	var _arg2 C.GdkAtom        // out
+	var _arg3 *C.GtkTextIter   // out
+	var _arg4 *C.GtkTextIter   // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(contentBuffer.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
+	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
+	_arg4 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
+
+	var _cret *C.guint8
+	var _arg5 C.gsize // in
+
+	_cret = C.gtk_text_buffer_serialize(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5)
+
+	var _guint8s []byte
+
+	_guint8s = unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg5)
+	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+
+	return _guint8s
+}
+
 // SetModified: used to keep track of whether the buffer has been modified
 // since the last time it was saved. Whenever the buffer is saved to disk,
 // call gtk_text_buffer_set_modified (@buffer, FALSE). When the buffer is
@@ -1613,6 +1941,34 @@ func (b textBuffer) SetText(text string, len int) {
 	_arg2 = C.gint(len)
 
 	C.gtk_text_buffer_set_text(_arg0, _arg1, _arg2)
+}
+
+// UnregisterDeserializeFormat: this function unregisters a rich text format
+// that was previously registered using
+// gtk_text_buffer_register_deserialize_format() or
+// gtk_text_buffer_register_deserialize_tagset().
+func (b textBuffer) UnregisterDeserializeFormat(format gdk.Atom) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 C.GdkAtom        // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
+
+	C.gtk_text_buffer_unregister_deserialize_format(_arg0, _arg1)
+}
+
+// UnregisterSerializeFormat: this function unregisters a rich text format
+// that was previously registered using
+// gtk_text_buffer_register_serialize_format() or
+// gtk_text_buffer_register_serialize_tagset()
+func (b textBuffer) UnregisterSerializeFormat(format gdk.Atom) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 C.GdkAtom        // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
+
+	C.gtk_text_buffer_unregister_serialize_format(_arg0, _arg1)
 }
 
 type TextBTree struct {

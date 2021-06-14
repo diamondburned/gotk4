@@ -2,7 +2,103 @@
 
 package gdkx11
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_x11_keymap_get_type()), F: marshalX11Keymap},
+	})
+}
+
+type X11Keymap interface {
+	gdk.Keymap
+
+	// GroupForState extracts the group from the state field sent in an X Key
+	// event. This is only needed for code processing raw X events, since
+	// EventKey directly includes an is_modifier field.
+	GroupForState(state uint) int
+	// KeyIsModifier determines whether a particular key code represents a key
+	// that is a modifier. That is, it’s a key that normally just affects the
+	// keyboard state and the behavior of other keys rather than producing a
+	// direct effect itself. This is only needed for code processing raw X
+	// events, since EventKey directly includes an is_modifier field.
+	KeyIsModifier(keycode uint) bool
+}
+
+// x11Keymap implements the X11Keymap class.
+type x11Keymap struct {
+	gdk.Keymap
+}
+
+var _ X11Keymap = (*x11Keymap)(nil)
+
+// WrapX11Keymap wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11Keymap(obj *externglib.Object) X11Keymap {
+	return x11Keymap{
+		gdk.Keymap: gdk.WrapKeymap(obj),
+	}
+}
+
+func marshalX11Keymap(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapX11Keymap(obj), nil
+}
+
+// GroupForState extracts the group from the state field sent in an X Key
+// event. This is only needed for code processing raw X events, since
+// EventKey directly includes an is_modifier field.
+func (k x11Keymap) GroupForState(state uint) int {
+	var _arg0 *C.GdkKeymap // out
+	var _arg1 C.guint      // out
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(state)
+
+	var _cret C.gint // in
+
+	_cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
+
+	var _gint int // out
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// KeyIsModifier determines whether a particular key code represents a key
+// that is a modifier. That is, it’s a key that normally just affects the
+// keyboard state and the behavior of other keys rather than producing a
+// direct effect itself. This is only needed for code processing raw X
+// events, since EventKey directly includes an is_modifier field.
+func (k x11Keymap) KeyIsModifier(keycode uint) bool {
+	var _arg0 *C.GdkKeymap // out
+	var _arg1 C.guint      // out
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(keycode)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}

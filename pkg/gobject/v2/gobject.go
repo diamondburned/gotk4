@@ -4,84 +4,12 @@ package gobject
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <glib-object.h>
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_initially_unowned_get_type()), F: marshalInitiallyUnowned},
-	})
-}
-
-// InitiallyUnowned: all the fields in the GInitiallyUnowned structure are
-// private to the Unowned implementation and should never be accessed directly.
-type InitiallyUnowned interface {
-	gextras.Objector
-}
-
-// initiallyUnowned implements the InitiallyUnowned class.
-type initiallyUnowned struct {
-	gextras.Objector
-}
-
-var _ InitiallyUnowned = (*initiallyUnowned)(nil)
-
-// WrapInitiallyUnowned wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapInitiallyUnowned(obj *externglib.Object) InitiallyUnowned {
-	return externglib.InitiallyUnowned{
-		Objector: obj,
-	}
-}
-
-func marshalInitiallyUnowned(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapInitiallyUnowned(obj), nil
-}
-
-// ObjectConstructParam: the GObjectConstructParam struct is an auxiliary
-// structure used to hand Spec/#GValue pairs to the @constructor of a Class.
-type ObjectConstructParam struct {
-	native C.GObjectConstructParam
-}
-
-// WrapObjectConstructParam wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapObjectConstructParam(ptr unsafe.Pointer) *ObjectConstructParam {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ObjectConstructParam)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (o *ObjectConstructParam) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
-}
-
-// Pspec gets the field inside the struct.
-func (o *ObjectConstructParam) Pspec() ParamSpec {
-	var v ParamSpec // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.pspec.Native()))).(ParamSpec)
-	return v
-}
-
-// Value gets the field inside the struct.
-func (o *ObjectConstructParam) Value() **externglib.Value {
-	var v **externglib.Value // out
-	v = externglib.ValueFromNative(unsafe.Pointer(o.native.value))
-	return v
-}
 
 // WeakRef: a structure containing a weak reference to a #GObject. It can either
 // be empty (i.e. point to nil), or point to an object for as long as at least

@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -16,31 +16,6 @@ import (
 import "C"
 
 type Stock string
-
-// TranslateFunc: the function used to translate messages in e.g. IconFactory
-// and ActionGroup.
-type TranslateFunc func(path string) (utf8 string)
-
-//export gotk4_TranslateFunc
-func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var path string // out
-
-	path = C.GoString(arg0)
-
-	fn := v.(TranslateFunc)
-	utf8 := fn(path)
-
-	var cret *C.gchar // out
-
-	cret = (*C.gchar)(C.CString(utf8))
-
-	return cret
-}
 
 // StockAdd registers each of the stock items in @items. If an item already
 // exists with the same stock ID as one of the @items, the old item gets
@@ -121,6 +96,13 @@ func (s *StockItem) StockID() string {
 func (s *StockItem) Label() string {
 	var v string // out
 	v = C.GoString(s.native.label)
+	return v
+}
+
+// Modifier gets the field inside the struct.
+func (s *StockItem) Modifier() gdk.ModifierType {
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(s.native.modifier)
 	return v
 }
 

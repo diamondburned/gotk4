@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,14 +33,34 @@ func init() {
 // GTK itself includes implementations using GStreamer and ffmpeg.
 type MediaFile interface {
 	MediaStream
+	gdk.Paintable
 
 	// Clear resets the media file to be empty.
 	Clear()
+	// File returns the file that @self is currently playing from.
+	//
+	// When @self is not playing or not playing from a file, nil is returned.
+	File() gio.File
+	// InputStream returns the stream that @self is currently playing from.
+	//
+	// When @self is not playing or not playing from a stream, nil is returned.
+	InputStream() gio.InputStream
+	// SetFile sets the `GtkMediaFile` to play the given file.
+	//
+	// If any file is still playing, stop playing it.
+	SetFile(file gio.File)
 	// SetFilename sets the `GtkMediaFile to play the given file.
 	//
 	// This is a utility function that converts the given @filename to a `GFile`
 	// and calls [method@Gtk.MediaFile.set_file].
 	SetFilename(filename string)
+	// SetInputStream sets the `GtkMediaFile` to play the given stream.
+	//
+	// If anything is still playing, stop playing it.
+	//
+	// Full control about the @stream is assumed for the duration of playback.
+	// The stream will not be closed.
+	SetInputStream(stream gio.InputStream)
 	// SetResource sets the `GtkMediaFile to play the given resource.
 	//
 	// This is a utility function that converts the given @resource_path to a
@@ -49,6 +71,7 @@ type MediaFile interface {
 // mediaFile implements the MediaFile class.
 type mediaFile struct {
 	MediaStream
+	gdk.Paintable
 }
 
 var _ MediaFile = (*mediaFile)(nil)
@@ -57,7 +80,8 @@ var _ MediaFile = (*mediaFile)(nil)
 // primarily used internally.
 func WrapMediaFile(obj *externglib.Object) MediaFile {
 	return mediaFile{
-		MediaStream: WrapMediaStream(obj),
+		MediaStream:   WrapMediaStream(obj),
+		gdk.Paintable: gdk.WrapPaintable(obj),
 	}
 }
 
@@ -80,6 +104,23 @@ func NewMediaFile() MediaFile {
 	return _mediaFile
 }
 
+// NewMediaFileForFile constructs a class MediaFile.
+func NewMediaFileForFile(file gio.File) MediaFile {
+	var _arg1 *C.GFile // out
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cret C.GtkMediaFile // in
+
+	_cret = C.gtk_media_file_new_for_file(_arg1)
+
+	var _mediaFile MediaFile // out
+
+	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MediaFile)
+
+	return _mediaFile
+}
+
 // NewMediaFileForFilename constructs a class MediaFile.
 func NewMediaFileForFilename(filename string) MediaFile {
 	var _arg1 *C.char // out
@@ -90,6 +131,23 @@ func NewMediaFileForFilename(filename string) MediaFile {
 	var _cret C.GtkMediaFile // in
 
 	_cret = C.gtk_media_file_new_for_filename(_arg1)
+
+	var _mediaFile MediaFile // out
+
+	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MediaFile)
+
+	return _mediaFile
+}
+
+// NewMediaFileForInputStream constructs a class MediaFile.
+func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
+	var _arg1 *C.GInputStream // out
+
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+
+	var _cret C.GtkMediaFile // in
+
+	_cret = C.gtk_media_file_new_for_input_stream(_arg1)
 
 	var _mediaFile MediaFile // out
 
@@ -125,6 +183,57 @@ func (s mediaFile) Clear() {
 	C.gtk_media_file_clear(_arg0)
 }
 
+// File returns the file that @self is currently playing from.
+//
+// When @self is not playing or not playing from a file, nil is returned.
+func (s mediaFile) File() gio.File {
+	var _arg0 *C.GtkMediaFile // out
+
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_media_file_get_file(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
+}
+
+// InputStream returns the stream that @self is currently playing from.
+//
+// When @self is not playing or not playing from a stream, nil is returned.
+func (s mediaFile) InputStream() gio.InputStream {
+	var _arg0 *C.GtkMediaFile // out
+
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GInputStream // in
+
+	_cret = C.gtk_media_file_get_input_stream(_arg0)
+
+	var _inputStream gio.InputStream // out
+
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.InputStream)
+
+	return _inputStream
+}
+
+// SetFile sets the `GtkMediaFile` to play the given file.
+//
+// If any file is still playing, stop playing it.
+func (s mediaFile) SetFile(file gio.File) {
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.GFile        // out
+
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_media_file_set_file(_arg0, _arg1)
+}
+
 // SetFilename sets the `GtkMediaFile to play the given file.
 //
 // This is a utility function that converts the given @filename to a `GFile`
@@ -138,6 +247,22 @@ func (s mediaFile) SetFilename(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_media_file_set_filename(_arg0, _arg1)
+}
+
+// SetInputStream sets the `GtkMediaFile` to play the given stream.
+//
+// If anything is still playing, stop playing it.
+//
+// Full control about the @stream is assumed for the duration of playback.
+// The stream will not be closed.
+func (s mediaFile) SetInputStream(stream gio.InputStream) {
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.GInputStream // out
+
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+
+	C.gtk_media_file_set_input_stream(_arg0, _arg1)
 }
 
 // SetResource sets the `GtkMediaFile to play the given resource.

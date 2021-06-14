@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,7 +43,7 @@ type Layout interface {
 
 	// BinWindow: retrieve the bin window of the layout used for drawing
 	// operations.
-	BinWindow() Window
+	BinWindow() gdk.Window
 	// HAdjustment: this function should only be called after the layout has
 	// been placed in a ScrolledWindow or otherwise configured for scrolling. It
 	// returns the Adjustment used for communication between the horizontal
@@ -124,7 +125,7 @@ func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 
 // BinWindow: retrieve the bin window of the layout used for drawing
 // operations.
-func (l layout) BinWindow() Window {
+func (l layout) BinWindow() gdk.Window {
 	var _arg0 *C.GtkLayout // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
@@ -133,9 +134,9 @@ func (l layout) BinWindow() Window {
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
 
-	var _window Window // out
+	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
 
 	return _window
 }

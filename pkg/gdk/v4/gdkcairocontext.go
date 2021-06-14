@@ -3,8 +3,10 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,6 +30,16 @@ func init() {
 // to draw on that surface.
 type CairoContext interface {
 	DrawContext
+
+	// CairoCreate retrieves a Cairo context to be used to draw on the
+	// `GdkSurface` of @context.
+	//
+	// A call to [method@Gdk.DrawContext.begin_frame] with this @context must
+	// have been done or this function will return nil.
+	//
+	// The returned context is guaranteed to be valid until
+	// [method@Gdk.DrawContext.end_frame] is called.
+	CairoCreate() *cairo.Context
 }
 
 // cairoContext implements the CairoContext class.
@@ -49,4 +61,31 @@ func marshalCairoContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCairoContext(obj), nil
+}
+
+// CairoCreate retrieves a Cairo context to be used to draw on the
+// `GdkSurface` of @context.
+//
+// A call to [method@Gdk.DrawContext.begin_frame] with this @context must
+// have been done or this function will return nil.
+//
+// The returned context is guaranteed to be valid until
+// [method@Gdk.DrawContext.end_frame] is called.
+func (s cairoContext) CairoCreate() *cairo.Context {
+	var _arg0 *C.GdkCairoContext // out
+
+	_arg0 = (*C.GdkCairoContext)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.cairo_t // in
+
+	_cret = C.gdk_cairo_context_cairo_create(_arg0)
+
+	var _context *cairo.Context // out
+
+	_context = cairo.WrapContext(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_context, func(v *cairo.Context) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _context
 }

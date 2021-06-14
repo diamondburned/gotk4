@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -15,6 +17,52 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
+
+// BindingsActivate: find a key binding matching @keyval and @modifiers and
+// activate the binding on @object.
+func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.ModifierType) bool {
+	var _arg1 *C.GObject        // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = C.guint(keyval)
+	_arg3 = (C.GdkModifierType)(modifiers)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// BindingsActivateEvent looks up key bindings for @object to find one matching
+// @event, and if one was found, activate it.
+func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
+	var _arg1 *C.GObject     // out
+	var _arg2 *C.GdkEventKey // out
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
 
 // BindingArg: a BindingArg holds the data associated with an argument for a key
 // binding signal emission as stored in BindingSignal.
@@ -69,6 +117,13 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 func (b *BindingEntry) Keyval() uint {
 	var v uint // out
 	v = (uint)(b.native.keyval)
+	return v
+}
+
+// Modifiers gets the field inside the struct.
+func (b *BindingEntry) Modifiers() gdk.ModifierType {
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(b.native.modifiers)
 	return v
 }
 

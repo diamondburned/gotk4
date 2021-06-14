@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -14,33 +13,12 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-//
-// void gotk4_TextTagTableForeach(GtkTextTag*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_text_tag_table_get_type()), F: marshalTextTagTable},
 	})
-}
-
-// TextTagTableForeach: a function used with gtk_text_tag_table_foreach(), to
-// iterate over every `GtkTextTag` inside a `GtkTextTagTable`.
-type TextTagTableForeach func(tag TextTag)
-
-//export gotk4_TextTagTableForeach
-func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var tag TextTag // out
-
-	tag = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TextTag)
-
-	fn := v.(TextTagTableForeach)
-	fn(tag)
 }
 
 // TextTagTable: the collection of tags in a `GtkTextBuffer`
@@ -69,11 +47,6 @@ type TextTagTable interface {
 	// @tag must not be in a tag table already, and may not have the same name
 	// as an already-added tag.
 	Add(tag TextTag) bool
-	// Foreach calls @func on each tag in @table, with user data @data.
-	//
-	// Note that the table may not be modified while iterating over it (you
-	// can’t add/remove tags).
-	Foreach(fn TextTagTableForeach)
 	// Size returns the size of the table (number of tags)
 	Size() int
 	// Lookup: look up a named tag.
@@ -146,22 +119,6 @@ func (t textTagTable) Add(tag TextTag) bool {
 	}
 
 	return _ok
-}
-
-// Foreach calls @func on each tag in @table, with user data @data.
-//
-// Note that the table may not be modified while iterating over it (you
-// can’t add/remove tags).
-func (t textTagTable) Foreach(fn TextTagTableForeach) {
-	var _arg0 *C.GtkTextTagTable       // out
-	var _arg1 C.GtkTextTagTableForeach // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TextTagTableForeach)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_text_tag_table_foreach(_arg0, _arg1, _arg2)
 }
 
 // Size returns the size of the table (number of tags)

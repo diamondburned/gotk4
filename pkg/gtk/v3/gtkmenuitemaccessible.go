@@ -24,13 +24,11 @@ func init() {
 
 type MenuItemAccessible interface {
 	ContainerAccessible
-	Action
 }
 
 // menuItemAccessible implements the MenuItemAccessible class.
 type menuItemAccessible struct {
 	ContainerAccessible
-	Action
 }
 
 var _ MenuItemAccessible = (*menuItemAccessible)(nil)
@@ -40,7 +38,6 @@ var _ MenuItemAccessible = (*menuItemAccessible)(nil)
 func WrapMenuItemAccessible(obj *externglib.Object) MenuItemAccessible {
 	return menuItemAccessible{
 		ContainerAccessible: WrapContainerAccessible(obj),
-		Action:              WrapAction(obj),
 	}
 }
 

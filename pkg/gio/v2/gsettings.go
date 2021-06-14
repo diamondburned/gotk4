@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -347,6 +349,44 @@ type Settings interface {
 	// g_settings_delay(). In the normal case settings are always applied
 	// immediately.
 	Apply()
+	// Bind: create a binding between the @key in the @settings object and the
+	// property @property of @object.
+	//
+	// The binding uses the default GIO mapping functions to map between the
+	// settings and property values. These functions handle booleans, numeric
+	// types and string types in a straightforward way. Use
+	// g_settings_bind_with_mapping() if you need a custom mapping, or map
+	// between types that are not supported by the default mapping functions.
+	//
+	// Unless the @flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function
+	// also establishes a binding between the writability of @key and the
+	// "sensitive" property of @object (if @object has a boolean property by
+	// that name). See g_settings_bind_writable() for more details about
+	// writable bindings.
+	//
+	// Note that the lifecycle of the binding is tied to @object, and that you
+	// can have only one binding per object property. If you bind the same
+	// property twice on the same object, the second binding overrides the first
+	// one.
+	Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags)
+	// BindWritable: create a binding between the writability of @key in the
+	// @settings object and the property @property of @object. The property must
+	// be boolean; "sensitive" or "visible" properties of widgets are the most
+	// likely candidates.
+	//
+	// Writable bindings are always uni-directional; changes of the writability
+	// of the setting will be propagated to the object property, not the other
+	// way.
+	//
+	// When the @inverted argument is true, the binding inverts the value as it
+	// passes from the setting to the object, i.e. @property will be set to true
+	// if the key is not writable.
+	//
+	// Note that the lifecycle of the binding is tied to @object, and that you
+	// can have only one binding per object property. If you bind the same
+	// property twice on the same object, the second binding overrides the first
+	// one.
+	BindWritable(key string, object gextras.Objector, property string, inverted bool)
 	// CreateAction creates a #GAction corresponding to a given #GSettings key.
 	//
 	// The action has the same name as the key.
@@ -378,6 +418,27 @@ type Settings interface {
 	// The schema for the child settings object must have been declared in the
 	// schema of @settings using a <child> element.
 	Child(name string) Settings
+	// DefaultValue gets the "default value" of a key.
+	//
+	// This is the value that would be read if g_settings_reset() were to be
+	// called on the key.
+	//
+	// Note that this may be a different value than returned by
+	// g_settings_schema_key_get_default_value() if the system administrator has
+	// provided a default value.
+	//
+	// Comparing the return values of g_settings_get_default_value() and
+	// g_settings_get_value() is not sufficient for determining if a value has
+	// been set because the user may have explicitly set the value to something
+	// that happens to be equal to the default. The difference here is that if
+	// the default changes in the future, the user's key will still be set.
+	//
+	// This function may be useful for adding an indication to a UI of what the
+	// default value was before the user set it.
+	//
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings.
+	DefaultValue(key string) *glib.Variant
 	// Double gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for doubles.
@@ -426,6 +487,8 @@ type Settings interface {
 	// It is a programmer error to give a @key that isn't specified as having a
 	// int64 type in the schema for @settings.
 	Int64(key string) int64
+	// Range queries the range of a key.
+	Range(key string) *glib.Variant
 	// String gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for strings.
@@ -452,6 +515,29 @@ type Settings interface {
 	// It is a programmer error to give a @key that isn't specified as having a
 	// uint64 type in the schema for @settings.
 	Uint64(key string) uint64
+	// UserValue checks the "user value" of a key, if there is one.
+	//
+	// The user value of a key is the last value that was set by the user.
+	//
+	// After calling g_settings_reset() this function should always return nil
+	// (assuming something is not wrong with the system configuration).
+	//
+	// It is possible that g_settings_get_value() will return a different value
+	// than this function. This can happen in the case that the user set a value
+	// for a key that was subsequently locked down by the system administrator
+	// -- this function will return the user's old value.
+	//
+	// This function may be useful for adding a "reset" option to a UI or for
+	// providing indication that a particular value has been changed.
+	//
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings.
+	UserValue(key string) *glib.Variant
+	// Value gets the value that is stored in @settings for @key.
+	//
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings.
+	Value(key string) *glib.Variant
 	// IsWritable finds out if a key can be written or not
 	IsWritable(name string) bool
 	// ListChildren gets the list of children on @settings.
@@ -475,6 +561,9 @@ type Settings interface {
 	// You should free the return value with g_strfreev() when you are done with
 	// it.
 	ListKeys() []string
+	// RangeCheck checks if the given @value is of the correct type and within
+	// the permitted range for @key.
+	RangeCheck(key string, value *glib.Variant) bool
 	// Reset resets @key to its default value.
 	//
 	// This call resets the key, as much as possible, to its default value. That
@@ -567,6 +656,14 @@ type Settings interface {
 	// It is a programmer error to give a @key that isn't specified as having a
 	// uint64 type in the schema for @settings.
 	SetUint64(key string, value uint64) bool
+	// SetValue sets @key in @settings to @value.
+	//
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings or for @value to have the incorrect type, per the
+	// schema.
+	//
+	// If @value is floating then this function consumes the reference.
+	SetValue(key string, value *glib.Variant) bool
 }
 
 // settings implements the Settings class.
@@ -706,6 +803,80 @@ func (s settings) Apply() {
 	C.g_settings_apply(_arg0)
 }
 
+// Bind: create a binding between the @key in the @settings object and the
+// property @property of @object.
+//
+// The binding uses the default GIO mapping functions to map between the
+// settings and property values. These functions handle booleans, numeric
+// types and string types in a straightforward way. Use
+// g_settings_bind_with_mapping() if you need a custom mapping, or map
+// between types that are not supported by the default mapping functions.
+//
+// Unless the @flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function
+// also establishes a binding between the writability of @key and the
+// "sensitive" property of @object (if @object has a boolean property by
+// that name). See g_settings_bind_writable() for more details about
+// writable bindings.
+//
+// Note that the lifecycle of the binding is tied to @object, and that you
+// can have only one binding per object property. If you bind the same
+// property twice on the same object, the second binding overrides the first
+// one.
+func (s settings) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
+	var _arg0 *C.GSettings         // out
+	var _arg1 *C.gchar             // out
+	var _arg2 C.gpointer           // out
+	var _arg3 *C.gchar             // out
+	var _arg4 C.GSettingsBindFlags // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg3 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (C.GSettingsBindFlags)(flags)
+
+	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// BindWritable: create a binding between the writability of @key in the
+// @settings object and the property @property of @object. The property must
+// be boolean; "sensitive" or "visible" properties of widgets are the most
+// likely candidates.
+//
+// Writable bindings are always uni-directional; changes of the writability
+// of the setting will be propagated to the object property, not the other
+// way.
+//
+// When the @inverted argument is true, the binding inverts the value as it
+// passes from the setting to the object, i.e. @property will be set to true
+// if the key is not writable.
+//
+// Note that the lifecycle of the binding is tied to @object, and that you
+// can have only one binding per object property. If you bind the same
+// property twice on the same object, the second binding overrides the first
+// one.
+func (s settings) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gpointer   // out
+	var _arg3 *C.gchar     // out
+	var _arg4 C.gboolean   // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg3 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(_arg3))
+	if inverted {
+		_arg4 = C.TRUE
+	}
+
+	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 // CreateAction creates a #GAction corresponding to a given #GSettings key.
 //
 // The action has the same name as the key.
@@ -798,6 +969,48 @@ func (s settings) Child(name string) Settings {
 	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
 
 	return _ret
+}
+
+// DefaultValue gets the "default value" of a key.
+//
+// This is the value that would be read if g_settings_reset() were to be
+// called on the key.
+//
+// Note that this may be a different value than returned by
+// g_settings_schema_key_get_default_value() if the system administrator has
+// provided a default value.
+//
+// Comparing the return values of g_settings_get_default_value() and
+// g_settings_get_value() is not sufficient for determining if a value has
+// been set because the user may have explicitly set the value to something
+// that happens to be equal to the default. The difference here is that if
+// the default changes in the future, the user's key will still be set.
+//
+// This function may be useful for adding an indication to a UI of what the
+// default value was before the user set it.
+//
+// It is a programmer error to give a @key that isn't contained in the
+// schema for @settings.
+func (s settings) DefaultValue(key string) *glib.Variant {
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_settings_get_default_value(_arg0, _arg1)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
 }
 
 // Double gets the value that is stored at @key in @settings.
@@ -955,6 +1168,29 @@ func (s settings) Int64(key string) int64 {
 	return _gint64
 }
 
+// Range queries the range of a key.
+func (s settings) Range(key string) *glib.Variant {
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_settings_get_range(_arg0, _arg1)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
+}
+
 // String gets the value that is stored at @key in @settings.
 //
 // A convenience variant of g_settings_get() for strings.
@@ -1000,16 +1236,13 @@ func (s settings) Strv(key string) []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -1069,6 +1302,71 @@ func (s settings) Uint64(key string) uint64 {
 	return _guint64
 }
 
+// UserValue checks the "user value" of a key, if there is one.
+//
+// The user value of a key is the last value that was set by the user.
+//
+// After calling g_settings_reset() this function should always return nil
+// (assuming something is not wrong with the system configuration).
+//
+// It is possible that g_settings_get_value() will return a different value
+// than this function. This can happen in the case that the user set a value
+// for a key that was subsequently locked down by the system administrator
+// -- this function will return the user's old value.
+//
+// This function may be useful for adding a "reset" option to a UI or for
+// providing indication that a particular value has been changed.
+//
+// It is a programmer error to give a @key that isn't contained in the
+// schema for @settings.
+func (s settings) UserValue(key string) *glib.Variant {
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_settings_get_user_value(_arg0, _arg1)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
+}
+
+// Value gets the value that is stored in @settings for @key.
+//
+// It is a programmer error to give a @key that isn't contained in the
+// schema for @settings.
+func (s settings) Value(key string) *glib.Variant {
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_settings_get_value(_arg0, _arg1)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
+}
+
 // IsWritable finds out if a key can be written or not
 func (s settings) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
@@ -1114,16 +1412,13 @@ func (s settings) ListChildren() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -1153,16 +1448,13 @@ func (s settings) ListKeys() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -1170,6 +1462,31 @@ func (s settings) ListKeys() []string {
 	}
 
 	return _utf8s
+}
+
+// RangeCheck checks if the given @value is of the correct type and within
+// the permitted range for @key.
+func (s settings) RangeCheck(key string, value *glib.Variant) bool {
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GVariant  // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Reset resets @key to its default value.
@@ -1503,6 +1820,36 @@ func (s settings) SetUint64(key string, value uint64) bool {
 	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetValue sets @key in @settings to @value.
+//
+// It is a programmer error to give a @key that isn't contained in the
+// schema for @settings or for @value to have the incorrect type, per the
+// schema.
+//
+// If @value is floating then this function consumes the reference.
+func (s settings) SetValue(key string, value *glib.Variant) bool {
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GVariant  // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
 
 	var _ok bool // out
 

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -83,6 +84,8 @@ type FileFilter interface {
 	// This is the string that will be displayed in the file chooser if there is
 	// a selectable list of filters.
 	SetName(name string)
+	// ToGVariant: serialize a file filter to an `a{sv}` variant.
+	ToGVariant() *glib.Variant
 }
 
 // fileFilter implements the FileFilter class.
@@ -113,6 +116,23 @@ func NewFileFilter() FileFilter {
 	var _cret C.GtkFileFilter // in
 
 	_cret = C.gtk_file_filter_new()
+
+	var _fileFilter FileFilter // out
+
+	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileFilter)
+
+	return _fileFilter
+}
+
+// NewFileFilterFromGVariant constructs a class FileFilter.
+func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
+	var _arg1 *C.GVariant // out
+
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+
+	var _cret C.GtkFileFilter // in
+
+	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
 	var _fileFilter FileFilter // out
 
@@ -175,16 +195,13 @@ func (f fileFilter) Attributes() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 		}
@@ -225,4 +242,21 @@ func (f fileFilter) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
+}
+
+// ToGVariant: serialize a file filter to an `a{sv}` variant.
+func (f fileFilter) ToGVariant() *glib.Variant {
+	var _arg0 *C.GtkFileFilter // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.gtk_file_filter_to_gvariant(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
 }

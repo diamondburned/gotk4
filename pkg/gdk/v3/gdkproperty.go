@@ -123,16 +123,13 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int
 	var _gint int // out
 
 	{
-		var length int
-		for p := _arg6; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _arg6; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_arg6, length)
-		_list = make([]string, length)
+		src := unsafe.Slice(_arg6, i)
+		_list = make([]string, i)
 		for i := range src {
 			_list[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))

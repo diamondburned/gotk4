@@ -166,16 +166,14 @@ func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
 		value.p.Descend()
 
 		// Scan for the length.
-		value.p.Linef("var length int")
-		value.p.Linef("for p := %s; *p != nil; p = (%s)(unsafe.Add(unsafe.Pointer(p), %s)) {",
-			value.InName, value.InType, value.csizeof())
-		value.p.Linef("  length++")
-		value.p.Linef("  if length < 0 { panic(`length overflow`) }")
+		value.p.Linef("var i int")
+		value.p.Linef("for p := %s; *p != nil; p = &unsafe.Slice(p, i+1)[i] {", value.InName)
+		value.p.Linef("  i++")
 		value.p.Linef("}")
 		value.p.EmptyLine()
 
-		value.p.Linef("src := unsafe.Slice(%s, length)", value.InName)
-		value.p.Linef("%s = make(%s, length)", value.OutName, value.OutType)
+		value.p.Linef("src := unsafe.Slice(%s, i)", value.InName)
+		value.p.Linef("%s = make(%s, i)", value.OutName, value.OutType)
 		value.p.Linef("for i := range src {")
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")

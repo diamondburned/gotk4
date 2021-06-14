@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -184,6 +186,15 @@ type Label interface {
 	Buildable
 	ConstraintTarget
 
+	// Attributes gets the labels attribute list.
+	//
+	// This is the [struct@Pango.AttrList] that was set on the label using
+	// [method@Gtk.Label.set_attributes], if any. This function does not reflect
+	// attributes that come from the labels markup (see
+	// [method@Gtk.Label.set_markup]). If you want to get the effective
+	// attributes for the label, use `pango_layout_get_attribute
+	// (gtk_label_get_layout (self))`.
+	Attributes() *pango.AttrList
 	// CurrentURI returns the URI for the currently active link in the label.
 	//
 	// The active link is the one under the mouse pointer or, in a selectable
@@ -192,6 +203,14 @@ type Label interface {
 	// This function is intended for use in a [signal@Gtk.Label::activate-link]
 	// handler or for use in a [signal@Gtk.Widget::query-tooltip] handler.
 	CurrentURI() string
+	// Ellipsize returns the ellipsizing position of the label.
+	//
+	// See [method@Gtk.Label.set_ellipsize].
+	Ellipsize() pango.EllipsizeMode
+	// ExtraMenu gets the extra menu model of @label.
+	//
+	// See [method@Gtk.Label.set_extra_menu].
+	ExtraMenu() gio.MenuModel
 	// Justify returns the justification of the label.
 	//
 	// See [method@Gtk.Label.set_justify].
@@ -201,6 +220,14 @@ type Label interface {
 	// The returned text includes any embedded underlines indicating mnemonics
 	// and Pango markup. (See [method@Gtk.Label.get_text]).
 	Label() string
+	// Layout gets the `PangoLayout` used to display the label.
+	//
+	// The layout is useful to e.g. convert text positions to pixel positions,
+	// in combination with [method@Gtk.Label.get_layout_offsets]. The returned
+	// layout is owned by the @label so need not be freed by the caller. The
+	// @label is free to recreate its layout at any time, so it should be
+	// considered read-only.
+	Layout() pango.Layout
 	// LayoutOffsets obtains the coordinates where the label will draw its
 	// `PangoLayout`.
 	//
@@ -264,7 +291,7 @@ type Label interface {
 	// WrapMode returns line wrap mode used by the label.
 	//
 	// See [method@Gtk.Label.set_wrap_mode].
-	WrapMode() WrapMode
+	WrapMode() pango.WrapMode
 	// Xalign gets the `xalign` of the label.
 	//
 	// See the [property@Gtk.Label:xalign] property.
@@ -280,6 +307,23 @@ type Label interface {
 	// this function has no effect. If @start_offset or @end_offset are -1, then
 	// the end of the label will be substituted.
 	SelectRegion(startOffset int, endOffset int)
+	// SetAttributes: apply attributes to the label text.
+	//
+	// The attributes set with this function will be applied and merged with any
+	// other attributes previously effected by way of the
+	// [property@Gtk.Label:use-underline] or [property@Gtk.Label:use-markup]
+	// properties. While it is not recommended to mix markup strings with
+	// manually set attributes, if you must; know that the attributes will be
+	// applied to the label after the markup string is parsed.
+	SetAttributes(attrs *pango.AttrList)
+	// SetEllipsize sets the mode used to ellipsizei the text.
+	//
+	// The text will be ellipsized if there is not enough space to render the
+	// entire string.
+	SetEllipsize(mode pango.EllipsizeMode)
+	// SetExtraMenu sets a menu model to add when constructing the context menu
+	// for @label.
+	SetExtraMenu(model gio.MenuModel)
 	// SetJustify sets the alignment of the lines in the text of the label
 	// relative to each other.
 	//
@@ -410,7 +454,7 @@ type Label interface {
 	// This only affects the label if line wrapping is on. (See
 	// [method@Gtk.Label.set_wrap]) The default is PANGO_WRAP_WORD which means
 	// wrap on word boundaries.
-	SetWrapMode(wrapMode WrapMode)
+	SetWrapMode(wrapMode pango.WrapMode)
 	// SetXalign sets the `xalign` of the label.
 	//
 	// See the [property@Gtk.Label:xalign] property.
@@ -484,6 +528,30 @@ func NewLabelWithMnemonic(str string) Label {
 	return _label
 }
 
+// Attributes gets the labels attribute list.
+//
+// This is the [struct@Pango.AttrList] that was set on the label using
+// [method@Gtk.Label.set_attributes], if any. This function does not reflect
+// attributes that come from the labels markup (see
+// [method@Gtk.Label.set_markup]). If you want to get the effective
+// attributes for the label, use `pango_layout_get_attribute
+// (gtk_label_get_layout (self))`.
+func (s label) Attributes() *pango.AttrList {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.PangoAttrList // in
+
+	_cret = C.gtk_label_get_attributes(_arg0)
+
+	var _attrList *pango.AttrList // out
+
+	_attrList = pango.WrapAttrList(unsafe.Pointer(_cret))
+
+	return _attrList
+}
+
 // CurrentURI returns the URI for the currently active link in the label.
 //
 // The active link is the one under the mouse pointer or, in a selectable
@@ -505,6 +573,44 @@ func (s label) CurrentURI() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Ellipsize returns the ellipsizing position of the label.
+//
+// See [method@Gtk.Label.set_ellipsize].
+func (s label) Ellipsize() pango.EllipsizeMode {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+
+	var _cret C.PangoEllipsizeMode // in
+
+	_cret = C.gtk_label_get_ellipsize(_arg0)
+
+	var _ellipsizeMode pango.EllipsizeMode // out
+
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
+
+	return _ellipsizeMode
+}
+
+// ExtraMenu gets the extra menu model of @label.
+//
+// See [method@Gtk.Label.set_extra_menu].
+func (s label) ExtraMenu() gio.MenuModel {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GMenuModel // in
+
+	_cret = C.gtk_label_get_extra_menu(_arg0)
+
+	var _menuModel gio.MenuModel // out
+
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+
+	return _menuModel
 }
 
 // Justify returns the justification of the label.
@@ -544,6 +650,29 @@ func (s label) Label() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Layout gets the `PangoLayout` used to display the label.
+//
+// The layout is useful to e.g. convert text positions to pixel positions,
+// in combination with [method@Gtk.Label.get_layout_offsets]. The returned
+// layout is owned by the @label so need not be freed by the caller. The
+// @label is free to recreate its layout at any time, so it should be
+// considered read-only.
+func (s label) Layout() pango.Layout {
+	var _arg0 *C.GtkLabel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.PangoLayout // in
+
+	_cret = C.gtk_label_get_layout(_arg0)
+
+	var _layout pango.Layout // out
+
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+
+	return _layout
 }
 
 // LayoutOffsets obtains the coordinates where the label will draw its
@@ -825,7 +954,7 @@ func (s label) Wrap() bool {
 // WrapMode returns line wrap mode used by the label.
 //
 // See [method@Gtk.Label.set_wrap_mode].
-func (s label) WrapMode() WrapMode {
+func (s label) WrapMode() pango.WrapMode {
 	var _arg0 *C.GtkLabel // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
@@ -834,9 +963,9 @@ func (s label) WrapMode() WrapMode {
 
 	_cret = C.gtk_label_get_wrap_mode(_arg0)
 
-	var _wrapMode WrapMode // out
+	var _wrapMode pango.WrapMode // out
 
-	_wrapMode = WrapMode(_cret)
+	_wrapMode = pango.WrapMode(_cret)
 
 	return _wrapMode
 }
@@ -895,6 +1024,50 @@ func (s label) SelectRegion(startOffset int, endOffset int) {
 	_arg2 = C.int(endOffset)
 
 	C.gtk_label_select_region(_arg0, _arg1, _arg2)
+}
+
+// SetAttributes: apply attributes to the label text.
+//
+// The attributes set with this function will be applied and merged with any
+// other attributes previously effected by way of the
+// [property@Gtk.Label:use-underline] or [property@Gtk.Label:use-markup]
+// properties. While it is not recommended to mix markup strings with
+// manually set attributes, if you must; know that the attributes will be
+// applied to the label after the markup string is parsed.
+func (s label) SetAttributes(attrs *pango.AttrList) {
+	var _arg0 *C.GtkLabel      // out
+	var _arg1 *C.PangoAttrList // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
+
+	C.gtk_label_set_attributes(_arg0, _arg1)
+}
+
+// SetEllipsize sets the mode used to ellipsizei the text.
+//
+// The text will be ellipsized if there is not enough space to render the
+// entire string.
+func (s label) SetEllipsize(mode pango.EllipsizeMode) {
+	var _arg0 *C.GtkLabel          // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.PangoEllipsizeMode)(mode)
+
+	C.gtk_label_set_ellipsize(_arg0, _arg1)
+}
+
+// SetExtraMenu sets a menu model to add when constructing the context menu
+// for @label.
+func (s label) SetExtraMenu(model gio.MenuModel) {
+	var _arg0 *C.GtkLabel   // out
+	var _arg1 *C.GMenuModel // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_label_set_extra_menu(_arg0, _arg1)
 }
 
 // SetJustify sets the alignment of the lines in the text of the label
@@ -1177,7 +1350,7 @@ func (s label) SetWrap(wrap bool) {
 // This only affects the label if line wrapping is on. (See
 // [method@Gtk.Label.set_wrap]) The default is PANGO_WRAP_WORD which means
 // wrap on word boundaries.
-func (s label) SetWrapMode(wrapMode WrapMode) {
+func (s label) SetWrapMode(wrapMode pango.WrapMode) {
 	var _arg0 *C.GtkLabel     // out
 	var _arg1 C.PangoWrapMode // out
 

@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,35 +22,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_tree_model_filter_get_type()), F: marshalTreeModelFilter},
 	})
-}
-
-// TreeModelFilterVisibleFunc: a function which decides whether the row
-// indicated by @iter is visible.
-type TreeModelFilterVisibleFunc func(model TreeModel, iter *TreeIter) (ok bool)
-
-//export gotk4_TreeModelFilterVisibleFunc
-func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var model TreeModel // out
-	var iter *TreeIter  // out
-
-	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
-	iter = WrapTreeIter(unsafe.Pointer(arg1))
-
-	fn := v.(TreeModelFilterVisibleFunc)
-	ok := fn(model, iter)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // TreeModelFilter: a TreeModelFilter is a tree model which wraps another tree

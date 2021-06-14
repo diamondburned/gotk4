@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -87,6 +88,23 @@ func NewColorButton() ColorButton {
 	var _cret C.GtkColorButton // in
 
 	_cret = C.gtk_color_button_new()
+
+	var _colorButton ColorButton // out
+
+	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
+
+	return _colorButton
+}
+
+// NewColorButtonWithRGBA constructs a class ColorButton.
+func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
+	var _arg1 *C.GdkRGBA // out
+
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+
+	var _cret C.GtkColorButton // in
+
+	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
 	var _colorButton ColorButton // out
 

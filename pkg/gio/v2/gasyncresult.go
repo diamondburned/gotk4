@@ -35,11 +35,8 @@ func init() {
 // AsyncResultOverrider contains methods that are overridable. This
 // interface is a subset of the interface AsyncResult.
 type AsyncResultOverrider interface {
-	// UserData gets the user data from a Result.
-	UserData() interface{}
-	// IsTagged checks if @res has the given @source_tag (generally a function
-	// pointer indicating the function @res was created by).
-	IsTagged(sourceTag interface{}) bool
+	// SourceObject gets the source object from a Result.
+	SourceObject() gextras.Objector
 }
 
 // AsyncResult provides a base class for implementing asynchronous function
@@ -158,43 +155,21 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 	return WrapAsyncResult(obj), nil
 }
 
-// UserData gets the user data from a Result.
-func (r asyncResult) UserData() interface{} {
+// SourceObject gets the source object from a Result.
+func (r asyncResult) SourceObject() gextras.Objector {
 	var _arg0 *C.GAsyncResult // out
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gpointer // in
+	var _cret *C.GObject // in
 
-	_cret = C.g_async_result_get_user_data(_arg0)
+	_cret = C.g_async_result_get_source_object(_arg0)
 
-	var _gpointer interface{} // out
+	var _object gextras.Objector // out
 
-	_gpointer = (interface{})(_cret)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return _gpointer
-}
-
-// IsTagged checks if @res has the given @source_tag (generally a function
-// pointer indicating the function @res was created by).
-func (r asyncResult) IsTagged(sourceTag interface{}) bool {
-	var _arg0 *C.GAsyncResult // out
-	var _arg1 C.gpointer      // out
-
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
-	_arg1 = C.gpointer(sourceTag)
-
-	var _cret C.gboolean // in
-
-	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+	return _object
 }
 
 // LegacyPropagateError: if @res is a AsyncResult, this is equivalent to

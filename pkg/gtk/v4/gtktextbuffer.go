@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,6 +38,12 @@ type TextBuffer interface {
 	// Emits the `GtkTextBuffer`::mark-set signal as notification of the mark's
 	// initial placement.
 	AddMark(mark TextMark, where *TextIter)
+	// AddSelectionClipboard adds @clipboard to the list of clipboards in which
+	// the selection contents of @buffer are available.
+	//
+	// In most cases, @clipboard will be the `GdkClipboard` returned by
+	// [method@Gtk.Widget.get_primary_clipboard] for a view of @buffer.
+	AddSelectionClipboard(clipboard gdk.Clipboard)
 	// ApplyTag emits the “apply-tag” signal on @buffer.
 	//
 	// The default handler for the signal applies @tag to the given range.
@@ -90,6 +97,8 @@ type TextBuffer interface {
 	// to add extra calls if you user action consists solely of a single call to
 	// one of those functions.
 	BeginUserAction()
+	// CopyClipboard copies the currently-selected text to a clipboard.
+	CopyClipboard(clipboard gdk.Clipboard)
 	// CreateChildAnchor creates and inserts a child anchor.
 	//
 	// This is a convenience function which simply creates a child anchor with
@@ -117,6 +126,9 @@ type TextBuffer interface {
 	// Emits the `GtkTextBuffer`::mark-set signal as notification of the mark's
 	// initial placement.
 	CreateMark(markName string, where *TextIter, leftGravity bool) TextMark
+	// CutClipboard copies the currently-selected text to a clipboard, then
+	// deletes said text if it’s editable.
+	CutClipboard(clipboard gdk.Clipboard, defaultEditable bool)
 	// Delete deletes text between @start and @end.
 	//
 	// The order of @start and @end is not actually relevant;
@@ -289,6 +301,11 @@ type TextBuffer interface {
 	// @end are nil, then they are not filled in, but the return value still
 	// indicates whether text is selected.
 	SelectionBounds() (start TextIter, end TextIter, ok bool)
+	// SelectionContent: get a content provider for this buffer.
+	//
+	// It can be used to make the content of @buffer available in a
+	// `GdkClipboard`, see [method@Gdk.Clipboard.set_content].
+	SelectionContent() gdk.ContentProvider
 	// Slice returns the text in the range [@start,@end).
 	//
 	// Excludes undisplayed text (text marked with tags that set the
@@ -369,6 +386,15 @@ type TextBuffer interface {
 	// for the signal. @iter will point to the end of the inserted text on
 	// return.
 	InsertMarkup(iter *TextIter, markup string, len int)
+	// InsertPaintable inserts an image into the text buffer at @iter.
+	//
+	// The image will be counted as one character in character counts, and when
+	// obtaining the buffer contents as a string, will be represented by the
+	// Unicode “object replacement character” 0xFFFC. Note that the “slice”
+	// variants for obtaining portions of the buffer as a string include this
+	// character for paintable, but the “text” variants do not. e.g. see
+	// [method@Gtk.TextBuffer.get_slice] and [method@Gtk.TextBuffer.get_text].
+	InsertPaintable(iter *TextIter, paintable gdk.Paintable)
 	// InsertRange copies text, tags, and paintables between @start and @end and
 	// inserts the copy at @iter.
 	//
@@ -399,6 +425,16 @@ type TextBuffer interface {
 	//
 	// See [method@Gtk.TextBuffer.move_mark] for details.
 	MoveMarkByName(name string, where *TextIter)
+	// PasteClipboard pastes the contents of a clipboard.
+	//
+	// If @override_location is nil, the pasted text will be inserted at the
+	// cursor position, or the buffer selection will be replaced if the
+	// selection is non-empty.
+	//
+	// Note: pasting is asynchronous, that is, we’ll ask for the paste data and
+	// return, and at some point later after the main loop runs, the paste data
+	// will be inserted.
+	PasteClipboard(clipboard gdk.Clipboard, overrideLocation *TextIter, defaultEditable bool)
 	// PlaceCursor: this function moves the “insert” and “selection_bound” marks
 	// simultaneously.
 	//
@@ -417,6 +453,9 @@ type TextBuffer interface {
 	// function is probably a bad idea if you have two or more unrelated code
 	// sections that add tags.
 	RemoveAllTags(start *TextIter, end *TextIter)
+	// RemoveSelectionClipboard removes a `GdkClipboard` added with
+	// gtk_text_buffer_add_selection_clipboard().
+	RemoveSelectionClipboard(clipboard gdk.Clipboard)
 	// RemoveTag emits the “remove-tag” signal.
 	//
 	// The default handler for the signal removes all occurrences of @tag from
@@ -523,6 +562,21 @@ func (b textBuffer) AddMark(mark TextMark, where *TextIter) {
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(where.Native()))
 
 	C.gtk_text_buffer_add_mark(_arg0, _arg1, _arg2)
+}
+
+// AddSelectionClipboard adds @clipboard to the list of clipboards in which
+// the selection contents of @buffer are available.
+//
+// In most cases, @clipboard will be the `GdkClipboard` returned by
+// [method@Gtk.Widget.get_primary_clipboard] for a view of @buffer.
+func (b textBuffer) AddSelectionClipboard(clipboard gdk.Clipboard) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GdkClipboard  // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+
+	C.gtk_text_buffer_add_selection_clipboard(_arg0, _arg1)
 }
 
 // ApplyTag emits the “apply-tag” signal on @buffer.
@@ -646,6 +700,17 @@ func (b textBuffer) BeginUserAction() {
 	C.gtk_text_buffer_begin_user_action(_arg0)
 }
 
+// CopyClipboard copies the currently-selected text to a clipboard.
+func (b textBuffer) CopyClipboard(clipboard gdk.Clipboard) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GdkClipboard  // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+
+	C.gtk_text_buffer_copy_clipboard(_arg0, _arg1)
+}
+
 // CreateChildAnchor creates and inserts a child anchor.
 //
 // This is a convenience function which simply creates a child anchor with
@@ -712,6 +777,22 @@ func (b textBuffer) CreateMark(markName string, where *TextIter, leftGravity boo
 	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
 
 	return _textMark
+}
+
+// CutClipboard copies the currently-selected text to a clipboard, then
+// deletes said text if it’s editable.
+func (b textBuffer) CutClipboard(clipboard gdk.Clipboard, defaultEditable bool) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GdkClipboard  // out
+	var _arg2 C.gboolean       // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	if defaultEditable {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_text_buffer_cut_clipboard(_arg0, _arg1, _arg2)
 }
 
 // Delete deletes text between @start and @end.
@@ -1303,6 +1384,26 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 	return _start, _end, _ok
 }
 
+// SelectionContent: get a content provider for this buffer.
+//
+// It can be used to make the content of @buffer available in a
+// `GdkClipboard`, see [method@Gdk.Clipboard.set_content].
+func (b textBuffer) SelectionContent() gdk.ContentProvider {
+	var _arg0 *C.GtkTextBuffer // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GdkContentProvider // in
+
+	_cret = C.gtk_text_buffer_get_selection_content(_arg0)
+
+	var _contentProvider gdk.ContentProvider // out
+
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
+
+	return _contentProvider
+}
+
 // Slice returns the text in the range [@start,@end).
 //
 // Excludes undisplayed text (text marked with tags that set the
@@ -1562,6 +1663,26 @@ func (b textBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
 }
 
+// InsertPaintable inserts an image into the text buffer at @iter.
+//
+// The image will be counted as one character in character counts, and when
+// obtaining the buffer contents as a string, will be represented by the
+// Unicode “object replacement character” 0xFFFC. Note that the “slice”
+// variants for obtaining portions of the buffer as a string include this
+// character for paintable, but the “text” variants do not. e.g. see
+// [method@Gtk.TextBuffer.get_slice] and [method@Gtk.TextBuffer.get_text].
+func (b textBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintable) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.GdkPaintable  // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
+	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+
+	C.gtk_text_buffer_insert_paintable(_arg0, _arg1, _arg2)
+}
+
 // InsertRange copies text, tags, and paintables between @start and @end and
 // inserts the copy at @iter.
 //
@@ -1655,6 +1776,31 @@ func (b textBuffer) MoveMarkByName(name string, where *TextIter) {
 	C.gtk_text_buffer_move_mark_by_name(_arg0, _arg1, _arg2)
 }
 
+// PasteClipboard pastes the contents of a clipboard.
+//
+// If @override_location is nil, the pasted text will be inserted at the
+// cursor position, or the buffer selection will be replaced if the
+// selection is non-empty.
+//
+// Note: pasting is asynchronous, that is, we’ll ask for the paste data and
+// return, and at some point later after the main loop runs, the paste data
+// will be inserted.
+func (b textBuffer) PasteClipboard(clipboard gdk.Clipboard, overrideLocation *TextIter, defaultEditable bool) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GdkClipboard  // out
+	var _arg2 *C.GtkTextIter   // out
+	var _arg3 C.gboolean       // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(overrideLocation.Native()))
+	if defaultEditable {
+		_arg3 = C.TRUE
+	}
+
+	C.gtk_text_buffer_paste_clipboard(_arg0, _arg1, _arg2, _arg3)
+}
+
 // PlaceCursor: this function moves the “insert” and “selection_bound” marks
 // simultaneously.
 //
@@ -1698,6 +1844,18 @@ func (b textBuffer) RemoveAllTags(start *TextIter, end *TextIter) {
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
 	C.gtk_text_buffer_remove_all_tags(_arg0, _arg1, _arg2)
+}
+
+// RemoveSelectionClipboard removes a `GdkClipboard` added with
+// gtk_text_buffer_add_selection_clipboard().
+func (b textBuffer) RemoveSelectionClipboard(clipboard gdk.Clipboard) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GdkClipboard  // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+
+	C.gtk_text_buffer_remove_selection_clipboard(_arg0, _arg1)
 }
 
 // RemoveTag emits the “remove-tag” signal.

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -119,7 +120,7 @@ type Scale interface {
 	HasOrigin() bool
 	// Layout gets the Layout used to display the scale. The returned object is
 	// owned by the scale so does not need to be freed by the caller.
-	Layout() Layout
+	Layout() pango.Layout
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// Layout representing the text in the scale. Remember when using the Layout
 	// function you need to convert to and from pixels using PANGO_PIXELS() or
@@ -312,7 +313,7 @@ func (s scale) HasOrigin() bool {
 
 // Layout gets the Layout used to display the scale. The returned object is
 // owned by the scale so does not need to be freed by the caller.
-func (s scale) Layout() Layout {
+func (s scale) Layout() pango.Layout {
 	var _arg0 *C.GtkScale // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
@@ -321,9 +322,9 @@ func (s scale) Layout() Layout {
 
 	_cret = C.gtk_scale_get_layout(_arg0)
 
-	var _layout Layout // out
+	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Layout)
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
 
 	return _layout
 }

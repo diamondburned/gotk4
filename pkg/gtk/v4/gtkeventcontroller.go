@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,6 +38,15 @@ func init() {
 type EventController interface {
 	gextras.Objector
 
+	// CurrentEvent returns the event that is currently being handled by the
+	// controller, and nil at other times.
+	CurrentEvent() gdk.Event
+	// CurrentEventDevice returns the device of the event that is currently
+	// being handled by the controller, and nil otherwise.
+	CurrentEventDevice() gdk.Device
+	// CurrentEventState returns the modifier state of the event that is
+	// currently being handled by the controller, and 0 otherwise.
+	CurrentEventState() gdk.ModifierType
 	// CurrentEventTime returns the timestamp of the event that is currently
 	// being handled by the controller, and 0 otherwise.
 	CurrentEventTime() uint32
@@ -87,6 +97,60 @@ func marshalEventController(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEventController(obj), nil
+}
+
+// CurrentEvent returns the event that is currently being handled by the
+// controller, and nil at other times.
+func (c eventController) CurrentEvent() gdk.Event {
+	var _arg0 *C.GtkEventController // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkEvent // in
+
+	_cret = C.gtk_event_controller_get_current_event(_arg0)
+
+	var _event gdk.Event // out
+
+	_event = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Event)
+
+	return _event
+}
+
+// CurrentEventDevice returns the device of the event that is currently
+// being handled by the controller, and nil otherwise.
+func (c eventController) CurrentEventDevice() gdk.Device {
+	var _arg0 *C.GtkEventController // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkDevice // in
+
+	_cret = C.gtk_event_controller_get_current_event_device(_arg0)
+
+	var _device gdk.Device // out
+
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Device)
+
+	return _device
+}
+
+// CurrentEventState returns the modifier state of the event that is
+// currently being handled by the controller, and 0 otherwise.
+func (c eventController) CurrentEventState() gdk.ModifierType {
+	var _arg0 *C.GtkEventController // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+
+	var _cret C.GdkModifierType // in
+
+	_cret = C.gtk_event_controller_get_current_event_state(_arg0)
+
+	var _modifierType gdk.ModifierType // out
+
+	_modifierType = gdk.ModifierType(_cret)
+
+	return _modifierType
 }
 
 // CurrentEventTime returns the timestamp of the event that is currently

@@ -6,6 +6,9 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -120,6 +123,16 @@ type Image interface {
 
 	// Clear resets the image to be empty.
 	Clear()
+	// Animation gets the PixbufAnimation being displayed by the Image. The
+	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ANIMATION
+	// (see gtk_image_get_storage_type()). The caller of this function does not
+	// own a reference to the returned animation.
+	Animation() gdkpixbuf.PixbufAnimation
+	// GIcon gets the #GIcon and size being displayed by the Image. The storage
+	// type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
+	// gtk_image_get_storage_type()). The caller of this function does not own a
+	// reference to the returned #GIcon.
+	GIcon() (gio.Icon, int)
 	// IconName gets the icon name and size being displayed by the Image. The
 	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME
 	// (see gtk_image_get_storage_type()). The returned string is owned by the
@@ -129,6 +142,11 @@ type Image interface {
 	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_SET
 	// (see gtk_image_get_storage_type()).
 	IconSet() (*IconSet, int)
+	// Pixbuf gets the Pixbuf being displayed by the Image. The storage type of
+	// the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PIXBUF (see
+	// gtk_image_get_storage_type()). The caller of this function does not own a
+	// reference to the returned pixbuf.
+	Pixbuf() gdkpixbuf.Pixbuf
 	// PixelSize gets the pixel size used for named icons.
 	PixelSize() int
 	// Stock gets the stock icon name and size being displayed by the Image. The
@@ -140,16 +158,25 @@ type Image interface {
 	// store image data. If the Image has no image data, the return value will
 	// be GTK_IMAGE_EMPTY.
 	StorageType() ImageType
+	// SetFromAnimation causes the Image to display the given animation (or
+	// display nothing, if you set the animation to nil).
+	SetFromAnimation(animation gdkpixbuf.PixbufAnimation)
 	// SetFromFile: see gtk_image_new_from_file() for details.
 	SetFromFile(filename string)
+	// SetFromGIcon: see gtk_image_new_from_gicon() for details.
+	SetFromGIcon(icon gio.Icon, size int)
 	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
 	SetFromIconName(iconName string, size int)
 	// SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 	SetFromIconSet(iconSet *IconSet, size int)
+	// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
 	// SetFromResource: see gtk_image_new_from_resource() for details.
 	SetFromResource(resourcePath string)
 	// SetFromStock: see gtk_image_new_from_stock() for details.
 	SetFromStock(stockId string, size int)
+	// SetFromSurface: see gtk_image_new_from_surface() for details.
+	SetFromSurface(surface *cairo.Surface)
 	// SetPixelSize sets the pixel size to use for named icons. If the pixel
 	// size is set to a value != -1, it is used instead of the icon size set by
 	// gtk_image_set_from_icon_name().
@@ -192,6 +219,23 @@ func NewImage() Image {
 	return _image
 }
 
+// NewImageFromAnimation constructs a class Image.
+func NewImageFromAnimation(animation gdkpixbuf.PixbufAnimation) Image {
+	var _arg1 *C.GdkPixbufAnimation // out
+
+	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+
+	var _cret C.GtkImage // in
+
+	_cret = C.gtk_image_new_from_animation(_arg1)
+
+	var _image Image // out
+
+	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+
+	return _image
+}
+
 // NewImageFromFile constructs a class Image.
 func NewImageFromFile(filename string) Image {
 	var _arg1 *C.gchar // out
@@ -202,6 +246,25 @@ func NewImageFromFile(filename string) Image {
 	var _cret C.GtkImage // in
 
 	_cret = C.gtk_image_new_from_file(_arg1)
+
+	var _image Image // out
+
+	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+
+	return _image
+}
+
+// NewImageFromGIcon constructs a class Image.
+func NewImageFromGIcon(icon gio.Icon, size int) Image {
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
+
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	var _cret C.GtkImage // in
+
+	_cret = C.gtk_image_new_from_gicon(_arg1, _arg2)
 
 	var _image Image // out
 
@@ -249,6 +312,23 @@ func NewImageFromIconSet(iconSet *IconSet, size int) Image {
 	return _image
 }
 
+// NewImageFromPixbuf constructs a class Image.
+func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	var _cret C.GtkImage // in
+
+	_cret = C.gtk_image_new_from_pixbuf(_arg1)
+
+	var _image Image // out
+
+	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+
+	return _image
+}
+
 // NewImageFromResource constructs a class Image.
 func NewImageFromResource(resourcePath string) Image {
 	var _arg1 *C.gchar // out
@@ -287,6 +367,23 @@ func NewImageFromStock(stockId string, size int) Image {
 	return _image
 }
 
+// NewImageFromSurface constructs a class Image.
+func NewImageFromSurface(surface *cairo.Surface) Image {
+	var _arg1 *C.cairo_surface_t // out
+
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+
+	var _cret C.GtkImage // in
+
+	_cret = C.gtk_image_new_from_surface(_arg1)
+
+	var _image Image // out
+
+	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+
+	return _image
+}
+
 // Clear resets the image to be empty.
 func (i image) Clear() {
 	var _arg0 *C.GtkImage // out
@@ -294,6 +391,49 @@ func (i image) Clear() {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	C.gtk_image_clear(_arg0)
+}
+
+// Animation gets the PixbufAnimation being displayed by the Image. The
+// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ANIMATION
+// (see gtk_image_get_storage_type()). The caller of this function does not
+// own a reference to the returned animation.
+func (i image) Animation() gdkpixbuf.PixbufAnimation {
+	var _arg0 *C.GtkImage // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GdkPixbufAnimation // in
+
+	_cret = C.gtk_image_get_animation(_arg0)
+
+	var _pixbufAnimation gdkpixbuf.PixbufAnimation // out
+
+	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.PixbufAnimation)
+
+	return _pixbufAnimation
+}
+
+// GIcon gets the #GIcon and size being displayed by the Image. The storage
+// type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
+// gtk_image_get_storage_type()). The caller of this function does not own a
+// reference to the returned #GIcon.
+func (i image) GIcon() (gio.Icon, int) {
+	var _arg0 *C.GtkImage // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+
+	var _arg1 *C.GIcon      // in
+	var _arg2 C.GtkIconSize // in
+
+	C.gtk_image_get_gicon(_arg0, &_arg1, &_arg2)
+
+	var _gicon gio.Icon // out
+	var _size int       // out
+
+	_gicon = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(gio.Icon)
+	_size = (int)(_arg2)
+
+	return _gicon, _size
 }
 
 // IconName gets the icon name and size being displayed by the Image. The
@@ -339,6 +479,26 @@ func (i image) IconSet() (*IconSet, int) {
 	_size = (int)(_arg2)
 
 	return _iconSet, _size
+}
+
+// Pixbuf gets the Pixbuf being displayed by the Image. The storage type of
+// the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PIXBUF (see
+// gtk_image_get_storage_type()). The caller of this function does not own a
+// reference to the returned pixbuf.
+func (i image) Pixbuf() gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkImage // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gtk_image_get_pixbuf(_arg0)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return _pixbuf
 }
 
 // PixelSize gets the pixel size used for named icons.
@@ -400,6 +560,18 @@ func (i image) StorageType() ImageType {
 	return _imageType
 }
 
+// SetFromAnimation causes the Image to display the given animation (or
+// display nothing, if you set the animation to nil).
+func (i image) SetFromAnimation(animation gdkpixbuf.PixbufAnimation) {
+	var _arg0 *C.GtkImage           // out
+	var _arg1 *C.GdkPixbufAnimation // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+
+	C.gtk_image_set_from_animation(_arg0, _arg1)
+}
+
 // SetFromFile: see gtk_image_new_from_file() for details.
 func (i image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
@@ -410,6 +582,19 @@ func (i image) SetFromFile(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_file(_arg0, _arg1)
+}
+
+// SetFromGIcon: see gtk_image_new_from_gicon() for details.
+func (i image) SetFromGIcon(icon gio.Icon, size int) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	C.gtk_image_set_from_gicon(_arg0, _arg1, _arg2)
 }
 
 // SetFromIconName: see gtk_image_new_from_icon_name() for details.
@@ -439,6 +624,17 @@ func (i image) SetFromIconSet(iconSet *IconSet, size int) {
 	C.gtk_image_set_from_icon_set(_arg0, _arg1, _arg2)
 }
 
+// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
+func (i image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkImage  // out
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
+}
+
 // SetFromResource: see gtk_image_new_from_resource() for details.
 func (i image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
@@ -463,6 +659,17 @@ func (i image) SetFromStock(stockId string, size int) {
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_image_set_from_stock(_arg0, _arg1, _arg2)
+}
+
+// SetFromSurface: see gtk_image_new_from_surface() for details.
+func (i image) SetFromSurface(surface *cairo.Surface) {
+	var _arg0 *C.GtkImage        // out
+	var _arg1 *C.cairo_surface_t // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+
+	C.gtk_image_set_from_surface(_arg0, _arg1)
 }
 
 // SetPixelSize sets the pixel size to use for named icons. If the pixel

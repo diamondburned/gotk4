@@ -5,7 +5,10 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,6 +75,43 @@ func marshalTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTexture(obj), nil
+}
+
+// NewTextureForPixbuf constructs a class Texture.
+func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	var _cret C.GdkTexture // in
+
+	_cret = C.gdk_texture_new_for_pixbuf(_arg1)
+
+	var _texture Texture // out
+
+	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
+
+	return _texture
+}
+
+// NewTextureFromFile constructs a class Texture.
+func NewTextureFromFile(file gio.File) (Texture, error) {
+	var _arg1 *C.GFile // out
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cret C.GdkTexture // in
+	var _cerr *C.GError    // in
+
+	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
+
+	var _texture Texture // out
+	var _goerr error     // out
+
+	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _texture, _goerr
 }
 
 // NewTextureFromResource constructs a class Texture.

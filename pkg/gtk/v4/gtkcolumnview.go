@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -90,6 +91,12 @@ type ColumnView interface {
 
 	// AppendColumn appends the @column to the end of the columns in @self.
 	AppendColumn(column ColumnViewColumn)
+	// Columns gets the list of columns in this column view.
+	//
+	// This list is constant over the lifetime of @self and can be used to
+	// monitor changes to the columns of @self by connecting to the
+	// ::items-changed signal.
+	Columns() gio.ListModel
 	// EnableRubberband returns whether rows can be selected by dragging with
 	// the mouse.
 	EnableRubberband() bool
@@ -217,6 +224,27 @@ func (s columnView) AppendColumn(column ColumnViewColumn) {
 	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
 
 	C.gtk_column_view_append_column(_arg0, _arg1)
+}
+
+// Columns gets the list of columns in this column view.
+//
+// This list is constant over the lifetime of @self and can be used to
+// monitor changes to the columns of @self by connecting to the
+// ::items-changed signal.
+func (s columnView) Columns() gio.ListModel {
+	var _arg0 *C.GtkColumnView // out
+
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_column_view_get_columns(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with

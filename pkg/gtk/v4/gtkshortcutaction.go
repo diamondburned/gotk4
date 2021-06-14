@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -243,6 +244,14 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 type ShortcutAction interface {
 	gextras.Objector
 
+	// Activate activates the action on the @widget with the given @args.
+	//
+	// Note that some actions ignore the passed in @flags, @widget or @args.
+	//
+	// Activation of an action can fail for various reasons. If the action is
+	// not supported by the @widget, if the @args don't match the action or if
+	// the activation otherwise had no effect, false will be returned.
+	Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
 	// String prints the given action into a human-readable string.
 	//
 	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
@@ -287,6 +296,37 @@ func NewShortcutActionParseString(string string) ShortcutAction {
 	_shortcutAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutAction)
 
 	return _shortcutAction
+}
+
+// Activate activates the action on the @widget with the given @args.
+//
+// Note that some actions ignore the passed in @flags, @widget or @args.
+//
+// Activation of an action can fail for various reasons. If the action is
+// not supported by the @widget, if the @args don't match the action or if
+// the activation otherwise had no effect, false will be returned.
+func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
+	var _arg0 *C.GtkShortcutAction     // out
+	var _arg1 C.GtkShortcutActionFlags // out
+	var _arg2 *C.GtkWidget             // out
+	var _arg3 *C.GVariant              // out
+
+	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkShortcutActionFlags)(flags)
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // String prints the given action into a human-readable string.

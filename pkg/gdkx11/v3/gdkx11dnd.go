@@ -2,7 +2,46 @@
 
 package gdkx11
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_x11_drag_context_get_type()), F: marshalX11DragContext},
+	})
+}
+
+type X11DragContext interface {
+	gdk.DragContext
+}
+
+// x11DragContext implements the X11DragContext class.
+type x11DragContext struct {
+	gdk.DragContext
+}
+
+var _ X11DragContext = (*x11DragContext)(nil)
+
+// WrapX11DragContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11DragContext(obj *externglib.Object) X11DragContext {
+	return x11DragContext{
+		gdk.DragContext: gdk.WrapDragContext(obj),
+	}
+}
+
+func marshalX11DragContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapX11DragContext(obj), nil
+}

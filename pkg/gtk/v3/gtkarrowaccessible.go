@@ -24,13 +24,11 @@ func init() {
 
 type ArrowAccessible interface {
 	WidgetAccessible
-	Image
 }
 
 // arrowAccessible implements the ArrowAccessible class.
 type arrowAccessible struct {
 	WidgetAccessible
-	Image
 }
 
 var _ ArrowAccessible = (*arrowAccessible)(nil)
@@ -40,7 +38,6 @@ var _ ArrowAccessible = (*arrowAccessible)(nil)
 func WrapArrowAccessible(obj *externglib.Object) ArrowAccessible {
 	return arrowAccessible{
 		WidgetAccessible: WrapWidgetAccessible(obj),
-		Image:            WrapImage(obj),
 	}
 }
 

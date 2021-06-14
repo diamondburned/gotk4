@@ -24,7 +24,6 @@ func init() {
 
 type PlugAccessible interface {
 	WindowAccessible
-	Window
 
 	ID() string
 }
@@ -32,7 +31,6 @@ type PlugAccessible interface {
 // plugAccessible implements the PlugAccessible class.
 type plugAccessible struct {
 	WindowAccessible
-	Window
 }
 
 var _ PlugAccessible = (*plugAccessible)(nil)
@@ -42,7 +40,6 @@ var _ PlugAccessible = (*plugAccessible)(nil)
 func WrapPlugAccessible(obj *externglib.Object) PlugAccessible {
 	return plugAccessible{
 		WindowAccessible: WrapWindowAccessible(obj),
-		Window:           WrapWindow(obj),
 	}
 }
 

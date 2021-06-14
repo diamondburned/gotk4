@@ -51,7 +51,8 @@ func (ng *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		files[file.name] = b
 
 		if err != nil {
-			return files, errors.Wrap(err, "package "+ng.PackageName())
+			pkg := ng.PackageName() + "/v" + gir.MajorVersion(ng.current.Namespace.Version)
+			return files, errors.Wrap(err, "package "+pkg)
 		}
 	}
 
@@ -93,17 +94,24 @@ func (ng *NamespaceGenerator) file(goFile string) *FileGenerator {
 // namespace should be ignored.
 func (ng *NamespaceGenerator) mustIgnore(girName, cType *string) (ignore bool) {
 	girType := ensureNamespace(ng.Namespace(), *girName)
+	hadNamespace := girType == *girName
+
 	names := FilterTypeName{girType, *cType}
 
 	for _, filter := range ng.gen.Filters {
+		// Filter returns keep=false.
 		if !filter.Filter(ng, &names) {
-			// Filter returns keep=false.
 			ng.Logln(LogDebug, "ignoring", girType)
 			return true
 		}
 	}
 
-	*girName = names.Name()
+	if hadNamespace {
+		*girName = names.GIRType
+	} else {
+		*girName = names.Name()
+	}
+
 	*cType = names.CType
 
 	return false
@@ -167,8 +175,9 @@ func (ng *NamespaceGenerator) Repositories() gir.Repositories {
 }
 
 func (ng *NamespaceGenerator) Logln(level LogLevel, v ...interface{}) {
-	prefix := []interface{}{"package", ng.current.Namespace.Name + ":"}
-	prefix = append(prefix, v...)
+	v = append(v, nil)
+	copy(v[1:], v) // shift rightwards once
+	v[0] = "package " + gir.VersionedNamespace(ng.current.Namespace) + ":"
 
-	ng.gen.Logln(level, prefix...)
+	ng.gen.Logln(level, v...)
 }

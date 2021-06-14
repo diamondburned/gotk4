@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -105,6 +106,9 @@ type PageSetup interface {
 	// LoadFile reads the page setup from the file @file_name. See
 	// gtk_page_setup_to_file().
 	LoadFile(fileName string) error
+	// LoadKeyFile reads the page setup from the group @group_name in the key
+	// file @key_file.
+	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
 	// SetBottomMargin sets the bottom margin of the PageSetup.
 	SetBottomMargin(margin float64, unit Unit)
 	// SetLeftMargin sets the left margin of the PageSetup.
@@ -123,6 +127,10 @@ type PageSetup interface {
 	SetTopMargin(margin float64, unit Unit)
 	// ToFile: this function saves the information from @setup to @file_name.
 	ToFile(fileName string) error
+	// ToGVariant: serialize page setup to an a{sv} variant.
+	ToGVariant() *glib.Variant
+	// ToKeyFile: this function adds the page setup from @setup to @key_file.
+	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
 
 // pageSetup implements the PageSetup class.
@@ -170,6 +178,46 @@ func NewPageSetupFromFile(fileName string) (PageSetup, error) {
 	var _cerr *C.GError      // in
 
 	_cret = C.gtk_page_setup_new_from_file(_arg1, &_cerr)
+
+	var _pageSetup PageSetup // out
+	var _goerr error         // out
+
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pageSetup, _goerr
+}
+
+// NewPageSetupFromGVariant constructs a class PageSetup.
+func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
+	var _arg1 *C.GVariant // out
+
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+
+	var _cret C.GtkPageSetup // in
+
+	_cret = C.gtk_page_setup_new_from_gvariant(_arg1)
+
+	var _pageSetup PageSetup // out
+
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
+
+	return _pageSetup
+}
+
+// NewPageSetupFromKeyFile constructs a class PageSetup.
+func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (PageSetup, error) {
+	var _arg1 *C.GKeyFile // out
+	var _arg2 *C.gchar    // out
+
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+	_arg2 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GtkPageSetup // in
+	var _cerr *C.GError      // in
+
+	_cret = C.gtk_page_setup_new_from_key_file(_arg1, _arg2, &_cerr)
 
 	var _pageSetup PageSetup // out
 	var _goerr error         // out
@@ -416,6 +464,29 @@ func (s pageSetup) LoadFile(fileName string) error {
 	return _goerr
 }
 
+// LoadKeyFile reads the page setup from the group @group_name in the key
+// file @key_file.
+func (s pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 *C.GKeyFile     // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+	_arg2 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cerr *C.GError // in
+
+	C.gtk_page_setup_load_key_file(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // SetBottomMargin sets the bottom margin of the PageSetup.
 func (s pageSetup) SetBottomMargin(margin float64, unit Unit) {
 	var _arg0 *C.GtkPageSetup // out
@@ -521,4 +592,35 @@ func (s pageSetup) ToFile(fileName string) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// ToGVariant: serialize page setup to an a{sv} variant.
+func (s pageSetup) ToGVariant() *glib.Variant {
+	var _arg0 *C.GtkPageSetup // out
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.gtk_page_setup_to_gvariant(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
+}
+
+// ToKeyFile: this function adds the page setup from @setup to @key_file.
+func (s pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 *C.GKeyFile     // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+	_arg2 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_page_setup_to_key_file(_arg0, _arg1, _arg2)
 }

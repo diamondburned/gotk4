@@ -3,10 +3,14 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -19,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 // DBusEscapeObjectPath: this is a language binding friendly version of
@@ -96,6 +101,75 @@ func DBusGenerateGuid() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// DBusGValueToGVariant converts a #GValue to a #GVariant of the type indicated
+// by the @type parameter.
+//
+// The conversion is using the following rules:
+//
+// - TYPE_STRING: 's', 'o', 'g' or 'ay' - TYPE_STRV: 'as', 'ao' or 'aay' -
+// TYPE_BOOLEAN: 'b' - TYPE_UCHAR: 'y' - TYPE_INT: 'i', 'n' - TYPE_UINT: 'u',
+// 'q' - TYPE_INT64 'x' - TYPE_UINT64: 't' - TYPE_DOUBLE: 'd' - TYPE_VARIANT:
+// Any Type
+//
+// This can fail if e.g. @gvalue is of type TYPE_STRING and @type is
+// ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType (including
+// e.g. TYPE_OBJECT and TYPE_BOXED derived-types) not in the table above.
+//
+// Note that if @gvalue is of type TYPE_VARIANT and its value is nil, the empty
+// #GVariant instance (never nil) for @type is returned (e.g. 0 for scalar
+// types, the empty string for string types, '/' for object path types, the
+// empty array for any array type and so on).
+//
+// See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
+// to a #GValue.
+func DBusGValueToGVariant(gvalue **externglib.Value, typ *glib.VariantType) *glib.Variant {
+	var _arg1 *C.GValue       // out
+	var _arg2 *C.GVariantType // out
+
+	_arg1 = (*C.GValue)(gvalue.GValue)
+	_arg2 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
+}
+
+// DBusGVariantToGValue converts a #GVariant to a #GValue. If @value is
+// floating, it is consumed.
+//
+// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
+// this function is essentially its reverse form. So, a #GVariant containing any
+// basic or string array type will be converted to a #GValue containing a basic
+// value or string array. Any other #GVariant (handle, variant, tuple, dict
+// entry) will be converted to a #GValue containing that #GVariant.
+//
+// The conversion never fails - a valid #GValue is always returned in
+// @out_gvalue.
+func DBusGVariantToGValue(value *glib.Variant) *externglib.Value {
+	var _arg1 *C.GVariant // out
+
+	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+
+	var _arg2 C.GValue // in
+
+	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
+
+	var _outGvalue *externglib.Value // out
+
+	_outGvalue = externglib.ValueFromNative(unsafe.Pointer(_arg2))
+
+	return _outGvalue
 }
 
 // DBusIsGuid checks if @string is a D-Bus GUID.
@@ -222,16 +296,13 @@ func DBusUnescapeObjectPath(s string) []byte {
 	var _guint8s []byte
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (*C.guint8)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_guint8s = make([]byte, length)
+		src := unsafe.Slice(_cret, i)
+		_guint8s = make([]byte, i)
 		for i := range src {
 			_guint8s[i] = (byte)(src[i])
 		}

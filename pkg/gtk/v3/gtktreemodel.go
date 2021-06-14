@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -17,8 +16,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -50,37 +47,6 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 	return TreeModelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TreeModelForeachFunc: type of the callback passed to gtk_tree_model_foreach()
-// to iterate over the rows in a tree model.
-type TreeModelForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter) (ok bool)
-
-//export gotk4_TreeModelForeachFunc
-func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var model TreeModel // out
-	var path *TreePath  // out
-	var iter *TreeIter  // out
-
-	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
-	path = WrapTreePath(unsafe.Pointer(arg1))
-	iter = WrapTreeIter(unsafe.Pointer(arg2))
-
-	fn := v.(TreeModelForeachFunc)
-	ok := fn(model, path, iter)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // TreeModelOverrider contains methods that are overridable. This
 // interface is a subset of the interface TreeModel.
 type TreeModelOverrider interface {
@@ -100,6 +66,11 @@ type TreeModelOverrider interface {
 	//
 	// This path should be freed with gtk_tree_path_free().
 	Path(iter *TreeIter) *TreePath
+	// Value initializes and sets @value to that at @column.
+	//
+	// When done with @value, g_value_unset() needs to be called to free any
+	// allocated memory.
+	Value(iter *TreeIter, column int) *externglib.Value
 	// IterChildren sets @iter to point to the first child of @parent.
 	//
 	// If @parent has no children, false is returned and @iter is set to be
@@ -344,11 +315,6 @@ type TreeModel interface {
 	// NewFilter creates a new TreeModel, with @child_model as the child_model
 	// and @root as the virtual root.
 	NewFilter(root *TreePath) TreeModel
-	// Foreach calls func on each node in model in a depth-first fashion.
-	//
-	// If @func returns true, then the tree ceases to be walked, and
-	// gtk_tree_model_foreach() returns.
-	Foreach(fn TreeModelForeachFunc)
 	// IterFirst initializes @iter with the first iterator in the tree (the one
 	// at the path "0") and returns true. Returns false if the tree is empty.
 	IterFirst() (TreeIter, bool)
@@ -406,22 +372,6 @@ func (c treeModel) NewFilter(root *TreePath) TreeModel {
 	_treeModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeModel)
 
 	return _treeModel
-}
-
-// Foreach calls func on each node in model in a depth-first fashion.
-//
-// If @func returns true, then the tree ceases to be walked, and
-// gtk_tree_model_foreach() returns.
-func (m treeModel) Foreach(fn TreeModelForeachFunc) {
-	var _arg0 *C.GtkTreeModel           // out
-	var _arg1 C.GtkTreeModelForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TreeModelForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_tree_model_foreach(_arg0, _arg1, _arg2)
 }
 
 // ColumnType returns the type of the column.
@@ -593,6 +543,30 @@ func (t treeModel) StringFromIter(iter *TreeIter) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// Value initializes and sets @value to that at @column.
+//
+// When done with @value, g_value_unset() needs to be called to free any
+// allocated memory.
+func (t treeModel) Value(iter *TreeIter, column int) *externglib.Value {
+	var _arg0 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _arg2 C.gint          // out
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg2 = C.gint(column)
+
+	var _arg3 C.GValue // in
+
+	C.gtk_tree_model_get_value(_arg0, _arg1, _arg2, &_arg3)
+
+	var _value *externglib.Value // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
+
+	return _value
 }
 
 // IterChildren sets @iter to point to the first child of @parent.
@@ -930,27 +904,6 @@ func (t *TreeIter) Native() unsafe.Pointer {
 func (t *TreeIter) Stamp() int {
 	var v int // out
 	v = (int)(t.native.stamp)
-	return v
-}
-
-// UserData gets the field inside the struct.
-func (t *TreeIter) UserData() interface{} {
-	var v interface{} // out
-	v = (interface{})(t.native.user_data)
-	return v
-}
-
-// UserData2 gets the field inside the struct.
-func (t *TreeIter) UserData2() interface{} {
-	var v interface{} // out
-	v = (interface{})(t.native.user_data2)
-	return v
-}
-
-// UserData3 gets the field inside the struct.
-func (t *TreeIter) UserData3() interface{} {
-	var v interface{} // out
-	v = (interface{})(t.native.user_data3)
 	return v
 }
 
@@ -1362,6 +1315,30 @@ func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference {
 	var _cret *C.GtkTreeRowReference // in
 
 	_cret = C.gtk_tree_row_reference_new(_arg1, _arg2)
+
+	var _treeRowReference *TreeRowReference // out
+
+	_treeRowReference = WrapTreeRowReference(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _treeRowReference
+}
+
+// NewTreeRowReferenceProXY constructs a struct TreeRowReference.
+func NewTreeRowReferenceProXY(proxy gextras.Objector, model TreeModel, path *TreePath) *TreeRowReference {
+	var _arg1 *C.GObject      // out
+	var _arg2 *C.GtkTreeModel // out
+	var _arg3 *C.GtkTreePath  // out
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(proxy.Native()))
+	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg3 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+
+	var _cret *C.GtkTreeRowReference // in
+
+	_cret = C.gtk_tree_row_reference_new_proxy(_arg1, _arg2, _arg3)
 
 	var _treeRowReference *TreeRowReference // out
 

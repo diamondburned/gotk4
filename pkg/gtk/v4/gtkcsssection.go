@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,6 +46,30 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 	return WrapCSSSection(unsafe.Pointer(b)), nil
 }
 
+// NewCSSSection constructs a struct CSSSection.
+func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSection {
+	var _arg1 *C.GFile          // out
+	var _arg2 *C.GtkCssLocation // out
+	var _arg3 *C.GtkCssLocation // out
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg2 = (*C.GtkCssLocation)(unsafe.Pointer(start.Native()))
+	_arg3 = (*C.GtkCssLocation)(unsafe.Pointer(end.Native()))
+
+	var _cret *C.GtkCssSection // in
+
+	_cret = C.gtk_css_section_new(_arg1, _arg2, _arg3)
+
+	var _cssSection *CSSSection // out
+
+	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _cssSection
+}
+
 // Native returns the underlying C source pointer.
 func (c *CSSSection) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
@@ -64,6 +90,26 @@ func (s *CSSSection) EndLocation() *CSSLocation {
 	_cssLocation = WrapCSSLocation(unsafe.Pointer(_cret))
 
 	return _cssLocation
+}
+
+// File gets the file that @section was parsed from.
+//
+// If no such file exists, for example because the CSS was loaded via
+// [method@Gtk.CssProvider.load_from_data], then `NULL` is returned.
+func (s *CSSSection) File() gio.File {
+	var _arg0 *C.GtkCssSection // out
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_css_section_get_file(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
 }
 
 // Parent gets the parent section for the given `section`.

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,6 +68,13 @@ type Device interface {
 	CapsLockState() bool
 	// DeviceTool retrieves the current tool for @device.
 	DeviceTool() DeviceTool
+	// Direction returns the direction of effective layout of the keyboard.
+	//
+	// This is only relevant for keyboard devices.
+	//
+	// The direction of a layout is the direction of the majority of its
+	// symbols. See [func@Pango.unichar_direction].
+	Direction() pango.Direction
 	// Display returns the `GdkDisplay` to which @device pertains.
 	Display() Display
 	// HasCursor determines whether the pointer follows device motion.
@@ -201,6 +209,28 @@ func (d device) DeviceTool() DeviceTool {
 	_deviceTool = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DeviceTool)
 
 	return _deviceTool
+}
+
+// Direction returns the direction of effective layout of the keyboard.
+//
+// This is only relevant for keyboard devices.
+//
+// The direction of a layout is the direction of the majority of its
+// symbols. See [func@Pango.unichar_direction].
+func (d device) Direction() pango.Direction {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret C.PangoDirection // in
+
+	_cret = C.gdk_device_get_direction(_arg0)
+
+	var _direction pango.Direction // out
+
+	_direction = pango.Direction(_cret)
+
+	return _direction
 }
 
 // Display returns the `GdkDisplay` to which @device pertains.

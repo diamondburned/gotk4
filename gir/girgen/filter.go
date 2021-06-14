@@ -72,18 +72,16 @@ func TypeRenamer(girType, newName string) FilterMatcher {
 
 func (ren typeRenamer) Filter(ng *NamespaceGenerator, names *FilterTypeName) (keep bool) {
 	var matches bool
-	if ren.namespace == "C" && names.CType == ren.from {
-		matches = true
-	}
-	if !matches {
+
+	if ren.namespace == "C" {
+		matches = names.CType == ren.from
+	} else {
 		typ, eq := EqNamespace(ren.namespace, names.GIRType)
 		matches = eq && typ == ren.from
 	}
 
 	if matches {
-		fullName, _ := gir.SplitGIRType(names.GIRType)
-		namespace, _ := gir.ParseVersionName(fullName)
-		names.GIRType = namespace + "." + ren.to
+		names.GIRType = ren.namespace + "." + ren.to
 	}
 
 	return true
@@ -140,9 +138,8 @@ func (rf *regexFilter) Filter(ng *NamespaceGenerator, names *FilterTypeName) (ke
 
 // EqNamespace is used for FilterMatchers to compare types and namespaces.
 func EqNamespace(nsp, girType string) (typ string, ok bool) {
-	fullName, typ := gir.SplitGIRType(girType)
-	namespace, _ := gir.ParseVersionName(fullName)
-	return typ, namespace != nsp
+	namespace, typ := gir.SplitGIRType(girType)
+	return typ, namespace == nsp
 }
 
 type fileFilter struct {

@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -125,6 +127,9 @@ type FileChooser interface {
 	// Note that the @chooser takes ownership of the filter if it is floating,
 	// so you have to ref and sink it if you want to keep a reference.
 	AddFilter(filter FileFilter)
+	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
+	// in a file chooser.
+	AddShortcutFolder(folder gio.File) error
 	// Action gets the type of operation that the file chooser is performing.
 	Action() FileChooserAction
 	// Choice gets the currently selected option in the 'choice' with the given
@@ -132,23 +137,53 @@ type FileChooser interface {
 	Choice(id string) string
 	// CreateFolders gets whether file chooser will offer to create new folders.
 	CreateFolders() bool
+	// CurrentFolder gets the current folder of @chooser as #GFile.
+	CurrentFolder() gio.File
 	// CurrentName gets the current name in the file selector, as entered by the
 	// user.
 	//
 	// This is meant to be used in save dialogs, to get the currently typed
 	// filename when the file itself does not exist yet.
 	CurrentName() string
+	// File gets the `GFile` for the currently selected file in the file
+	// selector.
+	//
+	// If multiple files are selected, one of the files will be returned at
+	// random.
+	//
+	// If the file chooser is in folder mode, this function returns the selected
+	// folder.
+	File() gio.File
+	// Files lists all the selected files and subfolders in the current folder
+	// of @chooser as #GFile.
+	Files() gio.ListModel
 	// Filter gets the current filter.
 	Filter() FileFilter
+	// Filters gets the current set of user-selectable filters, as a list model.
+	//
+	// See [method@Gtk.FileChooser.add_filter] and
+	// [method@Gtk.FileChooser.remove_filter] for changing individual filters.
+	//
+	// You should not modify the returned list model. Future changes to @chooser
+	// may or may not affect the returned model.
+	Filters() gio.ListModel
 	// SelectMultiple gets whether multiple files can be selected in the file
 	// chooser.
 	SelectMultiple() bool
+	// ShortcutFolders queries the list of shortcut folders in the file chooser.
+	//
+	// You should not modify the returned list model. Future changes to @chooser
+	// may or may not affect the returned model.
+	ShortcutFolders() gio.ListModel
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
 	// RemoveFilter removes @filter from the list of filters that the user can
 	// select between.
 	RemoveFilter(filter FileFilter)
+	// RemoveShortcutFolder removes a folder from the shortcut folders in a file
+	// chooser.
+	RemoveShortcutFolder(folder gio.File) error
 	// SetAction sets the type of operation that the chooser is performing.
 	//
 	// The user interface is adapted to suit the selected action.
@@ -168,6 +203,8 @@ type FileChooser interface {
 	// This is only relevant if the action is not set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN.
 	SetCreateFolders(createFolders bool)
+	// SetCurrentFolder sets the current folder for @chooser from a #GFile.
+	SetCurrentFolder(file gio.File) error
 	// SetCurrentName sets the current name in the file selector, as if entered
 	// by the user.
 	//
@@ -182,6 +219,47 @@ type FileChooser interface {
 	// Please see the documentation for those functions for an example of using
 	// [method@Gtk.FileChooser.set_current_name] as well.
 	SetCurrentName(name string)
+	// SetFile sets @file as the current filename for the file chooser.
+	//
+	// This includes changing to the file’s parent folder and actually selecting
+	// the file in list. If the @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE
+	// mode, the file’s base name will also appear in the dialog’s file name
+	// entry.
+	//
+	// If the file name isn’t in the current folder of @chooser, then the
+	// current folder of @chooser will be changed to the folder containing
+	// @filename.
+	//
+	// Note that the file must exist, or nothing will be done except for the
+	// directory change.
+	//
+	// If you are implementing a save dialog, you should use this function if
+	// you already have a file name to which the user may save; for example,
+	// when the user opens an existing file and then does “Save As…”. If you
+	// don’t have a file name already — for example, if the user just created a
+	// new file and is saving it for the first time, do not call this function.
+	//
+	// Instead, use something similar to this:
+	//
+	// “`c static void prepare_file_chooser (GtkFileChooser *chooser, GFile
+	// *existing_file) { gboolean document_is_new = (existing_file == NULL);
+	//
+	//    if (document_is_new)
+	//      {
+	//        GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
+	//        // the user just created a new document
+	//        gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
+	//        gtk_file_chooser_set_current_name (chooser, "Untitled document");
+	//        g_object_unref (default_file_for_saving);
+	//      }
+	//    else
+	//      {
+	//        // the user edited an existing document
+	//        gtk_file_chooser_set_file (chooser, existing_file, NULL);
+	//      }
+	//
+	// } “`
+	SetFile(file gio.File) error
 	// SetFilter sets the current filter.
 	//
 	// Only the files that pass the filter will be displayed. If the
@@ -282,6 +360,26 @@ func (c fileChooser) AddFilter(filter FileFilter) {
 	C.gtk_file_chooser_add_filter(_arg0, _arg1)
 }
 
+// AddShortcutFolder adds a folder to be displayed with the shortcut folders
+// in a file chooser.
+func (c fileChooser) AddShortcutFolder(folder gio.File) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
+
+	var _cerr *C.GError // in
+
+	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // Action gets the type of operation that the file chooser is performing.
 func (c fileChooser) Action() FileChooserAction {
 	var _arg0 *C.GtkFileChooser // out
@@ -339,6 +437,23 @@ func (c fileChooser) CreateFolders() bool {
 	return _ok
 }
 
+// CurrentFolder gets the current folder of @chooser as #GFile.
+func (c fileChooser) CurrentFolder() gio.File {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
+}
+
 // CurrentName gets the current name in the file selector, as entered by the
 // user.
 //
@@ -361,6 +476,48 @@ func (c fileChooser) CurrentName() string {
 	return _utf8
 }
 
+// File gets the `GFile` for the currently selected file in the file
+// selector.
+//
+// If multiple files are selected, one of the files will be returned at
+// random.
+//
+// If the file chooser is in folder mode, this function returns the selected
+// folder.
+func (c fileChooser) File() gio.File {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_file_chooser_get_file(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
+}
+
+// Files lists all the selected files and subfolders in the current folder
+// of @chooser as #GFile.
+func (c fileChooser) Files() gio.ListModel {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_file_chooser_get_files(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
+}
+
 // Filter gets the current filter.
 func (c fileChooser) Filter() FileFilter {
 	var _arg0 *C.GtkFileChooser // out
@@ -376,6 +533,29 @@ func (c fileChooser) Filter() FileFilter {
 	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileFilter)
 
 	return _fileFilter
+}
+
+// Filters gets the current set of user-selectable filters, as a list model.
+//
+// See [method@Gtk.FileChooser.add_filter] and
+// [method@Gtk.FileChooser.remove_filter] for changing individual filters.
+//
+// You should not modify the returned list model. Future changes to @chooser
+// may or may not affect the returned model.
+func (c fileChooser) Filters() gio.ListModel {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_file_chooser_get_filters(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
 }
 
 // SelectMultiple gets whether multiple files can be selected in the file
@@ -396,6 +576,26 @@ func (c fileChooser) SelectMultiple() bool {
 	}
 
 	return _ok
+}
+
+// ShortcutFolders queries the list of shortcut folders in the file chooser.
+//
+// You should not modify the returned list model. Future changes to @chooser
+// may or may not affect the returned model.
+func (c fileChooser) ShortcutFolders() gio.ListModel {
+	var _arg0 *C.GtkFileChooser // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_file_chooser_get_shortcut_folders(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
 }
 
 // RemoveChoice removes a 'choice' that has been added with
@@ -421,6 +621,26 @@ func (c fileChooser) RemoveFilter(filter FileFilter) {
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_remove_filter(_arg0, _arg1)
+}
+
+// RemoveShortcutFolder removes a folder from the shortcut folders in a file
+// chooser.
+func (c fileChooser) RemoveShortcutFolder(folder gio.File) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
+
+	var _cerr *C.GError // in
+
+	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // SetAction sets the type of operation that the chooser is performing.
@@ -475,6 +695,25 @@ func (c fileChooser) SetCreateFolders(createFolders bool) {
 	C.gtk_file_chooser_set_create_folders(_arg0, _arg1)
 }
 
+// SetCurrentFolder sets the current folder for @chooser from a #GFile.
+func (c fileChooser) SetCurrentFolder(file gio.File) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cerr *C.GError // in
+
+	C.gtk_file_chooser_set_current_folder(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // SetCurrentName sets the current name in the file selector, as if entered
 // by the user.
 //
@@ -497,6 +736,64 @@ func (c fileChooser) SetCurrentName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_set_current_name(_arg0, _arg1)
+}
+
+// SetFile sets @file as the current filename for the file chooser.
+//
+// This includes changing to the file’s parent folder and actually selecting
+// the file in list. If the @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE
+// mode, the file’s base name will also appear in the dialog’s file name
+// entry.
+//
+// If the file name isn’t in the current folder of @chooser, then the
+// current folder of @chooser will be changed to the folder containing
+// @filename.
+//
+// Note that the file must exist, or nothing will be done except for the
+// directory change.
+//
+// If you are implementing a save dialog, you should use this function if
+// you already have a file name to which the user may save; for example,
+// when the user opens an existing file and then does “Save As…”. If you
+// don’t have a file name already — for example, if the user just created a
+// new file and is saving it for the first time, do not call this function.
+//
+// Instead, use something similar to this:
+//
+// “`c static void prepare_file_chooser (GtkFileChooser *chooser, GFile
+// *existing_file) { gboolean document_is_new = (existing_file == NULL);
+//
+//    if (document_is_new)
+//      {
+//        GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
+//        // the user just created a new document
+//        gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
+//        gtk_file_chooser_set_current_name (chooser, "Untitled document");
+//        g_object_unref (default_file_for_saving);
+//      }
+//    else
+//      {
+//        // the user edited an existing document
+//        gtk_file_chooser_set_file (chooser, existing_file, NULL);
+//      }
+//
+// } “`
+func (c fileChooser) SetFile(file gio.File) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cerr *C.GError // in
+
+	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // SetFilter sets the current filter.

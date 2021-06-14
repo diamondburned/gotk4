@@ -244,27 +244,6 @@ func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	return _lineNumber, _charNumber
 }
 
-// UserData returns the user_data associated with @context.
-//
-// This will either be the user_data that was provided to
-// g_markup_parse_context_new() or to the most recent call of
-// g_markup_parse_context_push().
-func (c *MarkupParseContext) UserData() interface{} {
-	var _arg0 *C.GMarkupParseContext // out
-
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_markup_parse_context_get_user_data(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
-}
-
 // Parse: feed some data to the ParseContext.
 //
 // The data need not be valid UTF-8; an error will be signaled if it's invalid.
@@ -293,34 +272,6 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// Pop completes the process of a temporary sub-parser redirection.
-//
-// This function exists to collect the user_data allocated by a matching call to
-// g_markup_parse_context_push(). It must be called in the end_element handler
-// corresponding to the start_element handler during which
-// g_markup_parse_context_push() was called. You must not call this function
-// from the error callback -- the @user_data is provided directly to the
-// callback in that case.
-//
-// This function is not intended to be directly called by users interested in
-// invoking subparsers. Instead, it is intended to be used by the subparsers
-// themselves to implement a higher-level interface.
-func (c *MarkupParseContext) Pop() interface{} {
-	var _arg0 *C.GMarkupParseContext // out
-
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_markup_parse_context_pop(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
 }
 
 // Ref increases the reference count of @context.

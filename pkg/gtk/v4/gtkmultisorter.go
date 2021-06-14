@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,6 +29,7 @@ func init() {
 // and so on.
 type MultiSorter interface {
 	Sorter
+	gio.ListModel
 	Buildable
 
 	// Append: add @sorter to @self to use for sorting at the end.
@@ -45,6 +47,7 @@ type MultiSorter interface {
 // multiSorter implements the MultiSorter class.
 type multiSorter struct {
 	Sorter
+	gio.ListModel
 	Buildable
 }
 
@@ -54,8 +57,9 @@ var _ MultiSorter = (*multiSorter)(nil)
 // primarily used internally.
 func WrapMultiSorter(obj *externglib.Object) MultiSorter {
 	return multiSorter{
-		Sorter:    WrapSorter(obj),
-		Buildable: WrapBuildable(obj),
+		Sorter:        WrapSorter(obj),
+		gio.ListModel: gio.WrapListModel(obj),
+		Buildable:     WrapBuildable(obj),
 	}
 }
 

@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -26,8 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
-// void gotk4_FileProgressCallback(goffset, goffset, gpointer);
 import "C"
 
 func init() {
@@ -59,47 +56,6 @@ type FileOverrider interface {
 	// AppendToFinish finishes an asynchronous file append operation started
 	// with g_file_append_to_async().
 	AppendToFinish(res AsyncResult) (FileOutputStream, error)
-	// Copy copies the file @source to the location specified by @destination.
-	// Can not handle recursive copies of directories.
-	//
-	// If the flag FILE_COPY_OVERWRITE is specified an already existing
-	// @destination file is overwritten.
-	//
-	// If the flag FILE_COPY_NOFOLLOW_SYMLINKS is specified then symlinks will
-	// be copied as symlinks, otherwise the target of the @source symlink will
-	// be copied.
-	//
-	// If the flag FILE_COPY_ALL_METADATA is specified then all the metadata
-	// that is possible to copy is copied, not just the default subset (which,
-	// for instance, does not include the owner, see Info).
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If @progress_callback is not nil, then the operation can be monitored by
-	// setting this to a ProgressCallback function. @progress_callback_data will
-	// be passed to this function. It is guaranteed that this callback will be
-	// called after all data has been transferred with the total number of bytes
-	// copied during the operation.
-	//
-	// If the @source file does not exist, then the G_IO_ERROR_NOT_FOUND error
-	// is returned, independent on the status of the @destination.
-	//
-	// If FILE_COPY_OVERWRITE is not specified and the target exists, then the
-	// error G_IO_ERROR_EXISTS is returned.
-	//
-	// If trying to overwrite a file over a directory, the
-	// G_IO_ERROR_IS_DIRECTORY error is returned. If trying to overwrite a
-	// directory with a directory the G_IO_ERROR_WOULD_MERGE error is returned.
-	//
-	// If the source is a directory and the target does not exist, or
-	// FILE_COPY_OVERWRITE is specified and the target is a file, then the
-	// G_IO_ERROR_WOULD_RECURSE error is returned.
-	//
-	// If you are interested in copying the #GFile object itself (not the
-	// on-disk file), see g_file_dup().
-	Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error
 	// CopyFinish finishes copying the file started with g_file_copy_async().
 	CopyFinish(res AsyncResult) error
 	// Create creates a new file and returns an output stream for writing to it.
@@ -390,40 +346,6 @@ type FileOverrider interface {
 	// Finish an asynchronous mount operation that was started with
 	// g_file_mount_mountable().
 	MountMountableFinish(result AsyncResult) (File, error)
-	// Move tries to move the file or directory @source to the location
-	// specified by @destination. If native move operations are supported then
-	// this is used, otherwise a copy + delete fallback is used. The native
-	// implementation may support moving directories (for instance on moves
-	// inside the same filesystem), but the fallback code does not.
-	//
-	// If the flag FILE_COPY_OVERWRITE is specified an already existing
-	// @destination file is overwritten.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If @progress_callback is not nil, then the operation can be monitored by
-	// setting this to a ProgressCallback function. @progress_callback_data will
-	// be passed to this function. It is guaranteed that this callback will be
-	// called after all data has been transferred with the total number of bytes
-	// copied during the operation.
-	//
-	// If the @source file does not exist, then the G_IO_ERROR_NOT_FOUND error
-	// is returned, independent on the status of the @destination.
-	//
-	// If FILE_COPY_OVERWRITE is not specified and the target exists, then the
-	// error G_IO_ERROR_EXISTS is returned.
-	//
-	// If trying to overwrite a file over a directory, the
-	// G_IO_ERROR_IS_DIRECTORY error is returned. If trying to overwrite a
-	// directory with a directory the G_IO_ERROR_WOULD_MERGE error is returned.
-	//
-	// If the source is a directory and the target does not exist, or
-	// FILE_COPY_OVERWRITE is specified and the target is a file, then the
-	// G_IO_ERROR_WOULD_RECURSE error may be returned (if the native move
-	// operation isn't available).
-	Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error
 	// OpenReadwrite opens an existing file for reading and writing. The result
 	// is a IOStream that can be used to read and write the contents of the
 	// file.
@@ -618,16 +540,6 @@ type FileOverrider interface {
 	//
 	// This call does no blocking I/O.
 	ResolveRelativePath(relativePath string) File
-	// SetAttribute sets an attribute in the file with attribute name @attribute
-	// to @value_p.
-	//
-	// Some attributes can be unset by setting @type to
-	// G_FILE_ATTRIBUTE_TYPE_INVALID and @value_p to nil.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttribute(attribute string, typ FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetAttributesFinish finishes setting an attribute started in
 	// g_file_set_attributes_async().
 	SetAttributesFinish(result AsyncResult) (FileInfo, error)
@@ -1158,72 +1070,6 @@ func (f file) BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancell
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
-}
-
-// Copy copies the file @source to the location specified by @destination.
-// Can not handle recursive copies of directories.
-//
-// If the flag FILE_COPY_OVERWRITE is specified an already existing
-// @destination file is overwritten.
-//
-// If the flag FILE_COPY_NOFOLLOW_SYMLINKS is specified then symlinks will
-// be copied as symlinks, otherwise the target of the @source symlink will
-// be copied.
-//
-// If the flag FILE_COPY_ALL_METADATA is specified then all the metadata
-// that is possible to copy is copied, not just the default subset (which,
-// for instance, does not include the owner, see Info).
-//
-// If @cancellable is not nil, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If @progress_callback is not nil, then the operation can be monitored by
-// setting this to a ProgressCallback function. @progress_callback_data will
-// be passed to this function. It is guaranteed that this callback will be
-// called after all data has been transferred with the total number of bytes
-// copied during the operation.
-//
-// If the @source file does not exist, then the G_IO_ERROR_NOT_FOUND error
-// is returned, independent on the status of the @destination.
-//
-// If FILE_COPY_OVERWRITE is not specified and the target exists, then the
-// error G_IO_ERROR_EXISTS is returned.
-//
-// If trying to overwrite a file over a directory, the
-// G_IO_ERROR_IS_DIRECTORY error is returned. If trying to overwrite a
-// directory with a directory the G_IO_ERROR_WOULD_MERGE error is returned.
-//
-// If the source is a directory and the target does not exist, or
-// FILE_COPY_OVERWRITE is specified and the target is a file, then the
-// G_IO_ERROR_WOULD_RECURSE error is returned.
-//
-// If you are interested in copying the #GFile object itself (not the
-// on-disk file), see g_file_dup().
-func (s file) Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
-	var _arg0 *C.GFile                // out
-	var _arg1 *C.GFile                // out
-	var _arg2 C.GFileCopyFlags        // out
-	var _arg3 *C.GCancellable         // out
-	var _arg4 C.GFileProgressCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
-	_arg2 = (C.GFileCopyFlags)(flags)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
-	_arg5 = C.gpointer(box.Assign(progressCallback))
-
-	var _cerr *C.GError // in
-
-	C.g_file_copy(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // CopyAttributes copies the file attributes from @source to @destination.
@@ -2428,65 +2274,6 @@ func (f file) MountMountableFinish(result AsyncResult) (File, error) {
 	return _ret, _goerr
 }
 
-// Move tries to move the file or directory @source to the location
-// specified by @destination. If native move operations are supported then
-// this is used, otherwise a copy + delete fallback is used. The native
-// implementation may support moving directories (for instance on moves
-// inside the same filesystem), but the fallback code does not.
-//
-// If the flag FILE_COPY_OVERWRITE is specified an already existing
-// @destination file is overwritten.
-//
-// If @cancellable is not nil, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If @progress_callback is not nil, then the operation can be monitored by
-// setting this to a ProgressCallback function. @progress_callback_data will
-// be passed to this function. It is guaranteed that this callback will be
-// called after all data has been transferred with the total number of bytes
-// copied during the operation.
-//
-// If the @source file does not exist, then the G_IO_ERROR_NOT_FOUND error
-// is returned, independent on the status of the @destination.
-//
-// If FILE_COPY_OVERWRITE is not specified and the target exists, then the
-// error G_IO_ERROR_EXISTS is returned.
-//
-// If trying to overwrite a file over a directory, the
-// G_IO_ERROR_IS_DIRECTORY error is returned. If trying to overwrite a
-// directory with a directory the G_IO_ERROR_WOULD_MERGE error is returned.
-//
-// If the source is a directory and the target does not exist, or
-// FILE_COPY_OVERWRITE is specified and the target is a file, then the
-// G_IO_ERROR_WOULD_RECURSE error may be returned (if the native move
-// operation isn't available).
-func (s file) Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
-	var _arg0 *C.GFile                // out
-	var _arg1 *C.GFile                // out
-	var _arg2 C.GFileCopyFlags        // out
-	var _arg3 *C.GCancellable         // out
-	var _arg4 C.GFileProgressCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
-	_arg2 = (C.GFileCopyFlags)(flags)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
-	_arg5 = C.gpointer(box.Assign(progressCallback))
-
-	var _cerr *C.GError // in
-
-	C.g_file_move(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 // OpenReadwrite opens an existing file for reading and writing. The result
 // is a IOStream that can be used to read and write the contents of the
 // file.
@@ -3229,42 +3016,6 @@ func (f file) ResolveRelativePath(relativePath string) File {
 	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
 
 	return _ret
-}
-
-// SetAttribute sets an attribute in the file with attribute name @attribute
-// to @value_p.
-//
-// Some attributes can be unset by setting @type to
-// G_FILE_ATTRIBUTE_TYPE_INVALID and @value_p to nil.
-//
-// If @cancellable is not nil, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (f file) SetAttribute(attribute string, typ FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) error {
-	var _arg0 *C.GFile              // out
-	var _arg1 *C.char               // out
-	var _arg2 C.GFileAttributeType  // out
-	var _arg3 C.gpointer            // out
-	var _arg4 C.GFileQueryInfoFlags // out
-	var _arg5 *C.GCancellable       // out
-
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.char)(C.CString(attribute))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GFileAttributeType)(typ)
-	_arg3 = C.gpointer(valueP)
-	_arg4 = (C.GFileQueryInfoFlags)(flags)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_file_set_attribute(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // SetAttributeByteString sets @attribute of type

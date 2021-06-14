@@ -3,10 +3,12 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,6 +51,22 @@ type Surface interface {
 	// using the returned `GdkGLContext`, you will need to call
 	// [method@Gdk.GLContext.make_current] or [method@Gdk.GLContext.realize].
 	CreateGLContext() (GLContext, error)
+	// CreateSimilarSurface: create a new Cairo surface that is as compatible as
+	// possible with the given @surface.
+	//
+	// For example the new surface will have the same fallback resolution and
+	// font options as @surface. Generally, the new surface will also use the
+	// same backend as @surface, unless that is not possible for some reason.
+	// The type of the returned surface may be examined with
+	// cairo_surface_get_type().
+	//
+	// Initially the surface contents are all 0 (transparent if contents have
+	// transparency, black otherwise.)
+	//
+	// This function always returns a valid pointer, but it will return a
+	// pointer to a “nil” surface if @other is already in an error state or any
+	// other error occurs.
+	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
 	// CreateVulkanContext creates a new `GdkVulkanContext` for rendering on
 	// @surface.
 	//
@@ -152,6 +170,35 @@ type Surface interface {
 	// Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
 	// to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
 	SetDeviceCursor(device Device, cursor Cursor)
+	// SetInputRegion: apply the region to the surface for the purpose of event
+	// handling.
+	//
+	// Mouse events which happen while the pointer position corresponds to an
+	// unset bit in the mask will be passed on the surface below @surface.
+	//
+	// An input region is typically used with RGBA surfaces. The alpha channel
+	// of the surface defines which pixels are invisible and allows for nicely
+	// antialiased borders, and the input region controls where the surface is
+	// “clickable”.
+	//
+	// Use [method@Gdk.Display.supports_input_shapes] to find out if a
+	// particular backend supports input regions.
+	SetInputRegion(region *cairo.Region)
+	// SetOpaqueRegion marks a region of the `GdkSurface` as opaque.
+	//
+	// For optimisation purposes, compositing window managers may like to not
+	// draw obscured regions of surfaces, or turn off blending during for these
+	// regions. With RGB windows with no transparency, this is just the shape of
+	// the window, but with ARGB32 windows, the compositor does not know what
+	// regions of the window are transparent or not.
+	//
+	// This function only works for toplevel surfaces.
+	//
+	// GTK will update this property automatically if the @surface background is
+	// opaque, as we know where the opaque regions are. If your surface
+	// background is not opaque, please update this property in your
+	// WidgetClass.css_changed() handler.
+	SetOpaqueRegion(region *cairo.Region)
 }
 
 // surface implements the Surface class.
@@ -266,6 +313,46 @@ func (s surface) CreateGLContext() (GLContext, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
+}
+
+// CreateSimilarSurface: create a new Cairo surface that is as compatible as
+// possible with the given @surface.
+//
+// For example the new surface will have the same fallback resolution and
+// font options as @surface. Generally, the new surface will also use the
+// same backend as @surface, unless that is not possible for some reason.
+// The type of the returned surface may be examined with
+// cairo_surface_get_type().
+//
+// Initially the surface contents are all 0 (transparent if contents have
+// transparency, black otherwise.)
+//
+// This function always returns a valid pointer, but it will return a
+// pointer to a “nil” surface if @other is already in an error state or any
+// other error occurs.
+func (s surface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
+	var _arg0 *C.GdkSurface     // out
+	var _arg1 C.cairo_content_t // out
+	var _arg2 C.int             // out
+	var _arg3 C.int             // out
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.cairo_content_t)(content)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+
+	var _cret *C.cairo_surface_t // in
+
+	_cret = C.gdk_surface_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
+
+	var _ret *cairo.Surface // out
+
+	_ret = cairo.WrapSurface(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *cairo.Surface) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _ret
 }
 
 // CreateVulkanContext creates a new `GdkVulkanContext` for rendering on
@@ -604,4 +691,51 @@ func (s surface) SetDeviceCursor(device Device, cursor Cursor) {
 	_arg2 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_surface_set_device_cursor(_arg0, _arg1, _arg2)
+}
+
+// SetInputRegion: apply the region to the surface for the purpose of event
+// handling.
+//
+// Mouse events which happen while the pointer position corresponds to an
+// unset bit in the mask will be passed on the surface below @surface.
+//
+// An input region is typically used with RGBA surfaces. The alpha channel
+// of the surface defines which pixels are invisible and allows for nicely
+// antialiased borders, and the input region controls where the surface is
+// “clickable”.
+//
+// Use [method@Gdk.Display.supports_input_shapes] to find out if a
+// particular backend supports input regions.
+func (s surface) SetInputRegion(region *cairo.Region) {
+	var _arg0 *C.GdkSurface     // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	C.gdk_surface_set_input_region(_arg0, _arg1)
+}
+
+// SetOpaqueRegion marks a region of the `GdkSurface` as opaque.
+//
+// For optimisation purposes, compositing window managers may like to not
+// draw obscured regions of surfaces, or turn off blending during for these
+// regions. With RGB windows with no transparency, this is just the shape of
+// the window, but with ARGB32 windows, the compositor does not know what
+// regions of the window are transparent or not.
+//
+// This function only works for toplevel surfaces.
+//
+// GTK will update this property automatically if the @surface background is
+// opaque, as we know where the opaque regions are. If your surface
+// background is not opaque, please update this property in your
+// WidgetClass.css_changed() handler.
+func (s surface) SetOpaqueRegion(region *cairo.Region) {
+	var _arg0 *C.GdkSurface     // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	C.gdk_surface_set_opaque_region(_arg0, _arg1)
 }

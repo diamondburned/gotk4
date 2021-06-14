@@ -85,13 +85,6 @@ type Credentials interface {
 	//
 	// This operation can fail if #GCredentials is not supported on the the OS.
 	IsSameUser(otherCredentials Credentials) error
-	// SetNative copies the native credentials of type @native_type from @native
-	// into @credentials.
-	//
-	// It is a programming error (which will cause a warning to be logged) to
-	// use this method if there is no #GCredentials support for the OS or if
-	// @native_type isn't supported by the OS.
-	SetNative(nativeType CredentialsType, native interface{})
 	// SetUnixUser tries to set the UNIX user identifier on @credentials. This
 	// method is only available on UNIX platforms.
 	//
@@ -211,24 +204,6 @@ func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// SetNative copies the native credentials of type @native_type from @native
-// into @credentials.
-//
-// It is a programming error (which will cause a warning to be logged) to
-// use this method if there is no #GCredentials support for the OS or if
-// @native_type isn't supported by the OS.
-func (c credentials) SetNative(nativeType CredentialsType, native interface{}) {
-	var _arg0 *C.GCredentials    // out
-	var _arg1 C.GCredentialsType // out
-	var _arg2 C.gpointer         // out
-
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GCredentialsType)(nativeType)
-	_arg2 = C.gpointer(native)
-
-	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }
 
 // SetUnixUser tries to set the UNIX user identifier on @credentials. This

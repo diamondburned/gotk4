@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -142,6 +143,12 @@ type Notebook interface {
 	NthPage(pageNum int) Widget
 	// Page returns the `GtkNotebookPage` for @child.
 	Page(child Widget) NotebookPage
+	// Pages returns a `GListModel` that contains the pages of the notebook.
+	//
+	// This can be used to keep an up-to-date view. The model also implements
+	// [iface@Gtk.SelectionModel] and can be used to track and modify the
+	// visible page.
+	Pages() gio.ListModel
 	// Scrollable returns whether the tab label area has arrows for scrolling.
 	Scrollable() bool
 	// ShowBorder returns whether a bevel will be drawn around the notebook
@@ -533,6 +540,27 @@ func (n notebook) Page(child Widget) NotebookPage {
 	_notebookPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(NotebookPage)
 
 	return _notebookPage
+}
+
+// Pages returns a `GListModel` that contains the pages of the notebook.
+//
+// This can be used to keep an up-to-date view. The model also implements
+// [iface@Gtk.SelectionModel] and can be used to track and modify the
+// visible page.
+func (n notebook) Pages() gio.ListModel {
+	var _arg0 *C.GtkNotebook // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_notebook_get_pages(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
 }
 
 // Scrollable returns whether the tab label area has arrows for scrolling.

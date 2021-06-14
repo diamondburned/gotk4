@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,6 +49,9 @@ type ColumnViewColumn interface {
 	Factory() ListItemFactory
 	// FixedWidth gets the fixed width of the column.
 	FixedWidth() int
+	// HeaderMenu gets the menu model that is used to create the context menu
+	// for the column header.
+	HeaderMenu() gio.MenuModel
 	// Resizable returns whether this column is resizable.
 	Resizable() bool
 	// Sorter returns the sorter that is associated with the column.
@@ -70,6 +74,9 @@ type ColumnViewColumn interface {
 	// Setting a fixed width overrides the automatically calculated width.
 	// Interactive resizing also sets the “fixed-width” property.
 	SetFixedWidth(fixedWidth int)
+	// SetHeaderMenu sets the menu model that is used to create the context menu
+	// for the column header.
+	SetHeaderMenu(menu gio.MenuModel)
 	// SetResizable sets whether this column should be resizable by dragging.
 	SetResizable(resizable bool)
 	// SetSorter associates a sorter with the column.
@@ -206,6 +213,24 @@ func (s columnViewColumn) FixedWidth() int {
 	return _gint
 }
 
+// HeaderMenu gets the menu model that is used to create the context menu
+// for the column header.
+func (s columnViewColumn) HeaderMenu() gio.MenuModel {
+	var _arg0 *C.GtkColumnViewColumn // out
+
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GMenuModel // in
+
+	_cret = C.gtk_column_view_column_get_header_menu(_arg0)
+
+	var _menuModel gio.MenuModel // out
+
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+
+	return _menuModel
+}
+
 // Resizable returns whether this column is resizable.
 func (s columnViewColumn) Resizable() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -319,6 +344,18 @@ func (s columnViewColumn) SetFixedWidth(fixedWidth int) {
 	_arg1 = C.int(fixedWidth)
 
 	C.gtk_column_view_column_set_fixed_width(_arg0, _arg1)
+}
+
+// SetHeaderMenu sets the menu model that is used to create the context menu
+// for the column header.
+func (s columnViewColumn) SetHeaderMenu(menu gio.MenuModel) {
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 *C.GMenuModel          // out
+
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
+
+	C.gtk_column_view_column_set_header_menu(_arg0, _arg1)
 }
 
 // SetResizable sets whether this column should be resizable by dragging.

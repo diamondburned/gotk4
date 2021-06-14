@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -20,29 +20,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButton},
 	})
-}
-
-// MenuButtonCreatePopupFunc: user-provided callback function to create a popup
-// for a `GtkMenuButton` on demand.
-//
-// This function is called when the popup of @menu_button is shown, but none has
-// been provided via [method@Gtk.MenuButton.set_popover] or
-// [method@Gtk.MenuButton.set_menu_model].
-type MenuButtonCreatePopupFunc func(menuButton MenuButton)
-
-//export gotk4_MenuButtonCreatePopupFunc
-func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var menuButton MenuButton // out
-
-	menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(MenuButton)
-
-	fn := v.(MenuButtonCreatePopupFunc)
-	fn(menuButton)
 }
 
 // MenuButton: the `GtkMenuButton` widget is used to display a popup when
@@ -114,6 +91,8 @@ type MenuButton interface {
 	IconName() string
 	// Label gets the label shown in the button
 	Label() string
+	// MenuModel returns the `GMenuModel` used to generate the popup.
+	MenuModel() gio.MenuModel
 	// Popover returns the `GtkPopover` that pops out of the button.
 	//
 	// If the button is not using a `GtkPopover`, this function returns nil.
@@ -142,6 +121,18 @@ type MenuButton interface {
 	SetIconName(iconName string)
 	// SetLabel sets the label to show inside the menu button.
 	SetLabel(label string)
+	// SetMenuModel sets the `GMenuModel` from which the popup will be
+	// constructed.
+	//
+	// If @menu_model is nil, the button is disabled.
+	//
+	// A [class@Gtk.Popover] will be created from the menu model with
+	// [ctor@Gtk.PopoverMenu.new_from_model]. Actions will be connected as
+	// documented for this function.
+	//
+	// If [property@Gtk.MenuButton:popover] is already set, it will be
+	// dissociated from the @menu_button, and the property is set to nil.
+	SetMenuModel(menuModel gio.MenuModel)
 	// SetPopover sets the `GtkPopover` that will be popped up when the
 	// @menu_button is clicked.
 	//
@@ -265,6 +256,23 @@ func (m menuButton) Label() string {
 	return _utf8
 }
 
+// MenuModel returns the `GMenuModel` used to generate the popup.
+func (m menuButton) MenuModel() gio.MenuModel {
+	var _arg0 *C.GtkMenuButton // out
+
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
+
+	var _cret *C.GMenuModel // in
+
+	_cret = C.gtk_menu_button_get_menu_model(_arg0)
+
+	var _menuModel gio.MenuModel // out
+
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+
+	return _menuModel
+}
+
 // Popover returns the `GtkPopover` that pops out of the button.
 //
 // If the button is not using a `GtkPopover`, this function returns nil.
@@ -377,6 +385,27 @@ func (m menuButton) SetLabel(label string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_label(_arg0, _arg1)
+}
+
+// SetMenuModel sets the `GMenuModel` from which the popup will be
+// constructed.
+//
+// If @menu_model is nil, the button is disabled.
+//
+// A [class@Gtk.Popover] will be created from the menu model with
+// [ctor@Gtk.PopoverMenu.new_from_model]. Actions will be connected as
+// documented for this function.
+//
+// If [property@Gtk.MenuButton:popover] is already set, it will be
+// dissociated from the @menu_button, and the property is set to nil.
+func (m menuButton) SetMenuModel(menuModel gio.MenuModel) {
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 *C.GMenuModel    // out
+
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+
+	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
 
 // SetPopover sets the `GtkPopover` that will be popped up when the

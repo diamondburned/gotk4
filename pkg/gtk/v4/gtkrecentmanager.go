@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -428,16 +429,13 @@ func (r *RecentData) AppExec() string {
 func (r *RecentData) Groups() []string {
 	var v []string
 	{
-		var length int
-		for p := r.native.groups; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := r.native.groups; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(r.native.groups, length)
-		v = make([]string, length)
+		src := unsafe.Slice(r.native.groups, i)
+		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString(src[i])
 		}
@@ -478,6 +476,29 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *RecentInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// CreateAppInfo creates a `GAppInfo` for the specified `GtkRecentInfo`
+func (i *RecentInfo) CreateAppInfo(appName string) (gio.AppInfo, error) {
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.char          // out
+
+	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.char)(C.CString(appName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GAppInfo // in
+	var _cerr *C.GError   // in
+
+	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
+
+	var _appInfo gio.AppInfo // out
+	var _goerr error         // out
+
+	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.AppInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _appInfo, _goerr
 }
 
 // Exists checks whether the resource pointed by @info still exists. At the
@@ -579,6 +600,23 @@ func (i *RecentInfo) DisplayName() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// GIcon retrieves the icon associated to the resource MIME type.
+func (i *RecentInfo) GIcon() gio.Icon {
+	var _arg0 *C.GtkRecentInfo // out
+
+	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GIcon // in
+
+	_cret = C.gtk_recent_info_get_gicon(_arg0)
+
+	var _icon gio.Icon // out
+
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+
+	return _icon
 }
 
 // Groups returns all groups registered for the recently used item @info.

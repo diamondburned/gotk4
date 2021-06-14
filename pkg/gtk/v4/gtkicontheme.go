@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,7 +65,12 @@ func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 // `GtkIconPaintable` implements `GdkPaintable`.
 type IconPaintable interface {
 	gextras.Objector
+	gdk.Paintable
 
+	// File gets the `GFile` that was used to load the icon.
+	//
+	// Returns nil if the icon was not loaded from a file.
+	File() gio.File
 	// IconName: get the icon name being used for this icon.
 	//
 	// When an icon looked up in the icon theme was not available, the icon
@@ -86,6 +93,7 @@ type IconPaintable interface {
 // iconPaintable implements the IconPaintable class.
 type iconPaintable struct {
 	gextras.Objector
+	gdk.Paintable
 }
 
 var _ IconPaintable = (*iconPaintable)(nil)
@@ -94,7 +102,8 @@ var _ IconPaintable = (*iconPaintable)(nil)
 // primarily used internally.
 func WrapIconPaintable(obj *externglib.Object) IconPaintable {
 	return iconPaintable{
-		Objector: obj,
+		Objector:      obj,
+		gdk.Paintable: gdk.WrapPaintable(obj),
 	}
 }
 
@@ -102,6 +111,46 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapIconPaintable(obj), nil
+}
+
+// NewIconPaintableForFile constructs a class IconPaintable.
+func NewIconPaintableForFile(file gio.File, size int, scale int) IconPaintable {
+	var _arg1 *C.GFile // out
+	var _arg2 C.int    // out
+	var _arg3 C.int    // out
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg2 = C.int(size)
+	_arg3 = C.int(scale)
+
+	var _cret C.GtkIconPaintable // in
+
+	_cret = C.gtk_icon_paintable_new_for_file(_arg1, _arg2, _arg3)
+
+	var _iconPaintable IconPaintable // out
+
+	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
+
+	return _iconPaintable
+}
+
+// File gets the `GFile` that was used to load the icon.
+//
+// Returns nil if the icon was not loaded from a file.
+func (s iconPaintable) File() gio.File {
+	var _arg0 *C.GtkIconPaintable // out
+
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_icon_paintable_get_file(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
 }
 
 // IconName: get the icon name being used for this icon.
@@ -193,6 +242,9 @@ type IconTheme interface {
 	//
 	// See [method@Gtk.IconTheme.set_search_path].
 	AddSearchPath(path string)
+	// Display returns the display that the `GtkIconTheme` object was created
+	// for.
+	Display() gdk.Display
 	// IconNames lists the names of icons in the current icon theme.
 	IconNames() []string
 	// IconSizes returns an array of integers describing the sizes at which the
@@ -213,9 +265,17 @@ type IconTheme interface {
 	//
 	// Returns (transfer full): the current icon theme name,
 	ThemeName() string
+	// HasGIcon checks whether an icon theme includes an icon for a particular
+	// `GIcon`.
+	HasGIcon(gicon gio.Icon) bool
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
+	// LookupByGIcon looks up a icon for a desired size and window scale.
+	//
+	// The icon can then be rendered by using it as a `GdkPaintable`, or you can
+	// get information such as the filename and size.
+	LookupByGIcon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
 	// LookupIcon looks up a named icon for a desired size and window scale,
 	// returning a `GtkIconPaintable`.
 	//
@@ -334,6 +394,24 @@ func (s iconTheme) AddSearchPath(path string) {
 	C.gtk_icon_theme_add_search_path(_arg0, _arg1)
 }
 
+// Display returns the display that the `GtkIconTheme` object was created
+// for.
+func (s iconTheme) Display() gdk.Display {
+	var _arg0 *C.GtkIconTheme // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gtk_icon_theme_get_display(_arg0)
+
+	var _display gdk.Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+
+	return _display
+}
+
 // IconNames lists the names of icons in the current icon theme.
 func (s iconTheme) IconNames() []string {
 	var _arg0 *C.GtkIconTheme // out
@@ -347,16 +425,13 @@ func (s iconTheme) IconNames() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -386,16 +461,13 @@ func (s iconTheme) IconSizes(iconName string) []int {
 	var _gints []int
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (*C.int)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_gints = make([]int, length)
+		src := unsafe.Slice(_cret, i)
+		_gints = make([]int, i)
 		for i := range src {
 			_gints[i] = (int)(src[i])
 		}
@@ -419,16 +491,13 @@ func (s iconTheme) ResourcePath() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -453,16 +522,13 @@ func (s iconTheme) SearchPath() []string {
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -492,6 +558,28 @@ func (s iconTheme) ThemeName() string {
 	return _utf8
 }
 
+// HasGIcon checks whether an icon theme includes an icon for a particular
+// `GIcon`.
+func (s iconTheme) HasGIcon(gicon gio.Icon) bool {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.GIcon        // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // HasIcon checks whether an icon theme includes an icon for a particular
 // name.
 func (s iconTheme) HasIcon(iconName string) bool {
@@ -513,6 +601,36 @@ func (s iconTheme) HasIcon(iconName string) bool {
 	}
 
 	return _ok
+}
+
+// LookupByGIcon looks up a icon for a desired size and window scale.
+//
+// The icon can then be rendered by using it as a `GdkPaintable`, or you can
+// get information such as the filename and size.
+func (s iconTheme) LookupByGIcon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
+	var _arg0 *C.GtkIconTheme      // out
+	var _arg1 *C.GIcon             // out
+	var _arg2 C.int                // out
+	var _arg3 C.int                // out
+	var _arg4 C.GtkTextDirection   // out
+	var _arg5 C.GtkIconLookupFlags // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = C.int(size)
+	_arg3 = C.int(scale)
+	_arg4 = (C.GtkTextDirection)(direction)
+	_arg5 = (C.GtkIconLookupFlags)(flags)
+
+	var _cret *C.GtkIconPaintable // in
+
+	_cret = C.gtk_icon_theme_lookup_by_gicon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _iconPaintable IconPaintable // out
+
+	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
+
+	return _iconPaintable
 }
 
 // LookupIcon looks up a named icon for a desired size and window scale,

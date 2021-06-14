@@ -6,9 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -16,33 +16,12 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-//
-// void gotk4_PrintSettingsFunc( char*,  char*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_print_settings_get_type()), F: marshalPrintSettings},
 	})
-}
-
-type PrintSettingsFunc func(key string, value string)
-
-//export gotk4_PrintSettingsFunc
-func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var key string   // out
-	var value string // out
-
-	key = C.GoString(arg0)
-	value = C.GoString(arg1)
-
-	fn := v.(PrintSettingsFunc)
-	fn(key, value)
 }
 
 // PrintSettings: a `GtkPrintSettings` object represents the settings of a print
@@ -62,8 +41,6 @@ type PrintSettings interface {
 
 	// Copy copies a `GtkPrintSettings` object.
 	Copy() PrintSettings
-	// Foreach calls @func for each key-value pair of @settings.
-	Foreach(fn PrintSettingsFunc)
 	// Get looks up the string value associated with @key.
 	Get(key string) string
 	// Bool returns the boolean represented by the value that is associated with
@@ -156,6 +133,12 @@ type PrintSettings interface {
 	//
 	// See [method@Gtk.PrintSettings.to_file].
 	LoadFile(fileName string) error
+	// LoadKeyFile reads the print settings from the group @group_name in
+	// @key_file.
+	//
+	// If the file could not be loaded then error is set to either a
+	// `GFileError` or `GKeyFileError`.
+	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
 	// Set associates @value with @key.
 	Set(key string, value string)
 	// SetBool sets @key to a boolean value.
@@ -228,6 +211,11 @@ type PrintSettings interface {
 	// If the file could not be written then error is set to either a
 	// `GFileError` or `GKeyFileError`.
 	ToFile(fileName string) error
+	// ToGVariant: serialize print settings to an a{sv} variant.
+	ToGVariant() *glib.Variant
+	// ToKeyFile: this function adds the print settings from @settings to
+	// @key_file.
+	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 	// Unset removes any value associated with @key.
 	//
 	// This has the same effect as setting the value to nil.
@@ -289,6 +277,46 @@ func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
 	return _printSettings, _goerr
 }
 
+// NewPrintSettingsFromGVariant constructs a class PrintSettings.
+func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
+	var _arg1 *C.GVariant // out
+
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+
+	var _cret C.GtkPrintSettings // in
+
+	_cret = C.gtk_print_settings_new_from_gvariant(_arg1)
+
+	var _printSettings PrintSettings // out
+
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+
+	return _printSettings
+}
+
+// NewPrintSettingsFromKeyFile constructs a class PrintSettings.
+func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (PrintSettings, error) {
+	var _arg1 *C.GKeyFile // out
+	var _arg2 *C.char     // out
+
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+	_arg2 = (*C.char)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GtkPrintSettings // in
+	var _cerr *C.GError          // in
+
+	_cret = C.gtk_print_settings_new_from_key_file(_arg1, _arg2, &_cerr)
+
+	var _printSettings PrintSettings // out
+	var _goerr error                 // out
+
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _printSettings, _goerr
+}
+
 // Copy copies a `GtkPrintSettings` object.
 func (o printSettings) Copy() PrintSettings {
 	var _arg0 *C.GtkPrintSettings // out
@@ -304,19 +332,6 @@ func (o printSettings) Copy() PrintSettings {
 	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
 
 	return _printSettings
-}
-
-// Foreach calls @func for each key-value pair of @settings.
-func (s printSettings) Foreach(fn PrintSettingsFunc) {
-	var _arg0 *C.GtkPrintSettings    // out
-	var _arg1 C.GtkPrintSettingsFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_PrintSettingsFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_print_settings_foreach(_arg0, _arg1, _arg2)
 }
 
 // Get looks up the string value associated with @key.
@@ -990,6 +1005,32 @@ func (s printSettings) LoadFile(fileName string) error {
 	return _goerr
 }
 
+// LoadKeyFile reads the print settings from the group @group_name in
+// @key_file.
+//
+// If the file could not be loaded then error is set to either a
+// `GFileError` or `GKeyFileError`.
+func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.GKeyFile         // out
+	var _arg2 *C.char             // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+	_arg2 = (*C.char)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cerr *C.GError // in
+
+	C.gtk_print_settings_load_key_file(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // Set associates @value with @key.
 func (s printSettings) Set(key string, value string) {
 	var _arg0 *C.GtkPrintSettings // out
@@ -1388,6 +1429,38 @@ func (s printSettings) ToFile(fileName string) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// ToGVariant: serialize print settings to an a{sv} variant.
+func (s printSettings) ToGVariant() *glib.Variant {
+	var _arg0 *C.GtkPrintSettings // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.gtk_print_settings_to_gvariant(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+
+	return _variant
+}
+
+// ToKeyFile: this function adds the print settings from @settings to
+// @key_file.
+func (s printSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.GKeyFile         // out
+	var _arg2 *C.char             // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
+	_arg2 = (*C.char)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_print_settings_to_key_file(_arg0, _arg1, _arg2)
 }
 
 // Unset removes any value associated with @key.

@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -153,6 +154,103 @@ type Application interface {
 	//
 	// The application must be registered before calling this function.
 	Activate()
+	// AddMainOption: add an option to be handled by @application.
+	//
+	// Calling this function is the equivalent of calling
+	// g_application_add_main_option_entries() with a single Entry that has its
+	// arg_data member set to nil.
+	//
+	// The parsed arguments will be packed into a Dict which is passed to
+	// #GApplication::handle-local-options. If
+	// G_APPLICATION_HANDLES_COMMAND_LINE is set, then it will also be sent to
+	// the primary instance. See g_application_add_main_option_entries() for
+	// more details.
+	//
+	// See Entry for more documentation of the arguments.
+	AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
+	// AddMainOptionEntries adds main option entries to be handled by
+	// @application.
+	//
+	// This function is comparable to g_option_context_add_main_entries().
+	//
+	// After the commandline arguments are parsed, the
+	// #GApplication::handle-local-options signal will be emitted. At this
+	// point, the application can inspect the values pointed to by @arg_data in
+	// the given Entrys.
+	//
+	// Unlike Context, #GApplication supports giving a nil @arg_data for a
+	// non-callback Entry. This results in the argument in question being packed
+	// into a Dict which is also passed to #GApplication::handle-local-options,
+	// where it can be inspected and modified. If
+	// G_APPLICATION_HANDLES_COMMAND_LINE is set, then the resulting dictionary
+	// is sent to the primary instance, where
+	// g_application_command_line_get_options_dict() will return it. This
+	// "packing" is done according to the type of the argument -- booleans for
+	// normal flags, strings for strings, bytestrings for filenames, etc. The
+	// packing only occurs if the flag is given (ie: we do not pack a "false"
+	// #GVariant in the case that a flag is missing).
+	//
+	// In general, it is recommended that all commandline arguments are parsed
+	// locally. The options dictionary should then be used to transmit the
+	// result of the parsing to the primary instance, where
+	// g_variant_dict_lookup() can be used. For local options, it is possible to
+	// either use @arg_data in the usual way, or to consult (and potentially
+	// remove) the option from the options dictionary.
+	//
+	// This function is new in GLib 2.40. Before then, the only real choice was
+	// to send all of the commandline arguments (options and all) to the primary
+	// instance for handling. #GApplication ignored them completely on the local
+	// side. Calling this function "opts in" to the new behaviour, and in
+	// particular, means that unrecognised options will be treated as errors.
+	// Unrecognised options have never been ignored when
+	// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
+	//
+	// If #GApplication::handle-local-options needs to see the list of
+	// filenames, then the use of G_OPTION_REMAINING is recommended. If
+	// @arg_data is nil then G_OPTION_REMAINING can be used as a key into the
+	// options dictionary. If you do use G_OPTION_REMAINING then you need to
+	// handle these arguments for yourself because once they are consumed, they
+	// will no longer be visible to the default handling (which treats them as
+	// filenames to be opened).
+	//
+	// It is important to use the proper GVariant format when retrieving the
+	// options with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` -
+	// for G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
+	// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
+	// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
+	// `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
+	AddMainOptionEntries(entries []glib.OptionEntry)
+	// AddOptionGroup adds a Group to the commandline handling of @application.
+	//
+	// This function is comparable to g_option_context_add_group().
+	//
+	// Unlike g_application_add_main_option_entries(), this function does not
+	// deal with nil @arg_data and never transmits options to the primary
+	// instance.
+	//
+	// The reason for that is because, by the time the options arrive at the
+	// primary instance, it is typically too late to do anything with them.
+	// Taking the GTK option group as an example: GTK will already have been
+	// initialised by the time the #GApplication::command-line handler runs. In
+	// the case that this is not the first-running instance of the application,
+	// the existing instance may already have been running for a very long time.
+	//
+	// This means that the options from Group are only really usable in the case
+	// that the instance of the application being run is the first instance.
+	// Passing options like `--display=` or `--gdk-debug=` on future runs will
+	// have no effect on the existing primary instance.
+	//
+	// Calling this function will cause the options in the supplied option group
+	// to be parsed, but it does not cause you to be "opted in" to the new
+	// functionality whereby unrecognised options are rejected even if
+	// G_APPLICATION_HANDLES_COMMAND_LINE was given.
+	AddOptionGroup(group *glib.OptionGroup)
+	// BindBusyProperty marks @application as busy (see
+	// g_application_mark_busy()) while @property on @object is true.
+	//
+	// The binding holds a reference to @application while it is active, but not
+	// to @object. Instead, the binding is destroyed when @object is finalized.
+	BindBusyProperty(object gextras.Objector, property string)
 	// ApplicationID gets the unique identifier for @application.
 	ApplicationID() string
 	// DBusConnection gets the BusConnection being used by the application, or
@@ -489,6 +587,10 @@ type Application interface {
 	// call this function in the Class.startup virtual function, before chaining
 	// up to the parent implementation.
 	SetResourceBasePath(resourcePath string)
+	// UnbindBusyProperty destroys a binding between @property and the busy
+	// state of @application that was previously created with
+	// g_application_bind_busy_property().
+	UnbindBusyProperty(object gextras.Objector, property string)
 	// UnmarkBusy decreases the busy count of @application.
 	//
 	// When the busy count reaches zero, the new state will be propagated to
@@ -570,6 +672,163 @@ func (a application) Activate() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_activate(_arg0)
+}
+
+// AddMainOption: add an option to be handled by @application.
+//
+// Calling this function is the equivalent of calling
+// g_application_add_main_option_entries() with a single Entry that has its
+// arg_data member set to nil.
+//
+// The parsed arguments will be packed into a Dict which is passed to
+// #GApplication::handle-local-options. If
+// G_APPLICATION_HANDLES_COMMAND_LINE is set, then it will also be sent to
+// the primary instance. See g_application_add_main_option_entries() for
+// more details.
+//
+// See Entry for more documentation of the arguments.
+func (a application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
+	var _arg0 *C.GApplication // out
+	var _arg1 *C.char         // out
+	var _arg2 C.char          // out
+	var _arg3 C.GOptionFlags  // out
+	var _arg4 C.GOptionArg    // out
+	var _arg5 *C.char         // out
+	var _arg6 *C.char         // out
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.char)(C.CString(longName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.char(shortName)
+	_arg3 = (C.GOptionFlags)(flags)
+	_arg4 = (C.GOptionArg)(arg)
+	_arg5 = (*C.char)(C.CString(description))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.char)(C.CString(argDescription))
+	defer C.free(unsafe.Pointer(_arg6))
+
+	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
+// AddMainOptionEntries adds main option entries to be handled by
+// @application.
+//
+// This function is comparable to g_option_context_add_main_entries().
+//
+// After the commandline arguments are parsed, the
+// #GApplication::handle-local-options signal will be emitted. At this
+// point, the application can inspect the values pointed to by @arg_data in
+// the given Entrys.
+//
+// Unlike Context, #GApplication supports giving a nil @arg_data for a
+// non-callback Entry. This results in the argument in question being packed
+// into a Dict which is also passed to #GApplication::handle-local-options,
+// where it can be inspected and modified. If
+// G_APPLICATION_HANDLES_COMMAND_LINE is set, then the resulting dictionary
+// is sent to the primary instance, where
+// g_application_command_line_get_options_dict() will return it. This
+// "packing" is done according to the type of the argument -- booleans for
+// normal flags, strings for strings, bytestrings for filenames, etc. The
+// packing only occurs if the flag is given (ie: we do not pack a "false"
+// #GVariant in the case that a flag is missing).
+//
+// In general, it is recommended that all commandline arguments are parsed
+// locally. The options dictionary should then be used to transmit the
+// result of the parsing to the primary instance, where
+// g_variant_dict_lookup() can be used. For local options, it is possible to
+// either use @arg_data in the usual way, or to consult (and potentially
+// remove) the option from the options dictionary.
+//
+// This function is new in GLib 2.40. Before then, the only real choice was
+// to send all of the commandline arguments (options and all) to the primary
+// instance for handling. #GApplication ignored them completely on the local
+// side. Calling this function "opts in" to the new behaviour, and in
+// particular, means that unrecognised options will be treated as errors.
+// Unrecognised options have never been ignored when
+// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
+//
+// If #GApplication::handle-local-options needs to see the list of
+// filenames, then the use of G_OPTION_REMAINING is recommended. If
+// @arg_data is nil then G_OPTION_REMAINING can be used as a key into the
+// options dictionary. If you do use G_OPTION_REMAINING then you need to
+// handle these arguments for yourself because once they are consumed, they
+// will no longer be visible to the default handling (which treats them as
+// filenames to be opened).
+//
+// It is important to use the proper GVariant format when retrieving the
+// options with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` -
+// for G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
+// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
+// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
+// `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
+func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
+	var _arg0 *C.GApplication // out
+	var _arg1 *C.GOptionEntry
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong((len(entries) + 1)) * C.ulong(C.sizeof_GOptionEntry)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	{
+		out := unsafe.Slice(_arg1, len(entries))
+		for i := range entries {
+			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
+		}
+	}
+
+	C.g_application_add_main_option_entries(_arg0, _arg1)
+}
+
+// AddOptionGroup adds a Group to the commandline handling of @application.
+//
+// This function is comparable to g_option_context_add_group().
+//
+// Unlike g_application_add_main_option_entries(), this function does not
+// deal with nil @arg_data and never transmits options to the primary
+// instance.
+//
+// The reason for that is because, by the time the options arrive at the
+// primary instance, it is typically too late to do anything with them.
+// Taking the GTK option group as an example: GTK will already have been
+// initialised by the time the #GApplication::command-line handler runs. In
+// the case that this is not the first-running instance of the application,
+// the existing instance may already have been running for a very long time.
+//
+// This means that the options from Group are only really usable in the case
+// that the instance of the application being run is the first instance.
+// Passing options like `--display=` or `--gdk-debug=` on future runs will
+// have no effect on the existing primary instance.
+//
+// Calling this function will cause the options in the supplied option group
+// to be parsed, but it does not cause you to be "opted in" to the new
+// functionality whereby unrecognised options are rejected even if
+// G_APPLICATION_HANDLES_COMMAND_LINE was given.
+func (a application) AddOptionGroup(group *glib.OptionGroup) {
+	var _arg0 *C.GApplication // out
+	var _arg1 *C.GOptionGroup // out
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
+
+	C.g_application_add_option_group(_arg0, _arg1)
+}
+
+// BindBusyProperty marks @application as busy (see
+// g_application_mark_busy()) while @property on @object is true.
+//
+// The binding holds a reference to @application while it is active, but not
+// to @object. Instead, the binding is destroyed when @object is finalized.
+func (a application) BindBusyProperty(object gextras.Objector, property string) {
+	var _arg0 *C.GApplication // out
+	var _arg1 C.gpointer      // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.g_application_bind_busy_property(_arg0, _arg1, _arg2)
 }
 
 // ApplicationID gets the unique identifier for @application.
@@ -1238,6 +1497,22 @@ func (a application) SetResourceBasePath(resourcePath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_resource_base_path(_arg0, _arg1)
+}
+
+// UnbindBusyProperty destroys a binding between @property and the busy
+// state of @application that was previously created with
+// g_application_bind_busy_property().
+func (a application) UnbindBusyProperty(object gextras.Objector, property string) {
+	var _arg0 *C.GApplication // out
+	var _arg1 C.gpointer      // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
 }
 
 // UnmarkBusy decreases the busy count of @application.

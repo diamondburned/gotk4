@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,6 +39,8 @@ func init() {
 type Root interface {
 	NativeWidget
 
+	// Display returns the display that this `GtkRoot` is on.
+	Display() gdk.Display
 	// Focus retrieves the current focused widget within the root.
 	//
 	// Note that this is the widget that would have the focus if the root is
@@ -76,6 +79,23 @@ func marshalRoot(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRoot(obj), nil
+}
+
+// Display returns the display that this `GtkRoot` is on.
+func (s root) Display() gdk.Display {
+	var _arg0 *C.GtkRoot // out
+
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gtk_root_get_display(_arg0)
+
+	var _display gdk.Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+
+	return _display
 }
 
 // Focus retrieves the current focused widget within the root.

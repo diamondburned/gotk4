@@ -6,9 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -16,8 +17,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-//
-// gboolean gotk4_PixbufSaveFunc( gchar*, gsize, GError**, gpointer);
 import "C"
 
 func init() {
@@ -98,46 +97,4 @@ const (
 
 func marshalPixbufError(p uintptr) (interface{}, error) {
 	return PixbufError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// PixbufSaveFunc: save functions used by
-// [method@GdkPixbuf.Pixbuf.save_to_callback].
-//
-// This function is called once for each block of bytes that is "written" by
-// `gdk_pixbuf_save_to_callback()`.
-//
-// If successful it should return `TRUE`; if an error occurs it should set
-// `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
-// will fail with the same error.
-type PixbufSaveFunc func(buf []byte) (err *error, ok bool)
-
-//export gotk4_PixbufSaveFunc
-func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var buf []byte
-
-	{
-		src := unsafe.Slice(arg0, arg1)
-		buf = make([]byte, arg1)
-		for i := 0; i < int(arg1); i++ {
-			buf[i] = (byte)(src[i])
-		}
-	}
-
-	fn := v.(PixbufSaveFunc)
-	err, ok := fn(buf)
-
-	var arg2 **C.GError // out
-	var cret C.gboolean // out
-
-	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }

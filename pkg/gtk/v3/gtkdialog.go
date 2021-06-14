@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -77,6 +78,33 @@ const (
 
 func marshalDialogFlags(p uintptr) (interface{}, error) {
 	return DialogFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// AlternativeDialogButtonOrder returns true if dialogs are expected to use an
+// alternative button order on the screen @screen. See
+// gtk_dialog_set_alternative_button_order() for more details about alternative
+// button order.
+//
+// If you need to use this function, you should probably connect to the
+// ::notify:gtk-alternative-button-order signal on the Settings object
+// associated to @screen, in order to be notified if the button order setting
+// changes.
+func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
+	var _arg1 *C.GdkScreen // out
+
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_alternative_dialog_button_order(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Dialog: dialog boxes are a convenient way to prompt the user for a small

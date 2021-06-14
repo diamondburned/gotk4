@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,6 +43,9 @@ type WindowGroup interface {
 
 	// AddWindow adds a window to a WindowGroup.
 	AddWindow(window Window)
+	// CurrentDeviceGrab returns the current grab widget for @device, or nil if
+	// none.
+	CurrentDeviceGrab(device gdk.Device) Widget
 	// CurrentGrab gets the current grab widget of the given group, see
 	// gtk_grab_add().
 	CurrentGrab() Widget
@@ -92,6 +96,26 @@ func (w windowGroup) AddWindow(window Window) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
+}
+
+// CurrentDeviceGrab returns the current grab widget for @device, or nil if
+// none.
+func (w windowGroup) CurrentDeviceGrab(device gdk.Device) Widget {
+	var _arg0 *C.GtkWindowGroup // out
+	var _arg1 *C.GdkDevice      // out
+
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+
+	return _widget
 }
 
 // CurrentGrab gets the current grab widget of the given group, see

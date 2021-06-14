@@ -88,16 +88,13 @@ func (d *DBusAnnotationInfo) Value() string {
 func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo
 	{
-		var length int
-		for p := d.native.annotations; *p != nil; p = (**C.GDBusAnnotationInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.annotations, length)
-		v = make([]*DBusAnnotationInfo, length)
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
 		}
@@ -187,16 +184,13 @@ func (d *DBusArgInfo) Signature() string {
 func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo
 	{
-		var length int
-		for p := d.native.annotations; *p != nil; p = (**C.GDBusAnnotationInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.annotations, length)
-		v = make([]*DBusAnnotationInfo, length)
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
 		}
@@ -279,16 +273,13 @@ func (d *DBusInterfaceInfo) Name() string {
 func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 	var v []*DBusMethodInfo
 	{
-		var length int
-		for p := d.native.methods; *p != nil; p = (**C.GDBusMethodInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.methods; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.methods, length)
-		v = make([]*DBusMethodInfo, length)
+		src := unsafe.Slice(d.native.methods, i)
+		v = make([]*DBusMethodInfo, i)
 		for i := range src {
 			v[i] = WrapDBusMethodInfo(unsafe.Pointer(src[i]))
 		}
@@ -300,16 +291,13 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 	var v []*DBusSignalInfo
 	{
-		var length int
-		for p := d.native.signals; *p != nil; p = (**C.GDBusSignalInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.signals; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.signals, length)
-		v = make([]*DBusSignalInfo, length)
+		src := unsafe.Slice(d.native.signals, i)
+		v = make([]*DBusSignalInfo, i)
 		for i := range src {
 			v[i] = WrapDBusSignalInfo(unsafe.Pointer(src[i]))
 		}
@@ -321,16 +309,13 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 	var v []*DBusPropertyInfo
 	{
-		var length int
-		for p := d.native.properties; *p != nil; p = (**C.GDBusPropertyInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.properties; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.properties, length)
-		v = make([]*DBusPropertyInfo, length)
+		src := unsafe.Slice(d.native.properties, i)
+		v = make([]*DBusPropertyInfo, i)
 		for i := range src {
 			v[i] = WrapDBusPropertyInfo(unsafe.Pointer(src[i]))
 		}
@@ -342,16 +327,13 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo
 	{
-		var length int
-		for p := d.native.annotations; *p != nil; p = (**C.GDBusAnnotationInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.annotations, length)
-		v = make([]*DBusAnnotationInfo, length)
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
 		}
@@ -531,16 +513,13 @@ func (d *DBusMethodInfo) Name() string {
 func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 	var v []*DBusArgInfo
 	{
-		var length int
-		for p := d.native.in_args; *p != nil; p = (**C.GDBusArgInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.in_args; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.in_args, length)
-		v = make([]*DBusArgInfo, length)
+		src := unsafe.Slice(d.native.in_args, i)
+		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = WrapDBusArgInfo(unsafe.Pointer(src[i]))
 		}
@@ -552,16 +531,13 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 	var v []*DBusArgInfo
 	{
-		var length int
-		for p := d.native.out_args; *p != nil; p = (**C.GDBusArgInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.out_args; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.out_args, length)
-		v = make([]*DBusArgInfo, length)
+		src := unsafe.Slice(d.native.out_args, i)
+		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = WrapDBusArgInfo(unsafe.Pointer(src[i]))
 		}
@@ -573,16 +549,13 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo
 	{
-		var length int
-		for p := d.native.annotations; *p != nil; p = (**C.GDBusAnnotationInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.annotations, length)
-		v = make([]*DBusAnnotationInfo, length)
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
 		}
@@ -689,16 +662,13 @@ func (d *DBusNodeInfo) Path() string {
 func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 	var v []*DBusInterfaceInfo
 	{
-		var length int
-		for p := d.native.interfaces; *p != nil; p = (**C.GDBusInterfaceInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.interfaces; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.interfaces, length)
-		v = make([]*DBusInterfaceInfo, length)
+		src := unsafe.Slice(d.native.interfaces, i)
+		v = make([]*DBusInterfaceInfo, i)
 		for i := range src {
 			v[i] = WrapDBusInterfaceInfo(unsafe.Pointer(src[i]))
 		}
@@ -710,16 +680,13 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 	var v []*DBusNodeInfo
 	{
-		var length int
-		for p := d.native.nodes; *p != nil; p = (**C.GDBusNodeInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.nodes; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.nodes, length)
-		v = make([]*DBusNodeInfo, length)
+		src := unsafe.Slice(d.native.nodes, i)
+		v = make([]*DBusNodeInfo, i)
 		for i := range src {
 			v[i] = WrapDBusNodeInfo(unsafe.Pointer(src[i]))
 		}
@@ -731,16 +698,13 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo
 	{
-		var length int
-		for p := d.native.annotations; *p != nil; p = (**C.GDBusAnnotationInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.annotations, length)
-		v = make([]*DBusAnnotationInfo, length)
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
 		}
@@ -859,16 +823,13 @@ func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
 func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo
 	{
-		var length int
-		for p := d.native.annotations; *p != nil; p = (**C.GDBusAnnotationInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.annotations, length)
-		v = make([]*DBusAnnotationInfo, length)
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
 		}
@@ -951,16 +912,13 @@ func (d *DBusSignalInfo) Name() string {
 func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 	var v []*DBusArgInfo
 	{
-		var length int
-		for p := d.native.args; *p != nil; p = (**C.GDBusArgInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.args; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.args, length)
-		v = make([]*DBusArgInfo, length)
+		src := unsafe.Slice(d.native.args, i)
+		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = WrapDBusArgInfo(unsafe.Pointer(src[i]))
 		}
@@ -972,16 +930,13 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo
 	{
-		var length int
-		for p := d.native.annotations; *p != nil; p = (**C.GDBusAnnotationInfo)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(d.native.annotations, length)
-		v = make([]*DBusAnnotationInfo, length)
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
 		}

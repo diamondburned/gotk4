@@ -3,9 +3,12 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -206,6 +209,19 @@ type Cursor interface {
 	CursorType() CursorType
 	// Display returns the display on which the Cursor is defined.
 	Display() Display
+	// Image returns a Pixbuf with the image used to display the cursor.
+	//
+	// Note that depending on the capabilities of the windowing system and on
+	// the cursor, GDK may not be able to obtain the image data. In this case,
+	// nil is returned.
+	Image() gdkpixbuf.Pixbuf
+	// Surface returns a cairo image surface with the image used to display the
+	// cursor.
+	//
+	// Note that depending on the capabilities of the windowing system and on
+	// the cursor, GDK may not be able to obtain the image data. In this case,
+	// nil is returned.
+	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
 	// Ref adds a reference to @cursor.
 	Ref() Cursor
 	// Unref removes a reference from @cursor, deallocating the cursor if no
@@ -290,6 +306,52 @@ func NewCursorFromName(display Display, name string) Cursor {
 	return _cursor
 }
 
+// NewCursorFromPixbuf constructs a class Cursor.
+func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int) Cursor {
+	var _arg1 *C.GdkDisplay // out
+	var _arg2 *C.GdkPixbuf  // out
+	var _arg3 C.gint        // out
+	var _arg4 C.gint        // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg3 = C.gint(x)
+	_arg4 = C.gint(y)
+
+	var _cret C.GdkCursor // in
+
+	_cret = C.gdk_cursor_new_from_pixbuf(_arg1, _arg2, _arg3, _arg4)
+
+	var _cursor Cursor // out
+
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
+
+	return _cursor
+}
+
+// NewCursorFromSurface constructs a class Cursor.
+func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y float64) Cursor {
+	var _arg1 *C.GdkDisplay      // out
+	var _arg2 *C.cairo_surface_t // out
+	var _arg3 C.gdouble          // out
+	var _arg4 C.gdouble          // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
+
+	var _cret C.GdkCursor // in
+
+	_cret = C.gdk_cursor_new_from_surface(_arg1, _arg2, _arg3, _arg4)
+
+	var _cursor Cursor // out
+
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
+
+	return _cursor
+}
+
 // CursorType returns the cursor type for this cursor.
 func (c cursor) CursorType() CursorType {
 	var _arg0 *C.GdkCursor // out
@@ -322,6 +384,58 @@ func (c cursor) Display() Display {
 	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
 	return _display
+}
+
+// Image returns a Pixbuf with the image used to display the cursor.
+//
+// Note that depending on the capabilities of the windowing system and on
+// the cursor, GDK may not be able to obtain the image data. In this case,
+// nil is returned.
+func (c cursor) Image() gdkpixbuf.Pixbuf {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gdk_cursor_get_image(_arg0)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return _pixbuf
+}
+
+// Surface returns a cairo image surface with the image used to display the
+// cursor.
+//
+// Note that depending on the capabilities of the windowing system and on
+// the cursor, GDK may not be able to obtain the image data. In this case,
+// nil is returned.
+func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	var _arg1 C.gdouble          // in
+	var _arg2 C.gdouble          // in
+	var _cret *C.cairo_surface_t // in
+
+	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
+
+	var _xHot float64           // out
+	var _yHot float64           // out
+	var _surface *cairo.Surface // out
+
+	_xHot = (float64)(_arg1)
+	_yHot = (float64)(_arg2)
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _xHot, _yHot, _surface
 }
 
 // Ref adds a reference to @cursor.

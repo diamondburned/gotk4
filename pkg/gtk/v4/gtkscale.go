@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -20,31 +20,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_scale_get_type()), F: marshalScale},
 	})
-}
-
-type ScaleFormatValueFunc func(scale Scale, value float64) (utf8 string)
-
-//export gotk4_ScaleFormatValueFunc
-func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var scale Scale   // out
-	var value float64 // out
-
-	scale = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Scale)
-	value = (float64)(arg1)
-
-	fn := v.(ScaleFormatValueFunc)
-	utf8 := fn(scale, value)
-
-	var cret *C.char // out
-
-	cret = (*C.char)(C.CString(utf8))
-
-	return cret
 }
 
 // Scale: a `GtkScale` is a slider control used to select a numeric value.
@@ -141,6 +116,11 @@ type Scale interface {
 	DrawValue() bool
 	// HasOrigin returns whether the scale has an origin.
 	HasOrigin() bool
+	// Layout gets the `PangoLayout` used to display the scale.
+	//
+	// The returned object is owned by the scale so does not need to be freed by
+	// the caller.
+	Layout() pango.Layout
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// `PangoLayout` representing the text in the scale.
 	//
@@ -337,6 +317,26 @@ func (s scale) HasOrigin() bool {
 	}
 
 	return _ok
+}
+
+// Layout gets the `PangoLayout` used to display the scale.
+//
+// The returned object is owned by the scale so does not need to be freed by
+// the caller.
+func (s scale) Layout() pango.Layout {
+	var _arg0 *C.GtkScale // out
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.PangoLayout // in
+
+	_cret = C.gtk_scale_get_layout(_arg0)
+
+	var _layout pango.Layout // out
+
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+
+	return _layout
 }
 
 // LayoutOffsets obtains the coordinates where the scale will draw the

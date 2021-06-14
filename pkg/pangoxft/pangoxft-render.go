@@ -5,6 +5,7 @@ package pangoxft
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,12 +25,15 @@ func init() {
 // backend. It can be used directly, or it can be further subclassed to modify
 // exactly how drawing of individual elements occurs.
 type Renderer interface {
-	Renderer
+	pango.Renderer
+
+	// SetDefaultColor sets the default foreground color for a Renderer.
+	SetDefaultColor(defaultColor *pango.Color)
 }
 
 // renderer implements the Renderer class.
 type renderer struct {
-	Renderer
+	pango.Renderer
 }
 
 var _ Renderer = (*renderer)(nil)
@@ -38,7 +42,7 @@ var _ Renderer = (*renderer)(nil)
 // primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
 	return renderer{
-		Renderer: WrapRenderer(obj),
+		pango.Renderer: pango.WrapRenderer(obj),
 	}
 }
 
@@ -46,4 +50,15 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRenderer(obj), nil
+}
+
+// SetDefaultColor sets the default foreground color for a Renderer.
+func (x renderer) SetDefaultColor(defaultColor *pango.Color) {
+	var _arg0 *C.PangoXftRenderer // out
+	var _arg1 *C.PangoColor       // out
+
+	_arg0 = (*C.PangoXftRenderer)(unsafe.Pointer(x.Native()))
+	_arg1 = (*C.PangoColor)(unsafe.Pointer(defaultColor.Native()))
+
+	C.pango_xft_renderer_set_default_color(_arg0, _arg1)
 }

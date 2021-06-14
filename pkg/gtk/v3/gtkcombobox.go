@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -134,6 +135,10 @@ type ComboBox interface {
 	//
 	// Before calling this, @combo_box must be mapped, or nothing will happen.
 	Popup()
+	// PopupForDevice pops up the menu or dropdown list of @combo_box, the popup
+	// window will be grabbed so only @device and its associated
+	// pointer/keyboard are the only Devices able to send events to it.
+	PopupForDevice(device gdk.Device)
 	// SetActive sets the active item of @combo_box to be the item at @index.
 	SetActive(index_ int)
 	// SetActiveID changes the active row of @combo_box to the one that has an
@@ -634,6 +639,19 @@ func (c comboBox) Popup() {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
 	C.gtk_combo_box_popup(_arg0)
+}
+
+// PopupForDevice pops up the menu or dropdown list of @combo_box, the popup
+// window will be grabbed so only @device and its associated
+// pointer/keyboard are the only Devices able to send events to it.
+func (c comboBox) PopupForDevice(device gdk.Device) {
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 *C.GdkDevice   // out
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	C.gtk_combo_box_popup_for_device(_arg0, _arg1)
 }
 
 // SetActive sets the active item of @combo_box to be the item at @index.

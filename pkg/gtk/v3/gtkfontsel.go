@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,9 +30,14 @@ type FontSelection interface {
 	Buildable
 	Orientable
 
+	// Face gets the FontFace representing the selected font group details (i.e.
+	// family, slant, weight, width, etc).
+	Face() pango.FontFace
 	// FaceList: this returns the TreeView which lists all styles available for
 	// the selected font. For example, “Regular”, “Bold”, etc.
 	FaceList() Widget
+	// Family gets the FontFamily representing the selected font family.
+	Family() pango.FontFamily
 	// FamilyList: this returns the TreeView that lists font families, for
 	// example, “Sans”, “Serif”, etc.
 	FamilyList() Widget
@@ -105,6 +111,24 @@ func NewFontSelection() FontSelection {
 	return _fontSelection
 }
 
+// Face gets the FontFace representing the selected font group details (i.e.
+// family, slant, weight, width, etc).
+func (f fontSelection) Face() pango.FontFace {
+	var _arg0 *C.GtkFontSelection // out
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.PangoFontFace // in
+
+	_cret = C.gtk_font_selection_get_face(_arg0)
+
+	var _fontFace pango.FontFace // out
+
+	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontFace)
+
+	return _fontFace
+}
+
 // FaceList: this returns the TreeView which lists all styles available for
 // the selected font. For example, “Regular”, “Bold”, etc.
 func (f fontSelection) FaceList() Widget {
@@ -121,6 +145,23 @@ func (f fontSelection) FaceList() Widget {
 	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
 	return _widget
+}
+
+// Family gets the FontFamily representing the selected font family.
+func (f fontSelection) Family() pango.FontFamily {
+	var _arg0 *C.GtkFontSelection // out
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.PangoFontFamily // in
+
+	_cret = C.gtk_font_selection_get_family(_arg0)
+
+	var _fontFamily pango.FontFamily // out
+
+	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontFamily)
+
+	return _fontFamily
 }
 
 // FamilyList: this returns the TreeView that lists font families, for

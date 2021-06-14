@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,12 +30,14 @@ func init() {
 // To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter interface {
 	MultiFilter
+	gio.ListModel
 	Buildable
 }
 
 // anyFilter implements the AnyFilter class.
 type anyFilter struct {
 	MultiFilter
+	gio.ListModel
 	Buildable
 }
 
@@ -44,8 +47,9 @@ var _ AnyFilter = (*anyFilter)(nil)
 // primarily used internally.
 func WrapAnyFilter(obj *externglib.Object) AnyFilter {
 	return anyFilter{
-		MultiFilter: WrapMultiFilter(obj),
-		Buildable:   WrapBuildable(obj),
+		MultiFilter:   WrapMultiFilter(obj),
+		gio.ListModel: gio.WrapListModel(obj),
+		Buildable:     WrapBuildable(obj),
 	}
 }
 
@@ -74,12 +78,14 @@ func NewAnyFilter() AnyFilter {
 // To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter interface {
 	MultiFilter
+	gio.ListModel
 	Buildable
 }
 
 // everyFilter implements the EveryFilter class.
 type everyFilter struct {
 	MultiFilter
+	gio.ListModel
 	Buildable
 }
 
@@ -89,8 +95,9 @@ var _ EveryFilter = (*everyFilter)(nil)
 // primarily used internally.
 func WrapEveryFilter(obj *externglib.Object) EveryFilter {
 	return everyFilter{
-		MultiFilter: WrapMultiFilter(obj),
-		Buildable:   WrapBuildable(obj),
+		MultiFilter:   WrapMultiFilter(obj),
+		gio.ListModel: gio.WrapListModel(obj),
+		Buildable:     WrapBuildable(obj),
 	}
 }
 
@@ -117,6 +124,7 @@ func NewEveryFilter() EveryFilter {
 // multiple filters.
 type MultiFilter interface {
 	Filter
+	gio.ListModel
 	Buildable
 
 	// Append adds a @filter to @self to use for matching.
@@ -132,6 +140,7 @@ type MultiFilter interface {
 // multiFilter implements the MultiFilter class.
 type multiFilter struct {
 	Filter
+	gio.ListModel
 	Buildable
 }
 
@@ -141,8 +150,9 @@ var _ MultiFilter = (*multiFilter)(nil)
 // primarily used internally.
 func WrapMultiFilter(obj *externglib.Object) MultiFilter {
 	return multiFilter{
-		Filter:    WrapFilter(obj),
-		Buildable: WrapBuildable(obj),
+		Filter:        WrapFilter(obj),
+		gio.ListModel: gio.WrapListModel(obj),
+		Buildable:     WrapBuildable(obj),
 	}
 }
 

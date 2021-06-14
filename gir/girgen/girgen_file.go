@@ -250,10 +250,11 @@ func (fg *FileGenerator) Namespace() *gir.NamespaceFindResult {
 }
 
 func (fg *FileGenerator) Logln(level LogLevel, v ...interface{}) {
-	prefix := []interface{}{fg.name + ":"}
-	prefix = append(prefix, v...)
+	v = append(v, nil)
+	copy(v[1:], v)
+	v[0] = fg.name + ":"
 
-	fg.parent.Logln(level, prefix...)
+	fg.parent.Logln(level, v...)
 }
 
 func (fg *FileGenerator) warnUnknownType(typ string) {

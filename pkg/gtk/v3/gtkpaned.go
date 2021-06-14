@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -80,7 +81,7 @@ type Paned interface {
 	// HandleWindow returns the Window of the handle. This function is useful
 	// when handling button or motion events because it enables the callback to
 	// distinguish between the window of the paned, a child and the handle.
-	HandleWindow() Window
+	HandleWindow() gdk.Window
 	// Position obtains the position of the divider between the two panes.
 	Position() int
 	// WideHandle gets the Paned:wide-handle property.
@@ -198,7 +199,7 @@ func (p paned) Child2() Widget {
 // HandleWindow returns the Window of the handle. This function is useful
 // when handling button or motion events because it enables the callback to
 // distinguish between the window of the paned, a child and the handle.
-func (p paned) HandleWindow() Window {
+func (p paned) HandleWindow() gdk.Window {
 	var _arg0 *C.GtkPaned // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
@@ -207,9 +208,9 @@ func (p paned) HandleWindow() Window {
 
 	_cret = C.gtk_paned_get_handle_window(_arg0)
 
-	var _window Window // out
+	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
 
 	return _window
 }

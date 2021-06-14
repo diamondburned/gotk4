@@ -25,7 +25,6 @@ func init() {
 
 type ContainerCellAccessible interface {
 	CellAccessible
-	Action
 
 	AddChild(child CellAccessible)
 
@@ -35,7 +34,6 @@ type ContainerCellAccessible interface {
 // containerCellAccessible implements the ContainerCellAccessible class.
 type containerCellAccessible struct {
 	CellAccessible
-	Action
 }
 
 var _ ContainerCellAccessible = (*containerCellAccessible)(nil)
@@ -45,7 +43,6 @@ var _ ContainerCellAccessible = (*containerCellAccessible)(nil)
 func WrapContainerCellAccessible(obj *externglib.Object) ContainerCellAccessible {
 	return containerCellAccessible{
 		CellAccessible: WrapCellAccessible(obj),
-		Action:         WrapAction(obj),
 	}
 }
 

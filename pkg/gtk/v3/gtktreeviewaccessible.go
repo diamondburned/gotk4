@@ -24,14 +24,12 @@ func init() {
 
 type TreeViewAccessible interface {
 	ContainerAccessible
-	Table
 	CellAccessibleParent
 }
 
 // treeViewAccessible implements the TreeViewAccessible class.
 type treeViewAccessible struct {
 	ContainerAccessible
-	Table
 	CellAccessibleParent
 }
 
@@ -42,7 +40,6 @@ var _ TreeViewAccessible = (*treeViewAccessible)(nil)
 func WrapTreeViewAccessible(obj *externglib.Object) TreeViewAccessible {
 	return treeViewAccessible{
 		ContainerAccessible:  WrapContainerAccessible(obj),
-		Table:                WrapTable(obj),
 		CellAccessibleParent: WrapCellAccessibleParent(obj),
 	}
 }

@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -30,37 +29,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_vfs_get_type()), F: marshalVFS},
 	})
-}
-
-// VfsFileLookupFunc: this function type is used by g_vfs_register_uri_scheme()
-// to make it possible for a client to associate an URI scheme to a different
-// #GFile implementation.
-//
-// The client should return a reference to the new file that has been created
-// for @uri, or nil to continue with the default implementation.
-type VFSFileLookupFunc func(vfs VFS, identifier string) (file File)
-
-//export gotk4_VFSFileLookupFunc
-func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var vfs VFS           // out
-	var identifier string // out
-
-	vfs = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(VFS)
-	identifier = C.GoString(arg1)
-
-	fn := v.(VFSFileLookupFunc)
-	file := fn(vfs, identifier)
-
-	var cret *C.GFile // out
-
-	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	return cret
 }
 
 // VFS: entry point for using GIO functionality.
@@ -166,16 +134,13 @@ func (v vfS) SupportedURISchemes() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 		}

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -147,6 +148,8 @@ type AboutDialog interface {
 	License() string
 	// LicenseType retrieves the license type.
 	LicenseType() License
+	// Logo returns the paintable displayed as logo in the about dialog.
+	Logo() gdk.Paintable
 	// LogoIconName returns the icon name displayed as logo in the about dialog.
 	LogoIconName() string
 	// ProgramName returns the program name displayed in the about dialog.
@@ -194,6 +197,8 @@ type AboutDialog interface {
 	// This function overrides the license set using
 	// [method@Gtk.AboutDialog.set_license].
 	SetLicenseType(licenseType License)
+	// SetLogo sets the logo in the about dialog.
+	SetLogo(logo gdk.Paintable)
 	// SetLogoIconName sets the icon name to be displayed as logo in the about
 	// dialog.
 	SetLogoIconName(iconName string)
@@ -319,16 +324,13 @@ func (a aboutDialog) Artists() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 		}
@@ -351,16 +353,13 @@ func (a aboutDialog) Authors() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 		}
@@ -417,16 +416,13 @@ func (a aboutDialog) Documenters() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 		}
@@ -467,6 +463,23 @@ func (a aboutDialog) LicenseType() License {
 	_license = License(_cret)
 
 	return _license
+}
+
+// Logo returns the paintable displayed as logo in the about dialog.
+func (a aboutDialog) Logo() gdk.Paintable {
+	var _arg0 *C.GtkAboutDialog // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GdkPaintable // in
+
+	_cret = C.gtk_about_dialog_get_logo(_arg0)
+
+	var _paintable gdk.Paintable // out
+
+	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+
+	return _paintable
 }
 
 // LogoIconName returns the icon name displayed as logo in the about dialog.
@@ -729,6 +742,17 @@ func (a aboutDialog) SetLicenseType(licenseType License) {
 	_arg1 = (C.GtkLicense)(licenseType)
 
 	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
+}
+
+// SetLogo sets the logo in the about dialog.
+func (a aboutDialog) SetLogo(logo gdk.Paintable) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.GdkPaintable   // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(logo.Native()))
+
+	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }
 
 // SetLogoIconName sets the icon name to be displayed as logo in the about

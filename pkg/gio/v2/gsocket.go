@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -151,6 +152,50 @@ type Socket interface {
 	// call g_tcp_connection_set_graceful_disconnect(). But of course, this only
 	// works if the client will close its connection after the server does.)
 	Close() error
+	// ConditionCheck checks on the readiness of @socket to perform operations.
+	// The operations specified in @condition are checked for and masked against
+	// the currently-satisfied conditions on @socket. The result is returned.
+	//
+	// Note that on Windows, it is possible for an operation to return
+	// G_IO_ERROR_WOULD_BLOCK even immediately after g_socket_condition_check()
+	// has claimed that the socket is ready for writing. Rather than calling
+	// g_socket_condition_check() and then writing to the socket if it succeeds,
+	// it is generally better to simply try writing to the socket right away,
+	// and try again later if the initial attempt returns
+	// G_IO_ERROR_WOULD_BLOCK.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
+	// conditions will always be set in the output if they are true.
+	//
+	// This call never blocks.
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	// ConditionTimedWait waits for up to @timeout_us microseconds for
+	// @condition to become true on @socket. If the condition is met, true is
+	// returned.
+	//
+	// If @cancellable is cancelled before the condition is met, or if
+	// @timeout_us (or the socket's #GSocket:timeout) is reached before the
+	// condition is met, then false is returned and @error, if non-nil, is set
+	// to the appropriate value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+	//
+	// If you don't want a timeout, use g_socket_condition_wait().
+	// (Alternatively, you can pass -1 for @timeout_us.)
+	//
+	// Note that although @timeout_us is in microseconds for consistency with
+	// other GLib APIs, this function actually only has millisecond resolution,
+	// and the behavior is undefined if @timeout_us is not an exact number of
+	// milliseconds.
+	ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error
+	// ConditionWait waits for @condition to become true on @socket. When the
+	// condition is met, true is returned.
+	//
+	// If @cancellable is cancelled before the condition is met, or if the
+	// socket has a timeout set and it is reached before the condition is met,
+	// then false is returned and @error, if non-nil, is set to the appropriate
+	// value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+	//
+	// See also g_socket_condition_timed_wait().
+	ConditionWait(condition glib.IOCondition, cancellable Cancellable) error
 	// Connect: connect the socket to the specified remote address.
 	//
 	// For connection oriented socket this generally means we attempt to make a
@@ -819,6 +864,107 @@ func (s socket) Close() error {
 	var _cerr *C.GError // in
 
 	C.g_socket_close(_arg0, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// ConditionCheck checks on the readiness of @socket to perform operations.
+// The operations specified in @condition are checked for and masked against
+// the currently-satisfied conditions on @socket. The result is returned.
+//
+// Note that on Windows, it is possible for an operation to return
+// G_IO_ERROR_WOULD_BLOCK even immediately after g_socket_condition_check()
+// has claimed that the socket is ready for writing. Rather than calling
+// g_socket_condition_check() and then writing to the socket if it succeeds,
+// it is generally better to simply try writing to the socket right away,
+// and try again later if the initial attempt returns
+// G_IO_ERROR_WOULD_BLOCK.
+//
+// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
+// conditions will always be set in the output if they are true.
+//
+// This call never blocks.
+func (s socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+	var _arg0 *C.GSocket     // out
+	var _arg1 C.GIOCondition // out
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GIOCondition)(condition)
+
+	var _cret C.GIOCondition // in
+
+	_cret = C.g_socket_condition_check(_arg0, _arg1)
+
+	var _ioCondition glib.IOCondition // out
+
+	_ioCondition = glib.IOCondition(_cret)
+
+	return _ioCondition
+}
+
+// ConditionTimedWait waits for up to @timeout_us microseconds for
+// @condition to become true on @socket. If the condition is met, true is
+// returned.
+//
+// If @cancellable is cancelled before the condition is met, or if
+// @timeout_us (or the socket's #GSocket:timeout) is reached before the
+// condition is met, then false is returned and @error, if non-nil, is set
+// to the appropriate value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+//
+// If you don't want a timeout, use g_socket_condition_wait().
+// (Alternatively, you can pass -1 for @timeout_us.)
+//
+// Note that although @timeout_us is in microseconds for consistency with
+// other GLib APIs, this function actually only has millisecond resolution,
+// and the behavior is undefined if @timeout_us is not an exact number of
+// milliseconds.
+func (s socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error {
+	var _arg0 *C.GSocket      // out
+	var _arg1 C.GIOCondition  // out
+	var _arg2 C.gint64        // out
+	var _arg3 *C.GCancellable // out
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GIOCondition)(condition)
+	_arg2 = C.gint64(timeoutUs)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_socket_condition_timed_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// ConditionWait waits for @condition to become true on @socket. When the
+// condition is met, true is returned.
+//
+// If @cancellable is cancelled before the condition is met, or if the
+// socket has a timeout set and it is reached before the condition is met,
+// then false is returned and @error, if non-nil, is set to the appropriate
+// value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+//
+// See also g_socket_condition_timed_wait().
+func (s socket) ConditionWait(condition glib.IOCondition, cancellable Cancellable) error {
+	var _arg0 *C.GSocket      // out
+	var _arg1 C.GIOCondition  // out
+	var _arg2 *C.GCancellable // out
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GIOCondition)(condition)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cerr *C.GError // in
+
+	C.g_socket_condition_wait(_arg0, _arg1, _arg2, &_cerr)
 
 	var _goerr error // out
 

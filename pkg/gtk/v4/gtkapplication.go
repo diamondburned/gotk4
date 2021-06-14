@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -111,7 +112,9 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 // HowDoI: Using GtkApplication (https://wiki.gnome.org/HowDoI/GtkApplication),
 // Getting Started with GTK: Basics (getting_started.html#basics)
 type Application interface {
-	Application
+	gio.Application
+	gio.ActionGroup
+	gio.ActionMap
 
 	// AddWindow adds a window to `application`.
 	//
@@ -156,6 +159,14 @@ type Application interface {
 	// application has it — this is just the most recently-focused window within
 	// this application.
 	ActiveWindow() Window
+	// MenuByID gets a menu from automatically loaded resources.
+	//
+	// See the section on Automatic resources
+	// (class.Application.html#automatic-resources) for more information.
+	MenuByID(id string) gio.Menu
+	// Menubar returns the menu model that has been set with
+	// [method@Gtk.Application.set_menubar].
+	Menubar() gio.MenuModel
 	// WindowByID returns the [class@Gtk.ApplicationWindow] with the given ID.
 	//
 	// The ID of a `GtkApplicationWindow` can be retrieved with
@@ -211,6 +222,25 @@ type Application interface {
 	// For the `detailed_action_name`, see `g_action_parse_detailed_name()` and
 	// `g_action_print_detailed_name()`.
 	SetAccelsForAction(detailedActionName string, accels []string)
+	// SetMenubar sets or unsets the menubar for windows of `application`.
+	//
+	// This is a menubar in the traditional sense.
+	//
+	// This can only be done in the primary instance of the application, after
+	// it has been registered. `GApplication::startup` is a good place to call
+	// this.
+	//
+	// Depending on the desktop environment, this may appear at the top of each
+	// window, or at the top of the screen. In some environments, if both the
+	// application menu and the menubar are set, the application menu will be
+	// presented as if it were the first item of the menubar. Other environments
+	// treat the two as completely separate — for example, the application menu
+	// may be rendered by the desktop shell while the menubar (if set) remains
+	// in each individual window.
+	//
+	// Use the base `GActionMap` interface to add actions, to respond to the
+	// user selecting these menu items.
+	SetMenubar(menubar gio.MenuModel)
 	// Uninhibit removes an inhibitor that has been previously established.
 	//
 	// See [method@Gtk.Application.inhibit].
@@ -221,7 +251,9 @@ type Application interface {
 
 // application implements the Application class.
 type application struct {
-	Application
+	gio.Application
+	gio.ActionGroup
+	gio.ActionMap
 }
 
 var _ Application = (*application)(nil)
@@ -230,7 +262,9 @@ var _ Application = (*application)(nil)
 // primarily used internally.
 func WrapApplication(obj *externglib.Object) Application {
 	return application{
-		Application: WrapApplication(obj),
+		gio.Application: gio.WrapApplication(obj),
+		gio.ActionGroup: gio.WrapActionGroup(obj),
+		gio.ActionMap:   gio.WrapActionMap(obj),
 	}
 }
 
@@ -238,6 +272,26 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapApplication(obj), nil
+}
+
+// NewApplication constructs a class Application.
+func NewApplication(applicationId string, flags gio.ApplicationFlags) Application {
+	var _arg1 *C.char             // out
+	var _arg2 C.GApplicationFlags // out
+
+	_arg1 = (*C.char)(C.CString(applicationId))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GApplicationFlags)(flags)
+
+	var _cret C.GtkApplication // in
+
+	_cret = C.gtk_application_new(_arg1, _arg2)
+
+	var _application Application // out
+
+	_application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Application)
+
+	return _application
 }
 
 // AddWindow adds a window to `application`.
@@ -281,16 +335,13 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -332,16 +383,13 @@ func (a application) ActionsForAccel(accel string) []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -371,6 +419,47 @@ func (a application) ActiveWindow() Window {
 	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
 	return _window
+}
+
+// MenuByID gets a menu from automatically loaded resources.
+//
+// See the section on Automatic resources
+// (class.Application.html#automatic-resources) for more information.
+func (a application) MenuByID(id string) gio.Menu {
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.char)(C.CString(id))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GMenu // in
+
+	_cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
+
+	var _menu gio.Menu // out
+
+	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Menu)
+
+	return _menu
+}
+
+// Menubar returns the menu model that has been set with
+// [method@Gtk.Application.set_menubar].
+func (a application) Menubar() gio.MenuModel {
+	var _arg0 *C.GtkApplication // out
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+
+	var _cret *C.GMenuModel // in
+
+	_cret = C.gtk_application_get_menubar(_arg0)
+
+	var _menuModel gio.MenuModel // out
+
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+
+	return _menuModel
 }
 
 // WindowByID returns the [class@Gtk.ApplicationWindow] with the given ID.
@@ -457,16 +546,13 @@ func (a application) ListActionDescriptions() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -525,6 +611,34 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 	}
 
 	C.gtk_application_set_accels_for_action(_arg0, _arg1, _arg2)
+}
+
+// SetMenubar sets or unsets the menubar for windows of `application`.
+//
+// This is a menubar in the traditional sense.
+//
+// This can only be done in the primary instance of the application, after
+// it has been registered. `GApplication::startup` is a good place to call
+// this.
+//
+// Depending on the desktop environment, this may appear at the top of each
+// window, or at the top of the screen. In some environments, if both the
+// application menu and the menubar are set, the application menu will be
+// presented as if it were the first item of the menubar. Other environments
+// treat the two as completely separate — for example, the application menu
+// may be rendered by the desktop shell while the menubar (if set) remains
+// in each individual window.
+//
+// Use the base `GActionMap` interface to add actions, to respond to the
+// user selecting these menu items.
+func (a application) SetMenubar(menubar gio.MenuModel) {
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.GMenuModel     // out
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
+
+	C.gtk_application_set_menubar(_arg0, _arg1)
 }
 
 // Uninhibit removes an inhibitor that has been previously established.

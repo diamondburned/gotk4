@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -13,6 +14,26 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoft2.h>
 import "C"
+
+// FontGetCoverage gets the Coverage for a `PangoFT2Font`. Use
+// pango_font_get_coverage() instead.
+func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
+	var _arg1 *C.PangoFont     // out
+	var _arg2 *C.PangoLanguage // out
+
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+
+	var _cret *C.PangoCoverage // in
+
+	_cret = C.pango_ft2_font_get_coverage(_arg1, _arg2)
+
+	var _coverage pango.Coverage // out
+
+	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Coverage)
+
+	return _coverage
+}
 
 // ShutdownDisplay: free the global fontmap. (See
 // pango_ft2_font_map_for_display()) Use of the global PangoFT2 fontmap is

@@ -24,13 +24,11 @@ func init() {
 
 type SpinButtonAccessible interface {
 	EntryAccessible
-	Action
 }
 
 // spinButtonAccessible implements the SpinButtonAccessible class.
 type spinButtonAccessible struct {
 	EntryAccessible
-	Action
 }
 
 var _ SpinButtonAccessible = (*spinButtonAccessible)(nil)
@@ -40,7 +38,6 @@ var _ SpinButtonAccessible = (*spinButtonAccessible)(nil)
 func WrapSpinButtonAccessible(obj *externglib.Object) SpinButtonAccessible {
 	return spinButtonAccessible{
 		EntryAccessible: WrapEntryAccessible(obj),
-		Action:          WrapAction(obj),
 	}
 }
 

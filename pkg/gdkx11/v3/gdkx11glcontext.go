@@ -2,7 +2,46 @@
 
 package gdkx11
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_x11_gl_context_get_type()), F: marshalX11GLContext},
+	})
+}
+
+type X11GLContext interface {
+	gdk.GLContext
+}
+
+// x11GLContext implements the X11GLContext class.
+type x11GLContext struct {
+	gdk.GLContext
+}
+
+var _ X11GLContext = (*x11GLContext)(nil)
+
+// WrapX11GLContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11GLContext(obj *externglib.Object) X11GLContext {
+	return x11GLContext{
+		gdk.GLContext: gdk.WrapGLContext(obj),
+	}
+}
+
+func marshalX11GLContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapX11GLContext(obj), nil
+}

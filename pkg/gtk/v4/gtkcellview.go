@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -176,6 +177,23 @@ func NewCellViewWithText(text string) CellView {
 	var _cret C.GtkCellView // in
 
 	_cret = C.gtk_cell_view_new_with_text(_arg1)
+
+	var _cellView CellView // out
+
+	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
+
+	return _cellView
+}
+
+// NewCellViewWithTexture constructs a class CellView.
+func NewCellViewWithTexture(texture gdk.Texture) CellView {
+	var _arg1 *C.GdkTexture // out
+
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+
+	var _cret C.GtkCellView // in
+
+	_cret = C.gtk_cell_view_new_with_texture(_arg1)
 
 	var _cellView CellView // out
 

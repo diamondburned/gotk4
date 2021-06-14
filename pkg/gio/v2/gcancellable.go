@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -84,6 +85,24 @@ type Cancellable interface {
 	Fd() int
 	// IsCancelled checks if a cancellable job has been cancelled.
 	IsCancelled() bool
+	// MakePollfd creates a FD corresponding to @cancellable; this can be passed
+	// to g_poll() and used to poll for cancellation. This is useful both for
+	// unix systems without a native poll and for portability to windows.
+	//
+	// When this function returns true, you should use
+	// g_cancellable_release_fd() to free up resources allocated for the
+	// @pollfd. After a false return, do not call g_cancellable_release_fd().
+	//
+	// If this function returns false, either no @cancellable was given or
+	// resource limits prevent this function from allocating the necessary
+	// structures for polling. (On Linux, you will likely have reached the
+	// maximum number of file descriptors.) The suggested way to handle these
+	// cases is to ignore the @cancellable.
+	//
+	// You are not supposed to read from the fd yourself, just check for
+	// readable status. Reading to unset the readable status is done with
+	// g_cancellable_reset().
+	MakePollfd(pollfd *glib.PollFD) bool
 	// PopCurrent pops @cancellable off the cancellable stack (verifying that
 	// @cancellable is on the top of the stack).
 	PopCurrent()
@@ -241,6 +260,43 @@ func (c cancellable) IsCancelled() bool {
 	var _cret C.gboolean // in
 
 	_cret = C.g_cancellable_is_cancelled(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// MakePollfd creates a FD corresponding to @cancellable; this can be passed
+// to g_poll() and used to poll for cancellation. This is useful both for
+// unix systems without a native poll and for portability to windows.
+//
+// When this function returns true, you should use
+// g_cancellable_release_fd() to free up resources allocated for the
+// @pollfd. After a false return, do not call g_cancellable_release_fd().
+//
+// If this function returns false, either no @cancellable was given or
+// resource limits prevent this function from allocating the necessary
+// structures for polling. (On Linux, you will likely have reached the
+// maximum number of file descriptors.) The suggested way to handle these
+// cases is to ignore the @cancellable.
+//
+// You are not supposed to read from the fd yourself, just check for
+// readable status. Reading to unset the readable status is done with
+// g_cancellable_reset().
+func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
+	var _arg0 *C.GCancellable // out
+	var _arg1 *C.GPollFD      // out
+
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
 
 	var _ok bool // out
 

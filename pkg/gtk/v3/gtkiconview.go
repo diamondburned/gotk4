@@ -6,8 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -17,8 +18,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// void gotk4_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -50,27 +49,6 @@ func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 	return IconViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// IconViewForeachFunc: a function used by gtk_icon_view_selected_foreach() to
-// map all selected rows. It will be called on every selected row in the view.
-type IconViewForeachFunc func(iconView IconView, path *TreePath)
-
-//export gotk4_IconViewForeachFunc
-func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var iconView IconView // out
-	var path *TreePath    // out
-
-	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(IconView)
-	path = WrapTreePath(unsafe.Pointer(arg1))
-
-	fn := v.(IconViewForeachFunc)
-	fn(iconView, path)
-}
-
 // IconView provides an alternative view on a TreeModel. It displays the model
 // as a grid of icons with labels. Like TreeView, it allows to select one or
 // multiple items (depending on the selection mode, see
@@ -98,9 +76,23 @@ type IconView interface {
 	// ConvertWidgetToBinWindowCoords converts widget coordinates to coordinates
 	// for the bin_window, as expected by e.g. gtk_icon_view_get_path_at_pos().
 	ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int)
+	// CreateDragIcon creates a #cairo_surface_t representation of the item at
+	// @path. This image is used for a drag icon.
+	CreateDragIcon(path *TreePath) *cairo.Surface
+	// EnableModelDragDest turns @icon_view into a drop destination for
+	// automatic DND. Calling this method sets IconView:reorderable to false.
+	EnableModelDragDest(targets []TargetEntry, actions gdk.DragAction)
+	// EnableModelDragSource turns @icon_view into a drag source for automatic
+	// DND. Calling this method sets IconView:reorderable to false.
+	EnableModelDragSource(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction)
 	// ActivateOnSingleClick gets the setting set by
 	// gtk_icon_view_set_activate_on_single_click().
 	ActivateOnSingleClick() bool
+	// CellRect fills the bounding rectangle in widget coordinates for the cell
+	// specified by @path and @cell. If @cell is nil the main cell area is used.
+	//
+	// This function is only valid if @icon_view is realized.
+	CellRect(path *TreePath, cell CellRenderer) (gdk.Rectangle, bool)
 	// ColumnSpacing returns the value of the ::column-spacing property.
 	ColumnSpacing() int
 	// Columns returns the value of the ::columns property.
@@ -197,9 +189,6 @@ type IconView interface {
 	SelectAll()
 	// SelectPath selects the row at @path.
 	SelectPath(path *TreePath)
-	// SelectedForeach calls a function for each selected icon. Note that the
-	// model or selection cannot be modified from within this function.
-	SelectedForeach(fn IconViewForeachFunc)
 	// SetActivateOnSingleClick causes the IconView::item-activated signal to be
 	// emitted on a single click instead of a double click.
 	SetActivateOnSingleClick(single bool)
@@ -407,6 +396,63 @@ func (i iconView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int
 	return _bx, _by
 }
 
+// CreateDragIcon creates a #cairo_surface_t representation of the item at
+// @path. This image is used for a drag icon.
+func (i iconView) CreateDragIcon(path *TreePath) *cairo.Surface {
+	var _arg0 *C.GtkIconView // out
+	var _arg1 *C.GtkTreePath // out
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+
+	var _cret *C.cairo_surface_t // in
+
+	_cret = C.gtk_icon_view_create_drag_icon(_arg0, _arg1)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _surface
+}
+
+// EnableModelDragDest turns @icon_view into a drop destination for
+// automatic DND. Calling this method sets IconView:reorderable to false.
+func (i iconView) EnableModelDragDest(targets []TargetEntry, actions gdk.DragAction) {
+	var _arg0 *C.GtkIconView // out
+	var _arg1 *C.GtkTargetEntry
+	var _arg2 C.gint
+	var _arg3 C.GdkDragAction // out
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
+	_arg2 = C.gint(len(targets))
+	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	_arg3 = (C.GdkDragAction)(actions)
+
+	C.gtk_icon_view_enable_model_drag_dest(_arg0, _arg1, _arg2, _arg3)
+}
+
+// EnableModelDragSource turns @icon_view into a drag source for automatic
+// DND. Calling this method sets IconView:reorderable to false.
+func (i iconView) EnableModelDragSource(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction) {
+	var _arg0 *C.GtkIconView    // out
+	var _arg1 C.GdkModifierType // out
+	var _arg2 *C.GtkTargetEntry
+	var _arg3 C.gint
+	var _arg4 C.GdkDragAction // out
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
+	_arg1 = (C.GdkModifierType)(startButtonMask)
+	_arg3 = C.gint(len(targets))
+	_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	_arg4 = (C.GdkDragAction)(actions)
+
+	C.gtk_icon_view_enable_model_drag_source(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 // ActivateOnSingleClick gets the setting set by
 // gtk_icon_view_set_activate_on_single_click().
 func (i iconView) ActivateOnSingleClick() bool {
@@ -425,6 +471,33 @@ func (i iconView) ActivateOnSingleClick() bool {
 	}
 
 	return _ok
+}
+
+// CellRect fills the bounding rectangle in widget coordinates for the cell
+// specified by @path and @cell. If @cell is nil the main cell area is used.
+//
+// This function is only valid if @icon_view is realized.
+func (i iconView) CellRect(path *TreePath, cell CellRenderer) (gdk.Rectangle, bool) {
+	var _arg0 *C.GtkIconView     // out
+	var _arg1 *C.GtkTreePath     // out
+	var _arg2 *C.GtkCellRenderer // out
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+
+	var _rect gdk.Rectangle
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _rect, _ok
 }
 
 // ColumnSpacing returns the value of the ::column-spacing property.
@@ -971,20 +1044,6 @@ func (i iconView) SelectPath(path *TreePath) {
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	C.gtk_icon_view_select_path(_arg0, _arg1)
-}
-
-// SelectedForeach calls a function for each selected icon. Note that the
-// model or selection cannot be modified from within this function.
-func (i iconView) SelectedForeach(fn IconViewForeachFunc) {
-	var _arg0 *C.GtkIconView           // out
-	var _arg1 C.GtkIconViewForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_IconViewForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_icon_view_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetActivateOnSingleClick causes the IconView::item-activated signal to be

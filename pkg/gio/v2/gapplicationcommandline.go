@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -154,6 +156,26 @@ type ApplicationCommandLine interface {
 	ExitStatus() int
 	// IsRemote determines if @cmdline represents a remote invocation.
 	IsRemote() bool
+	// OptionsDict gets the options there were passed to
+	// g_application_command_line().
+	//
+	// If you did not override local_command_line() then these are the same
+	// options that were parsed according to the Entrys added to the application
+	// with g_application_add_main_option_entries() and possibly modified from
+	// your GApplication::handle-local-options handler.
+	//
+	// If no options were sent then an empty dictionary is returned so that you
+	// don't need to check for nil.
+	OptionsDict() *glib.VariantDict
+	// PlatformData gets the platform data associated with the invocation of
+	// @cmdline.
+	//
+	// This is a #GVariant dictionary containing information about the context
+	// in which the invocation occurred. It typically contains information like
+	// the current working directory and the startup notification ID.
+	//
+	// For local invocation, it will be nil.
+	PlatformData() *glib.Variant
 	// Stdin gets the stdin of the invoking process.
 	//
 	// The Stream can be used to read data passed to the standard input of the
@@ -333,16 +355,13 @@ func (c applicationCommandLine) Environ() []string {
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 		}
@@ -386,6 +405,59 @@ func (c applicationCommandLine) IsRemote() bool {
 	}
 
 	return _ok
+}
+
+// OptionsDict gets the options there were passed to
+// g_application_command_line().
+//
+// If you did not override local_command_line() then these are the same
+// options that were parsed according to the Entrys added to the application
+// with g_application_add_main_option_entries() and possibly modified from
+// your GApplication::handle-local-options handler.
+//
+// If no options were sent then an empty dictionary is returned so that you
+// don't need to check for nil.
+func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
+	var _arg0 *C.GApplicationCommandLine // out
+
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GVariantDict // in
+
+	_cret = C.g_application_command_line_get_options_dict(_arg0)
+
+	var _variantDict *glib.VariantDict // out
+
+	_variantDict = glib.WrapVariantDict(unsafe.Pointer(_cret))
+
+	return _variantDict
+}
+
+// PlatformData gets the platform data associated with the invocation of
+// @cmdline.
+//
+// This is a #GVariant dictionary containing information about the context
+// in which the invocation occurred. It typically contains information like
+// the current working directory and the startup notification ID.
+//
+// For local invocation, it will be nil.
+func (c applicationCommandLine) PlatformData() *glib.Variant {
+	var _arg0 *C.GApplicationCommandLine // out
+
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_application_command_line_get_platform_data(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
 }
 
 // Stdin gets the stdin of the invoking process.

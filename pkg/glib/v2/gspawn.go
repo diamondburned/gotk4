@@ -5,15 +5,12 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
-//
-// void gotk4_SpawnChildSetupFunc(gpointer);
 import "C"
 
 // SpawnError: error codes returned by spawning processes.
@@ -106,45 +103,6 @@ const (
 	// Since: 2.40
 	SpawnFlagsCloexecPipes SpawnFlags = 256
 )
-
-// SpawnChildSetupFunc specifies the type of the setup function passed to
-// g_spawn_async(), g_spawn_sync() and g_spawn_async_with_pipes(), which can, in
-// very limited ways, be used to affect the child's execution.
-//
-// On POSIX platforms, the function is called in the child after GLib has
-// performed all the setup it plans to perform, but before calling exec().
-// Actions taken in this function will only affect the child, not the parent.
-//
-// On Windows, the function is called in the parent. Its usefulness on Windows
-// is thus questionable. In many cases executing the child setup function in the
-// parent can have ill effects, and you should be very careful when porting
-// software to Windows that uses child setup functions.
-//
-// However, even on POSIX, you are extremely limited in what you can safely do
-// from a ChildSetupFunc, because any mutexes that were held by other threads in
-// the parent process at the time of the fork() will still be locked in the
-// child process, and they will never be unlocked (since the threads that held
-// them don't exist in the child). POSIX allows only async-signal-safe functions
-// (see signal(7)) to be called in the child between fork() and exec(), which
-// drastically limits the usefulness of child setup functions.
-//
-// In particular, it is not safe to call any function which may call malloc(),
-// which includes POSIX functions such as setenv(). If you need to set up the
-// child environment differently from the parent, you should use
-// g_get_environ(), g_environ_setenv(), and g_environ_unsetenv(), and then pass
-// the complete environment list to the `g_spawn...` function.
-type SpawnChildSetupFunc func()
-
-//export gotk4_SpawnChildSetupFunc
-func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
-	v := box.Get(uintptr(arg0))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(SpawnChildSetupFunc)
-	fn()
-}
 
 // SpawnCheckExitStatus: set @error if @exit_status indicates the child exited
 // abnormally (e.g. with a nonzero exit code, or via a fatal signal).
@@ -262,136 +220,30 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	var _goerr error    // out
 
 	{
-		var length int
-		for p := _arg2; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _arg2; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_arg2, length)
-		_standardOutput = make([]byte, length)
+		src := unsafe.Slice(_arg2, i)
+		_standardOutput = make([]byte, i)
 		for i := range src {
 			_standardOutput[i] = (byte)(src[i])
 		}
 	}
 	{
-		var length int
-		for p := _arg3; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _arg3; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_arg3, length)
-		_standardError = make([]byte, length)
+		src := unsafe.Slice(_arg3, i)
+		_standardError = make([]byte, i)
 		for i := range src {
 			_standardError[i] = (byte)(src[i])
 		}
 	}
 	_exitStatus = (int)(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _standardOutput, _standardError, _exitStatus, _goerr
-}
-
-// SpawnSync executes a child synchronously (waits for the child to exit before
-// returning). All output from the child is stored in @standard_output and
-// @standard_error, if those parameters are non-nil. Note that you must set the
-// G_SPAWN_STDOUT_TO_DEV_NULL and G_SPAWN_STDERR_TO_DEV_NULL flags when passing
-// nil for @standard_output and @standard_error.
-//
-// If @exit_status is non-nil, the platform-specific exit status of the child is
-// stored there; see the documentation of g_spawn_check_exit_status() for how to
-// use and interpret this. Note that it is invalid to pass
-// G_SPAWN_DO_NOT_REAP_CHILD in @flags, and on POSIX platforms, the same
-// restrictions as for g_child_watch_source_new() apply.
-//
-// If an error occurs, no data is returned in @standard_output, @standard_error,
-// or @exit_status.
-//
-// This function calls g_spawn_async_with_pipes() internally; see that function
-// for full details on the other parameters and details on how these functions
-// work on Windows.
-func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
-	var _arg1 *C.gchar // out
-	var _arg2 **C.gchar
-	var _arg3 **C.gchar
-	var _arg4 C.GSpawnFlags          // out
-	var _arg5 C.GSpawnChildSetupFunc // out
-	var _arg6 C.gpointer
-
-	_arg1 = (*C.gchar)(C.CString(workingDirectory))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong((len(argv) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	{
-		out := unsafe.Slice(_arg2, len(argv))
-		for i := range argv {
-			out[i] = (*C.gchar)(C.CString(argv[i]))
-			defer C.free(unsafe.Pointer(out[i]))
-		}
-	}
-	_arg3 = (**C.gchar)(C.malloc(C.ulong((len(envp) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	{
-		out := unsafe.Slice(_arg3, len(envp))
-		for i := range envp {
-			out[i] = (*C.gchar)(C.CString(envp[i]))
-			defer C.free(unsafe.Pointer(out[i]))
-		}
-	}
-	_arg4 = (C.GSpawnFlags)(flags)
-	_arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
-	_arg6 = C.gpointer(box.Assign(childSetup))
-
-	var _arg7 *C.gchar
-	var _arg8 *C.gchar
-	var _arg9 C.gint    // in
-	var _cerr *C.GError // in
-
-	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)
-
-	var _standardOutput []byte
-	var _standardError []byte
-	var _exitStatus int // out
-	var _goerr error    // out
-
-	{
-		var length int
-		for p := _arg7; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		src := unsafe.Slice(_arg7, length)
-		_standardOutput = make([]byte, length)
-		for i := range src {
-			_standardOutput[i] = (byte)(src[i])
-		}
-	}
-	{
-		var length int
-		for p := _arg8; *p != nil; p = (*C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		src := unsafe.Slice(_arg8, length)
-		_standardError = make([]byte, length)
-		for i := range src {
-			_standardError[i] = (byte)(src[i])
-		}
-	}
-	_exitStatus = (int)(_arg9)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _standardOutput, _standardError, _exitStatus, _goerr

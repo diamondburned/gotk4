@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -78,6 +79,9 @@ type CSSProvider interface {
 	// LoadFromData loads @data into @css_provider, and by doing so clears any
 	// previously loaded information.
 	LoadFromData(data []byte) error
+	// LoadFromFile loads the data contained in @file into @css_provider, making
+	// it clear any previously loaded information.
+	LoadFromFile(file gio.File) error
 	// LoadFromPath loads the data contained in @path into @css_provider, making
 	// it clear any previously loaded information.
 	LoadFromPath(path string) error
@@ -146,6 +150,26 @@ func (c cssProvider) LoadFromData(data []byte) error {
 	var _cerr *C.GError // in
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// LoadFromFile loads the data contained in @file into @css_provider, making
+// it clear any previously loaded information.
+func (c cssProvider) LoadFromFile(file gio.File) error {
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.GFile          // out
+
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cerr *C.GError // in
+
+	C.gtk_css_provider_load_from_file(_arg0, _arg1, &_cerr)
 
 	var _goerr error // out
 

@@ -71,8 +71,8 @@ type ifaceGenerator struct {
 	StructName    string
 
 	TypeTree TypeTree
-	Virtuals []callableGenerator // for interface
-	Methods  []callableGenerator // for object implementation
+	Virtuals []callableGenerator // for overrider
+	Methods  []callableGenerator // for big interface
 
 	fg *FileGenerator
 	ng *NamespaceGenerator
@@ -93,8 +93,7 @@ func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 	ig.InterfaceName = PascalToGo(iface.Name)
 	ig.StructName = UnexportPascal(ig.InterfaceName)
 
-	resolved := TypeFromResult(ig.ng, gir.TypeFindResult{Interface: &iface})
-	if !ig.TypeTree.ResolveFromType(resolved) {
+	if !ig.TypeTree.Resolve(iface.Name) {
 		ig.fg.Logln(LogSkip, "interface", ig.InterfaceName, "cannot be type-resolved")
 		return false
 	}

@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -15,8 +15,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
-//
-// gboolean gotk4_AttrFilterFunc(PangoAttribute*, gpointer);
 import "C"
 
 func init() {
@@ -196,53 +194,6 @@ const (
 
 func marshalShowFlags(p uintptr) (interface{}, error) {
 	return ShowFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// AttrDataCopyFunc: type of a function that can duplicate user data for an
-// attribute.
-type AttrDataCopyFunc func() (gpointer interface{})
-
-//export gotk4_AttrDataCopyFunc
-func gotk4_AttrDataCopyFunc(arg0 C.gpointer) C.gpointer {
-	v := box.Get(uintptr(arg0))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(AttrDataCopyFunc)
-	gpointer := fn()
-
-	var cret C.gpointer // out
-
-	cret = C.gpointer(gpointer)
-
-	return cret
-}
-
-// AttrFilterFunc: type of a function filtering a list of attributes.
-type AttrFilterFunc func(attribute *Attribute) (ok bool)
-
-//export gotk4_AttrFilterFunc
-func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var attribute *Attribute // out
-
-	attribute = WrapAttribute(unsafe.Pointer(arg0))
-
-	fn := v.(AttrFilterFunc)
-	ok := fn(attribute)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // NewAttrAllowBreaks: create a new allow-breaks attribute.
@@ -777,6 +728,74 @@ func NewAttrWeight(weight Weight) *Attribute {
 	return _attribute
 }
 
+// MarkupParserFinish finishes parsing markup.
+//
+// After feeding a Pango markup parser some data with
+// g_markup_parse_context_parse(), use this function to get the list of
+// attributes and text out of the markup. This function will not free @context,
+// use g_markup_parse_context_free() to do so.
+func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
+	var _arg1 *C.GMarkupParseContext // out
+
+	_arg1 = (*C.GMarkupParseContext)(unsafe.Pointer(context.Native()))
+
+	var _attrList *AttrList
+	var _arg3 *C.char    // in
+	var _arg4 C.gunichar // in
+	var _cerr *C.GError  // in
+
+	C.pango_markup_parser_finish(_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg3, &_arg4, &_cerr)
+
+	var _text string      // out
+	var _accelChar uint32 // out
+	var _goerr error      // out
+
+	_text = C.GoString(_arg3)
+	defer C.free(unsafe.Pointer(_arg3))
+	_accelChar = (uint32)(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _attrList, _text, _accelChar, _goerr
+}
+
+// NewMarkupParser: incrementally parses marked-up text to create a plain-text
+// string and an attribute list.
+//
+// See the Pango Markup (pango_markup.html) docs for details about the supported
+// markup.
+//
+// If @accel_marker is nonzero, the given character will mark the character
+// following it as an accelerator. For example, @accel_marker might be an
+// ampersand or underscore. All characters marked as an accelerator will receive
+// a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
+// returned in @accel_char, when calling [func@markup_parser_finish]. Two
+// @accel_marker characters following each other produce a single literal
+// @accel_marker character.
+//
+// To feed markup to the parser, use g_markup_parse_context_parse() on the
+// returned `GMarkupParseContext`. When done with feeding markup to the parser,
+// use [func@markup_parser_finish] to get the data out of it, and then use
+// g_markup_parse_context_free() to free it.
+//
+// This function is designed for applications that read Pango markup from
+// streams. To simply parse a string containing Pango markup, the
+// [func@parse_markup] API is recommended instead.
+func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
+	var _arg1 C.gunichar // out
+
+	_arg1 = C.gunichar(accelMarker)
+
+	var _cret *C.GMarkupParseContext // in
+
+	_cret = C.pango_markup_parser_new(_arg1)
+
+	var _markupParseContext *glib.MarkupParseContext // out
+
+	_markupParseContext = glib.WrapMarkupParseContext(unsafe.Pointer(_cret))
+
+	return _markupParseContext
+}
+
 // ParseMarkup parses marked-up text to create a plain-text string and an
 // attribute list.
 //
@@ -1271,31 +1290,6 @@ func (l *AttrList) Equal(otherList *AttrList) bool {
 	return _ok
 }
 
-// Filter: given a `PangoAttrList` and callback function, removes any elements
-// of @list for which @func returns true and inserts them into a new list.
-func (l *AttrList) Filter(fn AttrFilterFunc) *AttrList {
-	var _arg0 *C.PangoAttrList      // out
-	var _arg1 C.PangoAttrFilterFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_AttrFilterFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	var _cret *C.PangoAttrList // in
-
-	_cret = C.pango_attr_list_filter(_arg0, _arg1, _arg2)
-
-	var _attrList *AttrList // out
-
-	_attrList = WrapAttrList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _attrList
-}
-
 // Iterator: create a iterator initialized to the beginning of the list. @list
 // must not be modified until this iterator is freed.
 func (l *AttrList) Iterator() *AttrIterator {
@@ -1464,13 +1458,6 @@ func (a *AttrShape) InkRect() Rectangle {
 func (a *AttrShape) LogicalRect() Rectangle {
 	var v Rectangle // out
 	v = *WrapRectangle(unsafe.Pointer(&a.native.logical_rect))
-	return v
-}
-
-// Data gets the field inside the struct.
-func (a *AttrShape) Data() interface{} {
-	var v interface{} // out
-	v = (interface{})(a.native.data)
 	return v
 }
 

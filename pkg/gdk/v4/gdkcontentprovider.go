@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,6 +39,14 @@ type ContentProvider interface {
 
 	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
+	// Value gets the contents of @provider stored in @value.
+	//
+	// The @value will have been initialized to the `GType` the value should be
+	// provided in. This given `GType` does not need to be listed in the formats
+	// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
+	// given `GType` is not supported, this operation can fail and
+	// IO_ERROR_NOT_SUPPORTED will be reported.
+	Value(value **externglib.Value) error
 	// RefFormats gets the formats that the provider can provide its current
 	// contents in.
 	RefFormats() *ContentFormats
@@ -48,6 +58,10 @@ type ContentProvider interface {
 	// This can be assumed to be a subset of
 	// [method@Gdk.ContentProvider.ref_formats].
 	RefStorableFormats() *ContentFormats
+	// WriteMIMETypeFinish finishes an asynchronous write operation.
+	//
+	// See [method@Gdk.ContentProvider.write_mime_type_async].
+	WriteMIMETypeFinish(result gio.AsyncResult) error
 }
 
 // contentProvider implements the ContentProvider class.
@@ -69,6 +83,23 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapContentProvider(obj), nil
+}
+
+// NewContentProviderForValue constructs a class ContentProvider.
+func NewContentProviderForValue(value **externglib.Value) ContentProvider {
+	var _arg1 *C.GValue // out
+
+	_arg1 = (*C.GValue)(value.GValue)
+
+	var _cret C.GdkContentProvider // in
+
+	_cret = C.gdk_content_provider_new_for_value(_arg1)
+
+	var _contentProvider ContentProvider // out
+
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContentProvider)
+
+	return _contentProvider
 }
 
 // NewContentProviderUnion constructs a class ContentProvider.
@@ -103,6 +134,31 @@ func (p contentProvider) ContentChanged() {
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
 	C.gdk_content_provider_content_changed(_arg0)
+}
+
+// Value gets the contents of @provider stored in @value.
+//
+// The @value will have been initialized to the `GType` the value should be
+// provided in. This given `GType` does not need to be listed in the formats
+// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
+// given `GType` is not supported, this operation can fail and
+// IO_ERROR_NOT_SUPPORTED will be reported.
+func (p contentProvider) Value(value **externglib.Value) error {
+	var _arg0 *C.GdkContentProvider // out
+	var _arg1 *C.GValue             // out
+
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GValue)(value.GValue)
+
+	var _cerr *C.GError // in
+
+	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // RefFormats gets the formats that the provider can provide its current
@@ -150,4 +206,25 @@ func (p contentProvider) RefStorableFormats() *ContentFormats {
 	})
 
 	return _contentFormats
+}
+
+// WriteMIMETypeFinish finishes an asynchronous write operation.
+//
+// See [method@Gdk.ContentProvider.write_mime_type_async].
+func (p contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
+	var _arg0 *C.GdkContentProvider // out
+	var _arg1 *C.GAsyncResult       // out
+
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	var _cerr *C.GError // in
+
+	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

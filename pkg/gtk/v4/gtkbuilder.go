@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -325,6 +326,23 @@ type Builder interface {
 	// child (for instance a `GtkTreeView` that depends on its `GtkTreeModel`),
 	// you have to explicitly list all of them in @object_ids.
 	AddObjectsFromString(buffer string, length int, objectIds []string) error
+	// ExposeObject: add @object to the @builder object pool so it can be
+	// referenced just like any other object built by builder.
+	ExposeObject(name string, object gextras.Objector)
+	// ExtendWithTemplate: main private entry point for building composite
+	// components from template XML.
+	//
+	// This is exported purely to let `gtk-builder-tool` validate templates,
+	// applications have no need to call this function.
+	ExtendWithTemplate(object gextras.Objector, templateType externglib.Type, buffer string, length int) error
+	// CurrentObject gets the current object set via
+	// gtk_builder_set_current_object().
+	CurrentObject() gextras.Objector
+	// Object gets the object named @name.
+	//
+	// Note that this function does not increment the reference count of the
+	// returned object.
+	Object(name string) gextras.Objector
 	// Scope gets the scope in use that was set via gtk_builder_set_scope().
 	Scope() BuilderScope
 	// TranslationDomain gets the translation domain of @builder.
@@ -335,12 +353,44 @@ type Builder interface {
 	// purpose. This is mainly used when implementing the `GtkBuildable`
 	// interface on a type.
 	TypeFromName(typeName string) externglib.Type
+	// SetCurrentObject sets the current object for the @builder.
+	//
+	// The current object can be thought of as the `this` object that the
+	// builder is working for and will often be used as the default object when
+	// an object is optional.
+	//
+	// [method@Gtk.Widget.init_template] for example will set the current object
+	// to the widget the template is inited for. For functions like
+	// [ctor@Gtk.Builder.new_from_resource], the current object will be nil.
+	SetCurrentObject(currentObject gextras.Objector)
 	// SetScope sets the scope the builder should operate in.
 	//
 	// If @scope is nil a new [class@Gtk.BuilderCScope] will be created.
 	SetScope(scope BuilderScope)
 	// SetTranslationDomain sets the translation domain of @builder.
 	SetTranslationDomain(domain string)
+	// ValueFromString demarshals a value from a string.
+	//
+	// This function calls g_value_init() on the @value argument, so it need not
+	// be initialised beforehand.
+	//
+	// Can handle char, uchar, boolean, int, uint, long, ulong, enum, flags,
+	// float, double, string, `GdkRGBA` and `GtkAdjustment` type values.
+	//
+	// Upon errors false will be returned and @error will be assigned a `GError`
+	// from the GTK_BUILDER_ERROR domain.
+	ValueFromString(pspec gobject.ParamSpec, string string) (*externglib.Value, error)
+	// ValueFromStringType demarshals a value from a string.
+	//
+	// Unlike [method@Gtk.Builder.value_from_string], this function takes a
+	// `GType` instead of `GParamSpec`.
+	//
+	// Calls g_value_init() on the @value argument, so it need not be
+	// initialised beforehand.
+	//
+	// Upon errors false will be returned and @error will be assigned a `GError`
+	// from the GTK_BUILDER_ERROR domain.
+	ValueFromStringType(typ externglib.Type, string string) (*externglib.Value, error)
 }
 
 // builder implements the Builder class.
@@ -662,6 +712,92 @@ func (b builder) AddObjectsFromString(buffer string, length int, objectIds []str
 	return _goerr
 }
 
+// ExposeObject: add @object to the @builder object pool so it can be
+// referenced just like any other object built by builder.
+func (b builder) ExposeObject(name string, object gextras.Objector) {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.char       // out
+	var _arg2 *C.GObject    // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+
+	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
+}
+
+// ExtendWithTemplate: main private entry point for building composite
+// components from template XML.
+//
+// This is exported purely to let `gtk-builder-tool` validate templates,
+// applications have no need to call this function.
+func (b builder) ExtendWithTemplate(object gextras.Objector, templateType externglib.Type, buffer string, length int) error {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.GObject    // out
+	var _arg2 C.GType       // out
+	var _arg3 *C.char       // out
+	var _arg4 C.gssize      // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = C.GType(templateType)
+	_arg3 = (*C.char)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.gssize(length)
+
+	var _cerr *C.GError // in
+
+	C.gtk_builder_extend_with_template(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// CurrentObject gets the current object set via
+// gtk_builder_set_current_object().
+func (b builder) CurrentObject() gextras.Objector {
+	var _arg0 *C.GtkBuilder // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+
+	var _cret *C.GObject // in
+
+	_cret = C.gtk_builder_get_current_object(_arg0)
+
+	var _object gextras.Objector // out
+
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+
+	return _object
+}
+
+// Object gets the object named @name.
+//
+// Note that this function does not increment the reference count of the
+// returned object.
+func (b builder) Object(name string) gextras.Objector {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.char       // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GObject // in
+
+	_cret = C.gtk_builder_get_object(_arg0, _arg1)
+
+	var _object gextras.Objector // out
+
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+
+	return _object
+}
+
 // Scope gets the scope in use that was set via gtk_builder_set_scope().
 func (b builder) Scope() BuilderScope {
 	var _arg0 *C.GtkBuilder // out
@@ -720,6 +856,25 @@ func (b builder) TypeFromName(typeName string) externglib.Type {
 	return _gType
 }
 
+// SetCurrentObject sets the current object for the @builder.
+//
+// The current object can be thought of as the `this` object that the
+// builder is working for and will often be used as the default object when
+// an object is optional.
+//
+// [method@Gtk.Widget.init_template] for example will set the current object
+// to the widget the template is inited for. For functions like
+// [ctor@Gtk.Builder.new_from_resource], the current object will be nil.
+func (b builder) SetCurrentObject(currentObject gextras.Objector) {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.GObject    // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
+
+	C.gtk_builder_set_current_object(_arg0, _arg1)
+}
+
 // SetScope sets the scope the builder should operate in.
 //
 // If @scope is nil a new [class@Gtk.BuilderCScope] will be created.
@@ -743,4 +898,72 @@ func (b builder) SetTranslationDomain(domain string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_set_translation_domain(_arg0, _arg1)
+}
+
+// ValueFromString demarshals a value from a string.
+//
+// This function calls g_value_init() on the @value argument, so it need not
+// be initialised beforehand.
+//
+// Can handle char, uchar, boolean, int, uint, long, ulong, enum, flags,
+// float, double, string, `GdkRGBA` and `GtkAdjustment` type values.
+//
+// Upon errors false will be returned and @error will be assigned a `GError`
+// from the GTK_BUILDER_ERROR domain.
+func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (*externglib.Value, error) {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 *C.GParamSpec // out
+	var _arg2 *C.char       // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _arg3 C.GValue  // in
+	var _cerr *C.GError // in
+
+	C.gtk_builder_value_from_string(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+
+	var _value *externglib.Value // out
+	var _goerr error             // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _value, _goerr
+}
+
+// ValueFromStringType demarshals a value from a string.
+//
+// Unlike [method@Gtk.Builder.value_from_string], this function takes a
+// `GType` instead of `GParamSpec`.
+//
+// Calls g_value_init() on the @value argument, so it need not be
+// initialised beforehand.
+//
+// Upon errors false will be returned and @error will be assigned a `GError`
+// from the GTK_BUILDER_ERROR domain.
+func (b builder) ValueFromStringType(typ externglib.Type, string string) (*externglib.Value, error) {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 C.GType       // out
+	var _arg2 *C.char       // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = C.GType(typ)
+	_arg2 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _arg3 C.GValue  // in
+	var _cerr *C.GError // in
+
+	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+
+	var _value *externglib.Value // out
+	var _goerr error             // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _value, _goerr
 }

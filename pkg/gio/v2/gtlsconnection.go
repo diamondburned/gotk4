@@ -306,16 +306,13 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, er
 	var _goerr error // out
 
 	{
-		var length int
-		for p := _arg2; *p != nil; p = (C.GByteArray)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _arg2; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_arg2, length)
-		_data = make([]byte, length)
+		src := unsafe.Slice(_arg2, i)
+		_data = make([]byte, i)
 		for i := range src {
 			_data[i] = (byte)(src[i])
 		}

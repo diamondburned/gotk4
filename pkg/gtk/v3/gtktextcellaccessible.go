@@ -24,13 +24,11 @@ func init() {
 
 type TextCellAccessible interface {
 	RendererCellAccessible
-	Action
 }
 
 // textCellAccessible implements the TextCellAccessible class.
 type textCellAccessible struct {
 	RendererCellAccessible
-	Action
 }
 
 var _ TextCellAccessible = (*textCellAccessible)(nil)
@@ -40,7 +38,6 @@ var _ TextCellAccessible = (*textCellAccessible)(nil)
 func WrapTextCellAccessible(obj *externglib.Object) TextCellAccessible {
 	return textCellAccessible{
 		RendererCellAccessible: WrapRendererCellAccessible(obj),
-		Action:                 WrapAction(obj),
 	}
 }
 

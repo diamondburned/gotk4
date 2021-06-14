@@ -495,13 +495,6 @@ func (o *OptionEntry) Arg() OptionArg {
 	return v
 }
 
-// ArgData gets the field inside the struct.
-func (o *OptionEntry) ArgData() interface{} {
-	var v interface{} // out
-	v = (interface{})(o.native.arg_data)
-	return v
-}
-
 // Description gets the field inside the struct.
 func (o *OptionEntry) Description() string {
 	var v string // out

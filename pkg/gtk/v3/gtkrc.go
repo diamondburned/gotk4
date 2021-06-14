@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -207,6 +209,31 @@ func RCFindModuleInPath(moduleFile string) string {
 	return _filename
 }
 
+// RCFindPixmapInPath looks up a file in pixmap path for the specified Settings.
+// If the file is not found, it outputs a warning message using g_warning() and
+// returns nil.
+func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) string {
+	var _arg1 *C.GtkSettings // out
+	var _arg2 *C.GScanner    // out
+	var _arg3 *C.gchar       // out
+
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+	_arg3 = (*C.gchar)(C.CString(pixmapFile))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	var _cret *C.gchar // in
+
+	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
+
+	var _filename string // out
+
+	_filename = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _filename
+}
+
 // RCGetDefaultFiles retrieves the current list of RC files that will be parsed
 // at the end of gtk_init().
 func RCGetDefaultFiles() []string {
@@ -217,16 +244,13 @@ func RCGetDefaultFiles() []string {
 	var _filenames []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_filenames = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString(src[i])
 		}
@@ -364,6 +388,90 @@ func RCParse(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse(_arg1)
+}
+
+// RCParseColor parses a color in the format expected in a RC file.
+//
+// Note that theme engines should use gtk_rc_parse_color_full() in order to
+// support symbolic colors.
+func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
+	var _arg1 *C.GScanner // out
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+
+	var _color gdk.Color
+	var _cret C.guint // in
+
+	_cret = C.gtk_rc_parse_color(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
+
+	var _guint uint // out
+
+	_guint = (uint)(_cret)
+
+	return _color, _guint
+}
+
+// RCParseColorFull parses a color in the format expected in a RC file. If
+// @style is not nil, it will be consulted to resolve references to symbolic
+// colors.
+func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
+	var _arg1 *C.GScanner   // out
+	var _arg2 *C.GtkRcStyle // out
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
+
+	var _color gdk.Color
+	var _cret C.guint // in
+
+	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, (*C.GdkColor)(unsafe.Pointer(&_color)))
+
+	var _guint uint // out
+
+	_guint = (uint)(_cret)
+
+	return _color, _guint
+}
+
+// RCParsePriority parses a PathPriorityType variable from the format expected
+// in a RC file.
+func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
+	var _arg1 *C.GScanner            // out
+	var _arg2 *C.GtkPathPriorityType // out
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+	_arg2 = (*C.GtkPathPriorityType)(priority)
+
+	var _cret C.guint // in
+
+	_cret = C.gtk_rc_parse_priority(_arg1, _arg2)
+
+	var _guint uint // out
+
+	_guint = (uint)(_cret)
+
+	return _guint
+}
+
+// RCParseState parses a StateType variable from the format expected in a RC
+// file.
+func RCParseState(scanner *glib.Scanner) (StateType, uint) {
+	var _arg1 *C.GScanner // out
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+
+	var _arg2 C.GtkStateType // in
+	var _cret C.guint        // in
+
+	_cret = C.gtk_rc_parse_state(_arg1, &_arg2)
+
+	var _state StateType // out
+	var _guint uint      // out
+
+	_state = StateType(_arg2)
+	_guint = (uint)(_cret)
+
+	return _state, _guint
 }
 
 // RCParseString parses resource information directly from a string.
@@ -533,31 +641,4 @@ func WrapRCContext(ptr unsafe.Pointer) *RCContext {
 // Native returns the underlying C source pointer.
 func (r *RCContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// RCProperty: deprecated
-type RCProperty struct {
-	native C.GtkRcProperty
-}
-
-// WrapRCProperty wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRCProperty(ptr unsafe.Pointer) *RCProperty {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RCProperty)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (r *RCProperty) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}
-
-// Origin gets the field inside the struct.
-func (r *RCProperty) Origin() string {
-	var v string // out
-	v = C.GoString(r.native.origin)
-	return v
 }

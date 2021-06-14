@@ -5,6 +5,8 @@ package gsk
 import (
 	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
 // #cgo pkg-config: gtk4

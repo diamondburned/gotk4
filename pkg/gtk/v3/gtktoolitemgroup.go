@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,6 +41,8 @@ type ToolItemGroup interface {
 	Collapsed() bool
 	// DropItem gets the tool item at position (x, y).
 	DropItem(x int, y int) ToolItem
+	// Ellipsize gets the ellipsization mode of @group.
+	Ellipsize() pango.EllipsizeMode
 	// HeaderRelief gets the relief mode of the header button of @group.
 	HeaderRelief() ReliefStyle
 	// ItemPosition gets the position of @item in @group as index.
@@ -57,6 +60,9 @@ type ToolItemGroup interface {
 	Insert(item ToolItem, position int)
 	// SetCollapsed sets whether the @group should be collapsed or expanded.
 	SetCollapsed(collapsed bool)
+	// SetEllipsize sets the ellipsization mode which should be used by labels
+	// in @group.
+	SetEllipsize(ellipsize pango.EllipsizeMode)
 	// SetHeaderRelief: set the button relief of the group header. See
 	// gtk_button_set_relief() for details.
 	SetHeaderRelief(style ReliefStyle)
@@ -152,6 +158,23 @@ func (g toolItemGroup) DropItem(x int, y int) ToolItem {
 	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
 
 	return _toolItem
+}
+
+// Ellipsize gets the ellipsization mode of @group.
+func (g toolItemGroup) Ellipsize() pango.EllipsizeMode {
+	var _arg0 *C.GtkToolItemGroup // out
+
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(g.Native()))
+
+	var _cret C.PangoEllipsizeMode // in
+
+	_cret = C.gtk_tool_item_group_get_ellipsize(_arg0)
+
+	var _ellipsizeMode pango.EllipsizeMode // out
+
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
+
+	return _ellipsizeMode
 }
 
 // HeaderRelief gets the relief mode of the header button of @group.
@@ -285,6 +308,18 @@ func (g toolItemGroup) SetCollapsed(collapsed bool) {
 	}
 
 	C.gtk_tool_item_group_set_collapsed(_arg0, _arg1)
+}
+
+// SetEllipsize sets the ellipsization mode which should be used by labels
+// in @group.
+func (g toolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
+	var _arg0 *C.GtkToolItemGroup  // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(g.Native()))
+	_arg1 = (C.PangoEllipsizeMode)(ellipsize)
+
+	C.gtk_tool_item_group_set_ellipsize(_arg0, _arg1)
 }
 
 // SetHeaderRelief: set the button relief of the group header. See

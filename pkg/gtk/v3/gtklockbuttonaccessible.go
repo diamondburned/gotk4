@@ -24,15 +24,11 @@ func init() {
 
 type LockButtonAccessible interface {
 	ButtonAccessible
-	Action
-	Image
 }
 
 // lockButtonAccessible implements the LockButtonAccessible class.
 type lockButtonAccessible struct {
 	ButtonAccessible
-	Action
-	Image
 }
 
 var _ LockButtonAccessible = (*lockButtonAccessible)(nil)
@@ -42,8 +38,6 @@ var _ LockButtonAccessible = (*lockButtonAccessible)(nil)
 func WrapLockButtonAccessible(obj *externglib.Object) LockButtonAccessible {
 	return lockButtonAccessible{
 		ButtonAccessible: WrapButtonAccessible(obj),
-		Action:           WrapAction(obj),
-		Image:            WrapImage(obj),
 	}
 }
 

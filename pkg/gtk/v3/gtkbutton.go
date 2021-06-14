@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,7 +64,7 @@ type Button interface {
 	AlwaysShowImage() bool
 	// EventWindow returns the button’s event window if it is realized, nil
 	// otherwise. This function should be rarely needed.
-	EventWindow() Window
+	EventWindow() gdk.Window
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse. See gtk_button_set_focus_on_click().
 	FocusOnClick() bool
@@ -308,7 +309,7 @@ func (b button) AlwaysShowImage() bool {
 
 // EventWindow returns the button’s event window if it is realized, nil
 // otherwise. This function should be rarely needed.
-func (b button) EventWindow() Window {
+func (b button) EventWindow() gdk.Window {
 	var _arg0 *C.GtkButton // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
@@ -317,9 +318,9 @@ func (b button) EventWindow() Window {
 
 	_cret = C.gtk_button_get_event_window(_arg0)
 
-	var _window Window // out
+	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
 
 	return _window
 }

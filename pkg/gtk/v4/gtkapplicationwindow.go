@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -81,6 +82,8 @@ func init() {
 // GtkWidget *window = gtk_application_window_new (app); “`
 type ApplicationWindow interface {
 	Window
+	gio.ActionGroup
+	gio.ActionMap
 	Accessible
 	Buildable
 	ConstraintTarget
@@ -115,6 +118,8 @@ type ApplicationWindow interface {
 // applicationWindow implements the ApplicationWindow class.
 type applicationWindow struct {
 	Window
+	gio.ActionGroup
+	gio.ActionMap
 	Accessible
 	Buildable
 	ConstraintTarget
@@ -130,6 +135,8 @@ var _ ApplicationWindow = (*applicationWindow)(nil)
 func WrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
 	return applicationWindow{
 		Window:           WrapWindow(obj),
+		gio.ActionGroup:  gio.WrapActionGroup(obj),
+		gio.ActionMap:    gio.WrapActionMap(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
 		ConstraintTarget: WrapConstraintTarget(obj),

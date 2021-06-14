@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,6 +24,34 @@ func init() {
 	})
 }
 
+// ColorChooserOverrider contains methods that are overridable. This
+// interface is a subset of the interface ColorChooser.
+type ColorChooserOverrider interface {
+	// AddPalette adds a palette to the color chooser. If @orientation is
+	// horizontal, the colors are grouped in rows, with @colors_per_line colors
+	// in each row. If @horizontal is false, the colors are grouped in columns
+	// instead.
+	//
+	// The default color palette of ColorChooserWidget has 27 colors, organized
+	// in columns of 3 colors. The default gray palette has 9 grays in a single
+	// row.
+	//
+	// The layout of the color chooser widget works best when the palettes have
+	// 9-10 columns.
+	//
+	// Calling this function for the first time has the side effect of removing
+	// the default color and gray palettes from the color chooser.
+	//
+	// If @colors is nil, removes all previously added palettes.
+	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
+
+	ColorActivated(color *gdk.RGBA)
+	// RGBA gets the currently-selected color.
+	RGBA() gdk.RGBA
+	// SetRGBA sets the color.
+	SetRGBA(color *gdk.RGBA)
+}
+
 // ColorChooser is an interface that is implemented by widgets for choosing
 // colors. Depending on the situation, colors may be allowed to have alpha
 // (translucency).
@@ -31,6 +60,7 @@ func init() {
 // ColorChooserWidget, ColorChooserDialog and ColorButton.
 type ColorChooser interface {
 	gextras.Objector
+	ColorChooserOverrider
 
 	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
@@ -60,6 +90,51 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 	return WrapColorChooser(obj), nil
 }
 
+// AddPalette adds a palette to the color chooser. If @orientation is
+// horizontal, the colors are grouped in rows, with @colors_per_line colors
+// in each row. If @horizontal is false, the colors are grouped in columns
+// instead.
+//
+// The default color palette of ColorChooserWidget has 27 colors, organized
+// in columns of 3 colors. The default gray palette has 9 grays in a single
+// row.
+//
+// The layout of the color chooser widget works best when the palettes have
+// 9-10 columns.
+//
+// Calling this function for the first time has the side effect of removing
+// the default color and gray palettes from the color chooser.
+//
+// If @colors is nil, removes all previously added palettes.
+func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
+	var _arg0 *C.GtkColorChooser // out
+	var _arg1 C.GtkOrientation   // out
+	var _arg2 C.gint             // out
+	var _arg4 *C.GdkRGBA
+	var _arg3 C.gint
+
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (C.GtkOrientation)(orientation)
+	_arg2 = C.gint(colorsPerLine)
+	_arg3 = C.gint(len(colors))
+	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(&colors[0]))
+
+	C.gtk_color_chooser_add_palette(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// RGBA gets the currently-selected color.
+func (c colorChooser) RGBA() gdk.RGBA {
+	var _arg0 *C.GtkColorChooser // out
+
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+
+	var _color gdk.RGBA
+
+	C.gtk_color_chooser_get_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+
+	return _color
+}
+
 // UseAlpha returns whether the color chooser shows the alpha channel.
 func (c colorChooser) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
@@ -77,6 +152,17 @@ func (c colorChooser) UseAlpha() bool {
 	}
 
 	return _ok
+}
+
+// SetRGBA sets the color.
+func (c colorChooser) SetRGBA(color *gdk.RGBA) {
+	var _arg0 *C.GtkColorChooser // out
+	var _arg1 *C.GdkRGBA         // out
+
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
+
+	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
 }
 
 // SetUseAlpha sets whether or not the color chooser should use the alpha

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -77,6 +78,14 @@ type Display interface {
 	//
 	// Returns a monitor close to @surface if it is outside of all monitors.
 	MonitorAtSurface(surface Surface) Monitor
+	// Monitors gets the list of monitors associated with this display.
+	//
+	// Subsequent calls to this function will always return the same list for
+	// the same display.
+	//
+	// You can listen to the GListModel::items-changed signal on this list to
+	// monitor changes to the monitor of this display.
+	Monitors() gio.ListModel
 	// Name gets the name of the display.
 	Name() string
 	// PrimaryClipboard gets the clipboard used for the primary selection.
@@ -84,6 +93,9 @@ type Display interface {
 	// On backends where the primary clipboard is not supported natively, GDK
 	// emulates this clipboard locally.
 	PrimaryClipboard() Clipboard
+	// Setting retrieves a desktop-wide setting such as double-click time for
+	// the @display.
+	Setting(name string, value **externglib.Value) bool
 	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
@@ -351,6 +363,29 @@ func (d display) MonitorAtSurface(surface Surface) Monitor {
 	return _monitor
 }
 
+// Monitors gets the list of monitors associated with this display.
+//
+// Subsequent calls to this function will always return the same list for
+// the same display.
+//
+// You can listen to the GListModel::items-changed signal on this list to
+// monitor changes to the monitor of this display.
+func (s display) Monitors() gio.ListModel {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gdk_display_get_monitors(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
+}
+
 // Name gets the name of the display.
 func (d display) Name() string {
 	var _arg0 *C.GdkDisplay // out
@@ -386,6 +421,31 @@ func (d display) PrimaryClipboard() Clipboard {
 	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Clipboard)
 
 	return _clipboard
+}
+
+// Setting retrieves a desktop-wide setting such as double-click time for
+// the @display.
+func (d display) Setting(name string, value **externglib.Value) bool {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.char       // out
+	var _arg2 *C.GValue     // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GValue)(value.GValue)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // StartupNotificationID gets the startup notification ID for a Wayland

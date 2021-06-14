@@ -24,13 +24,11 @@ func init() {
 
 type ExpanderAccessible interface {
 	ContainerAccessible
-	Action
 }
 
 // expanderAccessible implements the ExpanderAccessible class.
 type expanderAccessible struct {
 	ContainerAccessible
-	Action
 }
 
 var _ ExpanderAccessible = (*expanderAccessible)(nil)
@@ -40,7 +38,6 @@ var _ ExpanderAccessible = (*expanderAccessible)(nil)
 func WrapExpanderAccessible(obj *externglib.Object) ExpanderAccessible {
 	return expanderAccessible{
 		ContainerAccessible: WrapContainerAccessible(obj),
-		Action:              WrapAction(obj),
 	}
 }
 

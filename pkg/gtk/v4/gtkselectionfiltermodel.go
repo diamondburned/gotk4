@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,6 +26,7 @@ func init() {
 // the selection from a `GtkSelectionModel`.
 type SelectionFilterModel interface {
 	gextras.Objector
+	gio.ListModel
 
 	// Model gets the model currently filtered or nil if none.
 	Model() SelectionModel
@@ -39,6 +41,7 @@ type SelectionFilterModel interface {
 // selectionFilterModel implements the SelectionFilterModel class.
 type selectionFilterModel struct {
 	gextras.Objector
+	gio.ListModel
 }
 
 var _ SelectionFilterModel = (*selectionFilterModel)(nil)
@@ -47,7 +50,8 @@ var _ SelectionFilterModel = (*selectionFilterModel)(nil)
 // primarily used internally.
 func WrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
 	return selectionFilterModel{
-		Objector: obj,
+		Objector:      obj,
+		gio.ListModel: gio.WrapListModel(obj),
 	}
 }
 

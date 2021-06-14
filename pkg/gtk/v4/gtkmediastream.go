@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,6 +38,7 @@ func init() {
 // [method@Gtk.MediaStream.error], [method@Gtk.MediaStream.error_valist].
 type MediaStream interface {
 	gextras.Objector
+	gdk.Paintable
 
 	// Ended pauses the media stream and marks it as ended.
 	//
@@ -132,6 +134,23 @@ type MediaStream interface {
 	// This function may not be called again until the stream has been reset via
 	// [method@Gtk.MediaStream.unprepared].
 	Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64)
+	// Realize: called by users to attach the media stream to a `GdkSurface`
+	// they manage.
+	//
+	// The stream can then access the resources of @surface for its rendering
+	// purposes. In particular, media streams might want to create a
+	// `GdkGLContext` or sync to the `GdkFrameClock`.
+	//
+	// Whoever calls this function is responsible for calling
+	// [method@Gtk.MediaStream.unrealize] before either the stream or @surface
+	// get destroyed.
+	//
+	// Multiple calls to this function may happen from different users of the
+	// video, even with the same @surface. Each of these calls must be followed
+	// by its own call to [method@Gtk.MediaStream.unrealize].
+	//
+	// It is not required to call this function to make a media stream work.
+	Realize(surface gdk.Surface)
 	// Seek: start a seek operation on @self to @timestamp.
 	//
 	// If @timestamp is out of range, it will be clamped.
@@ -196,6 +215,11 @@ type MediaStream interface {
 	//
 	// This function will also reset any error state the stream was in.
 	Unprepared()
+	// Unrealize undoes a previous call to gtk_media_stream_realize().
+	//
+	// This causes the stream to release all resources it had allocated from
+	// @surface.
+	Unrealize(surface gdk.Surface)
 	// Update: media stream implementations should regularly call this function
 	// to update the timestamp reported by the stream.
 	//
@@ -209,6 +233,7 @@ type MediaStream interface {
 // mediaStream implements the MediaStream class.
 type mediaStream struct {
 	gextras.Objector
+	gdk.Paintable
 }
 
 var _ MediaStream = (*mediaStream)(nil)
@@ -217,7 +242,8 @@ var _ MediaStream = (*mediaStream)(nil)
 // primarily used internally.
 func WrapMediaStream(obj *externglib.Object) MediaStream {
 	return mediaStream{
-		Objector: obj,
+		Objector:      obj,
+		gdk.Paintable: gdk.WrapPaintable(obj),
 	}
 }
 
@@ -585,6 +611,32 @@ func (s mediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, durat
 	C.gtk_media_stream_prepared(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
+// Realize: called by users to attach the media stream to a `GdkSurface`
+// they manage.
+//
+// The stream can then access the resources of @surface for its rendering
+// purposes. In particular, media streams might want to create a
+// `GdkGLContext` or sync to the `GdkFrameClock`.
+//
+// Whoever calls this function is responsible for calling
+// [method@Gtk.MediaStream.unrealize] before either the stream or @surface
+// get destroyed.
+//
+// Multiple calls to this function may happen from different users of the
+// video, even with the same @surface. Each of these calls must be followed
+// by its own call to [method@Gtk.MediaStream.unrealize].
+//
+// It is not required to call this function to make a media stream work.
+func (s mediaStream) Realize(surface gdk.Surface) {
+	var _arg0 *C.GtkMediaStream // out
+	var _arg1 *C.GdkSurface     // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+
+	C.gtk_media_stream_realize(_arg0, _arg1)
+}
+
 // Seek: start a seek operation on @self to @timestamp.
 //
 // If @timestamp is out of range, it will be clamped.
@@ -719,6 +771,20 @@ func (s mediaStream) Unprepared() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	C.gtk_media_stream_unprepared(_arg0)
+}
+
+// Unrealize undoes a previous call to gtk_media_stream_realize().
+//
+// This causes the stream to release all resources it had allocated from
+// @surface.
+func (s mediaStream) Unrealize(surface gdk.Surface) {
+	var _arg0 *C.GtkMediaStream // out
+	var _arg1 *C.GdkSurface     // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+
+	C.gtk_media_stream_unrealize(_arg0, _arg1)
 }
 
 // Update: media stream implementations should regularly call this function

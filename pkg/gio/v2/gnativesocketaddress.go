@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,23 +57,4 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNativeSocketAddress(obj), nil
-}
-
-// NewNativeSocketAddress constructs a class NativeSocketAddress.
-func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
-	var _arg1 C.gpointer // out
-	var _arg2 C.gsize    // out
-
-	_arg1 = C.gpointer(native)
-	_arg2 = C.gsize(len)
-
-	var _cret C.GNativeSocketAddress // in
-
-	_cret = C.g_native_socket_address_new(_arg1, _arg2)
-
-	var _nativeSocketAddress NativeSocketAddress // out
-
-	_nativeSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NativeSocketAddress)
-
-	return _nativeSocketAddress
 }

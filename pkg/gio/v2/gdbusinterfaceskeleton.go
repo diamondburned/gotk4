@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,6 +67,8 @@ type DBusInterfaceSkeleton interface {
 	Info() *DBusInterfaceInfo
 	// ObjectPath gets the object path that @interface_ is exported on, if any.
 	ObjectPath() string
+	// Properties gets all D-Bus properties for @interface_.
+	Properties() *glib.Variant
 	// HasConnection checks if @interface_ is exported on @connection.
 	HasConnection(connection DBusConnection) bool
 	// SetFlags sets flags describing what the behavior of @skeleton should be.
@@ -217,6 +221,26 @@ func (i dBusInterfaceSkeleton) ObjectPath() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// Properties gets all D-Bus properties for @interface_.
+func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+
+	var _cret *C.GVariant // in
+
+	_cret = C.g_dbus_interface_skeleton_get_properties(_arg0)
+
+	var _variant *glib.Variant // out
+
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _variant
 }
 
 // HasConnection checks if @interface_ is exported on @connection.

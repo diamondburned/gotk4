@@ -7,6 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/graphene"
+	"github.com/diamondburned/gotk4/pkg/gsk/v4"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,6 +29,10 @@ func init() {
 		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
 	})
 }
+
+// Allocation: the rectangle representing the area allocated for a widget by its
+// parent.
+type Allocation gdk.Rectangle
 
 // Widget: the base class for all widgets.
 //
@@ -321,6 +332,16 @@ type Widget interface {
 	//
 	// If @widget isn't activatable, the function returns false.
 	Activate() bool
+	// ActivateActionVariant looks up the action in the action groups associated
+	// with @widget and its ancestors, and activates it.
+	//
+	// If the action is in an action group added with
+	// [method@Gtk.Widget.insert_action_group], the @name is expected to be
+	// prefixed with the prefix that was used when the group was inserted.
+	//
+	// The arguments must match the actions expected parameter type, as returned
+	// by `g_action_get_parameter_type()`.
+	ActivateActionVariant(name string, args *glib.Variant) bool
 	// ActivateDefault activates the `default.activate` action from @widget.
 	ActivateDefault()
 	// AddController adds @controller to @widget so that it will receive events.
@@ -344,6 +365,16 @@ type Widget interface {
 	// by using a connection to the [signal@Gtk.Widget::destroy] signal or a
 	// weak notifier.
 	AddMnemonicLabel(label Widget)
+	// Allocate: this function is only used by `GtkWidget` subclasses, to assign
+	// a size, position and (optionally) baseline to their child widgets.
+	//
+	// In this function, the allocation and baseline may be adjusted. The given
+	// allocation will be forced to be bigger than the widget's minimum size, as
+	// well as at least 0×0 in size.
+	//
+	// For a version that does not take a transform, see
+	// [method@Gtk.Widget.size_allocate].
+	Allocate(width int, height int, baseline int, transform *gsk.Transform)
 	// ChildFocus: called by widgets as the user moves around the window using
 	// keyboard shortcuts.
 	//
@@ -365,6 +396,18 @@ type Widget interface {
 	// an app, you’d use [method@Gtk.Widget.grab_focus] to move the focus to a
 	// particular widget.
 	ChildFocus(direction DirectionType) bool
+	// ComputeBounds computes the bounds for @widget in the coordinate space of
+	// @target.
+	//
+	// FIXME: Explain what "bounds" are.
+	//
+	// If the operation is successful, true is returned. If @widget has no
+	// bounds or the bounds cannot be expressed in @target's coordinate space
+	// (for example if both widgets are in different windows), false is returned
+	// and @bounds is set to the zero rectangle.
+	//
+	// It is valid for @widget and @target to be the same widget.
+	ComputeBounds(target Widget) (graphene.Rect, bool)
 	// ComputeExpand computes whether a container should give this widget extra
 	// space when possible.
 	//
@@ -379,11 +422,35 @@ type Widget interface {
 	// on the widget itself, or, if none has been explicitly set, the widget may
 	// expand if some of its children do.
 	ComputeExpand(orientation Orientation) bool
+	// ComputePoint translates the given @point in @widget's coordinates to
+	// coordinates relative to @target’s coordinate system.
+	//
+	// In order to perform this operation, both widgets must share a common
+	// ancestor.
+	ComputePoint(target Widget, point *graphene.Point) (graphene.Point, bool)
+	// ComputeTransform computes a matrix suitable to describe a transformation
+	// from @widget's coordinate system into @target's coordinate system.
+	ComputeTransform(target Widget) (graphene.Matrix, bool)
 	// Contains tests if the point at (@x, @y) is contained in @widget.
 	//
 	// The coordinates for (@x, @y) must be in widget coordinates, so (0, 0) is
 	// assumed to be the top left of @widget's content area.
 	Contains(x float64, y float64) bool
+	// CreatePangoContext creates a new `PangoContext` with the appropriate font
+	// map, font options, font description, and base direction for drawing text
+	// for this widget.
+	//
+	// See also [method@Gtk.Widget.get_pango_context].
+	CreatePangoContext() pango.Context
+	// CreatePangoLayout creates a new `PangoLayout` with the appropriate font
+	// map, font description, and base direction for drawing text for this
+	// widget.
+	//
+	// If you keep a `PangoLayout` created in this way around, you need to
+	// re-create it when the widget `PangoContext` is replaced. This can be
+	// tracked by listening to changes of the [property@Gtk.Widget:root]
+	// property on the widget.
+	CreatePangoLayout(text string) pango.Layout
 	// DragCheckThreshold checks to see if a drag movement has passed the GTK
 	// drag threshold.
 	DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool
@@ -433,14 +500,36 @@ type Widget interface {
 	// This function is only useful for container implementations and should
 	// never be called by an application.
 	ChildVisible() bool
+	// Clipboard gets the clipboard object for @widget.
+	//
+	// This is a utility function to get the clipboard object for the
+	// `GdkDisplay` that @widget is using.
+	//
+	// Note that this function always works, even when @widget is not realized
+	// yet.
+	Clipboard() gdk.Clipboard
 	// CSSClasses returns the list of style classes applied to @widget.
 	CSSClasses() []string
 	// CSSName returns the CSS name that is used for @self.
 	CSSName() string
+	// Cursor queries the cursor set on @widget.
+	//
+	// See [method@Gtk.Widget.set_cursor] for details.
+	Cursor() gdk.Cursor
 	// Direction gets the reading direction for a particular widget.
 	//
 	// See [method@Gtk.Widget.set_direction].
 	Direction() TextDirection
+	// Display: get the `GdkDisplay` for the toplevel window associated with
+	// this widget.
+	//
+	// This function can only be called after the widget has been added to a
+	// widget hierarchy with a `GtkWindow` at the top.
+	//
+	// In general, you should only create display specific resources when a
+	// widget has been realized, and you should free those resources when the
+	// widget is unrealized.
+	Display() gdk.Display
 	// FirstChild returns the widgets first child.
 	//
 	// This API is primarily meant for widget implementations.
@@ -456,6 +545,38 @@ type Widget interface {
 	//
 	// See [method@Gtk.Widget.set_focusable].
 	Focusable() bool
+	// FontMap gets the font map of @widget.
+	//
+	// See [method@Gtk.Widget.set_font_map].
+	FontMap() pango.FontMap
+	// FontOptions returns the `cairo_font_options_t` used for Pango rendering.
+	//
+	// When not set, the defaults font options for the `GdkDisplay` will be
+	// used.
+	FontOptions() *cairo.FontOptions
+	// FrameClock obtains the frame clock for a widget.
+	//
+	// The frame clock is a global “ticker” that can be used to drive animations
+	// and repaints. The most common reason to get the frame clock is to call
+	// [method@Gdk.FrameClock.get_frame_time], in order to get a time to use for
+	// animating. For example you might record the start of the animation with
+	// an initial value from [method@Gdk.FrameClock.get_frame_time], and then
+	// update the animation by calling [method@Gdk.FrameClock.get_frame_time]
+	// again during each repaint.
+	//
+	// [method@Gdk.FrameClock.request_phase] will result in a new frame on the
+	// clock, but won’t necessarily repaint any widgets. To repaint a widget,
+	// you have to use [method@Gtk.Widget.queue_draw] which invalidates the
+	// widget (thus scheduling it to receive a draw on the next frame).
+	// gtk_widget_queue_draw() will also end up requesting a frame on the
+	// appropriate frame clock.
+	//
+	// A widget’s frame clock will not change while the widget is mapped.
+	// Reparenting a widget (which implies a temporary unmap) can change the
+	// widget’s frame clock.
+	//
+	// Unrealized widgets do not have a frame clock.
+	FrameClock() gdk.FrameClock
 	// Halign gets the horizontal alignment of @widget.
 	//
 	// For backwards compatibility reasons this method will never return
@@ -538,6 +659,16 @@ type Widget interface {
 	Opacity() float64
 	// Overflow returns the widgets overflow value.
 	Overflow() Overflow
+	// PangoContext gets a `PangoContext` with the appropriate font map, font
+	// description, and base direction for this widget.
+	//
+	// Unlike the context returned by [method@Gtk.Widget.create_pango_context],
+	// this context is owned by the widget (it can be used until the screen for
+	// the widget changes or the widget is removed from its toplevel), and will
+	// be updated to match any changes to the widget’s attributes. This can be
+	// tracked by listening to changes of the [property@Gtk.Widget:root]
+	// property on the widget.
+	PangoContext() pango.Context
 	// Parent returns the parent widget of @widget.
 	Parent() Widget
 	// PreferredSize retrieves the minimum and natural size of a widget, taking
@@ -559,6 +690,14 @@ type Widget interface {
 	//
 	// This API is primarily meant for widget implementations.
 	PrevSibling() Widget
+	// PrimaryClipboard gets the primary clipboard of @widget.
+	//
+	// This is a utility function to get the primary clipboard object for the
+	// `GdkDisplay` that @widget is using.
+	//
+	// Note that this function always works, even when @widget is not realized
+	// yet.
+	PrimaryClipboard() gdk.Clipboard
 	// Realized determines whether @widget is realized.
 	Realized() bool
 	// ReceivesDefault determines whether @widget is always treated as the
@@ -640,6 +779,16 @@ type Widget interface {
 	// The returned object is guaranteed to be the same for the lifetime of
 	// @widget.
 	StyleContext() StyleContext
+	// TemplateChild: fetch an object build from the template XML for
+	// @widget_type in this @widget instance.
+	//
+	// This will only report children which were previously declared with
+	// [method@Gtk.WidgetClass.bind_template_child_full] or one of its variants.
+	//
+	// This function is only meant to be called for code which is private to the
+	// @widget_type which declared the child and is meant for language bindings
+	// which cannot easily make use of the GObject structure offsets.
+	TemplateChild(widgetType externglib.Type, name string) gextras.Objector
 	// TooltipMarkup gets the contents of the tooltip for @widget.
 	//
 	// If the tooltip has not been set using
@@ -740,6 +889,20 @@ type Widget interface {
 	// A good rule of thumb is to call this function as the first thing in an
 	// instance initialization function.
 	InitTemplate()
+	// InsertActionGroup inserts @group into @widget.
+	//
+	// Children of @widget that implement [iface@Gtk.Actionable] can then be
+	// associated with actions in @group by setting their “action-name” to
+	// @prefix.`action-name`.
+	//
+	// Note that inheritance is defined for individual actions. I.e. even if you
+	// insert a group with prefix @prefix, actions with the same prefix will
+	// still be inherited from the parent, unless the group contains an action
+	// with the same name.
+	//
+	// If @group is nil, a previously inserted group for @name is removed from
+	// @widget.
+	InsertActionGroup(name string, group gio.ActionGroup)
 	// InsertAfter inserts @widget into the child widget list of @parent.
 	//
 	// It will be placed after @previous_sibling, or at the beginning if
@@ -837,6 +1000,25 @@ type Widget interface {
 	Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 	// MnemonicActivate emits the `GtkWidget`::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
+	// ObserveChildren returns a `GListModel` to track the children of @widget.
+	//
+	// Calling this function will enable extra internal bookkeeping to track
+	// children and emit signals on the returned listmodel. It may slow down
+	// operations a lot.
+	//
+	// Applications should try hard to avoid calling this function because of
+	// the slowdowns.
+	ObserveChildren() gio.ListModel
+	// ObserveControllers returns a `GListModel` to track the
+	// [class@Gtk.EventController]s of @widget.
+	//
+	// Calling this function will enable extra internal bookkeeping to track
+	// controllers and emit signals on the returned listmodel. It may slow down
+	// operations a lot.
+	//
+	// Applications should try hard to avoid calling this function because of
+	// the slowdowns.
+	ObserveControllers() gio.ListModel
 	// Pick finds the descendant of @widget closest to the screen at the point
 	// (@x, @y).
 	//
@@ -955,6 +1137,12 @@ type Widget interface {
 	// SetCSSClasses: will clear all style classes applied to @widget and
 	// replace them with @classes.
 	SetCSSClasses(classes []string)
+	// SetCursor sets the cursor to be shown when pointer devices point towards
+	// @widget.
+	//
+	// If the @cursor is NULL, @widget will use the cursor inherited from the
+	// parent widget.
+	SetCursor(cursor gdk.Cursor)
 	// SetCursorFromName sets a named cursor to be shown when pointer devices
 	// point towards @widget.
 	//
@@ -1007,6 +1195,19 @@ type Widget interface {
 	// See [method@Gtk.Widget.grab_focus] for actually setting the input focus
 	// on a widget.
 	SetFocusable(focusable bool)
+	// SetFontMap sets the font map to use for Pango rendering.
+	//
+	// The font map is the object that is used to look up fonts. Setting a
+	// custom font map can be useful in special situations, e.g. when you need
+	// to add application-specific fonts to the set of available fonts.
+	//
+	// When not set, the widget will inherit the font map from its parent.
+	SetFontMap(fontMap pango.FontMap)
+	// SetFontOptions sets the `cairo_font_options_t` used for Pango rendering
+	// in this widget.
+	//
+	// When not set, the default font options for the `GdkDisplay` will be used.
+	SetFontOptions(options *cairo.FontOptions)
 	// SetHalign sets the horizontal alignment of @widget.
 	SetHalign(align Align)
 	// SetHasTooltip sets the `has-tooltip` property on @widget to @has_tooltip.
@@ -1343,6 +1544,38 @@ func (w widget) Activate() bool {
 	return _ok
 }
 
+// ActivateActionVariant looks up the action in the action groups associated
+// with @widget and its ancestors, and activates it.
+//
+// If the action is in an action group added with
+// [method@Gtk.Widget.insert_action_group], the @name is expected to be
+// prefixed with the prefix that was used when the group was inserted.
+//
+// The arguments must match the actions expected parameter type, as returned
+// by `g_action_get_parameter_type()`.
+func (w widget) ActivateActionVariant(name string, args *glib.Variant) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.char      // out
+	var _arg2 *C.GVariant  // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(args.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_widget_activate_action_variant(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ActivateDefault activates the `default.activate` action from @widget.
 func (w widget) ActivateDefault() {
 	var _arg0 *C.GtkWidget // out
@@ -1401,6 +1634,31 @@ func (w widget) AddMnemonicLabel(label Widget) {
 	C.gtk_widget_add_mnemonic_label(_arg0, _arg1)
 }
 
+// Allocate: this function is only used by `GtkWidget` subclasses, to assign
+// a size, position and (optionally) baseline to their child widgets.
+//
+// In this function, the allocation and baseline may be adjusted. The given
+// allocation will be forced to be bigger than the widget's minimum size, as
+// well as at least 0×0 in size.
+//
+// For a version that does not take a transform, see
+// [method@Gtk.Widget.size_allocate].
+func (w widget) Allocate(width int, height int, baseline int, transform *gsk.Transform) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.int           // out
+	var _arg2 C.int           // out
+	var _arg3 C.int           // out
+	var _arg4 *C.GskTransform // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	_arg3 = C.int(baseline)
+	_arg4 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))
+
+	C.gtk_widget_allocate(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 // ChildFocus: called by widgets as the user moves around the window using
 // keyboard shortcuts.
 //
@@ -1441,6 +1699,38 @@ func (w widget) ChildFocus(direction DirectionType) bool {
 	return _ok
 }
 
+// ComputeBounds computes the bounds for @widget in the coordinate space of
+// @target.
+//
+// FIXME: Explain what "bounds" are.
+//
+// If the operation is successful, true is returned. If @widget has no
+// bounds or the bounds cannot be expressed in @target's coordinate space
+// (for example if both widgets are in different windows), false is returned
+// and @bounds is set to the zero rectangle.
+//
+// It is valid for @widget and @target to be the same widget.
+func (w widget) ComputeBounds(target Widget) (graphene.Rect, bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
+
+	var _outBounds graphene.Rect
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_widget_compute_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_outBounds)))
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _outBounds, _ok
+}
+
 // ComputeExpand computes whether a container should give this widget extra
 // space when possible.
 //
@@ -1474,6 +1764,57 @@ func (w widget) ComputeExpand(orientation Orientation) bool {
 	return _ok
 }
 
+// ComputePoint translates the given @point in @widget's coordinates to
+// coordinates relative to @target’s coordinate system.
+//
+// In order to perform this operation, both widgets must share a common
+// ancestor.
+func (w widget) ComputePoint(target Widget, point *graphene.Point) (graphene.Point, bool) {
+	var _arg0 *C.GtkWidget        // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 *C.graphene_point_t // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
+	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
+
+	var _outPoint graphene.Point
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_widget_compute_point(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_outPoint)))
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _outPoint, _ok
+}
+
+// ComputeTransform computes a matrix suitable to describe a transformation
+// from @widget's coordinate system into @target's coordinate system.
+func (w widget) ComputeTransform(target Widget) (graphene.Matrix, bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
+
+	var _outTransform graphene.Matrix
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_widget_compute_transform(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_outTransform)))
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _outTransform, _ok
+}
+
 // Contains tests if the point at (@x, @y) is contained in @widget.
 //
 // The coordinates for (@x, @y) must be in widget coordinates, so (0, 0) is
@@ -1498,6 +1839,54 @@ func (w widget) Contains(x float64, y float64) bool {
 	}
 
 	return _ok
+}
+
+// CreatePangoContext creates a new `PangoContext` with the appropriate font
+// map, font options, font description, and base direction for drawing text
+// for this widget.
+//
+// See also [method@Gtk.Widget.get_pango_context].
+func (w widget) CreatePangoContext() pango.Context {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.PangoContext // in
+
+	_cret = C.gtk_widget_create_pango_context(_arg0)
+
+	var _context pango.Context // out
+
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
+
+	return _context
+}
+
+// CreatePangoLayout creates a new `PangoLayout` with the appropriate font
+// map, font description, and base direction for drawing text for this
+// widget.
+//
+// If you keep a `PangoLayout` created in this way around, you need to
+// re-create it when the widget `PangoContext` is replaced. This can be
+// tracked by listening to changes of the [property@Gtk.Widget:root]
+// property on the widget.
+func (w widget) CreatePangoLayout(text string) pango.Layout {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.char      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.PangoLayout // in
+
+	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
+
+	var _layout pango.Layout // out
+
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+
+	return _layout
 }
 
 // DragCheckThreshold checks to see if a drag movement has passed the GTK
@@ -1694,6 +2083,29 @@ func (w widget) ChildVisible() bool {
 	return _ok
 }
 
+// Clipboard gets the clipboard object for @widget.
+//
+// This is a utility function to get the clipboard object for the
+// `GdkDisplay` that @widget is using.
+//
+// Note that this function always works, even when @widget is not realized
+// yet.
+func (w widget) Clipboard() gdk.Clipboard {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GdkClipboard // in
+
+	_cret = C.gtk_widget_get_clipboard(_arg0)
+
+	var _clipboard gdk.Clipboard // out
+
+	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Clipboard)
+
+	return _clipboard
+}
+
 // CSSClasses returns the list of style classes applied to @widget.
 func (w widget) CSSClasses() []string {
 	var _arg0 *C.GtkWidget // out
@@ -1707,16 +2119,13 @@ func (w widget) CSSClasses() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -1743,6 +2152,25 @@ func (s widget) CSSName() string {
 	return _utf8
 }
 
+// Cursor queries the cursor set on @widget.
+//
+// See [method@Gtk.Widget.set_cursor] for details.
+func (w widget) Cursor() gdk.Cursor {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GdkCursor // in
+
+	_cret = C.gtk_widget_get_cursor(_arg0)
+
+	var _cursor gdk.Cursor // out
+
+	_cursor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Cursor)
+
+	return _cursor
+}
+
 // Direction gets the reading direction for a particular widget.
 //
 // See [method@Gtk.Widget.set_direction].
@@ -1760,6 +2188,31 @@ func (w widget) Direction() TextDirection {
 	_textDirection = TextDirection(_cret)
 
 	return _textDirection
+}
+
+// Display: get the `GdkDisplay` for the toplevel window associated with
+// this widget.
+//
+// This function can only be called after the widget has been added to a
+// widget hierarchy with a `GtkWindow` at the top.
+//
+// In general, you should only create display specific resources when a
+// widget has been realized, and you should free those resources when the
+// widget is unrealized.
+func (w widget) Display() gdk.Display {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gtk_widget_get_display(_arg0)
+
+	var _display gdk.Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+
+	return _display
 }
 
 // FirstChild returns the widgets first child.
@@ -1839,6 +2292,83 @@ func (w widget) Focusable() bool {
 	}
 
 	return _ok
+}
+
+// FontMap gets the font map of @widget.
+//
+// See [method@Gtk.Widget.set_font_map].
+func (w widget) FontMap() pango.FontMap {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.PangoFontMap // in
+
+	_cret = C.gtk_widget_get_font_map(_arg0)
+
+	var _fontMap pango.FontMap // out
+
+	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontMap)
+
+	return _fontMap
+}
+
+// FontOptions returns the `cairo_font_options_t` used for Pango rendering.
+//
+// When not set, the defaults font options for the `GdkDisplay` will be
+// used.
+func (w widget) FontOptions() *cairo.FontOptions {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.cairo_font_options_t // in
+
+	_cret = C.gtk_widget_get_font_options(_arg0)
+
+	var _fontOptions *cairo.FontOptions // out
+
+	_fontOptions = cairo.WrapFontOptions(unsafe.Pointer(_cret))
+
+	return _fontOptions
+}
+
+// FrameClock obtains the frame clock for a widget.
+//
+// The frame clock is a global “ticker” that can be used to drive animations
+// and repaints. The most common reason to get the frame clock is to call
+// [method@Gdk.FrameClock.get_frame_time], in order to get a time to use for
+// animating. For example you might record the start of the animation with
+// an initial value from [method@Gdk.FrameClock.get_frame_time], and then
+// update the animation by calling [method@Gdk.FrameClock.get_frame_time]
+// again during each repaint.
+//
+// [method@Gdk.FrameClock.request_phase] will result in a new frame on the
+// clock, but won’t necessarily repaint any widgets. To repaint a widget,
+// you have to use [method@Gtk.Widget.queue_draw] which invalidates the
+// widget (thus scheduling it to receive a draw on the next frame).
+// gtk_widget_queue_draw() will also end up requesting a frame on the
+// appropriate frame clock.
+//
+// A widget’s frame clock will not change while the widget is mapped.
+// Reparenting a widget (which implies a temporary unmap) can change the
+// widget’s frame clock.
+//
+// Unrealized widgets do not have a frame clock.
+func (w widget) FrameClock() gdk.FrameClock {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GdkFrameClock // in
+
+	_cret = C.gtk_widget_get_frame_clock(_arg0)
+
+	var _frameClock gdk.FrameClock // out
+
+	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.FrameClock)
+
+	return _frameClock
 }
 
 // Halign gets the horizontal alignment of @widget.
@@ -2186,6 +2716,31 @@ func (w widget) Overflow() Overflow {
 	return _overflow
 }
 
+// PangoContext gets a `PangoContext` with the appropriate font map, font
+// description, and base direction for this widget.
+//
+// Unlike the context returned by [method@Gtk.Widget.create_pango_context],
+// this context is owned by the widget (it can be used until the screen for
+// the widget changes or the widget is removed from its toplevel), and will
+// be updated to match any changes to the widget’s attributes. This can be
+// tracked by listening to changes of the [property@Gtk.Widget:root]
+// property on the widget.
+func (w widget) PangoContext() pango.Context {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.PangoContext // in
+
+	_cret = C.gtk_widget_get_pango_context(_arg0)
+
+	var _context pango.Context // out
+
+	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Context)
+
+	return _context
+}
+
 // Parent returns the parent widget of @widget.
 func (w widget) Parent() Widget {
 	var _arg0 *C.GtkWidget // out
@@ -2247,6 +2802,29 @@ func (w widget) PrevSibling() Widget {
 	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
 	return _ret
+}
+
+// PrimaryClipboard gets the primary clipboard of @widget.
+//
+// This is a utility function to get the primary clipboard object for the
+// `GdkDisplay` that @widget is using.
+//
+// Note that this function always works, even when @widget is not realized
+// yet.
+func (w widget) PrimaryClipboard() gdk.Clipboard {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GdkClipboard // in
+
+	_cret = C.gtk_widget_get_primary_clipboard(_arg0)
+
+	var _clipboard gdk.Clipboard // out
+
+	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Clipboard)
+
+	return _clipboard
 }
 
 // Realized determines whether @widget is realized.
@@ -2504,6 +3082,36 @@ func (w widget) StyleContext() StyleContext {
 	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StyleContext)
 
 	return _styleContext
+}
+
+// TemplateChild: fetch an object build from the template XML for
+// @widget_type in this @widget instance.
+//
+// This will only report children which were previously declared with
+// [method@Gtk.WidgetClass.bind_template_child_full] or one of its variants.
+//
+// This function is only meant to be called for code which is private to the
+// @widget_type which declared the child and is meant for language bindings
+// which cannot easily make use of the GObject structure offsets.
+func (w widget) TemplateChild(widgetType externglib.Type, name string) gextras.Objector {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.GType      // out
+	var _arg2 *C.char      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = C.GType(widgetType)
+	_arg2 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret *C.GObject // in
+
+	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
+
+	var _object gextras.Objector // out
+
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+
+	return _object
 }
 
 // TooltipMarkup gets the contents of the tooltip for @widget.
@@ -2836,6 +3444,32 @@ func (w widget) InitTemplate() {
 	C.gtk_widget_init_template(_arg0)
 }
 
+// InsertActionGroup inserts @group into @widget.
+//
+// Children of @widget that implement [iface@Gtk.Actionable] can then be
+// associated with actions in @group by setting their “action-name” to
+// @prefix.`action-name`.
+//
+// Note that inheritance is defined for individual actions. I.e. even if you
+// insert a group with prefix @prefix, actions with the same prefix will
+// still be inherited from the parent, unless the group contains an action
+// with the same name.
+//
+// If @group is nil, a previously inserted group for @name is removed from
+// @widget.
+func (w widget) InsertActionGroup(name string, group gio.ActionGroup) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 *C.char         // out
+	var _arg2 *C.GActionGroup // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+
+	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
+}
+
 // InsertAfter inserts @widget into the child widget list of @parent.
 //
 // It will be placed after @previous_sibling, or at the beginning if
@@ -3117,6 +3751,55 @@ func (w widget) MnemonicActivate(groupCycling bool) bool {
 	return _ok
 }
 
+// ObserveChildren returns a `GListModel` to track the children of @widget.
+//
+// Calling this function will enable extra internal bookkeeping to track
+// children and emit signals on the returned listmodel. It may slow down
+// operations a lot.
+//
+// Applications should try hard to avoid calling this function because of
+// the slowdowns.
+func (w widget) ObserveChildren() gio.ListModel {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_widget_observe_children(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
+}
+
+// ObserveControllers returns a `GListModel` to track the
+// [class@Gtk.EventController]s of @widget.
+//
+// Calling this function will enable extra internal bookkeeping to track
+// controllers and emit signals on the returned listmodel. It may slow down
+// operations a lot.
+//
+// Applications should try hard to avoid calling this function because of
+// the slowdowns.
+func (w widget) ObserveControllers() gio.ListModel {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_widget_observe_controllers(_arg0)
+
+	var _listModel gio.ListModel // out
+
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+
+	return _listModel
+}
+
 // Pick finds the descendant of @widget closest to the screen at the point
 // (@x, @y).
 //
@@ -3372,6 +4055,21 @@ func (w widget) SetCSSClasses(classes []string) {
 	C.gtk_widget_set_css_classes(_arg0, _arg1)
 }
 
+// SetCursor sets the cursor to be shown when pointer devices point towards
+// @widget.
+//
+// If the @cursor is NULL, @widget will use the cursor inherited from the
+// parent widget.
+func (w widget) SetCursor(cursor gdk.Cursor) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkCursor // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+
+	C.gtk_widget_set_cursor(_arg0, _arg1)
+}
+
 // SetCursorFromName sets a named cursor to be shown when pointer devices
 // point towards @widget.
 //
@@ -3472,6 +4170,37 @@ func (w widget) SetFocusable(focusable bool) {
 	}
 
 	C.gtk_widget_set_focusable(_arg0, _arg1)
+}
+
+// SetFontMap sets the font map to use for Pango rendering.
+//
+// The font map is the object that is used to look up fonts. Setting a
+// custom font map can be useful in special situations, e.g. when you need
+// to add application-specific fonts to the set of available fonts.
+//
+// When not set, the widget will inherit the font map from its parent.
+func (w widget) SetFontMap(fontMap pango.FontMap) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 *C.PangoFontMap // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
+
+	C.gtk_widget_set_font_map(_arg0, _arg1)
+}
+
+// SetFontOptions sets the `cairo_font_options_t` used for Pango rendering
+// in this widget.
+//
+// When not set, the default font options for the `GdkDisplay` will be used.
+func (w widget) SetFontOptions(options *cairo.FontOptions) {
+	var _arg0 *C.GtkWidget            // out
+	var _arg1 *C.cairo_font_options_t // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options.Native()))
+
+	C.gtk_widget_set_font_options(_arg0, _arg1)
 }
 
 // SetHalign sets the horizontal alignment of @widget.

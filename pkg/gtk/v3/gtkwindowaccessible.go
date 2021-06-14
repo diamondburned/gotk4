@@ -24,13 +24,11 @@ func init() {
 
 type WindowAccessible interface {
 	ContainerAccessible
-	Window
 }
 
 // windowAccessible implements the WindowAccessible class.
 type windowAccessible struct {
 	ContainerAccessible
-	Window
 }
 
 var _ WindowAccessible = (*windowAccessible)(nil)
@@ -40,7 +38,6 @@ var _ WindowAccessible = (*windowAccessible)(nil)
 func WrapWindowAccessible(obj *externglib.Object) WindowAccessible {
 	return windowAccessible{
 		ContainerAccessible: WrapContainerAccessible(obj),
-		Window:              WrapWindow(obj),
 	}
 }
 

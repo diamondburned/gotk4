@@ -371,16 +371,13 @@ func GetFilenameCharsets() ([]string, bool) {
 	var _ok bool // out
 
 	{
-		var length int
-		for p := _arg1; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _arg1; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_arg1, length)
-		_filenameCharsets = make([]string, length)
+		src := unsafe.Slice(_arg1, i)
+		_filenameCharsets = make([]string, i)
 		for i := range src {
 			_filenameCharsets[i] = C.GoString(src[i])
 		}

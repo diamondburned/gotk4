@@ -60,6 +60,26 @@ func NewIconSet() *IconSet {
 	return _iconSet
 }
 
+// NewIconSetFromPixbuf constructs a struct IconSet.
+func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *IconSet {
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	var _cret *C.GtkIconSet // in
+
+	_cret = C.gtk_icon_set_new_from_pixbuf(_arg1)
+
+	var _iconSet *IconSet // out
+
+	_iconSet = WrapIconSet(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _iconSet
+}
+
 // Native returns the underlying C source pointer.
 func (i *IconSet) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
@@ -158,6 +178,99 @@ func (i *IconSet) Ref() *IconSet {
 	})
 
 	return _iconSet
+}
+
+// RenderIcon renders an icon using gtk_style_render_icon(). In most cases,
+// gtk_widget_render_icon() is better, since it automatically provides most of
+// the arguments from the current widget settings. This function never returns
+// nil; if the icon can’t be rendered (perhaps because an image file fails to
+// load), a default "missing image" icon will be returned instead.
+func (i *IconSet) RenderIcon(style Style, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkIconSet      // out
+	var _arg1 *C.GtkStyle        // out
+	var _arg2 C.GtkTextDirection // out
+	var _arg3 C.GtkStateType     // out
+	var _arg4 C.GtkIconSize      // out
+	var _arg5 *C.GtkWidget       // out
+	var _arg6 *C.gchar           // out
+
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	_arg2 = (C.GtkTextDirection)(direction)
+	_arg3 = (C.GtkStateType)(state)
+	_arg4 = C.GtkIconSize(size)
+	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg6 = (*C.gchar)(C.CString(detail))
+	defer C.free(unsafe.Pointer(_arg6))
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gtk_icon_set_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return _pixbuf
+}
+
+// RenderIconPixbuf renders an icon using gtk_render_icon_pixbuf(). In most
+// cases, gtk_widget_render_icon_pixbuf() is better, since it automatically
+// provides most of the arguments from the current widget settings. This
+// function never returns nil; if the icon can’t be rendered (perhaps because an
+// image file fails to load), a default "missing image" icon will be returned
+// instead.
+func (i *IconSet) RenderIconPixbuf(context StyleContext, size int) gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkIconSet      // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.GtkIconSize      // out
+
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gtk_icon_set_render_icon_pixbuf(_arg0, _arg1, _arg2)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return _pixbuf
+}
+
+// RenderIconSurface renders an icon using gtk_render_icon_pixbuf() and converts
+// it to a cairo surface.
+//
+// This function never returns nil; if the icon can’t be rendered (perhaps
+// because an image file fails to load), a default "missing image" icon will be
+// returned instead.
+func (i *IconSet) RenderIconSurface(context StyleContext, size int, scale int, forWindow gdk.Window) *cairo.Surface {
+	var _arg0 *C.GtkIconSet      // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.GtkIconSize      // out
+	var _arg3 C.int              // out
+	var _arg4 *C.GdkWindow       // out
+
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg2 = C.GtkIconSize(size)
+	_arg3 = C.int(scale)
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+
+	var _cret *C.cairo_surface_t // in
+
+	_cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _surface
 }
 
 // Unref decrements the reference count on @icon_set, and frees memory if the
@@ -316,6 +429,27 @@ func (s *IconSource) IconName() string {
 	return _utf8
 }
 
+// Pixbuf retrieves the source pixbuf, or nil if none is set. In addition, if a
+// filename source is in use, this function in some cases will return the pixbuf
+// from loaded from the filename. This is, for example, true for the
+// GtkIconSource passed to the Style render_icon() virtual function. The
+// reference count on the pixbuf is not incremented.
+func (s *IconSource) Pixbuf() gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkIconSource // out
+
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gtk_icon_source_get_pixbuf(_arg0)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return _pixbuf
+}
+
 // Size obtains the icon size this source applies to. The return value is only
 // useful/meaningful if the icon size is not wildcarded.
 func (s *IconSource) Size() int {
@@ -453,6 +587,18 @@ func (s *IconSource) SetIconName(iconName string) {
 	C.gtk_icon_source_set_icon_name(_arg0, _arg1)
 }
 
+// SetPixbuf sets a pixbuf to use as a base image when creating icon variants
+// for IconSet.
+func (s *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 *C.GdkPixbuf     // out
+
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	C.gtk_icon_source_set_pixbuf(_arg0, _arg1)
+}
+
 // SetSize sets the icon size this icon source is intended to be used with.
 //
 // Setting the icon size on an icon source makes no difference if the size is
@@ -585,6 +731,23 @@ func (d *SelectionData) Free() {
 	C.gtk_selection_data_free(_arg0)
 }
 
+// DataType retrieves the data type of the selection.
+func (s *SelectionData) DataType() gdk.Atom {
+	var _arg0 *C.GtkSelectionData // out
+
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GdkAtom // in
+
+	_cret = C.gtk_selection_data_get_data_type(_arg0)
+
+	var _atom gdk.Atom // out
+
+	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+
+	return _atom
+}
+
 // DataWithLength retrieves the raw data of the selection along with its length.
 func (s *SelectionData) DataWithLength() []byte {
 	var _arg0 *C.GtkSelectionData // out
@@ -607,6 +770,23 @@ func (s *SelectionData) DataWithLength() []byte {
 	}
 
 	return _guint8s
+}
+
+// Display retrieves the display of the selection.
+func (s *SelectionData) Display() gdk.Display {
+	var _arg0 *C.GtkSelectionData // out
+
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gtk_selection_data_get_display(_arg0)
+
+	var _display gdk.Display // out
+
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+
+	return _display
 }
 
 // Format retrieves the format of the selection.
@@ -643,6 +823,85 @@ func (s *SelectionData) Length() int {
 	return _gint
 }
 
+// Pixbuf gets the contents of the selection data as a Pixbuf.
+func (s *SelectionData) Pixbuf() gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkSelectionData // out
+
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkPixbuf // in
+
+	_cret = C.gtk_selection_data_get_pixbuf(_arg0)
+
+	var _pixbuf gdkpixbuf.Pixbuf // out
+
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return _pixbuf
+}
+
+// Selection retrieves the selection Atom of the selection data.
+func (s *SelectionData) Selection() gdk.Atom {
+	var _arg0 *C.GtkSelectionData // out
+
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GdkAtom // in
+
+	_cret = C.gtk_selection_data_get_selection(_arg0)
+
+	var _atom gdk.Atom // out
+
+	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+
+	return _atom
+}
+
+// Target retrieves the target of the selection.
+func (s *SelectionData) Target() gdk.Atom {
+	var _arg0 *C.GtkSelectionData // out
+
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+
+	var _cret C.GdkAtom // in
+
+	_cret = C.gtk_selection_data_get_target(_arg0)
+
+	var _atom gdk.Atom // out
+
+	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+
+	return _atom
+}
+
+// Targets gets the contents of @selection_data as an array of targets. This can
+// be used to interpret the results of getting the standard TARGETS target that
+// is always supplied for any selection.
+func (s *SelectionData) Targets() ([]gdk.Atom, bool) {
+	var _arg0 *C.GtkSelectionData // out
+
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+
+	var _arg1 *C.GdkAtom
+	var _arg2 C.gint     // in
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_selection_data_get_targets(_arg0, &_arg1, &_arg2)
+
+	var _targets []gdk.Atom
+	var _ok bool // out
+
+	_targets = unsafe.Slice((*gdk.Atom)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_targets, func(v *[]gdk.Atom) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _targets, _ok
+}
+
 // Text gets the contents of the selection data as a UTF-8 string.
 func (s *SelectionData) Text() string {
 	var _arg0 *C.GtkSelectionData // out
@@ -674,16 +933,13 @@ func (s *SelectionData) Uris() []string {
 	var _utf8s []string
 
 	{
-		var length int
-		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_utf8s = make([]string, length)
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString(src[i])
 			defer C.free(unsafe.Pointer(src[i]))
@@ -691,6 +947,46 @@ func (s *SelectionData) Uris() []string {
 	}
 
 	return _utf8s
+}
+
+// Set stores new data into a SelectionData object. Should only be called from a
+// selection handler callback. Zero-terminates the stored data.
+func (s *SelectionData) Set(typ gdk.Atom, format int, data []byte) {
+	var _arg0 *C.GtkSelectionData // out
+	var _arg1 C.GdkAtom           // out
+	var _arg2 C.gint              // out
+	var _arg3 *C.guchar
+	var _arg4 C.gint
+
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(typ.Native()))
+	_arg2 = C.gint(format)
+	_arg4 = C.gint(len(data))
+	_arg3 = (*C.guchar)(unsafe.Pointer(&data[0]))
+
+	C.gtk_selection_data_set(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// SetPixbuf sets the contents of the selection from a Pixbuf The pixbuf is
+// converted to the form determined by @selection_data->target.
+func (s *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) bool {
+	var _arg0 *C.GtkSelectionData // out
+	var _arg1 *C.GdkPixbuf        // out
+
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_selection_data_set_pixbuf(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SetText sets the contents of the selection from a UTF-8 encoded string. The

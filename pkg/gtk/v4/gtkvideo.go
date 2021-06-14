@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,6 +44,8 @@ type Video interface {
 
 	// Autoplay returns true if videos have been set to loop.
 	Autoplay() bool
+	// File gets the file played by @self or nil if not playing back a file.
+	File() gio.File
 	// Loop returns true if videos have been set to loop.
 	Loop() bool
 	// MediaStream gets the media stream managed by @self or nil if none.
@@ -50,6 +53,8 @@ type Video interface {
 	// SetAutoplay sets whether @self automatically starts playback when it
 	// becomes visible or when a new file gets loaded.
 	SetAutoplay(autoplay bool)
+	// SetFile makes @self play the given @file.
+	SetFile(file gio.File)
 	// SetFilename makes @self play the given @filename.
 	//
 	// This is a utility function that calls gtk_video_set_file(),
@@ -103,6 +108,23 @@ func NewVideo() Video {
 	var _cret C.GtkVideo // in
 
 	_cret = C.gtk_video_new()
+
+	var _video Video // out
+
+	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+
+	return _video
+}
+
+// NewVideoForFile constructs a class Video.
+func NewVideoForFile(file gio.File) Video {
+	var _arg1 *C.GFile // out
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cret C.GtkVideo // in
+
+	_cret = C.gtk_video_new_for_file(_arg1)
 
 	var _video Video // out
 
@@ -183,6 +205,23 @@ func (s video) Autoplay() bool {
 	return _ok
 }
 
+// File gets the file played by @self or nil if not playing back a file.
+func (s video) File() gio.File {
+	var _arg0 *C.GtkVideo // out
+
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_video_get_file(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
+}
+
 // Loop returns true if videos have been set to loop.
 func (s video) Loop() bool {
 	var _arg0 *C.GtkVideo // out
@@ -231,6 +270,17 @@ func (s video) SetAutoplay(autoplay bool) {
 	}
 
 	C.gtk_video_set_autoplay(_arg0, _arg1)
+}
+
+// SetFile makes @self play the given @file.
+func (s video) SetFile(file gio.File) {
+	var _arg0 *C.GtkVideo // out
+	var _arg1 *C.GFile    // out
+
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_video_set_file(_arg0, _arg1)
 }
 
 // SetFilename makes @self play the given @filename.

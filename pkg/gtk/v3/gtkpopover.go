@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -85,6 +87,28 @@ type Popover interface {
 	Bin
 	Buildable
 
+	// BindModel establishes a binding between a Popover and a Model.
+	//
+	// The contents of @popover are removed and then refilled with menu items
+	// according to @model. When @model changes, @popover is updated. Calling
+	// this function twice on @popover with different @model will cause the
+	// first binding to be replaced with a binding to the new model. If @model
+	// is nil then any previous binding is undone and all children are removed.
+	//
+	// If @action_namespace is non-nil then the effect is as if all actions
+	// mentioned in the @model have their names prefixed with the namespace,
+	// plus a dot. For example, if the action “quit” is mentioned and
+	// @action_namespace is “app” then the effective action name is “app.quit”.
+	//
+	// This function uses Actionable to define the action name and target values
+	// on the created menu items. If you want to use an action group other than
+	// “app” and “win”, or if you want to use a MenuShell outside of a
+	// ApplicationWindow, then you will need to attach your own action group to
+	// the widget hierarchy using gtk_widget_insert_action_group(). As an
+	// example, if you created a group with a “quit” action and inserted it with
+	// the name “mygroup” then you would use the action name “mygroup.quit” in
+	// your Model.
+	BindModel(model gio.MenuModel, actionNamespace string)
 	// ConstrainTo returns the constraint for placing this popover. See
 	// gtk_popover_set_constrain_to().
 	ConstrainTo() PopoverConstraint
@@ -94,6 +118,10 @@ type Popover interface {
 	// Modal returns whether the popover is modal, see gtk_popover_set_modal to
 	// see the implications of this.
 	Modal() bool
+	// PointingTo: if a rectangle to point to has been set, this function will
+	// return true and fill in @rect with such rectangle, otherwise it will
+	// return false and fill in @rect with the attached widget coordinates.
+	PointingTo() (gdk.Rectangle, bool)
 	// Position returns the preferred position of @popover.
 	Position() PositionType
 	// RelativeTo returns the widget @popover is currently attached to
@@ -124,6 +152,10 @@ type Popover interface {
 	// displayed. Clicking outside the popover area or pressing Esc will dismiss
 	// the popover and ungrab input.
 	SetModal(modal bool)
+	// SetPointingTo sets the rectangle that @popover will point to, in the
+	// coordinate space of the widget @popover is attached to, see
+	// gtk_popover_set_relative_to().
+	SetPointingTo(rect *gdk.Rectangle)
 	// SetPosition sets the preferred position for @popover to appear. If the
 	// @popover is currently visible, it will be immediately updated.
 	//
@@ -184,6 +216,59 @@ func NewPopover(relativeTo Widget) Popover {
 	return _popover
 }
 
+// NewPopoverFromModel constructs a class Popover.
+func NewPopoverFromModel(relativeTo Widget, model gio.MenuModel) Popover {
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 *C.GMenuModel // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+
+	var _cret C.GtkPopover // in
+
+	_cret = C.gtk_popover_new_from_model(_arg1, _arg2)
+
+	var _popover Popover // out
+
+	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Popover)
+
+	return _popover
+}
+
+// BindModel establishes a binding between a Popover and a Model.
+//
+// The contents of @popover are removed and then refilled with menu items
+// according to @model. When @model changes, @popover is updated. Calling
+// this function twice on @popover with different @model will cause the
+// first binding to be replaced with a binding to the new model. If @model
+// is nil then any previous binding is undone and all children are removed.
+//
+// If @action_namespace is non-nil then the effect is as if all actions
+// mentioned in the @model have their names prefixed with the namespace,
+// plus a dot. For example, if the action “quit” is mentioned and
+// @action_namespace is “app” then the effective action name is “app.quit”.
+//
+// This function uses Actionable to define the action name and target values
+// on the created menu items. If you want to use an action group other than
+// “app” and “win”, or if you want to use a MenuShell outside of a
+// ApplicationWindow, then you will need to attach your own action group to
+// the widget hierarchy using gtk_widget_insert_action_group(). As an
+// example, if you created a group with a “quit” action and inserted it with
+// the name “mygroup” then you would use the action name “mygroup.quit” in
+// your Model.
+func (p popover) BindModel(model gio.MenuModel, actionNamespace string) {
+	var _arg0 *C.GtkPopover // out
+	var _arg1 *C.GMenuModel // out
+	var _arg2 *C.gchar      // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.gchar)(C.CString(actionNamespace))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_popover_bind_model(_arg0, _arg1, _arg2)
+}
+
 // ConstrainTo returns the constraint for placing this popover. See
 // gtk_popover_set_constrain_to().
 func (p popover) ConstrainTo() PopoverConstraint {
@@ -238,6 +323,28 @@ func (p popover) Modal() bool {
 	}
 
 	return _ok
+}
+
+// PointingTo: if a rectangle to point to has been set, this function will
+// return true and fill in @rect with such rectangle, otherwise it will
+// return false and fill in @rect with the attached widget coordinates.
+func (p popover) PointingTo() (gdk.Rectangle, bool) {
+	var _arg0 *C.GtkPopover // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+
+	var _rect gdk.Rectangle
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _rect, _ok
 }
 
 // Position returns the preferred position of @popover.
@@ -358,6 +465,19 @@ func (p popover) SetModal(modal bool) {
 	}
 
 	C.gtk_popover_set_modal(_arg0, _arg1)
+}
+
+// SetPointingTo sets the rectangle that @popover will point to, in the
+// coordinate space of the widget @popover is attached to, see
+// gtk_popover_set_relative_to().
+func (p popover) SetPointingTo(rect *gdk.Rectangle) {
+	var _arg0 *C.GtkPopover   // out
+	var _arg1 *C.GdkRectangle // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
+
+	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }
 
 // SetPosition sets the preferred position for @popover to appear. If the

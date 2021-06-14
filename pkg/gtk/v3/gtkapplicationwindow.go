@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -118,7 +119,8 @@ func init() {
 // user-visible string to display - "icon": icon name to display
 type ApplicationWindow interface {
 	Window
-	ActionGroup
+	gio.ActionGroup
+	gio.ActionMap
 	Buildable
 
 	// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
@@ -143,7 +145,8 @@ type ApplicationWindow interface {
 // applicationWindow implements the ApplicationWindow class.
 type applicationWindow struct {
 	Window
-	ActionGroup
+	gio.ActionGroup
+	gio.ActionMap
 	Buildable
 }
 
@@ -153,9 +156,10 @@ var _ ApplicationWindow = (*applicationWindow)(nil)
 // primarily used internally.
 func WrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
 	return applicationWindow{
-		Window:      WrapWindow(obj),
-		ActionGroup: WrapActionGroup(obj),
-		Buildable:   WrapBuildable(obj),
+		Window:          WrapWindow(obj),
+		gio.ActionGroup: gio.WrapActionGroup(obj),
+		gio.ActionMap:   gio.WrapActionMap(obj),
+		Buildable:       WrapBuildable(obj),
 	}
 }
 

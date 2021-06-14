@@ -41,11 +41,6 @@ type MemoryOutputStream interface {
 	PollableOutputStream
 	Seekable
 
-	// Data gets any loaded data from the @ostream.
-	//
-	// Note that the returned pointer may become invalid on the next write or
-	// truncate operation on the stream.
-	Data() interface{}
 	// DataSize returns the number of bytes from the start up to including the
 	// last byte written in the stream that has not been truncated away.
 	DataSize() uint
@@ -64,13 +59,6 @@ type MemoryOutputStream interface {
 	// In any case, if you want the number of bytes currently written to the
 	// stream, use g_memory_output_stream_get_data_size().
 	Size() uint
-	// StealData gets any loaded data from the @ostream. Ownership of the data
-	// is transferred to the caller; when no longer needed it must be freed
-	// using the free function set in @ostream's OutputStream:destroy-function
-	// property.
-	//
-	// @ostream must be closed before calling this function.
-	StealData() interface{}
 }
 
 // memoryOutputStream implements the MemoryOutputStream class.
@@ -109,26 +97,6 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryOutputStream)
 
 	return _memoryOutputStream
-}
-
-// Data gets any loaded data from the @ostream.
-//
-// Note that the returned pointer may become invalid on the next write or
-// truncate operation on the stream.
-func (o memoryOutputStream) Data() interface{} {
-	var _arg0 *C.GMemoryOutputStream // out
-
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_memory_output_stream_get_data(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
 }
 
 // DataSize returns the number of bytes from the start up to including the
@@ -177,26 +145,4 @@ func (o memoryOutputStream) Size() uint {
 	_gsize = (uint)(_cret)
 
 	return _gsize
-}
-
-// StealData gets any loaded data from the @ostream. Ownership of the data
-// is transferred to the caller; when no longer needed it must be freed
-// using the free function set in @ostream's OutputStream:destroy-function
-// property.
-//
-// @ostream must be closed before calling this function.
-func (o memoryOutputStream) StealData() interface{} {
-	var _arg0 *C.GMemoryOutputStream // out
-
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_memory_output_stream_steal_data(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
 }

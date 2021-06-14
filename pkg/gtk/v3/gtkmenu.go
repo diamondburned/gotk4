@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -103,6 +105,8 @@ type Menu interface {
 	TearoffState() bool
 	// Title returns the title of the menu. See gtk_menu_set_title().
 	Title() string
+	// PlaceOnMonitor places @menu on the given monitor.
+	PlaceOnMonitor(monitor gdk.Monitor)
 	// Popdown removes the menu from the screen.
 	Popdown()
 	// ReorderChild moves @child to a new @position in the list of @menu
@@ -153,6 +157,8 @@ type Menu interface {
 	// SetReserveToggleSize sets whether the menu should reserve space for
 	// drawing toggles or icons, regardless of their actual presence.
 	SetReserveToggleSize(reserveToggleSize bool)
+	// SetScreen sets the Screen on which the menu will be displayed.
+	SetScreen(screen gdk.Screen)
 	// SetTearoffState changes the tearoff state of the menu. A menu is normally
 	// displayed as drop down menu which persists as long as the menu is active.
 	// It can also be displayed as a tearoff menu which persists until it is
@@ -194,6 +200,23 @@ func NewMenu() Menu {
 	var _cret C.GtkMenu // in
 
 	_cret = C.gtk_menu_new()
+
+	var _menu Menu // out
+
+	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Menu)
+
+	return _menu
+}
+
+// NewMenuFromModel constructs a class Menu.
+func NewMenuFromModel(model gio.MenuModel) Menu {
+	var _arg1 *C.GMenuModel // out
+
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+
+	var _cret C.GtkMenu // in
+
+	_cret = C.gtk_menu_new_from_model(_arg1)
 
 	var _menu Menu // out
 
@@ -382,6 +405,17 @@ func (m menu) Title() string {
 	return _utf8
 }
 
+// PlaceOnMonitor places @menu on the given monitor.
+func (m menu) PlaceOnMonitor(monitor gdk.Monitor) {
+	var _arg0 *C.GtkMenu    // out
+	var _arg1 *C.GdkMonitor // out
+
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
+
+	C.gtk_menu_place_on_monitor(_arg0, _arg1)
+}
+
 // Popdown removes the menu from the screen.
 func (m menu) Popdown() {
 	var _arg0 *C.GtkMenu // out
@@ -503,6 +537,17 @@ func (m menu) SetReserveToggleSize(reserveToggleSize bool) {
 	}
 
 	C.gtk_menu_set_reserve_toggle_size(_arg0, _arg1)
+}
+
+// SetScreen sets the Screen on which the menu will be displayed.
+func (m menu) SetScreen(screen gdk.Screen) {
+	var _arg0 *C.GtkMenu   // out
+	var _arg1 *C.GdkScreen // out
+
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	C.gtk_menu_set_screen(_arg0, _arg1)
 }
 
 // SetTearoffState changes the tearoff state of the menu. A menu is normally

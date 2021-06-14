@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,7 +41,7 @@ func init() {
 //
 //    g_object_unref (context);
 type AppLaunchContext interface {
-	AppLaunchContext
+	gio.AppLaunchContext
 
 	// SetDesktop sets the workspace on which applications will be launched when
 	// using this context when running under a window manager that supports
@@ -54,6 +55,14 @@ type AppLaunchContext interface {
 	// SetDisplay sets the display on which applications will be launched when
 	// using this context. See also gdk_app_launch_context_set_screen().
 	SetDisplay(display Display)
+	// SetIcon sets the icon for applications that are launched with this
+	// context.
+	//
+	// Window Managers can use this information when displaying startup
+	// notification.
+	//
+	// See also gdk_app_launch_context_set_icon_name().
+	SetIcon(icon gio.Icon)
 	// SetIconName sets the icon for applications that are launched with this
 	// context. The @icon_name will be interpreted in the same way as the Icon
 	// field in desktop files. See also gdk_app_launch_context_set_icon().
@@ -81,7 +90,7 @@ type AppLaunchContext interface {
 
 // appLaunchContext implements the AppLaunchContext class.
 type appLaunchContext struct {
-	AppLaunchContext
+	gio.AppLaunchContext
 }
 
 var _ AppLaunchContext = (*appLaunchContext)(nil)
@@ -90,7 +99,7 @@ var _ AppLaunchContext = (*appLaunchContext)(nil)
 // primarily used internally.
 func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
 	return appLaunchContext{
-		AppLaunchContext: WrapAppLaunchContext(obj),
+		gio.AppLaunchContext: gio.WrapAppLaunchContext(obj),
 	}
 }
 
@@ -141,6 +150,23 @@ func (c appLaunchContext) SetDisplay(display Display) {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_app_launch_context_set_display(_arg0, _arg1)
+}
+
+// SetIcon sets the icon for applications that are launched with this
+// context.
+//
+// Window Managers can use this information when displaying startup
+// notification.
+//
+// See also gdk_app_launch_context_set_icon_name().
+func (c appLaunchContext) SetIcon(icon gio.Icon) {
+	var _arg0 *C.GdkAppLaunchContext // out
+	var _arg1 *C.GIcon               // out
+
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }
 
 // SetIconName sets the icon for applications that are launched with this

@@ -7,6 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,6 +64,10 @@ type CellView interface {
 	// SizeOfRow sets @requisition to the size needed by @cell_view to display
 	// the model row pointed to by @path.
 	SizeOfRow(path *TreePath) (Requisition, bool)
+	// SetBackgroundColor sets the background color of @view.
+	SetBackgroundColor(color *gdk.Color)
+	// SetBackgroundRGBA sets the background color of @cell_view.
+	SetBackgroundRGBA(rgba *gdk.RGBA)
 	// SetDisplayedRow sets the row of the model that is currently displayed by
 	// the CellView. If the path is unset, then the contents of the cellview
 	// “stick” at their last value; this is not normally a desired result, but
@@ -155,6 +161,23 @@ func NewCellViewWithMarkup(markup string) CellView {
 	var _cret C.GtkCellView // in
 
 	_cret = C.gtk_cell_view_new_with_markup(_arg1)
+
+	var _cellView CellView // out
+
+	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
+
+	return _cellView
+}
+
+// NewCellViewWithPixbuf constructs a class CellView.
+func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbuf) CellView {
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	var _cret C.GtkCellView // in
+
+	_cret = C.gtk_cell_view_new_with_pixbuf(_arg1)
 
 	var _cellView CellView // out
 
@@ -281,6 +304,28 @@ func (c cellView) SizeOfRow(path *TreePath) (Requisition, bool) {
 	}
 
 	return _requisition, _ok
+}
+
+// SetBackgroundColor sets the background color of @view.
+func (c cellView) SetBackgroundColor(color *gdk.Color) {
+	var _arg0 *C.GtkCellView // out
+	var _arg1 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
+
+	C.gtk_cell_view_set_background_color(_arg0, _arg1)
+}
+
+// SetBackgroundRGBA sets the background color of @cell_view.
+func (c cellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
+	var _arg0 *C.GtkCellView // out
+	var _arg1 *C.GdkRGBA     // out
+
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+
+	C.gtk_cell_view_set_background_rgba(_arg0, _arg1)
 }
 
 // SetDisplayedRow sets the row of the model that is currently displayed by

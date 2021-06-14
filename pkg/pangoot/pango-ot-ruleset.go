@@ -85,6 +85,27 @@ func NewRuleset(info Info) Ruleset {
 	return _ruleset
 }
 
+// NewRulesetFor constructs a class Ruleset.
+func NewRulesetFor(info Info, script pango.Script, language *pango.Language) Ruleset {
+	var _arg1 *C.PangoOTInfo   // out
+	var _arg2 C.PangoScript    // out
+	var _arg3 *C.PangoLanguage // out
+
+	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
+	_arg2 = (C.PangoScript)(script)
+	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+
+	var _cret C.PangoOTRuleset // in
+
+	_cret = C.pango_ot_ruleset_new_for(_arg1, _arg2, _arg3)
+
+	var _ruleset Ruleset // out
+
+	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
+
+	return _ruleset
+}
+
 // NewRulesetFromDescription constructs a class Ruleset.
 func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset {
 	var _arg1 *C.PangoOTInfo               // out

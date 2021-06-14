@@ -6,6 +6,9 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -80,9 +83,16 @@ type Picture interface {
 	AlternativeText() string
 	// CanShrink returns whether the `GtkPicture` respects its contents size.
 	CanShrink() bool
+	// File gets the `GFile` currently displayed if @self is displaying a file.
+	//
+	// If @self is not displaying a file, for example when
+	// [method@Gtk.Picture.set_paintable] was used, then nil is returned.
+	File() gio.File
 	// KeepAspectRatio returns whether the `GtkPicture` preserves its contents
 	// aspect ratio.
 	KeepAspectRatio() bool
+	// Paintable gets the `GdkPaintable` being displayed by the `GtkPicture`.
+	Paintable() gdk.Paintable
 	// SetAlternativeText sets an alternative textual description for the
 	// picture contents.
 	//
@@ -104,6 +114,10 @@ type Picture interface {
 	// because the grow behavior can be controlled via
 	// [method@Gtk.Widget.set_halign] and [method@Gtk.Widget.set_valign].
 	SetCanShrink(canShrink bool)
+	// SetFile makes @self load and display @file.
+	//
+	// See [ctor@Gtk.Picture.new_for_file] for details.
+	SetFile(file gio.File)
 	// SetFilename makes @self load and display the given @filename.
 	//
 	// This is a utility function that calls [method@Gtk.Picture.set_file].
@@ -117,6 +131,18 @@ type Picture interface {
 	// If set to false or if the contents provide no aspect ratio, the contents
 	// will be stretched over the picture's whole area.
 	SetKeepAspectRatio(keepAspectRatio bool)
+	// SetPaintable makes @self display the given @paintable.
+	//
+	// If @paintable is nil, nothing will be displayed.
+	//
+	// See [ctor@Gtk.Picture.new_for_paintable] for details.
+	SetPaintable(paintable gdk.Paintable)
+	// SetPixbuf sets a `GtkPicture` to show a `GdkPixbuf`.
+	//
+	// See [ctor@Gtk.Picture.new_for_pixbuf] for details.
+	//
+	// This is a utility function that calls [method@Gtk.Picture.set_paintable].
+	SetPixbuf(pixbuf gdkpixbuf.Pixbuf)
 	// SetResource makes @self load and display the resource at the given
 	// @resource_path.
 	//
@@ -164,6 +190,23 @@ func NewPicture() Picture {
 	return _picture
 }
 
+// NewPictureForFile constructs a class Picture.
+func NewPictureForFile(file gio.File) Picture {
+	var _arg1 *C.GFile // out
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	var _cret C.GtkPicture // in
+
+	_cret = C.gtk_picture_new_for_file(_arg1)
+
+	var _picture Picture // out
+
+	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+
+	return _picture
+}
+
 // NewPictureForFilename constructs a class Picture.
 func NewPictureForFilename(filename string) Picture {
 	var _arg1 *C.char // out
@@ -174,6 +217,40 @@ func NewPictureForFilename(filename string) Picture {
 	var _cret C.GtkPicture // in
 
 	_cret = C.gtk_picture_new_for_filename(_arg1)
+
+	var _picture Picture // out
+
+	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+
+	return _picture
+}
+
+// NewPictureForPaintable constructs a class Picture.
+func NewPictureForPaintable(paintable gdk.Paintable) Picture {
+	var _arg1 *C.GdkPaintable // out
+
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+
+	var _cret C.GtkPicture // in
+
+	_cret = C.gtk_picture_new_for_paintable(_arg1)
+
+	var _picture Picture // out
+
+	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+
+	return _picture
+}
+
+// NewPictureForPixbuf constructs a class Picture.
+func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
+	var _arg1 *C.GdkPixbuf // out
+
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	var _cret C.GtkPicture // in
+
+	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
 
 	var _picture Picture // out
 
@@ -239,6 +316,26 @@ func (s picture) CanShrink() bool {
 	return _ok
 }
 
+// File gets the `GFile` currently displayed if @self is displaying a file.
+//
+// If @self is not displaying a file, for example when
+// [method@Gtk.Picture.set_paintable] was used, then nil is returned.
+func (s picture) File() gio.File {
+	var _arg0 *C.GtkPicture // out
+
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GFile // in
+
+	_cret = C.gtk_picture_get_file(_arg0)
+
+	var _file gio.File // out
+
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+
+	return _file
+}
+
 // KeepAspectRatio returns whether the `GtkPicture` preserves its contents
 // aspect ratio.
 func (s picture) KeepAspectRatio() bool {
@@ -257,6 +354,23 @@ func (s picture) KeepAspectRatio() bool {
 	}
 
 	return _ok
+}
+
+// Paintable gets the `GdkPaintable` being displayed by the `GtkPicture`.
+func (s picture) Paintable() gdk.Paintable {
+	var _arg0 *C.GtkPicture // out
+
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.GdkPaintable // in
+
+	_cret = C.gtk_picture_get_paintable(_arg0)
+
+	var _paintable gdk.Paintable // out
+
+	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+
+	return _paintable
 }
 
 // SetAlternativeText sets an alternative textual description for the
@@ -301,6 +415,19 @@ func (s picture) SetCanShrink(canShrink bool) {
 	C.gtk_picture_set_can_shrink(_arg0, _arg1)
 }
 
+// SetFile makes @self load and display @file.
+//
+// See [ctor@Gtk.Picture.new_for_file] for details.
+func (s picture) SetFile(file gio.File) {
+	var _arg0 *C.GtkPicture // out
+	var _arg1 *C.GFile      // out
+
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_picture_set_file(_arg0, _arg1)
+}
+
 // SetFilename makes @self load and display the given @filename.
 //
 // This is a utility function that calls [method@Gtk.Picture.set_file].
@@ -333,6 +460,36 @@ func (s picture) SetKeepAspectRatio(keepAspectRatio bool) {
 	}
 
 	C.gtk_picture_set_keep_aspect_ratio(_arg0, _arg1)
+}
+
+// SetPaintable makes @self display the given @paintable.
+//
+// If @paintable is nil, nothing will be displayed.
+//
+// See [ctor@Gtk.Picture.new_for_paintable] for details.
+func (s picture) SetPaintable(paintable gdk.Paintable) {
+	var _arg0 *C.GtkPicture   // out
+	var _arg1 *C.GdkPaintable // out
+
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+
+	C.gtk_picture_set_paintable(_arg0, _arg1)
+}
+
+// SetPixbuf sets a `GtkPicture` to show a `GdkPixbuf`.
+//
+// See [ctor@Gtk.Picture.new_for_pixbuf] for details.
+//
+// This is a utility function that calls [method@Gtk.Picture.set_paintable].
+func (s picture) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkPicture // out
+	var _arg1 *C.GdkPixbuf  // out
+
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	C.gtk_picture_set_pixbuf(_arg0, _arg1)
 }
 
 // SetResource makes @self load and display the resource at the given

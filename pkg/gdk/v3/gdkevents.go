@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -484,6 +485,29 @@ func SetShowEvents(showEvents bool) {
 	C.gdk_set_show_events(_arg1)
 }
 
+// SettingGet obtains a desktop-wide setting, such as the double-click time, for
+// the default screen. See gdk_screen_get_setting().
+func SettingGet(name string, value **externglib.Value) bool {
+	var _arg1 *C.gchar  // out
+	var _arg2 *C.GValue // out
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GValue)(value.GValue)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_setting_get(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // EventAny contains the fields which are common to all event structs. Any event
 // pointer can safely be cast to a pointer to a EventAny to access these fields.
 type EventAny struct {
@@ -951,6 +975,13 @@ func (e *EventExpose) SendEvent() int8 {
 func (e *EventExpose) Area() Rectangle {
 	var v Rectangle // out
 	v = *WrapRectangle(unsafe.Pointer(&e.native.area))
+	return v
+}
+
+// Region gets the field inside the struct.
+func (e *EventExpose) Region() *cairo.Region {
+	var v *cairo.Region // out
+	v = cairo.WrapRegion(unsafe.Pointer(e.native.region))
 	return v
 }
 

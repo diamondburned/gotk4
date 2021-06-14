@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -136,9 +138,16 @@ type PopoverMenu interface {
 	// For this to work, the menu model of @popover must have an item with a
 	// `custom` attribute that matches @id.
 	AddChild(child Widget, id string) bool
+	// MenuModel returns the menu model used to populate the popover.
+	MenuModel() gio.MenuModel
 	// RemoveChild removes a widget that has previously been added with
 	// gtk_popover_menu_add_child().
 	RemoveChild(child Widget) bool
+	// SetMenuModel sets a new menu model on @popover.
+	//
+	// The existing contents of @popover are removed, and the @popover is
+	// populated with new contents according to @model.
+	SetMenuModel(model gio.MenuModel)
 }
 
 // popoverMenu implements the PopoverMenu class.
@@ -172,6 +181,42 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return WrapPopoverMenu(obj), nil
 }
 
+// NewPopoverMenuFromModel constructs a class PopoverMenu.
+func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
+	var _arg1 *C.GMenuModel // out
+
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+
+	var _cret C.GtkPopoverMenu // in
+
+	_cret = C.gtk_popover_menu_new_from_model(_arg1)
+
+	var _popoverMenu PopoverMenu // out
+
+	_popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PopoverMenu)
+
+	return _popoverMenu
+}
+
+// NewPopoverMenuFromModelFull constructs a class PopoverMenu.
+func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) PopoverMenu {
+	var _arg1 *C.GMenuModel         // out
+	var _arg2 C.GtkPopoverMenuFlags // out
+
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (C.GtkPopoverMenuFlags)(flags)
+
+	var _cret C.GtkPopoverMenu // in
+
+	_cret = C.gtk_popover_menu_new_from_model_full(_arg1, _arg2)
+
+	var _popoverMenu PopoverMenu // out
+
+	_popoverMenu = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PopoverMenu)
+
+	return _popoverMenu
+}
+
 // AddChild adds a custom widget to a generated menu.
 //
 // For this to work, the menu model of @popover must have an item with a
@@ -199,6 +244,23 @@ func (p popoverMenu) AddChild(child Widget, id string) bool {
 	return _ok
 }
 
+// MenuModel returns the menu model used to populate the popover.
+func (p popoverMenu) MenuModel() gio.MenuModel {
+	var _arg0 *C.GtkPopoverMenu // out
+
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
+
+	var _cret *C.GMenuModel // in
+
+	_cret = C.gtk_popover_menu_get_menu_model(_arg0)
+
+	var _menuModel gio.MenuModel // out
+
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+
+	return _menuModel
+}
+
 // RemoveChild removes a widget that has previously been added with
 // gtk_popover_menu_add_child().
 func (p popoverMenu) RemoveChild(child Widget) bool {
@@ -219,4 +281,18 @@ func (p popoverMenu) RemoveChild(child Widget) bool {
 	}
 
 	return _ok
+}
+
+// SetMenuModel sets a new menu model on @popover.
+//
+// The existing contents of @popover are removed, and the @popover is
+// populated with new contents according to @model.
+func (p popoverMenu) SetMenuModel(model gio.MenuModel) {
+	var _arg0 *C.GtkPopoverMenu // out
+	var _arg1 *C.GMenuModel     // out
+
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_popover_menu_set_menu_model(_arg0, _arg1)
 }

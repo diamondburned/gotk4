@@ -372,16 +372,13 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 
 	_length = (uint)(_arg1)
 	{
-		var length int
-		for p := _cret; *p != nil; p = (*C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_guint8s = make([]byte, length)
+		src := unsafe.Slice(_cret, i)
+		_guint8s = make([]byte, i)
 		for i := range src {
 			_guint8s[i] = (byte)(src[i])
 		}
@@ -413,16 +410,13 @@ func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error
 
 	_length = (uint)(_arg2)
 	{
-		var length int
-		for p := _cret; *p != nil; p = (*C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
+		var i int
+		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+			i++
 		}
 
-		src := unsafe.Slice(_cret, length)
-		_guint8s = make([]byte, length)
+		src := unsafe.Slice(_cret, i)
+		_guint8s = make([]byte, i)
 		for i := range src {
 			_guint8s[i] = (byte)(src[i])
 		}

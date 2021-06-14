@@ -23,12 +23,11 @@ var packages = []Package{
 var filters = []girgen.FilterMatcher{
 	girgen.AbsoluteFilter("C.cairo_image_surface_create"),
 
-	// These types cannot be found for some reason.
-	girgen.AbsoluteFilter("C.GdkPixbufModulePattern"),
-	girgen.AbsoluteFilter("C.gsk_broadway_renderer_get_type"), // TODO not gen marshaler
+	// Broadway is not included, so we don't generate code for it.
+	girgen.FileFilter("../gsk/broadway/gskbroadwayrenderer.h"),
 
 	// Collision due to case conversions.
-	girgen.TypeRenamer("GLib.file_test", "TestFile"),
+	girgen.TypeRenamer("GLib.file_test", "test_file"),
 
 	girgen.FileFilter("garray.h"),
 	girgen.FileFilter("gasyncqueue.h"),

@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -67,7 +68,7 @@ type ConstraintGuide interface {
 	SetStrength(strength ConstraintStrength)
 }
 
-// constraintGuide implements the ConstraintGuide interface.
+// constraintGuide implements the ConstraintGuide class.
 type constraintGuide struct {
 	gextras.Objector
 	ConstraintTarget
@@ -78,7 +79,7 @@ var _ ConstraintGuide = (*constraintGuide)(nil)
 // WrapConstraintGuide wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConstraintGuide(obj *externglib.Object) ConstraintGuide {
-	return ConstraintGuide{
+	return constraintGuide{
 		Objector:         obj,
 		ConstraintTarget: WrapConstraintTarget(obj),
 	}

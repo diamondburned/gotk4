@@ -3,11 +3,12 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -106,14 +107,9 @@ type RadioButton interface {
 	//           last_button = radio_button;
 	//        }
 	JoinGroup(groupSource RadioButton)
-	// SetGroup sets a RadioButton’s group. It should be noted that this does
-	// not change the layout of your interface in any way, so if you are
-	// changing the group, it is likely you will need to re-arrange the user
-	// interface to reflect these changes.
-	SetGroup(group *glib.SList)
 }
 
-// radioButton implements the RadioButton interface.
+// radioButton implements the RadioButton class.
 type radioButton struct {
 	CheckButton
 	Actionable
@@ -126,7 +122,7 @@ var _ RadioButton = (*radioButton)(nil)
 // WrapRadioButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRadioButton(obj *externglib.Object) RadioButton {
-	return RadioButton{
+	return radioButton{
 		CheckButton: WrapCheckButton(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -166,18 +162,4 @@ func (r radioButton) JoinGroup(groupSource RadioButton) {
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
 
 	C.gtk_radio_button_join_group(_arg0, _arg1)
-}
-
-// SetGroup sets a RadioButton’s group. It should be noted that this does
-// not change the layout of your interface in any way, so if you are
-// changing the group, it is likely you will need to re-arrange the user
-// interface to reflect these changes.
-func (r radioButton) SetGroup(group *glib.SList) {
-	var _arg0 *C.GtkRadioButton // out
-	var _arg1 *C.GSList         // out
-
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-
-	C.gtk_radio_button_set_group(_arg0, _arg1)
 }

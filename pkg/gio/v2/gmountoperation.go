@@ -5,12 +5,12 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -98,7 +99,7 @@ type MountOperation interface {
 	SetUsername(username string)
 }
 
-// mountOperation implements the MountOperation interface.
+// mountOperation implements the MountOperation class.
 type mountOperation struct {
 	gextras.Objector
 }
@@ -108,7 +109,7 @@ var _ MountOperation = (*mountOperation)(nil)
 // WrapMountOperation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMountOperation(obj *externglib.Object) MountOperation {
-	return MountOperation{
+	return mountOperation{
 		Objector: obj,
 	}
 }
@@ -132,7 +133,7 @@ func (o mountOperation) Anonymous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -186,7 +187,7 @@ func (o mountOperation) IsTcryptHiddenVolume() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -206,7 +207,7 @@ func (o mountOperation) IsTcryptSystemVolume() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -283,7 +284,7 @@ func (o mountOperation) SetAnonymous(anonymous bool) {
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if anonymous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_mount_operation_set_anonymous(_arg0, _arg1)
@@ -320,7 +321,7 @@ func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if hiddenVolume {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_mount_operation_set_is_tcrypt_hidden_volume(_arg0, _arg1)
@@ -334,7 +335,7 @@ func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if systemVolume {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_mount_operation_set_is_tcrypt_system_volume(_arg0, _arg1)

@@ -5,15 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -85,7 +83,7 @@ type DesktopAppInfo interface {
 	// Filename: when @info was created from a known filename, return it. In
 	// some situations such as the AppInfo returned from
 	// g_desktop_app_info_new_from_keyfile(), this function will return nil.
-	Filename() *string
+	Filename() string
 	// GenericName gets the generic name from the desktop file.
 	GenericName() string
 	// IsHidden: a desktop file is hidden if the Hidden key in it is set to
@@ -145,31 +143,6 @@ type DesktopAppInfo interface {
 	// As with g_app_info_launch() there is no way to detect failures that occur
 	// while using this function.
 	LaunchAction(actionName string, launchContext AppLaunchContext)
-	// LaunchUrisAsManager: this function performs the equivalent of
-	// g_app_info_launch_uris(), but is intended primarily for operating system
-	// components that launch applications. Ordinary applications should use
-	// g_app_info_launch_uris().
-	//
-	// If the application is launched via GSpawn, then @spawn_flags, @user_setup
-	// and @user_setup_data are used for the call to g_spawn_async().
-	// Additionally, @pid_callback (with @pid_callback_data) will be called to
-	// inform about the PID of the created process. See
-	// g_spawn_async_with_pipes() for information on certain parameter
-	// conditions that can enable an optimized posix_spawn() codepath to be
-	// used.
-	//
-	// If application launching occurs via some other mechanism (eg: D-Bus
-	// activation) then @spawn_flags, @user_setup, @user_setup_data,
-	// @pid_callback and @pid_callback_data are ignored.
-	LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags) error
-	// LaunchUrisAsManagerWithFds: equivalent to
-	// g_desktop_app_info_launch_uris_as_manager() but allows you to pass in
-	// file descriptors for the stdin, stdout and stderr streams of the launched
-	// process.
-	//
-	// If application launching occurs via some non-spawn mechanism (e.g. D-Bus
-	// activation) then @stdin_fd, @stdout_fd and @stderr_fd are ignored.
-	LaunchUrisAsManagerWithFds(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, stdinFd int, stdoutFd int, stderrFd int) error
 	// ListActions returns the list of "additional application actions"
 	// supported on the desktop file, as per the desktop file specification.
 	//
@@ -178,7 +151,7 @@ type DesktopAppInfo interface {
 	ListActions() []string
 }
 
-// desktopAppInfo implements the DesktopAppInfo interface.
+// desktopAppInfo implements the DesktopAppInfo class.
 type desktopAppInfo struct {
 	gextras.Objector
 	AppInfo
@@ -189,7 +162,7 @@ var _ DesktopAppInfo = (*desktopAppInfo)(nil)
 // WrapDesktopAppInfo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfo {
-	return DesktopAppInfo{
+	return desktopAppInfo{
 		Objector: obj,
 		AppInfo:  WrapAppInfo(obj),
 	}
@@ -243,7 +216,7 @@ func (i desktopAppInfo) Boolean(key string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -270,7 +243,7 @@ func (i desktopAppInfo) Categories() string {
 // Filename: when @info was created from a known filename, return it. In
 // some situations such as the AppInfo returned from
 // g_desktop_app_info_new_from_keyfile(), this function will return nil.
-func (i desktopAppInfo) Filename() *string {
+func (i desktopAppInfo) Filename() string {
 	var _arg0 *C.GDesktopAppInfo // out
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
@@ -279,7 +252,7 @@ func (i desktopAppInfo) Filename() *string {
 
 	_cret = C.g_desktop_app_info_get_filename(_arg0)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -316,7 +289,7 @@ func (i desktopAppInfo) IsHidden() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -337,19 +310,17 @@ func (i desktopAppInfo) Keywords() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -394,7 +365,7 @@ func (i desktopAppInfo) Nodisplay() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -426,7 +397,7 @@ func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -494,13 +465,12 @@ func (i desktopAppInfo) StringList(key string) []string {
 	var _utf8s []string
 
 	{
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg2))
-
+		src := unsafe.Slice(_cret, _arg2)
+		defer C.free(unsafe.Pointer(_cret))
 		_utf8s = make([]string, _arg2)
-		for i := 0; i < uintptr(_arg2); i++ {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+		for i := 0; i < int(_arg2); i++ {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -523,7 +493,7 @@ func (i desktopAppInfo) HasKey(key string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -558,79 +528,6 @@ func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchC
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
 }
 
-// LaunchUrisAsManager: this function performs the equivalent of
-// g_app_info_launch_uris(), but is intended primarily for operating system
-// components that launch applications. Ordinary applications should use
-// g_app_info_launch_uris().
-//
-// If the application is launched via GSpawn, then @spawn_flags, @user_setup
-// and @user_setup_data are used for the call to g_spawn_async().
-// Additionally, @pid_callback (with @pid_callback_data) will be called to
-// inform about the PID of the created process. See
-// g_spawn_async_with_pipes() for information on certain parameter
-// conditions that can enable an optimized posix_spawn() codepath to be
-// used.
-//
-// If application launching occurs via some other mechanism (eg: D-Bus
-// activation) then @spawn_flags, @user_setup, @user_setup_data,
-// @pid_callback and @pid_callback_data are ignored.
-func (a desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags) error {
-	var _arg0 *C.GDesktopAppInfo   // out
-	var _arg1 *C.GList             // out
-	var _arg2 *C.GAppLaunchContext // out
-	var _arg3 C.GSpawnFlags        // out
-
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GList)(unsafe.Pointer(uris.Native()))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
-	_arg3 = (C.GSpawnFlags)(spawnFlags)
-
-	var _cerr *C.GError // in
-
-	C.g_desktop_app_info_launch_uris_as_manager(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// LaunchUrisAsManagerWithFds: equivalent to
-// g_desktop_app_info_launch_uris_as_manager() but allows you to pass in
-// file descriptors for the stdin, stdout and stderr streams of the launched
-// process.
-//
-// If application launching occurs via some non-spawn mechanism (e.g. D-Bus
-// activation) then @stdin_fd, @stdout_fd and @stderr_fd are ignored.
-func (a desktopAppInfo) LaunchUrisAsManagerWithFds(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, stdinFd int, stdoutFd int, stderrFd int) error {
-	var _arg0 *C.GDesktopAppInfo   // out
-	var _arg1 *C.GList             // out
-	var _arg2 *C.GAppLaunchContext // out
-	var _arg3 C.GSpawnFlags        // out
-	var _arg8 C.gint               // out
-	var _arg9 C.gint               // out
-	var _arg10 C.gint              // out
-
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GList)(unsafe.Pointer(uris.Native()))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
-	_arg3 = (C.GSpawnFlags)(spawnFlags)
-	_arg8 = C.gint(stdinFd)
-	_arg9 = C.gint(stdoutFd)
-	_arg10 = C.gint(stderrFd)
-
-	var _cerr *C.GError // in
-
-	C.g_desktop_app_info_launch_uris_as_manager_with_fds(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 // ListActions returns the list of "additional application actions"
 // supported on the desktop file, as per the desktop file specification.
 //
@@ -649,19 +546,17 @@ func (i desktopAppInfo) ListActions() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 

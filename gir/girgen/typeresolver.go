@@ -14,8 +14,8 @@ type ResolvedType struct {
 	Extern  *ExternType // optional
 	Builtin *string     // optional
 
-	Import  string // Full import path.
-	Package string // Package name, also import alias.
+	PublImport ResolvedTypeImport
+	ImplImport ResolvedTypeImport
 
 	GType string
 	CType string
@@ -25,6 +25,19 @@ type ResolvedType struct {
 // ExternType is an externally resolved type.
 type ExternType struct {
 	Result *gir.TypeFindResult
+}
+
+// ResolvedTypeImport is a single import for the resolved type.
+type ResolvedTypeImport struct {
+	Path    string // full path
+	Package string // package name, import alias
+}
+
+// These types contain an internal pointer in Go, so the pointer count
+// should be decreased.
+var goContainerTypes = []string{
+	"error",
+	"string",
 }
 
 // builtinType is a convenient function to make a new resolvedType.
@@ -39,25 +52,27 @@ func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
 
 	ptr := countPtrs(girType, nil)
 
-	// These types are interfaces, so we subtract a pointer from them.,
-	goIfaces := []string{
-		"error",
-	}
-
-	for _, iface := range goIfaces {
-		if iface == typ {
-			ptr--
-			break
+	if ptr > 0 {
+		for _, iface := range goContainerTypes {
+			if iface == typ {
+				ptr--
+				break
+			}
 		}
 	}
 
-	return &ResolvedType{
-		Builtin: &typ,
-		Import:  imp,
+	resolvedImport := ResolvedTypeImport{
+		Path:    imp,
 		Package: pkg,
-		GType:   girType.Name,
-		CType:   ctypeFallback(girType.CType, girType.Name),
-		Ptr:     ptr,
+	}
+
+	return &ResolvedType{
+		Builtin:    &typ,
+		PublImport: resolvedImport,
+		ImplImport: resolvedImport,
+		GType:      girType.Name,
+		CType:      ctypeFallback(girType.CType, girType.Name),
+		Ptr:        ptr,
 	}
 }
 
@@ -67,16 +82,30 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *ResolvedType {
 		ctyp = typ.CType
 	}
 
+	implImport := ResolvedTypeImport{
+		Path:    "github.com/gotk3/gotk3/glib",
+		Package: "externglib",
+	}
+	publImport := implImport
+
+	switch strings.ReplaceAll(goType, "*", "") {
+	case "InitiallyUnowned", "Object":
+		publImport = ResolvedTypeImport{
+			Path:    internalImportPath + "/gextras",
+			Package: "gextras",
+		}
+	}
+
 	ptrs := strings.Count(goType, "*")
 	goType = strings.Repeat("*", ptrs) + "externglib." + strings.TrimPrefix(goType, "*")
 
 	return &ResolvedType{
-		Builtin: &goType,
-		Import:  "github.com/gotk3/gotk3/glib",
-		Package: "externglib",
-		GType:   typ.Name,
-		CType:   ctyp,
-		Ptr:     uint8(ptrs),
+		Builtin:    &goType,
+		ImplImport: implImport,
+		PublImport: publImport,
+		GType:      typ.Name,
+		CType:      ctyp,
+		Ptr:        uint8(ptrs),
 	}
 }
 
@@ -87,15 +116,18 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 		return nil
 	}
 
-	return &ResolvedType{
-		Extern: &ExternType{
-			Result: result,
-		},
-		Import:  gen.ModPath(result.Namespace),
+	resolvedImport := ResolvedTypeImport{
+		Path:    gen.ModPath(result.Namespace),
 		Package: gir.GoNamespace(result.Namespace),
-		GType:   typ.Name,
-		CType:   typ.CType,
-		Ptr:     countPtrs(typ, result),
+	}
+
+	return &ResolvedType{
+		Extern:     &ExternType{Result: result},
+		ImplImport: resolvedImport,
+		PublImport: resolvedImport,
+		GType:      typ.Name,
+		CType:      typ.CType,
+		Ptr:        countPtrs(typ, result),
 	}
 }
 
@@ -110,16 +142,22 @@ func TypeFromResult(ng *NamespaceGenerator, res gir.TypeFindResult) *ResolvedTyp
 // IsExternGLib checks that the ResolvedType is exactly the gotk3/glib type with
 // the given name. Pointers are not compared.
 func (typ *ResolvedType) IsExternGLib(glibType string) bool {
-	if typ.Builtin == nil || typ.Import != "github.com/gotk3/gotk3/glib" {
+	// Use ImplImport for comparison, so we're not comparing gextras types.
+	if typ.Builtin == nil || typ.ImplImport.Path != "github.com/gotk3/gotk3/glib" {
 		return false
 	}
 
 	thisType := *typ.Builtin
 	thisType = strings.ReplaceAll(thisType, "*", "")
-	thisType = strings.TrimPrefix(thisType, typ.Package)
+	thisType = strings.TrimPrefix(thisType, typ.ImplImport.Package)
 	thisType = strings.TrimPrefix(thisType, ".")
 
 	return thisType == glibType
+}
+
+// IsCallback returns true if the current ResolvedType is a callback.
+func (typ *ResolvedType) IsCallback() bool {
+	return typ.Extern != nil && typ.Extern.Result.Callback != nil
 }
 
 // IsRecord returns true if the current ResolvedType is a record.
@@ -130,10 +168,21 @@ func (typ *ResolvedType) IsRecord() bool {
 // IsPrimitive returns true if the resolved type is a builtin type that can be
 // directly casted to an equivalent C type OR a record..
 func (typ *ResolvedType) IsPrimitive() bool {
-	return typ.Builtin != nil &&
-		typ.Package == "" &&
-		typ.Import == "" &&
-		*typ.Builtin != "string"
+	if typ.Builtin == nil {
+		return false
+	}
+
+	if typ.HasImport() {
+		return false
+	}
+
+	for _, ctype := range goContainerTypes {
+		if ctype == *typ.Builtin {
+			return false
+		}
+	}
+
+	return true
 }
 
 // CanCast returns true if the resolved type is a builtin type that can be
@@ -145,6 +194,12 @@ func (typ *ResolvedType) CanCast() bool {
 // IsBuiltin is a convenient function to compare the builtin type.
 func (typ *ResolvedType) IsBuiltin(builtin string) bool {
 	return typ.Builtin != nil && *typ.Builtin == builtin
+}
+
+// HasImport returns true if the ResolvedType has an import.
+func (typ *ResolvedType) HasImport() bool {
+	var zeroi ResolvedTypeImport
+	return typ.ImplImport != zeroi || typ.PublImport != zeroi
 }
 
 // GoImplType is a convenient function around ResolvedType.ImplType.
@@ -160,11 +215,14 @@ func GoPublicType(resolver TypeResolver, resolved *ResolvedType) string {
 // NeedsNamespace returns true if the returned Go type needs a namespace to be
 // referenced properly.
 func (typ *ResolvedType) NeedsNamespace(current *gir.NamespaceFindResult) bool {
-	if typ.Extern == nil {
-		return false
+	switch {
+	case typ.Builtin != nil:
+		return typ.HasImport()
+	case typ.Extern != nil:
+		return !typ.Extern.Result.Eq(current)
+	default:
+		return false // unreachable
 	}
-
-	return !typ.Extern.Result.Eq(current)
 }
 
 func (typ *ResolvedType) ptr(sub1 bool) string {
@@ -194,7 +252,7 @@ func (typ *ResolvedType) ImplType(needsNamespace bool) string {
 		return typ.ptr(false) + name
 	}
 
-	return typ.ptr(false) + typ.Package + "." + name
+	return typ.ptr(false) + typ.ImplImport.Package + "." + name
 }
 
 // PublicType returns the public type. If the resolved type is a class, then the
@@ -222,7 +280,7 @@ func (typ *ResolvedType) PublicType(needsNamespace bool) string {
 		return ptrStr + name
 	}
 
-	return ptrStr + typ.Package + "." + name
+	return ptrStr + typ.PublImport.Package + "." + name
 }
 
 // WrapName returns the name of the wrapper function. It only works for external
@@ -237,7 +295,9 @@ func (typ *ResolvedType) WrapName(needsNamespace bool) string {
 
 	wrapName := "Wrap" + name
 	if needsNamespace {
-		wrapName = typ.Package + "." + wrapName
+		// The wrapper is all exported, so it's probably public. In reality it
+		// doesn't matter, since all extern types will have the same imports.
+		wrapName = typ.PublImport.Package + "." + wrapName
 	}
 
 	return wrapName
@@ -302,8 +362,7 @@ var unsupportedCTypes = []string{
 // ResolveType resolves the given type from the GIR type field. It returns nil
 // if the type is not known. It does not recursively traverse the type.
 func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
-	if typ.Name == "" {
-		// empty gir type
+	if typ.Name == "" || !typ.IsIntrospectable() {
 		return nil
 	}
 
@@ -336,6 +395,10 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 		return builtinType("", "interface{}", typ)
 	case "GLib.Error":
 		return builtinType("", "error", typ)
+	case "GLib.List":
+		return externGLibType("*List", typ, "GList*")
+	case "GLib.SList":
+		return externGLibType("*SList", typ, "GSList*")
 	case "GObject.Type", "GType":
 		return externGLibType("Type", typ, "GType")
 	case "GObject.Value": // inconsistency???
@@ -363,8 +426,17 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 		return nil
 	}
 
-	// Check for edge cases.
+	// TODO: these checks shouldn't use as much load as they should, since that
+	// would lengthen generation time by a lot, which isn't a huge concern, but
+	// it's still one. Perhaps we could generate types separately first, and
+	// then generate methods and functions afterwards.
+
 	switch {
+	case result.Callback != nil:
+		cbgen := newCallbackGenerator(ng)
+		if !cbgen.Use(*result.Callback) {
+			return nil
+		}
 	case result.Record != nil:
 		if !canRecord(ng, *result.Record, nil) {
 			return nil
@@ -382,6 +454,7 @@ func (fg *FileGenerator) FindType(girType string) *gir.TypeFindResult {
 // ResolveType resolves the GIR type and adds it to the import header.
 func (fg *FileGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	resolved := fg.parent.ResolveType(typ)
-	fg.addResolvedImport(resolved)
+	fg.importImpl(resolved)
+	fg.importPubl(resolved)
 	return resolved
 }

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -48,7 +50,7 @@ type EmojiChooser interface {
 	ShortcutManager
 }
 
-// emojiChooser implements the EmojiChooser interface.
+// emojiChooser implements the EmojiChooser class.
 type emojiChooser struct {
 	Popover
 	Accessible
@@ -63,7 +65,7 @@ var _ EmojiChooser = (*emojiChooser)(nil)
 // WrapEmojiChooser wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEmojiChooser(obj *externglib.Object) EmojiChooser {
-	return EmojiChooser{
+	return emojiChooser{
 		Popover:          WrapPopover(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

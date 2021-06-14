@@ -3,14 +3,16 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-x11 gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4 gtk4-x11
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/x11/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -23,7 +25,7 @@ type X11Drag interface {
 	gdk.Drag
 }
 
-// x11Drag implements the X11Drag interface.
+// x11Drag implements the X11Drag class.
 type x11Drag struct {
 	gdk.Drag
 }
@@ -33,7 +35,7 @@ var _ X11Drag = (*x11Drag)(nil)
 // WrapX11Drag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Drag(obj *externglib.Object) X11Drag {
-	return X11Drag{
+	return x11Drag{
 		gdk.Drag: gdk.WrapDrag(obj),
 	}
 }

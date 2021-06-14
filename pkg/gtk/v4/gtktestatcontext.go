@@ -51,7 +51,7 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -72,7 +72,7 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -94,7 +94,7 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -115,7 +115,7 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

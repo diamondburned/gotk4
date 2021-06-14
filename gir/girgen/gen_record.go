@@ -40,10 +40,12 @@ var recordTmpl = newGoTemplate(`
 		return (*{{ .GoName }})(ptr)
 	}
 
+	{{ if .GLibGetType }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 		return Wrap{{ .GoName }}(unsafe.Pointer(b)), nil
 	}
+	{{ end }}
 
 	{{ range .Constructors }}
 	{{ if $.UseConstructor . $.GoName }}
@@ -123,7 +125,7 @@ func canRecord(ng *NamespaceGenerator, rec gir.Record, logger TypeResolver) bool
 }
 
 func (rg *recordGenerator) Use(rec gir.Record) bool {
-	rg.fg = rg.ng.FileFromSource(rec.SourcePosition)
+	rg.fg = rg.ng.FileFromSource(rec.DocElements)
 
 	if !canRecord(rg.ng, rec, rg.fg) {
 		return false
@@ -207,7 +209,7 @@ func (rg *recordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		converted.Apply(rg.fg)
+		converted.ApplySideEffects(&rg.fg.SideEffects)
 
 		b := pen.NewBlock()
 		b.Linef(converted.OutDeclare)
@@ -228,16 +230,18 @@ func (ng *NamespaceGenerator) generateRecords() {
 	rg := newRecordGenerator(ng)
 
 	for _, record := range ng.current.Namespace.Records {
+		if !record.IsIntrospectable() {
+			continue
+		}
 		if ng.mustIgnore(record.Name, record.CType) {
 			continue
 		}
-
 		if !rg.Use(record) {
 			continue
 		}
 
+		// Need unsafe for the wrapper.
 		rg.fg.addImport("unsafe")
-		rg.fg.needsGLibObject()
 
 		if record.GLibGetType != "" && !ng.mustIgnoreC(record.GLibGetType) {
 			rg.fg.addMarshaler(record.GLibGetType, rg.GoName)

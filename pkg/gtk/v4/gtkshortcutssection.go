@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -39,7 +41,7 @@ type ShortcutsSection interface {
 	Orientable
 }
 
-// shortcutsSection implements the ShortcutsSection interface.
+// shortcutsSection implements the ShortcutsSection class.
 type shortcutsSection struct {
 	Box
 	Accessible
@@ -53,7 +55,7 @@ var _ ShortcutsSection = (*shortcutsSection)(nil)
 // WrapShortcutsSection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutsSection(obj *externglib.Object) ShortcutsSection {
-	return ShortcutsSection{
+	return shortcutsSection{
 		Box:              WrapBox(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

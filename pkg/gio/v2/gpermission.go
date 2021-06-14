@@ -3,14 +3,14 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -46,34 +47,6 @@ func init() {
 type Permission interface {
 	gextras.Objector
 
-	// Acquire attempts to acquire the permission represented by @permission.
-	//
-	// The precise method by which this happens depends on the permission and
-	// the underlying authentication mechanism. A simple example is that a
-	// dialog may appear asking the user to enter their password.
-	//
-	// You should check with g_permission_get_can_acquire() before calling this
-	// function.
-	//
-	// If the permission is acquired then true is returned. Otherwise, false is
-	// returned and @error is set appropriately.
-	//
-	// This call is blocking, likely for a very long time (in the case that user
-	// interaction is required). See g_permission_acquire_async() for the
-	// non-blocking version.
-	Acquire(cancellable Cancellable) error
-	// AcquireAsync attempts to acquire the permission represented by
-	// @permission.
-	//
-	// This is the first half of the asynchronous version of
-	// g_permission_acquire().
-	AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// AcquireFinish collects the result of attempting to acquire the permission
-	// represented by @permission.
-	//
-	// This is the second half of the asynchronous version of
-	// g_permission_acquire().
-	AcquireFinish(result AsyncResult) error
 	// Allowed gets the value of the 'allowed' property. This property is true
 	// if the caller currently has permission to perform the action that
 	// @permission represents the permission to perform.
@@ -92,37 +65,9 @@ type Permission interface {
 	//
 	// GObject notify signals are generated, as appropriate.
 	ImplUpdate(allowed bool, canAcquire bool, canRelease bool)
-	// Release attempts to release the permission represented by @permission.
-	//
-	// The precise method by which this happens depends on the permission and
-	// the underlying authentication mechanism. In most cases the permission
-	// will be dropped immediately without further action.
-	//
-	// You should check with g_permission_get_can_release() before calling this
-	// function.
-	//
-	// If the permission is released then true is returned. Otherwise, false is
-	// returned and @error is set appropriately.
-	//
-	// This call is blocking, likely for a very long time (in the case that user
-	// interaction is required). See g_permission_release_async() for the
-	// non-blocking version.
-	Release(cancellable Cancellable) error
-	// ReleaseAsync attempts to release the permission represented by
-	// @permission.
-	//
-	// This is the first half of the asynchronous version of
-	// g_permission_release().
-	ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// ReleaseFinish collects the result of attempting to release the permission
-	// represented by @permission.
-	//
-	// This is the second half of the asynchronous version of
-	// g_permission_release().
-	ReleaseFinish(result AsyncResult) error
 }
 
-// permission implements the Permission interface.
+// permission implements the Permission class.
 type permission struct {
 	gextras.Objector
 }
@@ -132,7 +77,7 @@ var _ Permission = (*permission)(nil)
 // WrapPermission wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPermission(obj *externglib.Object) Permission {
-	return Permission{
+	return permission{
 		Objector: obj,
 	}
 }
@@ -141,81 +86,6 @@ func marshalPermission(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPermission(obj), nil
-}
-
-// Acquire attempts to acquire the permission represented by @permission.
-//
-// The precise method by which this happens depends on the permission and
-// the underlying authentication mechanism. A simple example is that a
-// dialog may appear asking the user to enter their password.
-//
-// You should check with g_permission_get_can_acquire() before calling this
-// function.
-//
-// If the permission is acquired then true is returned. Otherwise, false is
-// returned and @error is set appropriately.
-//
-// This call is blocking, likely for a very long time (in the case that user
-// interaction is required). See g_permission_acquire_async() for the
-// non-blocking version.
-func (p permission) Acquire(cancellable Cancellable) error {
-	var _arg0 *C.GPermission  // out
-	var _arg1 *C.GCancellable // out
-
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_permission_acquire(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// AcquireAsync attempts to acquire the permission represented by
-// @permission.
-//
-// This is the first half of the asynchronous version of
-// g_permission_acquire().
-func (p permission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GPermission        // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
-
-	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
-}
-
-// AcquireFinish collects the result of attempting to acquire the permission
-// represented by @permission.
-//
-// This is the second half of the asynchronous version of
-// g_permission_acquire().
-func (p permission) AcquireFinish(result AsyncResult) error {
-	var _arg0 *C.GPermission  // out
-	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // Allowed gets the value of the 'allowed' property. This property is true
@@ -232,7 +102,7 @@ func (p permission) Allowed() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -253,7 +123,7 @@ func (p permission) CanAcquire() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -274,7 +144,7 @@ func (p permission) CanRelease() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -294,89 +164,14 @@ func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	if allowed {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 	if canAcquire {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if canRelease {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.g_permission_impl_update(_arg0, _arg1, _arg2, _arg3)
-}
-
-// Release attempts to release the permission represented by @permission.
-//
-// The precise method by which this happens depends on the permission and
-// the underlying authentication mechanism. In most cases the permission
-// will be dropped immediately without further action.
-//
-// You should check with g_permission_get_can_release() before calling this
-// function.
-//
-// If the permission is released then true is returned. Otherwise, false is
-// returned and @error is set appropriately.
-//
-// This call is blocking, likely for a very long time (in the case that user
-// interaction is required). See g_permission_release_async() for the
-// non-blocking version.
-func (p permission) Release(cancellable Cancellable) error {
-	var _arg0 *C.GPermission  // out
-	var _arg1 *C.GCancellable // out
-
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_permission_release(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// ReleaseAsync attempts to release the permission represented by
-// @permission.
-//
-// This is the first half of the asynchronous version of
-// g_permission_release().
-func (p permission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GPermission        // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
-
-	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
-}
-
-// ReleaseFinish collects the result of attempting to release the permission
-// represented by @permission.
-//
-// This is the second half of the asynchronous version of
-// g_permission_release().
-func (p permission) ReleaseFinish(result AsyncResult) error {
-	var _arg0 *C.GPermission  // out
-	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }

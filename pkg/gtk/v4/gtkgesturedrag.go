@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -41,7 +43,7 @@ type GestureDrag interface {
 	StartPoint() (x float64, y float64, ok bool)
 }
 
-// gestureDrag implements the GestureDrag interface.
+// gestureDrag implements the GestureDrag class.
 type gestureDrag struct {
 	GestureSingle
 }
@@ -51,7 +53,7 @@ var _ GestureDrag = (*gestureDrag)(nil)
 // WrapGestureDrag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureDrag(obj *externglib.Object) GestureDrag {
-	return GestureDrag{
+	return gestureDrag{
 		GestureSingle: WrapGestureSingle(obj),
 	}
 }
@@ -84,7 +86,7 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 
 	_x = (float64)(_arg1)
 	_y = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -112,7 +114,7 @@ func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 
 	_x = (float64)(_arg1)
 	_y = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

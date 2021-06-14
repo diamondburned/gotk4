@@ -4,9 +4,6 @@ package gio
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -48,60 +45,6 @@ func DBusAddressEscapeValue(string string) string {
 	return _utf8
 }
 
-// DBusAddressGetForBusSync: synchronously looks up the D-Bus address for the
-// well-known message bus instance specified by @bus_type. This may involve
-// using various platform specific mechanisms.
-//
-// The returned address will be in the D-Bus address format
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string, error) {
-	var _arg1 C.GBusType      // out
-	var _arg2 *C.GCancellable // out
-
-	_arg1 = (C.GBusType)(busType)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
-
-	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, &_cerr)
-
-	var _utf8 string // out
-	var _goerr error // out
-
-	_utf8 = C.GoString(_cret)
-	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _utf8, _goerr
-}
-
-// DBusAddressGetStream: asynchronously connects to an endpoint specified by
-// @address and sets up the connection so it is in a state to run the
-// client-side of the D-Bus authentication conversation. @address must be in the
-// D-Bus address format
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-//
-// When the operation is finished, @callback will be invoked. You can then call
-// g_dbus_address_get_stream_finish() to get the result of the operation.
-//
-// This is an asynchronous failable function. See
-// g_dbus_address_get_stream_sync() for the synchronous version.
-func DBusAddressGetStream(address string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg1 = (*C.gchar)(C.CString(address))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
-}
-
 // DBusIsAddress checks if @string is a D-Bus address
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
@@ -119,30 +62,9 @@ func DBusIsAddress(string string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// DBusIsSupportedAddress: like g_dbus_is_address() but also checks if the
-// library supports the transports in @string and that key/value pairs for each
-// transport are valid. See the specification of the D-Bus address format
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DBusIsSupportedAddress(string string) error {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
-
-	C.g_dbus_is_supported_address(_arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }

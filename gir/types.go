@@ -168,11 +168,17 @@ type Include struct {
 }
 
 type InfoAttrs struct {
-	Introspectable    bool   `xml:"introspectable,attr"`
+	Introspectable    *bool  `xml:"introspectable,attr"` // default true
 	Deprecated        string `xml:"deprecated,attr"`
 	DeprecatedVersion string `xml:"deprecated-version,attr"`
 	Version           string `xml:"version,attr"`
 	Stability         string `xml:"stability,attr"`
+}
+
+// IsIntrospectable returns true if the InfoAttrs indicates that the type is
+// introspectable.
+func (inf InfoAttrs) IsIntrospectable() bool {
+	return inf.Introspectable == nil || *inf.Introspectable
 }
 
 type InfoElements struct {
@@ -257,11 +263,15 @@ type Parameter struct {
 
 type ParameterAttrs struct {
 	Name            string `xml:"name,attr"`
-	AllowNone       bool   `xml:"allow-none,attr"`
 	Direction       string `xml:"direction,attr"`
 	CallerAllocates bool   `xml:"caller-allocates,attr"`
 	Closure         *int   `xml:"closure,attr"`
 	Destroy         *int   `xml:"destroy,attr"`
+	Scope           string `xml:"scope,attr"`
+	Skip            bool   `xml:"skip,attr"`
+	Nullable        bool   `xml:"nullable,attr"`
+	Optional        bool   `xml:"optional,attr"`
+
 	TransferOwnership
 	AnyType
 	Doc *Doc
@@ -269,7 +279,6 @@ type ParameterAttrs struct {
 
 type Parameters struct {
 	XMLName           xml.Name           `xml:"http://www.gtk.org/introspection/core/1.0 parameters"`
-	Scope             string             `xml:"scope,attr"`
 	InstanceParameter *InstanceParameter `xml:"http://www.gtk.org/introspection/core/1.0 instance-parameter"`
 	Parameters        []Parameter        `xml:"http://www.gtk.org/introspection/core/1.0 parameter"`
 }
@@ -333,10 +342,14 @@ type Type struct {
 
 	Name           string `xml:"name,attr"`
 	CType          string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	Introspectable bool   `xml:"introspectable,attr"`
+	Introspectable *bool  `xml:"introspectable,attr"`
 
 	DocElements
 	AnyType
+}
+
+func (typ Type) IsIntrospectable() bool {
+	return typ.Introspectable == nil || *typ.Introspectable
 }
 
 type Union struct {

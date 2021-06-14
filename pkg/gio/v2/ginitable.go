@@ -3,13 +3,14 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -21,56 +22,13 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_initable_get_type()), F: marshalInitable},
 	})
-}
-
-// InitableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Initable.
-type InitableOverrider interface {
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	Init(cancellable Cancellable) error
 }
 
 // Initable is implemented by objects that can fail during initialization. If an
@@ -97,7 +55,6 @@ type InitableOverrider interface {
 // failure.
 type Initable interface {
 	gextras.Objector
-	InitableOverrider
 }
 
 // initable implements the Initable interface.
@@ -119,60 +76,4 @@ func marshalInitable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapInitable(obj), nil
-}
-
-// Init initializes the object implementing the interface.
-//
-// This method is intended for language bindings. If writing in C,
-// g_initable_new() should typically be used instead.
-//
-// The object must be initialized before any real use after initial
-// construction, either with this function or g_async_initable_init_async().
-//
-// Implementations may also support cancellation. If @cancellable is not
-// nil, then initialization can be cancelled by triggering the cancellable
-// object from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-// object doesn't support cancellable initialization the error
-// G_IO_ERROR_NOT_SUPPORTED will be returned.
-//
-// If the object is not initialized, or initialization returns with an
-// error, then all operations on the object except g_object_ref() and
-// g_object_unref() are considered to be invalid, and have undefined
-// behaviour. See the [introduction][ginitable] for more details.
-//
-// Callers should not assume that a class which implements #GInitable can be
-// initialized multiple times, unless the class explicitly documents itself
-// as supporting this. Generally, a class’ implementation of init() can
-// assume (and assert) that it will only be called once. Previously, this
-// documentation recommended all #GInitable implementations should be
-// idempotent; that recommendation was relaxed in GLib 2.54.
-//
-// If a class explicitly supports being initialized multiple times, it is
-// recommended that the method is idempotent: multiple calls with the same
-// arguments should return the same results. Only the first call initializes
-// the object; further calls return the result of the first call.
-//
-// One reason why a class might need to support idempotent initialization is
-// if it is designed to be used via the singleton pattern, with a
-// Class.constructor that sometimes returns an existing instance. In this
-// pattern, a caller would expect to be able to call g_initable_init() on
-// the result of g_object_new(), regardless of whether it is in fact a new
-// instance.
-func (i initable) Init(cancellable Cancellable) error {
-	var _arg0 *C.GInitable    // out
-	var _arg1 *C.GCancellable // out
-
-	_arg0 = (*C.GInitable)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_initable_init(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }

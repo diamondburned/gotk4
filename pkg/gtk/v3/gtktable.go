@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -18,8 +18,27 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_attach_options_get_type()), F: marshalAttachOptions},
 		{T: externglib.Type(C.gtk_table_get_type()), F: marshalTable},
 	})
+}
+
+// AttachOptions denotes the expansion properties that a widget will have when
+// it (or its parent) is resized.
+type AttachOptions int
+
+const (
+	// AttachOptionsExpand: the widget should expand to take up any extra space
+	// in its container that has been allocated.
+	AttachOptionsExpand AttachOptions = 1
+	// AttachOptionsShrink: the widget should shrink as and when possible.
+	AttachOptionsShrink AttachOptions = 2
+	// AttachOptionsFill: the widget should fill the space allocated to it.
+	AttachOptionsFill AttachOptions = 4
+)
+
+func marshalAttachOptions(p uintptr) (interface{}, error) {
+	return AttachOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Table: the Table functions allow the programmer to arrange widgets in rows
@@ -111,7 +130,7 @@ type Table interface {
 	SetRowSpacings(spacing uint)
 }
 
-// table implements the Table interface.
+// table implements the Table class.
 type table struct {
 	Container
 	Buildable
@@ -122,7 +141,7 @@ var _ Table = (*table)(nil)
 // WrapTable wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTable(obj *externglib.Object) Table {
-	return Table{
+	return table{
 		Container: WrapContainer(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -270,7 +289,7 @@ func (t table) Homogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -365,7 +384,7 @@ func (t table) SetHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_table_set_homogeneous(_arg0, _arg1)
@@ -409,11 +428,6 @@ func WrapTableChild(ptr unsafe.Pointer) *TableChild {
 	}
 
 	return (*TableChild)(ptr)
-}
-
-func marshalTableChild(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTableChild(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -475,11 +489,6 @@ func WrapTableRowCol(ptr unsafe.Pointer) *TableRowCol {
 	}
 
 	return (*TableRowCol)(ptr)
-}
-
-func marshalTableRowCol(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTableRowCol(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

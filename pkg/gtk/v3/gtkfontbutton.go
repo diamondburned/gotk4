@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -74,7 +74,7 @@ type FontButton interface {
 	SetUseSize(useSize bool)
 }
 
-// fontButton implements the FontButton interface.
+// fontButton implements the FontButton class.
 type fontButton struct {
 	Button
 	Actionable
@@ -88,7 +88,7 @@ var _ FontButton = (*fontButton)(nil)
 // WrapFontButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontButton(obj *externglib.Object) FontButton {
-	return FontButton{
+	return fontButton{
 		Button:      WrapButton(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -137,7 +137,7 @@ func (f fontButton) ShowSize() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -157,7 +157,7 @@ func (f fontButton) ShowStyle() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -193,7 +193,7 @@ func (f fontButton) UseFont() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -212,7 +212,7 @@ func (f fontButton) UseSize() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -235,7 +235,7 @@ func (f fontButton) SetFontName(fontname string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -250,7 +250,7 @@ func (f fontButton) SetShowSize(showSize bool) {
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 	if showSize {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_font_button_set_show_size(_arg0, _arg1)
@@ -264,7 +264,7 @@ func (f fontButton) SetShowStyle(showStyle bool) {
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 	if showStyle {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_font_button_set_show_style(_arg0, _arg1)
@@ -290,7 +290,7 @@ func (f fontButton) SetUseFont(useFont bool) {
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 	if useFont {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_font_button_set_use_font(_arg0, _arg1)
@@ -304,7 +304,7 @@ func (f fontButton) SetUseSize(useSize bool) {
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 	if useSize {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_font_button_set_use_size(_arg0, _arg1)

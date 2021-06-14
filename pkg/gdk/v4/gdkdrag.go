@@ -2,7 +2,129 @@
 
 package gdk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
+		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDrag},
+	})
+}
+
+// DragCancelReason: used in `GdkDrag` to the reason of a cancelled DND
+// operation.
+type DragCancelReason int
+
+const (
+	// DragCancelReasonNoTarget: there is no suitable drop target.
+	DragCancelReasonNoTarget DragCancelReason = 0
+	// DragCancelReasonUserCancelled: drag cancelled by the user
+	DragCancelReasonUserCancelled DragCancelReason = 1
+	// DragCancelReasonError: unspecified error.
+	DragCancelReasonError DragCancelReason = 2
+)
+
+func marshalDragCancelReason(p uintptr) (interface{}, error) {
+	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Drag: the `GdkDrag` object represents the source of an ongoing DND operation.
+//
+// A `GdkDrag` is created when a drag is started, and stays alive for duration
+// of the DND operation. After a drag has been started with
+// [func@Gdk.Drag.begin], the caller gets informed about the status of the
+// ongoing drag operation with signals on the `GdkDrag` object.
+//
+// GTK provides a higher level abstraction based on top of these functions, and
+// so they are not normally needed in GTK applications. See the "Drag and Drop"
+// section of the GTK documentation for more information.
+type Drag interface {
+	gextras.Objector
+
+	// DropDone informs GDK that the drop ended.
+	//
+	// Passing false for @success may trigger a drag cancellation animation.
+	//
+	// This function is called by the drag source, and should be the last call
+	// before dropping the reference to the @drag.
+	//
+	// The `GdkDrag` will only take the first [method@Gdk.Drag.drop_done] call
+	// as effective, if this function is called multiple times, all subsequent
+	// calls will be ignored.
+	DropDone(success bool)
+	// SetHotspot sets the position of the drag surface that will be kept under
+	// the cursor hotspot.
+	//
+	// Initially, the hotspot is at the top left corner of the drag surface.
+	SetHotspot(hotX int, hotY int)
+}
+
+// drag implements the Drag class.
+type drag struct {
+	gextras.Objector
+}
+
+var _ Drag = (*drag)(nil)
+
+// WrapDrag wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDrag(obj *externglib.Object) Drag {
+	return drag{
+		Objector: obj,
+	}
+}
+
+func marshalDrag(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDrag(obj), nil
+}
+
+// DropDone informs GDK that the drop ended.
+//
+// Passing false for @success may trigger a drag cancellation animation.
+//
+// This function is called by the drag source, and should be the last call
+// before dropping the reference to the @drag.
+//
+// The `GdkDrag` will only take the first [method@Gdk.Drag.drop_done] call
+// as effective, if this function is called multiple times, all subsequent
+// calls will be ignored.
+func (d drag) DropDone(success bool) {
+	var _arg0 *C.GdkDrag // out
+	var _arg1 C.gboolean // out
+
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
+	if success {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_drag_drop_done(_arg0, _arg1)
+}
+
+// SetHotspot sets the position of the drag surface that will be kept under
+// the cursor hotspot.
+//
+// Initially, the hotspot is at the top left corner of the drag surface.
+func (d drag) SetHotspot(hotX int, hotY int) {
+	var _arg0 *C.GdkDrag // out
+	var _arg1 C.int      // out
+	var _arg2 C.int      // out
+
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(hotX)
+	_arg2 = C.int(hotY)
+
+	C.gdk_drag_set_hotspot(_arg0, _arg1, _arg2)
+}

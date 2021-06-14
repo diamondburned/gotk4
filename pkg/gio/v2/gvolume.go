@@ -5,15 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -42,22 +40,6 @@ type VolumeOverrider interface {
 	CanMount() bool
 
 	Changed()
-	// Eject ejects a volume. This is an asynchronous operation, and is finished
-	// by calling g_volume_eject_finish() with the @volume and Result returned
-	// in the @callback.
-	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// EjectFinish finishes ejecting a volume. If any errors occurred during the
-	// operation, @error will be set to contain the errors and false will be
-	// returned.
-	EjectFinish(result AsyncResult) error
-	// EjectWithOperation ejects a volume. This is an asynchronous operation,
-	// and is finished by calling g_volume_eject_with_operation_finish() with
-	// the @volume and Result data returned in the @callback.
-	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	// EjectWithOperationFinish finishes ejecting a volume. If any errors
-	// occurred during the operation, @error will be set to contain the errors
-	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) error
 	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
 	// that @volume has. Use g_volume_get_identifier() to obtain the identifiers
 	// themselves.
@@ -74,18 +56,6 @@ type VolumeOverrider interface {
 	// the file system UUID for the volume in question and should be considered
 	// an opaque string. Returns nil if there is no UUID available.
 	UUID() string
-	// MountFinish finishes mounting a volume. If any errors occurred during the
-	// operation, @error will be set to contain the errors and false will be
-	// returned.
-	//
-	// If the mount operation succeeded, g_volume_get_mount() on @volume is
-	// guaranteed to return the mount right after calling this function; there's
-	// no need to listen for the 'mount-added' signal on Monitor.
-	MountFinish(result AsyncResult) error
-	// MountFn mounts a volume. This is an asynchronous operation, and is
-	// finished by calling g_volume_mount_finish() with the @volume and Result
-	// returned in the @callback.
-	MountFn(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 
 	Removed()
 	// ShouldAutomount returns whether the volume should be automatically
@@ -129,11 +99,6 @@ type VolumeOverrider interface {
 type Volume interface {
 	gextras.Objector
 	VolumeOverrider
-
-	// Mount mounts a volume. This is an asynchronous operation, and is finished
-	// by calling g_volume_mount_finish() with the @volume and Result returned
-	// in the @callback.
-	Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
 // volume implements the Volume interface.
@@ -169,7 +134,7 @@ func (v volume) CanEject() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -188,93 +153,11 @@ func (v volume) CanMount() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Eject ejects a volume. This is an asynchronous operation, and is finished
-// by calling g_volume_eject_finish() with the @volume and Result returned
-// in the @callback.
-func (v volume) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume            // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.GMountUnmountFlags)(flags)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_volume_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// EjectFinish finishes ejecting a volume. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
-// returned.
-func (v volume) EjectFinish(result AsyncResult) error {
-	var _arg0 *C.GVolume      // out
-	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// EjectWithOperation ejects a volume. This is an asynchronous operation,
-// and is finished by calling g_volume_eject_with_operation_finish() with
-// the @volume and Result data returned in the @callback.
-func (v volume) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume            // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.GMountUnmountFlags)(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// EjectWithOperationFinish finishes ejecting a volume. If any errors
-// occurred during the operation, @error will be set to contain the errors
-// and false will be returned.
-func (v volume) EjectWithOperationFinish(result AsyncResult) error {
-	var _arg0 *C.GVolume      // out
-	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
@@ -293,20 +176,18 @@ func (v volume) EnumerateIdentifiers() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -391,52 +272,6 @@ func (v volume) UUID() string {
 	return _utf8
 }
 
-// Mount mounts a volume. This is an asynchronous operation, and is finished
-// by calling g_volume_mount_finish() with the @volume and Result returned
-// in the @callback.
-func (v volume) Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume            // out
-	var _arg1 C.GMountMountFlags    // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.GMountMountFlags)(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_volume_mount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// MountFinish finishes mounting a volume. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
-// returned.
-//
-// If the mount operation succeeded, g_volume_get_mount() on @volume is
-// guaranteed to return the mount right after calling this function; there's
-// no need to listen for the 'mount-added' signal on Monitor.
-func (v volume) MountFinish(result AsyncResult) error {
-	var _arg0 *C.GVolume      // out
-	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 // ShouldAutomount returns whether the volume should be automatically
 // mounted.
 func (v volume) ShouldAutomount() bool {
@@ -450,7 +285,7 @@ func (v volume) ShouldAutomount() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

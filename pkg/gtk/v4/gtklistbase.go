@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -28,7 +30,7 @@ type ListBase interface {
 	Scrollable
 }
 
-// listBase implements the ListBase interface.
+// listBase implements the ListBase class.
 type listBase struct {
 	Widget
 	Accessible
@@ -43,7 +45,7 @@ var _ ListBase = (*listBase)(nil)
 // WrapListBase wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListBase(obj *externglib.Object) ListBase {
-	return ListBase{
+	return listBase{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

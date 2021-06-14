@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -104,7 +104,7 @@ func (l *Language) IncludesScript(script Script) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -131,7 +131,7 @@ func (l *Language) Matches(rangeList string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

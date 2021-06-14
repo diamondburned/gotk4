@@ -3,12 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -95,7 +97,7 @@ type ShortcutController interface {
 	SetScope(scope ShortcutScope)
 }
 
-// shortcutController implements the ShortcutController interface.
+// shortcutController implements the ShortcutController class.
 type shortcutController struct {
 	EventController
 	gio.ListModel
@@ -107,7 +109,7 @@ var _ ShortcutController = (*shortcutController)(nil)
 // WrapShortcutController wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutController(obj *externglib.Object) ShortcutController {
-	return ShortcutController{
+	return shortcutController{
 		EventController: WrapEventController(obj),
 		gio.ListModel:   gio.WrapListModel(obj),
 		Buildable:       WrapBuildable(obj),

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -199,7 +201,7 @@ type ConstraintLayout interface {
 	RemoveGuide(guide ConstraintGuide)
 }
 
-// constraintLayout implements the ConstraintLayout interface.
+// constraintLayout implements the ConstraintLayout class.
 type constraintLayout struct {
 	LayoutManager
 	Buildable
@@ -210,7 +212,7 @@ var _ ConstraintLayout = (*constraintLayout)(nil)
 // WrapConstraintLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConstraintLayout(obj *externglib.Object) ConstraintLayout {
-	return ConstraintLayout{
+	return constraintLayout{
 		LayoutManager: WrapLayoutManager(obj),
 		Buildable:     WrapBuildable(obj),
 	}
@@ -301,7 +303,7 @@ type ConstraintLayoutChild interface {
 	LayoutChild
 }
 
-// constraintLayoutChild implements the ConstraintLayoutChild interface.
+// constraintLayoutChild implements the ConstraintLayoutChild class.
 type constraintLayoutChild struct {
 	LayoutChild
 }
@@ -311,7 +313,7 @@ var _ ConstraintLayoutChild = (*constraintLayoutChild)(nil)
 // WrapConstraintLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChild {
-	return ConstraintLayoutChild{
+	return constraintLayoutChild{
 		LayoutChild: WrapLayoutChild(obj),
 	}
 }

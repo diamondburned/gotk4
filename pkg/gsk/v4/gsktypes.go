@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
@@ -67,26 +67,11 @@ func (f *Transform) Equal(second *Transform) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Print converts @self into a human-readable string representation suitable for
-// printing.
-//
-// The result of this function can later be parsed with
-// [func@Gsk.Transform.parse].
-func (s *Transform) Print(string *glib.String) {
-	var _arg0 *C.GskTransform // out
-	var _arg1 *C.GString      // out
-
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
-
-	C.gsk_transform_print(_arg0, _arg1)
 }
 
 // To2D converts a `GskTransform` to a 2D transformation matrix.

@@ -5,14 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -237,33 +235,9 @@ type Container interface {
 	// Note that this may return G_TYPE_NONE to indicate that no more children
 	// can be added, e.g. for a Paned which already has two children.
 	ChildType() externglib.Type
-	// Forall invokes @callback on each direct child of @container, including
-	// children that are considered “internal” (implementation details of the
-	// container). “Internal” children generally weren’t added by the user of
-	// the container, but were added by the container implementation itself.
-	//
-	// Most applications should use gtk_container_foreach(), rather than
-	// gtk_container_forall().
-	Forall(callback Callback)
-	// Foreach invokes @callback on each non-internal child of @container. See
-	// gtk_container_forall() for details on what constitutes an “internal”
-	// child. For all practical purposes, this function should iterate over
-	// precisely those child widgets that were added to the container by the
-	// application with explicit add() calls.
-	//
-	// It is permissible to remove the child from the @callback handler.
-	//
-	// Most applications should use gtk_container_foreach(), rather than
-	// gtk_container_forall().
-	Foreach(callback Callback)
 	// BorderWidth retrieves the border width of the container. See
 	// gtk_container_set_border_width().
 	BorderWidth() uint
-	// FocusChain retrieves the focus chain of the container, if one has been
-	// set explicitly. If no focus chain has been explicitly set, GTK+ computes
-	// the focus chain based on the positions of the children. In that case,
-	// GTK+ stores nil in @focusable_widgets and returns false.
-	FocusChain() (*glib.List, bool)
 	// PropagateDraw: when a container receives a call to the draw function, it
 	// must send synthetic Widget::draw calls to all children that don’t have
 	// their own Windows. This function provides a convenient way of doing this.
@@ -301,15 +275,6 @@ type Container interface {
 	// to only one side, use a specific Widget:margin property on the child
 	// widget, for example Widget:margin-top.
 	SetBorderWidth(borderWidth uint)
-	// SetFocusChain sets a focus chain, overriding the one computed
-	// automatically by GTK+.
-	//
-	// In principle each widget in the chain should be a descendant of the
-	// container, but this is not enforced by this method, since it’s allowed to
-	// set the focus chain before you pack the widgets, or have a widget in the
-	// chain that isn’t always packed. The necessary checks are done when the
-	// focus chain is actually traversed.
-	SetFocusChain(focusableWidgets *glib.List)
 	// SetFocusChild: sets, or unsets if @child is nil, the focused child of
 	// @container.
 	//
@@ -358,7 +323,7 @@ type Container interface {
 	UnsetFocusChain()
 }
 
-// container implements the Container interface.
+// container implements the Container class.
 type container struct {
 	Widget
 	Buildable
@@ -369,7 +334,7 @@ var _ Container = (*container)(nil)
 // WrapContainer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContainer(obj *externglib.Object) Container {
-	return Container{
+	return container{
 		Widget:    WrapWidget(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -497,47 +462,6 @@ func (c container) ChildType() externglib.Type {
 	return _gType
 }
 
-// Forall invokes @callback on each direct child of @container, including
-// children that are considered “internal” (implementation details of the
-// container). “Internal” children generally weren’t added by the user of
-// the container, but were added by the container implementation itself.
-//
-// Most applications should use gtk_container_foreach(), rather than
-// gtk_container_forall().
-func (c container) Forall(callback Callback) {
-	var _arg0 *C.GtkContainer // out
-	var _arg1 C.GtkCallback   // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_Callback)
-	_arg2 = C.gpointer(box.Assign(callback))
-
-	C.gtk_container_forall(_arg0, _arg1, _arg2)
-}
-
-// Foreach invokes @callback on each non-internal child of @container. See
-// gtk_container_forall() for details on what constitutes an “internal”
-// child. For all practical purposes, this function should iterate over
-// precisely those child widgets that were added to the container by the
-// application with explicit add() calls.
-//
-// It is permissible to remove the child from the @callback handler.
-//
-// Most applications should use gtk_container_foreach(), rather than
-// gtk_container_forall().
-func (c container) Foreach(callback Callback) {
-	var _arg0 *C.GtkContainer // out
-	var _arg1 C.GtkCallback   // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_Callback)
-	_arg2 = C.gpointer(box.Assign(callback))
-
-	C.gtk_container_foreach(_arg0, _arg1, _arg2)
-}
-
 // BorderWidth retrieves the border width of the container. See
 // gtk_container_set_border_width().
 func (c container) BorderWidth() uint {
@@ -554,29 +478,6 @@ func (c container) BorderWidth() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// FocusChain retrieves the focus chain of the container, if one has been
-// set explicitly. If no focus chain has been explicitly set, GTK+ computes
-// the focus chain based on the positions of the children. In that case,
-// GTK+ stores nil in @focusable_widgets and returns false.
-func (c container) FocusChain() (*glib.List, bool) {
-	var _arg0 *C.GtkContainer // out
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-
-	var _focusableWidgets *glib.List
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_container_get_focus_chain(_arg0, (**C.GList)(unsafe.Pointer(&_focusableWidgets)))
-
-	var _ok bool // out
-
-	if _cret {
-		_ok = true
-	}
-
-	return _focusableWidgets, _ok
 }
 
 // PropagateDraw: when a container receives a call to the draw function, it
@@ -651,24 +552,6 @@ func (c container) SetBorderWidth(borderWidth uint) {
 	C.gtk_container_set_border_width(_arg0, _arg1)
 }
 
-// SetFocusChain sets a focus chain, overriding the one computed
-// automatically by GTK+.
-//
-// In principle each widget in the chain should be a descendant of the
-// container, but this is not enforced by this method, since it’s allowed to
-// set the focus chain before you pack the widgets, or have a widget in the
-// chain that isn’t always packed. The necessary checks are done when the
-// focus chain is actually traversed.
-func (c container) SetFocusChain(focusableWidgets *glib.List) {
-	var _arg0 *C.GtkContainer // out
-	var _arg1 *C.GList        // out
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GList)(unsafe.Pointer(focusableWidgets.Native()))
-
-	C.gtk_container_set_focus_chain(_arg0, _arg1)
-}
-
 // SetFocusChild: sets, or unsets if @child is nil, the focused child of
 // @container.
 //
@@ -738,7 +621,7 @@ func (c container) SetReallocateRedraws(needsRedraws bool) {
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 	if needsRedraws {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_container_set_reallocate_redraws(_arg0, _arg1)

@@ -8,17 +8,229 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_axis_use_get_type()), F: marshalAxisUse},
+		{T: externglib.Type(C.gdk_gl_error_get_type()), F: marshalGLError},
+		{T: externglib.Type(C.gdk_gravity_get_type()), F: marshalGravity},
+		{T: externglib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
+		{T: externglib.Type(C.gdk_axis_flags_get_type()), F: marshalAxisFlags},
+		{T: externglib.Type(C.gdk_drag_action_get_type()), F: marshalDragAction},
+		{T: externglib.Type(C.gdk_modifier_type_get_type()), F: marshalModifierType},
 		{T: externglib.Type(C.gdk_content_formats_get_type()), F: marshalContentFormats},
 		{T: externglib.Type(C.gdk_rectangle_get_type()), F: marshalRectangle},
 	})
+}
+
+// AxisUse defines how device axes are interpreted by GTK.
+//
+// Note that the X and Y axes are not really needed; pointer devices report
+// their location via the x/y members of events regardless. Whether X and Y are
+// present as axes depends on the GDK backend.
+type AxisUse int
+
+const (
+	// AxisUseIgnore: the axis is ignored.
+	AxisUseIgnore AxisUse = 0
+	// AxisUseX: the axis is used as the x axis.
+	AxisUseX AxisUse = 1
+	// AxisUseY: the axis is used as the y axis.
+	AxisUseY AxisUse = 2
+	// AxisUseDeltaX: the axis is used as the scroll x delta
+	AxisUseDeltaX AxisUse = 3
+	// AxisUseDeltaY: the axis is used as the scroll y delta
+	AxisUseDeltaY AxisUse = 4
+	// AxisUsePressure: the axis is used for pressure information.
+	AxisUsePressure AxisUse = 5
+	// AxisUseXtilt: the axis is used for x tilt information.
+	AxisUseXtilt AxisUse = 6
+	// AxisUseYtilt: the axis is used for y tilt information.
+	AxisUseYtilt AxisUse = 7
+	// AxisUseWheel: the axis is used for wheel information.
+	AxisUseWheel AxisUse = 8
+	// AxisUseDistance: the axis is used for pen/tablet distance information
+	AxisUseDistance AxisUse = 9
+	// AxisUseRotation: the axis is used for pen rotation information
+	AxisUseRotation AxisUse = 10
+	// AxisUseSlider: the axis is used for pen slider information
+	AxisUseSlider AxisUse = 11
+	// AxisUseLast: a constant equal to the numerically highest axis value.
+	AxisUseLast AxisUse = 12
+)
+
+func marshalAxisUse(p uintptr) (interface{}, error) {
+	return AxisUse(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// GLError: error enumeration for `GdkGLContext`.
+type GLError int
+
+const (
+	// GLErrorNotAvailable: openGL support is not available
+	GLErrorNotAvailable GLError = 0
+	// GLErrorUnsupportedFormat: the requested visual format is not supported
+	GLErrorUnsupportedFormat GLError = 1
+	// GLErrorUnsupportedProfile: the requested profile is not supported
+	GLErrorUnsupportedProfile GLError = 2
+	// GLErrorCompilationFailed: the shader compilation failed
+	GLErrorCompilationFailed GLError = 3
+	// GLErrorLinkFailed: the shader linking failed
+	GLErrorLinkFailed GLError = 4
+)
+
+func marshalGLError(p uintptr) (interface{}, error) {
+	return GLError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Gravity defines the reference point of a surface and is used in PopupLayout.
+type Gravity int
+
+const (
+	// GravityNorthWest: the reference point is at the top left corner.
+	GravityNorthWest Gravity = 1
+	// GravityNorth: the reference point is in the middle of the top edge.
+	GravityNorth Gravity = 2
+	// GravityNorthEast: the reference point is at the top right corner.
+	GravityNorthEast Gravity = 3
+	// GravityWest: the reference point is at the middle of the left edge.
+	GravityWest Gravity = 4
+	// GravityCenter: the reference point is at the center of the surface.
+	GravityCenter Gravity = 5
+	// GravityEast: the reference point is at the middle of the right edge.
+	GravityEast Gravity = 6
+	// GravitySouthWest: the reference point is at the lower left corner.
+	GravitySouthWest Gravity = 7
+	// GravitySouth: the reference point is at the middle of the lower edge.
+	GravitySouth Gravity = 8
+	// GravitySouthEast: the reference point is at the lower right corner.
+	GravitySouthEast Gravity = 9
+	// GravityStatic: the reference point is at the top left corner of the
+	// surface itself, ignoring window manager decorations.
+	GravityStatic Gravity = 10
+)
+
+func marshalGravity(p uintptr) (interface{}, error) {
+	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// VulkanError: error enumeration for VulkanContext.
+type VulkanError int
+
+const (
+	// VulkanErrorUnsupported: vulkan is not supported on this backend or has
+	// not been compiled in.
+	VulkanErrorUnsupported VulkanError = 0
+	// VulkanErrorNotAvailable: vulkan support is not available on this Surface
+	VulkanErrorNotAvailable VulkanError = 1
+)
+
+func marshalVulkanError(p uintptr) (interface{}, error) {
+	return VulkanError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// AxisFlags flags describing the current capabilities of a device/tool.
+type AxisFlags int
+
+const (
+	// AxisFlagsX: x axis is present
+	AxisFlagsX AxisFlags = 2
+	// AxisFlagsY: y axis is present
+	AxisFlagsY AxisFlags = 4
+	// AxisFlagsDeltaX: scroll X delta axis is present
+	AxisFlagsDeltaX AxisFlags = 8
+	// AxisFlagsDeltaY: scroll Y delta axis is present
+	AxisFlagsDeltaY AxisFlags = 16
+	// AxisFlagsPressure: pressure axis is present
+	AxisFlagsPressure AxisFlags = 32
+	// AxisFlagsXtilt: x tilt axis is present
+	AxisFlagsXtilt AxisFlags = 64
+	// AxisFlagsYtilt: y tilt axis is present
+	AxisFlagsYtilt AxisFlags = 128
+	// AxisFlagsWheel: wheel axis is present
+	AxisFlagsWheel AxisFlags = 256
+	// AxisFlagsDistance: distance axis is present
+	AxisFlagsDistance AxisFlags = 512
+	// AxisFlagsRotation z-axis rotation is present
+	AxisFlagsRotation AxisFlags = 1024
+	// AxisFlagsSlider: slider axis is present
+	AxisFlagsSlider AxisFlags = 2048
+)
+
+func marshalAxisFlags(p uintptr) (interface{}, error) {
+	return AxisFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DragAction: used in `GdkDrop` and `GdkDrag` to indicate the actions that the
+// destination can and should do with the dropped data.
+type DragAction int
+
+const (
+	// DragActionCopy: copy the data.
+	DragActionCopy DragAction = 1
+	// DragActionMove: move the data, i.e. first copy it, then delete it from
+	// the source using the DELETE target of the X selection protocol.
+	DragActionMove DragAction = 2
+	// DragActionLink: add a link to the data. Note that this is only useful if
+	// source and destination agree on what it means, and is not supported on
+	// all platforms.
+	DragActionLink DragAction = 4
+	// DragActionAsk: ask the user what to do with the data.
+	DragActionAsk DragAction = 8
+)
+
+func marshalDragAction(p uintptr) (interface{}, error) {
+	return DragAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ModifierType flags to indicate the state of modifier keys and mouse buttons
+// in events.
+//
+// Typical modifier keys are Shift, Control, Meta, Super, Hyper, Alt, Compose,
+// Apple, CapsLock or ShiftLock.
+//
+// Note that GDK may add internal values to events which include values outside
+// of this enumeration. Your code should preserve and ignore them. You can use
+// GDK_MODIFIER_MASK to remove all private values.
+type ModifierType int
+
+const (
+	// ModifierTypeShiftMask: the Shift key.
+	ModifierTypeShiftMask ModifierType = 1
+	// ModifierTypeLockMask: a Lock key (depending on the modifier mapping of
+	// the X server this may either be CapsLock or ShiftLock).
+	ModifierTypeLockMask ModifierType = 2
+	// ModifierTypeControlMask: the Control key.
+	ModifierTypeControlMask ModifierType = 4
+	// ModifierTypeAltMask: the fourth modifier key (it depends on the modifier
+	// mapping of the X server which key is interpreted as this modifier, but
+	// normally it is the Alt key).
+	ModifierTypeAltMask ModifierType = 8
+	// ModifierTypeButton1Mask: the first mouse button.
+	ModifierTypeButton1Mask ModifierType = 256
+	// ModifierTypeButton2Mask: the second mouse button.
+	ModifierTypeButton2Mask ModifierType = 512
+	// ModifierTypeButton3Mask: the third mouse button.
+	ModifierTypeButton3Mask ModifierType = 1024
+	// ModifierTypeButton4Mask: the fourth mouse button.
+	ModifierTypeButton4Mask ModifierType = 2048
+	// ModifierTypeButton5Mask: the fifth mouse button.
+	ModifierTypeButton5Mask ModifierType = 4096
+	// ModifierTypeSuperMask: the Super modifier
+	ModifierTypeSuperMask ModifierType = 67108864
+	// ModifierTypeHyperMask: the Hyper modifier
+	ModifierTypeHyperMask ModifierType = 134217728
+	// ModifierTypeMetaMask: the Meta modifier
+	ModifierTypeMetaMask ModifierType = 268435456
+)
+
+func marshalModifierType(p uintptr) (interface{}, error) {
+	return ModifierType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // ContentFormats: the `GdkContentFormats` structure is used to advertise and
@@ -91,7 +303,7 @@ func (f *ContentFormats) ContainGType(typ externglib.Type) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -113,7 +325,7 @@ func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -137,12 +349,10 @@ func (f *ContentFormats) GTypes() []externglib.Type {
 	var _gTypes []externglib.Type
 
 	{
-		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
 		_gTypes = make([]externglib.Type, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_gTypes = externglib.Type(_cret)
+		for i := 0; i < int(_arg1); i++ {
+			_gTypes[i] = externglib.Type(src[i])
 		}
 	}
 
@@ -166,12 +376,10 @@ func (f *ContentFormats) MIMETypes() []string {
 	var _utf8s []string
 
 	{
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
 		_utf8s = make([]string, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_utf8s = C.GoString(_cret)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -192,7 +400,7 @@ func (f *ContentFormats) Match(second *ContentFormats) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -243,22 +451,6 @@ func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	return _utf8
 }
 
-// Print prints the given @formats into a string for human consumption.
-//
-// This is meant for debugging and logging.
-//
-// The form of the representation may change at any time and is not guaranteed
-// to stay identical.
-func (f *ContentFormats) Print(string *glib.String) {
-	var _arg0 *C.GdkContentFormats // out
-	var _arg1 *C.GString           // out
-
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
-
-	C.gdk_content_formats_print(_arg0, _arg1)
-}
-
 // String prints the given @formats into a human-readable string.
 //
 // This is a small wrapper around [method@Gdk.ContentFormats.print] to help when
@@ -304,11 +496,6 @@ func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
 	}
 
 	return (*KeymapKey)(ptr)
-}
-
-func marshalKeymapKey(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapKeymapKey(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -420,7 +607,7 @@ func (r *Rectangle) ContainsPoint(x int, y int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -441,7 +628,7 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -469,7 +656,7 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

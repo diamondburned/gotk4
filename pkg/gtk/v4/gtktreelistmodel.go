@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -47,9 +47,11 @@ func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GLi
 	fn := v.(TreeListModelCreateModelFunc)
 	listModel := fn(item)
 
+	var cret *C.GListModel // out
+
 	cret = (*C.GListModel)(unsafe.Pointer(listModel.Native()))
 
-	return listModel
+	return cret
 }
 
 // TreeListModel: `GtkTreeListModel` is a list model that can create child
@@ -83,7 +85,7 @@ type TreeListModel interface {
 	SetAutoexpand(autoexpand bool)
 }
 
-// treeListModel implements the TreeListModel interface.
+// treeListModel implements the TreeListModel class.
 type treeListModel struct {
 	gextras.Objector
 	gio.ListModel
@@ -94,7 +96,7 @@ var _ TreeListModel = (*treeListModel)(nil)
 // WrapTreeListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeListModel(obj *externglib.Object) TreeListModel {
-	return TreeListModel{
+	return treeListModel{
 		Objector:      obj,
 		gio.ListModel: gio.WrapListModel(obj),
 	}
@@ -122,7 +124,7 @@ func (s treeListModel) Autoexpand() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -150,7 +152,7 @@ func (s treeListModel) Passthrough() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -168,7 +170,7 @@ func (s treeListModel) SetAutoexpand(autoexpand bool) {
 
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 	if autoexpand {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tree_list_model_set_autoexpand(_arg0, _arg1)
@@ -225,7 +227,7 @@ type TreeListRow interface {
 	SetExpanded(expanded bool)
 }
 
-// treeListRow implements the TreeListRow interface.
+// treeListRow implements the TreeListRow class.
 type treeListRow struct {
 	gextras.Objector
 }
@@ -235,7 +237,7 @@ var _ TreeListRow = (*treeListRow)(nil)
 // WrapTreeListRow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeListRow(obj *externglib.Object) TreeListRow {
-	return TreeListRow{
+	return treeListRow{
 		Objector: obj,
 	}
 }
@@ -281,7 +283,7 @@ func (s treeListRow) Expanded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -343,7 +345,7 @@ func (s treeListRow) IsExpandable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -364,7 +366,7 @@ func (s treeListRow) SetExpanded(expanded bool) {
 
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 	if expanded {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tree_list_row_set_expanded(_arg0, _arg1)

@@ -4,9 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #cgo pkg-config: gtk4
@@ -27,47 +24,4 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri(_arg1, _arg2, _arg3)
-}
-
-// ShowURIFull: this function launches the default application for showing a
-// given uri.
-//
-// The @callback will be called when the launch is completed. It should call
-// gtk_show_uri_full_finish() to obtain the result.
-//
-// This is the recommended call to be used as it passes information necessary
-// for sandbox helpers to parent their dialogs properly.
-func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Cancellable) {
-	var _arg1 *C.GtkWindow    // out
-	var _arg2 *C.char         // out
-	var _arg3 C.guint32       // out
-	var _arg4 *C.GCancellable // out
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.char)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.guint32(timestamp)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	C.gtk_show_uri_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-}
-
-// ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
-// the operation.
-func ShowURIFullFinish(parent Window, result gio.AsyncResult) error {
-	var _arg1 *C.GtkWindow    // out
-	var _arg2 *C.GAsyncResult // out
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.gtk_show_uri_full_finish(_arg1, _arg2, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }

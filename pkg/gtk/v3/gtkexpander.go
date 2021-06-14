@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -116,7 +116,7 @@ type Expander interface {
 	SetUseUnderline(useUnderline bool)
 }
 
-// expander implements the Expander interface.
+// expander implements the Expander class.
 type expander struct {
 	Bin
 	Buildable
@@ -127,7 +127,7 @@ var _ Expander = (*expander)(nil)
 // WrapExpander wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapExpander(obj *externglib.Object) Expander {
-	return Expander{
+	return expander{
 		Bin:       WrapBin(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -154,7 +154,7 @@ func (e expander) Expanded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -200,7 +200,7 @@ func (e expander) LabelFill() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -220,7 +220,7 @@ func (e expander) ResizeToplevel() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -258,7 +258,7 @@ func (e expander) UseMarkup() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -278,7 +278,7 @@ func (e expander) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -294,7 +294,7 @@ func (e expander) SetExpanded(expanded bool) {
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if expanded {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_expander_set_expanded(_arg0, _arg1)
@@ -324,7 +324,7 @@ func (e expander) SetLabelFill(labelFill bool) {
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if labelFill {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_expander_set_label_fill(_arg0, _arg1)
@@ -350,7 +350,7 @@ func (e expander) SetResizeToplevel(resizeToplevel bool) {
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if resizeToplevel {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_expander_set_resize_toplevel(_arg0, _arg1)
@@ -377,7 +377,7 @@ func (e expander) SetUseMarkup(useMarkup bool) {
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if useMarkup {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_expander_set_use_markup(_arg0, _arg1)
@@ -392,7 +392,7 @@ func (e expander) SetUseUnderline(useUnderline bool) {
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if useUnderline {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_expander_set_use_underline(_arg0, _arg1)

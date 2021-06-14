@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -24,7 +26,7 @@ type ListBoxRowAccessible interface {
 	ContainerAccessible
 }
 
-// listBoxRowAccessible implements the ListBoxRowAccessible interface.
+// listBoxRowAccessible implements the ListBoxRowAccessible class.
 type listBoxRowAccessible struct {
 	ContainerAccessible
 }
@@ -34,7 +36,7 @@ var _ ListBoxRowAccessible = (*listBoxRowAccessible)(nil)
 // WrapListBoxRowAccessible wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListBoxRowAccessible(obj *externglib.Object) ListBoxRowAccessible {
-	return ListBoxRowAccessible{
+	return listBoxRowAccessible{
 		ContainerAccessible: WrapContainerAccessible(obj),
 	}
 }

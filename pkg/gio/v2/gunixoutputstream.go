@@ -3,12 +3,13 @@
 package gio
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -20,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -51,7 +53,7 @@ type UnixOutputStream interface {
 	SetCloseFd(closeFd bool)
 }
 
-// unixOutputStream implements the UnixOutputStream interface.
+// unixOutputStream implements the UnixOutputStream class.
 type unixOutputStream struct {
 	OutputStream
 	FileDescriptorBased
@@ -63,7 +65,7 @@ var _ UnixOutputStream = (*unixOutputStream)(nil)
 // WrapUnixOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixOutputStream(obj *externglib.Object) UnixOutputStream {
-	return UnixOutputStream{
+	return unixOutputStream{
 		OutputStream:         WrapOutputStream(obj),
 		FileDescriptorBased:  WrapFileDescriptorBased(obj),
 		PollableOutputStream: WrapPollableOutputStream(obj),
@@ -89,7 +91,7 @@ func (s unixOutputStream) CloseFd() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -121,7 +123,7 @@ func (s unixOutputStream) SetCloseFd(closeFd bool) {
 
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
 	if closeFd {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_unix_output_stream_set_close_fd(_arg0, _arg1)

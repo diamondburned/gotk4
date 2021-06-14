@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -75,7 +77,7 @@ type GridLayout interface {
 	SetRowSpacing(spacing uint)
 }
 
-// gridLayout implements the GridLayout interface.
+// gridLayout implements the GridLayout class.
 type gridLayout struct {
 	LayoutManager
 }
@@ -85,7 +87,7 @@ var _ GridLayout = (*gridLayout)(nil)
 // WrapGridLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGridLayout(obj *externglib.Object) GridLayout {
-	return GridLayout{
+	return gridLayout{
 		LayoutManager: WrapLayoutManager(obj),
 	}
 }
@@ -127,7 +129,7 @@ func (g gridLayout) ColumnHomogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -165,7 +167,7 @@ func (g gridLayout) RowHomogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -214,7 +216,7 @@ func (g gridLayout) SetColumnHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_grid_layout_set_column_homogeneous(_arg0, _arg1)
@@ -254,7 +256,7 @@ func (g gridLayout) SetRowHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_grid_layout_set_row_homogeneous(_arg0, _arg1)
@@ -295,7 +297,7 @@ type GridLayoutChild interface {
 	SetRowSpan(span int)
 }
 
-// gridLayoutChild implements the GridLayoutChild interface.
+// gridLayoutChild implements the GridLayoutChild class.
 type gridLayoutChild struct {
 	LayoutChild
 }
@@ -305,7 +307,7 @@ var _ GridLayoutChild = (*gridLayoutChild)(nil)
 // WrapGridLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGridLayoutChild(obj *externglib.Object) GridLayoutChild {
-	return GridLayoutChild{
+	return gridLayoutChild{
 		LayoutChild: WrapLayoutChild(obj),
 	}
 }

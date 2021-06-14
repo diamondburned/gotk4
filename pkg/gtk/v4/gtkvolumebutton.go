@@ -2,7 +2,61 @@
 
 package gtk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButton},
+	})
+}
+
+// VolumeButton: `GtkVolumeButton` is a `GtkScaleButton` subclass tailored for
+// volume control.
+//
+// !An example GtkVolumeButton (volumebutton.png)
+type VolumeButton interface {
+	ScaleButton
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
+}
+
+// volumeButton implements the VolumeButton class.
+type volumeButton struct {
+	ScaleButton
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
+}
+
+var _ VolumeButton = (*volumeButton)(nil)
+
+// WrapVolumeButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapVolumeButton(obj *externglib.Object) VolumeButton {
+	return volumeButton{
+		ScaleButton:      WrapScaleButton(obj),
+		Accessible:       WrapAccessible(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+		Orientable:       WrapOrientable(obj),
+	}
+}
+
+func marshalVolumeButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapVolumeButton(obj), nil
+}

@@ -5,8 +5,6 @@ package glib
 import (
 	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -30,9 +28,9 @@ func Base64Decode(text string) []byte {
 
 	var _guint8s []byte
 
-	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg2))
+	_guint8s = unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg2)
 	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 
 	return _guint8s

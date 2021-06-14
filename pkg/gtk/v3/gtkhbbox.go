@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -26,7 +28,7 @@ type HButtonBox interface {
 	Orientable
 }
 
-// hButtonBox implements the HButtonBox interface.
+// hButtonBox implements the HButtonBox class.
 type hButtonBox struct {
 	ButtonBox
 	Buildable
@@ -38,7 +40,7 @@ var _ HButtonBox = (*hButtonBox)(nil)
 // WrapHButtonBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapHButtonBox(obj *externglib.Object) HButtonBox {
-	return HButtonBox{
+	return hButtonBox{
 		ButtonBox:  WrapButtonBox(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),

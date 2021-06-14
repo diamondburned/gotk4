@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -165,7 +165,7 @@ type Popover interface {
 	SetTransitionsEnabled(transitionsEnabled bool)
 }
 
-// popover implements the Popover interface.
+// popover implements the Popover class.
 type popover struct {
 	Bin
 	Buildable
@@ -176,7 +176,7 @@ var _ Popover = (*popover)(nil)
 // WrapPopover wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPopover(obj *externglib.Object) Popover {
-	return Popover{
+	return popover{
 		Bin:       WrapBin(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -235,7 +235,7 @@ func (p popover) Modal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -257,7 +257,7 @@ func (p popover) PointingTo() (gdk.Rectangle, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -277,7 +277,7 @@ func (p popover) TransitionsEnabled() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -344,7 +344,7 @@ func (p popover) SetModal(modal bool) {
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if modal {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_popover_set_modal(_arg0, _arg1)
@@ -404,7 +404,7 @@ func (p popover) SetTransitionsEnabled(transitionsEnabled bool) {
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if transitionsEnabled {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_popover_set_transitions_enabled(_arg0, _arg1)

@@ -5,13 +5,14 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -21,8 +22,28 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_expander_style_get_type()), F: marshalExpanderStyle},
 		{T: externglib.Type(C.gtk_style_get_type()), F: marshalStyle},
 	})
+}
+
+// ExpanderStyle: used to specify the style of the expanders drawn by a
+// TreeView.
+type ExpanderStyle int
+
+const (
+	// ExpanderStyleCollapsed: the style used for a collapsed subtree.
+	ExpanderStyleCollapsed ExpanderStyle = 0
+	// ExpanderStyleSemiCollapsed: intermediate style used during animation.
+	ExpanderStyleSemiCollapsed ExpanderStyle = 1
+	// ExpanderStyleSemiExpanded: intermediate style used during animation.
+	ExpanderStyleSemiExpanded ExpanderStyle = 2
+	// ExpanderStyleExpanded: the style used for an expanded subtree.
+	ExpanderStyleExpanded ExpanderStyle = 3
+)
+
+func marshalExpanderStyle(p uintptr) (interface{}, error) {
+	return ExpanderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // PaintArrow draws an arrow in the given rectangle on @cr using the given
@@ -50,7 +71,7 @@ func PaintArrow(style Style, cr *cairo.Context, stateType StateType, shadowType 
 	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (C.GtkArrowType)(arrowType)
 	if fill {
-		_arg8 = C.gboolean(1)
+		_arg8 = C.TRUE
 	}
 	_arg9 = C.gint(x)
 	_arg10 = C.gint(y)
@@ -368,7 +389,7 @@ func PaintLayout(style Style, cr *cairo.Context, stateType StateType, useText bo
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = (C.GtkStateType)(stateType)
 	if useText {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg6 = (*C.gchar)(C.CString(detail))
@@ -651,7 +672,7 @@ type Style interface {
 	SetBackground(window gdk.Window, stateType StateType)
 }
 
-// style implements the Style interface.
+// style implements the Style class.
 type style struct {
 	gextras.Objector
 }
@@ -661,7 +682,7 @@ var _ Style = (*style)(nil)
 // WrapStyle wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStyle(obj *externglib.Object) Style {
-	return Style{
+	return style{
 		Objector: obj,
 	}
 }
@@ -739,7 +760,7 @@ func (s style) HasContext() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -765,7 +786,7 @@ func (s style) LookupColor(colorName string) (gdk.Color, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -798,11 +819,6 @@ func WrapThemeEngine(ptr unsafe.Pointer) *ThemeEngine {
 	}
 
 	return (*ThemeEngine)(ptr)
-}
-
-func marshalThemeEngine(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapThemeEngine(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

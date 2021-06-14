@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -67,7 +69,7 @@ type CheckMenuItem interface {
 	Toggled()
 }
 
-// checkMenuItem implements the CheckMenuItem interface.
+// checkMenuItem implements the CheckMenuItem class.
 type checkMenuItem struct {
 	MenuItem
 	Actionable
@@ -80,7 +82,7 @@ var _ CheckMenuItem = (*checkMenuItem)(nil)
 // WrapCheckMenuItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCheckMenuItem(obj *externglib.Object) CheckMenuItem {
-	return CheckMenuItem{
+	return checkMenuItem{
 		MenuItem:    WrapMenuItem(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -107,7 +109,7 @@ func (c checkMenuItem) Active() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -126,7 +128,7 @@ func (c checkMenuItem) DrawAsRadio() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -146,7 +148,7 @@ func (c checkMenuItem) Inconsistent() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -160,7 +162,7 @@ func (c checkMenuItem) SetActive(isActive bool) {
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if isActive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_check_menu_item_set_active(_arg0, _arg1)
@@ -174,7 +176,7 @@ func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if drawAsRadio {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_check_menu_item_set_draw_as_radio(_arg0, _arg1)
@@ -194,7 +196,7 @@ func (c checkMenuItem) SetInconsistent(setting bool) {
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_check_menu_item_set_inconsistent(_arg0, _arg1)

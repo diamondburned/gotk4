@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,8 +20,48 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_assistant_page_type_get_type()), F: marshalAssistantPageType},
 		{T: externglib.Type(C.gtk_assistant_get_type()), F: marshalAssistant},
 	})
+}
+
+// AssistantPageType: an enum for determining the page role inside the
+// Assistant. It's used to handle buttons sensitivity and visibility.
+//
+// Note that an assistant needs to end its page flow with a page of type
+// GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_SUMMARY or
+// GTK_ASSISTANT_PAGE_PROGRESS to be correct.
+//
+// The Cancel button will only be shown if the page isn’t “committed”. See
+// gtk_assistant_commit() for details.
+type AssistantPageType int
+
+const (
+	// AssistantPageTypeContent: the page has regular contents. Both the Back
+	// and forward buttons will be shown.
+	AssistantPageTypeContent AssistantPageType = 0
+	// AssistantPageTypeIntro: the page contains an introduction to the
+	// assistant task. Only the Forward button will be shown if there is a next
+	// page.
+	AssistantPageTypeIntro AssistantPageType = 1
+	// AssistantPageTypeConfirm: the page lets the user confirm or deny the
+	// changes. The Back and Apply buttons will be shown.
+	AssistantPageTypeConfirm AssistantPageType = 2
+	// AssistantPageTypeSummary: the page informs the user of the changes done.
+	// Only the Close button will be shown.
+	AssistantPageTypeSummary AssistantPageType = 3
+	// AssistantPageTypeProgress: used for tasks that take a long time to
+	// complete, blocks the assistant until the page is marked as complete. Only
+	// the back button will be shown.
+	AssistantPageTypeProgress AssistantPageType = 4
+	// AssistantPageTypeCustom: used for when other page types are not
+	// appropriate. No buttons will be shown, and the application must add its
+	// own buttons through gtk_assistant_add_action_widget().
+	AssistantPageTypeCustom AssistantPageType = 5
+)
+
+func marshalAssistantPageType(p uintptr) (interface{}, error) {
+	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // AssistantPageFunc: a function used by gtk_assistant_set_forward_page_func()
@@ -44,9 +84,11 @@ func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) C.gint {
 	fn := v.(AssistantPageFunc)
 	gint := fn(currentPage)
 
+	var cret C.gint // out
+
 	cret = C.gint(gint)
 
-	return gint
+	return cret
 }
 
 // Assistant: a Assistant is a widget used to represent a generally complex
@@ -167,7 +209,7 @@ type Assistant interface {
 	UpdateButtonsState()
 }
 
-// assistant implements the Assistant interface.
+// assistant implements the Assistant class.
 type assistant struct {
 	Window
 	Buildable
@@ -178,7 +220,7 @@ var _ Assistant = (*assistant)(nil)
 // WrapAssistant wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAssistant(obj *externglib.Object) Assistant {
-	return Assistant{
+	return assistant{
 		Window:    WrapWindow(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -283,7 +325,7 @@ func (a assistant) PageComplete(page Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -304,7 +346,7 @@ func (a assistant) PageHasPadding(page Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -448,7 +490,7 @@ func (a assistant) SetPageComplete(page Widget, complete bool) {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	if complete {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_assistant_set_page_complete(_arg0, _arg1, _arg2)
@@ -464,7 +506,7 @@ func (a assistant) SetPageHasPadding(page Widget, hasPadding bool) {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	if hasPadding {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_assistant_set_page_has_padding(_arg0, _arg1, _arg2)

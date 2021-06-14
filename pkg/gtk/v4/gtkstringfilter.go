@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -16,8 +16,27 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_string_filter_match_mode_get_type()), F: marshalStringFilterMatchMode},
 		{T: externglib.Type(C.gtk_string_filter_get_type()), F: marshalStringFilter},
 	})
+}
+
+// StringFilterMatchMode specifies how search strings are matched inside text.
+type StringFilterMatchMode int
+
+const (
+	// StringFilterMatchModeExact: the search string and text must match
+	// exactly.
+	StringFilterMatchModeExact StringFilterMatchMode = 0
+	// StringFilterMatchModeSubstring: the search string must be contained as a
+	// substring inside the text.
+	StringFilterMatchModeSubstring StringFilterMatchMode = 1
+	// StringFilterMatchModePrefix: the text must begin with the search string.
+	StringFilterMatchModePrefix StringFilterMatchMode = 2
+)
+
+func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
+	return StringFilterMatchMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // StringFilter: `GtkStringFilter` determines whether to include items by
@@ -53,7 +72,7 @@ type StringFilter interface {
 	SetSearch(search string)
 }
 
-// stringFilter implements the StringFilter interface.
+// stringFilter implements the StringFilter class.
 type stringFilter struct {
 	Filter
 }
@@ -63,7 +82,7 @@ var _ StringFilter = (*stringFilter)(nil)
 // WrapStringFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStringFilter(obj *externglib.Object) StringFilter {
-	return StringFilter{
+	return stringFilter{
 		Filter: WrapFilter(obj),
 	}
 }
@@ -86,7 +105,7 @@ func (s stringFilter) IgnoreCase() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -131,7 +150,7 @@ func (s stringFilter) SetIgnoreCase(ignoreCase bool) {
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 	if ignoreCase {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_string_filter_set_ignore_case(_arg0, _arg1)

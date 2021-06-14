@@ -3,13 +3,14 @@
 package pangoot
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangoot pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango pangoot
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango-ot.h>
@@ -96,6 +97,29 @@ func (b *Buffer) Destroy() {
 	C.pango_ot_buffer_destroy(_arg0)
 }
 
+// Glyphs gets the glyph array contained in a OTBuffer. The glyphs are owned by
+// the buffer and should not be freed, and are only valid as long as buffer is
+// not modified.
+func (b *Buffer) Glyphs() []Glyph {
+	var _arg0 *C.PangoOTBuffer // out
+
+	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
+
+	var _arg1 *C.PangoOTGlyph
+	var _arg2 C.int // in
+
+	C.pango_ot_buffer_get_glyphs(_arg0, &_arg1, &_arg2)
+
+	var _glyphs []Glyph
+
+	_glyphs = unsafe.Slice((*Glyph)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_glyphs, func(v *[]Glyph) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+
+	return _glyphs
+}
+
 // Output exports the glyphs in a OTBuffer into a GlyphString. This is typically
 // used after the OpenType layout processing is over, to convert the resulting
 // glyphs into a generic Pango glyph string.
@@ -117,7 +141,7 @@ func (b *Buffer) SetRTL(rtl bool) {
 
 	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
 	if rtl {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.pango_ot_buffer_set_rtl(_arg0, _arg1)
@@ -133,7 +157,7 @@ func (b *Buffer) SetZeroWidthMarks(zeroWidthMarks bool) {
 
 	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
 	if zeroWidthMarks {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.pango_ot_buffer_set_zero_width_marks(_arg0, _arg1)
@@ -154,11 +178,6 @@ func WrapFeatureMap(ptr unsafe.Pointer) *FeatureMap {
 	}
 
 	return (*FeatureMap)(ptr)
-}
-
-func marshalFeatureMap(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFeatureMap(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -195,11 +214,6 @@ func WrapGlyph(ptr unsafe.Pointer) *Glyph {
 	}
 
 	return (*Glyph)(ptr)
-}
-
-func marshalGlyph(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGlyph(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -320,7 +334,7 @@ func (d *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

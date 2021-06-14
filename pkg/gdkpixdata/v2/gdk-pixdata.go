@@ -5,14 +5,10 @@ package gdkpixdata
 import (
 	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
+// #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixdata.h>
 import "C"
 
@@ -105,11 +101,6 @@ func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
 	return (*Pixdata)(ptr)
 }
 
-func marshalPixdata(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPixdata(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (p *Pixdata) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
@@ -157,38 +148,6 @@ func (p *Pixdata) Height() uint32 {
 	return v
 }
 
-// Deserialize deserializes (reconstruct) a Pixdata structure from a byte
-// stream.
-//
-// The byte stream consists of a straightforward writeout of the `GdkPixdata`
-// fields in network byte order, plus the `pixel_data` bytes the structure
-// points to.
-//
-// The `pixdata` contents are reconstructed byte by byte and are checked for
-// validity.
-//
-// This function may fail with `GDK_PIXBUF_ERROR_CORRUPT_IMAGE` or
-// `GDK_PIXBUF_ERROR_UNKNOWN_TYPE`.
-func (p *Pixdata) Deserialize(stream []byte) error {
-	var _arg0 *C.GdkPixdata // out
-	var _arg2 *C.guint8
-	var _arg1 C.guint
-
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
-	_arg1 = C.guint(len(stream))
-	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
-
-	var _cerr *C.GError // in
-
-	C.gdk_pixdata_deserialize(_arg0, _arg1, _arg2, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 // Serialize serializes a Pixdata structure into a byte stream. The byte stream
 // consists of a straightforward writeout of the Pixdata fields in network byte
 // order, plus the @pixel_data bytes the structure points to.
@@ -204,9 +163,9 @@ func (p *Pixdata) Serialize() []byte {
 
 	var _guint8s []byte
 
-	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg1))
+	_guint8s = unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1)
 	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 
 	return _guint8s

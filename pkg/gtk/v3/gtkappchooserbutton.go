@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -86,7 +86,7 @@ type AppChooserButton interface {
 	SetShowDialogItem(setting bool)
 }
 
-// appChooserButton implements the AppChooserButton interface.
+// appChooserButton implements the AppChooserButton class.
 type appChooserButton struct {
 	ComboBox
 	AppChooser
@@ -100,7 +100,7 @@ var _ AppChooserButton = (*appChooserButton)(nil)
 // WrapAppChooserButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppChooserButton(obj *externglib.Object) AppChooserButton {
-	return AppChooserButton{
+	return appChooserButton{
 		ComboBox:     WrapComboBox(obj),
 		AppChooser:   WrapAppChooser(obj),
 		Buildable:    WrapBuildable(obj),
@@ -177,7 +177,7 @@ func (s appChooserButton) ShowDefaultItem() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -197,7 +197,7 @@ func (s appChooserButton) ShowDialogItem() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -241,7 +241,7 @@ func (s appChooserButton) SetShowDefaultItem(setting bool) {
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_app_chooser_button_set_show_default_item(_arg0, _arg1)
@@ -255,7 +255,7 @@ func (s appChooserButton) SetShowDialogItem(setting bool) {
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -106,7 +106,7 @@ type HeaderBar interface {
 	SetTitle(title string)
 }
 
-// headerBar implements the HeaderBar interface.
+// headerBar implements the HeaderBar class.
 type headerBar struct {
 	Container
 	Buildable
@@ -117,7 +117,7 @@ var _ HeaderBar = (*headerBar)(nil)
 // WrapHeaderBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapHeaderBar(obj *externglib.Object) HeaderBar {
-	return HeaderBar{
+	return headerBar{
 		Container: WrapContainer(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -160,7 +160,7 @@ func (b headerBar) HasSubtitle() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -180,7 +180,7 @@ func (b headerBar) ShowCloseButton() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -299,7 +299,7 @@ func (b headerBar) SetHasSubtitle(setting bool) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_header_bar_set_has_subtitle(_arg0, _arg1)
@@ -313,7 +313,7 @@ func (b headerBar) SetShowCloseButton(setting bool) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_header_bar_set_show_close_button(_arg0, _arg1)

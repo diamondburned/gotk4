@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangocairo pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango pangocairo
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangocairo.h>
@@ -110,21 +110,6 @@ func GlyphStringPath(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphStri
 	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
 }
 
-// LayoutLinePath adds the text in `PangoLayoutLine` to the current path in the
-// specified cairo context.
-//
-// The origin of the glyphs (the left edge of the line) will be at the current
-// point of the cairo context.
-func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
-	var _arg1 *C.cairo_t         // out
-	var _arg2 *C.PangoLayoutLine // out
-
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
-
-	C.pango_cairo_layout_line_path(_arg1, _arg2)
-}
-
 // LayoutPath adds the text in a `PangoLayout` to the current path in the
 // specified cairo context.
 //
@@ -214,20 +199,6 @@ func ShowLayout(cr *cairo.Context, layout pango.Layout) {
 	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_show_layout(_arg1, _arg2)
-}
-
-// ShowLayoutLine draws a `PangoLayoutLine` in the specified cairo context.
-//
-// The origin of the glyphs (the left edge of the line) will be drawn at the
-// current point of the cairo context.
-func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
-	var _arg1 *C.cairo_t         // out
-	var _arg2 *C.PangoLayoutLine // out
-
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
-
-	C.pango_cairo_show_layout_line(_arg1, _arg2)
 }
 
 // UpdateContext updates a `PangoContext` previously created for use with Cairo

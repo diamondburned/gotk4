@@ -2,7 +2,166 @@
 
 package gdk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursor},
+	})
+}
+
+// Cursor: `GdkCursor` is used to create and destroy cursors.
+//
+// Cursors are immutable objects, so once you created them, there is no way to
+// modify them later. You should create a new cursor when you want to change
+// something about it.
+//
+// Cursors by themselves are not very interesting: they must be bound to a
+// window for users to see them. This is done with
+// [method@Gdk.Surface.set_cursor] or [method@Gdk.Surface.set_device_cursor].
+// Applications will typically use higher-level GTK functions such as
+// [method@Gtk.Widget.set_cursor]` instead.
+//
+// Cursors are not bound to a given [class@Gdk.Display], so they can be shared.
+// However, the appearance of cursors may vary when used on different platforms.
+//
+//
+// Named and texture cursors
+//
+// There are multiple ways to create cursors. The platform's own cursors can be
+// created with [ctor@Gdk.Cursor.new_from_name]. That function lists the
+// commonly available names that are shared with the CSS specification. Other
+// names may be available, depending on the platform in use. On some platforms,
+// what images are used for named cursors may be influenced by the cursor theme.
+//
+// Another option to create a cursor is to use
+// [ctor@Gdk.Cursor.new_from_texture] and provide an image to use for the
+// cursor.
+//
+// To ease work with unsupported cursors, a fallback cursor can be provided. If
+// a [class@Gdk.Surface] cannot use a cursor because of the reasons mentioned
+// above, it will try the fallback cursor. Fallback cursors can themselves have
+// fallback cursors again, so it is possible to provide a chain of progressively
+// easier to support cursors. If none of the provided cursors can be supported,
+// the default cursor will be the ultimate fallback.
+type Cursor interface {
+	gextras.Objector
+
+	// HotspotX returns the horizontal offset of the hotspot.
+	//
+	// The hotspot indicates the pixel that will be directly above the cursor.
+	//
+	// Note that named cursors may have a nonzero hotspot, but this function
+	// will only return the hotspot position for cursors created with
+	// [ctor@Gdk.Cursor.new_from_texture].
+	HotspotX() int
+	// HotspotY returns the vertical offset of the hotspot.
+	//
+	// The hotspot indicates the pixel that will be directly above the cursor.
+	//
+	// Note that named cursors may have a nonzero hotspot, but this function
+	// will only return the hotspot position for cursors created with
+	// [ctor@Gdk.Cursor.new_from_texture].
+	HotspotY() int
+	// Name returns the name of the cursor.
+	//
+	// If the cursor is not a named cursor, nil will be returned.
+	Name() string
+}
+
+// cursor implements the Cursor class.
+type cursor struct {
+	gextras.Objector
+}
+
+var _ Cursor = (*cursor)(nil)
+
+// WrapCursor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCursor(obj *externglib.Object) Cursor {
+	return cursor{
+		Objector: obj,
+	}
+}
+
+func marshalCursor(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapCursor(obj), nil
+}
+
+// HotspotX returns the horizontal offset of the hotspot.
+//
+// The hotspot indicates the pixel that will be directly above the cursor.
+//
+// Note that named cursors may have a nonzero hotspot, but this function
+// will only return the hotspot position for cursors created with
+// [ctor@Gdk.Cursor.new_from_texture].
+func (c cursor) HotspotX() int {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	var _cret C.int // in
+
+	_cret = C.gdk_cursor_get_hotspot_x(_arg0)
+
+	var _gint int // out
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// HotspotY returns the vertical offset of the hotspot.
+//
+// The hotspot indicates the pixel that will be directly above the cursor.
+//
+// Note that named cursors may have a nonzero hotspot, but this function
+// will only return the hotspot position for cursors created with
+// [ctor@Gdk.Cursor.new_from_texture].
+func (c cursor) HotspotY() int {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	var _cret C.int // in
+
+	_cret = C.gdk_cursor_get_hotspot_y(_arg0)
+
+	var _gint int // out
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// Name returns the name of the cursor.
+//
+// If the cursor is not a named cursor, nil will be returned.
+func (c cursor) Name() string {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	var _cret *C.char // in
+
+	_cret = C.gdk_cursor_get_name(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}

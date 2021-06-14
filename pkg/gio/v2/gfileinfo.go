@@ -6,14 +6,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -119,7 +118,7 @@ type FileInfo interface {
 	// it in @result.
 	ModificationTime() glib.TimeVal
 	// Name gets the name for a file. This is guaranteed to always be set.
-	Name() *string
+	Name() string
 	// Size gets the file's size (in bytes). The size is retrieved through the
 	// value of the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted
 	// from #guint64 to #goffset before returning the result.
@@ -201,17 +200,13 @@ type FileInfo interface {
 	// SetIsSymlink sets the "is_symlink" attribute in a Info according to
 	// @is_symlink. See G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
 	SetIsSymlink(isSymlink bool)
-	// SetModificationDateTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
-	// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the
-	// given date/time value.
-	SetModificationDateTime(mtime *glib.DateTime)
 	// SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
 	// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the
 	// given time value.
 	SetModificationTime(mtime *glib.TimeVal)
 	// SetName sets the name attribute for the current Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_NAME.
-	SetName(name *string)
+	SetName(name string)
 	// SetSize sets the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file
 	// info to the given size.
 	SetSize(size int64)
@@ -229,7 +224,7 @@ type FileInfo interface {
 	UnsetAttributeMask()
 }
 
-// fileInfo implements the FileInfo interface.
+// fileInfo implements the FileInfo class.
 type fileInfo struct {
 	gextras.Objector
 }
@@ -239,7 +234,7 @@ var _ FileInfo = (*fileInfo)(nil)
 // WrapFileInfo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileInfo(obj *externglib.Object) FileInfo {
-	return FileInfo{
+	return fileInfo{
 		Objector: obj,
 	}
 }
@@ -310,7 +305,7 @@ func (i fileInfo) AttributeBoolean(attribute string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -442,19 +437,17 @@ func (i fileInfo) AttributeStringv(attribute string) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -587,7 +580,7 @@ func (i fileInfo) IsBackup() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -606,7 +599,7 @@ func (i fileInfo) IsHidden() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -625,7 +618,7 @@ func (i fileInfo) IsSymlink() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -647,7 +640,7 @@ func (i fileInfo) ModificationTime() glib.TimeVal {
 }
 
 // Name gets the name for a file. This is guaranteed to always be set.
-func (i fileInfo) Name() *string {
+func (i fileInfo) Name() string {
 	var _arg0 *C.GFileInfo // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
@@ -656,7 +649,7 @@ func (i fileInfo) Name() *string {
 
 	_cret = C.g_file_info_get_name(_arg0)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -733,7 +726,7 @@ func (i fileInfo) HasAttribute(attribute string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -756,7 +749,7 @@ func (i fileInfo) HasNamespace(nameSpace string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -780,20 +773,18 @@ func (i fileInfo) ListAttributes(nameSpace string) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -840,7 +831,7 @@ func (i fileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
 	if attrValue {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.g_file_info_set_attribute_boolean(_arg0, _arg1, _arg2)
@@ -940,7 +931,7 @@ func (i fileInfo) SetAttributeStatus(attribute string, status FileAttributeStatu
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -975,16 +966,14 @@ func (i fileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.char)(C.malloc((len(attrValue) + 1) * unsafe.Sizeof(int(0))))
+	_arg2 = (**C.char)(C.malloc(C.ulong((len(attrValue) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(attrValue)))
-
+		out := unsafe.Slice(_arg2, len(attrValue))
 		for i := range attrValue {
-			_arg2 = (*C.gchar)(C.CString(attrValue))
-			defer C.free(unsafe.Pointer(_arg2))
+			out[i] = (*C.gchar)(C.CString(attrValue[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -1092,7 +1081,7 @@ func (i fileInfo) SetIsHidden(isHidden bool) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	if isHidden {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_file_info_set_is_hidden(_arg0, _arg1)
@@ -1106,23 +1095,10 @@ func (i fileInfo) SetIsSymlink(isSymlink bool) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	if isSymlink {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_file_info_set_is_symlink(_arg0, _arg1)
-}
-
-// SetModificationDateTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
-// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the
-// given date/time value.
-func (i fileInfo) SetModificationDateTime(mtime *glib.DateTime) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GDateTime // out
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GDateTime)(unsafe.Pointer(mtime.Native()))
-
-	C.g_file_info_set_modification_date_time(_arg0, _arg1)
 }
 
 // SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
@@ -1140,7 +1116,7 @@ func (i fileInfo) SetModificationTime(mtime *glib.TimeVal) {
 
 // SetName sets the name attribute for the current Info. See
 // G_FILE_ATTRIBUTE_STANDARD_NAME.
-func (i fileInfo) SetName(name *string) {
+func (i fileInfo) SetName(name string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 

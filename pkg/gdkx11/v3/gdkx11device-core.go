@@ -3,14 +3,16 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -23,7 +25,7 @@ type X11DeviceCore interface {
 	gdk.Device
 }
 
-// x11DeviceCore implements the X11DeviceCore interface.
+// x11DeviceCore implements the X11DeviceCore class.
 type x11DeviceCore struct {
 	gdk.Device
 }
@@ -33,7 +35,7 @@ var _ X11DeviceCore = (*x11DeviceCore)(nil)
 // WrapX11DeviceCore wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11DeviceCore(obj *externglib.Object) X11DeviceCore {
-	return X11DeviceCore{
+	return x11DeviceCore{
 		gdk.Device: gdk.WrapDevice(obj),
 	}
 }

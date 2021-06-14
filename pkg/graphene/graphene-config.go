@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
+// #cgo pkg-config: graphene-1.0 graphene-gobject-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
 
@@ -24,11 +23,6 @@ func WrapSIMD4F(ptr unsafe.Pointer) *SIMD4F {
 	}
 
 	return (*SIMD4F)(ptr)
-}
-
-func marshalSIMD4F(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSIMD4F(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -48,11 +42,6 @@ func WrapSIMD4X4F(ptr unsafe.Pointer) *SIMD4X4F {
 	}
 
 	return (*SIMD4X4F)(ptr)
-}
-
-func marshalSIMD4X4F(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSIMD4X4F(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

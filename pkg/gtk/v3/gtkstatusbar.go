@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -78,7 +78,7 @@ type Statusbar interface {
 	RemoveAll(contextId uint)
 }
 
-// statusbar implements the Statusbar interface.
+// statusbar implements the Statusbar class.
 type statusbar struct {
 	Box
 	Buildable
@@ -90,7 +90,7 @@ var _ Statusbar = (*statusbar)(nil)
 // WrapStatusbar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStatusbar(obj *externglib.Object) Statusbar {
-	return Statusbar{
+	return statusbar{
 		Box:        WrapBox(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),

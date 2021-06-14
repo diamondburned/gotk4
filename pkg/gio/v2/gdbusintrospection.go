@@ -5,13 +5,11 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -23,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -218,24 +217,6 @@ func (i *DBusInterfaceInfo) CacheRelease() {
 	C.g_dbus_interface_info_cache_release(_arg0)
 }
 
-// GenerateXML appends an XML representation of @info (and its children) to
-// @string_builder.
-//
-// This function is typically used for generating introspection XML documents at
-// run-time for handling the `org.freedesktop.DBus.Introspectable.Introspect`
-// method.
-func (i *DBusInterfaceInfo) GenerateXML(indent uint, stringBuilder *glib.String) {
-	var _arg0 *C.GDBusInterfaceInfo // out
-	var _arg1 C.guint               // out
-	var _arg2 *C.GString            // out
-
-	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = C.guint(indent)
-	_arg2 = (*C.GString)(unsafe.Pointer(stringBuilder.Native()))
-
-	C.g_dbus_interface_info_generate_xml(_arg0, _arg1, _arg2)
-}
-
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
@@ -334,24 +315,6 @@ func (d *DBusNodeInfo) Path() string {
 	var v string // out
 	v = C.GoString(d.native.path)
 	return v
-}
-
-// GenerateXML appends an XML representation of @info (and its children) to
-// @string_builder.
-//
-// This function is typically used for generating introspection XML documents at
-// run-time for handling the `org.freedesktop.DBus.Introspectable.Introspect`
-// method.
-func (i *DBusNodeInfo) GenerateXML(indent uint, stringBuilder *glib.String) {
-	var _arg0 *C.GDBusNodeInfo // out
-	var _arg1 C.guint          // out
-	var _arg2 *C.GString       // out
-
-	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = C.guint(indent)
-	_arg2 = (*C.GString)(unsafe.Pointer(stringBuilder.Native()))
-
-	C.g_dbus_node_info_generate_xml(_arg0, _arg1, _arg2)
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases

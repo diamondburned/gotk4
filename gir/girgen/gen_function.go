@@ -35,10 +35,12 @@ func (ng *NamespaceGenerator) generateFuncs() {
 	fg := newFunctionGenerator(ng)
 
 	for _, function := range ng.current.Namespace.Functions {
+		if !function.IsIntrospectable() {
+			continue
+		}
 		if ng.mustIgnore(function.Name, function.CIdentifier) {
 			continue
 		}
-
 		if !fg.Use(function) {
 			continue
 		}

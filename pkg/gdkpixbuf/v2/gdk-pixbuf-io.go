@@ -6,14 +6,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -114,7 +113,7 @@ func (p *PixbufFormat) Flags() uint32 {
 // Disabled gets the field inside the struct.
 func (p *PixbufFormat) Disabled() bool {
 	var v bool // out
-	if p.native.disabled {
+	if p.native.disabled != 0 {
 		v = true
 	}
 	return v
@@ -163,20 +162,18 @@ func (f *PixbufFormat) Extensions() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -219,20 +216,18 @@ func (f *PixbufFormat) MIMETypes() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -271,7 +266,7 @@ func (f *PixbufFormat) IsDisabled() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -297,7 +292,7 @@ func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -320,7 +315,7 @@ func (f *PixbufFormat) IsScalable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -339,7 +334,7 @@ func (f *PixbufFormat) IsWritable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -359,7 +354,7 @@ func (f *PixbufFormat) SetDisabled(disabled bool) {
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 	if disabled {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_pixbuf_format_set_disabled(_arg0, _arg1)
@@ -400,11 +395,6 @@ func WrapPixbufModulePattern(ptr unsafe.Pointer) *PixbufModulePattern {
 	}
 
 	return (*PixbufModulePattern)(ptr)
-}
-
-func marshalPixbufModulePattern(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPixbufModulePattern(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

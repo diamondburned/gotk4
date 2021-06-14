@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -16,8 +18,37 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_button_box_style_get_type()), F: marshalButtonBoxStyle},
 		{T: externglib.Type(C.gtk_button_box_get_type()), F: marshalButtonBox},
 	})
+}
+
+// ButtonBoxStyle: used to dictate the style that a ButtonBox uses to layout the
+// buttons it contains.
+type ButtonBoxStyle int
+
+const (
+	// ButtonBoxStyleSpread buttons are evenly spread across the box.
+	ButtonBoxStyleSpread ButtonBoxStyle = 1
+	// ButtonBoxStyleEdge buttons are placed at the edges of the box.
+	ButtonBoxStyleEdge ButtonBoxStyle = 2
+	// ButtonBoxStyleStart buttons are grouped towards the start of the box, (on
+	// the left for a HBox, or the top for a VBox).
+	ButtonBoxStyleStart ButtonBoxStyle = 3
+	// ButtonBoxStyleEnd buttons are grouped towards the end of the box, (on the
+	// right for a HBox, or the bottom for a VBox).
+	ButtonBoxStyleEnd ButtonBoxStyle = 4
+	// ButtonBoxStyleCenter buttons are centered in the box. Since 2.12.
+	ButtonBoxStyleCenter ButtonBoxStyle = 5
+	// ButtonBoxStyleExpand buttons expand to fill the box. This entails giving
+	// buttons a "linked" appearance, making button sizes homogeneous, and
+	// setting spacing to 0 (same as calling gtk_box_set_homogeneous() and
+	// gtk_box_set_spacing() manually). Since 3.12.
+	ButtonBoxStyleExpand ButtonBoxStyle = 6
+)
+
+func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
+	return ButtonBoxStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 type ButtonBox interface {
@@ -51,7 +82,7 @@ type ButtonBox interface {
 	SetLayout(layoutStyle ButtonBoxStyle)
 }
 
-// buttonBox implements the ButtonBox interface.
+// buttonBox implements the ButtonBox class.
 type buttonBox struct {
 	Box
 	Buildable
@@ -63,7 +94,7 @@ var _ ButtonBox = (*buttonBox)(nil)
 // WrapButtonBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapButtonBox(obj *externglib.Object) ButtonBox {
-	return ButtonBox{
+	return buttonBox{
 		Box:        WrapBox(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -91,7 +122,7 @@ func (w buttonBox) ChildNonHomogeneous(child Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -113,7 +144,7 @@ func (w buttonBox) ChildSecondary(child Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -130,7 +161,7 @@ func (w buttonBox) SetChildNonHomogeneous(child Widget, nonHomogeneous bool) {
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if nonHomogeneous {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_button_box_set_child_non_homogeneous(_arg0, _arg1, _arg2)
@@ -156,7 +187,7 @@ func (w buttonBox) SetChildSecondary(child Widget, isSecondary bool) {
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if isSecondary {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_button_box_set_child_secondary(_arg0, _arg1, _arg2)

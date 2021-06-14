@@ -3,19 +3,38 @@
 package gdk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
 		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePad},
 	})
+}
+
+// DevicePadFeature: a pad feature.
+type DevicePadFeature int
+
+const (
+	// DevicePadFeatureButton: a button
+	DevicePadFeatureButton DevicePadFeature = 0
+	// DevicePadFeatureRing: a ring-shaped interactive area
+	DevicePadFeatureRing DevicePadFeature = 1
+	// DevicePadFeatureStrip: a straight interactive area
+	DevicePadFeatureStrip DevicePadFeature = 2
+)
+
+func marshalDevicePadFeature(p uintptr) (interface{}, error) {
+	return DevicePadFeature(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // DevicePad: `GdkDevicePad` is an interface implemented by devices of type

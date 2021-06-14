@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -267,7 +267,7 @@ type Notebook interface {
 	SetTabReorderable(child Widget, reorderable bool)
 }
 
-// notebook implements the Notebook interface.
+// notebook implements the Notebook class.
 type notebook struct {
 	Container
 	Buildable
@@ -278,7 +278,7 @@ var _ Notebook = (*notebook)(nil)
 // WrapNotebook wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNotebook(obj *externglib.Object) Notebook {
-	return Notebook{
+	return notebook{
 		Container: WrapContainer(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -434,7 +434,7 @@ func (n notebook) Scrollable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -454,7 +454,7 @@ func (n notebook) ShowBorder() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -474,7 +474,7 @@ func (n notebook) ShowTabs() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -496,7 +496,7 @@ func (n notebook) TabDetachable(child Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -555,7 +555,7 @@ func (n notebook) TabReorderable(child Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -846,7 +846,7 @@ func (n notebook) SetScrollable(scrollable bool) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	if scrollable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_notebook_set_scrollable(_arg0, _arg1)
@@ -861,7 +861,7 @@ func (n notebook) SetShowBorder(showBorder bool) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	if showBorder {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_notebook_set_show_border(_arg0, _arg1)
@@ -874,7 +874,7 @@ func (n notebook) SetShowTabs(showTabs bool) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	if showTabs {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_notebook_set_show_tabs(_arg0, _arg1)
@@ -930,7 +930,7 @@ func (n notebook) SetTabDetachable(child Widget, detachable bool) {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if detachable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_notebook_set_tab_detachable(_arg0, _arg1, _arg2)
@@ -987,7 +987,7 @@ func (n notebook) SetTabReorderable(child Widget, reorderable bool) {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if reorderable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_notebook_set_tab_reorderable(_arg0, _arg1, _arg2)

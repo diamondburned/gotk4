@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -79,7 +81,7 @@ type AccelLabel interface {
 	SetAccelWidget(accelWidget Widget)
 }
 
-// accelLabel implements the AccelLabel interface.
+// accelLabel implements the AccelLabel class.
 type accelLabel struct {
 	Label
 	Buildable
@@ -90,7 +92,7 @@ var _ AccelLabel = (*accelLabel)(nil)
 // WrapAccelLabel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAccelLabel(obj *externglib.Object) AccelLabel {
-	return AccelLabel{
+	return accelLabel{
 		Label:     WrapLabel(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -135,7 +137,7 @@ func (a accelLabel) Refetch() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

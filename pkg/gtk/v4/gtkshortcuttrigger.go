@@ -5,12 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -35,7 +35,7 @@ type AlternativeTrigger interface {
 	ShortcutTrigger
 }
 
-// alternativeTrigger implements the AlternativeTrigger interface.
+// alternativeTrigger implements the AlternativeTrigger class.
 type alternativeTrigger struct {
 	ShortcutTrigger
 }
@@ -45,7 +45,7 @@ var _ AlternativeTrigger = (*alternativeTrigger)(nil)
 // WrapAlternativeTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAlternativeTrigger(obj *externglib.Object) AlternativeTrigger {
-	return AlternativeTrigger{
+	return alternativeTrigger{
 		ShortcutTrigger: WrapShortcutTrigger(obj),
 	}
 }
@@ -65,7 +65,7 @@ type KeyvalTrigger interface {
 	Keyval() uint
 }
 
-// keyvalTrigger implements the KeyvalTrigger interface.
+// keyvalTrigger implements the KeyvalTrigger class.
 type keyvalTrigger struct {
 	ShortcutTrigger
 }
@@ -75,7 +75,7 @@ var _ KeyvalTrigger = (*keyvalTrigger)(nil)
 // WrapKeyvalTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapKeyvalTrigger(obj *externglib.Object) KeyvalTrigger {
-	return KeyvalTrigger{
+	return keyvalTrigger{
 		ShortcutTrigger: WrapShortcutTrigger(obj),
 	}
 }
@@ -115,7 +115,7 @@ type MnemonicTrigger interface {
 	Keyval() uint
 }
 
-// mnemonicTrigger implements the MnemonicTrigger interface.
+// mnemonicTrigger implements the MnemonicTrigger class.
 type mnemonicTrigger struct {
 	ShortcutTrigger
 }
@@ -125,7 +125,7 @@ var _ MnemonicTrigger = (*mnemonicTrigger)(nil)
 // WrapMnemonicTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMnemonicTrigger(obj *externglib.Object) MnemonicTrigger {
-	return MnemonicTrigger{
+	return mnemonicTrigger{
 		ShortcutTrigger: WrapShortcutTrigger(obj),
 	}
 }
@@ -158,7 +158,7 @@ type NeverTrigger interface {
 	ShortcutTrigger
 }
 
-// neverTrigger implements the NeverTrigger interface.
+// neverTrigger implements the NeverTrigger class.
 type neverTrigger struct {
 	ShortcutTrigger
 }
@@ -168,7 +168,7 @@ var _ NeverTrigger = (*neverTrigger)(nil)
 // WrapNeverTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNeverTrigger(obj *externglib.Object) NeverTrigger {
-	return NeverTrigger{
+	return neverTrigger{
 		ShortcutTrigger: WrapShortcutTrigger(obj),
 	}
 }
@@ -215,24 +215,6 @@ type ShortcutTrigger interface {
 	// The types of @trigger is #gconstpointer only to allow use of this
 	// function with Table. They must each be a `GtkShortcutTrigger`.
 	Hash() uint
-	// Print prints the given trigger into a string for the developer. This is
-	// meant for debugging and logging.
-	//
-	// The form of the representation may change at any time and is not
-	// guaranteed to stay identical.
-	Print(string *glib.String)
-	// PrintLabel prints the given trigger into a string.
-	//
-	// This function is returning a translated string for presentation to end
-	// users for example in menu items or in help texts.
-	//
-	// The @display in use may influence the resulting string in various forms,
-	// such as resolving hardware keycodes or by causing display-specific
-	// modifier names.
-	//
-	// The form of the representation may change at any time and is not
-	// guaranteed to stay identical.
-	PrintLabel(display gdk.Display, string *glib.String) bool
 	// ToLabel gets textual representation for the given trigger.
 	//
 	// This function is returning a translated string for presentation to end
@@ -252,7 +234,7 @@ type ShortcutTrigger interface {
 	String() string
 }
 
-// shortcutTrigger implements the ShortcutTrigger interface.
+// shortcutTrigger implements the ShortcutTrigger class.
 type shortcutTrigger struct {
 	gextras.Objector
 }
@@ -262,7 +244,7 @@ var _ ShortcutTrigger = (*shortcutTrigger)(nil)
 // WrapShortcutTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutTrigger(obj *externglib.Object) ShortcutTrigger {
-	return ShortcutTrigger{
+	return shortcutTrigger{
 		Objector: obj,
 	}
 }
@@ -313,7 +295,7 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -343,54 +325,6 @@ func (t shortcutTrigger) Hash() uint {
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// Print prints the given trigger into a string for the developer. This is
-// meant for debugging and logging.
-//
-// The form of the representation may change at any time and is not
-// guaranteed to stay identical.
-func (s shortcutTrigger) Print(string *glib.String) {
-	var _arg0 *C.GtkShortcutTrigger // out
-	var _arg1 *C.GString            // out
-
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
-
-	C.gtk_shortcut_trigger_print(_arg0, _arg1)
-}
-
-// PrintLabel prints the given trigger into a string.
-//
-// This function is returning a translated string for presentation to end
-// users for example in menu items or in help texts.
-//
-// The @display in use may influence the resulting string in various forms,
-// such as resolving hardware keycodes or by causing display-specific
-// modifier names.
-//
-// The form of the representation may change at any time and is not
-// guaranteed to stay identical.
-func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bool {
-	var _arg0 *C.GtkShortcutTrigger // out
-	var _arg1 *C.GdkDisplay         // out
-	var _arg2 *C.GString            // out
-
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (*C.GString)(unsafe.Pointer(string.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_shortcut_trigger_print_label(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // ToLabel gets textual representation for the given trigger.

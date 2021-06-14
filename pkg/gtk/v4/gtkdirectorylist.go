@@ -5,12 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -51,15 +51,6 @@ type DirectoryList interface {
 
 	// Attributes gets the attributes queried on the children.
 	Attributes() string
-	// Error gets the loading error, if any.
-	//
-	// If an error occurs during the loading process, the loading process will
-	// finish and this property allows querying the error that happened. This
-	// error will persist until a file is loaded again.
-	//
-	// An error being set does not mean that no files were loaded, and all
-	// successfully queried files will remain in the list.
-	Error() error
 	// IOPriority gets the IO priority set via
 	// gtk_directory_list_set_io_priority().
 	IOPriority() int
@@ -102,7 +93,7 @@ type DirectoryList interface {
 	SetMonitored(monitored bool)
 }
 
-// directoryList implements the DirectoryList interface.
+// directoryList implements the DirectoryList class.
 type directoryList struct {
 	gextras.Objector
 	gio.ListModel
@@ -113,7 +104,7 @@ var _ DirectoryList = (*directoryList)(nil)
 // WrapDirectoryList wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDirectoryList(obj *externglib.Object) DirectoryList {
-	return DirectoryList{
+	return directoryList{
 		Objector:      obj,
 		gio.ListModel: gio.WrapListModel(obj),
 	}
@@ -140,30 +131,6 @@ func (s directoryList) Attributes() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Error gets the loading error, if any.
-//
-// If an error occurs during the loading process, the loading process will
-// finish and this property allows querying the error that happened. This
-// error will persist until a file is loaded again.
-//
-// An error being set does not mean that no files were loaded, and all
-// successfully queried files will remain in the list.
-func (s directoryList) Error() error {
-	var _arg0 *C.GtkDirectoryList // out
-
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GError // in
-
-	_cret = C.gtk_directory_list_get_error(_arg0)
-
-	var _err error // out
-
-	_err = gerror.Take(unsafe.Pointer(_cret))
-
-	return _err
 }
 
 // IOPriority gets the IO priority set via
@@ -197,7 +164,7 @@ func (s directoryList) Monitored() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -220,7 +187,7 @@ func (s directoryList) IsLoading() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -288,7 +255,7 @@ func (s directoryList) SetMonitored(monitored bool) {
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 	if monitored {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_directory_list_set_monitored(_arg0, _arg1)

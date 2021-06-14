@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -36,7 +38,7 @@ type HSeparator interface {
 	Orientable
 }
 
-// hSeparator implements the HSeparator interface.
+// hSeparator implements the HSeparator class.
 type hSeparator struct {
 	Separator
 	Buildable
@@ -48,7 +50,7 @@ var _ HSeparator = (*hSeparator)(nil)
 // WrapHSeparator wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapHSeparator(obj *externglib.Object) HSeparator {
-	return HSeparator{
+	return hSeparator{
 		Separator:  WrapSeparator(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),

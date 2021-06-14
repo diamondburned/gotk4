@@ -8,16 +8,60 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_anchor_hints_get_type()), F: marshalAnchorHints},
 		{T: externglib.Type(C.gdk_popup_layout_get_type()), F: marshalPopupLayout},
 	})
+}
+
+// AnchorHints: positioning hints for aligning a surface relative to a
+// rectangle.
+//
+// These hints determine how the surface should be positioned in the case that
+// the surface would fall off-screen if placed in its ideal position.
+//
+// For example, GDK_ANCHOR_FLIP_X will replace GDK_GRAVITY_NORTH_WEST with
+// GDK_GRAVITY_NORTH_EAST and vice versa if the surface extends beyond the left
+// or right edges of the monitor.
+//
+// If GDK_ANCHOR_SLIDE_X is set, the surface can be shifted horizontally to fit
+// on-screen. If GDK_ANCHOR_RESIZE_X is set, the surface can be shrunken
+// horizontally to fit.
+//
+// In general, when multiple flags are set, flipping should take precedence over
+// sliding, which should take precedence over resizing.
+type AnchorHints int
+
+const (
+	// AnchorHintsFlipX: allow flipping anchors horizontally
+	AnchorHintsFlipX AnchorHints = 1
+	// AnchorHintsFlipY: allow flipping anchors vertically
+	AnchorHintsFlipY AnchorHints = 2
+	// AnchorHintsSlideX: allow sliding surface horizontally
+	AnchorHintsSlideX AnchorHints = 4
+	// AnchorHintsSlideY: allow sliding surface vertically
+	AnchorHintsSlideY AnchorHints = 8
+	// AnchorHintsResizeX: allow resizing surface horizontally
+	AnchorHintsResizeX AnchorHints = 16
+	// AnchorHintsResizeY: allow resizing surface vertically
+	AnchorHintsResizeY AnchorHints = 32
+	// AnchorHintsFlip: allow flipping anchors on both axes
+	AnchorHintsFlip AnchorHints = 3
+	// AnchorHintsSlide: allow sliding surface on both axes
+	AnchorHintsSlide AnchorHints = 12
+	// AnchorHintsResize: allow resizing surface on both axes
+	AnchorHintsResize AnchorHints = 48
+)
+
+func marshalAnchorHints(p uintptr) (interface{}, error) {
+	return AnchorHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // PopupLayout: the `GdkPopupLayout` struct contains information that is
@@ -90,7 +134,7 @@ func (l *PopupLayout) Equal(other *PopupLayout) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

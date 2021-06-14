@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -37,7 +39,7 @@ type BuilderListItemFactory interface {
 	Resource() string
 }
 
-// builderListItemFactory implements the BuilderListItemFactory interface.
+// builderListItemFactory implements the BuilderListItemFactory class.
 type builderListItemFactory struct {
 	ListItemFactory
 }
@@ -47,7 +49,7 @@ var _ BuilderListItemFactory = (*builderListItemFactory)(nil)
 // WrapBuilderListItemFactory wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
-	return BuilderListItemFactory{
+	return builderListItemFactory{
 		ListItemFactory: WrapListItemFactory(obj),
 	}
 }

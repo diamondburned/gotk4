@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -50,7 +52,7 @@ type SearchEntry interface {
 	Editable
 }
 
-// searchEntry implements the SearchEntry interface.
+// searchEntry implements the SearchEntry class.
 type searchEntry struct {
 	Entry
 	Buildable
@@ -63,7 +65,7 @@ var _ SearchEntry = (*searchEntry)(nil)
 // WrapSearchEntry wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSearchEntry(obj *externglib.Object) SearchEntry {
-	return SearchEntry{
+	return searchEntry{
 		Entry:        WrapEntry(obj),
 		Buildable:    WrapBuildable(obj),
 		CellEditable: WrapCellEditable(obj),

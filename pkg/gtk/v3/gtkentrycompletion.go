@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -153,7 +154,7 @@ type EntryCompletion interface {
 	SetTextColumn(column int)
 }
 
-// entryCompletion implements the EntryCompletion interface.
+// entryCompletion implements the EntryCompletion class.
 type entryCompletion struct {
 	gextras.Objector
 	Buildable
@@ -165,7 +166,7 @@ var _ EntryCompletion = (*entryCompletion)(nil)
 // WrapEntryCompletion wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEntryCompletion(obj *externglib.Object) EntryCompletion {
-	return EntryCompletion{
+	return entryCompletion{
 		Objector:   obj,
 		Buildable:  WrapBuildable(obj),
 		CellLayout: WrapCellLayout(obj),
@@ -259,7 +260,7 @@ func (c entryCompletion) InlineCompletion() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -278,7 +279,7 @@ func (c entryCompletion) InlineSelection() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -315,7 +316,7 @@ func (c entryCompletion) PopupCompletion() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -335,7 +336,7 @@ func (c entryCompletion) PopupSetWidth() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -355,7 +356,7 @@ func (c entryCompletion) PopupSingleMatch() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -431,7 +432,7 @@ func (c entryCompletion) SetInlineCompletion(inlineCompletion bool) {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if inlineCompletion {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_completion_set_inline_completion(_arg0, _arg1)
@@ -445,7 +446,7 @@ func (c entryCompletion) SetInlineSelection(inlineSelection bool) {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if inlineSelection {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_completion_set_inline_selection(_arg0, _arg1)
@@ -486,7 +487,7 @@ func (c entryCompletion) SetPopupCompletion(popupCompletion bool) {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if popupCompletion {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_completion_set_popup_completion(_arg0, _arg1)
@@ -500,7 +501,7 @@ func (c entryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if popupSetWidth {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_completion_set_popup_set_width(_arg0, _arg1)
@@ -516,7 +517,7 @@ func (c entryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if popupSingleMatch {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_completion_set_popup_single_match(_arg0, _arg1)

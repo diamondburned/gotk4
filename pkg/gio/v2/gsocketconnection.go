@@ -3,14 +3,13 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -48,25 +48,12 @@ func init() {
 type SocketConnection interface {
 	IOStream
 
-	// Connect: connect @connection to the specified remote address.
-	Connect(address SocketAddress, cancellable Cancellable) error
-	// ConnectAsync: asynchronously connect @connection to the specified remote
-	// address.
-	//
-	// This clears the #GSocket:blocking flag on @connection's underlying socket
-	// if it is currently set.
-	//
-	// Use g_socket_connection_connect_finish() to retrieve the result.
-	ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectFinish gets the result of a g_socket_connection_connect_async()
-	// call.
-	ConnectFinish(result AsyncResult) error
 	// IsConnected checks if @connection is connected. This is equivalent to
 	// calling g_socket_is_connected() on @connection's underlying #GSocket.
 	IsConnected() bool
 }
 
-// socketConnection implements the SocketConnection interface.
+// socketConnection implements the SocketConnection class.
 type socketConnection struct {
 	IOStream
 }
@@ -76,7 +63,7 @@ var _ SocketConnection = (*socketConnection)(nil)
 // WrapSocketConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketConnection(obj *externglib.Object) SocketConnection {
-	return SocketConnection{
+	return socketConnection{
 		IOStream: WrapIOStream(obj),
 	}
 }
@@ -85,70 +72,6 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSocketConnection(obj), nil
-}
-
-// Connect: connect @connection to the specified remote address.
-func (c socketConnection) Connect(address SocketAddress, cancellable Cancellable) error {
-	var _arg0 *C.GSocketConnection // out
-	var _arg1 *C.GSocketAddress    // out
-	var _arg2 *C.GCancellable      // out
-
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_socket_connection_connect(_arg0, _arg1, _arg2, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// ConnectAsync: asynchronously connect @connection to the specified remote
-// address.
-//
-// This clears the #GSocket:blocking flag on @connection's underlying socket
-// if it is currently set.
-//
-// Use g_socket_connection_connect_finish() to retrieve the result.
-func (c socketConnection) ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketConnection  // out
-	var _arg1 *C.GSocketAddress     // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_socket_connection_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// ConnectFinish gets the result of a g_socket_connection_connect_async()
-// call.
-func (c socketConnection) ConnectFinish(result AsyncResult) error {
-	var _arg0 *C.GSocketConnection // out
-	var _arg1 *C.GAsyncResult      // out
-
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_socket_connection_connect_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // IsConnected checks if @connection is connected. This is equivalent to
@@ -164,7 +87,7 @@ func (c socketConnection) IsConnected() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -71,7 +72,7 @@ type Settings interface {
 	SetStringProperty(name string, vString string, origin string)
 }
 
-// settings implements the Settings interface.
+// settings implements the Settings class.
 type settings struct {
 	gextras.Objector
 	StyleProvider
@@ -82,7 +83,7 @@ var _ Settings = (*settings)(nil)
 // WrapSettings wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSettings(obj *externglib.Object) Settings {
-	return Settings{
+	return settings{
 		Objector:      obj,
 		StyleProvider: WrapStyleProvider(obj),
 	}
@@ -182,11 +183,6 @@ func WrapSettingsValue(ptr unsafe.Pointer) *SettingsValue {
 	}
 
 	return (*SettingsValue)(ptr)
-}
-
-func marshalSettingsValue(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsValue(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

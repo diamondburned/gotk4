@@ -3,14 +3,14 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -147,7 +147,7 @@ func (c colorChooser) UseAlpha() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -173,7 +173,7 @@ func (c colorChooser) SetUseAlpha(useAlpha bool) {
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 	if useAlpha {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_color_chooser_set_use_alpha(_arg0, _arg1)

@@ -5,22 +5,315 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
+		{T: externglib.Type(C.gdk_gravity_get_type()), F: marshalGravity},
+		{T: externglib.Type(C.gdk_window_edge_get_type()), F: marshalWindowEdge},
+		{T: externglib.Type(C.gdk_window_type_get_type()), F: marshalWindowType},
+		{T: externglib.Type(C.gdk_window_window_class_get_type()), F: marshalWindowWindowClass},
+		{T: externglib.Type(C.gdk_anchor_hints_get_type()), F: marshalAnchorHints},
+		{T: externglib.Type(C.gdk_wm_decoration_get_type()), F: marshalWMDecoration},
+		{T: externglib.Type(C.gdk_wm_function_get_type()), F: marshalWMFunction},
+		{T: externglib.Type(C.gdk_window_attributes_type_get_type()), F: marshalWindowAttributesType},
+		{T: externglib.Type(C.gdk_window_hints_get_type()), F: marshalWindowHints},
 		{T: externglib.Type(C.gdk_window_get_type()), F: marshalWindow},
 	})
+}
+
+// FullscreenMode indicates which monitor (in a multi-head setup) a window
+// should span over when in fullscreen mode.
+type FullscreenMode int
+
+const (
+	// FullscreenModeCurrentMonitor: fullscreen on current monitor only.
+	FullscreenModeCurrentMonitor FullscreenMode = 0
+	// FullscreenModeAllMonitors: span across all monitors when fullscreen.
+	FullscreenModeAllMonitors FullscreenMode = 1
+)
+
+func marshalFullscreenMode(p uintptr) (interface{}, error) {
+	return FullscreenMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Gravity defines the reference point of a window and the meaning of
+// coordinates passed to gtk_window_move(). See gtk_window_move() and the
+// "implementation notes" section of the Extended Window Manager Hints
+// (http://www.freedesktop.org/Standards/wm-spec) specification for more
+// details.
+type Gravity int
+
+const (
+	// GravityNorthWest: the reference point is at the top left corner.
+	GravityNorthWest Gravity = 1
+	// GravityNorth: the reference point is in the middle of the top edge.
+	GravityNorth Gravity = 2
+	// GravityNorthEast: the reference point is at the top right corner.
+	GravityNorthEast Gravity = 3
+	// GravityWest: the reference point is at the middle of the left edge.
+	GravityWest Gravity = 4
+	// GravityCenter: the reference point is at the center of the window.
+	GravityCenter Gravity = 5
+	// GravityEast: the reference point is at the middle of the right edge.
+	GravityEast Gravity = 6
+	// GravitySouthWest: the reference point is at the lower left corner.
+	GravitySouthWest Gravity = 7
+	// GravitySouth: the reference point is at the middle of the lower edge.
+	GravitySouth Gravity = 8
+	// GravitySouthEast: the reference point is at the lower right corner.
+	GravitySouthEast Gravity = 9
+	// GravityStatic: the reference point is at the top left corner of the
+	// window itself, ignoring window manager decorations.
+	GravityStatic Gravity = 10
+)
+
+func marshalGravity(p uintptr) (interface{}, error) {
+	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WindowEdge determines a window edge or corner.
+type WindowEdge int
+
+const (
+	// WindowEdgeNorthWest: the top left corner.
+	WindowEdgeNorthWest WindowEdge = 0
+	// WindowEdgeNorth: the top edge.
+	WindowEdgeNorth WindowEdge = 1
+	// WindowEdgeNorthEast: the top right corner.
+	WindowEdgeNorthEast WindowEdge = 2
+	// WindowEdgeWest: the left edge.
+	WindowEdgeWest WindowEdge = 3
+	// WindowEdgeEast: the right edge.
+	WindowEdgeEast WindowEdge = 4
+	// WindowEdgeSouthWest: the lower left corner.
+	WindowEdgeSouthWest WindowEdge = 5
+	// WindowEdgeSouth: the lower edge.
+	WindowEdgeSouth WindowEdge = 6
+	// WindowEdgeSouthEast: the lower right corner.
+	WindowEdgeSouthEast WindowEdge = 7
+)
+
+func marshalWindowEdge(p uintptr) (interface{}, error) {
+	return WindowEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WindowType describes the kind of window.
+type WindowType int
+
+const (
+	// WindowTypeRoot: root window; this window has no parent, covers the entire
+	// screen, and is created by the window system
+	WindowTypeRoot WindowType = 0
+	// WindowTypeToplevel: toplevel window (used to implement Window)
+	WindowTypeToplevel WindowType = 1
+	// WindowTypeChild: child window (used to implement e.g. Entry)
+	WindowTypeChild WindowType = 2
+	// WindowTypeTemp: override redirect temporary window (used to implement
+	// Menu)
+	WindowTypeTemp WindowType = 3
+	// WindowTypeForeign: foreign window (see gdk_window_foreign_new())
+	WindowTypeForeign WindowType = 4
+	// WindowTypeOffscreen: offscreen window (see [Offscreen
+	// Windows][OFFSCREEN-WINDOWS]). Since 2.18
+	WindowTypeOffscreen WindowType = 5
+	// WindowTypeSubsurface: subsurface-based window; This window is visually
+	// tied to a toplevel, and is moved/stacked with it. Currently this window
+	// type is only implemented in Wayland. Since 3.14
+	WindowTypeSubsurface WindowType = 6
+)
+
+func marshalWindowType(p uintptr) (interface{}, error) {
+	return WindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WindowWindowClass: @GDK_INPUT_OUTPUT windows are the standard kind of window
+// you might expect. Such windows receive events and are also displayed on
+// screen. @GDK_INPUT_ONLY windows are invisible; they are usually placed above
+// other windows in order to trap or filter the events. You can’t draw on
+// @GDK_INPUT_ONLY windows.
+type WindowWindowClass int
+
+const (
+	// WindowWindowClassInputOutput: window for graphics and events
+	WindowWindowClassInputOutput WindowWindowClass = 0
+	// WindowWindowClassInputOnly: window for events only
+	WindowWindowClassInputOnly WindowWindowClass = 1
+)
+
+func marshalWindowWindowClass(p uintptr) (interface{}, error) {
+	return WindowWindowClass(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// AnchorHints: positioning hints for aligning a window relative to a rectangle.
+//
+// These hints determine how the window should be positioned in the case that
+// the window would fall off-screen if placed in its ideal position.
+//
+// For example, GDK_ANCHOR_FLIP_X will replace GDK_GRAVITY_NORTH_WEST with
+// GDK_GRAVITY_NORTH_EAST and vice versa if the window extends beyond the left
+// or right edges of the monitor.
+//
+// If GDK_ANCHOR_SLIDE_X is set, the window can be shifted horizontally to fit
+// on-screen. If GDK_ANCHOR_RESIZE_X is set, the window can be shrunken
+// horizontally to fit.
+//
+// In general, when multiple flags are set, flipping should take precedence over
+// sliding, which should take precedence over resizing.
+type AnchorHints int
+
+const (
+	// AnchorHintsFlipX: allow flipping anchors horizontally
+	AnchorHintsFlipX AnchorHints = 1
+	// AnchorHintsFlipY: allow flipping anchors vertically
+	AnchorHintsFlipY AnchorHints = 2
+	// AnchorHintsSlideX: allow sliding window horizontally
+	AnchorHintsSlideX AnchorHints = 4
+	// AnchorHintsSlideY: allow sliding window vertically
+	AnchorHintsSlideY AnchorHints = 8
+	// AnchorHintsResizeX: allow resizing window horizontally
+	AnchorHintsResizeX AnchorHints = 16
+	// AnchorHintsResizeY: allow resizing window vertically
+	AnchorHintsResizeY AnchorHints = 32
+	// AnchorHintsFlip: allow flipping anchors on both axes
+	AnchorHintsFlip AnchorHints = 3
+	// AnchorHintsSlide: allow sliding window on both axes
+	AnchorHintsSlide AnchorHints = 12
+	// AnchorHintsResize: allow resizing window on both axes
+	AnchorHintsResize AnchorHints = 48
+)
+
+func marshalAnchorHints(p uintptr) (interface{}, error) {
+	return AnchorHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WMDecoration: these are hints originally defined by the Motif toolkit. The
+// window manager can use them when determining how to decorate the window. The
+// hint must be set before mapping the window.
+type WMDecoration int
+
+const (
+	// WMDecorationAll: all decorations should be applied.
+	WMDecorationAll WMDecoration = 1
+	// WMDecorationBorder: a frame should be drawn around the window.
+	WMDecorationBorder WMDecoration = 2
+	// WMDecorationResizeh: the frame should have resize handles.
+	WMDecorationResizeh WMDecoration = 4
+	// WMDecorationTitle: a titlebar should be placed above the window.
+	WMDecorationTitle WMDecoration = 8
+	// WMDecorationMenu: a button for opening a menu should be included.
+	WMDecorationMenu WMDecoration = 16
+	// WMDecorationMinimize: a minimize button should be included.
+	WMDecorationMinimize WMDecoration = 32
+	// WMDecorationMaximize: a maximize button should be included.
+	WMDecorationMaximize WMDecoration = 64
+)
+
+func marshalWMDecoration(p uintptr) (interface{}, error) {
+	return WMDecoration(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WMFunction: these are hints originally defined by the Motif toolkit. The
+// window manager can use them when determining the functions to offer for the
+// window. The hint must be set before mapping the window.
+type WMFunction int
+
+const (
+	// WMFunctionAll: all functions should be offered.
+	WMFunctionAll WMFunction = 1
+	// WMFunctionResize: the window should be resizable.
+	WMFunctionResize WMFunction = 2
+	// WMFunctionMove: the window should be movable.
+	WMFunctionMove WMFunction = 4
+	// WMFunctionMinimize: the window should be minimizable.
+	WMFunctionMinimize WMFunction = 8
+	// WMFunctionMaximize: the window should be maximizable.
+	WMFunctionMaximize WMFunction = 16
+	// WMFunctionClose: the window should be closable.
+	WMFunctionClose WMFunction = 32
+)
+
+func marshalWMFunction(p uintptr) (interface{}, error) {
+	return WMFunction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WindowAttributesType: used to indicate which fields in the WindowAttr struct
+// should be honored. For example, if you filled in the “cursor” and “x” fields
+// of WindowAttr, pass “@GDK_WA_X | @GDK_WA_CURSOR” to gdk_window_new(). Fields
+// in WindowAttr not covered by a bit in this enum are required; for example,
+// the @width/@height, @wclass, and @window_type fields are required, they have
+// no corresponding flag in WindowAttributesType.
+type WindowAttributesType int
+
+const (
+	// WindowAttributesTypeTitle: honor the title field
+	WindowAttributesTypeTitle WindowAttributesType = 2
+	// WindowAttributesTypeX: honor the X coordinate field
+	WindowAttributesTypeX WindowAttributesType = 4
+	// WindowAttributesTypeY: honor the Y coordinate field
+	WindowAttributesTypeY WindowAttributesType = 8
+	// WindowAttributesTypeCursor: honor the cursor field
+	WindowAttributesTypeCursor WindowAttributesType = 16
+	// WindowAttributesTypeVisual: honor the visual field
+	WindowAttributesTypeVisual WindowAttributesType = 32
+	// WindowAttributesTypeWmclass: honor the wmclass_class and wmclass_name
+	// fields
+	WindowAttributesTypeWmclass WindowAttributesType = 64
+	// WindowAttributesTypeNoredir: honor the override_redirect field
+	WindowAttributesTypeNoredir WindowAttributesType = 128
+	// WindowAttributesTypeTypeHint: honor the type_hint field
+	WindowAttributesTypeTypeHint WindowAttributesType = 256
+)
+
+func marshalWindowAttributesType(p uintptr) (interface{}, error) {
+	return WindowAttributesType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WindowHints: used to indicate which fields of a Geometry struct should be
+// paid attention to. Also, the presence/absence of @GDK_HINT_POS,
+// @GDK_HINT_USER_POS, and @GDK_HINT_USER_SIZE is significant, though they don't
+// directly refer to Geometry fields. @GDK_HINT_USER_POS will be set
+// automatically by Window if you call gtk_window_move(). @GDK_HINT_USER_POS and
+// @GDK_HINT_USER_SIZE should be set if the user specified a size/position using
+// a --geometry command-line argument; gtk_window_parse_geometry() automatically
+// sets these flags.
+type WindowHints int
+
+const (
+	// WindowHintsPos indicates that the program has positioned the window
+	WindowHintsPos WindowHints = 1
+	// WindowHintsMinSize: min size fields are set
+	WindowHintsMinSize WindowHints = 2
+	// WindowHintsMaxSize: max size fields are set
+	WindowHintsMaxSize WindowHints = 4
+	// WindowHintsBaseSize: base size fields are set
+	WindowHintsBaseSize WindowHints = 8
+	// WindowHintsAspect: aspect ratio fields are set
+	WindowHintsAspect WindowHints = 16
+	// WindowHintsResizeInc: resize increment fields are set
+	WindowHintsResizeInc WindowHints = 32
+	// WindowHintsWinGravity: window gravity field is set
+	WindowHintsWinGravity WindowHints = 64
+	// WindowHintsUserPos indicates that the window’s position was explicitly
+	// set by the user
+	WindowHintsUserPos WindowHints = 128
+	// WindowHintsUserSize indicates that the window’s size was explicitly set
+	// by the user
+	WindowHintsUserSize WindowHints = 256
+)
+
+func marshalWindowHints(p uintptr) (interface{}, error) {
+	return WindowHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // OffscreenWindowSetEmbedder sets @window to be embedded in @embedder.
@@ -42,16 +335,6 @@ func OffscreenWindowSetEmbedder(window Window, embedder Window) {
 type Window interface {
 	gextras.Objector
 
-	// AddFilter adds an event filter to @window, allowing you to intercept
-	// events before they reach GDK. This is a low-level operation and makes it
-	// easy to break GDK and/or GTK+, so you have to know what you're doing.
-	// Pass nil for @window to get all events for all windows, instead of events
-	// for a specific window.
-	//
-	// If you are interested in X GenericEvents, bear in mind that
-	// XGetEventData() has been already called on the event, and
-	// XFreeEventData() must not be called within @function.
-	AddFilter(function FilterFunc)
 	// Beep emits a short beep associated to @window in the appropriate display,
 	// if supported. Otherwise, emits a short beep on the display just as
 	// gdk_display_beep().
@@ -371,22 +654,6 @@ type Window interface {
 	// On the Win32 platform, this functionality is not present and the function
 	// does nothing.
 	InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int)
-	// InvalidateMaybeRecurse adds @region to the update area for @window. The
-	// update area is the region that needs to be redrawn, or “dirty region.”
-	// The call gdk_window_process_updates() sends one or more expose events to
-	// the window, which together cover the entire update area. An application
-	// would normally redraw the contents of @window in response to those expose
-	// events.
-	//
-	// GDK will call gdk_window_process_all_updates() on your behalf whenever
-	// your program returns to the main loop and becomes idle, so normally
-	// there’s no need to do that manually, you just need to invalidate regions
-	// that you know should be redrawn.
-	//
-	// The @child_func parameter controls whether the region of each child
-	// window that intersects @region will also be invalidated. Only children
-	// for which @child_func returns UE will have the area invalidated.
-	InvalidateMaybeRecurse(region *cairo.Region, childFunc WindowChildFunc)
 	// InvalidateRect: a convenience wrapper around
 	// gdk_window_invalidate_region() which invalidates a rectangular region.
 	// See gdk_window_invalidate_region() for details.
@@ -528,9 +795,6 @@ type Window interface {
 	Raise()
 	// RegisterDnd registers a window as a potential drop destination.
 	RegisterDnd()
-	// RemoveFilter: remove a filter previously added with
-	// gdk_window_add_filter().
-	RemoveFilter(function FilterFunc)
 	// Reparent reparents @window into the given @new_parent. The window being
 	// reparented will be unmapped as a side effect.
 	Reparent(newParent Window, x int, y int)
@@ -750,16 +1014,6 @@ type Window interface {
 	// once. You should only set a non-default group window if your application
 	// pretends to be multiple applications.
 	SetGroup(leader Window)
-	// SetIconList sets a list of icons for the window. One of these will be
-	// used to represent the window when it has been iconified. The icon is
-	// usually shown in an icon box or some sort of task bar. Which icon size is
-	// shown depends on the window manager. The window manager can scale the
-	// icon but setting several size icons can give better image quality since
-	// the window manager may only need to scale the icon by a small amount or
-	// not at all.
-	//
-	// Note that some platforms don't support window icons.
-	SetIconList(pixbufs *glib.List)
 	// SetIconName windows may have a name used while minimized, distinct from
 	// the name they display in their titlebar. Most of the time this is a bad
 	// idea from a user interface standpoint. But you can set such a name with
@@ -1029,7 +1283,7 @@ type Window interface {
 	Withdraw()
 }
 
-// window implements the Window interface.
+// window implements the Window class.
 type window struct {
 	gextras.Objector
 }
@@ -1039,7 +1293,7 @@ var _ Window = (*window)(nil)
 // WrapWindow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindow(obj *externglib.Object) Window {
-	return Window{
+	return window{
 		Objector: obj,
 	}
 }
@@ -1048,27 +1302,6 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapWindow(obj), nil
-}
-
-// AddFilter adds an event filter to @window, allowing you to intercept
-// events before they reach GDK. This is a low-level operation and makes it
-// easy to break GDK and/or GTK+, so you have to know what you're doing.
-// Pass nil for @window to get all events for all windows, instead of events
-// for a specific window.
-//
-// If you are interested in X GenericEvents, bear in mind that
-// XGetEventData() has been already called on the event, and
-// XFreeEventData() must not be called within @function.
-func (w window) AddFilter(function FilterFunc) {
-	var _arg0 *C.GdkWindow    // out
-	var _arg1 C.GdkFilterFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_FilterFunc)
-	_arg2 = C.gpointer(box.Assign(function))
-
-	C.gdk_window_add_filter(_arg0, _arg1, _arg2)
 }
 
 // Beep emits a short beep associated to @window in the appropriate display,
@@ -1416,7 +1649,7 @@ func (w window) EnsureNative() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1534,7 +1767,7 @@ func (w window) AcceptFocus() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1555,7 +1788,7 @@ func (w window) Composited() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1575,7 +1808,7 @@ func (w window) EventCompression() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1596,7 +1829,7 @@ func (w window) FocusOnMap() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1698,7 +1931,7 @@ func (w window) ModalHint() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1745,7 +1978,7 @@ func (w window) PassThrough() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1866,7 +2099,7 @@ func (w window) SupportMultidevice() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1925,7 +2158,7 @@ func (w window) HasNative() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1984,35 +2217,6 @@ func (w window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, 
 	C.gdk_window_input_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
 }
 
-// InvalidateMaybeRecurse adds @region to the update area for @window. The
-// update area is the region that needs to be redrawn, or “dirty region.”
-// The call gdk_window_process_updates() sends one or more expose events to
-// the window, which together cover the entire update area. An application
-// would normally redraw the contents of @window in response to those expose
-// events.
-//
-// GDK will call gdk_window_process_all_updates() on your behalf whenever
-// your program returns to the main loop and becomes idle, so normally
-// there’s no need to do that manually, you just need to invalidate regions
-// that you know should be redrawn.
-//
-// The @child_func parameter controls whether the region of each child
-// window that intersects @region will also be invalidated. Only children
-// for which @child_func returns UE will have the area invalidated.
-func (w window) InvalidateMaybeRecurse(region *cairo.Region, childFunc WindowChildFunc) {
-	var _arg0 *C.GdkWindow         // out
-	var _arg1 *C.cairo_region_t    // out
-	var _arg2 C.GdkWindowChildFunc // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_WindowChildFunc)
-	_arg3 = C.gpointer(box.Assign(childFunc))
-
-	C.gdk_window_invalidate_maybe_recurse(_arg0, _arg1, _arg2, _arg3)
-}
-
 // InvalidateRect: a convenience wrapper around
 // gdk_window_invalidate_region() which invalidates a rectangular region.
 // See gdk_window_invalidate_region() for details.
@@ -2024,7 +2228,7 @@ func (w window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
 	if invalidateChildren {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gdk_window_invalidate_rect(_arg0, _arg1, _arg2)
@@ -2055,7 +2259,7 @@ func (w window) InvalidateRegion(region *cairo.Region, invalidateChildren bool) 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 	if invalidateChildren {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gdk_window_invalidate_region(_arg0, _arg1, _arg2)
@@ -2073,7 +2277,7 @@ func (w window) IsDestroyed() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2092,7 +2296,7 @@ func (w window) IsInputOnly() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2111,7 +2315,7 @@ func (w window) IsShaped() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2132,7 +2336,7 @@ func (w window) IsViewable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2152,7 +2356,7 @@ func (w window) IsVisible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2355,7 +2559,7 @@ func (w window) ProcessUpdates(updateChildren bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if updateChildren {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_process_updates(_arg0, _arg1)
@@ -2383,20 +2587,6 @@ func (w window) RegisterDnd() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gdk_window_register_dnd(_arg0)
-}
-
-// RemoveFilter: remove a filter previously added with
-// gdk_window_add_filter().
-func (w window) RemoveFilter(function FilterFunc) {
-	var _arg0 *C.GdkWindow    // out
-	var _arg1 C.GdkFilterFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_FilterFunc)
-	_arg2 = C.gpointer(box.Assign(function))
-
-	C.gdk_window_remove_filter(_arg0, _arg1, _arg2)
 }
 
 // Reparent reparents @window into the given @new_parent. The window being
@@ -2454,7 +2644,7 @@ func (w window) Restack(sibling Window, above bool) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(sibling.Native()))
 	if above {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gdk_window_restack(_arg0, _arg1, _arg2)
@@ -2493,7 +2683,7 @@ func (w window) SetAcceptFocus(acceptFocus bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if acceptFocus {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_accept_focus(_arg0, _arg1)
@@ -2595,7 +2785,7 @@ func (w window) SetComposited(composited bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if composited {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_composited(_arg0, _arg1)
@@ -2696,7 +2886,7 @@ func (w window) SetEventCompression(eventCompression bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if eventCompression {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_event_compression(_arg0, _arg1)
@@ -2733,7 +2923,7 @@ func (w window) SetFocusOnMap(focusOnMap bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if focusOnMap {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_focus_on_map(_arg0, _arg1)
@@ -2838,25 +3028,6 @@ func (w window) SetGroup(leader Window) {
 	C.gdk_window_set_group(_arg0, _arg1)
 }
 
-// SetIconList sets a list of icons for the window. One of these will be
-// used to represent the window when it has been iconified. The icon is
-// usually shown in an icon box or some sort of task bar. Which icon size is
-// shown depends on the window manager. The window manager can scale the
-// icon but setting several size icons can give better image quality since
-// the window manager may only need to scale the icon by a small amount or
-// not at all.
-//
-// Note that some platforms don't support window icons.
-func (w window) SetIconList(pixbufs *glib.List) {
-	var _arg0 *C.GdkWindow // out
-	var _arg1 *C.GList     // out
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GList)(unsafe.Pointer(pixbufs.Native()))
-
-	C.gdk_window_set_icon_list(_arg0, _arg1)
-}
-
 // SetIconName windows may have a name used while minimized, distinct from
 // the name they display in their titlebar. Most of the time this is a bad
 // idea from a user interface standpoint. But you can set such a name with
@@ -2895,7 +3066,7 @@ func (w window) SetKeepAbove(setting bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_keep_above(_arg0, _arg1)
@@ -2916,7 +3087,7 @@ func (w window) SetKeepBelow(setting bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_keep_below(_arg0, _arg1)
@@ -2934,7 +3105,7 @@ func (w window) SetModalHint(modal bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if modal {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_modal_hint(_arg0, _arg1)
@@ -3007,7 +3178,7 @@ func (w window) SetOverrideRedirect(overrideRedirect bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if overrideRedirect {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_override_redirect(_arg0, _arg1)
@@ -3037,7 +3208,7 @@ func (w window) SetPassThrough(passThrough bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if passThrough {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_pass_through(_arg0, _arg1)
@@ -3103,7 +3274,7 @@ func (w window) SetSkipPagerHint(skipsPager bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if skipsPager {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_skip_pager_hint(_arg0, _arg1)
@@ -3120,7 +3291,7 @@ func (w window) SetSkipTaskbarHint(skipsTaskbar bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if skipsTaskbar {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_skip_taskbar_hint(_arg0, _arg1)
@@ -3165,7 +3336,7 @@ func (w window) SetStaticGravities(useStatic bool) bool {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if useStatic {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -3174,7 +3345,7 @@ func (w window) SetStaticGravities(useStatic bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3192,7 +3363,7 @@ func (w window) SetSupportMultidevice(supportMultidevice bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if supportMultidevice {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_support_multidevice(_arg0, _arg1)
@@ -3254,7 +3425,7 @@ func (w window) SetUrgencyHint(urgent bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if urgent {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_window_set_urgency_hint(_arg0, _arg1)
@@ -3497,11 +3668,6 @@ func WrapGeometry(ptr unsafe.Pointer) *Geometry {
 	return (*Geometry)(ptr)
 }
 
-func marshalGeometry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGeometry(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (g *Geometry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
@@ -3592,11 +3758,6 @@ func WrapWindowAttr(ptr unsafe.Pointer) *WindowAttr {
 	return (*WindowAttr)(ptr)
 }
 
-func marshalWindowAttr(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWindowAttr(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (w *WindowAttr) Native() unsafe.Pointer {
 	return unsafe.Pointer(&w.native)
@@ -3661,7 +3822,7 @@ func (w *WindowAttr) WmclassClass() string {
 // OverrideRedirect gets the field inside the struct.
 func (w *WindowAttr) OverrideRedirect() bool {
 	var v bool // out
-	if w.native.override_redirect {
+	if w.native.override_redirect != 0 {
 		v = true
 	}
 	return v
@@ -3679,11 +3840,6 @@ func WrapWindowRedirect(ptr unsafe.Pointer) *WindowRedirect {
 	}
 
 	return (*WindowRedirect)(ptr)
-}
-
-func marshalWindowRedirect(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWindowRedirect(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

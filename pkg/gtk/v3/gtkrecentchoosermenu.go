@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -54,7 +56,7 @@ type RecentChooserMenu interface {
 	SetShowNumbers(showNumbers bool)
 }
 
-// recentChooserMenu implements the RecentChooserMenu interface.
+// recentChooserMenu implements the RecentChooserMenu class.
 type recentChooserMenu struct {
 	Menu
 	Activatable
@@ -67,7 +69,7 @@ var _ RecentChooserMenu = (*recentChooserMenu)(nil)
 // WrapRecentChooserMenu wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRecentChooserMenu(obj *externglib.Object) RecentChooserMenu {
-	return RecentChooserMenu{
+	return recentChooserMenu{
 		Menu:          WrapMenu(obj),
 		Activatable:   WrapActivatable(obj),
 		Buildable:     WrapBuildable(obj),
@@ -94,7 +96,7 @@ func (m recentChooserMenu) ShowNumbers() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -111,7 +113,7 @@ func (m recentChooserMenu) SetShowNumbers(showNumbers bool) {
 
 	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
 	if showNumbers {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_recent_chooser_menu_set_show_numbers(_arg0, _arg1)

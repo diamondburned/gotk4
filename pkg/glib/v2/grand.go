@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -104,11 +103,6 @@ func WrapRand(ptr unsafe.Pointer) *Rand {
 	}
 
 	return (*Rand)(ptr)
-}
-
-func marshalRand(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRand(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

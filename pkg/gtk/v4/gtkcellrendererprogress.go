@@ -2,7 +2,52 @@
 
 package gtk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_cell_renderer_progress_get_type()), F: marshalCellRendererProgress},
+	})
+}
+
+// CellRendererProgress renders numbers as progress bars
+//
+// CellRendererProgress renders a numeric value as a progress par in a cell.
+// Additionally, it can display a text on top of the progress bar.
+type CellRendererProgress interface {
+	CellRenderer
+	Orientable
+}
+
+// cellRendererProgress implements the CellRendererProgress class.
+type cellRendererProgress struct {
+	CellRenderer
+	Orientable
+}
+
+var _ CellRendererProgress = (*cellRendererProgress)(nil)
+
+// WrapCellRendererProgress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererProgress(obj *externglib.Object) CellRendererProgress {
+	return cellRendererProgress{
+		CellRenderer: WrapCellRenderer(obj),
+		Orientable:   WrapOrientable(obj),
+	}
+}
+
+func marshalCellRendererProgress(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapCellRendererProgress(obj), nil
+}

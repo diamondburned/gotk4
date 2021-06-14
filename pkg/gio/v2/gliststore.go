@@ -6,14 +6,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +24,9 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
+//
+// gint gotk4_CompareDataFunc(gpointer, gpointer, gpointer);
 import "C"
 
 func init() {
@@ -100,7 +102,7 @@ type ListStore interface {
 	Splice(position uint, nRemovals uint, additions []gextras.Objector)
 }
 
-// listStore implements the ListStore interface.
+// listStore implements the ListStore class.
 type listStore struct {
 	gextras.Objector
 	ListModel
@@ -111,7 +113,7 @@ var _ ListStore = (*listStore)(nil)
 // WrapListStore wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListStore(obj *externglib.Object) ListStore {
-	return ListStore{
+	return listStore{
 		Objector:  obj,
 		ListModel: WrapListModel(obj),
 	}
@@ -161,7 +163,7 @@ func (s listStore) Find(item gextras.Objector) (uint, bool) {
 	var _ok bool       // out
 
 	_position = (uint)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -279,15 +281,13 @@ func (s listStore) Splice(position uint, nRemovals uint, additions []gextras.Obj
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nRemovals)
 	_arg4 = C.guint(len(additions))
-	_arg3 = (*C.gpointer)(C.malloc(len(additions) * C.sizeof_GObject))
+	_arg3 = (*C.gpointer)(C.malloc(C.ulong(len(additions)) * C.ulong(C.sizeof_GObject)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	{
-		var out []C.GObject
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg3), int(len(additions)))
-
+		out := unsafe.Slice(_arg3, len(additions))
 		for i := range additions {
-			_arg3 = (*C.GObject)(unsafe.Pointer(additions.Native()))
+			out[i] = (*C.GObject)(unsafe.Pointer(additions[i].Native()))
 		}
 	}
 

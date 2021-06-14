@@ -5,14 +5,13 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -24,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -140,7 +140,7 @@ type SettingsBackend interface {
 	WritableChanged(key string)
 }
 
-// settingsBackend implements the SettingsBackend interface.
+// settingsBackend implements the SettingsBackend class.
 type settingsBackend struct {
 	gextras.Objector
 }
@@ -150,7 +150,7 @@ var _ SettingsBackend = (*settingsBackend)(nil)
 // WrapSettingsBackend wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSettingsBackend(obj *externglib.Object) SettingsBackend {
-	return SettingsBackend{
+	return settingsBackend{
 		Objector: obj,
 	}
 }
@@ -239,16 +239,14 @@ func (b settingsBackend) KeysChanged(path string, items []string, originTag inte
 	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc((len(items) + 1) * unsafe.Sizeof(int(0))))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong((len(items) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(items)))
-
+		out := unsafe.Slice(_arg2, len(items))
 		for i := range items {
-			_arg2 = (*C.gchar)(C.CString(items))
-			defer C.free(unsafe.Pointer(_arg2))
+			out[i] = (*C.gchar)(C.CString(items[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 	_arg3 = C.gpointer(originTag)

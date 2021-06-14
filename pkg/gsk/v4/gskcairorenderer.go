@@ -3,10 +3,12 @@
 package gsk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
@@ -25,7 +27,7 @@ type CairoRenderer interface {
 	Renderer
 }
 
-// cairoRenderer implements the CairoRenderer interface.
+// cairoRenderer implements the CairoRenderer class.
 type cairoRenderer struct {
 	Renderer
 }
@@ -35,7 +37,7 @@ var _ CairoRenderer = (*cairoRenderer)(nil)
 // WrapCairoRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCairoRenderer(obj *externglib.Object) CairoRenderer {
-	return CairoRenderer{
+	return cairoRenderer{
 		Renderer: WrapRenderer(obj),
 	}
 }

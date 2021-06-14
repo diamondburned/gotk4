@@ -5,11 +5,10 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -47,20 +46,6 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (c *CSSSection) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
-}
-
-// Print prints the `section` into `string` in a human-readable form.
-//
-// This is a form like `gtk.css:32:1-23` to denote line 32, characters 1 to 23
-// in the file `gtk.css`.
-func (s *CSSSection) Print(string *glib.String) {
-	var _arg0 *C.GtkCssSection // out
-	var _arg1 *C.GString       // out
-
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
-
-	C.gtk_css_section_print(_arg0, _arg1)
 }
 
 // String prints the section into a human-readable text form using

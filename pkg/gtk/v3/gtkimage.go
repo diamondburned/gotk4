@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -21,8 +21,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_image_type_get_type()), F: marshalImageType},
 		{T: externglib.Type(C.gtk_image_get_type()), F: marshalImage},
 	})
+}
+
+// ImageType describes the image data representation used by a Image. If you
+// want to get the image from the widget, you can only get the currently-stored
+// representation. e.g. if the gtk_image_get_storage_type() returns
+// K_IMAGE_PIXBUF, then you can call gtk_image_get_pixbuf() but not
+// gtk_image_get_stock(). For empty images, you can request any storage type
+// (call any of the "get" functions), but they will all return nil values.
+type ImageType int
+
+const (
+	// ImageTypeEmpty: there is no image displayed by the widget
+	ImageTypeEmpty ImageType = 0
+	// ImageTypePixbuf: the widget contains a Pixbuf
+	ImageTypePixbuf ImageType = 1
+	// ImageTypeStock: the widget contains a [stock item name][gtkstock]
+	ImageTypeStock ImageType = 2
+	// ImageTypeIconSet: the widget contains a IconSet
+	ImageTypeIconSet ImageType = 3
+	// ImageTypeAnimation: the widget contains a PixbufAnimation
+	ImageTypeAnimation ImageType = 4
+	// ImageTypeIconName: the widget contains a named icon. This image type was
+	// added in GTK+ 2.6
+	ImageTypeIconName ImageType = 5
+	// ImageTypeGIcon: the widget contains a #GIcon. This image type was added
+	// in GTK+ 2.14
+	ImageTypeGIcon ImageType = 6
+	// ImageTypeSurface: the widget contains a #cairo_surface_t. This image type
+	// was added in GTK+ 3.10
+	ImageTypeSurface ImageType = 7
+)
+
+func marshalImageType(p uintptr) (interface{}, error) {
+	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Image: the Image widget displays an image. Various kinds of object can be
@@ -103,7 +138,7 @@ type Image interface {
 	// display nothing, if you set the animation to nil).
 	SetFromAnimation(animation gdkpixbuf.PixbufAnimation)
 	// SetFromFile: see gtk_image_new_from_file() for details.
-	SetFromFile(filename *string)
+	SetFromFile(filename string)
 	// SetFromGIcon: see gtk_image_new_from_gicon() for details.
 	SetFromGIcon(icon gio.Icon, size int)
 	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
@@ -124,7 +159,7 @@ type Image interface {
 	SetPixelSize(pixelSize int)
 }
 
-// image implements the Image interface.
+// image implements the Image class.
 type image struct {
 	Misc
 	Buildable
@@ -135,7 +170,7 @@ var _ Image = (*image)(nil)
 // WrapImage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapImage(obj *externglib.Object) Image {
-	return Image{
+	return image{
 		Misc:      WrapMisc(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -165,10 +200,10 @@ func (i image) IconName() (string, int) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
-	var _arg1 **C.gchar     // in
+	var _arg1 *C.gchar      // in
 	var _arg2 C.GtkIconSize // in
 
-	C.gtk_image_get_icon_name(_arg0, _arg1, &_arg2)
+	C.gtk_image_get_icon_name(_arg0, &_arg1, &_arg2)
 
 	var _iconName string // out
 	var _size int        // out
@@ -205,10 +240,10 @@ func (i image) Stock() (string, int) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
-	var _arg1 **C.gchar     // in
+	var _arg1 *C.gchar      // in
 	var _arg2 C.GtkIconSize // in
 
-	C.gtk_image_get_stock(_arg0, _arg1, &_arg2)
+	C.gtk_image_get_stock(_arg0, &_arg1, &_arg2)
 
 	var _stockId string // out
 	var _size int       // out
@@ -232,7 +267,7 @@ func (i image) SetFromAnimation(animation gdkpixbuf.PixbufAnimation) {
 }
 
 // SetFromFile: see gtk_image_new_from_file() for details.
-func (i image) SetFromFile(filename *string) {
+func (i image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.gchar    // out
 

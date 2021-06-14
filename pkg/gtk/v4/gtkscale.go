@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -150,7 +150,7 @@ type Scale interface {
 	SetValuePos(pos PositionType)
 }
 
-// scale implements the Scale interface.
+// scale implements the Scale class.
 type scale struct {
 	Range
 	Accessible
@@ -164,7 +164,7 @@ var _ Scale = (*scale)(nil)
 // WrapScale wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapScale(obj *externglib.Object) Scale {
-	return Scale{
+	return scale{
 		Range:            WrapRange(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -242,7 +242,7 @@ func (s scale) DrawValue() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -261,7 +261,7 @@ func (s scale) HasOrigin() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -326,7 +326,7 @@ func (s scale) SetDrawValue(drawValue bool) {
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 	if drawValue {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_scale_set_draw_value(_arg0, _arg1)
@@ -343,7 +343,7 @@ func (s scale) SetHasOrigin(hasOrigin bool) {
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 	if hasOrigin {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_scale_set_has_origin(_arg0, _arg1)

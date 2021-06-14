@@ -5,13 +5,13 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -189,11 +189,6 @@ type CellArea interface {
 	// Implementing CellArea classes should implement this method to receive and
 	// navigate focus in its own way particular to how it lays out cells.
 	Focus(direction DirectionType) bool
-	// Foreach calls @callback for every CellRenderer in @area.
-	Foreach(callback CellCallback)
-	// ForeachAlloc calls @callback for every CellRenderer in @area with the
-	// allocated rectangle inside @cell_area.
-	ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
 	// CellAllocation derives the allocation of @renderer inside @area if @area
 	// were to be renderered in @cell_area.
 	CellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle
@@ -292,7 +287,7 @@ type CellArea interface {
 	StopEditing(canceled bool)
 }
 
-// cellArea implements the CellArea interface.
+// cellArea implements the CellArea class.
 type cellArea struct {
 	gextras.Objector
 	Buildable
@@ -304,7 +299,7 @@ var _ CellArea = (*cellArea)(nil)
 // WrapCellArea wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellArea(obj *externglib.Object) CellArea {
-	return CellArea{
+	return cellArea{
 		Objector:   obj,
 		Buildable:  WrapBuildable(obj),
 		CellLayout: WrapCellLayout(obj),
@@ -334,7 +329,7 @@ func (a cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 	_arg4 = (C.GtkCellRendererState)(flags)
 	if editOnly {
-		_arg5 = C.gboolean(1)
+		_arg5 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -343,7 +338,7 @@ func (a cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -392,10 +387,10 @@ func (a cellArea) ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpande
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 	if isExpander {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	if isExpanded {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	C.gtk_cell_area_apply_attributes(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -507,46 +502,11 @@ func (a cellArea) Focus(direction DirectionType) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Foreach calls @callback for every CellRenderer in @area.
-func (a cellArea) Foreach(callback CellCallback) {
-	var _arg0 *C.GtkCellArea    // out
-	var _arg1 C.GtkCellCallback // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_CellCallback)
-	_arg2 = C.gpointer(box.Assign(callback))
-
-	C.gtk_cell_area_foreach(_arg0, _arg1, _arg2)
-}
-
-// ForeachAlloc calls @callback for every CellRenderer in @area with the
-// allocated rectangle inside @cell_area.
-func (a cellArea) ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
-	var _arg0 *C.GtkCellArea         // out
-	var _arg1 *C.GtkCellAreaContext  // out
-	var _arg2 *C.GtkWidget           // out
-	var _arg3 *C.GdkRectangle        // out
-	var _arg4 *C.GdkRectangle        // out
-	var _arg5 C.GtkCellAllocCallback // out
-	var _arg6 C.gpointer
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_CellAllocCallback)
-	_arg6 = C.gpointer(box.Assign(callback))
-
-	C.gtk_cell_area_foreach_alloc(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // CellAllocation derives the allocation of @renderer inside @area if @area
@@ -744,7 +704,7 @@ func (a cellArea) HasRenderer(renderer CellRenderer) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -784,7 +744,7 @@ func (a cellArea) IsActivatable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -808,7 +768,7 @@ func (a cellArea) IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -860,7 +820,7 @@ func (a cellArea) Render(context CellAreaContext, widget Widget, cr *cairo.Conte
 	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 	_arg6 = (C.GtkCellRendererState)(flags)
 	if paintFocus {
-		_arg7 = C.gboolean(1)
+		_arg7 = C.TRUE
 	}
 
 	C.gtk_cell_area_render(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
@@ -926,7 +886,7 @@ func (a cellArea) StopEditing(canceled bool) {
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	if canceled {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_cell_area_stop_editing(_arg0, _arg1)

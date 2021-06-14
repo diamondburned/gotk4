@@ -5,13 +5,13 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -21,13 +21,166 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_path_priority_type_get_type()), F: marshalPathPriorityType},
+		{T: externglib.Type(C.gtk_path_type_get_type()), F: marshalPathType},
+		{T: externglib.Type(C.gtk_rc_token_type_get_type()), F: marshalRCTokenType},
+		{T: externglib.Type(C.gtk_rc_flags_get_type()), F: marshalRCFlags},
 		{T: externglib.Type(C.gtk_rc_style_get_type()), F: marshalRCStyle},
 	})
 }
 
+// PathPriorityType priorities for path lookups. See also
+// gtk_binding_set_add_path().
+type PathPriorityType int
+
+const (
+	// PathPriorityTypeLowest: deprecated
+	PathPriorityTypeLowest PathPriorityType = 0
+	// PathPriorityTypeGTK: deprecated
+	PathPriorityTypeGTK PathPriorityType = 4
+	// PathPriorityTypeApplication: deprecated
+	PathPriorityTypeApplication PathPriorityType = 8
+	// PathPriorityTypeTheme: deprecated
+	PathPriorityTypeTheme PathPriorityType = 10
+	// PathPriorityTypeRC: deprecated
+	PathPriorityTypeRC PathPriorityType = 12
+	// PathPriorityTypeHighest: deprecated
+	PathPriorityTypeHighest PathPriorityType = 15
+)
+
+func marshalPathPriorityType(p uintptr) (interface{}, error) {
+	return PathPriorityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PathType: widget path types. See also gtk_binding_set_add_path().
+type PathType int
+
+const (
+	// PathTypeWidget: deprecated
+	PathTypeWidget PathType = 0
+	// PathTypeWidgetClass: deprecated
+	PathTypeWidgetClass PathType = 1
+	// PathTypeClass: deprecated
+	PathTypeClass PathType = 2
+)
+
+func marshalPathType(p uintptr) (interface{}, error) {
+	return PathType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RCTokenType: the RcTokenType enumeration represents the tokens in the RC
+// file. It is exposed so that theme engines can reuse these tokens when parsing
+// the theme-engine specific portions of a RC file.
+type RCTokenType int
+
+const (
+	// RCTokenTypeInvalid: deprecated
+	RCTokenTypeInvalid RCTokenType = 270
+	// RCTokenTypeInclude: deprecated
+	RCTokenTypeInclude RCTokenType = 271
+	// RCTokenTypeNormal: deprecated
+	RCTokenTypeNormal RCTokenType = 272
+	// RCTokenTypeActive: deprecated
+	RCTokenTypeActive RCTokenType = 273
+	// RCTokenTypePrelight: deprecated
+	RCTokenTypePrelight RCTokenType = 274
+	// RCTokenTypeSelected: deprecated
+	RCTokenTypeSelected RCTokenType = 275
+	// RCTokenTypeInsensitive: deprecated
+	RCTokenTypeInsensitive RCTokenType = 276
+	// RCTokenTypeFg: deprecated
+	RCTokenTypeFg RCTokenType = 277
+	// RCTokenTypeBg: deprecated
+	RCTokenTypeBg RCTokenType = 278
+	// RCTokenTypeText: deprecated
+	RCTokenTypeText RCTokenType = 279
+	// RCTokenTypeBase: deprecated
+	RCTokenTypeBase RCTokenType = 280
+	// RCTokenTypeXthickness: deprecated
+	RCTokenTypeXthickness RCTokenType = 281
+	// RCTokenTypeYthickness: deprecated
+	RCTokenTypeYthickness RCTokenType = 282
+	// RCTokenTypeFont: deprecated
+	RCTokenTypeFont RCTokenType = 283
+	// RCTokenTypeFontset: deprecated
+	RCTokenTypeFontset RCTokenType = 284
+	// RCTokenTypeFontName: deprecated
+	RCTokenTypeFontName RCTokenType = 285
+	// RCTokenTypeBgPixmap: deprecated
+	RCTokenTypeBgPixmap RCTokenType = 286
+	// RCTokenTypePixmapPath: deprecated
+	RCTokenTypePixmapPath RCTokenType = 287
+	// RCTokenTypeStyle: deprecated
+	RCTokenTypeStyle RCTokenType = 288
+	// RCTokenTypeBinding: deprecated
+	RCTokenTypeBinding RCTokenType = 289
+	// RCTokenTypeBind: deprecated
+	RCTokenTypeBind RCTokenType = 290
+	// RCTokenTypeWidget: deprecated
+	RCTokenTypeWidget RCTokenType = 291
+	// RCTokenTypeWidgetClass: deprecated
+	RCTokenTypeWidgetClass RCTokenType = 292
+	// RCTokenTypeClass: deprecated
+	RCTokenTypeClass RCTokenType = 293
+	// RCTokenTypeLowest: deprecated
+	RCTokenTypeLowest RCTokenType = 294
+	// RCTokenTypeGTK: deprecated
+	RCTokenTypeGTK RCTokenType = 295
+	// RCTokenTypeApplication: deprecated
+	RCTokenTypeApplication RCTokenType = 296
+	// RCTokenTypeTheme: deprecated
+	RCTokenTypeTheme RCTokenType = 297
+	// RCTokenTypeRC: deprecated
+	RCTokenTypeRC RCTokenType = 298
+	// RCTokenTypeHighest: deprecated
+	RCTokenTypeHighest RCTokenType = 299
+	// RCTokenTypeEngine: deprecated
+	RCTokenTypeEngine RCTokenType = 300
+	// RCTokenTypeModulePath: deprecated
+	RCTokenTypeModulePath RCTokenType = 301
+	// RCTokenTypeImModulePath: deprecated
+	RCTokenTypeImModulePath RCTokenType = 302
+	// RCTokenTypeImModuleFile: deprecated
+	RCTokenTypeImModuleFile RCTokenType = 303
+	// RCTokenTypeStock: deprecated
+	RCTokenTypeStock RCTokenType = 304
+	// RCTokenTypeLTR: deprecated
+	RCTokenTypeLTR RCTokenType = 305
+	// RCTokenTypeRTL: deprecated
+	RCTokenTypeRTL RCTokenType = 306
+	// RCTokenTypeColor: deprecated
+	RCTokenTypeColor RCTokenType = 307
+	// RCTokenTypeUnbind: deprecated
+	RCTokenTypeUnbind RCTokenType = 308
+	// RCTokenTypeLast: deprecated
+	RCTokenTypeLast RCTokenType = 309
+)
+
+func marshalRCTokenType(p uintptr) (interface{}, error) {
+	return RCTokenType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RCFlags: deprecated
+type RCFlags int
+
+const (
+	// RCFlagsFg: deprecated
+	RCFlagsFg RCFlags = 1
+	// RCFlagsBg: deprecated
+	RCFlagsBg RCFlags = 2
+	// RCFlagsText: deprecated
+	RCFlagsText RCFlags = 4
+	// RCFlagsBase: deprecated
+	RCFlagsBase RCFlags = 8
+)
+
+func marshalRCFlags(p uintptr) (interface{}, error) {
+	return RCFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 // RCAddDefaultFile adds a file to the list of files to be parsed at the end of
 // gtk_init().
-func RCAddDefaultFile(filename *string) {
+func RCAddDefaultFile(filename string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(filename))
@@ -38,7 +191,7 @@ func RCAddDefaultFile(filename *string) {
 
 // RCFindModuleInPath searches for a theme engine in the GTK+ search path. This
 // function is not useful for applications and should not be used.
-func RCFindModuleInPath(moduleFile string) *string {
+func RCFindModuleInPath(moduleFile string) string {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(moduleFile))
@@ -48,7 +201,7 @@ func RCFindModuleInPath(moduleFile string) *string {
 
 	_cret = C.gtk_rc_find_module_in_path(_arg1)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -59,7 +212,7 @@ func RCFindModuleInPath(moduleFile string) *string {
 // RCFindPixmapInPath looks up a file in pixmap path for the specified Settings.
 // If the file is not found, it outputs a warning message using g_warning() and
 // returns nil.
-func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) *string {
+func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) string {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.GScanner    // out
 	var _arg3 *C.gchar       // out
@@ -73,7 +226,7 @@ func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile str
 
 	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -83,28 +236,26 @@ func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile str
 
 // RCGetDefaultFiles retrieves the current list of RC files that will be parsed
 // at the end of gtk_init().
-func RCGetDefaultFiles() []*string {
+func RCGetDefaultFiles() []string {
 	var _cret **C.gchar
 
 	_cret = C.gtk_rc_get_default_files()
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_filenames = make([]*string, length)
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
 		for i := range src {
-			_filenames = C.GoString(_cret)
+			_filenames[i] = C.GoString(src[i])
 		}
 	}
 
@@ -114,12 +265,12 @@ func RCGetDefaultFiles() []*string {
 // RCGetImModuleFile obtains the path to the IM modules file. See the
 // documentation of the `GTK_IM_MODULE_FILE` environment variable for more
 // details.
-func RCGetImModuleFile() *string {
+func RCGetImModuleFile() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_im_module_file()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -131,12 +282,12 @@ func RCGetImModuleFile() *string {
 // documentation of the `GTK_PATH` environment variable for more details about
 // looking up modules. This function is useful solely for utilities supplied
 // with GTK+ and should not be used by applications under normal circumstances.
-func RCGetImModulePath() *string {
+func RCGetImModulePath() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_im_module_path()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -147,12 +298,12 @@ func RCGetImModulePath() *string {
 // RCGetModuleDir returns a directory in which GTK+ looks for theme engines. For
 // full information about the search for theme engines, see the docs for
 // `GTK_PATH` in [Running GTK+ Applications][gtk-running].
-func RCGetModuleDir() *string {
+func RCGetModuleDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_module_dir()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -268,7 +419,7 @@ func RCReparseAll() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -284,7 +435,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	if forceLoad {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -293,7 +444,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -318,19 +469,17 @@ func RCResetStyles(settings Settings) {
 
 // RCSetDefaultFiles sets the list of files that GTK+ will read at the end of
 // gtk_init().
-func RCSetDefaultFiles(filenames []*string) {
+func RCSetDefaultFiles(filenames []string) {
 	var _arg1 **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc((len(filenames) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(filenames) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(filenames)))
-
+		out := unsafe.Slice(_arg1, len(filenames))
 		for i := range filenames {
-			_arg1 = (*C.gchar)(C.CString(filenames))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(filenames[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -344,7 +493,7 @@ type RCStyle interface {
 	gextras.Objector
 }
 
-// rcStyle implements the RCStyle interface.
+// rcStyle implements the RCStyle class.
 type rcStyle struct {
 	gextras.Objector
 }
@@ -354,7 +503,7 @@ var _ RCStyle = (*rcStyle)(nil)
 // WrapRCStyle wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRCStyle(obj *externglib.Object) RCStyle {
-	return RCStyle{
+	return rcStyle{
 		Objector: obj,
 	}
 }
@@ -379,11 +528,6 @@ func WrapRCContext(ptr unsafe.Pointer) *RCContext {
 	return (*RCContext)(ptr)
 }
 
-func marshalRCContext(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRCContext(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (r *RCContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
@@ -402,11 +546,6 @@ func WrapRCProperty(ptr unsafe.Pointer) *RCProperty {
 	}
 
 	return (*RCProperty)(ptr)
-}
-
-func marshalRCProperty(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRCProperty(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

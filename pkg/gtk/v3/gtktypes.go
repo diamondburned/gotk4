@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -84,7 +84,7 @@ func (i *IconSet) AddSource(source *IconSource) {
 
 // Sizes obtains a list of icon sizes this icon set can render. The returned
 // array must be freed with g_free().
-func (i *IconSet) Sizes() []*int {
+func (i *IconSet) Sizes() []int {
 	var _arg0 *C.GtkIconSet // out
 
 	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
@@ -94,11 +94,11 @@ func (i *IconSet) Sizes() []*int {
 
 	C.gtk_icon_set_get_sizes(_arg0, &_arg1, &_arg2)
 
-	var _sizes []*int
+	var _sizes []int
 
-	ptr.SetSlice(unsafe.Pointer(&_sizes), unsafe.Pointer(_arg1), int(_arg2))
-	runtime.SetFinalizer(&_sizes, func(v *[]*int) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+	_sizes = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_sizes, func(v *[]int) {
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 
 	return _sizes
@@ -161,7 +161,7 @@ func (s *IconSource) DirectionWildcarded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -171,7 +171,7 @@ func (s *IconSource) DirectionWildcarded() bool {
 // Filename retrieves the source filename, or nil if none is set. The filename
 // is not a copy, and should not be modified or expected to persist beyond the
 // lifetime of the icon source.
-func (s *IconSource) Filename() *string {
+func (s *IconSource) Filename() string {
 	var _arg0 *C.GtkIconSource // out
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
@@ -180,7 +180,7 @@ func (s *IconSource) Filename() *string {
 
 	_cret = C.gtk_icon_source_get_filename(_arg0)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -236,7 +236,7 @@ func (s *IconSource) SizeWildcarded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -255,7 +255,7 @@ func (s *IconSource) StateWildcarded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -293,7 +293,7 @@ func (s *IconSource) SetDirectionWildcarded(setting bool) {
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_icon_source_set_direction_wildcarded(_arg0, _arg1)
@@ -301,7 +301,7 @@ func (s *IconSource) SetDirectionWildcarded(setting bool) {
 
 // SetFilename sets the name of an image file to use as a base image when
 // creating icon variants for IconSet. The filename must be absolute.
-func (s *IconSource) SetFilename(filename *string) {
+func (s *IconSource) SetFilename(filename string) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 *C.gchar         // out
 
@@ -370,7 +370,7 @@ func (s *IconSource) SetSizeWildcarded(setting bool) {
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_icon_source_set_size_wildcarded(_arg0, _arg1)
@@ -410,7 +410,7 @@ func (s *IconSource) SetStateWildcarded(setting bool) {
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_icon_source_set_state_wildcarded(_arg0, _arg1)
@@ -463,12 +463,10 @@ func (s *SelectionData) DataWithLength() []byte {
 	var _guint8s []byte
 
 	{
-		var src []C.guchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
 		_guint8s = make([]byte, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_guint8s = (byte)(_cret)
+		for i := 0; i < int(_arg1); i++ {
+			_guint8s[i] = (byte)(src[i])
 		}
 	}
 
@@ -541,20 +539,18 @@ func (s *SelectionData) Uris() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -594,7 +590,7 @@ func (s *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -619,7 +615,7 @@ func (s *SelectionData) SetText(str string, len int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -633,16 +629,14 @@ func (s *SelectionData) SetUris(uris []string) bool {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
-	_arg1 = (**C.gchar)(C.malloc((len(uris) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(uris) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(uris)))
-
+		out := unsafe.Slice(_arg1, len(uris))
 		for i := range uris {
-			_arg1 = (*C.gchar)(C.CString(uris))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(uris[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -652,7 +646,7 @@ func (s *SelectionData) SetUris(uris []string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -667,7 +661,7 @@ func (s *SelectionData) TargetsIncludeImage(writable bool) bool {
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 	if writable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -676,7 +670,7 @@ func (s *SelectionData) TargetsIncludeImage(writable bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -699,7 +693,7 @@ func (s *SelectionData) TargetsIncludeRichText(buffer TextBuffer) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -719,7 +713,7 @@ func (s *SelectionData) TargetsIncludeText() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -740,7 +734,7 @@ func (s *SelectionData) TargetsIncludeURI() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -912,7 +906,7 @@ func (p *WidgetPath) HasParent(typ externglib.Type) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -934,7 +928,7 @@ func (p *WidgetPath) IsType(typ externglib.Type) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1100,7 +1094,7 @@ func (p *WidgetPath) IterHasClass(pos int, name string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1125,7 +1119,7 @@ func (p *WidgetPath) IterHasName(pos int, name string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

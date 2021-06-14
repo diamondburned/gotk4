@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -113,7 +113,7 @@ type MenuItem interface {
 	ToggleSizeAllocate(allocation int)
 }
 
-// menuItem implements the MenuItem interface.
+// menuItem implements the MenuItem class.
 type menuItem struct {
 	Bin
 	Actionable
@@ -126,7 +126,7 @@ var _ MenuItem = (*menuItem)(nil)
 // WrapMenuItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuItem(obj *externglib.Object) MenuItem {
-	return MenuItem{
+	return menuItem{
 		Bin:         WrapBin(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -208,7 +208,7 @@ func (m menuItem) ReserveIndicator() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -228,7 +228,7 @@ func (m menuItem) RightJustified() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -248,7 +248,7 @@ func (m menuItem) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -315,7 +315,7 @@ func (m menuItem) SetReserveIndicator(reserve bool) {
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	if reserve {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_menu_item_set_reserve_indicator(_arg0, _arg1)
@@ -332,7 +332,7 @@ func (m menuItem) SetRightJustified(rightJustified bool) {
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	if rightJustified {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_menu_item_set_right_justified(_arg0, _arg1)
@@ -358,7 +358,7 @@ func (m menuItem) SetUseUnderline(setting bool) {
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_menu_item_set_use_underline(_arg0, _arg1)

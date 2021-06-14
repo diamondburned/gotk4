@@ -20,23 +20,9 @@ type FileGenerator struct {
 	pen    *pen.PaperString // body
 
 	name       string
-	includes   []string // C include
 	marshalers []string
 
-	imports  map[string]string // optional alias value
-	imported []string          // keep track of side effects
-	packages []string
-
-	// Keep track of local callback declarations so we can reference them in the
-	// file.
-	callbacks      map[string]struct{}
-	callbackDelete bool
-
-	// inserted keeps track of what was inserted once.
-	inserted struct {
-		IncludeGObject bool
-		IncludeStdbool bool
-	}
+	SideEffects
 }
 
 // NewFileGenerator creates a new FileGenerator.
@@ -44,11 +30,7 @@ func NewFileGenerator(parent *NamespaceGenerator, goFile string) *FileGenerator 
 	fg := FileGenerator{
 		parent: parent,
 		pen:    pen.NewPaperStringSize(2 * 1024 * 1024), // 2MB
-
-		name:      goFile,
-		imports:   map[string]string{},
-		callbacks: map[string]struct{}{},
-
+		name:   goFile,
 		// overallocate
 		marshalers: make([]string, 0, 0+
 			len(parent.current.Namespace.Enums)+
@@ -75,13 +57,20 @@ func replaceExt(name, ext string) string {
 	}
 }
 
+// isRootFile returns true if the current file is the origin file, or the file
+// that is the fallback..
+func (fg *FileGenerator) isRootFile() bool {
+	return strings.Split(fg.name, ".")[0] == fg.parent.PackageName()
+}
+
 func (fg *FileGenerator) generate() ([]byte, error) {
 	if len(fg.marshalers) > 0 {
 		fg.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
 	}
 
-	if fg.callbackDelete {
-		fg.addImport("github.com/diamondburned/gotk4/internal/box")
+	if fg.CallbackDelete {
+		fg.addImportInternal("box")
+		fg.addCallbackHeader("extern void callbackDelete(gpointer);")
 	}
 
 	var out bytes.Buffer
@@ -95,11 +84,16 @@ func (fg *FileGenerator) generate() ([]byte, error) {
 	pen.Words("package", fg.parent.PackageName())
 	pen.EmptyLine()
 
-	if len(fg.imports) > 0 {
-		builtin := make([]string, len(fg.imports))
-		externs := make([]string, len(fg.imports))
+	if len(fg.Imports) > 0 {
+		builtin := make([]string, 0, len(fg.Imports))
+		externs := make([]string, 0, len(fg.Imports))
 
-		for path, alias := range fg.imports {
+		for path, alias := range fg.Imports {
+			// Skip importing the current package.
+			if path == fg.parent.pkgPath {
+				continue
+			}
+
 			if !strings.Contains(path, "/") {
 				builtin = append(builtin, makeImport(path, alias))
 			} else {
@@ -130,19 +124,11 @@ func (fg *FileGenerator) generate() ([]byte, error) {
 	pen.Words(append([]string{"// #cgo pkg-config:"}, fg.pkgconfig()...)...)
 	pen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
 
-	for _, cIncl := range fg.includes {
+	for _, cIncl := range fg.cIncludes() {
 		pen.Linef("// #include <%s>", cIncl)
 	}
-	for _, cIncl := range fg.parent.current.Repository.CIncludes {
-		pen.Linef("// #include <%s>", cIncl.Name)
-	}
 
-	if fg.callbackDelete {
-		pen.Words("//")
-		pen.Words("// extern void callbackDelete(gpointer);")
-	}
-
-	if len(fg.callbacks) > 0 {
+	if len(fg.Callbacks) > 0 {
 		pen.Words("//")
 		for _, callback := range fg.callbackHeaders() {
 			pen.Words("//", callback)
@@ -165,7 +151,8 @@ func (fg *FileGenerator) generate() ([]byte, error) {
 		pen.EmptyLine()
 	}
 
-	if fg.callbackDelete {
+	// Only write the Go definition in one file.
+	if fg.CallbackDelete && fg.isRootFile() {
 		pen.Words("//export callbackDelete")
 		pen.Words("func callbackDelete(ptr C.gpointer) {")
 		pen.Words("  box.Delete(box.Callback, uintptr(ptr))")
@@ -206,93 +193,54 @@ func makeImport(importPath, alias string) string {
 }
 
 func (fg *FileGenerator) pkgconfig() []string {
-	return append(fg.parent.pkgconfig(), fg.packages...)
+	parentPkgs := fg.parent.pkgconfig()
+	packages := make([]string, 0, len(fg.Packages)+len(parentPkgs))
+
+	packages = append(packages, parentPkgs...)
+	for pkg := range fg.Packages {
+		packages = append(packages, pkg)
+	}
+
+	sort.Strings(packages)
+	return packages
 }
 
+// addMarshaler adds the type marshaler into the init header. It also adds
+// imports.
 func (fg *FileGenerator) addMarshaler(glibGetType, goName string) {
 	fg.marshalers = append(fg.marshalers, fmt.Sprintf(
 		`{T: externglib.Type(C.%s()), F: marshal%s},`, glibGetType, goName,
 	))
+	// Need this for g_value functions inside marshal.
+	fg.needsGLibObject()
+	// Need this for the pointer cast.
+	fg.addImport("unsafe")
 }
 
-func (fg *FileGenerator) needsStdbool() {
-	if !fg.inserted.IncludeStdbool {
-		fg.inserted.IncludeStdbool = true
+func (fg *FileGenerator) cIncludes() []string {
+	includes := make([]string, 0,
+		len(fg.CIncludes)+len(fg.parent.current.Repository.CIncludes))
 
-		fg.includes = append(fg.includes, "stdbool.h")
+	for cIncl := range fg.CIncludes {
+		includes = append(includes, cIncl)
 	}
-}
-
-func (fg *FileGenerator) needsGLibObject() {
-	if !fg.inserted.IncludeGObject {
-		fg.inserted.IncludeGObject = true
-
-		// Need this for g_value_get_boxed.
-		fg.includes = append(fg.includes, "glib-object.h")
-		// Need tihs for the above header.
-		fg.packages = append(fg.packages, "glib-2.0")
+	for _, cIncl := range fg.parent.current.Repository.CIncludes {
+		includes = append(includes, cIncl.Name)
 	}
+
+	sort.Strings(includes)
+	return includes
 }
 
-func (fg *FileGenerator) needsCallbackDelete() {
-	fg.callbackDelete = true
-}
-
+// callbackHeaders returns the sorted C callback headers.
 func (fg *FileGenerator) callbackHeaders() []string {
-	headers := make([]string, 0, len(fg.callbacks))
-	for callback := range fg.callbacks {
+	headers := make([]string, 0, len(fg.Callbacks))
+	for callback := range fg.Callbacks {
 		headers = append(headers, callback)
 	}
 
 	sort.Strings(headers)
 	return headers
-}
-
-// addCallbackHeader adds the given callback's C function header into the
-// registry.
-func (fg *FileGenerator) addCallbackHeader(header string) {
-	fg.callbacks[header] = struct{}{}
-}
-
-func (fg *FileGenerator) addImport(pkgPath string) {
-	fg.addImportAlias(pkgPath, "")
-}
-
-func (fg *FileGenerator) addImportAlias(pkgPath, alias string) {
-	_, ok := fg.imports[pkgPath]
-	if ok {
-		return
-	}
-
-	fg.imports[pkgPath] = alias
-	fg.imported = append(fg.imported, pkgPath)
-}
-
-// wipeImportStack wipes the internal import stack. This is useful if the caller
-// wants to keep track of added imports to undo them.
-func (fg *FileGenerator) wipeImportStack() {
-	fg.imported = fg.imported[:0]
-}
-
-// undoImports undoes the added imports by reading back from the stack. The
-// caller should call wipeImportStack before this. The import stack is wiped
-// once done.
-func (fg *FileGenerator) undoImports() {
-	for _, pkgPath := range fg.imported {
-		delete(fg.imports, pkgPath)
-	}
-	fg.wipeImportStack()
-}
-
-func (fg *FileGenerator) addResolvedImport(resolved *ResolvedType) {
-	if resolved != nil && resolved.Import != "" && resolved.Import != fg.parent.pkgPath {
-		fg.addImportAlias(resolved.Import, resolved.Package)
-	}
-}
-
-// addGLibImport adds the gotk3/glib import.
-func (fg *FileGenerator) addGLibImport() {
-	fg.addResolvedImport(externGLibType("", gir.Type{}, ""))
 }
 
 // Namespace returns the generator's namespace that includes the repository it's
@@ -310,4 +258,135 @@ func (fg *FileGenerator) Logln(level LogLevel, v ...interface{}) {
 
 func (fg *FileGenerator) warnUnknownType(typ string) {
 	fg.Logln(LogUnknown, strconv.Quote(typ))
+}
+
+// applyConvertedFxs applies all side effects of the given list of type converted
+// results.
+func (fg *FileGenerator) applyConvertedFxs(results []ValueConverted) {
+	for _, result := range results {
+		result.ApplySideEffects(&fg.SideEffects)
+	}
+}
+
+// SideEffects describes the side effects of the conversion, such as
+// importing new things or modifying the Cgo preamble.
+type SideEffects struct {
+	Imports        map[string]string
+	CIncludes      map[string]struct{}
+	Packages       map[string]struct{} // for pkg-config
+	Callbacks      map[string]struct{}
+	CallbackDelete bool
+}
+
+const internalImportPath = "github.com/diamondburned/gotk4/internal"
+
+func (sides *SideEffects) addImportInternal(internal string) {
+	sides.addImport(internalImportPath + "/" + internal)
+}
+
+func (sides *SideEffects) addImport(path string) {
+	sides.addImportAlias(path, "")
+}
+
+func (sides *SideEffects) addImportAlias(path, alias string) {
+	if sides.Imports == nil {
+		sides.Imports = map[string]string{}
+	}
+
+	sides.Imports[path] = alias
+}
+
+func (sides *SideEffects) addGLibImport() {
+	sides.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
+}
+
+func (sides *SideEffects) importPubl(resolved *ResolvedType) {
+	if resolved == nil {
+		return
+	}
+
+	sides.importResolvedType(resolved.PublImport)
+	if resolved.IsCallback() {
+		sides.addCallbackHeader(CallbackCHeader(resolved.Extern.Result.Callback))
+	}
+}
+
+func (sides *SideEffects) importImpl(resolved *ResolvedType) {
+	if resolved == nil {
+		return
+	}
+
+	sides.importResolvedType(resolved.ImplImport)
+	if resolved.IsCallback() {
+		sides.addCallbackHeader(CallbackCHeader(resolved.Extern.Result.Callback))
+	}
+}
+
+func (sides *SideEffects) importResolvedType(imports ResolvedTypeImport) {
+	if imports.Path != "" {
+		sides.addImportAlias(imports.Path, imports.Package)
+	}
+}
+
+func (sides *SideEffects) addCallback(callback *gir.Callback) {
+	sides.addCallbackHeader(CallbackCHeader(callback))
+}
+
+func (sides *SideEffects) addCallbackHeader(header string) {
+	if sides.Callbacks == nil {
+		sides.Callbacks = map[string]struct{}{}
+	}
+
+	sides.Callbacks[header] = struct{}{}
+}
+
+// addPackage adds a pkg-config package.
+func (sides *SideEffects) addPackage(pkg string) {
+	if sides.Packages == nil {
+		sides.Packages = map[string]struct{}{}
+	}
+
+	sides.Packages[pkg] = struct{}{}
+}
+
+// includeC adds a C header file into the cgo preamble.
+func (sides *SideEffects) includeC(include string) {
+	if sides.CIncludes == nil {
+		sides.CIncludes = map[string]struct{}{}
+	}
+
+	sides.CIncludes[include] = struct{}{}
+}
+
+// needsCbool adds the C stdbool.h include.
+func (sides *SideEffects) needsCbool() {
+	sides.includeC("stdbool.h")
+}
+
+// needsGLibObject adds the glib-object.h include and the glib-2.0 package.
+func (sides *SideEffects) needsGLibObject() {
+	// Need this for g_value_get_boxed.
+	sides.includeC("glib-object.h")
+	// Need this for the above header.
+	sides.addPackage("glib-2.0")
+}
+
+// ApplySideEffects applies the side effects of the conversion. The caller is
+// responsible for calling this.
+func (sides *SideEffects) ApplySideEffects(dst *SideEffects) {
+	if sides.CallbackDelete {
+		dst.CallbackDelete = true
+	}
+	for path, alias := range sides.Imports {
+		dst.addImportAlias(path, alias)
+	}
+	for callback := range sides.Callbacks {
+		dst.addCallbackHeader(callback)
+	}
+	for cIncl := range sides.CIncludes {
+		dst.includeC(cIncl)
+	}
+	for pkg := range sides.Packages {
+		dst.addPackage(pkg)
+	}
 }

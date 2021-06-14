@@ -5,14 +5,152 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_clipboard_get_type()), F: marshalClipboard},
+	})
+}
+
+// Clipboard: the `GdkClipboard` object represents data shared between
+// applications or inside an application.
+//
+// To get a `GdkClipboard` object, use [method@Gdk.Display.get_clipboard] or
+// [method@Gdk.Display.get_primary_clipboard]. You can find out about the data
+// that is currently available in a clipboard using
+// [method@Gdk.Clipboard.get_formats].
+//
+// To make text or image data available in a clipboard, use
+// [method@Gdk.Clipboard.set_text] or [method@Gdk.Clipboard.set_texture]. For
+// other data, you can use [method@Gdk.Clipboard.set_content], which takes a
+// [class@Gdk.ContentProvider] object.
+//
+// To read textual or image data from a clipboard, use
+// [method@Gdk.Clipboard.read_text_async] or
+// [method@Gdk.Clipboard.read_texture_async]. For other data, use
+// [method@Gdk.Clipboard.read_async], which provides a `GInputStream` object.
+type Clipboard interface {
+	gextras.Objector
+
+	// IsLocal returns if the clipboard is local.
+	//
+	// A clipboard is considered local if it was last claimed by the running
+	// application.
+	//
+	// Note that [method@Gdk.Clipboard.get_content] may return nil even on a
+	// local clipboard. In this case the clipboard is empty.
+	IsLocal() bool
+	// SetContent sets a new content provider on @clipboard.
+	//
+	// The clipboard will claim the `GdkDisplay`'s resources and advertise these
+	// new contents to other applications.
+	//
+	// In the rare case of a failure, this function will return false. The
+	// clipboard will then continue reporting its old contents and ignore
+	// @provider.
+	//
+	// If the contents are read by either an external application or the
+	// @clipboard's read functions, @clipboard will select the best format to
+	// transfer the contents and then request that format from @provider.
+	SetContent(provider ContentProvider) bool
+	// SetValue sets the @clipboard to contain the given @value.
+	SetValue(value **externglib.Value)
+}
+
+// clipboard implements the Clipboard class.
+type clipboard struct {
+	gextras.Objector
+}
+
+var _ Clipboard = (*clipboard)(nil)
+
+// WrapClipboard wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapClipboard(obj *externglib.Object) Clipboard {
+	return clipboard{
+		Objector: obj,
+	}
+}
+
+func marshalClipboard(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapClipboard(obj), nil
+}
+
+// IsLocal returns if the clipboard is local.
+//
+// A clipboard is considered local if it was last claimed by the running
+// application.
+//
+// Note that [method@Gdk.Clipboard.get_content] may return nil even on a
+// local clipboard. In this case the clipboard is empty.
+func (c clipboard) IsLocal() bool {
+	var _arg0 *C.GdkClipboard // out
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_clipboard_is_local(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetContent sets a new content provider on @clipboard.
+//
+// The clipboard will claim the `GdkDisplay`'s resources and advertise these
+// new contents to other applications.
+//
+// In the rare case of a failure, this function will return false. The
+// clipboard will then continue reporting its old contents and ignore
+// @provider.
+//
+// If the contents are read by either an external application or the
+// @clipboard's read functions, @clipboard will select the best format to
+// transfer the contents and then request that format from @provider.
+func (c clipboard) SetContent(provider ContentProvider) bool {
+	var _arg0 *C.GdkClipboard       // out
+	var _arg1 *C.GdkContentProvider // out
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_clipboard_set_content(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetValue sets the @clipboard to contain the given @value.
+func (c clipboard) SetValue(value **externglib.Value) {
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GValue       // out
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GValue)(value.GValue)
+
+	C.gdk_clipboard_set_value(_arg0, _arg1)
+}

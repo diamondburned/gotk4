@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -124,7 +126,7 @@ type ToggleButton interface {
 	Toggled()
 }
 
-// toggleButton implements the ToggleButton interface.
+// toggleButton implements the ToggleButton class.
 type toggleButton struct {
 	Button
 	Actionable
@@ -137,7 +139,7 @@ var _ ToggleButton = (*toggleButton)(nil)
 // WrapToggleButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToggleButton(obj *externglib.Object) ToggleButton {
-	return ToggleButton{
+	return toggleButton{
 		Button:      WrapButton(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -164,7 +166,7 @@ func (t toggleButton) Active() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -183,7 +185,7 @@ func (t toggleButton) Inconsistent() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -203,7 +205,7 @@ func (t toggleButton) Mode() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -220,7 +222,7 @@ func (t toggleButton) SetActive(isActive bool) {
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if isActive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_toggle_button_set_active(_arg0, _arg1)
@@ -240,7 +242,7 @@ func (t toggleButton) SetInconsistent(setting bool) {
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_toggle_button_set_inconsistent(_arg0, _arg1)
@@ -262,7 +264,7 @@ func (t toggleButton) SetMode(drawIndicator bool) {
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if drawIndicator {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_toggle_button_set_mode(_arg0, _arg1)

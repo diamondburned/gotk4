@@ -6,14 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -48,15 +46,6 @@ func init() {
 type UnixFDMessage interface {
 	SocketControlMessage
 
-	// AppendFd adds a file descriptor to @message.
-	//
-	// The file descriptor is duplicated using dup(). You keep your copy of the
-	// descriptor and the copy contained in @message will be closed when
-	// @message is finalized.
-	//
-	// A possible cause of failure is exceeding the per-process or system-wide
-	// file descriptor limit.
-	AppendFd(fd int) error
 	// StealFds returns the array of file descriptors that is contained in this
 	// object.
 	//
@@ -75,7 +64,7 @@ type UnixFDMessage interface {
 	StealFds() []int
 }
 
-// unixFDMessage implements the UnixFDMessage interface.
+// unixFDMessage implements the UnixFDMessage class.
 type unixFDMessage struct {
 	SocketControlMessage
 }
@@ -85,7 +74,7 @@ var _ UnixFDMessage = (*unixFDMessage)(nil)
 // WrapUnixFDMessage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
-	return UnixFDMessage{
+	return unixFDMessage{
 		SocketControlMessage: WrapSocketControlMessage(obj),
 	}
 }
@@ -94,32 +83,6 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapUnixFDMessage(obj), nil
-}
-
-// AppendFd adds a file descriptor to @message.
-//
-// The file descriptor is duplicated using dup(). You keep your copy of the
-// descriptor and the copy contained in @message will be closed when
-// @message is finalized.
-//
-// A possible cause of failure is exceeding the per-process or system-wide
-// file descriptor limit.
-func (m unixFDMessage) AppendFd(fd int) error {
-	var _arg0 *C.GUnixFDMessage // out
-	var _arg1 C.gint            // out
-
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(fd)
-
-	var _cerr *C.GError // in
-
-	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // StealFds returns the array of file descriptors that is contained in this
@@ -149,9 +112,9 @@ func (m unixFDMessage) StealFds() []int {
 
 	var _gints []int
 
-	ptr.SetSlice(unsafe.Pointer(&_gints), unsafe.Pointer(_cret), int(_arg1))
+	_gints = unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg1)
 	runtime.SetFinalizer(&_gints, func(v *[]int) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 
 	return _gints

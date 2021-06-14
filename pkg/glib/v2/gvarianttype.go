@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -220,7 +220,7 @@ func (t *VariantType) Equal(type2 VariantType) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -296,7 +296,7 @@ func (t *VariantType) IsArray() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -323,7 +323,7 @@ func (t *VariantType) IsBasic() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -348,7 +348,7 @@ func (t *VariantType) IsContainer() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -375,7 +375,7 @@ func (t *VariantType) IsDefinite() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -398,7 +398,7 @@ func (t *VariantType) IsDictEntry() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -421,7 +421,7 @@ func (t *VariantType) IsMaybe() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -446,7 +446,7 @@ func (t *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -469,7 +469,7 @@ func (t *VariantType) IsTuple() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -488,7 +488,7 @@ func (t *VariantType) IsVariant() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -516,25 +516,4 @@ func (t *VariantType) NItems() uint {
 	_gsize = (uint)(_cret)
 
 	return _gsize
-}
-
-// PeekString returns the type string corresponding to the given @type. The
-// result is not nul-terminated; in order to determine its length you must call
-// g_variant_type_get_string_length().
-//
-// To get a nul-terminated string, see g_variant_type_dup_string().
-func (t *VariantType) PeekString() string {
-	var _arg0 *C.GVariantType // out
-
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.gchar // in
-
-	_cret = C.g_variant_type_peek_string(_arg0)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-
-	return _utf8
 }

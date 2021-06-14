@@ -269,25 +269,92 @@ type TypeFindResult struct {
 //
 // TODO: split Info into Name() and CType().
 func (res *TypeFindResult) Info() (name, ctype string) {
+	return res.Name(false), res.CType()
+}
+
+// CType returns the resulting type's C type identifier.
+func (res *TypeFindResult) CType() string {
 	switch {
 	case res.Alias != nil:
-		return res.Alias.Name, res.Alias.CType
+		return res.Alias.CType
 	case res.Class != nil:
-		return res.Class.Name, res.Class.GLibTypeName
+		return res.Class.GLibTypeName
 	case res.Interface != nil:
-		return res.Interface.Name, res.Interface.CType
+		return res.Interface.CType
 	case res.Record != nil:
-		return res.Record.Name, res.Record.CType
+		return res.Record.CType
 	case res.Enum != nil:
-		return res.Enum.Name, res.Enum.CType
+		return res.Enum.CType
 	case res.Function != nil:
-		return res.Function.Name, res.Function.CIdentifier
+		return res.Function.CIdentifier
 	case res.Union != nil:
-		return res.Union.Name, res.Union.CType
+		return res.Union.CType
 	case res.Bitfield != nil:
-		return res.Bitfield.Name, res.Bitfield.CType
+		return res.Bitfield.CType
 	case res.Callback != nil:
-		return res.Callback.Name, res.Callback.CIdentifier
+		return res.Callback.CIdentifier
+	}
+
+	panic("TypeFindResult has all fields nil")
+}
+
+// Name returns the resulting type's GIR name, with or without the namespace.
+func (res *TypeFindResult) Name(needsNamespace bool) string {
+	var typ string
+	switch {
+	case res.Alias != nil:
+		typ = res.Alias.Name
+	case res.Class != nil:
+		typ = res.Class.Name
+	case res.Interface != nil:
+		typ = res.Interface.Name
+	case res.Record != nil:
+		typ = res.Record.Name
+	case res.Enum != nil:
+		typ = res.Enum.Name
+	case res.Function != nil:
+		typ = res.Function.Name
+	case res.Union != nil:
+		typ = res.Union.Name
+	case res.Bitfield != nil:
+		typ = res.Bitfield.Name
+	case res.Callback != nil:
+		typ = res.Callback.Name
+	}
+
+	if typ == "" {
+		panic("TypeFindResult has all fields nil")
+	}
+
+	if needsNamespace {
+		typ = res.Namespace.Name + "." + typ
+	}
+
+	return typ
+}
+
+// IsIntrospectable returns true if the type inside the result is
+// introspectable.
+func (res *TypeFindResult) IsIntrospectable() bool {
+	switch {
+	case res.Alias != nil:
+		return res.Alias.IsIntrospectable()
+	case res.Class != nil:
+		return res.Class.IsIntrospectable()
+	case res.Interface != nil:
+		return res.Interface.IsIntrospectable()
+	case res.Record != nil:
+		return res.Record.IsIntrospectable()
+	case res.Enum != nil:
+		return res.Enum.IsIntrospectable()
+	case res.Function != nil:
+		return res.Function.IsIntrospectable()
+	case res.Union != nil:
+		return res.Union.IsIntrospectable()
+	case res.Bitfield != nil:
+		return res.Bitfield.IsIntrospectable()
+	case res.Callback != nil:
+		return res.Callback.IsIntrospectable()
 	}
 
 	panic("TypeFindResult has all fields nil")

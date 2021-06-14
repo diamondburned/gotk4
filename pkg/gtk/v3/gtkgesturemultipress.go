@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -50,7 +50,7 @@ type GestureMultiPress interface {
 	SetArea(rect *gdk.Rectangle)
 }
 
-// gestureMultiPress implements the GestureMultiPress interface.
+// gestureMultiPress implements the GestureMultiPress class.
 type gestureMultiPress struct {
 	GestureSingle
 }
@@ -60,7 +60,7 @@ var _ GestureMultiPress = (*gestureMultiPress)(nil)
 // WrapGestureMultiPress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureMultiPress(obj *externglib.Object) GestureMultiPress {
-	return GestureMultiPress{
+	return gestureMultiPress{
 		GestureSingle: WrapGestureSingle(obj),
 	}
 }
@@ -87,7 +87,7 @@ func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

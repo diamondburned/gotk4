@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -94,7 +94,7 @@ type WindowControls interface {
 	SetSide(side PackType)
 }
 
-// windowControls implements the WindowControls interface.
+// windowControls implements the WindowControls class.
 type windowControls struct {
 	Widget
 	Accessible
@@ -107,7 +107,7 @@ var _ WindowControls = (*windowControls)(nil)
 // WrapWindowControls wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindowControls(obj *externglib.Object) WindowControls {
-	return WindowControls{
+	return windowControls{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -150,7 +150,7 @@ func (s windowControls) Empty() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

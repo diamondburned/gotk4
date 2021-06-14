@@ -5,12 +5,13 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -137,7 +138,7 @@ type IMContext interface {
 	SetUsePreedit(usePreedit bool)
 }
 
-// imContext implements the IMContext interface.
+// imContext implements the IMContext class.
 type imContext struct {
 	gextras.Objector
 }
@@ -147,7 +148,7 @@ var _ IMContext = (*imContext)(nil)
 // WrapIMContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIMContext(obj *externglib.Object) IMContext {
-	return IMContext{
+	return imContext{
 		Objector: obj,
 	}
 }
@@ -189,7 +190,7 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -212,7 +213,7 @@ func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -298,7 +299,7 @@ func (c imContext) Surrounding() (string, int, bool) {
 	_text = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = (int)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -371,7 +372,7 @@ func (c imContext) SetUsePreedit(usePreedit bool) {
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	if usePreedit {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_im_context_set_use_preedit(_arg0, _arg1)

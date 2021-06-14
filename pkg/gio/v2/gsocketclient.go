@@ -5,13 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -23,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -65,37 +65,6 @@ type SocketClient interface {
 	// will be skipped. This is required to let the application do the proxy
 	// specific handshake.
 	AddApplicationProXY(protocol string)
-	// ConnectAsync: this is the asynchronous version of
-	// g_socket_client_connect().
-	//
-	// You may wish to prefer the asynchronous version even in synchronous
-	// command line programs because, since 2.60, it implements RFC 8305
-	// (https://tools.ietf.org/html/rfc8305) "Happy Eyeballs" recommendations to
-	// work around long connection timeouts in networks where IPv6 is broken by
-	// performing an IPv4 connection simultaneously without waiting for IPv6 to
-	// time out, which is not supported by the synchronous call. (This is not an
-	// API guarantee, and may change in the future.)
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_socket_client_connect_finish() to get the result of the operation.
-	ConnectAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectToHostAsync: this is the asynchronous version of
-	// g_socket_client_connect_to_host().
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_socket_client_connect_to_host_finish() to get the result of the
-	// operation.
-	ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectToServiceAsync: this is the asynchronous version of
-	// g_socket_client_connect_to_service().
-	ConnectToServiceAsync(domain string, service string, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectToURIAsync: this is the asynchronous version of
-	// g_socket_client_connect_to_uri().
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_socket_client_connect_to_uri_finish() to get the result of the
-	// operation.
-	ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback)
 	// EnableProXY gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
 	EnableProXY() bool
@@ -178,7 +147,7 @@ type SocketClient interface {
 	SetTLSValidationFlags(flags TLSCertificateFlags)
 }
 
-// socketClient implements the SocketClient interface.
+// socketClient implements the SocketClient class.
 type socketClient struct {
 	gextras.Objector
 }
@@ -188,7 +157,7 @@ var _ SocketClient = (*socketClient)(nil)
 // WrapSocketClient wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketClient(obj *externglib.Object) SocketClient {
-	return SocketClient{
+	return socketClient{
 		Objector: obj,
 	}
 }
@@ -228,107 +197,6 @@ func (c socketClient) AddApplicationProXY(protocol string) {
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
 }
 
-// ConnectAsync: this is the asynchronous version of
-// g_socket_client_connect().
-//
-// You may wish to prefer the asynchronous version even in synchronous
-// command line programs because, since 2.60, it implements RFC 8305
-// (https://tools.ietf.org/html/rfc8305) "Happy Eyeballs" recommendations to
-// work around long connection timeouts in networks where IPv6 is broken by
-// performing an IPv4 connection simultaneously without waiting for IPv6 to
-// time out, which is not supported by the synchronous call. (This is not an
-// API guarantee, and may change in the future.)
-//
-// When the operation is finished @callback will be called. You can then
-// call g_socket_client_connect_finish() to get the result of the operation.
-func (c socketClient) ConnectAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketClient      // out
-	var _arg1 *C.GSocketConnectable // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_socket_client_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// ConnectToHostAsync: this is the asynchronous version of
-// g_socket_client_connect_to_host().
-//
-// When the operation is finished @callback will be called. You can then
-// call g_socket_client_connect_to_host_finish() to get the result of the
-// operation.
-func (c socketClient) ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketClient      // out
-	var _arg1 *C.gchar              // out
-	var _arg2 C.guint16             // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.gchar)(C.CString(hostAndPort))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_socket_client_connect_to_host_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// ConnectToServiceAsync: this is the asynchronous version of
-// g_socket_client_connect_to_service().
-func (c socketClient) ConnectToServiceAsync(domain string, service string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketClient      // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.gchar              // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(service))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_socket_client_connect_to_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// ConnectToURIAsync: this is the asynchronous version of
-// g_socket_client_connect_to_uri().
-//
-// When the operation is finished @callback will be called. You can then
-// call g_socket_client_connect_to_uri_finish() to get the result of the
-// operation.
-func (c socketClient) ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketClient      // out
-	var _arg1 *C.gchar              // out
-	var _arg2 C.guint16             // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_socket_client_connect_to_uri_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
 // EnableProXY gets the proxy enable state; see
 // g_socket_client_set_enable_proxy()
 func (c socketClient) EnableProXY() bool {
@@ -342,7 +210,7 @@ func (c socketClient) EnableProXY() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -381,7 +249,7 @@ func (c socketClient) TLS() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -400,7 +268,7 @@ func (c socketClient) SetEnableProXY(enable bool) {
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	if enable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_socket_client_set_enable_proxy(_arg0, _arg1)
@@ -524,7 +392,7 @@ func (c socketClient) SetTLS(tls bool) {
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	if tls {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_socket_client_set_tls(_arg0, _arg1)

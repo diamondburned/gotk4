@@ -3,15 +3,13 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -21,8 +19,31 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_icon_view_drop_position_get_type()), F: marshalIconViewDropPosition},
 		{T: externglib.Type(C.gtk_icon_view_get_type()), F: marshalIconView},
 	})
+}
+
+// IconViewDropPosition: an enum for determining where a dropped item goes.
+type IconViewDropPosition int
+
+const (
+	// IconViewDropPositionNoDrop: no drop possible
+	IconViewDropPositionNoDrop IconViewDropPosition = 0
+	// IconViewDropPositionDropInto: dropped item replaces the item
+	IconViewDropPositionDropInto IconViewDropPosition = 1
+	// IconViewDropPositionDropLeft: droppped item is inserted to the left
+	IconViewDropPositionDropLeft IconViewDropPosition = 2
+	// IconViewDropPositionDropRight: dropped item is inserted to the right
+	IconViewDropPositionDropRight IconViewDropPosition = 3
+	// IconViewDropPositionDropAbove: dropped item is inserted above
+	IconViewDropPositionDropAbove IconViewDropPosition = 4
+	// IconViewDropPositionDropBelow: dropped item is inserted below
+	IconViewDropPositionDropBelow IconViewDropPosition = 5
+)
+
+func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
+	return IconViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // IconView provides an alternative view on a TreeModel. It displays the model
@@ -129,9 +150,6 @@ type IconView interface {
 	SelectAll()
 	// SelectPath selects the row at @path.
 	SelectPath(path *TreePath)
-	// SelectedForeach calls a function for each selected icon. Note that the
-	// model or selection cannot be modified from within this function.
-	SelectedForeach(fn IconViewForeachFunc)
 	// SetActivateOnSingleClick causes the IconView::item-activated signal to be
 	// emitted on a single click instead of a double click.
 	SetActivateOnSingleClick(single bool)
@@ -240,7 +258,7 @@ type IconView interface {
 	UnsetModelDragSource()
 }
 
-// iconView implements the IconView interface.
+// iconView implements the IconView class.
 type iconView struct {
 	Container
 	Buildable
@@ -253,7 +271,7 @@ var _ IconView = (*iconView)(nil)
 // WrapIconView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIconView(obj *externglib.Object) IconView {
-	return IconView{
+	return iconView{
 		Container:  WrapContainer(obj),
 		Buildable:  WrapBuildable(obj),
 		CellLayout: WrapCellLayout(obj),
@@ -339,7 +357,7 @@ func (i iconView) ActivateOnSingleClick() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -366,7 +384,7 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (gdk.Rectangle, bo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -545,7 +563,7 @@ func (i iconView) Reorderable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -638,7 +656,7 @@ func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -671,7 +689,7 @@ func (i iconView) PathIsSelected(path *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -703,7 +721,7 @@ func (i iconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign float32, 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	if useAlign {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	_arg3 = C.gfloat(rowAlign)
 	_arg4 = C.gfloat(colAlign)
@@ -732,20 +750,6 @@ func (i iconView) SelectPath(path *TreePath) {
 	C.gtk_icon_view_select_path(_arg0, _arg1)
 }
 
-// SelectedForeach calls a function for each selected icon. Note that the
-// model or selection cannot be modified from within this function.
-func (i iconView) SelectedForeach(fn IconViewForeachFunc) {
-	var _arg0 *C.GtkIconView           // out
-	var _arg1 C.GtkIconViewForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_IconViewForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_icon_view_selected_foreach(_arg0, _arg1, _arg2)
-}
-
 // SetActivateOnSingleClick causes the IconView::item-activated signal to be
 // emitted on a single click instead of a double click.
 func (i iconView) SetActivateOnSingleClick(single bool) {
@@ -754,7 +758,7 @@ func (i iconView) SetActivateOnSingleClick(single bool) {
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 	if single {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_icon_view_set_activate_on_single_click(_arg0, _arg1)
@@ -804,7 +808,7 @@ func (i iconView) SetCursor(path *TreePath, cell CellRenderer, startEditing bool
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if startEditing {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.gtk_icon_view_set_cursor(_arg0, _arg1, _arg2, _arg3)
@@ -930,7 +934,7 @@ func (i iconView) SetReorderable(reorderable bool) {
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 	if reorderable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_icon_view_set_reorderable(_arg0, _arg1)

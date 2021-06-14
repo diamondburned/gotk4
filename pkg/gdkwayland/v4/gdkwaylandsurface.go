@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4
+// #cgo pkg-config: gtk4 gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
 import "C"

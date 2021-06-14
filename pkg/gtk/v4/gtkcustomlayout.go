@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -27,7 +29,7 @@ type CustomLayout interface {
 	LayoutManager
 }
 
-// customLayout implements the CustomLayout interface.
+// customLayout implements the CustomLayout class.
 type customLayout struct {
 	LayoutManager
 }
@@ -37,7 +39,7 @@ var _ CustomLayout = (*customLayout)(nil)
 // WrapCustomLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCustomLayout(obj *externglib.Object) CustomLayout {
-	return CustomLayout{
+	return customLayout{
 		LayoutManager: WrapLayoutManager(obj),
 	}
 }

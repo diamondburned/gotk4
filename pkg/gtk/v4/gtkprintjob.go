@@ -5,11 +5,397 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_print_job_get_type()), F: marshalPrintJob},
+	})
+}
+
+// PrintJob: a `GtkPrintJob` object represents a job that is sent to a printer.
+//
+// You only need to deal directly with print jobs if you use the non-portable
+// [class@Gtk.PrintUnixDialog] API.
+//
+// Use [method@Gtk.PrintJob.get_surface] to obtain the cairo surface onto which
+// the pages must be drawn. Use [method@Gtk.PrintJob.send] to send the finished
+// job to the printer. If you don’t use cairo `GtkPrintJob` also supports
+// printing of manually generated PostScript, via
+// [method@Gtk.PrintJob.set_source_file].
+type PrintJob interface {
+	gextras.Objector
+
+	// Collate gets whether this job is printed collated.
+	Collate() bool
+	// NUp gets the n-up setting for this job.
+	NUp() uint
+	// NumCopies gets the number of copies of this job.
+	NumCopies() int
+	// Reverse gets whether this job is printed reversed.
+	Reverse() bool
+	// Rotate gets whether the job is printed rotated.
+	Rotate() bool
+	// Scale gets the scale for this job.
+	Scale() float64
+	// Title gets the job title.
+	Title() string
+	// TrackPrintStatus returns whether jobs will be tracked after printing.
+	//
+	// For details, see [method@Gtk.PrintJob.set_track_print_status].
+	TrackPrintStatus() bool
+	// SetCollate sets whether this job is printed collated.
+	SetCollate(collate bool)
+	// SetNUp sets the n-up setting for this job.
+	SetNUp(nUp uint)
+	// SetNUpLayout sets the n-up layout setting for this job.
+	SetNUpLayout(layout NumberUpLayout)
+	// SetNumCopies sets the number of copies for this job.
+	SetNumCopies(numCopies int)
+	// SetPageRanges sets the page ranges for this job.
+	SetPageRanges(ranges []PageRange)
+	// SetPageSet sets the `GtkPageSet` setting for this job.
+	SetPageSet(pageSet PageSet)
+	// SetPages sets the `GtkPrintPages` setting for this job.
+	SetPages(pages PrintPages)
+	// SetReverse sets whether this job is printed reversed.
+	SetReverse(reverse bool)
+	// SetRotate sets whether this job is printed rotated.
+	SetRotate(rotate bool)
+	// SetScale sets the scale for this job.
+	//
+	// 1.0 means unscaled.
+	SetScale(scale float64)
+	// SetTrackPrintStatus: if track_status is true, the print job will try to
+	// continue report on the status of the print job in the printer queues and
+	// printer.
+	//
+	// This can allow your application to show things like “out of paper”
+	// issues, and when the print job actually reaches the printer.
+	//
+	// This function is often implemented using some form of polling, so it
+	// should not be enabled unless needed.
+	SetTrackPrintStatus(trackStatus bool)
+}
+
+// printJob implements the PrintJob class.
+type printJob struct {
+	gextras.Objector
+}
+
+var _ PrintJob = (*printJob)(nil)
+
+// WrapPrintJob wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPrintJob(obj *externglib.Object) PrintJob {
+	return printJob{
+		Objector: obj,
+	}
+}
+
+func marshalPrintJob(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapPrintJob(obj), nil
+}
+
+// Collate gets whether this job is printed collated.
+func (j printJob) Collate() bool {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_print_job_get_collate(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// NUp gets the n-up setting for this job.
+func (j printJob) NUp() uint {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret C.guint // in
+
+	_cret = C.gtk_print_job_get_n_up(_arg0)
+
+	var _guint uint // out
+
+	_guint = (uint)(_cret)
+
+	return _guint
+}
+
+// NumCopies gets the number of copies of this job.
+func (j printJob) NumCopies() int {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret C.int // in
+
+	_cret = C.gtk_print_job_get_num_copies(_arg0)
+
+	var _gint int // out
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// Reverse gets whether this job is printed reversed.
+func (j printJob) Reverse() bool {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_print_job_get_reverse(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Rotate gets whether the job is printed rotated.
+func (j printJob) Rotate() bool {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_print_job_get_rotate(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Scale gets the scale for this job.
+func (j printJob) Scale() float64 {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret C.double // in
+
+	_cret = C.gtk_print_job_get_scale(_arg0)
+
+	var _gdouble float64 // out
+
+	_gdouble = (float64)(_cret)
+
+	return _gdouble
+}
+
+// Title gets the job title.
+func (j printJob) Title() string {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret *C.char // in
+
+	_cret = C.gtk_print_job_get_title(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}
+
+// TrackPrintStatus returns whether jobs will be tracked after printing.
+//
+// For details, see [method@Gtk.PrintJob.set_track_print_status].
+func (j printJob) TrackPrintStatus() bool {
+	var _arg0 *C.GtkPrintJob // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_print_job_get_track_print_status(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetCollate sets whether this job is printed collated.
+func (j printJob) SetCollate(collate bool) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	if collate {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_print_job_set_collate(_arg0, _arg1)
+}
+
+// SetNUp sets the n-up setting for this job.
+func (j printJob) SetNUp(nUp uint) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 C.guint        // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	_arg1 = C.guint(nUp)
+
+	C.gtk_print_job_set_n_up(_arg0, _arg1)
+}
+
+// SetNUpLayout sets the n-up layout setting for this job.
+func (j printJob) SetNUpLayout(layout NumberUpLayout) {
+	var _arg0 *C.GtkPrintJob      // out
+	var _arg1 C.GtkNumberUpLayout // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	_arg1 = (C.GtkNumberUpLayout)(layout)
+
+	C.gtk_print_job_set_n_up_layout(_arg0, _arg1)
+}
+
+// SetNumCopies sets the number of copies for this job.
+func (j printJob) SetNumCopies(numCopies int) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 C.int          // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	_arg1 = C.int(numCopies)
+
+	C.gtk_print_job_set_num_copies(_arg0, _arg1)
+}
+
+// SetPageRanges sets the page ranges for this job.
+func (j printJob) SetPageRanges(ranges []PageRange) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 *C.GtkPageRange
+	var _arg2 C.int
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	_arg2 = C.int(len(ranges))
+	_arg1 = (*C.GtkPageRange)(C.malloc(C.ulong(len(ranges)) * C.ulong(C.sizeof_GtkPageRange)))
+	{
+		out := unsafe.Slice(_arg1, len(ranges))
+		for i := range ranges {
+			out[i] = (C.GtkPageRange)(unsafe.Pointer(ranges[i].Native()))
+		}
+	}
+
+	C.gtk_print_job_set_page_ranges(_arg0, _arg1, _arg2)
+}
+
+// SetPageSet sets the `GtkPageSet` setting for this job.
+func (j printJob) SetPageSet(pageSet PageSet) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 C.GtkPageSet   // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	_arg1 = (C.GtkPageSet)(pageSet)
+
+	C.gtk_print_job_set_page_set(_arg0, _arg1)
+}
+
+// SetPages sets the `GtkPrintPages` setting for this job.
+func (j printJob) SetPages(pages PrintPages) {
+	var _arg0 *C.GtkPrintJob  // out
+	var _arg1 C.GtkPrintPages // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	_arg1 = (C.GtkPrintPages)(pages)
+
+	C.gtk_print_job_set_pages(_arg0, _arg1)
+}
+
+// SetReverse sets whether this job is printed reversed.
+func (j printJob) SetReverse(reverse bool) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	if reverse {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_print_job_set_reverse(_arg0, _arg1)
+}
+
+// SetRotate sets whether this job is printed rotated.
+func (j printJob) SetRotate(rotate bool) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	if rotate {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_print_job_set_rotate(_arg0, _arg1)
+}
+
+// SetScale sets the scale for this job.
+//
+// 1.0 means unscaled.
+func (j printJob) SetScale(scale float64) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 C.double       // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	_arg1 = C.double(scale)
+
+	C.gtk_print_job_set_scale(_arg0, _arg1)
+}
+
+// SetTrackPrintStatus: if track_status is true, the print job will try to
+// continue report on the status of the print job in the printer queues and
+// printer.
+//
+// This can allow your application to show things like “out of paper”
+// issues, and when the print job actually reaches the printer.
+//
+// This function is often implemented using some form of polling, so it
+// should not be enabled unless needed.
+func (j printJob) SetTrackPrintStatus(trackStatus bool) {
+	var _arg0 *C.GtkPrintJob // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	if trackStatus {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_print_job_set_track_print_status(_arg0, _arg1)
+}

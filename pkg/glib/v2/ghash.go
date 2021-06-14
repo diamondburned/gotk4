@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -44,11 +44,13 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean 
 	fn := v.(HRFunc)
 	ok := fn(key, value)
 
+	var cret C.gboolean // out
+
 	if ok {
-		cret = C.gboolean(1)
+		cret = C.TRUE
 	}
 
-	return ok
+	return cret
 }
 
 // DirectEqual compares two #gpointer arguments and returns true if they are
@@ -71,7 +73,7 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -117,7 +119,7 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -161,7 +163,7 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -208,7 +210,7 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -258,7 +260,7 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -341,11 +343,6 @@ func WrapHashTableIter(ptr unsafe.Pointer) *HashTableIter {
 	return (*HashTableIter)(ptr)
 }
 
-func marshalHashTableIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapHashTableIter(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (h *HashTableIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&h.native)
@@ -396,7 +393,7 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 
 	_key = (interface{})(_arg1)
 	_value = (interface{})(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

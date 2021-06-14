@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -27,12 +26,10 @@ func TestListAllTypes() []externglib.Type {
 	var _gTypes []externglib.Type
 
 	{
-		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
 		_gTypes = make([]externglib.Type, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_gTypes = externglib.Type(_cret)
+		for i := 0; i < int(_arg1); i++ {
+			_gTypes[i] = externglib.Type(src[i])
 		}
 	}
 
@@ -91,7 +88,7 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 	_arg1 = (*C.GtkSpinButton)(unsafe.Pointer(spinner.Native()))
 	_arg2 = C.guint(button)
 	if upwards {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -100,7 +97,7 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -162,7 +159,7 @@ func TestWidgetClick(widget Widget, button uint, modifiers gdk.ModifierType) boo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -191,7 +188,7 @@ func TestWidgetSendKey(widget Widget, keyval uint, modifiers gdk.ModifierType) b
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

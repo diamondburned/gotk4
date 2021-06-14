@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -50,7 +52,7 @@ type StackSwitcher interface {
 	SetStack(stack Stack)
 }
 
-// stackSwitcher implements the StackSwitcher interface.
+// stackSwitcher implements the StackSwitcher class.
 type stackSwitcher struct {
 	Box
 	Buildable
@@ -62,7 +64,7 @@ var _ StackSwitcher = (*stackSwitcher)(nil)
 // WrapStackSwitcher wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStackSwitcher(obj *externglib.Object) StackSwitcher {
-	return StackSwitcher{
+	return stackSwitcher{
 		Box:        WrapBox(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),

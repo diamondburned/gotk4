@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib-object.h>
 import "C"
 
@@ -26,11 +25,6 @@ func WrapCClosure(ptr unsafe.Pointer) *CClosure {
 	}
 
 	return (*CClosure)(ptr)
-}
-
-func marshalCClosure(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCClosure(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -57,11 +51,6 @@ func WrapClosureNotifyData(ptr unsafe.Pointer) *ClosureNotifyData {
 	}
 
 	return (*ClosureNotifyData)(ptr)
-}
-
-func marshalClosureNotifyData(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapClosureNotifyData(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

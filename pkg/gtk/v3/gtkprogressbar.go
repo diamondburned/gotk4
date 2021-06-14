@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -118,7 +118,7 @@ type ProgressBar interface {
 	SetText(text string)
 }
 
-// progressBar implements the ProgressBar interface.
+// progressBar implements the ProgressBar class.
 type progressBar struct {
 	Widget
 	Buildable
@@ -130,7 +130,7 @@ var _ ProgressBar = (*progressBar)(nil)
 // WrapProgressBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapProgressBar(obj *externglib.Object) ProgressBar {
-	return ProgressBar{
+	return progressBar{
 		Widget:     WrapWidget(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -172,7 +172,7 @@ func (p progressBar) Inverted() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -210,7 +210,7 @@ func (p progressBar) ShowText() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -281,7 +281,7 @@ func (p progressBar) SetInverted(inverted bool) {
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 	if inverted {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_progress_bar_set_inverted(_arg0, _arg1)
@@ -312,7 +312,7 @@ func (p progressBar) SetShowText(showText bool) {
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 	if showText {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_progress_bar_set_show_text(_arg0, _arg1)

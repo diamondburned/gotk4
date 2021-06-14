@@ -5,11 +5,10 @@ package gobject
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -147,7 +146,7 @@ func TypeCheckInstance(instance *TypeInstance) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -167,7 +166,7 @@ func TypeCheckInstanceIsA(instance *TypeInstance, ifaceType externglib.Type) boo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -187,7 +186,7 @@ func TypeCheckInstanceIsFundamentallyA(instance *TypeInstance, fundamentalType e
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -205,7 +204,7 @@ func TypeCheckIsValueType(typ externglib.Type) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -223,7 +222,7 @@ func TypeCheckValue(value **externglib.Value) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -243,7 +242,7 @@ func TypeCheckValueHolds(value **externglib.Value, typ externglib.Type) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -265,12 +264,11 @@ func TypeChildren(typ externglib.Type) []externglib.Type {
 	var _gTypes []externglib.Type
 
 	{
-		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg2))
-
+		src := unsafe.Slice(_cret, _arg2)
+		defer C.free(unsafe.Pointer(_cret))
 		_gTypes = make([]externglib.Type, _arg2)
-		for i := 0; i < uintptr(_arg2); i++ {
-			_gTypes = externglib.Type(_cret)
+		for i := 0; i < int(_arg2); i++ {
+			_gTypes[i] = externglib.Type(src[i])
 		}
 	}
 
@@ -453,12 +451,11 @@ func TypeInterfaces(typ externglib.Type) []externglib.Type {
 	var _gTypes []externglib.Type
 
 	{
-		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg2))
-
+		src := unsafe.Slice(_cret, _arg2)
+		defer C.free(unsafe.Pointer(_cret))
 		_gTypes = make([]externglib.Type, _arg2)
-		for i := 0; i < uintptr(_arg2); i++ {
-			_gTypes = externglib.Type(_cret)
+		for i := 0; i < int(_arg2); i++ {
+			_gTypes[i] = externglib.Type(src[i])
 		}
 	}
 
@@ -481,7 +478,7 @@ func TypeIsA(typ externglib.Type, isAType externglib.Type) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -685,7 +682,7 @@ func TypeTestFlags(typ externglib.Type, flags uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -706,11 +703,6 @@ func WrapInterfaceInfo(ptr unsafe.Pointer) *InterfaceInfo {
 	}
 
 	return (*InterfaceInfo)(ptr)
-}
-
-func marshalInterfaceInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInterfaceInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -741,11 +733,6 @@ func WrapTypeFundamentalInfo(ptr unsafe.Pointer) *TypeFundamentalInfo {
 	return (*TypeFundamentalInfo)(ptr)
 }
 
-func marshalTypeFundamentalInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTypeFundamentalInfo(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (t *TypeFundamentalInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
@@ -772,11 +759,6 @@ func WrapTypeInfo(ptr unsafe.Pointer) *TypeInfo {
 	}
 
 	return (*TypeInfo)(ptr)
-}
-
-func marshalTypeInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTypeInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -827,11 +809,6 @@ func WrapTypeInstance(ptr unsafe.Pointer) *TypeInstance {
 	return (*TypeInstance)(ptr)
 }
 
-func marshalTypeInstance(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTypeInstance(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (t *TypeInstance) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
@@ -869,11 +846,6 @@ func WrapTypeQuery(ptr unsafe.Pointer) *TypeQuery {
 	}
 
 	return (*TypeQuery)(ptr)
-}
-
-func marshalTypeQuery(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTypeQuery(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

@@ -42,12 +42,12 @@ func (cg *callableGenerator) reset() {
 
 func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 	// Skip this one. Hope the caller reaches the Shadows method, eventually.
-	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" {
+	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" || !cattrs.IsIntrospectable() {
 		cg.reset()
 		return false
 	}
 
-	cg.fg = cg.ng.FileFromSource(cattrs.SourcePosition)
+	cg.fg = cg.ng.FileFromSource(cattrs.DocElements)
 
 	cg.Name = SnakeToGo(true, cattrs.Name)
 	cg.CallableAttrs = cattrs
@@ -188,8 +188,8 @@ func (cg *callableGenerator) renderBlock() bool {
 		return false
 	}
 
-	applySideEffects(cg.fg, convertedInputs)
-	applySideEffects(cg.fg, convertedOutputs)
+	cg.fg.applyConvertedFxs(convertedInputs)
+	cg.fg.applyConvertedFxs(convertedOutputs)
 
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)

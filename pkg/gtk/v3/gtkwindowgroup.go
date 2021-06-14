@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -43,7 +46,7 @@ type WindowGroup interface {
 	RemoveWindow(window Window)
 }
 
-// windowGroup implements the WindowGroup interface.
+// windowGroup implements the WindowGroup class.
 type windowGroup struct {
 	gextras.Objector
 }
@@ -53,7 +56,7 @@ var _ WindowGroup = (*windowGroup)(nil)
 // WrapWindowGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindowGroup(obj *externglib.Object) WindowGroup {
-	return WindowGroup{
+	return windowGroup{
 		Objector: obj,
 	}
 }

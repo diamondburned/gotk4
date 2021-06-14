@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -104,7 +104,7 @@ type ToolButton interface {
 	SetUseUnderline(useUnderline bool)
 }
 
-// toolButton implements the ToolButton interface.
+// toolButton implements the ToolButton class.
 type toolButton struct {
 	ToolItem
 	Actionable
@@ -117,7 +117,7 @@ var _ ToolButton = (*toolButton)(nil)
 // WrapToolButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToolButton(obj *externglib.Object) ToolButton {
-	return ToolButton{
+	return toolButton{
 		ToolItem:    WrapToolItem(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -201,7 +201,7 @@ func (b toolButton) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -299,7 +299,7 @@ func (b toolButton) SetUseUnderline(useUnderline bool) {
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
 	if useUnderline {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tool_button_set_use_underline(_arg0, _arg1)

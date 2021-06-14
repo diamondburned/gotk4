@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -111,7 +112,7 @@ type TreeModelSort interface {
 	ResetDefaultSortFunc()
 }
 
-// treeModelSort implements the TreeModelSort interface.
+// treeModelSort implements the TreeModelSort class.
 type treeModelSort struct {
 	gextras.Objector
 	TreeDragSource
@@ -124,7 +125,7 @@ var _ TreeModelSort = (*treeModelSort)(nil)
 // WrapTreeModelSort wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeModelSort(obj *externglib.Object) TreeModelSort {
-	return TreeModelSort{
+	return treeModelSort{
 		Objector:       obj,
 		TreeDragSource: WrapTreeDragSource(obj),
 		TreeModel:      WrapTreeModel(obj),
@@ -170,7 +171,7 @@ func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -210,7 +211,7 @@ func (t treeModelSort) IterIsValid(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

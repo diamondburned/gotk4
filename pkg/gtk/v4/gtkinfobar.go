@@ -2,7 +2,360 @@
 
 package gtk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBar},
+	})
+}
+
+// InfoBar: `GtkInfoBar` can be show messages to the user without a dialog.
+//
+// !An example GtkInfoBar (info-bar.png)
+//
+// It is often temporarily shown at the top or bottom of a document. In contrast
+// to [class@Gtk.Dialog], which has an action area at the bottom, `GtkInfoBar`
+// has an action area at the side.
+//
+// The API of `GtkInfoBar` is very similar to `GtkDialog`, allowing you to add
+// buttons to the action area with [method@Gtk.InfoBar.add_button] or
+// [ctor@Gtk.InfoBar.new_with_buttons]. The sensitivity of action widgets can be
+// controlled with [method@Gtk.InfoBar.set_response_sensitive].
+//
+// To add widgets to the main content area of a `GtkInfoBar`, use
+// [method@Gtk.InfoBar.add_child].
+//
+// Similar to [class@Gtk.MessageDialog], the contents of a `GtkInfoBar` can by
+// classified as error message, warning, informational message, etc, by using
+// [method@Gtk.InfoBar.set_message_type]. GTK may use the message type to
+// determine how the message is displayed.
+//
+// A simple example for using a `GtkInfoBar`: “`c GtkWidget *message_label;
+// GtkWidget *widget; GtkWidget *grid; GtkInfoBar *bar;
+//
+// // set up info bar widget = gtk_info_bar_new (); bar = GTK_INFO_BAR (widget);
+// // grid = gtk_grid_new ();
+//
+// message_label = gtk_label_new (""); gtk_info_bar_add_child (bar,
+// message_label); gtk_info_bar_add_button (bar, _("_OK"), GTK_RESPONSE_OK);
+// g_signal_connect (bar, "response", G_CALLBACK (gtk_widget_hide), NULL);
+// gtk_grid_attach (GTK_GRID (grid), widget, 0, 2, 1, 1);
+//
+// // ...
+//
+// // show an error message gtk_label_set_text (GTK_LABEL (message_label), "An
+// // error occurred!"); gtk_info_bar_set_message_type (bar, GTK_MESSAGE_ERROR);
+// // gtk_widget_show (bar); “`
+//
+//
+// GtkInfoBar as GtkBuildable
+//
+// The `GtkInfoBar` implementation of the `GtkBuildable` interface exposes the
+// content area and action area as internal children with the names
+// “content_area” and “action_area”.
+//
+// `GtkInfoBar` supports a custom <action-widgets> element, which can contain
+// multiple <action-widget> elements. The “response” attribute specifies a
+// numeric response, and the content of the element is the id of widget (which
+// should be a child of the dialogs @action_area).
+//
+//
+// CSS nodes
+//
+// `GtkInfoBar` has a single CSS node with name infobar. The node may get one of
+// the style classes .info, .warning, .error or .question, depending on the
+// message type. If the info bar shows a close button, that button will have the
+// .close style class applied.
+type InfoBar interface {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+
+	// AddActionWidget: add an activatable widget to the action area of a
+	// `GtkInfoBar`.
+	//
+	// This also connects a signal handler that will emit the
+	// [signal@Gtk.InfoBar::response] signal on the message area when the widget
+	// is activated. The widget is appended to the end of the message areas
+	// action area.
+	AddActionWidget(child Widget, responseId int)
+	// AddChild adds a widget to the content area of the info bar.
+	AddChild(widget Widget)
+	// Revealed returns whether the info bar is currently revealed.
+	Revealed() bool
+	// ShowCloseButton returns whether the widget will display a standard close
+	// button.
+	ShowCloseButton() bool
+	// RemoveActionWidget removes a widget from the action area of @info_bar.
+	//
+	// The widget must have been put there by a call to
+	// [method@Gtk.InfoBar.add_action_widget] or
+	// [method@Gtk.InfoBar.add_button].
+	RemoveActionWidget(widget Widget)
+	// RemoveChild removes a widget from the content area of the info bar.
+	RemoveChild(widget Widget)
+	// Response emits the “response” signal with the given @response_id.
+	Response(responseId int)
+	// SetDefaultResponse sets the last widget in the info bar’s action area
+	// with the given response_id as the default widget for the dialog.
+	//
+	// Pressing “Enter” normally activates the default widget.
+	//
+	// Note that this function currently requires @info_bar to be added to a
+	// widget hierarchy.
+	SetDefaultResponse(responseId int)
+	// SetMessageType sets the message type of the message area.
+	//
+	// GTK uses this type to determine how the message is displayed.
+	SetMessageType(messageType MessageType)
+	// SetResponseSensitive sets the sensitivity of action widgets for
+	// @response_id.
+	//
+	// Calls `gtk_widget_set_sensitive (widget, setting)` for each widget in the
+	// info bars’s action area with the given @response_id. A convenient way to
+	// sensitize/desensitize buttons.
+	SetResponseSensitive(responseId int, setting bool)
+	// SetRevealed sets whether the `GtkInfoBar` is revealed.
+	//
+	// Changing this will make @info_bar reveal or conceal itself via a sliding
+	// transition.
+	//
+	// Note: this does not show or hide @info_bar in the
+	// [property@Gtk.Widget:visible] sense, so revealing has no effect if
+	// [property@Gtk.Widget:visible] is false.
+	SetRevealed(revealed bool)
+	// SetShowCloseButton: if true, a standard close button is shown.
+	//
+	// When clicked it emits the response GTK_RESPONSE_CLOSE.
+	SetShowCloseButton(setting bool)
+}
+
+// infoBar implements the InfoBar class.
+type infoBar struct {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+}
+
+var _ InfoBar = (*infoBar)(nil)
+
+// WrapInfoBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapInfoBar(obj *externglib.Object) InfoBar {
+	return infoBar{
+		Widget:           WrapWidget(obj),
+		Accessible:       WrapAccessible(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+	}
+}
+
+func marshalInfoBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapInfoBar(obj), nil
+}
+
+// AddActionWidget: add an activatable widget to the action area of a
+// `GtkInfoBar`.
+//
+// This also connects a signal handler that will emit the
+// [signal@Gtk.InfoBar::response] signal on the message area when the widget
+// is activated. The widget is appended to the end of the message areas
+// action area.
+func (i infoBar) AddActionWidget(child Widget, responseId int) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.int         // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = C.int(responseId)
+
+	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
+}
+
+// AddChild adds a widget to the content area of the info bar.
+func (i infoBar) AddChild(widget Widget) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_info_bar_add_child(_arg0, _arg1)
+}
+
+// Revealed returns whether the info bar is currently revealed.
+func (i infoBar) Revealed() bool {
+	var _arg0 *C.GtkInfoBar // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_info_bar_get_revealed(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ShowCloseButton returns whether the widget will display a standard close
+// button.
+func (i infoBar) ShowCloseButton() bool {
+	var _arg0 *C.GtkInfoBar // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// RemoveActionWidget removes a widget from the action area of @info_bar.
+//
+// The widget must have been put there by a call to
+// [method@Gtk.InfoBar.add_action_widget] or
+// [method@Gtk.InfoBar.add_button].
+func (i infoBar) RemoveActionWidget(widget Widget) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_info_bar_remove_action_widget(_arg0, _arg1)
+}
+
+// RemoveChild removes a widget from the content area of the info bar.
+func (i infoBar) RemoveChild(widget Widget) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_info_bar_remove_child(_arg0, _arg1)
+}
+
+// Response emits the “response” signal with the given @response_id.
+func (i infoBar) Response(responseId int) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.int         // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = C.int(responseId)
+
+	C.gtk_info_bar_response(_arg0, _arg1)
+}
+
+// SetDefaultResponse sets the last widget in the info bar’s action area
+// with the given response_id as the default widget for the dialog.
+//
+// Pressing “Enter” normally activates the default widget.
+//
+// Note that this function currently requires @info_bar to be added to a
+// widget hierarchy.
+func (i infoBar) SetDefaultResponse(responseId int) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.int         // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = C.int(responseId)
+
+	C.gtk_info_bar_set_default_response(_arg0, _arg1)
+}
+
+// SetMessageType sets the message type of the message area.
+//
+// GTK uses this type to determine how the message is displayed.
+func (i infoBar) SetMessageType(messageType MessageType) {
+	var _arg0 *C.GtkInfoBar    // out
+	var _arg1 C.GtkMessageType // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = (C.GtkMessageType)(messageType)
+
+	C.gtk_info_bar_set_message_type(_arg0, _arg1)
+}
+
+// SetResponseSensitive sets the sensitivity of action widgets for
+// @response_id.
+//
+// Calls `gtk_widget_set_sensitive (widget, setting)` for each widget in the
+// info bars’s action area with the given @response_id. A convenient way to
+// sensitize/desensitize buttons.
+func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.int         // out
+	var _arg2 C.gboolean    // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	_arg1 = C.int(responseId)
+	if setting {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_info_bar_set_response_sensitive(_arg0, _arg1, _arg2)
+}
+
+// SetRevealed sets whether the `GtkInfoBar` is revealed.
+//
+// Changing this will make @info_bar reveal or conceal itself via a sliding
+// transition.
+//
+// Note: this does not show or hide @info_bar in the
+// [property@Gtk.Widget:visible] sense, so revealing has no effect if
+// [property@Gtk.Widget:visible] is false.
+func (i infoBar) SetRevealed(revealed bool) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	if revealed {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_info_bar_set_revealed(_arg0, _arg1)
+}
+
+// SetShowCloseButton: if true, a standard close button is shown.
+//
+// When clicked it emits the response GTK_RESPONSE_CLOSE.
+func (i infoBar) SetShowCloseButton(setting bool) {
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
+	if setting {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
+}

@@ -47,10 +47,10 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if success {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if del {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	_arg4 = C.guint32(time_)
 

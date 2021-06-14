@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -176,11 +176,6 @@ func WrapEnumValue(ptr unsafe.Pointer) *EnumValue {
 	return (*EnumValue)(ptr)
 }
 
-func marshalEnumValue(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapEnumValue(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (e *EnumValue) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -221,11 +216,6 @@ func WrapFlagsValue(ptr unsafe.Pointer) *FlagsValue {
 	}
 
 	return (*FlagsValue)(ptr)
-}
-
-func marshalFlagsValue(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFlagsValue(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

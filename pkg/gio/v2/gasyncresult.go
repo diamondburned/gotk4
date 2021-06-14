@@ -5,14 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -24,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -127,16 +126,6 @@ type AsyncResultOverrider interface {
 type AsyncResult interface {
 	gextras.Objector
 	AsyncResultOverrider
-
-	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
-	// g_simple_async_result_propagate_error(). Otherwise it returns false.
-	//
-	// This can be used for legacy error handling in async *_finish() wrapper
-	// functions that traditionally handled AsyncResult error returns themselves
-	// rather than calling into the virtual method. This should not be used in
-	// new code; Result errors that are set by virtual methods should also be
-	// extracted by virtual methods, to enable subclasses to chain up correctly.
-	LegacyPropagateError() error
 }
 
 // asyncResult implements the AsyncResult interface.
@@ -209,33 +198,9 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
-// g_simple_async_result_propagate_error(). Otherwise it returns false.
-//
-// This can be used for legacy error handling in async *_finish() wrapper
-// functions that traditionally handled AsyncResult error returns themselves
-// rather than calling into the virtual method. This should not be used in
-// new code; Result errors that are set by virtual methods should also be
-// extracted by virtual methods, to enable subclasses to chain up correctly.
-func (r asyncResult) LegacyPropagateError() error {
-	var _arg0 *C.GAsyncResult // out
-
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_async_result_legacy_propagate_error(_arg0, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }

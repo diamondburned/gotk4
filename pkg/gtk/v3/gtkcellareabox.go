@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -58,7 +60,7 @@ type CellAreaBox interface {
 	SetSpacing(spacing int)
 }
 
-// cellAreaBox implements the CellAreaBox interface.
+// cellAreaBox implements the CellAreaBox class.
 type cellAreaBox struct {
 	CellArea
 	Buildable
@@ -71,7 +73,7 @@ var _ CellAreaBox = (*cellAreaBox)(nil)
 // WrapCellAreaBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellAreaBox(obj *externglib.Object) CellAreaBox {
-	return CellAreaBox{
+	return cellAreaBox{
 		CellArea:   WrapCellArea(obj),
 		Buildable:  WrapBuildable(obj),
 		CellLayout: WrapCellLayout(obj),
@@ -116,13 +118,13 @@ func (b cellAreaBox) PackEnd(renderer CellRenderer, expand bool, align bool, fix
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	if expand {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if align {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	if fixed {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	C.gtk_cell_area_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -143,13 +145,13 @@ func (b cellAreaBox) PackStart(renderer CellRenderer, expand bool, align bool, f
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	if expand {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if align {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	if fixed {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	C.gtk_cell_area_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)

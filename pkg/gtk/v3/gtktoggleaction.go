@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -40,7 +42,7 @@ type ToggleAction interface {
 	Toggled()
 }
 
-// toggleAction implements the ToggleAction interface.
+// toggleAction implements the ToggleAction class.
 type toggleAction struct {
 	Action
 	Buildable
@@ -51,7 +53,7 @@ var _ ToggleAction = (*toggleAction)(nil)
 // WrapToggleAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToggleAction(obj *externglib.Object) ToggleAction {
-	return ToggleAction{
+	return toggleAction{
 		Action:    WrapAction(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -75,7 +77,7 @@ func (a toggleAction) Active() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -95,7 +97,7 @@ func (a toggleAction) DrawAsRadio() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -109,7 +111,7 @@ func (a toggleAction) SetActive(isActive bool) {
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 	if isActive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_toggle_action_set_active(_arg0, _arg1)
@@ -123,7 +125,7 @@ func (a toggleAction) SetDrawAsRadio(drawAsRadio bool) {
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 	if drawAsRadio {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_toggle_action_set_draw_as_radio(_arg0, _arg1)

@@ -3,12 +3,13 @@
 package gio
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -20,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -59,7 +61,7 @@ type BufferedOutputStream interface {
 	SetBufferSize(size uint)
 }
 
-// bufferedOutputStream implements the BufferedOutputStream interface.
+// bufferedOutputStream implements the BufferedOutputStream class.
 type bufferedOutputStream struct {
 	FilterOutputStream
 	Seekable
@@ -70,7 +72,7 @@ var _ BufferedOutputStream = (*bufferedOutputStream)(nil)
 // WrapBufferedOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStream {
-	return BufferedOutputStream{
+	return bufferedOutputStream{
 		FilterOutputStream: WrapFilterOutputStream(obj),
 		Seekable:           WrapSeekable(obj),
 	}
@@ -94,7 +96,7 @@ func (s bufferedOutputStream) AutoGrow() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -128,7 +130,7 @@ func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 	if autoGrow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_buffered_output_stream_set_auto_grow(_arg0, _arg1)

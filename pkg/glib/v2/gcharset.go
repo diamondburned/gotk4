@@ -4,8 +4,6 @@ package glib
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -32,16 +30,16 @@ import "C"
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetCharset() (string, bool) {
-	var _arg1 **C.char   // in
+	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
 
-	_cret = C.g_get_charset(_arg1)
+	_cret = C.g_get_charset(&_arg1)
 
 	var _charset string // out
 	var _ok bool        // out
 
 	_charset = C.GoString(_arg1)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -79,16 +77,16 @@ func GetCodeset() string {
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetConsoleCharset() (string, bool) {
-	var _arg1 **C.char   // in
+	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
 
-	_cret = C.g_get_console_charset(_arg1)
+	_cret = C.g_get_console_charset(&_arg1)
 
 	var _charset string // out
 	var _ok bool        // out
 
 	_charset = C.GoString(_arg1)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -114,19 +112,17 @@ func GetLanguageNames() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -157,19 +153,17 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -205,20 +199,18 @@ func GetLocaleVariants(locale string) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

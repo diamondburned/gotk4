@@ -5,15 +5,13 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -75,51 +74,6 @@ type DBusProXY interface {
 	DBusInterface
 	Initable
 
-	// Call: asynchronously invokes the @method_name method on @proxy.
-	//
-	// If @method_name contains any dots, then @name is split into interface and
-	// method name parts. This allows using @proxy for invoking methods on other
-	// interfaces.
-	//
-	// If the BusConnection associated with @proxy is closed then the operation
-	// will fail with G_IO_ERROR_CLOSED. If @cancellable is canceled, the
-	// operation will fail with G_IO_ERROR_CANCELLED. If @parameters contains a
-	// value not compatible with the D-Bus protocol, the operation fails with
-	// G_IO_ERROR_INVALID_ARGUMENT.
-	//
-	// If the @parameters #GVariant is floating, it is consumed. This allows
-	// convenient 'inline' use of g_variant_new(), e.g.:
-	//
-	//    g_dbus_proxy_call (proxy,
-	//                       "TwoStrings",
-	//                       g_variant_new ("(ss)",
-	//                                      "Thing One",
-	//                                      "Thing Two"),
-	//                       G_DBUS_CALL_FLAGS_NONE,
-	//                       -1,
-	//                       NULL,
-	//                       (GAsyncReadyCallback) two_strings_done,
-	//                       &data);
-	//
-	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
-	// @method_name is referenced by it, then the return value is checked
-	// against the return type.
-	//
-	// This is an asynchronous method. When the operation is finished, @callback
-	// will be invoked in the [thread-default main
-	// context][g-main-context-push-thread-default] of the thread you are
-	// calling this method from. You can then call g_dbus_proxy_call_finish() to
-	// get the result of the operation. See g_dbus_proxy_call_sync() for the
-	// synchronous version of this method.
-	//
-	// If @callback is nil then the D-Bus method call message will be sent with
-	// the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-	Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList
-	// object.
-	//
-	// This method is only available on UNIX.
-	CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
 	// CachedPropertyNames gets the names of all cached properties on @proxy.
 	CachedPropertyNames() []string
 	// DefaultTimeout gets the timeout to use if -1 (specifying default timeout)
@@ -183,7 +137,7 @@ type DBusProXY interface {
 	SetInterfaceInfo(info *DBusInterfaceInfo)
 }
 
-// dBusProXY implements the DBusProXY interface.
+// dBusProXY implements the DBusProXY class.
 type dBusProXY struct {
 	gextras.Objector
 	AsyncInitable
@@ -196,7 +150,7 @@ var _ DBusProXY = (*dBusProXY)(nil)
 // WrapDBusProXY wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusProXY(obj *externglib.Object) DBusProXY {
-	return DBusProXY{
+	return dBusProXY{
 		Objector:      obj,
 		AsyncInitable: WrapAsyncInitable(obj),
 		DBusInterface: WrapDBusInterface(obj),
@@ -208,97 +162,6 @@ func marshalDBusProXY(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusProXY(obj), nil
-}
-
-// Call: asynchronously invokes the @method_name method on @proxy.
-//
-// If @method_name contains any dots, then @name is split into interface and
-// method name parts. This allows using @proxy for invoking methods on other
-// interfaces.
-//
-// If the BusConnection associated with @proxy is closed then the operation
-// will fail with G_IO_ERROR_CLOSED. If @cancellable is canceled, the
-// operation will fail with G_IO_ERROR_CANCELLED. If @parameters contains a
-// value not compatible with the D-Bus protocol, the operation fails with
-// G_IO_ERROR_INVALID_ARGUMENT.
-//
-// If the @parameters #GVariant is floating, it is consumed. This allows
-// convenient 'inline' use of g_variant_new(), e.g.:
-//
-//    g_dbus_proxy_call (proxy,
-//                       "TwoStrings",
-//                       g_variant_new ("(ss)",
-//                                      "Thing One",
-//                                      "Thing Two"),
-//                       G_DBUS_CALL_FLAGS_NONE,
-//                       -1,
-//                       NULL,
-//                       (GAsyncReadyCallback) two_strings_done,
-//                       &data);
-//
-// If @proxy has an expected interface (see BusProxy:g-interface-info) and
-// @method_name is referenced by it, then the return value is checked
-// against the return type.
-//
-// This is an asynchronous method. When the operation is finished, @callback
-// will be invoked in the [thread-default main
-// context][g-main-context-push-thread-default] of the thread you are
-// calling this method from. You can then call g_dbus_proxy_call_finish() to
-// get the result of the operation. See g_dbus_proxy_call_sync() for the
-// synchronous version of this method.
-//
-// If @callback is nil then the D-Bus method call message will be sent with
-// the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-func (p dBusProXY) Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GDBusProxy         // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GVariant           // out
-	var _arg3 C.GDBusCallFlags      // out
-	var _arg4 C.gint                // out
-	var _arg5 *C.GCancellable       // out
-	var _arg6 C.GAsyncReadyCallback // out
-	var _arg7 C.gpointer
-
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.gchar)(C.CString(methodName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
-	_arg3 = (C.GDBusCallFlags)(flags)
-	_arg4 = C.gint(timeoutMsec)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg7 = C.gpointer(box.Assign(callback))
-
-	C.g_dbus_proxy_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-}
-
-// CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList
-// object.
-//
-// This method is only available on UNIX.
-func (p dBusProXY) CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GDBusProxy         // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GVariant           // out
-	var _arg3 C.GDBusCallFlags      // out
-	var _arg4 C.gint                // out
-	var _arg5 *C.GUnixFDList        // out
-	var _arg6 *C.GCancellable       // out
-	var _arg7 C.GAsyncReadyCallback // out
-	var _arg8 C.gpointer
-
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.gchar)(C.CString(methodName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
-	_arg3 = (C.GDBusCallFlags)(flags)
-	_arg4 = C.gint(timeoutMsec)
-	_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg8 = C.gpointer(box.Assign(callback))
-
-	C.g_dbus_proxy_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
 // CachedPropertyNames gets the names of all cached properties on @proxy.
@@ -315,20 +178,18 @@ func (p dBusProXY) CachedPropertyNames() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

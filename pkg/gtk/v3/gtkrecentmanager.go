@@ -5,12 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,9 +19,39 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_recent_manager_error_get_type()), F: marshalRecentManagerError},
 		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManager},
 		{T: externglib.Type(C.gtk_recent_info_get_type()), F: marshalRecentInfo},
 	})
+}
+
+// RecentManagerError: error codes for RecentManager operations
+type RecentManagerError int
+
+const (
+	// RecentManagerErrorNotFound: the URI specified does not exists in the
+	// recently used resources list.
+	RecentManagerErrorNotFound RecentManagerError = 0
+	// RecentManagerErrorInvalidURI: the URI specified is not valid.
+	RecentManagerErrorInvalidURI RecentManagerError = 1
+	// RecentManagerErrorInvalidEncoding: the supplied string is not UTF-8
+	// encoded.
+	RecentManagerErrorInvalidEncoding RecentManagerError = 2
+	// RecentManagerErrorNotRegistered: no application has registered the
+	// specified item.
+	RecentManagerErrorNotRegistered RecentManagerError = 3
+	// RecentManagerErrorRead: failure while reading the recently used resources
+	// file.
+	RecentManagerErrorRead RecentManagerError = 4
+	// RecentManagerErrorWrite: failure while writing the recently used
+	// resources file.
+	RecentManagerErrorWrite RecentManagerError = 5
+	// RecentManagerErrorUnknown: unspecified error.
+	RecentManagerErrorUnknown RecentManagerError = 6
+)
+
+func marshalRecentManagerError(p uintptr) (interface{}, error) {
+	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // RecentManager provides a facility for adding, removing and looking up
@@ -101,20 +130,9 @@ type RecentManager interface {
 	// HasItem checks whether there is a recently used resource registered with
 	// @uri inside the recent manager.
 	HasItem(uri string) bool
-	// MoveItem changes the location of a recently used resource from @uri to
-	// @new_uri.
-	//
-	// Please note that this function will not affect the resource pointed by
-	// the URIs, but only the URI used in the recently used resources list.
-	MoveItem(uri string, newUri string) error
-	// PurgeItems purges every item from the recently used resources list.
-	PurgeItems() (int, error)
-	// RemoveItem removes a resource pointed by @uri from the recently used
-	// resources list handled by a recent manager.
-	RemoveItem(uri string) error
 }
 
-// recentManager implements the RecentManager interface.
+// recentManager implements the RecentManager class.
 type recentManager struct {
 	gextras.Objector
 }
@@ -124,7 +142,7 @@ var _ RecentManager = (*recentManager)(nil)
 // WrapRecentManager wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRecentManager(obj *externglib.Object) RecentManager {
-	return RecentManager{
+	return recentManager{
 		Objector: obj,
 	}
 }
@@ -168,7 +186,7 @@ func (m recentManager) AddFull(uri string, recentData *RecentData) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -198,7 +216,7 @@ func (m recentManager) AddItem(uri string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -221,79 +239,11 @@ func (m recentManager) HasItem(uri string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// MoveItem changes the location of a recently used resource from @uri to
-// @new_uri.
-//
-// Please note that this function will not affect the resource pointed by
-// the URIs, but only the URI used in the recently used resources list.
-func (m recentManager) MoveItem(uri string, newUri string) error {
-	var _arg0 *C.GtkRecentManager // out
-	var _arg1 *C.gchar            // out
-	var _arg2 *C.gchar            // out
-
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(newUri))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cerr *C.GError // in
-
-	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// PurgeItems purges every item from the recently used resources list.
-func (m recentManager) PurgeItems() (int, error) {
-	var _arg0 *C.GtkRecentManager // out
-
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
-
-	var _gint int    // out
-	var _goerr error // out
-
-	_gint = (int)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _gint, _goerr
-}
-
-// RemoveItem removes a resource pointed by @uri from the recently used
-// resources list handled by a recent manager.
-func (m recentManager) RemoveItem(uri string) error {
-	var _arg0 *C.GtkRecentManager // out
-	var _arg1 *C.gchar            // out
-
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
-
-	C.gtk_recent_manager_remove_item(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
@@ -310,11 +260,6 @@ func WrapRecentData(ptr unsafe.Pointer) *RecentData {
 	}
 
 	return (*RecentData)(ptr)
-}
-
-func marshalRecentData(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRecentData(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -362,19 +307,17 @@ func (r *RecentData) Groups() []string {
 	var v []string
 	{
 		var length int
-		for p := r.native.groups; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := r.native.groups; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(r.native.groups), int(length))
-
+		src := unsafe.Slice(r.native.groups, length)
 		v = make([]string, length)
 		for i := range src {
-			v = C.GoString(r.native.groups)
+			v[i] = C.GoString(src[i])
 		}
 	}
 	return v
@@ -383,7 +326,7 @@ func (r *RecentData) Groups() []string {
 // IsPrivate gets the field inside the struct.
 func (r *RecentData) IsPrivate() bool {
 	var v bool // out
-	if r.native.is_private {
+	if r.native.is_private != 0 {
 		v = true
 	}
 	return v
@@ -431,7 +374,7 @@ func (i *RecentInfo) Exists() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -487,12 +430,12 @@ func (i *RecentInfo) ApplicationInfo(appName string) (string, uint, int32, bool)
 	_arg1 = (*C.gchar)(C.CString(appName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _arg2 **C.gchar  // in
+	var _arg2 *C.gchar   // in
 	var _arg3 C.guint    // in
 	var _arg4 C.time_t   // in
 	var _cret C.gboolean // in
 
-	_cret = C.gtk_recent_info_get_application_info(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	_cret = C.gtk_recent_info_get_application_info(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
 	var _appExec string // out
 	var _count uint     // out
@@ -502,7 +445,7 @@ func (i *RecentInfo) ApplicationInfo(appName string) (string, uint, int32, bool)
 	_appExec = C.GoString(_arg2)
 	_count = (uint)(_arg3)
 	_time_ = (int32)(_arg4)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -524,13 +467,12 @@ func (i *RecentInfo) Applications() []string {
 	var _utf8s []string
 
 	{
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
+		defer C.free(unsafe.Pointer(_cret))
 		_utf8s = make([]string, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -588,13 +530,12 @@ func (i *RecentInfo) Groups() []string {
 	var _utf8s []string
 
 	{
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
+		defer C.free(unsafe.Pointer(_cret))
 		_utf8s = make([]string, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -650,7 +591,7 @@ func (i *RecentInfo) PrivateHint() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -748,7 +689,7 @@ func (i *RecentInfo) HasApplication(appName string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -771,7 +712,7 @@ func (i *RecentInfo) HasGroup(groupName string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -791,7 +732,7 @@ func (i *RecentInfo) IsLocal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -831,7 +772,7 @@ func (i *RecentInfo) Match(infoB *RecentInfo) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

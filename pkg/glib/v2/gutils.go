@@ -3,15 +3,11 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -141,7 +137,7 @@ func BitStorage(number uint32) uint {
 // directory, then in the Windows directory, and finally in the directories in
 // the `PATH` environment variable. If the program is found, the return value
 // contains the full name including the type suffix.
-func FindProgramInPath(program *string) *string {
+func FindProgramInPath(program string) string {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(program))
@@ -151,7 +147,7 @@ func FindProgramInPath(program *string) *string {
 
 	_cret = C.g_find_program_in_path(_arg1)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -275,12 +271,12 @@ func GetApplicationName() string {
 // that the new behaviour is in effect) then you should either directly check
 // the `HOME` environment variable yourself or unset it before calling any
 // functions in GLib.
-func GetHomeDir() *string {
+func GetHomeDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_home_dir()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -360,12 +356,12 @@ func GetPrgname() string {
 // user's entry in the `passwd` file. The encoding of the returned string is
 // system-defined. (On Windows, it is, however, always UTF-8.) If the real user
 // name cannot be determined, the string "Unknown" is returned.
-func GetRealName() *string {
+func GetRealName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_real_name()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -391,28 +387,26 @@ func GetRealName() *string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func GetSystemConfigDirs() []*string {
+func GetSystemConfigDirs() []string {
 	var _cret **C.gchar
 
 	_cret = C.g_get_system_config_dirs()
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_filenames = make([]*string, length)
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
 		for i := range src {
-			_filenames = C.GoString(_cret)
+			_filenames[i] = C.GoString(src[i])
 		}
 	}
 
@@ -450,28 +444,26 @@ func GetSystemConfigDirs() []*string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func GetSystemDataDirs() []*string {
+func GetSystemDataDirs() []string {
 	var _cret **C.gchar
 
 	_cret = C.g_get_system_data_dirs()
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_filenames = make([]*string, length)
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
 		for i := range src {
-			_filenames = C.GoString(_cret)
+			_filenames[i] = C.GoString(src[i])
 		}
 	}
 
@@ -489,12 +481,12 @@ func GetSystemDataDirs() []*string {
 //
 // The encoding of the returned string is system-defined. On Windows, it is
 // always UTF-8. The return value is never nil or the empty string.
-func GetTmpDir() *string {
+func GetTmpDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_tmp_dir()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -518,12 +510,12 @@ func GetTmpDir() *string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func GetUserCacheDir() *string {
+func GetUserCacheDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_cache_dir()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -548,12 +540,12 @@ func GetUserCacheDir() *string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func GetUserConfigDir() *string {
+func GetUserConfigDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_config_dir()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -578,12 +570,12 @@ func GetUserConfigDir() *string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func GetUserDataDir() *string {
+func GetUserDataDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_data_dir()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -594,12 +586,12 @@ func GetUserDataDir() *string {
 // returned string is system-defined. On UNIX, it might be the preferred file
 // name encoding, or something else, and there is no guarantee that it is even
 // consistent on a machine. On Windows, it is always UTF-8.
-func GetUserName() *string {
+func GetUserName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_name()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -617,12 +609,12 @@ func GetUserName() *string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func GetUserRuntimeDir() *string {
+func GetUserRuntimeDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_runtime_dir()
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -639,7 +631,7 @@ func GetUserRuntimeDir() *string {
 // Depending on the platform, the user might be able to change the path of the
 // special directory without requiring the session to restart; GLib will not
 // reflect any change once the special directories are loaded.
-func GetUserSpecialDir(directory UserDirectory) *string {
+func GetUserSpecialDir(directory UserDirectory) string {
 	var _arg1 C.GUserDirectory // out
 
 	_arg1 = (C.GUserDirectory)(directory)
@@ -648,7 +640,7 @@ func GetUserSpecialDir(directory UserDirectory) *string {
 
 	_cret = C.g_get_user_special_dir(_arg1)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -757,11 +749,6 @@ func WrapDebugKey(ptr unsafe.Pointer) *DebugKey {
 	}
 
 	return (*DebugKey)(ptr)
-}
-
-func marshalDebugKey(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDebugKey(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

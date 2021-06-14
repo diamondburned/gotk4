@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -75,7 +75,7 @@ type SingleSelection interface {
 	SetSelected(position uint)
 }
 
-// singleSelection implements the SingleSelection interface.
+// singleSelection implements the SingleSelection class.
 type singleSelection struct {
 	gextras.Objector
 	gio.ListModel
@@ -87,7 +87,7 @@ var _ SingleSelection = (*singleSelection)(nil)
 // WrapSingleSelection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSingleSelection(obj *externglib.Object) SingleSelection {
-	return SingleSelection{
+	return singleSelection{
 		Objector:       obj,
 		gio.ListModel:  gio.WrapListModel(obj),
 		SelectionModel: WrapSelectionModel(obj),
@@ -113,7 +113,7 @@ func (s singleSelection) Autoselect() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -133,7 +133,7 @@ func (s singleSelection) CanUnselect() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -189,7 +189,7 @@ func (s singleSelection) SetAutoselect(autoselect bool) {
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
 	if autoselect {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_single_selection_set_autoselect(_arg0, _arg1)
@@ -207,7 +207,7 @@ func (s singleSelection) SetCanUnselect(canUnselect bool) {
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
 	if canUnselect {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_single_selection_set_can_unselect(_arg0, _arg1)

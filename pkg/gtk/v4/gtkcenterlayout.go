@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -47,7 +49,7 @@ type CenterLayout interface {
 	SetStartWidget(widget Widget)
 }
 
-// centerLayout implements the CenterLayout interface.
+// centerLayout implements the CenterLayout class.
 type centerLayout struct {
 	LayoutManager
 }
@@ -57,7 +59,7 @@ var _ CenterLayout = (*centerLayout)(nil)
 // WrapCenterLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCenterLayout(obj *externglib.Object) CenterLayout {
-	return CenterLayout{
+	return centerLayout{
 		LayoutManager: WrapLayoutManager(obj),
 	}
 }

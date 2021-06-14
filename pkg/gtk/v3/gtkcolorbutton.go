@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -43,8 +43,6 @@ type ColorButton interface {
 	Alpha() uint16
 	// Color sets @color to be the current color in the ColorButton widget.
 	Color() gdk.Color
-	// RGBA sets @rgba to be the current color in the ColorButton widget.
-	RGBA() gdk.RGBA
 	// Title gets the title of the color selection dialog.
 	Title() string
 	// UseAlpha does the color selection dialog use the alpha channel ?
@@ -53,8 +51,6 @@ type ColorButton interface {
 	SetAlpha(alpha uint16)
 	// SetColor sets the current color to be @color.
 	SetColor(color *gdk.Color)
-	// SetRGBA sets the current color to be @rgba.
-	SetRGBA(rgba *gdk.RGBA)
 	// SetTitle sets the title for the color selection dialog.
 	SetTitle(title string)
 	// SetUseAlpha sets whether or not the color button should use the alpha
@@ -62,7 +58,7 @@ type ColorButton interface {
 	SetUseAlpha(useAlpha bool)
 }
 
-// colorButton implements the ColorButton interface.
+// colorButton implements the ColorButton class.
 type colorButton struct {
 	Button
 	Actionable
@@ -76,7 +72,7 @@ var _ ColorButton = (*colorButton)(nil)
 // WrapColorButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColorButton(obj *externglib.Object) ColorButton {
-	return ColorButton{
+	return colorButton{
 		Button:       WrapButton(obj),
 		Actionable:   WrapActionable(obj),
 		Activatable:  WrapActivatable(obj),
@@ -121,19 +117,6 @@ func (b colorButton) Color() gdk.Color {
 	return _color
 }
 
-// RGBA sets @rgba to be the current color in the ColorButton widget.
-func (b colorButton) RGBA() gdk.RGBA {
-	var _arg0 *C.GtkColorButton // out
-
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-
-	var _rgba gdk.RGBA
-
-	C.gtk_color_button_get_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_rgba)))
-
-	return _rgba
-}
-
 // Title gets the title of the color selection dialog.
 func (b colorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
@@ -163,7 +146,7 @@ func (b colorButton) UseAlpha() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -192,17 +175,6 @@ func (b colorButton) SetColor(color *gdk.Color) {
 	C.gtk_color_button_set_color(_arg0, _arg1)
 }
 
-// SetRGBA sets the current color to be @rgba.
-func (b colorButton) SetRGBA(rgba *gdk.RGBA) {
-	var _arg0 *C.GtkColorButton // out
-	var _arg1 *C.GdkRGBA        // out
-
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
-
-	C.gtk_color_button_set_rgba(_arg0, _arg1)
-}
-
 // SetTitle sets the title for the color selection dialog.
 func (b colorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
@@ -223,7 +195,7 @@ func (b colorButton) SetUseAlpha(useAlpha bool) {
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 	if useAlpha {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_color_button_set_use_alpha(_arg0, _arg1)

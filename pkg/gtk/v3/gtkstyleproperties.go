@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -61,7 +62,7 @@ type StyleProperties interface {
 	UnsetProperty(property string, state StateFlags)
 }
 
-// styleProperties implements the StyleProperties interface.
+// styleProperties implements the StyleProperties class.
 type styleProperties struct {
 	gextras.Objector
 	StyleProvider
@@ -72,7 +73,7 @@ var _ StyleProperties = (*styleProperties)(nil)
 // WrapStyleProperties wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStyleProperties(obj *externglib.Object) StyleProperties {
-	return StyleProperties{
+	return styleProperties{
 		Objector:      obj,
 		StyleProvider: WrapStyleProvider(obj),
 	}
@@ -118,7 +119,7 @@ func (p styleProperties) Property(property string, state StateFlags) (*externgli
 	runtime.SetFinalizer(_value, func(v *externglib.Value) {
 		C.g_value_unset((*C.GValue)(v.GValue))
 	})
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -151,7 +152,7 @@ func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(propsToMerge.Native()))
 	if replace {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
@@ -256,7 +257,7 @@ func (g *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -350,7 +351,7 @@ func (c *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

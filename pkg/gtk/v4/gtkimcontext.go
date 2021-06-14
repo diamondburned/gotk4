@@ -5,12 +5,13 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -175,7 +176,7 @@ type IMContext interface {
 	SetUsePreedit(usePreedit bool)
 }
 
-// imContext implements the IMContext interface.
+// imContext implements the IMContext class.
 type imContext struct {
 	gextras.Objector
 }
@@ -185,7 +186,7 @@ var _ IMContext = (*imContext)(nil)
 // WrapIMContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIMContext(obj *externglib.Object) IMContext {
-	return IMContext{
+	return imContext{
 		Objector: obj,
 	}
 }
@@ -228,7 +229,7 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -250,7 +251,7 @@ func (c imContext) FilterKey(press bool, surface gdk.Surface, device gdk.Device,
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	if press {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 	_arg3 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -265,7 +266,7 @@ func (c imContext) FilterKey(press bool, surface gdk.Surface, device gdk.Device,
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -290,7 +291,7 @@ func (c imContext) FilterKeypress(event gdk.Event) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -383,7 +384,7 @@ func (c imContext) Surrounding() (string, int, bool) {
 	_text = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = (int)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -426,7 +427,7 @@ func (c imContext) SurroundingWithSelection() (text string, cursorIndex int, anc
 	defer C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = (int)(_arg2)
 	_anchorIndex = (int)(_arg3)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -528,7 +529,7 @@ func (c imContext) SetUsePreedit(usePreedit bool) {
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	if usePreedit {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_im_context_set_use_preedit(_arg0, _arg1)

@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -366,7 +367,7 @@ func (a activatable) UseActionAppearance() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -402,7 +403,7 @@ func (a activatable) SetUseActionAppearance(useAppearance bool) {
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 	if useAppearance {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_activatable_set_use_action_appearance(_arg0, _arg1)

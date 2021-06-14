@@ -3,11 +3,12 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -53,11 +54,9 @@ type RadioAction interface {
 	// SetCurrentValue sets the currently active group member to the member with
 	// value property @current_value.
 	SetCurrentValue(currentValue int)
-	// SetGroup sets the radio group for the radio action object.
-	SetGroup(group *glib.SList)
 }
 
-// radioAction implements the RadioAction interface.
+// radioAction implements the RadioAction class.
 type radioAction struct {
 	ToggleAction
 	Buildable
@@ -68,7 +67,7 @@ var _ RadioAction = (*radioAction)(nil)
 // WrapRadioAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRadioAction(obj *externglib.Object) RadioAction {
-	return RadioAction{
+	return radioAction{
 		ToggleAction: WrapToggleAction(obj),
 		Buildable:    WrapBuildable(obj),
 	}
@@ -136,15 +135,4 @@ func (a radioAction) SetCurrentValue(currentValue int) {
 	_arg1 = C.gint(currentValue)
 
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)
-}
-
-// SetGroup sets the radio group for the radio action object.
-func (a radioAction) SetGroup(group *glib.SList) {
-	var _arg0 *C.GtkRadioAction // out
-	var _arg1 *C.GSList         // out
-
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-
-	C.gtk_radio_action_set_group(_arg0, _arg1)
 }

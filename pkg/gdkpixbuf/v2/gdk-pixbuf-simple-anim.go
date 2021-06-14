@@ -3,13 +3,15 @@
 package gdkpixbuf
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -33,7 +35,7 @@ type PixbufSimpleAnim interface {
 	SetLoop(loop bool)
 }
 
-// pixbufSimpleAnim implements the PixbufSimpleAnim interface.
+// pixbufSimpleAnim implements the PixbufSimpleAnim class.
 type pixbufSimpleAnim struct {
 	PixbufAnimation
 }
@@ -43,7 +45,7 @@ var _ PixbufSimpleAnim = (*pixbufSimpleAnim)(nil)
 // WrapPixbufSimpleAnim wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnim {
-	return PixbufSimpleAnim{
+	return pixbufSimpleAnim{
 		PixbufAnimation: WrapPixbufAnimation(obj),
 	}
 }
@@ -79,7 +81,7 @@ func (a pixbufSimpleAnim) Loop() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -94,7 +96,7 @@ func (a pixbufSimpleAnim) SetLoop(loop bool) {
 
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
 	if loop {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_pixbuf_simple_anim_set_loop(_arg0, _arg1)

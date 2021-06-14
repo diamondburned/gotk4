@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,8 +20,74 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_text_extend_selection_get_type()), F: marshalTextExtendSelection},
+		{T: externglib.Type(C.gtk_text_view_layer_get_type()), F: marshalTextViewLayer},
+		{T: externglib.Type(C.gtk_text_window_type_get_type()), F: marshalTextWindowType},
 		{T: externglib.Type(C.gtk_text_view_get_type()), F: marshalTextView},
 	})
+}
+
+// TextExtendSelection: granularity types that extend the text selection. Use
+// the TextView::extend-selection signal to customize the selection.
+type TextExtendSelection int
+
+const (
+	// TextExtendSelectionWord selects the current word. It is triggered by a
+	// double-click for example.
+	TextExtendSelectionWord TextExtendSelection = 0
+	// TextExtendSelectionLine selects the current line. It is triggered by a
+	// triple-click for example.
+	TextExtendSelectionLine TextExtendSelection = 1
+)
+
+func marshalTextExtendSelection(p uintptr) (interface{}, error) {
+	return TextExtendSelection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TextViewLayer: used to reference the layers of TextView for the purpose of
+// customized drawing with the ::draw_layer vfunc.
+type TextViewLayer int
+
+const (
+	// TextViewLayerBelow: old deprecated layer, use
+	// GTK_TEXT_VIEW_LAYER_BELOW_TEXT instead
+	TextViewLayerBelow TextViewLayer = 0
+	// TextViewLayerAbove: old deprecated layer, use
+	// GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead
+	TextViewLayerAbove TextViewLayer = 1
+	// TextViewLayerBelowText: the layer rendered below the text (but above the
+	// background). Since: 3.20
+	TextViewLayerBelowText TextViewLayer = 2
+	// TextViewLayerAboveText: the layer rendered above the text. Since: 3.20
+	TextViewLayerAboveText TextViewLayer = 3
+)
+
+func marshalTextViewLayer(p uintptr) (interface{}, error) {
+	return TextViewLayer(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TextWindowType: used to reference the parts of TextView.
+type TextWindowType int
+
+const (
+	// TextWindowTypePrivate: invalid value, used as a marker
+	TextWindowTypePrivate TextWindowType = 0
+	// TextWindowTypeWidget: window that floats over scrolling areas.
+	TextWindowTypeWidget TextWindowType = 1
+	// TextWindowTypeText: scrollable text window.
+	TextWindowTypeText TextWindowType = 2
+	// TextWindowTypeLeft: left side border window.
+	TextWindowTypeLeft TextWindowType = 3
+	// TextWindowTypeRight: right side border window.
+	TextWindowTypeRight TextWindowType = 4
+	// TextWindowTypeTop: top border window.
+	TextWindowTypeTop TextWindowType = 5
+	// TextWindowTypeBottom: bottom border window.
+	TextWindowTypeBottom TextWindowType = 6
+)
+
+func marshalTextWindowType(p uintptr) (interface{}, error) {
+	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // TextView: you may wish to begin by reading the [text widget conceptual
@@ -392,7 +458,7 @@ type TextView interface {
 	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
-// textView implements the TextView interface.
+// textView implements the TextView class.
 type textView struct {
 	Container
 	Buildable
@@ -404,7 +470,7 @@ var _ TextView = (*textView)(nil)
 // WrapTextView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextView(obj *externglib.Object) TextView {
-	return TextView{
+	return textView{
 		Container:  WrapContainer(obj),
 		Buildable:  WrapBuildable(obj),
 		Scrollable: WrapScrollable(obj),
@@ -478,7 +544,7 @@ func (t textView) BackwardDisplayLine(iter *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -506,7 +572,7 @@ func (t textView) BackwardDisplayLineStart(iter *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -565,7 +631,7 @@ func (t textView) ForwardDisplayLine(iter *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -593,7 +659,7 @@ func (t textView) ForwardDisplayLineEnd(iter *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -613,7 +679,7 @@ func (t textView) AcceptsTab() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -703,7 +769,7 @@ func (t textView) CursorVisible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -723,7 +789,7 @@ func (t textView) Editable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -770,7 +836,7 @@ func (t textView) IterAtLocation(x int, y int) (TextIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -804,7 +870,7 @@ func (t textView) IterAtPosition(x int, y int) (TextIter, int, bool) {
 	var _ok bool      // out
 
 	_trailing = (int)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -907,7 +973,7 @@ func (t textView) Monospace() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -926,7 +992,7 @@ func (t textView) Overwrite() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1083,7 +1149,7 @@ func (t textView) ImContextFilterKeypress(event *gdk.EventKey) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1121,7 +1187,7 @@ func (t textView) MoveMarkOnscreen(mark TextMark) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1152,7 +1218,7 @@ func (t textView) MoveVisually(iter *TextIter, count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1172,7 +1238,7 @@ func (t textView) PlaceCursorOnscreen() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1244,7 +1310,7 @@ func (t textView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bo
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	_arg2 = C.gdouble(withinMargin)
 	if useAlign {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	_arg4 = C.gdouble(xalign)
 	_arg5 = C.gdouble(yalign)
@@ -1255,7 +1321,7 @@ func (t textView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1280,7 +1346,7 @@ func (t textView) ScrollToMark(mark TextMark, withinMargin float64, useAlign boo
 	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 	_arg2 = C.gdouble(withinMargin)
 	if useAlign {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	_arg4 = C.gdouble(xalign)
 	_arg5 = C.gdouble(yalign)
@@ -1298,7 +1364,7 @@ func (t textView) SetAcceptsTab(acceptsTab bool) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	if acceptsTab {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_view_set_accepts_tab(_arg0, _arg1)
@@ -1364,7 +1430,7 @@ func (t textView) SetCursorVisible(setting bool) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_view_set_cursor_visible(_arg0, _arg1)
@@ -1379,7 +1445,7 @@ func (t textView) SetEditable(setting bool) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_view_set_editable(_arg0, _arg1)
@@ -1457,7 +1523,7 @@ func (t textView) SetMonospace(monospace bool) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	if monospace {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_view_set_monospace(_arg0, _arg1)
@@ -1470,7 +1536,7 @@ func (t textView) SetOverwrite(overwrite bool) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	if overwrite {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_view_set_overwrite(_arg0, _arg1)
@@ -1583,7 +1649,7 @@ func (t textView) StartsDisplayLine(iter *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -34,7 +34,7 @@ func (conv *TypeConversionToGo) convert(value *ValueConverted) bool {
 func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
 	if value.AnyType.Array.Type == nil {
 		conv.log(LogDebug, "C->Go skipping nested array", value.AnyType.Array.CType)
-		return value.AllowNone // ok if AllowNone
+		return value.Optional // ok if optional
 	}
 
 	array := value.AnyType.Array
@@ -117,28 +117,27 @@ func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
 		// not be freed.
 		if value.isTransferring() && inner.resolved.CanCast() {
 			value.addImport("runtime")
-			value.addImport(importInternal("ptr"))
 
-			value.p.Linef(goSliceFromPtr(value.OutName, value.InName, length.InName))
+			value.p.Linef("%s = unsafe.Slice((*%s)(unsafe.Pointer(%s)), %s)",
+				value.OutName, inner.OutType, value.InName, length.InName)
 
 			// See: https://golang.org/misc/cgo/gmp/gmp.go?s=3086:3757#L87
 			value.p.Linef("runtime.SetFinalizer(&%s, func(v *%s) {", value.OutName, value.OutType)
-			value.p.Linef("  C.free(ptr.Slice(unsafe.Pointer(v)))")
+			value.p.Linef("  C.free(unsafe.Pointer(&(*v)[0]))")
 			value.p.Linef("})")
 
 			return true
 		}
 
-		value.addImport(importInternal("ptr"))
-
 		value.p.Descend()
 
-		value.p.Linef("var src []%s", inner.InType)
-		value.p.Linef(goSliceFromPtr("src", value.InName, length.InName))
-		value.p.EmptyLine()
+		value.p.Linef("src := unsafe.Slice(%s, %s)", value.InName, length.InName)
+		if value.isTransferring() {
+			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
+		}
 
 		value.p.Linef("%s = make(%s, %s)", value.OutName, value.OutType, length.InName)
-		value.p.Linef("for i := 0; i < uintptr(%s); i++ {", length.InName)
+		value.p.Linef("for i := 0; i < int(%s); i++ {", length.InName)
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
@@ -147,18 +146,12 @@ func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
 
 	case array.Name == "GLib.Array": // treat as Go array
 		value.addImport("unsafe")
-		value.addImport(importInternal("ptr"))
 
 		value.p.Descend()
 
 		value.p.Linef("var len uintptr")
 		value.p.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&len))", value.InName)
-		value.p.EmptyLine()
-
-		value.p.Linef("var src []%s", inner.InType)
-		value.p.Linef(goSliceFromPtr("src", "p", "len"))
-		value.p.EmptyLine()
-
+		value.p.Linef("src := unsafe.Slice((*%s)(p), len)", inner.InType)
 		value.p.Linef("%s = make(%s, len)", value.OutName, value.OutType)
 		value.p.Linef("for i := 0; i < len; i++ {", value.InName)
 		value.p.Linef(inner.Conversion)
@@ -169,24 +162,19 @@ func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
 
 	case array.IsZeroTerminated():
 		value.addImport("unsafe")
-		value.addImport(importInternal("ptr"))
 
 		value.p.Descend()
 
 		// Scan for the length.
 		value.p.Linef("var length int")
-		value.p.Linef("for p := %s; *p != 0; p = (%s)(ptr.Add(unsafe.Pointer(p), %s)) {",
+		value.p.Linef("for p := %s; *p != nil; p = (%s)(unsafe.Add(unsafe.Pointer(p), %s)) {",
 			value.InName, value.InType, value.csizeof())
 		value.p.Linef("  length++")
 		value.p.Linef("  if length < 0 { panic(`length overflow`) }")
 		value.p.Linef("}")
 		value.p.EmptyLine()
 
-		value.p.Linef("var src []%s", inner.InType)
-		value.p.Linef(goSliceFromPtr("src", value.InName, "length"))
-		value.p.EmptyLine()
-
-		// Preallocate the slice.
+		value.p.Linef("src := unsafe.Slice(%s, length)", value.InName)
 		value.p.Linef("%s = make(%s, length)", value.OutName, value.OutType)
 		value.p.Linef("for i := range src {")
 		value.p.Linef(inner.Conversion)
@@ -224,11 +212,21 @@ func (conv *TypeConversionToGo) typeConverter(value *ValueConverted) bool {
 		return true
 
 	case value.resolved.IsBuiltin("bool"):
-		value.p.Linef("if %s { %s = true }", value.InName, value.OutName)
+		switch value.resolved.CType {
+		case "gboolean":
+			// gboolean is resolved to C type int, so we have to do regular int
+			// comparison.
+			value.p.Linef("if %s != 0 { %s = true }", value.InName, value.OutName)
+		case "_Bool", "bool":
+			fallthrough
+		default:
+			// CGo supports _Bool and bool directly.
+			value.p.Linef("if %s { %s = true }", value.InName, value.OutName)
+		}
 		return true
 
 	case value.resolved.IsBuiltin("error"):
-		value.addImport(importInternal("gerror"))
+		value.addImportInternal("gerror")
 		value.p.Linef("%s = gerror.Take(unsafe.Pointer(%s))", value.OutName, value.InName)
 		return true
 
@@ -240,8 +238,7 @@ func (conv *TypeConversionToGo) typeConverter(value *ValueConverted) bool {
 	// Resolve special-case GLib types.
 	switch ensureNamespace(conv.ng.current, value.AnyType.Type.Name) {
 	case "gpointer":
-		value.addImport(importInternal("box"))
-
+		value.addImportInternal("box")
 		value.p.Linef("%s = box.Get(uintptr(%s))", value.OutName, value.InName)
 		return true
 
@@ -251,20 +248,19 @@ func (conv *TypeConversionToGo) typeConverter(value *ValueConverted) bool {
 
 	case "GObject.Type", "GType":
 		value.addGLibImport()
-		value.NeedsGLibObject = true
-
+		value.needsGLibObject()
 		value.p.Linef("%s = externglib.Type(%s)", value.OutName, value.InName)
 		return true
 
 	case "GObject.Value":
 		value.addImport("unsafe")
 		value.addGLibImport()
-		value.NeedsGLibObject = true
+		value.needsGLibObject()
 
 		value.p.Linef(
 			"%s = externglib.ValueFromNative(unsafe.Pointer(%s))",
-			value.OutName, value.InName,
-		)
+			value.OutName, value.InName)
+
 		// Set this to be freed if we have the ownership now.
 		if value.isTransferring() {
 			// https://pkg.go.dev/github.com/gotk3/gotk3/glib?utm_source=godoc#Value
@@ -273,11 +269,6 @@ func (conv *TypeConversionToGo) typeConverter(value *ValueConverted) bool {
 			value.p.Linef("})")
 		}
 		return true
-	}
-
-	// Pretend that ignored types don't exist.
-	if conv.ng.mustIgnore(value.AnyType.Type.Name, value.AnyType.Type.CType) {
-		return false
 	}
 
 	// TODO: function

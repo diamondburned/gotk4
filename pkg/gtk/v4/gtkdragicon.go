@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -41,7 +43,7 @@ type DragIcon interface {
 	SetChild(child Widget)
 }
 
-// dragIcon implements the DragIcon interface.
+// dragIcon implements the DragIcon class.
 type dragIcon struct {
 	Widget
 	Accessible
@@ -56,7 +58,7 @@ var _ DragIcon = (*dragIcon)(nil)
 // WrapDragIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDragIcon(obj *externglib.Object) DragIcon {
-	return DragIcon{
+	return dragIcon{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

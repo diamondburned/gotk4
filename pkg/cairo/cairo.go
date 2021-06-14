@@ -8,10 +8,10 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: cairo-gobject gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: cairo-gobject glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <cairo-gobject.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -509,11 +509,6 @@ func WrapMatrix(ptr unsafe.Pointer) *Matrix {
 	return (*Matrix)(ptr)
 }
 
-func marshalMatrix(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMatrix(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (m *Matrix) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
@@ -651,11 +646,6 @@ func WrapPath(ptr unsafe.Pointer) *Path {
 	}
 
 	return (*Path)(ptr)
-}
-
-func marshalPath(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPath(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

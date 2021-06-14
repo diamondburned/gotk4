@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -195,7 +195,7 @@ type ComboBox interface {
 	SetWrapWidth(width int)
 }
 
-// comboBox implements the ComboBox interface.
+// comboBox implements the ComboBox class.
 type comboBox struct {
 	Bin
 	Buildable
@@ -208,7 +208,7 @@ var _ ComboBox = (*comboBox)(nil)
 // WrapComboBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapComboBox(obj *externglib.Object) ComboBox {
-	return ComboBox{
+	return comboBox{
 		Bin:          WrapBin(obj),
 		Buildable:    WrapBuildable(obj),
 		CellEditable: WrapCellEditable(obj),
@@ -284,7 +284,7 @@ func (c comboBox) ActiveIter() (TreeIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -303,7 +303,7 @@ func (c comboBox) AddTearoffs() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -359,7 +359,7 @@ func (c comboBox) FocusOnClick() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -378,7 +378,7 @@ func (c comboBox) HasEntry() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -416,7 +416,7 @@ func (c comboBox) PopupFixedWidth() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -548,7 +548,7 @@ func (c comboBox) SetActiveID(activeId string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -575,7 +575,7 @@ func (c comboBox) SetAddTearoffs(addTearoffs bool) {
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	if addTearoffs {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_combo_box_set_add_tearoffs(_arg0, _arg1)
@@ -634,7 +634,7 @@ func (c comboBox) SetFocusOnClick(focusOnClick bool) {
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	if focusOnClick {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_combo_box_set_focus_on_click(_arg0, _arg1)
@@ -678,7 +678,7 @@ func (c comboBox) SetPopupFixedWidth(fixed bool) {
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	if fixed {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_combo_box_set_popup_fixed_width(_arg0, _arg1)

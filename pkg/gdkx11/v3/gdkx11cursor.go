@@ -3,14 +3,16 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -23,7 +25,7 @@ type X11Cursor interface {
 	gdk.Cursor
 }
 
-// x11Cursor implements the X11Cursor interface.
+// x11Cursor implements the X11Cursor class.
 type x11Cursor struct {
 	gdk.Cursor
 }
@@ -33,7 +35,7 @@ var _ X11Cursor = (*x11Cursor)(nil)
 // WrapX11Cursor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Cursor(obj *externglib.Object) X11Cursor {
-	return X11Cursor{
+	return x11Cursor{
 		gdk.Cursor: gdk.WrapCursor(obj),
 	}
 }

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -16,8 +18,32 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
 		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealer},
 	})
+}
+
+// RevealerTransitionType: these enumeration values describe the possible
+// transitions when the child of a Revealer widget is shown or hidden.
+type RevealerTransitionType int
+
+const (
+	// RevealerTransitionTypeNone: no transition
+	RevealerTransitionTypeNone RevealerTransitionType = 0
+	// RevealerTransitionTypeCrossfade: fade in
+	RevealerTransitionTypeCrossfade RevealerTransitionType = 1
+	// RevealerTransitionTypeSlideRight: slide in from the left
+	RevealerTransitionTypeSlideRight RevealerTransitionType = 2
+	// RevealerTransitionTypeSlideLeft: slide in from the right
+	RevealerTransitionTypeSlideLeft RevealerTransitionType = 3
+	// RevealerTransitionTypeSlideUp: slide in from the bottom
+	RevealerTransitionTypeSlideUp RevealerTransitionType = 4
+	// RevealerTransitionTypeSlideDown: slide in from the top
+	RevealerTransitionTypeSlideDown RevealerTransitionType = 5
+)
+
+func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
+	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Revealer: the GtkRevealer widget is a container which animates the transition
@@ -64,7 +90,7 @@ type Revealer interface {
 	SetTransitionType(transition RevealerTransitionType)
 }
 
-// revealer implements the Revealer interface.
+// revealer implements the Revealer class.
 type revealer struct {
 	Bin
 	Buildable
@@ -75,7 +101,7 @@ var _ Revealer = (*revealer)(nil)
 // WrapRevealer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRevealer(obj *externglib.Object) Revealer {
-	return Revealer{
+	return revealer{
 		Bin:       WrapBin(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -100,7 +126,7 @@ func (r revealer) ChildRevealed() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -124,7 +150,7 @@ func (r revealer) RevealChild() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -159,7 +185,7 @@ func (r revealer) SetRevealChild(revealChild bool) {
 
 	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 	if revealChild {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_revealer_set_reveal_child(_arg0, _arg1)

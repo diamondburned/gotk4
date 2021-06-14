@@ -5,13 +5,14 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -50,7 +51,7 @@ type Texture interface {
 	SaveToPng(filename string) bool
 }
 
-// texture implements the Texture interface.
+// texture implements the Texture class.
 type texture struct {
 	gextras.Objector
 	Paintable
@@ -61,7 +62,7 @@ var _ Texture = (*texture)(nil)
 // WrapTexture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTexture(obj *externglib.Object) Texture {
-	return Texture{
+	return texture{
 		Objector:  obj,
 		Paintable: WrapPaintable(obj),
 	}
@@ -127,7 +128,7 @@ func (t texture) SaveToPng(filename string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

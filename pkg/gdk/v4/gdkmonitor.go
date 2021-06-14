@@ -5,19 +5,44 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
 		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitor},
 	})
+}
+
+// SubpixelLayout: this enumeration describes how the red, green and blue
+// components of physical pixels on an output device are laid out.
+type SubpixelLayout int
+
+const (
+	// SubpixelLayoutUnknown: the layout is not known
+	SubpixelLayoutUnknown SubpixelLayout = 0
+	// SubpixelLayoutNone: not organized in this way
+	SubpixelLayoutNone SubpixelLayout = 1
+	// SubpixelLayoutHorizontalRGB: the layout is horizontal, the order is RGB
+	SubpixelLayoutHorizontalRGB SubpixelLayout = 2
+	// SubpixelLayoutHorizontalBGR: the layout is horizontal, the order is BGR
+	SubpixelLayoutHorizontalBGR SubpixelLayout = 3
+	// SubpixelLayoutVerticalRGB: the layout is vertical, the order is RGB
+	SubpixelLayoutVerticalRGB SubpixelLayout = 4
+	// SubpixelLayoutVerticalBGR: the layout is vertical, the order is BGR
+	SubpixelLayoutVerticalBGR SubpixelLayout = 5
+)
+
+func marshalSubpixelLayout(p uintptr) (interface{}, error) {
+	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Monitor: `GdkMonitor` objects represent the individual outputs that are
@@ -73,7 +98,7 @@ type Monitor interface {
 	IsValid() bool
 }
 
-// monitor implements the Monitor interface.
+// monitor implements the Monitor class.
 type monitor struct {
 	gextras.Objector
 }
@@ -83,7 +108,7 @@ var _ Monitor = (*monitor)(nil)
 // WrapMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMonitor(obj *externglib.Object) Monitor {
-	return Monitor{
+	return monitor{
 		Objector: obj,
 	}
 }
@@ -262,7 +287,7 @@ func (m monitor) IsValid() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

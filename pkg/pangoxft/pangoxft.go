@@ -3,12 +3,13 @@
 package pangoxft
 
 import (
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangoxft pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango pangoxft
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangoxft.h>
@@ -36,14 +37,9 @@ type Font interface {
 	//
 	// Use pango_fc_font_has_char() instead.
 	HasChar(wc uint32) bool
-	// UnlockFace releases a font previously obtained with
-	// pango_xft_font_lock_face().
-	//
-	// Use pango_fc_font_unlock_face() instead.
-	UnlockFace()
 }
 
-// font implements the Font interface.
+// font implements the Font class.
 type font struct {
 	pangofc.Font
 }
@@ -53,7 +49,7 @@ var _ Font = (*font)(nil)
 // WrapFont wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
-	return Font{
+	return font{
 		pangofc.Font: pangofc.WrapFont(obj),
 	}
 }
@@ -103,23 +99,11 @@ func (f font) HasChar(wc uint32) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// UnlockFace releases a font previously obtained with
-// pango_xft_font_lock_face().
-//
-// Use pango_fc_font_unlock_face() instead.
-func (f font) UnlockFace() {
-	var _arg0 *C.PangoFont // out
-
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
-
-	C.pango_xft_font_unlock_face(_arg0)
 }
 
 // FontMap is an implementation of FcFontMap suitable for the Xft library as the
@@ -128,7 +112,7 @@ type FontMap interface {
 	pangofc.FontMap
 }
 
-// fontMap implements the FontMap interface.
+// fontMap implements the FontMap class.
 type fontMap struct {
 	pangofc.FontMap
 }
@@ -138,7 +122,7 @@ var _ FontMap = (*fontMap)(nil)
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
-	return FontMap{
+	return fontMap{
 		pangofc.FontMap: pangofc.WrapFontMap(obj),
 	}
 }

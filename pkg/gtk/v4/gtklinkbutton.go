@@ -4,9 +4,171 @@ package gtk
 
 import (
 	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButton},
+	})
+}
+
+// LinkButton: a `GtkLinkButton` is a button with a hyperlink.
+//
+// !An example GtkLinkButton (link-button.png)
+//
+// It is useful to show quick links to resources.
+//
+// A link button is created by calling either [ctor@Gtk.LinkButton.new] or
+// [ctor@Gtk.LinkButton.new_with_label]. If using the former, the URI you pass
+// to the constructor is used as a label for the widget.
+//
+// The URI bound to a `GtkLinkButton` can be set specifically using
+// [method@Gtk.LinkButton.set_uri].
+//
+// By default, `GtkLinkButton` calls [func@Gtk.show_uri] when the button is
+// clicked. This behaviour can be overridden by connecting to the
+// [signal@Gtk.LinkButton::activate-link] signal and returning true from the
+// signal handler.
+//
+//
+// CSS nodes
+//
+// `GtkLinkButton` has a single CSS node with name button. To differentiate it
+// from a plain `GtkButton`, it gets the .link style class.
+//
+//
+// Accessibility
+//
+// `GtkLinkButton` uses the K_ACCESSIBLE_ROLE_LINK role.
+type LinkButton interface {
+	Button
+	Accessible
+	Actionable
+	Buildable
+	ConstraintTarget
+
+	// URI retrieves the URI of the `GtkLinkButton`.
+	URI() string
+	// Visited retrieves the “visited” state of the `GtkLinkButton`.
+	//
+	// The button becomes visited when it is clicked. If the URI is changed on
+	// the button, the “visited” state is unset again.
+	//
+	// The state may also be changed using [method@Gtk.LinkButton.set_visited].
+	Visited() bool
+	// SetURI sets @uri as the URI where the `GtkLinkButton` points.
+	//
+	// As a side-effect this unsets the “visited” state of the button.
+	SetURI(uri string)
+	// SetVisited sets the “visited” state of the `GtkLinkButton`.
+	//
+	// See [method@Gtk.LinkButton.get_visited] for more details.
+	SetVisited(visited bool)
+}
+
+// linkButton implements the LinkButton class.
+type linkButton struct {
+	Button
+	Accessible
+	Actionable
+	Buildable
+	ConstraintTarget
+}
+
+var _ LinkButton = (*linkButton)(nil)
+
+// WrapLinkButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLinkButton(obj *externglib.Object) LinkButton {
+	return linkButton{
+		Button:           WrapButton(obj),
+		Accessible:       WrapAccessible(obj),
+		Actionable:       WrapActionable(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+	}
+}
+
+func marshalLinkButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapLinkButton(obj), nil
+}
+
+// URI retrieves the URI of the `GtkLinkButton`.
+func (l linkButton) URI() string {
+	var _arg0 *C.GtkLinkButton // out
+
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+
+	var _cret *C.char // in
+
+	_cret = C.gtk_link_button_get_uri(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}
+
+// Visited retrieves the “visited” state of the `GtkLinkButton`.
+//
+// The button becomes visited when it is clicked. If the URI is changed on
+// the button, the “visited” state is unset again.
+//
+// The state may also be changed using [method@Gtk.LinkButton.set_visited].
+func (l linkButton) Visited() bool {
+	var _arg0 *C.GtkLinkButton // out
+
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_link_button_get_visited(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetURI sets @uri as the URI where the `GtkLinkButton` points.
+//
+// As a side-effect this unsets the “visited” state of the button.
+func (l linkButton) SetURI(uri string) {
+	var _arg0 *C.GtkLinkButton // out
+	var _arg1 *C.char          // out
+
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_link_button_set_uri(_arg0, _arg1)
+}
+
+// SetVisited sets the “visited” state of the `GtkLinkButton`.
+//
+// See [method@Gtk.LinkButton.get_visited] for more details.
+func (l linkButton) SetVisited(visited bool) {
+	var _arg0 *C.GtkLinkButton // out
+	var _arg1 C.gboolean       // out
+
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	if visited {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_link_button_set_visited(_arg0, _arg1)
+}

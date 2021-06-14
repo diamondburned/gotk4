@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -16,8 +18,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_toolbar_space_style_get_type()), F: marshalToolbarSpaceStyle},
 		{T: externglib.Type(C.gtk_toolbar_get_type()), F: marshalToolbar},
 	})
+}
+
+// ToolbarSpaceStyle: whether spacers are vertical lines or just blank.
+type ToolbarSpaceStyle int
+
+const (
+	// ToolbarSpaceStyleEmpty: use blank spacers.
+	ToolbarSpaceStyleEmpty ToolbarSpaceStyle = 0
+	// ToolbarSpaceStyleLine: use vertical lines for spacers.
+	ToolbarSpaceStyleLine ToolbarSpaceStyle = 1
+)
+
+func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
+	return ToolbarSpaceStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Toolbar: a toolbar is created with a call to gtk_toolbar_new().
@@ -105,7 +122,7 @@ type Toolbar interface {
 	UnsetStyle()
 }
 
-// toolbar implements the Toolbar interface.
+// toolbar implements the Toolbar class.
 type toolbar struct {
 	Container
 	Buildable
@@ -118,7 +135,7 @@ var _ Toolbar = (*toolbar)(nil)
 // WrapToolbar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToolbar(obj *externglib.Object) Toolbar {
-	return Toolbar{
+	return toolbar{
 		Container:  WrapContainer(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -207,7 +224,7 @@ func (t toolbar) ShowArrow() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -279,7 +296,7 @@ func (t toolbar) SetShowArrow(showArrow bool) {
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	if showArrow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_toolbar_set_show_arrow(_arg0, _arg1)

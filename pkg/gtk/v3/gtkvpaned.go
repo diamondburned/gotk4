@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -31,7 +33,7 @@ type VPaned interface {
 	Orientable
 }
 
-// vPaned implements the VPaned interface.
+// vPaned implements the VPaned class.
 type vPaned struct {
 	Paned
 	Buildable
@@ -43,7 +45,7 @@ var _ VPaned = (*vPaned)(nil)
 // WrapVPaned wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapVPaned(obj *externglib.Object) VPaned {
-	return VPaned{
+	return vPaned{
 		Paned:      WrapPaned(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),

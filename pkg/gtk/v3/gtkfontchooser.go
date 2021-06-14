@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -19,8 +20,32 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_font_chooser_level_get_type()), F: marshalFontChooserLevel},
 		{T: externglib.Type(C.gtk_font_chooser_get_type()), F: marshalFontChooser},
 	})
+}
+
+// FontChooserLevel: this enumeration specifies the granularity of font
+// selection that is desired in a font chooser.
+//
+// This enumeration may be extended in the future; applications should ignore
+// unknown values.
+type FontChooserLevel int
+
+const (
+	// FontChooserLevelFamily: allow selecting a font family
+	FontChooserLevelFamily FontChooserLevel = 0
+	// FontChooserLevelStyle: allow selecting a specific font face
+	FontChooserLevelStyle FontChooserLevel = 1
+	// FontChooserLevelSize: allow selecting a specific font size
+	FontChooserLevelSize       FontChooserLevel = 2
+	FontChooserLevelVariations FontChooserLevel = 4
+	// FontChooserLevelFeatures: allow selecting specific OpenType font features
+	FontChooserLevelFeatures FontChooserLevel = 8
+)
+
+func marshalFontChooserLevel(p uintptr) (interface{}, error) {
+	return FontChooserLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // FontChooserOverrider contains methods that are overridable. This
@@ -225,7 +250,7 @@ func (f fontChooser) ShowPreviewEntry() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -328,7 +353,7 @@ func (f fontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 	if showPreviewEntry {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_font_chooser_set_show_preview_entry(_arg0, _arg1)

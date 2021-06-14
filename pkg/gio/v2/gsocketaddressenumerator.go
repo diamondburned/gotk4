@@ -3,13 +3,14 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/box"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -21,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -43,17 +45,9 @@ func init() {
 // that AddressEnumerator is not possible, and it can be unreffed.
 type SocketAddressEnumerator interface {
 	gextras.Objector
-
-	// NextAsync: asynchronously retrieves the next Address from @enumerator and
-	// then calls @callback, which must call
-	// g_socket_address_enumerator_next_finish() to get the result.
-	//
-	// It is an error to call this multiple times before the previous callback
-	// has finished.
-	NextAsync(cancellable Cancellable, callback AsyncReadyCallback)
 }
 
-// socketAddressEnumerator implements the SocketAddressEnumerator interface.
+// socketAddressEnumerator implements the SocketAddressEnumerator class.
 type socketAddressEnumerator struct {
 	gextras.Objector
 }
@@ -63,7 +57,7 @@ var _ SocketAddressEnumerator = (*socketAddressEnumerator)(nil)
 // WrapSocketAddressEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumerator {
-	return SocketAddressEnumerator{
+	return socketAddressEnumerator{
 		Objector: obj,
 	}
 }
@@ -72,24 +66,4 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSocketAddressEnumerator(obj), nil
-}
-
-// NextAsync: asynchronously retrieves the next Address from @enumerator and
-// then calls @callback, which must call
-// g_socket_address_enumerator_next_finish() to get the result.
-//
-// It is an error to call this multiple times before the previous callback
-// has finished.
-func (e socketAddressEnumerator) NextAsync(cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketAddressEnumerator // out
-	var _arg1 *C.GCancellable             // out
-	var _arg2 C.GAsyncReadyCallback       // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
-
-	C.g_socket_address_enumerator_next_async(_arg0, _arg1, _arg2, _arg3)
 }

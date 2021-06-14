@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -76,7 +78,7 @@ type Overlay interface {
 	SetOverlayPassThrough(widget Widget, passThrough bool)
 }
 
-// overlay implements the Overlay interface.
+// overlay implements the Overlay class.
 type overlay struct {
 	Bin
 	Buildable
@@ -87,7 +89,7 @@ var _ Overlay = (*overlay)(nil)
 // WrapOverlay wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapOverlay(obj *externglib.Object) Overlay {
-	return Overlay{
+	return overlay{
 		Bin:       WrapBin(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -131,7 +133,7 @@ func (o overlay) OverlayPassThrough(widget Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -167,7 +169,7 @@ func (o overlay) SetOverlayPassThrough(widget Widget, passThrough bool) {
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if passThrough {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_overlay_set_overlay_pass_through(_arg0, _arg1, _arg2)

@@ -5,13 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -23,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -116,7 +116,7 @@ type ApplicationCommandLine interface {
 	//
 	// The return value is nil-terminated and should be freed using
 	// g_strfreev().
-	Arguments() []*string
+	Arguments() []string
 	// Cwd gets the working directory of the command line invocation. The string
 	// may contain non-utf8 data.
 	//
@@ -125,7 +125,7 @@ type ApplicationCommandLine interface {
 	//
 	// The return value should not be modified or freed and is valid for as long
 	// as @cmdline exists.
-	Cwd() *string
+	Cwd() string
 	// Environ gets the contents of the 'environ' variable of the command line
 	// invocation, as would be returned by g_get_environ(), ie as a
 	// nil-terminated list of strings in the form 'NAME=VALUE'. The strings may
@@ -141,7 +141,7 @@ type ApplicationCommandLine interface {
 	//
 	// See g_application_command_line_getenv() if you are only interested in the
 	// value of a single environment variable.
-	Environ() []*string
+	Environ() []string
 	// ExitStatus gets the exit status of @cmdline. See
 	// g_application_command_line_set_exit_status() for more information.
 	ExitStatus() int
@@ -158,7 +158,7 @@ type ApplicationCommandLine interface {
 	//
 	// The return value should not be modified or freed and is valid for as long
 	// as @cmdline exists.
-	env(name *string) string
+	env(name string) string
 	// SetExitStatus sets the exit status that will be used when the invoking
 	// process exits.
 	//
@@ -183,7 +183,7 @@ type ApplicationCommandLine interface {
 	SetExitStatus(exitStatus int)
 }
 
-// applicationCommandLine implements the ApplicationCommandLine interface.
+// applicationCommandLine implements the ApplicationCommandLine class.
 type applicationCommandLine struct {
 	gextras.Objector
 }
@@ -193,7 +193,7 @@ var _ ApplicationCommandLine = (*applicationCommandLine)(nil)
 // WrapApplicationCommandLine wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplicationCommandLine(obj *externglib.Object) ApplicationCommandLine {
-	return ApplicationCommandLine{
+	return applicationCommandLine{
 		Objector: obj,
 	}
 }
@@ -215,7 +215,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 //
 // The return value is nil-terminated and should be freed using
 // g_strfreev().
-func (c applicationCommandLine) Arguments() []*string {
+func (c applicationCommandLine) Arguments() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
@@ -225,16 +225,15 @@ func (c applicationCommandLine) Arguments() []*string {
 
 	_cret = C.g_application_command_line_get_arguments(_arg0, &_arg1)
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
-		_filenames = make([]*string, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_filenames = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+		src := unsafe.Slice(_cret, _arg1)
+		defer C.free(unsafe.Pointer(_cret))
+		_filenames = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_filenames[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -249,7 +248,7 @@ func (c applicationCommandLine) Arguments() []*string {
 //
 // The return value should not be modified or freed and is valid for as long
 // as @cmdline exists.
-func (c applicationCommandLine) Cwd() *string {
+func (c applicationCommandLine) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
@@ -258,7 +257,7 @@ func (c applicationCommandLine) Cwd() *string {
 
 	_cret = C.g_application_command_line_get_cwd(_arg0)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -280,7 +279,7 @@ func (c applicationCommandLine) Cwd() *string {
 //
 // See g_application_command_line_getenv() if you are only interested in the
 // value of a single environment variable.
-func (c applicationCommandLine) Environ() []*string {
+func (c applicationCommandLine) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
@@ -289,23 +288,21 @@ func (c applicationCommandLine) Environ() []*string {
 
 	_cret = C.g_application_command_line_get_environ(_arg0)
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_filenames = make([]*string, length)
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
 		for i := range src {
-			_filenames = C.GoString(_cret)
+			_filenames[i] = C.GoString(src[i])
 		}
 	}
 
@@ -342,7 +339,7 @@ func (c applicationCommandLine) IsRemote() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -360,7 +357,7 @@ func (c applicationCommandLine) IsRemote() bool {
 //
 // The return value should not be modified or freed and is valid for as long
 // as @cmdline exists.
-func (c applicationCommandLine) env(name *string) string {
+func (c applicationCommandLine) env(name string) string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 

@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -85,7 +88,7 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, value **externglib.Value)
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -112,7 +115,7 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, value **externglib.Val
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -179,7 +182,7 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -202,7 +205,7 @@ func (d treeDragSource) RowDraggable(path *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

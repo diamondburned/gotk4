@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -99,7 +99,7 @@ type LevelBar interface {
 	SetValue(value float64)
 }
 
-// levelBar implements the LevelBar interface.
+// levelBar implements the LevelBar class.
 type levelBar struct {
 	Widget
 	Buildable
@@ -111,7 +111,7 @@ var _ LevelBar = (*levelBar)(nil)
 // WrapLevelBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLevelBar(obj *externglib.Object) LevelBar {
-	return LevelBar{
+	return levelBar{
 		Widget:     WrapWidget(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -155,7 +155,7 @@ func (s levelBar) Inverted() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -215,7 +215,7 @@ func (s levelBar) OffsetValue(name string) (float64, bool) {
 	var _ok bool       // out
 
 	_value = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -259,7 +259,7 @@ func (s levelBar) SetInverted(inverted bool) {
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 	if inverted {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_level_bar_set_inverted(_arg0, _arg1)

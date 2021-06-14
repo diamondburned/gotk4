@@ -2,7 +2,74 @@
 
 package gtk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparator},
+	})
+}
+
+// Separator: `GtkSeparator` is a horizontal or vertical separator widget.
+//
+// !An example GtkSeparator (separators.png)
+//
+// A `GtkSeparator` can be used to group the widgets within a window. It
+// displays a line with a shadow to make it appear sunken into the interface.
+//
+//
+// CSS nodes
+//
+// `GtkSeparator` has a single CSS node with name separator. The node gets one
+// of the .horizontal or .vertical style classes.
+//
+//
+// Accessibility
+//
+// `GtkSeparator` uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
+type Separator interface {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
+}
+
+// separator implements the Separator class.
+type separator struct {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
+}
+
+var _ Separator = (*separator)(nil)
+
+// WrapSeparator wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSeparator(obj *externglib.Object) Separator {
+	return separator{
+		Widget:           WrapWidget(obj),
+		Accessible:       WrapAccessible(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+		Orientable:       WrapOrientable(obj),
+	}
+}
+
+func marshalSeparator(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapSeparator(obj), nil
+}

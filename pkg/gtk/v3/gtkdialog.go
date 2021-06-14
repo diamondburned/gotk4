@@ -3,14 +3,13 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,8 +19,64 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
+		{T: externglib.Type(C.gtk_dialog_flags_get_type()), F: marshalDialogFlags},
 		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialog},
 	})
+}
+
+// ResponseType: predefined values for use as response ids in
+// gtk_dialog_add_button(). All predefined values are negative; GTK+ leaves
+// values of 0 or greater for application-defined response ids.
+type ResponseType int
+
+const (
+	// ResponseTypeNone: returned if an action widget has no response id, or if
+	// the dialog gets programmatically hidden or destroyed
+	ResponseTypeNone ResponseType = -1
+	// ResponseTypeReject: generic response id, not used by GTK+ dialogs
+	ResponseTypeReject ResponseType = -2
+	// ResponseTypeAccept: generic response id, not used by GTK+ dialogs
+	ResponseTypeAccept ResponseType = -3
+	// ResponseTypeDeleteEvent: returned if the dialog is deleted
+	ResponseTypeDeleteEvent ResponseType = -4
+	// ResponseTypeOk: returned by OK buttons in GTK+ dialogs
+	ResponseTypeOk ResponseType = -5
+	// ResponseTypeCancel: returned by Cancel buttons in GTK+ dialogs
+	ResponseTypeCancel ResponseType = -6
+	// ResponseTypeClose: returned by Close buttons in GTK+ dialogs
+	ResponseTypeClose ResponseType = -7
+	// ResponseTypeYes: returned by Yes buttons in GTK+ dialogs
+	ResponseTypeYes ResponseType = -8
+	// ResponseTypeNo: returned by No buttons in GTK+ dialogs
+	ResponseTypeNo ResponseType = -9
+	// ResponseTypeApply: returned by Apply buttons in GTK+ dialogs
+	ResponseTypeApply ResponseType = -10
+	// ResponseTypeHelp: returned by Help buttons in GTK+ dialogs
+	ResponseTypeHelp ResponseType = -11
+)
+
+func marshalResponseType(p uintptr) (interface{}, error) {
+	return ResponseType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DialogFlags flags used to influence dialog construction.
+type DialogFlags int
+
+const (
+	// DialogFlagsModal: make the constructed dialog modal, see
+	// gtk_window_set_modal()
+	DialogFlagsModal DialogFlags = 1
+	// DialogFlagsDestroyWithParent: destroy the dialog when its parent is
+	// destroyed, see gtk_window_set_destroy_with_parent()
+	DialogFlagsDestroyWithParent DialogFlags = 2
+	// DialogFlagsUseHeaderBar: create dialog with actions in header bar instead
+	// of action area. Since 3.12.
+	DialogFlagsUseHeaderBar DialogFlags = 4
+)
+
+func marshalDialogFlags(p uintptr) (interface{}, error) {
+	return DialogFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // AlternativeDialogButtonOrder returns true if dialogs are expected to use an
@@ -44,7 +99,7 @@ func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -245,7 +300,7 @@ type Dialog interface {
 	SetResponseSensitive(responseId int, setting bool)
 }
 
-// dialog implements the Dialog interface.
+// dialog implements the Dialog class.
 type dialog struct {
 	Window
 	Buildable
@@ -256,7 +311,7 @@ var _ Dialog = (*dialog)(nil)
 // WrapDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDialog(obj *externglib.Object) Dialog {
-	return Dialog{
+	return dialog{
 		Window:    WrapWindow(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -424,7 +479,7 @@ func (d dialog) SetResponseSensitive(responseId int, setting bool) {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = C.gint(responseId)
 	if setting {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_dialog_set_response_sensitive(_arg0, _arg1, _arg2)

@@ -8,16 +8,239 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_crossing_mode_get_type()), F: marshalCrossingMode},
+		{T: externglib.Type(C.gdk_event_type_get_type()), F: marshalEventType},
+		{T: externglib.Type(C.gdk_key_match_get_type()), F: marshalKeyMatch},
+		{T: externglib.Type(C.gdk_notify_type_get_type()), F: marshalNotifyType},
+		{T: externglib.Type(C.gdk_scroll_direction_get_type()), F: marshalScrollDirection},
+		{T: externglib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
 		{T: externglib.Type(C.gdk_event_sequence_get_type()), F: marshalEventSequence},
 	})
+}
+
+// CrossingMode specifies the crossing mode for enter and leave events.
+type CrossingMode int
+
+const (
+	// CrossingModeNormal: crossing because of pointer motion.
+	CrossingModeNormal CrossingMode = 0
+	// CrossingModeGrab: crossing because a grab is activated.
+	CrossingModeGrab CrossingMode = 1
+	// CrossingModeUngrab: crossing because a grab is deactivated.
+	CrossingModeUngrab CrossingMode = 2
+	// CrossingModeGTKGrab: crossing because a GTK grab is activated.
+	CrossingModeGTKGrab CrossingMode = 3
+	// CrossingModeGTKUngrab: crossing because a GTK grab is deactivated.
+	CrossingModeGTKUngrab CrossingMode = 4
+	// CrossingModeStateChanged: crossing because a GTK widget changed state
+	// (e.g. sensitivity).
+	CrossingModeStateChanged CrossingMode = 5
+	// CrossingModeTouchBegin: crossing because a touch sequence has begun, this
+	// event is synthetic as the pointer might have not left the surface.
+	CrossingModeTouchBegin CrossingMode = 6
+	// CrossingModeTouchEnd: crossing because a touch sequence has ended, this
+	// event is synthetic as the pointer might have not left the surface.
+	CrossingModeTouchEnd CrossingMode = 7
+	// CrossingModeDeviceSwitch: crossing because of a device switch (i.e. a
+	// mouse taking control of the pointer after a touch device), this event is
+	// synthetic as the pointer didn’t leave the surface.
+	CrossingModeDeviceSwitch CrossingMode = 8
+)
+
+func marshalCrossingMode(p uintptr) (interface{}, error) {
+	return CrossingMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// EventType specifies the type of the event.
+type EventType int
+
+const (
+	// EventTypeDelete: the window manager has requested that the toplevel
+	// surface be hidden or destroyed, usually when the user clicks on a special
+	// icon in the title bar.
+	EventTypeDelete EventType = 0
+	// EventTypeMotionNotify: the pointer (usually a mouse) has moved.
+	EventTypeMotionNotify EventType = 1
+	// EventTypeButtonPress: a mouse button has been pressed.
+	EventTypeButtonPress EventType = 2
+	// EventTypeButtonRelease: a mouse button has been released.
+	EventTypeButtonRelease EventType = 3
+	// EventTypeKeyPress: a key has been pressed.
+	EventTypeKeyPress EventType = 4
+	// EventTypeKeyRelease: a key has been released.
+	EventTypeKeyRelease EventType = 5
+	// EventTypeEnterNotify: the pointer has entered the surface.
+	EventTypeEnterNotify EventType = 6
+	// EventTypeLeaveNotify: the pointer has left the surface.
+	EventTypeLeaveNotify EventType = 7
+	// EventTypeFocusChange: the keyboard focus has entered or left the surface.
+	EventTypeFocusChange EventType = 8
+	// EventTypeProximityIn: an input device has moved into contact with a
+	// sensing surface (e.g. a touchscreen or graphics tablet).
+	EventTypeProximityIn EventType = 9
+	// EventTypeProximityOut: an input device has moved out of contact with a
+	// sensing surface.
+	EventTypeProximityOut EventType = 10
+	// EventTypeDragEnter: the mouse has entered the surface while a drag is in
+	// progress.
+	EventTypeDragEnter EventType = 11
+	// EventTypeDragLeave: the mouse has left the surface while a drag is in
+	// progress.
+	EventTypeDragLeave EventType = 12
+	// EventTypeDragMotion: the mouse has moved in the surface while a drag is
+	// in progress.
+	EventTypeDragMotion EventType = 13
+	// EventTypeDropStart: a drop operation onto the surface has started.
+	EventTypeDropStart EventType = 14
+	// EventTypeScroll: the scroll wheel was turned
+	EventTypeScroll EventType = 15
+	// EventTypeGrabBroken: a pointer or keyboard grab was broken.
+	EventTypeGrabBroken EventType = 16
+	// EventTypeTouchBegin: a new touch event sequence has just started.
+	EventTypeTouchBegin EventType = 17
+	// EventTypeTouchUpdate: a touch event sequence has been updated.
+	EventTypeTouchUpdate EventType = 18
+	// EventTypeTouchEnd: a touch event sequence has finished.
+	EventTypeTouchEnd EventType = 19
+	// EventTypeTouchCancel: a touch event sequence has been canceled.
+	EventTypeTouchCancel EventType = 20
+	// EventTypeTouchpadSwipe: a touchpad swipe gesture event, the current state
+	// is determined by its phase field.
+	EventTypeTouchpadSwipe EventType = 21
+	// EventTypeTouchpadPinch: a touchpad pinch gesture event, the current state
+	// is determined by its phase field.
+	EventTypeTouchpadPinch EventType = 22
+	// EventTypePadButtonPress: a tablet pad button press event.
+	EventTypePadButtonPress EventType = 23
+	// EventTypePadButtonRelease: a tablet pad button release event.
+	EventTypePadButtonRelease EventType = 24
+	// EventTypePadRing: a tablet pad axis event from a "ring".
+	EventTypePadRing EventType = 25
+	// EventTypePadStrip: a tablet pad axis event from a "strip".
+	EventTypePadStrip EventType = 26
+	// EventTypePadGroupMode: a tablet pad group mode change.
+	EventTypePadGroupMode EventType = 27
+	// EventTypeEventLast marks the end of the GdkEventType enumeration.
+	EventTypeEventLast EventType = 28
+)
+
+func marshalEventType(p uintptr) (interface{}, error) {
+	return EventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// KeyMatch describes how well an event matches a given keyval and modifiers.
+//
+// `GdkKeyMatch` values are returned by [method@Gdk.KeyEvent.matches].
+type KeyMatch int
+
+const (
+	// KeyMatchNone: the key event does not match
+	KeyMatchNone KeyMatch = 0
+	// KeyMatchPartial: the key event matches if keyboard state (specifically,
+	// the currently active group) is ignored
+	KeyMatchPartial KeyMatch = 1
+	// KeyMatchExact: the key event matches
+	KeyMatchExact KeyMatch = 2
+)
+
+func marshalKeyMatch(p uintptr) (interface{}, error) {
+	return KeyMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// NotifyType specifies the kind of crossing for enter and leave events.
+//
+// See the X11 protocol specification of LeaveNotify for full details of
+// crossing event generation.
+type NotifyType int
+
+const (
+	// NotifyTypeAncestor: the surface is entered from an ancestor or left
+	// towards an ancestor.
+	NotifyTypeAncestor NotifyType = 0
+	// NotifyTypeVirtual: the pointer moves between an ancestor and an inferior
+	// of the surface.
+	NotifyTypeVirtual NotifyType = 1
+	// NotifyTypeInferior: the surface is entered from an inferior or left
+	// towards an inferior.
+	NotifyTypeInferior NotifyType = 2
+	// NotifyTypeNonlinear: the surface is entered from or left towards a
+	// surface which is neither an ancestor nor an inferior.
+	NotifyTypeNonlinear NotifyType = 3
+	// NotifyTypeNonlinearVirtual: the pointer moves between two surfaces which
+	// are not ancestors of each other and the surface is part of the ancestor
+	// chain between one of these surfaces and their least common ancestor.
+	NotifyTypeNonlinearVirtual NotifyType = 4
+	// NotifyTypeUnknown: an unknown type of enter/leave event occurred.
+	NotifyTypeUnknown NotifyType = 5
+)
+
+func marshalNotifyType(p uintptr) (interface{}, error) {
+	return NotifyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ScrollDirection specifies the direction for scroll events.
+type ScrollDirection int
+
+const (
+	// ScrollDirectionUp: the surface is scrolled up.
+	ScrollDirectionUp ScrollDirection = 0
+	// ScrollDirectionDown: the surface is scrolled down.
+	ScrollDirectionDown ScrollDirection = 1
+	// ScrollDirectionLeft: the surface is scrolled to the left.
+	ScrollDirectionLeft ScrollDirection = 2
+	// ScrollDirectionRight: the surface is scrolled to the right.
+	ScrollDirectionRight ScrollDirection = 3
+	// ScrollDirectionSmooth: the scrolling is determined by the delta values in
+	// scroll events. See gdk_scroll_event_get_deltas()
+	ScrollDirectionSmooth ScrollDirection = 4
+)
+
+func marshalScrollDirection(p uintptr) (interface{}, error) {
+	return ScrollDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TouchpadGesturePhase specifies the current state of a touchpad gesture.
+//
+// All gestures are guaranteed to begin with an event with phase
+// GDK_TOUCHPAD_GESTURE_PHASE_BEGIN, followed by 0 or several events with phase
+// GDK_TOUCHPAD_GESTURE_PHASE_UPDATE.
+//
+// A finished gesture may have 2 possible outcomes, an event with phase
+// GDK_TOUCHPAD_GESTURE_PHASE_END will be emitted when the gesture is considered
+// successful, this should be used as the hint to perform any permanent changes.
+//
+// Cancelled gestures may be so for a variety of reasons, due to hardware or the
+// compositor, or due to the gesture recognition layers hinting the gesture did
+// not finish resolutely (eg. a 3rd finger being added during a pinch gesture).
+// In these cases, the last event will report the phase
+// GDK_TOUCHPAD_GESTURE_PHASE_CANCEL, this should be used as a hint to undo any
+// visible/permanent changes that were done throughout the progress of the
+// gesture.
+type TouchpadGesturePhase int
+
+const (
+	// TouchpadGesturePhaseBegin: the gesture has begun.
+	TouchpadGesturePhaseBegin TouchpadGesturePhase = 0
+	// TouchpadGesturePhaseUpdate: the gesture has been updated.
+	TouchpadGesturePhaseUpdate TouchpadGesturePhase = 1
+	// TouchpadGesturePhaseEnd: the gesture was finished, changes should be
+	// permanently applied.
+	TouchpadGesturePhaseEnd TouchpadGesturePhase = 2
+	// TouchpadGesturePhaseCancel: the gesture was cancelled, all changes should
+	// be undone.
+	TouchpadGesturePhaseCancel TouchpadGesturePhase = 3
+)
+
+func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
+	return TouchpadGesturePhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // EventsGetAngle returns the relative angle from @event1 to @event2.
@@ -44,7 +267,7 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 	var _ok bool       // out
 
 	_angle = (float64)(_arg3)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -74,7 +297,7 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 
 	_x = (float64)(_arg3)
 	_y = (float64)(_arg4)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -101,7 +324,7 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	var _ok bool          // out
 
 	_distance = (float64)(_arg3)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

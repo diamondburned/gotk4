@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -64,7 +63,7 @@ func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	if blockOthers {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.gtk_device_grab_add(_arg1, _arg2, _arg3)
@@ -114,7 +113,7 @@ func EventsPending() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -130,7 +129,7 @@ func False() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -238,26 +237,6 @@ func GetMinorVersion() uint {
 	return _guint
 }
 
-// KeySnooperInstall installs a key snooper function, which will get called on
-// all key events before delivering them normally.
-func KeySnooperInstall(snooper KeySnoopFunc) uint {
-	var _arg1 C.GtkKeySnoopFunc // out
-	var _arg2 C.gpointer
-
-	_arg1 = (*[0]byte)(C.gotk4_KeySnoopFunc)
-	_arg2 = C.gpointer(box.Assign(snooper))
-
-	var _cret C.guint // in
-
-	_cret = C.gtk_key_snooper_install(_arg1, _arg2)
-
-	var _guint uint // out
-
-	_guint = (uint)(_cret)
-
-	return _guint
-}
-
 // KeySnooperRemove removes the key snooper function with the given id.
 func KeySnooperRemove(snooperHandlerId uint) {
 	var _arg1 C.guint // out
@@ -287,7 +266,7 @@ func MainIteration() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -300,7 +279,7 @@ func MainIterationDo(blocking bool) bool {
 	var _arg1 C.gboolean // out
 
 	if blocking {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -309,7 +288,7 @@ func MainIterationDo(blocking bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -381,7 +360,7 @@ func True() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

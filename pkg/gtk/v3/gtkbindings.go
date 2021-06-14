@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -34,7 +35,7 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -56,7 +57,7 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -77,11 +78,6 @@ func WrapBindingArg(ptr unsafe.Pointer) *BindingArg {
 	}
 
 	return (*BindingArg)(ptr)
-}
-
-func marshalBindingArg(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBindingArg(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -112,11 +108,6 @@ func WrapBindingEntry(ptr unsafe.Pointer) *BindingEntry {
 	return (*BindingEntry)(ptr)
 }
 
-func marshalBindingEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBindingEntry(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (b *BindingEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
@@ -127,94 +118,6 @@ func (b *BindingEntry) Keyval() uint {
 	var v uint // out
 	v = (uint)(b.native.keyval)
 	return v
-}
-
-// BindingSet: a binding set maintains a list of activatable key bindings. A
-// single binding set can match multiple types of widgets. Similar to style
-// contexts, can be matched by any information contained in a widgets
-// WidgetPath. When a binding within a set is matched upon activation, an action
-// signal is emitted on the target widget to carry out the actual activation.
-type BindingSet struct {
-	native C.GtkBindingSet
-}
-
-// WrapBindingSet wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBindingSet(ptr unsafe.Pointer) *BindingSet {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*BindingSet)(ptr)
-}
-
-func marshalBindingSet(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBindingSet(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (b *BindingSet) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
-}
-
-// SetName gets the field inside the struct.
-func (b *BindingSet) SetName() string {
-	var v string // out
-	v = C.GoString(b.native.set_name)
-	return v
-}
-
-// Priority gets the field inside the struct.
-func (b *BindingSet) Priority() int {
-	var v int // out
-	v = (int)(b.native.priority)
-	return v
-}
-
-// Activate: find a key binding matching @keyval and @modifiers within
-// @binding_set and activate the binding on @object.
-func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object gextras.Objector) bool {
-	var _arg0 *C.GtkBindingSet  // out
-	var _arg1 C.guint           // out
-	var _arg2 C.GdkModifierType // out
-	var _arg3 *C.GObject        // out
-
-	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(b.Native()))
-	_arg1 = C.guint(keyval)
-	_arg2 = (C.GdkModifierType)(modifiers)
-	_arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
-
-	var _ok bool // out
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// AddPath: this function was used internally by the GtkRC parsing mechanism to
-// assign match patterns to BindingSet structures.
-//
-// In GTK+ 3, these match patterns are unused.
-func (b *BindingSet) AddPath(pathType PathType, pathPattern string, priority PathPriorityType) {
-	var _arg0 *C.GtkBindingSet      // out
-	var _arg1 C.GtkPathType         // out
-	var _arg2 *C.gchar              // out
-	var _arg3 C.GtkPathPriorityType // out
-
-	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.GtkPathType)(pathType)
-	_arg2 = (*C.gchar)(C.CString(pathPattern))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.GtkPathPriorityType)(priority)
-
-	C.gtk_binding_set_add_path(_arg0, _arg1, _arg2, _arg3)
 }
 
 // BindingSignal: a GtkBindingSignal stores the necessary information to
@@ -231,11 +134,6 @@ func WrapBindingSignal(ptr unsafe.Pointer) *BindingSignal {
 	}
 
 	return (*BindingSignal)(ptr)
-}
-
-func marshalBindingSignal(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBindingSignal(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

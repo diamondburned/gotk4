@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -161,7 +163,7 @@ type MenuButton interface {
 	SetUsePopover(usePopover bool)
 }
 
-// menuButton implements the MenuButton interface.
+// menuButton implements the MenuButton class.
 type menuButton struct {
 	ToggleButton
 	Actionable
@@ -174,7 +176,7 @@ var _ MenuButton = (*menuButton)(nil)
 // WrapMenuButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuButton(obj *externglib.Object) MenuButton {
-	return MenuButton{
+	return menuButton{
 		ToggleButton: WrapToggleButton(obj),
 		Actionable:   WrapActionable(obj),
 		Activatable:  WrapActivatable(obj),
@@ -201,7 +203,7 @@ func (m menuButton) UsePopover() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -306,7 +308,7 @@ func (m menuButton) SetUsePopover(usePopover bool) {
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 	if usePopover {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_menu_button_set_use_popover(_arg0, _arg1)

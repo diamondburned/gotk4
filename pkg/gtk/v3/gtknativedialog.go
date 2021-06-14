@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -116,7 +117,7 @@ type NativeDialog interface {
 	Show()
 }
 
-// nativeDialog implements the NativeDialog interface.
+// nativeDialog implements the NativeDialog class.
 type nativeDialog struct {
 	gextras.Objector
 }
@@ -126,7 +127,7 @@ var _ NativeDialog = (*nativeDialog)(nil)
 // WrapNativeDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNativeDialog(obj *externglib.Object) NativeDialog {
-	return NativeDialog{
+	return nativeDialog{
 		Objector: obj,
 	}
 }
@@ -167,7 +168,7 @@ func (s nativeDialog) Modal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -203,7 +204,7 @@ func (s nativeDialog) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -279,7 +280,7 @@ func (s nativeDialog) SetModal(modal bool) {
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 	if modal {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_native_dialog_set_modal(_arg0, _arg1)

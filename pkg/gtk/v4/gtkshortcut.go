@@ -3,11 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -44,7 +47,7 @@ type Shortcut interface {
 	SetTrigger(trigger ShortcutTrigger)
 }
 
-// shortcut implements the Shortcut interface.
+// shortcut implements the Shortcut class.
 type shortcut struct {
 	gextras.Objector
 }
@@ -54,7 +57,7 @@ var _ Shortcut = (*shortcut)(nil)
 // WrapShortcut wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcut(obj *externglib.Object) Shortcut {
-	return Shortcut{
+	return shortcut{
 		Objector: obj,
 	}
 }

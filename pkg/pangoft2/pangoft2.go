@@ -2,93 +2,14 @@
 
 package pangoft2
 
-import (
-	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/diamondburned/gotk4/pkg/pangofc"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
-// #cgo pkg-config: pangoft2 pango glib-2.0
+// #cgo pkg-config: pango pangoft2
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <pango/pangoft2.h>
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_ft2_font_map_get_type()), F: marshalFontMap},
-	})
-}
 
 // ShutdownDisplay: free the global fontmap. (See
 // pango_ft2_font_map_for_display()) Use of the global PangoFT2 fontmap is
 // deprecated.
 func ShutdownDisplay() {
 	C.pango_ft2_shutdown_display()
-}
-
-// FontMap: the `PangoFT2FontMap` is the `PangoFontMap` implementation for
-// FreeType fonts.
-type FontMap interface {
-	pangofc.FontMap
-
-	// SetResolution sets the horizontal and vertical resolutions for the
-	// fontmap.
-	SetResolution(dpiX float64, dpiY float64)
-	// SubstituteChanged: call this function any time the results of the default
-	// substitution function set with
-	// pango_ft2_font_map_set_default_substitute() change.
-	//
-	// That is, if your substitution function will return different results for
-	// the same input pattern, you must call this function.
-	SubstituteChanged()
-}
-
-// fontMap implements the FontMap interface.
-type fontMap struct {
-	pangofc.FontMap
-}
-
-var _ FontMap = (*fontMap)(nil)
-
-// WrapFontMap wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapFontMap(obj *externglib.Object) FontMap {
-	return FontMap{
-		pangofc.FontMap: pangofc.WrapFontMap(obj),
-	}
-}
-
-func marshalFontMap(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFontMap(obj), nil
-}
-
-// SetResolution sets the horizontal and vertical resolutions for the
-// fontmap.
-func (f fontMap) SetResolution(dpiX float64, dpiY float64) {
-	var _arg0 *C.PangoFT2FontMap // out
-	var _arg1 C.double           // out
-	var _arg2 C.double           // out
-
-	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
-	_arg1 = C.double(dpiX)
-	_arg2 = C.double(dpiY)
-
-	C.pango_ft2_font_map_set_resolution(_arg0, _arg1, _arg2)
-}
-
-// SubstituteChanged: call this function any time the results of the default
-// substitution function set with
-// pango_ft2_font_map_set_default_substitute() change.
-//
-// That is, if your substitution function will return different results for
-// the same input pattern, you must call this function.
-func (f fontMap) SubstituteChanged() {
-	var _arg0 *C.PangoFT2FontMap // out
-
-	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
-
-	C.pango_ft2_font_map_substitute_changed(_arg0)
 }

@@ -5,12 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,8 +19,26 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_arrow_placement_get_type()), F: marshalArrowPlacement},
 		{T: externglib.Type(C.gtk_menu_get_type()), F: marshalMenu},
 	})
+}
+
+// ArrowPlacement: used to specify the placement of scroll arrows in scrolling
+// menus.
+type ArrowPlacement int
+
+const (
+	// ArrowPlacementBoth: place one arrow on each end of the menu.
+	ArrowPlacementBoth ArrowPlacement = 0
+	// ArrowPlacementStart: place both arrows at the top of the menu.
+	ArrowPlacementStart ArrowPlacement = 1
+	// ArrowPlacementEnd: place both arrows at the bottom of the menu.
+	ArrowPlacementEnd ArrowPlacement = 2
+)
+
+func marshalArrowPlacement(p uintptr) (interface{}, error) {
+	return ArrowPlacement(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Menu: a Menu is a MenuShell that implements a drop down menu consisting of a
@@ -82,31 +99,6 @@ type Menu interface {
 	PlaceOnMonitor(monitor gdk.Monitor)
 	// Popdown removes the menu from the screen.
 	Popdown()
-	// Popup displays a menu and makes it available for selection.
-	//
-	// Applications can use this function to display context-sensitive menus,
-	// and will typically supply nil for the @parent_menu_shell,
-	// @parent_menu_item, @func and @data parameters. The default menu
-	// positioning function will position the menu at the current mouse cursor
-	// position.
-	//
-	// The @button parameter should be the mouse button pressed to initiate the
-	// menu popup. If the menu popup was initiated by something other than a
-	// mouse button press, such as a mouse button release or a keypress, @button
-	// should be 0.
-	//
-	// The @activate_time parameter is used to conflict-resolve initiation of
-	// concurrent requests for mouse/keyboard grab requests. To function
-	// properly, this needs to be the timestamp of the user event (such as a
-	// mouse click or key press) that caused the initiation of the popup. Only
-	// if no such event is available, gtk_get_current_event_time() can be used
-	// instead.
-	//
-	// Note that this function does not work very well on GDK backends that do
-	// not have global coordinates, such as Wayland or Mir. You should probably
-	// use one of the gtk_menu_popup_at_ variants, which do not have this
-	// problem.
-	Popup(parentMenuShell Widget, parentMenuItem Widget, fn MenuPositionFunc, button uint, activateTime uint32)
 	// ReorderChild moves @child to a new @position in the list of @menu
 	// children.
 	ReorderChild(child Widget, position int)
@@ -170,7 +162,7 @@ type Menu interface {
 	SetTitle(title string)
 }
 
-// menu implements the Menu interface.
+// menu implements the Menu class.
 type menu struct {
 	MenuShell
 	Buildable
@@ -181,7 +173,7 @@ var _ Menu = (*menu)(nil)
 // WrapMenu wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenu(obj *externglib.Object) Menu {
-	return Menu{
+	return menu{
 		MenuShell: WrapMenuShell(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -276,7 +268,7 @@ func (m menu) ReserveToggleSize() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -296,7 +288,7 @@ func (m menu) TearoffState() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -338,50 +330,6 @@ func (m menu) Popdown() {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_popdown(_arg0)
-}
-
-// Popup displays a menu and makes it available for selection.
-//
-// Applications can use this function to display context-sensitive menus,
-// and will typically supply nil for the @parent_menu_shell,
-// @parent_menu_item, @func and @data parameters. The default menu
-// positioning function will position the menu at the current mouse cursor
-// position.
-//
-// The @button parameter should be the mouse button pressed to initiate the
-// menu popup. If the menu popup was initiated by something other than a
-// mouse button press, such as a mouse button release or a keypress, @button
-// should be 0.
-//
-// The @activate_time parameter is used to conflict-resolve initiation of
-// concurrent requests for mouse/keyboard grab requests. To function
-// properly, this needs to be the timestamp of the user event (such as a
-// mouse click or key press) that caused the initiation of the popup. Only
-// if no such event is available, gtk_get_current_event_time() can be used
-// instead.
-//
-// Note that this function does not work very well on GDK backends that do
-// not have global coordinates, such as Wayland or Mir. You should probably
-// use one of the gtk_menu_popup_at_ variants, which do not have this
-// problem.
-func (m menu) Popup(parentMenuShell Widget, parentMenuItem Widget, fn MenuPositionFunc, button uint, activateTime uint32) {
-	var _arg0 *C.GtkMenu            // out
-	var _arg1 *C.GtkWidget          // out
-	var _arg2 *C.GtkWidget          // out
-	var _arg3 C.GtkMenuPositionFunc // out
-	var _arg4 C.gpointer
-	var _arg5 C.guint   // out
-	var _arg6 C.guint32 // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parentMenuShell.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(parentMenuItem.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_MenuPositionFunc)
-	_arg4 = C.gpointer(box.Assign(fn))
-	_arg5 = C.guint(button)
-	_arg6 = C.guint32(activateTime)
-
-	C.gtk_menu_popup(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // ReorderChild moves @child to a new @position in the list of @menu
@@ -492,7 +440,7 @@ func (m menu) SetReserveToggleSize(reserveToggleSize bool) {
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 	if reserveToggleSize {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_menu_set_reserve_toggle_size(_arg0, _arg1)
@@ -519,7 +467,7 @@ func (m menu) SetTearoffState(tornOff bool) {
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 	if tornOff {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_menu_set_tearoff_state(_arg0, _arg1)

@@ -3,14 +3,17 @@
 package gdk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -141,7 +144,7 @@ type Surface interface {
 	SetOpaqueRegion(region *cairo.Region)
 }
 
-// surface implements the Surface interface.
+// surface implements the Surface class.
 type surface struct {
 	gextras.Objector
 }
@@ -151,7 +154,7 @@ var _ Surface = (*surface)(nil)
 // WrapSurface wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSurface(obj *externglib.Object) Surface {
-	return Surface{
+	return surface{
 		Objector: obj,
 	}
 }
@@ -226,7 +229,7 @@ func (s surface) Mapped() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -306,7 +309,7 @@ func (s surface) IsDestroyed() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

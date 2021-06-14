@@ -3,59 +3,13 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
-
-// Break determines possible line, word, and character breaks for a string of
-// Unicode text with a single analysis.
-//
-// For most purposes you may want to use pango_get_log_attrs().
-func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
-	var _arg1 *C.gchar         // out
-	var _arg2 C.int            // out
-	var _arg3 *C.PangoAnalysis // out
-	var _arg4 *C.PangoLogAttr
-	var _arg5 C.int
-
-	_arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis.Native()))
-	_arg5 = C.int(len(attrs))
-	_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(&attrs[0]))
-
-	C.pango_break(_arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// DefaultBreak: this is the default break algorithm.
-//
-// It applies Unicode rules without language-specific tailoring, therefore the
-// @analyis argument is unused and can be nil.
-//
-// See pango_tailor_break() for language-specific breaks.
-func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
-	var _arg1 *C.gchar         // out
-	var _arg2 C.int            // out
-	var _arg3 *C.PangoAnalysis // out
-	var _arg4 *C.PangoLogAttr  // out
-	var _arg5 C.int            // out
-
-	_arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis.Native()))
-	_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(attrs.Native()))
-	_arg5 = C.int(attrsLen)
-
-	C.pango_default_break(_arg1, _arg2, _arg3, _arg4, _arg5)
-}
 
 // FindParagraphBoundary locates a paragraph boundary in @text.
 //
@@ -116,31 +70,6 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 	C.pango_get_log_attrs(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
-//
-// The line breaks are assumed to have been produced by [func@default_break].
-//
-// If @offset is not -1, it is used to apply attributes from @analysis that are
-// relevant to line breaking.
-func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
-	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
-	var _arg3 *C.PangoAnalysis // out
-	var _arg4 C.int            // out
-	var _arg5 *C.PangoLogAttr
-	var _arg6 C.int
-
-	_arg1 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis.Native()))
-	_arg4 = C.int(offset)
-	_arg6 = C.int(len(logAttrs))
-	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
-
-	C.pango_tailor_break(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-}
-
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes
 // of a single character.
 type LogAttr struct {
@@ -155,11 +84,6 @@ func WrapLogAttr(ptr unsafe.Pointer) *LogAttr {
 	}
 
 	return (*LogAttr)(ptr)
-}
-
-func marshalLogAttr(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLogAttr(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

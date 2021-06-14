@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -83,7 +83,7 @@ type CellView interface {
 	SetModel(model TreeModel)
 }
 
-// cellView implements the CellView interface.
+// cellView implements the CellView class.
 type cellView struct {
 	Widget
 	Buildable
@@ -96,7 +96,7 @@ var _ CellView = (*cellView)(nil)
 // WrapCellView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellView(obj *externglib.Object) CellView {
-	return CellView{
+	return cellView{
 		Widget:     WrapWidget(obj),
 		Buildable:  WrapBuildable(obj),
 		CellLayout: WrapCellLayout(obj),
@@ -123,7 +123,7 @@ func (c cellView) DrawSensitive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -143,7 +143,7 @@ func (c cellView) FitModel() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -166,7 +166,7 @@ func (c cellView) SizeOfRow(path *TreePath) (Requisition, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -220,7 +220,7 @@ func (c cellView) SetDrawSensitive(drawSensitive bool) {
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	if drawSensitive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_cell_view_set_draw_sensitive(_arg0, _arg1)
@@ -238,7 +238,7 @@ func (c cellView) SetFitModel(fitModel bool) {
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	if fitModel {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_cell_view_set_fit_model(_arg0, _arg1)

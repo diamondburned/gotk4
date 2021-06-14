@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -35,11 +34,6 @@ func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
 	}
 
 	return (*DBusErrorEntry)(ptr)
-}
-
-func marshalDBusErrorEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusErrorEntry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

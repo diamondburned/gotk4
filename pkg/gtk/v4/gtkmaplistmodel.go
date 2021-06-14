@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -44,9 +44,11 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	fn := v.(MapListModelMapFunc)
 	object := fn(item)
 
+	var cret C.gpointer // out
+
 	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
 
-	return object
+	return cret
 }
 
 // MapListModel: a `GtkMapListModel` maps the items in a list model to different
@@ -83,7 +85,7 @@ type MapListModel interface {
 	SetModel(model gio.ListModel)
 }
 
-// mapListModel implements the MapListModel interface.
+// mapListModel implements the MapListModel class.
 type mapListModel struct {
 	gextras.Objector
 	gio.ListModel
@@ -94,7 +96,7 @@ var _ MapListModel = (*mapListModel)(nil)
 // WrapMapListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMapListModel(obj *externglib.Object) MapListModel {
-	return MapListModel{
+	return mapListModel{
 		Objector:      obj,
 		gio.ListModel: gio.WrapListModel(obj),
 	}
@@ -118,7 +120,7 @@ func (s mapListModel) HasMap() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

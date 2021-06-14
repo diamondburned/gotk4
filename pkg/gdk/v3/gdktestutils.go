@@ -52,7 +52,7 @@ func TestSimulateButton(window Window, x int, y int, button uint, modifiers Modi
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -94,7 +94,7 @@ func TestSimulateKey(window Window, x int, y int, keyval uint, modifiers Modifie
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

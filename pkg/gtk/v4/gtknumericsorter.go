@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -38,7 +40,7 @@ type NumericSorter interface {
 	SetSortOrder(sortOrder SortType)
 }
 
-// numericSorter implements the NumericSorter interface.
+// numericSorter implements the NumericSorter class.
 type numericSorter struct {
 	Sorter
 }
@@ -48,7 +50,7 @@ var _ NumericSorter = (*numericSorter)(nil)
 // WrapNumericSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNumericSorter(obj *externglib.Object) NumericSorter {
-	return NumericSorter{
+	return numericSorter{
 		Sorter: WrapSorter(obj),
 	}
 }

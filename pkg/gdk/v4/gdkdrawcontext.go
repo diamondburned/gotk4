@@ -3,10 +3,171 @@
 package gdk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_draw_context_get_type()), F: marshalDrawContext},
+	})
+}
+
+// DrawContext: base class for objects implementing different rendering methods.
+//
+// `GdkDrawContext` is the base object used by contexts implementing different
+// rendering methods, such as [class@Gdk.CairoContext] or [class@Gdk.GLContext].
+// It provides shared functionality between those contexts.
+//
+// You will always interact with one of those subclasses.
+//
+// A `GdkDrawContext` is always associated with a single toplevel surface.
+type DrawContext interface {
+	gextras.Objector
+
+	// BeginFrame indicates that you are beginning the process of redrawing
+	// @region on the @context's surface.
+	//
+	// Calling this function begins a drawing operation using @context on the
+	// surface that @context was created from. The actual requirements and
+	// guarantees for the drawing operation vary for different implementations
+	// of drawing, so a [class@Gdk.CairoContext] and a [class@Gdk.GLContext]
+	// need to be treated differently.
+	//
+	// A call to this function is a requirement for drawing and must be followed
+	// by a call to [method@Gdk.DrawContext.end_frame], which will complete the
+	// drawing operation and ensure the contents become visible on screen.
+	//
+	// Note that the @region passed to this function is the minimum region that
+	// needs to be drawn and depending on implementation, windowing system and
+	// hardware in use, it might be necessary to draw a larger region. Drawing
+	// implementation must use [method@Gdk.DrawContext.get_frame_region() to
+	// query the region that must be drawn.
+	//
+	// When using GTK, the widget system automatically places calls to
+	// gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
+	// use of [class@Gsk.Renderer]s, so application code does not need to call
+	// these functions explicitly.
+	BeginFrame(region *cairo.Region)
+	// EndFrame ends a drawing operation started with
+	// gdk_draw_context_begin_frame().
+	//
+	// This makes the drawing available on screen. See
+	// [method@Gdk.DrawContext.begin_frame] for more details about drawing.
+	//
+	// When using a [class@Gdk.GLContext], this function may call `glFlush()`
+	// implicitly before returning; it is not recommended to call `glFlush()`
+	// explicitly before calling this function.
+	EndFrame()
+	// IsInFrame returns true if @context is in the process of drawing to its
+	// surface.
+	//
+	// This is the case between calls to [method@Gdk.DrawContext.begin_frame]
+	// and [method@Gdk.DrawContext.end_frame]. In this situation, drawing
+	// commands may be effecting the contents of the @context's surface.
+	IsInFrame() bool
+}
+
+// drawContext implements the DrawContext class.
+type drawContext struct {
+	gextras.Objector
+}
+
+var _ DrawContext = (*drawContext)(nil)
+
+// WrapDrawContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDrawContext(obj *externglib.Object) DrawContext {
+	return drawContext{
+		Objector: obj,
+	}
+}
+
+func marshalDrawContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDrawContext(obj), nil
+}
+
+// BeginFrame indicates that you are beginning the process of redrawing
+// @region on the @context's surface.
+//
+// Calling this function begins a drawing operation using @context on the
+// surface that @context was created from. The actual requirements and
+// guarantees for the drawing operation vary for different implementations
+// of drawing, so a [class@Gdk.CairoContext] and a [class@Gdk.GLContext]
+// need to be treated differently.
+//
+// A call to this function is a requirement for drawing and must be followed
+// by a call to [method@Gdk.DrawContext.end_frame], which will complete the
+// drawing operation and ensure the contents become visible on screen.
+//
+// Note that the @region passed to this function is the minimum region that
+// needs to be drawn and depending on implementation, windowing system and
+// hardware in use, it might be necessary to draw a larger region. Drawing
+// implementation must use [method@Gdk.DrawContext.get_frame_region() to
+// query the region that must be drawn.
+//
+// When using GTK, the widget system automatically places calls to
+// gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
+// use of [class@Gsk.Renderer]s, so application code does not need to call
+// these functions explicitly.
+func (c drawContext) BeginFrame(region *cairo.Region) {
+	var _arg0 *C.GdkDrawContext // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	C.gdk_draw_context_begin_frame(_arg0, _arg1)
+}
+
+// EndFrame ends a drawing operation started with
+// gdk_draw_context_begin_frame().
+//
+// This makes the drawing available on screen. See
+// [method@Gdk.DrawContext.begin_frame] for more details about drawing.
+//
+// When using a [class@Gdk.GLContext], this function may call `glFlush()`
+// implicitly before returning; it is not recommended to call `glFlush()`
+// explicitly before calling this function.
+func (c drawContext) EndFrame() {
+	var _arg0 *C.GdkDrawContext // out
+
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+
+	C.gdk_draw_context_end_frame(_arg0)
+}
+
+// IsInFrame returns true if @context is in the process of drawing to its
+// surface.
+//
+// This is the case between calls to [method@Gdk.DrawContext.begin_frame]
+// and [method@Gdk.DrawContext.end_frame]. In this situation, drawing
+// commands may be effecting the contents of the @context's surface.
+func (c drawContext) IsInFrame() bool {
+	var _arg0 *C.GdkDrawContext // out
+
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_draw_context_is_in_frame(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}

@@ -5,15 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,57 +22,13 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_async_initable_get_type()), F: marshalAsyncInitable},
 	})
-}
-
-// AsyncInitableOverrider contains methods that are overridable. This
-// interface is a subset of the interface AsyncInitable.
-type AsyncInitableOverrider interface {
-	// InitAsync starts asynchronous initialization of the object implementing
-	// the interface. This must be done before any real use of the object after
-	// initial construction. If the object also implements #GInitable you can
-	// optionally call g_initable_init() instead.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_async_initable_new_async() should typically be used instead.
-	//
-	// When the initialization is finished, @callback will be called. You can
-	// then call g_async_initable_init_finish() to get the result of the
-	// initialization.
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
-	// the object doesn't support cancellable initialization, the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// As with #GInitable, if the object is not initialized, or initialization
-	// returns with an error, then all operations on the object except
-	// g_object_ref() and g_object_unref() are considered to be invalid, and
-	// have undefined behaviour. They will often fail with g_critical() or
-	// g_warning(), but this must not be relied on.
-	//
-	// Callers should not assume that a class which implements Initable can be
-	// initialized multiple times; for more information, see g_initable_init().
-	// If a class explicitly supports being initialized multiple times,
-	// implementation requires yielding all subsequent calls to init_async() on
-	// the results of the first call.
-	//
-	// For classes that also support the #GInitable interface, the default
-	// implementation of this method will run the g_initable_init() function in
-	// a thread, so if you want to support asynchronous initialization via
-	// threads, just implement the Initable interface without overriding any
-	// interface methods.
-	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// InitFinish finishes asynchronous initialization and returns the result.
-	// See g_async_initable_init_async().
-	InitFinish(res AsyncResult) error
 }
 
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
@@ -177,11 +130,6 @@ type AsyncInitableOverrider interface {
 //    }
 type AsyncInitable interface {
 	gextras.Objector
-	AsyncInitableOverrider
-
-	// NewFinish finishes the async construction for the various
-	// g_async_initable_new calls, returning the created object or nil on error.
-	NewFinish(res AsyncResult) (gextras.Objector, error)
 }
 
 // asyncInitable implements the AsyncInitable interface.
@@ -203,99 +151,4 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAsyncInitable(obj), nil
-}
-
-// InitAsync starts asynchronous initialization of the object implementing
-// the interface. This must be done before any real use of the object after
-// initial construction. If the object also implements #GInitable you can
-// optionally call g_initable_init() instead.
-//
-// This method is intended for language bindings. If writing in C,
-// g_async_initable_new_async() should typically be used instead.
-//
-// When the initialization is finished, @callback will be called. You can
-// then call g_async_initable_init_finish() to get the result of the
-// initialization.
-//
-// Implementations may also support cancellation. If @cancellable is not
-// nil, then initialization can be cancelled by triggering the cancellable
-// object from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
-// the object doesn't support cancellable initialization, the error
-// G_IO_ERROR_NOT_SUPPORTED will be returned.
-//
-// As with #GInitable, if the object is not initialized, or initialization
-// returns with an error, then all operations on the object except
-// g_object_ref() and g_object_unref() are considered to be invalid, and
-// have undefined behaviour. They will often fail with g_critical() or
-// g_warning(), but this must not be relied on.
-//
-// Callers should not assume that a class which implements Initable can be
-// initialized multiple times; for more information, see g_initable_init().
-// If a class explicitly supports being initialized multiple times,
-// implementation requires yielding all subsequent calls to init_async() on
-// the results of the first call.
-//
-// For classes that also support the #GInitable interface, the default
-// implementation of this method will run the g_initable_init() function in
-// a thread, so if you want to support asynchronous initialization via
-// threads, just implement the Initable interface without overriding any
-// interface methods.
-func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GAsyncInitable     // out
-	var _arg1 C.int                 // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_async_initable_init_async(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// InitFinish finishes asynchronous initialization and returns the result.
-// See g_async_initable_init_async().
-func (i asyncInitable) InitFinish(res AsyncResult) error {
-	var _arg0 *C.GAsyncInitable // out
-	var _arg1 *C.GAsyncResult   // out
-
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// NewFinish finishes the async construction for the various
-// g_async_initable_new calls, returning the created object or nil on error.
-func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
-	var _arg0 *C.GAsyncInitable // out
-	var _arg1 *C.GAsyncResult   // out
-
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GObject // in
-	var _cerr *C.GError  // in
-
-	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
-
-	var _object gextras.Objector // out
-	var _goerr error             // out
-
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _object, _goerr
 }

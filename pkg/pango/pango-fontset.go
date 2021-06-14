@@ -3,11 +3,13 @@
 package pango
 
 import (
-	"github.com/diamondburned/gotk4/internal/box"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -29,15 +31,9 @@ func init() {
 // metrics for the entire fontset.
 type Fontset interface {
 	gextras.Objector
-
-	// Foreach iterates through all the fonts in a fontset, calling @func for
-	// each one.
-	//
-	// If @func returns true, that stops the iteration.
-	Foreach(fn FontsetForeachFunc)
 }
 
-// fontset implements the Fontset interface.
+// fontset implements the Fontset class.
 type fontset struct {
 	gextras.Objector
 }
@@ -47,7 +43,7 @@ var _ Fontset = (*fontset)(nil)
 // WrapFontset wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontset(obj *externglib.Object) Fontset {
-	return Fontset{
+	return fontset{
 		Objector: obj,
 	}
 }
@@ -56,22 +52,6 @@ func marshalFontset(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontset(obj), nil
-}
-
-// Foreach iterates through all the fonts in a fontset, calling @func for
-// each one.
-//
-// If @func returns true, that stops the iteration.
-func (f fontset) Foreach(fn FontsetForeachFunc) {
-	var _arg0 *C.PangoFontset           // out
-	var _arg1 C.PangoFontsetForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
 }
 
 // FontsetSimple: `PangoFontsetSimple` is a implementation of the abstract
@@ -88,7 +68,7 @@ type FontsetSimple interface {
 	Size() int
 }
 
-// fontsetSimple implements the FontsetSimple interface.
+// fontsetSimple implements the FontsetSimple class.
 type fontsetSimple struct {
 	Fontset
 }
@@ -98,7 +78,7 @@ var _ FontsetSimple = (*fontsetSimple)(nil)
 // WrapFontsetSimple wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontsetSimple(obj *externglib.Object) FontsetSimple {
-	return FontsetSimple{
+	return fontsetSimple{
 		Fontset: WrapFontset(obj),
 	}
 }

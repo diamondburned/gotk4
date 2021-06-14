@@ -8,9 +8,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gsk/gsk.h>
 import "C"
 
@@ -41,11 +40,6 @@ func WrapRoundedRect(ptr unsafe.Pointer) *RoundedRect {
 	return (*RoundedRect)(ptr)
 }
 
-func marshalRoundedRect(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRoundedRect(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (r *RoundedRect) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
@@ -65,7 +59,7 @@ func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -87,7 +81,7 @@ func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -109,7 +103,7 @@ func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -132,7 +126,7 @@ func (s *RoundedRect) IsRectilinear() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -2,10 +2,74 @@
 
 package pango
 
-// #cgo pkg-config: pango
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.pango_bidi_type_get_type()), F: marshalBidiType},
+	})
+}
+
+// BidiType: `PangoBidiType` represents the bidirectional character type of a
+// Unicode character as specified by the <ulink
+// url="http://www.unicode.org/reports/tr9/">Unicode bidirectional
+// algorithm</ulink>.
+type BidiType int
+
+const (
+	// BidiTypeL: left-to-Right
+	BidiTypeL BidiType = 0
+	// BidiTypeLre: left-to-Right Embedding
+	BidiTypeLre BidiType = 1
+	// BidiTypeLro: left-to-Right Override
+	BidiTypeLro BidiType = 2
+	// BidiTypeR: right-to-Left
+	BidiTypeR BidiType = 3
+	// BidiTypeAl: right-to-Left Arabic
+	BidiTypeAl BidiType = 4
+	// BidiTypeRle: right-to-Left Embedding
+	BidiTypeRle BidiType = 5
+	// BidiTypeRlo: right-to-Left Override
+	BidiTypeRlo BidiType = 6
+	// BidiTypePDF: pop Directional Format
+	BidiTypePDF BidiType = 7
+	// BidiTypeEn: european Number
+	BidiTypeEn BidiType = 8
+	// BidiTypeES: european Number Separator
+	BidiTypeES BidiType = 9
+	// BidiTypeEt: european Number Terminator
+	BidiTypeEt BidiType = 10
+	// BidiTypeAn: arabic Number
+	BidiTypeAn BidiType = 11
+	// BidiTypeCs: common Number Separator
+	BidiTypeCs BidiType = 12
+	// BidiTypeNsm: nonspacing Mark
+	BidiTypeNsm BidiType = 13
+	// BidiTypeBn: boundary Neutral
+	BidiTypeBn BidiType = 14
+	// BidiTypeB: paragraph Separator
+	BidiTypeB BidiType = 15
+	// BidiTypeS: segment Separator
+	BidiTypeS BidiType = 16
+	// BidiTypeWs: whitespace
+	BidiTypeWs BidiType = 17
+	// BidiTypeOn: other Neutrals
+	BidiTypeOn BidiType = 18
+)
+
+func marshalBidiType(p uintptr) (interface{}, error) {
+	return BidiType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 // GetMirrorChar returns the mirrored character of a Unicode character.
 //
@@ -26,7 +90,7 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

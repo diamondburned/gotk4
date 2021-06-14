@@ -19,7 +19,7 @@ var classTmpl = newGoTemplate(`
 		{{ end }}
 	}
 
-	// {{ .StructName }} implements the {{ .InterfaceName }} interface.
+	// {{ .StructName }} implements the {{ .InterfaceName }} class.
 	type {{ .StructName }} struct {
 		{{ range .TypeTree.PublicChildren -}}
 		{{ . }}
@@ -34,11 +34,13 @@ var classTmpl = newGoTemplate(`
 		return {{ .TypeTree.Wrap "obj" }}
 	}
 
+	{{ if .GLibGetType }}
 	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 		obj := externglib.Take(unsafe.Pointer(val))
 		return Wrap{{ .InterfaceName }}(obj), nil
 	}
+	{{ end }}
 
 	{{ range .Constructors }}
 	{{ if $.UseConstructor . }}
@@ -75,8 +77,7 @@ func newClassGenerator(ng *NamespaceGenerator) *classGenerator {
 }
 
 func (cg *classGenerator) Use(class gir.Class) bool {
-	cg.fg = cg.ng.FileFromSource(class.SourcePosition)
-	cg.TypeTree = cg.fg.TypeTree()
+	cg.TypeTree = cg.ng.TypeTree()
 	cg.TypeTree.Level = 2
 
 	if class.Parent == "" {
@@ -86,29 +87,24 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		return false
 	}
 
+	cg.fg = cg.ng.FileFromSource(class.DocElements)
 	cg.Class = class
 	cg.InterfaceName = PascalToGo(class.Name)
 	cg.StructName = UnexportPascal(cg.InterfaceName)
-
-	// resolved := TypeFromResult(cg.ng, gir.TypeFindResult{Class: &class})
-	// if !cg.TypeTree.ResolveFromType(resolved) {
-	// 	cg.fg.Logln(LogSkip, "class", class.Name, "because unknown parent type", class.Parent)
-	// 	return false
-	// }
 
 	if !cg.TypeTree.Resolve(class.Name) {
 		cg.fg.Logln(LogSkip, "class", class.Name, "because unknown parent type", class.Parent)
 		return false
 	}
 
-	cg.Methods = callableGrow(cg.Methods, len(class.Methods))
+	cg.TypeTree.ImportChildren(cg.fg)
 
+	cg.Methods = callableGrow(cg.Methods, len(class.Methods))
 	for _, method := range class.Methods {
 		cbgen := newCallableGenerator(cg.ng)
 		if !cbgen.Use(method.CallableAttrs) {
 			continue
 		}
-
 		cg.Methods = append(cg.Methods, cbgen)
 	}
 
@@ -160,15 +156,19 @@ func (ng *NamespaceGenerator) generateClasses() {
 	cg := newClassGenerator(ng)
 
 	for _, class := range ng.current.Namespace.Classes {
+		if !class.IsIntrospectable() {
+			continue
+		}
 		if ng.mustIgnore(class.Name, class.CType) {
 			continue
 		}
-
 		if !cg.Use(class) {
 			continue
 		}
 
-		cg.fg.needsGLibObject()
+		// Need for the object wrapper.
+		cg.fg.addGLibImport()
+
 		if class.GLibGetType != "" && !ng.mustIgnoreC(class.GLibGetType) {
 			cg.fg.addMarshaler(class.GLibGetType, cg.InterfaceName)
 		}

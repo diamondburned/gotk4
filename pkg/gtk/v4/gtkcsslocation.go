@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -35,11 +34,6 @@ func WrapCSSLocation(ptr unsafe.Pointer) *CSSLocation {
 	}
 
 	return (*CSSLocation)(ptr)
-}
-
-func marshalCSSLocation(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCSSLocation(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

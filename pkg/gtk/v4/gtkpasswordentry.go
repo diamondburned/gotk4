@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -69,7 +71,7 @@ type PasswordEntry interface {
 	SetShowPeekIcon(showPeekIcon bool)
 }
 
-// passwordEntry implements the PasswordEntry interface.
+// passwordEntry implements the PasswordEntry class.
 type passwordEntry struct {
 	Widget
 	Accessible
@@ -83,7 +85,7 @@ var _ PasswordEntry = (*passwordEntry)(nil)
 // WrapPasswordEntry wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPasswordEntry(obj *externglib.Object) PasswordEntry {
-	return PasswordEntry{
+	return passwordEntry{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -111,7 +113,7 @@ func (e passwordEntry) ShowPeekIcon() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -140,7 +142,7 @@ func (e passwordEntry) SetShowPeekIcon(showPeekIcon bool) {
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 	if showPeekIcon {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_password_entry_set_show_peek_icon(_arg0, _arg1)

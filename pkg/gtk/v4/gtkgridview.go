@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -93,7 +95,7 @@ type GridView interface {
 	SetSingleClickActivate(singleClickActivate bool)
 }
 
-// gridView implements the GridView interface.
+// gridView implements the GridView class.
 type gridView struct {
 	ListBase
 	Accessible
@@ -108,7 +110,7 @@ var _ GridView = (*gridView)(nil)
 // WrapGridView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGridView(obj *externglib.Object) GridView {
-	return GridView{
+	return gridView{
 		ListBase:         WrapListBase(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -137,7 +139,7 @@ func (s gridView) EnableRubberband() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -191,7 +193,7 @@ func (s gridView) SingleClickActivate() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -206,7 +208,7 @@ func (s gridView) SetEnableRubberband(enableRubberband bool) {
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
 	if enableRubberband {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_grid_view_set_enable_rubberband(_arg0, _arg1)
@@ -277,7 +279,7 @@ func (s gridView) SetSingleClickActivate(singleClickActivate bool) {
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
 	if singleClickActivate {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_grid_view_set_single_click_activate(_arg0, _arg1)

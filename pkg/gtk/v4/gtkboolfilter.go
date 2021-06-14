@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -34,7 +36,7 @@ type BoolFilter interface {
 	SetInvert(invert bool)
 }
 
-// boolFilter implements the BoolFilter interface.
+// boolFilter implements the BoolFilter class.
 type boolFilter struct {
 	Filter
 }
@@ -44,7 +46,7 @@ var _ BoolFilter = (*boolFilter)(nil)
 // WrapBoolFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBoolFilter(obj *externglib.Object) BoolFilter {
-	return BoolFilter{
+	return boolFilter{
 		Filter: WrapFilter(obj),
 	}
 }
@@ -67,7 +69,7 @@ func (s boolFilter) Invert() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -95,7 +97,7 @@ func (s boolFilter) SetInvert(invert bool) {
 
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 	if invert {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_bool_filter_set_invert(_arg0, _arg1)

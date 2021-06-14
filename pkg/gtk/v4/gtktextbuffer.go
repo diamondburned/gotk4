@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -450,7 +451,7 @@ type TextBuffer interface {
 	Undo()
 }
 
-// textBuffer implements the TextBuffer interface.
+// textBuffer implements the TextBuffer class.
 type textBuffer struct {
 	gextras.Objector
 }
@@ -460,7 +461,7 @@ var _ TextBuffer = (*textBuffer)(nil)
 // WrapTextBuffer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextBuffer(obj *externglib.Object) TextBuffer {
-	return TextBuffer{
+	return textBuffer{
 		Objector: obj,
 	}
 }
@@ -562,10 +563,10 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	if interactive {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if defaultEditable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -574,7 +575,7 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -647,7 +648,7 @@ func (b textBuffer) CutClipboard(clipboard gdk.Clipboard, defaultEditable bool) 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 	if defaultEditable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_text_buffer_cut_clipboard(_arg0, _arg1, _arg2)
@@ -690,7 +691,7 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(startIter.Native()))
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(endIter.Native()))
 	if defaultEditable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -699,7 +700,7 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -754,10 +755,10 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	if interactive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 	if defaultEditable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -766,7 +767,7 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -832,7 +833,7 @@ func (b textBuffer) CanRedo() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -851,7 +852,7 @@ func (b textBuffer) CanUndo() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -897,7 +898,7 @@ func (b textBuffer) EnableUndo() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -936,7 +937,7 @@ func (b textBuffer) HasSelection() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -976,7 +977,7 @@ func (b textBuffer) IterAtLine(lineNumber int) (TextIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1008,7 +1009,7 @@ func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (TextIter, bo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1040,7 +1041,7 @@ func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (TextIter, 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1138,7 +1139,7 @@ func (b textBuffer) Modified() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1165,7 +1166,7 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1192,7 +1193,7 @@ func (b textBuffer) Slice(start *TextIter, end *TextIter, includeHiddenChars boo
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 	if includeHiddenChars {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret *C.char // in
@@ -1240,7 +1241,7 @@ func (b textBuffer) Text(start *TextIter, end *TextIter, includeHiddenChars bool
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 	if includeHiddenChars {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret *C.char // in
@@ -1342,7 +1343,7 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(len)
 	if defaultEditable {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -1351,7 +1352,7 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1376,7 +1377,7 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(len)
 	if defaultEditable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -1385,7 +1386,7 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1479,7 +1480,7 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 	if defaultEditable {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -1488,7 +1489,7 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1546,7 +1547,7 @@ func (b textBuffer) PasteClipboard(clipboard gdk.Clipboard, overrideLocation *Te
 	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(overrideLocation.Native()))
 	if defaultEditable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.gtk_text_buffer_paste_clipboard(_arg0, _arg1, _arg2, _arg3)
@@ -1681,7 +1682,7 @@ func (b textBuffer) SetEnableUndo(enableUndo bool) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	if enableUndo {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_buffer_set_enable_undo(_arg0, _arg1)
@@ -1715,7 +1716,7 @@ func (b textBuffer) SetModified(setting bool) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_buffer_set_modified(_arg0, _arg1)

@@ -3,19 +3,55 @@
 package gdk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_frame_clock_phase_get_type()), F: marshalFrameClockPhase},
 		{T: externglib.Type(C.gdk_frame_clock_get_type()), F: marshalFrameClock},
 	})
+}
+
+// FrameClockPhase is used to represent the different paint clock phases that
+// can be requested. The elements of the enumeration correspond to the signals
+// of FrameClock.
+type FrameClockPhase int
+
+const (
+	// FrameClockPhaseNone: no phase
+	FrameClockPhaseNone FrameClockPhase = 0
+	// FrameClockPhaseFlushEvents corresponds to GdkFrameClock::flush-events.
+	// Should not be handled by applications.
+	FrameClockPhaseFlushEvents FrameClockPhase = 1
+	// FrameClockPhaseBeforePaint corresponds to GdkFrameClock::before-paint.
+	// Should not be handled by applications.
+	FrameClockPhaseBeforePaint FrameClockPhase = 2
+	// FrameClockPhaseUpdate corresponds to GdkFrameClock::update.
+	FrameClockPhaseUpdate FrameClockPhase = 4
+	// FrameClockPhaseLayout corresponds to GdkFrameClock::layout.
+	FrameClockPhaseLayout FrameClockPhase = 8
+	// FrameClockPhasePaint corresponds to GdkFrameClock::paint.
+	FrameClockPhasePaint FrameClockPhase = 16
+	// FrameClockPhaseResumeEvents corresponds to GdkFrameClock::resume-events.
+	// Should not be handled by applications.
+	FrameClockPhaseResumeEvents FrameClockPhase = 32
+	// FrameClockPhaseAfterPaint corresponds to GdkFrameClock::after-paint.
+	// Should not be handled by applications.
+	FrameClockPhaseAfterPaint FrameClockPhase = 64
+)
+
+func marshalFrameClockPhase(p uintptr) (interface{}, error) {
+	return FrameClockPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // FrameClock: a FrameClock tells the application when to update and repaint a
@@ -91,7 +127,7 @@ type FrameClock interface {
 	RequestPhase(phase FrameClockPhase)
 }
 
-// frameClock implements the FrameClock interface.
+// frameClock implements the FrameClock class.
 type frameClock struct {
 	gextras.Objector
 }
@@ -101,7 +137,7 @@ var _ FrameClock = (*frameClock)(nil)
 // WrapFrameClock wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFrameClock(obj *externglib.Object) FrameClock {
-	return FrameClock{
+	return frameClock{
 		Objector: obj,
 	}
 }

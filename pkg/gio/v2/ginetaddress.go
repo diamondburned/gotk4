@@ -5,12 +5,12 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -71,13 +72,11 @@ type InetAddress interface {
 	// NativeSize gets the size of the native raw binary address for @address.
 	// This is the size of the data that you get from g_inet_address_to_bytes().
 	NativeSize() uint
-	// ToBytes gets the raw binary address data from @address.
-	ToBytes() *byte
 	// String converts @address to string form.
 	String() string
 }
 
-// inetAddress implements the InetAddress interface.
+// inetAddress implements the InetAddress class.
 type inetAddress struct {
 	gextras.Objector
 }
@@ -87,7 +86,7 @@ var _ InetAddress = (*inetAddress)(nil)
 // WrapInetAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInetAddress(obj *externglib.Object) InetAddress {
-	return InetAddress{
+	return inetAddress{
 		Objector: obj,
 	}
 }
@@ -112,7 +111,7 @@ func (a inetAddress) Equal(otherAddress InetAddress) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -131,7 +130,7 @@ func (a inetAddress) IsAny() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -152,7 +151,7 @@ func (a inetAddress) IsLinkLocal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -171,7 +170,7 @@ func (a inetAddress) IsLoopback() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -190,7 +189,7 @@ func (a inetAddress) IsMcGlobal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -209,7 +208,7 @@ func (a inetAddress) IsMcLinkLocal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -228,7 +227,7 @@ func (a inetAddress) IsMcNodeLocal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -248,7 +247,7 @@ func (a inetAddress) IsMcOrgLocal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -267,7 +266,7 @@ func (a inetAddress) IsMcSiteLocal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -286,7 +285,7 @@ func (a inetAddress) IsMulticast() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -308,7 +307,7 @@ func (a inetAddress) IsSiteLocal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -331,23 +330,6 @@ func (a inetAddress) NativeSize() uint {
 	_gsize = (uint)(_cret)
 
 	return _gsize
-}
-
-// ToBytes gets the raw binary address data from @address.
-func (a inetAddress) ToBytes() *byte {
-	var _arg0 *C.GInetAddress // out
-
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.guint8 // in
-
-	_cret = C.g_inet_address_to_bytes(_arg0)
-
-	var _guint8 *byte // out
-
-	_guint8 = (*byte)(_cret)
-
-	return _guint8
 }
 
 // String converts @address to string form.

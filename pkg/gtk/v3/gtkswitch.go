@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -55,7 +57,7 @@ type Switch interface {
 	SetState(state bool)
 }
 
-// _switch implements the Switch interface.
+// _switch implements the Switch class.
 type _switch struct {
 	Widget
 	Actionable
@@ -68,7 +70,7 @@ var _ Switch = (*_switch)(nil)
 // WrapSwitch wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSwitch(obj *externglib.Object) Switch {
-	return Switch{
+	return _switch{
 		Widget:      WrapWidget(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -94,7 +96,7 @@ func (s _switch) Active() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -113,7 +115,7 @@ func (s _switch) State() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -127,7 +129,7 @@ func (s _switch) SetActive(isActive bool) {
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 	if isActive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_switch_set_active(_arg0, _arg1)
@@ -146,7 +148,7 @@ func (s _switch) SetState(state bool) {
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 	if state {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_switch_set_state(_arg0, _arg1)

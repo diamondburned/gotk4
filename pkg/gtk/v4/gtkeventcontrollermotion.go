@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -38,7 +40,7 @@ type EventControllerMotion interface {
 	IsPointer() bool
 }
 
-// eventControllerMotion implements the EventControllerMotion interface.
+// eventControllerMotion implements the EventControllerMotion class.
 type eventControllerMotion struct {
 	EventController
 }
@@ -48,7 +50,7 @@ var _ EventControllerMotion = (*eventControllerMotion)(nil)
 // WrapEventControllerMotion wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
-	return EventControllerMotion{
+	return eventControllerMotion{
 		EventController: WrapEventController(obj),
 	}
 }
@@ -72,7 +74,7 @@ func (s eventControllerMotion) ContainsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -92,7 +94,7 @@ func (s eventControllerMotion) IsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

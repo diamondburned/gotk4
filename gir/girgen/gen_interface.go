@@ -51,11 +51,13 @@ var interfaceTmpl = newGoTemplate(`
 		return {{ .TypeTree.Wrap "obj" }}
 	}
 
+	{{ if .GLibGetType }}
 	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 		obj := externglib.Take(unsafe.Pointer(val))
 		return Wrap{{ .InterfaceName }}(obj), nil
 	}
+	{{ end }}
 
 	{{ range .Methods }}
 	{{ GoDoc .Doc 1 .Name }}
@@ -83,20 +85,22 @@ func newIfaceGenerator(ng *NamespaceGenerator) *ifaceGenerator {
 }
 
 func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
-	ig.fg = ig.ng.FileFromSource(iface.SourcePosition)
-	ig.TypeTree = ig.fg.TypeTree()
+	ig.TypeTree = ig.ng.TypeTree()
 	ig.TypeTree.Level = 2
 
+	ig.fg = ig.ng.FileFromSource(iface.DocElements)
 	ig.Interface = iface
 	ig.InterfaceName = PascalToGo(iface.Name)
 	ig.StructName = UnexportPascal(ig.InterfaceName)
-	ig.updateMethods()
 
 	resolved := TypeFromResult(ig.ng, gir.TypeFindResult{Interface: &iface})
 	if !ig.TypeTree.ResolveFromType(resolved) {
 		ig.fg.Logln(LogSkip, "interface", ig.InterfaceName, "cannot be type-resolved")
 		return false
 	}
+
+	ig.TypeTree.ImportChildren(ig.fg)
+	ig.updateMethods()
 
 	return true
 }
@@ -142,6 +146,9 @@ func (ng *NamespaceGenerator) generateIfaces() {
 	ig := newIfaceGenerator(ng)
 
 	for _, iface := range ng.current.Namespace.Interfaces {
+		if !iface.IsIntrospectable() {
+			continue
+		}
 		if ng.mustIgnore(iface.Name, iface.CType) {
 			continue
 		}
@@ -150,7 +157,6 @@ func (ng *NamespaceGenerator) generateIfaces() {
 			continue
 		}
 
-		ig.fg.needsGLibObject()
 		if iface.GLibGetType != "" && !ng.mustIgnoreC(iface.GLibGetType) {
 			ig.fg.addMarshaler(iface.GLibGetType, ig.InterfaceName)
 		}

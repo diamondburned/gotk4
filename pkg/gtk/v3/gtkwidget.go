@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -14,7 +13,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -24,6 +23,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_widget_help_type_get_type()), F: marshalWidgetHelpType},
 		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidget},
 		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
 	})
@@ -34,6 +34,20 @@ func init() {
 // allocation. See [GtkWidget’s geometry management
 // section][geometry-management] for more information.
 type Allocation gdk.Rectangle
+
+// WidgetHelpType kinds of widget-specific help. Used by the ::show-help signal.
+type WidgetHelpType int
+
+const (
+	// WidgetHelpTypeTooltip: tooltip.
+	WidgetHelpTypeTooltip WidgetHelpType = 0
+	// WidgetHelpTypeWhatsThis what’s this.
+	WidgetHelpTypeWhatsThis WidgetHelpType = 1
+)
+
+func marshalWidgetHelpType(p uintptr) (interface{}, error) {
+	return WidgetHelpType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 // CairoShouldDrawWindow: this function is supposed to be called in Widget::draw
 // implementations for widgets that support multiple windows. @cr must be
@@ -56,7 +70,7 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Window) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1630,7 +1644,7 @@ type Widget interface {
 	UnsetStateFlags(flags StateFlags)
 }
 
-// widget implements the Widget interface.
+// widget implements the Widget class.
 type widget struct {
 	gextras.Objector
 	Buildable
@@ -1641,7 +1655,7 @@ var _ Widget = (*widget)(nil)
 // WrapWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWidget(obj *externglib.Object) Widget {
-	return Widget{
+	return widget{
 		Objector:  obj,
 		Buildable: WrapBuildable(obj),
 	}
@@ -1668,7 +1682,7 @@ func (w widget) Activate() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1764,7 +1778,7 @@ func (w widget) CanActivateAccel(signalId uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1803,7 +1817,7 @@ func (w widget) ChildFocus(direction DirectionType) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1877,7 +1891,7 @@ func (w widget) ComputeExpand(orientation Orientation) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1940,7 +1954,7 @@ func (w widget) DeviceIsShadowed(device gdk.Device) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1970,7 +1984,7 @@ func (w widget) DragCheckThreshold(startX int, startY int, currentX int, current
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2026,7 +2040,7 @@ func (w widget) DragDestGetTrackMotion() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2099,7 +2113,7 @@ func (w widget) DragDestSetProXY(proxyWindow gdk.Window, protocol gdk.DragProtoc
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(proxyWindow.Native()))
 	_arg2 = (C.GdkDragProtocol)(protocol)
 	if useCoordinates {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.gtk_drag_dest_set_proxy(_arg0, _arg1, _arg2, _arg3)
@@ -2130,7 +2144,7 @@ func (w widget) DragDestSetTrackMotion(trackMotion bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if trackMotion {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_drag_dest_set_track_motion(_arg0, _arg1)
@@ -2458,7 +2472,7 @@ func (w widget) AppPaintable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2478,7 +2492,7 @@ func (w widget) CanDefault() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2498,7 +2512,7 @@ func (w widget) CanFocus() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2551,7 +2565,7 @@ func (w widget) ChildVisible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2591,7 +2605,7 @@ func (w widget) DeviceEnabled(device gdk.Device) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2612,7 +2626,7 @@ func (w widget) DoubleBuffered() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2655,7 +2669,7 @@ func (w widget) FocusOnClick() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2675,7 +2689,7 @@ func (w widget) HasTooltip() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2695,7 +2709,7 @@ func (w widget) HasWindow() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2726,7 +2740,7 @@ func (w widget) Hexpand() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2753,7 +2767,7 @@ func (w widget) HexpandSet() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2772,7 +2786,7 @@ func (w widget) Mapped() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2913,7 +2927,7 @@ func (w widget) NoShowAll() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3154,7 +3168,7 @@ func (w widget) Realized() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3177,7 +3191,7 @@ func (w widget) ReceivesDefault() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3241,7 +3255,7 @@ func (w widget) Sensitive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3287,7 +3301,7 @@ func (w widget) SupportMultidevice() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3375,7 +3389,7 @@ func (w widget) Vexpand() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3397,7 +3411,7 @@ func (w widget) VexpandSet() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3422,7 +3436,7 @@ func (w widget) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3505,7 +3519,7 @@ func (w widget) HasDefault() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3526,7 +3540,7 @@ func (w widget) HasFocus() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3548,7 +3562,7 @@ func (w widget) HasGrab() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3568,7 +3582,7 @@ func (w widget) HasRCStyle() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3589,7 +3603,7 @@ func (w widget) HasScreen() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3616,7 +3630,7 @@ func (w widget) HasVisibleFocus() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3651,7 +3665,7 @@ func (w widget) HideOnDelete() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3671,7 +3685,7 @@ func (w widget) InDestruction() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3751,7 +3765,7 @@ func (w widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3773,7 +3787,7 @@ func (w widget) IsAncestor(ancestor Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3798,7 +3812,7 @@ func (w widget) IsComposited() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3818,7 +3832,7 @@ func (w widget) IsDrawable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3840,7 +3854,7 @@ func (w widget) IsFocus() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3860,7 +3874,7 @@ func (w widget) IsSensitive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3882,7 +3896,7 @@ func (w widget) IsToplevel() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3906,7 +3920,7 @@ func (w widget) IsVisible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3952,7 +3966,7 @@ func (w widget) KeynavFailed(direction DirectionType) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3974,19 +3988,17 @@ func (w widget) ListActionPrefixes() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -4010,7 +4022,7 @@ func (w widget) MnemonicActivate(groupCycling bool) bool {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if groupCycling {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -4019,7 +4031,7 @@ func (w widget) MnemonicActivate(groupCycling bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -4474,7 +4486,7 @@ func (w widget) RemoveAccelerator(accelGroup AccelGroup, accelKey uint, accelMod
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -4594,7 +4606,7 @@ func (w widget) SetAppPaintable(appPaintable bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if appPaintable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_app_paintable(_arg0, _arg1)
@@ -4608,7 +4620,7 @@ func (w widget) SetCanDefault(canDefault bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if canDefault {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_can_default(_arg0, _arg1)
@@ -4622,7 +4634,7 @@ func (w widget) SetCanFocus(canFocus bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if canFocus {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_can_focus(_arg0, _arg1)
@@ -4649,7 +4661,7 @@ func (w widget) SetChildVisible(isVisible bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if isVisible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_child_visible(_arg0, _arg1)
@@ -4682,7 +4694,7 @@ func (w widget) SetDeviceEnabled(device gdk.Device, enabled bool) {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	if enabled {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_widget_set_device_enabled(_arg0, _arg1, _arg2)
@@ -4761,7 +4773,7 @@ func (w widget) SetDoubleBuffered(doubleBuffered bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if doubleBuffered {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_double_buffered(_arg0, _arg1)
@@ -4797,7 +4809,7 @@ func (w widget) SetFocusOnClick(focusOnClick bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if focusOnClick {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_focus_on_click(_arg0, _arg1)
@@ -4848,7 +4860,7 @@ func (w widget) SetHasTooltip(hasTooltip bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if hasTooltip {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_has_tooltip(_arg0, _arg1)
@@ -4870,7 +4882,7 @@ func (w widget) SetHasWindow(hasWindow bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if hasWindow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_has_window(_arg0, _arg1)
@@ -4904,7 +4916,7 @@ func (w widget) SetHexpand(expand bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if expand {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_hexpand(_arg0, _arg1)
@@ -4929,7 +4941,7 @@ func (w widget) SetHexpandSet(set bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if set {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_hexpand_set(_arg0, _arg1)
@@ -4945,7 +4957,7 @@ func (w widget) SetMapped(mapped bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if mapped {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_mapped(_arg0, _arg1)
@@ -5054,7 +5066,7 @@ func (w widget) SetNoShowAll(noShowAll bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if noShowAll {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_no_show_all(_arg0, _arg1)
@@ -5126,7 +5138,7 @@ func (w widget) SetRealized(realized bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if realized {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_realized(_arg0, _arg1)
@@ -5143,7 +5155,7 @@ func (w widget) SetReceivesDefault(receivesDefault bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if receivesDefault {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_receives_default(_arg0, _arg1)
@@ -5169,7 +5181,7 @@ func (w widget) SetRedrawOnAllocate(redrawOnAllocate bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if redrawOnAllocate {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_redraw_on_allocate(_arg0, _arg1)
@@ -5185,7 +5197,7 @@ func (w widget) SetSensitive(sensitive bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if sensitive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_sensitive(_arg0, _arg1)
@@ -5268,7 +5280,7 @@ func (w widget) SetStateFlags(flags StateFlags, clear bool) {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GtkStateFlags)(flags)
 	if clear {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_widget_set_state_flags(_arg0, _arg1, _arg2)
@@ -5297,7 +5309,7 @@ func (w widget) SetSupportMultidevice(supportMultidevice bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if supportMultidevice {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_support_multidevice(_arg0, _arg1)
@@ -5374,7 +5386,7 @@ func (w widget) SetVexpand(expand bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if expand {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_vexpand(_arg0, _arg1)
@@ -5390,7 +5402,7 @@ func (w widget) SetVexpandSet(set bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if set {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_vexpand_set(_arg0, _arg1)
@@ -5408,7 +5420,7 @@ func (w widget) SetVisible(visible bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	if visible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_widget_set_visible(_arg0, _arg1)
@@ -5598,7 +5610,7 @@ func (s widget) TranslateCoordinates(destWidget Widget, srcX int, srcY int) (des
 
 	_destX = (int)(_arg4)
 	_destY = (int)(_arg5)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

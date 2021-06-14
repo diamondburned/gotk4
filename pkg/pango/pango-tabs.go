@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -16,8 +16,22 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.pango_tab_align_get_type()), F: marshalTabAlign},
 		{T: externglib.Type(C.pango_tab_array_get_type()), F: marshalTabArray},
 	})
+}
+
+// TabAlign: `PangoTabAlign` specifies where a tab stop appears relative to the
+// text.
+type TabAlign int
+
+const (
+	// TabAlignLeft: the tab stop appears to the left of the text.
+	TabAlignLeft TabAlign = 0
+)
+
+func marshalTabAlign(p uintptr) (interface{}, error) {
+	return TabAlign(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // TabArray: a `PangoTabArray` contains an array of tab stops.
@@ -70,7 +84,7 @@ func (t *TabArray) PositionsInPixels() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

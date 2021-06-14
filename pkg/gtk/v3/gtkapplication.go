@@ -5,13 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -21,8 +20,31 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_application_inhibit_flags_get_type()), F: marshalApplicationInhibitFlags},
 		{T: externglib.Type(C.gtk_application_get_type()), F: marshalApplication},
 	})
+}
+
+// ApplicationInhibitFlags types of user actions that may be blocked by
+// gtk_application_inhibit().
+type ApplicationInhibitFlags int
+
+const (
+	// ApplicationInhibitFlagsLogout: inhibit ending the user session by logging
+	// out or by shutting down the computer
+	ApplicationInhibitFlagsLogout ApplicationInhibitFlags = 1
+	// ApplicationInhibitFlagsSwitch: inhibit user switching
+	ApplicationInhibitFlagsSwitch ApplicationInhibitFlags = 2
+	// ApplicationInhibitFlagsSuspend: inhibit suspending the session or
+	// computer
+	ApplicationInhibitFlagsSuspend ApplicationInhibitFlags = 4
+	// ApplicationInhibitFlagsIdle: inhibit the session being marked as idle
+	// (and possibly locked)
+	ApplicationInhibitFlagsIdle ApplicationInhibitFlags = 8
+)
+
+func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
+	return ApplicationInhibitFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Application is a class that handles many important aspects of a GTK+
@@ -284,7 +306,7 @@ type Application interface {
 	Uninhibit(cookie uint)
 }
 
-// application implements the Application interface.
+// application implements the Application class.
 type application struct {
 	gio.Application
 	gio.ActionGroup
@@ -296,7 +318,7 @@ var _ Application = (*application)(nil)
 // WrapApplication wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplication(obj *externglib.Object) Application {
-	return Application{
+	return application{
 		gio.Application: gio.WrapApplication(obj),
 		gio.ActionGroup: gio.WrapActionGroup(obj),
 		gio.ActionMap:   gio.WrapActionMap(obj),
@@ -383,20 +405,18 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -434,20 +454,18 @@ func (a application) ActionsForAccel(accel string) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -516,7 +534,7 @@ func (a application) IsInhibited(flags ApplicationInhibitFlags) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -538,20 +556,18 @@ func (a application) ListActionDescriptions() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -601,7 +617,7 @@ func (a application) PrefersAppMenu() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -656,16 +672,14 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc((len(accels) + 1) * unsafe.Sizeof(int(0))))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong((len(accels) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(accels)))
-
+		out := unsafe.Slice(_arg2, len(accels))
 		for i := range accels {
-			_arg2 = (*C.gchar)(C.CString(accels))
-			defer C.free(unsafe.Pointer(_arg2))
+			out[i] = (*C.gchar)(C.CString(accels[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

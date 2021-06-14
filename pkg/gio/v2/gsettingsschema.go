@@ -5,14 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -24,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -144,7 +143,7 @@ func (s *SettingsSchema) HasKey(name string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -167,20 +166,18 @@ func (s *SettingsSchema) ListChildren() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -205,20 +202,18 @@ func (s *SettingsSchema) ListKeys() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -350,7 +345,7 @@ func (k *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -403,13 +398,13 @@ func (s *SettingsSchemaSource) Native() unsafe.Pointer {
 //
 // Do not call this function from normal programs. This is designed for use by
 // database editors, commandline tools, etc.
-func (s *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []*string, relocatable []*string) {
+func (s *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []string, relocatable []string) {
 	var _arg0 *C.GSettingsSchemaSource // out
 	var _arg1 C.gboolean               // out
 
 	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(s.Native()))
 	if recursive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	var _arg2 **C.gchar
@@ -417,43 +412,39 @@ func (s *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []*st
 
 	C.g_settings_schema_source_list_schemas(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _nonRelocatable []*string
-	var _relocatable []*string
+	var _nonRelocatable []string
+	var _relocatable []string
 
 	{
 		var length int
-		for p := _arg2; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _arg2; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []**C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg2), int(length))
-
-		_nonRelocatable = make([]*string, length)
+		src := unsafe.Slice(_arg2, length)
+		_nonRelocatable = make([]string, length)
 		for i := range src {
-			_nonRelocatable = C.GoString(_arg2)
-			defer C.free(unsafe.Pointer(_arg2))
+			_nonRelocatable[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	{
 		var length int
-		for p := _arg3; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _arg3; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []**C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg3), int(length))
-
-		_relocatable = make([]*string, length)
+		src := unsafe.Slice(_arg3, length)
+		_relocatable = make([]string, length)
 		for i := range src {
-			_relocatable = C.GoString(_arg3)
-			defer C.free(unsafe.Pointer(_arg3))
+			_relocatable[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

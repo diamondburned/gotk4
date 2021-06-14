@@ -5,11 +5,10 @@ package pango
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -31,7 +30,7 @@ func IsZeroWidth(ch uint32) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -86,7 +85,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	_arg2 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg2))
 	if warn {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _arg3 C.int      // in
@@ -102,39 +101,11 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	_value = (int)(_arg3)
 	_possibleValues = C.GoString(_arg5)
 	defer C.free(unsafe.Pointer(_arg5))
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _value, _possibleValues, _ok
-}
-
-// ReadLine reads an entire line from a file into a buffer.
-//
-// Lines may be delimited with '\n', '\r', '\n\r', or '\r\n'. The delimiter is
-// not written into the buffer. Text after a '#' character is treated as a
-// comment and skipped. '\' can be used to escape a
-//
-// character.
-//
-// '\' proceeding a line delimiter combines adjacent lines. A '\' proceeding any
-// other character is ignored and written into the output buffer unmodified.
-func ReadLine(stream *interface{}, str *glib.String) int {
-	var _arg1 *C.FILE    // out
-	var _arg2 *C.GString // out
-
-	_arg1 = *C.FILE(stream)
-	_arg2 = (*C.GString)(unsafe.Pointer(str.Native()))
-
-	var _cret C.gint // in
-
-	_cret = C.pango_read_line(_arg1, _arg2)
-
-	var _gint int // out
-
-	_gint = (int)(_cret)
-
-	return _gint
 }
 
 // SplitFileList splits a G_SEARCHPATH_SEPARATOR-separated list of files,
@@ -153,20 +124,18 @@ func SplitFileList(str string) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

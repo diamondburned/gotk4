@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -44,7 +46,7 @@ type GestureLongPress interface {
 	SetDelayFactor(delayFactor float64)
 }
 
-// gestureLongPress implements the GestureLongPress interface.
+// gestureLongPress implements the GestureLongPress class.
 type gestureLongPress struct {
 	GestureSingle
 }
@@ -54,7 +56,7 @@ var _ GestureLongPress = (*gestureLongPress)(nil)
 // WrapGestureLongPress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureLongPress(obj *externglib.Object) GestureLongPress {
-	return GestureLongPress{
+	return gestureLongPress{
 		GestureSingle: WrapGestureSingle(obj),
 	}
 }

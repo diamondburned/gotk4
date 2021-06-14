@@ -2,11 +2,7 @@
 
 package gdkx11
 
-import (
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-)
-
-// #cgo pkg-config: gtk4-x11 gtk4
+// #cgo pkg-config: gtk4 gtk4-x11
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/x11/gdkx.h>
 import "C"

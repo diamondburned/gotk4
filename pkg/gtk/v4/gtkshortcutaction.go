@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -17,6 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_shortcut_action_flags_get_type()), F: marshalShortcutActionFlags},
 		{T: externglib.Type(C.gtk_activate_action_get_type()), F: marshalActivateAction},
 		{T: externglib.Type(C.gtk_callback_action_get_type()), F: marshalCallbackAction},
 		{T: externglib.Type(C.gtk_mnemonic_action_get_type()), F: marshalMnemonicAction},
@@ -27,12 +29,28 @@ func init() {
 	})
 }
 
+// ShortcutActionFlags: list of flags that can be passed to action activation.
+//
+// More flags may be added in the future.
+type ShortcutActionFlags int
+
+const (
+	// ShortcutActionFlagsExclusive: the action is the only action that can be
+	// activated. If this flag is not set, a future activation may select a
+	// different action.
+	ShortcutActionFlagsExclusive ShortcutActionFlags = 1
+)
+
+func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
+	return ShortcutActionFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 // ActivateAction: a `GtkShortcutAction` that calls gtk_widget_activate().
 type ActivateAction interface {
 	ShortcutAction
 }
 
-// activateAction implements the ActivateAction interface.
+// activateAction implements the ActivateAction class.
 type activateAction struct {
 	ShortcutAction
 }
@@ -42,7 +60,7 @@ var _ ActivateAction = (*activateAction)(nil)
 // WrapActivateAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapActivateAction(obj *externglib.Object) ActivateAction {
-	return ActivateAction{
+	return activateAction{
 		ShortcutAction: WrapShortcutAction(obj),
 	}
 }
@@ -58,7 +76,7 @@ type CallbackAction interface {
 	ShortcutAction
 }
 
-// callbackAction implements the CallbackAction interface.
+// callbackAction implements the CallbackAction class.
 type callbackAction struct {
 	ShortcutAction
 }
@@ -68,7 +86,7 @@ var _ CallbackAction = (*callbackAction)(nil)
 // WrapCallbackAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCallbackAction(obj *externglib.Object) CallbackAction {
-	return CallbackAction{
+	return callbackAction{
 		ShortcutAction: WrapShortcutAction(obj),
 	}
 }
@@ -85,7 +103,7 @@ type MnemonicAction interface {
 	ShortcutAction
 }
 
-// mnemonicAction implements the MnemonicAction interface.
+// mnemonicAction implements the MnemonicAction class.
 type mnemonicAction struct {
 	ShortcutAction
 }
@@ -95,7 +113,7 @@ var _ MnemonicAction = (*mnemonicAction)(nil)
 // WrapMnemonicAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMnemonicAction(obj *externglib.Object) MnemonicAction {
-	return MnemonicAction{
+	return mnemonicAction{
 		ShortcutAction: WrapShortcutAction(obj),
 	}
 }
@@ -114,7 +132,7 @@ type NamedAction interface {
 	ActionName() string
 }
 
-// namedAction implements the NamedAction interface.
+// namedAction implements the NamedAction class.
 type namedAction struct {
 	ShortcutAction
 }
@@ -124,7 +142,7 @@ var _ NamedAction = (*namedAction)(nil)
 // WrapNamedAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNamedAction(obj *externglib.Object) NamedAction {
-	return NamedAction{
+	return namedAction{
 		ShortcutAction: WrapShortcutAction(obj),
 	}
 }
@@ -157,7 +175,7 @@ type NothingAction interface {
 	ShortcutAction
 }
 
-// nothingAction implements the NothingAction interface.
+// nothingAction implements the NothingAction class.
 type nothingAction struct {
 	ShortcutAction
 }
@@ -167,7 +185,7 @@ var _ NothingAction = (*nothingAction)(nil)
 // WrapNothingAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNothingAction(obj *externglib.Object) NothingAction {
-	return NothingAction{
+	return nothingAction{
 		ShortcutAction: WrapShortcutAction(obj),
 	}
 }
@@ -216,13 +234,6 @@ type ShortcutAction interface {
 	// not supported by the @widget, if the @args don't match the action or if
 	// the activation otherwise had no effect, false will be returned.
 	Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
-	// Print prints the given action into a string for the developer.
-	//
-	// This is meant for debugging and logging.
-	//
-	// The form of the representation may change at any time and is not
-	// guaranteed to stay identical.
-	Print(string *glib.String)
 	// String prints the given action into a human-readable string.
 	//
 	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
@@ -230,7 +241,7 @@ type ShortcutAction interface {
 	String() string
 }
 
-// shortcutAction implements the ShortcutAction interface.
+// shortcutAction implements the ShortcutAction class.
 type shortcutAction struct {
 	gextras.Objector
 }
@@ -240,7 +251,7 @@ var _ ShortcutAction = (*shortcutAction)(nil)
 // WrapShortcutAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutAction(obj *externglib.Object) ShortcutAction {
-	return ShortcutAction{
+	return shortcutAction{
 		Objector: obj,
 	}
 }
@@ -275,27 +286,11 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Print prints the given action into a string for the developer.
-//
-// This is meant for debugging and logging.
-//
-// The form of the representation may change at any time and is not
-// guaranteed to stay identical.
-func (s shortcutAction) Print(string *glib.String) {
-	var _arg0 *C.GtkShortcutAction // out
-	var _arg1 *C.GString           // out
-
-	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
-
-	C.gtk_shortcut_action_print(_arg0, _arg1)
 }
 
 // String prints the given action into a human-readable string.
@@ -330,7 +325,7 @@ type SignalAction interface {
 	SignalName() string
 }
 
-// signalAction implements the SignalAction interface.
+// signalAction implements the SignalAction class.
 type signalAction struct {
 	ShortcutAction
 }
@@ -340,7 +335,7 @@ var _ SignalAction = (*signalAction)(nil)
 // WrapSignalAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSignalAction(obj *externglib.Object) SignalAction {
-	return SignalAction{
+	return signalAction{
 		ShortcutAction: WrapShortcutAction(obj),
 	}
 }

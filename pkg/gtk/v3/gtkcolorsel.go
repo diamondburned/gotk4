@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -89,7 +89,7 @@ type ColorSelection interface {
 	SetPreviousRGBA(rgba *gdk.RGBA)
 }
 
-// colorSelection implements the ColorSelection interface.
+// colorSelection implements the ColorSelection class.
 type colorSelection struct {
 	Box
 	Buildable
@@ -101,7 +101,7 @@ var _ ColorSelection = (*colorSelection)(nil)
 // WrapColorSelection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColorSelection(obj *externglib.Object) ColorSelection {
-	return ColorSelection{
+	return colorSelection{
 		Box:        WrapBox(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -171,7 +171,7 @@ func (c colorSelection) HasOpacityControl() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -190,7 +190,7 @@ func (c colorSelection) HasPalette() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -252,7 +252,7 @@ func (c colorSelection) IsAdjusting() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -308,7 +308,7 @@ func (c colorSelection) SetHasOpacityControl(hasOpacity bool) {
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
 	if hasOpacity {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_color_selection_set_has_opacity_control(_arg0, _arg1)
@@ -322,7 +322,7 @@ func (c colorSelection) SetHasPalette(hasPalette bool) {
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
 	if hasPalette {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_color_selection_set_has_palette(_arg0, _arg1)

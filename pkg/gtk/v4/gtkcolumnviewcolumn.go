@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -86,7 +87,7 @@ type ColumnViewColumn interface {
 	SetVisible(visible bool)
 }
 
-// columnViewColumn implements the ColumnViewColumn interface.
+// columnViewColumn implements the ColumnViewColumn class.
 type columnViewColumn struct {
 	gextras.Objector
 }
@@ -96,7 +97,7 @@ var _ ColumnViewColumn = (*columnViewColumn)(nil)
 // WrapColumnViewColumn wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColumnViewColumn(obj *externglib.Object) ColumnViewColumn {
-	return ColumnViewColumn{
+	return columnViewColumn{
 		Objector: obj,
 	}
 }
@@ -119,7 +120,7 @@ func (s columnViewColumn) Expand() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -155,7 +156,7 @@ func (s columnViewColumn) Resizable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -191,7 +192,7 @@ func (s columnViewColumn) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -208,7 +209,7 @@ func (s columnViewColumn) SetExpand(expand bool) {
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 	if expand {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_column_set_expand(_arg0, _arg1)
@@ -260,7 +261,7 @@ func (s columnViewColumn) SetResizable(resizable bool) {
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 	if resizable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_column_set_resizable(_arg0, _arg1)
@@ -308,7 +309,7 @@ func (s columnViewColumn) SetVisible(visible bool) {
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 	if visible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_column_set_visible(_arg0, _arg1)

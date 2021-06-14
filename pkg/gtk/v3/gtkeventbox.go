@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -75,7 +77,7 @@ type EventBox interface {
 	SetVisibleWindow(visibleWindow bool)
 }
 
-// eventBox implements the EventBox interface.
+// eventBox implements the EventBox class.
 type eventBox struct {
 	Bin
 	Buildable
@@ -86,7 +88,7 @@ var _ EventBox = (*eventBox)(nil)
 // WrapEventBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventBox(obj *externglib.Object) EventBox {
-	return EventBox{
+	return eventBox{
 		Bin:       WrapBin(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -111,7 +113,7 @@ func (e eventBox) AboveChild() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -131,7 +133,7 @@ func (e eventBox) VisibleWindow() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -151,7 +153,7 @@ func (e eventBox) SetAboveChild(aboveChild bool) {
 
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 	if aboveChild {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_event_box_set_above_child(_arg0, _arg1)
@@ -194,7 +196,7 @@ func (e eventBox) SetVisibleWindow(visibleWindow bool) {
 
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 	if visibleWindow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_event_box_set_visible_window(_arg0, _arg1)

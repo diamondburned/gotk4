@@ -5,11 +5,10 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -123,11 +122,6 @@ func WrapOptionContext(ptr unsafe.Pointer) *OptionContext {
 	return (*OptionContext)(ptr)
 }
 
-func marshalOptionContext(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOptionContext(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (o *OptionContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
@@ -154,15 +148,13 @@ func (c *OptionContext) AddMainEntries(entries []OptionEntry, translationDomain 
 	var _arg2 *C.gchar // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_struct_GOptionEntry))
+	_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong((len(entries) + 1)) * C.ulong(C.sizeof_GOptionEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []C.GOptionEntry
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(entries)))
-
+		out := unsafe.Slice(_arg1, len(entries))
 		for i := range entries {
-			_arg1 = (C.GOptionEntry)(unsafe.Pointer(entries.Native()))
+			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
 		}
 	}
 	_arg2 = (*C.gchar)(C.CString(translationDomain))
@@ -212,7 +204,7 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if mainHelp {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 	_arg2 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
 
@@ -241,7 +233,7 @@ func (c *OptionContext) HelpEnabled() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -261,7 +253,7 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -282,7 +274,7 @@ func (c *OptionContext) StrictPosix() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -331,7 +323,7 @@ func (c *OptionContext) SetHelpEnabled(helpEnabled bool) {
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if helpEnabled {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_option_context_set_help_enabled(_arg0, _arg1)
@@ -350,7 +342,7 @@ func (c *OptionContext) SetIgnoreUnknownOptions(ignoreUnknown bool) {
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if ignoreUnknown {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_option_context_set_ignore_unknown_options(_arg0, _arg1)
@@ -399,7 +391,7 @@ func (c *OptionContext) SetStrictPosix(strictPosix bool) {
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if strictPosix {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_option_context_set_strict_posix(_arg0, _arg1)
@@ -450,11 +442,6 @@ func WrapOptionEntry(ptr unsafe.Pointer) *OptionEntry {
 	}
 
 	return (*OptionEntry)(ptr)
-}
-
-func marshalOptionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOptionEntry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -541,15 +528,13 @@ func (g *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg1 *C.GOptionEntry
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_struct_GOptionEntry))
+	_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong((len(entries) + 1)) * C.ulong(C.sizeof_GOptionEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []C.GOptionEntry
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(entries)))
-
+		out := unsafe.Slice(_arg1, len(entries))
 		for i := range entries {
-			_arg1 = (C.GOptionEntry)(unsafe.Pointer(entries.Native()))
+			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
 		}
 	}
 

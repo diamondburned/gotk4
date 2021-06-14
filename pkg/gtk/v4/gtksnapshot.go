@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -13,7 +12,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -207,7 +206,7 @@ type Snapshot interface {
 	Translate3D(point *graphene.Point3D)
 }
 
-// snapshot implements the Snapshot interface.
+// snapshot implements the Snapshot class.
 type snapshot struct {
 	gdk.Snapshot
 }
@@ -217,7 +216,7 @@ var _ Snapshot = (*snapshot)(nil)
 // WrapSnapshot wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSnapshot(obj *externglib.Object) Snapshot {
-	return Snapshot{
+	return snapshot{
 		gdk.Snapshot: gdk.WrapSnapshot(obj),
 	}
 }

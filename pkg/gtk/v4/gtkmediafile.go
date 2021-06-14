@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -59,7 +59,7 @@ type MediaFile interface {
 	SetResource(resourcePath string)
 }
 
-// mediaFile implements the MediaFile interface.
+// mediaFile implements the MediaFile class.
 type mediaFile struct {
 	MediaStream
 	gdk.Paintable
@@ -70,7 +70,7 @@ var _ MediaFile = (*mediaFile)(nil)
 // WrapMediaFile wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMediaFile(obj *externglib.Object) MediaFile {
-	return MediaFile{
+	return mediaFile{
 		MediaStream:   WrapMediaStream(obj),
 		gdk.Paintable: gdk.WrapPaintable(obj),
 	}

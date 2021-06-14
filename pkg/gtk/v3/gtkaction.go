@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -179,7 +180,7 @@ type Action interface {
 	UnblockActivate()
 }
 
-// action implements the Action interface.
+// action implements the Action class.
 type action struct {
 	gextras.Objector
 	Buildable
@@ -190,7 +191,7 @@ var _ Action = (*action)(nil)
 // WrapAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAction(obj *externglib.Object) Action {
-	return Action{
+	return action{
 		Objector:  obj,
 		Buildable: WrapBuildable(obj),
 	}
@@ -285,7 +286,7 @@ func (a action) AlwaysShowImage() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -321,7 +322,7 @@ func (a action) IsImportant() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -376,7 +377,7 @@ func (a action) Sensitive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -448,7 +449,7 @@ func (a action) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -467,7 +468,7 @@ func (a action) VisibleHorizontal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -486,7 +487,7 @@ func (a action) VisibleVertical() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -505,7 +506,7 @@ func (a action) IsSensitive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -524,7 +525,7 @@ func (a action) IsVisible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -573,7 +574,7 @@ func (a action) SetAlwaysShowImage(alwaysShow bool) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if alwaysShow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
@@ -610,7 +611,7 @@ func (a action) SetIsImportant(isImportant bool) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if isImportant {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_action_set_is_important(_arg0, _arg1)
@@ -637,7 +638,7 @@ func (a action) SetSensitive(sensitive bool) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if sensitive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_action_set_sensitive(_arg0, _arg1)
@@ -688,7 +689,7 @@ func (a action) SetVisible(visible bool) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if visible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_action_set_visible(_arg0, _arg1)
@@ -701,7 +702,7 @@ func (a action) SetVisibleHorizontal(visibleHorizontal bool) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if visibleHorizontal {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_action_set_visible_horizontal(_arg0, _arg1)
@@ -714,7 +715,7 @@ func (a action) SetVisibleVertical(visibleVertical bool) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if visibleVertical {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_action_set_visible_vertical(_arg0, _arg1)

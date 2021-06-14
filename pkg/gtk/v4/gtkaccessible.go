@@ -5,11 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -142,27 +142,23 @@ func (s accessible) UpdatePropertyValue(properties []AccessibleProperty, values 
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(len(properties))
-	_arg2 = (*C.GtkAccessibleProperty)(C.malloc(len(properties) * C.sizeof_GtkAccessibleProperty))
+	_arg2 = (*C.GtkAccessibleProperty)(C.malloc(C.ulong(len(properties)) * C.ulong(C.sizeof_GtkAccessibleProperty)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []C.GtkAccessibleProperty
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg2), int(len(properties)))
-
+		out := unsafe.Slice(_arg2, len(properties))
 		for i := range properties {
-			_arg2 = (C.GtkAccessibleProperty)(properties)
+			out[i] = (C.GtkAccessibleProperty)(properties[i])
 		}
 	}
 	_arg1 = C.int(len(values))
-	_arg3 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	{
-		var out []C.GValue
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg3), int(len(values)))
-
+		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			_arg3 = (*C.GValue)(values.GValue)
+			out[i] = (*C.GValue)(values[i].GValue)
 		}
 	}
 
@@ -185,27 +181,23 @@ func (s accessible) UpdateRelationValue(relations []AccessibleRelation, values [
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(len(relations))
-	_arg2 = (*C.GtkAccessibleRelation)(C.malloc(len(relations) * C.sizeof_GtkAccessibleRelation))
+	_arg2 = (*C.GtkAccessibleRelation)(C.malloc(C.ulong(len(relations)) * C.ulong(C.sizeof_GtkAccessibleRelation)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []C.GtkAccessibleRelation
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg2), int(len(relations)))
-
+		out := unsafe.Slice(_arg2, len(relations))
 		for i := range relations {
-			_arg2 = (C.GtkAccessibleRelation)(relations)
+			out[i] = (C.GtkAccessibleRelation)(relations[i])
 		}
 	}
 	_arg1 = C.int(len(values))
-	_arg3 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	{
-		var out []C.GValue
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg3), int(len(values)))
-
+		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			_arg3 = (*C.GValue)(values.GValue)
+			out[i] = (*C.GValue)(values[i].GValue)
 		}
 	}
 
@@ -227,27 +219,23 @@ func (s accessible) UpdateStateValue(states []AccessibleState, values []**extern
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(len(states))
-	_arg2 = (*C.GtkAccessibleState)(C.malloc(len(states) * C.sizeof_GtkAccessibleState))
+	_arg2 = (*C.GtkAccessibleState)(C.malloc(C.ulong(len(states)) * C.ulong(C.sizeof_GtkAccessibleState)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []C.GtkAccessibleState
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg2), int(len(states)))
-
+		out := unsafe.Slice(_arg2, len(states))
 		for i := range states {
-			_arg2 = (C.GtkAccessibleState)(states)
+			out[i] = (C.GtkAccessibleState)(states[i])
 		}
 	}
 	_arg1 = C.int(len(values))
-	_arg3 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	{
-		var out []C.GValue
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg3), int(len(values)))
-
+		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			_arg3 = (*C.GValue)(values.GValue)
+			out[i] = (*C.GValue)(values[i].GValue)
 		}
 	}
 

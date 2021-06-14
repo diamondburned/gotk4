@@ -10,9 +10,8 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -24,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -75,7 +75,7 @@ func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.g
 	var numDirs uint64     // out
 	var numFiles uint64    // out
 
-	if arg0 {
+	if arg0 != 0 {
 		reporting = true
 	}
 	currentSize = (uint64)(arg1)
@@ -131,11 +131,13 @@ func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C
 	fn := v.(FileReadMoreCallback)
 	ok := fn(fileContents, fileSize)
 
+	var cret C.gboolean // out
+
 	if ok {
-		cret = C.gboolean(1)
+		cret = C.TRUE
 	}
 
-	return ok
+	return cret
 }
 
 // PollableSourceFunc: this is the function type of the callback used for the
@@ -157,11 +159,13 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 	fn := v.(PollableSourceFunc)
 	ok := fn(pollableStream)
 
+	var cret C.gboolean // out
+
 	if ok {
-		cret = C.gboolean(1)
+		cret = C.TRUE
 	}
 
-	return ok
+	return cret
 }
 
 // FileAttributeMatcher determines if a string matches a file attribute.
@@ -209,7 +213,7 @@ func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -250,7 +254,7 @@ func (m *FileAttributeMatcher) Matches(attribute string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -273,7 +277,7 @@ func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -325,11 +329,6 @@ func WrapIOExtension(ptr unsafe.Pointer) *IOExtension {
 	}
 
 	return (*IOExtension)(ptr)
-}
-
-func marshalIOExtension(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIOExtension(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -407,11 +406,6 @@ func WrapIOExtensionPoint(ptr unsafe.Pointer) *IOExtensionPoint {
 	return (*IOExtensionPoint)(ptr)
 }
 
-func marshalIOExtensionPoint(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIOExtensionPoint(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (i *IOExtensionPoint) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
@@ -461,11 +455,6 @@ func WrapIOSchedulerJob(ptr unsafe.Pointer) *IOSchedulerJob {
 	return (*IOSchedulerJob)(ptr)
 }
 
-func marshalIOSchedulerJob(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIOSchedulerJob(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (i *IOSchedulerJob) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
@@ -483,11 +472,6 @@ func WrapIOStreamAdapter(ptr unsafe.Pointer) *IOStreamAdapter {
 	}
 
 	return (*IOStreamAdapter)(ptr)
-}
-
-func marshalIOStreamAdapter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIOStreamAdapter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -526,11 +510,6 @@ func WrapInputMessage(ptr unsafe.Pointer) *InputMessage {
 	}
 
 	return (*InputMessage)(ptr)
-}
-
-func marshalInputMessage(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInputMessage(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -583,11 +562,6 @@ func WrapInputVector(ptr unsafe.Pointer) *InputVector {
 	return (*InputVector)(ptr)
 }
 
-func marshalInputVector(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInputVector(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (i *InputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
@@ -626,11 +600,6 @@ func WrapOutputMessage(ptr unsafe.Pointer) *OutputMessage {
 	}
 
 	return (*OutputMessage)(ptr)
-}
-
-func marshalOutputMessage(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOutputMessage(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -674,11 +643,6 @@ func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
 	}
 
 	return (*OutputVector)(ptr)
-}
-
-func marshalOutputVector(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOutputVector(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -870,86 +834,6 @@ func marshalResource(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *Resource) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// EnumerateChildren returns all the names of children at the specified @path in
-// the resource. The return result is a nil terminated list of strings which
-// should be released with g_strfreev().
-//
-// If @path is invalid or does not exist in the #GResource,
-// G_RESOURCE_ERROR_NOT_FOUND will be returned.
-//
-// @lookup_flags controls the behaviour of the lookup.
-func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
-	var _arg0 *C.GResource           // out
-	var _arg1 *C.char                // out
-	var _arg2 C.GResourceLookupFlags // out
-
-	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _cret **C.char
-	var _cerr *C.GError // in
-
-	_cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, &_cerr)
-
-	var _utf8s []string
-	var _goerr error // out
-
-	{
-		var length int
-		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_utf8s = make([]string, length)
-		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
-		}
-	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _utf8s, _goerr
-}
-
-// Info looks for a file at the specified @path in the resource and if found
-// returns information about it.
-//
-// @lookup_flags controls the behaviour of the lookup.
-func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
-	var _arg0 *C.GResource           // out
-	var _arg1 *C.char                // out
-	var _arg2 C.GResourceLookupFlags // out
-
-	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _arg3 C.gsize   // in
-	var _arg4 C.guint32 // in
-	var _cerr *C.GError // in
-
-	C.g_resource_get_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
-
-	var _size uint    // out
-	var _flags uint32 // out
-	var _goerr error  // out
-
-	_size = (uint)(_arg3)
-	_flags = (uint32)(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _size, _flags, _goerr
 }
 
 // Unref: atomically decrements the reference count of @resource by one. If the

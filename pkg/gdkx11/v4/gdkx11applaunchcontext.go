@@ -3,15 +3,16 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-x11 gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4 gtk4-x11
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/x11/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -24,7 +25,7 @@ type X11AppLaunchContext interface {
 	gdk.AppLaunchContext
 }
 
-// x11AppLaunchContext implements the X11AppLaunchContext interface.
+// x11AppLaunchContext implements the X11AppLaunchContext class.
 type x11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }
@@ -34,7 +35,7 @@ var _ X11AppLaunchContext = (*x11AppLaunchContext)(nil)
 // WrapX11AppLaunchContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContext {
-	return X11AppLaunchContext{
+	return x11AppLaunchContext{
 		gdk.AppLaunchContext: gdk.WrapAppLaunchContext(obj),
 	}
 }

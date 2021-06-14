@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -14,8 +16,34 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_event_controller_scroll_flags_get_type()), F: marshalEventControllerScrollFlags},
 		{T: externglib.Type(C.gtk_event_controller_scroll_get_type()), F: marshalEventControllerScroll},
 	})
+}
+
+// EventControllerScrollFlags describes the behavior of a
+// `GtkEventControllerScroll`.
+type EventControllerScrollFlags int
+
+const (
+	// EventControllerScrollFlagsNone: don't emit scroll.
+	EventControllerScrollFlagsNone EventControllerScrollFlags = 0
+	// EventControllerScrollFlagsVertical: emit scroll with vertical deltas.
+	EventControllerScrollFlagsVertical EventControllerScrollFlags = 1
+	// EventControllerScrollFlagsHorizontal: emit scroll with horizontal deltas.
+	EventControllerScrollFlagsHorizontal EventControllerScrollFlags = 2
+	// EventControllerScrollFlagsDiscrete: only emit deltas that are multiples
+	// of 1.
+	EventControllerScrollFlagsDiscrete EventControllerScrollFlags = 4
+	// EventControllerScrollFlagsKinetic: emit ::decelerate after continuous
+	// scroll finishes.
+	EventControllerScrollFlagsKinetic EventControllerScrollFlags = 8
+	// EventControllerScrollFlagsBothAxes: emit scroll on both axes.
+	EventControllerScrollFlagsBothAxes EventControllerScrollFlags = 3
+)
+
+func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
+	return EventControllerScrollFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // EventControllerScroll: `GtkEventControllerScroll` is an event controller that
@@ -60,7 +88,7 @@ type EventControllerScroll interface {
 	SetFlags(flags EventControllerScrollFlags)
 }
 
-// eventControllerScroll implements the EventControllerScroll interface.
+// eventControllerScroll implements the EventControllerScroll class.
 type eventControllerScroll struct {
 	EventController
 }
@@ -70,7 +98,7 @@ var _ EventControllerScroll = (*eventControllerScroll)(nil)
 // WrapEventControllerScroll wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
-	return EventControllerScroll{
+	return eventControllerScroll{
 		EventController: WrapEventController(obj),
 	}
 }

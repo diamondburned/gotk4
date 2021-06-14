@@ -5,16 +5,14 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -38,34 +36,9 @@ type ContentProvider interface {
 
 	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
-	// Value gets the contents of @provider stored in @value.
-	//
-	// The @value will have been initialized to the `GType` the value should be
-	// provided in. This given `GType` does not need to be listed in the formats
-	// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
-	// given `GType` is not supported, this operation can fail and
-	// IO_ERROR_NOT_SUPPORTED will be reported.
-	Value(value **externglib.Value) error
-	// WriteMIMETypeAsync: asynchronously writes the contents of @provider to
-	// @stream in the given @mime_type.
-	//
-	// When the operation is finished @callback will be called. You must then
-	// call [method@Gdk.ContentProvider.write_mime_type_finish] to get the
-	// result of the operation.
-	//
-	// The given mime type does not need to be listed in the formats returned by
-	// [method@Gdk.ContentProvider.ref_formats]. However, if the given `GType`
-	// is not supported, IO_ERROR_NOT_SUPPORTED will be reported.
-	//
-	// The given @stream will not be closed.
-	WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
-	// WriteMIMETypeFinish finishes an asynchronous write operation.
-	//
-	// See [method@Gdk.ContentProvider.write_mime_type_async].
-	WriteMIMETypeFinish(result gio.AsyncResult) error
 }
 
-// contentProvider implements the ContentProvider interface.
+// contentProvider implements the ContentProvider class.
 type contentProvider struct {
 	gextras.Objector
 }
@@ -75,7 +48,7 @@ var _ ContentProvider = (*contentProvider)(nil)
 // WrapContentProvider wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContentProvider(obj *externglib.Object) ContentProvider {
-	return ContentProvider{
+	return contentProvider{
 		Objector: obj,
 	}
 }
@@ -93,83 +66,4 @@ func (p contentProvider) ContentChanged() {
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
 	C.gdk_content_provider_content_changed(_arg0)
-}
-
-// Value gets the contents of @provider stored in @value.
-//
-// The @value will have been initialized to the `GType` the value should be
-// provided in. This given `GType` does not need to be listed in the formats
-// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
-// given `GType` is not supported, this operation can fail and
-// IO_ERROR_NOT_SUPPORTED will be reported.
-func (p contentProvider) Value(value **externglib.Value) error {
-	var _arg0 *C.GdkContentProvider // out
-	var _arg1 *C.GValue             // out
-
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cerr *C.GError // in
-
-	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// WriteMIMETypeAsync: asynchronously writes the contents of @provider to
-// @stream in the given @mime_type.
-//
-// When the operation is finished @callback will be called. You must then
-// call [method@Gdk.ContentProvider.write_mime_type_finish] to get the
-// result of the operation.
-//
-// The given mime type does not need to be listed in the formats returned by
-// [method@Gdk.ContentProvider.ref_formats]. However, if the given `GType`
-// is not supported, IO_ERROR_NOT_SUPPORTED will be reported.
-//
-// The given @stream will not be closed.
-func (p contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkContentProvider // out
-	var _arg1 *C.char               // out
-	var _arg2 *C.GOutputStream      // out
-	var _arg3 C.int                 // out
-	var _arg4 *C.GCancellable       // out
-	var _arg5 C.GAsyncReadyCallback // out
-	var _arg6 C.gpointer
-
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.char)(C.CString(mimeType))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(box.Assign(callback))
-
-	C.gdk_content_provider_write_mime_type_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-}
-
-// WriteMIMETypeFinish finishes an asynchronous write operation.
-//
-// See [method@Gdk.ContentProvider.write_mime_type_async].
-func (p contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
-	var _arg0 *C.GdkContentProvider // out
-	var _arg1 *C.GAsyncResult       // out
-
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }

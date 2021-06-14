@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -47,7 +49,7 @@ type ColorChooserWidget interface {
 	Orientable
 }
 
-// colorChooserWidget implements the ColorChooserWidget interface.
+// colorChooserWidget implements the ColorChooserWidget class.
 type colorChooserWidget struct {
 	Box
 	Buildable
@@ -60,7 +62,7 @@ var _ ColorChooserWidget = (*colorChooserWidget)(nil)
 // WrapColorChooserWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
-	return ColorChooserWidget{
+	return colorChooserWidget{
 		Box:          WrapBox(obj),
 		Buildable:    WrapBuildable(obj),
 		ColorChooser: WrapColorChooser(obj),

@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -88,7 +88,7 @@ type DropDown interface {
 	SetSelected(position uint)
 }
 
-// dropDown implements the DropDown interface.
+// dropDown implements the DropDown class.
 type dropDown struct {
 	Widget
 	Accessible
@@ -101,7 +101,7 @@ var _ DropDown = (*dropDown)(nil)
 // WrapDropDown wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDropDown(obj *externglib.Object) DropDown {
-	return DropDown{
+	return dropDown{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -127,7 +127,7 @@ func (s dropDown) EnableSearch() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -180,7 +180,7 @@ func (s dropDown) SetEnableSearch(enableSearch bool) {
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	if enableSearch {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_drop_down_set_enable_search(_arg0, _arg1)

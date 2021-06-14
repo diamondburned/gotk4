@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -60,7 +62,7 @@ type GestureSingle interface {
 	SetTouchOnly(touchOnly bool)
 }
 
-// gestureSingle implements the GestureSingle interface.
+// gestureSingle implements the GestureSingle class.
 type gestureSingle struct {
 	Gesture
 }
@@ -70,7 +72,7 @@ var _ GestureSingle = (*gestureSingle)(nil)
 // WrapGestureSingle wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureSingle(obj *externglib.Object) GestureSingle {
-	return GestureSingle{
+	return gestureSingle{
 		Gesture: WrapGesture(obj),
 	}
 }
@@ -130,7 +132,7 @@ func (g gestureSingle) Exclusive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -149,7 +151,7 @@ func (g gestureSingle) TouchOnly() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -178,7 +180,7 @@ func (g gestureSingle) SetExclusive(exclusive bool) {
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 	if exclusive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_gesture_single_set_exclusive(_arg0, _arg1)
@@ -193,7 +195,7 @@ func (g gestureSingle) SetTouchOnly(touchOnly bool) {
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 	if touchOnly {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_gesture_single_set_touch_only(_arg0, _arg1)

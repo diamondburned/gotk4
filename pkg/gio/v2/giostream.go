@@ -3,14 +3,14 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -79,70 +80,13 @@ type IOStream interface {
 
 	// ClearPending clears the pending flag on @stream.
 	ClearPending()
-	// Close closes the stream, releasing resources related to it. This will
-	// also close the individual input and output streams, if they are not
-	// already closed.
-	//
-	// Once the stream is closed, all other operations will return
-	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
-	// error.
-	//
-	// Closing a stream will automatically flush any outstanding buffers in the
-	// stream.
-	//
-	// Streams will be automatically closed when the last reference is dropped,
-	// but you might want to call this function to make sure resources are
-	// released as early as possible.
-	//
-	// Some streams might keep the backing store of the stream (e.g. a file
-	// descriptor) open after the stream is closed. See the documentation for
-	// the individual stream for details.
-	//
-	// On failure the first error that happened will be reported, but the close
-	// operation will finish as much as possible. A stream that failed to close
-	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
-	// important to check and report the error to the user, otherwise there
-	// might be a loss of data as all data might not be written.
-	//
-	// If @cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	// Cancelling a close will still leave the stream closed, but some streams
-	// can use a faster close that doesn't block to e.g. check errors.
-	//
-	// The default implementation of this method just calls close on the
-	// individual input/output streams.
-	Close(cancellable Cancellable) error
-	// CloseAsync requests an asynchronous close of the stream, releasing
-	// resources related to it. When the operation is finished @callback will be
-	// called. You can then call g_io_stream_close_finish() to get the result of
-	// the operation.
-	//
-	// For behaviour details see g_io_stream_close().
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResult) error
 	// HasPending checks if a stream has pending actions.
 	HasPending() bool
 	// IsClosed checks if a stream is closed.
 	IsClosed() bool
-	// SetPending sets @stream to have actions pending. If the pending flag is
-	// already set or @stream is closed, it will return false and set @error.
-	SetPending() error
-	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
-	// input stream of @stream2, and splice the output stream of @stream2 to the
-	// input stream of @stream1.
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_io_stream_splice_finish() to get the result of the operation.
-	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
-// ioStream implements the IOStream interface.
+// ioStream implements the IOStream class.
 type ioStream struct {
 	gextras.Objector
 }
@@ -152,7 +96,7 @@ var _ IOStream = (*ioStream)(nil)
 // WrapIOStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIOStream(obj *externglib.Object) IOStream {
-	return IOStream{
+	return ioStream{
 		Objector: obj,
 	}
 }
@@ -172,102 +116,6 @@ func (s ioStream) ClearPending() {
 	C.g_io_stream_clear_pending(_arg0)
 }
 
-// Close closes the stream, releasing resources related to it. This will
-// also close the individual input and output streams, if they are not
-// already closed.
-//
-// Once the stream is closed, all other operations will return
-// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
-// error.
-//
-// Closing a stream will automatically flush any outstanding buffers in the
-// stream.
-//
-// Streams will be automatically closed when the last reference is dropped,
-// but you might want to call this function to make sure resources are
-// released as early as possible.
-//
-// Some streams might keep the backing store of the stream (e.g. a file
-// descriptor) open after the stream is closed. See the documentation for
-// the individual stream for details.
-//
-// On failure the first error that happened will be reported, but the close
-// operation will finish as much as possible. A stream that failed to close
-// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
-// important to check and report the error to the user, otherwise there
-// might be a loss of data as all data might not be written.
-//
-// If @cancellable is not NULL, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-// Cancelling a close will still leave the stream closed, but some streams
-// can use a faster close that doesn't block to e.g. check errors.
-//
-// The default implementation of this method just calls close on the
-// individual input/output streams.
-func (s ioStream) Close(cancellable Cancellable) error {
-	var _arg0 *C.GIOStream    // out
-	var _arg1 *C.GCancellable // out
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_io_stream_close(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// CloseAsync requests an asynchronous close of the stream, releasing
-// resources related to it. When the operation is finished @callback will be
-// called. You can then call g_io_stream_close_finish() to get the result of
-// the operation.
-//
-// For behaviour details see g_io_stream_close().
-//
-// The asynchronous methods have a default fallback that uses threads to
-// implement asynchronicity, so they are optional for inheriting classes.
-// However, if you override one you must override all.
-func (s ioStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GIOStream          // out
-	var _arg1 C.int                 // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_io_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// CloseFinish closes a stream.
-func (s ioStream) CloseFinish(result AsyncResult) error {
-	var _arg0 *C.GIOStream    // out
-	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 // HasPending checks if a stream has pending actions.
 func (s ioStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
@@ -280,7 +128,7 @@ func (s ioStream) HasPending() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -299,53 +147,9 @@ func (s ioStream) IsClosed() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// SetPending sets @stream to have actions pending. If the pending flag is
-// already set or @stream is closed, it will return false and set @error.
-func (s ioStream) SetPending() error {
-	var _arg0 *C.GIOStream // out
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_io_stream_set_pending(_arg0, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// SpliceAsync: asynchronously splice the output stream of @stream1 to the
-// input stream of @stream2, and splice the output stream of @stream2 to the
-// input stream of @stream1.
-//
-// When the operation is finished @callback will be called. You can then
-// call g_io_stream_splice_finish() to get the result of the operation.
-func (s ioStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GIOStream           // out
-	var _arg1 *C.GIOStream           // out
-	var _arg2 C.GIOStreamSpliceFlags // out
-	var _arg3 C.int                  // out
-	var _arg4 *C.GCancellable        // out
-	var _arg5 C.GAsyncReadyCallback  // out
-	var _arg6 C.gpointer
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream2.Native()))
-	_arg2 = (C.GIOStreamSpliceFlags)(flags)
-	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(box.Assign(callback))
-
-	C.g_io_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

@@ -5,13 +5,11 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -23,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,
@@ -35,7 +34,7 @@ import "C"
 //
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
-func IOModulesScanAllInDirectory(dirname *string) {
+func IOModulesScanAllInDirectory(dirname string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(dirname))
@@ -55,7 +54,7 @@ func IOModulesScanAllInDirectory(dirname *string) {
 //
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
-func IOModulesScanAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) {
+func IOModulesScanAllInDirectoryWithScope(dirname string, scope *IOModuleScope) {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GIOModuleScope // out
 
@@ -83,11 +82,6 @@ func WrapIOModuleScope(ptr unsafe.Pointer) *IOModuleScope {
 	}
 
 	return (*IOModuleScope)(ptr)
-}
-
-func marshalIOModuleScope(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIOModuleScope(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

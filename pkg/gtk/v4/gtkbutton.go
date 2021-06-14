@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -99,7 +99,7 @@ type Button interface {
 	SetUseUnderline(useUnderline bool)
 }
 
-// button implements the Button interface.
+// button implements the Button class.
 type button struct {
 	Widget
 	Accessible
@@ -113,7 +113,7 @@ var _ Button = (*button)(nil)
 // WrapButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapButton(obj *externglib.Object) Button {
-	return Button{
+	return button{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Actionable:       WrapActionable(obj),
@@ -140,7 +140,7 @@ func (b button) HasFrame() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -203,7 +203,7 @@ func (b button) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -230,7 +230,7 @@ func (b button) SetHasFrame(hasFrame bool) {
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if hasFrame {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_button_set_has_frame(_arg0, _arg1)
@@ -275,7 +275,7 @@ func (b button) SetUseUnderline(useUnderline bool) {
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if useUnderline {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_button_set_use_underline(_arg0, _arg1)

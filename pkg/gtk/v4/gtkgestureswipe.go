@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -40,7 +42,7 @@ type GestureSwipe interface {
 	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
-// gestureSwipe implements the GestureSwipe interface.
+// gestureSwipe implements the GestureSwipe class.
 type gestureSwipe struct {
 	GestureSingle
 }
@@ -50,7 +52,7 @@ var _ GestureSwipe = (*gestureSwipe)(nil)
 // WrapGestureSwipe wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureSwipe(obj *externglib.Object) GestureSwipe {
-	return GestureSwipe{
+	return gestureSwipe{
 		GestureSingle: WrapGestureSingle(obj),
 	}
 }
@@ -83,7 +85,7 @@ func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool)
 
 	_velocityX = (float64)(_arg1)
 	_velocityY = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

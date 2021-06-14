@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -14,8 +17,53 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_sorter_change_get_type()), F: marshalSorterChange},
+		{T: externglib.Type(C.gtk_sorter_order_get_type()), F: marshalSorterOrder},
 		{T: externglib.Type(C.gtk_sorter_get_type()), F: marshalSorter},
 	})
+}
+
+// SorterChange describes changes in a sorter in more detail and allows users to
+// optimize resorting.
+type SorterChange int
+
+const (
+	// SorterChangeDifferent: the sorter change cannot be described by any of
+	// the other enumeration values
+	SorterChangeDifferent SorterChange = 0
+	// SorterChangeInverted: the sort order was inverted. Comparisons that
+	// returned GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice
+	// versa. Other comparisons return the same values as before.
+	SorterChangeInverted SorterChange = 1
+	// SorterChangeLessStrict: the sorter is less strict: Comparisons may now
+	// return GTK_ORDERING_EQUAL that did not do so before.
+	SorterChangeLessStrict SorterChange = 2
+	// SorterChangeMoreStrict: the sorter is more strict: Comparisons that did
+	// return GTK_ORDERING_EQUAL may not do so anymore.
+	SorterChangeMoreStrict SorterChange = 3
+)
+
+func marshalSorterChange(p uintptr) (interface{}, error) {
+	return SorterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SorterOrder describes the type of order that a `GtkSorter` may produce.
+type SorterOrder int
+
+const (
+	// SorterOrderPartial: a partial order. Any Ordering is possible.
+	SorterOrderPartial SorterOrder = 0
+	// SorterOrderNone: no order, all elements are considered equal.
+	// gtk_sorter_compare() will only return GTK_ORDERING_EQUAL.
+	SorterOrderNone SorterOrder = 1
+	// SorterOrderTotal: a total order. gtk_sorter_compare() will only return
+	// GTK_ORDERING_EQUAL if an item is compared with itself. Two different
+	// items will never cause this value to be returned.
+	SorterOrderTotal SorterOrder = 2
+)
+
+func marshalSorterOrder(p uintptr) (interface{}, error) {
+	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Sorter: `GtkSorter` is an object to describe sorting criteria.
@@ -55,7 +103,7 @@ type Sorter interface {
 	Changed(change SorterChange)
 }
 
-// sorter implements the Sorter interface.
+// sorter implements the Sorter class.
 type sorter struct {
 	gextras.Objector
 }
@@ -65,7 +113,7 @@ var _ Sorter = (*sorter)(nil)
 // WrapSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSorter(obj *externglib.Object) Sorter {
-	return Sorter{
+	return sorter{
 		Objector: obj,
 	}
 }

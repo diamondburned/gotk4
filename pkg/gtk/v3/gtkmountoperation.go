@@ -3,12 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -37,7 +39,7 @@ type MountOperation interface {
 	SetScreen(screen gdk.Screen)
 }
 
-// mountOperation implements the MountOperation interface.
+// mountOperation implements the MountOperation class.
 type mountOperation struct {
 	gio.MountOperation
 }
@@ -47,7 +49,7 @@ var _ MountOperation = (*mountOperation)(nil)
 // WrapMountOperation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMountOperation(obj *externglib.Object) MountOperation {
-	return MountOperation{
+	return mountOperation{
 		gio.MountOperation: gio.WrapMountOperation(obj),
 	}
 }
@@ -71,7 +73,7 @@ func (o mountOperation) IsShowing() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

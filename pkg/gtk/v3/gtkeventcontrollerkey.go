@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -34,7 +36,7 @@ type EventControllerKey interface {
 	SetImContext(imContext IMContext)
 }
 
-// eventControllerKey implements the EventControllerKey interface.
+// eventControllerKey implements the EventControllerKey class.
 type eventControllerKey struct {
 	EventController
 }
@@ -44,7 +46,7 @@ var _ EventControllerKey = (*eventControllerKey)(nil)
 // WrapEventControllerKey wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerKey(obj *externglib.Object) EventControllerKey {
-	return EventControllerKey{
+	return eventControllerKey{
 		EventController: WrapEventController(obj),
 	}
 }
@@ -68,7 +70,7 @@ func (c eventControllerKey) Forward(widget Widget) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

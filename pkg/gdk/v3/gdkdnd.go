@@ -2,10 +2,96 @@
 
 package gdk
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: gdk-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
+		{T: externglib.Type(C.gdk_drag_protocol_get_type()), F: marshalDragProtocol},
+		{T: externglib.Type(C.gdk_drag_action_get_type()), F: marshalDragAction},
+	})
+}
+
+// DragCancelReason: used in DragContext to the reason of a cancelled DND
+// operation.
+type DragCancelReason int
+
+const (
+	// DragCancelReasonNoTarget: there is no suitable drop target.
+	DragCancelReasonNoTarget DragCancelReason = 0
+	// DragCancelReasonUserCancelled: drag cancelled by the user
+	DragCancelReasonUserCancelled DragCancelReason = 1
+	// DragCancelReasonError: unspecified error.
+	DragCancelReasonError DragCancelReason = 2
+)
+
+func marshalDragCancelReason(p uintptr) (interface{}, error) {
+	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DragProtocol: used in DragContext to indicate the protocol according to which
+// DND is done.
+type DragProtocol int
+
+const (
+	// DragProtocolNone: no protocol.
+	DragProtocolNone DragProtocol = 0
+	// DragProtocolMotif: the Motif DND protocol. No longer supported
+	DragProtocolMotif DragProtocol = 1
+	// DragProtocolXdnd: the Xdnd protocol.
+	DragProtocolXdnd DragProtocol = 2
+	// DragProtocolRootwin: an extension to the Xdnd protocol for unclaimed root
+	// window drops.
+	DragProtocolRootwin DragProtocol = 3
+	// DragProtocolWin32Dropfiles: the simple WM_DROPFILES protocol.
+	DragProtocolWin32Dropfiles DragProtocol = 4
+	// DragProtocolOle2: the complex OLE2 DND protocol (not implemented).
+	DragProtocolOle2 DragProtocol = 5
+	// DragProtocolLocal: intra-application DND.
+	DragProtocolLocal DragProtocol = 6
+	// DragProtocolWayland: wayland DND protocol.
+	DragProtocolWayland DragProtocol = 7
+)
+
+func marshalDragProtocol(p uintptr) (interface{}, error) {
+	return DragProtocol(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DragAction: used in DragContext to indicate what the destination should do
+// with the dropped data.
+type DragAction int
+
+const (
+	// DragActionDefault means nothing, and should not be used.
+	DragActionDefault DragAction = 1
+	// DragActionCopy: copy the data.
+	DragActionCopy DragAction = 2
+	// DragActionMove: move the data, i.e. first copy it, then delete it from
+	// the source using the DELETE target of the X selection protocol.
+	DragActionMove DragAction = 4
+	// DragActionLink: add a link to the data. Note that this is only useful if
+	// source and destination agree on what it means.
+	DragActionLink DragAction = 8
+	// DragActionPrivate: special action which tells the source that the
+	// destination will do something that the source doesn’t understand.
+	DragActionPrivate DragAction = 16
+	// DragActionAsk: ask the user what to do with the data.
+	DragActionAsk DragAction = 32
+)
+
+func marshalDragAction(p uintptr) (interface{}, error) {
+	return DragAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 // DragAbort aborts a drag without dropping.
 //
@@ -54,7 +140,7 @@ func DragDropDone(context DragContext, success bool) {
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if success {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gdk_drag_drop_done(_arg1, _arg2)
@@ -74,7 +160,7 @@ func DragDropSucceeded(context DragContext) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -113,7 +199,7 @@ func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, x
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -146,7 +232,7 @@ func DropFinish(context DragContext, success bool, time_ uint32) {
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if success {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	_arg3 = C.guint32(time_)
 
@@ -164,7 +250,7 @@ func DropReply(context DragContext, accepted bool, time_ uint32) {
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if accepted {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	_arg3 = C.guint32(time_)
 

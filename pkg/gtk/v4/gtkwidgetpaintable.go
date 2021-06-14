@@ -3,11 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -47,7 +50,7 @@ type WidgetPaintable interface {
 	SetWidget(widget Widget)
 }
 
-// widgetPaintable implements the WidgetPaintable interface.
+// widgetPaintable implements the WidgetPaintable class.
 type widgetPaintable struct {
 	gextras.Objector
 	gdk.Paintable
@@ -58,7 +61,7 @@ var _ WidgetPaintable = (*widgetPaintable)(nil)
 // WrapWidgetPaintable wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
-	return WidgetPaintable{
+	return widgetPaintable{
 		Objector:      obj,
 		gdk.Paintable: gdk.WrapPaintable(obj),
 	}

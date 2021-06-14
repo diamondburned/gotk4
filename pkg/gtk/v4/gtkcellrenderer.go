@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -17,8 +18,54 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_cell_renderer_mode_get_type()), F: marshalCellRendererMode},
+		{T: externglib.Type(C.gtk_cell_renderer_state_get_type()), F: marshalCellRendererState},
 		{T: externglib.Type(C.gtk_cell_renderer_get_type()), F: marshalCellRenderer},
 	})
+}
+
+// CellRendererMode identifies how the user can interact with a particular cell.
+type CellRendererMode int
+
+const (
+	// CellRendererModeInert: the cell is just for display and cannot be
+	// interacted with. Note that this doesn’t mean that eg. the row being drawn
+	// can’t be selected -- just that a particular element of it cannot be
+	// individually modified.
+	CellRendererModeInert CellRendererMode = 0
+	// CellRendererModeActivatable: the cell can be clicked.
+	CellRendererModeActivatable CellRendererMode = 1
+	// CellRendererModeEditable: the cell can be edited or otherwise modified.
+	CellRendererModeEditable CellRendererMode = 2
+)
+
+func marshalCellRendererMode(p uintptr) (interface{}, error) {
+	return CellRendererMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// CellRendererState tells how a cell is to be rendered.
+type CellRendererState int
+
+const (
+	// CellRendererStateSelected: the cell is currently selected, and probably
+	// has a selection colored background to render to.
+	CellRendererStateSelected CellRendererState = 1
+	// CellRendererStatePrelit: the mouse is hovering over the cell.
+	CellRendererStatePrelit CellRendererState = 2
+	// CellRendererStateInsensitive: the cell is drawn in an insensitive manner
+	CellRendererStateInsensitive CellRendererState = 4
+	// CellRendererStateSorted: the cell is in a sorted row
+	CellRendererStateSorted CellRendererState = 8
+	// CellRendererStateFocused: the cell is in the focus row.
+	CellRendererStateFocused CellRendererState = 16
+	// CellRendererStateExpandable: the cell is in a row that can be expanded
+	CellRendererStateExpandable CellRendererState = 32
+	// CellRendererStateExpanded: the cell is in a row that is expanded
+	CellRendererStateExpanded CellRendererState = 64
+)
+
+func marshalCellRendererState(p uintptr) (interface{}, error) {
+	return CellRendererState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // CellRenderer: an object for rendering a single cell
@@ -130,7 +177,7 @@ type CellRenderer interface {
 	StopEditing(canceled bool)
 }
 
-// cellRenderer implements the CellRenderer interface.
+// cellRenderer implements the CellRenderer class.
 type cellRenderer struct {
 	gextras.Objector
 }
@@ -140,7 +187,7 @@ var _ CellRenderer = (*cellRenderer)(nil)
 // WrapCellRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRenderer(obj *externglib.Object) CellRenderer {
-	return CellRenderer{
+	return cellRenderer{
 		Objector: obj,
 	}
 }
@@ -178,7 +225,7 @@ func (c cellRenderer) Activate(event gdk.Event, widget Widget, path string, back
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -258,7 +305,7 @@ func (c cellRenderer) IsExpanded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -277,7 +324,7 @@ func (c cellRenderer) IsExpander() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -429,7 +476,7 @@ func (c cellRenderer) Sensitive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -448,7 +495,7 @@ func (c cellRenderer) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -468,7 +515,7 @@ func (c cellRenderer) IsActivatable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -509,7 +556,7 @@ func (c cellRenderer) SetIsExpanded(isExpanded bool) {
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	if isExpanded {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_cell_renderer_set_is_expanded(_arg0, _arg1)
@@ -522,7 +569,7 @@ func (c cellRenderer) SetIsExpander(isExpander bool) {
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	if isExpander {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_cell_renderer_set_is_expander(_arg0, _arg1)
@@ -548,7 +595,7 @@ func (c cellRenderer) SetSensitive(sensitive bool) {
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	if sensitive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_cell_renderer_set_sensitive(_arg0, _arg1)
@@ -561,7 +608,7 @@ func (c cellRenderer) SetVisible(visible bool) {
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	if visible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
@@ -604,7 +651,7 @@ func (c cellRenderer) StopEditing(canceled bool) {
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	if canceled {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_cell_renderer_stop_editing(_arg0, _arg1)

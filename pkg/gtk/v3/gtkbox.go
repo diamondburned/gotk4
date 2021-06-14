@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -113,7 +115,7 @@ type Box interface {
 	SetSpacing(spacing int)
 }
 
-// box implements the Box interface.
+// box implements the Box class.
 type box struct {
 	Container
 	Buildable
@@ -125,7 +127,7 @@ var _ Box = (*box)(nil)
 // WrapBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBox(obj *externglib.Object) Box {
-	return Box{
+	return box{
 		Container:  WrapContainer(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -151,7 +153,7 @@ func (b box) Homogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -188,10 +190,10 @@ func (b box) PackEnd(child Widget, expand bool, fill bool, padding uint) {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if expand {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if fill {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	_arg4 = C.guint(padding)
 
@@ -211,10 +213,10 @@ func (b box) PackStart(child Widget, expand bool, fill bool, padding uint) {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if expand {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if fill {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	_arg4 = C.guint(padding)
 
@@ -282,10 +284,10 @@ func (b box) SetChildPacking(child Widget, expand bool, fill bool, padding uint,
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if expand {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if fill {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	_arg4 = C.guint(padding)
 	_arg5 = (C.GtkPackType)(packType)
@@ -301,7 +303,7 @@ func (b box) SetHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_box_set_homogeneous(_arg0, _arg1)

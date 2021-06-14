@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -27,7 +29,7 @@ type EventControllerLegacy interface {
 	EventController
 }
 
-// eventControllerLegacy implements the EventControllerLegacy interface.
+// eventControllerLegacy implements the EventControllerLegacy class.
 type eventControllerLegacy struct {
 	EventController
 }
@@ -37,7 +39,7 @@ var _ EventControllerLegacy = (*eventControllerLegacy)(nil)
 // WrapEventControllerLegacy wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacy {
-	return EventControllerLegacy{
+	return eventControllerLegacy{
 		EventController: WrapEventController(obj),
 	}
 }

@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -435,7 +435,7 @@ type Window interface {
 	Unminimize()
 }
 
-// window implements the Window interface.
+// window implements the Window class.
 type window struct {
 	Widget
 	Accessible
@@ -451,7 +451,7 @@ var _ Window = (*window)(nil)
 // WrapWindow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindow(obj *externglib.Object) Window {
-	return Window{
+	return window{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -541,7 +541,7 @@ func (w window) Decorated() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -584,7 +584,7 @@ func (w window) Deletable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -604,7 +604,7 @@ func (w window) DestroyWithParent() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -623,7 +623,7 @@ func (w window) FocusVisible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -643,7 +643,7 @@ func (w window) HandleMenubarAccel() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -663,7 +663,7 @@ func (w window) HideOnClose() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -699,7 +699,7 @@ func (w window) MnemonicsVisible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -718,7 +718,7 @@ func (w window) Modal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -737,7 +737,7 @@ func (w window) Resizable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -773,7 +773,7 @@ func (w window) HasGroup() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -799,7 +799,7 @@ func (w window) IsActive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -827,7 +827,7 @@ func (w window) IsFullscreen() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -855,7 +855,7 @@ func (w window) IsMaximized() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -999,7 +999,7 @@ func (w window) SetDecorated(setting bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_decorated(_arg0, _arg1)
@@ -1073,7 +1073,7 @@ func (w window) SetDeletable(setting bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_deletable(_arg0, _arg1)
@@ -1090,7 +1090,7 @@ func (w window) SetDestroyWithParent(setting bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_destroy_with_parent(_arg0, _arg1)
@@ -1135,7 +1135,7 @@ func (w window) SetFocusVisible(setting bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_focus_visible(_arg0, _arg1)
@@ -1149,7 +1149,7 @@ func (w window) SetHandleMenubarAccel(handleMenubarAccel bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if handleMenubarAccel {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_handle_menubar_accel(_arg0, _arg1)
@@ -1163,7 +1163,7 @@ func (w window) SetHideOnClose(setting bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_hide_on_close(_arg0, _arg1)
@@ -1194,7 +1194,7 @@ func (w window) SetMnemonicsVisible(setting bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_mnemonics_visible(_arg0, _arg1)
@@ -1213,7 +1213,7 @@ func (w window) SetModal(modal bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if modal {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_modal(_arg0, _arg1)
@@ -1228,7 +1228,7 @@ func (w window) SetResizable(resizable bool) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if resizable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_window_set_resizable(_arg0, _arg1)

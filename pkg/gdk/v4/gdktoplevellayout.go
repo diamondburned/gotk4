@@ -8,10 +8,10 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -66,7 +66,7 @@ func (l *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -92,7 +92,7 @@ func (l *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	if _arg1 {
 		_fullscreen = true
 	}
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -118,7 +118,7 @@ func (l *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	if _arg1 {
 		_maximized = true
 	}
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -138,7 +138,7 @@ func (l *ToplevelLayout) Resizable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -154,7 +154,7 @@ func (l *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitor) {
 
 	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 	if fullscreen {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 	_arg2 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
@@ -169,7 +169,7 @@ func (l *ToplevelLayout) SetMaximized(maximized bool) {
 
 	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 	if maximized {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_toplevel_layout_set_maximized(_arg0, _arg1)
@@ -183,7 +183,7 @@ func (l *ToplevelLayout) SetResizable(resizable bool) {
 
 	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 	if resizable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_toplevel_layout_set_resizable(_arg0, _arg1)

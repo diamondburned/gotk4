@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -133,7 +135,7 @@ type InfoBar interface {
 	SetShowCloseButton(setting bool)
 }
 
-// infoBar implements the InfoBar interface.
+// infoBar implements the InfoBar class.
 type infoBar struct {
 	Box
 	Buildable
@@ -145,7 +147,7 @@ var _ InfoBar = (*infoBar)(nil)
 // WrapInfoBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInfoBar(obj *externglib.Object) InfoBar {
-	return InfoBar{
+	return infoBar{
 		Box:        WrapBox(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -185,7 +187,7 @@ func (i infoBar) Revealed() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -205,7 +207,7 @@ func (i infoBar) ShowCloseButton() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -263,7 +265,7 @@ func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = C.gint(responseId)
 	if setting {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_info_bar_set_response_sensitive(_arg0, _arg1, _arg2)
@@ -280,7 +282,7 @@ func (i infoBar) SetRevealed(revealed bool) {
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	if revealed {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_info_bar_set_revealed(_arg0, _arg1)
@@ -294,7 +296,7 @@ func (i infoBar) SetShowCloseButton(setting bool) {
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)

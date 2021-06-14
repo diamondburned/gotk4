@@ -4,15 +4,10 @@ package gio
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,27 +20,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
-
-// BusGet: asynchronously connects to the message bus specified by @bus_type.
-//
-// When the operation is finished, @callback will be invoked. You can then call
-// g_bus_get_finish() to get the result of the operation.
-//
-// This is an asynchronous failable function. See g_bus_get_sync() for the
-// synchronous version.
-func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg1 C.GBusType            // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg1 = (C.GBusType)(busType)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_bus_get(_arg1, _arg2, _arg3, _arg4)
-}
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls
 // for a D-Bus interface.
@@ -99,11 +73,6 @@ func WrapDBusInterfaceVTable(ptr unsafe.Pointer) *DBusInterfaceVTable {
 	return (*DBusInterfaceVTable)(ptr)
 }
 
-func marshalDBusInterfaceVTable(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusInterfaceVTable(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (d *DBusInterfaceVTable) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
@@ -123,11 +92,6 @@ func WrapDBusSubtreeVTable(ptr unsafe.Pointer) *DBusSubtreeVTable {
 	}
 
 	return (*DBusSubtreeVTable)(ptr)
-}
-
-func marshalDBusSubtreeVTable(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusSubtreeVTable(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

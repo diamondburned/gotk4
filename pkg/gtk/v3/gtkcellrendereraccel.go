@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -16,8 +18,26 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
 		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAccel},
 	})
+}
+
+// CellRendererAccelMode determines if the edited accelerators are GTK+
+// accelerators. If they are, consumed modifiers are suppressed, only
+// accelerators accepted by GTK+ are allowed, and the accelerators are rendered
+// in the same way as they are in menus.
+type CellRendererAccelMode int
+
+const (
+	// CellRendererAccelModeGTK: GTK+ accelerators mode
+	CellRendererAccelModeGTK CellRendererAccelMode = 0
+	// CellRendererAccelModeOther: other accelerator mode
+	CellRendererAccelModeOther CellRendererAccelMode = 1
+)
+
+func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
+	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
@@ -29,7 +49,7 @@ type CellRendererAccel interface {
 	CellRendererText
 }
 
-// cellRendererAccel implements the CellRendererAccel interface.
+// cellRendererAccel implements the CellRendererAccel class.
 type cellRendererAccel struct {
 	CellRendererText
 }
@@ -39,7 +59,7 @@ var _ CellRendererAccel = (*cellRendererAccel)(nil)
 // WrapCellRendererAccel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
-	return CellRendererAccel{
+	return cellRendererAccel{
 		CellRendererText: WrapCellRendererText(obj),
 	}
 }

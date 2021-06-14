@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -33,7 +35,7 @@ type HScale interface {
 	Orientable
 }
 
-// hScale implements the HScale interface.
+// hScale implements the HScale class.
 type hScale struct {
 	Scale
 	Buildable
@@ -45,7 +47,7 @@ var _ HScale = (*hScale)(nil)
 // WrapHScale wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapHScale(obj *externglib.Object) HScale {
-	return HScale{
+	return hScale{
 		Scale:      WrapScale(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),

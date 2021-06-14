@@ -31,6 +31,10 @@ func init() {
 	if output == "" {
 		log.Fatalln("Missing -o output directory.")
 	}
+
+	if !verbose {
+		verbose = os.Getenv("GIR_VERBOSE") == "1"
+	}
 }
 
 type Package struct {
@@ -72,6 +76,7 @@ func main() {
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
 	gen := girgen.NewGenerator(repos, modulePath)
+	gen.Color = true
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
 	gen.AddFilters(filters)
 

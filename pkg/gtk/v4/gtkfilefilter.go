@@ -5,10 +5,210 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_file_filter_get_type()), F: marshalFileFilter},
+	})
+}
+
+// FileFilter: `GtkFileFilter` filters files by name or mime type.
+//
+// `GtkFileFilter` can be used to restrict the files being shown in a
+// `GtkFileChooser`. Files can be filtered based on their name (with
+// [method@Gtk.FileFilter.add_pattern]) or on their mime type (with
+// [method@Gtk.FileFilter.add_mime_type]).
+//
+// Filtering by mime types handles aliasing and subclassing of mime types; e.g.
+// a filter for text/plain also matches a file with mime type application/rtf,
+// since application/rtf is a subclass of text/plain. Note that `GtkFileFilter`
+// allows wildcards for the subtype of a mime type, so you can e.g. filter for
+// image/\*.
+//
+// Normally, file filters are used by adding them to a `GtkFileChooser` (see
+// [method@Gtk.FileChooser.add_filter]), but it is also possible to manually use
+// a file filter on any [class@Gtk.FilterListModel] containing `GFileInfo`
+// objects.
+//
+//
+// GtkFileFilter as GtkBuildable
+//
+// The `GtkFileFilter` implementation of the `GtkBuildable` interface supports
+// adding rules using the <mime-types> and <patterns> elements and listing the
+// rules within. Specifying a <mime-type> or <pattern> has the same effect as as
+// calling [method@Gtk.FileFilter.add_mime_type] or
+// [method@Gtk.FileFilter.add_pattern].
+//
+// An example of a UI definition fragment specifying `GtkFileFilter` rules:
+// “`xml <object class="GtkFileFilter"> <property name="name"
+// translatable="yes">Text and Images</property> <mime-types>
+// <mime-type>text/plain</mime-type> <mime-type>image/ *</mime-type>
+// </mime-types> <patterns> <pattern>*.txt</pattern> <pattern>*.png</pattern>
+// </patterns> </object> “`
+type FileFilter interface {
+	Filter
+	Buildable
+
+	// AddMIMEType adds a rule allowing a given mime type to @filter.
+	AddMIMEType(mimeType string)
+	// AddPattern adds a rule allowing a shell style glob to a filter.
+	AddPattern(pattern string)
+	// AddPixbufFormats adds a rule allowing image files in the formats
+	// supported by GdkPixbuf.
+	//
+	// This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for
+	// all the supported mime types.
+	AddPixbufFormats()
+	// Attributes gets the attributes that need to be filled in for the
+	// `GFileInfo` passed to this filter.
+	//
+	// This function will not typically be used by applications; it is intended
+	// principally for use in the implementation of `GtkFileChooser`.
+	Attributes() []string
+	// Name gets the human-readable name for the filter.
+	//
+	// See [method@Gtk.FileFilter.set_name].
+	Name() string
+	// SetName sets a human-readable name of the filter.
+	//
+	// This is the string that will be displayed in the file chooser if there is
+	// a selectable list of filters.
+	SetName(name string)
+}
+
+// fileFilter implements the FileFilter class.
+type fileFilter struct {
+	Filter
+	Buildable
+}
+
+var _ FileFilter = (*fileFilter)(nil)
+
+// WrapFileFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileFilter(obj *externglib.Object) FileFilter {
+	return fileFilter{
+		Filter:    WrapFilter(obj),
+		Buildable: WrapBuildable(obj),
+	}
+}
+
+func marshalFileFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapFileFilter(obj), nil
+}
+
+// AddMIMEType adds a rule allowing a given mime type to @filter.
+func (f fileFilter) AddMIMEType(mimeType string) {
+	var _arg0 *C.GtkFileFilter // out
+	var _arg1 *C.char          // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(mimeType))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
+}
+
+// AddPattern adds a rule allowing a shell style glob to a filter.
+func (f fileFilter) AddPattern(pattern string) {
+	var _arg0 *C.GtkFileFilter // out
+	var _arg1 *C.char          // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(pattern))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_file_filter_add_pattern(_arg0, _arg1)
+}
+
+// AddPixbufFormats adds a rule allowing image files in the formats
+// supported by GdkPixbuf.
+//
+// This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for
+// all the supported mime types.
+func (f fileFilter) AddPixbufFormats() {
+	var _arg0 *C.GtkFileFilter // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+
+	C.gtk_file_filter_add_pixbuf_formats(_arg0)
+}
+
+// Attributes gets the attributes that need to be filled in for the
+// `GFileInfo` passed to this filter.
+//
+// This function will not typically be used by applications; it is intended
+// principally for use in the implementation of `GtkFileChooser`.
+func (f fileFilter) Attributes() []string {
+	var _arg0 *C.GtkFileFilter // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+
+	var _cret **C.char
+
+	_cret = C.gtk_file_filter_get_attributes(_arg0)
+
+	var _utf8s []string
+
+	{
+		var length int
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_cret, length)
+		_utf8s = make([]string, length)
+		for i := range src {
+			_utf8s[i] = C.GoString(src[i])
+		}
+	}
+
+	return _utf8s
+}
+
+// Name gets the human-readable name for the filter.
+//
+// See [method@Gtk.FileFilter.set_name].
+func (f fileFilter) Name() string {
+	var _arg0 *C.GtkFileFilter // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+
+	var _cret *C.char // in
+
+	_cret = C.gtk_file_filter_get_name(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}
+
+// SetName sets a human-readable name of the filter.
+//
+// This is the string that will be displayed in the file chooser if there is
+// a selectable list of filters.
+func (f fileFilter) SetName(name string) {
+	var _arg0 *C.GtkFileFilter // out
+	var _arg1 *C.char          // out
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_file_filter_set_name(_arg0, _arg1)
+}

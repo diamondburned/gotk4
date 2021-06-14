@@ -5,11 +5,583 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_icon_theme_error_get_type()), F: marshalIconThemeError},
+		{T: externglib.Type(C.gtk_icon_lookup_flags_get_type()), F: marshalIconLookupFlags},
+		{T: externglib.Type(C.gtk_icon_paintable_get_type()), F: marshalIconPaintable},
+		{T: externglib.Type(C.gtk_icon_theme_get_type()), F: marshalIconTheme},
+	})
+}
+
+// IconThemeError: error codes for `GtkIconTheme` operations.
+type IconThemeError int
+
+const (
+	// IconThemeErrorNotFound: the icon specified does not exist in the theme
+	IconThemeErrorNotFound IconThemeError = 0
+	// IconThemeErrorFailed: an unspecified error occurred.
+	IconThemeErrorFailed IconThemeError = 1
+)
+
+func marshalIconThemeError(p uintptr) (interface{}, error) {
+	return IconThemeError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon().
+type IconLookupFlags int
+
+const (
+	// IconLookupFlagsForceRegular: try to always load regular icons, even when
+	// symbolic icon names are given
+	IconLookupFlagsForceRegular IconLookupFlags = 1
+	// IconLookupFlagsForceSymbolic: try to always load symbolic icons, even
+	// when regular icon names are given
+	IconLookupFlagsForceSymbolic IconLookupFlags = 2
+	// IconLookupFlagsPreload starts loading the texture in the background so it
+	// is ready when later needed.
+	IconLookupFlagsPreload IconLookupFlags = 4
+)
+
+func marshalIconLookupFlags(p uintptr) (interface{}, error) {
+	return IconLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// IconPaintable contains information found when looking up an icon in
+// `GtkIconTheme`.
+//
+// `GtkIconPaintable` implements `GdkPaintable`.
+type IconPaintable interface {
+	gextras.Objector
+	gdk.Paintable
+
+	// IconName: get the icon name being used for this icon.
+	//
+	// When an icon looked up in the icon theme was not available, the icon
+	// theme may use fallback icons - either those specified to
+	// gtk_icon_theme_lookup_icon() or the always-available "image-missing". The
+	// icon chosen is returned by this function.
+	//
+	// If the icon was created without an icon theme, this function returns nil.
+	IconName() string
+	// IsSymbolic checks if the icon is symbolic or not.
+	//
+	// This currently uses only the file name and not the file contents for
+	// determining this. This behaviour may change in the future.
+	//
+	// Note that to render a symbolic `GtkIconPaintable` properly (with
+	// recoloring), you have to set its icon name on a `GtkImage`.
+	IsSymbolic() bool
+}
+
+// iconPaintable implements the IconPaintable class.
+type iconPaintable struct {
+	gextras.Objector
+	gdk.Paintable
+}
+
+var _ IconPaintable = (*iconPaintable)(nil)
+
+// WrapIconPaintable wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIconPaintable(obj *externglib.Object) IconPaintable {
+	return iconPaintable{
+		Objector:      obj,
+		gdk.Paintable: gdk.WrapPaintable(obj),
+	}
+}
+
+func marshalIconPaintable(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapIconPaintable(obj), nil
+}
+
+// IconName: get the icon name being used for this icon.
+//
+// When an icon looked up in the icon theme was not available, the icon
+// theme may use fallback icons - either those specified to
+// gtk_icon_theme_lookup_icon() or the always-available "image-missing". The
+// icon chosen is returned by this function.
+//
+// If the icon was created without an icon theme, this function returns nil.
+func (s iconPaintable) IconName() string {
+	var _arg0 *C.GtkIconPaintable // out
+
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.char // in
+
+	_cret = C.gtk_icon_paintable_get_icon_name(_arg0)
+
+	var _filename string // out
+
+	_filename = C.GoString(_cret)
+
+	return _filename
+}
+
+// IsSymbolic checks if the icon is symbolic or not.
+//
+// This currently uses only the file name and not the file contents for
+// determining this. This behaviour may change in the future.
+//
+// Note that to render a symbolic `GtkIconPaintable` properly (with
+// recoloring), you have to set its icon name on a `GtkImage`.
+func (s iconPaintable) IsSymbolic() bool {
+	var _arg0 *C.GtkIconPaintable // out
+
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_icon_paintable_is_symbolic(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IconTheme: `GtkIconTheme` provides a facility for loading themed icons.
+//
+// The main reason for using a name rather than simply providing a filename is
+// to allow different icons to be used depending on what “icon theme” is
+// selected by the user. The operation of icon themes on Linux and Unix follows
+// the Icon Theme Specification
+// (http://www.freedesktop.org/Standards/icon-theme-spec) There is a fallback
+// icon theme, named `hicolor`, where applications should install their icons,
+// but additional icon themes can be installed as operating system vendors and
+// users choose.
+//
+// In many cases, named themes are used indirectly, via [class@Gtk.Image] rather
+// than directly, but looking up icons directly is also simple. The
+// `GtkIconTheme` object acts as a database of all the icons in the current
+// theme. You can create new `GtkIconTheme` objects, but it’s much more
+// efficient to use the standard icon theme of the `GtkWidget` so that the icon
+// information is shared with other people looking up icons.
+//
+// “`c GtkIconTheme *icon_theme; GtkIconPaintable *icon; GdkPaintable
+// *paintable;
+//
+// icon_theme = gtk_icon_theme_get_for_display (gtk_widget_get_display
+// (my_widget)); icon = gtk_icon_theme_lookup_icon (icon_theme, "my-icon-name",
+// // icon name 48, // icon size 1, // scale 0, // flags); paintable =
+// GDK_PAINTABLE (icon); // Use the paintable g_object_unref (icon); “`
+type IconTheme interface {
+	gextras.Objector
+
+	// AddResourcePath adds a resource path that will be looked at when looking
+	// for icons, similar to search paths.
+	//
+	// See [method@Gtk.IconTheme.set_resource_path].
+	//
+	// This function should be used to make application-specific icons available
+	// as part of the icon theme.
+	AddResourcePath(path string)
+	// AddSearchPath appends a directory to the search path.
+	//
+	// See [method@Gtk.IconTheme.set_search_path].
+	AddSearchPath(path string)
+	// IconNames lists the names of icons in the current icon theme.
+	IconNames() []string
+	// IconSizes returns an array of integers describing the sizes at which the
+	// icon is available without scaling.
+	//
+	// A size of -1 means that the icon is available in a scalable format. The
+	// array is zero-terminated.
+	IconSizes(iconName string) []int
+	// ResourcePath gets the current resource path.
+	//
+	// See [method@Gtk.IconTheme.set_resource_path].
+	ResourcePath() []string
+	// SearchPath gets the current search path.
+	//
+	// See [method@Gtk.IconTheme.set_search_path].
+	SearchPath() []string
+	// ThemeName gets the current icon theme name.
+	//
+	// Returns (transfer full): the current icon theme name,
+	ThemeName() string
+	// HasGIcon checks whether an icon theme includes an icon for a particular
+	// `GIcon`.
+	HasGIcon(gicon gio.Icon) bool
+	// HasIcon checks whether an icon theme includes an icon for a particular
+	// name.
+	HasIcon(iconName string) bool
+	// SetResourcePath sets the resource paths that will be looked at when
+	// looking for icons, similar to search paths.
+	//
+	// The resources are considered as part of the hicolor icon theme and must
+	// be located in subdirectories that are defined in the hicolor icon theme,
+	// such as `@path/16x16/actions/run.png` or
+	// `@path/scalable/actions/run.svg`.
+	//
+	// Icons that are directly placed in the resource path instead of a
+	// subdirectory are also considered as ultimate fallback, but they are
+	// treated like unthemed icons.
+	SetResourcePath(path *string)
+	// SetSearchPath sets the search path for the icon theme object.
+	//
+	// When looking for an icon theme, GTK will search for a subdirectory of one
+	// or more of the directories in @path with the same name as the icon theme
+	// containing an index.theme file. (Themes from multiple of the path
+	// elements are combined to allow themes to be extended by adding icons in
+	// the user’s home directory.)
+	//
+	// In addition if an icon found isn’t found either in the current icon theme
+	// or the default icon theme, and an image file with the right name is found
+	// directly in one of the elements of @path, then that image will be used
+	// for the icon name. (This is legacy feature, and new icons should be put
+	// into the fallback icon theme, which is called hicolor, rather than
+	// directly on the icon path.)
+	SetSearchPath(path []string)
+	// SetThemeName sets the name of the icon theme that the `GtkIconTheme`
+	// object uses overriding system configuration.
+	//
+	// This function cannot be called on the icon theme objects returned from
+	// [type_func@Gtk.IconTheme.get_for_display].
+	SetThemeName(themeName string)
+}
+
+// iconTheme implements the IconTheme class.
+type iconTheme struct {
+	gextras.Objector
+}
+
+var _ IconTheme = (*iconTheme)(nil)
+
+// WrapIconTheme wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIconTheme(obj *externglib.Object) IconTheme {
+	return iconTheme{
+		Objector: obj,
+	}
+}
+
+func marshalIconTheme(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapIconTheme(obj), nil
+}
+
+// AddResourcePath adds a resource path that will be looked at when looking
+// for icons, similar to search paths.
+//
+// See [method@Gtk.IconTheme.set_resource_path].
+//
+// This function should be used to make application-specific icons available
+// as part of the icon theme.
+func (s iconTheme) AddResourcePath(path string) {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_icon_theme_add_resource_path(_arg0, _arg1)
+}
+
+// AddSearchPath appends a directory to the search path.
+//
+// See [method@Gtk.IconTheme.set_search_path].
+func (s iconTheme) AddSearchPath(path string) {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_icon_theme_add_search_path(_arg0, _arg1)
+}
+
+// IconNames lists the names of icons in the current icon theme.
+func (s iconTheme) IconNames() []string {
+	var _arg0 *C.GtkIconTheme // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+
+	var _cret **C.char
+
+	_cret = C.gtk_icon_theme_get_icon_names(_arg0)
+
+	var _utf8s []string
+
+	{
+		var length int
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_cret, length)
+		_utf8s = make([]string, length)
+		for i := range src {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
+// IconSizes returns an array of integers describing the sizes at which the
+// icon is available without scaling.
+//
+// A size of -1 means that the icon is available in a scalable format. The
+// array is zero-terminated.
+func (s iconTheme) IconSizes(iconName string) []int {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(iconName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.int
+
+	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
+
+	var _gints []int
+
+	{
+		var length int
+		for p := _cret; *p != nil; p = (*C.int)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_cret, length)
+		_gints = make([]int, length)
+		for i := range src {
+			_gints[i] = (int)(src[i])
+		}
+	}
+
+	return _gints
+}
+
+// ResourcePath gets the current resource path.
+//
+// See [method@Gtk.IconTheme.set_resource_path].
+func (s iconTheme) ResourcePath() []string {
+	var _arg0 *C.GtkIconTheme // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+
+	var _cret **C.char
+
+	_cret = C.gtk_icon_theme_get_resource_path(_arg0)
+
+	var _utf8s []string
+
+	{
+		var length int
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_cret, length)
+		_utf8s = make([]string, length)
+		for i := range src {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
+// SearchPath gets the current search path.
+//
+// See [method@Gtk.IconTheme.set_search_path].
+func (s iconTheme) SearchPath() []string {
+	var _arg0 *C.GtkIconTheme // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+
+	var _cret **C.char
+
+	_cret = C.gtk_icon_theme_get_search_path(_arg0)
+
+	var _filenames []string
+
+	{
+		var length int
+		for p := _cret; *p != nil; p = (**C.char)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
+		for i := range src {
+			_filenames[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _filenames
+}
+
+// ThemeName gets the current icon theme name.
+//
+// Returns (transfer full): the current icon theme name,
+func (s iconTheme) ThemeName() string {
+	var _arg0 *C.GtkIconTheme // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+
+	var _cret *C.char // in
+
+	_cret = C.gtk_icon_theme_get_theme_name(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// HasGIcon checks whether an icon theme includes an icon for a particular
+// `GIcon`.
+func (s iconTheme) HasGIcon(gicon gio.Icon) bool {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.GIcon        // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HasIcon checks whether an icon theme includes an icon for a particular
+// name.
+func (s iconTheme) HasIcon(iconName string) bool {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(iconName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetResourcePath sets the resource paths that will be looked at when
+// looking for icons, similar to search paths.
+//
+// The resources are considered as part of the hicolor icon theme and must
+// be located in subdirectories that are defined in the hicolor icon theme,
+// such as `@path/16x16/actions/run.png` or
+// `@path/scalable/actions/run.svg`.
+//
+// Icons that are directly placed in the resource path instead of a
+// subdirectory are also considered as ultimate fallback, but they are
+// treated like unthemed icons.
+func (s iconTheme) SetResourcePath(path *string) {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 **C.char        // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (**C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_icon_theme_set_resource_path(_arg0, _arg1)
+}
+
+// SetSearchPath sets the search path for the icon theme object.
+//
+// When looking for an icon theme, GTK will search for a subdirectory of one
+// or more of the directories in @path with the same name as the icon theme
+// containing an index.theme file. (Themes from multiple of the path
+// elements are combined to allow themes to be extended by adding icons in
+// the user’s home directory.)
+//
+// In addition if an icon found isn’t found either in the current icon theme
+// or the default icon theme, and an image file with the right name is found
+// directly in one of the elements of @path, then that image will be used
+// for the icon name. (This is legacy feature, and new icons should be put
+// into the fallback icon theme, which is called hicolor, rather than
+// directly on the icon path.)
+func (s iconTheme) SetSearchPath(path []string) {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 **C.char
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (**C.char)(C.malloc(C.ulong((len(path) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	{
+		out := unsafe.Slice(_arg1, len(path))
+		for i := range path {
+			out[i] = (*C.gchar)(C.CString(path[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	C.gtk_icon_theme_set_search_path(_arg0, _arg1)
+}
+
+// SetThemeName sets the name of the icon theme that the `GtkIconTheme`
+// object uses overriding system configuration.
+//
+// This function cannot be called on the icon theme objects returned from
+// [type_func@Gtk.IconTheme.get_for_display].
+func (s iconTheme) SetThemeName(themeName string) {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(themeName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_icon_theme_set_theme_name(_arg0, _arg1)
+}

@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -48,9 +48,11 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 	fn := v.(ListBoxCreateWidgetFunc)
 	widget := fn(item)
 
+	var cret *C.GtkWidget // out
+
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	return widget
+	return cret
 }
 
 // ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
@@ -132,10 +134,6 @@ type ListBox interface {
 	SelectAll()
 	// SelectRow: make @row the currently selected row.
 	SelectRow(row ListBoxRow)
-	// SelectedForeach calls a function for each selected child.
-	//
-	// Note that the selection cannot be modified from within this function.
-	SelectedForeach(fn ListBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, rows will be activated when
 	// you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -161,7 +159,7 @@ type ListBox interface {
 	UnselectRow(row ListBoxRow)
 }
 
-// listBox implements the ListBox interface.
+// listBox implements the ListBox class.
 type listBox struct {
 	Container
 	Buildable
@@ -172,7 +170,7 @@ var _ ListBox = (*listBox)(nil)
 // WrapListBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListBox(obj *externglib.Object) ListBox {
-	return ListBox{
+	return listBox{
 		Container: WrapContainer(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -222,7 +220,7 @@ func (b listBox) ActivateOnSingleClick() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -314,21 +312,6 @@ func (b listBox) SelectRow(row ListBoxRow) {
 	C.gtk_list_box_select_row(_arg0, _arg1)
 }
 
-// SelectedForeach calls a function for each selected child.
-//
-// Note that the selection cannot be modified from within this function.
-func (b listBox) SelectedForeach(fn ListBoxForeachFunc) {
-	var _arg0 *C.GtkListBox           // out
-	var _arg1 C.GtkListBoxForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_ListBoxForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
-}
-
 // SetActivateOnSingleClick: if @single is true, rows will be activated when
 // you click on them, otherwise you need to double-click.
 func (b listBox) SetActivateOnSingleClick(single bool) {
@@ -337,7 +320,7 @@ func (b listBox) SetActivateOnSingleClick(single bool) {
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	if single {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_box_set_activate_on_single_click(_arg0, _arg1)
@@ -448,7 +431,7 @@ type ListBoxRow interface {
 	SetSelectable(selectable bool)
 }
 
-// listBoxRow implements the ListBoxRow interface.
+// listBoxRow implements the ListBoxRow class.
 type listBoxRow struct {
 	Bin
 	Actionable
@@ -460,7 +443,7 @@ var _ ListBoxRow = (*listBoxRow)(nil)
 // WrapListBoxRow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListBoxRow(obj *externglib.Object) ListBoxRow {
-	return ListBoxRow{
+	return listBoxRow{
 		Bin:        WrapBin(obj),
 		Actionable: WrapActionable(obj),
 		Buildable:  WrapBuildable(obj),
@@ -509,7 +492,7 @@ func (r listBoxRow) Activatable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -546,7 +529,7 @@ func (r listBoxRow) Selectable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -566,7 +549,7 @@ func (r listBoxRow) IsSelected() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -580,7 +563,7 @@ func (r listBoxRow) SetActivatable(activatable bool) {
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	if activatable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_box_row_set_activatable(_arg0, _arg1)
@@ -606,7 +589,7 @@ func (r listBoxRow) SetSelectable(selectable bool) {
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	if selectable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_box_row_set_selectable(_arg0, _arg1)

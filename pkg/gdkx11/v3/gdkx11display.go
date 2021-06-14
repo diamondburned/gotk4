@@ -9,10 +9,10 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -135,7 +135,7 @@ type X11Display interface {
 	SetWindowScale(scale int)
 	// StringToCompoundText: convert a string from the encoding of the current
 	// locale into a form suitable for storing in a window property.
-	StringToCompoundText(str string) (encoding gdk.Atom, format int, ctext []*byte, gint int)
+	StringToCompoundText(str string) (encoding gdk.Atom, format int, ctext []byte, gint int)
 	// TextPropertyToTextList: convert a text string from the encoding as it is
 	// stored in a property into an array of strings in the encoding of the
 	// current locale. (The elements of the array represent the nul-separated
@@ -145,10 +145,10 @@ type X11Display interface {
 	// gdk_x11_display_grab().
 	Ungrab()
 	// UTF8ToCompoundText converts from UTF-8 to compound text.
-	UTF8ToCompoundText(str string) (gdk.Atom, int, []*byte, bool)
+	UTF8ToCompoundText(str string) (gdk.Atom, int, []byte, bool)
 }
 
-// x11Display implements the X11Display interface.
+// x11Display implements the X11Display class.
 type x11Display struct {
 	gdk.Display
 }
@@ -158,7 +158,7 @@ var _ X11Display = (*x11Display)(nil)
 // WrapX11Display wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Display(obj *externglib.Object) X11Display {
-	return X11Display{
+	return x11Display{
 		gdk.Display: gdk.WrapDisplay(obj),
 	}
 }
@@ -338,7 +338,7 @@ func (d x11Display) SetWindowScale(scale int) {
 
 // StringToCompoundText: convert a string from the encoding of the current
 // locale into a form suitable for storing in a window property.
-func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format int, ctext []*byte, gint int) {
+func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 
@@ -355,13 +355,13 @@ func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format 
 	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, (*C.GdkAtom)(unsafe.Pointer(&_encoding)), &_arg3, &_arg4, &_arg5)
 
 	var _format int // out
-	var _ctext []*byte
+	var _ctext []byte
 	var _gint int // out
 
 	_format = (int)(_arg3)
-	ptr.SetSlice(unsafe.Pointer(&_ctext), unsafe.Pointer(_arg4), int(_arg5))
-	runtime.SetFinalizer(&_ctext, func(v *[]*byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
+	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 	_gint = (int)(_cret)
 
@@ -410,7 +410,7 @@ func (d x11Display) Ungrab() {
 }
 
 // UTF8ToCompoundText converts from UTF-8 to compound text.
-func (d x11Display) UTF8ToCompoundText(str string) (gdk.Atom, int, []*byte, bool) {
+func (d x11Display) UTF8ToCompoundText(str string) (gdk.Atom, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 
@@ -427,15 +427,15 @@ func (d x11Display) UTF8ToCompoundText(str string) (gdk.Atom, int, []*byte, bool
 	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, (*C.GdkAtom)(unsafe.Pointer(&_encoding)), &_arg3, &_arg4, &_arg5)
 
 	var _format int // out
-	var _ctext []*byte
+	var _ctext []byte
 	var _ok bool // out
 
 	_format = (int)(_arg3)
-	ptr.SetSlice(unsafe.Pointer(&_ctext), unsafe.Pointer(_arg4), int(_arg5))
-	runtime.SetFinalizer(&_ctext, func(v *[]*byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
+	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

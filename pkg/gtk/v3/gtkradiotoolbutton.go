@@ -3,11 +3,12 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -38,13 +39,9 @@ type RadioToolButton interface {
 	Actionable
 	Activatable
 	Buildable
-
-	// SetGroup adds @button to @group, removing it from the group it belonged
-	// to before.
-	SetGroup(group *glib.SList)
 }
 
-// radioToolButton implements the RadioToolButton interface.
+// radioToolButton implements the RadioToolButton class.
 type radioToolButton struct {
 	ToggleToolButton
 	Actionable
@@ -57,7 +54,7 @@ var _ RadioToolButton = (*radioToolButton)(nil)
 // WrapRadioToolButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRadioToolButton(obj *externglib.Object) RadioToolButton {
-	return RadioToolButton{
+	return radioToolButton{
 		ToggleToolButton: WrapToggleToolButton(obj),
 		Actionable:       WrapActionable(obj),
 		Activatable:      WrapActivatable(obj),
@@ -69,16 +66,4 @@ func marshalRadioToolButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRadioToolButton(obj), nil
-}
-
-// SetGroup adds @button to @group, removing it from the group it belonged
-// to before.
-func (b radioToolButton) SetGroup(group *glib.SList) {
-	var _arg0 *C.GtkRadioToolButton // out
-	var _arg1 *C.GSList             // out
-
-	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-
-	C.gtk_radio_tool_button_set_group(_arg0, _arg1)
 }

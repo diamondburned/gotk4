@@ -3,12 +3,14 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -20,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -58,7 +61,7 @@ type FileMonitor interface {
 	SetRateLimit(limitMsecs int)
 }
 
-// fileMonitor implements the FileMonitor interface.
+// fileMonitor implements the FileMonitor class.
 type fileMonitor struct {
 	gextras.Objector
 }
@@ -68,7 +71,7 @@ var _ FileMonitor = (*fileMonitor)(nil)
 // WrapFileMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileMonitor(obj *externglib.Object) FileMonitor {
-	return FileMonitor{
+	return fileMonitor{
 		Objector: obj,
 	}
 }
@@ -91,7 +94,7 @@ func (m fileMonitor) Cancel() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -130,7 +133,7 @@ func (m fileMonitor) IsCancelled() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -4,12 +4,22 @@ package gdk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_display_manager_get_type()), F: marshalDisplayManager},
+	})
+}
 
 // SetAllowedBackends sets a list of backends that GDK should try to use.
 //
@@ -49,4 +59,72 @@ func SetAllowedBackends(backends string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_allowed_backends(_arg1)
+}
+
+// DisplayManager: a singleton object that offers notification when displays
+// appear or disappear.
+//
+// You can use [func@Gdk.DisplayManager.get] to obtain the `GdkDisplayManager`
+// singleton, but that should be rarely necessary. Typically, initializing GTK
+// opens a display that you can work with without ever accessing the
+// `GdkDisplayManager`.
+//
+// The GDK library can be built with support for multiple backends. The
+// `GdkDisplayManager` object determines which backend is used at runtime.
+//
+// In the rare case that you need to influence which of the backends is being
+// used, you can use [func@Gdk.set_allowed_backends]. Note that you need to call
+// this function before initializing GTK.
+//
+//
+// Backend-specific code
+//
+// When writing backend-specific code that is supposed to work with multiple GDK
+// backends, you have to consider both compile time and runtime. At compile
+// time, use the K_WINDOWING_X11, K_WINDOWING_WIN32 macros, etc. to find out
+// which backends are present in the GDK library you are building your
+// application against. At runtime, use type-check macros like
+// GDK_IS_X11_DISPLAY() to find out which backend is in use:
+//
+// “`c #ifdef GDK_WINDOWING_X11 if (GDK_IS_X11_DISPLAY (display)) { // make
+// X11-specific calls here } else #endif #ifdef GDK_WINDOWING_MACOS if
+// (GDK_IS_MACOS_DISPLAY (display)) { // make Quartz-specific calls here } else
+// #endif g_error ("Unsupported GDK backend"); “`
+type DisplayManager interface {
+	gextras.Objector
+
+	// SetDefaultDisplay sets @display as the default display.
+	SetDefaultDisplay(display Display)
+}
+
+// displayManager implements the DisplayManager class.
+type displayManager struct {
+	gextras.Objector
+}
+
+var _ DisplayManager = (*displayManager)(nil)
+
+// WrapDisplayManager wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDisplayManager(obj *externglib.Object) DisplayManager {
+	return displayManager{
+		Objector: obj,
+	}
+}
+
+func marshalDisplayManager(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDisplayManager(obj), nil
+}
+
+// SetDefaultDisplay sets @display as the default display.
+func (m displayManager) SetDefaultDisplay(display Display) {
+	var _arg0 *C.GdkDisplayManager // out
+	var _arg1 *C.GdkDisplay        // out
+
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+
+	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 }

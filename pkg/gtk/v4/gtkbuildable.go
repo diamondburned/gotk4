@@ -6,11 +6,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -28,8 +27,6 @@ type BuildableOverrider interface {
 	// AddChild adds a child to @buildable. @type is an optional string
 	// describing how the child should be added.
 	AddChild(builder Builder, child gextras.Objector, typ string)
-
-	ConstructChild(builder Builder, name string) gextras.Objector
 	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
 	// once for each custom tag handled by the @buildable.
 	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
@@ -129,11 +126,6 @@ func WrapBuildableParseContext(ptr unsafe.Pointer) *BuildableParseContext {
 	return (*BuildableParseContext)(ptr)
 }
 
-func marshalBuildableParseContext(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBuildableParseContext(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (b *BuildableParseContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
@@ -184,19 +176,17 @@ func (c *BuildableParseContext) ElementStack() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (*C.GPtrArray)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (*C.GPtrArray)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 

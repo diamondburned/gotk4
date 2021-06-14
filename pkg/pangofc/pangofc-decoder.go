@@ -3,10 +3,13 @@
 package pangofc
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangofc pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango pangofc
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangofc-fontmap.h>
@@ -31,7 +34,7 @@ type Decoder interface {
 	gextras.Objector
 }
 
-// decoder implements the Decoder interface.
+// decoder implements the Decoder class.
 type decoder struct {
 	gextras.Objector
 }
@@ -41,7 +44,7 @@ var _ Decoder = (*decoder)(nil)
 // WrapDecoder wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDecoder(obj *externglib.Object) Decoder {
-	return Decoder{
+	return decoder{
 		Objector: obj,
 	}
 }

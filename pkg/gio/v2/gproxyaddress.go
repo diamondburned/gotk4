@@ -3,12 +3,13 @@
 package gio
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -20,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -54,7 +56,7 @@ type ProXYAddress interface {
 	Username() string
 }
 
-// proXYAddress implements the ProXYAddress interface.
+// proXYAddress implements the ProXYAddress class.
 type proXYAddress struct {
 	InetSocketAddress
 	SocketConnectable
@@ -65,7 +67,7 @@ var _ ProXYAddress = (*proXYAddress)(nil)
 // WrapProXYAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapProXYAddress(obj *externglib.Object) ProXYAddress {
-	return ProXYAddress{
+	return proXYAddress{
 		InetSocketAddress: WrapInetSocketAddress(obj),
 		SocketConnectable: WrapSocketConnectable(obj),
 	}

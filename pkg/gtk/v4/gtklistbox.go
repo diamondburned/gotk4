@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -18,6 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_list_box_get_type()), F: marshalListBox},
 		{T: externglib.Type(C.gtk_list_box_row_get_type()), F: marshalListBoxRow},
 	})
 }
@@ -41,9 +42,458 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 	fn := v.(ListBoxCreateWidgetFunc)
 	widget := fn(item)
 
+	var cret *C.GtkWidget // out
+
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	return widget
+	return cret
+}
+
+// ListBox: `GtkListBox` is a vertical list.
+//
+// A `GtkListBox` only contains `GtkListBoxRow` children. These rows can by
+// dynamically sorted and filtered, and headers can be added dynamically
+// depending on the row content. It also allows keyboard and mouse navigation
+// and selection like a typical list.
+//
+// Using `GtkListBox` is often an alternative to `GtkTreeView`, especially when
+// the list contents has a more complicated layout than what is allowed by a
+// `GtkCellRenderer`, or when the contents is interactive (i.e. has a button in
+// it).
+//
+// Although a `GtkListBox` must have only `GtkListBoxRow` children, you can add
+// any kind of widget to it via [method@Gtk.ListBox.prepend],
+// [method@Gtk.ListBox.append] and [method@Gtk.ListBox.insert] and a
+// `GtkListBoxRow` widget will automatically be inserted between the list and
+// the widget.
+//
+// `GtkListBoxRows` can be marked as activatable or selectable. If a row is
+// activatable, [signal@Gtk.ListBox::row-activated] will be emitted for it when
+// the user tries to activate it. If it is selectable, the row will be marked as
+// selected when the user tries to select it.
+//
+//
+// GtkListBox as GtkBuildable
+//
+// The `GtkListBox` implementation of the `GtkBuildable` interface supports
+// setting a child as the placeholder by specifying “placeholder” as the “type”
+// attribute of a <child> element. See [method@Gtk.ListBox.set_placeholder] for
+// info.
+//
+// CSS nodes
+//
+//    list[.separators][.rich-list][.navigation-sidebar]
+//    ╰── row[.activatable]
+//
+// `GtkListBox` uses a single CSS node named list. It may carry the .separators
+// style class, when the [property@Gtk.ListBox:show-separators] property is set.
+// Each `GtkListBoxRow` uses a single CSS node named row. The row nodes get the
+// .activatable style class added when appropriate.
+//
+// The main list node may also carry style classes to select the style of list
+// presentation (section-list-widget.html#list-styles): .rich-list,
+// .navigation-sidebar or .data-table.
+//
+//
+// Accessibility
+//
+// `GtkListBox` uses the GTK_ACCESSIBLE_ROLE_LIST role and `GtkListBoxRow` uses
+// the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
+type ListBox interface {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+
+	// Append: append a widget to the list.
+	//
+	// If a sort function is set, the widget will actually be inserted at the
+	// calculated position.
+	Append(child Widget)
+	// DragHighlightRow: add a drag highlight to a row.
+	//
+	// This is a helper function for implementing DnD onto a `GtkListBox`. The
+	// passed in @row will be highlighted by setting the
+	// GTK_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will
+	// be unhighlighted.
+	//
+	// The row will also be unhighlighted when the widget gets a drag leave
+	// event.
+	DragHighlightRow(row ListBoxRow)
+	// DragUnhighlightRow: if a row has previously been highlighted via
+	// gtk_list_box_drag_highlight_row(), it will have the highlight removed.
+	DragUnhighlightRow()
+	// ActivateOnSingleClick returns whether rows activate on single clicks.
+	ActivateOnSingleClick() bool
+	// ShowSeparators returns whether the list box should show separators
+	// between rows.
+	ShowSeparators() bool
+	// Insert: insert the @child into the @box at @position.
+	//
+	// If a sort function is set, the widget will actually be inserted at the
+	// calculated position.
+	//
+	// If @position is -1, or larger than the total number of items in the @box,
+	// then the @child will be appended to the end.
+	Insert(child Widget, position int)
+	// InvalidateFilter: update the filtering for all rows.
+	//
+	// Call this when result of the filter function on the @box is changed due
+	// to an external factor. For instance, this would be used if the filter
+	// function just looked for a specific search string and the entry with the
+	// search string has changed.
+	InvalidateFilter()
+	// InvalidateHeaders: update the separators for all rows.
+	//
+	// Call this when result of the header function on the @box is changed due
+	// to an external factor.
+	InvalidateHeaders()
+	// InvalidateSort: update the sorting for all rows.
+	//
+	// Call this when result of the sort function on the @box is changed due to
+	// an external factor.
+	InvalidateSort()
+	// Prepend: prepend a widget to the list.
+	//
+	// If a sort function is set, the widget will actually be inserted at the
+	// calculated position.
+	Prepend(child Widget)
+	// Remove removes a child from @box.
+	Remove(child Widget)
+	// SelectAll: select all children of @box, if the selection mode allows it.
+	SelectAll()
+	// SelectRow: make @row the currently selected row.
+	SelectRow(row ListBoxRow)
+	// SetActivateOnSingleClick: if @single is true, rows will be activated when
+	// you click on them, otherwise you need to double-click.
+	SetActivateOnSingleClick(single bool)
+	// SetAdjustment sets the adjustment (if any) that the widget uses to for
+	// vertical scrolling.
+	//
+	// For instance, this is used to get the page size for PageUp/Down key
+	// handling.
+	//
+	// In the normal case when the @box is packed inside a `GtkScrolledWindow`
+	// the adjustment from that will be picked up automatically, so there is no
+	// need to manually do that.
+	SetAdjustment(adjustment Adjustment)
+	// SetPlaceholder sets the placeholder widget that is shown in the list when
+	// it doesn't display any visible children.
+	SetPlaceholder(placeholder Widget)
+	// SetSelectionMode sets how selection works in the listbox.
+	SetSelectionMode(mode SelectionMode)
+	// SetShowSeparators sets whether the list box should show separators
+	// between rows.
+	SetShowSeparators(showSeparators bool)
+	// UnselectAll: unselect all children of @box, if the selection mode allows
+	// it.
+	UnselectAll()
+	// UnselectRow unselects a single row of @box, if the selection mode allows
+	// it.
+	UnselectRow(row ListBoxRow)
+}
+
+// listBox implements the ListBox class.
+type listBox struct {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+}
+
+var _ ListBox = (*listBox)(nil)
+
+// WrapListBox wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListBox(obj *externglib.Object) ListBox {
+	return listBox{
+		Widget:           WrapWidget(obj),
+		Accessible:       WrapAccessible(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+	}
+}
+
+func marshalListBox(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapListBox(obj), nil
+}
+
+// Append: append a widget to the list.
+//
+// If a sort function is set, the widget will actually be inserted at the
+// calculated position.
+func (b listBox) Append(child Widget) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	C.gtk_list_box_append(_arg0, _arg1)
+}
+
+// DragHighlightRow: add a drag highlight to a row.
+//
+// This is a helper function for implementing DnD onto a `GtkListBox`. The
+// passed in @row will be highlighted by setting the
+// GTK_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will
+// be unhighlighted.
+//
+// The row will also be unhighlighted when the widget gets a drag leave
+// event.
+func (b listBox) DragHighlightRow(row ListBoxRow) {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
+
+	C.gtk_list_box_drag_highlight_row(_arg0, _arg1)
+}
+
+// DragUnhighlightRow: if a row has previously been highlighted via
+// gtk_list_box_drag_highlight_row(), it will have the highlight removed.
+func (b listBox) DragUnhighlightRow() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+
+	C.gtk_list_box_drag_unhighlight_row(_arg0)
+}
+
+// ActivateOnSingleClick returns whether rows activate on single clicks.
+func (b listBox) ActivateOnSingleClick() bool {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ShowSeparators returns whether the list box should show separators
+// between rows.
+func (b listBox) ShowSeparators() bool {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_list_box_get_show_separators(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Insert: insert the @child into the @box at @position.
+//
+// If a sort function is set, the widget will actually be inserted at the
+// calculated position.
+//
+// If @position is -1, or larger than the total number of items in the @box,
+// then the @child will be appended to the end.
+func (b listBox) Insert(child Widget, position int) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.int         // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = C.int(position)
+
+	C.gtk_list_box_insert(_arg0, _arg1, _arg2)
+}
+
+// InvalidateFilter: update the filtering for all rows.
+//
+// Call this when result of the filter function on the @box is changed due
+// to an external factor. For instance, this would be used if the filter
+// function just looked for a specific search string and the entry with the
+// search string has changed.
+func (b listBox) InvalidateFilter() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+
+	C.gtk_list_box_invalidate_filter(_arg0)
+}
+
+// InvalidateHeaders: update the separators for all rows.
+//
+// Call this when result of the header function on the @box is changed due
+// to an external factor.
+func (b listBox) InvalidateHeaders() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+
+	C.gtk_list_box_invalidate_headers(_arg0)
+}
+
+// InvalidateSort: update the sorting for all rows.
+//
+// Call this when result of the sort function on the @box is changed due to
+// an external factor.
+func (b listBox) InvalidateSort() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+
+	C.gtk_list_box_invalidate_sort(_arg0)
+}
+
+// Prepend: prepend a widget to the list.
+//
+// If a sort function is set, the widget will actually be inserted at the
+// calculated position.
+func (b listBox) Prepend(child Widget) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	C.gtk_list_box_prepend(_arg0, _arg1)
+}
+
+// Remove removes a child from @box.
+func (b listBox) Remove(child Widget) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	C.gtk_list_box_remove(_arg0, _arg1)
+}
+
+// SelectAll: select all children of @box, if the selection mode allows it.
+func (b listBox) SelectAll() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+
+	C.gtk_list_box_select_all(_arg0)
+}
+
+// SelectRow: make @row the currently selected row.
+func (b listBox) SelectRow(row ListBoxRow) {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
+
+	C.gtk_list_box_select_row(_arg0, _arg1)
+}
+
+// SetActivateOnSingleClick: if @single is true, rows will be activated when
+// you click on them, otherwise you need to double-click.
+func (b listBox) SetActivateOnSingleClick(single bool) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	if single {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_list_box_set_activate_on_single_click(_arg0, _arg1)
+}
+
+// SetAdjustment sets the adjustment (if any) that the widget uses to for
+// vertical scrolling.
+//
+// For instance, this is used to get the page size for PageUp/Down key
+// handling.
+//
+// In the normal case when the @box is packed inside a `GtkScrolledWindow`
+// the adjustment from that will be picked up automatically, so there is no
+// need to manually do that.
+func (b listBox) SetAdjustment(adjustment Adjustment) {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkAdjustment // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+
+	C.gtk_list_box_set_adjustment(_arg0, _arg1)
+}
+
+// SetPlaceholder sets the placeholder widget that is shown in the list when
+// it doesn't display any visible children.
+func (b listBox) SetPlaceholder(placeholder Widget) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(placeholder.Native()))
+
+	C.gtk_list_box_set_placeholder(_arg0, _arg1)
+}
+
+// SetSelectionMode sets how selection works in the listbox.
+func (b listBox) SetSelectionMode(mode SelectionMode) {
+	var _arg0 *C.GtkListBox      // out
+	var _arg1 C.GtkSelectionMode // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (C.GtkSelectionMode)(mode)
+
+	C.gtk_list_box_set_selection_mode(_arg0, _arg1)
+}
+
+// SetShowSeparators sets whether the list box should show separators
+// between rows.
+func (b listBox) SetShowSeparators(showSeparators bool) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	if showSeparators {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_list_box_set_show_separators(_arg0, _arg1)
+}
+
+// UnselectAll: unselect all children of @box, if the selection mode allows
+// it.
+func (b listBox) UnselectAll() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+
+	C.gtk_list_box_unselect_all(_arg0)
+}
+
+// UnselectRow unselects a single row of @box, if the selection mode allows
+// it.
+func (b listBox) UnselectRow(row ListBoxRow) {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
+
+	C.gtk_list_box_unselect_row(_arg0, _arg1)
 }
 
 // ListBoxRow: `GtkListBoxRow` is the kind of widget that can be added to a
@@ -96,7 +546,7 @@ type ListBoxRow interface {
 	SetSelectable(selectable bool)
 }
 
-// listBoxRow implements the ListBoxRow interface.
+// listBoxRow implements the ListBoxRow class.
 type listBoxRow struct {
 	Widget
 	Accessible
@@ -110,7 +560,7 @@ var _ ListBoxRow = (*listBoxRow)(nil)
 // WrapListBoxRow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListBoxRow(obj *externglib.Object) ListBoxRow {
-	return ListBoxRow{
+	return listBoxRow{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Actionable:       WrapActionable(obj),
@@ -162,7 +612,7 @@ func (r listBoxRow) Activatable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -198,7 +648,7 @@ func (r listBoxRow) Selectable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -218,7 +668,7 @@ func (r listBoxRow) IsSelected() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -232,7 +682,7 @@ func (r listBoxRow) SetActivatable(activatable bool) {
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	if activatable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_box_row_set_activatable(_arg0, _arg1)
@@ -271,7 +721,7 @@ func (r listBoxRow) SetSelectable(selectable bool) {
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	if selectable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_box_row_set_selectable(_arg0, _arg1)

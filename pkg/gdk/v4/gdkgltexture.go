@@ -3,13 +3,15 @@
 package gdk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -31,7 +33,7 @@ type GLTexture interface {
 	Release()
 }
 
-// glTexture implements the GLTexture interface.
+// glTexture implements the GLTexture class.
 type glTexture struct {
 	Texture
 	Paintable
@@ -42,7 +44,7 @@ var _ GLTexture = (*glTexture)(nil)
 // WrapGLTexture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGLTexture(obj *externglib.Object) GLTexture {
-	return GLTexture{
+	return glTexture{
 		Texture:   WrapTexture(obj),
 		Paintable: WrapPaintable(obj),
 	}

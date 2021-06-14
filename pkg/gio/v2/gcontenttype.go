@@ -3,10 +3,7 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -39,7 +36,7 @@ func ContentTypeCanBeExecutable(typ string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -62,7 +59,7 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -143,19 +140,17 @@ func ContentTypeGetMIMEDirs() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -238,20 +233,18 @@ func ContentTypeGuessForTree(root File) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -274,7 +267,7 @@ func ContentTypeIsA(typ string, supertype string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -298,7 +291,7 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -320,7 +313,7 @@ func ContentTypeIsUnknown(typ string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -351,16 +344,14 @@ func ContentTypeIsUnknown(typ string) bool {
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var _arg1 **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc((len(dirs) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(dirs) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(dirs)))
-
+		out := unsafe.Slice(_arg1, len(dirs))
 		for i := range dirs {
-			_arg1 = (*C.gchar)(C.CString(dirs))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(dirs[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -46,7 +46,7 @@ type IMContextSimple interface {
 	AddComposeFile(composeFile string)
 }
 
-// imContextSimple implements the IMContextSimple interface.
+// imContextSimple implements the IMContextSimple class.
 type imContextSimple struct {
 	IMContext
 }
@@ -56,7 +56,7 @@ var _ IMContextSimple = (*imContextSimple)(nil)
 // WrapIMContextSimple wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIMContextSimple(obj *externglib.Object) IMContextSimple {
-	return IMContextSimple{
+	return imContextSimple{
 		IMContext: WrapIMContext(obj),
 	}
 }

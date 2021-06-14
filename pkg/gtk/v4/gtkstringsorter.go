@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -40,7 +42,7 @@ type StringSorter interface {
 	SetIgnoreCase(ignoreCase bool)
 }
 
-// stringSorter implements the StringSorter interface.
+// stringSorter implements the StringSorter class.
 type stringSorter struct {
 	Sorter
 }
@@ -50,7 +52,7 @@ var _ StringSorter = (*stringSorter)(nil)
 // WrapStringSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStringSorter(obj *externglib.Object) StringSorter {
-	return StringSorter{
+	return stringSorter{
 		Sorter: WrapSorter(obj),
 	}
 }
@@ -73,7 +75,7 @@ func (s stringSorter) IgnoreCase() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -101,7 +103,7 @@ func (s stringSorter) SetIgnoreCase(ignoreCase bool) {
 
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 	if ignoreCase {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_string_sorter_set_ignore_case(_arg0, _arg1)

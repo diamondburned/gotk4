@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -18,74 +18,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.pango_item_get_type()), F: marshalItem},
 	})
-}
-
-// Analysis: the `PangoAnalysis` structure stores information about the
-// properties of a segment of text.
-type Analysis struct {
-	native C.PangoAnalysis
-}
-
-// WrapAnalysis wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAnalysis(ptr unsafe.Pointer) *Analysis {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Analysis)(ptr)
-}
-
-func marshalAnalysis(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAnalysis(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *Analysis) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}
-
-// ShapeEngine gets the field inside the struct.
-func (a *Analysis) ShapeEngine() interface{} {
-	var v interface{} // out
-	v = (interface{})(a.native.shape_engine)
-	return v
-}
-
-// LangEngine gets the field inside the struct.
-func (a *Analysis) LangEngine() interface{} {
-	var v interface{} // out
-	v = (interface{})(a.native.lang_engine)
-	return v
-}
-
-// Level gets the field inside the struct.
-func (a *Analysis) Level() byte {
-	var v byte // out
-	v = (byte)(a.native.level)
-	return v
-}
-
-// Gravity gets the field inside the struct.
-func (a *Analysis) Gravity() byte {
-	var v byte // out
-	v = (byte)(a.native.gravity)
-	return v
-}
-
-// Flags gets the field inside the struct.
-func (a *Analysis) Flags() byte {
-	var v byte // out
-	v = (byte)(a.native.flags)
-	return v
-}
-
-// Script gets the field inside the struct.
-func (a *Analysis) Script() byte {
-	var v byte // out
-	v = (byte)(a.native.script)
-	return v
 }
 
 // Item: the `PangoItem` structure stores information about a segment of text.

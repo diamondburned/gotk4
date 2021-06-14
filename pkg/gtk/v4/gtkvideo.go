@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -71,7 +71,7 @@ type Video interface {
 	SetResource(resourcePath string)
 }
 
-// video implements the Video interface.
+// video implements the Video class.
 type video struct {
 	Widget
 	Accessible
@@ -84,7 +84,7 @@ var _ Video = (*video)(nil)
 // WrapVideo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapVideo(obj *externglib.Object) Video {
-	return Video{
+	return video{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -110,7 +110,7 @@ func (s video) Autoplay() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -129,7 +129,7 @@ func (s video) Loop() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -144,7 +144,7 @@ func (s video) SetAutoplay(autoplay bool) {
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 	if autoplay {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_video_set_autoplay(_arg0, _arg1)
@@ -182,7 +182,7 @@ func (s video) SetLoop(loop bool) {
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 	if loop {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_video_set_loop(_arg0, _arg1)

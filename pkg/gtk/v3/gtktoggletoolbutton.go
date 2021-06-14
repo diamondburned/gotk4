@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -44,7 +46,7 @@ type ToggleToolButton interface {
 	SetActive(isActive bool)
 }
 
-// toggleToolButton implements the ToggleToolButton interface.
+// toggleToolButton implements the ToggleToolButton class.
 type toggleToolButton struct {
 	ToolButton
 	Actionable
@@ -57,7 +59,7 @@ var _ ToggleToolButton = (*toggleToolButton)(nil)
 // WrapToggleToolButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToggleToolButton(obj *externglib.Object) ToggleToolButton {
-	return ToggleToolButton{
+	return toggleToolButton{
 		ToolButton:  WrapToolButton(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -84,7 +86,7 @@ func (b toggleToolButton) Active() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -100,7 +102,7 @@ func (b toggleToolButton) SetActive(isActive bool) {
 
 	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
 	if isActive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_toggle_tool_button_set_active(_arg0, _arg1)

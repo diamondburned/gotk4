@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -151,7 +153,7 @@ func (m selectionModel) IsSelected(position uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -170,7 +172,7 @@ func (m selectionModel) SelectAll() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -186,7 +188,7 @@ func (m selectionModel) SelectItem(position uint, unselectRest bool) bool {
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 	_arg1 = C.guint(position)
 	if unselectRest {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -195,7 +197,7 @@ func (m selectionModel) SelectItem(position uint, unselectRest bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -213,7 +215,7 @@ func (m selectionModel) SelectRange(position uint, nItems uint, unselectRest boo
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
 	if unselectRest {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -222,7 +224,7 @@ func (m selectionModel) SelectRange(position uint, nItems uint, unselectRest boo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -287,7 +289,7 @@ func (m selectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -306,7 +308,7 @@ func (m selectionModel) UnselectAll() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -327,7 +329,7 @@ func (m selectionModel) UnselectItem(position uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -350,7 +352,7 @@ func (m selectionModel) UnselectRange(position uint, nItems uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

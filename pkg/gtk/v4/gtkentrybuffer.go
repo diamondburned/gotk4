@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -87,7 +88,7 @@ type EntryBuffer interface {
 	SetText(chars string, nChars int)
 }
 
-// entryBuffer implements the EntryBuffer interface.
+// entryBuffer implements the EntryBuffer class.
 type entryBuffer struct {
 	gextras.Objector
 }
@@ -97,7 +98,7 @@ var _ EntryBuffer = (*entryBuffer)(nil)
 // WrapEntryBuffer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEntryBuffer(obj *externglib.Object) EntryBuffer {
-	return EntryBuffer{
+	return entryBuffer{
 		Objector: obj,
 	}
 }

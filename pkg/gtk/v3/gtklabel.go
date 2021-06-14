@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -254,7 +254,7 @@ type Label interface {
 	SetYalign(yalign float32)
 }
 
-// label implements the Label interface.
+// label implements the Label class.
 type label struct {
 	Misc
 	Buildable
@@ -265,7 +265,7 @@ var _ Label = (*label)(nil)
 // WrapLabel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLabel(obj *externglib.Object) Label {
-	return Label{
+	return label{
 		Misc:      WrapMisc(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -376,7 +376,7 @@ func (l label) LineWrap() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -450,7 +450,7 @@ func (l label) Selectable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -476,7 +476,7 @@ func (l label) SelectionBounds() (start int, end int, ok bool) {
 
 	_start = (int)(_arg1)
 	_end = (int)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -495,7 +495,7 @@ func (l label) SingleLineMode() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -534,7 +534,7 @@ func (l label) TrackVisitedLinks() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -555,7 +555,7 @@ func (l label) UseMarkup() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -575,7 +575,7 @@ func (l label) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -740,7 +740,7 @@ func (l label) SetLineWrap(wrap bool) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
 	if wrap {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_label_set_line_wrap(_arg0, _arg1)
@@ -884,7 +884,7 @@ func (l label) SetSelectable(setting bool) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_label_set_selectable(_arg0, _arg1)
@@ -897,7 +897,7 @@ func (l label) SetSingleLineMode(singleLineMode bool) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
 	if singleLineMode {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_label_set_single_line_mode(_arg0, _arg1)
@@ -948,7 +948,7 @@ func (l label) SetTrackVisitedLinks(trackLinks bool) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
 	if trackLinks {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_label_set_track_visited_links(_arg0, _arg1)
@@ -963,7 +963,7 @@ func (l label) SetUseMarkup(setting bool) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_label_set_use_markup(_arg0, _arg1)
@@ -977,7 +977,7 @@ func (l label) SetUseUnderline(setting bool) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_label_set_use_underline(_arg0, _arg1)
@@ -1028,11 +1028,6 @@ func WrapLabelSelectionInfo(ptr unsafe.Pointer) *LabelSelectionInfo {
 	}
 
 	return (*LabelSelectionInfo)(ptr)
-}
-
-func marshalLabelSelectionInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLabelSelectionInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

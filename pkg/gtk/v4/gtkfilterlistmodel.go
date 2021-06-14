@@ -3,11 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -78,7 +81,7 @@ type FilterListModel interface {
 	SetModel(model gio.ListModel)
 }
 
-// filterListModel implements the FilterListModel interface.
+// filterListModel implements the FilterListModel class.
 type filterListModel struct {
 	gextras.Objector
 	gio.ListModel
@@ -89,7 +92,7 @@ var _ FilterListModel = (*filterListModel)(nil)
 // WrapFilterListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFilterListModel(obj *externglib.Object) FilterListModel {
-	return FilterListModel{
+	return filterListModel{
 		Objector:      obj,
 		gio.ListModel: gio.WrapListModel(obj),
 	}
@@ -115,7 +118,7 @@ func (s filterListModel) Incremental() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -185,7 +188,7 @@ func (s filterListModel) SetIncremental(incremental bool) {
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 	if incremental {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_filter_list_model_set_incremental(_arg0, _arg1)

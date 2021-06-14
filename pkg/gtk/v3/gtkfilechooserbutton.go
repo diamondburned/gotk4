@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -80,7 +80,7 @@ type FileChooserButton interface {
 	SetWidthChars(nChars int)
 }
 
-// fileChooserButton implements the FileChooserButton interface.
+// fileChooserButton implements the FileChooserButton class.
 type fileChooserButton struct {
 	Box
 	Buildable
@@ -93,7 +93,7 @@ var _ FileChooserButton = (*fileChooserButton)(nil)
 // WrapFileChooserButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileChooserButton(obj *externglib.Object) FileChooserButton {
-	return FileChooserButton{
+	return fileChooserButton{
 		Box:         WrapBox(obj),
 		Buildable:   WrapBuildable(obj),
 		FileChooser: WrapFileChooser(obj),
@@ -120,7 +120,7 @@ func (b fileChooserButton) FocusOnClick() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -173,7 +173,7 @@ func (b fileChooserButton) SetFocusOnClick(focusOnClick bool) {
 
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
 	if focusOnClick {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_file_chooser_button_set_focus_on_click(_arg0, _arg1)

@@ -3,12 +3,13 @@
 package gio
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -20,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -49,7 +51,7 @@ type TcpConnection interface {
 	SetGracefulDisconnect(gracefulDisconnect bool)
 }
 
-// tcpConnection implements the TcpConnection interface.
+// tcpConnection implements the TcpConnection class.
 type tcpConnection struct {
 	SocketConnection
 }
@@ -59,7 +61,7 @@ var _ TcpConnection = (*tcpConnection)(nil)
 // WrapTcpConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTcpConnection(obj *externglib.Object) TcpConnection {
-	return TcpConnection{
+	return tcpConnection{
 		SocketConnection: WrapSocketConnection(obj),
 	}
 }
@@ -83,7 +85,7 @@ func (c tcpConnection) GracefulDisconnect() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -106,7 +108,7 @@ func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 
 	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
 	if gracefulDisconnect {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_tcp_connection_set_graceful_disconnect(_arg0, _arg1)

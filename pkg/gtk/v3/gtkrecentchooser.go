@@ -5,12 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,8 +19,48 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_recent_chooser_error_get_type()), F: marshalRecentChooserError},
+		{T: externglib.Type(C.gtk_recent_sort_type_get_type()), F: marshalRecentSortType},
 		{T: externglib.Type(C.gtk_recent_chooser_get_type()), F: marshalRecentChooser},
 	})
+}
+
+// RecentChooserError: these identify the various errors that can occur while
+// calling RecentChooser functions.
+type RecentChooserError int
+
+const (
+	// RecentChooserErrorNotFound indicates that a file does not exist
+	RecentChooserErrorNotFound RecentChooserError = 0
+	// RecentChooserErrorInvalidURI indicates a malformed URI
+	RecentChooserErrorInvalidURI RecentChooserError = 1
+)
+
+func marshalRecentChooserError(p uintptr) (interface{}, error) {
+	return RecentChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RecentSortType: used to specify the sorting method to be applyed to the
+// recently used resource list.
+type RecentSortType int
+
+const (
+	// RecentSortTypeNone: do not sort the returned list of recently used
+	// resources.
+	RecentSortTypeNone RecentSortType = 0
+	// RecentSortTypeMru: sort the returned list with the most recently used
+	// items first.
+	RecentSortTypeMru RecentSortType = 1
+	// RecentSortTypeLru: sort the returned list with the least recently used
+	// items first.
+	RecentSortTypeLru RecentSortType = 2
+	// RecentSortTypeCustom: sort the returned list using a custom sorting
+	// function passed using gtk_recent_chooser_set_sort_func().
+	RecentSortTypeCustom RecentSortType = 3
+)
+
+func marshalRecentSortType(p uintptr) (interface{}, error) {
+	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // RecentChooserOverrider contains methods that are overridable. This
@@ -43,12 +82,8 @@ type RecentChooserOverrider interface {
 	// SelectAll selects all the items inside @chooser, if the @chooser supports
 	// multiple selection.
 	SelectAll()
-	// SelectURI selects @uri inside @chooser.
-	SelectURI(uri string) error
 
 	SelectionChanged()
-	// SetCurrentURI sets @uri as the current URI for @chooser.
-	SetCurrentURI(uri string) error
 	// UnselectAll unselects all the items inside @chooser.
 	UnselectAll()
 	// UnselectURI unselects @uri inside @chooser.
@@ -208,7 +243,7 @@ func (c recentChooser) LocalOnly() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -227,7 +262,7 @@ func (c recentChooser) SelectMultiple() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -247,7 +282,7 @@ func (c recentChooser) ShowIcons() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -267,7 +302,7 @@ func (c recentChooser) ShowNotFound() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -287,7 +322,7 @@ func (c recentChooser) ShowPrivate() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -307,7 +342,7 @@ func (c recentChooser) ShowTips() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -333,13 +368,12 @@ func (c recentChooser) Uris() []string {
 	var _utf8s []string
 
 	{
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
+		defer C.free(unsafe.Pointer(_cret))
 		_utf8s = make([]string, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -366,46 +400,6 @@ func (c recentChooser) SelectAll() {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 
 	C.gtk_recent_chooser_select_all(_arg0)
-}
-
-// SelectURI selects @uri inside @chooser.
-func (c recentChooser) SelectURI(uri string) error {
-	var _arg0 *C.GtkRecentChooser // out
-	var _arg1 *C.gchar            // out
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
-
-	C.gtk_recent_chooser_select_uri(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-// SetCurrentURI sets @uri as the current URI for @chooser.
-func (c recentChooser) SetCurrentURI(uri string) error {
-	var _arg0 *C.GtkRecentChooser // out
-	var _arg1 *C.gchar            // out
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
-
-	C.gtk_recent_chooser_set_current_uri(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // SetFilter sets @filter as the current RecentFilter object used by
@@ -443,7 +437,7 @@ func (c recentChooser) SetLocalOnly(localOnly bool) {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	if localOnly {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_recent_chooser_set_local_only(_arg0, _arg1)
@@ -456,7 +450,7 @@ func (c recentChooser) SetSelectMultiple(selectMultiple bool) {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	if selectMultiple {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_recent_chooser_set_select_multiple(_arg0, _arg1)
@@ -470,7 +464,7 @@ func (c recentChooser) SetShowIcons(showIcons bool) {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	if showIcons {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_recent_chooser_set_show_icons(_arg0, _arg1)
@@ -484,7 +478,7 @@ func (c recentChooser) SetShowNotFound(showNotFound bool) {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	if showNotFound {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_recent_chooser_set_show_not_found(_arg0, _arg1)
@@ -498,7 +492,7 @@ func (c recentChooser) SetShowPrivate(showPrivate bool) {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	if showPrivate {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_recent_chooser_set_show_private(_arg0, _arg1)
@@ -512,7 +506,7 @@ func (c recentChooser) SetShowTips(showTips bool) {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	if showTips {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_recent_chooser_set_show_tips(_arg0, _arg1)

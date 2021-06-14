@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -18,8 +18,50 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_css_section_type_get_type()), F: marshalCSSSectionType},
 		{T: externglib.Type(C.gtk_css_section_get_type()), F: marshalCSSSection},
 	})
+}
+
+// CSSSectionType: the different types of sections indicate parts of a CSS
+// document as parsed by GTK’s CSS parser. They are oriented towards the CSS
+// Grammar (http://www.w3.org/TR/CSS21/grammar.html), but may contain
+// extensions.
+//
+// More types might be added in the future as the parser incorporates more
+// features.
+type CSSSectionType int
+
+const (
+	// CSSSectionTypeDocument: the section describes a complete document. This
+	// section time is the only one where gtk_css_section_get_parent() might
+	// return nil.
+	CSSSectionTypeDocument CSSSectionType = 0
+	// CSSSectionTypeImport: the section defines an import rule.
+	CSSSectionTypeImport CSSSectionType = 1
+	// CSSSectionTypeColorDefinition: the section defines a color. This is a GTK
+	// extension to CSS.
+	CSSSectionTypeColorDefinition CSSSectionType = 2
+	// CSSSectionTypeBindingSet: the section defines a binding set. This is a
+	// GTK extension to CSS.
+	CSSSectionTypeBindingSet CSSSectionType = 3
+	// CSSSectionTypeRuleset: the section defines a CSS ruleset.
+	CSSSectionTypeRuleset CSSSectionType = 4
+	// CSSSectionTypeSelector: the section defines a CSS selector.
+	CSSSectionTypeSelector CSSSectionType = 5
+	// CSSSectionTypeDeclaration: the section defines the declaration of a CSS
+	// variable.
+	CSSSectionTypeDeclaration CSSSectionType = 6
+	// CSSSectionTypeValue: the section defines the value of a CSS declaration.
+	CSSSectionTypeValue CSSSectionType = 7
+	// CSSSectionTypeKeyframes: the section defines keyframes. See [CSS
+	// Animations](http://dev.w3.org/csswg/css3-animations/#keyframes) for
+	// details. Since 3.6
+	CSSSectionTypeKeyframes CSSSectionType = 8
+)
+
+func marshalCSSSectionType(p uintptr) (interface{}, error) {
+	return CSSSectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // CSSSection defines a part of a CSS document. Because sections are nested into

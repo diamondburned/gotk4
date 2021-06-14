@@ -9,10 +9,10 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -100,7 +100,7 @@ type X11Window interface {
 	SetUTF8Property(name string, value string)
 }
 
-// x11Window implements the X11Window interface.
+// x11Window implements the X11Window class.
 type x11Window struct {
 	gdk.Window
 }
@@ -110,7 +110,7 @@ var _ X11Window = (*x11Window)(nil)
 // WrapX11Window wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Window(obj *externglib.Object) X11Window {
-	return X11Window{
+	return x11Window{
 		gdk.Window: gdk.WrapWindow(obj),
 	}
 }
@@ -195,7 +195,7 @@ func (w x11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if frameSyncEnabled {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_x11_window_set_frame_sync_enabled(_arg0, _arg1)
@@ -214,7 +214,7 @@ func (w x11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) 
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if hideTitlebarWhenMaximized {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_x11_window_set_hide_titlebar_when_maximized(_arg0, _arg1)

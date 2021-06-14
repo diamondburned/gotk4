@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -136,7 +138,7 @@ type ApplicationWindow interface {
 	SetShowMenubar(showMenubar bool)
 }
 
-// applicationWindow implements the ApplicationWindow interface.
+// applicationWindow implements the ApplicationWindow class.
 type applicationWindow struct {
 	Window
 	gio.ActionGroup
@@ -149,7 +151,7 @@ var _ ApplicationWindow = (*applicationWindow)(nil)
 // WrapApplicationWindow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
-	return ApplicationWindow{
+	return applicationWindow{
 		Window:          WrapWindow(obj),
 		gio.ActionGroup: gio.WrapActionGroup(obj),
 		gio.ActionMap:   gio.WrapActionMap(obj),
@@ -194,7 +196,7 @@ func (w applicationWindow) ShowMenubar() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -223,7 +225,7 @@ func (w applicationWindow) SetShowMenubar(showMenubar bool) {
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 	if showMenubar {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_application_window_set_show_menubar(_arg0, _arg1)

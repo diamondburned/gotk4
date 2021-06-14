@@ -5,12 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,8 +19,65 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_license_get_type()), F: marshalLicense},
 		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialog},
 	})
+}
+
+// License: the type of license for an application.
+//
+// This enumeration can be expanded at later date.
+type License int
+
+const (
+	// LicenseUnknown: no license specified
+	LicenseUnknown License = 0
+	// LicenseCustom: a license text is going to be specified by the developer
+	LicenseCustom License = 1
+	// LicenseGPL20: the GNU General Public License, version 2.0 or later
+	LicenseGPL20 License = 2
+	// LicenseGPL30: the GNU General Public License, version 3.0 or later
+	LicenseGPL30 License = 3
+	// LicenseLGPL21: the GNU Lesser General Public License, version 2.1 or
+	// later
+	LicenseLGPL21 License = 4
+	// LicenseLGPL30: the GNU Lesser General Public License, version 3.0 or
+	// later
+	LicenseLGPL30 License = 5
+	// LicenseBSD: the BSD standard license
+	LicenseBSD License = 6
+	// LicenseMITX11: the MIT/X11 standard license
+	LicenseMITX11 License = 7
+	// LicenseArtistic: the Artistic License, version 2.0
+	LicenseArtistic License = 8
+	// LicenseGPL20Only: the GNU General Public License, version 2.0 only. Since
+	// 3.12.
+	LicenseGPL20Only License = 9
+	// LicenseGPL30Only: the GNU General Public License, version 3.0 only. Since
+	// 3.12.
+	LicenseGPL30Only License = 10
+	// LicenseLGPL21Only: the GNU Lesser General Public License, version 2.1
+	// only. Since 3.12.
+	LicenseLGPL21Only License = 11
+	// LicenseLGPL30Only: the GNU Lesser General Public License, version 3.0
+	// only. Since 3.12.
+	LicenseLGPL30Only License = 12
+	// LicenseAGPL30: the GNU Affero General Public License, version 3.0 or
+	// later. Since: 3.22.
+	LicenseAGPL30 License = 13
+	// LicenseAGPL30Only: the GNU Affero General Public License, version 3.0
+	// only. Since: 3.22.27.
+	LicenseAGPL30Only License = 14
+	// LicenseBSD3: the 3-clause BSD licence. Since: 3.24.20.
+	LicenseBSD3 License = 15
+	// LicenseApache20: the Apache License, version 2.0. Since: 3.24.20.
+	LicenseApache20 License = 16
+	// LicenseMPL20: the Mozilla Public License, version 2.0. Since: 3.24.20.
+	LicenseMPL20 License = 17
+)
+
+func marshalLicense(p uintptr) (interface{}, error) {
+	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // AboutDialog: the GtkAboutDialog offers a simple way to display information
@@ -159,7 +215,7 @@ type AboutDialog interface {
 	SetWrapLicense(wrapLicense bool)
 }
 
-// aboutDialog implements the AboutDialog interface.
+// aboutDialog implements the AboutDialog class.
 type aboutDialog struct {
 	Dialog
 	Buildable
@@ -170,7 +226,7 @@ var _ AboutDialog = (*aboutDialog)(nil)
 // WrapAboutDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAboutDialog(obj *externglib.Object) AboutDialog {
-	return AboutDialog{
+	return aboutDialog{
 		Dialog:    WrapDialog(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -191,16 +247,14 @@ func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(sectionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc((len(people) + 1) * unsafe.Sizeof(int(0))))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong((len(people) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(people)))
-
+		out := unsafe.Slice(_arg2, len(people))
 		for i := range people {
-			_arg2 = (*C.gchar)(C.CString(people))
-			defer C.free(unsafe.Pointer(_arg2))
+			out[i] = (*C.gchar)(C.CString(people[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -222,19 +276,17 @@ func (a aboutDialog) Artists() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -256,19 +308,17 @@ func (a aboutDialog) Authors() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -324,19 +374,17 @@ func (a aboutDialog) Documenters() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
+			_utf8s[i] = C.GoString(src[i])
 		}
 	}
 
@@ -476,7 +524,7 @@ func (a aboutDialog) WrapLicense() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -490,16 +538,14 @@ func (a aboutDialog) SetArtists(artists []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (**C.gchar)(C.malloc((len(artists) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(artists) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(artists)))
-
+		out := unsafe.Slice(_arg1, len(artists))
 		for i := range artists {
-			_arg1 = (*C.gchar)(C.CString(artists))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(artists[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -513,16 +559,14 @@ func (a aboutDialog) SetAuthors(authors []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (**C.gchar)(C.malloc((len(authors) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(authors) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(authors)))
-
+		out := unsafe.Slice(_arg1, len(authors))
 		for i := range authors {
-			_arg1 = (*C.gchar)(C.CString(authors))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(authors[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -562,16 +606,14 @@ func (a aboutDialog) SetDocumenters(documenters []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (**C.gchar)(C.malloc((len(documenters) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(documenters) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(documenters)))
-
+		out := unsafe.Slice(_arg1, len(documenters))
 		for i := range documenters {
-			_arg1 = (*C.gchar)(C.CString(documenters))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(documenters[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -716,7 +758,7 @@ func (a aboutDialog) SetWrapLicense(wrapLicense bool) {
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 	if wrapLicense {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_about_dialog_set_wrap_license(_arg0, _arg1)

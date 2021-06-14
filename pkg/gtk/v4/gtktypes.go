@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -74,7 +74,7 @@ func (s *Bitset) Add(value uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -142,7 +142,7 @@ func (s *Bitset) Contains(value uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -181,7 +181,7 @@ func (s *Bitset) Equals(other *Bitset) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -324,7 +324,7 @@ func (s *Bitset) IsEmpty() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -345,7 +345,7 @@ func (s *Bitset) Remove(value uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -514,11 +514,6 @@ func WrapCSSStyleChange(ptr unsafe.Pointer) *CSSStyleChange {
 	}
 
 	return (*CSSStyleChange)(ptr)
-}
-
-func marshalCSSStyleChange(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCSSStyleChange(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

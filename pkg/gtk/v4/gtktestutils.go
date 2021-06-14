@@ -4,8 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: gtk4
@@ -24,12 +22,10 @@ func TestListAllTypes() []externglib.Type {
 	var _gTypes []externglib.Type
 
 	{
-		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
 		_gTypes = make([]externglib.Type, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_gTypes = externglib.Type(_cret)
+		for i := 0; i < int(_arg1); i++ {
+			_gTypes[i] = externglib.Type(src[i])
 		}
 	}
 

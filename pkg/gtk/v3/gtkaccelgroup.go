@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -19,8 +20,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_accel_flags_get_type()), F: marshalAccelFlags},
 		{T: externglib.Type(C.gtk_accel_group_get_type()), F: marshalAccelGroup},
 	})
+}
+
+// AccelFlags: accelerator flags used with gtk_accel_group_connect().
+type AccelFlags int
+
+const (
+	// AccelFlagsVisible: accelerator is visible
+	AccelFlagsVisible AccelFlags = 1
+	// AccelFlagsLocked: accelerator not removable
+	AccelFlagsLocked AccelFlags = 2
+	// AccelFlagsMask: mask
+	AccelFlagsMask AccelFlags = 7
+)
+
+func marshalAccelFlags(p uintptr) (interface{}, error) {
+	return AccelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // AccelGroupsActivate finds the first accelerator in any AccelGroup attached to
@@ -41,7 +59,7 @@ func AccelGroupsActivate(object gextras.Objector, accelKey uint, accelMods gdk.M
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -188,7 +206,7 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -231,7 +249,7 @@ type AccelGroup interface {
 	Unlock()
 }
 
-// accelGroup implements the AccelGroup interface.
+// accelGroup implements the AccelGroup class.
 type accelGroup struct {
 	gextras.Objector
 }
@@ -241,7 +259,7 @@ var _ AccelGroup = (*accelGroup)(nil)
 // WrapAccelGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAccelGroup(obj *externglib.Object) AccelGroup {
-	return AccelGroup{
+	return accelGroup{
 		Objector: obj,
 	}
 }
@@ -269,7 +287,7 @@ func (a accelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) boo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -289,7 +307,7 @@ func (a accelGroup) IsLocked() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -336,11 +354,6 @@ func WrapAccelGroupEntry(ptr unsafe.Pointer) *AccelGroupEntry {
 	return (*AccelGroupEntry)(ptr)
 }
 
-func marshalAccelGroupEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAccelGroupEntry(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (a *AccelGroupEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -358,11 +371,6 @@ func WrapAccelKey(ptr unsafe.Pointer) *AccelKey {
 	}
 
 	return (*AccelKey)(ptr)
-}
-
-func marshalAccelKey(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAccelKey(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

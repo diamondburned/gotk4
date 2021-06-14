@@ -3,15 +3,13 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -37,9 +35,11 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
 	fn := v.(TranslateFunc)
 	utf8 := fn(path)
 
+	var cret *C.gchar // out
+
 	cret = (*C.gchar)(C.CString(utf8))
 
-	return utf8
+	return cret
 }
 
 // StockAdd registers each of the stock items in @items. If an item already
@@ -84,7 +84,7 @@ func StockLookup(stockId string) (StockItem, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -103,11 +103,6 @@ func WrapStockItem(ptr unsafe.Pointer) *StockItem {
 	}
 
 	return (*StockItem)(ptr)
-}
-
-func marshalStockItem(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStockItem(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

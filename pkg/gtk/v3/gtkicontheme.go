@@ -3,16 +3,15 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -22,17 +21,74 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_icon_theme_error_get_type()), F: marshalIconThemeError},
+		{T: externglib.Type(C.gtk_icon_lookup_flags_get_type()), F: marshalIconLookupFlags},
 		{T: externglib.Type(C.gtk_icon_info_get_type()), F: marshalIconInfo},
 		{T: externglib.Type(C.gtk_icon_theme_get_type()), F: marshalIconTheme},
 	})
+}
+
+// IconThemeError: error codes for GtkIconTheme operations.
+type IconThemeError int
+
+const (
+	// IconThemeErrorNotFound: the icon specified does not exist in the theme
+	IconThemeErrorNotFound IconThemeError = 0
+	// IconThemeErrorFailed: an unspecified error occurred.
+	IconThemeErrorFailed IconThemeError = 1
+)
+
+func marshalIconThemeError(p uintptr) (interface{}, error) {
+	return IconThemeError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon()
+type IconLookupFlags int
+
+const (
+	// IconLookupFlagsNoSvg: never get SVG icons, even if gdk-pixbuf supports
+	// them. Cannot be used together with GTK_ICON_LOOKUP_FORCE_SVG.
+	IconLookupFlagsNoSvg IconLookupFlags = 1
+	// IconLookupFlagsForceSvg: get SVG icons, even if gdk-pixbuf doesn’t
+	// support them. Cannot be used together with GTK_ICON_LOOKUP_NO_SVG.
+	IconLookupFlagsForceSvg IconLookupFlags = 2
+	// IconLookupFlagsUseBuiltin: when passed to gtk_icon_theme_lookup_icon()
+	// includes builtin icons as well as files. For a builtin icon,
+	// gtk_icon_info_get_filename() is nil and you need to call
+	// gtk_icon_info_get_builtin_pixbuf().
+	IconLookupFlagsUseBuiltin IconLookupFlags = 4
+	// IconLookupFlagsGenericFallback: try to shorten icon name at '-'
+	// characters before looking at inherited themes. This flag is only
+	// supported in functions that take a single icon name. For more general
+	// fallback, see gtk_icon_theme_choose_icon(). Since 2.12.
+	IconLookupFlagsGenericFallback IconLookupFlags = 8
+	// IconLookupFlagsForceSize always get the icon scaled to the requested
+	// size. Since 2.14.
+	IconLookupFlagsForceSize IconLookupFlags = 16
+	// IconLookupFlagsForceRegular: try to always load regular icons, even when
+	// symbolic icon names are given. Since 3.14.
+	IconLookupFlagsForceRegular IconLookupFlags = 32
+	// IconLookupFlagsForceSymbolic: try to always load symbolic icons, even
+	// when regular icon names are given. Since 3.14.
+	IconLookupFlagsForceSymbolic IconLookupFlags = 64
+	// IconLookupFlagsDirLTR: try to load a variant of the icon for
+	// left-to-right text direction. Since 3.14.
+	IconLookupFlagsDirLTR IconLookupFlags = 128
+	// IconLookupFlagsDirRTL: try to load a variant of the icon for
+	// right-to-left text direction. Since 3.14.
+	IconLookupFlagsDirRTL IconLookupFlags = 256
+)
+
+func marshalIconLookupFlags(p uintptr) (interface{}, error) {
+	return IconLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // IconInfo contains information found when looking up an icon in an icon theme.
 type IconInfo interface {
 	gextras.Objector
 
-	// Free: free a IconInfo and associated information
-	Free()
+	// AttachPoints: this function is deprecated and always returns false.
+	AttachPoints() ([]gdk.Point, bool)
 	// BaseScale gets the base scale for the icon. The base scale is a scale for
 	// the icon that was specified by the icon theme creator. For instance an
 	// icon drawn for a high-dpi screen with window scale 2 for a base size of
@@ -55,31 +111,11 @@ type IconInfo interface {
 	// gtk_icon_theme_lookup_icon(), there may be no filename if a builtin icon
 	// is returned; in this case, you should use
 	// gtk_icon_info_get_builtin_pixbuf().
-	Filename() *string
+	Filename() string
 	// IsSymbolic checks if the icon is symbolic or not. This currently uses
 	// only the file name and not the file contents for determining this. This
 	// behaviour may change in the future.
 	IsSymbolic() bool
-	// LoadIconAsync: asynchronously load, render and scale an icon previously
-	// looked up from the icon theme using gtk_icon_theme_lookup_icon().
-	//
-	// For more details, see gtk_icon_info_load_icon() which is the synchronous
-	// version of this call.
-	LoadIconAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
-	// LoadSymbolicAsync: asynchronously load, render and scale a symbolic icon
-	// previously looked up from the icon theme using
-	// gtk_icon_theme_lookup_icon().
-	//
-	// For more details, see gtk_icon_info_load_symbolic() which is the
-	// synchronous version of this call.
-	LoadSymbolicAsync(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
-	// LoadSymbolicForContextAsync: asynchronously load, render and scale a
-	// symbolic icon previously looked up from the icon theme using
-	// gtk_icon_theme_lookup_icon().
-	//
-	// For more details, see gtk_icon_info_load_symbolic_for_context() which is
-	// the synchronous version of this call.
-	LoadSymbolicForContextAsync(context StyleContext, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// SetRawCoordinates sets whether the coordinates returned by
 	// gtk_icon_info_get_embedded_rect() and gtk_icon_info_get_attach_points()
 	// should be returned in their original form as specified in the icon theme,
@@ -98,7 +134,7 @@ type IconInfo interface {
 	SetRawCoordinates(rawCoordinates bool)
 }
 
-// iconInfo implements the IconInfo interface.
+// iconInfo implements the IconInfo class.
 type iconInfo struct {
 	gextras.Objector
 }
@@ -108,7 +144,7 @@ var _ IconInfo = (*iconInfo)(nil)
 // WrapIconInfo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIconInfo(obj *externglib.Object) IconInfo {
-	return IconInfo{
+	return iconInfo{
 		Objector: obj,
 	}
 }
@@ -119,13 +155,30 @@ func marshalIconInfo(p uintptr) (interface{}, error) {
 	return WrapIconInfo(obj), nil
 }
 
-// Free: free a IconInfo and associated information
-func (i iconInfo) Free() {
+// AttachPoints: this function is deprecated and always returns false.
+func (i iconInfo) AttachPoints() ([]gdk.Point, bool) {
 	var _arg0 *C.GtkIconInfo // out
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 
-	C.gtk_icon_info_free(_arg0)
+	var _arg1 *C.GdkPoint
+	var _arg2 C.gint     // in
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_icon_info_get_attach_points(_arg0, &_arg1, &_arg2)
+
+	var _points []gdk.Point
+	var _ok bool // out
+
+	_points = unsafe.Slice((*gdk.Point)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_points, func(v *[]gdk.Point) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _points, _ok
 }
 
 // BaseScale gets the base scale for the icon. The base scale is a scale for
@@ -201,7 +254,7 @@ func (i iconInfo) EmbeddedRect() (gdk.Rectangle, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -213,7 +266,7 @@ func (i iconInfo) EmbeddedRect() (gdk.Rectangle, bool) {
 // gtk_icon_theme_lookup_icon(), there may be no filename if a builtin icon
 // is returned; in this case, you should use
 // gtk_icon_info_get_builtin_pixbuf().
-func (i iconInfo) Filename() *string {
+func (i iconInfo) Filename() string {
 	var _arg0 *C.GtkIconInfo // out
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
@@ -222,7 +275,7 @@ func (i iconInfo) Filename() *string {
 
 	_cret = C.gtk_icon_info_get_filename(_arg0)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -243,80 +296,11 @@ func (i iconInfo) IsSymbolic() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// LoadIconAsync: asynchronously load, render and scale an icon previously
-// looked up from the icon theme using gtk_icon_theme_lookup_icon().
-//
-// For more details, see gtk_icon_info_load_icon() which is the synchronous
-// version of this call.
-func (i iconInfo) LoadIconAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GtkIconInfo        // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
-
-	C.gtk_icon_info_load_icon_async(_arg0, _arg1, _arg2, _arg3)
-}
-
-// LoadSymbolicAsync: asynchronously load, render and scale a symbolic icon
-// previously looked up from the icon theme using
-// gtk_icon_theme_lookup_icon().
-//
-// For more details, see gtk_icon_info_load_symbolic() which is the
-// synchronous version of this call.
-func (i iconInfo) LoadSymbolicAsync(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GtkIconInfo        // out
-	var _arg1 *C.GdkRGBA            // out
-	var _arg2 *C.GdkRGBA            // out
-	var _arg3 *C.GdkRGBA            // out
-	var _arg4 *C.GdkRGBA            // out
-	var _arg5 *C.GCancellable       // out
-	var _arg6 C.GAsyncReadyCallback // out
-	var _arg7 C.gpointer
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(fg.Native()))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(successColor.Native()))
-	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(warningColor.Native()))
-	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(errorColor.Native()))
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg7 = C.gpointer(box.Assign(callback))
-
-	C.gtk_icon_info_load_symbolic_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-}
-
-// LoadSymbolicForContextAsync: asynchronously load, render and scale a
-// symbolic icon previously looked up from the icon theme using
-// gtk_icon_theme_lookup_icon().
-//
-// For more details, see gtk_icon_info_load_symbolic_for_context() which is
-// the synchronous version of this call.
-func (i iconInfo) LoadSymbolicForContextAsync(context StyleContext, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GtkIconInfo        // out
-	var _arg1 *C.GtkStyleContext    // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.gtk_icon_info_load_symbolic_for_context_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetRawCoordinates sets whether the coordinates returned by
@@ -340,7 +324,7 @@ func (i iconInfo) SetRawCoordinates(rawCoordinates bool) {
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 	if rawCoordinates {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_icon_info_set_raw_coordinates(_arg0, _arg1)
@@ -423,7 +407,7 @@ type IconTheme interface {
 	AddResourcePath(path string)
 	// AppendSearchPath appends a directory to the search path. See
 	// gtk_icon_theme_set_search_path().
-	AppendSearchPath(path *string)
+	AppendSearchPath(path string)
 	// ExampleIconName gets the name of an icon that is representative of the
 	// current theme (for instance, to use when presenting a list of themes to
 	// the user.)
@@ -434,13 +418,13 @@ type IconTheme interface {
 	IconSizes(iconName string) []int
 	// SearchPath gets the current search path. See
 	// gtk_icon_theme_set_search_path().
-	SearchPath() []*string
+	SearchPath() []string
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
 	// PrependSearchPath prepends a directory to the search path. See
 	// gtk_icon_theme_set_search_path().
-	PrependSearchPath(path *string)
+	PrependSearchPath(path string)
 	// RescanIfNeeded checks to see if the icon theme has changed; if it has,
 	// any currently cached information is discarded and will be reloaded next
 	// time @icon_theme is accessed.
@@ -467,10 +451,10 @@ type IconTheme interface {
 	// for the icon name. (This is legacy feature, and new icons should be put
 	// into the fallback icon theme, which is called hicolor, rather than
 	// directly on the icon path.)
-	SetSearchPath(path []*string)
+	SetSearchPath(path []string)
 }
 
-// iconTheme implements the IconTheme interface.
+// iconTheme implements the IconTheme class.
 type iconTheme struct {
 	gextras.Objector
 }
@@ -480,7 +464,7 @@ var _ IconTheme = (*iconTheme)(nil)
 // WrapIconTheme wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIconTheme(obj *externglib.Object) IconTheme {
-	return IconTheme{
+	return iconTheme{
 		Objector: obj,
 	}
 }
@@ -515,7 +499,7 @@ func (i iconTheme) AddResourcePath(path string) {
 
 // AppendSearchPath appends a directory to the search path. See
 // gtk_icon_theme_set_search_path().
-func (i iconTheme) AppendSearchPath(path *string) {
+func (i iconTheme) AppendSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 
@@ -565,19 +549,17 @@ func (i iconTheme) IconSizes(iconName string) []int {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (*C.gint)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (*C.gint)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []C.gint
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_gints = make([]int, length)
 		for i := range src {
-			_gints = (int)(_cret)
+			_gints[i] = (int)(src[i])
 		}
 	}
 
@@ -586,7 +568,7 @@ func (i iconTheme) IconSizes(iconName string) []int {
 
 // SearchPath gets the current search path. See
 // gtk_icon_theme_set_search_path().
-func (i iconTheme) SearchPath() []*string {
+func (i iconTheme) SearchPath() []string {
 	var _arg0 *C.GtkIconTheme // out
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
@@ -596,16 +578,15 @@ func (i iconTheme) SearchPath() []*string {
 
 	C.gtk_icon_theme_get_search_path(_arg0, &_arg1, &_arg2)
 
-	var _path []*string
+	var _path []string
 
 	{
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
-
-		_path = make([]*string, _arg2)
-		for i := 0; i < uintptr(_arg2); i++ {
-			_path = C.GoString(_arg1)
-			defer C.free(unsafe.Pointer(_arg1))
+		src := unsafe.Slice(_arg1, _arg2)
+		defer C.free(unsafe.Pointer(_arg1))
+		_path = make([]string, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_path[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -628,7 +609,7 @@ func (i iconTheme) HasIcon(iconName string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -637,7 +618,7 @@ func (i iconTheme) HasIcon(iconName string) bool {
 
 // PrependSearchPath prepends a directory to the search path. See
 // gtk_icon_theme_set_search_path().
-func (i iconTheme) PrependSearchPath(path *string) {
+func (i iconTheme) PrependSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 
@@ -662,7 +643,7 @@ func (i iconTheme) RescanIfNeeded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -710,23 +691,21 @@ func (i iconTheme) SetScreen(screen gdk.Screen) {
 // for the icon name. (This is legacy feature, and new icons should be put
 // into the fallback icon theme, which is called hicolor, rather than
 // directly on the icon path.)
-func (i iconTheme) SetSearchPath(path []*string) {
+func (i iconTheme) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 **C.gchar
 	var _arg2 C.gint
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
 	_arg2 = C.gint(len(path))
-	_arg1 = (**C.gchar)(C.malloc(len(path) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(path)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg1), int(len(path)))
-
+		out := unsafe.Slice(_arg1, len(path))
 		for i := range path {
-			_arg1 = (*C.gchar)(C.CString(path))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(path[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

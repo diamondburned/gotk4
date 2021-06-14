@@ -6,11 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -18,12 +18,142 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.pango_stretch_get_type()), F: marshalStretch},
+		{T: externglib.Type(C.pango_style_get_type()), F: marshalStyle},
+		{T: externglib.Type(C.pango_variant_get_type()), F: marshalVariant},
+		{T: externglib.Type(C.pango_weight_get_type()), F: marshalWeight},
+		{T: externglib.Type(C.pango_font_mask_get_type()), F: marshalFontMask},
 		{T: externglib.Type(C.pango_font_get_type()), F: marshalFont},
 		{T: externglib.Type(C.pango_font_face_get_type()), F: marshalFontFace},
 		{T: externglib.Type(C.pango_font_family_get_type()), F: marshalFontFamily},
 		{T: externglib.Type(C.pango_font_description_get_type()), F: marshalFontDescription},
 		{T: externglib.Type(C.pango_font_metrics_get_type()), F: marshalFontMetrics},
 	})
+}
+
+// Stretch: an enumeration specifying the width of the font relative to other
+// designs within a family.
+type Stretch int
+
+const (
+	// StretchUltraCondensed: ultra condensed width
+	StretchUltraCondensed Stretch = 0
+	// StretchExtraCondensed: extra condensed width
+	StretchExtraCondensed Stretch = 1
+	// StretchCondensed: condensed width
+	StretchCondensed Stretch = 2
+	// StretchSemiCondensed: semi condensed width
+	StretchSemiCondensed Stretch = 3
+	// StretchNormal: the normal width
+	StretchNormal Stretch = 4
+	// StretchSemiExpanded: semi expanded width
+	StretchSemiExpanded Stretch = 5
+	// StretchExpanded: expanded width
+	StretchExpanded Stretch = 6
+	// StretchExtraExpanded: extra expanded width
+	StretchExtraExpanded Stretch = 7
+	// StretchUltraExpanded: ultra expanded width
+	StretchUltraExpanded Stretch = 8
+)
+
+func marshalStretch(p uintptr) (interface{}, error) {
+	return Stretch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Style: an enumeration specifying the various slant styles possible for a
+// font.
+type Style int
+
+const (
+	// StyleNormal: the font is upright.
+	StyleNormal Style = 0
+	// StyleOblique: the font is slanted, but in a roman style.
+	StyleOblique Style = 1
+	// StyleItalic: the font is slanted in an italic style.
+	StyleItalic Style = 2
+)
+
+func marshalStyle(p uintptr) (interface{}, error) {
+	return Style(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Variant: an enumeration specifying capitalization variant of the font.
+type Variant int
+
+const (
+	// VariantNormal: a normal font.
+	VariantNormal Variant = 0
+	// VariantSmallCaps: a font with the lower case characters replaced by
+	// smaller variants of the capital characters.
+	VariantSmallCaps Variant = 1
+)
+
+func marshalVariant(p uintptr) (interface{}, error) {
+	return Variant(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Weight: an enumeration specifying the weight (boldness) of a font.
+//
+// This is a numerical value ranging from 100 to 1000, but there are some
+// predefined values.
+type Weight int
+
+const (
+	// WeightThin: the thin weight (= 100; Since: 1.24)
+	WeightThin Weight = 100
+	// WeightUltralight: the ultralight weight (= 200)
+	WeightUltralight Weight = 200
+	// WeightLight: the light weight (= 300)
+	WeightLight Weight = 300
+	// WeightSemilight: the semilight weight (= 350; Since: 1.36.7)
+	WeightSemilight Weight = 350
+	// WeightBook: the book weight (= 380; Since: 1.24)
+	WeightBook Weight = 380
+	// WeightNormal: the default weight (= 400)
+	WeightNormal Weight = 400
+	// WeightMedium: the normal weight (= 500; Since: 1.24)
+	WeightMedium Weight = 500
+	// WeightSemibold: the semibold weight (= 600)
+	WeightSemibold Weight = 600
+	// WeightBold: the bold weight (= 700)
+	WeightBold Weight = 700
+	// WeightUltrabold: the ultrabold weight (= 800)
+	WeightUltrabold Weight = 800
+	// WeightHeavy: the heavy weight (= 900)
+	WeightHeavy Weight = 900
+	// WeightUltraheavy: the ultraheavy weight (= 1000; Since: 1.24)
+	WeightUltraheavy Weight = 1000
+)
+
+func marshalWeight(p uintptr) (interface{}, error) {
+	return Weight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FontMask: the bits in a `PangoFontMask` correspond to the set fields in a
+// `PangoFontDescription`.
+type FontMask int
+
+const (
+	// FontMaskFamily: the font family is specified.
+	FontMaskFamily FontMask = 1
+	// FontMaskStyle: the font style is specified.
+	FontMaskStyle FontMask = 2
+	// FontMaskVariant: the font variant is specified.
+	FontMaskVariant FontMask = 4
+	// FontMaskWeight: the font weight is specified.
+	FontMaskWeight FontMask = 8
+	// FontMaskStretch: the font stretch is specified.
+	FontMaskStretch FontMask = 16
+	// FontMaskSize: the font size is specified.
+	FontMaskSize FontMask = 32
+	// FontMaskGravity: the font gravity is specified (Since: 1.16.)
+	FontMaskGravity FontMask = 64
+	// FontMaskVariations: openType font variations are specified (Since: 1.42)
+	FontMaskVariations FontMask = 128
+)
+
+func marshalFontMask(p uintptr) (interface{}, error) {
+	return FontMask(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Font: a `PangoFont` is used to represent a font in a
@@ -37,7 +167,7 @@ type Font interface {
 	HasChar(wc uint32) bool
 }
 
-// font implements the Font interface.
+// font implements the Font class.
 type font struct {
 	gextras.Objector
 }
@@ -47,7 +177,7 @@ var _ Font = (*font)(nil)
 // WrapFont wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
-	return Font{
+	return font{
 		Objector: obj,
 	}
 }
@@ -74,7 +204,7 @@ func (f font) HasChar(wc uint32) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -100,10 +230,10 @@ type FontFace interface {
 	// at the location pointed to by @sizes and 0 at the location pointed to by
 	// @n_sizes. The sizes returned are in Pango units and are sorted in
 	// ascending order.
-	ListSizes() []*int
+	ListSizes() []int
 }
 
-// fontFace implements the FontFace interface.
+// fontFace implements the FontFace class.
 type fontFace struct {
 	gextras.Objector
 }
@@ -113,7 +243,7 @@ var _ FontFace = (*fontFace)(nil)
 // WrapFontFace wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontFace(obj *externglib.Object) FontFace {
-	return FontFace{
+	return fontFace{
 		Objector: obj,
 	}
 }
@@ -157,7 +287,7 @@ func (f fontFace) IsSynthesized() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -170,7 +300,7 @@ func (f fontFace) IsSynthesized() bool {
 // at the location pointed to by @sizes and 0 at the location pointed to by
 // @n_sizes. The sizes returned are in Pango units and are sorted in
 // ascending order.
-func (f fontFace) ListSizes() []*int {
+func (f fontFace) ListSizes() []int {
 	var _arg0 *C.PangoFontFace // out
 
 	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
@@ -180,11 +310,11 @@ func (f fontFace) ListSizes() []*int {
 
 	C.pango_font_face_list_sizes(_arg0, &_arg1, &_arg2)
 
-	var _sizes []*int
+	var _sizes []int
 
-	ptr.SetSlice(unsafe.Pointer(&_sizes), unsafe.Pointer(_arg1), int(_arg2))
-	runtime.SetFinalizer(&_sizes, func(v *[]*int) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+	_sizes = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_sizes, func(v *[]int) {
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 
 	return _sizes
@@ -223,7 +353,7 @@ type FontFamily interface {
 	IsVariable() bool
 }
 
-// fontFamily implements the FontFamily interface.
+// fontFamily implements the FontFamily class.
 type fontFamily struct {
 	gextras.Objector
 }
@@ -233,7 +363,7 @@ var _ FontFamily = (*fontFamily)(nil)
 // WrapFontFamily wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontFamily(obj *externglib.Object) FontFamily {
-	return FontFamily{
+	return fontFamily{
 		Objector: obj,
 	}
 }
@@ -289,7 +419,7 @@ func (f fontFamily) IsMonospace() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -309,7 +439,7 @@ func (f fontFamily) IsVariable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -372,7 +502,7 @@ func (d *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *FontD
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -398,7 +528,7 @@ func (d *FontDescription) Equal(desc2 *FontDescription) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -468,7 +598,7 @@ func (d *FontDescription) SizeIsAbsolute() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -530,7 +660,7 @@ func (d *FontDescription) Merge(descToMerge *FontDescription, replaceExisting bo
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(descToMerge.Native()))
 	if replaceExisting {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.pango_font_description_merge(_arg0, _arg1, _arg2)
@@ -551,7 +681,7 @@ func (d *FontDescription) MergeStatic(descToMerge *FontDescription, replaceExist
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(descToMerge.Native()))
 	if replaceExisting {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.pango_font_description_merge_static(_arg0, _arg1, _arg2)

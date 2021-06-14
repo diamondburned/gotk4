@@ -24,11 +24,6 @@ func (ng *NamespaceGenerator) TypeTree() TypeTree {
 	return TypeTree{res: ng, Level: -1}
 }
 
-// TypeTree returns a new type tree for resolving.
-func (fg *FileGenerator) TypeTree() TypeTree {
-	return TypeTree{res: fg, Level: -1}
-}
-
 func (tree *TypeTree) reset() {
 	// Zero out the fields to prevent dangling pointers.
 	for i := range tree.Requires {
@@ -61,11 +56,11 @@ func (tree *TypeTree) Resolve(toplevel string) bool {
 // resolved top-level type.
 func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 	tree.reset()
+	tree.Resolved = toplevel
+
 	if tree.Level == 0 {
 		return true
 	}
-
-	tree.Resolved = toplevel
 
 	// Edge cases for builtin types.
 	if tree.Resolved.Builtin != nil {
@@ -77,6 +72,10 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 		}
 
 		return true
+	}
+
+	if !tree.Resolved.Extern.Result.IsIntrospectable() {
+		return false
 	}
 
 	switch {
@@ -167,6 +166,14 @@ func (tree *TypeTree) resolveParents(parents ...*ResolvedType) bool {
 	return true
 }
 
+// ImportChildren imports the type tree's public children into the given file
+// generator.
+func (tree *TypeTree) ImportChildren(fg *FileGenerator) {
+	for _, req := range tree.Requires {
+		fg.importPubl(req.Resolved)
+	}
+}
+
 // PublicChildren returns the list of the toplevel type's children as Go
 // exported type names. The namespaces are appropriately prepended if needed.
 func (tree *TypeTree) PublicChildren() []string {
@@ -191,7 +198,7 @@ func (tree *TypeTree) PublicChildren() []string {
 //
 func (tree *TypeTree) Wrap(obj string) string {
 	p := pen.NewPiece()
-	p.Write(tree.Resolved.PublicType(false)).Char('{')
+	p.Write(tree.Resolved.ImplType(false)).Char('{')
 	p.EmptyLine()
 
 	for _, typ := range tree.Requires {

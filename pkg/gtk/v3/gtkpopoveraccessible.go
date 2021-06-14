@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -24,7 +26,7 @@ type PopoverAccessible interface {
 	ContainerAccessible
 }
 
-// popoverAccessible implements the PopoverAccessible interface.
+// popoverAccessible implements the PopoverAccessible class.
 type popoverAccessible struct {
 	ContainerAccessible
 }
@@ -34,7 +36,7 @@ var _ PopoverAccessible = (*popoverAccessible)(nil)
 // WrapPopoverAccessible wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPopoverAccessible(obj *externglib.Object) PopoverAccessible {
-	return PopoverAccessible{
+	return popoverAccessible{
 		ContainerAccessible: WrapContainerAccessible(obj),
 	}
 }

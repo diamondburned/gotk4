@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -124,7 +124,7 @@ type CheckButton interface {
 	SetUseUnderline(setting bool)
 }
 
-// checkButton implements the CheckButton interface.
+// checkButton implements the CheckButton class.
 type checkButton struct {
 	Widget
 	Accessible
@@ -138,7 +138,7 @@ var _ CheckButton = (*checkButton)(nil)
 // WrapCheckButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCheckButton(obj *externglib.Object) CheckButton {
-	return CheckButton{
+	return checkButton{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Actionable:       WrapActionable(obj),
@@ -165,7 +165,7 @@ func (s checkButton) Active() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -185,7 +185,7 @@ func (c checkButton) Inconsistent() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -221,7 +221,7 @@ func (s checkButton) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -235,7 +235,7 @@ func (s checkButton) SetActive(setting bool) {
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_check_button_set_active(_arg0, _arg1)
@@ -276,7 +276,7 @@ func (c checkButton) SetInconsistent(inconsistent bool) {
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(c.Native()))
 	if inconsistent {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_check_button_set_inconsistent(_arg0, _arg1)
@@ -309,7 +309,7 @@ func (s checkButton) SetUseUnderline(setting bool) {
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_check_button_set_use_underline(_arg0, _arg1)

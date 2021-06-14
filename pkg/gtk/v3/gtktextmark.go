@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -69,7 +72,7 @@ type TextMark interface {
 	SetVisible(setting bool)
 }
 
-// textMark implements the TextMark interface.
+// textMark implements the TextMark class.
 type textMark struct {
 	gextras.Objector
 }
@@ -79,7 +82,7 @@ var _ TextMark = (*textMark)(nil)
 // WrapTextMark wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextMark(obj *externglib.Object) TextMark {
-	return TextMark{
+	return textMark{
 		Objector: obj,
 	}
 }
@@ -104,7 +107,7 @@ func (m textMark) Deleted() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -123,7 +126,7 @@ func (m textMark) LeftGravity() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -160,7 +163,7 @@ func (m textMark) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -178,7 +181,7 @@ func (m textMark) SetVisible(setting bool) {
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_mark_set_visible(_arg0, _arg1)

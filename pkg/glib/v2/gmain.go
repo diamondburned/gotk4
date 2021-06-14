@@ -3,14 +3,13 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -20,7 +19,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_main_context_get_type()), F: marshalMainContext},
 		{T: externglib.Type(C.g_main_loop_get_type()), F: marshalMainLoop},
-		{T: externglib.Type(C.g_source_get_type()), F: marshalSource},
 	})
 }
 
@@ -42,11 +40,13 @@ func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
 	fn := v.(SourceFunc)
 	ok := fn()
 
+	var cret C.gboolean // out
+
 	if ok {
-		cret = C.gboolean(1)
+		cret = C.TRUE
 	}
 
-	return ok
+	return cret
 }
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
@@ -113,7 +113,7 @@ func IdleRemoveByData(data interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -235,7 +235,7 @@ func (c *MainContext) Acquire() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -281,7 +281,7 @@ func (c *MainContext) Check(maxPriority int, fds []PollFD) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -300,37 +300,6 @@ func (c *MainContext) Dispatch() {
 	C.g_main_context_dispatch(_arg0)
 }
 
-// Invoke invokes a function in such a way that @context is owned during the
-// invocation of @function.
-//
-// If @context is nil then the global default main context — as returned by
-// g_main_context_default() — is used.
-//
-// If @context is owned by the current thread, @function is called directly.
-// Otherwise, if @context is the thread-default main context of the current
-// thread and g_main_context_acquire() succeeds, then @function is called and
-// g_main_context_release() is called afterwards.
-//
-// In any other case, an idle source is created to call @function and that
-// source is attached to @context (presumably to be run in another thread). The
-// idle source is attached with PRIORITY_DEFAULT priority. If you want a
-// different priority, use g_main_context_invoke_full().
-//
-// Note that, as with normal idle functions, @function should probably return
-// false. If it returns true, it will be continuously run in a loop (and may
-// prevent this call from returning).
-func (c *MainContext) Invoke(function SourceFunc) {
-	var _arg0 *C.GMainContext // out
-	var _arg1 C.GSourceFunc   // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_SourceFunc)
-	_arg2 = C.gpointer(box.Assign(function))
-
-	C.g_main_context_invoke(_arg0, _arg1, _arg2)
-}
-
 // IsOwner determines whether this thread holds the (recursive) ownership of
 // this Context. This is useful to know before waiting on another thread that
 // may be blocking to get ownership of @context.
@@ -345,7 +314,7 @@ func (c *MainContext) IsOwner() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -369,7 +338,7 @@ func (c *MainContext) Iteration(mayBlock bool) bool {
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 	if mayBlock {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -378,7 +347,7 @@ func (c *MainContext) Iteration(mayBlock bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -397,7 +366,7 @@ func (c *MainContext) Pending() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -433,7 +402,7 @@ func (c *MainContext) Prepare() (int, bool) {
 	var _ok bool      // out
 
 	_priority = (int)(_arg1)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -576,7 +545,7 @@ func (l *MainLoop) IsRunning() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -615,503 +584,4 @@ func (l *MainLoop) Unref() {
 	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
 
 	C.g_main_loop_unref(_arg0)
-}
-
-// Source: the `GSource` struct is an opaque data type representing an event
-// source.
-type Source struct {
-	native C.GSource
-}
-
-// WrapSource wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSource(ptr unsafe.Pointer) *Source {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Source)(ptr)
-}
-
-func marshalSource(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSource(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *Source) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
-// AddChildSource adds @child_source to @source as a "polled" source; when
-// @source is added to a Context, @child_source will be automatically added with
-// the same priority, when @child_source is triggered, it will cause @source to
-// dispatch (in addition to calling its own callback), and when @source is
-// destroyed, it will destroy @child_source as well. (@source will also still be
-// dispatched if its own prepare/check functions indicate that it is ready.)
-//
-// If you don't need @child_source to do anything on its own when it triggers,
-// you can call g_source_set_dummy_callback() on it to set a callback that does
-// nothing (except return true if appropriate).
-//
-// @source will hold a reference on @child_source while @child_source is
-// attached to it.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-func (s *Source) AddChildSource(childSource *Source) {
-	var _arg0 *C.GSource // out
-	var _arg1 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GSource)(unsafe.Pointer(childSource.Native()))
-
-	C.g_source_add_child_source(_arg0, _arg1)
-}
-
-// AddPoll adds a file descriptor to the set of file descriptors polled for this
-// source. This is usually combined with g_source_new() to add an event source.
-// The event source's check function will typically test the @revents field in
-// the FD struct and return true if events need to be processed.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// Using this API forces the linear scanning of event sources on each main loop
-// iteration. Newly-written event sources should try to use
-// g_source_add_unix_fd() instead of this API.
-func (s *Source) AddPoll(fd *PollFD) {
-	var _arg0 *C.GSource // out
-	var _arg1 *C.GPollFD // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd.Native()))
-
-	C.g_source_add_poll(_arg0, _arg1)
-}
-
-// AddUnixFd monitors @fd for the IO events in @events.
-//
-// The tag returned by this function can be used to remove or modify the
-// monitoring of the fd using g_source_remove_unix_fd() or
-// g_source_modify_unix_fd().
-//
-// It is not necessary to remove the fd before destroying the source; it will be
-// cleaned up automatically.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// As the name suggests, this function is not available on Windows.
-func (s *Source) AddUnixFd(fd int, events IOCondition) interface{} {
-	var _arg0 *C.GSource     // out
-	var _arg1 C.gint         // out
-	var _arg2 C.GIOCondition // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(fd)
-	_arg2 = (C.GIOCondition)(events)
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_source_add_unix_fd(_arg0, _arg1, _arg2)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
-}
-
-// Attach adds a #GSource to a @context so that it will be executed within that
-// context. Remove it by calling g_source_destroy().
-//
-// This function is safe to call from any thread, regardless of which thread the
-// @context is running in.
-func (s *Source) Attach(context *MainContext) uint {
-	var _arg0 *C.GSource      // out
-	var _arg1 *C.GMainContext // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GMainContext)(unsafe.Pointer(context.Native()))
-
-	var _cret C.guint // in
-
-	_cret = C.g_source_attach(_arg0, _arg1)
-
-	var _guint uint // out
-
-	_guint = (uint)(_cret)
-
-	return _guint
-}
-
-// Destroy removes a source from its Context, if any, and mark it as destroyed.
-// The source cannot be subsequently added to another context. It is safe to
-// call this on sources which have already been removed from their context.
-//
-// This does not unref the #GSource: if you still hold a reference, use
-// g_source_unref() to drop it.
-//
-// This function is safe to call from any thread, regardless of which thread the
-// Context is running in.
-func (s *Source) Destroy() {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	C.g_source_destroy(_arg0)
-}
-
-// CanRecurse checks whether a source is allowed to be called recursively. see
-// g_source_set_can_recurse().
-func (s *Source) CanRecurse() bool {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.g_source_get_can_recurse(_arg0)
-
-	var _ok bool // out
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// CurrentTime: this function ignores @source and is otherwise the same as
-// g_get_current_time().
-func (s *Source) CurrentTime(timeval *TimeVal) {
-	var _arg0 *C.GSource  // out
-	var _arg1 *C.GTimeVal // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(timeval.Native()))
-
-	C.g_source_get_current_time(_arg0, _arg1)
-}
-
-// ID returns the numeric ID for a particular source. The ID of a source is a
-// positive integer which is unique within a particular main loop context. The
-// reverse mapping from ID to source is done by
-// g_main_context_find_source_by_id().
-//
-// You can only call this function while the source is associated to a Context
-// instance; calling this function before g_source_attach() or after
-// g_source_destroy() yields undefined behavior. The ID returned is unique
-// within the Context instance passed to g_source_attach().
-func (s *Source) ID() uint {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
-
-	_cret = C.g_source_get_id(_arg0)
-
-	var _guint uint // out
-
-	_guint = (uint)(_cret)
-
-	return _guint
-}
-
-// Name gets a name for the source, used in debugging and profiling. The name
-// may be LL if it has never been set with g_source_set_name().
-func (s *Source) Name() string {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
-
-	_cret = C.g_source_get_name(_arg0)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-
-	return _utf8
-}
-
-// Priority gets the priority of a source.
-func (s *Source) Priority() int {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
-
-	_cret = C.g_source_get_priority(_arg0)
-
-	var _gint int // out
-
-	_gint = (int)(_cret)
-
-	return _gint
-}
-
-// ReadyTime gets the "ready time" of @source, as set by
-// g_source_set_ready_time().
-//
-// Any time before the current monotonic time (including 0) is an indication
-// that the source will fire immediately.
-func (s *Source) ReadyTime() int64 {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint64 // in
-
-	_cret = C.g_source_get_ready_time(_arg0)
-
-	var _gint64 int64 // out
-
-	_gint64 = (int64)(_cret)
-
-	return _gint64
-}
-
-// Time gets the time to be used when checking this source. The advantage of
-// calling this function over calling g_get_monotonic_time() directly is that
-// when checking multiple sources, GLib can cache a single value instead of
-// having to repeatedly get the system monotonic time.
-//
-// The time here is the system monotonic time, if available, or some other
-// reasonable alternative otherwise. See g_get_monotonic_time().
-func (s *Source) Time() int64 {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint64 // in
-
-	_cret = C.g_source_get_time(_arg0)
-
-	var _gint64 int64 // out
-
-	_gint64 = (int64)(_cret)
-
-	return _gint64
-}
-
-// IsDestroyed returns whether @source has been destroyed.
-//
-// This is important when you operate upon your objects from within idle
-// handlers, but may have freed the object before the dispatch of your idle
-// handler.
-//
-//    static gboolean
-//    idle_callback (gpointer data)
-//    {
-//      SomeWidget *self = data;
-//
-//      g_mutex_lock (&self->idle_id_mutex);
-//      if (!g_source_is_destroyed (g_main_current_source ()))
-//        {
-//          // do stuff with self
-//        }
-//      g_mutex_unlock (&self->idle_id_mutex);
-//
-//      return FALSE;
-//    }
-//
-// Calls to this function from a thread other than the one acquired by the
-// Context the #GSource is attached to are typically redundant, as the source
-// could be destroyed immediately after this function returns. However, once a
-// source is destroyed it cannot be un-destroyed, so this function can be used
-// for opportunistic checks from any thread.
-func (s *Source) IsDestroyed() bool {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
-
-	_cret = C.g_source_is_destroyed(_arg0)
-
-	var _ok bool // out
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ModifyUnixFd updates the event mask to watch for the fd identified by @tag.
-//
-// @tag is the tag returned from g_source_add_unix_fd().
-//
-// If you want to remove a fd, don't set its event mask to zero. Instead, call
-// g_source_remove_unix_fd().
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// As the name suggests, this function is not available on Windows.
-func (s *Source) ModifyUnixFd(tag interface{}, newEvents IOCondition) {
-	var _arg0 *C.GSource     // out
-	var _arg1 C.gpointer     // out
-	var _arg2 C.GIOCondition // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gpointer(tag)
-	_arg2 = (C.GIOCondition)(newEvents)
-
-	C.g_source_modify_unix_fd(_arg0, _arg1, _arg2)
-}
-
-// RemoveChildSource detaches @child_source from @source and destroys it.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-func (s *Source) RemoveChildSource(childSource *Source) {
-	var _arg0 *C.GSource // out
-	var _arg1 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GSource)(unsafe.Pointer(childSource.Native()))
-
-	C.g_source_remove_child_source(_arg0, _arg1)
-}
-
-// RemovePoll removes a file descriptor from the set of file descriptors polled
-// for this source.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-func (s *Source) RemovePoll(fd *PollFD) {
-	var _arg0 *C.GSource // out
-	var _arg1 *C.GPollFD // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd.Native()))
-
-	C.g_source_remove_poll(_arg0, _arg1)
-}
-
-// RemoveUnixFd reverses the effect of a previous call to
-// g_source_add_unix_fd().
-//
-// You only need to call this if you want to remove an fd from being watched
-// while keeping the same source around. In the normal case you will just want
-// to destroy the source.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// As the name suggests, this function is not available on Windows.
-func (s *Source) RemoveUnixFd(tag interface{}) {
-	var _arg0 *C.GSource // out
-	var _arg1 C.gpointer // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gpointer(tag)
-
-	C.g_source_remove_unix_fd(_arg0, _arg1)
-}
-
-// SetCanRecurse sets whether a source can be called recursively. If
-// @can_recurse is true, then while the source is being dispatched then this
-// source will be processed normally. Otherwise, all processing of this source
-// is blocked until the dispatch function returns.
-func (s *Source) SetCanRecurse(canRecurse bool) {
-	var _arg0 *C.GSource // out
-	var _arg1 C.gboolean // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	if canRecurse {
-		_arg1 = C.gboolean(1)
-	}
-
-	C.g_source_set_can_recurse(_arg0, _arg1)
-}
-
-// SetName sets a name for the source, used in debugging and profiling. The name
-// defaults to LL.
-//
-// The source name should describe in a human-readable way what the source does.
-// For example, "X11 event queue" or "GTK+ repaint idle handler" or whatever it
-// is.
-//
-// It is permitted to call this function multiple times, but is not recommended
-// due to the potential performance impact. For example, one could change the
-// name in the "check" function of a Funcs to include details like the event
-// type in the source name.
-//
-// Use caution if changing the name while another thread may be accessing it
-// with g_source_get_name(); that function does not copy the value, and changing
-// the value will free it while the other thread may be attempting to use it.
-func (s *Source) SetName(name string) {
-	var _arg0 *C.GSource // out
-	var _arg1 *C.char    // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.g_source_set_name(_arg0, _arg1)
-}
-
-// SetPriority sets the priority of a source. While the main loop is being run,
-// a source will be dispatched if it is ready to be dispatched and no sources at
-// a higher (numerically smaller) priority are ready to be dispatched.
-//
-// A child source always has the same priority as its parent. It is not
-// permitted to change the priority of a source once it has been added as a
-// child of another source.
-func (s *Source) SetPriority(priority int) {
-	var _arg0 *C.GSource // out
-	var _arg1 C.gint     // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(priority)
-
-	C.g_source_set_priority(_arg0, _arg1)
-}
-
-// SetReadyTime sets a #GSource to be dispatched when the given monotonic time
-// is reached (or passed). If the monotonic time is in the past (as it always
-// will be if @ready_time is 0) then the source will be dispatched immediately.
-//
-// If @ready_time is -1 then the source is never woken up on the basis of the
-// passage of time.
-//
-// Dispatching the source does not reset the ready time. You should do so
-// yourself, from the source dispatch function.
-//
-// Note that if you have a pair of sources where the ready time of one suggests
-// that it will be delivered first but the priority for the other suggests that
-// it would be delivered first, and the ready time for both sources is reached
-// during the same main context iteration, then the order of dispatch is
-// undefined.
-//
-// It is a no-op to call this function on a #GSource which has already been
-// destroyed with g_source_destroy().
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-func (s *Source) SetReadyTime(readyTime int64) {
-	var _arg0 *C.GSource // out
-	var _arg1 C.gint64   // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint64(readyTime)
-
-	C.g_source_set_ready_time(_arg0, _arg1)
-}
-
-// Unref decreases the reference count of a source by one. If the resulting
-// reference count is zero the source and associated memory will be destroyed.
-func (s *Source) Unref() {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
-
-	C.g_source_unref(_arg0)
 }

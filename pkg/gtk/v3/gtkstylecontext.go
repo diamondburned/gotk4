@@ -5,13 +5,14 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -21,8 +22,27 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_style_context_print_flags_get_type()), F: marshalStyleContextPrintFlags},
 		{T: externglib.Type(C.gtk_style_context_get_type()), F: marshalStyleContext},
 	})
+}
+
+// StyleContextPrintFlags flags that modify the behavior of
+// gtk_style_context_to_string(). New values may be added to this enumeration.
+type StyleContextPrintFlags int
+
+const (
+	StyleContextPrintFlagsNone StyleContextPrintFlags = 0
+	// StyleContextPrintFlagsRecurse: print the entire tree of CSS nodes
+	// starting at the style context's node
+	StyleContextPrintFlagsRecurse StyleContextPrintFlags = 1
+	// StyleContextPrintFlagsShowStyle: show the values of the CSS properties
+	// for each node
+	StyleContextPrintFlagsShowStyle StyleContextPrintFlags = 2
+)
+
+func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
+	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // DrawInsertionCursor draws a text caret on @cr at @location. This is not a
@@ -40,11 +60,11 @@ func DrawInsertionCursor(widget Widget, cr *cairo.Context, location *gdk.Rectang
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(location.Native()))
 	if isPrimary {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 	_arg5 = (C.GtkTextDirection)(direction)
 	if drawArrow {
-		_arg6 = C.gboolean(1)
+		_arg6 = C.TRUE
 	}
 
 	C.gtk_draw_insertion_cursor(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -372,7 +392,7 @@ type StyleContext interface {
 	String(flags StyleContextPrintFlags) string
 }
 
-// styleContext implements the StyleContext interface.
+// styleContext implements the StyleContext class.
 type styleContext struct {
 	gextras.Objector
 }
@@ -382,7 +402,7 @@ var _ StyleContext = (*styleContext)(nil)
 // WrapStyleContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStyleContext(obj *externglib.Object) StyleContext {
-	return StyleContext{
+	return styleContext{
 		Objector: obj,
 	}
 }
@@ -680,7 +700,7 @@ func (c styleContext) HasClass(className string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -714,7 +734,7 @@ func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -761,7 +781,7 @@ func (c styleContext) NotifyStateChange(window gdk.Window, regionId interface{},
 	_arg2 = C.gpointer(regionId)
 	_arg3 = (C.GtkStateType)(state)
 	if stateValue {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	C.gtk_style_context_notify_state_change(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -1027,7 +1047,7 @@ func (c styleContext) StateIsRunning(state StateType) (float64, bool) {
 	var _ok bool          // out
 
 	_progress = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

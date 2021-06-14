@@ -6,27 +6,15 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
 import "C"
-
-// SignalCMarshaller: this is the signature of marshaller functions, required to
-// marshall arrays of parameter values to signal emissions into C language
-// callback invocations. It is merely an alias to Marshal since the #GClosure
-// mechanism takes over responsibility of actual function invocation for the
-// signal system.
-type SignalCMarshaller ClosureMarshal
-
-// SignalCVaMarshaller: this is the signature of va_list marshaller functions,
-// an optional marshaller that can be used in some situations to avoid
-// marshalling the signal argument into GValues.
-type SignalCVaMarshaller VaClosureMarshal
 
 // ConnectFlags: the connection flags are used to specify the behaviour of a
 // signal's connection.
@@ -150,7 +138,7 @@ func SignalAccumulatorFirstWins(ihint *SignalInvocationHint, returnAccu **extern
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -180,7 +168,7 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu **exte
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -236,7 +224,7 @@ func SignalHandlerIsConnected(instance gextras.Objector, handlerId uint32) bool 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -295,7 +283,7 @@ func SignalIsValidName(name string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -317,9 +305,9 @@ func SignalListIds(itype externglib.Type) []uint {
 
 	var _guints []uint
 
-	ptr.SetSlice(unsafe.Pointer(&_guints), unsafe.Pointer(_cret), int(_arg2))
+	_guints = unsafe.Slice((*uint)(unsafe.Pointer(_cret)), _arg2)
 	runtime.SetFinalizer(&_guints, func(v *[]uint) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 
 	return _guints
@@ -433,11 +421,6 @@ func WrapSignalInvocationHint(ptr unsafe.Pointer) *SignalInvocationHint {
 	return (*SignalInvocationHint)(ptr)
 }
 
-func marshalSignalInvocationHint(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSignalInvocationHint(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (s *SignalInvocationHint) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
@@ -464,11 +447,6 @@ func WrapSignalQuery(ptr unsafe.Pointer) *SignalQuery {
 	}
 
 	return (*SignalQuery)(ptr)
-}
-
-func marshalSignalQuery(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSignalQuery(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

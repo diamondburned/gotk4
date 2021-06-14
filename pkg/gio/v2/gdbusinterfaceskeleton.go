@@ -5,13 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -23,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -37,14 +37,6 @@ type DBusInterfaceSkeleton interface {
 	gextras.Objector
 	DBusInterface
 
-	// Export exports @interface_ at @object_path on @connection.
-	//
-	// This can be called multiple times to export the same @interface_ onto
-	// multiple connections however the @object_path provided must be the same
-	// for all connections.
-	//
-	// Use g_dbus_interface_skeleton_unexport() to unexport the object.
-	Export(connection DBusConnection, objectPath string) error
 	// Flush: if @interface_ has outstanding changes, request for these changes
 	// to be emitted immediately.
 	//
@@ -72,7 +64,7 @@ type DBusInterfaceSkeleton interface {
 	UnexportFromConnection(connection DBusConnection)
 }
 
-// dBusInterfaceSkeleton implements the DBusInterfaceSkeleton interface.
+// dBusInterfaceSkeleton implements the DBusInterfaceSkeleton class.
 type dBusInterfaceSkeleton struct {
 	gextras.Objector
 	DBusInterface
@@ -83,7 +75,7 @@ var _ DBusInterfaceSkeleton = (*dBusInterfaceSkeleton)(nil)
 // WrapDBusInterfaceSkeleton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeleton {
-	return DBusInterfaceSkeleton{
+	return dBusInterfaceSkeleton{
 		Objector:      obj,
 		DBusInterface: WrapDBusInterface(obj),
 	}
@@ -93,34 +85,6 @@ func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusInterfaceSkeleton(obj), nil
-}
-
-// Export exports @interface_ at @object_path on @connection.
-//
-// This can be called multiple times to export the same @interface_ onto
-// multiple connections however the @object_path provided must be the same
-// for all connections.
-//
-// Use g_dbus_interface_skeleton_unexport() to unexport the object.
-func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) error {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _arg1 *C.GDBusConnection        // out
-	var _arg2 *C.gchar                  // out
-
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cerr *C.GError // in
-
-	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // Flush: if @interface_ has outstanding changes, request for these changes
@@ -169,7 +133,7 @@ func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

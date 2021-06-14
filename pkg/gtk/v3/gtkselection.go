@@ -3,16 +3,14 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -22,9 +20,33 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_target_flags_get_type()), F: marshalTargetFlags},
 		{T: externglib.Type(C.gtk_target_entry_get_type()), F: marshalTargetEntry},
 		{T: externglib.Type(C.gtk_target_list_get_type()), F: marshalTargetList},
 	})
+}
+
+// TargetFlags: the TargetFlags enumeration is used to specify constraints on a
+// TargetEntry.
+type TargetFlags int
+
+const (
+	// TargetFlagsSameApp: if this is set, the target will only be selected for
+	// drags within a single application.
+	TargetFlagsSameApp TargetFlags = 1
+	// TargetFlagsSameWidget: if this is set, the target will only be selected
+	// for drags within a single widget.
+	TargetFlagsSameWidget TargetFlags = 2
+	// TargetFlagsOtherApp: if this is set, the target will not be selected for
+	// drags within a single application.
+	TargetFlagsOtherApp TargetFlags = 4
+	// TargetFlagsOtherWidget: if this is set, the target will not be selected
+	// for drags withing a single widget.
+	TargetFlagsOtherWidget TargetFlags = 8
+)
+
+func marshalTargetFlags(p uintptr) (interface{}, error) {
+	return TargetFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // SelectionAddTarget appends a specified target to the list of supported
@@ -90,7 +112,7 @@ func SelectionConvert(widget Widget, selection gdk.Atom, target gdk.Atom, time_ 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -114,7 +136,7 @@ func SelectionOwnerSet(widget Widget, selection gdk.Atom, time_ uint32) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -140,7 +162,7 @@ func SelectionOwnerSetForDisplay(display gdk.Display, widget Widget, selection g
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -180,7 +202,7 @@ func TargetsIncludeImage(targets []gdk.Atom, writable bool) bool {
 	_arg2 = C.gint(len(targets))
 	_arg1 = (*C.GdkAtom)(unsafe.Pointer(&targets[0]))
 	if writable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -189,7 +211,7 @@ func TargetsIncludeImage(targets []gdk.Atom, writable bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -213,7 +235,7 @@ func TargetsIncludeRichText(targets []gdk.Atom, buffer TextBuffer) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -235,7 +257,7 @@ func TargetsIncludeText(targets []gdk.Atom) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -257,7 +279,7 @@ func TargetsIncludeURI(targets []gdk.Atom) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -373,7 +395,7 @@ func (l *TargetList) AddImageTargets(info uint, writable bool) {
 	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.guint(info)
 	if writable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_target_list_add_image_targets(_arg0, _arg1, _arg2)
@@ -392,7 +414,7 @@ func (l *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer T
 	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.guint(info)
 	if deserializable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
@@ -453,7 +475,7 @@ func (l *TargetList) Find(target gdk.Atom) (uint, bool) {
 	var _ok bool   // out
 
 	_info = (uint)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -495,11 +517,6 @@ func WrapTargetPair(ptr unsafe.Pointer) *TargetPair {
 	}
 
 	return (*TargetPair)(ptr)
-}
-
-func marshalTargetPair(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTargetPair(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

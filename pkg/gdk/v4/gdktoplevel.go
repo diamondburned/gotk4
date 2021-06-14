@@ -5,20 +5,112 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
+		{T: externglib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
+		{T: externglib.Type(C.gdk_toplevel_state_get_type()), F: marshalToplevelState},
 		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalToplevel},
 	})
+}
+
+// FullscreenMode indicates which monitor a surface should span over when in
+// fullscreen mode.
+type FullscreenMode int
+
+const (
+	// FullscreenModeCurrentMonitor: fullscreen on current monitor only.
+	FullscreenModeCurrentMonitor FullscreenMode = 0
+	// FullscreenModeAllMonitors: span across all monitors when fullscreen.
+	FullscreenModeAllMonitors FullscreenMode = 1
+)
+
+func marshalFullscreenMode(p uintptr) (interface{}, error) {
+	return FullscreenMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SurfaceEdge determines a surface edge or corner.
+type SurfaceEdge int
+
+const (
+	// SurfaceEdgeNorthWest: the top left corner.
+	SurfaceEdgeNorthWest SurfaceEdge = 0
+	// SurfaceEdgeNorth: the top edge.
+	SurfaceEdgeNorth SurfaceEdge = 1
+	// SurfaceEdgeNorthEast: the top right corner.
+	SurfaceEdgeNorthEast SurfaceEdge = 2
+	// SurfaceEdgeWest: the left edge.
+	SurfaceEdgeWest SurfaceEdge = 3
+	// SurfaceEdgeEast: the right edge.
+	SurfaceEdgeEast SurfaceEdge = 4
+	// SurfaceEdgeSouthWest: the lower left corner.
+	SurfaceEdgeSouthWest SurfaceEdge = 5
+	// SurfaceEdgeSouth: the lower edge.
+	SurfaceEdgeSouth SurfaceEdge = 6
+	// SurfaceEdgeSouthEast: the lower right corner.
+	SurfaceEdgeSouthEast SurfaceEdge = 7
+)
+
+func marshalSurfaceEdge(p uintptr) (interface{}, error) {
+	return SurfaceEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ToplevelState specifies the state of a toplevel surface.
+//
+// On platforms that support information about individual edges, the
+// GDK_TOPLEVEL_STATE_TILED state will be set whenever any of the individual
+// tiled states is set. On platforms that lack that support, the tiled state
+// will give an indication of tiledness without any of the per-edge states being
+// set.
+type ToplevelState int
+
+const (
+	// ToplevelStateMinimized: the surface is minimized
+	ToplevelStateMinimized ToplevelState = 1
+	// ToplevelStateMaximized: the surface is maximized
+	ToplevelStateMaximized ToplevelState = 2
+	// ToplevelStateSticky: the surface is sticky
+	ToplevelStateSticky ToplevelState = 4
+	// ToplevelStateFullscreen: the surface is maximized without decorations
+	ToplevelStateFullscreen ToplevelState = 8
+	// ToplevelStateAbove: the surface is kept above other surfaces
+	ToplevelStateAbove ToplevelState = 16
+	// ToplevelStateBelow: the surface is kept below other surfaces
+	ToplevelStateBelow ToplevelState = 32
+	// ToplevelStateFocused: the surface is presented as focused (with active
+	// decorations)
+	ToplevelStateFocused ToplevelState = 64
+	// ToplevelStateTiled: the surface is in a tiled state
+	ToplevelStateTiled ToplevelState = 128
+	// ToplevelStateTopTiled: whether the top edge is tiled
+	ToplevelStateTopTiled ToplevelState = 256
+	// ToplevelStateTopResizable: whether the top edge is resizable
+	ToplevelStateTopResizable ToplevelState = 512
+	// ToplevelStateRightTiled: whether the right edge is tiled
+	ToplevelStateRightTiled ToplevelState = 1024
+	// ToplevelStateRightResizable: whether the right edge is resizable
+	ToplevelStateRightResizable ToplevelState = 2048
+	// ToplevelStateBottomTiled: whether the bottom edge is tiled
+	ToplevelStateBottomTiled ToplevelState = 4096
+	// ToplevelStateBottomResizable: whether the bottom edge is resizable
+	ToplevelStateBottomResizable ToplevelState = 8192
+	// ToplevelStateLeftTiled: whether the left edge is tiled
+	ToplevelStateLeftTiled ToplevelState = 16384
+	// ToplevelStateLeftResizable: whether the left edge is resizable
+	ToplevelStateLeftResizable ToplevelState = 32768
+)
+
+func marshalToplevelState(p uintptr) (interface{}, error) {
+	return ToplevelState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Toplevel: a `GdkToplevel` is a freestanding toplevel surface.
@@ -101,15 +193,6 @@ type Toplevel interface {
 	// Setting @deletable to true hints the desktop environment that it should
 	// offer the user a way to close the surface.
 	SetDeletable(deletable bool)
-	// SetIconList sets a list of icons for the surface.
-	//
-	// One of these will be used to represent the surface in iconic form. The
-	// icon may be shown in window lists or task bars. Which icon size is shown
-	// depends on the window manager. The window manager can scale the icon but
-	// setting several size icons can give better image quality.
-	//
-	// Note that some platforms don't support surface icons.
-	SetIconList(surfaces *glib.List)
 	// SetModal sets the toplevel to be modal.
 	//
 	// The application can use this hint to tell the window manager that a
@@ -275,7 +358,7 @@ func (t toplevel) Lower() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -296,7 +379,7 @@ func (t toplevel) Minimize() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -347,7 +430,7 @@ func (t toplevel) SetDecorated(decorated bool) {
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	if decorated {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_toplevel_set_decorated(_arg0, _arg1)
@@ -363,28 +446,10 @@ func (t toplevel) SetDeletable(deletable bool) {
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	if deletable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_toplevel_set_deletable(_arg0, _arg1)
-}
-
-// SetIconList sets a list of icons for the surface.
-//
-// One of these will be used to represent the surface in iconic form. The
-// icon may be shown in window lists or task bars. Which icon size is shown
-// depends on the window manager. The window manager can scale the icon but
-// setting several size icons can give better image quality.
-//
-// Note that some platforms don't support surface icons.
-func (t toplevel) SetIconList(surfaces *glib.List) {
-	var _arg0 *C.GdkToplevel // out
-	var _arg1 *C.GList       // out
-
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GList)(unsafe.Pointer(surfaces.Native()))
-
-	C.gdk_toplevel_set_icon_list(_arg0, _arg1)
 }
 
 // SetModal sets the toplevel to be modal.
@@ -401,7 +466,7 @@ func (t toplevel) SetModal(modal bool) {
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	if modal {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_toplevel_set_modal(_arg0, _arg1)
@@ -474,7 +539,7 @@ func (t toplevel) ShowWindowMenu(event Event) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -494,7 +559,7 @@ func (t toplevel) SupportsEdgeConstraints() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

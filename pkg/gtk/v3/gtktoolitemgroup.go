@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -65,7 +65,7 @@ type ToolItemGroup interface {
 	SetLabelWidget(labelWidget Widget)
 }
 
-// toolItemGroup implements the ToolItemGroup interface.
+// toolItemGroup implements the ToolItemGroup class.
 type toolItemGroup struct {
 	Container
 	Buildable
@@ -77,7 +77,7 @@ var _ ToolItemGroup = (*toolItemGroup)(nil)
 // WrapToolItemGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToolItemGroup(obj *externglib.Object) ToolItemGroup {
-	return ToolItemGroup{
+	return toolItemGroup{
 		Container: WrapContainer(obj),
 		Buildable: WrapBuildable(obj),
 		ToolShell: WrapToolShell(obj),
@@ -102,7 +102,7 @@ func (g toolItemGroup) Collapsed() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -182,7 +182,7 @@ func (g toolItemGroup) SetCollapsed(collapsed bool) {
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(g.Native()))
 	if collapsed {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tool_item_group_set_collapsed(_arg0, _arg1)

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -36,7 +38,7 @@ type CellRendererCombo interface {
 	CellRendererText
 }
 
-// cellRendererCombo implements the CellRendererCombo interface.
+// cellRendererCombo implements the CellRendererCombo class.
 type cellRendererCombo struct {
 	CellRendererText
 }
@@ -46,7 +48,7 @@ var _ CellRendererCombo = (*cellRendererCombo)(nil)
 // WrapCellRendererCombo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
-	return CellRendererCombo{
+	return cellRendererCombo{
 		CellRendererText: WrapCellRendererText(obj),
 	}
 }

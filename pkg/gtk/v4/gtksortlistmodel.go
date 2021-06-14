@@ -3,11 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -78,7 +81,7 @@ type SortListModel interface {
 	SetSorter(sorter Sorter)
 }
 
-// sortListModel implements the SortListModel interface.
+// sortListModel implements the SortListModel class.
 type sortListModel struct {
 	gextras.Objector
 	gio.ListModel
@@ -89,7 +92,7 @@ var _ SortListModel = (*sortListModel)(nil)
 // WrapSortListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSortListModel(obj *externglib.Object) SortListModel {
-	return SortListModel{
+	return sortListModel{
 		Objector:      obj,
 		gio.ListModel: gio.WrapListModel(obj),
 	}
@@ -115,7 +118,7 @@ func (s sortListModel) Incremental() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -174,7 +177,7 @@ func (s sortListModel) SetIncremental(incremental bool) {
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 	if incremental {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_sort_list_model_set_incremental(_arg0, _arg1)

@@ -3,11 +3,686 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplay},
+	})
+}
+
+// Display objects purpose are two fold:
+//
+// - To manage and provide information about input devices (pointers and
+// keyboards)
+//
+// - To manage and provide information about the available Screens
+//
+// GdkDisplay objects are the GDK representation of an X Display, which can be
+// described as a workstation consisting of a keyboard, a pointing device (such
+// as a mouse) and one or more screens. It is used to open and keep track of
+// various GdkScreen objects currently instantiated by the application. It is
+// also used to access the keyboard(s) and mouse pointer(s) of the display.
+//
+// Most of the input device handling has been factored out into the separate
+// DeviceManager object. Every display has a device manager, which you can
+// obtain using gdk_display_get_device_manager().
+type Display interface {
+	gextras.Objector
+
+	// Beep emits a short beep on @display
+	Beep()
+	// Close closes the connection to the windowing system for the given
+	// display, and cleans up associated resources.
+	Close()
+	// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
+	// @display.
+	DeviceIsGrabbed(device Device) bool
+	// Flush flushes any requests queued for the windowing system; this happens
+	// automatically when the main loop blocks waiting for new events, but if
+	// your application is drawing without returning control to the main loop,
+	// you may need to call this function explicitly. A common case where this
+	// function needs to be called is when an application is executing drawing
+	// commands from a thread other than the thread where the main loop is
+	// running.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
+	Flush()
+	// DefaultCursorSize returns the default size to use for cursors on
+	// @display.
+	DefaultCursorSize() uint
+	// MaximalCursorSize gets the maximal size to use for cursors on @display.
+	MaximalCursorSize() (width uint, height uint)
+	// NMonitors gets the number of monitors that belong to @display.
+	//
+	// The returned number is valid until the next emission of the
+	// Display::monitor-added or Display::monitor-removed signal.
+	NMonitors() int
+	// NScreens gets the number of screen managed by the @display.
+	NScreens() int
+	// Name gets the name of the display.
+	Name() string
+	// HasPending returns whether the display has events that are waiting to be
+	// processed.
+	HasPending() bool
+	// IsClosed finds out if the display has been closed.
+	IsClosed() bool
+	// KeyboardUngrab: release any keyboard grab
+	KeyboardUngrab(time_ uint32)
+	// NotifyStartupComplete indicates to the GUI environment that the
+	// application has finished loading, using a given identifier.
+	//
+	// GTK+ will call this function automatically for Window with custom
+	// startup-notification identifier unless
+	// gtk_window_set_auto_startup_notification() is called to disable that
+	// feature.
+	NotifyStartupComplete(startupId string)
+	// PointerIsGrabbed: test if the pointer is grabbed.
+	PointerIsGrabbed() bool
+	// PointerUngrab: release any pointer grab.
+	PointerUngrab(time_ uint32)
+	// RequestSelectionNotification: request EventOwnerChange events for
+	// ownership changes of the selection named by the given atom.
+	RequestSelectionNotification(selection Atom) bool
+	// SetDoubleClickDistance sets the double click distance (two clicks within
+	// this distance count as a double click and result in a K_2BUTTON_PRESS
+	// event). See also gdk_display_set_double_click_time(). Applications should
+	// not set this, it is a global user-configured setting.
+	SetDoubleClickDistance(distance uint)
+	// SetDoubleClickTime sets the double click time (two clicks within this
+	// time interval count as a double click and result in a K_2BUTTON_PRESS
+	// event). Applications should not set this, it is a global user-configured
+	// setting.
+	SetDoubleClickTime(msec uint)
+	// StoreClipboard issues a request to the clipboard manager to store the
+	// clipboard data. On X11, this is a special program that works according to
+	// the FreeDesktop Clipboard Specification
+	// (http://www.freedesktop.org/Standards/clipboard-manager-spec).
+	StoreClipboard(clipboardWindow Window, time_ uint32, targets []Atom)
+	// SupportsClipboardPersistence returns whether the speicifed display
+	// supports clipboard persistance; i.e. if it’s possible to store the
+	// clipboard data after an application has quit. On X11 this checks if a
+	// clipboard daemon is running.
+	SupportsClipboardPersistence() bool
+	// SupportsComposite returns true if gdk_window_set_composited() can be used
+	// to redirect drawing on the window using compositing.
+	//
+	// Currently this only works on X11 with XComposite and XDamage extensions
+	// available.
+	SupportsComposite() bool
+	// SupportsCursorAlpha returns true if cursors can use an 8bit alpha channel
+	// on @display. Otherwise, cursors are restricted to bilevel alpha (i.e. a
+	// mask).
+	SupportsCursorAlpha() bool
+	// SupportsCursorColor returns true if multicolored cursors are supported on
+	// @display. Otherwise, cursors have only a forground and a background
+	// color.
+	SupportsCursorColor() bool
+	// SupportsInputShapes returns true if gdk_window_input_shape_combine_mask()
+	// can be used to modify the input shape of windows on @display.
+	SupportsInputShapes() bool
+	// SupportsSelectionNotification returns whether EventOwnerChange events
+	// will be sent when the owner of a selection changes.
+	SupportsSelectionNotification() bool
+	// SupportsShapes returns true if gdk_window_shape_combine_mask() can be
+	// used to create shaped windows on @display.
+	SupportsShapes() bool
+	// Sync flushes any requests queued for the windowing system and waits until
+	// all requests have been handled. This is often used for making sure that
+	// the display is synchronized with the current state of the program.
+	// Calling gdk_display_sync() before gdk_error_trap_pop() makes sure that
+	// any errors generated from earlier requests are handled before the error
+	// trap is removed.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
+	Sync()
+	// WarpPointer warps the pointer of @display to the point @x,@y on the
+	// screen @screen, unless the pointer is confined to a window by a grab, in
+	// which case it will be moved as far as allowed by the grab. Warping the
+	// pointer creates events as if the user had moved the mouse instantaneously
+	// to the destination.
+	//
+	// Note that the pointer should normally be under the control of the user.
+	// This function was added to cover some rare use cases like keyboard
+	// navigation support for the color picker in the ColorSelectionDialog.
+	WarpPointer(screen Screen, x int, y int)
+}
+
+// display implements the Display class.
+type display struct {
+	gextras.Objector
+}
+
+var _ Display = (*display)(nil)
+
+// WrapDisplay wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDisplay(obj *externglib.Object) Display {
+	return display{
+		Objector: obj,
+	}
+}
+
+func marshalDisplay(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDisplay(obj), nil
+}
+
+// Beep emits a short beep on @display
+func (d display) Beep() {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	C.gdk_display_beep(_arg0)
+}
+
+// Close closes the connection to the windowing system for the given
+// display, and cleans up associated resources.
+func (d display) Close() {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	C.gdk_display_close(_arg0)
+}
+
+// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
+// @display.
+func (d display) DeviceIsGrabbed(device Device) bool {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.GdkDevice  // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Flush flushes any requests queued for the windowing system; this happens
+// automatically when the main loop blocks waiting for new events, but if
+// your application is drawing without returning control to the main loop,
+// you may need to call this function explicitly. A common case where this
+// function needs to be called is when an application is executing drawing
+// commands from a thread other than the thread where the main loop is
+// running.
+//
+// This is most useful for X11. On windowing systems where requests are
+// handled synchronously, this function will do nothing.
+func (d display) Flush() {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	C.gdk_display_flush(_arg0)
+}
+
+// DefaultCursorSize returns the default size to use for cursors on
+// @display.
+func (d display) DefaultCursorSize() uint {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.guint // in
+
+	_cret = C.gdk_display_get_default_cursor_size(_arg0)
+
+	var _guint uint // out
+
+	_guint = (uint)(_cret)
+
+	return _guint
+}
+
+// MaximalCursorSize gets the maximal size to use for cursors on @display.
+func (d display) MaximalCursorSize() (width uint, height uint) {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _arg1 C.guint // in
+	var _arg2 C.guint // in
+
+	C.gdk_display_get_maximal_cursor_size(_arg0, &_arg1, &_arg2)
+
+	var _width uint  // out
+	var _height uint // out
+
+	_width = (uint)(_arg1)
+	_height = (uint)(_arg2)
+
+	return _width, _height
+}
+
+// NMonitors gets the number of monitors that belong to @display.
+//
+// The returned number is valid until the next emission of the
+// Display::monitor-added or Display::monitor-removed signal.
+func (d display) NMonitors() int {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.int // in
+
+	_cret = C.gdk_display_get_n_monitors(_arg0)
+
+	var _gint int // out
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// NScreens gets the number of screen managed by the @display.
+func (d display) NScreens() int {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gint // in
+
+	_cret = C.gdk_display_get_n_screens(_arg0)
+
+	var _gint int // out
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// Name gets the name of the display.
+func (d display) Name() string {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.gchar // in
+
+	_cret = C.gdk_display_get_name(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}
+
+// HasPending returns whether the display has events that are waiting to be
+// processed.
+func (d display) HasPending() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_has_pending(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsClosed finds out if the display has been closed.
+func (d display) IsClosed() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_is_closed(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// KeyboardUngrab: release any keyboard grab
+func (d display) KeyboardUngrab(time_ uint32) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.guint32     // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint32(time_)
+
+	C.gdk_display_keyboard_ungrab(_arg0, _arg1)
+}
+
+// NotifyStartupComplete indicates to the GUI environment that the
+// application has finished loading, using a given identifier.
+//
+// GTK+ will call this function automatically for Window with custom
+// startup-notification identifier unless
+// gtk_window_set_auto_startup_notification() is called to disable that
+// feature.
+func (d display) NotifyStartupComplete(startupId string) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.gchar      // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.gchar)(C.CString(startupId))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gdk_display_notify_startup_complete(_arg0, _arg1)
+}
+
+// PointerIsGrabbed: test if the pointer is grabbed.
+func (d display) PointerIsGrabbed() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_pointer_is_grabbed(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// PointerUngrab: release any pointer grab.
+func (d display) PointerUngrab(time_ uint32) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.guint32     // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint32(time_)
+
+	C.gdk_display_pointer_ungrab(_arg0, _arg1)
+}
+
+// RequestSelectionNotification: request EventOwnerChange events for
+// ownership changes of the selection named by the given atom.
+func (d display) RequestSelectionNotification(selection Atom) bool {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.GdkAtom     // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_request_selection_notification(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetDoubleClickDistance sets the double click distance (two clicks within
+// this distance count as a double click and result in a K_2BUTTON_PRESS
+// event). See also gdk_display_set_double_click_time(). Applications should
+// not set this, it is a global user-configured setting.
+func (d display) SetDoubleClickDistance(distance uint) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.guint       // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(distance)
+
+	C.gdk_display_set_double_click_distance(_arg0, _arg1)
+}
+
+// SetDoubleClickTime sets the double click time (two clicks within this
+// time interval count as a double click and result in a K_2BUTTON_PRESS
+// event). Applications should not set this, it is a global user-configured
+// setting.
+func (d display) SetDoubleClickTime(msec uint) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.guint       // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(msec)
+
+	C.gdk_display_set_double_click_time(_arg0, _arg1)
+}
+
+// StoreClipboard issues a request to the clipboard manager to store the
+// clipboard data. On X11, this is a special program that works according to
+// the FreeDesktop Clipboard Specification
+// (http://www.freedesktop.org/Standards/clipboard-manager-spec).
+func (d display) StoreClipboard(clipboardWindow Window, time_ uint32, targets []Atom) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.GdkWindow  // out
+	var _arg2 C.guint32     // out
+	var _arg3 *C.GdkAtom
+	var _arg4 C.gint
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(clipboardWindow.Native()))
+	_arg2 = C.guint32(time_)
+	_arg4 = C.gint(len(targets))
+	_arg3 = (*C.GdkAtom)(unsafe.Pointer(&targets[0]))
+
+	C.gdk_display_store_clipboard(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// SupportsClipboardPersistence returns whether the speicifed display
+// supports clipboard persistance; i.e. if it’s possible to store the
+// clipboard data after an application has quit. On X11 this checks if a
+// clipboard daemon is running.
+func (d display) SupportsClipboardPersistence() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_supports_clipboard_persistence(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SupportsComposite returns true if gdk_window_set_composited() can be used
+// to redirect drawing on the window using compositing.
+//
+// Currently this only works on X11 with XComposite and XDamage extensions
+// available.
+func (d display) SupportsComposite() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_supports_composite(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SupportsCursorAlpha returns true if cursors can use an 8bit alpha channel
+// on @display. Otherwise, cursors are restricted to bilevel alpha (i.e. a
+// mask).
+func (d display) SupportsCursorAlpha() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_supports_cursor_alpha(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SupportsCursorColor returns true if multicolored cursors are supported on
+// @display. Otherwise, cursors have only a forground and a background
+// color.
+func (d display) SupportsCursorColor() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_supports_cursor_color(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SupportsInputShapes returns true if gdk_window_input_shape_combine_mask()
+// can be used to modify the input shape of windows on @display.
+func (d display) SupportsInputShapes() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_supports_input_shapes(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SupportsSelectionNotification returns whether EventOwnerChange events
+// will be sent when the owner of a selection changes.
+func (d display) SupportsSelectionNotification() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_supports_selection_notification(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SupportsShapes returns true if gdk_window_shape_combine_mask() can be
+// used to create shaped windows on @display.
+func (d display) SupportsShapes() bool {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_display_supports_shapes(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Sync flushes any requests queued for the windowing system and waits until
+// all requests have been handled. This is often used for making sure that
+// the display is synchronized with the current state of the program.
+// Calling gdk_display_sync() before gdk_error_trap_pop() makes sure that
+// any errors generated from earlier requests are handled before the error
+// trap is removed.
+//
+// This is most useful for X11. On windowing systems where requests are
+// handled synchronously, this function will do nothing.
+func (d display) Sync() {
+	var _arg0 *C.GdkDisplay // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+
+	C.gdk_display_sync(_arg0)
+}
+
+// WarpPointer warps the pointer of @display to the point @x,@y on the
+// screen @screen, unless the pointer is confined to a window by a grab, in
+// which case it will be moved as far as allowed by the grab. Warping the
+// pointer creates events as if the user had moved the mouse instantaneously
+// to the destination.
+//
+// Note that the pointer should normally be under the control of the user.
+// This function was added to cover some rare use cases like keyboard
+// navigation support for the color picker in the ColorSelectionDialog.
+func (d display) WarpPointer(screen Screen, x int, y int) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.GdkScreen  // out
+	var _arg2 C.gint        // out
+	var _arg3 C.gint        // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
+
+	C.gdk_display_warp_pointer(_arg0, _arg1, _arg2, _arg3)
+}

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -33,7 +35,7 @@ type MediaControls interface {
 	SetMediaStream(stream MediaStream)
 }
 
-// mediaControls implements the MediaControls interface.
+// mediaControls implements the MediaControls class.
 type mediaControls struct {
 	Widget
 	Accessible
@@ -46,7 +48,7 @@ var _ MediaControls = (*mediaControls)(nil)
 // WrapMediaControls wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMediaControls(obj *externglib.Object) MediaControls {
-	return MediaControls{
+	return mediaControls{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -376,7 +376,7 @@ func (e editable) Editable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -395,7 +395,7 @@ func (e editable) EnableUndo() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -464,7 +464,7 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 
 	_startPos = (int)(_arg1)
 	_endPos = (int)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -565,7 +565,7 @@ func (e editable) SetEditable(isEditable bool) {
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 	if isEditable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_editable_set_editable(_arg0, _arg1)
@@ -583,7 +583,7 @@ func (e editable) SetEnableUndo(enableUndo bool) {
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 	if enableUndo {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_editable_set_enable_undo(_arg0, _arg1)

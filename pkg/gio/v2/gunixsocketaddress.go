@@ -3,12 +3,13 @@
 package gio
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -20,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -60,7 +62,7 @@ type UnixSocketAddress interface {
 	PathLen() uint
 }
 
-// unixSocketAddress implements the UnixSocketAddress interface.
+// unixSocketAddress implements the UnixSocketAddress class.
 type unixSocketAddress struct {
 	SocketAddress
 	SocketConnectable
@@ -71,7 +73,7 @@ var _ UnixSocketAddress = (*unixSocketAddress)(nil)
 // WrapUnixSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
-	return UnixSocketAddress{
+	return unixSocketAddress{
 		SocketAddress:     WrapSocketAddress(obj),
 		SocketConnectable: WrapSocketConnectable(obj),
 	}
@@ -95,7 +97,7 @@ func (a unixSocketAddress) IsAbstract() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

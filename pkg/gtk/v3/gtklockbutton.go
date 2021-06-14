@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -61,7 +63,7 @@ type LockButton interface {
 	SetPermission(permission gio.Permission)
 }
 
-// lockButton implements the LockButton interface.
+// lockButton implements the LockButton class.
 type lockButton struct {
 	Button
 	Actionable
@@ -74,7 +76,7 @@ var _ LockButton = (*lockButton)(nil)
 // WrapLockButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLockButton(obj *externglib.Object) LockButton {
-	return LockButton{
+	return lockButton{
 		Button:      WrapButton(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),

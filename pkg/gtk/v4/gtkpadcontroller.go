@@ -3,13 +3,12 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -17,8 +16,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_pad_action_type_get_type()), F: marshalPadActionType},
 		{T: externglib.Type(C.gtk_pad_controller_get_type()), F: marshalPadController},
 	})
+}
+
+// PadActionType: the type of a pad action.
+type PadActionType int
+
+const (
+	// PadActionTypeButton: action is triggered by a pad button
+	PadActionTypeButton PadActionType = 0
+	// PadActionTypeRing: action is triggered by a pad ring
+	PadActionTypeRing PadActionType = 1
+	// PadActionTypeStrip: action is triggered by a pad strip
+	PadActionTypeStrip PadActionType = 2
+)
+
+func marshalPadActionType(p uintptr) (interface{}, error) {
+	return PadActionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // PadController: `GtkPadController` is an event controller for the pads found
@@ -82,7 +98,7 @@ type PadController interface {
 	SetActionEntries(entries []PadActionEntry)
 }
 
-// padController implements the PadController interface.
+// padController implements the PadController class.
 type padController struct {
 	EventController
 }
@@ -92,7 +108,7 @@ var _ PadController = (*padController)(nil)
 // WrapPadController wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPadController(obj *externglib.Object) PadController {
-	return PadController{
+	return padController{
 		EventController: WrapEventController(obj),
 	}
 }
@@ -162,11 +178,6 @@ func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
 	}
 
 	return (*PadActionEntry)(ptr)
-}
-
-func marshalPadActionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPadActionEntry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

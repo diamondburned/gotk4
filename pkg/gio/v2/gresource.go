@@ -4,14 +4,10 @@ package gio
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -24,79 +20,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
-
-// ResourcesEnumerateChildren returns all the names of children at the specified
-// @path in the set of globally registered resources. The return result is a nil
-// terminated list of strings which should be released with g_strfreev().
-//
-// @lookup_flags controls the behaviour of the lookup.
-func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
-	var _arg1 *C.char                // out
-	var _arg2 C.GResourceLookupFlags // out
-
-	_arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _cret **C.char
-	var _cerr *C.GError // in
-
-	_cret = C.g_resources_enumerate_children(_arg1, _arg2, &_cerr)
-
-	var _utf8s []string
-	var _goerr error // out
-
-	{
-		var length int
-		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_utf8s = make([]string, length)
-		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
-		}
-	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _utf8s, _goerr
-}
-
-// ResourcesGetInfo looks for a file at the specified @path in the set of
-// globally registered resources and if found returns information about it.
-//
-// @lookup_flags controls the behaviour of the lookup.
-func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
-	var _arg1 *C.char                // out
-	var _arg2 C.GResourceLookupFlags // out
-
-	_arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _arg3 C.gsize   // in
-	var _arg4 C.guint32 // in
-	var _cerr *C.GError // in
-
-	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
-
-	var _size uint    // out
-	var _flags uint32 // out
-	var _goerr error  // out
-
-	_size = (uint)(_arg3)
-	_flags = (uint32)(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _size, _flags, _goerr
-}
 
 // ResourcesRegister registers the resource with the process-global set of
 // resources. Once a resource is registered the files in it can be accessed with
@@ -133,11 +56,6 @@ func WrapStaticResource(ptr unsafe.Pointer) *StaticResource {
 	}
 
 	return (*StaticResource)(ptr)
-}
-
-func marshalStaticResource(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStaticResource(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

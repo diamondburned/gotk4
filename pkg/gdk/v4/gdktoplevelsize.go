@@ -8,10 +8,10 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func ToplevelSizeGetType() externglib.Type {
@@ -40,11 +40,6 @@ func WrapToplevelSize(ptr unsafe.Pointer) *ToplevelSize {
 	}
 
 	return (*ToplevelSize)(ptr)
-}
-
-func marshalToplevelSize(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToplevelSize(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

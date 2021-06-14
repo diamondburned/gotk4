@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 graphene-1.0 graphene-gobject-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <graphene-gobject.h>

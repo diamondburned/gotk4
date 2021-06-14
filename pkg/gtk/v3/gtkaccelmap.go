@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -74,7 +77,7 @@ type AccelMap interface {
 	gextras.Objector
 }
 
-// accelMap implements the AccelMap interface.
+// accelMap implements the AccelMap class.
 type accelMap struct {
 	gextras.Objector
 }
@@ -84,7 +87,7 @@ var _ AccelMap = (*accelMap)(nil)
 // WrapAccelMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAccelMap(obj *externglib.Object) AccelMap {
-	return AccelMap{
+	return accelMap{
 		Objector: obj,
 	}
 }

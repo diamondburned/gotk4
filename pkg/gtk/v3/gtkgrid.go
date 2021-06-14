@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -118,7 +120,7 @@ type Grid interface {
 	SetRowSpacing(spacing uint)
 }
 
-// grid implements the Grid interface.
+// grid implements the Grid class.
 type grid struct {
 	Container
 	Buildable
@@ -130,7 +132,7 @@ var _ Grid = (*grid)(nil)
 // WrapGrid wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGrid(obj *externglib.Object) Grid {
-	return Grid{
+	return grid{
 		Container:  WrapContainer(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -222,7 +224,7 @@ func (g grid) ColumnHomogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -258,7 +260,7 @@ func (g grid) RowHomogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -381,7 +383,7 @@ func (g grid) SetColumnHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_grid_set_column_homogeneous(_arg0, _arg1)
@@ -420,7 +422,7 @@ func (g grid) SetRowHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_grid_set_row_homogeneous(_arg0, _arg1)

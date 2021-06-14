@@ -3,14 +3,16 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -23,7 +25,7 @@ type X11DisplayManager interface {
 	gdk.DisplayManager
 }
 
-// x11DisplayManager implements the X11DisplayManager interface.
+// x11DisplayManager implements the X11DisplayManager class.
 type x11DisplayManager struct {
 	gdk.DisplayManager
 }
@@ -33,7 +35,7 @@ var _ X11DisplayManager = (*x11DisplayManager)(nil)
 // WrapX11DisplayManager wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11DisplayManager(obj *externglib.Object) X11DisplayManager {
-	return X11DisplayManager{
+	return x11DisplayManager{
 		gdk.DisplayManager: gdk.WrapDisplayManager(obj),
 	}
 }

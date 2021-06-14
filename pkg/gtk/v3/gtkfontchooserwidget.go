@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -44,7 +46,7 @@ type FontChooserWidget interface {
 	Orientable
 }
 
-// fontChooserWidget implements the FontChooserWidget interface.
+// fontChooserWidget implements the FontChooserWidget class.
 type fontChooserWidget struct {
 	Box
 	Buildable
@@ -57,7 +59,7 @@ var _ FontChooserWidget = (*fontChooserWidget)(nil)
 // WrapFontChooserWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
-	return FontChooserWidget{
+	return fontChooserWidget{
 		Box:         WrapBox(obj),
 		Buildable:   WrapBuildable(obj),
 		FontChooser: WrapFontChooser(obj),

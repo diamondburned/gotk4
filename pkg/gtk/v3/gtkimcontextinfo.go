@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -27,11 +26,6 @@ func WrapIMContextInfo(ptr unsafe.Pointer) *IMContextInfo {
 	}
 
 	return (*IMContextInfo)(ptr)
-}
-
-func marshalIMContextInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIMContextInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

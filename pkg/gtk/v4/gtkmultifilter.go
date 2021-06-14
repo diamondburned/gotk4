@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -31,7 +33,7 @@ type AnyFilter interface {
 	Buildable
 }
 
-// anyFilter implements the AnyFilter interface.
+// anyFilter implements the AnyFilter class.
 type anyFilter struct {
 	MultiFilter
 	gio.ListModel
@@ -43,7 +45,7 @@ var _ AnyFilter = (*anyFilter)(nil)
 // WrapAnyFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAnyFilter(obj *externglib.Object) AnyFilter {
-	return AnyFilter{
+	return anyFilter{
 		MultiFilter:   WrapMultiFilter(obj),
 		gio.ListModel: gio.WrapListModel(obj),
 		Buildable:     WrapBuildable(obj),
@@ -66,7 +68,7 @@ type EveryFilter interface {
 	Buildable
 }
 
-// everyFilter implements the EveryFilter interface.
+// everyFilter implements the EveryFilter class.
 type everyFilter struct {
 	MultiFilter
 	gio.ListModel
@@ -78,7 +80,7 @@ var _ EveryFilter = (*everyFilter)(nil)
 // WrapEveryFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEveryFilter(obj *externglib.Object) EveryFilter {
-	return EveryFilter{
+	return everyFilter{
 		MultiFilter:   WrapMultiFilter(obj),
 		gio.ListModel: gio.WrapListModel(obj),
 		Buildable:     WrapBuildable(obj),
@@ -108,7 +110,7 @@ type MultiFilter interface {
 	Remove(position uint)
 }
 
-// multiFilter implements the MultiFilter interface.
+// multiFilter implements the MultiFilter class.
 type multiFilter struct {
 	Filter
 	gio.ListModel
@@ -120,7 +122,7 @@ var _ MultiFilter = (*multiFilter)(nil)
 // WrapMultiFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMultiFilter(obj *externglib.Object) MultiFilter {
-	return MultiFilter{
+	return multiFilter{
 		Filter:        WrapFilter(obj),
 		gio.ListModel: gio.WrapListModel(obj),
 		Buildable:     WrapBuildable(obj),

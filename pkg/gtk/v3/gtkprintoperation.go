@@ -5,12 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,30 +19,108 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_print_error_get_type()), F: marshalPrintError},
+		{T: externglib.Type(C.gtk_print_operation_action_get_type()), F: marshalPrintOperationAction},
+		{T: externglib.Type(C.gtk_print_operation_result_get_type()), F: marshalPrintOperationResult},
+		{T: externglib.Type(C.gtk_print_status_get_type()), F: marshalPrintStatus},
 		{T: externglib.Type(C.gtk_print_operation_get_type()), F: marshalPrintOperation},
 	})
 }
 
-// PrintRunPageSetupDialogAsync runs a page setup dialog, letting the user
-// modify the values from @page_setup.
-//
-// In contrast to gtk_print_run_page_setup_dialog(), this function returns after
-// showing the page setup dialog on platforms that support this, and calls
-// @done_cb from a signal handler for the ::response signal of the dialog.
-func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings PrintSettings, doneCb PageSetupDoneFunc) {
-	var _arg1 *C.GtkWindow           // out
-	var _arg2 *C.GtkPageSetup        // out
-	var _arg3 *C.GtkPrintSettings    // out
-	var _arg4 C.GtkPageSetupDoneFunc // out
-	var _arg5 C.gpointer
+// PrintError: error codes that identify various errors that can occur while
+// using the GTK+ printing support.
+type PrintError int
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
-	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_PageSetupDoneFunc)
-	_arg5 = C.gpointer(box.Assign(doneCb))
+const (
+	// PrintErrorGeneral: an unspecified error occurred.
+	PrintErrorGeneral PrintError = 0
+	// PrintErrorInternalError: an internal error occurred.
+	PrintErrorInternalError PrintError = 1
+	// PrintErrorNOMEM: a memory allocation failed.
+	PrintErrorNOMEM PrintError = 2
+	// PrintErrorInvalidFile: an error occurred while loading a page setup or
+	// paper size from a key file.
+	PrintErrorInvalidFile PrintError = 3
+)
 
-	C.gtk_print_run_page_setup_dialog_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+func marshalPrintError(p uintptr) (interface{}, error) {
+	return PrintError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PrintOperationAction: the @action parameter to gtk_print_operation_run()
+// determines what action the print operation should perform.
+type PrintOperationAction int
+
+const (
+	// PrintOperationActionPrintDialog: show the print dialog.
+	PrintOperationActionPrintDialog PrintOperationAction = 0
+	// PrintOperationActionPrint: start to print without showing the print
+	// dialog, based on the current print settings.
+	PrintOperationActionPrint PrintOperationAction = 1
+	// PrintOperationActionPreview: show the print preview.
+	PrintOperationActionPreview PrintOperationAction = 2
+	// PrintOperationActionExport: export to a file. This requires the
+	// export-filename property to be set.
+	PrintOperationActionExport PrintOperationAction = 3
+)
+
+func marshalPrintOperationAction(p uintptr) (interface{}, error) {
+	return PrintOperationAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PrintOperationResult: a value of this type is returned by
+// gtk_print_operation_run().
+type PrintOperationResult int
+
+const (
+	// PrintOperationResultError: an error has occurred.
+	PrintOperationResultError PrintOperationResult = 0
+	// PrintOperationResultApply: the print settings should be stored.
+	PrintOperationResultApply PrintOperationResult = 1
+	// PrintOperationResultCancel: the print operation has been canceled, the
+	// print settings should not be stored.
+	PrintOperationResultCancel PrintOperationResult = 2
+	// PrintOperationResultInProgress: the print operation is not complete yet.
+	// This value will only be returned when running asynchronously.
+	PrintOperationResultInProgress PrintOperationResult = 3
+)
+
+func marshalPrintOperationResult(p uintptr) (interface{}, error) {
+	return PrintOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PrintStatus: the status gives a rough indication of the completion of a
+// running print operation.
+type PrintStatus int
+
+const (
+	// PrintStatusInitial: the printing has not started yet; this status is set
+	// initially, and while the print dialog is shown.
+	PrintStatusInitial PrintStatus = 0
+	// PrintStatusPreparing: this status is set while the begin-print signal is
+	// emitted and during pagination.
+	PrintStatusPreparing PrintStatus = 1
+	// PrintStatusGeneratingData: this status is set while the pages are being
+	// rendered.
+	PrintStatusGeneratingData PrintStatus = 2
+	// PrintStatusSendingData: the print job is being sent off to the printer.
+	PrintStatusSendingData PrintStatus = 3
+	// PrintStatusPending: the print job has been sent to the printer, but is
+	// not printed for some reason, e.g. the printer may be stopped.
+	PrintStatusPending PrintStatus = 4
+	// PrintStatusPendingIssue: some problem has occurred during printing, e.g.
+	// a paper jam.
+	PrintStatusPendingIssue PrintStatus = 5
+	// PrintStatusPrinting: the printer is processing the print job.
+	PrintStatusPrinting PrintStatus = 6
+	// PrintStatusFinished: the printing has been completed successfully.
+	PrintStatusFinished PrintStatus = 7
+	// PrintStatusFinishedAborted: the printing has been aborted.
+	PrintStatusFinishedAborted PrintStatus = 8
+)
+
+func marshalPrintStatus(p uintptr) (interface{}, error) {
+	return PrintStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // PrintOperation: gtkPrintOperation is the high-level, portable printing API.
@@ -122,11 +199,6 @@ type PrintOperation interface {
 	// EmbedPageSetup gets the value of PrintOperation:embed-page-setup
 	// property.
 	EmbedPageSetup() bool
-	// Error: call this when the result of a print operation is
-	// GTK_PRINT_OPERATION_RESULT_ERROR, either as returned by
-	// gtk_print_operation_run(), or in the PrintOperation::done signal handler.
-	// The returned #GError will contain more details on what went wrong.
-	Error() error
 	// HasSelection gets the value of PrintOperation:has-selection property.
 	HasSelection() bool
 	// NPagesToPrint returns the number of pages that will be printed.
@@ -195,7 +267,7 @@ type PrintOperation interface {
 	// “Print to PDF” support is independent of this and is done by letting the
 	// user pick the “Print to PDF” item from the list of printers in the print
 	// dialog.
-	SetExportFilename(filename *string)
+	SetExportFilename(filename string)
 	// SetHasSelection sets whether there is a selection to print.
 	//
 	// Application has to set number of pages to which the selection will draw
@@ -249,7 +321,7 @@ type PrintOperation interface {
 	SetUseFullPage(fullPage bool)
 }
 
-// printOperation implements the PrintOperation interface.
+// printOperation implements the PrintOperation class.
 type printOperation struct {
 	gextras.Objector
 	PrintOperationPreview
@@ -260,7 +332,7 @@ var _ PrintOperation = (*printOperation)(nil)
 // WrapPrintOperation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPrintOperation(obj *externglib.Object) PrintOperation {
-	return PrintOperation{
+	return printOperation{
 		Objector:              obj,
 		PrintOperationPreview: WrapPrintOperationPreview(obj),
 	}
@@ -311,31 +383,11 @@ func (o printOperation) EmbedPageSetup() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Error: call this when the result of a print operation is
-// GTK_PRINT_OPERATION_RESULT_ERROR, either as returned by
-// gtk_print_operation_run(), or in the PrintOperation::done signal handler.
-// The returned #GError will contain more details on what went wrong.
-func (o printOperation) Error() error {
-	var _arg0 *C.GtkPrintOperation // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cerr *C.GError // in
-
-	C.gtk_print_operation_get_error(_arg0, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // HasSelection gets the value of PrintOperation:has-selection property.
@@ -350,7 +402,7 @@ func (o printOperation) HasSelection() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -417,7 +469,7 @@ func (o printOperation) SupportSelection() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -442,7 +494,7 @@ func (o printOperation) IsFinished() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -458,7 +510,7 @@ func (o printOperation) SetAllowAsync(allowAsync bool) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if allowAsync {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_print_operation_set_allow_async(_arg0, _arg1)
@@ -530,7 +582,7 @@ func (o printOperation) SetEmbedPageSetup(embed bool) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if embed {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_print_operation_set_embed_page_setup(_arg0, _arg1)
@@ -544,7 +596,7 @@ func (o printOperation) SetEmbedPageSetup(embed bool) {
 // “Print to PDF” support is independent of this and is done by letting the
 // user pick the “Print to PDF” item from the list of printers in the print
 // dialog.
-func (o printOperation) SetExportFilename(filename *string) {
+func (o printOperation) SetExportFilename(filename string) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 *C.gchar             // out
 
@@ -566,7 +618,7 @@ func (o printOperation) SetHasSelection(hasSelection bool) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if hasSelection {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_print_operation_set_has_selection(_arg0, _arg1)
@@ -628,7 +680,7 @@ func (o printOperation) SetShowProgress(showProgress bool) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if showProgress {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_print_operation_set_show_progress(_arg0, _arg1)
@@ -642,7 +694,7 @@ func (o printOperation) SetSupportSelection(supportSelection bool) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if supportSelection {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_print_operation_set_support_selection(_arg0, _arg1)
@@ -662,7 +714,7 @@ func (o printOperation) SetTrackPrintStatus(trackStatus bool) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if trackStatus {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_print_operation_set_track_print_status(_arg0, _arg1)
@@ -692,7 +744,7 @@ func (o printOperation) SetUseFullPage(fullPage bool) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if fullPage {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_print_operation_set_use_full_page(_arg0, _arg1)

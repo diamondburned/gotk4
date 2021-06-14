@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -43,7 +43,7 @@ type ShortcutLabel interface {
 	SetDisabledText(disabledText string)
 }
 
-// shortcutLabel implements the ShortcutLabel interface.
+// shortcutLabel implements the ShortcutLabel class.
 type shortcutLabel struct {
 	Widget
 	Accessible
@@ -56,7 +56,7 @@ var _ ShortcutLabel = (*shortcutLabel)(nil)
 // WrapShortcutLabel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutLabel(obj *externglib.Object) ShortcutLabel {
-	return ShortcutLabel{
+	return shortcutLabel{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

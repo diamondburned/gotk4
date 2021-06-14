@@ -5,10 +5,11 @@ package gobject
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -109,7 +110,7 @@ type TypeModule interface {
 	Use() bool
 }
 
-// typeModule implements the TypeModule interface.
+// typeModule implements the TypeModule class.
 type typeModule struct {
 	gextras.Objector
 	TypePlugin
@@ -120,7 +121,7 @@ var _ TypeModule = (*typeModule)(nil)
 // WrapTypeModule wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTypeModule(obj *externglib.Object) TypeModule {
-	return TypeModule{
+	return typeModule{
 		Objector:   obj,
 		TypePlugin: WrapTypePlugin(obj),
 	}
@@ -295,7 +296,7 @@ func (m typeModule) Use() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

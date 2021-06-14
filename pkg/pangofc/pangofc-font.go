@@ -3,11 +3,13 @@
 package pangofc
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangofc pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango pangofc
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangofc-fontmap.h>
@@ -46,7 +48,7 @@ type Font interface {
 	UnlockFace()
 }
 
-// font implements the Font interface.
+// font implements the Font class.
 type font struct {
 	pango.Font
 }
@@ -56,7 +58,7 @@ var _ Font = (*font)(nil)
 // WrapFont wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
-	return Font{
+	return font{
 		pango.Font: pango.WrapFont(obj),
 	}
 }
@@ -103,7 +105,7 @@ func (f font) HasChar(wc uint32) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

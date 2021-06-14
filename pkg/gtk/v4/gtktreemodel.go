@@ -3,15 +3,13 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -19,11 +17,31 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_tree_model_flags_get_type()), F: marshalTreeModelFlags},
 		{T: externglib.Type(C.gtk_tree_model_get_type()), F: marshalTreeModel},
 		{T: externglib.Type(C.gtk_tree_iter_get_type()), F: marshalTreeIter},
 		{T: externglib.Type(C.gtk_tree_path_get_type()), F: marshalTreePath},
 		{T: externglib.Type(C.gtk_tree_row_reference_get_type()), F: marshalTreeRowReference},
 	})
+}
+
+// TreeModelFlags: these flags indicate various properties of a TreeModel.
+//
+// They are returned by gtk_tree_model_get_flags(), and must be static for the
+// lifetime of the object. A more complete description of
+// K_TREE_MODEL_ITERS_PERSIST can be found in the overview of this section.
+type TreeModelFlags int
+
+const (
+	// TreeModelFlagsItersPersist iterators survive all signals emitted by the
+	// tree
+	TreeModelFlagsItersPersist TreeModelFlags = 1
+	// TreeModelFlagsListOnly: the model is a list only, and never has children
+	TreeModelFlagsListOnly TreeModelFlags = 2
+)
+
+func marshalTreeModelFlags(p uintptr) (interface{}, error) {
+	return TreeModelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // TreeModelOverrider contains methods that are overridable. This
@@ -120,10 +138,6 @@ type TreeModelOverrider interface {
 	RowHasChildToggled(path *TreePath, iter *TreeIter)
 	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
 	RowInserted(path *TreePath, iter *TreeIter)
-	// RowsReordered emits the TreeModel::rows-reordered signal on @tree_model.
-	//
-	// This should be called by models when their rows have been reordered.
-	RowsReordered(path *TreePath, iter *TreeIter, newOrder *int)
 	// UnrefNode lets the tree unref the node.
 	//
 	// This is an optional method for models to implement. To be more specific,
@@ -300,11 +314,6 @@ type TreeModel interface {
 	gextras.Objector
 	TreeModelOverrider
 
-	// Foreach calls func on each node in model in a depth-first fashion.
-	//
-	// If @func returns true, then the tree ceases to be walked, and
-	// gtk_tree_model_foreach() returns.
-	Foreach(fn TreeModelForeachFunc)
 	// IterFirst initializes @iter with the first iterator in the tree (the one
 	// at the path "0") and returns true. Returns false if the tree is empty.
 	IterFirst() (TreeIter, bool)
@@ -344,22 +353,6 @@ func marshalTreeModel(p uintptr) (interface{}, error) {
 	return WrapTreeModel(obj), nil
 }
 
-// Foreach calls func on each node in model in a depth-first fashion.
-//
-// If @func returns true, then the tree ceases to be walked, and
-// gtk_tree_model_foreach() returns.
-func (m treeModel) Foreach(fn TreeModelForeachFunc) {
-	var _arg0 *C.GtkTreeModel           // out
-	var _arg1 C.GtkTreeModelForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TreeModelForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_tree_model_foreach(_arg0, _arg1, _arg2)
-}
-
 // ColumnType returns the type of the column.
 func (t treeModel) ColumnType(index_ int) externglib.Type {
 	var _arg0 *C.GtkTreeModel // out
@@ -395,7 +388,7 @@ func (t treeModel) Iter(path *TreePath) (TreeIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -416,7 +409,7 @@ func (t treeModel) IterFirst() (TreeIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -440,7 +433,7 @@ func (t treeModel) IterFromString(pathString string) (TreeIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -533,7 +526,7 @@ func (t treeModel) IterChildren(parent *TreeIter) (TreeIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -554,7 +547,7 @@ func (t treeModel) IterHasChild(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -601,7 +594,7 @@ func (t treeModel) IterNext(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -631,7 +624,7 @@ func (t treeModel) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -660,7 +653,7 @@ func (t treeModel) IterParent(child *TreeIter) (TreeIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -685,7 +678,7 @@ func (t treeModel) IterPrevious(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -993,12 +986,10 @@ func (p *TreePath) IndicesWithDepth() []int {
 	var _gints []int
 
 	{
-		var src []C.int
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
 		_gints = make([]int, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_gints = (int)(_cret)
+		for i := 0; i < int(_arg1); i++ {
+			_gints[i] = (int)(src[i])
 		}
 	}
 
@@ -1019,7 +1010,7 @@ func (p *TreePath) IsAncestor(descendant *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1040,7 +1031,7 @@ func (p *TreePath) IsDescendant(ancestor *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1082,7 +1073,7 @@ func (p *TreePath) Prev() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1123,7 +1114,7 @@ func (p *TreePath) Up() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1179,7 +1170,7 @@ func (r *TreeRowReference) Valid() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

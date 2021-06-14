@@ -3,14 +3,16 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -65,7 +67,7 @@ type X11Screen interface {
 	SupportsNetWmHint(property gdk.Atom) bool
 }
 
-// x11Screen implements the X11Screen interface.
+// x11Screen implements the X11Screen class.
 type x11Screen struct {
 	gdk.Screen
 }
@@ -75,7 +77,7 @@ var _ X11Screen = (*x11Screen)(nil)
 // WrapX11Screen wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Screen(obj *externglib.Object) X11Screen {
-	return X11Screen{
+	return x11Screen{
 		gdk.Screen: gdk.WrapScreen(obj),
 	}
 }
@@ -186,7 +188,7 @@ func (s x11Screen) SupportsNetWmHint(property gdk.Atom) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

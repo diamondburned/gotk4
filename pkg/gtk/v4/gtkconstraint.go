@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -83,7 +86,7 @@ type Constraint interface {
 	IsRequired() bool
 }
 
-// constraint implements the Constraint interface.
+// constraint implements the Constraint class.
 type constraint struct {
 	gextras.Objector
 }
@@ -93,7 +96,7 @@ var _ Constraint = (*constraint)(nil)
 // WrapConstraint wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConstraint(obj *externglib.Object) Constraint {
-	return Constraint{
+	return constraint{
 		Objector: obj,
 	}
 }
@@ -170,7 +173,7 @@ func (c constraint) IsAttached() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -190,7 +193,7 @@ func (c constraint) IsConstant() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -210,7 +213,7 @@ func (c constraint) IsRequired() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

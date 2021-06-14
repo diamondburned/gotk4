@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -75,7 +75,7 @@ func ParamValueConvert(pspec ParamSpec, srcValue **externglib.Value, destValue *
 	_arg2 = (*C.GValue)(srcValue.GValue)
 	_arg3 = (*C.GValue)(destValue.GValue)
 	if strictValidation {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -84,7 +84,7 @@ func ParamValueConvert(pspec ParamSpec, srcValue **externglib.Value, destValue *
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -106,7 +106,7 @@ func ParamValueDefaults(pspec ParamSpec, value **externglib.Value) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -142,7 +142,7 @@ func ParamValueValidate(pspec ParamSpec, value **externglib.Value) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -190,11 +190,6 @@ func WrapParamSpecPool(ptr unsafe.Pointer) *ParamSpecPool {
 	return (*ParamSpecPool)(ptr)
 }
 
-func marshalParamSpecPool(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapParamSpecPool(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (p *ParamSpecPool) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
@@ -238,11 +233,6 @@ func WrapParameter(ptr unsafe.Pointer) *Parameter {
 	}
 
 	return (*Parameter)(ptr)
-}
-
-func marshalParameter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapParameter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

@@ -3,13 +3,14 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/box"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -21,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -32,8 +34,6 @@ func init() {
 // ProXYOverrider contains methods that are overridable. This
 // interface is a subset of the interface ProXY.
 type ProXYOverrider interface {
-	// ConnectAsync asynchronous version of g_proxy_connect().
-	ConnectAsync(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable, callback AsyncReadyCallback)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
 	// which they will resolve to an IP address themselves. Others, like SOCKS4,
 	// do not allow this. This function will return false if @proxy is
@@ -75,25 +75,6 @@ func marshalProXY(p uintptr) (interface{}, error) {
 	return WrapProXY(obj), nil
 }
 
-// ConnectAsync asynchronous version of g_proxy_connect().
-func (p proXY) ConnectAsync(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GProxy             // out
-	var _arg1 *C.GIOStream          // out
-	var _arg2 *C.GProxyAddress      // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_proxy_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
 // SupportsHostname: some proxy protocols expect to be passed a hostname,
 // which they will resolve to an IP address themselves. Others, like SOCKS4,
 // do not allow this. This function will return false if @proxy is
@@ -112,7 +93,7 @@ func (p proXY) SupportsHostname() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

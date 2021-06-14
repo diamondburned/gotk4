@@ -4,13 +4,419 @@ package gdk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_device_type_get_type()), F: marshalDeviceType},
+		{T: externglib.Type(C.gdk_input_mode_get_type()), F: marshalInputMode},
+		{T: externglib.Type(C.gdk_input_source_get_type()), F: marshalInputSource},
+		{T: externglib.Type(C.gdk_device_get_type()), F: marshalDevice},
+	})
+}
+
+// DeviceType indicates the device type. See
+// [above][GdkDeviceManager.description] for more information about the meaning
+// of these device types.
+type DeviceType int
+
+const (
+	// DeviceTypeMaster: device is a master (or virtual) device. There will be
+	// an associated focus indicator on the screen.
+	DeviceTypeMaster DeviceType = 0
+	// DeviceTypeSlave: device is a slave (or physical) device.
+	DeviceTypeSlave DeviceType = 1
+	// DeviceTypeFloating: device is a physical device, currently not attached
+	// to any virtual device.
+	DeviceTypeFloating DeviceType = 2
+)
+
+func marshalDeviceType(p uintptr) (interface{}, error) {
+	return DeviceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// InputMode: an enumeration that describes the mode of an input device.
+type InputMode int
+
+const (
+	// InputModeDisabled: the device is disabled and will not report any events.
+	InputModeDisabled InputMode = 0
+	// InputModeScreen: the device is enabled. The device’s coordinate space
+	// maps to the entire screen.
+	InputModeScreen InputMode = 1
+	// InputModeWindow: the device is enabled. The device’s coordinate space is
+	// mapped to a single window. The manner in which this window is chosen is
+	// undefined, but it will typically be the same way in which the focus
+	// window for key events is determined.
+	InputModeWindow InputMode = 2
+)
+
+func marshalInputMode(p uintptr) (interface{}, error) {
+	return InputMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// InputSource: an enumeration describing the type of an input device in general
+// terms.
+type InputSource int
+
+const (
+	// InputSourceMouse: the device is a mouse. (This will be reported for the
+	// core pointer, even if it is something else, such as a trackball.)
+	InputSourceMouse InputSource = 0
+	// InputSourcePen: the device is a stylus of a graphics tablet or similar
+	// device.
+	InputSourcePen InputSource = 1
+	// InputSourceEraser: the device is an eraser. Typically, this would be the
+	// other end of a stylus on a graphics tablet.
+	InputSourceEraser InputSource = 2
+	// InputSourceCursor: the device is a graphics tablet “puck” or similar
+	// device.
+	InputSourceCursor InputSource = 3
+	// InputSourceKeyboard: the device is a keyboard.
+	InputSourceKeyboard InputSource = 4
+	// InputSourceTouchscreen: the device is a direct-input touch device, such
+	// as a touchscreen or tablet. This device type has been added in 3.4.
+	InputSourceTouchscreen InputSource = 5
+	// InputSourceTouchpad: the device is an indirect touch device, such as a
+	// touchpad. This device type has been added in 3.4.
+	InputSourceTouchpad InputSource = 6
+	// InputSourceTrackpoint: the device is a trackpoint. This device type has
+	// been added in 3.22
+	InputSourceTrackpoint InputSource = 7
+	// InputSourceTabletPad: the device is a "pad", a collection of buttons,
+	// rings and strips found in drawing tablets. This device type has been
+	// added in 3.22.
+	InputSourceTabletPad InputSource = 8
+)
+
+func marshalInputSource(p uintptr) (interface{}, error) {
+	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Device: the Device object represents a single input device, such as a
+// keyboard, a mouse, a touchpad, etc.
+//
+// See the DeviceManager documentation for more information about the various
+// kinds of master and slave devices, and their relationships.
+type Device interface {
+	gextras.Objector
+
+	// HasCursor determines whether the pointer follows device motion. This is
+	// not meaningful for keyboard devices, which don't have a pointer.
+	HasCursor() bool
+	// NAxes returns the number of axes the device currently has.
+	NAxes() int
+	// NKeys returns the number of keys the device currently has.
+	NKeys() int
+	// Name determines the name of the device.
+	Name() string
+	// ProductID returns the product ID of this device, or nil if this
+	// information couldn't be obtained. This ID is retrieved from the device,
+	// and is thus constant for it. See gdk_device_get_vendor_id() for more
+	// information.
+	ProductID() string
+	// VendorID returns the vendor ID of this device, or nil if this information
+	// couldn't be obtained. This ID is retrieved from the device, and is thus
+	// constant for it.
+	//
+	// This function, together with gdk_device_get_product_id(), can be used to
+	// eg. compose #GSettings paths to store settings for this device.
+	//
+	//     static GSettings *
+	//     get_device_settings (GdkDevice *device)
+	//     {
+	//       const gchar *vendor, *product;
+	//       GSettings *settings;
+	//       GdkDevice *device;
+	//       gchar *path;
+	//
+	//       vendor = gdk_device_get_vendor_id (device);
+	//       product = gdk_device_get_product_id (device);
+	//
+	//       path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+	//       settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+	//       g_free (path);
+	//
+	//       return settings;
+	//     }
+	VendorID() string
+	// SetAxisUse specifies how an axis of a device is used.
+	SetAxisUse(index_ uint, use AxisUse)
+	// SetKey specifies the X key event to generate when a macro button of a
+	// device is pressed.
+	SetKey(index_ uint, keyval uint, modifiers ModifierType)
+	// SetMode sets a the mode of an input device. The mode controls if the
+	// device is active and whether the device’s range is mapped to the entire
+	// screen or to a single window.
+	//
+	// Note: This is only meaningful for floating devices, master devices (and
+	// slaves connected to these) drive the pointer cursor, which is not limited
+	// by the input mode.
+	SetMode(mode InputMode) bool
+	// Ungrab: release any grab on @device.
+	Ungrab(time_ uint32)
+	// Warp warps @device in @display to the point @x,@y on the screen @screen,
+	// unless the device is confined to a window by a grab, in which case it
+	// will be moved as far as allowed by the grab. Warping the pointer creates
+	// events as if the user had moved the mouse instantaneously to the
+	// destination.
+	//
+	// Note that the pointer should normally be under the control of the user.
+	// This function was added to cover some rare use cases like keyboard
+	// navigation support for the color picker in the ColorSelectionDialog.
+	Warp(screen Screen, x int, y int)
+}
+
+// device implements the Device class.
+type device struct {
+	gextras.Objector
+}
+
+var _ Device = (*device)(nil)
+
+// WrapDevice wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDevice(obj *externglib.Object) Device {
+	return device{
+		Objector: obj,
+	}
+}
+
+func marshalDevice(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDevice(obj), nil
+}
+
+// HasCursor determines whether the pointer follows device motion. This is
+// not meaningful for keyboard devices, which don't have a pointer.
+func (d device) HasCursor() bool {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_device_get_has_cursor(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// NAxes returns the number of axes the device currently has.
+func (d device) NAxes() int {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gint // in
+
+	_cret = C.gdk_device_get_n_axes(_arg0)
+
+	var _gint int // out
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// NKeys returns the number of keys the device currently has.
+func (d device) NKeys() int {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret C.gint // in
+
+	_cret = C.gdk_device_get_n_keys(_arg0)
+
+	var _gint int // out
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// Name determines the name of the device.
+func (d device) Name() string {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.gchar // in
+
+	_cret = C.gdk_device_get_name(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}
+
+// ProductID returns the product ID of this device, or nil if this
+// information couldn't be obtained. This ID is retrieved from the device,
+// and is thus constant for it. See gdk_device_get_vendor_id() for more
+// information.
+func (d device) ProductID() string {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.gchar // in
+
+	_cret = C.gdk_device_get_product_id(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}
+
+// VendorID returns the vendor ID of this device, or nil if this information
+// couldn't be obtained. This ID is retrieved from the device, and is thus
+// constant for it.
+//
+// This function, together with gdk_device_get_product_id(), can be used to
+// eg. compose #GSettings paths to store settings for this device.
+//
+//     static GSettings *
+//     get_device_settings (GdkDevice *device)
+//     {
+//       const gchar *vendor, *product;
+//       GSettings *settings;
+//       GdkDevice *device;
+//       gchar *path;
+//
+//       vendor = gdk_device_get_vendor_id (device);
+//       product = gdk_device_get_product_id (device);
+//
+//       path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+//       settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+//       g_free (path);
+//
+//       return settings;
+//     }
+func (d device) VendorID() string {
+	var _arg0 *C.GdkDevice // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+
+	var _cret *C.gchar // in
+
+	_cret = C.gdk_device_get_vendor_id(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}
+
+// SetAxisUse specifies how an axis of a device is used.
+func (d device) SetAxisUse(index_ uint, use AxisUse) {
+	var _arg0 *C.GdkDevice // out
+	var _arg1 C.guint      // out
+	var _arg2 C.GdkAxisUse // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(index_)
+	_arg2 = (C.GdkAxisUse)(use)
+
+	C.gdk_device_set_axis_use(_arg0, _arg1, _arg2)
+}
+
+// SetKey specifies the X key event to generate when a macro button of a
+// device is pressed.
+func (d device) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
+	var _arg0 *C.GdkDevice      // out
+	var _arg1 C.guint           // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(index_)
+	_arg2 = C.guint(keyval)
+	_arg3 = (C.GdkModifierType)(modifiers)
+
+	C.gdk_device_set_key(_arg0, _arg1, _arg2, _arg3)
+}
+
+// SetMode sets a the mode of an input device. The mode controls if the
+// device is active and whether the device’s range is mapped to the entire
+// screen or to a single window.
+//
+// Note: This is only meaningful for floating devices, master devices (and
+// slaves connected to these) drive the pointer cursor, which is not limited
+// by the input mode.
+func (d device) SetMode(mode InputMode) bool {
+	var _arg0 *C.GdkDevice   // out
+	var _arg1 C.GdkInputMode // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GdkInputMode)(mode)
+
+	var _cret C.gboolean // in
+
+	_cret = C.gdk_device_set_mode(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Ungrab: release any grab on @device.
+func (d device) Ungrab(time_ uint32) {
+	var _arg0 *C.GdkDevice // out
+	var _arg1 C.guint32    // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint32(time_)
+
+	C.gdk_device_ungrab(_arg0, _arg1)
+}
+
+// Warp warps @device in @display to the point @x,@y on the screen @screen,
+// unless the device is confined to a window by a grab, in which case it
+// will be moved as far as allowed by the grab. Warping the pointer creates
+// events as if the user had moved the mouse instantaneously to the
+// destination.
+//
+// Note that the pointer should normally be under the control of the user.
+// This function was added to cover some rare use cases like keyboard
+// navigation support for the color picker in the ColorSelectionDialog.
+func (d device) Warp(screen Screen, x int, y int) {
+	var _arg0 *C.GdkDevice // out
+	var _arg1 *C.GdkScreen // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
+
+	C.gdk_device_warp(_arg0, _arg1, _arg2, _arg3)
+}
 
 // TimeCoord: a TimeCoord stores a single event in a motion history.
 type TimeCoord struct {
@@ -25,11 +431,6 @@ func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
 	}
 
 	return (*TimeCoord)(ptr)
-}
-
-func marshalTimeCoord(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTimeCoord(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

@@ -3,10 +3,13 @@
 package pango
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -48,7 +51,7 @@ type FontMap interface {
 	Serial() uint
 }
 
-// fontMap implements the FontMap interface.
+// fontMap implements the FontMap class.
 type fontMap struct {
 	gextras.Objector
 }
@@ -58,7 +61,7 @@ var _ FontMap = (*fontMap)(nil)
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
-	return FontMap{
+	return fontMap{
 		Objector: obj,
 	}
 }

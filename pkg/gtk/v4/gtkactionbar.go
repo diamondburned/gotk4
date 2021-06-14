@@ -2,7 +2,171 @@
 
 package gtk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_action_bar_get_type()), F: marshalActionBar},
+	})
+}
+
+// ActionBar: `GtkActionBar` is designed to present contextual actions.
+//
+// !An example GtkActionBar (action-bar.png)
+//
+// It is expected to be displayed below the content and expand horizontally to
+// fill the area.
+//
+// It allows placing children at the start or the end. In addition, it contains
+// an internal centered box which is centered with respect to the full width of
+// the box, even if the children at either side take up different amounts of
+// space.
+//
+//
+// CSS nodes
+//
+// `GtkActionBar` has a single CSS node with name actionbar.
+type ActionBar interface {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+
+	// Revealed gets whether the contents of the action bar are revealed.
+	Revealed() bool
+	// PackEnd adds @child to @action_bar, packed with reference to the end of
+	// the @action_bar.
+	PackEnd(child Widget)
+	// PackStart adds @child to @action_bar, packed with reference to the start
+	// of the @action_bar.
+	PackStart(child Widget)
+	// Remove removes a child from @action_bar.
+	Remove(child Widget)
+	// SetCenterWidget sets the center widget for the `GtkActionBar`.
+	SetCenterWidget(centerWidget Widget)
+	// SetRevealed reveals or conceals the content of the action bar.
+	//
+	// Note: this does not show or hide @action_bar in the
+	// [property@Gtk.Widget:visible] sense, so revealing has no effect if the
+	// action bar is hidden.
+	SetRevealed(revealed bool)
+}
+
+// actionBar implements the ActionBar class.
+type actionBar struct {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+}
+
+var _ ActionBar = (*actionBar)(nil)
+
+// WrapActionBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapActionBar(obj *externglib.Object) ActionBar {
+	return actionBar{
+		Widget:           WrapWidget(obj),
+		Accessible:       WrapAccessible(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+	}
+}
+
+func marshalActionBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapActionBar(obj), nil
+}
+
+// Revealed gets whether the contents of the action bar are revealed.
+func (a actionBar) Revealed() bool {
+	var _arg0 *C.GtkActionBar // out
+
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_action_bar_get_revealed(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// PackEnd adds @child to @action_bar, packed with reference to the end of
+// the @action_bar.
+func (a actionBar) PackEnd(child Widget) {
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	C.gtk_action_bar_pack_end(_arg0, _arg1)
+}
+
+// PackStart adds @child to @action_bar, packed with reference to the start
+// of the @action_bar.
+func (a actionBar) PackStart(child Widget) {
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	C.gtk_action_bar_pack_start(_arg0, _arg1)
+}
+
+// Remove removes a child from @action_bar.
+func (a actionBar) Remove(child Widget) {
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	C.gtk_action_bar_remove(_arg0, _arg1)
+}
+
+// SetCenterWidget sets the center widget for the `GtkActionBar`.
+func (a actionBar) SetCenterWidget(centerWidget Widget) {
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
+
+	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
+}
+
+// SetRevealed reveals or conceals the content of the action bar.
+//
+// Note: this does not show or hide @action_bar in the
+// [property@Gtk.Widget:visible] sense, so revealing has no effect if the
+// action bar is hidden.
+func (a actionBar) SetRevealed(revealed bool) {
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 C.gboolean      // out
+
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	if revealed {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_action_bar_set_revealed(_arg0, _arg1)
+}

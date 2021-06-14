@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -32,7 +34,7 @@ type GestureZoom interface {
 	ScaleDelta() float64
 }
 
-// gestureZoom implements the GestureZoom interface.
+// gestureZoom implements the GestureZoom class.
 type gestureZoom struct {
 	Gesture
 }
@@ -42,7 +44,7 @@ var _ GestureZoom = (*gestureZoom)(nil)
 // WrapGestureZoom wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureZoom(obj *externglib.Object) GestureZoom {
-	return GestureZoom{
+	return gestureZoom{
 		Gesture: WrapGesture(obj),
 	}
 }

@@ -2,7 +2,76 @@
 
 package gtk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidget},
+	})
+}
+
+// FontChooserWidget: the `GtkFontChooserWidget` widget lets the user select a
+// font.
+//
+// It is used in the `GtkFontChooserDialog` widget to provide a dialog for
+// selecting fonts.
+//
+// To set the font which is initially selected, use
+// [method@Gtk.FontChooser.set_font] or [method@Gtk.FontChooser.set_font_desc].
+//
+// To get the selected font use [method@Gtk.FontChooser.get_font] or
+// [method@Gtk.FontChooser.get_font_desc].
+//
+// To change the text which is shown in the preview area, use
+// [method@Gtk.FontChooser.set_preview_text].
+//
+//
+// CSS nodes
+//
+// `GtkFontChooserWidget` has a single CSS node with name fontchooser.
+type FontChooserWidget interface {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	FontChooser
+}
+
+// fontChooserWidget implements the FontChooserWidget class.
+type fontChooserWidget struct {
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	FontChooser
+}
+
+var _ FontChooserWidget = (*fontChooserWidget)(nil)
+
+// WrapFontChooserWidget wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
+	return fontChooserWidget{
+		Widget:           WrapWidget(obj),
+		Accessible:       WrapAccessible(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+		FontChooser:      WrapFontChooser(obj),
+	}
+}
+
+func marshalFontChooserWidget(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapFontChooserWidget(obj), nil
+}

@@ -3,10 +3,13 @@
 package pango
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -107,7 +110,7 @@ type Context interface {
 	SetRoundGlyphPositions(roundPositions bool)
 }
 
-// context implements the Context interface.
+// context implements the Context class.
 type context struct {
 	gextras.Objector
 }
@@ -117,7 +120,7 @@ var _ Context = (*context)(nil)
 // WrapContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContext(obj *externglib.Object) Context {
-	return Context{
+	return context{
 		Objector: obj,
 	}
 }
@@ -155,7 +158,7 @@ func (c context) RoundGlyphPositions() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -311,7 +314,7 @@ func (c context) SetRoundGlyphPositions(roundPositions bool) {
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	if roundPositions {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.pango_context_set_round_glyph_positions(_arg0, _arg1)

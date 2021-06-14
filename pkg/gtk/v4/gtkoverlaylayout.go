@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -30,7 +32,7 @@ type OverlayLayout interface {
 	LayoutManager
 }
 
-// overlayLayout implements the OverlayLayout interface.
+// overlayLayout implements the OverlayLayout class.
 type overlayLayout struct {
 	LayoutManager
 }
@@ -40,7 +42,7 @@ var _ OverlayLayout = (*overlayLayout)(nil)
 // WrapOverlayLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapOverlayLayout(obj *externglib.Object) OverlayLayout {
-	return OverlayLayout{
+	return overlayLayout{
 		LayoutManager: WrapLayoutManager(obj),
 	}
 }
@@ -66,7 +68,7 @@ type OverlayLayoutChild interface {
 	SetMeasure(measure bool)
 }
 
-// overlayLayoutChild implements the OverlayLayoutChild interface.
+// overlayLayoutChild implements the OverlayLayoutChild class.
 type overlayLayoutChild struct {
 	LayoutChild
 }
@@ -76,7 +78,7 @@ var _ OverlayLayoutChild = (*overlayLayoutChild)(nil)
 // WrapOverlayLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChild {
-	return OverlayLayoutChild{
+	return overlayLayoutChild{
 		LayoutChild: WrapLayoutChild(obj),
 	}
 }
@@ -99,7 +101,7 @@ func (c overlayLayoutChild) ClipOverlay() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -118,7 +120,7 @@ func (c overlayLayoutChild) Measure() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -132,7 +134,7 @@ func (c overlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 	if clipOverlay {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_overlay_layout_child_set_clip_overlay(_arg0, _arg1)
@@ -145,7 +147,7 @@ func (c overlayLayoutChild) SetMeasure(measure bool) {
 
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 	if measure {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_overlay_layout_child_set_measure(_arg0, _arg1)

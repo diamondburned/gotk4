@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -38,7 +40,7 @@ type AspectFrame interface {
 	Set(xalign float32, yalign float32, ratio float32, obeyChild bool)
 }
 
-// aspectFrame implements the AspectFrame interface.
+// aspectFrame implements the AspectFrame class.
 type aspectFrame struct {
 	Frame
 	Buildable
@@ -49,7 +51,7 @@ var _ AspectFrame = (*aspectFrame)(nil)
 // WrapAspectFrame wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAspectFrame(obj *externglib.Object) AspectFrame {
-	return AspectFrame{
+	return aspectFrame{
 		Frame:     WrapFrame(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -74,7 +76,7 @@ func (a aspectFrame) Set(xalign float32, yalign float32, ratio float32, obeyChil
 	_arg2 = C.gfloat(yalign)
 	_arg3 = C.gfloat(ratio)
 	if obeyChild {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	C.gtk_aspect_frame_set(_arg0, _arg1, _arg2, _arg3, _arg4)

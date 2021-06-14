@@ -3,11 +3,14 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -32,9 +35,23 @@ type GestureStylus interface {
 	// [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
 	// signals.
 	Axis(axis gdk.AxisUse) (float64, bool)
+	// Backlog returns the accumulated backlog of tracking information.
+	//
+	// By default, GTK will limit rate of input events. On stylus input where
+	// accuracy of strokes is paramount, this function returns the accumulated
+	// coordinate/timing state before the emission of the current
+	// [Gtk.GestureStylus::motion] signal.
+	//
+	// This function may only be called within a
+	// [signal@Gtk.GestureStylus::motion] signal handler, the state given in
+	// this signal and obtainable through [method@Gtk.GestureStylus.get_axis]
+	// express the latest (most up-to-date) state in motion history.
+	//
+	// The @backlog is provided in chronological order.
+	Backlog() ([]gdk.TimeCoord, bool)
 }
 
-// gestureStylus implements the GestureStylus interface.
+// gestureStylus implements the GestureStylus class.
 type gestureStylus struct {
 	GestureSingle
 }
@@ -44,7 +61,7 @@ var _ GestureStylus = (*gestureStylus)(nil)
 // WrapGestureStylus wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureStylus(obj *externglib.Object) GestureStylus {
-	return GestureStylus{
+	return gestureStylus{
 		GestureSingle: WrapGestureSingle(obj),
 	}
 }
@@ -77,9 +94,47 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _ok bool       // out
 
 	_value = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _value, _ok
+}
+
+// Backlog returns the accumulated backlog of tracking information.
+//
+// By default, GTK will limit rate of input events. On stylus input where
+// accuracy of strokes is paramount, this function returns the accumulated
+// coordinate/timing state before the emission of the current
+// [Gtk.GestureStylus::motion] signal.
+//
+// This function may only be called within a
+// [signal@Gtk.GestureStylus::motion] signal handler, the state given in
+// this signal and obtainable through [method@Gtk.GestureStylus.get_axis]
+// express the latest (most up-to-date) state in motion history.
+//
+// The @backlog is provided in chronological order.
+func (g gestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
+	var _arg0 *C.GtkGestureStylus // out
+
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
+
+	var _arg1 *C.GdkTimeCoord
+	var _arg2 C.guint    // in
+	var _cret C.gboolean // in
+
+	_cret = C.gtk_gesture_stylus_get_backlog(_arg0, &_arg1, &_arg2)
+
+	var _backlog []gdk.TimeCoord
+	var _ok bool // out
+
+	_backlog = unsafe.Slice((*gdk.TimeCoord)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_backlog, func(v *[]gdk.TimeCoord) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _backlog, _ok
 }

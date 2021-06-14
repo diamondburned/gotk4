@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -183,7 +183,7 @@ type ComboBox interface {
 	SetPopupFixedWidth(fixed bool)
 }
 
-// comboBox implements the ComboBox interface.
+// comboBox implements the ComboBox class.
 type comboBox struct {
 	Widget
 	Accessible
@@ -198,7 +198,7 @@ var _ ComboBox = (*comboBox)(nil)
 // WrapComboBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapComboBox(obj *externglib.Object) ComboBox {
-	return ComboBox{
+	return comboBox{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -280,7 +280,7 @@ func (c comboBox) ActiveIter() (TreeIter, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -317,7 +317,7 @@ func (c comboBox) HasEntry() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -354,7 +354,7 @@ func (c comboBox) PopupFixedWidth() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -437,7 +437,7 @@ func (c comboBox) SetActiveID(activeId string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -543,7 +543,7 @@ func (c comboBox) SetPopupFixedWidth(fixed bool) {
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	if fixed {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_combo_box_set_popup_fixed_width(_arg0, _arg1)

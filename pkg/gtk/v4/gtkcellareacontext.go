@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -112,7 +115,7 @@ type CellAreaContext interface {
 	Reset()
 }
 
-// cellAreaContext implements the CellAreaContext interface.
+// cellAreaContext implements the CellAreaContext class.
 type cellAreaContext struct {
 	gextras.Objector
 }
@@ -122,7 +125,7 @@ var _ CellAreaContext = (*cellAreaContext)(nil)
 // WrapCellAreaContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellAreaContext(obj *externglib.Object) CellAreaContext {
-	return CellAreaContext{
+	return cellAreaContext{
 		Objector: obj,
 	}
 }

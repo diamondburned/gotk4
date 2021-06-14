@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -48,7 +50,7 @@ type SeparatorToolItem interface {
 	SetDraw(draw bool)
 }
 
-// separatorToolItem implements the SeparatorToolItem interface.
+// separatorToolItem implements the SeparatorToolItem class.
 type separatorToolItem struct {
 	ToolItem
 	Activatable
@@ -60,7 +62,7 @@ var _ SeparatorToolItem = (*separatorToolItem)(nil)
 // WrapSeparatorToolItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSeparatorToolItem(obj *externglib.Object) SeparatorToolItem {
-	return SeparatorToolItem{
+	return separatorToolItem{
 		ToolItem:    WrapToolItem(obj),
 		Activatable: WrapActivatable(obj),
 		Buildable:   WrapBuildable(obj),
@@ -86,7 +88,7 @@ func (i separatorToolItem) Draw() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -102,7 +104,7 @@ func (i separatorToolItem) SetDraw(draw bool) {
 
 	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
 	if draw {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)

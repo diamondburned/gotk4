@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -24,7 +26,7 @@ type StatusbarAccessible interface {
 	ContainerAccessible
 }
 
-// statusbarAccessible implements the StatusbarAccessible interface.
+// statusbarAccessible implements the StatusbarAccessible class.
 type statusbarAccessible struct {
 	ContainerAccessible
 }
@@ -34,7 +36,7 @@ var _ StatusbarAccessible = (*statusbarAccessible)(nil)
 // WrapStatusbarAccessible wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStatusbarAccessible(obj *externglib.Object) StatusbarAccessible {
-	return StatusbarAccessible{
+	return statusbarAccessible{
 		ContainerAccessible: WrapContainerAccessible(obj),
 	}
 }

@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -17,8 +19,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_tool_palette_drag_targets_get_type()), F: marshalToolPaletteDragTargets},
 		{T: externglib.Type(C.gtk_tool_palette_get_type()), F: marshalToolPalette},
 	})
+}
+
+// ToolPaletteDragTargets flags used to specify the supported drag targets.
+type ToolPaletteDragTargets int
+
+const (
+	// ToolPaletteDragTargetsItems: support drag of items.
+	ToolPaletteDragTargetsItems ToolPaletteDragTargets = 1
+	// ToolPaletteDragTargetsGroups: support drag of groups.
+	ToolPaletteDragTargetsGroups ToolPaletteDragTargets = 2
+)
+
+func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
+	return ToolPaletteDragTargets(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // ToolPalette: a ToolPalette allows you to add ToolItems to a palette-like
@@ -118,7 +135,7 @@ type ToolPalette interface {
 	UnsetStyle()
 }
 
-// toolPalette implements the ToolPalette interface.
+// toolPalette implements the ToolPalette class.
 type toolPalette struct {
 	Container
 	Buildable
@@ -131,7 +148,7 @@ var _ ToolPalette = (*toolPalette)(nil)
 // WrapToolPalette wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToolPalette(obj *externglib.Object) ToolPalette {
-	return ToolPalette{
+	return toolPalette{
 		Container:  WrapContainer(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -179,7 +196,7 @@ func (p toolPalette) Exclusive(group ToolItemGroup) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -201,7 +218,7 @@ func (p toolPalette) Expand(group ToolItemGroup) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -269,7 +286,7 @@ func (p toolPalette) SetExclusive(group ToolItemGroup, exclusive bool) {
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 	if exclusive {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_tool_palette_set_exclusive(_arg0, _arg1, _arg2)
@@ -284,7 +301,7 @@ func (p toolPalette) SetExpand(group ToolItemGroup, expand bool) {
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 	if expand {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_tool_palette_set_expand(_arg0, _arg1, _arg2)

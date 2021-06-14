@@ -5,11 +5,10 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -166,27 +165,6 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// EndParse signals to the ParseContext that all data has been fed into the
-// parse context with g_markup_parse_context_parse().
-//
-// This function reports an error if the document isn't complete, for example if
-// elements are still open.
-func (c *MarkupParseContext) EndParse() error {
-	var _arg0 *C.GMarkupParseContext // out
-
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_markup_parse_context_end_parse(_arg0, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 // Free frees a ParseContext.
 //
 // This function can't be called from inside one of the Parser functions or
@@ -262,36 +240,6 @@ func (c *MarkupParseContext) UserData() interface{} {
 	_gpointer = (interface{})(_cret)
 
 	return _gpointer
-}
-
-// Parse: feed some data to the ParseContext.
-//
-// The data need not be valid UTF-8; an error will be signaled if it's invalid.
-// The data need not be an entire document; you can feed a document into the
-// parser incrementally, via multiple calls to this function. Typically, as you
-// receive data from a network connection or file, you feed each received chunk
-// of data into this function, aborting the process if an error occurs. Once an
-// error is reported, no further data may be fed to the ParseContext; all errors
-// are fatal.
-func (c *MarkupParseContext) Parse(text string, textLen int) error {
-	var _arg0 *C.GMarkupParseContext // out
-	var _arg1 *C.gchar               // out
-	var _arg2 C.gssize               // out
-
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(textLen)
-
-	var _cerr *C.GError // in
-
-	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // Pop completes the process of a temporary sub-parser redirection.

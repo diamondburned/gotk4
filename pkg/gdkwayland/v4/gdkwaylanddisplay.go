@@ -9,10 +9,10 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4 gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -36,10 +36,6 @@ type WaylandDisplay interface {
 	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
-	// WlCompositor returns the Wayland `wl_compositor` of a `GdkDisplay`.
-	WlCompositor() *interface{}
-	// WlDisplay returns the Wayland `wl_display` of a `GdkDisplay`.
-	WlDisplay() *interface{}
 	// QueryRegistry returns true if the the interface was found in the display
 	// `wl_registry.global` handler.
 	QueryRegistry(global string) bool
@@ -57,7 +53,7 @@ type WaylandDisplay interface {
 	SetStartupNotificationID(startupId string)
 }
 
-// waylandDisplay implements the WaylandDisplay interface.
+// waylandDisplay implements the WaylandDisplay class.
 type waylandDisplay struct {
 	gdk.Display
 }
@@ -67,7 +63,7 @@ var _ WaylandDisplay = (*waylandDisplay)(nil)
 // WrapWaylandDisplay wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandDisplay(obj *externglib.Object) WaylandDisplay {
-	return WaylandDisplay{
+	return waylandDisplay{
 		gdk.Display: gdk.WrapDisplay(obj),
 	}
 }
@@ -96,40 +92,6 @@ func (d waylandDisplay) StartupNotificationID() string {
 	return _utf8
 }
 
-// WlCompositor returns the Wayland `wl_compositor` of a `GdkDisplay`.
-func (d waylandDisplay) WlCompositor() *interface{} {
-	var _arg0 *C.GdkDisplay // out
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.wl_compositor // in
-
-	_cret = C.gdk_wayland_display_get_wl_compositor(_arg0)
-
-	var _gpointer *interface{} // out
-
-	_gpointer = (*interface{})(_cret)
-
-	return _gpointer
-}
-
-// WlDisplay returns the Wayland `wl_display` of a `GdkDisplay`.
-func (d waylandDisplay) WlDisplay() *interface{} {
-	var _arg0 *C.GdkDisplay // out
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.wl_display // in
-
-	_cret = C.gdk_wayland_display_get_wl_display(_arg0)
-
-	var _gpointer *interface{} // out
-
-	_gpointer = (*interface{})(_cret)
-
-	return _gpointer
-}
-
 // QueryRegistry returns true if the the interface was found in the display
 // `wl_registry.global` handler.
 func (d waylandDisplay) QueryRegistry(global string) bool {
@@ -146,7 +108,7 @@ func (d waylandDisplay) QueryRegistry(global string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

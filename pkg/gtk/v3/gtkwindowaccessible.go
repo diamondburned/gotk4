@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -24,7 +26,7 @@ type WindowAccessible interface {
 	ContainerAccessible
 }
 
-// windowAccessible implements the WindowAccessible interface.
+// windowAccessible implements the WindowAccessible class.
 type windowAccessible struct {
 	ContainerAccessible
 }
@@ -34,7 +36,7 @@ var _ WindowAccessible = (*windowAccessible)(nil)
 // WrapWindowAccessible wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindowAccessible(obj *externglib.Object) WindowAccessible {
-	return WindowAccessible{
+	return windowAccessible{
 		ContainerAccessible: WrapContainerAccessible(obj),
 	}
 }

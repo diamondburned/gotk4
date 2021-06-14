@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -40,7 +42,7 @@ type CellRendererText interface {
 	SetFixedHeightFromFont(numberOfRows int)
 }
 
-// cellRendererText implements the CellRendererText interface.
+// cellRendererText implements the CellRendererText class.
 type cellRendererText struct {
 	CellRenderer
 }
@@ -50,7 +52,7 @@ var _ CellRendererText = (*cellRendererText)(nil)
 // WrapCellRendererText wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererText(obj *externglib.Object) CellRendererText {
-	return CellRendererText{
+	return cellRendererText{
 		CellRenderer: WrapCellRenderer(obj),
 	}
 }

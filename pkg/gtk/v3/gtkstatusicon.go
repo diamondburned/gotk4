@@ -5,13 +5,14 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -112,7 +113,7 @@ type StatusIcon interface {
 	IsEmbedded() bool
 	// SetFromFile makes @status_icon display the file @filename. See
 	// gtk_status_icon_new_from_file() for details.
-	SetFromFile(filename *string)
+	SetFromFile(filename string)
 	// SetFromGIcon makes @status_icon display the #GIcon. See
 	// gtk_status_icon_new_from_gicon() for details.
 	SetFromGIcon(icon gio.Icon)
@@ -160,7 +161,7 @@ type StatusIcon interface {
 	SetVisible(visible bool)
 }
 
-// statusIcon implements the StatusIcon interface.
+// statusIcon implements the StatusIcon class.
 type statusIcon struct {
 	gextras.Objector
 }
@@ -170,7 +171,7 @@ var _ StatusIcon = (*statusIcon)(nil)
 // WrapStatusIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStatusIcon(obj *externglib.Object) StatusIcon {
-	return StatusIcon{
+	return statusIcon{
 		Objector: obj,
 	}
 }
@@ -194,7 +195,7 @@ func (s statusIcon) HasTooltip() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -332,7 +333,7 @@ func (s statusIcon) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -379,7 +380,7 @@ func (s statusIcon) IsEmbedded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -388,7 +389,7 @@ func (s statusIcon) IsEmbedded() bool {
 
 // SetFromFile makes @status_icon display the file @filename. See
 // gtk_status_icon_new_from_file() for details.
-func (s statusIcon) SetFromFile(filename *string) {
+func (s statusIcon) SetFromFile(filename string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
 
@@ -458,7 +459,7 @@ func (s statusIcon) SetHasTooltip(hasTooltip bool) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 	if hasTooltip {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_status_icon_set_has_tooltip(_arg0, _arg1)
@@ -547,7 +548,7 @@ func (s statusIcon) SetVisible(visible bool) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 	if visible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_status_icon_set_visible(_arg0, _arg1)

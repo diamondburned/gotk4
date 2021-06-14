@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -67,7 +68,7 @@ type ThemingEngine interface {
 	StateIsRunning(state StateType) (float64, bool)
 }
 
-// themingEngine implements the ThemingEngine interface.
+// themingEngine implements the ThemingEngine class.
 type themingEngine struct {
 	gextras.Objector
 }
@@ -77,7 +78,7 @@ var _ ThemingEngine = (*themingEngine)(nil)
 // WrapThemingEngine wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapThemingEngine(obj *externglib.Object) ThemingEngine {
-	return ThemingEngine{
+	return themingEngine{
 		Objector: obj,
 	}
 }
@@ -240,7 +241,7 @@ func (e themingEngine) HasClass(styleClass string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -264,7 +265,7 @@ func (e themingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -295,7 +296,7 @@ func (e themingEngine) StateIsRunning(state StateType) (float64, bool) {
 	var _ok bool          // out
 
 	_progress = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

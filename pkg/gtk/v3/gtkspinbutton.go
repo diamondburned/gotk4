@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -16,8 +18,54 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
+		{T: externglib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
 		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButton},
 	})
+}
+
+// SpinButtonUpdatePolicy: the spin button update policy determines whether the
+// spin button displays values even if they are outside the bounds of its
+// adjustment. See gtk_spin_button_set_update_policy().
+type SpinButtonUpdatePolicy int
+
+const (
+	// SpinButtonUpdatePolicyAlways: when refreshing your SpinButton, the value
+	// is always displayed
+	SpinButtonUpdatePolicyAlways SpinButtonUpdatePolicy = 0
+	// SpinButtonUpdatePolicyIfValid: when refreshing your SpinButton, the value
+	// is only displayed if it is valid within the bounds of the spin button's
+	// adjustment
+	SpinButtonUpdatePolicyIfValid SpinButtonUpdatePolicy = 1
+)
+
+func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
+	return SpinButtonUpdatePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SpinType: the values of the GtkSpinType enumeration are used to specify the
+// change to make in gtk_spin_button_spin().
+type SpinType int
+
+const (
+	// SpinTypeStepForward: increment by the adjustments step increment.
+	SpinTypeStepForward SpinType = 0
+	// SpinTypeStepBackward: decrement by the adjustments step increment.
+	SpinTypeStepBackward SpinType = 1
+	// SpinTypePageForward: increment by the adjustments page increment.
+	SpinTypePageForward SpinType = 2
+	// SpinTypePageBackward: decrement by the adjustments page increment.
+	SpinTypePageBackward SpinType = 3
+	// SpinTypeHome: go to the adjustments lower bound.
+	SpinTypeHome SpinType = 4
+	// SpinTypeEnd: go to the adjustments upper bound.
+	SpinTypeEnd SpinType = 5
+	// SpinTypeUserDefined: change by a specified amount.
+	SpinTypeUserDefined SpinType = 6
+)
+
+func marshalSpinType(p uintptr) (interface{}, error) {
+	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // SpinButton: a SpinButton is an ideal way to allow the user to set the value
@@ -135,7 +183,7 @@ type SpinButton interface {
 	Update()
 }
 
-// spinButton implements the SpinButton interface.
+// spinButton implements the SpinButton class.
 type spinButton struct {
 	Entry
 	Buildable
@@ -149,7 +197,7 @@ var _ SpinButton = (*spinButton)(nil)
 // WrapSpinButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSpinButton(obj *externglib.Object) SpinButton {
-	return SpinButton{
+	return spinButton{
 		Entry:        WrapEntry(obj),
 		Buildable:    WrapBuildable(obj),
 		CellEditable: WrapCellEditable(obj),
@@ -233,7 +281,7 @@ func (s spinButton) Numeric() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -274,7 +322,7 @@ func (s spinButton) SnapToTicks() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -329,7 +377,7 @@ func (s spinButton) Wrap() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -382,7 +430,7 @@ func (s spinButton) SetNumeric(numeric bool) {
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 	if numeric {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_spin_button_set_numeric(_arg0, _arg1)
@@ -413,7 +461,7 @@ func (s spinButton) SetSnapToTicks(snapToTicks bool) {
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 	if snapToTicks {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_spin_button_set_snap_to_ticks(_arg0, _arg1)
@@ -452,7 +500,7 @@ func (s spinButton) SetWrap(wrap bool) {
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 	if wrap {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_spin_button_set_wrap(_arg0, _arg1)

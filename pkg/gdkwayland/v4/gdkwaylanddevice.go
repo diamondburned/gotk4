@@ -3,14 +3,16 @@
 package gdkwayland
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4 gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -37,15 +39,9 @@ type WaylandDevice interface {
 	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
 	// GDK_SOURCE_TABLET_PAD.
 	NodePath() string
-	// WlKeyboard returns the Wayland `wl_keyboard` of a `GdkDevice`.
-	WlKeyboard() *interface{}
-	// WlPointer returns the Wayland `wl_pointer` of a `GdkDevice`.
-	WlPointer() *interface{}
-	// WlSeat returns the Wayland `wl_seat` of a `GdkDevice`.
-	WlSeat() *interface{}
 }
 
-// waylandDevice implements the WaylandDevice interface.
+// waylandDevice implements the WaylandDevice class.
 type waylandDevice struct {
 	gdk.Device
 }
@@ -55,7 +51,7 @@ var _ WaylandDevice = (*waylandDevice)(nil)
 // WrapWaylandDevice wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandDevice(obj *externglib.Object) WaylandDevice {
-	return WaylandDevice{
+	return waylandDevice{
 		gdk.Device: gdk.WrapDevice(obj),
 	}
 }
@@ -87,55 +83,4 @@ func (d waylandDevice) NodePath() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// WlKeyboard returns the Wayland `wl_keyboard` of a `GdkDevice`.
-func (d waylandDevice) WlKeyboard() *interface{} {
-	var _arg0 *C.GdkDevice // out
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.wl_keyboard // in
-
-	_cret = C.gdk_wayland_device_get_wl_keyboard(_arg0)
-
-	var _gpointer *interface{} // out
-
-	_gpointer = (*interface{})(_cret)
-
-	return _gpointer
-}
-
-// WlPointer returns the Wayland `wl_pointer` of a `GdkDevice`.
-func (d waylandDevice) WlPointer() *interface{} {
-	var _arg0 *C.GdkDevice // out
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.wl_pointer // in
-
-	_cret = C.gdk_wayland_device_get_wl_pointer(_arg0)
-
-	var _gpointer *interface{} // out
-
-	_gpointer = (*interface{})(_cret)
-
-	return _gpointer
-}
-
-// WlSeat returns the Wayland `wl_seat` of a `GdkDevice`.
-func (d waylandDevice) WlSeat() *interface{} {
-	var _arg0 *C.GdkDevice // out
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.wl_seat // in
-
-	_cret = C.gdk_wayland_device_get_wl_seat(_arg0)
-
-	var _gpointer *interface{} // out
-
-	_gpointer = (*interface{})(_cret)
-
-	return _gpointer
 }

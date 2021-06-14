@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -16,9 +17,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_builder_closure_flags_get_type()), F: marshalBuilderClosureFlags},
 		{T: externglib.Type(C.gtk_builder_scope_get_type()), F: marshalBuilderScope},
 		{T: externglib.Type(C.gtk_builder_cscope_get_type()), F: marshalBuilderCScope},
 	})
+}
+
+// BuilderClosureFlags: the list of flags that can be passed to
+// gtk_builder_create_closure().
+//
+// New values may be added in the future for new features, so external
+// implementations of [interface@Gtk.BuilderScope] should test the flags for
+// unknown values and raise a GTK_BUILDER_ERROR_INVALID_ATTRIBUTE error when
+// they encounter one.
+type BuilderClosureFlags int
+
+const (
+	// BuilderClosureFlagsSwapped: the closure should be created swapped. See
+	// g_cclosure_new_swap() for details.
+	BuilderClosureFlagsSwapped BuilderClosureFlags = 1
+)
+
+func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
+	return BuilderClosureFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // BuilderScopeOverrider contains methods that are overridable. This
@@ -89,7 +110,7 @@ type BuilderCScope interface {
 	BuilderScope
 }
 
-// builderCScope implements the BuilderCScope interface.
+// builderCScope implements the BuilderCScope class.
 type builderCScope struct {
 	gextras.Objector
 	BuilderScope
@@ -100,7 +121,7 @@ var _ BuilderCScope = (*builderCScope)(nil)
 // WrapBuilderCScope wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBuilderCScope(obj *externglib.Object) BuilderCScope {
-	return BuilderCScope{
+	return builderCScope{
 		Objector:     obj,
 		BuilderScope: WrapBuilderScope(obj),
 	}

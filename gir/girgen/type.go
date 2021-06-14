@@ -10,28 +10,18 @@ import (
 func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
 	ptr := uint8(strings.Count(typ.CType, "*"))
 
-	if ptr > 0 {
-		// Edge case: a string is a gchar*, so we don't need a pointer.
-		if typ.Name == "utf8" {
+	if ptr > 0 && result != nil {
+		// Edge case: interfaces must not be pointers. We should still
+		// sometimes allow for pointers to interfaces, if needed, but this
+		// likely won't work.
+		switch {
+		case result.Interface != nil:
+			fallthrough
+		case result.Class != nil:
 			ptr--
-			goto ret
-		}
-
-		if result != nil {
-			// Edge case: interfaces must not be pointers. We should still
-			// sometimes allow for pointers to interfaces, if needed, but this
-			// likely won't work.
-			switch {
-			case result.Interface != nil:
-				fallthrough
-			case result.Class != nil:
-				ptr--
-				goto ret
-			}
 		}
 	}
 
-ret:
 	return ptr
 }
 

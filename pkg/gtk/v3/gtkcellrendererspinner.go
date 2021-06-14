@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -34,7 +36,7 @@ type CellRendererSpinner interface {
 	CellRenderer
 }
 
-// cellRendererSpinner implements the CellRendererSpinner interface.
+// cellRendererSpinner implements the CellRendererSpinner class.
 type cellRendererSpinner struct {
 	CellRenderer
 }
@@ -44,7 +46,7 @@ var _ CellRendererSpinner = (*cellRendererSpinner)(nil)
 // WrapCellRendererSpinner wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
-	return CellRendererSpinner{
+	return cellRendererSpinner{
 		CellRenderer: WrapCellRenderer(obj),
 	}
 }

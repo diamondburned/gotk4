@@ -5,15 +5,118 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDrop},
+	})
+}
+
+// Drop: the `GdkDrop` object represents the target of an ongoing DND operation.
+//
+// Possible drop sites get informed about the status of the ongoing drag
+// operation with events of type GDK_DRAG_ENTER, GDK_DRAG_LEAVE, GDK_DRAG_MOTION
+// and GDK_DROP_START. The `GdkDrop` object can be obtained from these
+// [class@Gdk.Event] types using [method@Gdk.DNDEvent.get_drop].
+//
+// The actual data transfer is initiated from the target side via an async read,
+// using one of the `GdkDrop` methods for this purpose:
+// [method@Gdk.Drop.read_async] or [method@Gdk.Drop.read_value_async].
+//
+// GTK provides a higher level abstraction based on top of these functions, and
+// so they are not normally needed in GTK applications. See the "Drag and Drop"
+// section of the GTK documentation for more information.
+type Drop interface {
+	gextras.Objector
+
+	// Finish ends the drag operation after a drop.
+	//
+	// The @action must be a single action selected from the actions available
+	// via [method@Gdk.Drop.get_actions].
+	Finish(action DragAction)
+	// Status selects all actions that are potentially supported by the
+	// destination.
+	//
+	// When calling this function, do not restrict the passed in actions to the
+	// ones provided by [method@Gdk.Drop.get_actions]. Those actions may change
+	// in the future, even depending on the actions you provide here.
+	//
+	// The @preferred action is a hint to the drag'n'drop mechanism about which
+	// action to use when multiple actions are possible.
+	//
+	// This function should be called by drag destinations in response to
+	// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
+	// know the exact actions it supports, it should set any possible actions
+	// first and then later call this function again.
+	Status(actions DragAction, preferred DragAction)
+}
+
+// drop implements the Drop class.
+type drop struct {
+	gextras.Objector
+}
+
+var _ Drop = (*drop)(nil)
+
+// WrapDrop wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDrop(obj *externglib.Object) Drop {
+	return drop{
+		Objector: obj,
+	}
+}
+
+func marshalDrop(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDrop(obj), nil
+}
+
+// Finish ends the drag operation after a drop.
+//
+// The @action must be a single action selected from the actions available
+// via [method@Gdk.Drop.get_actions].
+func (s drop) Finish(action DragAction) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 C.GdkDragAction // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GdkDragAction)(action)
+
+	C.gdk_drop_finish(_arg0, _arg1)
+}
+
+// Status selects all actions that are potentially supported by the
+// destination.
+//
+// When calling this function, do not restrict the passed in actions to the
+// ones provided by [method@Gdk.Drop.get_actions]. Those actions may change
+// in the future, even depending on the actions you provide here.
+//
+// The @preferred action is a hint to the drag'n'drop mechanism about which
+// action to use when multiple actions are possible.
+//
+// This function should be called by drag destinations in response to
+// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
+// know the exact actions it supports, it should set any possible actions
+// first and then later call this function again.
+func (s drop) Status(actions DragAction, preferred DragAction) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 C.GdkDragAction // out
+	var _arg2 C.GdkDragAction // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GdkDragAction)(actions)
+	_arg2 = (C.GdkDragAction)(preferred)
+
+	C.gdk_drop_status(_arg0, _arg1, _arg2)
+}

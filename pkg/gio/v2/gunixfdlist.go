@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -45,31 +44,6 @@ func init() {
 type UnixFDList interface {
 	gextras.Objector
 
-	// Append adds a file descriptor to @list.
-	//
-	// The file descriptor is duplicated using dup(). You keep your copy of the
-	// descriptor and the copy contained in @list will be closed when @list is
-	// finalized.
-	//
-	// A possible cause of failure is exceeding the per-process or system-wide
-	// file descriptor limit.
-	//
-	// The index of the file descriptor in the list is returned. If you use this
-	// index with g_unix_fd_list_get() then you will receive back a duplicated
-	// copy of the same file descriptor.
-	Append(fd int) (int, error)
-	// Get gets a file descriptor out of @list.
-	//
-	// @index_ specifies the index of the file descriptor to get. It is a
-	// programmer error for @index_ to be out of range; see
-	// g_unix_fd_list_get_length().
-	//
-	// The file descriptor is duplicated using dup() and set as close-on-exec
-	// before being returned. You must call close() on it when you are done.
-	//
-	// A possible cause of failure is exceeding the per-process or system-wide
-	// file descriptor limit.
-	Get(index_ int) (int, error)
 	// Length gets the length of @list (ie: the number of file descriptors
 	// contained within).
 	Length() int
@@ -105,7 +79,7 @@ type UnixFDList interface {
 	StealFds() []int
 }
 
-// unixFDList implements the UnixFDList interface.
+// unixFDList implements the UnixFDList class.
 type unixFDList struct {
 	gextras.Objector
 }
@@ -115,7 +89,7 @@ var _ UnixFDList = (*unixFDList)(nil)
 // WrapUnixFDList wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixFDList(obj *externglib.Object) UnixFDList {
-	return UnixFDList{
+	return unixFDList{
 		Objector: obj,
 	}
 }
@@ -124,71 +98,6 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapUnixFDList(obj), nil
-}
-
-// Append adds a file descriptor to @list.
-//
-// The file descriptor is duplicated using dup(). You keep your copy of the
-// descriptor and the copy contained in @list will be closed when @list is
-// finalized.
-//
-// A possible cause of failure is exceeding the per-process or system-wide
-// file descriptor limit.
-//
-// The index of the file descriptor in the list is returned. If you use this
-// index with g_unix_fd_list_get() then you will receive back a duplicated
-// copy of the same file descriptor.
-func (l unixFDList) Append(fd int) (int, error) {
-	var _arg0 *C.GUnixFDList // out
-	var _arg1 C.gint         // out
-
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gint(fd)
-
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
-
-	_cret = C.g_unix_fd_list_append(_arg0, _arg1, &_cerr)
-
-	var _gint int    // out
-	var _goerr error // out
-
-	_gint = (int)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _gint, _goerr
-}
-
-// Get gets a file descriptor out of @list.
-//
-// @index_ specifies the index of the file descriptor to get. It is a
-// programmer error for @index_ to be out of range; see
-// g_unix_fd_list_get_length().
-//
-// The file descriptor is duplicated using dup() and set as close-on-exec
-// before being returned. You must call close() on it when you are done.
-//
-// A possible cause of failure is exceeding the per-process or system-wide
-// file descriptor limit.
-func (l unixFDList) Get(index_ int) (int, error) {
-	var _arg0 *C.GUnixFDList // out
-	var _arg1 C.gint         // out
-
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gint(index_)
-
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
-
-	_cret = C.g_unix_fd_list_get(_arg0, _arg1, &_cerr)
-
-	var _gint int    // out
-	var _goerr error // out
-
-	_gint = (int)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _gint, _goerr
 }
 
 // Length gets the length of @list (ie: the number of file descriptors
@@ -234,12 +143,10 @@ func (l unixFDList) PeekFds() []int {
 	var _gints []int
 
 	{
-		var src []C.gint
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
 		_gints = make([]int, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_gints = (int)(_cret)
+		for i := 0; i < int(_arg1); i++ {
+			_gints[i] = (int)(src[i])
 		}
 	}
 
@@ -274,9 +181,9 @@ func (l unixFDList) StealFds() []int {
 
 	var _gints []int
 
-	ptr.SetSlice(unsafe.Pointer(&_gints), unsafe.Pointer(_cret), int(_arg1))
+	_gints = unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg1)
 	runtime.SetFinalizer(&_gints, func(v *[]int) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 
 	return _gints

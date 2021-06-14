@@ -3,11 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -49,7 +52,7 @@ type SliceListModel interface {
 	SetSize(size uint)
 }
 
-// sliceListModel implements the SliceListModel interface.
+// sliceListModel implements the SliceListModel class.
 type sliceListModel struct {
 	gextras.Objector
 	gio.ListModel
@@ -60,7 +63,7 @@ var _ SliceListModel = (*sliceListModel)(nil)
 // WrapSliceListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSliceListModel(obj *externglib.Object) SliceListModel {
-	return SliceListModel{
+	return sliceListModel{
 		Objector:      obj,
 		gio.ListModel: gio.WrapListModel(obj),
 	}

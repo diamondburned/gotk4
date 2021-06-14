@@ -4,8 +4,6 @@ package glib
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -15,20 +13,18 @@ import "C"
 
 // EnvironGetenv returns the value of the environment variable @variable in the
 // provided list @envp.
-func EnvironGetenv(envp []*string, variable *string) *string {
+func EnvironGetenv(envp []string, variable string) string {
 	var _arg1 **C.gchar
 	var _arg2 *C.gchar // out
 
-	_arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(envp) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(envp)))
-
+		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
-			_arg1 = (*C.gchar)(C.CString(envp))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(envp[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 	_arg2 = (*C.gchar)(C.CString(variable))
@@ -38,7 +34,7 @@ func EnvironGetenv(envp []*string, variable *string) *string {
 
 	_cret = C.g_environ_getenv(_arg1, _arg2)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -47,19 +43,17 @@ func EnvironGetenv(envp []*string, variable *string) *string {
 
 // EnvironSetenv sets the environment variable @variable in the provided list
 // @envp to @value.
-func EnvironSetenv(envp []*string, variable *string, value *string, overwrite bool) []*string {
+func EnvironSetenv(envp []string, variable string, value string, overwrite bool) []string {
 	var _arg1 **C.gchar
 	var _arg2 *C.gchar   // out
 	var _arg3 *C.gchar   // out
 	var _arg4 C.gboolean // out
 
-	_arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(envp) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(envp)))
-
+		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
-			_arg1 = (*C.gchar)(C.CString(envp))
+			out[i] = (*C.gchar)(C.CString(envp[i]))
 		}
 	}
 	_arg2 = (*C.gchar)(C.CString(variable))
@@ -67,31 +61,29 @@ func EnvironSetenv(envp []*string, variable *string, value *string, overwrite bo
 	_arg3 = (*C.gchar)(C.CString(value))
 	defer C.free(unsafe.Pointer(_arg3))
 	if overwrite {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _cret **C.gchar
 
 	_cret = C.g_environ_setenv(_arg1, _arg2, _arg3, _arg4)
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_filenames = make([]*string, length)
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
 		for i := range src {
-			_filenames = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_filenames[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -100,17 +92,15 @@ func EnvironSetenv(envp []*string, variable *string, value *string, overwrite bo
 
 // EnvironUnsetenv removes the environment variable @variable from the provided
 // environment @envp.
-func EnvironUnsetenv(envp []*string, variable *string) []*string {
+func EnvironUnsetenv(envp []string, variable string) []string {
 	var _arg1 **C.gchar
 	var _arg2 *C.gchar // out
 
-	_arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(envp) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(envp)))
-
+		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
-			_arg1 = (*C.gchar)(C.CString(envp))
+			out[i] = (*C.gchar)(C.CString(envp[i]))
 		}
 	}
 	_arg2 = (*C.gchar)(C.CString(variable))
@@ -120,24 +110,22 @@ func EnvironUnsetenv(envp []*string, variable *string) []*string {
 
 	_cret = C.g_environ_unsetenv(_arg1, _arg2)
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_filenames = make([]*string, length)
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
 		for i := range src {
-			_filenames = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_filenames[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -154,29 +142,27 @@ func EnvironUnsetenv(envp []*string, variable *string) []*string {
 //
 // The return value is freshly allocated and it should be freed with
 // g_strfreev() when it is no longer needed.
-func GetEnviron() []*string {
+func GetEnviron() []string {
 	var _cret **C.gchar
 
 	_cret = C.g_get_environ()
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_filenames = make([]*string, length)
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
 		for i := range src {
-			_filenames = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_filenames[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -189,7 +175,7 @@ func GetEnviron() []*string {
 // some consistent character set and encoding. On Windows, they are in UTF-8. On
 // Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
-func Getenv(variable *string) *string {
+func Getenv(variable string) string {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(variable))
@@ -199,7 +185,7 @@ func Getenv(variable *string) *string {
 
 	_cret = C.g_getenv(_arg1)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -214,29 +200,27 @@ func Getenv(variable *string) *string {
 // encoding, while in most of the typical use cases for environment variables in
 // GLib-using programs you want the UTF-8 encoding that this function and
 // g_getenv() provide.
-func Listenv() []*string {
+func Listenv() []string {
 	var _cret **C.gchar
 
 	_cret = C.g_listenv()
 
-	var _filenames []*string
+	var _filenames []string
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_filenames = make([]*string, length)
+		src := unsafe.Slice(_cret, length)
+		_filenames = make([]string, length)
 		for i := range src {
-			_filenames = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_filenames[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -261,7 +245,7 @@ func Listenv() []*string {
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
-func Setenv(variable *string, value *string, overwrite bool) bool {
+func Setenv(variable string, value string, overwrite bool) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _arg3 C.gboolean // out
@@ -271,7 +255,7 @@ func Setenv(variable *string, value *string, overwrite bool) bool {
 	_arg2 = (*C.gchar)(C.CString(value))
 	defer C.free(unsafe.Pointer(_arg2))
 	if overwrite {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -280,7 +264,7 @@ func Setenv(variable *string, value *string, overwrite bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -303,7 +287,7 @@ func Setenv(variable *string, value *string, overwrite bool) bool {
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
-func Unsetenv(variable *string) {
+func Unsetenv(variable string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(variable))

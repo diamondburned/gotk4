@@ -3,19 +3,41 @@
 package gdk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_paintable_flags_get_type()), F: marshalPaintableFlags},
 		{T: externglib.Type(C.gdk_paintable_get_type()), F: marshalPaintable},
 	})
+}
+
+// PaintableFlags flags about a paintable object.
+//
+// Implementations use these for optimizations such as caching.
+type PaintableFlags int
+
+const (
+	// PaintableFlagsSize: the size is immutable. The
+	// [signal@GdkPaintable::invalidate-size] signal will never be emitted.
+	PaintableFlagsSize PaintableFlags = 1
+	// PaintableFlagsContents: the content is immutable. The
+	// [signal@GdkPaintable::invalidate-contents] signal will never be emitted.
+	PaintableFlagsContents PaintableFlags = 2
+)
+
+func marshalPaintableFlags(p uintptr) (interface{}, error) {
+	return PaintableFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // PaintableOverrider contains methods that are overridable. This

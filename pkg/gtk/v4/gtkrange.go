@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -156,7 +156,7 @@ type Range interface {
 	SetValue(value float64)
 }
 
-// _range implements the Range interface.
+// _range implements the Range class.
 type _range struct {
 	Widget
 	Accessible
@@ -170,7 +170,7 @@ var _ Range = (*_range)(nil)
 // WrapRange wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRange(obj *externglib.Object) Range {
-	return Range{
+	return _range{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -216,7 +216,7 @@ func (r _range) Flippable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -237,7 +237,7 @@ func (r _range) Inverted() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -273,7 +273,7 @@ func (r _range) RestrictToFillLevel() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -312,7 +312,7 @@ func (r _range) ShowFillLevel() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -357,7 +357,7 @@ func (r _range) SliderSizeFixed() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -439,7 +439,7 @@ func (r _range) SetFlippable(flippable bool) {
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if flippable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_range_set_flippable(_arg0, _arg1)
@@ -473,7 +473,7 @@ func (r _range) SetInverted(setting bool) {
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_range_set_inverted(_arg0, _arg1)
@@ -506,7 +506,7 @@ func (r _range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if restrictToFillLevel {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_range_set_restrict_to_fill_level(_arg0, _arg1)
@@ -537,7 +537,7 @@ func (r _range) SetShowFillLevel(showFillLevel bool) {
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if showFillLevel {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_range_set_show_fill_level(_arg0, _arg1)
@@ -553,7 +553,7 @@ func (r _range) SetSliderSizeFixed(sizeFixed bool) {
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if sizeFixed {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_range_set_slider_size_fixed(_arg0, _arg1)

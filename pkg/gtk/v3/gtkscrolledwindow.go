@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -16,8 +18,58 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_corner_type_get_type()), F: marshalCornerType},
+		{T: externglib.Type(C.gtk_policy_type_get_type()), F: marshalPolicyType},
 		{T: externglib.Type(C.gtk_scrolled_window_get_type()), F: marshalScrolledWindow},
 	})
+}
+
+// CornerType specifies which corner a child widget should be placed in when
+// packed into a ScrolledWindow. This is effectively the opposite of where the
+// scroll bars are placed.
+type CornerType int
+
+const (
+	// CornerTypeTopLeft: place the scrollbars on the right and bottom of the
+	// widget (default behaviour).
+	CornerTypeTopLeft CornerType = 0
+	// CornerTypeBottomLeft: place the scrollbars on the top and right of the
+	// widget.
+	CornerTypeBottomLeft CornerType = 1
+	// CornerTypeTopRight: place the scrollbars on the left and bottom of the
+	// widget.
+	CornerTypeTopRight CornerType = 2
+	// CornerTypeBottomRight: place the scrollbars on the top and left of the
+	// widget.
+	CornerTypeBottomRight CornerType = 3
+)
+
+func marshalCornerType(p uintptr) (interface{}, error) {
+	return CornerType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PolicyType determines how the size should be computed to achieve the one of
+// the visibility mode for the scrollbars.
+type PolicyType int
+
+const (
+	// PolicyTypeAlways: the scrollbar is always visible. The view size is
+	// independent of the content.
+	PolicyTypeAlways PolicyType = 0
+	// PolicyTypeAutomatic: the scrollbar will appear and disappear as
+	// necessary. For example, when all of a TreeView can not be seen.
+	PolicyTypeAutomatic PolicyType = 1
+	// PolicyTypeNever: the scrollbar should never appear. In this mode the
+	// content determines the size.
+	PolicyTypeNever PolicyType = 2
+	// PolicyTypeExternal: don't show a scrollbar, but don't force the size to
+	// follow the content. This can be used e.g. to make multiple scrolled
+	// windows share a scrollbar. Since: 3.16
+	PolicyTypeExternal PolicyType = 3
+)
+
+func marshalPolicyType(p uintptr) (interface{}, error) {
+	return PolicyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // ScrolledWindow: gtkScrolledWindow is a container that accepts a single child
@@ -234,7 +286,7 @@ type ScrolledWindow interface {
 	UnsetPlacement()
 }
 
-// scrolledWindow implements the ScrolledWindow interface.
+// scrolledWindow implements the ScrolledWindow class.
 type scrolledWindow struct {
 	Bin
 	Buildable
@@ -245,7 +297,7 @@ var _ ScrolledWindow = (*scrolledWindow)(nil)
 // WrapScrolledWindow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapScrolledWindow(obj *externglib.Object) ScrolledWindow {
-	return ScrolledWindow{
+	return scrolledWindow{
 		Bin:       WrapBin(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -295,7 +347,7 @@ func (s scrolledWindow) CaptureButtonPress() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -314,7 +366,7 @@ func (s scrolledWindow) KineticScrolling() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -404,7 +456,7 @@ func (s scrolledWindow) OverlayScrolling() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -425,7 +477,7 @@ func (s scrolledWindow) PropagateNaturalHeight() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -446,7 +498,7 @@ func (s scrolledWindow) PropagateNaturalWidth() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -471,7 +523,7 @@ func (s scrolledWindow) SetCaptureButtonPress(captureButtonPress bool) {
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if captureButtonPress {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_scrolled_window_set_capture_button_press(_arg0, _arg1)
@@ -496,7 +548,7 @@ func (s scrolledWindow) SetKineticScrolling(kineticScrolling bool) {
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if kineticScrolling {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_scrolled_window_set_kinetic_scrolling(_arg0, _arg1)
@@ -574,7 +626,7 @@ func (s scrolledWindow) SetOverlayScrolling(overlayScrolling bool) {
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if overlayScrolling {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_scrolled_window_set_overlay_scrolling(_arg0, _arg1)
@@ -630,7 +682,7 @@ func (s scrolledWindow) SetPropagateNaturalHeight(propagate bool) {
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if propagate {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_scrolled_window_set_propagate_natural_height(_arg0, _arg1)
@@ -645,7 +697,7 @@ func (s scrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if propagate {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_scrolled_window_set_propagate_natural_width(_arg0, _arg1)

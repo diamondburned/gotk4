@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -120,7 +120,7 @@ type Button interface {
 	SetUseUnderline(useUnderline bool)
 }
 
-// button implements the Button interface.
+// button implements the Button class.
 type button struct {
 	Bin
 	Actionable
@@ -133,7 +133,7 @@ var _ Button = (*button)(nil)
 // WrapButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapButton(obj *externglib.Object) Button {
-	return Button{
+	return button{
 		Bin:         WrapBin(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -199,7 +199,7 @@ func (b button) AlwaysShowImage() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -219,7 +219,7 @@ func (b button) FocusOnClick() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -258,7 +258,7 @@ func (b button) UseStock() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -278,7 +278,7 @@ func (b button) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -338,7 +338,7 @@ func (b button) SetAlwaysShowImage(alwaysShow bool) {
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if alwaysShow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_button_set_always_show_image(_arg0, _arg1)
@@ -354,7 +354,7 @@ func (b button) SetFocusOnClick(focusOnClick bool) {
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if focusOnClick {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_button_set_focus_on_click(_arg0, _arg1)
@@ -422,7 +422,7 @@ func (b button) SetUseStock(useStock bool) {
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if useStock {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_button_set_use_stock(_arg0, _arg1)
@@ -437,7 +437,7 @@ func (b button) SetUseUnderline(useUnderline bool) {
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if useUnderline {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_button_set_use_underline(_arg0, _arg1)

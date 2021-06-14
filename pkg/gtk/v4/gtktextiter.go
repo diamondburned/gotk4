@@ -9,16 +9,42 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+//
+// gboolean gotk4_TextCharPredicate(gunichar, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_text_search_flags_get_type()), F: marshalTextSearchFlags},
 		{T: externglib.Type(C.gtk_text_iter_get_type()), F: marshalTextIter},
 	})
+}
+
+// TextSearchFlags flags affecting how a search is done.
+//
+// If neither GTK_TEXT_SEARCH_VISIBLE_ONLY nor GTK_TEXT_SEARCH_TEXT_ONLY are
+// enabled, the match must be exact; the special 0xFFFC character will match
+// embedded paintables or child widgets.
+type TextSearchFlags int
+
+const (
+	// TextSearchFlagsVisibleOnly: search only visible data. A search match may
+	// have invisible text interspersed.
+	TextSearchFlagsVisibleOnly TextSearchFlags = 1
+	// TextSearchFlagsTextOnly: search only text. A match may have paintables or
+	// child widgets mixed inside the matched range.
+	TextSearchFlagsTextOnly TextSearchFlags = 2
+	// TextSearchFlagsCaseInsensitive: the text will be matched regardless of
+	// what case it is in.
+	TextSearchFlagsCaseInsensitive TextSearchFlags = 4
+)
+
+func marshalTextSearchFlags(p uintptr) (interface{}, error) {
+	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // TextCharPredicate: the predicate function used by
@@ -39,11 +65,13 @@ func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
 	fn := v.(TextCharPredicate)
 	ok := fn(ch)
 
+	var cret C.gboolean // out
+
 	if ok {
-		cret = C.gboolean(1)
+		cret = C.TRUE
 	}
 
-	return ok
+	return cret
 }
 
 // TextIter: an iterator for the contents of a `GtkTextBuffer`.
@@ -107,7 +135,7 @@ func (i *TextIter) BackwardChar() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -136,7 +164,7 @@ func (i *TextIter) BackwardChars(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -156,7 +184,7 @@ func (i *TextIter) BackwardCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -179,7 +207,7 @@ func (i *TextIter) BackwardCursorPositions(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -205,7 +233,7 @@ func (i *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) boo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -231,7 +259,7 @@ func (i *TextIter) BackwardLine() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -260,7 +288,7 @@ func (i *TextIter) BackwardLines(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -291,7 +319,7 @@ func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *Text
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -316,7 +344,7 @@ func (i *TextIter) BackwardSentenceStart() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -340,7 +368,7 @@ func (i *TextIter) BackwardSentenceStarts(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -366,7 +394,7 @@ func (i *TextIter) BackwardToTagToggle(tag TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -388,7 +416,7 @@ func (i *TextIter) BackwardVisibleCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -411,7 +439,7 @@ func (i *TextIter) BackwardVisibleCursorPositions(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -437,7 +465,7 @@ func (i *TextIter) BackwardVisibleLine() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -466,7 +494,7 @@ func (i *TextIter) BackwardVisibleLines(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -491,7 +519,7 @@ func (i *TextIter) BackwardVisibleWordStart() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -513,7 +541,7 @@ func (i *TextIter) BackwardVisibleWordStarts(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -538,7 +566,7 @@ func (i *TextIter) BackwardWordStart() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -560,7 +588,7 @@ func (i *TextIter) BackwardWordStarts(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -580,7 +608,7 @@ func (i *TextIter) CanInsert(defaultEditability bool) bool {
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 	if defaultEditability {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -589,7 +617,7 @@ func (i *TextIter) CanInsert(defaultEditability bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -637,7 +665,7 @@ func (i *TextIter) Editable(defaultSetting bool) bool {
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 	if defaultSetting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -646,7 +674,7 @@ func (i *TextIter) Editable(defaultSetting bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -674,7 +702,7 @@ func (i *TextIter) EndsLine() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -696,7 +724,7 @@ func (i *TextIter) EndsSentence() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -725,7 +753,7 @@ func (i *TextIter) EndsTag(tag TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -747,7 +775,7 @@ func (i *TextIter) EndsWord() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -773,7 +801,7 @@ func (l *TextIter) Equal(rhs *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -798,7 +826,7 @@ func (i *TextIter) ForwardChar() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -827,7 +855,7 @@ func (i *TextIter) ForwardChars(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -859,7 +887,7 @@ func (i *TextIter) ForwardCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -882,7 +910,7 @@ func (i *TextIter) ForwardCursorPositions(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -911,7 +939,7 @@ func (i *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) bool
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -934,7 +962,7 @@ func (i *TextIter) ForwardLine() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -963,7 +991,7 @@ func (i *TextIter) ForwardLines(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -999,7 +1027,7 @@ func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextI
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1023,7 +1051,7 @@ func (i *TextIter) ForwardSentenceEnd() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1046,7 +1074,7 @@ func (i *TextIter) ForwardSentenceEnds(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1087,7 +1115,7 @@ func (i *TextIter) ForwardToLineEnd() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1113,7 +1141,7 @@ func (i *TextIter) ForwardToTagToggle(tag TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1135,7 +1163,7 @@ func (i *TextIter) ForwardVisibleCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1158,7 +1186,7 @@ func (i *TextIter) ForwardVisibleCursorPositions(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1181,7 +1209,7 @@ func (i *TextIter) ForwardVisibleLine() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1210,7 +1238,7 @@ func (i *TextIter) ForwardVisibleLines(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1235,7 +1263,7 @@ func (i *TextIter) ForwardVisibleWordEnd() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1257,7 +1285,7 @@ func (i *TextIter) ForwardVisibleWordEnds(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1282,7 +1310,7 @@ func (i *TextIter) ForwardWordEnd() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1303,7 +1331,7 @@ func (i *TextIter) ForwardWordEnds(count int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1620,7 +1648,7 @@ func (i *TextIter) HasTag(tag TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1645,7 +1673,7 @@ func (i *TextIter) InRange(start *TextIter, end *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1669,7 +1697,7 @@ func (i *TextIter) InsideSentence() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1696,7 +1724,7 @@ func (i *TextIter) InsideWord() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1718,7 +1746,7 @@ func (i *TextIter) IsCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1741,7 +1769,7 @@ func (i *TextIter) IsEnd() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1760,7 +1788,7 @@ func (i *TextIter) IsStart() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1886,7 +1914,7 @@ func (i *TextIter) StartsLine() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1908,7 +1936,7 @@ func (i *TextIter) StartsSentence() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1937,7 +1965,7 @@ func (i *TextIter) StartsTag(tag TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1959,7 +1987,7 @@ func (i *TextIter) StartsWord() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1984,7 +2012,7 @@ func (i *TextIter) TogglesTag(tag TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

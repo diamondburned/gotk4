@@ -5,15 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -40,26 +38,6 @@ type ProXYResolverOverrider interface {
 	// internally; g_proxy_resolver_get_default() will only return a proxy
 	// resolver that returns true for this method.)
 	IsSupported() bool
-	// Lookup looks into the system proxy configuration to determine what proxy,
-	// if any, to use to connect to @uri. The returned proxy URIs are of the
-	// form `<protocol>://[user[:password]@]host:port` or `direct://`, where
-	// <protocol> could be http, rtsp, socks or other proxying protocol.
-	//
-	// If you don't know what network protocol is being used on the socket, you
-	// should use `none` as the URI protocol. In this case, the resolver might
-	// still return a generic proxy type (such as SOCKS), but would not return
-	// protocol-specific proxy types (such as http).
-	//
-	// `direct://` is used when no proxy is needed. Direct connection should not
-	// be attempted unless it is part of the returned array of proxies.
-	Lookup(uri string, cancellable Cancellable) ([]string, error)
-	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
-	// for more details.
-	LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupFinish: call this function to obtain the array of proxy URIs when
-	// g_proxy_resolver_lookup_async() is complete. See
-	// g_proxy_resolver_lookup() for more details.
-	LookupFinish(result AsyncResult) ([]string, error)
 }
 
 // ProXYResolver provides synchronous and asynchronous network proxy resolution.
@@ -109,122 +87,9 @@ func (r proXYResolver) IsSupported() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Lookup looks into the system proxy configuration to determine what proxy,
-// if any, to use to connect to @uri. The returned proxy URIs are of the
-// form `<protocol>://[user[:password]@]host:port` or `direct://`, where
-// <protocol> could be http, rtsp, socks or other proxying protocol.
-//
-// If you don't know what network protocol is being used on the socket, you
-// should use `none` as the URI protocol. In this case, the resolver might
-// still return a generic proxy type (such as SOCKS), but would not return
-// protocol-specific proxy types (such as http).
-//
-// `direct://` is used when no proxy is needed. Direct connection should not
-// be attempted unless it is part of the returned array of proxies.
-func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
-	var _arg0 *C.GProxyResolver // out
-	var _arg1 *C.gchar          // out
-	var _arg2 *C.GCancellable   // out
-
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret **C.gchar
-	var _cerr *C.GError // in
-
-	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
-
-	var _utf8s []string
-	var _goerr error // out
-
-	{
-		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_utf8s = make([]string, length)
-		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
-		}
-	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _utf8s, _goerr
-}
-
-// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
-// for more details.
-func (r proXYResolver) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GProxyResolver     // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_proxy_resolver_lookup_async(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// LookupFinish: call this function to obtain the array of proxy URIs when
-// g_proxy_resolver_lookup_async() is complete. See
-// g_proxy_resolver_lookup() for more details.
-func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
-	var _arg0 *C.GProxyResolver // out
-	var _arg1 *C.GAsyncResult   // out
-
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret **C.gchar
-	var _cerr *C.GError // in
-
-	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
-
-	var _utf8s []string
-	var _goerr error // out
-
-	{
-		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
-		_utf8s = make([]string, length)
-		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
-		}
-	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _utf8s, _goerr
 }

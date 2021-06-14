@@ -2,7 +2,56 @@
 
 package gtk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_cell_renderer_spinner_get_type()), F: marshalCellRendererSpinner},
+	})
+}
+
+// CellRendererSpinner renders a spinning animation in a cell
+//
+// GtkCellRendererSpinner renders a spinning animation in a cell, very similar
+// to Spinner. It can often be used as an alternative to a CellRendererProgress
+// for displaying indefinite activity, instead of actual progress.
+//
+// To start the animation in a cell, set the CellRendererSpinner:active property
+// to true and increment the CellRendererSpinner:pulse property at regular
+// intervals. The usual way to set the cell renderer properties for each cell is
+// to bind them to columns in your tree model using e.g.
+// gtk_tree_view_column_add_attribute().
+type CellRendererSpinner interface {
+	CellRenderer
+}
+
+// cellRendererSpinner implements the CellRendererSpinner class.
+type cellRendererSpinner struct {
+	CellRenderer
+}
+
+var _ CellRendererSpinner = (*cellRendererSpinner)(nil)
+
+// WrapCellRendererSpinner wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
+	return cellRendererSpinner{
+		CellRenderer: WrapCellRenderer(obj),
+	}
+}
+
+func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapCellRendererSpinner(obj), nil
+}

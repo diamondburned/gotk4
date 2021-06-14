@@ -31,7 +31,7 @@ func UUIDStringIsValid(str string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

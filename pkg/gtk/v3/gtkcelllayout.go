@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -225,7 +226,7 @@ func (c cellLayout) PackEnd(cell CellRenderer, expand bool) {
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if expand {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_cell_layout_pack_end(_arg0, _arg1, _arg2)
@@ -244,7 +245,7 @@ func (c cellLayout) PackStart(cell CellRenderer, expand bool) {
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if expand {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_cell_layout_pack_start(_arg0, _arg1, _arg2)

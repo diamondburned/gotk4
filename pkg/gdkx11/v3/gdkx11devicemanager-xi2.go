@@ -3,14 +3,15 @@
 package gdkx11
 
 import (
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -23,7 +24,7 @@ type X11DeviceManagerXI2 interface {
 	X11DeviceManagerCore
 }
 
-// x11DeviceManagerXI2 implements the X11DeviceManagerXI2 interface.
+// x11DeviceManagerXI2 implements the X11DeviceManagerXI2 class.
 type x11DeviceManagerXI2 struct {
 	X11DeviceManagerCore
 }
@@ -33,7 +34,7 @@ var _ X11DeviceManagerXI2 = (*x11DeviceManagerXI2)(nil)
 // WrapX11DeviceManagerXI2 wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
-	return X11DeviceManagerXI2{
+	return x11DeviceManagerXI2{
 		X11DeviceManagerCore: WrapX11DeviceManagerCore(obj),
 	}
 }

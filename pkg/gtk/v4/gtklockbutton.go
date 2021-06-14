@@ -3,10 +3,108 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButton},
+	})
+}
+
+// LockButton: `GtkLockButton` is a widget to obtain and revoke authorizations
+// needed to operate the controls.
+//
+// !An example GtkLockButton (lock-button.png)
+//
+// It is typically used in preference dialogs or control panels.
+//
+// The required authorization is represented by a `GPermission` object. Concrete
+// implementations of `GPermission` may use PolicyKit or some other
+// authorization framework. To obtain a PolicyKit-based `GPermission`, use
+// `polkit_permission_new()`.
+//
+// If the user is not currently allowed to perform the action, but can obtain
+// the permission, the widget looks like this:
+//
+// ! (lockbutton-locked.png)
+//
+// and the user can click the button to request the permission. Depending on the
+// platform, this may pop up an authentication dialog or ask the user to
+// authenticate in some other way. Once the user has obtained the permission,
+// the widget changes to this:
+//
+// ! (lockbutton-unlocked.png)
+//
+// and the permission can be dropped again by clicking the button. If the user
+// is not able to obtain the permission at all, the widget looks like this:
+//
+// ! (lockbutton-sorry.png)
+//
+// If the user has the permission and cannot drop it, the button is hidden.
+//
+// The text (and tooltips) that are shown in the various cases can be adjusted
+// with the [property@Gtk.LockButton:text-lock],
+// [property@Gtk.LockButton:text-unlock],
+// [property@Gtk.LockButton:tooltip-lock],
+// [property@Gtk.LockButton:tooltip-unlock] and
+// [property@Gtk.LockButton:tooltip-not-authorized] properties.
+type LockButton interface {
+	Button
+	Accessible
+	Actionable
+	Buildable
+	ConstraintTarget
+
+	// SetPermission sets the `GPermission` object that controls @button.
+	SetPermission(permission gio.Permission)
+}
+
+// lockButton implements the LockButton class.
+type lockButton struct {
+	Button
+	Accessible
+	Actionable
+	Buildable
+	ConstraintTarget
+}
+
+var _ LockButton = (*lockButton)(nil)
+
+// WrapLockButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLockButton(obj *externglib.Object) LockButton {
+	return lockButton{
+		Button:           WrapButton(obj),
+		Accessible:       WrapAccessible(obj),
+		Actionable:       WrapActionable(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+	}
+}
+
+func marshalLockButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapLockButton(obj), nil
+}
+
+// SetPermission sets the `GPermission` object that controls @button.
+func (b lockButton) SetPermission(permission gio.Permission) {
+	var _arg0 *C.GtkLockButton // out
+	var _arg1 *C.GPermission   // out
+
+	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+
+	C.gtk_lock_button_set_permission(_arg0, _arg1)
+}

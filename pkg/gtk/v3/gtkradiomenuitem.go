@@ -3,11 +3,12 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -66,11 +67,9 @@ type RadioMenuItem interface {
 	//          last_item = radio_item;
 	//        }
 	JoinGroup(groupSource RadioMenuItem)
-	// SetGroup sets the group of a radio menu item, or changes it.
-	SetGroup(group *glib.SList)
 }
 
-// radioMenuItem implements the RadioMenuItem interface.
+// radioMenuItem implements the RadioMenuItem class.
 type radioMenuItem struct {
 	CheckMenuItem
 	Actionable
@@ -83,7 +82,7 @@ var _ RadioMenuItem = (*radioMenuItem)(nil)
 // WrapRadioMenuItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRadioMenuItem(obj *externglib.Object) RadioMenuItem {
-	return RadioMenuItem{
+	return radioMenuItem{
 		CheckMenuItem: WrapCheckMenuItem(obj),
 		Actionable:    WrapActionable(obj),
 		Activatable:   WrapActivatable(obj),
@@ -125,15 +124,4 @@ func (r radioMenuItem) JoinGroup(groupSource RadioMenuItem) {
 	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(groupSource.Native()))
 
 	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
-}
-
-// SetGroup sets the group of a radio menu item, or changes it.
-func (r radioMenuItem) SetGroup(group *glib.SList) {
-	var _arg0 *C.GtkRadioMenuItem // out
-	var _arg1 *C.GSList           // out
-
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-
-	C.gtk_radio_menu_item_set_group(_arg0, _arg1)
 }

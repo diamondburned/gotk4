@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -47,7 +49,7 @@ type Arrow interface {
 	Set(arrowType ArrowType, shadowType ShadowType)
 }
 
-// arrow implements the Arrow interface.
+// arrow implements the Arrow class.
 type arrow struct {
 	Misc
 	Buildable
@@ -58,7 +60,7 @@ var _ Arrow = (*arrow)(nil)
 // WrapArrow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapArrow(obj *externglib.Object) Arrow {
-	return Arrow{
+	return arrow{
 		Misc:      WrapMisc(obj),
 		Buildable: WrapBuildable(obj),
 	}

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -37,7 +39,7 @@ type DropControllerMotion interface {
 	IsPointer() bool
 }
 
-// dropControllerMotion implements the DropControllerMotion interface.
+// dropControllerMotion implements the DropControllerMotion class.
 type dropControllerMotion struct {
 	EventController
 }
@@ -47,7 +49,7 @@ var _ DropControllerMotion = (*dropControllerMotion)(nil)
 // WrapDropControllerMotion wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDropControllerMotion(obj *externglib.Object) DropControllerMotion {
-	return DropControllerMotion{
+	return dropControllerMotion{
 		EventController: WrapEventController(obj),
 	}
 }
@@ -71,7 +73,7 @@ func (s dropControllerMotion) ContainsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -91,7 +93,7 @@ func (s dropControllerMotion) IsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -3,13 +3,16 @@
 package gdk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -35,7 +38,7 @@ type DrawingContext interface {
 	IsValid() bool
 }
 
-// drawingContext implements the DrawingContext interface.
+// drawingContext implements the DrawingContext class.
 type drawingContext struct {
 	gextras.Objector
 }
@@ -45,7 +48,7 @@ var _ DrawingContext = (*drawingContext)(nil)
 // WrapDrawingContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrawingContext(obj *externglib.Object) DrawingContext {
-	return DrawingContext{
+	return drawingContext{
 		Objector: obj,
 	}
 }
@@ -68,7 +71,7 @@ func (c drawingContext) IsValid() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

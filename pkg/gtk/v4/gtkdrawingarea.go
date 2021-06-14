@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -119,7 +121,7 @@ type DrawingArea interface {
 	SetContentWidth(width int)
 }
 
-// drawingArea implements the DrawingArea interface.
+// drawingArea implements the DrawingArea class.
 type drawingArea struct {
 	Widget
 	Accessible
@@ -132,7 +134,7 @@ var _ DrawingArea = (*drawingArea)(nil)
 // WrapDrawingArea wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrawingArea(obj *externglib.Object) DrawingArea {
-	return DrawingArea{
+	return drawingArea{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

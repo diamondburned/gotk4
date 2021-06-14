@@ -5,12 +5,12 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -83,7 +84,7 @@ type DBusObjectManagerServer interface {
 	Unexport(objectPath string) bool
 }
 
-// dBusObjectManagerServer implements the DBusObjectManagerServer interface.
+// dBusObjectManagerServer implements the DBusObjectManagerServer class.
 type dBusObjectManagerServer struct {
 	gextras.Objector
 	DBusObjectManager
@@ -94,7 +95,7 @@ var _ DBusObjectManagerServer = (*dBusObjectManagerServer)(nil)
 // WrapDBusObjectManagerServer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
-	return DBusObjectManagerServer{
+	return dBusObjectManagerServer{
 		Objector:          obj,
 		DBusObjectManager: WrapDBusObjectManager(obj),
 	}
@@ -154,7 +155,7 @@ func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -192,7 +193,7 @@ func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

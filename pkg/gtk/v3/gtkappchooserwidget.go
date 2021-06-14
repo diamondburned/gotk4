@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -85,7 +85,7 @@ type AppChooserWidget interface {
 	SetShowRecommended(setting bool)
 }
 
-// appChooserWidget implements the AppChooserWidget interface.
+// appChooserWidget implements the AppChooserWidget class.
 type appChooserWidget struct {
 	Box
 	AppChooser
@@ -98,7 +98,7 @@ var _ AppChooserWidget = (*appChooserWidget)(nil)
 // WrapAppChooserWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppChooserWidget(obj *externglib.Object) AppChooserWidget {
-	return AppChooserWidget{
+	return appChooserWidget{
 		Box:        WrapBox(obj),
 		AppChooser: WrapAppChooser(obj),
 		Buildable:  WrapBuildable(obj),
@@ -143,7 +143,7 @@ func (s appChooserWidget) ShowAll() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -163,7 +163,7 @@ func (s appChooserWidget) ShowDefault() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -183,7 +183,7 @@ func (s appChooserWidget) ShowFallback() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -203,7 +203,7 @@ func (s appChooserWidget) ShowOther() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -223,7 +223,7 @@ func (s appChooserWidget) ShowRecommended() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -251,7 +251,7 @@ func (s appChooserWidget) SetShowAll(setting bool) {
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_app_chooser_widget_set_show_all(_arg0, _arg1)
@@ -265,7 +265,7 @@ func (s appChooserWidget) SetShowDefault(setting bool) {
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_app_chooser_widget_set_show_default(_arg0, _arg1)
@@ -279,7 +279,7 @@ func (s appChooserWidget) SetShowFallback(setting bool) {
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_app_chooser_widget_set_show_fallback(_arg0, _arg1)
@@ -293,7 +293,7 @@ func (s appChooserWidget) SetShowOther(setting bool) {
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_app_chooser_widget_set_show_other(_arg0, _arg1)
@@ -307,7 +307,7 @@ func (s appChooserWidget) SetShowRecommended(setting bool) {
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)

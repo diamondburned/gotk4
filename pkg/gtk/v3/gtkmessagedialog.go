@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -18,8 +18,37 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
 		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialog},
 	})
+}
+
+// ButtonsType: prebuilt sets of buttons for the dialog. If none of these
+// choices are appropriate, simply use GTK_BUTTONS_NONE then call
+// gtk_dialog_add_buttons().
+//
+// > Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO > and
+// GTK_BUTTONS_OK_CANCEL are discouraged by the > GNOME Human Interface
+// Guidelines (http://library.gnome.org/devel/hig-book/stable/).
+type ButtonsType int
+
+const (
+	// ButtonsTypeNone: no buttons at all
+	ButtonsTypeNone ButtonsType = 0
+	// ButtonsTypeOk: an OK button
+	ButtonsTypeOk ButtonsType = 1
+	// ButtonsTypeClose: a Close button
+	ButtonsTypeClose ButtonsType = 2
+	// ButtonsTypeCancel: a Cancel button
+	ButtonsTypeCancel ButtonsType = 3
+	// ButtonsTypeYesNo yes and No buttons
+	ButtonsTypeYesNo ButtonsType = 4
+	// ButtonsTypeOkCancel: OK and Cancel buttons
+	ButtonsTypeOkCancel ButtonsType = 5
+)
+
+func marshalButtonsType(p uintptr) (interface{}, error) {
+	return ButtonsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // MessageDialog presents a dialog with some message text. It’s simply a
@@ -69,7 +98,7 @@ type MessageDialog interface {
 	SetMarkup(str string)
 }
 
-// messageDialog implements the MessageDialog interface.
+// messageDialog implements the MessageDialog class.
 type messageDialog struct {
 	Dialog
 	Buildable
@@ -80,7 +109,7 @@ var _ MessageDialog = (*messageDialog)(nil)
 // WrapMessageDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMessageDialog(obj *externglib.Object) MessageDialog {
-	return MessageDialog{
+	return messageDialog{
 		Dialog:    WrapDialog(obj),
 		Buildable: WrapBuildable(obj),
 	}

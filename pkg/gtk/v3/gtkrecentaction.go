@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -42,7 +44,7 @@ type RecentAction interface {
 	SetShowNumbers(showNumbers bool)
 }
 
-// recentAction implements the RecentAction interface.
+// recentAction implements the RecentAction class.
 type recentAction struct {
 	Action
 	Buildable
@@ -54,7 +56,7 @@ var _ RecentAction = (*recentAction)(nil)
 // WrapRecentAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRecentAction(obj *externglib.Object) RecentAction {
-	return RecentAction{
+	return recentAction{
 		Action:        WrapAction(obj),
 		Buildable:     WrapBuildable(obj),
 		RecentChooser: WrapRecentChooser(obj),
@@ -80,7 +82,7 @@ func (a recentAction) ShowNumbers() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -97,7 +99,7 @@ func (a recentAction) SetShowNumbers(showNumbers bool) {
 
 	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
 	if showNumbers {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_recent_action_set_show_numbers(_arg0, _arg1)

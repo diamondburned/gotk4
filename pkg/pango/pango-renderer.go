@@ -5,10 +5,11 @@ package pango
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -16,8 +17,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.pango_render_part_get_type()), F: marshalRenderPart},
 		{T: externglib.Type(C.pango_renderer_get_type()), F: marshalRenderer},
 	})
+}
+
+// RenderPart defines different items to render for such purposes as setting
+// colors.
+type RenderPart int
+
+const (
+	// RenderPartForeground: the text itself
+	RenderPartForeground RenderPart = 0
+	// RenderPartBackground: the area behind the text
+	RenderPartBackground RenderPart = 1
+	// RenderPartUnderline: underlines
+	RenderPartUnderline RenderPart = 2
+	// RenderPartStrikethrough: strikethrough lines
+	RenderPartStrikethrough RenderPart = 3
+	// RenderPartOverline: overlines
+	RenderPartOverline RenderPart = 4
+)
+
+func marshalRenderPart(p uintptr) (interface{}, error) {
+	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Renderer: `PangoRenderer` is a base class for objects that can render text
@@ -71,8 +94,6 @@ type Renderer interface {
 	DrawGlyphs(font Font, glyphs *GlyphString, x int, y int)
 	// DrawLayout draws @layout with the specified `PangoRenderer`.
 	DrawLayout(layout Layout, x int, y int)
-	// DrawLayoutLine draws @line with the specified `PangoRenderer`.
-	DrawLayoutLine(line *LayoutLine, x int, y int)
 	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
 	// with the specified `PangoRenderer`.
 	//
@@ -112,7 +133,7 @@ type Renderer interface {
 	SetMatrix(matrix *Matrix)
 }
 
-// renderer implements the Renderer interface.
+// renderer implements the Renderer class.
 type renderer struct {
 	gextras.Objector
 }
@@ -122,7 +143,7 @@ var _ Renderer = (*renderer)(nil)
 // WrapRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
-	return Renderer{
+	return renderer{
 		Objector: obj,
 	}
 }
@@ -246,21 +267,6 @@ func (r renderer) DrawLayout(layout Layout, x int, y int) {
 	_arg3 = C.int(y)
 
 	C.pango_renderer_draw_layout(_arg0, _arg1, _arg2, _arg3)
-}
-
-// DrawLayoutLine draws @line with the specified `PangoRenderer`.
-func (r renderer) DrawLayoutLine(line *LayoutLine, x int, y int) {
-	var _arg0 *C.PangoRenderer   // out
-	var _arg1 *C.PangoLayoutLine // out
-	var _arg2 C.int              // out
-	var _arg3 C.int              // out
-
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
-	_arg2 = C.int(x)
-	_arg3 = C.int(y)
-
-	C.pango_renderer_draw_layout_line(_arg0, _arg1, _arg2, _arg3)
 }
 
 // DrawRectangle draws an axis-aligned rectangle in user space coordinates

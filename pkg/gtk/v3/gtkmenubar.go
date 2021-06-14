@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -38,7 +40,7 @@ type MenuBar interface {
 	SetPackDirection(packDir PackDirection)
 }
 
-// menuBar implements the MenuBar interface.
+// menuBar implements the MenuBar class.
 type menuBar struct {
 	MenuShell
 	Buildable
@@ -49,7 +51,7 @@ var _ MenuBar = (*menuBar)(nil)
 // WrapMenuBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuBar(obj *externglib.Object) MenuBar {
-	return MenuBar{
+	return menuBar{
 		MenuShell: WrapMenuShell(obj),
 		Buildable: WrapBuildable(obj),
 	}

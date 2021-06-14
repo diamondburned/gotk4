@@ -5,14 +5,12 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -24,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 // DBusEscapeObjectPath: this is a language binding friendly version of
@@ -63,15 +62,13 @@ func DBusEscapeObjectPath(s string) string {
 func DBusEscapeObjectPathBytestring(bytes []byte) string {
 	var _arg1 *C.guint8
 
-	_arg1 = (*C.guint8)(C.malloc((len(bytes) + 1) * C.sizeof_guint8))
+	_arg1 = (*C.guint8)(C.malloc(C.ulong((len(bytes) + 1)) * C.ulong(C.sizeof_guint8)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []C.guint8
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(bytes)))
-
+		out := unsafe.Slice(_arg1, len(bytes))
 		for i := range bytes {
-			_arg1 = C.guint8(bytes)
+			out[i] = C.guint8(bytes[i])
 		}
 	}
 
@@ -148,7 +145,7 @@ func DBusIsGuid(string string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -168,7 +165,7 @@ func DBusIsInterfaceName(string string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -189,7 +186,7 @@ func DBusIsMemberName(string string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -210,7 +207,7 @@ func DBusIsName(string string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -230,7 +227,7 @@ func DBusIsUniqueName(string string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -257,19 +254,17 @@ func DBusUnescapeObjectPath(s string) []byte {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (*C.guint8)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (*C.guint8)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []C.guint8
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_guint8s = make([]byte, length)
 		for i := range src {
-			_guint8s = (byte)(_cret)
+			_guint8s[i] = (byte)(src[i])
 		}
 	}
 

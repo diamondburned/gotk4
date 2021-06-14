@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -28,7 +31,7 @@ type ATContext interface {
 	gextras.Objector
 }
 
-// atContext implements the ATContext interface.
+// atContext implements the ATContext class.
 type atContext struct {
 	gextras.Objector
 }
@@ -38,7 +41,7 @@ var _ ATContext = (*atContext)(nil)
 // WrapATContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapATContext(obj *externglib.Object) ATContext {
-	return ATContext{
+	return atContext{
 		Objector: obj,
 	}
 }

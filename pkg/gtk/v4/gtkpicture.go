@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -142,7 +142,7 @@ type Picture interface {
 	SetResource(resourcePath string)
 }
 
-// picture implements the Picture interface.
+// picture implements the Picture class.
 type picture struct {
 	Widget
 	Accessible
@@ -155,7 +155,7 @@ var _ Picture = (*picture)(nil)
 // WrapPicture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPicture(obj *externglib.Object) Picture {
-	return Picture{
+	return picture{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -201,7 +201,7 @@ func (s picture) CanShrink() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -221,7 +221,7 @@ func (s picture) KeepAspectRatio() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -264,7 +264,7 @@ func (s picture) SetCanShrink(canShrink bool) {
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	if canShrink {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_picture_set_can_shrink(_arg0, _arg1)
@@ -311,7 +311,7 @@ func (s picture) SetKeepAspectRatio(keepAspectRatio bool) {
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	if keepAspectRatio {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_picture_set_keep_aspect_ratio(_arg0, _arg1)

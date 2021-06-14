@@ -2,7 +2,51 @@
 
 package gdk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_cairo_context_get_type()), F: marshalCairoContext},
+	})
+}
+
+// CairoContext: `GdkCairoContext` is an object representing the
+// platform-specific draw context.
+//
+// `GdkCairoContext`s are created for a surface using
+// [method@Gdk.Surface.create_cairo_context], and the context can then be used
+// to draw on that surface.
+type CairoContext interface {
+	DrawContext
+}
+
+// cairoContext implements the CairoContext class.
+type cairoContext struct {
+	DrawContext
+}
+
+var _ CairoContext = (*cairoContext)(nil)
+
+// WrapCairoContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCairoContext(obj *externglib.Object) CairoContext {
+	return cairoContext{
+		DrawContext: WrapDrawContext(obj),
+	}
+}
+
+func marshalCairoContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapCairoContext(obj), nil
+}

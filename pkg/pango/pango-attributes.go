@@ -6,12 +6,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -19,11 +17,181 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.pango_attr_type_get_type()), F: marshalAttrType},
+		{T: externglib.Type(C.pango_overline_get_type()), F: marshalOverline},
+		{T: externglib.Type(C.pango_underline_get_type()), F: marshalUnderline},
+		{T: externglib.Type(C.pango_show_flags_get_type()), F: marshalShowFlags},
 		{T: externglib.Type(C.pango_attr_iterator_get_type()), F: marshalAttrIterator},
 		{T: externglib.Type(C.pango_attr_list_get_type()), F: marshalAttrList},
 		{T: externglib.Type(C.pango_attribute_get_type()), F: marshalAttribute},
 		{T: externglib.Type(C.pango_color_get_type()), F: marshalColor},
 	})
+}
+
+// AttrType: the `PangoAttrType` distinguishes between different types of
+// attributes.
+//
+// Along with the predefined values, it is possible to allocate additional
+// values for custom attributes using [type_func@attr_type_register]. The
+// predefined values are given below. The type of structure used to store the
+// attribute is listed in parentheses after the description.
+type AttrType int
+
+const (
+	// AttrTypeInvalid does not happen
+	AttrTypeInvalid AttrType = 0
+	// AttrTypeLanguage: language ([struct@Pango.AttrLanguage])
+	AttrTypeLanguage AttrType = 1
+	// AttrTypeFamily: font family name list ([struct@Pango.AttrString])
+	AttrTypeFamily AttrType = 2
+	// AttrTypeStyle: font slant style ([struct@Pango.AttrInt])
+	AttrTypeStyle AttrType = 3
+	// AttrTypeWeight: font weight ([struct@Pango.AttrInt])
+	AttrTypeWeight AttrType = 4
+	// AttrTypeVariant: font variant (normal or small caps)
+	// ([struct@Pango.AttrInt])
+	AttrTypeVariant AttrType = 5
+	// AttrTypeStretch: font stretch ([struct@Pango.AttrInt])
+	AttrTypeStretch AttrType = 6
+	// AttrTypeSize: font size in points scaled by PANGO_SCALE
+	// ([struct@Pango.AttrInt])
+	AttrTypeSize AttrType = 7
+	// AttrTypeFontDesc: font description ([struct@Pango.AttrFontDesc])
+	AttrTypeFontDesc AttrType = 8
+	// AttrTypeForeground: foreground color ([struct@Pango.AttrColor])
+	AttrTypeForeground AttrType = 9
+	// AttrTypeBackground: background color ([struct@Pango.AttrColor])
+	AttrTypeBackground AttrType = 10
+	// AttrTypeUnderline: whether the text has an underline
+	// ([struct@Pango.AttrInt])
+	AttrTypeUnderline AttrType = 11
+	// AttrTypeStrikethrough: whether the text is struck-through
+	// ([struct@Pango.AttrInt])
+	AttrTypeStrikethrough AttrType = 12
+	// AttrTypeRise: baseline displacement ([struct@Pango.AttrInt])
+	AttrTypeRise AttrType = 13
+	// AttrTypeShape: shape ([struct@Pango.AttrShape])
+	AttrTypeShape AttrType = 14
+	// AttrTypeScale: font size scale factor ([struct@Pango.AttrFloat])
+	AttrTypeScale AttrType = 15
+	// AttrTypeFallback: whether fallback is enabled ([struct@Pango.AttrInt])
+	AttrTypeFallback AttrType = 16
+	// AttrTypeLetterSpacing: letter spacing ([struct@PangoAttrInt])
+	AttrTypeLetterSpacing AttrType = 17
+	// AttrTypeUnderlineColor: underline color ([struct@Pango.AttrColor])
+	AttrTypeUnderlineColor AttrType = 18
+	// AttrTypeStrikethroughColor: strikethrough color
+	// ([struct@Pango.AttrColor])
+	AttrTypeStrikethroughColor AttrType = 19
+	// AttrTypeAbsoluteSize: font size in pixels scaled by PANGO_SCALE
+	// ([struct@Pango.AttrInt])
+	AttrTypeAbsoluteSize AttrType = 20
+	// AttrTypeGravity: base text gravity ([struct@Pango.AttrInt])
+	AttrTypeGravity AttrType = 21
+	// AttrTypeGravityHint: gravity hint ([struct@Pango.AttrInt])
+	AttrTypeGravityHint AttrType = 22
+	// AttrTypeFontFeatures: openType font features ([struct@Pango.AttrString]).
+	// Since 1.38
+	AttrTypeFontFeatures AttrType = 23
+	// AttrTypeForegroundAlpha: foreground alpha ([struct@Pango.AttrInt]). Since
+	// 1.38
+	AttrTypeForegroundAlpha AttrType = 24
+	// AttrTypeBackgroundAlpha: background alpha ([struct@Pango.AttrInt]). Since
+	// 1.38
+	AttrTypeBackgroundAlpha AttrType = 25
+	// AttrTypeAllowBreaks: whether breaks are allowed ([struct@Pango.AttrInt]).
+	// Since 1.44
+	AttrTypeAllowBreaks AttrType = 26
+	// AttrTypeShow: how to render invisible characters
+	// ([struct@Pango.AttrInt]). Since 1.44
+	AttrTypeShow AttrType = 27
+	// AttrTypeInsertHyphens: whether to insert hyphens at intra-word line
+	// breaks ([struct@Pango.AttrInt]). Since 1.44
+	AttrTypeInsertHyphens AttrType = 28
+	// AttrTypeOverline: whether the text has an overline
+	// ([struct@Pango.AttrInt]). Since 1.46
+	AttrTypeOverline AttrType = 29
+	// AttrTypeOverlineColor: overline color ([struct@Pango.AttrColor]). Since
+	// 1.46
+	AttrTypeOverlineColor AttrType = 30
+)
+
+func marshalAttrType(p uintptr) (interface{}, error) {
+	return AttrType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Overline: the `PangoOverline` enumeration is used to specify whether text
+// should be overlined, and if so, the type of line.
+type Overline int
+
+const (
+	// OverlineNone: no overline should be drawn
+	OverlineNone Overline = 0
+	// OverlineSingle: draw a single line above the ink extents of the text
+	// being underlined.
+	OverlineSingle Overline = 1
+)
+
+func marshalOverline(p uintptr) (interface{}, error) {
+	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Underline: the `PangoUnderline` enumeration is used to specify whether text
+// should be underlined, and if so, the type of underlining.
+type Underline int
+
+const (
+	// UnderlineNone: no underline should be drawn
+	UnderlineNone Underline = 0
+	// UnderlineSingle: a single underline should be drawn
+	UnderlineSingle Underline = 1
+	// UnderlineDouble: a double underline should be drawn
+	UnderlineDouble Underline = 2
+	// UnderlineLow: a single underline should be drawn at a position beneath
+	// the ink extents of the text being underlined. This should be used only
+	// for underlining single characters, such as for keyboard accelerators.
+	// PANGO_UNDERLINE_SINGLE should be used for extended portions of text.
+	UnderlineLow Underline = 3
+	// UnderlineError: a wavy underline should be drawn below. This underline is
+	// typically used to indicate an error such as a possible mispelling; in
+	// some cases a contrasting color may automatically be used. This type of
+	// underlining is available since Pango 1.4.
+	UnderlineError Underline = 4
+	// UnderlineSingleLine: like @PANGO_UNDERLINE_SINGLE, but drawn continuously
+	// across multiple runs. This type of underlining is available since Pango
+	// 1.46.
+	UnderlineSingleLine Underline = 5
+	// UnderlineDoubleLine: like @PANGO_UNDERLINE_DOUBLE, but drawn continuously
+	// across multiple runs. This type of underlining is available since Pango
+	// 1.46.
+	UnderlineDoubleLine Underline = 6
+	// UnderlineErrorLine: like @PANGO_UNDERLINE_ERROR, but drawn continuously
+	// across multiple runs. This type of underlining is available since Pango
+	// 1.46.
+	UnderlineErrorLine Underline = 7
+)
+
+func marshalUnderline(p uintptr) (interface{}, error) {
+	return Underline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ShowFlags: these flags affect how Pango treats characters that are normally
+// not visible in the output.
+type ShowFlags int
+
+const (
+	// ShowFlagsNone: no special treatment for invisible characters
+	ShowFlagsNone ShowFlags = 0
+	// ShowFlagsSpaces: render spaces, tabs and newlines visibly
+	ShowFlagsSpaces ShowFlags = 1
+	// ShowFlagsLineBreaks: render line breaks visibly
+	ShowFlagsLineBreaks ShowFlags = 2
+	// ShowFlagsIgnorables: render default-ignorable Unicode characters visibly
+	ShowFlagsIgnorables ShowFlags = 4
+)
+
+func marshalShowFlags(p uintptr) (interface{}, error) {
+	return ShowFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // AttrDataCopyFunc: type of a function that can duplicate user data for an
@@ -40,86 +208,11 @@ func gotk4_AttrDataCopyFunc(arg0 C.gpointer) C.gpointer {
 	fn := v.(AttrDataCopyFunc)
 	gpointer := fn()
 
+	var cret C.gpointer // out
+
 	cret = C.gpointer(gpointer)
 
-	return gpointer
-}
-
-// MarkupParserFinish finishes parsing markup.
-//
-// After feeding a Pango markup parser some data with
-// g_markup_parse_context_parse(), use this function to get the list of
-// attributes and text out of the markup. This function will not free @context,
-// use g_markup_parse_context_free() to do so.
-func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
-	var _arg1 *C.GMarkupParseContext // out
-
-	_arg1 = (*C.GMarkupParseContext)(unsafe.Pointer(context.Native()))
-
-	var _attrList *AttrList
-	var _arg3 *C.char    // in
-	var _arg4 C.gunichar // in
-	var _cerr *C.GError  // in
-
-	C.pango_markup_parser_finish(_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg3, &_arg4, &_cerr)
-
-	var _text string      // out
-	var _accelChar uint32 // out
-	var _goerr error      // out
-
-	_text = C.GoString(_arg3)
-	defer C.free(unsafe.Pointer(_arg3))
-	_accelChar = (uint32)(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _attrList, _text, _accelChar, _goerr
-}
-
-// ParseMarkup parses marked-up text to create a plain-text string and an
-// attribute list.
-//
-// See the Pango Markup (pango_markup.html) docs for details about the supported
-// markup.
-//
-// If @accel_marker is nonzero, the given character will mark the character
-// following it as an accelerator. For example, @accel_marker might be an
-// ampersand or underscore. All characters marked as an accelerator will receive
-// a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
-// returned in @accel_char. Two @accel_marker characters following each other
-// produce a single literal @accel_marker character.
-//
-// To parse a stream of pango markup incrementally, use
-// [func@markup_parser_new].
-//
-// If any error happens, none of the output arguments are touched except for
-// @error.
-func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
-	var _arg1 *C.char    // out
-	var _arg2 C.int      // out
-	var _arg3 C.gunichar // out
-
-	_arg1 = (*C.char)(C.CString(markupText))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = C.gunichar(accelMarker)
-
-	var _attrList *AttrList
-	var _arg5 *C.char    // in
-	var _arg6 C.gunichar // in
-	var _cerr *C.GError  // in
-
-	C.pango_parse_markup(_arg1, _arg2, _arg3, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg5, &_arg6, &_cerr)
-
-	var _text string      // out
-	var _accelChar uint32 // out
-	var _goerr error      // out
-
-	_text = C.GoString(_arg5)
-	defer C.free(unsafe.Pointer(_arg5))
-	_accelChar = (uint32)(_arg6)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _attrList, _text, _accelChar, _goerr
+	return cret
 }
 
 // AttrColor: the `PangoAttrColor` structure is used to represent attributes
@@ -136,11 +229,6 @@ func WrapAttrColor(ptr unsafe.Pointer) *AttrColor {
 	}
 
 	return (*AttrColor)(ptr)
-}
-
-func marshalAttrColor(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrColor(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -162,11 +250,6 @@ func WrapAttrFloat(ptr unsafe.Pointer) *AttrFloat {
 	}
 
 	return (*AttrFloat)(ptr)
-}
-
-func marshalAttrFloat(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrFloat(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -197,11 +280,6 @@ func WrapAttrFontDesc(ptr unsafe.Pointer) *AttrFontDesc {
 	return (*AttrFontDesc)(ptr)
 }
 
-func marshalAttrFontDesc(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrFontDesc(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrFontDesc) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -221,11 +299,6 @@ func WrapAttrFontFeatures(ptr unsafe.Pointer) *AttrFontFeatures {
 	}
 
 	return (*AttrFontFeatures)(ptr)
-}
-
-func marshalAttrFontFeatures(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrFontFeatures(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -254,11 +327,6 @@ func WrapAttrInt(ptr unsafe.Pointer) *AttrInt {
 	}
 
 	return (*AttrInt)(ptr)
-}
-
-func marshalAttrInt(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrInt(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -314,21 +382,6 @@ func (i *AttrIterator) Destroy() {
 	C.pango_attr_iterator_destroy(_arg0)
 }
 
-// Font: get the font and other attributes at the current iterator position.
-func (i *AttrIterator) Font(desc *FontDescription, language **Language, extraAttrs **glib.SList) {
-	var _arg0 *C.PangoAttrIterator    // out
-	var _arg1 *C.PangoFontDescription // out
-	var _arg2 **C.PangoLanguage       // out
-	var _arg3 **C.GSList              // out
-
-	_arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
-	_arg2 = (**C.PangoLanguage)(unsafe.Pointer(language.Native()))
-	_arg3 = (**C.GSList)(unsafe.Pointer(extraAttrs.Native()))
-
-	C.pango_attr_iterator_get_font(_arg0, _arg1, _arg2, _arg3)
-}
-
 // Next: advance the iterator until the next change of style.
 func (i *AttrIterator) Next() bool {
 	var _arg0 *C.PangoAttrIterator // out
@@ -341,7 +394,7 @@ func (i *AttrIterator) Next() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -385,11 +438,6 @@ func WrapAttrLanguage(ptr unsafe.Pointer) *AttrLanguage {
 	}
 
 	return (*AttrLanguage)(ptr)
-}
-
-func marshalAttrLanguage(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrLanguage(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -467,7 +515,7 @@ func (l *AttrList) Equal(otherList *AttrList) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -578,11 +626,6 @@ func WrapAttrShape(ptr unsafe.Pointer) *AttrShape {
 	return (*AttrShape)(ptr)
 }
 
-func marshalAttrShape(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrShape(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrShape) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -611,11 +654,6 @@ func WrapAttrSize(ptr unsafe.Pointer) *AttrSize {
 	return (*AttrSize)(ptr)
 }
 
-func marshalAttrSize(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrSize(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -642,11 +680,6 @@ func WrapAttrString(ptr unsafe.Pointer) *AttrString {
 	}
 
 	return (*AttrString)(ptr)
-}
-
-func marshalAttrString(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrString(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -731,7 +764,7 @@ func (a *Attribute) Equal(attr2 *Attribute) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -816,7 +849,7 @@ func (c *Color) Parse(spec string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -853,7 +886,7 @@ func (c *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _ok bool      // out
 
 	_alpha = (uint16)(_arg1)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

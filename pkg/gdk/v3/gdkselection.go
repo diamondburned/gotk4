@@ -33,7 +33,7 @@ func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent boo
 	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 	_arg3 = C.guint32(time_)
 	if sendEvent {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -42,7 +42,7 @@ func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent boo
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -63,7 +63,7 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, 
 	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 	_arg4 = C.guint32(time_)
 	if sendEvent {
-		_arg5 = C.gboolean(1)
+		_arg5 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -72,37 +72,11 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// SelectionPropertyGet retrieves selection data that was stored by the
-// selection data in response to a call to gdk_selection_convert(). This
-// function will not be used by applications, who should use the Clipboard API
-// instead.
-func SelectionPropertyGet(requestor Window, data **byte, propType *Atom, propFormat *int) int {
-	var _arg1 *C.GdkWindow // out
-	var _arg2 **C.guchar   // out
-	var _arg3 *C.GdkAtom   // out
-	var _arg4 *C.gint      // out
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	_arg2 = **C.guchar(data)
-	_arg3 = (*C.GdkAtom)(unsafe.Pointer(propType.Native()))
-	_arg4 = *C.gint(propFormat)
-
-	var _cret C.gint // in
-
-	_cret = C.gdk_selection_property_get(_arg1, _arg2, _arg3, _arg4)
-
-	var _gint int // out
-
-	_gint = (int)(_cret)
-
-	return _gint
 }
 
 // SelectionSendNotify sends a response to SelectionRequest event.

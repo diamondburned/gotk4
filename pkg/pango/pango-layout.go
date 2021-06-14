@@ -3,14 +3,13 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -18,9 +17,11 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.pango_alignment_get_type()), F: marshalAlignment},
+		{T: externglib.Type(C.pango_ellipsize_mode_get_type()), F: marshalEllipsizeMode},
+		{T: externglib.Type(C.pango_wrap_mode_get_type()), F: marshalWrapMode},
 		{T: externglib.Type(C.pango_layout_get_type()), F: marshalLayout},
 		{T: externglib.Type(C.pango_layout_iter_get_type()), F: marshalLayoutIter},
-		{T: externglib.Type(C.pango_layout_line_get_type()), F: marshalLayoutLine},
 	})
 }
 
@@ -30,6 +31,66 @@ func init() {
 // It is simply an alternate name for [struct@Pango.GlyphItem]. See the
 // [struct@Pango.GlyphItem] docs for details on the fields.
 type LayoutRun GlyphItem
+
+// Alignment: `PangoAlignment` describes how to align the lines of a
+// `PangoLayout` within the available space.
+//
+// If the `PangoLayout` is set to justify using
+// [method@Pango.Layout.set_justify], this only has effect for partial lines.
+type Alignment int
+
+const (
+	// AlignmentLeft: put all available space on the right
+	AlignmentLeft Alignment = 0
+	// AlignmentCenter: center the line within the available space
+	AlignmentCenter Alignment = 1
+	// AlignmentRight: put all available space on the left
+	AlignmentRight Alignment = 2
+)
+
+func marshalAlignment(p uintptr) (interface{}, error) {
+	return Alignment(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// EllipsizeMode: `PangoEllipsizeMode` describes what sort of ellipsization
+// should be applied to text.
+//
+// In the ellipsization process characters are removed from the text in order to
+// make it fit to a given width and replaced with an ellipsis.
+type EllipsizeMode int
+
+const (
+	// EllipsizeModeNone: no ellipsization
+	EllipsizeModeNone EllipsizeMode = 0
+	// EllipsizeModeStart: omit characters at the start of the text
+	EllipsizeModeStart EllipsizeMode = 1
+	// EllipsizeModeMiddle: omit characters in the middle of the text
+	EllipsizeModeMiddle EllipsizeMode = 2
+	// EllipsizeModeEnd: omit characters at the end of the text
+	EllipsizeModeEnd EllipsizeMode = 3
+)
+
+func marshalEllipsizeMode(p uintptr) (interface{}, error) {
+	return EllipsizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WrapMode: `PangoWrapMode` describes how to wrap the lines of a `PangoLayout`
+// to the desired width.
+type WrapMode int
+
+const (
+	// WrapModeWord: wrap lines at word boundaries.
+	WrapModeWord WrapMode = 0
+	// WrapModeChar: wrap lines at character boundaries.
+	WrapModeChar WrapMode = 1
+	// WrapModeWordChar: wrap lines at word boundaries, but fall back to
+	// character boundaries if there is not enough space for a full word.
+	WrapModeWordChar WrapMode = 2
+)
+
+func marshalWrapMode(p uintptr) (interface{}, error) {
+	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 // Layout: a `PangoLayout` structure represents an entire paragraph of text.
 //
@@ -386,7 +447,7 @@ type Layout interface {
 	XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 }
 
-// layout implements the Layout interface.
+// layout implements the Layout class.
 type layout struct {
 	gextras.Objector
 }
@@ -396,7 +457,7 @@ var _ Layout = (*layout)(nil)
 // WrapLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLayout(obj *externglib.Object) Layout {
-	return Layout{
+	return layout{
 		Objector: obj,
 	}
 }
@@ -435,7 +496,7 @@ func (l layout) AutoDir() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -574,7 +635,7 @@ func (l layout) Justify() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -704,7 +765,7 @@ func (l layout) SingleParagraphMode() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -821,7 +882,7 @@ func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(index_)
 	if trailing {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	var _arg3 C.int // in
@@ -875,7 +936,7 @@ func (l layout) IsEllipsized() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -898,7 +959,7 @@ func (l layout) IsWrapped() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -930,7 +991,7 @@ func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, d
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if strong {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 	_arg2 = C.int(oldIndex)
 	_arg3 = C.int(oldTrailing)
@@ -996,7 +1057,7 @@ func (l layout) SetAutoDir(autoDir bool) {
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if autoDir {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.pango_layout_set_auto_dir(_arg0, _arg1)
@@ -1107,7 +1168,7 @@ func (l layout) SetJustify(justify bool) {
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if justify {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.pango_layout_set_justify(_arg0, _arg1)
@@ -1203,7 +1264,7 @@ func (l layout) SetSingleParagraphMode(setting bool) {
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.pango_layout_set_single_paragraph_mode(_arg0, _arg1)
@@ -1328,7 +1389,7 @@ func (l layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool) {
 
 	_index_ = (int)(_arg3)
 	_trailing = (int)(_arg4)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1377,7 +1438,7 @@ func (i *LayoutIter) AtLastLine() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1552,7 +1613,7 @@ func (i *LayoutIter) NextChar() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1572,7 +1633,7 @@ func (i *LayoutIter) NextCluster() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1592,7 +1653,7 @@ func (i *LayoutIter) NextLine() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1612,205 +1673,9 @@ func (i *LayoutIter) NextRun() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// LayoutLine: a `PangoLayoutLine` represents one of the lines resulting from
-// laying out a paragraph via `PangoLayout`.
-//
-// `PangoLayoutLine` structures are obtained by calling
-// [method@Pango.Layout.get_line] and are only valid until the text, attributes,
-// or settings of the parent `PangoLayout` are modified.
-type LayoutLine struct {
-	native C.PangoLayoutLine
-}
-
-// WrapLayoutLine wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapLayoutLine(ptr unsafe.Pointer) *LayoutLine {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*LayoutLine)(ptr)
-}
-
-func marshalLayoutLine(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLayoutLine(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *LayoutLine) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
-}
-
-// StartIndex gets the field inside the struct.
-func (l *LayoutLine) StartIndex() int {
-	var v int // out
-	v = (int)(l.native.start_index)
-	return v
-}
-
-// Length gets the field inside the struct.
-func (l *LayoutLine) Length() int {
-	var v int // out
-	v = (int)(l.native.length)
-	return v
-}
-
-// Extents computes the logical and ink extents of a layout line. See
-// [method@Pango.Font.get_glyph_extents] for details about the interpretation of
-// the rectangles.
-func (l *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoLayoutLine // out
-
-	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
-
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
-
-	C.pango_layout_line_get_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
-
-	return _inkRect, _logicalRect
-}
-
-// Height computes the height of the line, i.e. the distance between this and
-// the previous lines baseline.
-func (l *LayoutLine) Height() int {
-	var _arg0 *C.PangoLayoutLine // out
-
-	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
-
-	var _arg1 C.int // in
-
-	C.pango_layout_line_get_height(_arg0, &_arg1)
-
-	var _height int // out
-
-	_height = (int)(_arg1)
-
-	return _height
-}
-
-// PixelExtents computes the logical and ink extents of @layout_line in device
-// units.
-//
-// This function just calls [method@Pango.LayoutLine.get_extents] followed by
-// two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect such
-// that the rounded rectangles fully contain the unrounded one (that is, passes
-// them as first argument to [func@extents_to_pixels]).
-func (l *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoLayoutLine // out
-
-	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
-
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
-
-	C.pango_layout_line_get_pixel_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
-
-	return _inkRect, _logicalRect
-}
-
-// XRanges gets a list of visual ranges corresponding to a given logical range.
-// This list is not necessarily minimal - there may be consecutive ranges which
-// are adjacent. The ranges will be sorted from left to right. The ranges are
-// with respect to the left edge of the entire layout, not with respect to the
-// line.
-func (l *LayoutLine) XRanges(startIndex int, endIndex int) []*int {
-	var _arg0 *C.PangoLayoutLine // out
-	var _arg1 C.int              // out
-	var _arg2 C.int              // out
-
-	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
-	_arg1 = C.int(startIndex)
-	_arg2 = C.int(endIndex)
-
-	var _arg3 *C.int
-	var _arg4 C.int // in
-
-	C.pango_layout_line_get_x_ranges(_arg0, _arg1, _arg2, &_arg3, &_arg4)
-
-	var _ranges []*int
-
-	ptr.SetSlice(unsafe.Pointer(&_ranges), unsafe.Pointer(_arg3), int(_arg4))
-	runtime.SetFinalizer(&_ranges, func(v *[]*int) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
-
-	return _ranges
-}
-
-// IndexToX converts an index within a line to a X position.
-func (l *LayoutLine) IndexToX(index_ int, trailing bool) int {
-	var _arg0 *C.PangoLayoutLine // out
-	var _arg1 C.int              // out
-	var _arg2 C.gboolean         // out
-
-	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
-	_arg1 = C.int(index_)
-	if trailing {
-		_arg2 = C.gboolean(1)
-	}
-
-	var _arg3 C.int // in
-
-	C.pango_layout_line_index_to_x(_arg0, _arg1, _arg2, &_arg3)
-
-	var _xPos int // out
-
-	_xPos = (int)(_arg3)
-
-	return _xPos
-}
-
-// Unref: decrease the reference count of a `PangoLayoutLine` by one. If the
-// result is zero, the line and all associated memory will be freed.
-func (l *LayoutLine) Unref() {
-	var _arg0 *C.PangoLayoutLine // out
-
-	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
-
-	C.pango_layout_line_unref(_arg0)
-}
-
-// XToIndex converts from x offset to the byte index of the corresponding
-// character within the text of the layout. If @x_pos is outside the line,
-// @index_ and @trailing will point to the very first or very last position in
-// the line. This determination is based on the resolved direction of the
-// paragraph; for example, if the resolved direction is right-to-left, then an X
-// position to the right of the line (after it) results in 0 being stored in
-// @index_ and @trailing. An X position to the left of the line results in
-// @index_ pointing to the (logical) last grapheme in the line and @trailing
-// being set to the number of characters in that grapheme. The reverse is true
-// for a left-to-right line.
-func (l *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
-	var _arg0 *C.PangoLayoutLine // out
-	var _arg1 C.int              // out
-
-	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
-	_arg1 = C.int(xPos)
-
-	var _arg2 C.int      // in
-	var _arg3 C.int      // in
-	var _cret C.gboolean // in
-
-	_cret = C.pango_layout_line_x_to_index(_arg0, _arg1, &_arg2, &_arg3)
-
-	var _index_ int   // out
-	var _trailing int // out
-	var _ok bool      // out
-
-	_index_ = (int)(_arg2)
-	_trailing = (int)(_arg3)
-	if _cret {
-		_ok = true
-	}
-
-	return _index_, _trailing, _ok
 }

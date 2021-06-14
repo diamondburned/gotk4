@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -33,7 +35,7 @@ type GestureRotate interface {
 	AngleDelta() float64
 }
 
-// gestureRotate implements the GestureRotate interface.
+// gestureRotate implements the GestureRotate class.
 type gestureRotate struct {
 	Gesture
 }
@@ -43,7 +45,7 @@ var _ GestureRotate = (*gestureRotate)(nil)
 // WrapGestureRotate wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureRotate(obj *externglib.Object) GestureRotate {
-	return GestureRotate{
+	return gestureRotate{
 		Gesture: WrapGesture(obj),
 	}
 }

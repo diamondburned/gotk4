@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -43,11 +43,13 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
 	fn := v.(CustomFilterFunc)
 	ok := fn(item)
 
+	var cret C.gboolean // out
+
 	if ok {
-		cret = C.gboolean(1)
+		cret = C.TRUE
 	}
 
-	return ok
+	return cret
 }
 
 // CustomFilter: `GtkCustomFilter` determines whether to include items with a
@@ -56,7 +58,7 @@ type CustomFilter interface {
 	Filter
 }
 
-// customFilter implements the CustomFilter interface.
+// customFilter implements the CustomFilter class.
 type customFilter struct {
 	Filter
 }
@@ -66,7 +68,7 @@ var _ CustomFilter = (*customFilter)(nil)
 // WrapCustomFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCustomFilter(obj *externglib.Object) CustomFilter {
-	return CustomFilter{
+	return customFilter{
 		Filter: WrapFilter(obj),
 	}
 }

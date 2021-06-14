@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -80,7 +82,7 @@ type ImageMenuItem interface {
 	SetUseStock(useStock bool)
 }
 
-// imageMenuItem implements the ImageMenuItem interface.
+// imageMenuItem implements the ImageMenuItem class.
 type imageMenuItem struct {
 	MenuItem
 	Actionable
@@ -93,7 +95,7 @@ var _ ImageMenuItem = (*imageMenuItem)(nil)
 // WrapImageMenuItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapImageMenuItem(obj *externglib.Object) ImageMenuItem {
-	return ImageMenuItem{
+	return imageMenuItem{
 		MenuItem:    WrapMenuItem(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -120,7 +122,7 @@ func (i imageMenuItem) AlwaysShowImage() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -140,7 +142,7 @@ func (i imageMenuItem) UseStock() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -175,7 +177,7 @@ func (i imageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 	if alwaysShow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_image_menu_item_set_always_show_image(_arg0, _arg1)
@@ -202,7 +204,7 @@ func (i imageMenuItem) SetUseStock(useStock bool) {
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 	if useStock {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_image_menu_item_set_use_stock(_arg0, _arg1)

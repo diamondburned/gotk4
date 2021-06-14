@@ -5,15 +5,13 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -345,35 +344,6 @@ type Application interface {
 	// The result of calling g_application_run() again after it returns is
 	// unspecified.
 	Quit()
-	// Register attempts registration of the application.
-	//
-	// This is the point at which the application discovers if it is the primary
-	// instance or merely acting as a remote for an already-existing primary
-	// instance. This is implemented by attempting to acquire the application
-	// identifier as a unique bus name on the session bus using GDBus.
-	//
-	// If there is no application ID or if G_APPLICATION_NON_UNIQUE was given,
-	// then this process will always become the primary instance.
-	//
-	// Due to the internal architecture of GDBus, method calls can be dispatched
-	// at any time (even if a main loop is not running). For this reason, you
-	// must ensure that any object paths that you wish to register are
-	// registered before calling this function.
-	//
-	// If the application has already been registered then true is returned with
-	// no work performed.
-	//
-	// The #GApplication::startup signal is emitted if registration succeeds and
-	// @application is the primary instance (including the non-unique case).
-	//
-	// In the event of an error (such as @cancellable being cancelled, or a
-	// failure to connect to the session bus), false is returned and @error is
-	// set appropriately.
-	//
-	// Note: the return value of this function is not an indicator that this
-	// instance is or is not the primary instance of the application. See
-	// g_application_get_is_remote() for that.
-	Register(cancellable Cancellable) error
 	// Release: decrease the use count of @application.
 	//
 	// When the use count reaches zero, the application will stop running.
@@ -454,7 +424,7 @@ type Application interface {
 	// applications but should not be used from applications like editors that
 	// need precise control over when processes invoked via the commandline will
 	// exit and what their exit status will be.
-	Run(argv []*string) int
+	Run(argv []string) int
 	// SendNotification sends a notification on behalf of @application to the
 	// desktop shell. There is no guarantee that the notification is displayed
 	// immediately, or even at all.
@@ -597,7 +567,7 @@ type Application interface {
 	WithdrawNotification(id string)
 }
 
-// application implements the Application interface.
+// application implements the Application class.
 type application struct {
 	gextras.Objector
 	ActionGroup
@@ -609,7 +579,7 @@ var _ Application = (*application)(nil)
 // WrapApplication wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplication(obj *externglib.Object) Application {
-	return Application{
+	return application{
 		Objector:    obj,
 		ActionGroup: WrapActionGroup(obj),
 		ActionMap:   WrapActionMap(obj),
@@ -728,15 +698,13 @@ func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg1 *C.GOptionEntry
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_struct_GOptionEntry))
+	_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong((len(entries) + 1)) * C.ulong(C.sizeof_GOptionEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []C.GOptionEntry
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(entries)))
-
+		out := unsafe.Slice(_arg1, len(entries))
 		for i := range entries {
-			_arg1 = (C.GOptionEntry)(unsafe.Pointer(entries.Native()))
+			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
 		}
 	}
 
@@ -877,7 +845,7 @@ func (a application) IsBusy() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -899,7 +867,7 @@ func (a application) IsRegistered() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -927,7 +895,7 @@ func (a application) IsRemote() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1008,15 +976,13 @@ func (a application) Open(files []File, hint string) {
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg2 = C.gint(len(files))
-	_arg1 = (**C.GFile)(C.malloc(len(files) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.GFile)(C.malloc(C.ulong(len(files)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.GFile
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg1), int(len(files)))
-
+		out := unsafe.Slice(_arg1, len(files))
 		for i := range files {
-			_arg1 = (*C.GFile)(unsafe.Pointer(files.Native()))
+			out[i] = (*C.GFile)(unsafe.Pointer(files[i].Native()))
 		}
 	}
 	_arg3 = (*C.gchar)(C.CString(hint))
@@ -1043,52 +1009,6 @@ func (a application) Quit() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_quit(_arg0)
-}
-
-// Register attempts registration of the application.
-//
-// This is the point at which the application discovers if it is the primary
-// instance or merely acting as a remote for an already-existing primary
-// instance. This is implemented by attempting to acquire the application
-// identifier as a unique bus name on the session bus using GDBus.
-//
-// If there is no application ID or if G_APPLICATION_NON_UNIQUE was given,
-// then this process will always become the primary instance.
-//
-// Due to the internal architecture of GDBus, method calls can be dispatched
-// at any time (even if a main loop is not running). For this reason, you
-// must ensure that any object paths that you wish to register are
-// registered before calling this function.
-//
-// If the application has already been registered then true is returned with
-// no work performed.
-//
-// The #GApplication::startup signal is emitted if registration succeeds and
-// @application is the primary instance (including the non-unique case).
-//
-// In the event of an error (such as @cancellable being cancelled, or a
-// failure to connect to the session bus), false is returned and @error is
-// set appropriately.
-//
-// Note: the return value of this function is not an indicator that this
-// instance is or is not the primary instance of the application. See
-// g_application_get_is_remote() for that.
-func (a application) Register(cancellable Cancellable) error {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.GCancellable // out
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_application_register(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // Release: decrease the use count of @application.
@@ -1178,23 +1098,21 @@ func (a application) Release() {
 // applications but should not be used from applications like editors that
 // need precise control over when processes invoked via the commandline will
 // exit and what their exit status will be.
-func (a application) Run(argv []*string) int {
+func (a application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
 	var _arg2 **C.char
 	var _arg1 C.int
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = C.int(len(argv))
-	_arg2 = (**C.char)(C.malloc(len(argv) * unsafe.Sizeof(int(0))))
+	_arg2 = (**C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg2), int(len(argv)))
-
+		out := unsafe.Slice(_arg2, len(argv))
 		for i := range argv {
-			_arg2 = (*C.gchar)(C.CString(argv))
-			defer C.free(unsafe.Pointer(_arg2))
+			out[i] = (*C.gchar)(C.CString(argv[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

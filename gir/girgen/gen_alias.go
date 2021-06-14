@@ -15,11 +15,14 @@ type aliasData struct {
 
 func (ng *NamespaceGenerator) generateAliases() {
 	for _, alias := range ng.current.Namespace.Aliases {
+		if !alias.IsIntrospectable() {
+			continue
+		}
 		if ng.mustIgnore(alias.Name, alias.CType) {
 			continue
 		}
 
-		fg := ng.FileFromSource(alias.SourcePosition)
+		fg := ng.FileFromSource(alias.DocElements)
 
 		goType, ok := GoType(fg, alias.Type, true)
 		if !ok {

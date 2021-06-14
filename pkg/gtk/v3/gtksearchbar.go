@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -65,7 +67,7 @@ type SearchBar interface {
 	SetShowCloseButton(visible bool)
 }
 
-// searchBar implements the SearchBar interface.
+// searchBar implements the SearchBar class.
 type searchBar struct {
 	Bin
 	Buildable
@@ -76,7 +78,7 @@ var _ SearchBar = (*searchBar)(nil)
 // WrapSearchBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSearchBar(obj *externglib.Object) SearchBar {
-	return SearchBar{
+	return searchBar{
 		Bin:       WrapBin(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -114,7 +116,7 @@ func (b searchBar) SearchMode() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -133,7 +135,7 @@ func (b searchBar) ShowCloseButton() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -147,7 +149,7 @@ func (b searchBar) SetSearchMode(searchMode bool) {
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 	if searchMode {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_search_bar_set_search_mode(_arg0, _arg1)
@@ -162,7 +164,7 @@ func (b searchBar) SetShowCloseButton(visible bool) {
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 	if visible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)

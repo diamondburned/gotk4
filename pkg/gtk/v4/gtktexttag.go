@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -62,7 +65,7 @@ type TextTag interface {
 	SetPriority(priority int)
 }
 
-// textTag implements the TextTag interface.
+// textTag implements the TextTag class.
 type textTag struct {
 	gextras.Objector
 }
@@ -72,7 +75,7 @@ var _ TextTag = (*textTag)(nil)
 // WrapTextTag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextTag(obj *externglib.Object) TextTag {
-	return TextTag{
+	return textTag{
 		Objector: obj,
 	}
 }
@@ -94,7 +97,7 @@ func (t textTag) Changed(sizeChanged bool) {
 
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
 	if sizeChanged {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_tag_changed(_arg0, _arg1)

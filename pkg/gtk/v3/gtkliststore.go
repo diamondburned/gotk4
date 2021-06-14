@@ -3,14 +3,13 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -140,7 +139,7 @@ type ListStore interface {
 	Swap(a *TreeIter, b *TreeIter)
 }
 
-// listStore implements the ListStore interface.
+// listStore implements the ListStore class.
 type listStore struct {
 	gextras.Objector
 	Buildable
@@ -155,7 +154,7 @@ var _ ListStore = (*listStore)(nil)
 // WrapListStore wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListStore(obj *externglib.Object) ListStore {
-	return ListStore{
+	return listStore{
 		Objector:       obj,
 		Buildable:      WrapBuildable(obj),
 		TreeDragDest:   WrapTreeDragDest(obj),
@@ -269,15 +268,13 @@ func (l listStore) InsertWithValuesv(position int, columns []int, values []**ext
 	_arg5 = C.gint(len(columns))
 	_arg3 = (*C.gint)(unsafe.Pointer(&columns[0]))
 	_arg5 = C.gint(len(values))
-	_arg4 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	_arg4 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg4))
 
 	{
-		var out []C.GValue
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg4), int(len(values)))
-
+		out := unsafe.Slice(_arg4, len(values))
 		for i := range values {
-			_arg4 = (*C.GValue)(values.GValue)
+			out[i] = (*C.GValue)(values[i].GValue)
 		}
 	}
 
@@ -305,7 +302,7 @@ func (l listStore) IterIsValid(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -374,7 +371,7 @@ func (l listStore) Remove(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -388,15 +385,13 @@ func (s listStore) Reorder(newOrder []int) {
 	var _arg1 *C.gint
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gint)(C.malloc((len(newOrder) + 1) * C.sizeof_gint))
+	_arg1 = (*C.gint)(C.malloc(C.ulong((len(newOrder) + 1)) * C.ulong(C.sizeof_gint)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []C.gint
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(newOrder)))
-
+		out := unsafe.Slice(_arg1, len(newOrder))
 		for i := range newOrder {
-			_arg1 = C.gint(newOrder)
+			out[i] = C.gint(newOrder[i])
 		}
 	}
 
@@ -414,15 +409,13 @@ func (l listStore) SetColumnTypes(types []externglib.Type) {
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(len(types))
-	_arg2 = (*C.GType)(C.malloc(len(types) * C.sizeof_GType))
+	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []C.GType
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg2), int(len(types)))
-
+		out := unsafe.Slice(_arg2, len(types))
 		for i := range types {
-			_arg2 = C.GType(types)
+			out[i] = C.GType(types[i])
 		}
 	}
 
@@ -462,15 +455,13 @@ func (l listStore) SetValuesv(iter *TreeIter, columns []int, values []**externgl
 	_arg4 = C.gint(len(columns))
 	_arg2 = (*C.gint)(unsafe.Pointer(&columns[0]))
 	_arg4 = C.gint(len(values))
-	_arg3 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	{
-		var out []C.GValue
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg3), int(len(values)))
-
+		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			_arg3 = (*C.GValue)(values.GValue)
+			out[i] = (*C.GValue)(values[i].GValue)
 		}
 	}
 

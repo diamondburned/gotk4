@@ -5,12 +5,12 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -36,7 +37,7 @@ func init() {
 // implementation of the OS. This is primarily used for hiding mountable and
 // mounted volumes that only are used in the OS and has little to no relevance
 // to the casual user.
-func UnixIsMountPathSystemInternal(mountPath *string) bool {
+func UnixIsMountPathSystemInternal(mountPath string) bool {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(mountPath))
@@ -48,7 +49,7 @@ func UnixIsMountPathSystemInternal(mountPath *string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -75,7 +76,7 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -101,7 +102,7 @@ func UnixIsSystemFSType(fsType string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -137,7 +138,7 @@ func UnixMountFree(mountEntry *UnixMountEntry) {
 }
 
 // UnixMountGetDevicePath gets the device path for a unix mount.
-func UnixMountGetDevicePath(mountEntry *UnixMountEntry) *string {
+func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string {
 	var _arg1 *C.GUnixMountEntry // out
 
 	_arg1 = (*C.GUnixMountEntry)(unsafe.Pointer(mountEntry.Native()))
@@ -146,7 +147,7 @@ func UnixMountGetDevicePath(mountEntry *UnixMountEntry) *string {
 
 	_cret = C.g_unix_mount_get_device_path(_arg1)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -171,7 +172,7 @@ func UnixMountGetFSType(mountEntry *UnixMountEntry) string {
 }
 
 // UnixMountGetMountPath gets the mount path for a unix mount.
-func UnixMountGetMountPath(mountEntry *UnixMountEntry) *string {
+func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 	var _arg1 *C.GUnixMountEntry // out
 
 	_arg1 = (*C.GUnixMountEntry)(unsafe.Pointer(mountEntry.Native()))
@@ -180,7 +181,7 @@ func UnixMountGetMountPath(mountEntry *UnixMountEntry) *string {
 
 	_cret = C.g_unix_mount_get_mount_path(_arg1)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -241,7 +242,7 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -280,7 +281,7 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -299,7 +300,7 @@ func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -323,7 +324,7 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -343,7 +344,7 @@ func UnixMountPointsChangedSince(time uint64) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -363,7 +364,7 @@ func UnixMountsChangedSince(time uint64) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -383,7 +384,7 @@ type UnixMountMonitor interface {
 	SetRateLimit(limitMsec int)
 }
 
-// unixMountMonitor implements the UnixMountMonitor interface.
+// unixMountMonitor implements the UnixMountMonitor class.
 type unixMountMonitor struct {
 	gextras.Objector
 }
@@ -393,7 +394,7 @@ var _ UnixMountMonitor = (*unixMountMonitor)(nil)
 // WrapUnixMountMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
-	return UnixMountMonitor{
+	return unixMountMonitor{
 		Objector: obj,
 	}
 }
@@ -501,7 +502,7 @@ func (m *UnixMountPoint) Free() {
 }
 
 // DevicePath gets the device path for a unix mount point.
-func (m *UnixMountPoint) DevicePath() *string {
+func (m *UnixMountPoint) DevicePath() string {
 	var _arg0 *C.GUnixMountPoint // out
 
 	_arg0 = (*C.GUnixMountPoint)(unsafe.Pointer(m.Native()))
@@ -510,7 +511,7 @@ func (m *UnixMountPoint) DevicePath() *string {
 
 	_cret = C.g_unix_mount_point_get_device_path(_arg0)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -535,7 +536,7 @@ func (m *UnixMountPoint) FSType() string {
 }
 
 // MountPath gets the mount path for a unix mount point.
-func (m *UnixMountPoint) MountPath() *string {
+func (m *UnixMountPoint) MountPath() string {
 	var _arg0 *C.GUnixMountPoint // out
 
 	_arg0 = (*C.GUnixMountPoint)(unsafe.Pointer(m.Native()))
@@ -544,7 +545,7 @@ func (m *UnixMountPoint) MountPath() *string {
 
 	_cret = C.g_unix_mount_point_get_mount_path(_arg0)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 
@@ -580,7 +581,7 @@ func (m *UnixMountPoint) GuessCanEject() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -618,7 +619,7 @@ func (m *UnixMountPoint) IsLoopback() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -637,7 +638,7 @@ func (m *UnixMountPoint) IsReadonly() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -656,7 +657,7 @@ func (m *UnixMountPoint) IsUserMountable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

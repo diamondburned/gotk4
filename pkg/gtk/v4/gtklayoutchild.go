@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -31,7 +34,7 @@ type LayoutChild interface {
 	gextras.Objector
 }
 
-// layoutChild implements the LayoutChild interface.
+// layoutChild implements the LayoutChild class.
 type layoutChild struct {
 	gextras.Objector
 }
@@ -41,7 +44,7 @@ var _ LayoutChild = (*layoutChild)(nil)
 // WrapLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLayoutChild(obj *externglib.Object) LayoutChild {
-	return LayoutChild{
+	return layoutChild{
 		Objector: obj,
 	}
 }

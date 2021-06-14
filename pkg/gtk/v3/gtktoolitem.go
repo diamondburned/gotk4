@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -116,7 +116,7 @@ type ToolItem interface {
 	ToolbarReconfigured()
 }
 
-// toolItem implements the ToolItem interface.
+// toolItem implements the ToolItem class.
 type toolItem struct {
 	Bin
 	Activatable
@@ -128,7 +128,7 @@ var _ ToolItem = (*toolItem)(nil)
 // WrapToolItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToolItem(obj *externglib.Object) ToolItem {
-	return ToolItem{
+	return toolItem{
 		Bin:         WrapBin(obj),
 		Activatable: WrapActivatable(obj),
 		Buildable:   WrapBuildable(obj),
@@ -154,7 +154,7 @@ func (t toolItem) Expand() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -174,7 +174,7 @@ func (t toolItem) Homogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -213,7 +213,7 @@ func (t toolItem) IsImportant() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -252,7 +252,7 @@ func (t toolItem) UseDragWindow() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -272,7 +272,7 @@ func (t toolItem) VisibleHorizontal() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -292,7 +292,7 @@ func (t toolItem) VisibleVertical() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -323,7 +323,7 @@ func (t toolItem) SetExpand(expand bool) {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if expand {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tool_item_set_expand(_arg0, _arg1)
@@ -338,7 +338,7 @@ func (t toolItem) SetHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tool_item_set_homogeneous(_arg0, _arg1)
@@ -355,7 +355,7 @@ func (t toolItem) SetIsImportant(isImportant bool) {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if isImportant {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tool_item_set_is_important(_arg0, _arg1)
@@ -415,7 +415,7 @@ func (t toolItem) SetUseDragWindow(useDragWindow bool) {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if useDragWindow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tool_item_set_use_drag_window(_arg0, _arg1)
@@ -429,7 +429,7 @@ func (t toolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if visibleHorizontal {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tool_item_set_visible_horizontal(_arg0, _arg1)
@@ -445,7 +445,7 @@ func (t toolItem) SetVisibleVertical(visibleVertical bool) {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if visibleVertical {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_tool_item_set_visible_vertical(_arg0, _arg1)

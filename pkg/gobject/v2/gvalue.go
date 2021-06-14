@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -62,26 +62,6 @@ func (s *Value) Copy(destValue **externglib.Value) {
 	C.g_value_copy(_arg0, _arg1)
 }
 
-// DupBoxed: get the contents of a G_TYPE_BOXED derived #GValue. Upon getting,
-// the boxed value is duplicated and needs to be later freed with
-// g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value),
-// return_value);
-func (v *Value) DupBoxed() interface{} {
-	var _arg0 *C.GValue // out
-
-	_arg0 = (*C.GValue)(v.GValue)
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_value_dup_boxed(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
-}
-
 // DupObject: get the contents of a G_TYPE_OBJECT derived #GValue, increasing
 // its reference count. If the contents of the #GValue are nil, then nil will be
 // returned.
@@ -132,7 +112,7 @@ func (v *Value) FitsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -151,7 +131,7 @@ func (v *Value) Boolean() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -549,7 +529,7 @@ func (v *Value) SetBoolean(vBoolean bool) {
 
 	_arg0 = (*C.GValue)(v.GValue)
 	if vBoolean {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_value_set_boolean(_arg0, _arg1)
@@ -723,18 +703,6 @@ func (v *Value) SetObject(vObject gextras.Objector) {
 	C.g_value_set_object(_arg0, _arg1)
 }
 
-// SetObjectTakeOwnership: this is an internal function introduced mainly for C
-// marshallers.
-func (v *Value) SetObjectTakeOwnership(vObject interface{}) {
-	var _arg0 *C.GValue  // out
-	var _arg1 C.gpointer // out
-
-	_arg0 = (*C.GValue)(v.GValue)
-	_arg1 = C.gpointer(vObject)
-
-	C.g_value_set_object_take_ownership(_arg0, _arg1)
-}
-
 // SetParam: set the contents of a G_TYPE_PARAM #GValue to @param.
 func (v *Value) SetParam(param ParamSpec) {
 	var _arg0 *C.GValue     // out
@@ -744,18 +712,6 @@ func (v *Value) SetParam(param ParamSpec) {
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
 
 	C.g_value_set_param(_arg0, _arg1)
-}
-
-// SetParamTakeOwnership: this is an internal function introduced mainly for C
-// marshallers.
-func (v *Value) SetParamTakeOwnership(param ParamSpec) {
-	var _arg0 *C.GValue     // out
-	var _arg1 *C.GParamSpec // out
-
-	_arg0 = (*C.GValue)(v.GValue)
-	_arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
-
-	C.g_value_set_param_take_ownership(_arg0, _arg1)
 }
 
 // SetPointer: set the contents of a pointer #GValue to @v_pointer.
@@ -904,36 +860,6 @@ func (v *Value) TakeBoxed(vBoxed interface{}) {
 	C.g_value_take_boxed(_arg0, _arg1)
 }
 
-// TakeObject sets the contents of a G_TYPE_OBJECT derived #GValue to @v_object
-// and takes over the ownership of the caller’s reference to @v_object; the
-// caller doesn’t have to unref it any more (i.e. the reference count of the
-// object is not increased).
-//
-// If you want the #GValue to hold its own reference to @v_object, use
-// g_value_set_object() instead.
-func (v *Value) TakeObject(vObject interface{}) {
-	var _arg0 *C.GValue  // out
-	var _arg1 C.gpointer // out
-
-	_arg0 = (*C.GValue)(v.GValue)
-	_arg1 = C.gpointer(vObject)
-
-	C.g_value_take_object(_arg0, _arg1)
-}
-
-// TakeParam sets the contents of a G_TYPE_PARAM #GValue to @param and takes
-// over the ownership of the caller’s reference to @param; the caller doesn’t
-// have to unref it any more.
-func (v *Value) TakeParam(param ParamSpec) {
-	var _arg0 *C.GValue     // out
-	var _arg1 *C.GParamSpec // out
-
-	_arg0 = (*C.GValue)(v.GValue)
-	_arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
-
-	C.g_value_take_param(_arg0, _arg1)
-}
-
 // TakeString sets the contents of a G_TYPE_STRING #GValue to @v_string.
 func (v *Value) TakeString(vString string) {
 	var _arg0 *C.GValue // out
@@ -987,7 +913,7 @@ func (s *Value) Transform(destValue **externglib.Value) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

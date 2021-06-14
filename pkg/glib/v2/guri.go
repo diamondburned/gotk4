@@ -5,11 +5,10 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -510,18 +509,6 @@ func (u *URI) ToStringPartial(flags URIHideFlags) string {
 	return _utf8
 }
 
-// Unref: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
-func (u *URI) Unref() {
-	var _arg0 *C.GUri // out
-
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
-
-	C.g_uri_unref(_arg0)
-}
-
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
 // part of the URI value. For example
 // `scheme://server/path?query=string&is=there` has two attributes –
@@ -544,11 +531,6 @@ func WrapURIParamsIter(ptr unsafe.Pointer) *URIParamsIter {
 	}
 
 	return (*URIParamsIter)(ptr)
-}
-
-func marshalURIParamsIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapURIParamsIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -603,36 +585,4 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 	_arg4 = (C.GUriParamsFlags)(flags)
 
 	C.g_uri_params_iter_init(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// Next advances @iter and retrieves the next attribute/value. false is returned
-// if an error has occurred (in which case @error is set), or if the end of the
-// iteration is reached (in which case @attribute and @value are set to nil and
-// the iterator becomes invalid). If true is returned, g_uri_params_iter_next()
-// may be called again to receive another attribute/value pair.
-//
-// Note that the same @attribute may be returned multiple times, since URIs
-// allow repeated attributes.
-func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
-	var _arg0 *C.GUriParamsIter // out
-
-	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
-
-	var _arg1 *C.gchar  // in
-	var _arg2 *C.gchar  // in
-	var _cerr *C.GError // in
-
-	C.g_uri_params_iter_next(_arg0, &_arg1, &_arg2, &_cerr)
-
-	var _attribute string // out
-	var _value string     // out
-	var _goerr error      // out
-
-	_attribute = C.GoString(_arg1)
-	defer C.free(unsafe.Pointer(_arg1))
-	_value = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _attribute, _value, _goerr
 }

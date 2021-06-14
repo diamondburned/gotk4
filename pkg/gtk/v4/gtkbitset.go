@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -30,11 +29,6 @@ func WrapBitsetIter(ptr unsafe.Pointer) *BitsetIter {
 	}
 
 	return (*BitsetIter)(ptr)
-}
-
-func marshalBitsetIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBitsetIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -74,7 +68,7 @@ func (i *BitsetIter) IsValid() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -99,7 +93,7 @@ func (i *BitsetIter) Next() (uint, bool) {
 	var _ok bool    // out
 
 	_value = (uint)(_arg1)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -124,7 +118,7 @@ func (i *BitsetIter) Previous() (uint, bool) {
 	var _ok bool    // out
 
 	_value = (uint)(_arg1)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

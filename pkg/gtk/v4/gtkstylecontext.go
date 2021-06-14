@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -17,8 +18,33 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_style_context_print_flags_get_type()), F: marshalStyleContextPrintFlags},
 		{T: externglib.Type(C.gtk_style_context_get_type()), F: marshalStyleContext},
 	})
+}
+
+// StyleContextPrintFlags flags that modify the behavior of
+// gtk_style_context_to_string().
+//
+// New values may be added to this enumeration.
+type StyleContextPrintFlags int
+
+const (
+	// StyleContextPrintFlagsNone: default value.
+	StyleContextPrintFlagsNone StyleContextPrintFlags = 0
+	// StyleContextPrintFlagsRecurse: print the entire tree of CSS nodes
+	// starting at the style context's node
+	StyleContextPrintFlagsRecurse StyleContextPrintFlags = 1
+	// StyleContextPrintFlagsShowStyle: show the values of the CSS properties
+	// for each node
+	StyleContextPrintFlagsShowStyle StyleContextPrintFlags = 2
+	// StyleContextPrintFlagsShowChange: show information about what changes
+	// affect the styles
+	StyleContextPrintFlagsShowChange StyleContextPrintFlags = 4
+)
+
+func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
+	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // StyleContext: `GtkStyleContext` stores styling information affecting a
@@ -145,7 +171,7 @@ type StyleContext interface {
 	String(flags StyleContextPrintFlags) string
 }
 
-// styleContext implements the StyleContext interface.
+// styleContext implements the StyleContext class.
 type styleContext struct {
 	gextras.Objector
 }
@@ -155,7 +181,7 @@ var _ StyleContext = (*styleContext)(nil)
 // WrapStyleContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStyleContext(obj *externglib.Object) StyleContext {
-	return StyleContext{
+	return styleContext{
 		Objector: obj,
 	}
 }
@@ -294,7 +320,7 @@ func (c styleContext) HasClass(className string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -317,7 +343,7 @@ func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

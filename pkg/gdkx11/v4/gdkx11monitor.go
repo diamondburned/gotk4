@@ -9,10 +9,10 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-x11 gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4 gtk4-x11
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/x11/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -31,7 +31,7 @@ type X11Monitor interface {
 	Workarea() gdk.Rectangle
 }
 
-// x11Monitor implements the X11Monitor interface.
+// x11Monitor implements the X11Monitor class.
 type x11Monitor struct {
 	gdk.Monitor
 }
@@ -41,7 +41,7 @@ var _ X11Monitor = (*x11Monitor)(nil)
 // WrapX11Monitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Monitor(obj *externglib.Object) X11Monitor {
-	return X11Monitor{
+	return x11Monitor{
 		gdk.Monitor: gdk.WrapMonitor(obj),
 	}
 }

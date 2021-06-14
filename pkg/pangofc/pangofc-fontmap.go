@@ -3,11 +3,13 @@
 package pangofc
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangofc pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango pangofc
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangofc-fontmap.h>
@@ -60,7 +62,7 @@ type FontMap interface {
 	SubstituteChanged()
 }
 
-// fontMap implements the FontMap interface.
+// fontMap implements the FontMap class.
 type fontMap struct {
 	pango.FontMap
 }
@@ -70,7 +72,7 @@ var _ FontMap = (*fontMap)(nil)
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
-	return FontMap{
+	return fontMap{
 		pango.FontMap: pango.WrapFontMap(obj),
 	}
 }

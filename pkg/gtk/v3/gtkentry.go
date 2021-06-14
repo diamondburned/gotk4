@@ -12,7 +12,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -22,8 +22,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_entry_icon_position_get_type()), F: marshalEntryIconPosition},
 		{T: externglib.Type(C.gtk_entry_get_type()), F: marshalEntry},
 	})
+}
+
+// EntryIconPosition specifies the side of the entry at which an icon is placed.
+type EntryIconPosition int
+
+const (
+	// EntryIconPositionPrimary: at the beginning of the entry (depending on the
+	// text direction).
+	EntryIconPositionPrimary EntryIconPosition = 0
+	// EntryIconPositionSecondary: at the end of the entry (depending on the
+	// text direction).
+	EntryIconPositionSecondary EntryIconPosition = 1
+)
+
+func marshalEntryIconPosition(p uintptr) (interface{}, error) {
+	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Entry: the Entry widget is a single line text entry widget. A fairly large
@@ -430,7 +447,7 @@ type Entry interface {
 	UnsetInvisibleChar()
 }
 
-// entry implements the Entry interface.
+// entry implements the Entry class.
 type entry struct {
 	Widget
 	Buildable
@@ -443,7 +460,7 @@ var _ Entry = (*entry)(nil)
 // WrapEntry wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEntry(obj *externglib.Object) Entry {
-	return Entry{
+	return entry{
 		Widget:       WrapWidget(obj),
 		Buildable:    WrapBuildable(obj),
 		CellEditable: WrapCellEditable(obj),
@@ -470,7 +487,7 @@ func (e entry) ActivatesDefault() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -526,7 +543,7 @@ func (e entry) HasFrame() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -547,7 +564,7 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -636,7 +653,7 @@ func (e entry) IconSensitive(iconPos EntryIconPosition) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -812,7 +829,7 @@ func (e entry) OverwriteMode() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -945,7 +962,7 @@ func (e entry) Visibility() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1006,7 +1023,7 @@ func (e entry) ImContextFilterKeypress(event *gdk.EventKey) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1074,7 +1091,7 @@ func (e entry) SetActivatesDefault(setting bool) {
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_set_activates_default(_arg0, _arg1)
@@ -1155,7 +1172,7 @@ func (e entry) SetHasFrame(setting bool) {
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_set_has_frame(_arg0, _arg1)
@@ -1170,7 +1187,7 @@ func (e entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool) {
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
 	if activatable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_entry_set_icon_activatable(_arg0, _arg1, _arg2)
@@ -1281,7 +1298,7 @@ func (e entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) {
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
 	if sensitive {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_entry_set_icon_sensitive(_arg0, _arg1, _arg2)
@@ -1429,7 +1446,7 @@ func (e entry) SetOverwriteMode(overwrite bool) {
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	if overwrite {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_set_overwrite_mode(_arg0, _arg1)
@@ -1524,7 +1541,7 @@ func (e entry) SetVisibility(visible bool) {
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	if visible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_entry_set_visibility(_arg0, _arg1)

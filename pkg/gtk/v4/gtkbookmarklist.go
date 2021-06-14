@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -56,7 +57,7 @@ type BookmarkList interface {
 	SetIOPriority(ioPriority int)
 }
 
-// bookmarkList implements the BookmarkList interface.
+// bookmarkList implements the BookmarkList class.
 type bookmarkList struct {
 	gextras.Objector
 	gio.ListModel
@@ -67,7 +68,7 @@ var _ BookmarkList = (*bookmarkList)(nil)
 // WrapBookmarkList wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBookmarkList(obj *externglib.Object) BookmarkList {
-	return BookmarkList{
+	return bookmarkList{
 		Objector:      obj,
 		gio.ListModel: gio.WrapListModel(obj),
 	}
@@ -146,7 +147,7 @@ func (s bookmarkList) IsLoading() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

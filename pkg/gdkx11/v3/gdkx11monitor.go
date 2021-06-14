@@ -3,14 +3,16 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
+// #cgo pkg-config: gdk-x11-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -23,7 +25,7 @@ type X11Monitor interface {
 	gdk.Monitor
 }
 
-// x11Monitor implements the X11Monitor interface.
+// x11Monitor implements the X11Monitor class.
 type x11Monitor struct {
 	gdk.Monitor
 }
@@ -33,7 +35,7 @@ var _ X11Monitor = (*x11Monitor)(nil)
 // WrapX11Monitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Monitor(obj *externglib.Object) X11Monitor {
-	return X11Monitor{
+	return x11Monitor{
 		gdk.Monitor: gdk.WrapMonitor(obj),
 	}
 }

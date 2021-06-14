@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -25,11 +24,6 @@ func WrapDir(ptr unsafe.Pointer) *Dir {
 	}
 
 	return (*Dir)(ptr)
-}
-
-func marshalDir(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDir(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -58,7 +52,7 @@ func (d *Dir) Close() {
 //
 // On Windows, as is true of all GLib functions which operate on filenames, the
 // returned name is in UTF-8.
-func (d *Dir) ReadName() *string {
+func (d *Dir) ReadName() string {
 	var _arg0 *C.GDir // out
 
 	_arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
@@ -67,7 +61,7 @@ func (d *Dir) ReadName() *string {
 
 	_cret = C.g_dir_read_name(_arg0)
 
-	var _filename *string // out
+	var _filename string // out
 
 	_filename = C.GoString(_cret)
 

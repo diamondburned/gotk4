@@ -38,12 +38,14 @@ func (eg *enumGenerator) FormatMember(memberName string) string {
 
 func (ng *NamespaceGenerator) generateEnums() {
 	for _, enum := range ng.current.Namespace.Enums {
+		if !enum.IsIntrospectable() {
+			continue
+		}
 		if ng.mustIgnore(enum.Name, enum.CType) {
 			continue
 		}
 
-		fg := ng.FileFromSource(enum.SourcePosition)
-		fg.needsGLibObject()
+		fg := ng.FileFromSource(enum.DocElements)
 
 		if enum.GLibGetType != "" && !ng.mustIgnoreC(enum.GLibGetType) {
 			fg.addMarshaler(enum.GLibGetType, PascalToGo(enum.Name))

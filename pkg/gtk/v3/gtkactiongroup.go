@@ -3,15 +3,13 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -93,25 +91,6 @@ type ActionGroup interface {
 	//
 	// Accel paths are set to `<Actions>/group-name/action-name`.
 	AddActionWithAccel(action Action, accelerator string)
-	// AddActions: this is a convenience function to create a number of actions
-	// and add them to the action group.
-	//
-	// The “activate” signals of the actions are connected to the callbacks and
-	// their accel paths are set to `<Actions>/group-name/action-name`.
-	AddActions(entries []ActionEntry, userData interface{})
-	// AddRadioActions: this is a convenience routine to create a group of radio
-	// actions and add them to the action group.
-	//
-	// The “changed” signal of the first radio action is connected to the
-	// @on_change callback and the accel paths of the actions are set to
-	// `<Actions>/group-name/action-name`.
-	AddRadioActions(entries []RadioActionEntry, value int, onChange gobject.Callback)
-	// AddToggleActions: this is a convenience function to create a number of
-	// toggle actions and add them to the action group.
-	//
-	// The “activate” signals of the actions are connected to the callbacks and
-	// their accel paths are set to `<Actions>/group-name/action-name`.
-	AddToggleActions(entries []ToggleActionEntry, userData interface{})
 	// Name gets the name of the action group.
 	Name() string
 	// Sensitive returns true if the group is sensitive. The constituent actions
@@ -145,7 +124,7 @@ type ActionGroup interface {
 	TranslateString(string string) string
 }
 
-// actionGroup implements the ActionGroup interface.
+// actionGroup implements the ActionGroup class.
 type actionGroup struct {
 	gextras.Objector
 	Buildable
@@ -156,7 +135,7 @@ var _ ActionGroup = (*actionGroup)(nil)
 // WrapActionGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapActionGroup(obj *externglib.Object) ActionGroup {
-	return ActionGroup{
+	return actionGroup{
 		Objector:  obj,
 		Buildable: WrapBuildable(obj),
 	}
@@ -204,68 +183,6 @@ func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
 }
 
-// AddActions: this is a convenience function to create a number of actions
-// and add them to the action group.
-//
-// The “activate” signals of the actions are connected to the callbacks and
-// their accel paths are set to `<Actions>/group-name/action-name`.
-func (a actionGroup) AddActions(entries []ActionEntry, userData interface{}) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkActionEntry
-	var _arg2 C.guint
-	var _arg3 C.gpointer // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg2 = C.guint(len(entries))
-	_arg1 = (*C.GtkActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = C.gpointer(userData)
-
-	C.gtk_action_group_add_actions(_arg0, _arg1, _arg2, _arg3)
-}
-
-// AddRadioActions: this is a convenience routine to create a group of radio
-// actions and add them to the action group.
-//
-// The “changed” signal of the first radio action is connected to the
-// @on_change callback and the accel paths of the actions are set to
-// `<Actions>/group-name/action-name`.
-func (a actionGroup) AddRadioActions(entries []RadioActionEntry, value int, onChange gobject.Callback) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkRadioActionEntry
-	var _arg2 C.guint
-	var _arg3 C.gint      // out
-	var _arg4 C.GCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg2 = C.guint(len(entries))
-	_arg1 = (*C.GtkRadioActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = C.gint(value)
-	_arg4 = (*[0]byte)(C.gotk4_Callback)
-	_arg5 = C.gpointer(box.Assign(onChange))
-
-	C.gtk_action_group_add_radio_actions(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// AddToggleActions: this is a convenience function to create a number of
-// toggle actions and add them to the action group.
-//
-// The “activate” signals of the actions are connected to the callbacks and
-// their accel paths are set to `<Actions>/group-name/action-name`.
-func (a actionGroup) AddToggleActions(entries []ToggleActionEntry, userData interface{}) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkToggleActionEntry
-	var _arg2 C.guint
-	var _arg3 C.gpointer // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg2 = C.guint(len(entries))
-	_arg1 = (*C.GtkToggleActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = C.gpointer(userData)
-
-	C.gtk_action_group_add_toggle_actions(_arg0, _arg1, _arg2, _arg3)
-}
-
 // Name gets the name of the action group.
 func (a actionGroup) Name() string {
 	var _arg0 *C.GtkActionGroup // out
@@ -298,7 +215,7 @@ func (a actionGroup) Sensitive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -319,7 +236,7 @@ func (a actionGroup) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -356,7 +273,7 @@ func (a actionGroup) SetSensitive(sensitive bool) {
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	if sensitive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_action_group_set_sensitive(_arg0, _arg1)
@@ -386,7 +303,7 @@ func (a actionGroup) SetVisible(visible bool) {
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	if visible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_action_group_set_visible(_arg0, _arg1)
@@ -428,11 +345,6 @@ func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
 	}
 
 	return (*ActionEntry)(ptr)
-}
-
-func marshalActionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapActionEntry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -489,11 +401,6 @@ func WrapRadioActionEntry(ptr unsafe.Pointer) *RadioActionEntry {
 	}
 
 	return (*RadioActionEntry)(ptr)
-}
-
-func marshalRadioActionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRadioActionEntry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -559,11 +466,6 @@ func WrapToggleActionEntry(ptr unsafe.Pointer) *ToggleActionEntry {
 	return (*ToggleActionEntry)(ptr)
 }
 
-func marshalToggleActionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToggleActionEntry(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (t *ToggleActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
@@ -607,7 +509,7 @@ func (t *ToggleActionEntry) Tooltip() string {
 // IsActive gets the field inside the struct.
 func (t *ToggleActionEntry) IsActive() bool {
 	var v bool // out
-	if t.native.is_active {
+	if t.native.is_active != 0 {
 		v = true
 	}
 	return v

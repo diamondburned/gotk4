@@ -5,11 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -19,8 +19,44 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_ui_manager_item_type_get_type()), F: marshalUIManagerItemType},
 		{T: externglib.Type(C.gtk_ui_manager_get_type()), F: marshalUIManager},
 	})
+}
+
+// UIManagerItemType: these enumeration values are used by
+// gtk_ui_manager_add_ui() to determine what UI element to create.
+type UIManagerItemType int
+
+const (
+	// UIManagerItemTypeAuto: pick the type of the UI element according to
+	// context.
+	UIManagerItemTypeAuto UIManagerItemType = 0
+	// UIManagerItemTypeMenubar: create a menubar.
+	UIManagerItemTypeMenubar UIManagerItemType = 1
+	// UIManagerItemTypeMenu: create a menu.
+	UIManagerItemTypeMenu UIManagerItemType = 2
+	// UIManagerItemTypeToolbar: create a toolbar.
+	UIManagerItemTypeToolbar UIManagerItemType = 4
+	// UIManagerItemTypePlaceholder: insert a placeholder.
+	UIManagerItemTypePlaceholder UIManagerItemType = 8
+	// UIManagerItemTypePopup: create a popup menu.
+	UIManagerItemTypePopup UIManagerItemType = 16
+	// UIManagerItemTypeMenuitem: create a menuitem.
+	UIManagerItemTypeMenuitem UIManagerItemType = 32
+	// UIManagerItemTypeToolitem: create a toolitem.
+	UIManagerItemTypeToolitem UIManagerItemType = 64
+	// UIManagerItemTypeSeparator: create a separator.
+	UIManagerItemTypeSeparator UIManagerItemType = 128
+	// UIManagerItemTypeAccelerator: install an accelerator.
+	UIManagerItemTypeAccelerator UIManagerItemType = 256
+	// UIManagerItemTypePopupWithAccels: same as GTK_UI_MANAGER_POPUP, but the
+	// actions’ accelerators are shown.
+	UIManagerItemTypePopupWithAccels UIManagerItemType = 512
+)
+
+func marshalUIManagerItemType(p uintptr) (interface{}, error) {
+	return UIManagerItemType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // UIManager: > GtkUIManager is deprecated since GTK+ 3.10. To construct user
@@ -256,16 +292,6 @@ type UIManager interface {
 	// If @path points to a menuitem or toolitem, the new element will be
 	// inserted before or after this item, depending on @top.
 	AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool)
-	// AddUiFromFile parses a file containing a [UI definition][XML-UI] and
-	// merges it with the current contents of @manager.
-	AddUiFromFile(filename *string) (uint, error)
-	// AddUiFromResource parses a resource file containing a [UI
-	// definition][XML-UI] and merges it with the current contents of @manager.
-	AddUiFromResource(resourcePath string) (uint, error)
-	// AddUiFromString parses a string containing a [UI definition][XML-UI] and
-	// merges it with the current contents of @manager. An enclosing <ui>
-	// element is added if it is missing.
-	AddUiFromString(buffer string, length int) (uint, error)
 	// EnsureUpdate makes sure that all pending updates to the UI have been
 	// completed.
 	//
@@ -310,7 +336,7 @@ type UIManager interface {
 	SetAddTearoffs(addTearoffs bool)
 }
 
-// uiManager implements the UIManager interface.
+// uiManager implements the UIManager class.
 type uiManager struct {
 	gextras.Objector
 	Buildable
@@ -321,7 +347,7 @@ var _ UIManager = (*uiManager)(nil)
 // WrapUIManager wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUIManager(obj *externglib.Object) UIManager {
-	return UIManager{
+	return uiManager{
 		Objector:  obj,
 		Buildable: WrapBuildable(obj),
 	}
@@ -361,85 +387,10 @@ func (m uiManager) AddUi(mergeId uint, path string, name string, action string, 
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (C.GtkUIManagerItemType)(typ)
 	if top {
-		_arg6 = C.gboolean(1)
+		_arg6 = C.TRUE
 	}
 
 	C.gtk_ui_manager_add_ui(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-}
-
-// AddUiFromFile parses a file containing a [UI definition][XML-UI] and
-// merges it with the current contents of @manager.
-func (m uiManager) AddUiFromFile(filename *string) (uint, error) {
-	var _arg0 *C.GtkUIManager // out
-	var _arg1 *C.gchar        // out
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_ui_manager_add_ui_from_file(_arg0, _arg1, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
-}
-
-// AddUiFromResource parses a resource file containing a [UI
-// definition][XML-UI] and merges it with the current contents of @manager.
-func (m uiManager) AddUiFromResource(resourcePath string) (uint, error) {
-	var _arg0 *C.GtkUIManager // out
-	var _arg1 *C.gchar        // out
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.gchar)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_ui_manager_add_ui_from_resource(_arg0, _arg1, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
-}
-
-// AddUiFromString parses a string containing a [UI definition][XML-UI] and
-// merges it with the current contents of @manager. An enclosing <ui>
-// element is added if it is missing.
-func (m uiManager) AddUiFromString(buffer string, length int) (uint, error) {
-	var _arg0 *C.GtkUIManager // out
-	var _arg1 *C.gchar        // out
-	var _arg2 C.gssize        // out
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.gchar)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(length)
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_ui_manager_add_ui_from_string(_arg0, _arg1, _arg2, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
 }
 
 // EnsureUpdate makes sure that all pending updates to the UI have been
@@ -478,7 +429,7 @@ func (m uiManager) AddTearoffs() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -573,7 +524,7 @@ func (m uiManager) SetAddTearoffs(addTearoffs bool) {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 	if addTearoffs {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_ui_manager_set_add_tearoffs(_arg0, _arg1)

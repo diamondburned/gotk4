@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -16,8 +17,58 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_filter_change_get_type()), F: marshalFilterChange},
+		{T: externglib.Type(C.gtk_filter_match_get_type()), F: marshalFilterMatch},
 		{T: externglib.Type(C.gtk_filter_get_type()), F: marshalFilter},
 	})
+}
+
+// FilterChange describes changes in a filter in more detail and allows objects
+// using the filter to optimize refiltering items.
+//
+// If you are writing an implementation and are not sure which value to pass,
+// GTK_FILTER_CHANGE_DIFFERENT is always a correct choice.
+type FilterChange int
+
+const (
+	// FilterChangeDifferent: the filter change cannot be described with any of
+	// the other enumeration values.
+	FilterChangeDifferent FilterChange = 0
+	// FilterChangeLessStrict: the filter is less strict than it was before: All
+	// items that it used to return true for still return true, others now may,
+	// too.
+	FilterChangeLessStrict FilterChange = 1
+	// FilterChangeMoreStrict: the filter is more strict than it was before: All
+	// items that it used to return false for still return false, others now
+	// may, too.
+	FilterChangeMoreStrict FilterChange = 2
+)
+
+func marshalFilterChange(p uintptr) (interface{}, error) {
+	return FilterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FilterMatch describes the known strictness of a filter.
+//
+// Note that for filters where the strictness is not known,
+// GTK_FILTER_MATCH_SOME is always an acceptable value, even if a filter does
+// match all or no items.
+type FilterMatch int
+
+const (
+	// FilterMatchSome: the filter matches some items, gtk_filter_match() may
+	// return true or false
+	FilterMatchSome FilterMatch = 0
+	// FilterMatchNone: the filter does not match any item, gtk_filter_match()
+	// will always return false.
+	FilterMatchNone FilterMatch = 1
+	// FilterMatchAll: the filter matches all items, gtk_filter_match() will
+	// alays return true.
+	FilterMatchAll FilterMatch = 2
+)
+
+func marshalFilterMatch(p uintptr) (interface{}, error) {
+	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Filter: a `GtkFilter` object describes the filtering to be performed by a
@@ -55,7 +106,7 @@ type Filter interface {
 	Match(item gextras.Objector) bool
 }
 
-// filter implements the Filter interface.
+// filter implements the Filter class.
 type filter struct {
 	gextras.Objector
 }
@@ -65,7 +116,7 @@ var _ Filter = (*filter)(nil)
 // WrapFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFilter(obj *externglib.Object) Filter {
-	return Filter{
+	return filter{
 		Objector: obj,
 	}
 }
@@ -109,7 +160,7 @@ func (s filter) Match(item gextras.Objector) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

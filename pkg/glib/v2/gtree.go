@@ -5,11 +5,10 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -59,46 +58,6 @@ func (t *Tree) Destroy() {
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
 	C.g_tree_destroy(_arg0)
-}
-
-// Foreach calls the given function for each of the key/value pairs in the
-// #GTree. The function is passed the key and value of each pair, and the given
-// @data parameter. The tree is traversed in sorted order.
-//
-// The tree may not be modified while iterating over it (you can't add/remove
-// items). To remove all items matching a predicate, you need to add each item
-// to a list in your Func as you walk over the tree, then walk the list and
-// remove each item.
-func (t *Tree) Foreach(fn TraverseFunc) {
-	var _arg0 *C.GTree        // out
-	var _arg1 C.GTraverseFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TraverseFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.g_tree_foreach(_arg0, _arg1, _arg2)
-}
-
-// ForeachNode calls the given function for each of the nodes in the #GTree. The
-// function is passed the pointer to the particular node, and the given @data
-// parameter. The tree traversal happens in-order.
-//
-// The tree may not be modified while iterating over it (you can't add/remove
-// items). To remove all items matching a predicate, you need to add each item
-// to a list in your Func as you walk over the tree, then walk the list and
-// remove each item.
-func (t *Tree) ForeachNode(fn TraverseNodeFunc) {
-	var _arg0 *C.GTree            // out
-	var _arg1 C.GTraverseNodeFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TraverseNodeFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.g_tree_foreach_node(_arg0, _arg1, _arg2)
 }
 
 // Height gets the height of a #GTree.
@@ -181,7 +140,7 @@ func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value
 
 	_origKey = (interface{})(_arg2)
 	_value = (interface{})(_arg3)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -227,7 +186,7 @@ func (t *Tree) Remove(key interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -248,34 +207,6 @@ func (t *Tree) Replace(key interface{}, value interface{}) {
 	C.g_tree_replace(_arg0, _arg1, _arg2)
 }
 
-// Search searches a #GTree using @search_func.
-//
-// The @search_func is called with a pointer to the key of a key/value pair in
-// the tree, and the passed in @user_data. If @search_func returns 0 for a
-// key/value pair, then the corresponding value is returned as the result of
-// g_tree_search(). If @search_func returns -1, searching will proceed among the
-// key/value pairs that have a smaller key; if @search_func returns 1, searching
-// will proceed among the key/value pairs that have a larger key.
-func (t *Tree) Search(searchFunc CompareFunc) interface{} {
-	var _arg0 *C.GTree       // out
-	var _arg1 C.GCompareFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_CompareFunc)
-	_arg2 = C.gpointer(box.Assign(searchFunc))
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_tree_search(_arg0, _arg1, _arg2)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
-}
-
 // Steal removes a key and its associated value from a #GTree without calling
 // the key and value destroy functions.
 //
@@ -293,26 +224,11 @@ func (t *Tree) Steal(key interface{}) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Traverse calls the given function for each node in the #GTree.
-func (t *Tree) Traverse(traverseFunc TraverseFunc, traverseType TraverseType) {
-	var _arg0 *C.GTree        // out
-	var _arg1 C.GTraverseFunc // out
-	var _arg3 C.gpointer
-	var _arg2 C.GTraverseType // out
-
-	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TraverseFunc)
-	_arg3 = C.gpointer(box.Assign(traverseFunc))
-	_arg2 = (C.GTraverseType)(traverseType)
-
-	C.g_tree_traverse(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Unref decrements the reference count of @tree by one. If the reference count
@@ -341,11 +257,6 @@ func WrapTreeNode(ptr unsafe.Pointer) *TreeNode {
 	}
 
 	return (*TreeNode)(ptr)
-}
-
-func marshalTreeNode(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeNode(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

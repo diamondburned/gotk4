@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -39,7 +41,7 @@ type TreeListRowSorter interface {
 	SetSorter(sorter Sorter)
 }
 
-// treeListRowSorter implements the TreeListRowSorter interface.
+// treeListRowSorter implements the TreeListRowSorter class.
 type treeListRowSorter struct {
 	Sorter
 }
@@ -49,7 +51,7 @@ var _ TreeListRowSorter = (*treeListRowSorter)(nil)
 // WrapTreeListRowSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorter {
-	return TreeListRowSorter{
+	return treeListRowSorter{
 		Sorter: WrapSorter(obj),
 	}
 }

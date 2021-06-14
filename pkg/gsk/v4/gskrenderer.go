@@ -3,13 +3,14 @@
 package gsk
 
 import (
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
@@ -37,9 +38,6 @@ type Renderer interface {
 
 	// IsRealized checks whether the @renderer is realized or not.
 	IsRealized() bool
-	// Realize creates the resources needed by the @renderer to render the scene
-	// graph.
-	Realize(surface gdk.Surface) error
 	// Render renders the scene graph, described by a tree of `GskRenderNode`
 	// instances, ensuring that the given @region gets redrawn.
 	//
@@ -55,7 +53,7 @@ type Renderer interface {
 	Unrealize()
 }
 
-// renderer implements the Renderer interface.
+// renderer implements the Renderer class.
 type renderer struct {
 	gextras.Objector
 }
@@ -65,7 +63,7 @@ var _ Renderer = (*renderer)(nil)
 // WrapRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
-	return Renderer{
+	return renderer{
 		Objector: obj,
 	}
 }
@@ -88,31 +86,11 @@ func (r renderer) IsRealized() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Realize creates the resources needed by the @renderer to render the scene
-// graph.
-func (r renderer) Realize(surface gdk.Surface) error {
-	var _arg0 *C.GskRenderer // out
-	var _arg1 *C.GdkSurface  // out
-
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	var _cerr *C.GError // in
-
-	C.gsk_renderer_realize(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // Render renders the scene graph, described by a tree of `GskRenderNode`

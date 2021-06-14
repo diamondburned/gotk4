@@ -2,7 +2,238 @@
 
 package gdk
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: gdk-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_cursor_type_get_type()), F: marshalCursorType},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursor},
+	})
+}
+
+// CursorType: predefined cursors.
+//
+// Note that these IDs are directly taken from the X cursor font, and many of
+// these cursors are either not useful, or are not available on other platforms.
+//
+// The recommended way to create cursors is to use gdk_cursor_new_from_name().
+type CursorType int
+
+const (
+	// CursorTypeXCursor: ! (X_cursor.png)
+	CursorTypeXCursor CursorType = 0
+	// CursorTypeArrow: ! (arrow.png)
+	CursorTypeArrow CursorType = 2
+	// CursorTypeBasedArrowDown: ! (based_arrow_down.png)
+	CursorTypeBasedArrowDown CursorType = 4
+	// CursorTypeBasedArrowUp: ! (based_arrow_up.png)
+	CursorTypeBasedArrowUp CursorType = 6
+	// CursorTypeBoat: ! (boat.png)
+	CursorTypeBoat CursorType = 8
+	// CursorTypeBogosity: ! (bogosity.png)
+	CursorTypeBogosity CursorType = 10
+	// CursorTypeBottomLeftCorner: ! (bottom_left_corner.png)
+	CursorTypeBottomLeftCorner CursorType = 12
+	// CursorTypeBottomRightCorner: ! (bottom_right_corner.png)
+	CursorTypeBottomRightCorner CursorType = 14
+	// CursorTypeBottomSide: ! (bottom_side.png)
+	CursorTypeBottomSide CursorType = 16
+	// CursorTypeBottomTee: ! (bottom_tee.png)
+	CursorTypeBottomTee CursorType = 18
+	// CursorTypeBoxSpiral: ! (box_spiral.png)
+	CursorTypeBoxSpiral CursorType = 20
+	// CursorTypeCenterPtr: ! (center_ptr.png)
+	CursorTypeCenterPtr CursorType = 22
+	// CursorTypeCircle: ! (circle.png)
+	CursorTypeCircle CursorType = 24
+	// CursorTypeClock: ! (clock.png)
+	CursorTypeClock CursorType = 26
+	// CursorTypeCoffeeMug: ! (coffee_mug.png)
+	CursorTypeCoffeeMug CursorType = 28
+	// CursorTypeCross: ! (cross.png)
+	CursorTypeCross CursorType = 30
+	// CursorTypeCrossReverse: ! (cross_reverse.png)
+	CursorTypeCrossReverse CursorType = 32
+	// CursorTypeCrosshair: ! (crosshair.png)
+	CursorTypeCrosshair CursorType = 34
+	// CursorTypeDiamondCross: ! (diamond_cross.png)
+	CursorTypeDiamondCross CursorType = 36
+	// CursorTypeDot: ! (dot.png)
+	CursorTypeDot CursorType = 38
+	// CursorTypeDotbox: ! (dotbox.png)
+	CursorTypeDotbox CursorType = 40
+	// CursorTypeDoubleArrow: ! (double_arrow.png)
+	CursorTypeDoubleArrow CursorType = 42
+	// CursorTypeDraftLarge: ! (draft_large.png)
+	CursorTypeDraftLarge CursorType = 44
+	// CursorTypeDraftSmall: ! (draft_small.png)
+	CursorTypeDraftSmall CursorType = 46
+	// CursorTypeDrapedBox: ! (draped_box.png)
+	CursorTypeDrapedBox CursorType = 48
+	// CursorTypeExchange: ! (exchange.png)
+	CursorTypeExchange CursorType = 50
+	// CursorTypeFleur: ! (fleur.png)
+	CursorTypeFleur CursorType = 52
+	// CursorTypeGobbler: ! (gobbler.png)
+	CursorTypeGobbler CursorType = 54
+	// CursorTypeGumby: ! (gumby.png)
+	CursorTypeGumby CursorType = 56
+	// CursorTypeHand1: ! (hand1.png)
+	CursorTypeHand1 CursorType = 58
+	// CursorTypeHand2: ! (hand2.png)
+	CursorTypeHand2 CursorType = 60
+	// CursorTypeHeart: ! (heart.png)
+	CursorTypeHeart CursorType = 62
+	// CursorTypeIcon: ! (icon.png)
+	CursorTypeIcon CursorType = 64
+	// CursorTypeIronCross: ! (iron_cross.png)
+	CursorTypeIronCross CursorType = 66
+	// CursorTypeLeftPtr: ! (left_ptr.png)
+	CursorTypeLeftPtr CursorType = 68
+	// CursorTypeLeftSide: ! (left_side.png)
+	CursorTypeLeftSide CursorType = 70
+	// CursorTypeLeftTee: ! (left_tee.png)
+	CursorTypeLeftTee CursorType = 72
+	// CursorTypeLeftbutton: ! (leftbutton.png)
+	CursorTypeLeftbutton CursorType = 74
+	// CursorTypeLlAngle: ! (ll_angle.png)
+	CursorTypeLlAngle CursorType = 76
+	// CursorTypeLrAngle: ! (lr_angle.png)
+	CursorTypeLrAngle CursorType = 78
+	// CursorTypeMan: ! (man.png)
+	CursorTypeMan CursorType = 80
+	// CursorTypeMiddlebutton: ! (middlebutton.png)
+	CursorTypeMiddlebutton CursorType = 82
+	// CursorTypeMouse: ! (mouse.png)
+	CursorTypeMouse CursorType = 84
+	// CursorTypePencil: ! (pencil.png)
+	CursorTypePencil CursorType = 86
+	// CursorTypePirate: ! (pirate.png)
+	CursorTypePirate CursorType = 88
+	// CursorTypePlus: ! (plus.png)
+	CursorTypePlus CursorType = 90
+	// CursorTypeQuestionArrow: ! (question_arrow.png)
+	CursorTypeQuestionArrow CursorType = 92
+	// CursorTypeRightPtr: ! (right_ptr.png)
+	CursorTypeRightPtr CursorType = 94
+	// CursorTypeRightSide: ! (right_side.png)
+	CursorTypeRightSide CursorType = 96
+	// CursorTypeRightTee: ! (right_tee.png)
+	CursorTypeRightTee CursorType = 98
+	// CursorTypeRightbutton: ! (rightbutton.png)
+	CursorTypeRightbutton CursorType = 100
+	// CursorTypeRTLLogo: ! (rtl_logo.png)
+	CursorTypeRTLLogo CursorType = 102
+	// CursorTypeSailboat: ! (sailboat.png)
+	CursorTypeSailboat CursorType = 104
+	// CursorTypeSbDownArrow: ! (sb_down_arrow.png)
+	CursorTypeSbDownArrow CursorType = 106
+	// CursorTypeSbHDoubleArrow: ! (sb_h_double_arrow.png)
+	CursorTypeSbHDoubleArrow CursorType = 108
+	// CursorTypeSbLeftArrow: ! (sb_left_arrow.png)
+	CursorTypeSbLeftArrow CursorType = 110
+	// CursorTypeSbRightArrow: ! (sb_right_arrow.png)
+	CursorTypeSbRightArrow CursorType = 112
+	// CursorTypeSbUpArrow: ! (sb_up_arrow.png)
+	CursorTypeSbUpArrow CursorType = 114
+	// CursorTypeSbVDoubleArrow: ! (sb_v_double_arrow.png)
+	CursorTypeSbVDoubleArrow CursorType = 116
+	// CursorTypeShuttle: ! (shuttle.png)
+	CursorTypeShuttle CursorType = 118
+	// CursorTypeSizing: ! (sizing.png)
+	CursorTypeSizing CursorType = 120
+	// CursorTypeSpider: ! (spider.png)
+	CursorTypeSpider CursorType = 122
+	// CursorTypeSpraycan: ! (spraycan.png)
+	CursorTypeSpraycan CursorType = 124
+	// CursorTypeStar: ! (star.png)
+	CursorTypeStar CursorType = 126
+	// CursorTypeTarget: ! (target.png)
+	CursorTypeTarget CursorType = 128
+	// CursorTypeTcross: ! (tcross.png)
+	CursorTypeTcross CursorType = 130
+	// CursorTypeTopLeftArrow: ! (top_left_arrow.png)
+	CursorTypeTopLeftArrow CursorType = 132
+	// CursorTypeTopLeftCorner: ! (top_left_corner.png)
+	CursorTypeTopLeftCorner CursorType = 134
+	// CursorTypeTopRightCorner: ! (top_right_corner.png)
+	CursorTypeTopRightCorner CursorType = 136
+	// CursorTypeTopSide: ! (top_side.png)
+	CursorTypeTopSide CursorType = 138
+	// CursorTypeTopTee: ! (top_tee.png)
+	CursorTypeTopTee CursorType = 140
+	// CursorTypeTrek: ! (trek.png)
+	CursorTypeTrek CursorType = 142
+	// CursorTypeUlAngle: ! (ul_angle.png)
+	CursorTypeUlAngle CursorType = 144
+	// CursorTypeUmbrella: ! (umbrella.png)
+	CursorTypeUmbrella CursorType = 146
+	// CursorTypeUrAngle: ! (ur_angle.png)
+	CursorTypeUrAngle CursorType = 148
+	// CursorTypeWatch: ! (watch.png)
+	CursorTypeWatch CursorType = 150
+	// CursorTypeXterm: ! (xterm.png)
+	CursorTypeXterm CursorType = 152
+	// CursorTypeLastCursor: last cursor type
+	CursorTypeLastCursor CursorType = 153
+	// CursorTypeBlankCursor: blank cursor. Since 2.16
+	CursorTypeBlankCursor CursorType = -2
+	// CursorTypeCursorIsPixmap: type of cursors constructed with
+	// gdk_cursor_new_from_pixbuf()
+	CursorTypeCursorIsPixmap CursorType = -1
+)
+
+func marshalCursorType(p uintptr) (interface{}, error) {
+	return CursorType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Cursor: a Cursor represents a cursor. Its contents are private.
+type Cursor interface {
+	gextras.Objector
+
+	// Unref removes a reference from @cursor, deallocating the cursor if no
+	// references remain.
+	Unref()
+}
+
+// cursor implements the Cursor class.
+type cursor struct {
+	gextras.Objector
+}
+
+var _ Cursor = (*cursor)(nil)
+
+// WrapCursor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCursor(obj *externglib.Object) Cursor {
+	return cursor{
+		Objector: obj,
+	}
+}
+
+func marshalCursor(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapCursor(obj), nil
+}
+
+// Unref removes a reference from @cursor, deallocating the cursor if no
+// references remain.
+func (c cursor) Unref() {
+	var _arg0 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	C.gdk_cursor_unref(_arg0)
+}

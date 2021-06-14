@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -81,7 +83,7 @@ type Fixed interface {
 	SetChildTransform(widget Widget, transform *gsk.Transform)
 }
 
-// fixed implements the Fixed interface.
+// fixed implements the Fixed class.
 type fixed struct {
 	Widget
 	Accessible
@@ -94,7 +96,7 @@ var _ Fixed = (*fixed)(nil)
 // WrapFixed wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFixed(obj *externglib.Object) Fixed {
-	return Fixed{
+	return fixed{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

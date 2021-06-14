@@ -5,15 +5,13 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,12 +23,47 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.g_settings_bind_flags_get_type()), F: marshalSettingsBindFlags},
 		{T: externglib.Type(C.g_settings_get_type()), F: marshalSettings},
 	})
+}
+
+// SettingsBindFlags flags used when creating a binding. These flags determine
+// in which direction the binding works. The default is to synchronize in both
+// directions.
+type SettingsBindFlags int
+
+const (
+	// SettingsBindFlagsDefault: equivalent to
+	// `G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET`
+	SettingsBindFlagsDefault SettingsBindFlags = 0
+	// SettingsBindFlagsGet: update the #GObject property when the setting
+	// changes. It is an error to use this flag if the property is not writable.
+	SettingsBindFlagsGet SettingsBindFlags = 1
+	// SettingsBindFlagsSet: update the setting when the #GObject property
+	// changes. It is an error to use this flag if the property is not readable.
+	SettingsBindFlagsSet SettingsBindFlags = 2
+	// SettingsBindFlagsNoSensitivity: do not try to bind a "sensitivity"
+	// property to the writability of the setting
+	SettingsBindFlagsNoSensitivity SettingsBindFlags = 4
+	// SettingsBindFlagsGetNoChanges: when set in addition to SETTINGS_BIND_GET,
+	// set the #GObject property value initially from the setting, but do not
+	// listen for changes of the setting
+	SettingsBindFlagsGetNoChanges SettingsBindFlags = 8
+	// SettingsBindFlagsInvertBoolean: when passed to g_settings_bind(), uses a
+	// pair of mapping functions that invert the boolean value when mapping
+	// between the setting and the property. The setting and property must both
+	// be booleans. You cannot pass this flag to g_settings_bind_with_mapping().
+	SettingsBindFlagsInvertBoolean SettingsBindFlags = 16
+)
+
+func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
+	return SettingsBindFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Settings: the #GSettings class provides a convenient API for storing and
@@ -412,34 +445,6 @@ type Settings interface {
 	// It is a programmer error to give a @key that isn't specified as having a
 	// int64 type in the schema for @settings.
 	Int64(key string) int64
-	// Mapped gets the value that is stored at @key in @settings, subject to
-	// application-level validation/mapping.
-	//
-	// You should use this function when the application needs to perform some
-	// processing on the value of the key (for example, parsing). The @mapping
-	// function performs that processing. If the function indicates that the
-	// processing was unsuccessful (due to a parse error, for example) then the
-	// mapping is tried again with another value.
-	//
-	// This allows a robust 'fall back to defaults' behaviour to be implemented
-	// somewhat automatically.
-	//
-	// The first value that is tried is the user's setting for the key. If the
-	// mapping function fails to map this value, other values may be tried in an
-	// unspecified order (system or site defaults, translated schema default
-	// values, untranslated schema default values, etc).
-	//
-	// If the mapping function fails for all possible values, one additional
-	// attempt is made: the mapping function is called with a nil value. If the
-	// mapping function still indicates failure at this point then the
-	// application will be aborted.
-	//
-	// The result parameter for the @mapping function is pointed to a #gpointer
-	// which is initially set to nil. The same pointer is given to each
-	// invocation of @mapping. The final value of that #gpointer is what is
-	// returned by this function. nil is valid; it is returned just as any other
-	// value would be.
-	Mapped(key string, mapping SettingsGetMapping) interface{}
 	// String gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for strings.
@@ -594,7 +599,7 @@ type Settings interface {
 	SetValue(key string, value *glib.Variant) bool
 }
 
-// settings implements the Settings interface.
+// settings implements the Settings class.
 type settings struct {
 	gextras.Objector
 }
@@ -604,7 +609,7 @@ var _ Settings = (*settings)(nil)
 // WrapSettings wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSettings(obj *externglib.Object) Settings {
-	return Settings{
+	return settings{
 		Objector: obj,
 	}
 }
@@ -695,7 +700,7 @@ func (s settings) BindWritable(key string, object gextras.Objector, property str
 	_arg3 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg3))
 	if inverted {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -732,7 +737,7 @@ func (s settings) Boolean(key string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -837,7 +842,7 @@ func (s settings) HasUnapplied() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -894,56 +899,6 @@ func (s settings) Int64(key string) int64 {
 	return _gint64
 }
 
-// Mapped gets the value that is stored at @key in @settings, subject to
-// application-level validation/mapping.
-//
-// You should use this function when the application needs to perform some
-// processing on the value of the key (for example, parsing). The @mapping
-// function performs that processing. If the function indicates that the
-// processing was unsuccessful (due to a parse error, for example) then the
-// mapping is tried again with another value.
-//
-// This allows a robust 'fall back to defaults' behaviour to be implemented
-// somewhat automatically.
-//
-// The first value that is tried is the user's setting for the key. If the
-// mapping function fails to map this value, other values may be tried in an
-// unspecified order (system or site defaults, translated schema default
-// values, untranslated schema default values, etc).
-//
-// If the mapping function fails for all possible values, one additional
-// attempt is made: the mapping function is called with a nil value. If the
-// mapping function still indicates failure at this point then the
-// application will be aborted.
-//
-// The result parameter for the @mapping function is pointed to a #gpointer
-// which is initially set to nil. The same pointer is given to each
-// invocation of @mapping. The final value of that #gpointer is what is
-// returned by this function. nil is valid; it is returned just as any other
-// value would be.
-func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
-	var _arg0 *C.GSettings          // out
-	var _arg1 *C.gchar              // out
-	var _arg2 C.GSettingsGetMapping // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
-	_arg3 = C.gpointer(box.Assign(mapping))
-
-	var _cret C.gpointer // in
-
-	_cret = C.g_settings_get_mapped(_arg0, _arg1, _arg2, _arg3)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
-}
-
 // String gets the value that is stored at @key in @settings.
 //
 // A convenience variant of g_settings_get() for strings.
@@ -990,20 +945,18 @@ func (s settings) Strv(key string) []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1075,7 +1028,7 @@ func (s settings) IsWritable(name string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1106,20 +1059,18 @@ func (s settings) ListChildren() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1147,20 +1098,18 @@ func (s settings) ListKeys() []string {
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
-
+		src := unsafe.Slice(_cret, length)
 		_utf8s = make([]string, length)
 		for i := range src {
-			_utf8s = C.GoString(_cret)
-			defer C.free(unsafe.Pointer(_cret))
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1185,7 +1134,7 @@ func (s settings) RangeCheck(key string, value *glib.Variant) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1237,7 +1186,7 @@ func (s settings) SetBoolean(key string, value bool) bool {
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	if value {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -1246,7 +1195,7 @@ func (s settings) SetBoolean(key string, value bool) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1275,7 +1224,7 @@ func (s settings) SetDouble(key string, value float64) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1307,7 +1256,7 @@ func (s settings) SetEnum(key string, value int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1341,7 +1290,7 @@ func (s settings) SetFlags(key string, value uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1370,7 +1319,7 @@ func (s settings) SetInt(key string, value int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1399,7 +1348,7 @@ func (s settings) SetInt64(key string, value int64) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1429,7 +1378,7 @@ func (s settings) SetString(key string, value string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1451,16 +1400,14 @@ func (s settings) SetStrv(key string, value []string) bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc((len(value) + 1) * unsafe.Sizeof(int(0))))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong((len(value) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(value)))
-
+		out := unsafe.Slice(_arg2, len(value))
 		for i := range value {
-			_arg2 = (*C.gchar)(C.CString(value))
-			defer C.free(unsafe.Pointer(_arg2))
+			out[i] = (*C.gchar)(C.CString(value[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -1470,7 +1417,7 @@ func (s settings) SetStrv(key string, value []string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1499,7 +1446,7 @@ func (s settings) SetUint(key string, value uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1528,7 +1475,7 @@ func (s settings) SetUint64(key string, value uint64) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1558,7 +1505,7 @@ func (s settings) SetValue(key string, value *glib.Variant) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

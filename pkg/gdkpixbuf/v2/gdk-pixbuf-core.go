@@ -3,57 +3,93 @@
 package gdkpixbuf
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-pixbuf-2.0
+// #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
+// #include <glib-object.h>
 import "C"
 
-// PixbufSaveFunc: save functions used by
-// [method@GdkPixbuf.Pixbuf.save_to_callback].
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_colorspace_get_type()), F: marshalColorspace},
+		{T: externglib.Type(C.gdk_pixbuf_alpha_mode_get_type()), F: marshalPixbufAlphaMode},
+		{T: externglib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
+	})
+}
+
+// Colorspace: this enumeration defines the color spaces that are supported by
+// the gdk-pixbuf library.
 //
-// This function is called once for each block of bytes that is "written" by
-// `gdk_pixbuf_save_to_callback()`.
+// Currently only RGB is supported.
+type Colorspace int
+
+const (
+	// ColorspaceRGB indicates a red/green/blue additive color space.
+	ColorspaceRGB Colorspace = 0
+)
+
+func marshalColorspace(p uintptr) (interface{}, error) {
+	return Colorspace(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PixbufAlphaMode: control the alpha channel for drawables.
 //
-// If successful it should return `TRUE`; if an error occurs it should set
-// `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
-// will fail with the same error.
-type PixbufSaveFunc func(buf []byte) (err *error, ok bool)
+// These values can be passed to gdk_pixbuf_xlib_render_to_drawable_alpha() in
+// gdk-pixbuf-xlib to control how the alpha channel of an image should be
+// handled.
+//
+// This function can create a bilevel clipping mask (black and white) and use it
+// while painting the image.
+//
+// In the future, when the X Window System gets an alpha channel extension, it
+// will be possible to do full alpha compositing onto arbitrary drawables. For
+// now both cases fall back to a bilevel clipping mask.
+type PixbufAlphaMode int
 
-//export gotk4_PixbufSaveFunc
-func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
+const (
+	// PixbufAlphaModeBilevel: a bilevel clipping mask (black and white) will be
+	// created and used to draw the image. Pixels below 0.5 opacity will be
+	// considered fully transparent, and all others will be considered fully
+	// opaque.
+	PixbufAlphaModeBilevel PixbufAlphaMode = 0
+	// PixbufAlphaModeFull: for now falls back to K_PIXBUF_ALPHA_BILEVEL. In the
+	// future it will do full alpha compositing.
+	PixbufAlphaModeFull PixbufAlphaMode = 1
+)
 
-	var buf []byte
+func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
+	return PixbufAlphaMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
-	{
-		var src []C.guint8
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(arg0), int(arg1))
+// PixbufError: an error code in the `GDK_PIXBUF_ERROR` domain.
+//
+// Many gdk-pixbuf operations can cause errors in this domain, or in the
+// `G_FILE_ERROR` domain.
+type PixbufError int
 
-		buf = make([]byte, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			buf = (byte)(arg0)
-		}
-	}
+const (
+	// PixbufErrorCorruptImage: an image file was broken somehow.
+	PixbufErrorCorruptImage PixbufError = 0
+	// PixbufErrorInsufficientMemory: not enough memory.
+	PixbufErrorInsufficientMemory PixbufError = 1
+	// PixbufErrorBadOption: a bad option was passed to a pixbuf save module.
+	PixbufErrorBadOption PixbufError = 2
+	// PixbufErrorUnknownType: unknown image type.
+	PixbufErrorUnknownType PixbufError = 3
+	// PixbufErrorUnsupportedOperation: don't know how to perform the given
+	// operation on the type of image at hand.
+	PixbufErrorUnsupportedOperation PixbufError = 4
+	// PixbufErrorFailed: generic failure code, something went wrong.
+	PixbufErrorFailed PixbufError = 5
+	// PixbufErrorIncompleteAnimation: only part of the animation was loaded.
+	PixbufErrorIncompleteAnimation PixbufError = 6
+)
 
-	fn := v.(PixbufSaveFunc)
-	err, ok := fn(buf)
-
-	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
-	if ok {
-		cret = C.gboolean(1)
-	}
-
-	return ok
+func marshalPixbufError(p uintptr) (interface{}, error) {
+	return PixbufError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }

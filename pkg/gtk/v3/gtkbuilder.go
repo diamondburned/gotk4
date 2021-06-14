@@ -5,15 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -23,8 +19,58 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_builder_error_get_type()), F: marshalBuilderError},
 		{T: externglib.Type(C.gtk_builder_get_type()), F: marshalBuilder},
 	})
+}
+
+// BuilderError: error codes that identify various errors that can occur while
+// using Builder.
+type BuilderError int
+
+const (
+	// BuilderErrorInvalidTypeFunction: a type-func attribute didn’t name a
+	// function that returns a #GType.
+	BuilderErrorInvalidTypeFunction BuilderError = 0
+	// BuilderErrorUnhandledTag: the input contained a tag that Builder can’t
+	// handle.
+	BuilderErrorUnhandledTag BuilderError = 1
+	// BuilderErrorMissingAttribute: an attribute that is required by Builder
+	// was missing.
+	BuilderErrorMissingAttribute BuilderError = 2
+	// BuilderErrorInvalidAttribute: Builder found an attribute that it doesn’t
+	// understand.
+	BuilderErrorInvalidAttribute BuilderError = 3
+	// BuilderErrorInvalidTag: Builder found a tag that it doesn’t understand.
+	BuilderErrorInvalidTag BuilderError = 4
+	// BuilderErrorMissingPropertyValue: a required property value was missing.
+	BuilderErrorMissingPropertyValue BuilderError = 5
+	// BuilderErrorInvalidValue: Builder couldn’t parse some attribute value.
+	BuilderErrorInvalidValue BuilderError = 6
+	// BuilderErrorVersionMismatch: the input file requires a newer version of
+	// GTK+.
+	BuilderErrorVersionMismatch BuilderError = 7
+	// BuilderErrorDuplicateID: an object id occurred twice.
+	BuilderErrorDuplicateID BuilderError = 8
+	// BuilderErrorObjectTypeRefused: a specified object type is of the same
+	// type or derived from the type of the composite class being extended with
+	// builder XML.
+	BuilderErrorObjectTypeRefused BuilderError = 9
+	// BuilderErrorTemplateMismatch: the wrong type was specified in a composite
+	// class’s template XML
+	BuilderErrorTemplateMismatch BuilderError = 10
+	// BuilderErrorInvalidProperty: the specified property is unknown for the
+	// object class.
+	BuilderErrorInvalidProperty BuilderError = 11
+	// BuilderErrorInvalidSignal: the specified signal is unknown for the object
+	// class.
+	BuilderErrorInvalidSignal BuilderError = 12
+	// BuilderErrorInvalidID: an object id is unknown
+	BuilderErrorInvalidID BuilderError = 13
+)
+
+func marshalBuilderError(p uintptr) (interface{}, error) {
+	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Builder: a GtkBuilder is an auxiliary object that reads textual descriptions
@@ -202,81 +248,6 @@ func init() {
 type Builder interface {
 	gextras.Objector
 
-	// AddFromFile parses a file containing a [GtkBuilder UI
-	// definition][BUILDER-UI] and merges it with the current contents of
-	// @builder.
-	//
-	// Most users will probably want to use gtk_builder_new_from_file().
-	//
-	// If an error occurs, 0 will be returned and @error will be assigned a
-	// #GError from the K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
-	//
-	// It’s not really reasonable to attempt to handle failures of this call.
-	// You should not use this function with untrusted files (ie: files that are
-	// not part of your application). Broken Builder files can easily crash your
-	// program, and it’s possible that memory was leaked leading up to the
-	// reported failure. The only reasonable thing to do when an error is
-	// detected is to call g_error().
-	AddFromFile(filename string) (uint, error)
-	// AddFromResource parses a resource file containing a [GtkBuilder UI
-	// definition][BUILDER-UI] and merges it with the current contents of
-	// @builder.
-	//
-	// Most users will probably want to use gtk_builder_new_from_resource().
-	//
-	// If an error occurs, 0 will be returned and @error will be assigned a
-	// #GError from the K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
-	//
-	// It’s not really reasonable to attempt to handle failures of this call.
-	// The only reasonable thing to do when an error is detected is to call
-	// g_error().
-	AddFromResource(resourcePath string) (uint, error)
-	// AddFromString parses a string containing a [GtkBuilder UI
-	// definition][BUILDER-UI] and merges it with the current contents of
-	// @builder.
-	//
-	// Most users will probably want to use gtk_builder_new_from_string().
-	//
-	// Upon errors 0 will be returned and @error will be assigned a #GError from
-	// the K_BUILDER_ERROR, MARKUP_ERROR or VARIANT_PARSE_ERROR domain.
-	//
-	// It’s not really reasonable to attempt to handle failures of this call.
-	// The only reasonable thing to do when an error is detected is to call
-	// g_error().
-	AddFromString(buffer string, length uint) (uint, error)
-	// AddObjectsFromFile parses a file containing a [GtkBuilder UI
-	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of @builder.
-	//
-	// Upon errors 0 will be returned and @error will be assigned a #GError from
-	// the K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
-	//
-	// If you are adding an object that depends on an object that is not its
-	// child (for instance a TreeView that depends on its TreeModel), you have
-	// to explicitly list all of them in @object_ids.
-	AddObjectsFromFile(filename string, objectIds []string) (uint, error)
-	// AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
-	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of @builder.
-	//
-	// Upon errors 0 will be returned and @error will be assigned a #GError from
-	// the K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
-	//
-	// If you are adding an object that depends on an object that is not its
-	// child (for instance a TreeView that depends on its TreeModel), you have
-	// to explicitly list all of them in @object_ids.
-	AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error)
-	// AddObjectsFromString parses a string containing a [GtkBuilder UI
-	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of @builder.
-	//
-	// Upon errors 0 will be returned and @error will be assigned a #GError from
-	// the K_BUILDER_ERROR or MARKUP_ERROR domain.
-	//
-	// If you are adding an object that depends on an object that is not its
-	// child (for instance a TreeView that depends on its TreeModel), you have
-	// to explicitly list all of them in @object_ids.
-	AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error)
 	// ConnectSignals: this method is a simpler variation of
 	// gtk_builder_connect_signals_full(). It uses symbols explicitly added to
 	// @builder with prior calls to gtk_builder_add_callback_symbol(). In the
@@ -300,19 +271,9 @@ type Builder interface {
 	// instead be compiled with the -Wl,--export-dynamic CFLAGS, and linked
 	// against gmodule-export-2.0.
 	ConnectSignals(userData interface{})
-	// ConnectSignalsFull: this function can be thought of the interpreted
-	// language binding version of gtk_builder_connect_signals(), except that it
-	// does not require GModule to function correctly.
-	ConnectSignalsFull(fn BuilderConnectFunc)
 	// ExposeObject: add @object to the @builder object pool so it can be
 	// referenced just like any other object built by builder.
 	ExposeObject(name string, object gextras.Objector)
-	// ExtendWithTemplate: main private entry point for building composite
-	// container components from template XML.
-	//
-	// This is exported purely to let gtk-builder-tool validate templates,
-	// applications have no need to call this function.
-	ExtendWithTemplate(widget Widget, templateType externglib.Type, buffer string, length uint) (uint, error)
 	// Object gets the object named @name. Note that this function does not
 	// increment the reference count of the returned object.
 	Object(name string) gextras.Objector
@@ -330,28 +291,9 @@ type Builder interface {
 	// SetTranslationDomain sets the translation domain of @builder. See
 	// Builder:translation-domain.
 	SetTranslationDomain(domain string)
-	// ValueFromString: this function demarshals a value from a string. This
-	// function calls g_value_init() on the @value argument, so it need not be
-	// initialised beforehand.
-	//
-	// This function can handle char, uchar, boolean, int, uint, long, ulong,
-	// enum, flags, float, double, string, Color, RGBA and Adjustment type
-	// values. Support for Widget type values is still to come.
-	//
-	// Upon errors false will be returned and @error will be assigned a #GError
-	// from the K_BUILDER_ERROR domain.
-	ValueFromString(pspec gobject.ParamSpec, string string) (*externglib.Value, error)
-	// ValueFromStringType: like gtk_builder_value_from_string(), this function
-	// demarshals a value from a string, but takes a #GType instead of Spec.
-	// This function calls g_value_init() on the @value argument, so it need not
-	// be initialised beforehand.
-	//
-	// Upon errors false will be returned and @error will be assigned a #GError
-	// from the K_BUILDER_ERROR domain.
-	ValueFromStringType(typ externglib.Type, string string) (*externglib.Value, error)
 }
 
-// builder implements the Builder interface.
+// builder implements the Builder class.
 type builder struct {
 	gextras.Objector
 }
@@ -361,7 +303,7 @@ var _ Builder = (*builder)(nil)
 // WrapBuilder wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBuilder(obj *externglib.Object) Builder {
-	return Builder{
+	return builder{
 		Objector: obj,
 	}
 }
@@ -370,250 +312,6 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBuilder(obj), nil
-}
-
-// AddFromFile parses a file containing a [GtkBuilder UI
-// definition][BUILDER-UI] and merges it with the current contents of
-// @builder.
-//
-// Most users will probably want to use gtk_builder_new_from_file().
-//
-// If an error occurs, 0 will be returned and @error will be assigned a
-// #GError from the K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
-//
-// It’s not really reasonable to attempt to handle failures of this call.
-// You should not use this function with untrusted files (ie: files that are
-// not part of your application). Broken Builder files can easily crash your
-// program, and it’s possible that memory was leaked leading up to the
-// reported failure. The only reasonable thing to do when an error is
-// detected is to call g_error().
-func (b builder) AddFromFile(filename string) (uint, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.gchar      // out
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_builder_add_from_file(_arg0, _arg1, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
-}
-
-// AddFromResource parses a resource file containing a [GtkBuilder UI
-// definition][BUILDER-UI] and merges it with the current contents of
-// @builder.
-//
-// Most users will probably want to use gtk_builder_new_from_resource().
-//
-// If an error occurs, 0 will be returned and @error will be assigned a
-// #GError from the K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
-//
-// It’s not really reasonable to attempt to handle failures of this call.
-// The only reasonable thing to do when an error is detected is to call
-// g_error().
-func (b builder) AddFromResource(resourcePath string) (uint, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.gchar      // out
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_builder_add_from_resource(_arg0, _arg1, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
-}
-
-// AddFromString parses a string containing a [GtkBuilder UI
-// definition][BUILDER-UI] and merges it with the current contents of
-// @builder.
-//
-// Most users will probably want to use gtk_builder_new_from_string().
-//
-// Upon errors 0 will be returned and @error will be assigned a #GError from
-// the K_BUILDER_ERROR, MARKUP_ERROR or VARIANT_PARSE_ERROR domain.
-//
-// It’s not really reasonable to attempt to handle failures of this call.
-// The only reasonable thing to do when an error is detected is to call
-// g_error().
-func (b builder) AddFromString(buffer string, length uint) (uint, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.gsize       // out
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gsize(length)
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_builder_add_from_string(_arg0, _arg1, _arg2, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
-}
-
-// AddObjectsFromFile parses a file containing a [GtkBuilder UI
-// definition][BUILDER-UI] building only the requested objects and merges
-// them with the current contents of @builder.
-//
-// Upon errors 0 will be returned and @error will be assigned a #GError from
-// the K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
-//
-// If you are adding an object that depends on an object that is not its
-// child (for instance a TreeView that depends on its TreeModel), you have
-// to explicitly list all of them in @object_ids.
-func (b builder) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.gchar      // out
-	var _arg2 **C.gchar
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(objectIds)))
-
-		for i := range objectIds {
-			_arg2 = (*C.gchar)(C.CString(objectIds))
-			defer C.free(unsafe.Pointer(_arg2))
-		}
-	}
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_builder_add_objects_from_file(_arg0, _arg1, _arg2, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
-}
-
-// AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
-// definition][BUILDER-UI] building only the requested objects and merges
-// them with the current contents of @builder.
-//
-// Upon errors 0 will be returned and @error will be assigned a #GError from
-// the K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
-//
-// If you are adding an object that depends on an object that is not its
-// child (for instance a TreeView that depends on its TreeModel), you have
-// to explicitly list all of them in @object_ids.
-func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.gchar      // out
-	var _arg2 **C.gchar
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(objectIds)))
-
-		for i := range objectIds {
-			_arg2 = (*C.gchar)(C.CString(objectIds))
-			defer C.free(unsafe.Pointer(_arg2))
-		}
-	}
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_builder_add_objects_from_resource(_arg0, _arg1, _arg2, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
-}
-
-// AddObjectsFromString parses a string containing a [GtkBuilder UI
-// definition][BUILDER-UI] building only the requested objects and merges
-// them with the current contents of @builder.
-//
-// Upon errors 0 will be returned and @error will be assigned a #GError from
-// the K_BUILDER_ERROR or MARKUP_ERROR domain.
-//
-// If you are adding an object that depends on an object that is not its
-// child (for instance a TreeView that depends on its TreeModel), you have
-// to explicitly list all of them in @object_ids.
-func (b builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.gsize       // out
-	var _arg3 **C.gchar
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gsize(length)
-	_arg3 = (**C.gchar)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg3), int(len(objectIds)))
-
-		for i := range objectIds {
-			_arg3 = (*C.gchar)(C.CString(objectIds))
-			defer C.free(unsafe.Pointer(_arg3))
-		}
-	}
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_builder_add_objects_from_string(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
 }
 
 // ConnectSignals: this method is a simpler variation of
@@ -648,21 +346,6 @@ func (b builder) ConnectSignals(userData interface{}) {
 	C.gtk_builder_connect_signals(_arg0, _arg1)
 }
 
-// ConnectSignalsFull: this function can be thought of the interpreted
-// language binding version of gtk_builder_connect_signals(), except that it
-// does not require GModule to function correctly.
-func (b builder) ConnectSignalsFull(fn BuilderConnectFunc) {
-	var _arg0 *C.GtkBuilder           // out
-	var _arg1 C.GtkBuilderConnectFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_BuilderConnectFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_builder_connect_signals_full(_arg0, _arg1, _arg2)
-}
-
 // ExposeObject: add @object to the @builder object pool so it can be
 // referenced just like any other object built by builder.
 func (b builder) ExposeObject(name string, object gextras.Objector) {
@@ -676,39 +359,6 @@ func (b builder) ExposeObject(name string, object gextras.Objector) {
 	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
-}
-
-// ExtendWithTemplate: main private entry point for building composite
-// container components from template XML.
-//
-// This is exported purely to let gtk-builder-tool validate templates,
-// applications have no need to call this function.
-func (b builder) ExtendWithTemplate(widget Widget, templateType externglib.Type, buffer string, length uint) (uint, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 C.GType       // out
-	var _arg3 *C.gchar      // out
-	var _arg4 C.gsize       // out
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.GType(templateType)
-	_arg3 = (*C.gchar)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gsize(length)
-
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
-
-	_cret = C.gtk_builder_extend_with_template(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = (uint)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _guint, _goerr
 }
 
 // Object gets the object named @name. Note that this function does not
@@ -796,69 +446,4 @@ func (b builder) SetTranslationDomain(domain string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_set_translation_domain(_arg0, _arg1)
-}
-
-// ValueFromString: this function demarshals a value from a string. This
-// function calls g_value_init() on the @value argument, so it need not be
-// initialised beforehand.
-//
-// This function can handle char, uchar, boolean, int, uint, long, ulong,
-// enum, flags, float, double, string, Color, RGBA and Adjustment type
-// values. Support for Widget type values is still to come.
-//
-// Upon errors false will be returned and @error will be assigned a #GError
-// from the K_BUILDER_ERROR domain.
-func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (*externglib.Value, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.GParamSpec // out
-	var _arg2 *C.gchar      // out
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	_arg2 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _arg3 C.GValue  // in
-	var _cerr *C.GError // in
-
-	C.gtk_builder_value_from_string(_arg0, _arg1, _arg2, &_arg3, &_cerr)
-
-	var _value *externglib.Value // out
-	var _goerr error             // out
-
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _value, _goerr
-}
-
-// ValueFromStringType: like gtk_builder_value_from_string(), this function
-// demarshals a value from a string, but takes a #GType instead of Spec.
-// This function calls g_value_init() on the @value argument, so it need not
-// be initialised beforehand.
-//
-// Upon errors false will be returned and @error will be assigned a #GError
-// from the K_BUILDER_ERROR domain.
-func (b builder) ValueFromStringType(typ externglib.Type, string string) (*externglib.Value, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 C.GType       // out
-	var _arg2 *C.gchar      // out
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = C.GType(typ)
-	_arg2 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _arg3 C.GValue  // in
-	var _cerr *C.GError // in
-
-	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, &_cerr)
-
-	var _value *externglib.Value // out
-	var _goerr error             // out
-
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _value, _goerr
 }

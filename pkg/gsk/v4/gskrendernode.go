@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gsk/gsk.h>
 import "C"
 
@@ -25,11 +24,6 @@ func WrapColorStop(ptr unsafe.Pointer) *ColorStop {
 	}
 
 	return (*ColorStop)(ptr)
-}
-
-func marshalColorStop(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapColorStop(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -57,11 +51,6 @@ func WrapParseLocation(ptr unsafe.Pointer) *ParseLocation {
 	}
 
 	return (*ParseLocation)(ptr)
-}
-
-func marshalParseLocation(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapParseLocation(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -117,11 +106,6 @@ func WrapShadow(ptr unsafe.Pointer) *Shadow {
 	}
 
 	return (*Shadow)(ptr)
-}
-
-func marshalShadow(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapShadow(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

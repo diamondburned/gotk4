@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -66,7 +68,7 @@ type DropTargetAsync interface {
 	SetFormats(formats *gdk.ContentFormats)
 }
 
-// dropTargetAsync implements the DropTargetAsync interface.
+// dropTargetAsync implements the DropTargetAsync class.
 type dropTargetAsync struct {
 	EventController
 }
@@ -76,7 +78,7 @@ var _ DropTargetAsync = (*dropTargetAsync)(nil)
 // WrapDropTargetAsync wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDropTargetAsync(obj *externglib.Object) DropTargetAsync {
-	return DropTargetAsync{
+	return dropTargetAsync{
 		EventController: WrapEventController(obj),
 	}
 }

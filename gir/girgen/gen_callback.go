@@ -64,7 +64,7 @@ func newCallbackGenerator(ng *NamespaceGenerator) callbackGenerator {
 
 // Use sets the callback generator to the given GIR callback.
 func (cg *callbackGenerator) Use(cb gir.Callback) bool {
-	cg.fg = cg.ng.FileFromSource(cb.SourcePosition)
+	cg.fg = cg.ng.FileFromSource(cb.DocElements)
 
 	// We can't use the callback if it has no closure parameters.
 	if cb.Parameters == nil || len(cb.Parameters.Parameters) == 0 {
@@ -189,11 +189,11 @@ func (cg *callbackGenerator) renderBlock() bool {
 		}
 	}
 
-	var fnReturn string
+	var hasReturn bool
 	if !returnIsVoid(cg.ReturnValue) {
-		fnReturn = returnName(cg.CallableAttrs)
+		hasReturn = true
 		outputValues = append(outputValues, NewValuePropReturn(
-			fnReturn, "cret", *cg.ReturnValue,
+			returnName(cg.CallableAttrs), "cret", *cg.ReturnValue,
 		))
 	}
 
@@ -209,12 +209,13 @@ func (cg *callbackGenerator) renderBlock() bool {
 		return false
 	}
 
+	cg.fg.applyConvertedFxs(convertedIns)
+	cg.fg.applyConvertedFxs(convertedOuts)
+
 	goArgs := pen.NewJoints(", ", len(convertedIns))
 	callbackArgs := pen.NewJoints(", ", cap)
 
 	for _, converted := range convertedIns {
-		converted.Apply(cg.fg)
-
 		goArgs.Addf("%s %s", converted.OutName, converted.OutType)
 		callbackArgs.Add(converted.OutCall)
 
@@ -226,15 +227,12 @@ func (cg *callbackGenerator) renderBlock() bool {
 	callbackRets := pen.NewJoints(", ", cap)
 
 	for _, converted := range convertedOuts {
-		converted.Apply(cg.fg)
-
 		goRets.Addf("%s %s", converted.InName, converted.InType)
 		callbackRets.Add(converted.InCall)
 
+		cg.pen.Line(secOutputPre, converted.OutDeclare)
 		cg.pen.Line(secOutputConv, converted.Conversion)
 	}
-
-	cg.fg.addImport(importInternal("box"))
 
 	if callbackRets.Len() == 0 {
 		cg.pen.Linef(secFnCall, "fn(%s)", callbackArgs.Join())
@@ -242,8 +240,8 @@ func (cg *callbackGenerator) renderBlock() bool {
 		cg.pen.Linef(secFnCall, "%s := fn(%s)", callbackRets.Join(), callbackArgs.Join())
 	}
 
-	if fnReturn != "" {
-		cg.pen.Linef(secReturn, "return "+fnReturn)
+	if hasReturn {
+		cg.pen.Linef(secReturn, "return cret")
 	}
 
 	cg.Block = cg.pen.String()
@@ -253,6 +251,10 @@ func (cg *callbackGenerator) renderBlock() bool {
 		cg.GoTail += " (" + goRets.Join() + ")"
 	}
 
+	// Only add the import now, since we know that the callback will be
+	// generated.
+	cg.fg.addImportInternal("box")
+
 	return true
 }
 
@@ -260,10 +262,12 @@ func (ng *NamespaceGenerator) generateCallbacks() {
 	cg := newCallbackGenerator(ng)
 
 	for _, callback := range ng.current.Namespace.Callbacks {
+		if !callback.IsIntrospectable() {
+			continue
+		}
 		if ng.mustIgnore(callback.Name, callback.CIdentifier) {
 			continue
 		}
-
 		if !cg.Use(callback) {
 			continue
 		}

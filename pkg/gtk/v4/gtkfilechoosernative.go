@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -189,7 +189,7 @@ type FileChooserNative interface {
 	SetCancelLabel(cancelLabel string)
 }
 
-// fileChooserNative implements the FileChooserNative interface.
+// fileChooserNative implements the FileChooserNative class.
 type fileChooserNative struct {
 	NativeDialog
 	FileChooser
@@ -200,7 +200,7 @@ var _ FileChooserNative = (*fileChooserNative)(nil)
 // WrapFileChooserNative wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileChooserNative(obj *externglib.Object) FileChooserNative {
-	return FileChooserNative{
+	return fileChooserNative{
 		NativeDialog: WrapNativeDialog(obj),
 		FileChooser:  WrapFileChooser(obj),
 	}

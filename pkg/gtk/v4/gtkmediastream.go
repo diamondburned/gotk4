@@ -3,12 +3,14 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -43,39 +45,12 @@ type MediaStream interface {
 	//
 	// The media stream must be prepared when this function is called.
 	Ended()
-	// Gerror sets @self into an error state.
-	//
-	// This will pause the stream (you can check for an error via
-	// [method@Gtk.MediaStream.get_error] in your GtkMediaStream.pause()
-	// implementation), abort pending seeks and mark the stream as prepared.
-	//
-	// if the stream is already in an error state, this call will be ignored and
-	// the existing error will be retained.
-	//
-	// To unset an error, the stream must be reset via a call to
-	// [method@Gtk.MediaStream.unprepared].
-	Gerror(err error)
 	// Duration gets the duration of the stream.
 	//
 	// If the duration is not known, 0 will be returned.
 	Duration() int64
 	// GetEnded returns whether the streams playback is finished.
 	GetEnded() bool
-	// Error: if the stream is in an error state, returns the `GError`
-	// explaining that state.
-	//
-	// Any type of error can be reported here depending on the implementation of
-	// the media stream.
-	//
-	// A media stream in an error cannot be operated on, calls like
-	// [method@Gtk.MediaStream.play] or [method@Gtk.MediaStream.seek] will not
-	// have any effect.
-	//
-	// `GtkMediaStream` itself does not provide a way to unset an error, but
-	// implementations may provide options. For example, a [class@Gtk.MediaFile]
-	// will unset errors when a new source is set, e.g. with
-	// [method@Gtk.MediaFile.set_file].
-	Error() error
 	// Loop returns whether the stream is set to loop.
 	//
 	// See [method@Gtk.MediaStream.set_loop] for details.
@@ -227,7 +202,7 @@ type MediaStream interface {
 	Update(timestamp int64)
 }
 
-// mediaStream implements the MediaStream interface.
+// mediaStream implements the MediaStream class.
 type mediaStream struct {
 	gextras.Objector
 	gdk.Paintable
@@ -238,7 +213,7 @@ var _ MediaStream = (*mediaStream)(nil)
 // WrapMediaStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMediaStream(obj *externglib.Object) MediaStream {
-	return MediaStream{
+	return mediaStream{
 		Objector:      obj,
 		gdk.Paintable: gdk.WrapPaintable(obj),
 	}
@@ -261,27 +236,6 @@ func (s mediaStream) Ended() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	C.gtk_media_stream_ended(_arg0)
-}
-
-// Gerror sets @self into an error state.
-//
-// This will pause the stream (you can check for an error via
-// [method@Gtk.MediaStream.get_error] in your GtkMediaStream.pause()
-// implementation), abort pending seeks and mark the stream as prepared.
-//
-// if the stream is already in an error state, this call will be ignored and
-// the existing error will be retained.
-//
-// To unset an error, the stream must be reset via a call to
-// [method@Gtk.MediaStream.unprepared].
-func (s mediaStream) Gerror(err error) {
-	var _arg0 *C.GtkMediaStream // out
-	var _arg1 *C.GError         // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
-
-	C.gtk_media_stream_gerror(_arg0, _arg1)
 }
 
 // Duration gets the duration of the stream.
@@ -315,41 +269,11 @@ func (s mediaStream) GetEnded() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Error: if the stream is in an error state, returns the `GError`
-// explaining that state.
-//
-// Any type of error can be reported here depending on the implementation of
-// the media stream.
-//
-// A media stream in an error cannot be operated on, calls like
-// [method@Gtk.MediaStream.play] or [method@Gtk.MediaStream.seek] will not
-// have any effect.
-//
-// `GtkMediaStream` itself does not provide a way to unset an error, but
-// implementations may provide options. For example, a [class@Gtk.MediaFile]
-// will unset errors when a new source is set, e.g. with
-// [method@Gtk.MediaFile.set_file].
-func (s mediaStream) Error() error {
-	var _arg0 *C.GtkMediaStream // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GError // in
-
-	_cret = C.gtk_media_stream_get_error(_arg0)
-
-	var _err error // out
-
-	_err = gerror.Take(unsafe.Pointer(_cret))
-
-	return _err
 }
 
 // Loop returns whether the stream is set to loop.
@@ -366,7 +290,7 @@ func (s mediaStream) Loop() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -387,7 +311,7 @@ func (s mediaStream) Muted() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -406,7 +330,7 @@ func (s mediaStream) Playing() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -461,7 +385,7 @@ func (s mediaStream) HasAudio() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -480,7 +404,7 @@ func (s mediaStream) HasVideo() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -501,7 +425,7 @@ func (s mediaStream) IsPrepared() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -528,7 +452,7 @@ func (s mediaStream) IsSeekable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -547,7 +471,7 @@ func (s mediaStream) IsSeeking() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -595,13 +519,13 @@ func (s mediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, durat
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 	if hasAudio {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 	if hasVideo {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if seekable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 	_arg4 = C.gint64(duration)
 
@@ -697,7 +621,7 @@ func (s mediaStream) SetLoop(loop bool) {
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 	if loop {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_media_stream_set_loop(_arg0, _arg1)
@@ -717,7 +641,7 @@ func (s mediaStream) SetMuted(muted bool) {
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 	if muted {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_media_stream_set_muted(_arg0, _arg1)
@@ -730,7 +654,7 @@ func (s mediaStream) SetPlaying(playing bool) {
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 	if playing {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_media_stream_set_playing(_arg0, _arg1)

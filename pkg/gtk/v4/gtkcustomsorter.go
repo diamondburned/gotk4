@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -24,7 +26,7 @@ type CustomSorter interface {
 	Sorter
 }
 
-// customSorter implements the CustomSorter interface.
+// customSorter implements the CustomSorter class.
 type customSorter struct {
 	Sorter
 }
@@ -34,7 +36,7 @@ var _ CustomSorter = (*customSorter)(nil)
 // WrapCustomSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCustomSorter(obj *externglib.Object) CustomSorter {
-	return CustomSorter{
+	return customSorter{
 		Sorter: WrapSorter(obj),
 	}
 }

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -16,8 +18,44 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
 		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcut},
 	})
+}
+
+// ShortcutType: gtkShortcutType specifies the kind of shortcut that is being
+// described. More values may be added to this enumeration over time.
+type ShortcutType int
+
+const (
+	// ShortcutTypeAccelerator: the shortcut is a keyboard accelerator. The
+	// ShortcutsShortcut:accelerator property will be used.
+	ShortcutTypeAccelerator ShortcutType = 0
+	// ShortcutTypeGesturePinch: the shortcut is a pinch gesture. GTK+ provides
+	// an icon and subtitle.
+	ShortcutTypeGesturePinch ShortcutType = 1
+	// ShortcutTypeGestureStretch: the shortcut is a stretch gesture. GTK+
+	// provides an icon and subtitle.
+	ShortcutTypeGestureStretch ShortcutType = 2
+	// ShortcutTypeGestureRotateClockwise: the shortcut is a clockwise rotation
+	// gesture. GTK+ provides an icon and subtitle.
+	ShortcutTypeGestureRotateClockwise ShortcutType = 3
+	// ShortcutTypeGestureRotateCounterclockwise: the shortcut is a
+	// counterclockwise rotation gesture. GTK+ provides an icon and subtitle.
+	ShortcutTypeGestureRotateCounterclockwise ShortcutType = 4
+	// ShortcutTypeGestureTwoFingerSwipeLeft: the shortcut is a two-finger swipe
+	// gesture. GTK+ provides an icon and subtitle.
+	ShortcutTypeGestureTwoFingerSwipeLeft ShortcutType = 5
+	// ShortcutTypeGestureTwoFingerSwipeRight: the shortcut is a two-finger
+	// swipe gesture. GTK+ provides an icon and subtitle.
+	ShortcutTypeGestureTwoFingerSwipeRight ShortcutType = 6
+	// ShortcutTypeGesture: the shortcut is a gesture. The
+	// ShortcutsShortcut:icon property will be used.
+	ShortcutTypeGesture ShortcutType = 7
+)
+
+func marshalShortcutType(p uintptr) (interface{}, error) {
+	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // ShortcutsShortcut: a GtkShortcutsShortcut represents a single keyboard
@@ -29,7 +67,7 @@ type ShortcutsShortcut interface {
 	Orientable
 }
 
-// shortcutsShortcut implements the ShortcutsShortcut interface.
+// shortcutsShortcut implements the ShortcutsShortcut class.
 type shortcutsShortcut struct {
 	Box
 	Buildable
@@ -41,7 +79,7 @@ var _ ShortcutsShortcut = (*shortcutsShortcut)(nil)
 // WrapShortcutsShortcut wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcut {
-	return ShortcutsShortcut{
+	return shortcutsShortcut{
 		Box:        WrapBox(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),

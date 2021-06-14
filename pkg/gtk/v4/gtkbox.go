@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -97,7 +99,7 @@ type Box interface {
 	SetSpacing(spacing int)
 }
 
-// box implements the Box interface.
+// box implements the Box class.
 type box struct {
 	Widget
 	Accessible
@@ -111,7 +113,7 @@ var _ Box = (*box)(nil)
 // WrapBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBox(obj *externglib.Object) Box {
-	return Box{
+	return box{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -150,7 +152,7 @@ func (b box) Homogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -255,7 +257,7 @@ func (b box) SetHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_box_set_homogeneous(_arg0, _arg1)

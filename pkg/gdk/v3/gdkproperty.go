@@ -6,33 +6,36 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
 
-// PropertyChange changes the contents of a property on a window.
-func PropertyChange(window Window, property Atom, typ Atom, format int, mode PropMode, data *byte, nelements int) {
-	var _arg1 *C.GdkWindow  // out
-	var _arg2 C.GdkAtom     // out
-	var _arg3 C.GdkAtom     // out
-	var _arg4 C.gint        // out
-	var _arg5 C.GdkPropMode // out
-	var _arg6 *C.guchar     // out
-	var _arg7 C.gint        // out
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_prop_mode_get_type()), F: marshalPropMode},
+	})
+}
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(typ.Native()))
-	_arg4 = C.gint(format)
-	_arg5 = (C.GdkPropMode)(mode)
-	_arg6 = *C.guchar(data)
-	_arg7 = C.gint(nelements)
+// PropMode describes how existing data is combined with new data when using
+// gdk_property_change().
+type PropMode int
 
-	C.gdk_property_change(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+const (
+	// PropModeReplace: the new data replaces the existing data.
+	PropModeReplace PropMode = 0
+	// PropModePrepend: the new data is prepended to the existing data.
+	PropModePrepend PropMode = 1
+	// PropModeAppend: the new data is appended to the existing data.
+	PropModeAppend PropMode = 2
+)
+
+func marshalPropMode(p uintptr) (interface{}, error) {
+	return PropMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // PropertyDelete deletes a property from a window.
@@ -57,7 +60,7 @@ func PropertyDelete(window Window, property Atom) {
 // should return a useful error to the program. You are advised to use
 // XGetWindowProperty() directly until a replacement function for
 // gdk_property_get() is provided.
-func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length uint32, pdelete int) (Atom, int, []*byte, bool) {
+func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length uint32, pdelete int) (Atom, int, []byte, bool) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.GdkAtom    // out
 	var _arg3 C.GdkAtom    // out
@@ -81,15 +84,15 @@ func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length u
 	_cret = C.gdk_property_get(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, (*C.GdkAtom)(unsafe.Pointer(&_actualPropertyType)), &_arg8, &_arg9, &_arg10)
 
 	var _actualFormat int // out
-	var _data []*byte
+	var _data []byte
 	var _ok bool // out
 
 	_actualFormat = (int)(_arg8)
-	ptr.SetSlice(unsafe.Pointer(&_data), unsafe.Pointer(_arg10), int(_arg9))
-	runtime.SetFinalizer(&_data, func(v *[]*byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+	_data = unsafe.Slice((*byte)(unsafe.Pointer(_arg10)), _arg9)
+	runtime.SetFinalizer(&_data, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -98,7 +101,7 @@ func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length u
 
 // TextPropertyToUTF8ListForDisplay converts a text property in the given
 // encoding to a list of UTF-8 strings.
-func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int, text []byte) ([]*string, int) {
+func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int, text []byte) ([]string, int) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.GdkAtom     // out
 	var _arg3 C.gint        // out
@@ -116,25 +119,23 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int
 
 	_cret = C.gdk_text_property_to_utf8_list_for_display(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
 
-	var _list []*string
+	var _list []string
 	var _gint int // out
 
 	{
 		var length int
-		for p := _arg6; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _arg6; *p != nil; p = (**C.gchar)(unsafe.Add(unsafe.Pointer(p), unsafe.Sizeof(uint(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		var src []**C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg6), int(length))
-
-		_list = make([]*string, length)
+		src := unsafe.Slice(_arg6, length)
+		_list = make([]string, length)
 		for i := range src {
-			_list = C.GoString(_arg6)
-			defer C.free(unsafe.Pointer(_arg6))
+			_list[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_gint = (int)(_cret)

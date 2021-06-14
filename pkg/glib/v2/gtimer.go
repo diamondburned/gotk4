@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -38,11 +37,6 @@ func WrapTimer(ptr unsafe.Pointer) *Timer {
 	}
 
 	return (*Timer)(ptr)
-}
-
-func marshalTimer(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTimer(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -104,7 +98,7 @@ func (t *Timer) IsActive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

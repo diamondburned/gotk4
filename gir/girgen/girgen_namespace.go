@@ -34,6 +34,16 @@ func (ng *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	ng.generateClasses()
 	ng.generateRecords()
 
+	// Scan to see if there's a file that needs CallbackDelete. We should put
+	// its definition in the root file, if possible.
+	for _, file := range ng.files {
+		if file.CallbackDelete {
+			root := ng.FileFromSource(gir.DocElements{})
+			root.CallbackDelete = true
+			break
+		}
+	}
+
 	files := make(map[string][]byte, len(ng.files))
 
 	for _, file := range ng.files {
@@ -50,12 +60,19 @@ func (ng *NamespaceGenerator) Generate() (map[string][]byte, error) {
 
 // FileFromSource returns the respective file from the given SourcePosition. If
 // nil is given, the original file is returned.
-func (ng *NamespaceGenerator) FileFromSource(pos *gir.SourcePosition) *FileGenerator {
-	if pos == nil {
-		return ng.file(ng.PackageName() + ".go")
+func (ng *NamespaceGenerator) FileFromSource(doc gir.DocElements) *FileGenerator {
+	var filename string
+
+	switch {
+	case doc.SourcePosition != nil:
+		filename = doc.SourcePosition.Filename
+	case doc.Doc != nil:
+		filename = doc.Doc.Filename
+	default:
+		filename = ng.PackageName()
 	}
 
-	fg := ng.file(replaceExt(path.Base(pos.Filename), ".go"))
+	fg := ng.file(replaceExt(path.Base(filename), ".go"))
 	return fg
 }
 

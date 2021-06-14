@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -34,11 +34,6 @@ func WrapTextAppearance(ptr unsafe.Pointer) *TextAppearance {
 	}
 
 	return (*TextAppearance)(ptr)
-}
-
-func marshalTextAppearance(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextAppearance(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

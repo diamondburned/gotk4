@@ -5,12 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -110,7 +109,7 @@ type DropTarget interface {
 	SetPreload(preload bool)
 }
 
-// dropTarget implements the DropTarget interface.
+// dropTarget implements the DropTarget class.
 type dropTarget struct {
 	EventController
 }
@@ -120,7 +119,7 @@ var _ DropTarget = (*dropTarget)(nil)
 // WrapDropTarget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDropTarget(obj *externglib.Object) DropTarget {
-	return DropTarget{
+	return dropTarget{
 		EventController: WrapEventController(obj),
 	}
 }
@@ -147,12 +146,10 @@ func (s dropTarget) GTypes() []externglib.Type {
 	var _gTypes []externglib.Type
 
 	{
-		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
+		src := unsafe.Slice(_cret, _arg1)
 		_gTypes = make([]externglib.Type, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_gTypes = externglib.Type(_cret)
+		for i := 0; i < int(_arg1); i++ {
+			_gTypes[i] = externglib.Type(src[i])
 		}
 	}
 
@@ -171,7 +168,7 @@ func (s dropTarget) Preload() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -229,15 +226,13 @@ func (s dropTarget) SetGTypes(types []externglib.Type) {
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(types))
-	_arg1 = (*C.GType)(C.malloc(len(types) * C.sizeof_GType))
+	_arg1 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []C.GType
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg1), int(len(types)))
-
+		out := unsafe.Slice(_arg1, len(types))
 		for i := range types {
-			_arg1 = C.GType(types)
+			out[i] = C.GType(types[i])
 		}
 	}
 
@@ -251,7 +246,7 @@ func (s dropTarget) SetPreload(preload bool) {
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 	if preload {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_drop_target_set_preload(_arg0, _arg1)

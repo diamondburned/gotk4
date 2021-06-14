@@ -8,17 +8,11 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_value_array_get_type()), F: marshalValueArray},
-	})
-}
 
 // ValueArray: a Array contains an array of #GValue elements.
 type ValueArray struct {
@@ -57,15 +51,6 @@ func (v *ValueArray) Values() **externglib.Value {
 	var v **externglib.Value // out
 	v = externglib.ValueFromNative(unsafe.Pointer(v.native.values))
 	return v
-}
-
-// Free: free a Array including its contents.
-func (v *ValueArray) Free() {
-	var _arg0 *C.GValueArray // out
-
-	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-
-	C.g_value_array_free(_arg0)
 }
 
 // Nth: return a pointer to the value at @index_ containd in @value_array.

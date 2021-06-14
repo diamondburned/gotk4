@@ -3,12 +3,13 @@
 package gio
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -20,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -70,7 +72,7 @@ type MemoryOutputStream interface {
 	StealData() interface{}
 }
 
-// memoryOutputStream implements the MemoryOutputStream interface.
+// memoryOutputStream implements the MemoryOutputStream class.
 type memoryOutputStream struct {
 	OutputStream
 	PollableOutputStream
@@ -82,7 +84,7 @@ var _ MemoryOutputStream = (*memoryOutputStream)(nil)
 // WrapMemoryOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStream {
-	return MemoryOutputStream{
+	return memoryOutputStream{
 		OutputStream:         WrapOutputStream(obj),
 		PollableOutputStream: WrapPollableOutputStream(obj),
 		Seekable:             WrapSeekable(obj),

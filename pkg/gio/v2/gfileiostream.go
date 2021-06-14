@@ -5,13 +5,11 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -23,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -56,16 +55,9 @@ type FileIOStream interface {
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
 	Etag() string
-	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
-	// completed, @callback will be called with a Result which can be used to
-	// finish the operation with g_file_io_stream_query_info_finish().
-	//
-	// For the synchronous version of this function, see
-	// g_file_io_stream_query_info().
-	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
-// fileIOStream implements the FileIOStream interface.
+// fileIOStream implements the FileIOStream class.
 type fileIOStream struct {
 	IOStream
 	Seekable
@@ -76,7 +68,7 @@ var _ FileIOStream = (*fileIOStream)(nil)
 // WrapFileIOStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileIOStream(obj *externglib.Object) FileIOStream {
-	return FileIOStream{
+	return fileIOStream{
 		IOStream: WrapIOStream(obj),
 		Seekable: WrapSeekable(obj),
 	}
@@ -106,29 +98,4 @@ func (s fileIOStream) Etag() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// QueryInfoAsync: asynchronously queries the @stream for a Info. When
-// completed, @callback will be called with a Result which can be used to
-// finish the operation with g_file_io_stream_query_info_finish().
-//
-// For the synchronous version of this function, see
-// g_file_io_stream_query_info().
-func (s fileIOStream) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GFileIOStream      // out
-	var _arg1 *C.char               // out
-	var _arg2 C.int                 // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.char)(C.CString(attributes))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_file_io_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -77,7 +77,7 @@ type TreeExpander interface {
 	SetListRow(listRow TreeListRow)
 }
 
-// treeExpander implements the TreeExpander interface.
+// treeExpander implements the TreeExpander class.
 type treeExpander struct {
 	Widget
 	Accessible
@@ -90,7 +90,7 @@ var _ TreeExpander = (*treeExpander)(nil)
 // WrapTreeExpander wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeExpander(obj *externglib.Object) TreeExpander {
-	return TreeExpander{
+	return treeExpander{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),

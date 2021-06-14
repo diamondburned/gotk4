@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -32,7 +34,7 @@ type GestureStylus interface {
 	Axis(axis gdk.AxisUse) (float64, bool)
 }
 
-// gestureStylus implements the GestureStylus interface.
+// gestureStylus implements the GestureStylus class.
 type gestureStylus struct {
 	GestureSingle
 }
@@ -42,7 +44,7 @@ var _ GestureStylus = (*gestureStylus)(nil)
 // WrapGestureStylus wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureStylus(obj *externglib.Object) GestureStylus {
-	return GestureStylus{
+	return gestureStylus{
 		GestureSingle: WrapGestureSingle(obj),
 	}
 }
@@ -72,7 +74,7 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _ok bool       // out
 
 	_value = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

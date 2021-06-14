@@ -3,13 +3,11 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -201,7 +199,7 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 	var _arg1 C.gboolean // out
 
 	if useStderr {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.g_log_writer_default_set_use_stderr(_arg1)
@@ -239,7 +237,7 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -265,7 +263,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
 	if useColor {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _cret *C.gchar // in
@@ -299,7 +297,7 @@ func LogWriterIsJournald(outputFd int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -320,50 +318,11 @@ func LogWriterSupportsColor(outputFd int) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// ReturnIfFailWarning: internal function used to print messages from the public
-// g_return_if_fail() and g_return_val_if_fail() macros.
-func ReturnIfFailWarning(logDomain string, prettyFunction string, expression string) {
-	var _arg1 *C.char // out
-	var _arg2 *C.char // out
-	var _arg3 *C.char // out
-
-	_arg1 = (*C.char)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(prettyFunction))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.char)(C.CString(expression))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	C.g_return_if_fail_warning(_arg1, _arg2, _arg3)
-}
-
-// WarnMessage: internal function used to print messages from the public
-// g_warn_if_reached() and g_warn_if_fail() macros.
-func WarnMessage(domain string, file string, line int, fn string, warnexpr string) {
-	var _arg1 *C.char // out
-	var _arg2 *C.char // out
-	var _arg3 C.int   // out
-	var _arg4 *C.char // out
-	var _arg5 *C.char // out
-
-	_arg1 = (*C.char)(C.CString(domain))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(file))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(line)
-	_arg4 = (*C.char)(C.CString(fn))
-	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.char)(C.CString(warnexpr))
-	defer C.free(unsafe.Pointer(_arg5))
-
-	C.g_warn_message(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // LogField: structure representing a single field in a structured log entry.
@@ -385,11 +344,6 @@ func WrapLogField(ptr unsafe.Pointer) *LogField {
 	}
 
 	return (*LogField)(ptr)
-}
-
-func marshalLogField(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLogField(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

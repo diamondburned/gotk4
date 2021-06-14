@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -206,7 +206,7 @@ type Gesture interface {
 	Ungroup()
 }
 
-// gesture implements the Gesture interface.
+// gesture implements the Gesture class.
 type gesture struct {
 	EventController
 }
@@ -216,7 +216,7 @@ var _ Gesture = (*gesture)(nil)
 // WrapGesture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGesture(obj *externglib.Object) Gesture {
-	return Gesture{
+	return gesture{
 		EventController: WrapEventController(obj),
 	}
 }
@@ -247,7 +247,7 @@ func (g gesture) BoundingBox() (gdk.Rectangle, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -275,7 +275,7 @@ func (g gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 
 	_x = (float64)(_arg1)
 	_y = (float64)(_arg2)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -305,7 +305,7 @@ func (g gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bo
 
 	_x = (float64)(_arg2)
 	_y = (float64)(_arg3)
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -348,7 +348,7 @@ func (g gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -368,7 +368,7 @@ func (g gesture) IsActive() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -389,7 +389,7 @@ func (g gesture) IsGroupedWith(other Gesture) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -411,7 +411,7 @@ func (g gesture) IsRecognized() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -468,7 +468,7 @@ func (g gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequen
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -491,7 +491,7 @@ func (g gesture) SetState(state EventSequenceState) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

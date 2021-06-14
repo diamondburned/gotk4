@@ -3,12 +3,13 @@
 package gio
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -20,6 +21,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -34,7 +36,7 @@ type NativeSocketAddress interface {
 	SocketConnectable
 }
 
-// nativeSocketAddress implements the NativeSocketAddress interface.
+// nativeSocketAddress implements the NativeSocketAddress class.
 type nativeSocketAddress struct {
 	SocketAddress
 	SocketConnectable
@@ -45,7 +47,7 @@ var _ NativeSocketAddress = (*nativeSocketAddress)(nil)
 // WrapNativeSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
-	return NativeSocketAddress{
+	return nativeSocketAddress{
 		SocketAddress:     WrapSocketAddress(obj),
 		SocketConnectable: WrapSocketConnectable(obj),
 	}

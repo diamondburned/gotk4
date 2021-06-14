@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -84,7 +86,7 @@ type Paned interface {
 	SetWideHandle(wide bool)
 }
 
-// paned implements the Paned interface.
+// paned implements the Paned class.
 type paned struct {
 	Container
 	Buildable
@@ -96,7 +98,7 @@ var _ Paned = (*paned)(nil)
 // WrapPaned wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPaned(obj *externglib.Object) Paned {
-	return Paned{
+	return paned{
 		Container:  WrapContainer(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -162,7 +164,7 @@ func (p paned) WideHandle() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -179,10 +181,10 @@ func (p paned) Pack1(child Widget, resize bool, shrink bool) {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if resize {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if shrink {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.gtk_paned_pack1(_arg0, _arg1, _arg2, _arg3)
@@ -198,10 +200,10 @@ func (p paned) Pack2(child Widget, resize bool, shrink bool) {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if resize {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if shrink {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.gtk_paned_pack2(_arg0, _arg1, _arg2, _arg3)
@@ -225,7 +227,7 @@ func (p paned) SetWideHandle(wide bool) {
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	if wide {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)

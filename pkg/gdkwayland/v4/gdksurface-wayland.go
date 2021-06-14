@@ -3,14 +3,16 @@
 package gdkwayland
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4 gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -26,7 +28,7 @@ type WaylandPopup interface {
 	WaylandSurface
 }
 
-// waylandPopup implements the WaylandPopup interface.
+// waylandPopup implements the WaylandPopup class.
 type waylandPopup struct {
 	WaylandSurface
 }
@@ -36,7 +38,7 @@ var _ WaylandPopup = (*waylandPopup)(nil)
 // WrapWaylandPopup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandPopup(obj *externglib.Object) WaylandPopup {
-	return WaylandPopup{
+	return waylandPopup{
 		WaylandSurface: WrapWaylandSurface(obj),
 	}
 }
@@ -54,12 +56,9 @@ func marshalWaylandPopup(p uintptr) (interface{}, error) {
 // [method@GdkWayland.WaylandSurface.get_wl_surface].
 type WaylandSurface interface {
 	gdk.Surface
-
-	// WlSurface returns the Wayland `wl_surface` of a `GdkSurface`.
-	WlSurface() *interface{}
 }
 
-// waylandSurface implements the WaylandSurface interface.
+// waylandSurface implements the WaylandSurface class.
 type waylandSurface struct {
 	gdk.Surface
 }
@@ -69,7 +68,7 @@ var _ WaylandSurface = (*waylandSurface)(nil)
 // WrapWaylandSurface wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandSurface(obj *externglib.Object) WaylandSurface {
-	return WaylandSurface{
+	return waylandSurface{
 		gdk.Surface: gdk.WrapSurface(obj),
 	}
 }
@@ -78,23 +77,6 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapWaylandSurface(obj), nil
-}
-
-// WlSurface returns the Wayland `wl_surface` of a `GdkSurface`.
-func (s waylandSurface) WlSurface() *interface{} {
-	var _arg0 *C.GdkSurface // out
-
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.wl_surface // in
-
-	_cret = C.gdk_wayland_surface_get_wl_surface(_arg0)
-
-	var _gpointer *interface{} // out
-
-	_gpointer = (*interface{})(_cret)
-
-	return _gpointer
 }
 
 // WaylandToplevel: the Wayland implementation of `GdkToplevel`.
@@ -129,7 +111,7 @@ type WaylandToplevel interface {
 	UnexportHandle()
 }
 
-// waylandToplevel implements the WaylandToplevel interface.
+// waylandToplevel implements the WaylandToplevel class.
 type waylandToplevel struct {
 	WaylandSurface
 }
@@ -139,7 +121,7 @@ var _ WaylandToplevel = (*waylandToplevel)(nil)
 // WrapWaylandToplevel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandToplevel(obj *externglib.Object) WaylandToplevel {
-	return WaylandToplevel{
+	return waylandToplevel{
 		WaylandSurface: WrapWaylandSurface(obj),
 	}
 }
@@ -185,7 +167,7 @@ func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

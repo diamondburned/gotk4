@@ -5,13 +5,13 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -23,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -69,7 +70,7 @@ type MenuAttributeIter interface {
 	Next() bool
 }
 
-// menuAttributeIter implements the MenuAttributeIter interface.
+// menuAttributeIter implements the MenuAttributeIter class.
 type menuAttributeIter struct {
 	gextras.Objector
 }
@@ -79,7 +80,7 @@ var _ MenuAttributeIter = (*menuAttributeIter)(nil)
 // WrapMenuAttributeIter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuAttributeIter(obj *externglib.Object) MenuAttributeIter {
-	return MenuAttributeIter{
+	return menuAttributeIter{
 		Objector: obj,
 	}
 }
@@ -129,11 +130,11 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
 
-	var _arg1 **C.gchar // in
+	var _arg1 *C.gchar // in
 	var _value *glib.Variant
 	var _cret C.gboolean // in
 
-	_cret = C.g_menu_attribute_iter_get_next(_arg0, _arg1, (**C.GVariant)(unsafe.Pointer(&_value)))
+	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, (**C.GVariant)(unsafe.Pointer(&_value)))
 
 	var _outName string // out
 
@@ -141,7 +142,7 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 
 	_outName = C.GoString(_arg1)
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -167,7 +168,7 @@ func (i menuAttributeIter) Next() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -193,7 +194,7 @@ type MenuLinkIter interface {
 	Next() bool
 }
 
-// menuLinkIter implements the MenuLinkIter interface.
+// menuLinkIter implements the MenuLinkIter class.
 type menuLinkIter struct {
 	gextras.Objector
 }
@@ -203,7 +204,7 @@ var _ MenuLinkIter = (*menuLinkIter)(nil)
 // WrapMenuLinkIter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuLinkIter(obj *externglib.Object) MenuLinkIter {
-	return MenuLinkIter{
+	return menuLinkIter{
 		Objector: obj,
 	}
 }
@@ -251,7 +252,7 @@ func (i menuLinkIter) Next() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -397,7 +398,7 @@ type MenuModel interface {
 	ItemsChanged(position int, removed int, added int)
 }
 
-// menuModel implements the MenuModel interface.
+// menuModel implements the MenuModel class.
 type menuModel struct {
 	gextras.Objector
 }
@@ -407,7 +408,7 @@ var _ MenuModel = (*menuModel)(nil)
 // WrapMenuModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuModel(obj *externglib.Object) MenuModel {
-	return MenuModel{
+	return menuModel{
 		Objector: obj,
 	}
 }
@@ -450,7 +451,7 @@ func (m menuModel) IsMutable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

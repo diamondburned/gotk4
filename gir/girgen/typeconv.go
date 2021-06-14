@@ -42,8 +42,22 @@ type ValueProp struct {
 	// allocating the type or not.
 	CallerAllocates bool
 
-	// AllowNone, if true, will allow types that cannot be converted to stay.
-	AllowNone bool
+	// Optional, if true, will allow types that cannot be converted to stay.
+	Optional bool
+
+	// Nullable, if true, will preserve the pointer type to preserve
+	// nullability.
+	Nullable bool // TODO
+
+	// Scope determines the asynchronous rules for the value.
+	//
+	//    - notified: valid until a GDestroyNotify argument is called
+	//    - async: only valid for the duration of the first callback invocation
+	//      (can only be called once)
+	//    - call: only valid for the duration of the call, can be called
+	//      multiple times during the call
+	//
+	Scope string
 }
 
 // NewValuePropParam creates a ValueProp from the given parameter attribute.
@@ -53,9 +67,11 @@ func NewValuePropParam(in, out string, i int, param gir.ParameterAttrs) ValuePro
 		OutName:           out,
 		AnyType:           param.AnyType,
 		Ownership:         param.TransferOwnership,
+		Scope:             param.Scope,
 		Closure:           param.Closure,
 		Destroy:           param.Destroy,
-		AllowNone:         param.AllowNone,
+		Optional:          param.Optional || param.Skip,
+		Nullable:          param.Nullable,
 		CallerAllocates:   param.CallerAllocates,
 		ParameterIsOutput: param.Direction == "out",
 	}
@@ -72,7 +88,9 @@ func NewValuePropReturn(in, out string, ret gir.ReturnValue) ValueProp {
 		OutName:   out,
 		AnyType:   ret.AnyType,
 		Ownership: ret.TransferOwnership,
-		AllowNone: ret.Skip || ret.AllowNone,
+		Scope:     ret.Scope,
+		Optional:  ret.Skip,
+		Nullable:  ret.Nullable,
 		Closure:   ret.Closure,
 		Destroy:   ret.Destroy,
 	}
@@ -103,7 +121,8 @@ func NewThrowValue(in, out string) ValueProp {
 				CType: "GError**",
 			},
 		},
-		AllowNone:         true,
+		Optional:          true,
+		Nullable:          true,
 		ParameterIsOutput: true,
 	}
 }
@@ -281,10 +300,11 @@ func (conv *conversionTo) convertInner(of *ValueConverted, in, out string) *Valu
 	}
 
 	result := newValueConverted(&ValueProp{
-		InName:    of.InName,
-		OutName:   of.OutName,
-		AnyType:   of.AnyType.Array.AnyType,
-		Ownership: owner,
+		InName:            in,
+		OutName:           out,
+		AnyType:           of.AnyType.Array.AnyType,
+		Ownership:         owner,
+		ParameterIsOutput: of.ParameterIsOutput,
 	})
 
 	if !conv.convert(&result) {
@@ -348,14 +368,14 @@ type ValueConverted struct {
 	OutDeclare string
 
 	Conversion string
-	ConversionSideEffects
-
-	resolved       *ResolvedType // only for type conversions
-	needsNamespace bool
+	SideEffects
 
 	p       *pen.PaperString
 	inDecl  *pen.PaperString
 	outDecl *pen.PaperString
+
+	resolved       *ResolvedType // only for type conversions
+	needsNamespace bool
 
 	// Skip is true if the type value should be skipped for
 	Skip bool
@@ -391,6 +411,15 @@ func (value *ValueConverted) resolveType(conv *conversionTo, inputC bool) bool {
 		return false
 	}
 
+	// Pretend that ignored types don't exist.
+	if conv.ng.mustIgnore(value.AnyType.Type.Name, value.AnyType.Type.CType) {
+		return false
+	}
+	// ResolveType already checks this, but we can early bail.
+	if !value.AnyType.Type.IsIntrospectable() {
+		return false
+	}
+
 	if value.resolved != nil {
 		// already resolved
 		return true
@@ -401,15 +430,20 @@ func (value *ValueConverted) resolveType(conv *conversionTo, inputC bool) bool {
 		return false
 	}
 
+	if value.resolved.IsCallback() {
+		value.addCallback(value.resolved.Extern.Result.Callback)
+	}
+
 	// If this is the output parameter, then the pointer count should be less.
 	// This only affects the Go type.
-	if inputC && value.ParameterIsOutput {
+	if inputC && value.ParameterIsOutput && value.resolved.Ptr > 0 {
 		value.resolved.Ptr--
 	}
 
 	value.needsNamespace = value.resolved.NeedsNamespace(conv.ng.current)
 	if value.needsNamespace {
-		value.addImportAlias(value.resolved.Import, value.resolved.Package)
+		// We're using the PublicType, so add that import.
+		value.importPubl(value.resolved)
 	}
 
 	cgoType := value.resolved.CGoType()
@@ -423,7 +457,7 @@ func (value *ValueConverted) resolveType(conv *conversionTo, inputC bool) bool {
 		value.InType = goType
 	}
 
-	if inputC && value.outputAllocs() {
+	if inputC && value.ParameterIsOutput {
 		value.InCall = "&" + value.InCall
 		value.InType = strings.TrimPrefix(value.InType, "*")
 	}
@@ -449,7 +483,7 @@ func (value *ValueConverted) cgoSetObject() {
 	}
 
 	value.addGLibImport()
-	value.addImport(importInternal("gextras"))
+	value.addImportInternal("gextras")
 	value.addImport("unsafe")
 
 	value.p.Linef(
@@ -458,13 +492,13 @@ func (value *ValueConverted) cgoSetObject() {
 	)
 }
 
-func (value *ValueConverted) malloc(lenOf string, add1 bool) string {
+func (value *ValueConverted) cmalloc(lenOf string, add1 bool) string {
 	lenOf = "len(" + lenOf + ")"
 	if add1 {
 		lenOf = "(" + lenOf + "+1)"
 	}
 
-	return fmt.Sprintf("C.malloc(%s * %s)", lenOf, value.csizeof())
+	return fmt.Sprintf("C.malloc(C.ulong(%s) * C.ulong(%s))", lenOf, value.csizeof())
 }
 
 func (value *ValueConverted) csizeof() string {
@@ -478,86 +512,15 @@ func (value *ValueConverted) csizeof() string {
 		return value.ptrsz()
 	}
 
-	if value.resolved.IsRecord() {
-		return "C.sizeof_struct_" + value.resolved.CType
-	}
+	// 	if value.resolved.IsRecord() {
+	// 		return "C.sizeof_struct_" + value.resolved.CType
+	// 	}
 
 	return "C.sizeof_" + value.resolved.CType
 }
 
 func (value *ValueConverted) ptrsz() string {
 	value.addImport("unsafe")
-	// Size of a pointer is the same as int.
-	return "unsafe.Sizeof(int(0))"
-}
-
-// ConversionSideEffects describes the side effects of the conversion, such as
-// importing new things or modifying the Cgo preamble.
-type ConversionSideEffects struct {
-	Imports         map[string]string
-	Callbacks       []string
-	CallbackDelete  bool
-	NeedsStdBool    bool
-	NeedsGLibObject bool
-}
-
-// applySideEffects applies all side effects of the given list of type converted
-// results.
-func applySideEffects(fg *FileGenerator, results []ValueConverted) {
-	for _, result := range results {
-		result.Apply(fg)
-	}
-}
-
-func (sides *ConversionSideEffects) addImport(path string) {
-	sides.addImportAlias(path, "")
-}
-
-func (sides *ConversionSideEffects) addImportAlias(path, alias string) {
-	if sides.Imports == nil {
-		sides.Imports = map[string]string{}
-	}
-
-	sides.Imports[path] = alias
-}
-
-func (sides *ConversionSideEffects) addGLibImport() {
-	resolved := externGLibType("", gir.Type{}, "")
-	sides.addImportAlias(resolved.Import, resolved.Package)
-}
-
-func (sides ConversionSideEffects) addCallback(callback *gir.Callback) {
-	sides.Callbacks = append(sides.Callbacks, CallbackCHeader(callback))
-}
-
-// Apply applies the side effects of the conversion. The caller has control over
-// calling this.
-func (sides ConversionSideEffects) Apply(fg *FileGenerator) {
-	if sides.CallbackDelete {
-		fg.needsCallbackDelete()
-	}
-	if sides.NeedsStdBool {
-		fg.needsStdbool()
-	}
-	if sides.NeedsGLibObject {
-		fg.needsGLibObject()
-	}
-	for path, alias := range sides.Imports {
-		fg.addImportAlias(path, alias)
-	}
-	for _, callback := range sides.Callbacks {
-		fg.addCallbackHeader(callback)
-	}
-}
-
-// goSliceFromPtr crafts a typ slice from the given ptr as the backing array
-// with the given len, then set it into target. typ should be innerType. A
-// temporary variable named sliceHeader is made.
-//
-// Imports needed: github.com/diamondburned/gotk4/internal/ptr.
-func goSliceFromPtr(target, ptr, len string) string {
-	return fmt.Sprintf(
-		"ptr.SetSlice(unsafe.Pointer(&%s), unsafe.Pointer(%s), int(%s))",
-		target, ptr, len,
-	)
+	// Size of a pointer is the same as uint.
+	return "unsafe.Sizeof(uint(0))"
 }

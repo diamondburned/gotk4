@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -60,7 +62,7 @@ type EditableLabel interface {
 	StopEditing(commit bool)
 }
 
-// editableLabel implements the EditableLabel interface.
+// editableLabel implements the EditableLabel class.
 type editableLabel struct {
 	Widget
 	Accessible
@@ -74,7 +76,7 @@ var _ EditableLabel = (*editableLabel)(nil)
 // WrapEditableLabel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEditableLabel(obj *externglib.Object) EditableLabel {
-	return EditableLabel{
+	return editableLabel{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -101,7 +103,7 @@ func (s editableLabel) Editing() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -129,7 +131,7 @@ func (s editableLabel) StopEditing(commit bool) {
 
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 	if commit {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_editable_label_stop_editing(_arg0, _arg1)

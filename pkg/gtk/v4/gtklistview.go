@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -134,7 +136,7 @@ type ListView interface {
 	SetSingleClickActivate(singleClickActivate bool)
 }
 
-// listView implements the ListView interface.
+// listView implements the ListView class.
 type listView struct {
 	ListBase
 	Accessible
@@ -149,7 +151,7 @@ var _ ListView = (*listView)(nil)
 // WrapListView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListView(obj *externglib.Object) ListView {
-	return ListView{
+	return listView{
 		ListBase:         WrapListBase(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -178,7 +180,7 @@ func (s listView) EnableRubberband() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -198,7 +200,7 @@ func (s listView) ShowSeparators() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -218,7 +220,7 @@ func (s listView) SingleClickActivate() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -233,7 +235,7 @@ func (s listView) SetEnableRubberband(enableRubberband bool) {
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 	if enableRubberband {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_view_set_enable_rubberband(_arg0, _arg1)
@@ -272,7 +274,7 @@ func (s listView) SetShowSeparators(showSeparators bool) {
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 	if showSeparators {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_view_set_show_separators(_arg0, _arg1)
@@ -286,7 +288,7 @@ func (s listView) SetSingleClickActivate(singleClickActivate bool) {
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 	if singleClickActivate {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_view_set_single_click_activate(_arg0, _arg1)

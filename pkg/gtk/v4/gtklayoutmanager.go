@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -78,7 +81,7 @@ type LayoutManager interface {
 	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
-// layoutManager implements the LayoutManager interface.
+// layoutManager implements the LayoutManager class.
 type layoutManager struct {
 	gextras.Objector
 }
@@ -88,7 +91,7 @@ var _ LayoutManager = (*layoutManager)(nil)
 // WrapLayoutManager wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLayoutManager(obj *externglib.Object) LayoutManager {
-	return LayoutManager{
+	return layoutManager{
 		Objector: obj,
 	}
 }

@@ -3,14 +3,14 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -85,7 +85,7 @@ type CSSProvider interface {
 	String() string
 }
 
-// cssProvider implements the CSSProvider interface.
+// cssProvider implements the CSSProvider class.
 type cssProvider struct {
 	gextras.Objector
 	StyleProvider
@@ -96,7 +96,7 @@ var _ CSSProvider = (*cssProvider)(nil)
 // WrapCSSProvider wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCSSProvider(obj *externglib.Object) CSSProvider {
-	return CSSProvider{
+	return cssProvider{
 		Objector:      obj,
 		StyleProvider: WrapStyleProvider(obj),
 	}

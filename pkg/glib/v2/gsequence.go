@@ -4,13 +4,10 @@ package glib
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -30,28 +27,9 @@ func WrapSequence(ptr unsafe.Pointer) *Sequence {
 	return (*Sequence)(ptr)
 }
 
-func marshalSequence(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSequence(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (s *Sequence) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// Foreach calls @func for each item in the sequence passing @user_data to the
-// function. @func must not modify the sequence itself.
-func (s *Sequence) Foreach(fn Func) {
-	var _arg0 *C.GSequence // out
-	var _arg1 C.GFunc      // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_Func)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.g_sequence_foreach(_arg0, _arg1, _arg2)
 }
 
 // Free frees the memory allocated for @seq. If @seq has a data destroy function
@@ -99,47 +77,11 @@ func (s *Sequence) IsEmpty() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Sort sorts @seq using @cmp_func.
-//
-// @cmp_func is passed two items of @seq and should return 0 if they are equal,
-// a negative value if the first comes before the second, and a positive value
-// if the second comes before the first.
-func (s *Sequence) Sort(cmpFunc CompareDataFunc) {
-	var _arg0 *C.GSequence       // out
-	var _arg1 C.GCompareDataFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
-	_arg2 = C.gpointer(box.Assign(cmpFunc))
-
-	C.g_sequence_sort(_arg0, _arg1, _arg2)
-}
-
-// SortIter: like g_sequence_sort(), but uses a IterCompareFunc instead of a
-// DataFunc as the compare function
-//
-// @cmp_func is called with two iterators pointing into @seq. It should return 0
-// if the iterators are equal, a negative value if the first iterator comes
-// before the second, and a positive value if the second iterator comes before
-// the first.
-func (s *Sequence) SortIter(cmpFunc SequenceIterCompareFunc) {
-	var _arg0 *C.GSequence               // out
-	var _arg1 C.GSequenceIterCompareFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_SequenceIterCompareFunc)
-	_arg2 = C.gpointer(box.Assign(cmpFunc))
-
-	C.g_sequence_sort_iter(_arg0, _arg1, _arg2)
 }
 
 // SequenceIter: the Iter struct is an opaque data type representing an iterator
@@ -156,11 +98,6 @@ func WrapSequenceIter(ptr unsafe.Pointer) *SequenceIter {
 	}
 
 	return (*SequenceIter)(ptr)
-}
-
-func marshalSequenceIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSequenceIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -219,7 +156,7 @@ func (i *SequenceIter) IsBegin() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -238,7 +175,7 @@ func (i *SequenceIter) IsEnd() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -3,11 +3,13 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/internal/box"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -49,8 +51,6 @@ type TreeSelection interface {
 	// CountSelectedRows returns the number of rows that have been selected in
 	// @tree.
 	CountSelectedRows() int
-	// UserData returns the user data for the selection function.
-	UserData() interface{}
 	// IterIsSelected returns true if the row at @iter is currently selected.
 	IterIsSelected(iter *TreeIter) bool
 	// PathIsSelected returns true if the row pointed to by @path is currently
@@ -66,10 +66,6 @@ type TreeSelection interface {
 	// SelectRange selects a range of nodes, determined by @start_path and
 	// @end_path inclusive. @selection must be set to K_SELECTION_MULTIPLE mode.
 	SelectRange(startPath *TreePath, endPath *TreePath)
-	// SelectedForeach calls a function for each selected node. Note that you
-	// cannot modify the tree or selection from within this function. As a
-	// result, gtk_tree_selection_get_selected_rows() might be more useful.
-	SelectedForeach(fn TreeSelectionForeachFunc)
 	// SetMode sets the selection mode of the @selection. If the previous type
 	// was K_SELECTION_MULTIPLE, then the anchor is kept selected, if it was
 	// previously selected.
@@ -85,7 +81,7 @@ type TreeSelection interface {
 	UnselectRange(startPath *TreePath, endPath *TreePath)
 }
 
-// treeSelection implements the TreeSelection interface.
+// treeSelection implements the TreeSelection class.
 type treeSelection struct {
 	gextras.Objector
 }
@@ -95,7 +91,7 @@ var _ TreeSelection = (*treeSelection)(nil)
 // WrapTreeSelection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeSelection(obj *externglib.Object) TreeSelection {
-	return TreeSelection{
+	return treeSelection{
 		Objector: obj,
 	}
 }
@@ -124,23 +120,6 @@ func (s treeSelection) CountSelectedRows() int {
 	return _gint
 }
 
-// UserData returns the user data for the selection function.
-func (s treeSelection) UserData() interface{} {
-	var _arg0 *C.GtkTreeSelection // out
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gpointer // in
-
-	_cret = C.gtk_tree_selection_get_user_data(_arg0)
-
-	var _gpointer interface{} // out
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
-}
-
 // IterIsSelected returns true if the row at @iter is currently selected.
 func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeSelection // out
@@ -155,7 +134,7 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -177,7 +156,7 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -228,21 +207,6 @@ func (s treeSelection) SelectRange(startPath *TreePath, endPath *TreePath) {
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(endPath.Native()))
 
 	C.gtk_tree_selection_select_range(_arg0, _arg1, _arg2)
-}
-
-// SelectedForeach calls a function for each selected node. Note that you
-// cannot modify the tree or selection from within this function. As a
-// result, gtk_tree_selection_get_selected_rows() might be more useful.
-func (s treeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
-	var _arg0 *C.GtkTreeSelection           // out
-	var _arg1 C.GtkTreeSelectionForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TreeSelectionForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_tree_selection_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetMode sets the selection mode of the @selection. If the previous type

@@ -3,14 +3,15 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +23,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -134,12 +136,9 @@ type Cancellable interface {
 	// outstanding async operations. You should create a fresh cancellable for
 	// further async operations.
 	Reset()
-	// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
-	// notify that the operation was cancelled.
-	SetErrorIfCancelled() error
 }
 
-// cancellable implements the Cancellable interface.
+// cancellable implements the Cancellable class.
 type cancellable struct {
 	gextras.Objector
 }
@@ -149,7 +148,7 @@ var _ Cancellable = (*cancellable)(nil)
 // WrapCancellable wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCancellable(obj *externglib.Object) Cancellable {
-	return Cancellable{
+	return cancellable{
 		Objector: obj,
 	}
 }
@@ -247,7 +246,7 @@ func (c cancellable) IsCancelled() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -284,7 +283,7 @@ func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -351,22 +350,4 @@ func (c cancellable) Reset() {
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	C.g_cancellable_reset(_arg0)
-}
-
-// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
-// notify that the operation was cancelled.
-func (c cancellable) SetErrorIfCancelled() error {
-	var _arg0 *C.GCancellable // out
-
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-
-	var _cerr *C.GError // in
-
-	C.g_cancellable_set_error_if_cancelled(_arg0, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }

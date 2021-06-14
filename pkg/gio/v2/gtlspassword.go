@@ -3,15 +3,14 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -23,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -66,7 +66,7 @@ type TLSPassword interface {
 	SetWarning(warning string)
 }
 
-// tlsPassword implements the TLSPassword interface.
+// tlsPassword implements the TLSPassword class.
 type tlsPassword struct {
 	gextras.Objector
 }
@@ -76,7 +76,7 @@ var _ TLSPassword = (*tlsPassword)(nil)
 // WrapTLSPassword wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTLSPassword(obj *externglib.Object) TLSPassword {
-	return TLSPassword{
+	return tlsPassword{
 		Objector: obj,
 	}
 }

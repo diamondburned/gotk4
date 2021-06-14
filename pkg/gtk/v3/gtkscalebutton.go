@@ -5,11 +5,10 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -56,7 +55,7 @@ type ScaleButton interface {
 	SetValue(value float64)
 }
 
-// scaleButton implements the ScaleButton interface.
+// scaleButton implements the ScaleButton class.
 type scaleButton struct {
 	Button
 	Actionable
@@ -70,7 +69,7 @@ var _ ScaleButton = (*scaleButton)(nil)
 // WrapScaleButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapScaleButton(obj *externglib.Object) ScaleButton {
-	return ScaleButton{
+	return scaleButton{
 		Button:      WrapButton(obj),
 		Actionable:  WrapActionable(obj),
 		Activatable: WrapActivatable(obj),
@@ -121,16 +120,14 @@ func (b scaleButton) SetIcons(icons []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (**C.gchar)(C.malloc((len(icons) + 1) * unsafe.Sizeof(int(0))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(icons) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(icons)))
-
+		out := unsafe.Slice(_arg1, len(icons))
 		for i := range icons {
-			_arg1 = (*C.gchar)(C.CString(icons))
-			defer C.free(unsafe.Pointer(_arg1))
+			out[i] = (*C.gchar)(C.CString(icons[i]))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

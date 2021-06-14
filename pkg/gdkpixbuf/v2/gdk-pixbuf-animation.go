@@ -3,14 +3,17 @@
 package gdkpixbuf
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -47,11 +50,9 @@ type PixbufAnimation interface {
 	// `TRUE`. Use gdk_pixbuf_animation_get_static_image() to retrieve the
 	// image.
 	IsStaticImage() bool
-	// Unref removes a reference from an animation.
-	Unref()
 }
 
-// pixbufAnimation implements the PixbufAnimation interface.
+// pixbufAnimation implements the PixbufAnimation class.
 type pixbufAnimation struct {
 	gextras.Objector
 }
@@ -61,7 +62,7 @@ var _ PixbufAnimation = (*pixbufAnimation)(nil)
 // WrapPixbufAnimation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufAnimation(obj *externglib.Object) PixbufAnimation {
-	return PixbufAnimation{
+	return pixbufAnimation{
 		Objector: obj,
 	}
 }
@@ -123,20 +124,11 @@ func (a pixbufAnimation) IsStaticImage() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Unref removes a reference from an animation.
-func (a pixbufAnimation) Unref() {
-	var _arg0 *C.GdkPixbufAnimation // out
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	C.gdk_pixbuf_animation_unref(_arg0)
 }
 
 // PixbufAnimationIter: an opaque object representing an iterator which points
@@ -184,7 +176,7 @@ type PixbufAnimationIter interface {
 	OnCurrentlyLoadingFrame() bool
 }
 
-// pixbufAnimationIter implements the PixbufAnimationIter interface.
+// pixbufAnimationIter implements the PixbufAnimationIter class.
 type pixbufAnimationIter struct {
 	gextras.Objector
 }
@@ -194,7 +186,7 @@ var _ PixbufAnimationIter = (*pixbufAnimationIter)(nil)
 // WrapPixbufAnimationIter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIter {
-	return PixbufAnimationIter{
+	return pixbufAnimationIter{
 		Objector: obj,
 	}
 }
@@ -238,7 +230,7 @@ func (i pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -287,7 +279,7 @@ func (i pixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

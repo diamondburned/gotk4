@@ -2,7 +2,102 @@
 
 package gtk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_page_setup_unix_dialog_get_type()), F: marshalPageSetupUnixDialog},
+	})
+}
+
+// PageSetupUnixDialog: `GtkPageSetupUnixDialog` implements a page setup dialog
+// for platforms which don’t provide a native page setup dialog, like Unix.
+//
+// !An example GtkPageSetupUnixDialog (pagesetupdialog.png)
+//
+// It can be used very much like any other GTK dialog, at the cost of the
+// portability offered by the high-level printing API in
+// [class@Gtk.PrintOperation].
+type PageSetupUnixDialog interface {
+	Dialog
+	Accessible
+	Buildable
+	ConstraintTarget
+	Native
+	Root
+	ShortcutManager
+
+	// SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
+	// takes its values.
+	SetPageSetup(pageSetup PageSetup)
+	// SetPrintSettings sets the `GtkPrintSettings` from which the page setup
+	// dialog takes its values.
+	SetPrintSettings(printSettings PrintSettings)
+}
+
+// pageSetupUnixDialog implements the PageSetupUnixDialog class.
+type pageSetupUnixDialog struct {
+	Dialog
+	Accessible
+	Buildable
+	ConstraintTarget
+	Native
+	Root
+	ShortcutManager
+}
+
+var _ PageSetupUnixDialog = (*pageSetupUnixDialog)(nil)
+
+// WrapPageSetupUnixDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
+	return pageSetupUnixDialog{
+		Dialog:           WrapDialog(obj),
+		Accessible:       WrapAccessible(obj),
+		Buildable:        WrapBuildable(obj),
+		ConstraintTarget: WrapConstraintTarget(obj),
+		Native:           WrapNative(obj),
+		Root:             WrapRoot(obj),
+		ShortcutManager:  WrapShortcutManager(obj),
+	}
+}
+
+func marshalPageSetupUnixDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapPageSetupUnixDialog(obj), nil
+}
+
+// SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
+// takes its values.
+func (d pageSetupUnixDialog) SetPageSetup(pageSetup PageSetup) {
+	var _arg0 *C.GtkPageSetupUnixDialog // out
+	var _arg1 *C.GtkPageSetup           // out
+
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
+
+	C.gtk_page_setup_unix_dialog_set_page_setup(_arg0, _arg1)
+}
+
+// SetPrintSettings sets the `GtkPrintSettings` from which the page setup
+// dialog takes its values.
+func (d pageSetupUnixDialog) SetPrintSettings(printSettings PrintSettings) {
+	var _arg0 *C.GtkPageSetupUnixDialog // out
+	var _arg1 *C.GtkPrintSettings       // out
+
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(printSettings.Native()))
+
+	C.gtk_page_setup_unix_dialog_set_print_settings(_arg0, _arg1)
+}

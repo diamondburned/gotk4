@@ -3,10 +3,12 @@
 package gsk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
@@ -23,7 +25,7 @@ type GLRenderer interface {
 	Renderer
 }
 
-// glRenderer implements the GLRenderer interface.
+// glRenderer implements the GLRenderer class.
 type glRenderer struct {
 	Renderer
 }
@@ -33,7 +35,7 @@ var _ GLRenderer = (*glRenderer)(nil)
 // WrapGLRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGLRenderer(obj *externglib.Object) GLRenderer {
-	return GLRenderer{
+	return glRenderer{
 		Renderer: WrapRenderer(obj),
 	}
 }

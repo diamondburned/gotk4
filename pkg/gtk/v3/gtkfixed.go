@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -69,7 +69,7 @@ type Fixed interface {
 	Put(widget Widget, x int, y int)
 }
 
-// fixed implements the Fixed interface.
+// fixed implements the Fixed class.
 type fixed struct {
 	Container
 	Buildable
@@ -80,7 +80,7 @@ var _ Fixed = (*fixed)(nil)
 // WrapFixed wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFixed(obj *externglib.Object) Fixed {
-	return Fixed{
+	return fixed{
 		Container: WrapContainer(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -134,11 +134,6 @@ func WrapFixedChild(ptr unsafe.Pointer) *FixedChild {
 	}
 
 	return (*FixedChild)(ptr)
-}
-
-func marshalFixedChild(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFixedChild(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

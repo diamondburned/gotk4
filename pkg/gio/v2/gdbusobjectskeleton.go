@@ -5,12 +5,12 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -22,6 +22,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -63,7 +64,7 @@ type DBusObjectSkeleton interface {
 	SetObjectPath(objectPath string)
 }
 
-// dBusObjectSkeleton implements the DBusObjectSkeleton interface.
+// dBusObjectSkeleton implements the DBusObjectSkeleton class.
 type dBusObjectSkeleton struct {
 	gextras.Objector
 	DBusObject
@@ -74,7 +75,7 @@ var _ DBusObjectSkeleton = (*dBusObjectSkeleton)(nil)
 // WrapDBusObjectSkeleton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectSkeleton(obj *externglib.Object) DBusObjectSkeleton {
-	return DBusObjectSkeleton{
+	return dBusObjectSkeleton{
 		Objector:   obj,
 		DBusObject: WrapDBusObject(obj),
 	}

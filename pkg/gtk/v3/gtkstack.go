@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -18,8 +18,75 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_stack_transition_type_get_type()), F: marshalStackTransitionType},
 		{T: externglib.Type(C.gtk_stack_get_type()), F: marshalStack},
 	})
+}
+
+// StackTransitionType: these enumeration values describe the possible
+// transitions between pages in a Stack widget.
+//
+// New values may be added to this enumeration over time.
+type StackTransitionType int
+
+const (
+	// StackTransitionTypeNone: no transition
+	StackTransitionTypeNone StackTransitionType = 0
+	// StackTransitionTypeCrossfade: a cross-fade
+	StackTransitionTypeCrossfade StackTransitionType = 1
+	// StackTransitionTypeSlideRight: slide from left to right
+	StackTransitionTypeSlideRight StackTransitionType = 2
+	// StackTransitionTypeSlideLeft: slide from right to left
+	StackTransitionTypeSlideLeft StackTransitionType = 3
+	// StackTransitionTypeSlideUp: slide from bottom up
+	StackTransitionTypeSlideUp StackTransitionType = 4
+	// StackTransitionTypeSlideDown: slide from top down
+	StackTransitionTypeSlideDown StackTransitionType = 5
+	// StackTransitionTypeSlideLeftRight: slide from left or right according to
+	// the children order
+	StackTransitionTypeSlideLeftRight StackTransitionType = 6
+	// StackTransitionTypeSlideUpDown: slide from top down or bottom up
+	// according to the order
+	StackTransitionTypeSlideUpDown StackTransitionType = 7
+	// StackTransitionTypeOverUp: cover the old page by sliding up. Since 3.12
+	StackTransitionTypeOverUp StackTransitionType = 8
+	// StackTransitionTypeOverDown: cover the old page by sliding down. Since:
+	// 3.12
+	StackTransitionTypeOverDown StackTransitionType = 9
+	// StackTransitionTypeOverLeft: cover the old page by sliding to the left.
+	// Since: 3.12
+	StackTransitionTypeOverLeft StackTransitionType = 10
+	// StackTransitionTypeOverRight: cover the old page by sliding to the right.
+	// Since: 3.12
+	StackTransitionTypeOverRight StackTransitionType = 11
+	// StackTransitionTypeUnderUp: uncover the new page by sliding up. Since
+	// 3.12
+	StackTransitionTypeUnderUp StackTransitionType = 12
+	// StackTransitionTypeUnderDown: uncover the new page by sliding down.
+	// Since: 3.12
+	StackTransitionTypeUnderDown StackTransitionType = 13
+	// StackTransitionTypeUnderLeft: uncover the new page by sliding to the
+	// left. Since: 3.12
+	StackTransitionTypeUnderLeft StackTransitionType = 14
+	// StackTransitionTypeUnderRight: uncover the new page by sliding to the
+	// right. Since: 3.12
+	StackTransitionTypeUnderRight StackTransitionType = 15
+	// StackTransitionTypeOverUpDown: cover the old page sliding up or uncover
+	// the new page sliding down, according to order. Since: 3.12
+	StackTransitionTypeOverUpDown StackTransitionType = 16
+	// StackTransitionTypeOverDownUp: cover the old page sliding down or uncover
+	// the new page sliding up, according to order. Since: 3.14
+	StackTransitionTypeOverDownUp StackTransitionType = 17
+	// StackTransitionTypeOverLeftRight: cover the old page sliding left or
+	// uncover the new page sliding right, according to order. Since: 3.14
+	StackTransitionTypeOverLeftRight StackTransitionType = 18
+	// StackTransitionTypeOverRightLeft: cover the old page sliding right or
+	// uncover the new page sliding left, according to order. Since: 3.14
+	StackTransitionTypeOverRightLeft StackTransitionType = 19
+)
+
+func marshalStackTransitionType(p uintptr) (interface{}, error) {
+	return StackTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Stack: the GtkStack widget is a container which only shows one of its
@@ -128,7 +195,7 @@ type Stack interface {
 	SetVisibleChildName(name string)
 }
 
-// stack implements the Stack interface.
+// stack implements the Stack class.
 type stack struct {
 	Container
 	Buildable
@@ -139,7 +206,7 @@ var _ Stack = (*stack)(nil)
 // WrapStack wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStack(obj *externglib.Object) Stack {
-	return Stack{
+	return stack{
 		Container: WrapContainer(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -197,7 +264,7 @@ func (s stack) Hhomogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -217,7 +284,7 @@ func (s stack) Homogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -237,7 +304,7 @@ func (s stack) InterpolateSize() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -275,7 +342,7 @@ func (s stack) TransitionRunning() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -295,7 +362,7 @@ func (s stack) Vhomogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -330,7 +397,7 @@ func (s stack) SetHhomogeneous(hhomogeneous bool) {
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	if hhomogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_stack_set_hhomogeneous(_arg0, _arg1)
@@ -349,7 +416,7 @@ func (s stack) SetHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_stack_set_homogeneous(_arg0, _arg1)
@@ -366,7 +433,7 @@ func (s stack) SetInterpolateSize(interpolateSize bool) {
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	if interpolateSize {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_stack_set_interpolate_size(_arg0, _arg1)
@@ -411,7 +478,7 @@ func (s stack) SetVhomogeneous(vhomogeneous bool) {
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	if vhomogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_stack_set_vhomogeneous(_arg0, _arg1)

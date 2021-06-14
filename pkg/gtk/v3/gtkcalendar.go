@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -16,8 +18,36 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_calendar_display_options_get_type()), F: marshalCalendarDisplayOptions},
 		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendar},
 	})
+}
+
+// CalendarDisplayOptions: these options can be used to influence the display
+// and behaviour of a Calendar.
+type CalendarDisplayOptions int
+
+const (
+	// CalendarDisplayOptionsShowHeading specifies that the month and year
+	// should be displayed.
+	CalendarDisplayOptionsShowHeading CalendarDisplayOptions = 1
+	// CalendarDisplayOptionsShowDayNames specifies that three letter day
+	// descriptions should be present.
+	CalendarDisplayOptionsShowDayNames CalendarDisplayOptions = 2
+	// CalendarDisplayOptionsNoMonthChange prevents the user from switching
+	// months with the calendar.
+	CalendarDisplayOptionsNoMonthChange CalendarDisplayOptions = 4
+	// CalendarDisplayOptionsShowWeekNumbers displays each week numbers of the
+	// current year, down the left side of the calendar.
+	CalendarDisplayOptionsShowWeekNumbers CalendarDisplayOptions = 8
+	// CalendarDisplayOptionsShowDetails: just show an indicator, not the full
+	// details text when details are provided. See
+	// gtk_calendar_set_detail_func().
+	CalendarDisplayOptionsShowDetails CalendarDisplayOptions = 32
+)
+
+func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
+	return CalendarDisplayOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
@@ -75,7 +105,7 @@ type Calendar interface {
 	UnmarkDay(day uint)
 }
 
-// calendar implements the Calendar interface.
+// calendar implements the Calendar class.
 type calendar struct {
 	Widget
 	Buildable
@@ -86,7 +116,7 @@ var _ Calendar = (*calendar)(nil)
 // WrapCalendar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCalendar(obj *externglib.Object) Calendar {
-	return Calendar{
+	return calendar{
 		Widget:    WrapWidget(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -144,7 +174,7 @@ func (c calendar) DayIsMarked(day uint) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -53,7 +55,7 @@ type FixedLayout interface {
 	LayoutManager
 }
 
-// fixedLayout implements the FixedLayout interface.
+// fixedLayout implements the FixedLayout class.
 type fixedLayout struct {
 	LayoutManager
 }
@@ -63,7 +65,7 @@ var _ FixedLayout = (*fixedLayout)(nil)
 // WrapFixedLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFixedLayout(obj *externglib.Object) FixedLayout {
-	return FixedLayout{
+	return fixedLayout{
 		LayoutManager: WrapLayoutManager(obj),
 	}
 }
@@ -83,7 +85,7 @@ type FixedLayoutChild interface {
 	SetTransform(transform *gsk.Transform)
 }
 
-// fixedLayoutChild implements the FixedLayoutChild interface.
+// fixedLayoutChild implements the FixedLayoutChild class.
 type fixedLayoutChild struct {
 	LayoutChild
 }
@@ -93,7 +95,7 @@ var _ FixedLayoutChild = (*fixedLayoutChild)(nil)
 // WrapFixedLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChild {
-	return FixedLayoutChild{
+	return fixedLayoutChild{
 		LayoutChild: WrapLayoutChild(obj),
 	}
 }

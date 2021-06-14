@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -55,7 +57,7 @@ type BoxLayout interface {
 	SetSpacing(spacing uint)
 }
 
-// boxLayout implements the BoxLayout interface.
+// boxLayout implements the BoxLayout class.
 type boxLayout struct {
 	LayoutManager
 	Orientable
@@ -66,7 +68,7 @@ var _ BoxLayout = (*boxLayout)(nil)
 // WrapBoxLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBoxLayout(obj *externglib.Object) BoxLayout {
-	return BoxLayout{
+	return boxLayout{
 		LayoutManager: WrapLayoutManager(obj),
 		Orientable:    WrapOrientable(obj),
 	}
@@ -90,7 +92,7 @@ func (b boxLayout) Homogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -139,7 +141,7 @@ func (b boxLayout) SetHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_box_layout_set_homogeneous(_arg0, _arg1)

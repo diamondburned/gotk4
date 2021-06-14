@@ -8,9 +8,8 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -36,9 +35,11 @@ func gotk4_CompareDataFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.
 	fn := v.(CompareDataFunc)
 	gint := fn(a, b)
 
+	var cret C.gint // out
+
 	cret = C.gint(gint)
 
-	return gint
+	return cret
 }
 
 // Func specifies the type of functions passed to g_list_foreach() and
@@ -101,11 +102,6 @@ func WrapTimeVal(ptr unsafe.Pointer) *TimeVal {
 	}
 
 	return (*TimeVal)(ptr)
-}
-
-func marshalTimeVal(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTimeVal(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: pango glib-2.0
+// #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
 
@@ -99,11 +98,6 @@ func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 	}
 
 	return (*Rectangle)(ptr)
-}
-
-func marshalRectangle(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRectangle(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

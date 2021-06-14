@@ -3,17 +3,16 @@
 package gdkpixbuf
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -71,22 +70,6 @@ func init() {
 type PixbufLoader interface {
 	gextras.Objector
 
-	// Close informs a pixbuf loader that no further writes with
-	// gdk_pixbuf_loader_write() will occur, so that it can free its internal
-	// loading structures.
-	//
-	// This function also tries to parse any data that hasn't yet been parsed;
-	// if the remaining data is partial or corrupt, an error will be returned.
-	//
-	// If `FALSE` is returned, `error` will be set to an error from the
-	// `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.
-	//
-	// If you're just cancelling a load rather than expecting it to be finished,
-	// passing `NULL` for `error` to ignore it is reasonable.
-	//
-	// Remember that this function does not release a reference on the loader,
-	// so you will need to explicitly release any reference you hold.
-	Close() error
 	// SetSize causes the image to be scaled while it is loaded.
 	//
 	// The desired image size can be determined relative to the original size of
@@ -96,11 +79,9 @@ type PixbufLoader interface {
 	// Attempts to set the desired image size are ignored after the emission of
 	// the ::size-prepared signal.
 	SetSize(width int, height int)
-	// Write parses the next `count` bytes in the given image buffer.
-	Write(buf []byte) error
 }
 
-// pixbufLoader implements the PixbufLoader interface.
+// pixbufLoader implements the PixbufLoader class.
 type pixbufLoader struct {
 	gextras.Objector
 }
@@ -110,7 +91,7 @@ var _ PixbufLoader = (*pixbufLoader)(nil)
 // WrapPixbufLoader wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufLoader(obj *externglib.Object) PixbufLoader {
-	return PixbufLoader{
+	return pixbufLoader{
 		Objector: obj,
 	}
 }
@@ -119,37 +100,6 @@ func marshalPixbufLoader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPixbufLoader(obj), nil
-}
-
-// Close informs a pixbuf loader that no further writes with
-// gdk_pixbuf_loader_write() will occur, so that it can free its internal
-// loading structures.
-//
-// This function also tries to parse any data that hasn't yet been parsed;
-// if the remaining data is partial or corrupt, an error will be returned.
-//
-// If `FALSE` is returned, `error` will be set to an error from the
-// `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.
-//
-// If you're just cancelling a load rather than expecting it to be finished,
-// passing `NULL` for `error` to ignore it is reasonable.
-//
-// Remember that this function does not release a reference on the loader,
-// so you will need to explicitly release any reference you hold.
-func (l pixbufLoader) Close() error {
-	var _arg0 *C.GdkPixbufLoader // out
-
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
-
-	var _cerr *C.GError // in
-
-	C.gdk_pixbuf_loader_close(_arg0, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // SetSize causes the image to be scaled while it is loaded.
@@ -170,25 +120,4 @@ func (l pixbufLoader) SetSize(width int, height int) {
 	_arg2 = C.int(height)
 
 	C.gdk_pixbuf_loader_set_size(_arg0, _arg1, _arg2)
-}
-
-// Write parses the next `count` bytes in the given image buffer.
-func (l pixbufLoader) Write(buf []byte) error {
-	var _arg0 *C.GdkPixbufLoader // out
-	var _arg1 *C.guchar
-	var _arg2 C.gsize
-
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
-	_arg2 = C.gsize(len(buf))
-	_arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
-
-	var _cerr *C.GError // in
-
-	C.gdk_pixbuf_loader_write(_arg0, _arg1, _arg2, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }

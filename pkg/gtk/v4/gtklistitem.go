@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -89,7 +89,7 @@ type ListItem interface {
 	SetSelectable(selectable bool)
 }
 
-// listItem implements the ListItem interface.
+// listItem implements the ListItem class.
 type listItem struct {
 	gextras.Objector
 }
@@ -99,7 +99,7 @@ var _ ListItem = (*listItem)(nil)
 // WrapListItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListItem(obj *externglib.Object) ListItem {
-	return ListItem{
+	return listItem{
 		Objector: obj,
 	}
 }
@@ -123,7 +123,7 @@ func (s listItem) Activatable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -183,7 +183,7 @@ func (s listItem) Selectable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -205,7 +205,7 @@ func (s listItem) Selected() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -226,7 +226,7 @@ func (s listItem) SetActivatable(activatable bool) {
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 	if activatable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_item_set_activatable(_arg0, _arg1)
@@ -264,7 +264,7 @@ func (s listItem) SetSelectable(selectable bool) {
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 	if selectable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_list_item_set_selectable(_arg0, _arg1)

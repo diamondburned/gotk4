@@ -9,10 +9,10 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-x11 gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4 gtk4-x11
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/x11/gdkx.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -103,7 +103,7 @@ type X11Surface interface {
 	SetUTF8Property(name string, value string)
 }
 
-// x11Surface implements the X11Surface interface.
+// x11Surface implements the X11Surface class.
 type x11Surface struct {
 	gdk.Surface
 }
@@ -113,7 +113,7 @@ var _ X11Surface = (*x11Surface)(nil)
 // WrapX11Surface wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Surface(obj *externglib.Object) X11Surface {
-	return X11Surface{
+	return x11Surface{
 		gdk.Surface: gdk.WrapSurface(obj),
 	}
 }
@@ -181,7 +181,7 @@ func (s x11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	if frameSyncEnabled {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_x11_surface_set_frame_sync_enabled(_arg0, _arg1)
@@ -207,7 +207,7 @@ func (s x11Surface) SetSkipPagerHint(skipsPager bool) {
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	if skipsPager {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_x11_surface_set_skip_pager_hint(_arg0, _arg1)
@@ -221,7 +221,7 @@ func (s x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	if skipsTaskbar {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_x11_surface_set_skip_taskbar_hint(_arg0, _arg1)
@@ -255,7 +255,7 @@ func (s x11Surface) SetUrgencyHint(urgent bool) {
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	if urgent {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gdk_x11_surface_set_urgency_hint(_arg0, _arg1)

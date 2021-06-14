@@ -3,11 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -32,7 +35,7 @@ type FlattenListModel interface {
 	SetModel(model gio.ListModel)
 }
 
-// flattenListModel implements the FlattenListModel interface.
+// flattenListModel implements the FlattenListModel class.
 type flattenListModel struct {
 	gextras.Objector
 	gio.ListModel
@@ -43,7 +46,7 @@ var _ FlattenListModel = (*flattenListModel)(nil)
 // WrapFlattenListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFlattenListModel(obj *externglib.Object) FlattenListModel {
-	return FlattenListModel{
+	return flattenListModel{
 		Objector:      obj,
 		gio.ListModel: gio.WrapListModel(obj),
 	}

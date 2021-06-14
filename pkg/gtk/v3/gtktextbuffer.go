@@ -5,11 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -19,8 +20,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_text_buffer_target_info_get_type()), F: marshalTextBufferTargetInfo},
 		{T: externglib.Type(C.gtk_text_buffer_get_type()), F: marshalTextBuffer},
 	})
+}
+
+// TextBufferTargetInfo: these values are used as “info” for the targets
+// contained in the lists returned by gtk_text_buffer_get_copy_target_list() and
+// gtk_text_buffer_get_paste_target_list().
+//
+// The values counts down from `-1` to avoid clashes with application added drag
+// destinations which usually start at 0.
+type TextBufferTargetInfo int
+
+const (
+	// TextBufferTargetInfoBufferContents: buffer contents
+	TextBufferTargetInfoBufferContents TextBufferTargetInfo = -1
+	// TextBufferTargetInfoRichText: rich text
+	TextBufferTargetInfoRichText TextBufferTargetInfo = -2
+	// TextBufferTargetInfoText: text
+	TextBufferTargetInfoText TextBufferTargetInfo = -3
+)
+
+func marshalTextBufferTargetInfo(p uintptr) (interface{}, error) {
+	return TextBufferTargetInfo(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // TextBuffer: you may wish to begin by reading the [text widget conceptual
@@ -111,13 +134,6 @@ type TextBuffer interface {
 	// @interactive is true, the editability of the selection will be considered
 	// (users can’t delete uneditable text).
 	DeleteSelection(interactive bool, defaultEditable bool) bool
-	// Deserialize: this function deserializes rich text in format @format and
-	// inserts it at @iter.
-	//
-	// @formats to be used must be registered using
-	// gtk_text_buffer_register_deserialize_format() or
-	// gtk_text_buffer_register_deserialize_tagset() beforehand.
-	Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error
 	// DeserializeGetCanCreateTags: this functions returns the value set with
 	// gtk_text_buffer_deserialize_set_can_create_tags()
 	DeserializeGetCanCreateTags(format gdk.Atom) bool
@@ -368,7 +384,7 @@ type TextBuffer interface {
 	UnregisterSerializeFormat(format gdk.Atom)
 }
 
-// textBuffer implements the TextBuffer interface.
+// textBuffer implements the TextBuffer class.
 type textBuffer struct {
 	gextras.Objector
 }
@@ -378,7 +394,7 @@ var _ TextBuffer = (*textBuffer)(nil)
 // WrapTextBuffer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextBuffer(obj *externglib.Object) TextBuffer {
-	return TextBuffer{
+	return textBuffer{
 		Objector: obj,
 	}
 }
@@ -474,10 +490,10 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	if interactive {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 	if defaultEditable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -486,7 +502,7 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -538,7 +554,7 @@ func (b textBuffer) CutClipboard(clipboard Clipboard, defaultEditable bool) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	if defaultEditable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_text_buffer_cut_clipboard(_arg0, _arg1, _arg2)
@@ -577,7 +593,7 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(startIter.Native()))
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(endIter.Native()))
 	if defaultEditable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -586,7 +602,7 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -635,10 +651,10 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	if interactive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 	if defaultEditable {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -647,43 +663,11 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
-}
-
-// Deserialize: this function deserializes rich text in format @format and
-// inserts it at @iter.
-//
-// @formats to be used must be registered using
-// gtk_text_buffer_register_deserialize_format() or
-// gtk_text_buffer_register_deserialize_tagset() beforehand.
-func (r textBuffer) Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error {
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextBuffer // out
-	var _arg2 C.GdkAtom        // out
-	var _arg3 *C.GtkTextIter   // out
-	var _arg4 *C.guint8
-	var _arg5 C.gsize
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(contentBuffer.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
-	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
-	_arg5 = C.gsize(len(data))
-	_arg4 = (*C.guint8)(unsafe.Pointer(&data[0]))
-
-	var _cerr *C.GError // in
-
-	C.gtk_text_buffer_deserialize(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 // DeserializeGetCanCreateTags: this functions returns the value set with
@@ -701,7 +685,7 @@ func (b textBuffer) DeserializeGetCanCreateTags(format gdk.Atom) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -733,7 +717,7 @@ func (b textBuffer) DeserializeSetCanCreateTags(format gdk.Atom, canCreateTags b
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
 	if canCreateTags {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_text_buffer_deserialize_set_can_create_tags(_arg0, _arg1, _arg2)
@@ -816,7 +800,7 @@ func (b textBuffer) HasSelection() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -971,7 +955,7 @@ func (b textBuffer) Modified() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -996,7 +980,7 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1022,7 +1006,7 @@ func (b textBuffer) Slice(start *TextIter, end *TextIter, includeHiddenChars boo
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 	if includeHiddenChars {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret *C.gchar // in
@@ -1068,7 +1052,7 @@ func (b textBuffer) Text(start *TextIter, end *TextIter, includeHiddenChars bool
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 	if includeHiddenChars {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret *C.gchar // in
@@ -1162,7 +1146,7 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(len)
 	if defaultEditable {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -1171,7 +1155,7 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1195,7 +1179,7 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 	if defaultEditable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -1204,7 +1188,7 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1289,7 +1273,7 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 	if defaultEditable {
-		_arg4 = C.gboolean(1)
+		_arg4 = C.TRUE
 	}
 
 	var _cret C.gboolean // in
@@ -1298,7 +1282,7 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1351,7 +1335,7 @@ func (b textBuffer) PasteClipboard(clipboard Clipboard, overrideLocation *TextIt
 	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(overrideLocation.Native()))
 	if defaultEditable {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.gtk_text_buffer_paste_clipboard(_arg0, _arg1, _arg2, _arg3)
@@ -1480,9 +1464,9 @@ func (r textBuffer) Serialize(contentBuffer TextBuffer, format gdk.Atom, start *
 
 	var _guint8s []byte
 
-	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg5))
+	_guint8s = unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg5)
 	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 
 	return _guint8s
@@ -1500,7 +1484,7 @@ func (b textBuffer) SetModified(setting bool) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	if setting {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_text_buffer_set_modified(_arg0, _arg1)
@@ -1561,11 +1545,6 @@ func WrapTextBTree(ptr unsafe.Pointer) *TextBTree {
 	}
 
 	return (*TextBTree)(ptr)
-}
-
-func marshalTextBTree(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextBTree(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

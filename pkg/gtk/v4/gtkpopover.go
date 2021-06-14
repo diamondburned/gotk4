@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -171,7 +171,7 @@ type Popover interface {
 	SetPosition(position PositionType)
 }
 
-// popover implements the Popover interface.
+// popover implements the Popover class.
 type popover struct {
 	Widget
 	Accessible
@@ -186,7 +186,7 @@ var _ Popover = (*popover)(nil)
 // WrapPopover wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPopover(obj *externglib.Object) Popover {
-	return Popover{
+	return popover{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -216,7 +216,7 @@ func (p popover) Autohide() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -236,7 +236,7 @@ func (p popover) CascadePopdown() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -256,7 +256,7 @@ func (p popover) HasArrow() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -275,7 +275,7 @@ func (p popover) MnemonicsVisible() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -319,7 +319,7 @@ func (p popover) PointingTo() (gdk.Rectangle, bool) {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -375,7 +375,7 @@ func (p popover) SetAutohide(autohide bool) {
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if autohide {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_popover_set_autohide(_arg0, _arg1)
@@ -391,7 +391,7 @@ func (p popover) SetCascadePopdown(cascadePopdown bool) {
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if cascadePopdown {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_popover_set_cascade_popdown(_arg0, _arg1)
@@ -431,7 +431,7 @@ func (p popover) SetHasArrow(hasArrow bool) {
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if hasArrow {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_popover_set_has_arrow(_arg0, _arg1)
@@ -444,7 +444,7 @@ func (p popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if mnemonicsVisible {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_popover_set_mnemonics_visible(_arg0, _arg1)

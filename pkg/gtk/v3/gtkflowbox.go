@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -43,9 +43,11 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 	fn := v.(FlowBoxCreateWidgetFunc)
 	widget := fn(item)
 
+	var cret *C.GtkWidget // out
+
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	return widget
+	return cret
 }
 
 // FlowBox: a GtkFlowBox positions child widgets in sequence according to its
@@ -131,10 +133,6 @@ type FlowBox interface {
 	// SelectChild selects a single child of @box, if the selection mode allows
 	// it.
 	SelectChild(child FlowBoxChild)
-	// SelectedForeach calls a function for each selected child.
-	//
-	// Note that the selection cannot be modified from within this function.
-	SelectedForeach(fn FlowBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, children will be activated
 	// when you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -186,7 +184,7 @@ type FlowBox interface {
 	UnselectChild(child FlowBoxChild)
 }
 
-// flowBox implements the FlowBox interface.
+// flowBox implements the FlowBox class.
 type flowBox struct {
 	Container
 	Buildable
@@ -198,7 +196,7 @@ var _ FlowBox = (*flowBox)(nil)
 // WrapFlowBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFlowBox(obj *externglib.Object) FlowBox {
-	return FlowBox{
+	return flowBox{
 		Container:  WrapContainer(obj),
 		Buildable:  WrapBuildable(obj),
 		Orientable: WrapOrientable(obj),
@@ -223,7 +221,7 @@ func (b flowBox) ActivateOnSingleClick() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -260,7 +258,7 @@ func (b flowBox) Homogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -385,21 +383,6 @@ func (b flowBox) SelectChild(child FlowBoxChild) {
 	C.gtk_flow_box_select_child(_arg0, _arg1)
 }
 
-// SelectedForeach calls a function for each selected child.
-//
-// Note that the selection cannot be modified from within this function.
-func (b flowBox) SelectedForeach(fn FlowBoxForeachFunc) {
-	var _arg0 *C.GtkFlowBox           // out
-	var _arg1 C.GtkFlowBoxForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_FlowBoxForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
-
-	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
-}
-
 // SetActivateOnSingleClick: if @single is true, children will be activated
 // when you click on them, otherwise you need to double-click.
 func (b flowBox) SetActivateOnSingleClick(single bool) {
@@ -408,7 +391,7 @@ func (b flowBox) SetActivateOnSingleClick(single bool) {
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 	if single {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_flow_box_set_activate_on_single_click(_arg0, _arg1)
@@ -452,7 +435,7 @@ func (b flowBox) SetHomogeneous(homogeneous bool) {
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 	if homogeneous {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_flow_box_set_homogeneous(_arg0, _arg1)
@@ -577,7 +560,7 @@ type FlowBoxChild interface {
 	IsSelected() bool
 }
 
-// flowBoxChild implements the FlowBoxChild interface.
+// flowBoxChild implements the FlowBoxChild class.
 type flowBoxChild struct {
 	Bin
 	Buildable
@@ -588,7 +571,7 @@ var _ FlowBoxChild = (*flowBoxChild)(nil)
 // WrapFlowBoxChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFlowBoxChild(obj *externglib.Object) FlowBoxChild {
-	return FlowBoxChild{
+	return flowBoxChild{
 		Bin:       WrapBin(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -653,7 +636,7 @@ func (c flowBoxChild) IsSelected() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

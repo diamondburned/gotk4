@@ -3,11 +3,13 @@
 package pangoxft
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangoxft pango glib-2.0
+// #cgo pkg-config: glib-2.0 pango pangoxft
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangoxft.h>
@@ -29,7 +31,7 @@ type Renderer interface {
 	SetDefaultColor(defaultColor *pango.Color)
 }
 
-// renderer implements the Renderer interface.
+// renderer implements the Renderer class.
 type renderer struct {
 	pango.Renderer
 }
@@ -39,7 +41,7 @@ var _ Renderer = (*renderer)(nil)
 // WrapRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
-	return Renderer{
+	return renderer{
 		pango.Renderer: pango.WrapRenderer(obj),
 	}
 }

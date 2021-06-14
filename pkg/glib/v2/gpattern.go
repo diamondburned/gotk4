@@ -6,9 +6,8 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -47,7 +46,7 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -73,7 +72,7 @@ func PatternMatchSimple(pattern string, string string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -97,7 +96,7 @@ func PatternMatchString(pspec *PatternSpec, string string) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -120,11 +119,6 @@ func WrapPatternSpec(ptr unsafe.Pointer) *PatternSpec {
 	return (*PatternSpec)(ptr)
 }
 
-func marshalPatternSpec(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPatternSpec(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (p *PatternSpec) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
@@ -145,7 +139,7 @@ func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -136,7 +136,7 @@ type MenuShell interface {
 	SetTakeFocus(takeFocus bool)
 }
 
-// menuShell implements the MenuShell interface.
+// menuShell implements the MenuShell class.
 type menuShell struct {
 	Container
 	Buildable
@@ -147,7 +147,7 @@ var _ MenuShell = (*menuShell)(nil)
 // WrapMenuShell wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuShell(obj *externglib.Object) MenuShell {
-	return MenuShell{
+	return menuShell{
 		Container: WrapContainer(obj),
 		Buildable: WrapBuildable(obj),
 	}
@@ -168,7 +168,7 @@ func (m menuShell) ActivateItem(menuItem Widget, forceDeactivate bool) {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 	if forceDeactivate {
-		_arg2 = C.gboolean(1)
+		_arg2 = C.TRUE
 	}
 
 	C.gtk_menu_shell_activate_item(_arg0, _arg1, _arg2)
@@ -226,7 +226,7 @@ func (m menuShell) BindModel(model gio.MenuModel, actionNamespace string, withSe
 	_arg2 = (*C.gchar)(C.CString(actionNamespace))
 	defer C.free(unsafe.Pointer(_arg2))
 	if withSeparators {
-		_arg3 = C.gboolean(1)
+		_arg3 = C.TRUE
 	}
 
 	C.gtk_menu_shell_bind_model(_arg0, _arg1, _arg2, _arg3)
@@ -275,7 +275,7 @@ func (m menuShell) TakeFocus() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -316,7 +316,7 @@ func (m menuShell) SelectFirst(searchSensitive bool) {
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 	if searchSensitive {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_menu_shell_select_first(_arg0, _arg1)
@@ -363,7 +363,7 @@ func (m menuShell) SetTakeFocus(takeFocus bool) {
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 	if takeFocus {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_menu_shell_set_take_focus(_arg0, _arg1)

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -141,7 +143,7 @@ type ColumnView interface {
 	SortByColumn(column ColumnViewColumn, direction SortType)
 }
 
-// columnView implements the ColumnView interface.
+// columnView implements the ColumnView class.
 type columnView struct {
 	Widget
 	Accessible
@@ -155,7 +157,7 @@ var _ ColumnView = (*columnView)(nil)
 // WrapColumnView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColumnView(obj *externglib.Object) ColumnView {
-	return ColumnView{
+	return columnView{
 		Widget:           WrapWidget(obj),
 		Accessible:       WrapAccessible(obj),
 		Buildable:        WrapBuildable(obj),
@@ -194,7 +196,7 @@ func (s columnView) EnableRubberband() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -213,7 +215,7 @@ func (s columnView) Reorderable() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -233,7 +235,7 @@ func (s columnView) ShowColumnSeparators() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -253,7 +255,7 @@ func (s columnView) ShowRowSeparators() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -273,7 +275,7 @@ func (s columnView) SingleClickActivate() bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -315,7 +317,7 @@ func (s columnView) SetEnableRubberband(enableRubberband bool) {
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 	if enableRubberband {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_set_enable_rubberband(_arg0, _arg1)
@@ -341,7 +343,7 @@ func (s columnView) SetReorderable(reorderable bool) {
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 	if reorderable {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_set_reorderable(_arg0, _arg1)
@@ -355,7 +357,7 @@ func (s columnView) SetShowColumnSeparators(showColumnSeparators bool) {
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 	if showColumnSeparators {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_set_show_column_separators(_arg0, _arg1)
@@ -369,7 +371,7 @@ func (s columnView) SetShowRowSeparators(showRowSeparators bool) {
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 	if showRowSeparators {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_set_show_row_separators(_arg0, _arg1)
@@ -383,7 +385,7 @@ func (s columnView) SetSingleClickActivate(singleClickActivate bool) {
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 	if singleClickActivate {
-		_arg1 = C.gboolean(1)
+		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_set_single_click_activate(_arg0, _arg1)

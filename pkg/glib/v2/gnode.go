@@ -4,13 +4,10 @@ package glib
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -76,11 +73,6 @@ func WrapNode(ptr unsafe.Pointer) *Node {
 	return (*Node)(ptr)
 }
 
-func marshalNode(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNode(unsafe.Pointer(b)), nil
-}
-
 // Native returns the underlying C source pointer.
 func (n *Node) Native() unsafe.Pointer {
 	return unsafe.Pointer(&n.native)
@@ -134,23 +126,6 @@ func (n *Node) ChildPosition(child *Node) int {
 	return _gint
 }
 
-// ChildrenForeach calls a function for each of the children of a #GNode. Note
-// that it doesn't descend beneath the child nodes. @func must not do anything
-// that would modify the structure of the tree.
-func (n *Node) ChildrenForeach(flags TraverseFlags, fn NodeForeachFunc) {
-	var _arg0 *C.GNode           // out
-	var _arg1 C.GTraverseFlags   // out
-	var _arg2 C.GNodeForeachFunc // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
-	_arg1 = (C.GTraverseFlags)(flags)
-	_arg2 = (*[0]byte)(C.gotk4_NodeForeachFunc)
-	_arg3 = C.gpointer(box.Assign(fn))
-
-	C.g_node_children_foreach(_arg0, _arg1, _arg2, _arg3)
-}
-
 // Depth gets the depth of a #GNode.
 //
 // If @node is nil the depth is 0. The root node has a depth of 1. For the
@@ -197,7 +172,7 @@ func (n *Node) IsAncestor(descendant *Node) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -269,28 +244,6 @@ func (n *Node) ReverseChildren() {
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	C.g_node_reverse_children(_arg0)
-}
-
-// Traverse traverses a tree starting at the given root #GNode. It calls the
-// given function for each node visited. The traversal can be halted at any
-// point by returning true from @func. @func must not do anything that would
-// modify the structure of the tree.
-func (r *Node) Traverse(order TraverseType, flags TraverseFlags, maxDepth int, fn NodeTraverseFunc) {
-	var _arg0 *C.GNode            // out
-	var _arg1 C.GTraverseType     // out
-	var _arg2 C.GTraverseFlags    // out
-	var _arg3 C.gint              // out
-	var _arg4 C.GNodeTraverseFunc // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.GTraverseType)(order)
-	_arg2 = (C.GTraverseFlags)(flags)
-	_arg3 = C.gint(maxDepth)
-	_arg4 = (*[0]byte)(C.gotk4_NodeTraverseFunc)
-	_arg5 = C.gpointer(box.Assign(fn))
-
-	C.g_node_traverse(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // Unlink unlinks a #GNode from a tree, resulting in two separate trees.

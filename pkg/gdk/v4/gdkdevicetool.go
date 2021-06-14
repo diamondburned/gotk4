@@ -2,7 +2,140 @@
 
 package gdk
 
-// #cgo pkg-config: gtk4
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
+// #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_device_tool_type_get_type()), F: marshalDeviceToolType},
+		{T: externglib.Type(C.gdk_device_tool_get_type()), F: marshalDeviceTool},
+	})
+}
+
+// DeviceToolType indicates the specific type of tool being used being a tablet.
+// Such as an airbrush, pencil, etc.
+type DeviceToolType int
+
+const (
+	// DeviceToolTypeUnknown: tool is of an unknown type.
+	DeviceToolTypeUnknown DeviceToolType = 0
+	// DeviceToolTypePen: tool is a standard tablet stylus.
+	DeviceToolTypePen DeviceToolType = 1
+	// DeviceToolTypeEraser: tool is standard tablet eraser.
+	DeviceToolTypeEraser DeviceToolType = 2
+	// DeviceToolTypeBrush: tool is a brush stylus.
+	DeviceToolTypeBrush DeviceToolType = 3
+	// DeviceToolTypePencil: tool is a pencil stylus.
+	DeviceToolTypePencil DeviceToolType = 4
+	// DeviceToolTypeAirbrush: tool is an airbrush stylus.
+	DeviceToolTypeAirbrush DeviceToolType = 5
+	// DeviceToolTypeMouse: tool is a mouse.
+	DeviceToolTypeMouse DeviceToolType = 6
+	// DeviceToolTypeLens: tool is a lens cursor.
+	DeviceToolTypeLens DeviceToolType = 7
+)
+
+func marshalDeviceToolType(p uintptr) (interface{}, error) {
+	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DeviceTool: a physical tool associated to a `GdkDevice`.
+type DeviceTool interface {
+	gextras.Objector
+
+	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
+	//
+	// When non-zero, the identificator is unique for the given tool model,
+	// meaning that two identical tools will share the same @hardware_id, but
+	// will have different serial numbers (see
+	// [method@Gdk.DeviceTool.get_serial]).
+	//
+	// This is a more concrete (and device specific) method to identify a
+	// `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type], as a tablet
+	// may support multiple devices with the same `GdkDeviceToolType`, but
+	// different hardware identificators.
+	HardwareID() uint64
+	// Serial gets the serial number of this tool.
+	//
+	// This value can be used to identify a physical tool (eg. a tablet pen)
+	// across program executions.
+	Serial() uint64
+}
+
+// deviceTool implements the DeviceTool class.
+type deviceTool struct {
+	gextras.Objector
+}
+
+var _ DeviceTool = (*deviceTool)(nil)
+
+// WrapDeviceTool wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDeviceTool(obj *externglib.Object) DeviceTool {
+	return deviceTool{
+		Objector: obj,
+	}
+}
+
+func marshalDeviceTool(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDeviceTool(obj), nil
+}
+
+// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
+//
+// When non-zero, the identificator is unique for the given tool model,
+// meaning that two identical tools will share the same @hardware_id, but
+// will have different serial numbers (see
+// [method@Gdk.DeviceTool.get_serial]).
+//
+// This is a more concrete (and device specific) method to identify a
+// `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type], as a tablet
+// may support multiple devices with the same `GdkDeviceToolType`, but
+// different hardware identificators.
+func (t deviceTool) HardwareID() uint64 {
+	var _arg0 *C.GdkDeviceTool // out
+
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+
+	var _cret C.guint64 // in
+
+	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
+
+	var _guint64 uint64 // out
+
+	_guint64 = (uint64)(_cret)
+
+	return _guint64
+}
+
+// Serial gets the serial number of this tool.
+//
+// This value can be used to identify a physical tool (eg. a tablet pen)
+// across program executions.
+func (t deviceTool) Serial() uint64 {
+	var _arg0 *C.GdkDeviceTool // out
+
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+
+	var _cret C.guint64 // in
+
+	_cret = C.gdk_device_tool_get_serial(_arg0)
+
+	var _guint64 uint64 // out
+
+	_guint64 = (uint64)(_cret)
+
+	return _guint64
+}

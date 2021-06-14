@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -24,7 +26,7 @@ type TextCellAccessible interface {
 	RendererCellAccessible
 }
 
-// textCellAccessible implements the TextCellAccessible interface.
+// textCellAccessible implements the TextCellAccessible class.
 type textCellAccessible struct {
 	RendererCellAccessible
 }
@@ -34,7 +36,7 @@ var _ TextCellAccessible = (*textCellAccessible)(nil)
 // WrapTextCellAccessible wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextCellAccessible(obj *externglib.Object) TextCellAccessible {
-	return TextCellAccessible{
+	return textCellAccessible{
 		RendererCellAccessible: WrapRendererCellAccessible(obj),
 	}
 }

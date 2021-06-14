@@ -3,14 +3,16 @@
 package gdkwayland
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4 gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {
@@ -26,12 +28,9 @@ func init() {
 // [method@GdkWayland.WaylandMonitor.get_wl_output].
 type WaylandMonitor interface {
 	gdk.Monitor
-
-	// WlOutput returns the Wayland `wl_output` of a `GdkMonitor`.
-	WlOutput() *interface{}
 }
 
-// waylandMonitor implements the WaylandMonitor interface.
+// waylandMonitor implements the WaylandMonitor class.
 type waylandMonitor struct {
 	gdk.Monitor
 }
@@ -41,7 +40,7 @@ var _ WaylandMonitor = (*waylandMonitor)(nil)
 // WrapWaylandMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
-	return WaylandMonitor{
+	return waylandMonitor{
 		gdk.Monitor: gdk.WrapMonitor(obj),
 	}
 }
@@ -50,21 +49,4 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapWaylandMonitor(obj), nil
-}
-
-// WlOutput returns the Wayland `wl_output` of a `GdkMonitor`.
-func (m waylandMonitor) WlOutput() *interface{} {
-	var _arg0 *C.GdkMonitor // out
-
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.wl_output // in
-
-	_cret = C.gdk_wayland_monitor_get_wl_output(_arg0)
-
-	var _gpointer *interface{} // out
-
-	_gpointer = (*interface{})(_cret)
-
-	return _gpointer
 }

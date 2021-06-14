@@ -3,14 +3,13 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 glib-2.0
+// #cgo pkg-config: glib-2.0 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -146,7 +145,7 @@ type TreeStore interface {
 	Swap(a *TreeIter, b *TreeIter)
 }
 
-// treeStore implements the TreeStore interface.
+// treeStore implements the TreeStore class.
 type treeStore struct {
 	gextras.Objector
 	Buildable
@@ -161,7 +160,7 @@ var _ TreeStore = (*treeStore)(nil)
 // WrapTreeStore wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeStore(obj *externglib.Object) TreeStore {
-	return TreeStore{
+	return treeStore{
 		Objector:       obj,
 		Buildable:      WrapBuildable(obj),
 		TreeDragDest:   WrapTreeDragDest(obj),
@@ -297,15 +296,13 @@ func (t treeStore) InsertWithValuesv(parent *TreeIter, position int, columns []i
 	_arg6 = C.int(len(columns))
 	_arg4 = (*C.int)(unsafe.Pointer(&columns[0]))
 	_arg6 = C.int(len(values))
-	_arg5 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	_arg5 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg5))
 
 	{
-		var out []C.GValue
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg5), int(len(values)))
-
+		out := unsafe.Slice(_arg5, len(values))
 		for i := range values {
-			_arg5 = (*C.GValue)(values.GValue)
+			out[i] = (*C.GValue)(values[i].GValue)
 		}
 	}
 
@@ -333,7 +330,7 @@ func (t treeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -377,7 +374,7 @@ func (t treeStore) IterIsValid(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -452,7 +449,7 @@ func (t treeStore) Remove(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -470,15 +467,13 @@ func (t treeStore) SetColumnTypes(types []externglib.Type) {
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg1 = C.int(len(types))
-	_arg2 = (*C.GType)(C.malloc(len(types) * C.sizeof_GType))
+	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	{
-		var out []C.GType
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg2), int(len(types)))
-
+		out := unsafe.Slice(_arg2, len(types))
 		for i := range types {
-			_arg2 = C.GType(types)
+			out[i] = C.GType(types[i])
 		}
 	}
 
@@ -518,15 +513,13 @@ func (t treeStore) SetValuesv(iter *TreeIter, columns []int, values []**externgl
 	_arg4 = C.int(len(columns))
 	_arg2 = (*C.int)(unsafe.Pointer(&columns[0]))
 	_arg4 = C.int(len(values))
-	_arg3 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	{
-		var out []C.GValue
-		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg3), int(len(values)))
-
+		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			_arg3 = (*C.GValue)(values.GValue)
+			out[i] = (*C.GValue)(values[i].GValue)
 		}
 	}
 

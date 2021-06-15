@@ -129,7 +129,7 @@ func NewSearchEntry() SearchEntry {
 
 	var _searchEntry SearchEntry // out
 
-	_searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SearchEntry)
+	_searchEntry = WrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
 }
@@ -146,7 +146,7 @@ func (e searchEntry) KeyCaptureWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

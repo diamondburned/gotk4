@@ -217,7 +217,7 @@ func (d x11Display) DefaultGroup() gdk.Surface {
 
 	var _surface gdk.Surface // out
 
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Surface)
 
 	return _surface
 }
@@ -265,7 +265,7 @@ func (d x11Display) PrimaryMonitor() gdk.Monitor {
 
 	var _monitor gdk.Monitor // out
 
-	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Monitor)
 
 	return _monitor
 }
@@ -281,7 +281,7 @@ func (d x11Display) Screen() X11Screen {
 
 	var _x11Screen X11Screen // out
 
-	_x11Screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(X11Screen)
+	_x11Screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(X11Screen)
 
 	return _x11Screen
 }
@@ -446,7 +446,7 @@ func (d x11Display) TextPropertyToTextList(encoding string, format int, text *by
 	_arg1 = (*C.char)(C.CString(encoding))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.int)(format)
-	_arg3 = (*C.guchar)(text)
+	_arg3 = (*C.guchar)(unsafe.Pointer(text))
 	_arg4 = (C.int)(length)
 	_arg5 = (***C.char)(C.CString(list))
 	defer C.free(unsafe.Pointer(_arg5))

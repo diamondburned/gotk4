@@ -79,7 +79,7 @@ func NewRuleset(info Info) Ruleset {
 
 	var _ruleset Ruleset // out
 
-	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
+	_ruleset = WrapRuleset(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ruleset
 }
@@ -99,7 +99,7 @@ func NewRulesetFor(info Info, script pango.Script, language *pango.Language) Rul
 
 	var _ruleset Ruleset // out
 
-	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
+	_ruleset = WrapRuleset(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ruleset
 }
@@ -117,7 +117,7 @@ func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset {
 
 	var _ruleset Ruleset // out
 
-	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
+	_ruleset = WrapRuleset(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ruleset
 }

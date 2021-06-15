@@ -279,7 +279,7 @@ func (f font) Coverage(language *Language) Coverage {
 
 	var _coverage Coverage // out
 
-	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
+	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Coverage)
 
 	return _coverage
 }
@@ -295,7 +295,7 @@ func (f font) Face() FontFace {
 
 	var _fontFace FontFace // out
 
-	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontFace)
+	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontFace)
 
 	return _fontFace
 }
@@ -320,7 +320,7 @@ func (f font) FontMap() FontMap {
 
 	var _fontMap FontMap // out
 
-	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontMap)
+	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontMap)
 
 	return _fontMap
 }
@@ -474,7 +474,7 @@ func (f fontFace) Family() FontFamily {
 
 	var _fontFamily FontFamily // out
 
-	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontFamily)
+	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontFamily)
 
 	return _fontFamily
 }
@@ -599,7 +599,7 @@ func (f fontFamily) Face(name string) FontFace {
 
 	var _fontFace FontFace // out
 
-	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontFace)
+	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontFace)
 
 	return _fontFace
 }
@@ -693,7 +693,7 @@ func (f fontFamily) ListFaces() []FontFace {
 		defer C.free(unsafe.Pointer(_arg1))
 		_faces = make([]FontFace, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_faces[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i].Native()))).(FontFace)
+			_faces[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i]))).(FontFace)
 		}
 	}
 

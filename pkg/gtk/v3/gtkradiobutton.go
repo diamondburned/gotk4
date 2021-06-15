@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -148,7 +147,7 @@ func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
 
 	var _radioButton RadioButton // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
+	_radioButton = WrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }
@@ -167,7 +166,7 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label strin
 
 	var _radioButton RadioButton // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
+	_radioButton = WrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }
@@ -186,7 +185,7 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label st
 
 	var _radioButton RadioButton // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
+	_radioButton = WrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }

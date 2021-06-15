@@ -201,7 +201,7 @@ func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 
 	var _scale Scale // out
 
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scale)
+	_scale = WrapScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scale
 }
@@ -223,7 +223,7 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 
 	var _scale Scale // out
 
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scale)
+	_scale = WrapScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scale
 }
@@ -328,7 +328,7 @@ func (s scale) Layout() pango.Layout {
 
 	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.Layout)
 
 	return _layout
 }

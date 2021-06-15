@@ -75,7 +75,7 @@ func NewWindowGroup() WindowGroup {
 
 	var _windowGroup WindowGroup // out
 
-	_windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(WindowGroup)
+	_windowGroup = WrapWindowGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }

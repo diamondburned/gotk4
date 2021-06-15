@@ -206,7 +206,7 @@ func (l listModel) Object(position uint) gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }

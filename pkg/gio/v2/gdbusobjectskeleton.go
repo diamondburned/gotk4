@@ -99,7 +99,7 @@ func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 
 	var _dBusObjectSkeleton DBusObjectSkeleton // out
 
-	_dBusObjectSkeleton = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectSkeleton)
+	_dBusObjectSkeleton = WrapDBusObjectSkeleton(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectSkeleton
 }

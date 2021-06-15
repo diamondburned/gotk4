@@ -654,7 +654,7 @@ func NewApplication(applicationId string, flags ApplicationFlags) Application {
 
 	var _application Application // out
 
-	_application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Application)
+	_application = WrapApplication(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _application
 }
@@ -865,7 +865,7 @@ func (a application) DBusConnection() DBusConnection {
 
 	var _dBusConnection DBusConnection // out
 
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DBusConnection)
 
 	return _dBusConnection
 }

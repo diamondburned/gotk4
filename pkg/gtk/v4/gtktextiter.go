@@ -1260,7 +1260,7 @@ func (i *TextIter) Buffer() TextBuffer {
 
 	var _textBuffer TextBuffer // out
 
-	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextBuffer)
+	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextBuffer)
 
 	return _textBuffer
 }
@@ -1336,7 +1336,7 @@ func (i *TextIter) ChildAnchor() TextChildAnchor {
 
 	var _textChildAnchor TextChildAnchor // out
 
-	_textChildAnchor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
+	_textChildAnchor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextChildAnchor)
 
 	return _textChildAnchor
 }
@@ -1454,7 +1454,7 @@ func (i *TextIter) Paintable() gdk.Paintable {
 
 	var _paintable gdk.Paintable // out
 
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Paintable)
 
 	return _paintable
 }

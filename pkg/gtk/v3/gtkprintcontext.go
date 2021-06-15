@@ -162,7 +162,7 @@ func (c printContext) CreatePangoContext() pango.Context {
 
 	var _ret pango.Context // out
 
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
 
 	return _ret
 }
@@ -179,7 +179,7 @@ func (c printContext) CreatePangoLayout() pango.Layout {
 
 	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Layout)
 
 	return _layout
 }
@@ -294,7 +294,7 @@ func (c printContext) PageSetup() PageSetup {
 
 	var _pageSetup PageSetup // out
 
-	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
+	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
 }
@@ -311,7 +311,7 @@ func (c printContext) PangoFontmap() pango.FontMap {
 
 	var _fontMap pango.FontMap // out
 
-	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontMap)
+	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontMap)
 
 	return _fontMap
 }

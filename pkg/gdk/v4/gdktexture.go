@@ -88,7 +88,7 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 
 	var _texture Texture // out
 
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
+	_texture = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
 }
@@ -106,7 +106,7 @@ func NewTextureFromFile(file gio.File) (Texture, error) {
 	var _texture Texture // out
 	var _goerr error     // out
 
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
+	_texture = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _texture, _goerr
@@ -124,7 +124,7 @@ func NewTextureFromResource(resourcePath string) Texture {
 
 	var _texture Texture // out
 
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
+	_texture = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
 }

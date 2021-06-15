@@ -132,7 +132,7 @@ func (s numerableIcon) BackgroundGIcon() gio.Icon {
 
 	var _icon gio.Icon // out
 
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
 
 	return _icon
 }
@@ -198,7 +198,7 @@ func (s numerableIcon) StyleContext() StyleContext {
 
 	var _styleContext StyleContext // out
 
-	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StyleContext)
+	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StyleContext)
 
 	return _styleContext
 }

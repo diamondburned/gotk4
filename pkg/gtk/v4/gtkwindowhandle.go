@@ -82,7 +82,7 @@ func NewWindowHandle() WindowHandle {
 
 	var _windowHandle WindowHandle // out
 
-	_windowHandle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(WindowHandle)
+	_windowHandle = WrapWindowHandle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowHandle
 }
@@ -98,7 +98,7 @@ func (s windowHandle) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

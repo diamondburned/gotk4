@@ -110,7 +110,7 @@ func NewInetAddressAny(family SocketFamily) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
+	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }
@@ -127,7 +127,7 @@ func NewInetAddressFromString(_string string) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
+	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }
@@ -143,7 +143,7 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
+	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }

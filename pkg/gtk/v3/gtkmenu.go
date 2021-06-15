@@ -203,7 +203,7 @@ func NewMenu() Menu {
 
 	var _menu Menu // out
 
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Menu)
+	_menu = WrapMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -219,7 +219,7 @@ func NewMenuFromModel(model gio.MenuModel) Menu {
 
 	var _menu Menu // out
 
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Menu)
+	_menu = WrapMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -272,7 +272,7 @@ func (m menu) AccelGroup() AccelGroup {
 
 	var _accelGroup AccelGroup // out
 
-	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
+	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AccelGroup)
 
 	return _accelGroup
 }
@@ -305,7 +305,7 @@ func (m menu) Active() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -321,7 +321,7 @@ func (m menu) AttachWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

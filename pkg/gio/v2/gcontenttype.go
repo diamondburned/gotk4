@@ -139,7 +139,7 @@ func ContentTypeGetIcon(typ string) Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -155,7 +155,8 @@ func ContentTypeGetMIMEDirs() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -200,7 +201,7 @@ func ContentTypeGetSymbolicIcon(typ string) Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -259,7 +260,8 @@ func ContentTypeGuessForTree(root File) []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

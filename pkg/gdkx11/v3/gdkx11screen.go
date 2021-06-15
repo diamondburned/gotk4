@@ -64,7 +64,7 @@ type X11Screen interface {
 	// return false for every property. You can monitor the
 	// window_manager_changed signal on Screen to detect a window manager
 	// change.
-	SupportsNetWmHint(property gdk.Atom) bool
+	SupportsNetWmHint(property *gdk.Atom) bool
 }
 
 // x11Screen implements the X11Screen class.
@@ -171,13 +171,13 @@ func (s x11Screen) WindowManagerName() string {
 // return false for every property. You can monitor the
 // window_manager_changed signal on Screen to detect a window manager
 // change.
-func (s x11Screen) SupportsNetWmHint(property gdk.Atom) bool {
+func (s x11Screen) SupportsNetWmHint(property *gdk.Atom) bool {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.GdkAtom    // out
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
 
 	_cret = C.gdk_x11_screen_supports_net_wm_hint(_arg0, _arg1)
 

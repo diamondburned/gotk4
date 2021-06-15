@@ -25,10 +25,20 @@ func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
 	return ptr
 }
 
-var ctypePrefixEraser = strings.NewReplacer(
-	"const", "",
-	"volatile", "",
-)
+var cTypePrefixes = []string{"const", "volatile"}
+
+var cTypePrefixEraser *strings.Replacer
+
+func init() {
+	replacers := make([]string, len(cTypePrefixes)*4)
+	for _, prefix := range cTypePrefixes {
+		// Use trailing spaces to prevent casting to the wrong type, like
+		// gpointer instead of gconstpointer.
+		replacers = append(replacers, prefix+" ", "")
+		replacers = append(replacers, " "+prefix, "")
+	}
+	cTypePrefixEraser = strings.NewReplacer(replacers...)
+}
 
 // movePtr moves the same number of pointers from the given orig string into
 // another string.
@@ -40,7 +50,7 @@ func movePtr(orig, into string) string {
 // cleanCType cleans the underlying C type of and special keywords for
 // comparison.
 func cleanCType(cType string) string {
-	cType = ctypePrefixEraser.Replace(cType)
+	cType = cTypePrefixEraser.Replace(cType)
 	cType = strings.TrimSpace(cType)
 	return cType
 }
@@ -54,7 +64,7 @@ func anyTypeIsVoid(any gir.AnyType) bool {
 func cgoTypeFromC(cType string) string {
 	originalCType := cType
 
-	cType = ctypePrefixEraser.Replace(cType)
+	cType = cTypePrefixEraser.Replace(cType)
 	cType = strings.ReplaceAll(cType, "*", "")
 	cType = strings.TrimSpace(cType)
 
@@ -62,7 +72,7 @@ func cgoTypeFromC(cType string) string {
 		cType = replace
 	}
 
-	return movePtr(originalCType, "C."+cleanCType(cType))
+	return movePtr(originalCType, "C."+cType)
 }
 
 // anyTypeCGo returns the CGo type for a GIR AnyType. An empty string is
@@ -95,7 +105,7 @@ var girCTypes = map[string]string{
 // ctypeFallback returns the C type OR the GIR type if it's empty.
 func ctypeFallback(c, gir string) string {
 	if c != "" {
-		return ctypePrefixEraser.Replace(c)
+		return cTypePrefixEraser.Replace(c)
 	}
 
 	// Handle edge cases with a hard-coded type map. Thanks, GIR, for evading
@@ -105,7 +115,7 @@ func ctypeFallback(c, gir string) string {
 		return ctyp
 	}
 
-	return ctypePrefixEraser.Replace(gir)
+	return cTypePrefixEraser.Replace(gir)
 }
 
 // returnIsVoid returns true if the return type is void.

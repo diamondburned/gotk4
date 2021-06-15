@@ -128,7 +128,7 @@ func NewCredentials() Credentials {
 
 	var _credentials Credentials // out
 
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Credentials)
+	_credentials = WrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _credentials
 }

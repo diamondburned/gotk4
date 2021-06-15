@@ -197,7 +197,7 @@ func NewFlowBox() FlowBox {
 
 	var _flowBox FlowBox // out
 
-	_flowBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBox)
+	_flowBox = WrapFlowBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBox
 }
@@ -233,7 +233,7 @@ func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
 
 	var _flowBoxChild FlowBoxChild // out
 
-	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
+	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FlowBoxChild)
 
 	return _flowBoxChild
 }
@@ -253,7 +253,7 @@ func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
 
 	var _flowBoxChild FlowBoxChild // out
 
-	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
+	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FlowBoxChild)
 
 	return _flowBoxChild
 }
@@ -632,7 +632,7 @@ func NewFlowBoxChild() FlowBoxChild {
 
 	var _flowBoxChild FlowBoxChild // out
 
-	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
+	_flowBoxChild = WrapFlowBoxChild(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBoxChild
 }

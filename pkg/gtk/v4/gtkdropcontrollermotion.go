@@ -73,7 +73,7 @@ func NewDropControllerMotion() DropControllerMotion {
 
 	var _dropControllerMotion DropControllerMotion // out
 
-	_dropControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DropControllerMotion)
+	_dropControllerMotion = WrapDropControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropControllerMotion
 }
@@ -109,7 +109,7 @@ func (s dropControllerMotion) Drop() gdk.Drop {
 
 	var _drop gdk.Drop // out
 
-	_drop = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Drop)
+	_drop = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Drop)
 
 	return _drop
 }

@@ -75,7 +75,7 @@ func NewFilenameCompleter() FilenameCompleter {
 
 	var _filenameCompleter FilenameCompleter // out
 
-	_filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FilenameCompleter)
+	_filenameCompleter = WrapFilenameCompleter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _filenameCompleter
 }
@@ -116,7 +116,8 @@ func (c filenameCompleter) Completions(initialText string) []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

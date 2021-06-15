@@ -209,7 +209,7 @@ func NewColumnView(model SelectionModel) ColumnView {
 
 	var _columnView ColumnView // out
 
-	_columnView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColumnView)
+	_columnView = WrapColumnView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _columnView
 }
@@ -240,7 +240,7 @@ func (s columnView) Columns() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -275,7 +275,7 @@ func (s columnView) Model() SelectionModel {
 
 	var _selectionModel SelectionModel // out
 
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SelectionModel)
+	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SelectionModel)
 
 	return _selectionModel
 }
@@ -380,7 +380,7 @@ func (s columnView) Sorter() Sorter {
 
 	var _sorter Sorter // out
 
-	_sorter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Sorter)
+	_sorter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Sorter)
 
 	return _sorter
 }

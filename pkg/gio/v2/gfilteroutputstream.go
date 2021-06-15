@@ -80,7 +80,7 @@ func (s filterOutputStream) BaseStream() OutputStream {
 
 	var _outputStream OutputStream // out
 
-	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OutputStream)
+	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(OutputStream)
 
 	return _outputStream
 }

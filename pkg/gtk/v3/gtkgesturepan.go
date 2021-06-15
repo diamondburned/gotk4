@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -79,7 +78,7 @@ func NewGesturePan(widget Widget, orientation Orientation) GesturePan {
 
 	var _gesturePan GesturePan // out
 
-	_gesturePan = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GesturePan)
+	_gesturePan = WrapGesturePan(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gesturePan
 }

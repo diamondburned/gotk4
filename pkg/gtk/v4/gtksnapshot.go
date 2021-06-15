@@ -254,7 +254,7 @@ func NewSnapshot() Snapshot {
 
 	var _snapshot Snapshot // out
 
-	_snapshot = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Snapshot)
+	_snapshot = WrapSnapshot(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _snapshot
 }
@@ -892,7 +892,7 @@ func (s snapshot) ToNode() gsk.RenderNode {
 
 	var _renderNode gsk.RenderNode // out
 
-	_renderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gsk.RenderNode)
+	_renderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gsk.RenderNode)
 
 	return _renderNode
 }
@@ -915,7 +915,7 @@ func (s snapshot) ToPaintable(size *graphene.Size) gdk.Paintable {
 
 	var _paintable gdk.Paintable // out
 
-	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdk.Paintable)
 
 	return _paintable
 }

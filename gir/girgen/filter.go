@@ -67,20 +67,15 @@ func TypeRenamer(girType, newName string) FilterMatcher {
 	if len(parts) != 2 {
 		log.Panicf("missing namespace for TypeRenamer %q", girType)
 	}
+	if parts[0] == "C" {
+		log.Panicf("TypeRenamer must not rename C type")
+	}
 	return typeRenamer{parts[0], parts[1], newName}
 }
 
 func (ren typeRenamer) Filter(ng *NamespaceGenerator, names *FilterTypeName) (keep bool) {
-	var matches bool
-
-	if ren.namespace == "C" {
-		matches = names.CType == ren.from
-	} else {
-		typ, eq := EqNamespace(ren.namespace, names.GIRType)
-		matches = eq && typ == ren.from
-	}
-
-	if matches {
+	typ, eq := EqNamespace(ren.namespace, names.GIRType)
+	if eq && typ == ren.from {
 		names.GIRType = ren.namespace + "." + ren.to
 	}
 

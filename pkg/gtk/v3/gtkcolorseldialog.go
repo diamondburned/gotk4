@@ -67,7 +67,7 @@ func NewColorSelectionDialog(title string) ColorSelectionDialog {
 
 	var _colorSelectionDialog ColorSelectionDialog // out
 
-	_colorSelectionDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorSelectionDialog)
+	_colorSelectionDialog = WrapColorSelectionDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorSelectionDialog
 }
@@ -84,7 +84,7 @@ func (c colorSelectionDialog) ColorSelection() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

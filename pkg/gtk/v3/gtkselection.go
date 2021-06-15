@@ -53,15 +53,15 @@ func marshalTargetFlags(p uintptr) (interface{}, error) {
 
 // SelectionAddTarget appends a specified target to the list of supported
 // targets for a given widget and selection.
-func SelectionAddTarget(widget Widget, selection gdk.Atom, target gdk.Atom, info uint) {
+func SelectionAddTarget(widget Widget, selection *gdk.Atom, target *gdk.Atom, info uint) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GdkAtom    // out
 	var _arg3 C.GdkAtom    // out
 	var _arg4 C.guint      // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 	_arg4 = (C.guint)(info)
 
 	C.gtk_selection_add_target(_arg1, _arg2, _arg3, _arg4)
@@ -69,14 +69,14 @@ func SelectionAddTarget(widget Widget, selection gdk.Atom, target gdk.Atom, info
 
 // SelectionAddTargets prepends a table of targets to the list of supported
 // targets for a given widget and selection.
-func SelectionAddTargets(widget Widget, selection gdk.Atom, targets []TargetEntry) {
+func SelectionAddTargets(widget Widget, selection *gdk.Atom, targets []TargetEntry) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GdkAtom    // out
 	var _arg3 *C.GtkTargetEntry
 	var _arg4 C.guint
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 	_arg4 = C.guint(len(targets))
 	_arg3 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
 
@@ -85,19 +85,19 @@ func SelectionAddTargets(widget Widget, selection gdk.Atom, targets []TargetEntr
 
 // SelectionClearTargets: remove all targets registered for the given selection
 // for the widget.
-func SelectionClearTargets(widget Widget, selection gdk.Atom) {
+func SelectionClearTargets(widget Widget, selection *gdk.Atom) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GdkAtom    // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	C.gtk_selection_clear_targets(_arg1, _arg2)
 }
 
 // SelectionConvert requests the contents of a selection. When received, a
 // “selection-received” signal will be generated.
-func SelectionConvert(widget Widget, selection gdk.Atom, target gdk.Atom, time_ uint32) bool {
+func SelectionConvert(widget Widget, selection *gdk.Atom, target *gdk.Atom, time_ uint32) bool {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GdkAtom    // out
 	var _arg3 C.GdkAtom    // out
@@ -105,8 +105,8 @@ func SelectionConvert(widget Widget, selection gdk.Atom, target gdk.Atom, time_ 
 	var _cret C.gboolean   // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 	_arg4 = (C.guint32)(time_)
 
 	_cret = C.gtk_selection_convert(_arg1, _arg2, _arg3, _arg4)
@@ -122,14 +122,14 @@ func SelectionConvert(widget Widget, selection gdk.Atom, target gdk.Atom, time_ 
 
 // SelectionOwnerSet claims ownership of a given selection for a particular
 // widget, or, if @widget is nil, release ownership of the selection.
-func SelectionOwnerSet(widget Widget, selection gdk.Atom, time_ uint32) bool {
+func SelectionOwnerSet(widget Widget, selection *gdk.Atom, time_ uint32) bool {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GdkAtom    // out
 	var _arg3 C.guint32    // out
 	var _cret C.gboolean   // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 	_arg3 = (C.guint32)(time_)
 
 	_cret = C.gtk_selection_owner_set(_arg1, _arg2, _arg3)
@@ -145,7 +145,7 @@ func SelectionOwnerSet(widget Widget, selection gdk.Atom, time_ uint32) bool {
 
 // SelectionOwnerSetForDisplay: claim ownership of a given selection for a
 // particular widget, or, if @widget is nil, release ownership of the selection.
-func SelectionOwnerSetForDisplay(display gdk.Display, widget Widget, selection gdk.Atom, time_ uint32) bool {
+func SelectionOwnerSetForDisplay(display gdk.Display, widget Widget, selection *gdk.Atom, time_ uint32) bool {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GtkWidget  // out
 	var _arg3 C.GdkAtom     // out
@@ -154,7 +154,7 @@ func SelectionOwnerSetForDisplay(display gdk.Display, widget Widget, selection g
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 	_arg4 = (C.guint32)(time_)
 
 	_cret = C.gtk_selection_owner_set_for_display(_arg1, _arg2, _arg3, _arg4)
@@ -193,7 +193,7 @@ func TargetTableFree(targets []TargetEntry) {
 
 // TargetsIncludeImage determines if any of the targets in @targets can be used
 // to provide a Pixbuf.
-func TargetsIncludeImage(targets []gdk.Atom, writable bool) bool {
+func TargetsIncludeImage(targets []*gdk.Atom, writable bool) bool {
 	var _arg1 *C.GdkAtom
 	var _arg2 C.gint
 	var _arg3 C.gboolean // out
@@ -218,7 +218,7 @@ func TargetsIncludeImage(targets []gdk.Atom, writable bool) bool {
 
 // TargetsIncludeRichText determines if any of the targets in @targets can be
 // used to provide rich text.
-func TargetsIncludeRichText(targets []gdk.Atom, buffer TextBuffer) bool {
+func TargetsIncludeRichText(targets []*gdk.Atom, buffer TextBuffer) bool {
 	var _arg1 *C.GdkAtom
 	var _arg2 C.gint
 	var _arg3 *C.GtkTextBuffer // out
@@ -241,7 +241,7 @@ func TargetsIncludeRichText(targets []gdk.Atom, buffer TextBuffer) bool {
 
 // TargetsIncludeText determines if any of the targets in @targets can be used
 // to provide text.
-func TargetsIncludeText(targets []gdk.Atom) bool {
+func TargetsIncludeText(targets []*gdk.Atom) bool {
 	var _arg1 *C.GdkAtom
 	var _arg2 C.gint
 	var _cret C.gboolean // in
@@ -262,7 +262,7 @@ func TargetsIncludeText(targets []gdk.Atom) bool {
 
 // TargetsIncludeURI determines if any of the targets in @targets can be used to
 // provide an uri list.
-func TargetsIncludeURI(targets []gdk.Atom) bool {
+func TargetsIncludeURI(targets []*gdk.Atom) bool {
 	var _arg1 *C.GdkAtom
 	var _arg2 C.gint
 	var _cret C.gboolean // in
@@ -409,14 +409,14 @@ func (t *TargetList) Native() unsafe.Pointer {
 }
 
 // Add appends another target to a TargetList.
-func (l *TargetList) Add(target gdk.Atom, flags uint, info uint) {
+func (l *TargetList) Add(target *gdk.Atom, flags uint, info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.GdkAtom        // out
 	var _arg2 C.guint          // out
 	var _arg3 C.guint          // out
 
 	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 	_arg2 = (C.guint)(flags)
 	_arg3 = (C.guint)(info)
 
@@ -497,14 +497,14 @@ func (l *TargetList) AddURITargets(info uint) {
 }
 
 // Find looks up a given target in a TargetList.
-func (l *TargetList) Find(target gdk.Atom) (uint, bool) {
+func (l *TargetList) Find(target *gdk.Atom) (uint, bool) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.GdkAtom        // out
 	var _arg2 C.guint          // in
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
 	_cret = C.gtk_target_list_find(_arg0, _arg1, &_arg2)
 
@@ -539,12 +539,12 @@ func (l *TargetList) Ref() *TargetList {
 }
 
 // Remove removes a target from a target list.
-func (l *TargetList) Remove(target gdk.Atom) {
+func (l *TargetList) Remove(target *gdk.Atom) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.GdkAtom        // out
 
 	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
 	C.gtk_target_list_remove(_arg0, _arg1)
 }

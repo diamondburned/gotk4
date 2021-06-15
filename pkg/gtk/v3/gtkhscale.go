@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,7 +71,7 @@ func NewHScale(adjustment Adjustment) HScale {
 
 	var _hScale HScale // out
 
-	_hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HScale)
+	_hScale = WrapHScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
 }
@@ -92,7 +91,7 @@ func NewHScaleWithRange(min float64, max float64, step float64) HScale {
 
 	var _hScale HScale // out
 
-	_hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HScale)
+	_hScale = WrapHScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
 }

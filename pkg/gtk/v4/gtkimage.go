@@ -199,7 +199,7 @@ func NewImage() Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -216,7 +216,7 @@ func NewImageFromFile(filename string) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -232,7 +232,7 @@ func NewImageFromGIcon(icon gio.Icon) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -249,7 +249,7 @@ func NewImageFromIconName(iconName string) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -265,7 +265,7 @@ func NewImageFromPaintable(paintable gdk.Paintable) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -281,7 +281,7 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -298,7 +298,7 @@ func NewImageFromResource(resourcePath string) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -327,7 +327,7 @@ func (i image) GIcon() gio.Icon {
 
 	var _icon gio.Icon // out
 
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
 
 	return _icon
 }
@@ -384,7 +384,7 @@ func (i image) Paintable() gdk.Paintable {
 
 	var _paintable gdk.Paintable // out
 
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Paintable)
 
 	return _paintable
 }

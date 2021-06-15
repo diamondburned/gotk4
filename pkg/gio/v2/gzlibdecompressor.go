@@ -78,7 +78,7 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 
 	var _zlibDecompressor ZlibDecompressor // out
 
-	_zlibDecompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ZlibDecompressor)
+	_zlibDecompressor = WrapZlibDecompressor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _zlibDecompressor
 }
@@ -98,7 +98,7 @@ func (d zlibDecompressor) FileInfo() FileInfo {
 
 	var _fileInfo FileInfo // out
 
-	_fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FileInfo)
 
 	return _fileInfo
 }

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -119,7 +118,7 @@ func NewFileFilter() FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileFilter)
+	_fileFilter = WrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -135,7 +134,7 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileFilter)
+	_fileFilter = WrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -194,7 +193,8 @@ func (f fileFilter) Attributes() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

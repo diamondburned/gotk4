@@ -212,7 +212,7 @@ func NewMenuButton() MenuButton {
 
 	var _menuButton MenuButton // out
 
-	_menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuButton)
+	_menuButton = WrapMenuButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuButton
 }
@@ -228,7 +228,7 @@ func (m menuButton) AlignWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -261,7 +261,7 @@ func (m menuButton) MenuModel() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }
@@ -278,7 +278,7 @@ func (m menuButton) Popover() Popover {
 
 	var _popover Popover // out
 
-	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Popover)
+	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Popover)
 
 	return _popover
 }
@@ -295,7 +295,7 @@ func (m menuButton) Popup() Menu {
 
 	var _menu Menu // out
 
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Menu)
+	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Menu)
 
 	return _menu
 }

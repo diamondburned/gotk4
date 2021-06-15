@@ -77,7 +77,7 @@ func NewMountOperation(parent Window) MountOperation {
 
 	var _mountOperation MountOperation // out
 
-	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MountOperation)
+	_mountOperation = WrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mountOperation
 }
@@ -93,7 +93,7 @@ func (o mountOperation) Parent() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }
@@ -110,7 +110,7 @@ func (o mountOperation) Screen() gdk.Screen {
 
 	var _screen gdk.Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
 
 	return _screen
 }

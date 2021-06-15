@@ -89,7 +89,7 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 
 	var _networkAddress NetworkAddress // out
 
-	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkAddress)
+	_networkAddress = WrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkAddress
 }
@@ -105,7 +105,7 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 
 	var _networkAddress NetworkAddress // out
 
-	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkAddress)
+	_networkAddress = WrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkAddress
 }

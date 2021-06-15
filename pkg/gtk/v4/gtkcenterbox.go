@@ -131,7 +131,7 @@ func NewCenterBox() CenterBox {
 
 	var _centerBox CenterBox // out
 
-	_centerBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CenterBox)
+	_centerBox = WrapCenterBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _centerBox
 }
@@ -164,7 +164,7 @@ func (s centerBox) CenterWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -180,7 +180,7 @@ func (s centerBox) EndWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -196,7 +196,7 @@ func (s centerBox) StartWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

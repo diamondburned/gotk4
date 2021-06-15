@@ -218,7 +218,8 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 
 	{
 		var i int
-		for p := _arg2; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.gchar
+		for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -230,7 +231,8 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	}
 	{
 		var i int
-		for p := _arg3; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.gchar
+		for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

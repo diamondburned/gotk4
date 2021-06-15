@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,9 +32,6 @@ type StyleProviderOverrider interface {
 	// Style returns the style settings affecting a widget defined by @path, or
 	// nil if @provider doesn’t contemplate styling @path.
 	Style(path *WidgetPath) StyleProperties
-	// StyleProperty looks up a widget style property as defined by @provider
-	// for the widget represented by @path.
-	StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (*externglib.Value, bool)
 }
 
 // StyleProvider: gtkStyleProvider is an interface used to provide style
@@ -81,7 +77,7 @@ func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
 
 	var _iconFactory IconFactory // out
 
-	_iconFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconFactory)
+	_iconFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(IconFactory)
 
 	return _iconFactory
 }
@@ -100,35 +96,7 @@ func (p styleProvider) Style(path *WidgetPath) StyleProperties {
 
 	var _styleProperties StyleProperties // out
 
-	_styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StyleProperties)
+	_styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StyleProperties)
 
 	return _styleProperties
-}
-
-// StyleProperty looks up a widget style property as defined by @provider
-// for the widget represented by @path.
-func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (*externglib.Value, bool) {
-	var _arg0 *C.GtkStyleProvider // out
-	var _arg1 *C.GtkWidgetPath    // out
-	var _arg2 C.GtkStateFlags     // out
-	var _arg3 *C.GParamSpec       // out
-	var _arg4 C.GValue            // in
-	var _cret C.gboolean          // in
-
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
-	_arg2 = (C.GtkStateFlags)(state)
-	_arg3 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-
-	_cret = C.gtk_style_provider_get_style_property(_arg0, _arg1, _arg2, _arg3, &_arg4)
-
-	var _value *externglib.Value // out
-	var _ok bool                 // out
-
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg4))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _value, _ok
 }

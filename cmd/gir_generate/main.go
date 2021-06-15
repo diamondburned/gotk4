@@ -20,15 +20,17 @@ var (
 	output  string
 	module  string
 	verbose bool
+	listPkg bool
 )
 
 func init() {
 	flag.StringVar(&output, "o", "", "output directory to mkdir in")
 	flag.StringVar(&module, "m", "github.com/diamondburned/gotk4", "go module name")
 	flag.BoolVar(&verbose, "v", verbose, "log verbosely (debug mode)")
+	flag.BoolVar(&listPkg, "l", listPkg, "only list packages and exit")
 	flag.Parse()
 
-	if output == "" {
+	if !listPkg && output == "" {
 		log.Fatalln("Missing -o output directory.")
 	}
 
@@ -66,6 +68,10 @@ func main() {
 				repo.Path,
 			)
 		}
+	}
+
+	if listPkg {
+		return
 	}
 
 	var wg sync.WaitGroup
@@ -130,15 +136,17 @@ func writeNamespace(ng *girgen.NamespaceGenerator) error {
 		dir = filepath.Join(dir, fmt.Sprintf("v%d", version))
 	}
 
-	if err := os.MkdirAll(dir, os.ModePerm|os.ModeDir); err != nil {
-		return errors.Wrap(err, "mkdir -p failed")
-	}
-
 	files, genErr := ng.Generate()
 
-	for name, data := range files {
-		if err := os.WriteFile(filepath.Join(dir, name), data, 0666); err != nil {
-			return errors.Wrapf(err, "failed to write %s", name)
+	if len(files) > 0 {
+		if err := os.MkdirAll(dir, os.ModePerm|os.ModeDir); err != nil {
+			return errors.Wrap(err, "mkdir -p failed")
+		}
+
+		for name, data := range files {
+			if err := os.WriteFile(filepath.Join(dir, name), data, 0666); err != nil {
+				return errors.Wrapf(err, "failed to write %s", name)
+			}
 		}
 	}
 

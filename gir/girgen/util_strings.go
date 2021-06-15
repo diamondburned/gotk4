@@ -5,73 +5,20 @@ import (
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	_ "embed"
 )
+
+//go:embed util_strings_specials.txt
+var specialsTXT string
 
 var (
 	snakeRegex     = regexp.MustCompile(`[_0-9]+\w`)
-	pascalSpecials = []string{
-		"Gl",
-		"Es",
-		"Id",
-		"Io",
-		"Fs",
-		"Rc",
-		"Ft",
-		"Ps",
-		"Pdf",
-		"Xml",
-		"Os2",
-		"Drm",
-		"Tls",
-		"Rgb",
-		"Bgr",
-		"Hsl",
-		"Hsv",
-		"Uri",
-		"Url",
-		"Css",
-		"Dpi",
-		"Ltr",
-		"Rtl",
-		"Gtk",
-		"Nul",
-		"Eof",
-		"Md5",
-		"Dmy",
-		"Cas",
-		"Ssl",
-		"Gpl",
-		"Mit",
-		"Bsd",
-		"Mpl",
-		"Nfc",
-		"Nfd",
-		"Nfkc",
-		"Nfkd",
-		"Dtls",
-		"Uuid",
-		"Simd",
-		"Hmac",
-		"Mime",
-		"Rgba",
-		"Argb",
-		"Vrgb",
-		"Vbgr",
-		"Cogl",
-		"Ascii",
-		"Iso8601",
-		`[LA]gpl`,
-		`[234]d`,
-		`[A-Z]fs`,
-		`Sha(\d+)?`,
-		`Utf(\d+)?`,
-		`[XY][^aiueo]`,
-		`[XYZxyz]{2,3}`,
-		`(|S|R)[XYZxyz]{3}`,
-	}
-	pascalWords = strings.NewReplacer(
+	pascalSpecials = strings.Split(specialsTXT, "\n")
+	pascalWords    = strings.NewReplacer(
 		"Tolower", "ToLower",
 		"Toupper", "ToUpper",
+		"Totitle", "ToTitle",
 		"Xdigit", "XDigit",
 		"Dbus", "DBus",
 		"Gicon", "GIcon",

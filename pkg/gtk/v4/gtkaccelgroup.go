@@ -208,7 +208,8 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint,
 	_acceleratorKey = (uint)(_arg3)
 	{
 		var i int
-		for p := _arg4; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.guint
+		for p := _arg4; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

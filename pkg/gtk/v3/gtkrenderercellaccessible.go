@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,7 +58,7 @@ func NewRendererCellAccessible(renderer CellRenderer) RendererCellAccessible {
 
 	var _rendererCellAccessible RendererCellAccessible // out
 
-	_rendererCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RendererCellAccessible)
+	_rendererCellAccessible = WrapRendererCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rendererCellAccessible
 }

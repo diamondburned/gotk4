@@ -111,7 +111,7 @@ func (c eventController) CurrentEvent() gdk.Event {
 
 	var _event gdk.Event // out
 
-	_event = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Event)
+	_event = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Event)
 
 	return _event
 }
@@ -128,7 +128,7 @@ func (c eventController) CurrentEventDevice() gdk.Device {
 
 	var _device gdk.Device // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Device)
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Device)
 
 	return _device
 }
@@ -227,7 +227,7 @@ func (c eventController) Widget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

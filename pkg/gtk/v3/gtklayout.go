@@ -117,7 +117,7 @@ func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 
 	var _layout Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Layout)
+	_layout = WrapLayout(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -134,7 +134,7 @@ func (l layout) BinWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }
@@ -155,7 +155,7 @@ func (l layout) HAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -197,7 +197,7 @@ func (l layout) VAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }

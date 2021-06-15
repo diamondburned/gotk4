@@ -242,7 +242,7 @@ func NewPrintSettings() PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printSettings
 }
@@ -261,7 +261,7 @@ func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
 	var _printSettings PrintSettings // out
 	var _goerr error                 // out
 
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printSettings, _goerr
@@ -278,7 +278,7 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printSettings
 }
@@ -299,7 +299,7 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (Print
 	var _printSettings PrintSettings // out
 	var _goerr error                 // out
 
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printSettings, _goerr
@@ -316,7 +316,7 @@ func (o printSettings) Copy() PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintSettings)
 
 	return _printSettings
 }

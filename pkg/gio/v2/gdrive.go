@@ -290,7 +290,8 @@ func (d drive) EnumerateIdentifiers() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -316,7 +317,7 @@ func (d drive) Icon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -402,7 +403,7 @@ func (d drive) SymbolicIcon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }

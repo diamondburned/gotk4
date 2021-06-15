@@ -142,7 +142,7 @@ func NewDirectoryList(attributes string, file gio.File) DirectoryList {
 
 	var _directoryList DirectoryList // out
 
-	_directoryList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DirectoryList)
+	_directoryList = WrapDirectoryList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _directoryList
 }
@@ -197,7 +197,7 @@ func (s directoryList) File() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }

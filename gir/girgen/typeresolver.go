@@ -16,9 +16,10 @@ type ResolvedType struct {
 	PublImport ResolvedTypeImport
 	ImplImport ResolvedTypeImport
 
-	GType string
 	CType string
-	Ptr   uint8
+
+	GType string
+	Ptr   uint8 // used ONLY for the Go type.
 }
 
 // ExternType is an externally resolved type.
@@ -120,13 +121,21 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 		Package: gir.GoNamespace(result.Namespace),
 	}
 
+	ptr := countPtrs(typ, result)
+
+	// Always use internal types (like GVariant) by reference and not value,
+	// since Go will refuse to allocate them.
+	if result.Record != nil && recordIsOpaque(*result.Record) && ptr == 0 {
+		ptr++
+	}
+
 	return &ResolvedType{
 		Extern:     &ExternType{Result: result},
 		ImplImport: resolvedImport,
 		PublImport: resolvedImport,
 		GType:      typ.Name,
 		CType:      typ.CType,
-		Ptr:        countPtrs(typ, result),
+		Ptr:        ptr,
 	}
 }
 

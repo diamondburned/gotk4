@@ -144,7 +144,7 @@ func (b tlsBackend) DefaultDatabase() TLSDatabase {
 
 	var _tlsDatabase TLSDatabase // out
 
-	_tlsDatabase = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSDatabase)
+	_tlsDatabase = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSDatabase)
 
 	return _tlsDatabase
 }

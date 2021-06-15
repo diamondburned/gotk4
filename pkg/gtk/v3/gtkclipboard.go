@@ -113,7 +113,7 @@ type Clipboard interface {
 	// WaitForContents requests the contents of the clipboard using the given
 	// target. This function waits for the data to be received using the main
 	// loop, so events, timeouts, etc, may be dispatched during the wait.
-	WaitForContents(target gdk.Atom) *SelectionData
+	WaitForContents(target *gdk.Atom) *SelectionData
 	// WaitForImage requests the contents of the clipboard as image and converts
 	// the result to a Pixbuf. This function waits for the data to be received
 	// using the main loop, so events, timeouts, etc, may be dispatched during
@@ -160,7 +160,7 @@ type Clipboard interface {
 	//
 	// If you want to see if there’s text available on the clipboard, use
 	// gtk_clipboard_wait_is_text_available () instead.
-	WaitIsTargetAvailable(target gdk.Atom) bool
+	WaitIsTargetAvailable(target *gdk.Atom) bool
 	// WaitIsTextAvailable: test to see if there is text available to be pasted
 	// This is done by requesting the TARGETS atom and checking if it contains
 	// any of the supported text targets. This function waits for the data to be
@@ -227,7 +227,7 @@ func (c clipboard) Display() gdk.Display {
 
 	var _display gdk.Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
 
 	return _display
 }
@@ -246,7 +246,7 @@ func (c clipboard) Owner() gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }
@@ -312,13 +312,13 @@ func (c clipboard) Store() {
 // WaitForContents requests the contents of the clipboard using the given
 // target. This function waits for the data to be received using the main
 // loop, so events, timeouts, etc, may be dispatched during the wait.
-func (c clipboard) WaitForContents(target gdk.Atom) *SelectionData {
+func (c clipboard) WaitForContents(target *gdk.Atom) *SelectionData {
 	var _arg0 *C.GtkClipboard     // out
 	var _arg1 C.GdkAtom           // out
 	var _cret *C.GtkSelectionData // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_contents(_arg0, _arg1)
 
@@ -346,7 +346,7 @@ func (c clipboard) WaitForImage() gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -415,7 +415,8 @@ func (c clipboard) WaitForUris() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -490,13 +491,13 @@ func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
 //
 // If you want to see if there’s text available on the clipboard, use
 // gtk_clipboard_wait_is_text_available () instead.
-func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
+func (c clipboard) WaitIsTargetAvailable(target *gdk.Atom) bool {
 	var _arg0 *C.GtkClipboard // out
 	var _arg1 C.GdkAtom       // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_target_available(_arg0, _arg1)
 

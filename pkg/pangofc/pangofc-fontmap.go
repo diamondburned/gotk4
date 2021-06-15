@@ -134,7 +134,7 @@ func (f fontMap) CreateContext() pango.Context {
 
 	var _context pango.Context // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
 
 	return _context
 }

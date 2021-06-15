@@ -762,7 +762,7 @@ func (c fileChooser) CurrentFolderFile() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }
@@ -848,7 +848,7 @@ func (c fileChooser) ExtraWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -869,7 +869,7 @@ func (c fileChooser) File() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }
@@ -907,7 +907,7 @@ func (c fileChooser) Filter() FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileFilter)
+	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FileFilter)
 
 	return _fileFilter
 }
@@ -943,7 +943,7 @@ func (c fileChooser) PreviewFile() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }
@@ -996,7 +996,7 @@ func (c fileChooser) PreviewWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

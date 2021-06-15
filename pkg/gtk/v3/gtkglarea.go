@@ -195,7 +195,7 @@ func NewGLArea() GLArea {
 
 	var _glArea GLArea // out
 
-	_glArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(GLArea)
+	_glArea = WrapGLArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _glArea
 }
@@ -243,7 +243,7 @@ func (a glArea) Context() gdk.GLContext {
 
 	var _glContext gdk.GLContext // out
 
-	_glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.GLContext)
+	_glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.GLContext)
 
 	return _glContext
 }

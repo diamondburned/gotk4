@@ -86,7 +86,7 @@ func NewOffscreenWindow() OffscreenWindow {
 
 	var _offscreenWindow OffscreenWindow // out
 
-	_offscreenWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OffscreenWindow)
+	_offscreenWindow = WrapOffscreenWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _offscreenWindow
 }
@@ -104,7 +104,7 @@ func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }

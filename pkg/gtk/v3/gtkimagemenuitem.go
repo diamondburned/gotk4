@@ -121,7 +121,7 @@ func NewImageMenuItem() ImageMenuItem {
 
 	var _imageMenuItem ImageMenuItem // out
 
-	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ImageMenuItem)
+	_imageMenuItem = WrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -140,7 +140,7 @@ func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuI
 
 	var _imageMenuItem ImageMenuItem // out
 
-	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ImageMenuItem)
+	_imageMenuItem = WrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -157,7 +157,7 @@ func NewImageMenuItemWithLabel(label string) ImageMenuItem {
 
 	var _imageMenuItem ImageMenuItem // out
 
-	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ImageMenuItem)
+	_imageMenuItem = WrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -174,7 +174,7 @@ func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
 
 	var _imageMenuItem ImageMenuItem // out
 
-	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ImageMenuItem)
+	_imageMenuItem = WrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -210,7 +210,7 @@ func (i imageMenuItem) Image() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

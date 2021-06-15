@@ -39,12 +39,12 @@ func marshalPropMode(p uintptr) (interface{}, error) {
 }
 
 // PropertyDelete deletes a property from a window.
-func PropertyDelete(window Window, property Atom) {
+func PropertyDelete(window Window, property *Atom) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.GdkAtom    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
 
 	C.gdk_property_delete(_arg1, _arg2)
 }
@@ -60,7 +60,7 @@ func PropertyDelete(window Window, property Atom) {
 // should return a useful error to the program. You are advised to use
 // XGetWindowProperty() directly until a replacement function for
 // gdk_property_get() is provided.
-func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length uint32, pdelete int) (Atom, int, []byte, bool) {
+func PropertyGet(window Window, property *Atom, typ *Atom, offset uint32, length uint32, pdelete int) (Atom, int, []byte, bool) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.GdkAtom    // out
 	var _arg3 C.GdkAtom    // out
@@ -74,8 +74,8 @@ func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length u
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(property.Native()))
-	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(typ.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(typ.Native()))
 	_arg4 = (C.gulong)(offset)
 	_arg5 = (C.gulong)(length)
 	_arg6 = (C.gint)(pdelete)
@@ -100,7 +100,7 @@ func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length u
 
 // TextPropertyToUTF8ListForDisplay converts a text property in the given
 // encoding to a list of UTF-8 strings.
-func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int, text []byte) ([]string, int) {
+func TextPropertyToUTF8ListForDisplay(display Display, encoding *Atom, format int, text []byte) ([]string, int) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.GdkAtom     // out
 	var _arg3 C.gint        // out
@@ -110,7 +110,7 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int
 	var _cret C.gint // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(encoding.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(encoding.Native()))
 	_arg3 = (C.gint)(format)
 	_arg5 = C.gint(len(text))
 	_arg4 = (*C.guchar)(unsafe.Pointer(&text[0]))
@@ -122,7 +122,8 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int
 
 	{
 		var i int
-		for p := _arg6; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _arg6; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

@@ -121,7 +121,7 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 
 	var _dBusObjectManagerServer DBusObjectManagerServer // out
 
-	_dBusObjectManagerServer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectManagerServer)
+	_dBusObjectManagerServer = WrapDBusObjectManagerServer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectManagerServer
 }
@@ -171,7 +171,7 @@ func (m dBusObjectManagerServer) Connection() DBusConnection {
 
 	var _dBusConnection DBusConnection // out
 
-	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusConnection)
 
 	return _dBusConnection
 }

@@ -233,7 +233,7 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinBu
 
 	var _spinButton SpinButton // out
 
-	_spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SpinButton)
+	_spinButton = WrapSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinButton
 }
@@ -253,7 +253,7 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 
 	var _spinButton SpinButton // out
 
-	_spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SpinButton)
+	_spinButton = WrapSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinButton
 }
@@ -286,7 +286,7 @@ func (s spinButton) Adjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }

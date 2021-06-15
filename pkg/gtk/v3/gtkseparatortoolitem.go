@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -84,7 +83,7 @@ func NewSeparatorToolItem() SeparatorToolItem {
 
 	var _separatorToolItem SeparatorToolItem // out
 
-	_separatorToolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SeparatorToolItem)
+	_separatorToolItem = WrapSeparatorToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorToolItem
 }

@@ -201,7 +201,7 @@ func (r _range) Adjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }

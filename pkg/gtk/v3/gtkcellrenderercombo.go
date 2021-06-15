@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,7 +67,7 @@ func NewCellRendererCombo() CellRendererCombo {
 
 	var _cellRendererCombo CellRendererCombo // out
 
-	_cellRendererCombo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererCombo)
+	_cellRendererCombo = WrapCellRendererCombo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererCombo
 }

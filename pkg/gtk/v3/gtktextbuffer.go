@@ -163,10 +163,10 @@ type TextBuffer interface {
 	// @formats to be used must be registered using
 	// gtk_text_buffer_register_deserialize_format() or
 	// gtk_text_buffer_register_deserialize_tagset() beforehand.
-	Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error
+	Deserialize(contentBuffer TextBuffer, format *gdk.Atom, iter *TextIter, data []byte) error
 	// DeserializeGetCanCreateTags: this functions returns the value set with
 	// gtk_text_buffer_deserialize_set_can_create_tags()
-	DeserializeGetCanCreateTags(format gdk.Atom) bool
+	DeserializeGetCanCreateTags(format *gdk.Atom) bool
 	// DeserializeSetCanCreateTags: use this function to allow a rich text
 	// deserialization function to create new tags in the receiving buffer. Note
 	// that using this function is almost always a bad idea, because the rich
@@ -184,7 +184,7 @@ type TextBuffer interface {
 	// buffers and you know that it’s fine to receive new tags from these
 	// buffers, because you know that your application can handle the newly
 	// created tags.
-	DeserializeSetCanCreateTags(format gdk.Atom, canCreateTags bool)
+	DeserializeSetCanCreateTags(format *gdk.Atom, canCreateTags bool)
 	// EndUserAction: should be paired with a call to
 	// gtk_text_buffer_begin_user_action(). See that function for a full
 	// explanation.
@@ -398,7 +398,7 @@ type TextBuffer interface {
 	// RegisterDeserializeTagset: this function registers GTK+’s internal rich
 	// text serialization format with the passed @buffer. See
 	// gtk_text_buffer_register_serialize_tagset() for details.
-	RegisterDeserializeTagset(tagsetName string) gdk.Atom
+	RegisterDeserializeTagset(tagsetName string) *gdk.Atom
 	// RegisterSerializeTagset: this function registers GTK+’s internal rich
 	// text serialization format with the passed @buffer. The internal format
 	// does not comply to any standard rich text format and only works between
@@ -416,7 +416,7 @@ type TextBuffer interface {
 	// being pasted. It is probably the common case to pass an identifier != nil
 	// here, since the nil tagset requires the receiving buffer to deal with
 	// with pasting of arbitrary tags.
-	RegisterSerializeTagset(tagsetName string) gdk.Atom
+	RegisterSerializeTagset(tagsetName string) *gdk.Atom
 	// RemoveAllTags removes all tags in the range between @start and @end. Be
 	// careful with this function; it could remove tags added in code unrelated
 	// to the code you’re currently writing. That is, using this function is
@@ -454,12 +454,12 @@ type TextBuffer interface {
 	// that was previously registered using
 	// gtk_text_buffer_register_deserialize_format() or
 	// gtk_text_buffer_register_deserialize_tagset().
-	UnregisterDeserializeFormat(format gdk.Atom)
+	UnregisterDeserializeFormat(format *gdk.Atom)
 	// UnregisterSerializeFormat: this function unregisters a rich text format
 	// that was previously registered using
 	// gtk_text_buffer_register_serialize_format() or
 	// gtk_text_buffer_register_serialize_tagset()
-	UnregisterSerializeFormat(format gdk.Atom)
+	UnregisterSerializeFormat(format *gdk.Atom)
 }
 
 // textBuffer implements the TextBuffer class.
@@ -494,7 +494,7 @@ func NewTextBuffer(table TextTagTable) TextBuffer {
 
 	var _textBuffer TextBuffer // out
 
-	_textBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextBuffer)
+	_textBuffer = WrapTextBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textBuffer
 }
@@ -654,7 +654,7 @@ func (b textBuffer) CreateChildAnchor(iter *TextIter) TextChildAnchor {
 
 	var _textChildAnchor TextChildAnchor // out
 
-	_textChildAnchor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
+	_textChildAnchor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextChildAnchor)
 
 	return _textChildAnchor
 }
@@ -694,7 +694,7 @@ func (b textBuffer) CreateMark(markName string, where *TextIter, leftGravity boo
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }
@@ -829,7 +829,7 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 // @formats to be used must be registered using
 // gtk_text_buffer_register_deserialize_format() or
 // gtk_text_buffer_register_deserialize_tagset() beforehand.
-func (r textBuffer) Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error {
+func (r textBuffer) Deserialize(contentBuffer TextBuffer, format *gdk.Atom, iter *TextIter, data []byte) error {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextBuffer // out
 	var _arg2 C.GdkAtom        // out
@@ -840,7 +840,7 @@ func (r textBuffer) Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter 
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(contentBuffer.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(format.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	_arg5 = C.gsize(len(data))
 	_arg4 = (*C.guint8)(unsafe.Pointer(&data[0]))
@@ -856,13 +856,13 @@ func (r textBuffer) Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter 
 
 // DeserializeGetCanCreateTags: this functions returns the value set with
 // gtk_text_buffer_deserialize_set_can_create_tags()
-func (b textBuffer) DeserializeGetCanCreateTags(format gdk.Atom) bool {
+func (b textBuffer) DeserializeGetCanCreateTags(format *gdk.Atom) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GdkAtom        // out
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(format.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
 
 	_cret = C.gtk_text_buffer_deserialize_get_can_create_tags(_arg0, _arg1)
 
@@ -892,13 +892,13 @@ func (b textBuffer) DeserializeGetCanCreateTags(format gdk.Atom) bool {
 // buffers and you know that it’s fine to receive new tags from these
 // buffers, because you know that your application can handle the newly
 // created tags.
-func (b textBuffer) DeserializeSetCanCreateTags(format gdk.Atom, canCreateTags bool) {
+func (b textBuffer) DeserializeSetCanCreateTags(format *gdk.Atom, canCreateTags bool) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GdkAtom        // out
 	var _arg2 C.gboolean       // out
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(format.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
 	if canCreateTags {
 		_arg2 = C.TRUE
 	}
@@ -1019,7 +1019,7 @@ func (b textBuffer) GetInsert() TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }
@@ -1166,7 +1166,7 @@ func (b textBuffer) Mark(name string) TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }
@@ -1232,7 +1232,7 @@ func (b textBuffer) SelectionBound() TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }
@@ -1319,7 +1319,7 @@ func (b textBuffer) TagTable() TextTagTable {
 
 	var _textTagTable TextTagTable // out
 
-	_textTagTable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextTagTable)
+	_textTagTable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextTagTable)
 
 	return _textTagTable
 }
@@ -1644,7 +1644,7 @@ func (b textBuffer) PlaceCursor(where *TextIter) {
 // RegisterDeserializeTagset: this function registers GTK+’s internal rich
 // text serialization format with the passed @buffer. See
 // gtk_text_buffer_register_serialize_tagset() for details.
-func (b textBuffer) RegisterDeserializeTagset(tagsetName string) gdk.Atom {
+func (b textBuffer) RegisterDeserializeTagset(tagsetName string) *gdk.Atom {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.gchar         // out
 	var _cret C.GdkAtom        // in
@@ -1655,9 +1655,9 @@ func (b textBuffer) RegisterDeserializeTagset(tagsetName string) gdk.Atom {
 
 	_cret = C.gtk_text_buffer_register_deserialize_tagset(_arg0, _arg1)
 
-	var _atom gdk.Atom // out
+	var _atom *gdk.Atom // out
 
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+	_atom = gdk.WrapAtom(unsafe.Pointer(_cret))
 
 	return _atom
 }
@@ -1679,7 +1679,7 @@ func (b textBuffer) RegisterDeserializeTagset(tagsetName string) gdk.Atom {
 // being pasted. It is probably the common case to pass an identifier != nil
 // here, since the nil tagset requires the receiving buffer to deal with
 // with pasting of arbitrary tags.
-func (b textBuffer) RegisterSerializeTagset(tagsetName string) gdk.Atom {
+func (b textBuffer) RegisterSerializeTagset(tagsetName string) *gdk.Atom {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.gchar         // out
 	var _cret C.GdkAtom        // in
@@ -1690,9 +1690,9 @@ func (b textBuffer) RegisterSerializeTagset(tagsetName string) gdk.Atom {
 
 	_cret = C.gtk_text_buffer_register_serialize_tagset(_arg0, _arg1)
 
-	var _atom gdk.Atom // out
+	var _atom *gdk.Atom // out
 
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+	_atom = gdk.WrapAtom(unsafe.Pointer(_cret))
 
 	return _atom
 }
@@ -1815,12 +1815,12 @@ func (b textBuffer) SetText(text string, len int) {
 // that was previously registered using
 // gtk_text_buffer_register_deserialize_format() or
 // gtk_text_buffer_register_deserialize_tagset().
-func (b textBuffer) UnregisterDeserializeFormat(format gdk.Atom) {
+func (b textBuffer) UnregisterDeserializeFormat(format *gdk.Atom) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GdkAtom        // out
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(format.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
 
 	C.gtk_text_buffer_unregister_deserialize_format(_arg0, _arg1)
 }
@@ -1829,12 +1829,12 @@ func (b textBuffer) UnregisterDeserializeFormat(format gdk.Atom) {
 // that was previously registered using
 // gtk_text_buffer_register_serialize_format() or
 // gtk_text_buffer_register_serialize_tagset()
-func (b textBuffer) UnregisterSerializeFormat(format gdk.Atom) {
+func (b textBuffer) UnregisterSerializeFormat(format *gdk.Atom) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GdkAtom        // out
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(format.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
 
 	C.gtk_text_buffer_unregister_serialize_format(_arg0, _arg1)
 }

@@ -57,7 +57,7 @@ func NewPixbufNonAnim(pixbuf Pixbuf) PixbufNonAnim {
 
 	var _pixbufNonAnim PixbufNonAnim // out
 
-	_pixbufNonAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufNonAnim)
+	_pixbufNonAnim = WrapPixbufNonAnim(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbufNonAnim
 }

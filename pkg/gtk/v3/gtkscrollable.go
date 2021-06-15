@@ -138,7 +138,7 @@ func (s scrollable) HAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -170,7 +170,7 @@ func (s scrollable) VAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }

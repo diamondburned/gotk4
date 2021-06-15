@@ -27,7 +27,7 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerCore, deviceId int) X1
 
 	var _x11DeviceCore X11DeviceCore // out
 
-	_x11DeviceCore = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(X11DeviceCore)
+	_x11DeviceCore = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(X11DeviceCore)
 
 	return _x11DeviceCore
 }

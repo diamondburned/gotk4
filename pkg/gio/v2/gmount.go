@@ -273,7 +273,7 @@ func (m mount) DefaultLocation() File {
 
 	var _file File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
 
 	return _file
 }
@@ -292,7 +292,7 @@ func (m mount) Drive() Drive {
 
 	var _drive Drive // out
 
-	_drive = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Drive)
+	_drive = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Drive)
 
 	return _drive
 }
@@ -308,7 +308,7 @@ func (m mount) Icon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -341,7 +341,7 @@ func (m mount) Root() File {
 
 	var _file File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
 
 	return _file
 }
@@ -373,7 +373,7 @@ func (m mount) SymbolicIcon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -408,7 +408,7 @@ func (m mount) Volume() Volume {
 
 	var _volume Volume // out
 
-	_volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Volume)
+	_volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Volume)
 
 	return _volume
 }
@@ -433,7 +433,8 @@ func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -478,7 +479,8 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

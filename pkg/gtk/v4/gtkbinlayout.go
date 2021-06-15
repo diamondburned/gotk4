@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,7 +60,7 @@ func NewBinLayout() BinLayout {
 
 	var _binLayout BinLayout // out
 
-	_binLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BinLayout)
+	_binLayout = WrapBinLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _binLayout
 }

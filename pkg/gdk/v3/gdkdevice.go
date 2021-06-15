@@ -299,7 +299,7 @@ func (d device) AssociatedDevice() Device {
 
 	var _ret Device // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Device)
 
 	return _ret
 }
@@ -365,7 +365,7 @@ func (d device) Display() Display {
 
 	var _display Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
 
 	return _display
 }
@@ -431,7 +431,7 @@ func (d device) LastEventWindow() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }
@@ -518,7 +518,7 @@ func (d device) Position() (screen Screen, x int, y int) {
 	var _x int         // out
 	var _y int         // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
 	_x = (int)(_arg2)
 	_y = (int)(_arg3)
 
@@ -543,7 +543,7 @@ func (d device) PositionDouble() (screen Screen, x float64, y float64) {
 	var _x float64     // out
 	var _y float64     // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
 	_x = (float64)(_arg2)
 	_y = (float64)(_arg3)
 
@@ -580,7 +580,7 @@ func (d device) Seat() Seat {
 
 	var _seat Seat // out
 
-	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Seat)
+	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Seat)
 
 	return _seat
 }
@@ -664,7 +664,7 @@ func (d device) WindowAtPosition() (winX int, winY int, window Window) {
 
 	_winX = (int)(_arg1)
 	_winY = (int)(_arg2)
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _winX, _winY, _window
 }
@@ -693,7 +693,7 @@ func (d device) WindowAtPositionDouble() (winX float64, winY float64, window Win
 
 	_winX = (float64)(_arg1)
 	_winY = (float64)(_arg2)
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _winX, _winY, _window
 }

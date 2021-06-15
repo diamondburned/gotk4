@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -107,7 +106,7 @@ func NewProXYAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 
 	var _proxyAddress ProXYAddress // out
 
-	_proxyAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ProXYAddress)
+	_proxyAddress = WrapProXYAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _proxyAddress
 }

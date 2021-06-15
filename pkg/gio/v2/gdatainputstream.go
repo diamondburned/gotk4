@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -198,7 +197,7 @@ func NewDataInputStream(baseStream InputStream) DataInputStream {
 
 	var _dataInputStream DataInputStream // out
 
-	_dataInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DataInputStream)
+	_dataInputStream = WrapDataInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dataInputStream
 }
@@ -365,7 +364,8 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 	_length = (uint)(_arg1)
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -402,7 +402,8 @@ func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error
 	_length = (uint)(_arg2)
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

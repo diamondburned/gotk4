@@ -279,7 +279,7 @@ func (c styleContext) Display() gdk.Display {
 
 	var _display gdk.Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
 
 	return _display
 }

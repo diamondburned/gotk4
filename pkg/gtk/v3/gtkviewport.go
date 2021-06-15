@@ -104,7 +104,7 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 
 	var _viewport Viewport // out
 
-	_viewport = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Viewport)
+	_viewport = WrapViewport(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
 }
@@ -120,7 +120,7 @@ func (v viewport) BinWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }
@@ -136,7 +136,7 @@ func (v viewport) HAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -169,7 +169,7 @@ func (v viewport) VAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -185,7 +185,7 @@ func (v viewport) ViewWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }

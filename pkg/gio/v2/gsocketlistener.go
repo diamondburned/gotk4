@@ -179,7 +179,7 @@ func NewSocketListener() SocketListener {
 
 	var _socketListener SocketListener // out
 
-	_socketListener = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketListener)
+	_socketListener = WrapSocketListener(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketListener
 }
@@ -210,8 +210,8 @@ func (l socketListener) Accept(cancellable Cancellable) (gextras.Objector, Socke
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(gextras.Objector)
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(gextras.Objector)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socketConnection, _goerr
@@ -235,8 +235,8 @@ func (l socketListener) AcceptFinish(result AsyncResult) (gextras.Objector, Sock
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(gextras.Objector)
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(gextras.Objector)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socketConnection, _goerr
@@ -271,8 +271,8 @@ func (l socketListener) AcceptSocket(cancellable Cancellable) (gextras.Objector,
 	var _socket Socket                 // out
 	var _goerr error                   // out
 
-	_sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(gextras.Objector)
-	_socket = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Socket)
+	_sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(gextras.Objector)
+	_socket = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Socket)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socket, _goerr
@@ -296,8 +296,8 @@ func (l socketListener) AcceptSocketFinish(result AsyncResult) (gextras.Objector
 	var _socket Socket                 // out
 	var _goerr error                   // out
 
-	_sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(gextras.Objector)
-	_socket = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Socket)
+	_sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(gextras.Objector)
+	_socket = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Socket)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socket, _goerr
@@ -345,7 +345,7 @@ func (l socketListener) AddAddress(address SocketAddress, typ SocketType, protoc
 	var _effectiveAddress SocketAddress // out
 	var _goerr error                    // out
 
-	_effectiveAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5.Native()))).(SocketAddress)
+	_effectiveAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5))).(SocketAddress)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _effectiveAddress, _goerr

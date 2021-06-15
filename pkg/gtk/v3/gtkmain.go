@@ -166,7 +166,7 @@ func GetCurrentEventDevice() gdk.Device {
 
 	var _device gdk.Device // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Device)
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Device)
 
 	return _device
 }
@@ -359,7 +359,7 @@ func GrabGetCurrent() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

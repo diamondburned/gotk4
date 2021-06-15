@@ -155,7 +155,7 @@ func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient,
 	var _dBusObjectManagerClient DBusObjectManagerClient // out
 	var _goerr error                                     // out
 
-	_dBusObjectManagerClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectManagerClient)
+	_dBusObjectManagerClient = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusObjectManagerClient, _goerr
@@ -174,7 +174,7 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerC
 	var _dBusObjectManagerClient DBusObjectManagerClient // out
 	var _goerr error                                     // out
 
-	_dBusObjectManagerClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectManagerClient)
+	_dBusObjectManagerClient = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusObjectManagerClient, _goerr
@@ -191,7 +191,7 @@ func (m dBusObjectManagerClient) Connection() DBusConnection {
 
 	var _dBusConnection DBusConnection // out
 
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DBusConnection)
 
 	return _dBusConnection
 }

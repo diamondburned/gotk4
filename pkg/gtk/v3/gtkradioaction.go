@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -103,7 +102,7 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 
 	var _radioAction RadioAction // out
 
-	_radioAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RadioAction)
+	_radioAction = WrapRadioAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _radioAction
 }

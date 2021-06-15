@@ -237,7 +237,7 @@ func NewSurfacePopup(parent Surface, autohide bool) Surface {
 
 	var _surface Surface // out
 
-	_surface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Surface)
+	_surface = WrapSurface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _surface
 }
@@ -253,7 +253,7 @@ func NewSurfaceToplevel(display Display) Surface {
 
 	var _surface Surface // out
 
-	_surface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Surface)
+	_surface = WrapSurface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _surface
 }
@@ -282,7 +282,7 @@ func (s surface) CreateCairoContext() CairoContext {
 
 	var _cairoContext CairoContext // out
 
-	_cairoContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CairoContext)
+	_cairoContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CairoContext)
 
 	return _cairoContext
 }
@@ -305,7 +305,7 @@ func (s surface) CreateGLContext() (GLContext, error) {
 	var _glContext GLContext // out
 	var _goerr error         // out
 
-	_glContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GLContext)
+	_glContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GLContext)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
@@ -366,7 +366,7 @@ func (s surface) CreateVulkanContext() (VulkanContext, error) {
 	var _vulkanContext VulkanContext // out
 	var _goerr error                 // out
 
-	_vulkanContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(VulkanContext)
+	_vulkanContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(VulkanContext)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _vulkanContext, _goerr
@@ -404,7 +404,7 @@ func (s surface) Cursor() Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Cursor)
+	_cursor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }
@@ -426,7 +426,7 @@ func (s surface) DeviceCursor(device Device) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Cursor)
+	_cursor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }
@@ -474,7 +474,7 @@ func (s surface) Display() Display {
 
 	var _display Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
 
 	return _display
 }
@@ -493,7 +493,7 @@ func (s surface) FrameClock() FrameClock {
 
 	var _frameClock FrameClock // out
 
-	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FrameClock)
+	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FrameClock)
 
 	return _frameClock
 }

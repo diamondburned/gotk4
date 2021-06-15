@@ -82,7 +82,7 @@ func NewStackSidebar() StackSidebar {
 
 	var _stackSidebar StackSidebar // out
 
-	_stackSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackSidebar)
+	_stackSidebar = WrapStackSidebar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSidebar
 }
@@ -98,7 +98,7 @@ func (s stackSidebar) Stack() Stack {
 
 	var _stack Stack // out
 
-	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
+	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Stack)
 
 	return _stack
 }

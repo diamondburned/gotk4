@@ -76,7 +76,7 @@ func NewNoSelection(model gio.ListModel) NoSelection {
 
 	var _noSelection NoSelection // out
 
-	_noSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NoSelection)
+	_noSelection = WrapNoSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noSelection
 }
@@ -92,7 +92,7 @@ func (s noSelection) Model() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }

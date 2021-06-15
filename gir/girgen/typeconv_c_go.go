@@ -24,7 +24,19 @@ func (conv *TypeConverter) cgoArrayConverter(value *ValueConverted) bool {
 		return value.Optional // ok if optional
 	}
 
-	array := value.AnyType.Array
+	array := *value.AnyType.Array
+
+	// Ensure that the array type matches the inner type. Some functions violate
+	// this, e.g. g_spawn_command_line_sync().
+	if array.Type.CType == "" {
+		// Copy the inner type so we don't accidentally change a reference.
+		typ := *array.Type
+		// Dereference the inner type by 1.
+		typ.CType = strings.Replace(array.CType, "*", "", 1)
+
+		array.AnyType.Type = &typ
+		value.AnyType.Array = &array
+	}
 
 	// All generators must declare src.
 	inner := conv.convertInner(value, "src[i]", value.OutName+"[i]")
@@ -154,7 +166,8 @@ func (conv *TypeConverter) cgoArrayConverter(value *ValueConverted) bool {
 
 		// Scan for the length.
 		value.p.Linef("var i int")
-		value.p.Linef("for p := %s; *p != nil; p = &unsafe.Slice(p, i+1)[i] {", value.InName)
+		value.p.Linef("var z %s", inner.InType)
+		value.p.Linef("for p := %s; *p != z; p = &unsafe.Slice(p, i+1)[i] {", value.InName)
 		value.p.Linef("  i++")
 		value.p.Linef("}")
 		value.p.EmptyLine()

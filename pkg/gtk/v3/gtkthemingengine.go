@@ -292,7 +292,7 @@ func (e themingEngine) Screen() gdk.Screen {
 
 	var _screen gdk.Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
 
 	return _screen
 }

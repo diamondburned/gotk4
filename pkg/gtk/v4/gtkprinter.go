@@ -191,7 +191,7 @@ func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
 
 	var _printer Printer // out
 
-	_printer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Printer)
+	_printer = WrapPrinter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printer
 }
@@ -301,7 +301,7 @@ func (p printer) DefaultPageSize() PageSetup {
 
 	var _pageSetup PageSetup // out
 
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
 }

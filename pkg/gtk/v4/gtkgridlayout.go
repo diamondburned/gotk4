@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -113,7 +112,7 @@ func NewGridLayout() GridLayout {
 
 	var _gridLayout GridLayout // out
 
-	_gridLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GridLayout)
+	_gridLayout = WrapGridLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gridLayout
 }

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -86,7 +85,7 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
 
 	var _arrow Arrow // out
 
-	_arrow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Arrow)
+	_arrow = WrapArrow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _arrow
 }

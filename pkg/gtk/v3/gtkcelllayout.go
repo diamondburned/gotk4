@@ -230,7 +230,7 @@ func (c cellLayout) Area() CellArea {
 
 	var _cellArea CellArea // out
 
-	_cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellArea)
+	_cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellArea)
 
 	return _cellArea
 }

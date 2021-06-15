@@ -193,7 +193,7 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 
 	var _glShader GLShader // out
 
-	_glShader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GLShader)
+	_glShader = WrapGLShader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _glShader
 }

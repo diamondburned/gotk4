@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -80,7 +79,7 @@ func NewCellRendererToggle() CellRendererToggle {
 
 	var _cellRendererToggle CellRendererToggle // out
 
-	_cellRendererToggle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererToggle)
+	_cellRendererToggle = WrapCellRendererToggle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererToggle
 }

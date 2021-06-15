@@ -230,7 +230,7 @@ func NewComboBox() ComboBox {
 
 	var _comboBox ComboBox // out
 
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -243,7 +243,7 @@ func NewComboBoxWithEntry() ComboBox {
 
 	var _comboBox ComboBox // out
 
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -259,7 +259,7 @@ func NewComboBoxWithModel(model TreeModel) ComboBox {
 
 	var _comboBox ComboBox // out
 
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -275,7 +275,7 @@ func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 
 	var _comboBox ComboBox // out
 
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
+	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -378,7 +378,7 @@ func (c comboBox) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -446,7 +446,7 @@ func (c comboBox) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }

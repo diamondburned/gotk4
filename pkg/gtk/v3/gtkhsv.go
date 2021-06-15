@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -81,7 +80,7 @@ func NewHSV() HSV {
 
 	var _hsV HSV // out
 
-	_hsV = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HSV)
+	_hsV = WrapHSV(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hsV
 }

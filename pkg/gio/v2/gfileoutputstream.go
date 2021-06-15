@@ -149,7 +149,7 @@ func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) 
 	var _fileInfo FileInfo // out
 	var _goerr error       // out
 
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -171,7 +171,7 @@ func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) 
 	var _fileInfo FileInfo // out
 	var _goerr error       // out
 
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr

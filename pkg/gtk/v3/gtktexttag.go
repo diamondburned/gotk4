@@ -94,7 +94,7 @@ func NewTextTag(name string) TextTag {
 
 	var _textTag TextTag // out
 
-	_textTag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextTag)
+	_textTag = WrapTextTag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTag
 }

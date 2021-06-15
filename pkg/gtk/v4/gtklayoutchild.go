@@ -74,7 +74,7 @@ func (l layoutChild) ChildWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -91,7 +91,7 @@ func (l layoutChild) LayoutManager() LayoutManager {
 
 	var _layoutManager LayoutManager // out
 
-	_layoutManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LayoutManager)
+	_layoutManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LayoutManager)
 
 	return _layoutManager
 }

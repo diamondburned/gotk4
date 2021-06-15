@@ -153,7 +153,7 @@ func NewRevealer() Revealer {
 
 	var _revealer Revealer // out
 
-	_revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Revealer)
+	_revealer = WrapRevealer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _revealer
 }
@@ -169,7 +169,7 @@ func (r revealer) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

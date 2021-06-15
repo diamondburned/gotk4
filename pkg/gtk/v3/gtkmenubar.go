@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -79,7 +78,7 @@ func NewMenuBar() MenuBar {
 
 	var _menuBar MenuBar // out
 
-	_menuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuBar)
+	_menuBar = WrapMenuBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuBar
 }
@@ -95,7 +94,7 @@ func NewMenuBarFromModel(model gio.MenuModel) MenuBar {
 
 	var _menuBar MenuBar // out
 
-	_menuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuBar)
+	_menuBar = WrapMenuBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuBar
 }

@@ -96,7 +96,7 @@ func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
 
 	var _appInfo AppInfo // out
 
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppInfo)
+	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AppInfo)
 
 	return _appInfo
 }
@@ -224,7 +224,7 @@ func NewDesktopAppInfo(desktopId string) DesktopAppInfo {
 
 	var _desktopAppInfo DesktopAppInfo // out
 
-	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
+	_desktopAppInfo = WrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _desktopAppInfo
 }
@@ -241,7 +241,7 @@ func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
 
 	var _desktopAppInfo DesktopAppInfo // out
 
-	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
+	_desktopAppInfo = WrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _desktopAppInfo
 }
@@ -257,7 +257,7 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 
 	var _desktopAppInfo DesktopAppInfo // out
 
-	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
+	_desktopAppInfo = WrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _desktopAppInfo
 }
@@ -391,7 +391,8 @@ func (i desktopAppInfo) Keywords() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -586,7 +587,8 @@ func (i desktopAppInfo) ListActions() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

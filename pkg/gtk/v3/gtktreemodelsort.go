@@ -165,7 +165,7 @@ func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort {
 
 	var _treeModelSort TreeModelSort // out
 
-	_treeModelSort = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeModelSort)
+	_treeModelSort = WrapTreeModelSort(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeModelSort
 }
@@ -284,7 +284,7 @@ func (t treeModelSort) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }

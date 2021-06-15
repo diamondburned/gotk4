@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -95,7 +94,7 @@ func NewSignalListItemFactory() SignalListItemFactory {
 
 	var _signalListItemFactory SignalListItemFactory // out
 
-	_signalListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SignalListItemFactory)
+	_signalListItemFactory = WrapSignalListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _signalListItemFactory
 }

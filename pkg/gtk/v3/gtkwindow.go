@@ -1003,7 +1003,7 @@ func NewWindow(typ WindowType) Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = WrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -1233,7 +1233,7 @@ func (w window) Application() Application {
 
 	var _application Application // out
 
-	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Application)
+	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Application)
 
 	return _application
 }
@@ -1250,7 +1250,7 @@ func (w window) AttachedTo() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -1307,7 +1307,7 @@ func (w window) DefaultWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -1364,7 +1364,7 @@ func (w window) Focus() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -1433,7 +1433,7 @@ func (w window) Group() WindowGroup {
 
 	var _windowGroup WindowGroup // out
 
-	_windowGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(WindowGroup)
+	_windowGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(WindowGroup)
 
 	return _windowGroup
 }
@@ -1488,7 +1488,7 @@ func (w window) Icon() gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -1698,7 +1698,7 @@ func (w window) Screen() gdk.Screen {
 
 	var _screen gdk.Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
 
 	return _screen
 }
@@ -1826,7 +1826,7 @@ func (w window) Titlebar() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -1843,7 +1843,7 @@ func (w window) TransientFor() Window {
 
 	var _ret Window // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _ret
 }

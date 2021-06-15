@@ -207,7 +207,8 @@ func (k *KeyFile) Groups() (uint, []string) {
 	_length = (uint)(_arg1)
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -304,7 +305,8 @@ func (k *KeyFile) Keys(groupName string) (uint, []string, error) {
 	_length = (uint)(_arg2)
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

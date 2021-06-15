@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -123,7 +122,7 @@ func NewColorSelection() ColorSelection {
 
 	var _colorSelection ColorSelection // out
 
-	_colorSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorSelection)
+	_colorSelection = WrapColorSelection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorSelection
 }

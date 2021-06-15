@@ -196,7 +196,7 @@ func NewTreeStoreV(types []externglib.Type) TreeStore {
 
 	var _treeStore TreeStore // out
 
-	_treeStore = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeStore)
+	_treeStore = WrapTreeStore(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeStore
 }

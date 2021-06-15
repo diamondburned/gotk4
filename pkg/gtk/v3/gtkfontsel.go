@@ -106,7 +106,7 @@ func NewFontSelection() FontSelection {
 
 	var _fontSelection FontSelection // out
 
-	_fontSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontSelection)
+	_fontSelection = WrapFontSelection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelection
 }
@@ -123,7 +123,7 @@ func (f fontSelection) Face() pango.FontFace {
 
 	var _fontFace pango.FontFace // out
 
-	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontFace)
+	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontFace)
 
 	return _fontFace
 }
@@ -140,7 +140,7 @@ func (f fontSelection) FaceList() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -156,7 +156,7 @@ func (f fontSelection) Family() pango.FontFamily {
 
 	var _fontFamily pango.FontFamily // out
 
-	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontFamily)
+	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontFamily)
 
 	return _fontFamily
 }
@@ -173,7 +173,7 @@ func (f fontSelection) FamilyList() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -214,7 +214,7 @@ func (f fontSelection) PreviewEntry() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -263,7 +263,7 @@ func (f fontSelection) SizeEntry() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -279,7 +279,7 @@ func (f fontSelection) SizeList() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -384,7 +384,7 @@ func NewFontSelectionDialog(title string) FontSelectionDialog {
 
 	var _fontSelectionDialog FontSelectionDialog // out
 
-	_fontSelectionDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontSelectionDialog)
+	_fontSelectionDialog = WrapFontSelectionDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelectionDialog
 }
@@ -400,7 +400,7 @@ func (f fontSelectionDialog) CancelButton() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -440,7 +440,7 @@ func (f fontSelectionDialog) FontSelection() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -456,7 +456,7 @@ func (f fontSelectionDialog) OkButton() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

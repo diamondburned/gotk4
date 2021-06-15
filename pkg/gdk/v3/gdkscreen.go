@@ -231,7 +231,7 @@ func (s screen) ActiveWindow() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }
@@ -247,7 +247,7 @@ func (s screen) Display() Display {
 
 	var _display Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
 
 	return _display
 }
@@ -576,7 +576,7 @@ func (s screen) RGBAVisual() Visual {
 
 	var _visual Visual // out
 
-	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Visual)
+	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Visual)
 
 	return _visual
 }
@@ -592,7 +592,7 @@ func (s screen) RootWindow() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }
@@ -636,7 +636,7 @@ func (s screen) SystemVisual() Visual {
 
 	var _visual Visual // out
 
-	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Visual)
+	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Visual)
 
 	return _visual
 }

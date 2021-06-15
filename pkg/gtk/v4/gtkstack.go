@@ -282,7 +282,7 @@ func NewStack() Stack {
 
 	var _stack Stack // out
 
-	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
+	_stack = WrapStack(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stack
 }
@@ -300,7 +300,7 @@ func (s stack) AddChild(child Widget) StackPage {
 
 	var _stackPage StackPage // out
 
-	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackPage)
+	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackPage)
 
 	return _stackPage
 }
@@ -323,7 +323,7 @@ func (s stack) AddNamed(child Widget, name string) StackPage {
 
 	var _stackPage StackPage // out
 
-	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackPage)
+	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackPage)
 
 	return _stackPage
 }
@@ -351,7 +351,7 @@ func (s stack) AddTitled(child Widget, name string, title string) StackPage {
 
 	var _stackPage StackPage // out
 
-	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackPage)
+	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackPage)
 
 	return _stackPage
 }
@@ -372,7 +372,7 @@ func (s stack) ChildByName(name string) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -427,7 +427,7 @@ func (s stack) Page(child Widget) StackPage {
 
 	var _stackPage StackPage // out
 
-	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackPage)
+	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackPage)
 
 	return _stackPage
 }
@@ -447,7 +447,7 @@ func (s stack) Pages() SelectionModel {
 
 	var _selectionModel SelectionModel // out
 
-	_selectionModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SelectionModel)
+	_selectionModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SelectionModel)
 
 	return _selectionModel
 }
@@ -536,7 +536,7 @@ func (s stack) VisibleChild() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -781,7 +781,7 @@ func (s stackPage) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

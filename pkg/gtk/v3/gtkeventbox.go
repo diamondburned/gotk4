@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -109,7 +108,7 @@ func NewEventBox() EventBox {
 
 	var _eventBox EventBox // out
 
-	_eventBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EventBox)
+	_eventBox = WrapEventBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _eventBox
 }

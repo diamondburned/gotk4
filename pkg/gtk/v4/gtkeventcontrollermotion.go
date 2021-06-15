@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -70,7 +69,7 @@ func NewEventControllerMotion() EventControllerMotion {
 
 	var _eventControllerMotion EventControllerMotion // out
 
-	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerMotion)
+	_eventControllerMotion = WrapEventControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerMotion
 }

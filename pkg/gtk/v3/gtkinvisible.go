@@ -70,7 +70,7 @@ func NewInvisible() Invisible {
 
 	var _invisible Invisible // out
 
-	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Invisible)
+	_invisible = WrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -86,7 +86,7 @@ func NewInvisibleForScreen(screen gdk.Screen) Invisible {
 
 	var _invisible Invisible // out
 
-	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Invisible)
+	_invisible = WrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -102,7 +102,7 @@ func (i invisible) Screen() gdk.Screen {
 
 	var _screen gdk.Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
 
 	return _screen
 }

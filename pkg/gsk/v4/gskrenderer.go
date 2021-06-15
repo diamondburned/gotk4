@@ -104,7 +104,7 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 
 	var _renderer Renderer // out
 
-	_renderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Renderer)
+	_renderer = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _renderer
 }
@@ -122,7 +122,7 @@ func (r renderer) Surface() gdk.Surface {
 
 	var _surface gdk.Surface // out
 
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Surface)
 
 	return _surface
 }
@@ -208,7 +208,7 @@ func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Te
 
 	var _texture gdk.Texture // out
 
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Texture)
+	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdk.Texture)
 
 	return _texture
 }

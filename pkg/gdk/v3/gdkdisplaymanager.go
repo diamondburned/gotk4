@@ -99,7 +99,7 @@ func (m displayManager) DefaultDisplay() Display {
 
 	var _display Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
 
 	return _display
 }
@@ -118,7 +118,7 @@ func (m displayManager) OpenDisplay(name string) Display {
 
 	var _display Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
 
 	return _display
 }

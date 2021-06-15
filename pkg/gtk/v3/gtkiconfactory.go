@@ -157,7 +157,7 @@ func NewIconFactory() IconFactory {
 
 	var _iconFactory IconFactory // out
 
-	_iconFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconFactory)
+	_iconFactory = WrapIconFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconFactory
 }

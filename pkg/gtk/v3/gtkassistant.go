@@ -221,7 +221,7 @@ func NewAssistant() Assistant {
 
 	var _assistant Assistant // out
 
-	_assistant = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Assistant)
+	_assistant = WrapAssistant(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _assistant
 }
@@ -315,7 +315,7 @@ func (a assistant) NthPage(pageNum int) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -373,7 +373,7 @@ func (a assistant) PageHeaderImage(page Widget) gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -391,7 +391,7 @@ func (a assistant) PageSideImage(page Widget) gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }

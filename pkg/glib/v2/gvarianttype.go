@@ -345,13 +345,13 @@ func (t *VariantType) Element() *VariantType {
 // The argument types of @type1 and @type2 are only #gconstpointer to allow use
 // with Table without function pointer casting. For both arguments, a valid Type
 // must be provided.
-func (t *VariantType) Equal(type2 VariantType) bool {
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer // out
-	var _cret C.gboolean // in
+func (t *VariantType) Equal(type2 *VariantType) bool {
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
 
-	_arg0 = *(*C.gpointer)(unsafe.Pointer(t.Native()))
-	_arg1 = *(*C.gpointer)(unsafe.Pointer(type2.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(type2.Native()))
 
 	_cret = C.g_variant_type_equal(_arg0, _arg1)
 
@@ -427,10 +427,10 @@ func (t *VariantType) StringLength() uint {
 // The argument type of @type is only #gconstpointer to allow use with Table
 // without function pointer casting. A valid Type must be provided.
 func (t *VariantType) Hash() uint {
-	var _arg0 C.gpointer // out
-	var _cret C.guint    // in
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
 
-	_arg0 = *(*C.gpointer)(unsafe.Pointer(t.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
 
 	_cret = C.g_variant_type_hash(_arg0)
 

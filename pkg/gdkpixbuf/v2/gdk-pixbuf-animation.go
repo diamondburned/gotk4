@@ -134,7 +134,7 @@ func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
 	var _pixbufAnimation PixbufAnimation // out
 	var _goerr error                     // out
 
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
+	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -154,7 +154,7 @@ func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error
 	var _pixbufAnimation PixbufAnimation // out
 	var _goerr error                     // out
 
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
+	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -175,7 +175,7 @@ func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancel
 	var _pixbufAnimation PixbufAnimation // out
 	var _goerr error                     // out
 
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
+	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -194,7 +194,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) (PixbufAnim
 	var _pixbufAnimation PixbufAnimation // out
 	var _goerr error                     // out
 
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
+	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -260,7 +260,7 @@ func (a pixbufAnimation) Iter(startTime *glib.TimeVal) PixbufAnimationIter {
 
 	var _pixbufAnimationIter PixbufAnimationIter // out
 
-	_pixbufAnimationIter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimationIter)
+	_pixbufAnimationIter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufAnimationIter)
 
 	return _pixbufAnimationIter
 }
@@ -286,7 +286,7 @@ func (a pixbufAnimation) StaticImage() Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }
@@ -500,7 +500,7 @@ func (i pixbufAnimationIter) Pixbuf() Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }

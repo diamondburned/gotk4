@@ -411,7 +411,7 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbuf
 }
@@ -430,7 +430,7 @@ func NewPixbufFromFile(filename string) (Pixbuf, error) {
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -458,7 +458,7 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -482,7 +482,7 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (Pixbuf, er
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -507,7 +507,7 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (Pixbuf, error) {
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -527,7 +527,7 @@ func NewPixbufFromResource(resourcePath string) (Pixbuf, error) {
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -555,7 +555,7 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -576,7 +576,7 @@ func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (P
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -605,7 +605,7 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -624,7 +624,7 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResult) (Pixbuf, error) {
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -649,7 +649,7 @@ func NewPixbufFromXpmData(data []string) Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbuf
 }
@@ -687,7 +687,7 @@ func (p pixbuf) AddAlpha(substituteColor bool, r byte, g byte, b byte) Pixbuf {
 
 	var _ret Pixbuf // out
 
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _ret
 }
@@ -712,7 +712,7 @@ func (s pixbuf) ApplyEmbeddedOrientation() Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }
@@ -838,7 +838,7 @@ func (s pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpType I
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }
@@ -858,7 +858,7 @@ func (p pixbuf) Copy() Pixbuf {
 
 	var _ret Pixbuf // out
 
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _ret
 }
@@ -948,7 +948,7 @@ func (s pixbuf) Flip(horizontal bool) Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }
@@ -1166,7 +1166,7 @@ func (s pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }
@@ -1227,7 +1227,7 @@ func (s pixbuf) RotateSimple(angle PixbufRotation) Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }
@@ -1486,7 +1486,7 @@ func (s pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpType
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }

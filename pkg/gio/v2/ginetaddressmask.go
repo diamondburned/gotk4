@@ -92,7 +92,7 @@ func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) 
 	var _inetAddressMask InetAddressMask // out
 	var _goerr error                     // out
 
-	_inetAddressMask = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddressMask)
+	_inetAddressMask = WrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inetAddressMask, _goerr
@@ -112,7 +112,7 @@ func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	var _inetAddressMask InetAddressMask // out
 	var _goerr error                     // out
 
-	_inetAddressMask = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddressMask)
+	_inetAddressMask = WrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inetAddressMask, _goerr
@@ -149,7 +149,7 @@ func (m inetAddressMask) Address() InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InetAddress)
+	_inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InetAddress)
 
 	return _inetAddress
 }

@@ -165,7 +165,7 @@ func NewNamedAction(name string) NamedAction {
 
 	var _namedAction NamedAction // out
 
-	_namedAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NamedAction)
+	_namedAction = WrapNamedAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _namedAction
 }
@@ -290,7 +290,7 @@ func NewShortcutActionParseString(_string string) ShortcutAction {
 
 	var _shortcutAction ShortcutAction // out
 
-	_shortcutAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutAction)
+	_shortcutAction = WrapShortcutAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutAction
 }
@@ -389,7 +389,7 @@ func NewSignalAction(signalName string) SignalAction {
 
 	var _signalAction SignalAction // out
 
-	_signalAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SignalAction)
+	_signalAction = WrapSignalAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _signalAction
 }

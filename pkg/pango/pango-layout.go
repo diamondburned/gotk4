@@ -522,7 +522,7 @@ func NewLayout(context Context) Layout {
 
 	var _layout Layout // out
 
-	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Layout)
+	_layout = WrapLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -554,7 +554,7 @@ func (s layout) Copy() Layout {
 
 	var _layout Layout // out
 
-	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Layout)
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Layout)
 
 	return _layout
 }
@@ -657,7 +657,7 @@ func (l layout) Context() Context {
 
 	var _context Context // out
 
-	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Context)
+	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Context)
 
 	return _context
 }
@@ -1789,7 +1789,7 @@ func (i *LayoutIter) Layout() Layout {
 
 	var _layout Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Layout)
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Layout)
 
 	return _layout
 }

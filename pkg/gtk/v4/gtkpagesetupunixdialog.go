@@ -97,7 +97,7 @@ func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
 
 	var _pageSetupUnixDialog PageSetupUnixDialog // out
 
-	_pageSetupUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetupUnixDialog)
+	_pageSetupUnixDialog = WrapPageSetupUnixDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _pageSetupUnixDialog
 }
@@ -113,7 +113,7 @@ func (d pageSetupUnixDialog) PageSetup() PageSetup {
 
 	var _pageSetup PageSetup // out
 
-	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
+	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
 }
@@ -129,7 +129,7 @@ func (d pageSetupUnixDialog) PrintSettings() PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PrintSettings)
 
 	return _printSettings
 }

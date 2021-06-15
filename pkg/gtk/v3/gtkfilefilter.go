@@ -148,7 +148,7 @@ func NewFileFilter() FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileFilter)
+	_fileFilter = WrapFileFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -164,7 +164,7 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileFilter)
+	_fileFilter = WrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }

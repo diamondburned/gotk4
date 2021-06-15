@@ -19,7 +19,7 @@ import "C"
 func X11FreeCompoundText(ctext *byte) {
 	var _arg1 *C.guchar // out
 
-	_arg1 = (*C.guchar)(ctext)
+	_arg1 = (*C.guchar)(unsafe.Pointer(ctext))
 
 	C.gdk_x11_free_compound_text(_arg1)
 }

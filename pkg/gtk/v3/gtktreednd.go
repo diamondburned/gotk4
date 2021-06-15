@@ -46,7 +46,7 @@ func TreeGetRowDragData(selectionData *SelectionData) (TreeModel, *TreePath, boo
 
 	var _ok bool // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeModel)
 
 	if _cret != 0 {
 		_ok = true

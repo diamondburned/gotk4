@@ -192,7 +192,7 @@ func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 
 	var _popoverMenu PopoverMenu // out
 
-	_popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PopoverMenu)
+	_popoverMenu = WrapPopoverMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -210,7 +210,7 @@ func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) Po
 
 	var _popoverMenu PopoverMenu // out
 
-	_popoverMenu = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PopoverMenu)
+	_popoverMenu = WrapPopoverMenu(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -252,7 +252,7 @@ func (p popoverMenu) MenuModel() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }

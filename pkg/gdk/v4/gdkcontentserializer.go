@@ -119,7 +119,7 @@ func (s contentSerializer) Cancellable() gio.Cancellable {
 
 	var _cancellable gio.Cancellable // out
 
-	_cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Cancellable)
+	_cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Cancellable)
 
 	return _cancellable
 }
@@ -169,7 +169,7 @@ func (s contentSerializer) OutputStream() gio.OutputStream {
 
 	var _outputStream gio.OutputStream // out
 
-	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.OutputStream)
+	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.OutputStream)
 
 	return _outputStream
 }

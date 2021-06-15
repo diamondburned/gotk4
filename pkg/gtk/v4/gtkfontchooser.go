@@ -239,7 +239,7 @@ func (f fontChooser) FontFace() pango.FontFace {
 
 	var _fontFace pango.FontFace // out
 
-	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontFace)
+	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontFace)
 
 	return _fontFace
 }
@@ -260,7 +260,7 @@ func (f fontChooser) FontFamily() pango.FontFamily {
 
 	var _fontFamily pango.FontFamily // out
 
-	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontFamily)
+	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontFamily)
 
 	return _fontFamily
 }
@@ -294,7 +294,7 @@ func (f fontChooser) FontMap() pango.FontMap {
 
 	var _fontMap pango.FontMap // out
 
-	_fontMap = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.FontMap)
+	_fontMap = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.FontMap)
 
 	return _fontMap
 }

@@ -87,7 +87,7 @@ func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppCho
 
 	var _appChooserDialog AppChooserDialog // out
 
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserDialog)
+	_appChooserDialog = WrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserDialog
 }
@@ -108,7 +108,7 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 
 	var _appChooserDialog AppChooserDialog // out
 
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserDialog)
+	_appChooserDialog = WrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserDialog
 }
@@ -140,7 +140,7 @@ func (s appChooserDialog) Widget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

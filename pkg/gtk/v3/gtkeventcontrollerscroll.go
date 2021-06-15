@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -125,7 +124,7 @@ func NewEventControllerScroll(widget Widget, flags EventControllerScrollFlags) E
 
 	var _eventControllerScroll EventControllerScroll // out
 
-	_eventControllerScroll = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerScroll)
+	_eventControllerScroll = WrapEventControllerScroll(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerScroll
 }

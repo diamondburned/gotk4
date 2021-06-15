@@ -181,7 +181,7 @@ func NewEntryCompletion() EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryCompletion)
+	_entryCompletion = WrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryCompletion
 }
@@ -197,7 +197,7 @@ func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryCompletion)
+	_entryCompletion = WrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryCompletion
 }
@@ -267,7 +267,7 @@ func (c entryCompletion) Entry() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -338,7 +338,7 @@ func (c entryCompletion) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }

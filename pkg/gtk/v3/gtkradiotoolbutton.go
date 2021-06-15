@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -80,7 +79,7 @@ func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
 
 	var _radioToolButton RadioToolButton // out
 
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioToolButton)
+	_radioToolButton = WrapRadioToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioToolButton
 }
@@ -99,7 +98,7 @@ func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string
 
 	var _radioToolButton RadioToolButton // out
 
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioToolButton)
+	_radioToolButton = WrapRadioToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioToolButton
 }

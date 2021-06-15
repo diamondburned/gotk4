@@ -92,7 +92,7 @@ func (s mapListModel) Model() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }

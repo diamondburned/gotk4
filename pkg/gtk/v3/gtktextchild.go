@@ -66,7 +66,7 @@ func NewTextChildAnchor() TextChildAnchor {
 
 	var _textChildAnchor TextChildAnchor // out
 
-	_textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
+	_textChildAnchor = WrapTextChildAnchor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textChildAnchor
 }

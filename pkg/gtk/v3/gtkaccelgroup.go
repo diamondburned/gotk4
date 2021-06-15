@@ -241,7 +241,8 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 	_acceleratorKey = (uint)(_arg2)
 	{
 		var i int
-		for p := _arg3; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.guint
+		for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -367,7 +368,7 @@ func NewAccelGroup() AccelGroup {
 
 	var _accelGroup AccelGroup // out
 
-	_accelGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AccelGroup)
+	_accelGroup = WrapAccelGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _accelGroup
 }
@@ -455,25 +456,6 @@ func (a accelGroup) Unlock() {
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
 
 	C.gtk_accel_group_unlock(_arg0)
-}
-
-type AccelGroupEntry struct {
-	native C.GtkAccelGroupEntry
-}
-
-// WrapAccelGroupEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAccelGroupEntry(ptr unsafe.Pointer) *AccelGroupEntry {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AccelGroupEntry)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (a *AccelGroupEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
 }
 
 type AccelKey struct {

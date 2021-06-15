@@ -5,7 +5,6 @@ package gsk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,7 +54,7 @@ func NewGLRenderer() GLRenderer {
 
 	var _glRenderer GLRenderer // out
 
-	_glRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GLRenderer)
+	_glRenderer = WrapGLRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _glRenderer
 }

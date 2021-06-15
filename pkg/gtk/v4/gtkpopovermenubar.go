@@ -104,7 +104,7 @@ func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
 
 	var _popoverMenuBar PopoverMenuBar // out
 
-	_popoverMenuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PopoverMenuBar)
+	_popoverMenuBar = WrapPopoverMenuBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenuBar
 }
@@ -146,7 +146,7 @@ func (b popoverMenuBar) MenuModel() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }

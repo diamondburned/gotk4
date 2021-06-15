@@ -77,7 +77,7 @@ func NewFileIcon(file File) FileIcon {
 
 	var _fileIcon FileIcon // out
 
-	_fileIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIcon)
+	_fileIcon = WrapFileIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileIcon
 }
@@ -93,7 +93,7 @@ func (i fileIcon) File() File {
 
 	var _file File // out
 
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(File)
 
 	return _file
 }

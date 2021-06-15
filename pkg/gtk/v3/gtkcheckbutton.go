@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -81,7 +80,7 @@ func NewCheckButton() CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
@@ -98,7 +97,7 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
@@ -115,7 +114,7 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }

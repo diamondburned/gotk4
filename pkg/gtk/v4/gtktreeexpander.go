@@ -116,7 +116,7 @@ func NewTreeExpander() TreeExpander {
 
 	var _treeExpander TreeExpander // out
 
-	_treeExpander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeExpander)
+	_treeExpander = WrapTreeExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeExpander
 }
@@ -132,7 +132,7 @@ func (s treeExpander) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -154,7 +154,7 @@ func (s treeExpander) Item() gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }
@@ -170,7 +170,7 @@ func (s treeExpander) ListRow() TreeListRow {
 
 	var _treeListRow TreeListRow // out
 
-	_treeListRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeListRow)
+	_treeListRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeListRow)
 
 	return _treeListRow
 }

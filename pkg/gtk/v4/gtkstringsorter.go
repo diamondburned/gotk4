@@ -78,7 +78,7 @@ func NewStringSorter(expression Expression) StringSorter {
 
 	var _stringSorter StringSorter // out
 
-	_stringSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StringSorter)
+	_stringSorter = WrapStringSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stringSorter
 }
@@ -95,7 +95,7 @@ func (s stringSorter) Expression() Expression {
 
 	var _expression Expression // out
 
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expression)
 
 	return _expression
 }

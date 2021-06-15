@@ -76,7 +76,7 @@ func NewUnixCredentialsMessage() UnixCredentialsMessage {
 
 	var _unixCredentialsMessage UnixCredentialsMessage // out
 
-	_unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixCredentialsMessage)
+	_unixCredentialsMessage = WrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixCredentialsMessage
 }
@@ -92,7 +92,7 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCrede
 
 	var _unixCredentialsMessage UnixCredentialsMessage // out
 
-	_unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixCredentialsMessage)
+	_unixCredentialsMessage = WrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixCredentialsMessage
 }
@@ -108,7 +108,7 @@ func (m unixCredentialsMessage) Credentials() Credentials {
 
 	var _credentials Credentials // out
 
-	_credentials = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Credentials)
+	_credentials = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Credentials)
 
 	return _credentials
 }

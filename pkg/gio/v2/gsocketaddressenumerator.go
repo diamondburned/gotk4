@@ -112,7 +112,7 @@ func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, e
 	var _socketAddress SocketAddress // out
 	var _goerr error                 // out
 
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -136,7 +136,7 @@ func (e socketAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, 
 	var _socketAddress SocketAddress // out
 	var _goerr error                 // out
 
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr

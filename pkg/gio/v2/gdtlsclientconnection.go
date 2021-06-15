@@ -85,7 +85,7 @@ func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
 
 	var _socketConnectable SocketConnectable // out
 
-	_socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SocketConnectable)
+	_socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SocketConnectable)
 
 	return _socketConnectable
 }

@@ -123,7 +123,7 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) Scal
 
 	var _scaleButton ScaleButton // out
 
-	_scaleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ScaleButton)
+	_scaleButton = WrapScaleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scaleButton
 }
@@ -142,7 +142,7 @@ func (b scaleButton) Adjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -158,7 +158,7 @@ func (b scaleButton) MinusButton() Button {
 
 	var _ret Button // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
 
 	return _ret
 }
@@ -174,7 +174,7 @@ func (b scaleButton) PlusButton() Button {
 
 	var _ret Button // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
 
 	return _ret
 }
@@ -190,7 +190,7 @@ func (b scaleButton) Popup() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

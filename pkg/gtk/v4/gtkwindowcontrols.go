@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -135,7 +134,7 @@ func NewWindowControls(side PackType) WindowControls {
 
 	var _windowControls WindowControls // out
 
-	_windowControls = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(WindowControls)
+	_windowControls = WrapWindowControls(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowControls
 }

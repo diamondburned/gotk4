@@ -207,7 +207,7 @@ func (c glContext) Display() Display {
 
 	var _display Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
 
 	return _display
 }
@@ -262,7 +262,7 @@ func (c glContext) SharedContext() GLContext {
 
 	var _glContext GLContext // out
 
-	_glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(GLContext)
+	_glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(GLContext)
 
 	return _glContext
 }
@@ -318,7 +318,7 @@ func (c glContext) Window() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }

@@ -191,7 +191,7 @@ func NewContext() Context {
 
 	var _context Context // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Context)
+	_context = WrapContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _context
 }
@@ -273,7 +273,7 @@ func (c context) FontMap() FontMap {
 
 	var _fontMap FontMap // out
 
-	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontMap)
+	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontMap)
 
 	return _fontMap
 }
@@ -452,7 +452,7 @@ func (c context) ListFamilies() []FontFamily {
 		defer C.free(unsafe.Pointer(_arg1))
 		_families = make([]FontFamily, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i].Native()))).(FontFamily)
+			_families[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i]))).(FontFamily)
 		}
 	}
 
@@ -473,7 +473,7 @@ func (c context) LoadFont(desc *FontDescription) Font {
 
 	var _font Font // out
 
-	_font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Font)
+	_font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Font)
 
 	return _font
 }
@@ -494,7 +494,7 @@ func (c context) LoadFontset(desc *FontDescription, language *Language) Fontset 
 
 	var _fontset Fontset // out
 
-	_fontset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Fontset)
+	_fontset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Fontset)
 
 	return _fontset
 }

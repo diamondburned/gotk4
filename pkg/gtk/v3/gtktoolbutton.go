@@ -152,7 +152,7 @@ func NewToolButton(iconWidget Widget, label string) ToolButton {
 
 	var _toolButton ToolButton // out
 
-	_toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolButton)
+	_toolButton = WrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolButton
 }
@@ -169,7 +169,7 @@ func NewToolButtonFromStock(stockId string) ToolButton {
 
 	var _toolButton ToolButton // out
 
-	_toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolButton)
+	_toolButton = WrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolButton
 }
@@ -203,7 +203,7 @@ func (b toolButton) IconWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -238,7 +238,7 @@ func (b toolButton) LabelWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

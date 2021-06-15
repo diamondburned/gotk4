@@ -180,7 +180,7 @@ func NewRecentManager() RecentManager {
 
 	var _recentManager RecentManager // out
 
-	_recentManager = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentManager)
+	_recentManager = WrapRecentManager(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentManager
 }
@@ -433,7 +433,7 @@ func (i *RecentInfo) CreateAppInfo(appName string) (gio.AppInfo, error) {
 	var _appInfo gio.AppInfo // out
 	var _goerr error         // out
 
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.AppInfo)
+	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.AppInfo)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -570,7 +570,7 @@ func (i *RecentInfo) GIcon() gio.Icon {
 
 	var _icon gio.Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.Icon)
 
 	return _icon
 }
@@ -588,7 +588,7 @@ func (i *RecentInfo) Icon(size int) gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }

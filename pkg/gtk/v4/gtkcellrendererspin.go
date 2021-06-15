@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -69,7 +68,7 @@ func NewCellRendererSpin() CellRendererSpin {
 
 	var _cellRendererSpin CellRendererSpin // out
 
-	_cellRendererSpin = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererSpin)
+	_cellRendererSpin = WrapCellRendererSpin(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpin
 }

@@ -65,7 +65,8 @@ func (conv *TypeConverter) gocArrayConverter(value *ValueConverted) bool {
 		}
 
 		// Use CString, which copies. Since we're transferring ownership to C,
-		// don't free it after we're done.
+		// don't free it after we're done. CString is actually null-terminated,
+		// but we're giving the caller the length, so an extra byte is fine.
 		value.p.Linef(
 			"%s = (%s)(C.CString(%s))",
 			value.OutName, value.OutType, value.InName,
@@ -258,7 +259,17 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 		return true
 
 	case value.resolved.IsPrimitive():
-		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
+		if value.resolved.Ptr == 0 {
+			// Cast by value if no pointer.
+			value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
+		} else {
+			// Otherwise, use unsafe casting and cast the pointer itself.
+			value.addImport("unsafe")
+			value.p.Linef(
+				"%s = (%s)(unsafe.Pointer(%s))",
+				value.OutName, value.OutType, value.InName,
+			)
+		}
 		return true
 	}
 

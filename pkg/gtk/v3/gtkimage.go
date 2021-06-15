@@ -214,7 +214,7 @@ func NewImage() Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -230,7 +230,7 @@ func NewImageFromAnimation(animation gdkpixbuf.PixbufAnimation) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -247,7 +247,7 @@ func NewImageFromFile(filename string) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -265,7 +265,7 @@ func NewImageFromGIcon(icon gio.Icon, size int) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -284,7 +284,7 @@ func NewImageFromIconName(iconName string, size int) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -302,7 +302,7 @@ func NewImageFromIconSet(iconSet *IconSet, size int) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -318,7 +318,7 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -335,7 +335,7 @@ func NewImageFromResource(resourcePath string) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -354,7 +354,7 @@ func NewImageFromStock(stockId string, size int) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -370,7 +370,7 @@ func NewImageFromSurface(surface *cairo.Surface) Image {
 
 	var _image Image // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
+	_image = WrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -398,7 +398,7 @@ func (i image) Animation() gdkpixbuf.PixbufAnimation {
 
 	var _pixbufAnimation gdkpixbuf.PixbufAnimation // out
 
-	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.PixbufAnimation)
+	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdkpixbuf.PixbufAnimation)
 
 	return _pixbufAnimation
 }
@@ -419,7 +419,7 @@ func (i image) GIcon() (gio.Icon, int) {
 	var _gicon gio.Icon // out
 	var _size int       // out
 
-	_gicon = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(gio.Icon)
+	_gicon = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(gio.Icon)
 	_size = (int)(_arg2)
 
 	return _gicon, _size
@@ -482,7 +482,7 @@ func (i image) Pixbuf() gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }

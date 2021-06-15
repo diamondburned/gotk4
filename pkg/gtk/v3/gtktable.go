@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -171,7 +170,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 
 	var _table Table // out
 
-	_table = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Table)
+	_table = WrapTable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _table
 }

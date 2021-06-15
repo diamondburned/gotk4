@@ -102,7 +102,7 @@ func NewConstraintGuide() ConstraintGuide {
 
 	var _constraintGuide ConstraintGuide // out
 
-	_constraintGuide = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ConstraintGuide)
+	_constraintGuide = WrapConstraintGuide(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintGuide
 }
@@ -114,8 +114,8 @@ func (g constraintGuide) MaxSize(width *int, height *int) {
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.int)(width)
-	_arg2 = (*C.int)(height)
+	_arg1 = (*C.int)(unsafe.Pointer(width))
+	_arg2 = (*C.int)(unsafe.Pointer(height))
 
 	C.gtk_constraint_guide_get_max_size(_arg0, _arg1, _arg2)
 }
@@ -127,8 +127,8 @@ func (g constraintGuide) MinSize(width *int, height *int) {
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.int)(width)
-	_arg2 = (*C.int)(height)
+	_arg1 = (*C.int)(unsafe.Pointer(width))
+	_arg2 = (*C.int)(unsafe.Pointer(height))
 
 	C.gtk_constraint_guide_get_min_size(_arg0, _arg1, _arg2)
 }
@@ -156,8 +156,8 @@ func (g constraintGuide) NatSize(width *int, height *int) {
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.int)(width)
-	_arg2 = (*C.int)(height)
+	_arg1 = (*C.int)(unsafe.Pointer(width))
+	_arg2 = (*C.int)(unsafe.Pointer(height))
 
 	C.gtk_constraint_guide_get_nat_size(_arg0, _arg1, _arg2)
 }

@@ -562,7 +562,7 @@ func NewTreeView() TreeView {
 
 	var _treeView TreeView // out
 
-	_treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeView)
+	_treeView = WrapTreeView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeView
 }
@@ -578,7 +578,7 @@ func NewTreeViewWithModel(model TreeModel) TreeView {
 
 	var _treeView TreeView // out
 
-	_treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeView)
+	_treeView = WrapTreeView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeView
 }
@@ -801,7 +801,7 @@ func (t treeView) CreateRowDragIcon(path *TreePath) gdk.Paintable {
 
 	var _paintable gdk.Paintable // out
 
-	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdk.Paintable)
 
 	return _paintable
 }
@@ -962,7 +962,7 @@ func (t treeView) Column(n int) TreeViewColumn {
 
 	var _treeViewColumn TreeViewColumn // out
 
-	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeViewColumn)
+	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeViewColumn)
 
 	return _treeViewColumn
 }
@@ -984,7 +984,7 @@ func (t treeView) Cursor() (*TreePath, TreeViewColumn) {
 
 	var _focusColumn TreeViewColumn // out
 
-	_focusColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(TreeViewColumn)
+	_focusColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeViewColumn)
 
 	return _path, _focusColumn
 }
@@ -1088,7 +1088,7 @@ func (t treeView) ExpanderColumn() TreeViewColumn {
 
 	var _treeViewColumn TreeViewColumn // out
 
-	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeViewColumn)
+	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeViewColumn)
 
 	return _treeViewColumn
 }
@@ -1231,7 +1231,7 @@ func (t treeView) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }
@@ -1289,7 +1289,7 @@ func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn
 	var _cellY int             // out
 	var _ok bool               // out
 
-	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(TreeViewColumn)
+	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeViewColumn)
 	_cellX = (int)(_arg5)
 	_cellY = (int)(_arg6)
 	if _cret != 0 {
@@ -1367,7 +1367,7 @@ func (t treeView) SearchEntry() Editable {
 
 	var _editable Editable // out
 
-	_editable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Editable)
+	_editable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Editable)
 
 	return _editable
 }
@@ -1383,7 +1383,7 @@ func (t treeView) Selection() TreeSelection {
 
 	var _treeSelection TreeSelection // out
 
-	_treeSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeSelection)
+	_treeSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeSelection)
 
 	return _treeSelection
 }
@@ -1457,7 +1457,7 @@ func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *Tr
 
 	var _ok bool // out
 
-	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(TreeModel)
+	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeModel)
 
 	if _cret != 0 {
 		_ok = true
@@ -1567,7 +1567,7 @@ func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewCol
 	var _cellY int             // out
 	var _ok bool               // out
 
-	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(TreeViewColumn)
+	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeViewColumn)
 	_cellX = (int)(_arg5)
 	_cellY = (int)(_arg6)
 	if _cret != 0 {

@@ -5,7 +5,6 @@ package gdkpixbuf
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,7 +71,7 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 
 	var _pixbufSimpleAnim PixbufSimpleAnim // out
 
-	_pixbufSimpleAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufSimpleAnim)
+	_pixbufSimpleAnim = WrapPixbufSimpleAnim(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbufSimpleAnim
 }

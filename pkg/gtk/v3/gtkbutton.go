@@ -169,7 +169,7 @@ func NewButton() Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -188,7 +188,7 @@ func NewButtonFromIconName(iconName string, size int) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -205,7 +205,7 @@ func NewButtonFromStock(stockId string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -222,7 +222,7 @@ func NewButtonWithLabel(label string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -239,7 +239,7 @@ func NewButtonWithMnemonic(label string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -313,7 +313,7 @@ func (b button) EventWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }
@@ -350,7 +350,7 @@ func (b button) Image() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

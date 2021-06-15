@@ -151,7 +151,7 @@ func NewDragSource() DragSource {
 
 	var _dragSource DragSource // out
 
-	_dragSource = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DragSource)
+	_dragSource = WrapDragSource(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dragSource
 }
@@ -192,7 +192,7 @@ func (s dragSource) Content() gdk.ContentProvider {
 
 	var _contentProvider gdk.ContentProvider // out
 
-	_contentProvider = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
+	_contentProvider = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.ContentProvider)
 
 	return _contentProvider
 }
@@ -208,7 +208,7 @@ func (s dragSource) Drag() gdk.Drag {
 
 	var _drag gdk.Drag // out
 
-	_drag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Drag)
+	_drag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Drag)
 
 	return _drag
 }

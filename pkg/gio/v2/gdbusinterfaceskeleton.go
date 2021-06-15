@@ -163,7 +163,7 @@ func (i dBusInterfaceSkeleton) Connection() DBusConnection {
 
 	var _dBusConnection DBusConnection // out
 
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DBusConnection)
 
 	return _dBusConnection
 }

@@ -26,6 +26,9 @@ var filters = []girgen.FilterMatcher{
 	// Broadway is not included, so we don't generate code for it.
 	girgen.FileFilter("../gsk/broadway/gskbroadwayrenderer.h"),
 
+	// Output buffer parameter is not actually array.
+	girgen.AbsoluteFilter("GLib.unichar_to_utf8"),
+
 	// Collision due to case conversions.
 	girgen.TypeRenamer("GLib.file_test", "test_file"),
 

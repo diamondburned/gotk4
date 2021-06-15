@@ -132,7 +132,7 @@ func NewPaned(orientation Orientation) Paned {
 
 	var _paned Paned // out
 
-	_paned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Paned)
+	_paned = WrapPaned(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _paned
 }
@@ -172,7 +172,7 @@ func (p paned) Child1() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -188,7 +188,7 @@ func (p paned) Child2() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -206,7 +206,7 @@ func (p paned) HandleWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }

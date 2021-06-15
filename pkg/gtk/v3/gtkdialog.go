@@ -346,7 +346,7 @@ func NewDialog() Dialog {
 
 	var _dialog Dialog // out
 
-	_dialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Dialog)
+	_dialog = WrapDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dialog
 }
@@ -388,7 +388,7 @@ func (d dialog) AddButton(buttonText string, responseId int) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -404,7 +404,7 @@ func (d dialog) ActionArea() Box {
 
 	var _box Box // out
 
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Box)
 
 	return _box
 }
@@ -420,7 +420,7 @@ func (d dialog) ContentArea() Box {
 
 	var _box Box // out
 
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Box)
 
 	return _box
 }
@@ -437,7 +437,7 @@ func (d dialog) HeaderBar() HeaderBar {
 
 	var _headerBar HeaderBar // out
 
-	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HeaderBar)
+	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HeaderBar)
 
 	return _headerBar
 }
@@ -475,7 +475,7 @@ func (d dialog) WidgetForResponse(responseId int) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

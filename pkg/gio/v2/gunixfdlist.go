@@ -103,7 +103,7 @@ func NewUnixFDList() UnixFDList {
 
 	var _unixFDList UnixFDList // out
 
-	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDList)
+	_unixFDList = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDList
 }
@@ -121,7 +121,7 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 
 	var _unixFDList UnixFDList // out
 
-	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDList)
+	_unixFDList = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDList
 }

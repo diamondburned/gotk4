@@ -73,7 +73,7 @@ func NewMultiSelection(model gio.ListModel) MultiSelection {
 
 	var _multiSelection MultiSelection // out
 
-	_multiSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MultiSelection)
+	_multiSelection = WrapMultiSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSelection
 }
@@ -89,7 +89,7 @@ func (s multiSelection) Model() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }

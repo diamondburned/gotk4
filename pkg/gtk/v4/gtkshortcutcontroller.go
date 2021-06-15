@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -137,7 +136,7 @@ func NewShortcutController() ShortcutController {
 
 	var _shortcutController ShortcutController // out
 
-	_shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutController)
+	_shortcutController = WrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutController
 }
@@ -153,7 +152,7 @@ func NewShortcutControllerForModel(model gio.ListModel) ShortcutController {
 
 	var _shortcutController ShortcutController // out
 
-	_shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutController)
+	_shortcutController = WrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutController
 }

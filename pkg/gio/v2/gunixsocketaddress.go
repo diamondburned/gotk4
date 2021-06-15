@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -100,7 +99,7 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
+	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }
@@ -118,7 +117,7 @@ func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
+	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }
@@ -138,7 +137,7 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSo
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
+	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }

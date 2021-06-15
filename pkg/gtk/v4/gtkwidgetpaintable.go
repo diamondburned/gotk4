@@ -86,7 +86,7 @@ func NewWidgetPaintable(widget Widget) WidgetPaintable {
 
 	var _widgetPaintable WidgetPaintable // out
 
-	_widgetPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(WidgetPaintable)
+	_widgetPaintable = WrapWidgetPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _widgetPaintable
 }
@@ -102,7 +102,7 @@ func (s widgetPaintable) Widget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

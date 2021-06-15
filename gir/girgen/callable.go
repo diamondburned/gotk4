@@ -14,7 +14,8 @@ type callableGenerator struct {
 	Tail  string
 	Block string
 
-	Converts []string
+	ReturnWrap string // passed to ConversionValue, ctor only
+	Converts   []string
 
 	pen *pen.BlockSections
 	ng  *NamespaceGenerator
@@ -169,6 +170,10 @@ func (cg *callableGenerator) renderBlock() bool {
 			returnName = "_" + returnName
 
 			value := NewConversionValueReturn("_cret", returnName, ConvertCToGo, *cg.ReturnValue)
+			if cg.ReturnWrap != "" {
+				value.WrapObject = cg.ReturnWrap
+			}
+
 			callableValues = append(callableValues, value)
 		}
 	}

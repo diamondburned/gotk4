@@ -314,7 +314,7 @@ func (g gesture) Device() gdk.Device {
 
 	var _device gdk.Device // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Device)
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Device)
 
 	return _device
 }
@@ -336,7 +336,7 @@ func (g gesture) LastEvent(sequence *gdk.EventSequence) gdk.Event {
 
 	var _event gdk.Event // out
 
-	_event = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Event)
+	_event = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Event)
 
 	return _event
 }

@@ -111,7 +111,7 @@ func CreateContext(cr *cairo.Context) pango.Context {
 
 	var _context pango.Context // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
 
 	return _context
 }
@@ -138,7 +138,7 @@ func CreateLayout(cr *cairo.Context) pango.Layout {
 
 	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Layout)
 
 	return _layout
 }

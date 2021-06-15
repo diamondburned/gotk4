@@ -253,7 +253,8 @@ func (v volume) EnumerateIdentifiers() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -292,7 +293,7 @@ func (v volume) ActivationRoot() File {
 
 	var _file File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
 
 	return _file
 }
@@ -308,7 +309,7 @@ func (v volume) Drive() Drive {
 
 	var _drive Drive // out
 
-	_drive = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Drive)
+	_drive = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Drive)
 
 	return _drive
 }
@@ -324,7 +325,7 @@ func (v volume) Icon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -362,7 +363,7 @@ func (v volume) Mount() Mount {
 
 	var _mount Mount // out
 
-	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Mount)
+	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Mount)
 
 	return _mount
 }
@@ -411,7 +412,7 @@ func (v volume) SymbolicIcon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }

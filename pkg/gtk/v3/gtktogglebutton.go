@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -162,7 +161,7 @@ func NewToggleButton() ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
@@ -179,7 +178,7 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
@@ -196,7 +195,7 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }

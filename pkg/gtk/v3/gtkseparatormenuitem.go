@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,7 +72,7 @@ func NewSeparatorMenuItem() SeparatorMenuItem {
 
 	var _separatorMenuItem SeparatorMenuItem // out
 
-	_separatorMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SeparatorMenuItem)
+	_separatorMenuItem = WrapSeparatorMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorMenuItem
 }

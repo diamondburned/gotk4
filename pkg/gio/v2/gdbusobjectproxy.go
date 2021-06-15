@@ -80,7 +80,7 @@ func NewDBusObjectProXY(connection DBusConnection, objectPath string) DBusObject
 
 	var _dBusObjectProxy DBusObjectProXY // out
 
-	_dBusObjectProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectProXY)
+	_dBusObjectProxy = WrapDBusObjectProXY(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectProxy
 }
@@ -96,7 +96,7 @@ func (p dBusObjectProXY) Connection() DBusConnection {
 
 	var _dBusConnection DBusConnection // out
 
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DBusConnection)
 
 	return _dBusConnection
 }

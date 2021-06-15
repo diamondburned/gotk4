@@ -104,7 +104,7 @@ func NewLockButton(permission gio.Permission) LockButton {
 
 	var _lockButton LockButton // out
 
-	_lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LockButton)
+	_lockButton = WrapLockButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _lockButton
 }
@@ -120,7 +120,7 @@ func (b lockButton) Permission() gio.Permission {
 
 	var _permission gio.Permission // out
 
-	_permission = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Permission)
+	_permission = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Permission)
 
 	return _permission
 }

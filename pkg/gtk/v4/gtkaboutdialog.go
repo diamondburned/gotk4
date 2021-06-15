@@ -282,7 +282,7 @@ func NewAboutDialog() AboutDialog {
 
 	var _aboutDialog AboutDialog // out
 
-	_aboutDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AboutDialog)
+	_aboutDialog = WrapAboutDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _aboutDialog
 }
@@ -323,7 +323,8 @@ func (a aboutDialog) Artists() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -351,7 +352,8 @@ func (a aboutDialog) Authors() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -411,7 +413,8 @@ func (a aboutDialog) Documenters() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -468,7 +471,7 @@ func (a aboutDialog) Logo() gdk.Paintable {
 
 	var _paintable gdk.Paintable // out
 
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Paintable)
 
 	return _paintable
 }

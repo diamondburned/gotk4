@@ -192,14 +192,14 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 	var _destWindow Window     // out
 	var _protocol DragProtocol // out
 
-	_destWindow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6.Native()))).(Window)
+	_destWindow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6))).(Window)
 	_protocol = DragProtocol(_arg7)
 
 	return _destWindow, _protocol
 }
 
 // DragGetSelection returns the selection atom for the current source window.
-func DragGetSelection(context DragContext) Atom {
+func DragGetSelection(context DragContext) *Atom {
 	var _arg1 *C.GdkDragContext // out
 	var _cret C.GdkAtom         // in
 
@@ -207,9 +207,9 @@ func DragGetSelection(context DragContext) Atom {
 
 	_cret = C.gdk_drag_get_selection(_arg1)
 
-	var _atom Atom // out
+	var _atom *Atom // out
 
-	_atom = *WrapAtom(unsafe.Pointer(&_cret))
+	_atom = WrapAtom(unsafe.Pointer(_cret))
 
 	return _atom
 }

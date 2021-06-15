@@ -29,7 +29,7 @@ func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 
 	var _coverage pango.Coverage // out
 
-	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Coverage)
+	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Coverage)
 
 	return _coverage
 }

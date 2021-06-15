@@ -144,7 +144,7 @@ func NewDropDown(model gio.ListModel, expression Expression) DropDown {
 
 	var _dropDown DropDown // out
 
-	_dropDown = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DropDown)
+	_dropDown = WrapDropDown(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dropDown
 }
@@ -168,7 +168,7 @@ func NewDropDownFromStrings(strings []string) DropDown {
 
 	var _dropDown DropDown // out
 
-	_dropDown = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DropDown)
+	_dropDown = WrapDropDown(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dropDown
 }
@@ -205,7 +205,7 @@ func (s dropDown) Expression() Expression {
 
 	var _expression Expression // out
 
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expression)
 
 	return _expression
 }
@@ -225,7 +225,7 @@ func (s dropDown) Factory() ListItemFactory {
 
 	var _listItemFactory ListItemFactory // out
 
-	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListItemFactory)
+	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListItemFactory)
 
 	return _listItemFactory
 }
@@ -242,7 +242,7 @@ func (s dropDown) ListFactory() ListItemFactory {
 
 	var _listItemFactory ListItemFactory // out
 
-	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListItemFactory)
+	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListItemFactory)
 
 	return _listItemFactory
 }
@@ -258,7 +258,7 @@ func (s dropDown) Model() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -291,7 +291,7 @@ func (s dropDown) SelectedItem() gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }

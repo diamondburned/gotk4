@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -86,7 +85,7 @@ func NewSeparator(orientation Orientation) Separator {
 
 	var _separator Separator // out
 
-	_separator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Separator)
+	_separator = WrapSeparator(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separator
 }

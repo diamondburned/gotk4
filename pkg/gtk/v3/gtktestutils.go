@@ -36,7 +36,7 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -61,7 +61,7 @@ func TestFindLabel(widget Widget, labelPattern string) Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -84,7 +84,7 @@ func TestFindSibling(baseWidget Widget, widgetType externglib.Type) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -111,7 +111,7 @@ func TestFindWidget(widget Widget, labelPattern string, widgetType externglib.Ty
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }

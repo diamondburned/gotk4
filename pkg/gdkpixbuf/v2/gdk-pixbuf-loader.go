@@ -158,7 +158,7 @@ func NewPixbufLoader() PixbufLoader {
 
 	var _pixbufLoader PixbufLoader // out
 
-	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufLoader)
+	_pixbufLoader = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbufLoader
 }
@@ -177,7 +177,7 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
 	var _pixbufLoader PixbufLoader // out
 	var _goerr error               // out
 
-	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufLoader)
+	_pixbufLoader = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
@@ -197,7 +197,7 @@ func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
 	var _pixbufLoader PixbufLoader // out
 	var _goerr error               // out
 
-	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufLoader)
+	_pixbufLoader = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
@@ -252,7 +252,7 @@ func (l pixbufLoader) Animation() PixbufAnimation {
 
 	var _pixbufAnimation PixbufAnimation // out
 
-	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
+	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PixbufAnimation)
 
 	return _pixbufAnimation
 }
@@ -299,7 +299,7 @@ func (l pixbufLoader) Pixbuf() Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }

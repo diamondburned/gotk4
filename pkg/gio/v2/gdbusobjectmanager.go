@@ -103,7 +103,7 @@ func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DB
 
 	var _dBusInterface DBusInterface // out
 
-	_dBusInterface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusInterface)
+	_dBusInterface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusInterface)
 
 	return _dBusInterface
 }
@@ -122,7 +122,7 @@ func (m dBusObjectManager) Object(objectPath string) DBusObject {
 
 	var _dBusObject DBusObject // out
 
-	_dBusObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObject)
+	_dBusObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObject)
 
 	return _dBusObject
 }

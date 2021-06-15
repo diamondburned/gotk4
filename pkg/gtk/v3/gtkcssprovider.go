@@ -131,7 +131,7 @@ func NewCSSProvider() CSSProvider {
 
 	var _cssProvider CSSProvider // out
 
-	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CSSProvider)
+	_cssProvider = WrapCSSProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cssProvider
 }

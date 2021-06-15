@@ -185,7 +185,7 @@ func NewPicture() Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -201,7 +201,7 @@ func NewPictureForFile(file gio.File) Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -218,7 +218,7 @@ func NewPictureForFilename(filename string) Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -234,7 +234,7 @@ func NewPictureForPaintable(paintable gdk.Paintable) Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -250,7 +250,7 @@ func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -267,7 +267,7 @@ func NewPictureForResource(resourcePath string) Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -323,7 +323,7 @@ func (s picture) File() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }
@@ -358,7 +358,7 @@ func (s picture) Paintable() gdk.Paintable {
 
 	var _paintable gdk.Paintable // out
 
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Paintable)
 
 	return _paintable
 }

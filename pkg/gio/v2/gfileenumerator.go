@@ -238,7 +238,7 @@ func (e fileEnumerator) Child(info FileInfo) File {
 
 	var _file File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
 
 	return _file
 }
@@ -254,7 +254,7 @@ func (e fileEnumerator) Container() File {
 
 	var _file File // out
 
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(File)
 
 	return _file
 }
@@ -345,8 +345,8 @@ func (d fileEnumerator) Iterate(cancellable Cancellable) (FileInfo, File, error)
 	var _outChild File    // out
 	var _goerr error      // out
 
-	_outInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(FileInfo)
-	_outChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(File)
+	_outInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(FileInfo)
+	_outChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(File)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outInfo, _outChild, _goerr
@@ -376,7 +376,7 @@ func (e fileEnumerator) NextFile(cancellable Cancellable) (FileInfo, error) {
 	var _fileInfo FileInfo // out
 	var _goerr error       // out
 
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr

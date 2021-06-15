@@ -265,7 +265,7 @@ func NewFileInfo() FileInfo {
 
 	var _fileInfo FileInfo // out
 
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_fileInfo = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileInfo
 }
@@ -303,7 +303,7 @@ func (o fileInfo) Dup() FileInfo {
 
 	var _fileInfo FileInfo // out
 
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
 
 	return _fileInfo
 }
@@ -428,7 +428,7 @@ func (i fileInfo) AttributeObject(attribute string) gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }
@@ -489,7 +489,8 @@ func (i fileInfo) AttributeStringv(attribute string) []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -659,7 +660,7 @@ func (i fileInfo) Icon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -793,7 +794,7 @@ func (i fileInfo) SymbolicIcon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -874,7 +875,8 @@ func (i fileInfo) ListAttributes(nameSpace string) []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

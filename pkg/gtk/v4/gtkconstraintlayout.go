@@ -254,7 +254,7 @@ func NewConstraintLayout() ConstraintLayout {
 
 	var _constraintLayout ConstraintLayout // out
 
-	_constraintLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ConstraintLayout)
+	_constraintLayout = WrapConstraintLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintLayout
 }
@@ -318,7 +318,7 @@ func (l constraintLayout) ObserveConstraints() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -342,7 +342,7 @@ func (l constraintLayout) ObserveGuides() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }

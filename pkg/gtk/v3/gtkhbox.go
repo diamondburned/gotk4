@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -86,7 +85,7 @@ func NewHBox(homogeneous bool, spacing int) HBox {
 
 	var _hBox HBox // out
 
-	_hBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HBox)
+	_hBox = WrapHBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hBox
 }

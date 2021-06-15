@@ -145,7 +145,7 @@ func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 
 	var _socketAddressEnumerator SocketAddressEnumerator // out
 
-	_socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddressEnumerator)
+	_socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddressEnumerator)
 
 	return _socketAddressEnumerator
 }
@@ -167,7 +167,7 @@ func (c socketConnectable) ProXYEnumerate() SocketAddressEnumerator {
 
 	var _socketAddressEnumerator SocketAddressEnumerator // out
 
-	_socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddressEnumerator)
+	_socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddressEnumerator)
 
 	return _socketAddressEnumerator
 }

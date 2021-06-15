@@ -110,7 +110,7 @@ func NewCoverage() Coverage {
 
 	var _coverage Coverage // out
 
-	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
+	_coverage = WrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _coverage
 }
@@ -126,7 +126,7 @@ func (c coverage) Copy() Coverage {
 
 	var _ret Coverage // out
 
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Coverage)
 
 	return _ret
 }
@@ -173,7 +173,7 @@ func (c coverage) Ref() Coverage {
 
 	var _ret Coverage // out
 
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Coverage)
 
 	return _ret
 }

@@ -233,7 +233,7 @@ func (c dragContext) DestWindow() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }
@@ -249,7 +249,7 @@ func (c dragContext) Device() Device {
 
 	var _device Device // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Device)
 
 	return _device
 }
@@ -269,7 +269,7 @@ func (c dragContext) DragWindow() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }
@@ -317,7 +317,7 @@ func (c dragContext) SourceWindow() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }

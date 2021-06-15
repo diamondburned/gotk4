@@ -297,6 +297,7 @@ func (sides *SideEffects) addImportAlias(path, alias string) {
 	sides.Imports[path] = alias
 }
 
+// addGLibImport adds the external gotk3/glib import.
 func (sides *SideEffects) addGLibImport() {
 	sides.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
 }

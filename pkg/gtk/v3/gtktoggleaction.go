@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -87,7 +86,7 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 
 	var _toggleAction ToggleAction // out
 
-	_toggleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ToggleAction)
+	_toggleAction = WrapToggleAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _toggleAction
 }

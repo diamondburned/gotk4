@@ -152,7 +152,7 @@ func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials
 	var _credentials Credentials // out
 	var _goerr error             // out
 
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Credentials)
+	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Credentials)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr
@@ -174,7 +174,7 @@ func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (Credential
 	var _credentials Credentials // out
 	var _goerr error             // out
 
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Credentials)
+	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Credentials)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr

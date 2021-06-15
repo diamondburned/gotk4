@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -122,7 +121,7 @@ func NewFileChooserButton(title string, action FileChooserAction) FileChooserBut
 
 	var _fileChooserButton FileChooserButton // out
 
-	_fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileChooserButton)
+	_fileChooserButton = WrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserButton
 }
@@ -138,7 +137,7 @@ func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
 
 	var _fileChooserButton FileChooserButton // out
 
-	_fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileChooserButton)
+	_fileChooserButton = WrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserButton
 }

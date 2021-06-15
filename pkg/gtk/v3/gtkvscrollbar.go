@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,7 +71,7 @@ func NewVScrollbar(adjustment Adjustment) VScrollbar {
 
 	var _vScrollbar VScrollbar // out
 
-	_vScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VScrollbar)
+	_vScrollbar = WrapVScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScrollbar
 }

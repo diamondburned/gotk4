@@ -89,7 +89,7 @@ func NewCenterLayout() CenterLayout {
 
 	var _centerLayout CenterLayout // out
 
-	_centerLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CenterLayout)
+	_centerLayout = WrapCenterLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _centerLayout
 }
@@ -121,7 +121,7 @@ func (s centerLayout) CenterWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -137,7 +137,7 @@ func (s centerLayout) EndWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -169,7 +169,7 @@ func (s centerLayout) StartWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

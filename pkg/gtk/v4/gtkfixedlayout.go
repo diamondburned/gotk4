@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -85,7 +84,7 @@ func NewFixedLayout() FixedLayout {
 
 	var _fixedLayout FixedLayout // out
 
-	_fixedLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FixedLayout)
+	_fixedLayout = WrapFixedLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fixedLayout
 }

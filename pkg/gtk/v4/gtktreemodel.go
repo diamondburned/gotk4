@@ -380,7 +380,7 @@ func (c treeModel) NewFilter(root *TreePath) TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }
@@ -1344,7 +1344,7 @@ func (r *TreeRowReference) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }

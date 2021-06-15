@@ -171,7 +171,7 @@ func NewCancellable() Cancellable {
 
 	var _cancellable Cancellable // out
 
-	_cancellable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cancellable)
+	_cancellable = WrapCancellable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cancellable
 }

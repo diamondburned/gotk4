@@ -264,7 +264,7 @@ func NewText() Text {
 
 	var _text Text // out
 
-	_text = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Text)
+	_text = WrapText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
 }
@@ -280,7 +280,7 @@ func NewTextWithBuffer(buffer EntryBuffer) Text {
 
 	var _text Text // out
 
-	_text = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Text)
+	_text = WrapText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
 }
@@ -333,7 +333,7 @@ func (s text) Buffer() EntryBuffer {
 
 	var _entryBuffer EntryBuffer // out
 
-	_entryBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EntryBuffer)
+	_entryBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(EntryBuffer)
 
 	return _entryBuffer
 }
@@ -368,7 +368,7 @@ func (s text) ExtraMenu() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }

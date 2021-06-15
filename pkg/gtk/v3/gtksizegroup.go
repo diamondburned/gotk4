@@ -152,7 +152,7 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 
 	var _sizeGroup SizeGroup // out
 
-	_sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SizeGroup)
+	_sizeGroup = WrapSizeGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _sizeGroup
 }

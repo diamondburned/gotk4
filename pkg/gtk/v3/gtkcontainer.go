@@ -8,7 +8,6 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -225,11 +224,6 @@ type Container interface {
 	//
 	// Also see gtk_widget_child_notify().
 	ChildNotify(child Widget, childProperty string)
-	// ChildNotifyByPspec emits a Widget::child-notify signal for the [child
-	// property][child-properties] specified by @pspec on the child.
-	//
-	// This is an analogue of g_object_notify_by_pspec() for child properties.
-	ChildNotifyByPspec(child Widget, pspec gobject.ParamSpec)
 	// ChildSetProperty sets a child property for @child and @container.
 	ChildSetProperty(child Widget, propertyName string, value **externglib.Value)
 	// ChildType returns the type of the children supported by the container.
@@ -428,22 +422,6 @@ func (c container) ChildNotify(child Widget, childProperty string) {
 	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
 }
 
-// ChildNotifyByPspec emits a Widget::child-notify signal for the [child
-// property][child-properties] specified by @pspec on the child.
-//
-// This is an analogue of g_object_notify_by_pspec() for child properties.
-func (c container) ChildNotifyByPspec(child Widget, pspec gobject.ParamSpec) {
-	var _arg0 *C.GtkContainer // out
-	var _arg1 *C.GtkWidget    // out
-	var _arg2 *C.GParamSpec   // out
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-
-	C.gtk_container_child_notify_by_pspec(_arg0, _arg1, _arg2)
-}
-
 // ChildSetProperty sets a child property for @child and @container.
 func (c container) ChildSetProperty(child Widget, propertyName string, value **externglib.Value) {
 	var _arg0 *C.GtkContainer // out
@@ -509,7 +487,7 @@ func (c container) FocusChild() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -526,7 +504,7 @@ func (c container) FocusHAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -543,7 +521,7 @@ func (c container) FocusVAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }

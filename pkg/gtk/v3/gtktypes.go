@@ -204,7 +204,7 @@ func (i *IconSet) RenderIcon(style Style, direction TextDirection, state StateTy
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -229,7 +229,7 @@ func (i *IconSet) RenderIconPixbuf(context StyleContext, size int) gdkpixbuf.Pix
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -432,7 +432,7 @@ func (s *IconSource) Pixbuf() gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -714,7 +714,7 @@ func (d *SelectionData) Free() {
 }
 
 // DataType retrieves the data type of the selection.
-func (s *SelectionData) DataType() gdk.Atom {
+func (s *SelectionData) DataType() *gdk.Atom {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.GdkAtom           // in
 
@@ -722,9 +722,9 @@ func (s *SelectionData) DataType() gdk.Atom {
 
 	_cret = C.gtk_selection_data_get_data_type(_arg0)
 
-	var _atom gdk.Atom // out
+	var _atom *gdk.Atom // out
 
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+	_atom = gdk.WrapAtom(unsafe.Pointer(_cret))
 
 	return _atom
 }
@@ -740,7 +740,7 @@ func (s *SelectionData) Display() gdk.Display {
 
 	var _display gdk.Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
 
 	return _display
 }
@@ -788,13 +788,13 @@ func (s *SelectionData) Pixbuf() gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
 
 // Selection retrieves the selection Atom of the selection data.
-func (s *SelectionData) Selection() gdk.Atom {
+func (s *SelectionData) Selection() *gdk.Atom {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.GdkAtom           // in
 
@@ -802,15 +802,15 @@ func (s *SelectionData) Selection() gdk.Atom {
 
 	_cret = C.gtk_selection_data_get_selection(_arg0)
 
-	var _atom gdk.Atom // out
+	var _atom *gdk.Atom // out
 
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+	_atom = gdk.WrapAtom(unsafe.Pointer(_cret))
 
 	return _atom
 }
 
 // Target retrieves the target of the selection.
-func (s *SelectionData) Target() gdk.Atom {
+func (s *SelectionData) Target() *gdk.Atom {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.GdkAtom           // in
 
@@ -818,9 +818,9 @@ func (s *SelectionData) Target() gdk.Atom {
 
 	_cret = C.gtk_selection_data_get_target(_arg0)
 
-	var _atom gdk.Atom // out
+	var _atom *gdk.Atom // out
 
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+	_atom = gdk.WrapAtom(unsafe.Pointer(_cret))
 
 	return _atom
 }
@@ -882,7 +882,8 @@ func (s *SelectionData) Uris() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -899,7 +900,7 @@ func (s *SelectionData) Uris() []string {
 
 // Set stores new data into a SelectionData object. Should only be called from a
 // selection handler callback. Zero-terminates the stored data.
-func (s *SelectionData) Set(typ gdk.Atom, format int, data []byte) {
+func (s *SelectionData) Set(typ *gdk.Atom, format int, data []byte) {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 C.GdkAtom           // out
 	var _arg2 C.gint              // out
@@ -907,7 +908,7 @@ func (s *SelectionData) Set(typ gdk.Atom, format int, data []byte) {
 	var _arg4 C.gint
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(typ.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(typ.Native()))
 	_arg2 = (C.gint)(format)
 	_arg4 = C.gint(len(data))
 	_arg3 = (*C.guchar)(unsafe.Pointer(&data[0]))

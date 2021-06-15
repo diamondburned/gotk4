@@ -214,7 +214,7 @@ func (r *Rand) SetSeedArray(seed *uint32, seedLength uint) {
 	var _arg2 C.guint    // out
 
 	_arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.guint32)(seed)
+	_arg1 = (*C.guint32)(unsafe.Pointer(seed))
 	_arg2 = (C.guint)(seedLength)
 
 	C.g_rand_set_seed_array(_arg0, _arg1, _arg2)

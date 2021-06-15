@@ -132,7 +132,7 @@ type Display interface {
 	PointerUngrab(time_ uint32)
 	// RequestSelectionNotification: request EventOwnerChange events for
 	// ownership changes of the selection named by the given atom.
-	RequestSelectionNotification(selection Atom) bool
+	RequestSelectionNotification(selection *Atom) bool
 	// SetDoubleClickDistance sets the double click distance (two clicks within
 	// this distance count as a double click and result in a K_2BUTTON_PRESS
 	// event). See also gdk_display_set_double_click_time(). Applications should
@@ -147,7 +147,7 @@ type Display interface {
 	// clipboard data. On X11, this is a special program that works according to
 	// the FreeDesktop Clipboard Specification
 	// (http://www.freedesktop.org/Standards/clipboard-manager-spec).
-	StoreClipboard(clipboardWindow Window, time_ uint32, targets []Atom)
+	StoreClipboard(clipboardWindow Window, time_ uint32, targets []*Atom)
 	// SupportsClipboardPersistence returns whether the speicifed display
 	// supports clipboard persistance; i.e. if it’s possible to store the
 	// clipboard data after an application has quit. On X11 this checks if a
@@ -289,7 +289,7 @@ func (d display) AppLaunchContext() AppLaunchContext {
 
 	var _appLaunchContext AppLaunchContext // out
 
-	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppLaunchContext)
+	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AppLaunchContext)
 
 	return _appLaunchContext
 }
@@ -324,7 +324,7 @@ func (d display) DefaultGroup() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }
@@ -340,7 +340,7 @@ func (d display) DefaultScreen() Screen {
 
 	var _screen Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Screen)
 
 	return _screen
 }
@@ -356,7 +356,7 @@ func (d display) DefaultSeat() Seat {
 
 	var _seat Seat // out
 
-	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Seat)
+	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Seat)
 
 	return _seat
 }
@@ -372,7 +372,7 @@ func (d display) DeviceManager() DeviceManager {
 
 	var _deviceManager DeviceManager // out
 
-	_deviceManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DeviceManager)
+	_deviceManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DeviceManager)
 
 	return _deviceManager
 }
@@ -409,7 +409,7 @@ func (d display) Monitor(monitorNum int) Monitor {
 
 	var _monitor Monitor // out
 
-	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Monitor)
 
 	return _monitor
 }
@@ -430,7 +430,7 @@ func (d display) MonitorAtPoint(x int, y int) Monitor {
 
 	var _monitor Monitor // out
 
-	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Monitor)
 
 	return _monitor
 }
@@ -449,7 +449,7 @@ func (d display) MonitorAtWindow(window Window) Monitor {
 
 	var _monitor Monitor // out
 
-	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Monitor)
 
 	return _monitor
 }
@@ -523,7 +523,7 @@ func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
 	var _y int             // out
 	var _mask ModifierType // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
 	_x = (int)(_arg2)
 	_y = (int)(_arg3)
 	_mask = ModifierType(_arg4)
@@ -547,7 +547,7 @@ func (d display) PrimaryMonitor() Monitor {
 
 	var _monitor Monitor // out
 
-	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Monitor)
 
 	return _monitor
 }
@@ -565,7 +565,7 @@ func (d display) Screen(screenNum int) Screen {
 
 	var _screen Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Screen)
 
 	return _screen
 }
@@ -590,7 +590,7 @@ func (d display) WindowAtPointer() (winX int, winY int, window Window) {
 
 	_winX = (int)(_arg1)
 	_winY = (int)(_arg2)
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _winX, _winY, _window
 }
@@ -692,13 +692,13 @@ func (d display) PointerUngrab(time_ uint32) {
 
 // RequestSelectionNotification: request EventOwnerChange events for
 // ownership changes of the selection named by the given atom.
-func (d display) RequestSelectionNotification(selection Atom) bool {
+func (d display) RequestSelectionNotification(selection *Atom) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.GdkAtom     // out
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gdk_display_request_selection_notification(_arg0, _arg1)
 
@@ -743,7 +743,7 @@ func (d display) SetDoubleClickTime(msec uint) {
 // clipboard data. On X11, this is a special program that works according to
 // the FreeDesktop Clipboard Specification
 // (http://www.freedesktop.org/Standards/clipboard-manager-spec).
-func (d display) StoreClipboard(clipboardWindow Window, time_ uint32, targets []Atom) {
+func (d display) StoreClipboard(clipboardWindow Window, time_ uint32, targets []*Atom) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkWindow  // out
 	var _arg2 C.guint32     // out

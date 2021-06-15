@@ -220,7 +220,7 @@ func NewStatusIcon() StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -237,7 +237,7 @@ func NewStatusIconFromFile(filename string) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -253,7 +253,7 @@ func NewStatusIconFromGIcon(icon gio.Icon) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -270,7 +270,7 @@ func NewStatusIconFromIconName(iconName string) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -286,7 +286,7 @@ func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbuf) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -303,7 +303,7 @@ func NewStatusIconFromStock(stockId string) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StatusIcon)
+	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -335,7 +335,7 @@ func (s statusIcon) Geometry() (gdk.Screen, gdk.Rectangle, Orientation, bool) {
 	var _orientation Orientation // out
 	var _ok bool                 // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(gdk.Screen)
 
 	_orientation = Orientation(_arg3)
 	if _cret != 0 {
@@ -361,7 +361,7 @@ func (s statusIcon) GIcon() gio.Icon {
 
 	var _icon gio.Icon // out
 
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
 
 	return _icon
 }
@@ -419,7 +419,7 @@ func (s statusIcon) Pixbuf() gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -435,7 +435,7 @@ func (s statusIcon) Screen() gdk.Screen {
 
 	var _screen gdk.Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
 
 	return _screen
 }

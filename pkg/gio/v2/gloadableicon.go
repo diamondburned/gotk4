@@ -93,7 +93,7 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStre
 
 	_typ = C.GoString(_arg2)
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _typ, _inputStream, _goerr
@@ -119,7 +119,7 @@ func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 
 	_typ = C.GoString(_arg2)
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _typ, _inputStream, _goerr

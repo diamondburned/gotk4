@@ -568,7 +568,7 @@ func NewTextView() TextView {
 
 	var _textView TextView // out
 
-	_textView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextView)
+	_textView = WrapTextView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textView
 }
@@ -584,7 +584,7 @@ func NewTextViewWithBuffer(buffer TextBuffer) TextView {
 
 	var _textView TextView // out
 
-	_textView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextView)
+	_textView = WrapTextView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textView
 }
@@ -819,7 +819,7 @@ func (t textView) Buffer() TextBuffer {
 
 	var _textBuffer TextBuffer // out
 
-	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextBuffer)
+	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextBuffer)
 
 	return _textBuffer
 }
@@ -908,7 +908,7 @@ func (t textView) ExtraMenu() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }
@@ -931,7 +931,7 @@ func (t textView) Gutter(win TextWindowType) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

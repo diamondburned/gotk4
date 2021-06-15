@@ -147,7 +147,7 @@ func (c socketConnection) LocalAddress() (SocketAddress, error) {
 	var _socketAddress SocketAddress // out
 	var _goerr error                 // out
 
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -172,7 +172,7 @@ func (c socketConnection) RemoteAddress() (SocketAddress, error) {
 	var _socketAddress SocketAddress // out
 	var _goerr error                 // out
 
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -191,7 +191,7 @@ func (c socketConnection) Socket() Socket {
 
 	var _socket Socket // out
 
-	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Socket)
+	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Socket)
 
 	return _socket
 }

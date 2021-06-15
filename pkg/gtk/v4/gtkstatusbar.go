@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -120,7 +119,7 @@ func NewStatusbar() Statusbar {
 
 	var _statusbar Statusbar // out
 
-	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Statusbar)
+	_statusbar = WrapStatusbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _statusbar
 }

@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,34 +22,6 @@ func init() {
 	})
 }
 
-// ParamSpecExpression creates a new `GParamSpec` instance for a property
-// holding a `GtkExpression`.
-//
-// See `g_param_spec_internal()` for details on the property strings.
-func ParamSpecExpression(name string, nick string, blurb string, flags gobject.ParamFlags) gobject.ParamSpec {
-	var _arg1 *C.char       // out
-	var _arg2 *C.char       // out
-	var _arg3 *C.char       // out
-	var _arg4 C.GParamFlags // out
-	var _cret *C.GParamSpec // in
-
-	_arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(nick))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.char)(C.CString(blurb))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.GParamFlags)(flags)
-
-	_cret = C.gtk_param_spec_expression(_arg1, _arg2, _arg3, _arg4)
-
-	var _paramSpec gobject.ParamSpec // out
-
-	_paramSpec = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gobject.ParamSpec)
-
-	return _paramSpec
-}
-
 // ValueDupExpression retrieves the `GtkExpression` stored inside the given
 // `value`, and acquires a reference to it.
 func ValueDupExpression(value **externglib.Value) Expression {
@@ -63,7 +34,7 @@ func ValueDupExpression(value **externglib.Value) Expression {
 
 	var _expression Expression // out
 
-	_expression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Expression)
 
 	return _expression
 }
@@ -80,7 +51,7 @@ func ValueGetExpression(value **externglib.Value) Expression {
 
 	var _expression Expression // out
 
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expression)
 
 	return _expression
 }

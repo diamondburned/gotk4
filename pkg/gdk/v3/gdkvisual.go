@@ -339,7 +339,7 @@ func (v visual) Screen() Screen {
 
 	var _screen Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Screen)
 
 	return _screen
 }

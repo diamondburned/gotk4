@@ -103,7 +103,7 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 
 	var _tlsPassword TLSPassword // out
 
-	_tlsPassword = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSPassword)
+	_tlsPassword = WrapTLSPassword(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _tlsPassword
 }
@@ -151,7 +151,7 @@ func (p tlsPassword) Value(length *uint) *byte {
 	var _cret *C.guchar       // in
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.gsize)(length)
+	_arg1 = (*C.gsize)(unsafe.Pointer(length))
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
 

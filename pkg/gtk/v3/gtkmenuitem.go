@@ -152,7 +152,7 @@ func NewMenuItem() MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -169,7 +169,7 @@ func NewMenuItemWithLabel(label string) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -186,7 +186,7 @@ func NewMenuItemWithMnemonic(label string) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -294,7 +294,7 @@ func (m menuItem) Submenu() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

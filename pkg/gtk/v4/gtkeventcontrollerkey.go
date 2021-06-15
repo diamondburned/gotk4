@@ -72,7 +72,7 @@ func NewEventControllerKey() EventControllerKey {
 
 	var _eventControllerKey EventControllerKey // out
 
-	_eventControllerKey = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerKey)
+	_eventControllerKey = WrapEventControllerKey(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerKey
 }
@@ -131,7 +131,7 @@ func (c eventControllerKey) ImContext() IMContext {
 
 	var _imContext IMContext // out
 
-	_imContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IMContext)
+	_imContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(IMContext)
 
 	return _imContext
 }

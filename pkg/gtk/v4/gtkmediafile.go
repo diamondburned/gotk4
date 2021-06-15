@@ -99,7 +99,7 @@ func NewMediaFile() MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -115,7 +115,7 @@ func NewMediaFileForFile(file gio.File) MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -132,7 +132,7 @@ func NewMediaFileForFilename(filename string) MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -148,7 +148,7 @@ func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -165,7 +165,7 @@ func NewMediaFileForResource(resourcePath string) MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -192,7 +192,7 @@ func (s mediaFile) File() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }
@@ -210,7 +210,7 @@ func (s mediaFile) InputStream() gio.InputStream {
 
 	var _inputStream gio.InputStream // out
 
-	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.InputStream)
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.InputStream)
 
 	return _inputStream
 }

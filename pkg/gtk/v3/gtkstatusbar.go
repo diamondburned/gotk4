@@ -114,7 +114,7 @@ func NewStatusbar() Statusbar {
 
 	var _statusbar Statusbar // out
 
-	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Statusbar)
+	_statusbar = WrapStatusbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _statusbar
 }
@@ -150,7 +150,7 @@ func (s statusbar) MessageArea() Box {
 
 	var _box Box // out
 
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Box)
 
 	return _box
 }

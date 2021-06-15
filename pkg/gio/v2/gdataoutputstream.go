@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -94,7 +93,7 @@ func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 
 	var _dataOutputStream DataOutputStream // out
 
-	_dataOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DataOutputStream)
+	_dataOutputStream = WrapDataOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dataOutputStream
 }

@@ -85,7 +85,7 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 
 	var _inetSocketAddress InetSocketAddress // out
 
-	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetSocketAddress)
+	_inetSocketAddress = WrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetSocketAddress
 }
@@ -104,7 +104,7 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 
 	var _inetSocketAddress InetSocketAddress // out
 
-	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetSocketAddress)
+	_inetSocketAddress = WrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetSocketAddress
 }
@@ -120,7 +120,7 @@ func (a inetSocketAddress) Address() InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InetAddress)
+	_inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InetAddress)
 
 	return _inetAddress
 }

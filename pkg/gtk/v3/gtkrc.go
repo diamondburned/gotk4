@@ -243,7 +243,8 @@ func RCGetDefaultFiles() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -320,7 +321,7 @@ func RCGetStyle(widget Widget) Style {
 
 	var _style Style // out
 
-	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Style)
+	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Style)
 
 	return _style
 }
@@ -356,7 +357,7 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 
 	var _style Style // out
 
-	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Style)
+	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Style)
 
 	return _style
 }
@@ -591,7 +592,7 @@ func NewRCStyle() RCStyle {
 
 	var _rcStyle RCStyle // out
 
-	_rcStyle = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RCStyle)
+	_rcStyle = WrapRCStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rcStyle
 }
@@ -608,7 +609,7 @@ func (o rcStyle) Copy() RCStyle {
 
 	var _rcStyle RCStyle // out
 
-	_rcStyle = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RCStyle)
+	_rcStyle = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RCStyle)
 
 	return _rcStyle
 }

@@ -574,7 +574,7 @@ func (a cellArea) CopyContext(context CellAreaContext) CellAreaContext {
 
 	var _cellAreaContext CellAreaContext // out
 
-	_cellAreaContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CellAreaContext)
+	_cellAreaContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CellAreaContext)
 
 	return _cellAreaContext
 }
@@ -595,7 +595,7 @@ func (a cellArea) CreateContext() CellAreaContext {
 
 	var _cellAreaContext CellAreaContext // out
 
-	_cellAreaContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CellAreaContext)
+	_cellAreaContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CellAreaContext)
 
 	return _cellAreaContext
 }
@@ -696,7 +696,7 @@ func (a cellArea) CellAtPosition(context CellAreaContext, widget Widget, cellAre
 
 	var _cellRenderer CellRenderer // out
 
-	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRenderer)
+	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRenderer)
 
 	return _allocArea, _cellRenderer
 }
@@ -732,7 +732,7 @@ func (a cellArea) EditWidget() CellEditable {
 
 	var _cellEditable CellEditable // out
 
-	_cellEditable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellEditable)
+	_cellEditable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellEditable)
 
 	return _cellEditable
 }
@@ -748,7 +748,7 @@ func (a cellArea) EditedCell() CellRenderer {
 
 	var _cellRenderer CellRenderer // out
 
-	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRenderer)
+	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRenderer)
 
 	return _cellRenderer
 }
@@ -764,7 +764,7 @@ func (a cellArea) FocusCell() CellRenderer {
 
 	var _cellRenderer CellRenderer // out
 
-	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRenderer)
+	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRenderer)
 
 	return _cellRenderer
 }
@@ -787,7 +787,7 @@ func (a cellArea) FocusFromSibling(renderer CellRenderer) CellRenderer {
 
 	var _cellRenderer CellRenderer // out
 
-	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRenderer)
+	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRenderer)
 
 	return _cellRenderer
 }

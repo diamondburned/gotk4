@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,7 +59,7 @@ func NewContainerCellAccessible() ContainerCellAccessible {
 
 	var _containerCellAccessible ContainerCellAccessible // out
 
-	_containerCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContainerCellAccessible)
+	_containerCellAccessible = WrapContainerCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _containerCellAccessible
 }

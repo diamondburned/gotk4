@@ -91,7 +91,7 @@ func NewUnixFDMessage() UnixFDMessage {
 
 	var _unixFDMessage UnixFDMessage // out
 
-	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDMessage)
+	_unixFDMessage = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDMessage
 }
@@ -107,7 +107,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 
 	var _unixFDMessage UnixFDMessage // out
 
-	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDMessage)
+	_unixFDMessage = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDMessage
 }
@@ -150,7 +150,7 @@ func (m unixFDMessage) FdList() UnixFDList {
 
 	var _unixFDList UnixFDList // out
 
-	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(UnixFDList)
+	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(UnixFDList)
 
 	return _unixFDList
 }

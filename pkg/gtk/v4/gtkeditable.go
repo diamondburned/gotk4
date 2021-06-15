@@ -382,7 +382,7 @@ func (e editable) Delegate() Editable {
 
 	var _ret Editable // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Editable)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Editable)
 
 	return _ret
 }

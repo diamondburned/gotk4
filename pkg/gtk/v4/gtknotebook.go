@@ -328,7 +328,7 @@ func NewNotebook() Notebook {
 
 	var _notebook Notebook // out
 
-	_notebook = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Notebook)
+	_notebook = WrapNotebook(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _notebook
 }
@@ -406,7 +406,7 @@ func (n notebook) ActionWidget(packType PackType) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -456,7 +456,7 @@ func (n notebook) MenuLabel(child Widget) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -509,7 +509,7 @@ func (n notebook) NthPage(pageNum int) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -527,7 +527,7 @@ func (n notebook) Page(child Widget) NotebookPage {
 
 	var _notebookPage NotebookPage // out
 
-	_notebookPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(NotebookPage)
+	_notebookPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(NotebookPage)
 
 	return _notebookPage
 }
@@ -547,7 +547,7 @@ func (n notebook) Pages() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -644,7 +644,7 @@ func (n notebook) TabLabel(child Widget) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -1152,7 +1152,7 @@ func (p notebookPage) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

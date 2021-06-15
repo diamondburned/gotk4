@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,7 +73,7 @@ func NewGestureSwipe(widget Widget) GestureSwipe {
 
 	var _gestureSwipe GestureSwipe // out
 
-	_gestureSwipe = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureSwipe)
+	_gestureSwipe = WrapGestureSwipe(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureSwipe
 }

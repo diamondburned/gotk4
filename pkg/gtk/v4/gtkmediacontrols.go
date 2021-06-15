@@ -76,7 +76,7 @@ func NewMediaControls(stream MediaStream) MediaControls {
 
 	var _mediaControls MediaControls // out
 
-	_mediaControls = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaControls)
+	_mediaControls = WrapMediaControls(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _mediaControls
 }
@@ -92,7 +92,7 @@ func (c mediaControls) MediaStream() MediaStream {
 
 	var _mediaStream MediaStream // out
 
-	_mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaStream)
+	_mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MediaStream)
 
 	return _mediaStream
 }

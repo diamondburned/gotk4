@@ -90,7 +90,7 @@ func NewTextTagTable() TextTagTable {
 
 	var _textTagTable TextTagTable // out
 
-	_textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextTagTable)
+	_textTagTable = WrapTextTagTable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTagTable
 }
@@ -150,7 +150,7 @@ func (t textTagTable) Lookup(name string) TextTag {
 
 	var _textTag TextTag // out
 
-	_textTag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextTag)
+	_textTag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextTag)
 
 	return _textTag
 }

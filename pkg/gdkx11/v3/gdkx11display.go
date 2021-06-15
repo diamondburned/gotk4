@@ -140,7 +140,7 @@ type X11Display interface {
 	// stored in a property into an array of strings in the encoding of the
 	// current locale. (The elements of the array represent the nul-separated
 	// elements of the original text string.)
-	TextPropertyToTextList(encoding gdk.Atom, format int, text *byte, length int, list **string) int
+	TextPropertyToTextList(encoding *gdk.Atom, format int, text *byte, length int, list **string) int
 	// Ungrab: ungrab @display after it has been grabbed with
 	// gdk_x11_display_grab().
 	Ungrab()
@@ -368,7 +368,7 @@ func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format 
 // stored in a property into an array of strings in the encoding of the
 // current locale. (The elements of the array represent the nul-separated
 // elements of the original text string.)
-func (d x11Display) TextPropertyToTextList(encoding gdk.Atom, format int, text *byte, length int, list **string) int {
+func (d x11Display) TextPropertyToTextList(encoding *gdk.Atom, format int, text *byte, length int, list **string) int {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.GdkAtom     // out
 	var _arg2 C.gint        // out
@@ -378,9 +378,9 @@ func (d x11Display) TextPropertyToTextList(encoding gdk.Atom, format int, text *
 	var _cret C.gint        // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(encoding.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(encoding.Native()))
 	_arg2 = (C.gint)(format)
-	_arg3 = (*C.guchar)(text)
+	_arg3 = (*C.guchar)(unsafe.Pointer(text))
 	_arg4 = (C.gint)(length)
 	_arg5 = (***C.gchar)(C.CString(list))
 	defer C.free(unsafe.Pointer(_arg5))

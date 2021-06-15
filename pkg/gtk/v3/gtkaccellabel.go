@@ -123,7 +123,7 @@ func NewAccelLabel(_string string) AccelLabel {
 
 	var _accelLabel AccelLabel // out
 
-	_accelLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelLabel)
+	_accelLabel = WrapAccelLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelLabel
 }
@@ -160,7 +160,7 @@ func (a accelLabel) AccelWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

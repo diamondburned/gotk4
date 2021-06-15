@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -110,7 +109,7 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) Dro
 
 	var _dropTargetAsync DropTargetAsync // out
 
-	_dropTargetAsync = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DropTargetAsync)
+	_dropTargetAsync = WrapDropTargetAsync(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropTargetAsync
 }

@@ -48,7 +48,7 @@ func BusGetFinish(res AsyncResult) (DBusConnection, error) {
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -83,7 +83,7 @@ func BusGetSync(busType BusType, cancellable Cancellable) (DBusConnection, error
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr

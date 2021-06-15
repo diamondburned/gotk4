@@ -92,7 +92,7 @@ func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListMod
 
 	var _sliceListModel SliceListModel // out
 
-	_sliceListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SliceListModel)
+	_sliceListModel = WrapSliceListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _sliceListModel
 }
@@ -108,7 +108,7 @@ func (s sliceListModel) Model() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }

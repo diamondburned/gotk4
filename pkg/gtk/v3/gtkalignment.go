@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -96,7 +95,7 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 
 	var _alignment Alignment // out
 
-	_alignment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Alignment)
+	_alignment = WrapAlignment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _alignment
 }

@@ -180,7 +180,7 @@ func NewApplicationWindow(application Application) ApplicationWindow {
 
 	var _applicationWindow ApplicationWindow // out
 
-	_applicationWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ApplicationWindow)
+	_applicationWindow = WrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
 }
@@ -197,7 +197,7 @@ func (w applicationWindow) HelpOverlay() ShortcutsWindow {
 
 	var _shortcutsWindow ShortcutsWindow // out
 
-	_shortcutsWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutsWindow)
+	_shortcutsWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ShortcutsWindow)
 
 	return _shortcutsWindow
 }

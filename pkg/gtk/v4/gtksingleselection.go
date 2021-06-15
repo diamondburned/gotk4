@@ -113,7 +113,7 @@ func NewSingleSelection(model gio.ListModel) SingleSelection {
 
 	var _singleSelection SingleSelection // out
 
-	_singleSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SingleSelection)
+	_singleSelection = WrapSingleSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _singleSelection
 }
@@ -167,7 +167,7 @@ func (s singleSelection) Model() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -203,7 +203,7 @@ func (s singleSelection) SelectedItem() gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }

@@ -297,7 +297,7 @@ func (d display) AppLaunchContext() AppLaunchContext {
 
 	var _appLaunchContext AppLaunchContext // out
 
-	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppLaunchContext)
+	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AppLaunchContext)
 
 	return _appLaunchContext
 }
@@ -313,7 +313,7 @@ func (d display) Clipboard() Clipboard {
 
 	var _clipboard Clipboard // out
 
-	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Clipboard)
+	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Clipboard)
 
 	return _clipboard
 }
@@ -332,7 +332,7 @@ func (d display) DefaultSeat() Seat {
 
 	var _seat Seat // out
 
-	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Seat)
+	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Seat)
 
 	return _seat
 }
@@ -353,7 +353,7 @@ func (d display) MonitorAtSurface(surface Surface) Monitor {
 
 	var _monitor Monitor // out
 
-	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Monitor)
 
 	return _monitor
 }
@@ -375,7 +375,7 @@ func (s display) Monitors() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -410,7 +410,7 @@ func (d display) PrimaryClipboard() Clipboard {
 
 	var _clipboard Clipboard // out
 
-	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Clipboard)
+	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Clipboard)
 
 	return _clipboard
 }

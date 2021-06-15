@@ -502,7 +502,7 @@ func (a *Atom) Name() string {
 	var _arg0 C.GdkAtom // out
 	var _cret *C.gchar  // in
 
-	_arg0 = *(*C.GdkAtom)(unsafe.Pointer(a.Native()))
+	_arg0 = (C.GdkAtom)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gdk_atom_name(_arg0)
 

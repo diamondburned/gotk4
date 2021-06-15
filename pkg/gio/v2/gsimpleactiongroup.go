@@ -88,7 +88,7 @@ func NewSimpleActionGroup() SimpleActionGroup {
 
 	var _simpleActionGroup SimpleActionGroup // out
 
-	_simpleActionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SimpleActionGroup)
+	_simpleActionGroup = WrapSimpleActionGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleActionGroup
 }
@@ -125,7 +125,7 @@ func (s simpleActionGroup) Lookup(actionName string) Action {
 
 	var _action Action // out
 
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Action)
 
 	return _action
 }

@@ -80,7 +80,7 @@ func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) Altern
 
 	var _alternativeTrigger AlternativeTrigger // out
 
-	_alternativeTrigger = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AlternativeTrigger)
+	_alternativeTrigger = WrapAlternativeTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _alternativeTrigger
 }
@@ -99,7 +99,7 @@ func (s alternativeTrigger) First() ShortcutTrigger {
 
 	var _shortcutTrigger ShortcutTrigger // out
 
-	_shortcutTrigger = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutTrigger)
+	_shortcutTrigger = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ShortcutTrigger)
 
 	return _shortcutTrigger
 }
@@ -118,7 +118,7 @@ func (s alternativeTrigger) Second() ShortcutTrigger {
 
 	var _shortcutTrigger ShortcutTrigger // out
 
-	_shortcutTrigger = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutTrigger)
+	_shortcutTrigger = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ShortcutTrigger)
 
 	return _shortcutTrigger
 }
@@ -169,7 +169,7 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger {
 
 	var _keyvalTrigger KeyvalTrigger // out
 
-	_keyvalTrigger = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(KeyvalTrigger)
+	_keyvalTrigger = WrapKeyvalTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _keyvalTrigger
 }
@@ -251,7 +251,7 @@ func NewMnemonicTrigger(keyval uint) MnemonicTrigger {
 
 	var _mnemonicTrigger MnemonicTrigger // out
 
-	_mnemonicTrigger = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MnemonicTrigger)
+	_mnemonicTrigger = WrapMnemonicTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mnemonicTrigger
 }
@@ -388,7 +388,7 @@ func NewShortcutTriggerParseString(_string string) ShortcutTrigger {
 
 	var _shortcutTrigger ShortcutTrigger // out
 
-	_shortcutTrigger = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutTrigger)
+	_shortcutTrigger = WrapShortcutTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutTrigger
 }
@@ -398,12 +398,12 @@ func NewShortcutTriggerParseString(_string string) ShortcutTrigger {
 //
 // They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer // out
-	var _cret C.int      // in
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.int           // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(trigger2.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(trigger2.Native()))
 
 	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
 
@@ -420,12 +420,12 @@ func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
 // The types of @one and @two are #gconstpointer only to allow use of this
 // function with Table. They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer // out
-	var _cret C.gboolean // in
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(trigger2.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(trigger2.Native()))
 
 	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
 
@@ -448,10 +448,10 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 // The types of @trigger is #gconstpointer only to allow use of this
 // function with Table. They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Hash() uint {
-	var _arg0 C.gpointer // out
-	var _cret C.guint    // in
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gtk_shortcut_trigger_hash(_arg0)
 

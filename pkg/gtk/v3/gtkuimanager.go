@@ -398,7 +398,7 @@ func NewUIManager() UIManager {
 
 	var _uiManager UIManager // out
 
-	_uiManager = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UIManager)
+	_uiManager = WrapUIManager(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _uiManager
 }
@@ -543,7 +543,7 @@ func (m uiManager) AccelGroup() AccelGroup {
 
 	var _accelGroup AccelGroup // out
 
-	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
+	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AccelGroup)
 
 	return _accelGroup
 }
@@ -563,7 +563,7 @@ func (m uiManager) Action(path string) Action {
 
 	var _action Action // out
 
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Action)
 
 	return _action
 }
@@ -631,7 +631,7 @@ func (m uiManager) Widget(path string) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

@@ -236,7 +236,7 @@ func NewStack() Stack {
 
 	var _stack Stack // out
 
-	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
+	_stack = WrapStack(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stack
 }
@@ -289,7 +289,7 @@ func (s stack) ChildByName(name string) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -435,7 +435,7 @@ func (s stack) VisibleChild() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

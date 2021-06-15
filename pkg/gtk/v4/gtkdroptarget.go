@@ -151,7 +151,7 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 
 	var _dropTarget DropTarget // out
 
-	_dropTarget = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DropTarget)
+	_dropTarget = WrapDropTarget(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropTarget
 }
@@ -185,7 +185,7 @@ func (s dropTarget) Drop() gdk.Drop {
 
 	var _drop gdk.Drop // out
 
-	_drop = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Drop)
+	_drop = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Drop)
 
 	return _drop
 }

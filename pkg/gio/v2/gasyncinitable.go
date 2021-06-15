@@ -202,7 +202,7 @@ func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	var _object gextras.Objector // out
 	var _goerr error             // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _object, _goerr

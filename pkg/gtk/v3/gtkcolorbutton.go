@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -96,7 +95,7 @@ func NewColorButton() ColorButton {
 
 	var _colorButton ColorButton // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
+	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -112,7 +111,7 @@ func NewColorButtonWithColor(color *gdk.Color) ColorButton {
 
 	var _colorButton ColorButton // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
+	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -128,7 +127,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 
 	var _colorButton ColorButton // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
+	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }

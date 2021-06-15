@@ -862,13 +862,13 @@ func (v *Variant) Classify() VariantClass {
 //
 // If you only require an equality comparison, g_variant_equal() is more
 // general.
-func (o *Variant) Compare(two Variant) int {
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer // out
-	var _cret C.gint     // in
+func (o *Variant) Compare(two *Variant) int {
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gint          // in
 
-	_arg0 = *(*C.gpointer)(unsafe.Pointer(o.Native()))
-	_arg1 = *(*C.gpointer)(unsafe.Pointer(two.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(o.Native()))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(two.Native()))
 
 	_cret = C.g_variant_compare(_arg0, _arg1)
 
@@ -908,13 +908,13 @@ func (v *Variant) DupString() (uint, string) {
 //
 // The types of @one and @two are #gconstpointer only to allow use of this
 // function with Table. They must each be a #GVariant.
-func (o *Variant) Equal(two Variant) bool {
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer // out
-	var _cret C.gboolean // in
+func (o *Variant) Equal(two *Variant) bool {
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
 
-	_arg0 = *(*C.gpointer)(unsafe.Pointer(o.Native()))
-	_arg1 = *(*C.gpointer)(unsafe.Pointer(two.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(o.Native()))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(two.Native()))
 
 	_cret = C.g_variant_equal(_arg0, _arg1)
 
@@ -997,7 +997,8 @@ func (v *Variant) Bytestring() []byte {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -1396,10 +1397,10 @@ func (v *Variant) Variant() *Variant {
 // The type of @value is #gconstpointer only to allow use of this function with
 // Table. @value must be a #GVariant.
 func (v *Variant) Hash() uint {
-	var _arg0 C.gpointer // out
-	var _cret C.guint    // in
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
 
-	_arg0 = *(*C.gpointer)(unsafe.Pointer(v.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(v.Native()))
 
 	_cret = C.g_variant_hash(_arg0)
 

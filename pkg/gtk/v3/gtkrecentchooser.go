@@ -248,7 +248,7 @@ func (c recentChooser) Filter() RecentFilter {
 
 	var _recentFilter RecentFilter // out
 
-	_recentFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentFilter)
+	_recentFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RecentFilter)
 
 	return _recentFilter
 }

@@ -234,7 +234,7 @@ func (s toolShell) TextSizeGroup() SizeGroup {
 
 	var _sizeGroup SizeGroup // out
 
-	_sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SizeGroup)
+	_sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SizeGroup)
 
 	return _sizeGroup
 }

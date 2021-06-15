@@ -121,7 +121,7 @@ func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 
 	var _entryBuffer EntryBuffer // out
 
-	_entryBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryBuffer)
+	_entryBuffer = WrapEntryBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryBuffer
 }

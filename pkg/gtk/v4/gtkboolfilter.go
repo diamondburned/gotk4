@@ -72,7 +72,7 @@ func NewBoolFilter(expression Expression) BoolFilter {
 
 	var _boolFilter BoolFilter // out
 
-	_boolFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BoolFilter)
+	_boolFilter = WrapBoolFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boolFilter
 }
@@ -89,7 +89,7 @@ func (s boolFilter) Expression() Expression {
 
 	var _expression Expression // out
 
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expression)
 
 	return _expression
 }

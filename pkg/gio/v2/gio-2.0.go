@@ -229,7 +229,7 @@ func NewDBusAuthObserver() DBusAuthObserver {
 
 	var _dBusAuthObserver DBusAuthObserver // out
 
-	_dBusAuthObserver = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusAuthObserver)
+	_dBusAuthObserver = WrapDBusAuthObserver(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusAuthObserver
 }
@@ -640,7 +640,7 @@ func NewDBusConnectionFinish(res AsyncResult) (DBusConnection, error) {
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -659,7 +659,7 @@ func NewDBusConnectionForAddressFinish(res AsyncResult) (DBusConnection, error) 
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -685,7 +685,7 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -713,7 +713,7 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -848,7 +848,7 @@ func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1.Native()))).(UnixFDList)
+	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1))).(UnixFDList)
 	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
@@ -902,7 +902,7 @@ func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg10.Native()))).(UnixFDList)
+	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg10))).(UnixFDList)
 	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
@@ -1209,7 +1209,7 @@ func (c dBusConnection) PeerCredentials() Credentials {
 
 	var _credentials Credentials // out
 
-	_credentials = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Credentials)
+	_credentials = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Credentials)
 
 	return _credentials
 }
@@ -1228,7 +1228,7 @@ func (c dBusConnection) Stream() IOStream {
 
 	var _ioStream IOStream // out
 
-	_ioStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IOStream)
+	_ioStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(IOStream)
 
 	return _ioStream
 }
@@ -1355,7 +1355,7 @@ func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage
 	var _dBusMessage DBusMessage // out
 	var _goerr error             // out
 
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusMessage, _goerr
@@ -1414,7 +1414,7 @@ func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBus
 	var _goerr error             // out
 
 	_outSerial = (uint32)(_arg4)
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outSerial, _dBusMessage, _goerr
@@ -1778,7 +1778,7 @@ func NewDBusMessage() DBusMessage {
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
 }
@@ -1800,7 +1800,7 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (DBus
 	var _dBusMessage DBusMessage // out
 	var _goerr error             // out
 
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusMessage, _goerr
@@ -1827,7 +1827,7 @@ func NewDBusMessageMethodCall(name string, path string, interface_ string, metho
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
 }
@@ -1850,7 +1850,7 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMes
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
 }
@@ -1872,7 +1872,7 @@ func (m dBusMessage) Copy() (DBusMessage, error) {
 	var _dBusMessage DBusMessage // out
 	var _goerr error             // out
 
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusMessage, _goerr
@@ -2010,7 +2010,8 @@ func (m dBusMessage) HeaderFields() []byte {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.guchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -2214,7 +2215,7 @@ func (m dBusMessage) UnixFdList() UnixFDList {
 
 	var _unixFDList UnixFDList // out
 
-	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(UnixFDList)
+	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(UnixFDList)
 
 	return _unixFDList
 }
@@ -2246,7 +2247,7 @@ func (m dBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 
 	return _dBusMessage
 }
@@ -2263,7 +2264,7 @@ func (m dBusMessage) NewMethodReply() DBusMessage {
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 
 	return _dBusMessage
 }
@@ -2689,7 +2690,7 @@ func (i dBusMethodInvocation) Connection() DBusConnection {
 
 	var _dBusConnection DBusConnection // out
 
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DBusConnection)
 
 	return _dBusConnection
 }
@@ -2733,7 +2734,7 @@ func (i dBusMethodInvocation) Message() DBusMessage {
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusMessage)
+	_dBusMessage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DBusMessage)
 
 	return _dBusMessage
 }
@@ -3029,7 +3030,7 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 	var _dBusServer DBusServer // out
 	var _goerr error           // out
 
-	_dBusServer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusServer)
+	_dBusServer = WrapDBusServer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusServer, _goerr
@@ -3244,7 +3245,7 @@ func NewMenu() Menu {
 
 	var _menu Menu // out
 
-	_menu = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Menu)
+	_menu = WrapMenu(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -3664,7 +3665,7 @@ func NewMenuItem(label string, detailedAction string) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -3682,7 +3683,7 @@ func NewMenuItemFromModel(model MenuModel, itemIndex int) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -3701,7 +3702,7 @@ func NewMenuItemSection(label string, section MenuModel) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -3720,7 +3721,7 @@ func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -3767,7 +3768,7 @@ func (m menuItem) Link(link string) MenuModel {
 
 	var _menuModel MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MenuModel)
+	_menuModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MenuModel)
 
 	return _menuModel
 }
@@ -4075,7 +4076,7 @@ func NewNotification(title string) Notification {
 
 	var _notification Notification // out
 
-	_notification = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Notification)
+	_notification = WrapNotification(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _notification
 }
@@ -4321,7 +4322,7 @@ func NewPropertyAction(name string, object gextras.Objector, propertyName string
 
 	var _propertyAction PropertyAction // out
 
-	_propertyAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PropertyAction)
+	_propertyAction = WrapPropertyAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _propertyAction
 }
@@ -4397,7 +4398,7 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction 
 
 	var _simpleAction SimpleAction // out
 
-	_simpleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SimpleAction)
+	_simpleAction = WrapSimpleAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleAction
 }
@@ -4418,7 +4419,7 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 
 	var _simpleAction SimpleAction // out
 
-	_simpleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SimpleAction)
+	_simpleAction = WrapSimpleAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleAction
 }
@@ -4521,7 +4522,7 @@ func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) Simpl
 
 	var _simpleIOStream SimpleIOStream // out
 
-	_simpleIOStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SimpleIOStream)
+	_simpleIOStream = WrapSimpleIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleIOStream
 }
@@ -4569,7 +4570,7 @@ func NewSimplePermission(allowed bool) SimplePermission {
 
 	var _simplePermission SimplePermission // out
 
-	_simplePermission = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SimplePermission)
+	_simplePermission = WrapSimplePermission(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simplePermission
 }
@@ -4793,7 +4794,7 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (Subprocess, error) {
 	var _subprocess Subprocess // out
 	var _goerr error           // out
 
-	_subprocess = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Subprocess)
+	_subprocess = WrapSubprocess(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _subprocess, _goerr
@@ -5005,7 +5006,7 @@ func (s subprocess) StderrPipe() InputStream {
 
 	var _inputStream InputStream // out
 
-	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InputStream)
 
 	return _inputStream
 }
@@ -5025,7 +5026,7 @@ func (s subprocess) StdinPipe() OutputStream {
 
 	var _outputStream OutputStream // out
 
-	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OutputStream)
+	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(OutputStream)
 
 	return _outputStream
 }
@@ -5045,7 +5046,7 @@ func (s subprocess) StdoutPipe() InputStream {
 
 	var _inputStream InputStream // out
 
-	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InputStream)
 
 	return _inputStream
 }
@@ -5421,7 +5422,7 @@ func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 
 	var _subprocessLauncher SubprocessLauncher // out
 
-	_subprocessLauncher = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SubprocessLauncher)
+	_subprocessLauncher = WrapSubprocessLauncher(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _subprocessLauncher
 }
@@ -5661,7 +5662,7 @@ func (s subprocessLauncher) Spawnv(argv []string) (Subprocess, error) {
 	var _subprocess Subprocess // out
 	var _goerr error           // out
 
-	_subprocess = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Subprocess)
+	_subprocess = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Subprocess)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _subprocess, _goerr
@@ -5930,7 +5931,7 @@ func NewTestDBus(flags TestDBusFlags) TestDBus {
 
 	var _testDBus TestDBus // out
 
-	_testDBus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TestDBus)
+	_testDBus = WrapTestDBus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _testDBus
 }

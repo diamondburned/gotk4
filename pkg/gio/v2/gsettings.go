@@ -699,7 +699,7 @@ func NewSettings(schemaId string) Settings {
 
 	var _settings Settings // out
 
-	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+	_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _settings
 }
@@ -720,7 +720,7 @@ func NewSettingsFull(schema *SettingsSchema, backend SettingsBackend, path strin
 
 	var _settings Settings // out
 
-	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+	_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _settings
 }
@@ -739,7 +739,7 @@ func NewSettingsWithBackend(schemaId string, backend SettingsBackend) Settings {
 
 	var _settings Settings // out
 
-	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+	_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _settings
 }
@@ -761,7 +761,7 @@ func NewSettingsWithBackendAndPath(schemaId string, backend SettingsBackend, pat
 
 	var _settings Settings // out
 
-	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+	_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _settings
 }
@@ -781,7 +781,7 @@ func NewSettingsWithPath(schemaId string, path string) Settings {
 
 	var _settings Settings // out
 
-	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+	_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _settings
 }
@@ -898,7 +898,7 @@ func (s settings) CreateAction(key string) Action {
 
 	var _action Action // out
 
-	_action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Action)
+	_action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Action)
 
 	return _action
 }
@@ -958,7 +958,7 @@ func (s settings) Child(name string) Settings {
 
 	var _ret Settings // out
 
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Settings)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Settings)
 
 	return _ret
 }
@@ -1219,7 +1219,8 @@ func (s settings) Strv(key string) []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -1389,7 +1390,8 @@ func (s settings) ListChildren() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -1424,7 +1426,8 @@ func (s settings) ListKeys() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

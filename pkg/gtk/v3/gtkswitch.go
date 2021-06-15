@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,7 +92,7 @@ func NewSwitch() Switch {
 
 	var __switch Switch // out
 
-	__switch = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Switch)
+	__switch = WrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
 }

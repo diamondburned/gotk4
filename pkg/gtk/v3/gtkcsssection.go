@@ -150,7 +150,7 @@ func (s *CSSSection) File() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }

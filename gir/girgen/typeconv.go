@@ -54,6 +54,11 @@ type ConversionValue struct {
 	InName  string
 	OutName string
 
+	// WrapObject, if not empty, will make the converter directly wrap to the
+	// object type instead of wrapping it in a Box. This should only be used for
+	// converting within types of the same package.
+	WrapObject string
+
 	// Direction is the direction of conversion.
 	Direction ConversionDirection
 
@@ -425,7 +430,7 @@ func (conv *TypeConverter) convertParam(at int) *ValueConverted {
 		}
 	}
 
-	conv.log(LogError, "C->Go conversion arg not found at", at)
+	conv.log(LogUnusuality, "C->Go conversion arg not found at", at)
 	return nil
 }
 
@@ -558,6 +563,11 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 		value.InType = strings.TrimPrefix(value.InType, "*")
 	}
 
+	// if value.Direction == ConvertCToGo && anyTypeC(value.AnyType) == "PangoContext*" {
+	// 	conv.log(LogDebug, "resolved to CGoType", value.resolved.CGoType())
+	// 	conv.log(LogDebug, "inType:", value.InType)
+	// }
+
 	value.inDecl.Linef("var %s %s // in", value.InName, value.InType)
 	value.outDecl.Linef("var %s %s // out", value.OutName, value.OutType)
 
@@ -565,7 +575,7 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 }
 
 // cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
-// function.
+// function. This should only be used for C to Go conversion.
 func (value *ValueConverted) cgoSetObject() {
 	var gobjectFunction string
 	if value.isTransferring() {
@@ -579,11 +589,22 @@ func (value *ValueConverted) cgoSetObject() {
 	}
 
 	value.addGLibImport()
-	value.addImportInternal("gextras")
 	value.addImport("unsafe")
 
+	if value.WrapObject != "" {
+		// This is only ever used for local constructors, so we don't need to
+		// mess with namespaces.
+		// TODO: maybe not make such a bad assumption.
+		value.p.Linef(
+			"%s = %s(externglib.%s(unsafe.Pointer(%s)))",
+			value.OutName, value.WrapObject, gobjectFunction, value.InName,
+		)
+		return
+	}
+
+	value.addImportInternal("gextras")
 	value.p.Linef(
-		"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s.Native()))).(%s)",
+		"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s))).(%s)",
 		value.OutName, gobjectFunction, value.InName, value.OutType,
 	)
 }

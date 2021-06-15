@@ -134,7 +134,7 @@ func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn
 
 	var _columnViewColumn ColumnViewColumn // out
 
-	_columnViewColumn = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ColumnViewColumn)
+	_columnViewColumn = WrapColumnViewColumn(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _columnViewColumn
 }
@@ -152,7 +152,7 @@ func (s columnViewColumn) ColumnView() ColumnView {
 
 	var _columnView ColumnView // out
 
-	_columnView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColumnView)
+	_columnView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColumnView)
 
 	return _columnView
 }
@@ -187,7 +187,7 @@ func (s columnViewColumn) Factory() ListItemFactory {
 
 	var _listItemFactory ListItemFactory // out
 
-	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListItemFactory)
+	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListItemFactory)
 
 	return _listItemFactory
 }
@@ -220,7 +220,7 @@ func (s columnViewColumn) HeaderMenu() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }
@@ -254,7 +254,7 @@ func (s columnViewColumn) Sorter() Sorter {
 
 	var _sorter Sorter // out
 
-	_sorter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Sorter)
+	_sorter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Sorter)
 
 	return _sorter
 }

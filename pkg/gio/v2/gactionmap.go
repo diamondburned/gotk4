@@ -118,7 +118,7 @@ func (a actionMap) LookupAction(actionName string) Action {
 
 	var _action Action // out
 
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Action)
 
 	return _action
 }

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -82,7 +81,7 @@ func NewToggleToolButton() ToggleToolButton {
 
 	var _toggleToolButton ToggleToolButton // out
 
-	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleToolButton)
+	_toggleToolButton = WrapToggleToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleToolButton
 }
@@ -99,7 +98,7 @@ func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
 
 	var _toggleToolButton ToggleToolButton // out
 
-	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleToolButton)
+	_toggleToolButton = WrapToggleToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleToolButton
 }

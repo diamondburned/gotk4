@@ -155,7 +155,7 @@ func NewExpander(label string) Expander {
 
 	var _expander Expander // out
 
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expander)
+	_expander = WrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
 }
@@ -172,7 +172,7 @@ func NewExpanderWithMnemonic(label string) Expander {
 
 	var _expander Expander // out
 
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expander)
+	_expander = WrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
 }
@@ -254,7 +254,7 @@ func (e expander) LabelWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

@@ -332,7 +332,7 @@ func NewIconView() IconView {
 
 	var _iconView IconView // out
 
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
+	_iconView = WrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -348,7 +348,7 @@ func NewIconViewWithArea(area CellArea) IconView {
 
 	var _iconView IconView // out
 
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
+	_iconView = WrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -364,7 +364,7 @@ func NewIconViewWithModel(model TreeModel) IconView {
 
 	var _iconView IconView // out
 
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
+	_iconView = WrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -544,7 +544,7 @@ func (i iconView) Cursor() (*TreePath, CellRenderer, bool) {
 	var _cell CellRenderer // out
 	var _ok bool           // out
 
-	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(CellRenderer)
+	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(CellRenderer)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -619,7 +619,7 @@ func (i iconView) ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool) {
 	var _cell CellRenderer // out
 	var _ok bool           // out
 
-	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(CellRenderer)
+	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(CellRenderer)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -759,7 +759,7 @@ func (i iconView) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }

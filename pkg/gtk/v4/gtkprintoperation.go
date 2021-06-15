@@ -146,7 +146,7 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 
 	var _pageSetup PageSetup // out
 
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
 }
@@ -460,7 +460,7 @@ func NewPrintOperation() PrintOperation {
 
 	var _printOperation PrintOperation // out
 
-	_printOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintOperation)
+	_printOperation = WrapPrintOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printOperation
 }
@@ -505,7 +505,7 @@ func (o printOperation) DefaultPageSetup() PageSetup {
 
 	var _pageSetup PageSetup // out
 
-	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
+	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
 }
@@ -608,7 +608,7 @@ func (o printOperation) PrintSettings() PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PrintSettings)
 
 	return _printSettings
 }

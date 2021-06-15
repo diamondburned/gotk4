@@ -126,7 +126,7 @@ func NewOverlay() Overlay {
 
 	var _overlay Overlay // out
 
-	_overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Overlay)
+	_overlay = WrapOverlay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _overlay
 }
@@ -159,7 +159,7 @@ func (o overlay) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

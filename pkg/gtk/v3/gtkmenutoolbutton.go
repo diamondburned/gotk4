@@ -106,7 +106,7 @@ func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
 
 	var _menuToolButton MenuToolButton // out
 
-	_menuToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuToolButton)
+	_menuToolButton = WrapMenuToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuToolButton
 }
@@ -123,7 +123,7 @@ func NewMenuToolButtonFromStock(stockId string) MenuToolButton {
 
 	var _menuToolButton MenuToolButton // out
 
-	_menuToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuToolButton)
+	_menuToolButton = WrapMenuToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuToolButton
 }
@@ -139,7 +139,7 @@ func (b menuToolButton) Menu() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

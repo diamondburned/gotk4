@@ -84,7 +84,7 @@ func (s appChooser) AppInfo() gio.AppInfo {
 
 	var _appInfo gio.AppInfo // out
 
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.AppInfo)
+	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.AppInfo)
 
 	return _appInfo
 }

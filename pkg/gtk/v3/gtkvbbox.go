@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,7 +61,7 @@ func NewVButtonBox() VButtonBox {
 
 	var _vButtonBox VButtonBox // out
 
-	_vButtonBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VButtonBox)
+	_vButtonBox = WrapVButtonBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vButtonBox
 }

@@ -195,7 +195,7 @@ func NewToolItem() ToolItem {
 
 	var _toolItem ToolItem // out
 
-	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+	_toolItem = WrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
 }
@@ -331,7 +331,7 @@ func (t toolItem) ProXYMenuItem(menuItemId string) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -404,7 +404,7 @@ func (t toolItem) TextSizeGroup() SizeGroup {
 
 	var _sizeGroup SizeGroup // out
 
-	_sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SizeGroup)
+	_sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SizeGroup)
 
 	return _sizeGroup
 }
@@ -518,7 +518,7 @@ func (t toolItem) RetrieveProXYMenuItem() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

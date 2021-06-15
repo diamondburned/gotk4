@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -104,7 +103,7 @@ func NewLinkButton(uri string) LinkButton {
 
 	var _linkButton LinkButton // out
 
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LinkButton)
+	_linkButton = WrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
@@ -124,7 +123,7 @@ func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 
 	var _linkButton LinkButton // out
 
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LinkButton)
+	_linkButton = WrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }

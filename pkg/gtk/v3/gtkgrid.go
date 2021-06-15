@@ -161,7 +161,7 @@ func NewGrid() Grid {
 
 	var _grid Grid // out
 
-	_grid = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Grid)
+	_grid = WrapGrid(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _grid
 }
@@ -247,7 +247,7 @@ func (g grid) ChildAt(left int, top int) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

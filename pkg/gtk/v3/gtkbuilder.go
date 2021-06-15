@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -360,17 +359,6 @@ type Builder interface {
 	// SetTranslationDomain sets the translation domain of @builder. See
 	// Builder:translation-domain.
 	SetTranslationDomain(domain string)
-	// ValueFromString: this function demarshals a value from a string. This
-	// function calls g_value_init() on the @value argument, so it need not be
-	// initialised beforehand.
-	//
-	// This function can handle char, uchar, boolean, int, uint, long, ulong,
-	// enum, flags, float, double, string, Color, RGBA and Adjustment type
-	// values. Support for Widget type values is still to come.
-	//
-	// Upon errors false will be returned and @error will be assigned a #GError
-	// from the K_BUILDER_ERROR domain.
-	ValueFromString(pspec gobject.ParamSpec, _string string) (*externglib.Value, error)
 	// ValueFromStringType: like gtk_builder_value_from_string(), this function
 	// demarshals a value from a string, but takes a #GType instead of Spec.
 	// This function calls g_value_init() on the @value argument, so it need not
@@ -410,7 +398,7 @@ func NewBuilder() Builder {
 
 	var _builder Builder // out
 
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
+	_builder = WrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builder
 }
@@ -427,7 +415,7 @@ func NewBuilderFromFile(filename string) Builder {
 
 	var _builder Builder // out
 
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
+	_builder = WrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builder
 }
@@ -444,7 +432,7 @@ func NewBuilderFromResource(resourcePath string) Builder {
 
 	var _builder Builder // out
 
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
+	_builder = WrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builder
 }
@@ -463,7 +451,7 @@ func NewBuilderFromString(_string string, length int) Builder {
 
 	var _builder Builder // out
 
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
+	_builder = WrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builder
 }
@@ -762,7 +750,7 @@ func (b builder) Application() Application {
 
 	var _application Application // out
 
-	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Application)
+	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Application)
 
 	return _application
 }
@@ -782,7 +770,7 @@ func (b builder) Object(name string) gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }
@@ -849,39 +837,6 @@ func (b builder) SetTranslationDomain(domain string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_set_translation_domain(_arg0, _arg1)
-}
-
-// ValueFromString: this function demarshals a value from a string. This
-// function calls g_value_init() on the @value argument, so it need not be
-// initialised beforehand.
-//
-// This function can handle char, uchar, boolean, int, uint, long, ulong,
-// enum, flags, float, double, string, Color, RGBA and Adjustment type
-// values. Support for Widget type values is still to come.
-//
-// Upon errors false will be returned and @error will be assigned a #GError
-// from the K_BUILDER_ERROR domain.
-func (b builder) ValueFromString(pspec gobject.ParamSpec, _string string) (*externglib.Value, error) {
-	var _arg0 *C.GtkBuilder // out
-	var _arg1 *C.GParamSpec // out
-	var _arg2 *C.gchar      // out
-	var _arg3 C.GValue      // in
-	var _cerr *C.GError     // in
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	_arg2 = (*C.gchar)(C.CString(_string))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.gtk_builder_value_from_string(_arg0, _arg1, _arg2, &_arg3, &_cerr)
-
-	var _value *externglib.Value // out
-	var _goerr error             // out
-
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _value, _goerr
 }
 
 // ValueFromStringType: like gtk_builder_value_from_string(), this function

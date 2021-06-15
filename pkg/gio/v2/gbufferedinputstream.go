@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -138,7 +137,7 @@ func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
 
 	var _bufferedInputStream BufferedInputStream // out
 
-	_bufferedInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BufferedInputStream)
+	_bufferedInputStream = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedInputStream
 }
@@ -156,7 +155,7 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 
 	var _bufferedInputStream BufferedInputStream // out
 
-	_bufferedInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BufferedInputStream)
+	_bufferedInputStream = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedInputStream
 }

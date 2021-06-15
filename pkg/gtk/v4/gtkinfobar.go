@@ -187,7 +187,7 @@ func NewInfoBar() InfoBar {
 
 	var _infoBar InfoBar // out
 
-	_infoBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InfoBar)
+	_infoBar = WrapInfoBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _infoBar
 }
@@ -232,7 +232,7 @@ func (i infoBar) AddButton(buttonText string, responseId int) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
+	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
 
 	return _button
 }

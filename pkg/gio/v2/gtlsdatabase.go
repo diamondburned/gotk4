@@ -219,7 +219,7 @@ func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSIn
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -245,7 +245,7 @@ func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCe
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -280,7 +280,7 @@ func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interac
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -303,7 +303,7 @@ func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCerti
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr

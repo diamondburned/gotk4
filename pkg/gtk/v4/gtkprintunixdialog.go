@@ -174,7 +174,7 @@ func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
 
 	var _printUnixDialog PrintUnixDialog // out
 
-	_printUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintUnixDialog)
+	_printUnixDialog = WrapPrintUnixDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _printUnixDialog
 }
@@ -272,7 +272,7 @@ func (d printUnixDialog) PageSetup() PageSetup {
 
 	var _pageSetup PageSetup // out
 
-	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
+	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
 }
@@ -306,7 +306,7 @@ func (d printUnixDialog) SelectedPrinter() Printer {
 
 	var _printer Printer // out
 
-	_printer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Printer)
+	_printer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Printer)
 
 	return _printer
 }
@@ -326,7 +326,7 @@ func (d printUnixDialog) Settings() PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintSettings)
 
 	return _printSettings
 }

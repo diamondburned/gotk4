@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -235,7 +234,7 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 
 	var _fileChooserNative FileChooserNative // out
 
-	_fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileChooserNative)
+	_fileChooserNative = WrapFileChooserNative(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileChooserNative
 }

@@ -98,7 +98,7 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 
 	var _networkService NetworkService // out
 
-	_networkService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkService)
+	_networkService = WrapNetworkService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkService
 }

@@ -504,7 +504,7 @@ func NewLabel(str string) Label {
 
 	var _label Label // out
 
-	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
+	_label = WrapLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _label
 }
@@ -521,7 +521,7 @@ func NewLabelWithMnemonic(str string) Label {
 
 	var _label Label // out
 
-	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
+	_label = WrapLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _label
 }
@@ -602,7 +602,7 @@ func (s label) ExtraMenu() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }
@@ -661,7 +661,7 @@ func (s label) Layout() pango.Layout {
 
 	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.Layout)
 
 	return _layout
 }
@@ -764,7 +764,7 @@ func (s label) MnemonicWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

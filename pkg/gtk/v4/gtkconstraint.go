@@ -152,7 +152,7 @@ func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute,
 
 	var _constraint Constraint // out
 
-	_constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Constraint)
+	_constraint = WrapConstraint(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraint
 }
@@ -176,7 +176,7 @@ func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAt
 
 	var _constraint Constraint // out
 
-	_constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Constraint)
+	_constraint = WrapConstraint(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraint
 }
@@ -246,7 +246,7 @@ func (c constraint) Source() ConstraintTarget {
 
 	var _constraintTarget ConstraintTarget // out
 
-	_constraintTarget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ConstraintTarget)
+	_constraintTarget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ConstraintTarget)
 
 	return _constraintTarget
 }
@@ -299,7 +299,7 @@ func (c constraint) Target() ConstraintTarget {
 
 	var _constraintTarget ConstraintTarget // out
 
-	_constraintTarget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ConstraintTarget)
+	_constraintTarget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ConstraintTarget)
 
 	return _constraintTarget
 }

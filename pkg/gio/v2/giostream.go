@@ -242,7 +242,7 @@ func (s ioStream) InputStream() InputStream {
 
 	var _inputStream InputStream // out
 
-	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InputStream)
 
 	return _inputStream
 }
@@ -259,7 +259,7 @@ func (s ioStream) OutputStream() OutputStream {
 
 	var _outputStream OutputStream // out
 
-	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OutputStream)
+	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(OutputStream)
 
 	return _outputStream
 }

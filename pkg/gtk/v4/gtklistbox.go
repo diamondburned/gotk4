@@ -218,7 +218,7 @@ func NewListBox() ListBox {
 
 	var _listBox ListBox // out
 
-	_listBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBox)
+	_listBox = WrapListBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBox
 }
@@ -296,7 +296,7 @@ func (b listBox) Adjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -317,7 +317,7 @@ func (b listBox) RowAtIndex(index_ int) ListBoxRow {
 
 	var _listBoxRow ListBoxRow // out
 
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
+	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListBoxRow)
 
 	return _listBoxRow
 }
@@ -335,7 +335,7 @@ func (b listBox) RowAtY(y int) ListBoxRow {
 
 	var _listBoxRow ListBoxRow // out
 
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
+	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListBoxRow)
 
 	return _listBoxRow
 }
@@ -354,7 +354,7 @@ func (b listBox) SelectedRow() ListBoxRow {
 
 	var _listBoxRow ListBoxRow // out
 
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
+	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListBoxRow)
 
 	return _listBoxRow
 }
@@ -682,7 +682,7 @@ func NewListBoxRow() ListBoxRow {
 
 	var _listBoxRow ListBoxRow // out
 
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
+	_listBoxRow = WrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
 }
@@ -741,7 +741,7 @@ func (r listBoxRow) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -760,7 +760,7 @@ func (r listBoxRow) Header() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

@@ -250,7 +250,7 @@ func (c applicationCommandLine) CreateFileForArg(arg string) File {
 
 	var _file File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
 
 	return _file
 }
@@ -305,7 +305,8 @@ func (c applicationCommandLine) Environ() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -424,7 +425,7 @@ func (c applicationCommandLine) Stdin() InputStream {
 
 	var _inputStream InputStream // out
 
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InputStream)
 
 	return _inputStream
 }

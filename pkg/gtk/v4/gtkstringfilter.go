@@ -110,7 +110,7 @@ func NewStringFilter(expression Expression) StringFilter {
 
 	var _stringFilter StringFilter // out
 
-	_stringFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StringFilter)
+	_stringFilter = WrapStringFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stringFilter
 }
@@ -127,7 +127,7 @@ func (s stringFilter) Expression() Expression {
 
 	var _expression Expression // out
 
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expression)
 
 	return _expression
 }

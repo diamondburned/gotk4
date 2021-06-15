@@ -336,7 +336,7 @@ func NewIconView() IconView {
 
 	var _iconView IconView // out
 
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
+	_iconView = WrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -352,7 +352,7 @@ func NewIconViewWithArea(area CellArea) IconView {
 
 	var _iconView IconView // out
 
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
+	_iconView = WrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -368,7 +368,7 @@ func NewIconViewWithModel(model TreeModel) IconView {
 
 	var _iconView IconView // out
 
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
+	_iconView = WrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -387,7 +387,7 @@ func (i iconView) CreateDragIcon(path *TreePath) gdk.Paintable {
 
 	var _paintable gdk.Paintable // out
 
-	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdk.Paintable)
 
 	return _paintable
 }
@@ -517,7 +517,7 @@ func (i iconView) Cursor() (*TreePath, CellRenderer, bool) {
 	var _cell CellRenderer // out
 	var _ok bool           // out
 
-	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(CellRenderer)
+	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(CellRenderer)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -587,7 +587,7 @@ func (i iconView) ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool) {
 	var _cell CellRenderer // out
 	var _ok bool           // out
 
-	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(CellRenderer)
+	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(CellRenderer)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -727,7 +727,7 @@ func (i iconView) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }
@@ -904,7 +904,7 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *Tr
 
 	var _ok bool // out
 
-	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(TreeModel)
+	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeModel)
 
 	if _cret != 0 {
 		_ok = true

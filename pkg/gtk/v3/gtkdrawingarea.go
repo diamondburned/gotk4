@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -135,7 +134,7 @@ func NewDrawingArea() DrawingArea {
 
 	var _drawingArea DrawingArea // out
 
-	_drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DrawingArea)
+	_drawingArea = WrapDrawingArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
 }

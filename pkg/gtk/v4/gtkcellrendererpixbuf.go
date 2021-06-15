@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,7 +66,7 @@ func NewCellRendererPixbuf() CellRendererPixbuf {
 
 	var _cellRendererPixbuf CellRendererPixbuf // out
 
-	_cellRendererPixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererPixbuf)
+	_cellRendererPixbuf = WrapCellRendererPixbuf(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererPixbuf
 }

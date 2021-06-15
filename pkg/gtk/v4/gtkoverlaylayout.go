@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,7 +61,7 @@ func NewOverlayLayout() OverlayLayout {
 
 	var _overlayLayout OverlayLayout // out
 
-	_overlayLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(OverlayLayout)
+	_overlayLayout = WrapOverlayLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _overlayLayout
 }

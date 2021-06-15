@@ -96,7 +96,7 @@ func NewContentProviderForValue(value **externglib.Value) ContentProvider {
 
 	var _contentProvider ContentProvider // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContentProvider)
+	_contentProvider = WrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
@@ -120,7 +120,7 @@ func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 
 	var _contentProvider ContentProvider // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContentProvider)
+	_contentProvider = WrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }

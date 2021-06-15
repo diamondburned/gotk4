@@ -297,7 +297,7 @@ func NewSocketClient() SocketClient {
 
 	var _socketClient SocketClient // out
 
-	_socketClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketClient)
+	_socketClient = WrapSocketClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketClient
 }
@@ -367,7 +367,7 @@ func (c socketClient) Connect(connectable SocketConnectable, cancellable Cancell
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
@@ -389,7 +389,7 @@ func (c socketClient) ConnectFinish(result AsyncResult) (SocketConnection, error
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
@@ -443,7 +443,7 @@ func (c socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, canc
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
@@ -465,7 +465,7 @@ func (c socketClient) ConnectToHostFinish(result AsyncResult) (SocketConnection,
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
@@ -504,7 +504,7 @@ func (c socketClient) ConnectToService(domain string, service string, cancellabl
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
@@ -526,7 +526,7 @@ func (c socketClient) ConnectToServiceFinish(result AsyncResult) (SocketConnecti
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
@@ -570,7 +570,7 @@ func (c socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable C
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
@@ -592,7 +592,7 @@ func (c socketClient) ConnectToURIFinish(result AsyncResult) (SocketConnection, 
 	var _socketConnection SocketConnection // out
 	var _goerr error                       // out
 
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
+	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
@@ -648,7 +648,7 @@ func (c socketClient) LocalAddress() SocketAddress {
 
 	var _socketAddress SocketAddress // out
 
-	_socketAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SocketAddress)
+	_socketAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SocketAddress)
 
 	return _socketAddress
 }
@@ -684,7 +684,7 @@ func (c socketClient) ProXYResolver() ProXYResolver {
 
 	var _proxyResolver ProXYResolver // out
 
-	_proxyResolver = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ProXYResolver)
+	_proxyResolver = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ProXYResolver)
 
 	return _proxyResolver
 }

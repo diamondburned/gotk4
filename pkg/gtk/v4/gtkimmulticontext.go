@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,7 +67,7 @@ func NewIMMulticontext() IMMulticontext {
 
 	var _imMulticontext IMMulticontext // out
 
-	_imMulticontext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IMMulticontext)
+	_imMulticontext = WrapIMMulticontext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imMulticontext
 }

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -165,7 +164,7 @@ func NewComboBoxText() ComboBoxText {
 
 	var _comboBoxText ComboBoxText // out
 
-	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBoxText)
+	_comboBoxText = WrapComboBoxText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBoxText
 }
@@ -178,7 +177,7 @@ func NewComboBoxTextWithEntry() ComboBoxText {
 
 	var _comboBoxText ComboBoxText // out
 
-	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBoxText)
+	_comboBoxText = WrapComboBoxText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBoxText
 }

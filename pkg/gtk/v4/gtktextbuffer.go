@@ -539,7 +539,7 @@ func NewTextBuffer(table TextTagTable) TextBuffer {
 
 	var _textBuffer TextBuffer // out
 
-	_textBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextBuffer)
+	_textBuffer = WrapTextBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textBuffer
 }
@@ -729,7 +729,7 @@ func (b textBuffer) CreateChildAnchor(iter *TextIter) TextChildAnchor {
 
 	var _textChildAnchor TextChildAnchor // out
 
-	_textChildAnchor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
+	_textChildAnchor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextChildAnchor)
 
 	return _textChildAnchor
 }
@@ -770,7 +770,7 @@ func (b textBuffer) CreateMark(markName string, where *TextIter, leftGravity boo
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }
@@ -1087,7 +1087,7 @@ func (b textBuffer) GetInsert() TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }
@@ -1258,7 +1258,7 @@ func (b textBuffer) Mark(name string) TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }
@@ -1327,7 +1327,7 @@ func (b textBuffer) SelectionBound() TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }
@@ -1372,7 +1372,7 @@ func (b textBuffer) SelectionContent() gdk.ContentProvider {
 
 	var _contentProvider gdk.ContentProvider // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdk.ContentProvider)
 
 	return _contentProvider
 }
@@ -1437,7 +1437,7 @@ func (b textBuffer) TagTable() TextTagTable {
 
 	var _textTagTable TextTagTable // out
 
-	_textTagTable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextTagTable)
+	_textTagTable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextTagTable)
 
 	return _textTagTable
 }

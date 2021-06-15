@@ -95,7 +95,7 @@ func NewStyleProperties() StyleProperties {
 
 	var _styleProperties StyleProperties // out
 
-	_styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StyleProperties)
+	_styleProperties = WrapStyleProperties(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _styleProperties
 }

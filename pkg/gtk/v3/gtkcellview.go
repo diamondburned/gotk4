@@ -127,7 +127,7 @@ func NewCellView() CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -145,7 +145,7 @@ func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -162,7 +162,7 @@ func NewCellViewWithMarkup(markup string) CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -178,7 +178,7 @@ func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbuf) CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -195,7 +195,7 @@ func NewCellViewWithText(text string) CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -270,7 +270,7 @@ func (c cellView) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }

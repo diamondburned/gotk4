@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -135,7 +134,7 @@ func NewCalendar() Calendar {
 
 	var _calendar Calendar // out
 
-	_calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Calendar)
+	_calendar = WrapCalendar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _calendar
 }

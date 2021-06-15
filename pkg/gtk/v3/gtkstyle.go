@@ -711,7 +711,7 @@ func NewStyle() Style {
 
 	var _style Style // out
 
-	_style = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Style)
+	_style = WrapStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _style
 }
@@ -749,7 +749,7 @@ func (s style) Copy() Style {
 
 	var _ret Style // out
 
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Style)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Style)
 
 	return _ret
 }
@@ -875,7 +875,7 @@ func (s style) RenderIcon(source *IconSource, direction TextDirection, state Sta
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }

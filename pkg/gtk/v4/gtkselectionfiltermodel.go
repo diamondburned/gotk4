@@ -72,7 +72,7 @@ func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
 
 	var _selectionFilterModel SelectionFilterModel // out
 
-	_selectionFilterModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SelectionFilterModel)
+	_selectionFilterModel = WrapSelectionFilterModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _selectionFilterModel
 }
@@ -88,7 +88,7 @@ func (s selectionFilterModel) Model() SelectionModel {
 
 	var _selectionModel SelectionModel // out
 
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SelectionModel)
+	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SelectionModel)
 
 	return _selectionModel
 }

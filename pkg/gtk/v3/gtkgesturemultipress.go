@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -83,7 +82,7 @@ func NewGestureMultiPress(widget Widget) GestureMultiPress {
 
 	var _gestureMultiPress GestureMultiPress // out
 
-	_gestureMultiPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureMultiPress)
+	_gestureMultiPress = WrapGestureMultiPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureMultiPress
 }

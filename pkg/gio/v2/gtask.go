@@ -369,7 +369,7 @@ func (t task) Cancellable() Cancellable {
 
 	var _cancellable Cancellable // out
 
-	_cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Cancellable)
+	_cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Cancellable)
 
 	return _cancellable
 }
@@ -498,7 +498,7 @@ func (t task) SourceObject() gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }

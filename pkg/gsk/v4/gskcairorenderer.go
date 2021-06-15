@@ -5,7 +5,6 @@ package gsk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -57,7 +56,7 @@ func NewCairoRenderer() CairoRenderer {
 
 	var _cairoRenderer CairoRenderer // out
 
-	_cairoRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CairoRenderer)
+	_cairoRenderer = WrapCairoRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cairoRenderer
 }

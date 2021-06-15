@@ -90,7 +90,7 @@ func NewThemedIcon(iconname string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
+	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _themedIcon
 }
@@ -116,7 +116,7 @@ func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
+	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _themedIcon
 }
@@ -133,7 +133,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
+	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _themedIcon
 }
@@ -166,7 +166,8 @@ func (i themedIcon) Names() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

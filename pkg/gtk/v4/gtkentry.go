@@ -446,7 +446,7 @@ func NewEntry() Entry {
 
 	var _entry Entry // out
 
-	_entry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Entry)
+	_entry = WrapEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entry
 }
@@ -462,7 +462,7 @@ func NewEntryWithBuffer(buffer EntryBuffer) Entry {
 
 	var _entry Entry // out
 
-	_entry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Entry)
+	_entry = WrapEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entry
 }
@@ -534,7 +534,7 @@ func (e entry) Buffer() EntryBuffer {
 
 	var _entryBuffer EntryBuffer // out
 
-	_entryBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EntryBuffer)
+	_entryBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(EntryBuffer)
 
 	return _entryBuffer
 }
@@ -551,7 +551,7 @@ func (e entry) Completion() EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EntryCompletion)
+	_entryCompletion = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(EntryCompletion)
 
 	return _entryCompletion
 }
@@ -584,7 +584,7 @@ func (e entry) ExtraMenu() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }
@@ -688,7 +688,7 @@ func (e entry) IconGIcon(iconPos EntryIconPosition) gio.Icon {
 
 	var _icon gio.Icon // out
 
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
 
 	return _icon
 }
@@ -729,7 +729,7 @@ func (e entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintable {
 
 	var _paintable gdk.Paintable // out
 
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
+	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Paintable)
 
 	return _paintable
 }

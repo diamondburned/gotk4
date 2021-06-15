@@ -103,7 +103,7 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _cret C.gboolean  // in
 
 	_arg1 = (C.gunichar)(ch)
-	_arg2 = (*C.gunichar)(mirroredCh)
+	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
 
 	_cret = C.pango_get_mirror_char(_arg1, _arg2)
 

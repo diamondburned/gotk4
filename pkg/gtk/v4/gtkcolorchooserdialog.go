@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,7 +92,7 @@ func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 
 	var _colorChooserDialog ColorChooserDialog // out
 
-	_colorChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorChooserDialog)
+	_colorChooserDialog = WrapColorChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserDialog
 }

@@ -100,7 +100,7 @@ func NewActionBar() ActionBar {
 
 	var _actionBar ActionBar // out
 
-	_actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ActionBar)
+	_actionBar = WrapActionBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _actionBar
 }
@@ -116,7 +116,7 @@ func (a actionBar) CenterWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

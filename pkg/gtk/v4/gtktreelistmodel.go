@@ -146,7 +146,7 @@ func (s treeListModel) ChildRow(position uint) TreeListRow {
 
 	var _treeListRow TreeListRow // out
 
-	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeListRow)
+	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
 
 	return _treeListRow
 }
@@ -162,7 +162,7 @@ func (s treeListModel) Model() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -223,7 +223,7 @@ func (s treeListModel) Row(position uint) TreeListRow {
 
 	var _treeListRow TreeListRow // out
 
-	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeListRow)
+	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
 
 	return _treeListRow
 }
@@ -352,7 +352,7 @@ func (s treeListRow) ChildRow(position uint) TreeListRow {
 
 	var _treeListRow TreeListRow // out
 
-	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeListRow)
+	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
 
 	return _treeListRow
 }
@@ -374,7 +374,7 @@ func (s treeListRow) Children() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -433,7 +433,7 @@ func (s treeListRow) Item() gextras.Objector {
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }
@@ -457,7 +457,7 @@ func (s treeListRow) Parent() TreeListRow {
 
 	var _treeListRow TreeListRow // out
 
-	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeListRow)
+	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
 
 	return _treeListRow
 }

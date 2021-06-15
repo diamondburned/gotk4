@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -114,7 +113,7 @@ func NewSocketService() SocketService {
 
 	var _socketService SocketService // out
 
-	_socketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketService)
+	_socketService = WrapSocketService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketService
 }

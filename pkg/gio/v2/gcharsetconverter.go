@@ -89,7 +89,7 @@ func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter
 	var _charsetConverter CharsetConverter // out
 	var _goerr error                       // out
 
-	_charsetConverter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CharsetConverter)
+	_charsetConverter = WrapCharsetConverter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _charsetConverter, _goerr

@@ -110,7 +110,7 @@ func NewSocket() Socket {
 
 	var _socket Socket // out
 
-	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Socket)
+	_socket = WrapSocket(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _socket
 }
@@ -127,7 +127,7 @@ func (s socket) PlugWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }

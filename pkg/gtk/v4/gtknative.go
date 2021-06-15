@@ -92,7 +92,7 @@ func (s native) Renderer() gsk.Renderer {
 
 	var _renderer gsk.Renderer // out
 
-	_renderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gsk.Renderer)
+	_renderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gsk.Renderer)
 
 	return _renderer
 }
@@ -108,7 +108,7 @@ func (s native) Surface() gdk.Surface {
 
 	var _surface gdk.Surface // out
 
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Surface)
 
 	return _surface
 }

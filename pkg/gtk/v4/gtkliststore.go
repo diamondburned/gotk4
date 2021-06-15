@@ -191,7 +191,7 @@ func NewListStoreV(types []externglib.Type) ListStore {
 
 	var _listStore ListStore // out
 
-	_listStore = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ListStore)
+	_listStore = WrapListStore(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _listStore
 }

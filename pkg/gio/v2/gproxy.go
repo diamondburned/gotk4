@@ -105,7 +105,7 @@ func (p proXY) Connect(connection IOStream, proxyAddress ProXYAddress, cancellab
 	var _ioStream IOStream // out
 	var _goerr error       // out
 
-	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IOStream)
+	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IOStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStream, _goerr
@@ -126,7 +126,7 @@ func (p proXY) ConnectFinish(result AsyncResult) (IOStream, error) {
 	var _ioStream IOStream // out
 	var _goerr error       // out
 
-	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IOStream)
+	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IOStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStream, _goerr

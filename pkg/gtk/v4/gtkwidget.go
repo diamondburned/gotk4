@@ -1848,7 +1848,7 @@ func (w widget) CreatePangoContext() pango.Context {
 
 	var _context pango.Context // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
 
 	return _context
 }
@@ -1874,7 +1874,7 @@ func (w widget) CreatePangoLayout(text string) pango.Layout {
 
 	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Layout)
 
 	return _layout
 }
@@ -1997,7 +1997,7 @@ func (w widget) Ancestor(widgetType externglib.Type) Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -2082,7 +2082,7 @@ func (w widget) Clipboard() gdk.Clipboard {
 
 	var _clipboard gdk.Clipboard // out
 
-	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Clipboard)
+	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Clipboard)
 
 	return _clipboard
 }
@@ -2100,7 +2100,8 @@ func (w widget) CSSClasses() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -2144,7 +2145,7 @@ func (w widget) Cursor() gdk.Cursor {
 
 	var _cursor gdk.Cursor // out
 
-	_cursor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Cursor)
+	_cursor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Cursor)
 
 	return _cursor
 }
@@ -2186,7 +2187,7 @@ func (w widget) Display() gdk.Display {
 
 	var _display gdk.Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
 
 	return _display
 }
@@ -2204,7 +2205,7 @@ func (w widget) FirstChild() Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -2220,7 +2221,7 @@ func (w widget) FocusChild() Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -2279,7 +2280,7 @@ func (w widget) FontMap() pango.FontMap {
 
 	var _fontMap pango.FontMap // out
 
-	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontMap)
+	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontMap)
 
 	return _fontMap
 }
@@ -2335,7 +2336,7 @@ func (w widget) FrameClock() gdk.FrameClock {
 
 	var _frameClock gdk.FrameClock // out
 
-	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.FrameClock)
+	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.FrameClock)
 
 	return _frameClock
 }
@@ -2472,7 +2473,7 @@ func (w widget) LastChild() Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -2490,7 +2491,7 @@ func (w widget) LayoutManager() LayoutManager {
 
 	var _layoutManager LayoutManager // out
 
-	_layoutManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LayoutManager)
+	_layoutManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LayoutManager)
 
 	return _layoutManager
 }
@@ -2611,7 +2612,7 @@ func (w widget) Native() Native {
 
 	var _native Native // out
 
-	_native = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Native)
+	_native = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Native)
 
 	return _native
 }
@@ -2629,7 +2630,7 @@ func (w widget) NextSibling() Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -2687,7 +2688,7 @@ func (w widget) PangoContext() pango.Context {
 
 	var _context pango.Context // out
 
-	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.Context)
 
 	return _context
 }
@@ -2703,7 +2704,7 @@ func (w widget) Parent() Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -2747,7 +2748,7 @@ func (w widget) PrevSibling() Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -2769,7 +2770,7 @@ func (w widget) PrimaryClipboard() gdk.Clipboard {
 
 	var _clipboard gdk.Clipboard // out
 
-	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Clipboard)
+	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Clipboard)
 
 	return _clipboard
 }
@@ -2851,7 +2852,7 @@ func (w widget) Root() Root {
 
 	var _root Root // out
 
-	_root = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Root)
+	_root = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Root)
 
 	return _root
 }
@@ -2920,7 +2921,7 @@ func (w widget) Settings() Settings {
 
 	var _settings Settings // out
 
-	_settings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Settings)
+	_settings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Settings)
 
 	return _settings
 }
@@ -3015,7 +3016,7 @@ func (w widget) StyleContext() StyleContext {
 
 	var _styleContext StyleContext // out
 
-	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StyleContext)
+	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StyleContext)
 
 	return _styleContext
 }
@@ -3044,7 +3045,7 @@ func (w widget) TemplateChild(widgetType externglib.Type, name string) gextras.O
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }
@@ -3683,7 +3684,7 @@ func (w widget) ObserveChildren() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -3707,7 +3708,7 @@ func (w widget) ObserveControllers() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -3741,7 +3742,7 @@ func (w widget) Pick(x float64, y float64, flags PickFlags) Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }

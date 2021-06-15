@@ -238,7 +238,7 @@ func NewAssistant() Assistant {
 
 	var _assistant Assistant // out
 
-	_assistant = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Assistant)
+	_assistant = WrapAssistant(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _assistant
 }
@@ -334,7 +334,7 @@ func (a assistant) NthPage(pageNum int) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -352,7 +352,7 @@ func (a assistant) Page(child Widget) AssistantPage {
 
 	var _assistantPage AssistantPage // out
 
-	_assistantPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AssistantPage)
+	_assistantPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AssistantPage)
 
 	return _assistantPage
 }
@@ -424,7 +424,7 @@ func (a assistant) Pages() gio.ListModel {
 
 	var _listModel gio.ListModel // out
 
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
 
 	return _listModel
 }
@@ -642,7 +642,7 @@ func (p assistantPage) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

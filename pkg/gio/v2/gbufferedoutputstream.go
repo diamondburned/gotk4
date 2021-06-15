@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -96,7 +95,7 @@ func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 
 	var _bufferedOutputStream BufferedOutputStream // out
 
-	_bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BufferedOutputStream)
+	_bufferedOutputStream = WrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedOutputStream
 }
@@ -114,7 +113,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 
 	var _bufferedOutputStream BufferedOutputStream // out
 
-	_bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BufferedOutputStream)
+	_bufferedOutputStream = WrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedOutputStream
 }

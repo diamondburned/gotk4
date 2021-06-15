@@ -79,7 +79,7 @@ func NewConverterInputStream(baseStream InputStream, converter Converter) Conver
 
 	var _converterInputStream ConverterInputStream // out
 
-	_converterInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ConverterInputStream)
+	_converterInputStream = WrapConverterInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _converterInputStream
 }
@@ -95,7 +95,7 @@ func (c converterInputStream) Converter() Converter {
 
 	var _converter Converter // out
 
-	_converter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Converter)
+	_converter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Converter)
 
 	return _converter
 }

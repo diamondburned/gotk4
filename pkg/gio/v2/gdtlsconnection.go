@@ -368,7 +368,7 @@ func (c dtlsConnection) Certificate() TLSCertificate {
 
 	var _tlsCertificate TLSCertificate // out
 
-	_tlsCertificate = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TLSCertificate)
 
 	return _tlsCertificate
 }
@@ -403,7 +403,8 @@ func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, e
 
 	{
 		var i int
-		for p := _arg2; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.guint8
+		for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -430,7 +431,7 @@ func (c dtlsConnection) Database() TLSDatabase {
 
 	var _tlsDatabase TLSDatabase // out
 
-	_tlsDatabase = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TLSDatabase)
+	_tlsDatabase = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TLSDatabase)
 
 	return _tlsDatabase
 }
@@ -448,7 +449,7 @@ func (c dtlsConnection) Interaction() TLSInteraction {
 
 	var _tlsInteraction TLSInteraction // out
 
-	_tlsInteraction = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TLSInteraction)
+	_tlsInteraction = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TLSInteraction)
 
 	return _tlsInteraction
 }
@@ -488,7 +489,7 @@ func (c dtlsConnection) PeerCertificate() TLSCertificate {
 
 	var _tlsCertificate TLSCertificate // out
 
-	_tlsCertificate = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TLSCertificate)
 
 	return _tlsCertificate
 }

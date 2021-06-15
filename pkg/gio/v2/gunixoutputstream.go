@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -94,7 +93,7 @@ func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 
 	var _unixOutputStream UnixOutputStream // out
 
-	_unixOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixOutputStream)
+	_unixOutputStream = WrapUnixOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixOutputStream
 }

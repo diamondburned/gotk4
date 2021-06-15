@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,7 +72,7 @@ func NewCellRendererText() CellRendererText {
 
 	var _cellRendererText CellRendererText // out
 
-	_cellRendererText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererText)
+	_cellRendererText = WrapCellRendererText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererText
 }

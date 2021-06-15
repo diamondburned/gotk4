@@ -90,7 +90,7 @@ func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup strin
 
 	var _settingsBackend SettingsBackend // out
 
-	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SettingsBackend)
+	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SettingsBackend)
 
 	return _settingsBackend
 }
@@ -107,7 +107,7 @@ func NewMemorySettingsBackend() SettingsBackend {
 
 	var _settingsBackend SettingsBackend // out
 
-	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SettingsBackend)
+	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SettingsBackend)
 
 	return _settingsBackend
 }
@@ -123,7 +123,7 @@ func NewNullSettingsBackend() SettingsBackend {
 
 	var _settingsBackend SettingsBackend // out
 
-	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SettingsBackend)
+	_settingsBackend = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SettingsBackend)
 
 	return _settingsBackend
 }

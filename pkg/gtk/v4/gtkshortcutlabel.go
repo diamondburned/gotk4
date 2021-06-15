@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -83,7 +82,7 @@ func NewShortcutLabel(accelerator string) ShortcutLabel {
 
 	var _shortcutLabel ShortcutLabel // out
 
-	_shortcutLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutLabel)
+	_shortcutLabel = WrapShortcutLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _shortcutLabel
 }

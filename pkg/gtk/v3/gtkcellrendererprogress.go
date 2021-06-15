@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,7 +62,7 @@ func NewCellRendererProgress() CellRendererProgress {
 
 	var _cellRendererProgress CellRendererProgress // out
 
-	_cellRendererProgress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererProgress)
+	_cellRendererProgress = WrapCellRendererProgress(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererProgress
 }

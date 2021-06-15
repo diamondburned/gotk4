@@ -204,7 +204,7 @@ func (d device) DeviceTool() DeviceTool {
 
 	var _deviceTool DeviceTool // out
 
-	_deviceTool = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DeviceTool)
+	_deviceTool = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DeviceTool)
 
 	return _deviceTool
 }
@@ -241,7 +241,7 @@ func (d device) Display() Display {
 
 	var _display Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
 
 	return _display
 }
@@ -388,7 +388,7 @@ func (d device) Seat() Seat {
 
 	var _seat Seat // out
 
-	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Seat)
+	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Seat)
 
 	return _seat
 }
@@ -430,7 +430,7 @@ func (d device) SurfaceAtPosition() (winX float64, winY float64, surface Surface
 
 	_winX = (float64)(_arg1)
 	_winY = (float64)(_arg2)
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Surface)
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Surface)
 
 	return _winX, _winY, _surface
 }

@@ -324,7 +324,7 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -377,7 +377,7 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -503,7 +503,7 @@ func NewUnixMountMonitor() UnixMountMonitor {
 
 	var _unixMountMonitor UnixMountMonitor // out
 
-	_unixMountMonitor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixMountMonitor)
+	_unixMountMonitor = WrapUnixMountMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixMountMonitor
 }
@@ -715,7 +715,7 @@ func (m *UnixMountPoint) GuessIcon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }
@@ -749,7 +749,7 @@ func (m *UnixMountPoint) GuessSymbolicIcon() Icon {
 
 	var _icon Icon // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
 }

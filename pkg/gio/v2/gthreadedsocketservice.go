@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -80,7 +79,7 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 
 	var _threadedSocketService ThreadedSocketService // out
 
-	_threadedSocketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThreadedSocketService)
+	_threadedSocketService = WrapThreadedSocketService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _threadedSocketService
 }

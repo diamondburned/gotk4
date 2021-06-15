@@ -95,7 +95,7 @@ func NewBookmarkList(filename string, attributes string) BookmarkList {
 
 	var _bookmarkList BookmarkList // out
 
-	_bookmarkList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BookmarkList)
+	_bookmarkList = WrapBookmarkList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bookmarkList
 }

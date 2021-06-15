@@ -561,7 +561,7 @@ func Ucs4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, g
 	var _cret *C.gunichar2 // in
 	var _cerr *C.GError    // in
 
-	_arg1 = (*C.gunichar)(str)
+	_arg1 = (*C.gunichar)(unsafe.Pointer(str))
 	_arg2 = (C.glong)(len)
 
 	_cret = C.g_ucs4_to_utf16(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -589,7 +589,7 @@ func Ucs4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, ut
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg1 = (*C.gunichar)(str)
+	_arg1 = (*C.gunichar)(unsafe.Pointer(str))
 	_arg2 = (C.glong)(len)
 
 	_cret = C.g_ucs4_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -790,7 +790,7 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _cret C.gboolean  // in
 
 	_arg1 = (C.gunichar)(ch)
-	_arg2 = (*C.gunichar)(mirroredCh)
+	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
 
 	_cret = C.g_unichar_get_mirror_char(_arg1, _arg2)
 
@@ -1175,25 +1175,6 @@ func UnicharIszerowidth(c uint32) bool {
 	return _ok
 }
 
-// UnicharToUTF8 converts a single character to UTF-8.
-func UnicharToUTF8(c uint32) (string, int) {
-	var _arg1 C.gunichar // out
-	var _arg2 C.gchar    // in
-	var _cret C.gint     // in
-
-	_arg1 = (C.gunichar)(c)
-
-	_cret = C.g_unichar_to_utf8(_arg1, &_arg2)
-
-	var _outbuf string // out
-	var _gint int      // out
-
-	_outbuf = C.GoString(_arg2)
-	_gint = (int)(_cret)
-
-	return _outbuf, _gint
-}
-
 // UnicharToLower converts a character to lower case.
 func UnicharToLower(c uint32) uint32 {
 	var _arg1 C.gunichar // out
@@ -1210,8 +1191,8 @@ func UnicharToLower(c uint32) uint32 {
 	return _gunichar
 }
 
-// UnicharTotitle converts a character to the titlecase.
-func UnicharTotitle(c uint32) uint32 {
+// UnicharToTitle converts a character to the titlecase.
+func UnicharToTitle(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
 
@@ -1303,7 +1284,7 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 	var _cret *C.gunichar // in
 
 	_arg1 = (C.gunichar)(ch)
-	_arg2 = (*C.gsize)(resultLen)
+	_arg2 = (*C.gsize)(unsafe.Pointer(resultLen))
 
 	_cret = C.g_unicode_canonical_decomposition(_arg1, _arg2)
 
@@ -1321,13 +1302,13 @@ func UnicodeCanonicalOrdering(_string *uint32, len uint) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.gsize     // out
 
-	_arg1 = (*C.gunichar)(_string)
+	_arg1 = (*C.gunichar)(unsafe.Pointer(_string))
 	_arg2 = (C.gsize)(len)
 
 	C.g_unicode_canonical_ordering(_arg1, _arg2)
 }
 
-// UnicodeScriptFromIso15924 looks up the Unicode script for @iso15924. ISO
+// UnicodeScriptFromISO15924 looks up the Unicode script for @iso15924. ISO
 // 15924 assigns four-letter codes to scripts. For example, the code for Arabic
 // is 'Arab'. This function accepts four letter codes encoded as a @guint32 in a
 // big-endian fashion. That is, the code expected for Arabic is 0x41726162 (0x41
@@ -1335,7 +1316,7 @@ func UnicodeCanonicalOrdering(_string *uint32, len uint) {
 //
 // See Codes for the representation of names of scripts
 // (http://unicode.org/iso15924/codelists.html) for details.
-func UnicodeScriptFromIso15924(iso15924 uint32) UnicodeScript {
+func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 	var _arg1 C.guint32        // out
 	var _cret C.GUnicodeScript // in
 
@@ -1350,7 +1331,7 @@ func UnicodeScriptFromIso15924(iso15924 uint32) UnicodeScript {
 	return _unicodeScript
 }
 
-// UnicodeScriptToIso15924 looks up the ISO 15924 code for @script. ISO 15924
+// UnicodeScriptToISO15924 looks up the ISO 15924 code for @script. ISO 15924
 // assigns four-letter codes to scripts. For example, the code for Arabic is
 // 'Arab'. The four letter codes are encoded as a @guint32 by this function in a
 // big-endian fashion. That is, the code returned for Arabic is 0x41726162 (0x41
@@ -1358,7 +1339,7 @@ func UnicodeScriptFromIso15924(iso15924 uint32) UnicodeScript {
 //
 // See Codes for the representation of names of scripts
 // (http://unicode.org/iso15924/codelists.html) for details.
-func UnicodeScriptToIso15924(script UnicodeScript) uint32 {
+func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 	var _arg1 C.GUnicodeScript // out
 	var _cret C.guint32        // in
 
@@ -1383,7 +1364,7 @@ func UTF16ToUcs4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, g
 	var _cret *C.gunichar  // in
 	var _cerr *C.GError    // in
 
-	_arg1 = (*C.gunichar2)(str)
+	_arg1 = (*C.gunichar2)(unsafe.Pointer(str))
 	_arg2 = (C.glong)(len)
 
 	_cret = C.g_utf16_to_ucs4(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -1420,7 +1401,7 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, u
 	var _cret *C.gchar     // in
 	var _cerr *C.GError    // in
 
-	_arg1 = (*C.gunichar2)(str)
+	_arg1 = (*C.gunichar2)(unsafe.Pointer(str))
 	_arg2 = (C.glong)(len)
 
 	_cret = C.g_utf16_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)

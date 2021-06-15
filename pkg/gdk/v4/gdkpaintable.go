@@ -269,7 +269,7 @@ func (p paintable) CurrentImage() Paintable {
 
 	var _ret Paintable // out
 
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Paintable)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Paintable)
 
 	return _ret
 }

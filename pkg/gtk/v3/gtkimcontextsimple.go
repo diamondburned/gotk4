@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,7 +75,7 @@ func NewIMContextSimple() IMContextSimple {
 
 	var _imContextSimple IMContextSimple // out
 
-	_imContextSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IMContextSimple)
+	_imContextSimple = WrapIMContextSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imContextSimple
 }

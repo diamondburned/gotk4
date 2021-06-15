@@ -170,7 +170,7 @@ func NewToolbar() Toolbar {
 
 	var _toolbar Toolbar // out
 
-	_toolbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Toolbar)
+	_toolbar = WrapToolbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolbar
 }
@@ -265,7 +265,7 @@ func (t toolbar) NthItem(n int) ToolItem {
 
 	var _toolItem ToolItem // out
 
-	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolItem)
 
 	return _toolItem
 }

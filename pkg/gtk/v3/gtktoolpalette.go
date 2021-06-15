@@ -185,7 +185,7 @@ func NewToolPalette() ToolPalette {
 
 	var _toolPalette ToolPalette // out
 
-	_toolPalette = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolPalette)
+	_toolPalette = WrapToolPalette(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolPalette
 }
@@ -223,7 +223,7 @@ func (p toolPalette) DragItem(selection *SelectionData) Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -243,7 +243,7 @@ func (p toolPalette) DropGroup(x int, y int) ToolItemGroup {
 
 	var _toolItemGroup ToolItemGroup // out
 
-	_toolItemGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItemGroup)
+	_toolItemGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolItemGroup)
 
 	return _toolItemGroup
 }
@@ -264,7 +264,7 @@ func (p toolPalette) DropItem(x int, y int) ToolItem {
 
 	var _toolItem ToolItem // out
 
-	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolItem)
 
 	return _toolItem
 }
@@ -341,7 +341,7 @@ func (p toolPalette) HAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -390,7 +390,7 @@ func (p toolPalette) VAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }

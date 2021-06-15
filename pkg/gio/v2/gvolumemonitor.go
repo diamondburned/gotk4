@@ -86,7 +86,7 @@ func (v volumeMonitor) MountForUUID(uuid string) Mount {
 
 	var _mount Mount // out
 
-	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Mount)
+	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Mount)
 
 	return _mount
 }
@@ -106,7 +106,7 @@ func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
 
 	var _volume Volume // out
 
-	_volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Volume)
+	_volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Volume)
 
 	return _volume
 }

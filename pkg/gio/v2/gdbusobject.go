@@ -89,7 +89,7 @@ func (o dBusObject) Interface(interfaceName string) DBusInterface {
 
 	var _dBusInterface DBusInterface // out
 
-	_dBusInterface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusInterface)
+	_dBusInterface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusInterface)
 
 	return _dBusInterface
 }

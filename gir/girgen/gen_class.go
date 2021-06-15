@@ -148,6 +148,9 @@ func bodgeClassCtor(class gir.Class, ctor gir.Constructor) gir.Constructor {
 }
 
 func (cg *classGenerator) UseConstructor(ctor gir.Constructor) bool {
+	// Initialize the Callable constructor generator.
+	cg.Callable.ReturnWrap = "Wrap" + cg.InterfaceName
+
 	ctor = bodgeClassCtor(cg.Class, ctor)
 	return cg.Callable.Use(ctor.CallableAttrs)
 }

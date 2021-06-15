@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -202,7 +201,7 @@ func NewLevelBar() LevelBar {
 
 	var _levelBar LevelBar // out
 
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LevelBar)
+	_levelBar = WrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
@@ -220,7 +219,7 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 
 	var _levelBar LevelBar // out
 
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LevelBar)
+	_levelBar = WrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }

@@ -112,7 +112,7 @@ func NewPasswordEntry() PasswordEntry {
 
 	var _passwordEntry PasswordEntry // out
 
-	_passwordEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PasswordEntry)
+	_passwordEntry = WrapPasswordEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _passwordEntry
 }
@@ -129,7 +129,7 @@ func (e passwordEntry) ExtraMenu() gio.MenuModel {
 
 	var _menuModel gio.MenuModel // out
 
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.MenuModel)
 
 	return _menuModel
 }

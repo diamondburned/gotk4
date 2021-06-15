@@ -37,7 +37,7 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 
 	var _contentProvider gdk.ContentProvider // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdk.ContentProvider)
 
 	return _contentProvider
 }
@@ -60,7 +60,7 @@ func TreeGetRowDragData(value **externglib.Value) (TreeModel, *TreePath, bool) {
 
 	var _ok bool // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeModel)
 
 	if _cret != 0 {
 		_ok = true
@@ -252,7 +252,7 @@ func (d treeDragSource) DragDataGet(path *TreePath) gdk.ContentProvider {
 
 	var _contentProvider gdk.ContentProvider // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdk.ContentProvider)
 
 	return _contentProvider
 }

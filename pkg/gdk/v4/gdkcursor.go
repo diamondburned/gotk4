@@ -127,7 +127,7 @@ func NewCursorFromName(name string, fallback Cursor) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -149,7 +149,7 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -171,7 +171,7 @@ func (c cursor) Fallback() Cursor {
 
 	var _ret Cursor // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Cursor)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Cursor)
 
 	return _ret
 }
@@ -251,7 +251,7 @@ func (c cursor) Texture() Texture {
 
 	var _texture Texture // out
 
-	_texture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Texture)
+	_texture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Texture)
 
 	return _texture
 }

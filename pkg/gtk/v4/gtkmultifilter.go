@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -67,7 +66,7 @@ func NewAnyFilter() AnyFilter {
 
 	var _anyFilter AnyFilter // out
 
-	_anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AnyFilter)
+	_anyFilter = WrapAnyFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _anyFilter
 }
@@ -115,7 +114,7 @@ func NewEveryFilter() EveryFilter {
 
 	var _everyFilter EveryFilter // out
 
-	_everyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EveryFilter)
+	_everyFilter = WrapEveryFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _everyFilter
 }

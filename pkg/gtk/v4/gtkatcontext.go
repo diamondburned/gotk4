@@ -73,7 +73,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, di
 
 	var _atContext ATContext // out
 
-	_atContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ATContext)
+	_atContext = WrapATContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _atContext
 }
@@ -89,7 +89,7 @@ func (s atContext) Accessible() Accessible {
 
 	var _accessible Accessible // out
 
-	_accessible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Accessible)
+	_accessible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Accessible)
 
 	return _accessible
 }

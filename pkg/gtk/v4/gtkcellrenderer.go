@@ -698,7 +698,7 @@ func (c cellRenderer) StartEditing(event gdk.Event, widget Widget, path string, 
 
 	var _cellEditable CellEditable // out
 
-	_cellEditable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellEditable)
+	_cellEditable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellEditable)
 
 	return _cellEditable
 }

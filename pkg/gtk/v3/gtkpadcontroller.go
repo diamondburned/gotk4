@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -136,7 +135,7 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadC
 
 	var _padController PadController // out
 
-	_padController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PadController)
+	_padController = WrapPadController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _padController
 }

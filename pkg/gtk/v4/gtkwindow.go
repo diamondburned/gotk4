@@ -498,7 +498,7 @@ func NewWindow() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = WrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -575,7 +575,7 @@ func (w window) Application() Application {
 
 	var _application Application // out
 
-	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Application)
+	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Application)
 
 	return _application
 }
@@ -591,7 +591,7 @@ func (w window) Child() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -648,7 +648,7 @@ func (w window) DefaultWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -705,7 +705,7 @@ func (w window) Focus() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -741,7 +741,7 @@ func (w window) Group() WindowGroup {
 
 	var _windowGroup WindowGroup // out
 
-	_windowGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(WindowGroup)
+	_windowGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(WindowGroup)
 
 	return _windowGroup
 }
@@ -882,7 +882,7 @@ func (w window) Titlebar() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -898,7 +898,7 @@ func (w window) TransientFor() Window {
 
 	var _ret Window // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _ret
 }

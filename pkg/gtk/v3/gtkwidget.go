@@ -347,7 +347,7 @@ type Widget interface {
 	// have different valid targets for different parts of the widget; in that
 	// case, they will have to implement a drag_motion handler that passes the
 	// correct target list to this function.
-	DragDestFindTarget(context gdk.DragContext, targetList *TargetList) gdk.Atom
+	DragDestFindTarget(context gdk.DragContext, targetList *TargetList) *gdk.Atom
 	// DragDestGetTargetList returns the list of targets this widget can accept
 	// from drag-and-drop.
 	DragDestGetTargetList() *TargetList
@@ -418,7 +418,7 @@ type Widget interface {
 	// negative. However, when gtk_drag_get_data() is called implicitely because
 	// the GTK_DEST_DEFAULT_DROP was set, then the widget will not receive
 	// notification of failed drops.
-	DragGetData(context gdk.DragContext, target gdk.Atom, time_ uint32)
+	DragGetData(context gdk.DragContext, target *gdk.Atom, time_ uint32)
 	// DragHighlight highlights a widget as a currently hovered drop target. To
 	// end the highlight, call gtk_drag_unhighlight(). GTK+ calls this
 	// automatically if GTK_DEST_DEFAULT_HIGHLIGHT is set.
@@ -572,7 +572,7 @@ type Widget interface {
 	// Clipboard returns the clipboard object for the given selection to be used
 	// with @widget. @widget must have a Display associated with it, so must be
 	// attached to a toplevel window.
-	Clipboard(selection gdk.Atom) Clipboard
+	Clipboard(selection *gdk.Atom) Clipboard
 	// CompositeName obtains the composite name of a widget.
 	CompositeName() string
 	// DeviceEnabled returns whether @device can interact with @widget and its
@@ -2151,7 +2151,7 @@ func (w widget) CreatePangoContext() pango.Context {
 
 	var _context pango.Context // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
 
 	return _context
 }
@@ -2175,7 +2175,7 @@ func (w widget) CreatePangoLayout(text string) pango.Layout {
 
 	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Layout)
 
 	return _layout
 }
@@ -2314,7 +2314,7 @@ func (w widget) DragDestAddURITargets() {
 // have different valid targets for different parts of the widget; in that
 // case, they will have to implement a drag_motion handler that passes the
 // correct target list to this function.
-func (w widget) DragDestFindTarget(context gdk.DragContext, targetList *TargetList) gdk.Atom {
+func (w widget) DragDestFindTarget(context gdk.DragContext, targetList *TargetList) *gdk.Atom {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GtkTargetList  // out
@@ -2326,9 +2326,9 @@ func (w widget) DragDestFindTarget(context gdk.DragContext, targetList *TargetLi
 
 	_cret = C.gtk_drag_dest_find_target(_arg0, _arg1, _arg2)
 
-	var _atom gdk.Atom // out
+	var _atom *gdk.Atom // out
 
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
+	_atom = gdk.WrapAtom(unsafe.Pointer(_cret))
 
 	return _atom
 }
@@ -2490,7 +2490,7 @@ func (w widget) DragDestUnset() {
 // negative. However, when gtk_drag_get_data() is called implicitely because
 // the GTK_DEST_DEFAULT_DROP was set, then the widget will not receive
 // notification of failed drops.
-func (w widget) DragGetData(context gdk.DragContext, target gdk.Atom, time_ uint32) {
+func (w widget) DragGetData(context gdk.DragContext, target *gdk.Atom, time_ uint32) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.GdkAtom         // out
@@ -2498,7 +2498,7 @@ func (w widget) DragGetData(context gdk.DragContext, target gdk.Atom, time_ uint
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 	_arg3 = (C.guint32)(time_)
 
 	C.gtk_drag_get_data(_arg0, _arg1, _arg2, _arg3)
@@ -2756,7 +2756,7 @@ func (w widget) ActionGroup(prefix string) gio.ActionGroup {
 
 	var _actionGroup gio.ActionGroup // out
 
-	_actionGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ActionGroup)
+	_actionGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ActionGroup)
 
 	return _actionGroup
 }
@@ -2836,7 +2836,7 @@ func (w widget) Ancestor(widgetType externglib.Type) Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -2954,19 +2954,19 @@ func (w widget) ChildVisible() bool {
 // Clipboard returns the clipboard object for the given selection to be used
 // with @widget. @widget must have a Display associated with it, so must be
 // attached to a toplevel window.
-func (w widget) Clipboard(selection gdk.Atom) Clipboard {
+func (w widget) Clipboard(selection *gdk.Atom) Clipboard {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GdkAtom       // out
 	var _cret *C.GtkClipboard // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gtk_widget_get_clipboard(_arg0, _arg1)
 
 	var _clipboard Clipboard // out
 
-	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Clipboard)
+	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Clipboard)
 
 	return _clipboard
 }
@@ -3063,7 +3063,7 @@ func (w widget) Display() gdk.Display {
 
 	var _display gdk.Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
 
 	return _display
 }
@@ -3141,7 +3141,7 @@ func (w widget) FontMap() pango.FontMap {
 
 	var _fontMap pango.FontMap // out
 
-	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontMap)
+	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontMap)
 
 	return _fontMap
 }
@@ -3194,7 +3194,7 @@ func (w widget) FrameClock() gdk.FrameClock {
 
 	var _frameClock gdk.FrameClock // out
 
-	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.FrameClock)
+	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.FrameClock)
 
 	return _frameClock
 }
@@ -3470,7 +3470,7 @@ func (w widget) ModifierStyle() RCStyle {
 
 	var _rcStyle RCStyle // out
 
-	_rcStyle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RCStyle)
+	_rcStyle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RCStyle)
 
 	return _rcStyle
 }
@@ -3546,7 +3546,7 @@ func (w widget) PangoContext() pango.Context {
 
 	var _context pango.Context // out
 
-	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.Context)
 
 	return _context
 }
@@ -3562,7 +3562,7 @@ func (w widget) Parent() Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -3579,7 +3579,7 @@ func (w widget) ParentWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }
@@ -3896,7 +3896,7 @@ func (w widget) RootWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }
@@ -3938,7 +3938,7 @@ func (w widget) Screen() gdk.Screen {
 
 	var _screen gdk.Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
 
 	return _screen
 }
@@ -3980,7 +3980,7 @@ func (w widget) Settings() Settings {
 
 	var _settings Settings // out
 
-	_settings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Settings)
+	_settings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Settings)
 
 	return _settings
 }
@@ -4060,7 +4060,7 @@ func (w widget) Style() Style {
 
 	var _style Style // out
 
-	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Style)
+	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Style)
 
 	return _style
 }
@@ -4077,7 +4077,7 @@ func (w widget) StyleContext() StyleContext {
 
 	var _styleContext StyleContext // out
 
-	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StyleContext)
+	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StyleContext)
 
 	return _styleContext
 }
@@ -4125,7 +4125,7 @@ func (w widget) TemplateChild(widgetType externglib.Type, name string) gextras.O
 
 	var _object gextras.Objector // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
 }
@@ -4177,7 +4177,7 @@ func (w widget) TooltipWindow() Window {
 
 	var _window Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }
@@ -4219,7 +4219,7 @@ func (w widget) Toplevel() Widget {
 
 	var _ret Widget // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _ret
 }
@@ -4340,7 +4340,7 @@ func (w widget) Visual() gdk.Visual {
 
 	var _visual gdk.Visual // out
 
-	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Visual)
+	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Visual)
 
 	return _visual
 }
@@ -4356,7 +4356,7 @@ func (w widget) Window() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }
@@ -4888,7 +4888,8 @@ func (w widget) ListActionPrefixes() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -5464,7 +5465,7 @@ func (w widget) RenderIcon(stockId string, size int, detail string) gdkpixbuf.Pi
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -5492,7 +5493,7 @@ func (w widget) RenderIconPixbuf(stockId string, size int) gdkpixbuf.Pixbuf {
 
 	var _pixbuf gdkpixbuf.Pixbuf // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }

@@ -270,7 +270,7 @@ func NewPlacesSidebar() PlacesSidebar {
 
 	var _placesSidebar PlacesSidebar // out
 
-	_placesSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PlacesSidebar)
+	_placesSidebar = WrapPlacesSidebar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _placesSidebar
 }
@@ -333,7 +333,7 @@ func (s placesSidebar) Location() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }
@@ -354,7 +354,7 @@ func (s placesSidebar) NthBookmark(n int) gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }

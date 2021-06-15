@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -95,7 +94,7 @@ func NewBoxLayout(orientation Orientation) BoxLayout {
 
 	var _boxLayout BoxLayout // out
 
-	_boxLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BoxLayout)
+	_boxLayout = WrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boxLayout
 }

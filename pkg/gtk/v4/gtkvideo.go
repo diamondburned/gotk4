@@ -111,7 +111,7 @@ func NewVideo() Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -127,7 +127,7 @@ func NewVideoForFile(file gio.File) Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -144,7 +144,7 @@ func NewVideoForFilename(filename string) Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -160,7 +160,7 @@ func NewVideoForMediaStream(stream MediaStream) Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -177,7 +177,7 @@ func NewVideoForResource(resourcePath string) Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -211,7 +211,7 @@ func (s video) File() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }
@@ -245,7 +245,7 @@ func (s video) MediaStream() MediaStream {
 
 	var _mediaStream MediaStream // out
 
-	_mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaStream)
+	_mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MediaStream)
 
 	return _mediaStream
 }

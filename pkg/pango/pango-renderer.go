@@ -382,7 +382,7 @@ func (r renderer) Layout() Layout {
 
 	var _layout Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Layout)
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Layout)
 
 	return _layout
 }

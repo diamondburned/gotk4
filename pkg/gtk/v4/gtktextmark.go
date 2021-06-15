@@ -115,7 +115,7 @@ func NewTextMark(name string, leftGravity bool) TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextMark)
+	_textMark = WrapTextMark(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textMark
 }
@@ -133,7 +133,7 @@ func (m textMark) Buffer() TextBuffer {
 
 	var _textBuffer TextBuffer // out
 
-	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextBuffer)
+	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextBuffer)
 
 	return _textBuffer
 }

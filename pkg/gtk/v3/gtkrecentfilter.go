@@ -173,7 +173,7 @@ func NewRecentFilter() RecentFilter {
 
 	var _recentFilter RecentFilter // out
 
-	_recentFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentFilter)
+	_recentFilter = WrapRecentFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentFilter
 }

@@ -144,7 +144,7 @@ func NewGridView(model SelectionModel, factory ListItemFactory) GridView {
 
 	var _gridView GridView // out
 
-	_gridView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(GridView)
+	_gridView = WrapGridView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _gridView
 }
@@ -179,7 +179,7 @@ func (s gridView) Factory() ListItemFactory {
 
 	var _listItemFactory ListItemFactory // out
 
-	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListItemFactory)
+	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListItemFactory)
 
 	return _listItemFactory
 }
@@ -227,7 +227,7 @@ func (s gridView) Model() SelectionModel {
 
 	var _selectionModel SelectionModel // out
 
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SelectionModel)
+	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SelectionModel)
 
 	return _selectionModel
 }

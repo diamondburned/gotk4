@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,7 +73,7 @@ func NewMemoryInputStream() MemoryInputStream {
 
 	var _memoryInputStream MemoryInputStream // out
 
-	_memoryInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryInputStream)
+	_memoryInputStream = WrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryInputStream
 }

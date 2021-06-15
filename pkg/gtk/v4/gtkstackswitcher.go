@@ -96,7 +96,7 @@ func NewStackSwitcher() StackSwitcher {
 
 	var _stackSwitcher StackSwitcher // out
 
-	_stackSwitcher = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackSwitcher)
+	_stackSwitcher = WrapStackSwitcher(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSwitcher
 }
@@ -112,7 +112,7 @@ func (s stackSwitcher) Stack() Stack {
 
 	var _stack Stack // out
 
-	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
+	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Stack)
 
 	return _stack
 }

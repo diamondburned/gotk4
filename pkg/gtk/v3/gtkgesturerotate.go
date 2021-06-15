@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,7 +66,7 @@ func NewGestureRotate(widget Widget) GestureRotate {
 
 	var _gestureRotate GestureRotate // out
 
-	_gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureRotate)
+	_gestureRotate = WrapGestureRotate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureRotate
 }

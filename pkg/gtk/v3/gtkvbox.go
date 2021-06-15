@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,7 +92,7 @@ func NewVBox(homogeneous bool, spacing int) VBox {
 
 	var _vBox VBox // out
 
-	_vBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VBox)
+	_vBox = WrapVBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vBox
 }

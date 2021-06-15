@@ -726,7 +726,8 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -793,7 +794,7 @@ func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (Inp
 	var _inputStream InputStream // out
 	var _goerr error             // out
 
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr

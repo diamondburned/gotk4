@@ -314,7 +314,7 @@ func NewLabel(str string) Label {
 
 	var _label Label // out
 
-	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
+	_label = WrapLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _label
 }
@@ -331,7 +331,7 @@ func NewLabelWithMnemonic(str string) Label {
 
 	var _label Label // out
 
-	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
+	_label = WrapLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _label
 }
@@ -461,7 +461,7 @@ func (l label) Layout() pango.Layout {
 
 	var _layout pango.Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
+	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.Layout)
 
 	return _layout
 }
@@ -592,7 +592,7 @@ func (l label) MnemonicWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

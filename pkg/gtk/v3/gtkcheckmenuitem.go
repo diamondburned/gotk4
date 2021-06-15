@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -105,7 +104,7 @@ func NewCheckMenuItem() CheckMenuItem {
 
 	var _checkMenuItem CheckMenuItem // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
+	_checkMenuItem = WrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
@@ -122,7 +121,7 @@ func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 
 	var _checkMenuItem CheckMenuItem // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
+	_checkMenuItem = WrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
@@ -139,7 +138,7 @@ func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
 
 	var _checkMenuItem CheckMenuItem // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
+	_checkMenuItem = WrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }

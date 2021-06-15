@@ -50,10 +50,9 @@ func NewGenerator(repos gir.Repositories, modPath ModulePathFunc) *Generator {
 			// These are already manually covered in the girgen code; they are
 			// provided by package gotk3/glib.
 			AbsoluteFilter("GLib.Error"),
-			AbsoluteFilter("GObject.Type"),
-			AbsoluteFilter("GObject.Value"),
-			AbsoluteFilter("GObject.Object"),
-			AbsoluteFilter("GObject.InitiallyUnowned"),
+			// Ignore generating everything in GObject, but allow resolving its
+			// types.
+			RegexFilter("GObject..*"),
 
 			// This is not supported by Go. We might be able to support it in
 			// the future using a 16-byte data structure, but the actual size

@@ -266,7 +266,8 @@ func GetFilenameCharsets() ([]string, bool) {
 
 	{
 		var i int
-		for p := _arg1; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.gchar
+		for p := _arg1; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 

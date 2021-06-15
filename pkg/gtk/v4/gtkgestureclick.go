@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,7 +60,7 @@ func NewGestureClick() GestureClick {
 
 	var _gestureClick GestureClick // out
 
-	_gestureClick = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureClick)
+	_gestureClick = WrapGestureClick(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureClick
 }

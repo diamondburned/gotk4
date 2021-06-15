@@ -419,7 +419,7 @@ func NewStyleContext() StyleContext {
 
 	var _styleContext StyleContext // out
 
-	_styleContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StyleContext)
+	_styleContext = WrapStyleContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _styleContext
 }
@@ -617,7 +617,7 @@ func (c styleContext) FrameClock() gdk.FrameClock {
 
 	var _frameClock gdk.FrameClock // out
 
-	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.FrameClock)
+	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.FrameClock)
 
 	return _frameClock
 }
@@ -681,7 +681,7 @@ func (c styleContext) Parent() StyleContext {
 
 	var _styleContext StyleContext // out
 
-	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StyleContext)
+	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StyleContext)
 
 	return _styleContext
 }
@@ -765,7 +765,7 @@ func (c styleContext) Screen() gdk.Screen {
 
 	var _screen gdk.Screen // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
 
 	return _screen
 }

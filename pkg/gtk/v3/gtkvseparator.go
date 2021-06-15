@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,7 +66,7 @@ func NewVSeparator() VSeparator {
 
 	var _vSeparator VSeparator // out
 
-	_vSeparator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VSeparator)
+	_vSeparator = WrapVSeparator(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vSeparator
 }

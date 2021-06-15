@@ -102,7 +102,7 @@ func NewTLSCertificateFromFile(file string) (TLSCertificate, error) {
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -125,7 +125,7 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (TLSCertificate
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -147,7 +147,7 @@ func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -170,7 +170,7 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -187,7 +187,7 @@ func (c tlsCertificate) Issuer() TLSCertificate {
 
 	var _tlsCertificate TLSCertificate // out
 
-	_tlsCertificate = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_tlsCertificate = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TLSCertificate)
 
 	return _tlsCertificate
 }

@@ -128,7 +128,7 @@ func NewIconPaintableForFile(file gio.File, size int, scale int) IconPaintable {
 
 	var _iconPaintable IconPaintable // out
 
-	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
+	_iconPaintable = WrapIconPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconPaintable
 }
@@ -146,7 +146,7 @@ func (s iconPaintable) File() gio.File {
 
 	var _file gio.File // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
 
 	return _file
 }
@@ -353,7 +353,7 @@ func NewIconTheme() IconTheme {
 
 	var _iconTheme IconTheme // out
 
-	_iconTheme = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconTheme)
+	_iconTheme = WrapIconTheme(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconTheme
 }
@@ -402,7 +402,7 @@ func (s iconTheme) Display() gdk.Display {
 
 	var _display gdk.Display // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
 
 	return _display
 }
@@ -420,7 +420,8 @@ func (s iconTheme) IconNames() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -455,7 +456,8 @@ func (s iconTheme) IconSizes(iconName string) []int {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z C.int
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -484,7 +486,8 @@ func (s iconTheme) ResourcePath() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -514,7 +517,8 @@ func (s iconTheme) SearchPath() []string {
 
 	{
 		var i int
-		for p := _cret; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
@@ -615,7 +619,7 @@ func (s iconTheme) LookupByGIcon(icon gio.Icon, size int, scale int, direction T
 
 	var _iconPaintable IconPaintable // out
 
-	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
+	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconPaintable)
 
 	return _iconPaintable
 }
@@ -667,7 +671,7 @@ func (s iconTheme) LookupIcon(iconName string, fallbacks []string, size int, sca
 
 	var _iconPaintable IconPaintable // out
 
-	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
+	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconPaintable)
 
 	return _iconPaintable
 }

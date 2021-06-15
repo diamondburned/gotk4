@@ -177,7 +177,7 @@ func (t *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.GTimeType)(typ)
-	_arg2 = (*C.gint64)(time_)
+	_arg2 = (*C.gint64)(unsafe.Pointer(time_))
 
 	_cret = C.g_time_zone_adjust_time(_arg0, _arg1, _arg2)
 

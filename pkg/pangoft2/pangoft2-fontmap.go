@@ -67,7 +67,7 @@ func NewFontMap() FontMap {
 
 	var _fontMap FontMap // out
 
-	_fontMap = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FontMap)
+	_fontMap = WrapFontMap(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fontMap
 }

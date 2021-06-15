@@ -76,12 +76,12 @@ func (r *RGBA) Copy() *RGBA {
 
 // Equal compares two `GdkRGBA` colors.
 func (p *RGBA) Equal(p2 RGBA) bool {
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer // out
-	var _cret C.gboolean // in
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
 
-	_arg0 = *(*C.gpointer)(unsafe.Pointer(p.Native()))
-	_arg1 = *(*C.gpointer)(unsafe.Pointer(p2.Native()))
+	_arg0 = *(*C.gconstpointer)(unsafe.Pointer(p.Native()))
+	_arg1 = *(*C.gconstpointer)(unsafe.Pointer(p2.Native()))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 
@@ -106,10 +106,10 @@ func (r *RGBA) Free() {
 // Hash: a hash function suitable for using for a hash table that stores
 // `GdkRGBA`s.
 func (p *RGBA) Hash() uint {
-	var _arg0 C.gpointer // out
-	var _cret C.guint    // in
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
 
-	_arg0 = *(*C.gpointer)(unsafe.Pointer(p.Native()))
+	_arg0 = *(*C.gconstpointer)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gdk_rgba_hash(_arg0)
 

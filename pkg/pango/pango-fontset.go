@@ -75,7 +75,7 @@ func (f fontset) Font(wc uint) Font {
 
 	var _font Font // out
 
-	_font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Font)
+	_font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Font)
 
 	return _font
 }
@@ -145,7 +145,7 @@ func NewFontsetSimple(language *Language) FontsetSimple {
 
 	var _fontsetSimple FontsetSimple // out
 
-	_fontsetSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FontsetSimple)
+	_fontsetSimple = WrapFontsetSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fontsetSimple
 }

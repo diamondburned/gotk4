@@ -114,7 +114,7 @@ func NewToolItemGroup(label string) ToolItemGroup {
 
 	var _toolItemGroup ToolItemGroup // out
 
-	_toolItemGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItemGroup)
+	_toolItemGroup = WrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItemGroup
 }
@@ -152,7 +152,7 @@ func (g toolItemGroup) DropItem(x int, y int) ToolItem {
 
 	var _toolItem ToolItem // out
 
-	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolItem)
 
 	return _toolItem
 }
@@ -235,7 +235,7 @@ func (g toolItemGroup) LabelWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }
@@ -269,7 +269,7 @@ func (g toolItemGroup) NthItem(index uint) ToolItem {
 
 	var _toolItem ToolItem // out
 
-	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToolItem)
+	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolItem)
 
 	return _toolItem
 }

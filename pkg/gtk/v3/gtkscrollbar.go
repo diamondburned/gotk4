@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -105,7 +104,7 @@ func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 
 	var _scrollbar Scrollbar // out
 
-	_scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scrollbar)
+	_scrollbar = WrapScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scrollbar
 }

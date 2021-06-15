@@ -74,7 +74,7 @@ func (t *Timer) Elapsed(microseconds *uint32) float64 {
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.gulong)(microseconds)
+	_arg1 = (*C.gulong)(unsafe.Pointer(microseconds))
 
 	_cret = C.g_timer_elapsed(_arg0, _arg1)
 

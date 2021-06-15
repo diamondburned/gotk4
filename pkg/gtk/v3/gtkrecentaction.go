@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -91,7 +90,7 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 
 	var _recentAction RecentAction // out
 
-	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentAction)
+	_recentAction = WrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
 }
@@ -119,7 +118,7 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 
 	var _recentAction RecentAction // out
 
-	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentAction)
+	_recentAction = WrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
 }

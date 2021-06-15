@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -92,7 +91,7 @@ func NewRecentChooserMenu() RecentChooserMenu {
 
 	var _recentChooserMenu RecentChooserMenu // out
 
-	_recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserMenu)
+	_recentChooserMenu = WrapRecentChooserMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
 }
@@ -108,7 +107,7 @@ func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
 
 	var _recentChooserMenu RecentChooserMenu // out
 
-	_recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserMenu)
+	_recentChooserMenu = WrapRecentChooserMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
 }

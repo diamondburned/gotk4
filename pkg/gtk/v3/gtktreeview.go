@@ -582,7 +582,7 @@ func NewTreeView() TreeView {
 
 	var _treeView TreeView // out
 
-	_treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeView)
+	_treeView = WrapTreeView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeView
 }
@@ -598,7 +598,7 @@ func NewTreeViewWithModel(model TreeModel) TreeView {
 
 	var _treeView TreeView // out
 
-	_treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeView)
+	_treeView = WrapTreeView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeView
 }
@@ -965,7 +965,7 @@ func (t treeView) BinWindow() gdk.Window {
 
 	var _window gdk.Window // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
 }
@@ -1007,7 +1007,7 @@ func (t treeView) Column(n int) TreeViewColumn {
 
 	var _treeViewColumn TreeViewColumn // out
 
-	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeViewColumn)
+	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeViewColumn)
 
 	return _treeViewColumn
 }
@@ -1029,7 +1029,7 @@ func (t treeView) Cursor() (*TreePath, TreeViewColumn) {
 
 	var _focusColumn TreeViewColumn // out
 
-	_focusColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(TreeViewColumn)
+	_focusColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeViewColumn)
 
 	return _path, _focusColumn
 }
@@ -1132,7 +1132,7 @@ func (t treeView) ExpanderColumn() TreeViewColumn {
 
 	var _treeViewColumn TreeViewColumn // out
 
-	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeViewColumn)
+	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeViewColumn)
 
 	return _treeViewColumn
 }
@@ -1184,7 +1184,7 @@ func (t treeView) HAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -1292,7 +1292,7 @@ func (t treeView) Model() TreeModel {
 
 	var _treeModel TreeModel // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
 }
@@ -1351,7 +1351,7 @@ func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn
 	var _cellY int             // out
 	var _ok bool               // out
 
-	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(TreeViewColumn)
+	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeViewColumn)
 	_cellX = (int)(_arg5)
 	_cellY = (int)(_arg6)
 	if _cret != 0 {
@@ -1447,7 +1447,7 @@ func (t treeView) SearchEntry() Entry {
 
 	var _entry Entry // out
 
-	_entry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Entry)
+	_entry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Entry)
 
 	return _entry
 }
@@ -1463,7 +1463,7 @@ func (t treeView) Selection() TreeSelection {
 
 	var _treeSelection TreeSelection // out
 
-	_treeSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeSelection)
+	_treeSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeSelection)
 
 	return _treeSelection
 }
@@ -1515,7 +1515,7 @@ func (t treeView) VAdjustment() Adjustment {
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }
@@ -1621,7 +1621,7 @@ func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewCol
 	var _cellY int             // out
 	var _ok bool               // out
 
-	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(TreeViewColumn)
+	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeViewColumn)
 	_cellX = (int)(_arg5)
 	_cellY = (int)(_arg6)
 	if _cret != 0 {

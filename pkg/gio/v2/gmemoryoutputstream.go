@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -94,7 +93,7 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 
 	var _memoryOutputStream MemoryOutputStream // out
 
-	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryOutputStream)
+	_memoryOutputStream = WrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryOutputStream
 }

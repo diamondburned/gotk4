@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -87,7 +86,7 @@ func NewSpinner() Spinner {
 
 	var _spinner Spinner // out
 
-	_spinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Spinner)
+	_spinner = WrapSpinner(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinner
 }

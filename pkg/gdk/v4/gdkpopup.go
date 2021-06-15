@@ -117,7 +117,7 @@ func (p popup) Parent() Surface {
 
 	var _surface Surface // out
 
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Surface)
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Surface)
 
 	return _surface
 }

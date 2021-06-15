@@ -165,7 +165,7 @@ func (s treeSelection) Selected() (TreeModel, TreeIter, bool) {
 
 	var _ok bool // out
 
-	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(TreeModel)
+	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(TreeModel)
 
 	if _cret != 0 {
 		_ok = true
@@ -185,7 +185,7 @@ func (s treeSelection) TreeView() TreeView {
 
 	var _treeView TreeView // out
 
-	_treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeView)
+	_treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeView)
 
 	return _treeView
 }

@@ -163,7 +163,7 @@ func NewActionGroup(name string) ActionGroup {
 
 	var _actionGroup ActionGroup // out
 
-	_actionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ActionGroup)
+	_actionGroup = WrapActionGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _actionGroup
 }
@@ -215,7 +215,7 @@ func (a actionGroup) AccelGroup() AccelGroup {
 
 	var _accelGroup AccelGroup // out
 
-	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
+	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AccelGroup)
 
 	return _accelGroup
 }
@@ -234,7 +234,7 @@ func (a actionGroup) Action(actionName string) Action {
 
 	var _action Action // out
 
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Action)
 
 	return _action
 }
@@ -383,27 +383,6 @@ func (a actionGroup) TranslateString(_string string) string {
 	return _utf8
 }
 
-// ActionEntry structs are used with gtk_action_group_add_actions() to construct
-// actions.
-type ActionEntry struct {
-	native C.GtkActionEntry
-}
-
-// WrapActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ActionEntry)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}
-
 // RadioActionEntry structs are used with gtk_action_group_add_radio_actions()
 // to construct groups of radio actions.
 type RadioActionEntry struct {
@@ -423,25 +402,4 @@ func WrapRadioActionEntry(ptr unsafe.Pointer) *RadioActionEntry {
 // Native returns the underlying C source pointer.
 func (r *RadioActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// ToggleActionEntry structs are used with gtk_action_group_add_toggle_actions()
-// to construct toggle actions.
-type ToggleActionEntry struct {
-	native C.GtkToggleActionEntry
-}
-
-// WrapToggleActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToggleActionEntry(ptr unsafe.Pointer) *ToggleActionEntry {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ToggleActionEntry)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToggleActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }

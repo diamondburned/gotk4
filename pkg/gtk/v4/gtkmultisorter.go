@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -77,7 +76,7 @@ func NewMultiSorter() MultiSorter {
 
 	var _multiSorter MultiSorter // out
 
-	_multiSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MultiSorter)
+	_multiSorter = WrapMultiSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSorter
 }

@@ -77,7 +77,7 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 
 	var _builderListItemFactory BuilderListItemFactory // out
 
-	_builderListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BuilderListItemFactory)
+	_builderListItemFactory = WrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderListItemFactory
 }
@@ -110,7 +110,7 @@ func (s builderListItemFactory) Scope() BuilderScope {
 
 	var _builderScope BuilderScope // out
 
-	_builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(BuilderScope)
+	_builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(BuilderScope)
 
 	return _builderScope
 }

@@ -159,7 +159,7 @@ func NewPrintJob(title string, printer Printer, settings PrintSettings, pageSetu
 
 	var _printJob PrintJob // out
 
-	_printJob = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintJob)
+	_printJob = WrapPrintJob(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printJob
 }
@@ -273,7 +273,7 @@ func (j printJob) Printer() Printer {
 
 	var _printer Printer // out
 
-	_printer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Printer)
+	_printer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Printer)
 
 	return _printer
 }
@@ -341,7 +341,7 @@ func (j printJob) Settings() PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintSettings)
+	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PrintSettings)
 
 	return _printSettings
 }

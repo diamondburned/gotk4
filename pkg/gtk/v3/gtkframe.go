@@ -131,7 +131,7 @@ func NewFrame(label string) Frame {
 
 	var _frame Frame // out
 
-	_frame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Frame)
+	_frame = WrapFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _frame
 }
@@ -186,7 +186,7 @@ func (f frame) LabelWidget() Widget {
 
 	var _widget Widget // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
 }

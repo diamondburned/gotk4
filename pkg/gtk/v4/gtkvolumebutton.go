@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -70,7 +69,7 @@ func NewVolumeButton() VolumeButton {
 
 	var _volumeButton VolumeButton // out
 
-	_volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VolumeButton)
+	_volumeButton = WrapVolumeButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _volumeButton
 }

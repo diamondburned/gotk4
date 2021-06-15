@@ -73,11 +73,10 @@ func (t *Transform) Native() unsafe.Pointer {
 func (f *Transform) Equal(second *Transform) bool {
 	var _arg0 *C.GskTransform // out
 	var _arg1 *C.GskTransform // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GskTransform)(unsafe.Pointer(second.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gsk_transform_equal(_arg0, _arg1)
 
@@ -92,11 +91,10 @@ func (f *Transform) Equal(second *Transform) bool {
 
 // Category returns the category this transform belongs to.
 func (s *Transform) Category() TransformCategory {
-	var _arg0 *C.GskTransform // out
+	var _arg0 *C.GskTransform        // out
+	var _cret C.GskTransformCategory // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GskTransformCategory // in
 
 	_cret = C.gsk_transform_get_category(_arg0)
 
@@ -115,10 +113,9 @@ func (s *Transform) Category() TransformCategory {
 // calling this function.
 func (s *Transform) Invert() *Transform {
 	var _arg0 *C.GskTransform // out
+	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gsk_transform_invert(_arg0)
 
@@ -136,11 +133,10 @@ func (s *Transform) Invert() *Transform {
 func (n *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var _arg0 *C.GskTransform      // out
 	var _arg1 *C.graphene_matrix_t // out
+	var _cret *C.GskTransform      // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gsk_transform_matrix(_arg0, _arg1)
 
@@ -162,11 +158,10 @@ func (n *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 func (n *Transform) Perspective(depth float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
+	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
-	_arg1 = C.float(depth)
-
-	var _cret *C.GskTransform // in
+	_arg1 = (C.float)(depth)
 
 	_cret = C.gsk_transform_perspective(_arg0, _arg1)
 
@@ -183,10 +178,9 @@ func (n *Transform) Perspective(depth float32) *Transform {
 // Ref acquires a reference on the given `GskTransform`.
 func (s *Transform) Ref() *Transform {
 	var _arg0 *C.GskTransform // out
+	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gsk_transform_ref(_arg0)
 
@@ -202,11 +196,10 @@ func (s *Transform) Ref() *Transform {
 func (n *Transform) Rotate(angle float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
+	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
-	_arg1 = C.float(angle)
-
-	var _cret *C.GskTransform // in
+	_arg1 = (C.float)(angle)
 
 	_cret = C.gsk_transform_rotate(_arg0, _arg1)
 
@@ -227,12 +220,11 @@ func (n *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 C.float            // out
 	var _arg2 *C.graphene_vec3_t // out
+	var _cret *C.GskTransform    // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
-	_arg1 = C.float(angle)
+	_arg1 = (C.float)(angle)
 	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gsk_transform_rotate_3d(_arg0, _arg1, _arg2)
 
@@ -253,12 +245,11 @@ func (n *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
 	var _arg2 C.float         // out
+	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
-	_arg1 = C.float(factorX)
-	_arg2 = C.float(factorY)
-
-	var _cret *C.GskTransform // in
+	_arg1 = (C.float)(factorX)
+	_arg2 = (C.float)(factorY)
 
 	_cret = C.gsk_transform_scale(_arg0, _arg1, _arg2)
 
@@ -278,13 +269,12 @@ func (n *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *
 	var _arg1 C.float         // out
 	var _arg2 C.float         // out
 	var _arg3 C.float         // out
+	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
-	_arg1 = C.float(factorX)
-	_arg2 = C.float(factorY)
-	_arg3 = C.float(factorZ)
-
-	var _cret *C.GskTransform // in
+	_arg1 = (C.float)(factorX)
+	_arg2 = (C.float)(factorY)
+	_arg3 = (C.float)(factorZ)
 
 	_cret = C.gsk_transform_scale_3d(_arg0, _arg1, _arg2, _arg3)
 
@@ -311,15 +301,14 @@ func (n *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *
 // type from other 2D drawing libraries, in particular Cairo.
 func (s *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // in
+	var _arg2 C.float         // in
+	var _arg3 C.float         // in
+	var _arg4 C.float         // in
+	var _arg5 C.float         // in
+	var _arg6 C.float         // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _arg1 C.float // in
-	var _arg2 C.float // in
-	var _arg3 C.float // in
-	var _arg4 C.float // in
-	var _arg5 C.float // in
-	var _arg6 C.float // in
 
 	C.gsk_transform_to_2d(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
@@ -346,13 +335,12 @@ func (s *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy f
 // gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_AFFINE to check.
 func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // in
+	var _arg2 C.float         // in
+	var _arg3 C.float         // in
+	var _arg4 C.float         // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _arg1 C.float // in
-	var _arg2 C.float // in
-	var _arg3 C.float // in
-	var _arg4 C.float // in
 
 	C.gsk_transform_to_affine(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -374,10 +362,9 @@ func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx floa
 // The previous value of @out_matrix will be ignored.
 func (s *Transform) ToMatrix() graphene.Matrix {
 	var _arg0 *C.GskTransform // out
+	var _outMatrix graphene.Matrix
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _outMatrix graphene.Matrix
 
 	C.gsk_transform_to_matrix(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_outMatrix)))
 
@@ -391,10 +378,9 @@ func (s *Transform) ToMatrix() graphene.Matrix {
 // This is a wrapper around [method@Gsk.Transform.print].
 func (s *Transform) String() string {
 	var _arg0 *C.GskTransform // out
+	var _cret *C.char         // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gsk_transform_to_string(_arg0)
 
@@ -412,11 +398,10 @@ func (s *Transform) String() string {
 // gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_TRANSLATE to check.
 func (s *Transform) ToTranslate() (outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // in
+	var _arg2 C.float         // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
-
-	var _arg1 C.float // in
-	var _arg2 C.float // in
 
 	C.gsk_transform_to_translate(_arg0, &_arg1, &_arg2)
 
@@ -433,11 +418,10 @@ func (s *Transform) ToTranslate() (outDx float32, outDy float32) {
 func (n *Transform) Transform(other *Transform) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 *C.GskTransform // out
+	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GskTransform)(unsafe.Pointer(other.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gsk_transform_transform(_arg0, _arg1)
 
@@ -458,11 +442,10 @@ func (n *Transform) Transform(other *Transform) *Transform {
 func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 *C.graphene_rect_t // out
+	var _outRect graphene.Rect
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
-
-	var _outRect graphene.Rect
 
 	C.gsk_transform_transform_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_outRect)))
 
@@ -474,11 +457,10 @@ func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 *C.graphene_point_t // out
+	var _outPoint graphene.Point
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
-
-	var _outPoint graphene.Point
 
 	C.gsk_transform_transform_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_outPoint)))
 
@@ -489,11 +471,10 @@ func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 func (n *Transform) Translate(point *graphene.Point) *Transform {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 *C.graphene_point_t // out
+	var _cret *C.GskTransform     // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gsk_transform_translate(_arg0, _arg1)
 
@@ -511,11 +492,10 @@ func (n *Transform) Translate(point *graphene.Point) *Transform {
 func (n *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var _arg0 *C.GskTransform       // out
 	var _arg1 *C.graphene_point3d_t // out
+	var _cret *C.GskTransform       // in
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gsk_transform_translate_3d(_arg0, _arg1)
 

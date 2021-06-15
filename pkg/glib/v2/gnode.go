@@ -78,45 +78,16 @@ func (n *Node) Native() unsafe.Pointer {
 	return unsafe.Pointer(&n.native)
 }
 
-// Next gets the field inside the struct.
-func (n *Node) Next() *Node {
-	var v *Node // out
-	v = WrapNode(unsafe.Pointer(n.native.next))
-	return v
-}
-
-// Prev gets the field inside the struct.
-func (n *Node) Prev() *Node {
-	var v *Node // out
-	v = WrapNode(unsafe.Pointer(n.native.prev))
-	return v
-}
-
-// Parent gets the field inside the struct.
-func (n *Node) Parent() *Node {
-	var v *Node // out
-	v = WrapNode(unsafe.Pointer(n.native.parent))
-	return v
-}
-
-// Children gets the field inside the struct.
-func (n *Node) Children() *Node {
-	var v *Node // out
-	v = WrapNode(unsafe.Pointer(n.native.children))
-	return v
-}
-
 // ChildPosition gets the position of a #GNode with respect to its siblings.
 // @child must be a child of @node. The first child is numbered 0, the second 1,
 // and so on.
 func (n *Node) ChildPosition(child *Node) int {
 	var _arg0 *C.GNode // out
 	var _arg1 *C.GNode // out
+	var _cret C.gint   // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GNode)(unsafe.Pointer(child.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_node_child_position(_arg0, _arg1)
 
@@ -133,10 +104,9 @@ func (n *Node) ChildPosition(child *Node) int {
 // children of the root node the depth is 2. And so on.
 func (n *Node) Depth() uint {
 	var _arg0 *C.GNode // out
+	var _cret C.guint  // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.g_node_depth(_arg0)
 
@@ -161,13 +131,12 @@ func (r *Node) Destroy() {
 // if node is the parent of @descendant, or if node is the grandparent of
 // @descendant etc.
 func (n *Node) IsAncestor(descendant *Node) bool {
-	var _arg0 *C.GNode // out
-	var _arg1 *C.GNode // out
+	var _arg0 *C.GNode   // out
+	var _arg1 *C.GNode   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GNode)(unsafe.Pointer(descendant.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_node_is_ancestor(_arg0, _arg1)
 
@@ -187,10 +156,9 @@ func (n *Node) IsAncestor(descendant *Node) bool {
 // @root has children, 2 is returned. And so on.
 func (r *Node) MaxHeight() uint {
 	var _arg0 *C.GNode // out
+	var _cret C.guint  // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.g_node_max_height(_arg0)
 
@@ -204,10 +172,9 @@ func (r *Node) MaxHeight() uint {
 // NChildren gets the number of children of a #GNode.
 func (n *Node) NChildren() uint {
 	var _arg0 *C.GNode // out
+	var _cret C.guint  // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.g_node_n_children(_arg0)
 
@@ -222,11 +189,10 @@ func (n *Node) NChildren() uint {
 func (r *Node) NNodes(flags TraverseFlags) uint {
 	var _arg0 *C.GNode         // out
 	var _arg1 C.GTraverseFlags // out
+	var _cret C.guint          // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
 	_arg1 = (C.GTraverseFlags)(flags)
-
-	var _cret C.guint // in
 
 	_cret = C.g_node_n_nodes(_arg0, _arg1)
 

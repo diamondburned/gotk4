@@ -64,10 +64,9 @@ func marshalHScale(p uintptr) (interface{}, error) {
 // NewHScale constructs a class HScale.
 func NewHScale(adjustment Adjustment) HScale {
 	var _arg1 *C.GtkAdjustment // out
+	var _cret C.GtkHScale      // in
 
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-
-	var _cret C.GtkHScale // in
 
 	_cret = C.gtk_hscale_new(_arg1)
 
@@ -80,15 +79,14 @@ func NewHScale(adjustment Adjustment) HScale {
 
 // NewHScaleWithRange constructs a class HScale.
 func NewHScaleWithRange(min float64, max float64, step float64) HScale {
-	var _arg1 C.gdouble // out
-	var _arg2 C.gdouble // out
-	var _arg3 C.gdouble // out
-
-	_arg1 = C.gdouble(min)
-	_arg2 = C.gdouble(max)
-	_arg3 = C.gdouble(step)
-
+	var _arg1 C.gdouble   // out
+	var _arg2 C.gdouble   // out
+	var _arg3 C.gdouble   // out
 	var _cret C.GtkHScale // in
+
+	_arg1 = (C.gdouble)(min)
+	_arg2 = (C.gdouble)(max)
+	_arg3 = (C.gdouble)(step)
 
 	_cret = C.gtk_hscale_new_with_range(_arg1, _arg2, _arg3)
 

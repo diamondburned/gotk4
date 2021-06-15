@@ -112,10 +112,9 @@ func marshalActionable(p uintptr) (interface{}, error) {
 // ActionName gets the action name for @actionable.
 func (a actionable) ActionName() string {
 	var _arg0 *C.GtkActionable // out
+	var _cret *C.char          // in
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_actionable_get_action_name(_arg0)
 
@@ -129,10 +128,9 @@ func (a actionable) ActionName() string {
 // ActionTargetValue gets the current target value of @actionable.
 func (a actionable) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.GtkActionable // out
+	var _cret *C.GVariant      // in
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.gtk_actionable_get_action_target_value(_arg0)
 

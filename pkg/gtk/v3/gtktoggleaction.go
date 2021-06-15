@@ -68,10 +68,11 @@ func marshalToggleAction(p uintptr) (interface{}, error) {
 
 // NewToggleAction constructs a class ToggleAction.
 func NewToggleAction(name string, label string, tooltip string, stockId string) ToggleAction {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
-	var _arg3 *C.gchar // out
-	var _arg4 *C.gchar // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.gchar          // out
+	var _arg3 *C.gchar          // out
+	var _arg4 *C.gchar          // out
+	var _cret C.GtkToggleAction // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -81,8 +82,6 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg4))
-
-	var _cret C.GtkToggleAction // in
 
 	_cret = C.gtk_toggle_action_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -96,10 +95,9 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 // Active returns the checked state of the toggle action.
 func (a toggleAction) Active() bool {
 	var _arg0 *C.GtkToggleAction // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_action_get_active(_arg0)
 
@@ -116,10 +114,9 @@ func (a toggleAction) Active() bool {
 // action.
 func (a toggleAction) DrawAsRadio() bool {
 	var _arg0 *C.GtkToggleAction // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_action_get_draw_as_radio(_arg0)
 

@@ -179,12 +179,11 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(offset)
-	_arg2 = C.gint(nChars)
-
-	var _cret C.gboolean // in
+	_arg1 = (C.gint)(offset)
+	_arg2 = (C.gint)(nChars)
 
 	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
 
@@ -203,11 +202,10 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkEventKey  // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
 
@@ -248,12 +246,11 @@ func (c imContext) FocusOut() {
 // displayed inserted at the insertion point.
 func (c imContext) PreeditString() (string, *pango.AttrList, int) {
 	var _arg0 *C.GtkIMContext // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 *C.gchar // in
+	var _arg1 *C.gchar        // in
 	var _attrs *pango.AttrList
 	var _arg3 C.gint // in
+
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
 	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrs)), &_arg3)
 
@@ -283,12 +280,11 @@ func (c imContext) PreeditString() (string, *pango.AttrList, int) {
 // must be prepared to function without context.
 func (c imContext) Surrounding() (string, int, bool) {
 	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.gchar        // in
+	var _arg2 C.gint          // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 *C.gchar   // in
-	var _arg2 C.gint     // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 
@@ -356,8 +352,8 @@ func (c imContext) SetSurrounding(text string, len int, cursorIndex int) {
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(len)
-	_arg3 = C.gint(cursorIndex)
+	_arg2 = (C.gint)(len)
+	_arg3 = (C.gint)(cursorIndex)
 
 	C.gtk_im_context_set_surrounding(_arg0, _arg1, _arg2, _arg3)
 }

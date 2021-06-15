@@ -76,10 +76,9 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 // AppInfo returns the currently selected application.
 func (s appChooser) AppInfo() gio.AppInfo {
 	var _arg0 *C.GtkAppChooser // out
+	var _cret *C.GAppInfo      // in
 
 	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GAppInfo // in
 
 	_cret = C.gtk_app_chooser_get_app_info(_arg0)
 
@@ -94,10 +93,9 @@ func (s appChooser) AppInfo() gio.AppInfo {
 // applications.
 func (s appChooser) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out
+	var _cret *C.char          // in
 
 	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_app_chooser_get_content_type(_arg0)
 

@@ -54,7 +54,7 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 	if del {
 		_arg3 = C.TRUE
 	}
-	_arg4 = C.guint32(time_)
+	_arg4 = (C.guint32)(time_)
 
 	C.gtk_drag_finish(_arg1, _arg2, _arg3, _arg4)
 }
@@ -62,10 +62,9 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 // DragGetSourceWidget determines the source widget for a drag.
 func DragGetSourceWidget(context gdk.DragContext) Widget {
 	var _arg1 *C.GdkDragContext // out
+	var _cret *C.GtkWidget      // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_drag_get_source_widget(_arg1)
 
@@ -96,8 +95,8 @@ func DragSetIconGIcon(context gdk.DragContext, icon gio.Icon, hotX int, hotY int
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg3 = C.gint(hotX)
-	_arg4 = C.gint(hotY)
+	_arg3 = (C.gint)(hotX)
+	_arg4 = (C.gint)(hotY)
 
 	C.gtk_drag_set_icon_gicon(_arg1, _arg2, _arg3, _arg4)
 }
@@ -115,8 +114,8 @@ func DragSetIconName(context gdk.DragContext, iconName string, hotX int, hotY in
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.gint(hotX)
-	_arg4 = C.gint(hotY)
+	_arg3 = (C.gint)(hotX)
+	_arg4 = (C.gint)(hotY)
 
 	C.gtk_drag_set_icon_name(_arg1, _arg2, _arg3, _arg4)
 }
@@ -130,8 +129,8 @@ func DragSetIconPixbuf(context gdk.DragContext, pixbuf gdkpixbuf.Pixbuf, hotX in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	_arg3 = C.gint(hotX)
-	_arg4 = C.gint(hotY)
+	_arg3 = (C.gint)(hotX)
+	_arg4 = (C.gint)(hotY)
 
 	C.gtk_drag_set_icon_pixbuf(_arg1, _arg2, _arg3, _arg4)
 }
@@ -146,8 +145,8 @@ func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY in
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.gint(hotX)
-	_arg4 = C.gint(hotY)
+	_arg3 = (C.gint)(hotX)
+	_arg4 = (C.gint)(hotY)
 
 	C.gtk_drag_set_icon_stock(_arg1, _arg2, _arg3, _arg4)
 }
@@ -180,8 +179,8 @@ func DragSetIconWidget(context gdk.DragContext, widget Widget, hotX int, hotY in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = C.gint(hotX)
-	_arg4 = C.gint(hotY)
+	_arg3 = (C.gint)(hotX)
+	_arg4 = (C.gint)(hotY)
 
 	C.gtk_drag_set_icon_widget(_arg1, _arg2, _arg3, _arg4)
 }

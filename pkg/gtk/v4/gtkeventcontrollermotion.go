@@ -79,10 +79,9 @@ func NewEventControllerMotion() EventControllerMotion {
 // children.
 func (s eventControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
+	var _cret C.gboolean                  // in
 
 	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_controller_motion_contains_pointer(_arg0)
 
@@ -99,10 +98,9 @@ func (s eventControllerMotion) ContainsPointer() bool {
 // children.
 func (s eventControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
+	var _cret C.gboolean                  // in
 
 	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_controller_motion_is_pointer(_arg0)
 

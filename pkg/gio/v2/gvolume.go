@@ -165,10 +165,9 @@ func marshalVolume(p uintptr) (interface{}, error) {
 // CanEject checks if a volume can be ejected.
 func (v volume) CanEject() bool {
 	var _arg0 *C.GVolume // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_volume_can_eject(_arg0)
 
@@ -184,10 +183,9 @@ func (v volume) CanEject() bool {
 // CanMount checks if a volume can be mounted.
 func (v volume) CanMount() bool {
 	var _arg0 *C.GVolume // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_volume_can_mount(_arg0)
 
@@ -206,11 +204,10 @@ func (v volume) CanMount() bool {
 func (v volume) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -227,11 +224,10 @@ func (v volume) EjectFinish(result AsyncResult) error {
 func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -247,10 +243,9 @@ func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 // themselves.
 func (v volume) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
+	var _cret **C.char
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret **C.char
 
 	_cret = C.g_volume_enumerate_identifiers(_arg0)
 
@@ -289,10 +284,9 @@ func (v volume) EnumerateIdentifiers() []string {
 // details.
 func (v volume) ActivationRoot() File {
 	var _arg0 *C.GVolume // out
+	var _cret *C.GFile   // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.g_volume_get_activation_root(_arg0)
 
@@ -306,10 +300,9 @@ func (v volume) ActivationRoot() File {
 // Drive gets the drive for the @volume.
 func (v volume) Drive() Drive {
 	var _arg0 *C.GVolume // out
+	var _cret *C.GDrive  // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GDrive // in
 
 	_cret = C.g_volume_get_drive(_arg0)
 
@@ -323,10 +316,9 @@ func (v volume) Drive() Drive {
 // Icon gets the icon for @volume.
 func (v volume) Icon() Icon {
 	var _arg0 *C.GVolume // out
+	var _cret *C.GIcon   // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_volume_get_icon(_arg0)
 
@@ -343,12 +335,11 @@ func (v volume) Icon() Icon {
 func (v volume) Identifier(kind string) string {
 	var _arg0 *C.GVolume // out
 	var _arg1 *C.char    // out
+	var _cret *C.char    // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.char)(C.CString(kind))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.char // in
 
 	_cret = C.g_volume_get_identifier(_arg0, _arg1)
 
@@ -363,10 +354,9 @@ func (v volume) Identifier(kind string) string {
 // Mount gets the mount for the @volume.
 func (v volume) Mount() Mount {
 	var _arg0 *C.GVolume // out
+	var _cret *C.GMount  // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GMount // in
 
 	_cret = C.g_volume_get_mount(_arg0)
 
@@ -380,10 +370,9 @@ func (v volume) Mount() Mount {
 // Name gets the name of @volume.
 func (v volume) Name() string {
 	var _arg0 *C.GVolume // out
+	var _cret *C.char    // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_volume_get_name(_arg0)
 
@@ -398,10 +387,9 @@ func (v volume) Name() string {
 // SortKey gets the sort key for @volume, if any.
 func (v volume) SortKey() string {
 	var _arg0 *C.GVolume // out
+	var _cret *C.gchar   // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_volume_get_sort_key(_arg0)
 
@@ -415,10 +403,9 @@ func (v volume) SortKey() string {
 // SymbolicIcon gets the symbolic icon for @volume.
 func (v volume) SymbolicIcon() Icon {
 	var _arg0 *C.GVolume // out
+	var _cret *C.GIcon   // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_volume_get_symbolic_icon(_arg0)
 
@@ -434,10 +421,9 @@ func (v volume) SymbolicIcon() Icon {
 // an opaque string. Returns nil if there is no UUID available.
 func (v volume) UUID() string {
 	var _arg0 *C.GVolume // out
+	var _cret *C.char    // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_volume_get_uuid(_arg0)
 
@@ -459,11 +445,10 @@ func (v volume) UUID() string {
 func (v volume) MountFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
 
@@ -478,10 +463,9 @@ func (v volume) MountFinish(result AsyncResult) error {
 // mounted.
 func (v volume) ShouldAutomount() bool {
 	var _arg0 *C.GVolume // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_volume_should_automount(_arg0)
 

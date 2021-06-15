@@ -58,10 +58,9 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 // gdk_monitor_get_scale_factor()).
 func (m x11Monitor) Workarea() gdk.Rectangle {
 	var _arg0 *C.GdkMonitor // out
+	var _workarea gdk.Rectangle
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _workarea gdk.Rectangle
 
 	C.gdk_x11_monitor_get_workarea(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_workarea)))
 

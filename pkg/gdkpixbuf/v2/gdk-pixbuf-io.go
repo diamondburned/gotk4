@@ -64,43 +64,12 @@ func (p *PixbufFormat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Signature gets the field inside the struct.
-func (p *PixbufFormat) Signature() *PixbufModulePattern {
-	var v *PixbufModulePattern // out
-	v = WrapPixbufModulePattern(unsafe.Pointer(p.native.signature))
-	return v
-}
-
-// Domain gets the field inside the struct.
-func (p *PixbufFormat) Domain() string {
-	var v string // out
-	v = C.GoString(p.native.domain)
-	return v
-}
-
-// Flags gets the field inside the struct.
-func (p *PixbufFormat) Flags() uint32 {
-	var v uint32 // out
-	v = (uint32)(p.native.flags)
-	return v
-}
-
-// Disabled gets the field inside the struct.
-func (p *PixbufFormat) Disabled() bool {
-	var v bool // out
-	if p.native.disabled != 0 {
-		v = true
-	}
-	return v
-}
-
 // Copy creates a copy of `format`.
 func (f *PixbufFormat) Copy() *PixbufFormat {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret *C.GdkPixbufFormat // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GdkPixbufFormat // in
 
 	_cret = C.gdk_pixbuf_format_copy(_arg0)
 
@@ -127,10 +96,9 @@ func (f *PixbufFormat) Free() {
 // Description returns a description of the format.
 func (f *PixbufFormat) Description() string {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gdk_pixbuf_format_get_description(_arg0)
 
@@ -146,10 +114,9 @@ func (f *PixbufFormat) Description() string {
 // given format.
 func (f *PixbufFormat) Extensions() []string {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.gdk_pixbuf_format_get_extensions(_arg0)
 
@@ -179,10 +146,9 @@ func (f *PixbufFormat) Extensions() []string {
 // "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other license.
 func (f *PixbufFormat) License() string {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gdk_pixbuf_format_get_license(_arg0)
 
@@ -197,10 +163,9 @@ func (f *PixbufFormat) License() string {
 // MIMETypes returns the mime types supported by the format.
 func (f *PixbufFormat) MIMETypes() []string {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.gdk_pixbuf_format_get_mime_types(_arg0)
 
@@ -226,10 +191,9 @@ func (f *PixbufFormat) MIMETypes() []string {
 // Name returns the name of the format.
 func (f *PixbufFormat) Name() string {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gdk_pixbuf_format_get_name(_arg0)
 
@@ -246,10 +210,9 @@ func (f *PixbufFormat) Name() string {
 // See gdk_pixbuf_format_set_disabled().
 func (f *PixbufFormat) IsDisabled() bool {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_format_is_disabled(_arg0)
 
@@ -270,12 +233,11 @@ func (f *PixbufFormat) IsDisabled() bool {
 func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _arg1 *C.gchar           // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(optionKey))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_format_is_save_option_supported(_arg0, _arg1)
 
@@ -295,10 +257,9 @@ func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 // pixbuf to the desired size.
 func (f *PixbufFormat) IsScalable() bool {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_format_is_scalable(_arg0)
 
@@ -314,10 +275,9 @@ func (f *PixbufFormat) IsScalable() bool {
 // IsWritable returns whether pixbufs can be saved in the given format.
 func (f *PixbufFormat) IsWritable() bool {
 	var _arg0 *C.GdkPixbufFormat // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_format_is_writable(_arg0)
 
@@ -389,25 +349,4 @@ func WrapPixbufModulePattern(ptr unsafe.Pointer) *PixbufModulePattern {
 // Native returns the underlying C source pointer.
 func (p *PixbufModulePattern) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
-}
-
-// Prefix gets the field inside the struct.
-func (p *PixbufModulePattern) Prefix() string {
-	var v string // out
-	v = C.GoString(p.native.prefix)
-	return v
-}
-
-// Mask gets the field inside the struct.
-func (p *PixbufModulePattern) Mask() string {
-	var v string // out
-	v = C.GoString(p.native.mask)
-	return v
-}
-
-// Relevance gets the field inside the struct.
-func (p *PixbufModulePattern) Relevance() int {
-	var v int // out
-	v = (int)(p.native.relevance)
-	return v
 }

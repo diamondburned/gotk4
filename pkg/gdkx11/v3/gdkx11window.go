@@ -24,10 +24,9 @@ func init() {
 // X11GetServerTime: routine to get the current X server time stamp.
 func X11GetServerTime(window X11Window) uint32 {
 	var _arg1 *C.GdkWindow // out
+	var _cret C.guint32    // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
@@ -124,10 +123,9 @@ func marshalX11Window(p uintptr) (interface{}, error) {
 // Desktop gets the number of the workspace @window is on.
 func (w x11Window) Desktop() uint32 {
 	var _arg0 *C.GdkWindow // out
+	var _cret C.guint32    // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_window_get_desktop(_arg0)
 
@@ -160,7 +158,7 @@ func (w x11Window) MoveToDesktop(desktop uint32) {
 	var _arg1 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = C.guint32(desktop)
+	_arg1 = (C.guint32)(desktop)
 
 	C.gdk_x11_window_move_to_desktop(_arg0, _arg1)
 }
@@ -175,10 +173,10 @@ func (w x11Window) SetFrameExtents(left int, right int, top int, bottom int) {
 	var _arg4 C.int        // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = C.int(left)
-	_arg2 = C.int(right)
-	_arg3 = C.int(top)
-	_arg4 = C.int(bottom)
+	_arg1 = (C.int)(left)
+	_arg2 = (C.int)(right)
+	_arg3 = (C.int)(top)
+	_arg4 = (C.int)(bottom)
 
 	C.gdk_x11_window_set_frame_extents(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -256,7 +254,7 @@ func (w x11Window) SetUserTime(timestamp uint32) {
 	var _arg1 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = C.guint32(timestamp)
+	_arg1 = (C.guint32)(timestamp)
 
 	C.gdk_x11_window_set_user_time(_arg0, _arg1)
 }

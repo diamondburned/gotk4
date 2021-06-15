@@ -72,10 +72,9 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 // BaseStream gets the base stream for the filter stream.
 func (s filterOutputStream) BaseStream() OutputStream {
 	var _arg0 *C.GFilterOutputStream // out
+	var _cret *C.GOutputStream       // in
 
 	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GOutputStream // in
 
 	_cret = C.g_filter_output_stream_get_base_stream(_arg0)
 
@@ -90,10 +89,9 @@ func (s filterOutputStream) BaseStream() OutputStream {
 // @stream is closed.
 func (s filterOutputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterOutputStream // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_filter_output_stream_get_close_base_stream(_arg0)
 

@@ -4,8 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -48,12 +46,11 @@ func StockAddStatic(items []StockItem) {
 // true if @stock_id was known.
 func StockLookup(stockId string) (StockItem, bool) {
 	var _arg1 *C.gchar // out
+	var _item StockItem
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _item StockItem
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stock_lookup(_arg1, (*C.GtkStockItem)(unsafe.Pointer(&_item)))
 
@@ -83,41 +80,6 @@ func WrapStockItem(ptr unsafe.Pointer) *StockItem {
 // Native returns the underlying C source pointer.
 func (s *StockItem) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// StockID gets the field inside the struct.
-func (s *StockItem) StockID() string {
-	var v string // out
-	v = C.GoString(s.native.stock_id)
-	return v
-}
-
-// Label gets the field inside the struct.
-func (s *StockItem) Label() string {
-	var v string // out
-	v = C.GoString(s.native.label)
-	return v
-}
-
-// Modifier gets the field inside the struct.
-func (s *StockItem) Modifier() gdk.ModifierType {
-	var v gdk.ModifierType // out
-	v = gdk.ModifierType(s.native.modifier)
-	return v
-}
-
-// Keyval gets the field inside the struct.
-func (s *StockItem) Keyval() uint {
-	var v uint // out
-	v = (uint)(s.native.keyval)
-	return v
-}
-
-// TranslationDomain gets the field inside the struct.
-func (s *StockItem) TranslationDomain() string {
-	var v string // out
-	v = C.GoString(s.native.translation_domain)
-	return v
 }
 
 // Free frees a stock item allocated on the heap, such as one returned by

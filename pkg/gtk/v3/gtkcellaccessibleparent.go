@@ -103,11 +103,10 @@ func (p cellAccessibleParent) ExpandCollapse(cell CellAccessible) {
 func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
+	var _cellRect gdk.Rectangle
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	var _cellRect gdk.Rectangle
 
 	C.gtk_cell_accessible_parent_get_cell_area(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_cellRect)))
 
@@ -117,12 +116,11 @@ func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
 func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
+	var _arg2 C.gint                     // in
+	var _arg3 C.gint                     // in
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	var _arg2 C.gint // in
-	var _arg3 C.gint // in
 
 	C.gtk_cell_accessible_parent_get_cell_position(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -138,11 +136,10 @@ func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column
 func (p cellAccessibleParent) ChildIndex(cell CellAccessible) int {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
+	var _cret C.int                      // in
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_cell_accessible_parent_get_child_index(_arg0, _arg1)
 
@@ -156,11 +153,10 @@ func (p cellAccessibleParent) ChildIndex(cell CellAccessible) int {
 func (p cellAccessibleParent) RendererState(cell CellAccessible) CellRendererState {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
+	var _cret C.GtkCellRendererState     // in
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	var _cret C.GtkCellRendererState // in
 
 	_cret = C.gtk_cell_accessible_parent_get_renderer_state(_arg0, _arg1)
 
@@ -174,11 +170,10 @@ func (p cellAccessibleParent) RendererState(cell CellAccessible) CellRendererSta
 func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
+	var _cret C.gboolean                 // in
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_accessible_parent_grab_focus(_arg0, _arg1)
 

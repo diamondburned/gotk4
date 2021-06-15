@@ -108,12 +108,11 @@ func (a actionMap) AddAction(action Action) {
 func (a actionMap) LookupAction(actionName string) Action {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
+	var _cret *C.GAction    // in
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GAction // in
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
 

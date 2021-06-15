@@ -65,11 +65,10 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 
 // NewGestureSwipe constructs a class GestureSwipe.
 func NewGestureSwipe(widget Widget) GestureSwipe {
-	var _arg1 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget      // out
+	var _cret C.GtkGestureSwipe // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureSwipe // in
 
 	_cret = C.gtk_gesture_swipe_new(_arg1)
 
@@ -85,12 +84,11 @@ func NewGestureSwipe(widget Widget) GestureSwipe {
 // the last event(s) processed.
 func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out
+	var _arg1 C.gdouble          // in
+	var _arg2 C.gdouble          // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
-
-	var _arg1 C.gdouble  // in
-	var _arg2 C.gdouble  // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 

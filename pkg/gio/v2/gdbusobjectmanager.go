@@ -91,14 +91,13 @@ func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DB
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
+	var _cret *C.GDBusInterface     // in
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GDBusInterface // in
 
 	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
 
@@ -113,12 +112,11 @@ func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DB
 func (m dBusObjectManager) Object(objectPath string) DBusObject {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusObject        // in
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GDBusObject // in
 
 	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
 
@@ -132,10 +130,9 @@ func (m dBusObjectManager) Object(objectPath string) DBusObject {
 // ObjectPath gets the object path that @manager is for.
 func (m dBusObjectManager) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
+	var _cret *C.gchar              // in
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_object_manager_get_object_path(_arg0)
 

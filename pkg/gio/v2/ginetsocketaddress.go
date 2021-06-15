@@ -74,13 +74,12 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 
 // NewInetSocketAddress constructs a class InetSocketAddress.
 func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
-	var _arg1 *C.GInetAddress // out
-	var _arg2 C.guint16       // out
+	var _arg1 *C.GInetAddress      // out
+	var _arg2 C.guint16            // out
+	var _cret C.GInetSocketAddress // in
 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = C.guint16(port)
-
-	var _cret C.GInetSocketAddress // in
+	_arg2 = (C.guint16)(port)
 
 	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
 
@@ -93,14 +92,13 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 
 // NewInetSocketAddressFromString constructs a class InetSocketAddress.
 func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
-	var _arg1 *C.char // out
-	var _arg2 C.guint // out
+	var _arg1 *C.char              // out
+	var _arg2 C.guint              // out
+	var _cret C.GInetSocketAddress // in
 
 	_arg1 = (*C.char)(C.CString(address))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint(port)
-
-	var _cret C.GInetSocketAddress // in
+	_arg2 = (C.guint)(port)
 
 	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
 
@@ -114,10 +112,9 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 // Address gets @address's Address.
 func (a inetSocketAddress) Address() InetAddress {
 	var _arg0 *C.GInetSocketAddress // out
+	var _cret *C.GInetAddress       // in
 
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GInetAddress // in
 
 	_cret = C.g_inet_socket_address_get_address(_arg0)
 
@@ -132,10 +129,9 @@ func (a inetSocketAddress) Address() InetAddress {
 // IPv6 address.
 func (a inetSocketAddress) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
+	var _cret C.guint32             // in
 
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.g_inet_socket_address_get_flowinfo(_arg0)
 
@@ -149,10 +145,9 @@ func (a inetSocketAddress) Flowinfo() uint32 {
 // Port gets @address's port.
 func (a inetSocketAddress) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
+	var _cret C.guint16             // in
 
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.g_inet_socket_address_get_port(_arg0)
 
@@ -167,10 +162,9 @@ func (a inetSocketAddress) Port() uint16 {
 // IPv6 address.
 func (a inetSocketAddress) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
+	var _cret C.guint32             // in
 
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.g_inet_socket_address_get_scope_id(_arg0)
 

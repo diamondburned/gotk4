@@ -195,11 +195,10 @@ func NewProgressBar() ProgressBar {
 //
 // See [method@Gtk.ProgressBar.set_ellipsize].
 func (p progressBar) Ellipsize() pango.EllipsizeMode {
-	var _arg0 *C.GtkProgressBar // out
+	var _arg0 *C.GtkProgressBar    // out
+	var _cret C.PangoEllipsizeMode // in
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-
-	var _cret C.PangoEllipsizeMode // in
 
 	_cret = C.gtk_progress_bar_get_ellipsize(_arg0)
 
@@ -213,10 +212,9 @@ func (p progressBar) Ellipsize() pango.EllipsizeMode {
 // Fraction returns the current fraction of the task that’s been completed.
 func (p progressBar) Fraction() float64 {
 	var _arg0 *C.GtkProgressBar // out
+	var _cret C.double          // in
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_progress_bar_get_fraction(_arg0)
 
@@ -230,10 +228,9 @@ func (p progressBar) Fraction() float64 {
 // Inverted returns whether the progress bar is inverted.
 func (p progressBar) Inverted() bool {
 	var _arg0 *C.GtkProgressBar // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_progress_bar_get_inverted(_arg0)
 
@@ -251,10 +248,9 @@ func (p progressBar) Inverted() bool {
 // See [method@Gtk.ProgressBar.set_pulse_step].
 func (p progressBar) PulseStep() float64 {
 	var _arg0 *C.GtkProgressBar // out
+	var _cret C.double          // in
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_progress_bar_get_pulse_step(_arg0)
 
@@ -270,10 +266,9 @@ func (p progressBar) PulseStep() float64 {
 // See [method@Gtk.ProgressBar.set_show_text].
 func (p progressBar) ShowText() bool {
 	var _arg0 *C.GtkProgressBar // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_progress_bar_get_show_text(_arg0)
 
@@ -292,10 +287,9 @@ func (p progressBar) ShowText() bool {
 // become invalid if you change the text in the progress bar.
 func (p progressBar) Text() string {
 	var _arg0 *C.GtkProgressBar // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_progress_bar_get_text(_arg0)
 
@@ -344,7 +338,7 @@ func (p progressBar) SetFraction(fraction float64) {
 	var _arg1 C.double          // out
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-	_arg1 = C.double(fraction)
+	_arg1 = (C.double)(fraction)
 
 	C.gtk_progress_bar_set_fraction(_arg0, _arg1)
 }
@@ -375,7 +369,7 @@ func (p progressBar) SetPulseStep(fraction float64) {
 	var _arg1 C.double          // out
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-	_arg1 = C.double(fraction)
+	_arg1 = (C.double)(fraction)
 
 	C.gtk_progress_bar_set_pulse_step(_arg0, _arg1)
 }

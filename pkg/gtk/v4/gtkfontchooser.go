@@ -183,10 +183,9 @@ func marshalFontChooser(p uintptr) (interface{}, error) {
 // descriptions.
 func (f fontChooser) Font() string {
 	var _arg0 *C.GtkFontChooser // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_font_chooser_get_font(_arg0)
 
@@ -209,11 +208,10 @@ func (f fontChooser) Font() string {
 // Use [method@Pango.FontDescription.equal] if you want to compare two font
 // descriptions.
 func (f fontChooser) FontDesc() *pango.FontDescription {
-	var _arg0 *C.GtkFontChooser // out
+	var _arg0 *C.GtkFontChooser       // out
+	var _cret *C.PangoFontDescription // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.PangoFontDescription // in
 
 	_cret = C.gtk_font_chooser_get_font_desc(_arg0)
 
@@ -233,10 +231,9 @@ func (f fontChooser) FontDesc() *pango.FontDescription {
 // If the selected font is not installed, returns nil.
 func (f fontChooser) FontFace() pango.FontFace {
 	var _arg0 *C.GtkFontChooser // out
+	var _cret *C.PangoFontFace  // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.PangoFontFace // in
 
 	_cret = C.gtk_font_chooser_get_font_face(_arg0)
 
@@ -254,11 +251,10 @@ func (f fontChooser) FontFace() pango.FontFace {
 //
 // If the selected font is not installed, returns nil.
 func (f fontChooser) FontFamily() pango.FontFamily {
-	var _arg0 *C.GtkFontChooser // out
+	var _arg0 *C.GtkFontChooser  // out
+	var _cret *C.PangoFontFamily // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.PangoFontFamily // in
 
 	_cret = C.gtk_font_chooser_get_font_family(_arg0)
 
@@ -272,10 +268,9 @@ func (f fontChooser) FontFamily() pango.FontFamily {
 // FontFeatures gets the currently-selected font features.
 func (f fontChooser) FontFeatures() string {
 	var _arg0 *C.GtkFontChooser // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_font_chooser_get_font_features(_arg0)
 
@@ -291,10 +286,9 @@ func (f fontChooser) FontFeatures() string {
 // it does not have one.
 func (f fontChooser) FontMap() pango.FontMap {
 	var _arg0 *C.GtkFontChooser // out
+	var _cret *C.PangoFontMap   // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.PangoFontMap // in
 
 	_cret = C.gtk_font_chooser_get_font_map(_arg0)
 
@@ -308,10 +302,9 @@ func (f fontChooser) FontMap() pango.FontMap {
 // FontSize: the selected font size.
 func (f fontChooser) FontSize() int {
 	var _arg0 *C.GtkFontChooser // out
+	var _cret C.int             // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_font_chooser_get_font_size(_arg0)
 
@@ -325,10 +318,9 @@ func (f fontChooser) FontSize() int {
 // Language gets the language that is used for font features.
 func (f fontChooser) Language() string {
 	var _arg0 *C.GtkFontChooser // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_font_chooser_get_language(_arg0)
 
@@ -342,11 +334,10 @@ func (f fontChooser) Language() string {
 
 // Level returns the current level of granularity for selecting fonts.
 func (f fontChooser) Level() FontChooserLevel {
-	var _arg0 *C.GtkFontChooser // out
+	var _arg0 *C.GtkFontChooser     // out
+	var _cret C.GtkFontChooserLevel // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret C.GtkFontChooserLevel // in
 
 	_cret = C.gtk_font_chooser_get_level(_arg0)
 
@@ -360,10 +351,9 @@ func (f fontChooser) Level() FontChooserLevel {
 // PreviewText gets the text displayed in the preview area.
 func (f fontChooser) PreviewText() string {
 	var _arg0 *C.GtkFontChooser // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_font_chooser_get_preview_text(_arg0)
 
@@ -378,10 +368,9 @@ func (f fontChooser) PreviewText() string {
 // ShowPreviewEntry returns whether the preview entry is shown or not.
 func (f fontChooser) ShowPreviewEntry() bool {
 	var _arg0 *C.GtkFontChooser // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_font_chooser_get_show_preview_entry(_arg0)
 

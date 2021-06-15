@@ -53,11 +53,10 @@ func (d *Dir) Close() {
 // On Windows, as is true of all GLib functions which operate on filenames, the
 // returned name is in UTF-8.
 func (d *Dir) ReadName() string {
-	var _arg0 *C.GDir // out
+	var _arg0 *C.GDir  // out
+	var _cret *C.gchar // in
 
 	_arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_dir_read_name(_arg0)
 

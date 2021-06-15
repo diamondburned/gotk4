@@ -241,7 +241,11 @@ func (c converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (b
 	var _arg2 C.gsize
 	var _arg3 *C.void
 	var _arg4 C.gsize
-	var _arg5 C.GConverterFlags // out
+	var _arg5 C.GConverterFlags  // out
+	var _arg6 C.gsize            // in
+	var _arg7 C.gsize            // in
+	var _cret C.GConverterResult // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GConverter)(unsafe.Pointer(c.Native()))
 	_arg2 = C.gsize(len(inbuf))
@@ -249,11 +253,6 @@ func (c converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (b
 	_arg4 = C.gsize(len(outbuf))
 	_arg3 = (*C.void)(unsafe.Pointer(&outbuf[0]))
 	_arg5 = (C.GConverterFlags)(flags)
-
-	var _arg6 C.gsize            // in
-	var _arg7 C.gsize            // in
-	var _cret C.GConverterResult // in
-	var _cerr *C.GError          // in
 
 	_cret = C.g_converter_convert(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7, &_cerr)
 

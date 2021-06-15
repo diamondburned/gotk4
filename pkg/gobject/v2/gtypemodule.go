@@ -171,13 +171,12 @@ func (m typeModule) RegisterEnum(name string, constStaticValues *EnumValue) exte
 	var _arg0 *C.GTypeModule // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GEnumValue  // out
+	var _cret C.GType        // in
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GEnumValue)(unsafe.Pointer(constStaticValues.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.g_type_module_register_enum(_arg0, _arg1, _arg2)
 
@@ -202,13 +201,12 @@ func (m typeModule) RegisterFlags(name string, constStaticValues *FlagsValue) ex
 	var _arg0 *C.GTypeModule // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GFlagsValue // out
+	var _cret C.GType        // in
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GFlagsValue)(unsafe.Pointer(constStaticValues.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.g_type_module_register_flags(_arg0, _arg1, _arg2)
 
@@ -239,6 +237,7 @@ func (m typeModule) RegisterType(parentType externglib.Type, typeName string, ty
 	var _arg2 *C.gchar       // out
 	var _arg3 *C.GTypeInfo   // out
 	var _arg4 C.GTypeFlags   // out
+	var _cret C.GType        // in
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 	_arg1 = C.GType(parentType)
@@ -246,8 +245,6 @@ func (m typeModule) RegisterType(parentType externglib.Type, typeName string, ty
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GTypeInfo)(unsafe.Pointer(typeInfo.Native()))
 	_arg4 = (C.GTypeFlags)(flags)
-
-	var _cret C.GType // in
 
 	_cret = C.g_type_module_register_type(_arg0, _arg1, _arg2, _arg3, _arg4)
 
@@ -287,10 +284,9 @@ func (m typeModule) Unuse() {
 // count is reset to its prior value.
 func (m typeModule) Use() bool {
 	var _arg0 *C.GTypeModule // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_type_module_use(_arg0)
 

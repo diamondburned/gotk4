@@ -85,12 +85,11 @@ func NewGestureDrag() GestureDrag {
 // starting drag point.
 func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
+	var _arg1 C.double          // in
+	var _arg2 C.double          // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
-
-	var _arg1 C.double   // in
-	var _arg2 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 
@@ -113,12 +112,11 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 // @y with the drag start coordinates, in surface-relative coordinates.
 func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
+	var _arg1 C.double          // in
+	var _arg2 C.double          // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
-
-	var _arg1 C.double   // in
-	var _arg2 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 

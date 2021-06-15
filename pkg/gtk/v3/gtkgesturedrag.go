@@ -64,11 +64,10 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 
 // NewGestureDrag constructs a class GestureDrag.
 func NewGestureDrag(widget Widget) GestureDrag {
-	var _arg1 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget     // out
+	var _cret C.GtkGestureDrag // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureDrag // in
 
 	_cret = C.gtk_gesture_drag_new(_arg1)
 
@@ -84,12 +83,11 @@ func NewGestureDrag(widget Widget) GestureDrag {
 // the starting drag point.
 func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
+	var _arg1 C.gdouble         // in
+	var _arg2 C.gdouble         // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
-
-	var _arg1 C.gdouble  // in
-	var _arg2 C.gdouble  // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 
@@ -111,12 +109,11 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 // coordinates.
 func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
+	var _arg1 C.gdouble         // in
+	var _arg2 C.gdouble         // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
-
-	var _arg1 C.gdouble  // in
-	var _arg2 C.gdouble  // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 

@@ -96,11 +96,10 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
+	var _cret C.GtkScrollbar   // in
 
 	_arg1 = (C.GtkOrientation)(orientation)
 	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-
-	var _cret C.GtkScrollbar // in
 
 	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
 

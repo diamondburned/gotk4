@@ -87,10 +87,9 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 // NewBoxLayout constructs a class BoxLayout.
 func NewBoxLayout(orientation Orientation) BoxLayout {
 	var _arg1 C.GtkOrientation // out
+	var _cret C.GtkBoxLayout   // in
 
 	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkBoxLayout // in
 
 	_cret = C.gtk_box_layout_new(_arg1)
 
@@ -104,11 +103,10 @@ func NewBoxLayout(orientation Orientation) BoxLayout {
 // BaselinePosition gets the value set by
 // gtk_box_layout_set_baseline_position().
 func (b boxLayout) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkBoxLayout // out
+	var _arg0 *C.GtkBoxLayout       // out
+	var _cret C.GtkBaselinePosition // in
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkBaselinePosition // in
 
 	_cret = C.gtk_box_layout_get_baseline_position(_arg0)
 
@@ -122,10 +120,9 @@ func (b boxLayout) BaselinePosition() BaselinePosition {
 // Homogeneous returns whether the layout is set to be homogeneous.
 func (b boxLayout) Homogeneous() bool {
 	var _arg0 *C.GtkBoxLayout // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
 
@@ -141,10 +138,9 @@ func (b boxLayout) Homogeneous() bool {
 // Spacing returns the space that @box_layout puts between children.
 func (b boxLayout) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
+	var _cret C.guint         // in
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_box_layout_get_spacing(_arg0)
 
@@ -192,7 +188,7 @@ func (b boxLayout) SetSpacing(spacing uint) {
 	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-	_arg1 = C.guint(spacing)
+	_arg1 = (C.guint)(spacing)
 
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)
 }

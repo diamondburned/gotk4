@@ -96,10 +96,9 @@ func NewOffscreenWindow() OffscreenWindow {
 // application should unreference it once it is no longer needed.
 func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkOffscreenWindow // out
+	var _cret *C.GdkPixbuf          // in
 
 	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GdkPixbuf // in
 
 	_cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
 
@@ -115,10 +114,9 @@ func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
 // then you should add a reference to it.
 func (o offscreenWindow) Surface() *cairo.Surface {
 	var _arg0 *C.GtkOffscreenWindow // out
+	var _cret *C.cairo_surface_t    // in
 
 	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.cairo_surface_t // in
 
 	_cret = C.gtk_offscreen_window_get_surface(_arg0)
 

@@ -83,11 +83,10 @@ func NewUnixCredentialsMessage() UnixCredentialsMessage {
 
 // NewUnixCredentialsMessageWithCredentials constructs a class UnixCredentialsMessage.
 func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCredentialsMessage {
-	var _arg1 *C.GCredentials // out
+	var _arg1 *C.GCredentials           // out
+	var _cret C.GUnixCredentialsMessage // in
 
 	_arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
-
-	var _cret C.GUnixCredentialsMessage // in
 
 	_cret = C.g_unix_credentials_message_new_with_credentials(_arg1)
 
@@ -101,10 +100,9 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCrede
 // Credentials gets the credentials stored in @message.
 func (m unixCredentialsMessage) Credentials() Credentials {
 	var _arg0 *C.GUnixCredentialsMessage // out
+	var _cret *C.GCredentials            // in
 
 	_arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GCredentials // in
 
 	_cret = C.g_unix_credentials_message_get_credentials(_arg0)
 

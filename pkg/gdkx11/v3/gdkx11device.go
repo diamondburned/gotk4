@@ -16,10 +16,9 @@ import "C"
 // will return 0.
 func X11DeviceGetID(device X11DeviceCore) int {
 	var _arg1 *C.GdkDevice // out
+	var _cret C.gint       // in
 
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gdk_x11_device_get_id(_arg1)
 

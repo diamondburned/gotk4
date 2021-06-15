@@ -77,10 +77,9 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 // ServerIdentity gets @conn's expected server identity
 func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
 	var _arg0 *C.GDtlsClientConnection // out
+	var _cret *C.GSocketConnectable    // in
 
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSocketConnectable // in
 
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 
@@ -94,10 +93,9 @@ func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
 // ValidationFlags gets @conn's validation flags
 func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
+	var _cret C.GTlsCertificateFlags   // in
 
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GTlsCertificateFlags // in
 
 	_cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
 

@@ -75,13 +75,12 @@ func marshalHBox(p uintptr) (interface{}, error) {
 func NewHBox(homogeneous bool, spacing int) HBox {
 	var _arg1 C.gboolean // out
 	var _arg2 C.gint     // out
+	var _cret C.GtkHBox  // in
 
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
-	_arg2 = C.gint(spacing)
-
-	var _cret C.GtkHBox // in
+	_arg2 = (C.gint)(spacing)
 
 	_cret = C.gtk_hbox_new(_arg1, _arg2)
 

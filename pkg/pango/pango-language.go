@@ -67,10 +67,9 @@ func (l *Language) Native() unsafe.Pointer {
 // “` pango_language_get_sample_string (pango_language_from_string ("xx")) “`
 func (l *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
+	var _cret *C.char          // in
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
@@ -79,50 +78,6 @@ func (l *Language) SampleString() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Scripts determines the scripts used to to write @language.
-//
-// If nothing is known about the language tag @language, or if @language is nil,
-// then nil is returned. The list of scripts returned starts with the script
-// that the language uses most and continues to the one it uses least.
-//
-// The value @num_script points at will be set to the number of scripts in the
-// returned array (or zero if nil is returned).
-//
-// Most languages use only one script for writing, but there are some that use
-// two (Latin and Cyrillic for example), and a few use three (Japanese for
-// example). Applications should not make any assumptions on the maximum number
-// of scripts returned though, except that it is positive if the return value is
-// not nil, and it is a small number.
-//
-// The [method@Pango.Language.includes_script] function uses this function
-// internally.
-//
-// Note: while the return value is declared as `PangoScript`, the returned
-// values are from the `GUnicodeScript` enumeration, which may have more values.
-// Callers need to handle unknown values.
-func (l *Language) Scripts() []Script {
-	var _arg0 *C.PangoLanguage // out
-
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.PangoScript
-	var _arg1 C.int // in
-
-	_cret = C.pango_language_get_scripts(_arg0, &_arg1)
-
-	var _scripts []Script
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		_scripts = make([]Script, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_scripts[i] = Script(src[i])
-		}
-	}
-
-	return _scripts
 }
 
 // IncludesScript determines if @script is one of the scripts used to write
@@ -138,11 +93,10 @@ func (l *Language) Scripts() []Script {
 func (l *Language) IncludesScript(script Script) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 C.PangoScript    // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 	_arg1 = (C.PangoScript)(script)
-
-	var _cret C.gboolean // in
 
 	_cret = C.pango_language_includes_script(_arg0, _arg1)
 
@@ -164,12 +118,11 @@ func (l *Language) IncludesScript(script Script) bool {
 func (l *Language) Matches(rangeList string) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 *C.char          // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(rangeList))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.pango_language_matches(_arg0, _arg1)
 
@@ -185,10 +138,9 @@ func (l *Language) Matches(rangeList string) bool {
 // String gets the RFC-3066 format string representing the given language tag.
 func (l *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
+	var _cret *C.char          // in
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.pango_language_to_string(_arg0)
 

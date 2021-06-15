@@ -101,11 +101,10 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 
 // NewStringFilter constructs a class StringFilter.
 func NewStringFilter(expression Expression) StringFilter {
-	var _arg1 *C.GtkExpression // out
+	var _arg1 *C.GtkExpression  // out
+	var _cret C.GtkStringFilter // in
 
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	var _cret C.GtkStringFilter // in
 
 	_cret = C.gtk_string_filter_new(_arg1)
 
@@ -120,10 +119,9 @@ func NewStringFilter(expression Expression) StringFilter {
 // strings from items.
 func (s stringFilter) Expression() Expression {
 	var _arg0 *C.GtkStringFilter // out
+	var _cret *C.GtkExpression   // in
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkExpression // in
 
 	_cret = C.gtk_string_filter_get_expression(_arg0)
 
@@ -137,10 +135,9 @@ func (s stringFilter) Expression() Expression {
 // IgnoreCase returns whether the filter ignores case differences.
 func (s stringFilter) IgnoreCase() bool {
 	var _arg0 *C.GtkStringFilter // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_string_filter_get_ignore_case(_arg0)
 
@@ -155,11 +152,10 @@ func (s stringFilter) IgnoreCase() bool {
 
 // MatchMode returns the match mode that the filter is using.
 func (s stringFilter) MatchMode() StringFilterMatchMode {
-	var _arg0 *C.GtkStringFilter // out
+	var _arg0 *C.GtkStringFilter         // out
+	var _cret C.GtkStringFilterMatchMode // in
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkStringFilterMatchMode // in
 
 	_cret = C.gtk_string_filter_get_match_mode(_arg0)
 
@@ -173,10 +169,9 @@ func (s stringFilter) MatchMode() StringFilterMatchMode {
 // Search gets the search term.
 func (s stringFilter) Search() string {
 	var _arg0 *C.GtkStringFilter // out
+	var _cret *C.char            // in
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_string_filter_get_search(_arg0)
 

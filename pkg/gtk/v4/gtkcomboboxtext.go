@@ -225,10 +225,9 @@ func (c comboBoxText) AppendText(text string) {
 // necessarily be an item from the list).
 func (c comboBoxText) ActiveText() string {
 	var _arg0 *C.GtkComboBoxText // out
+	var _cret *C.char            // in
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_combo_box_text_get_active_text(_arg0)
 
@@ -254,7 +253,7 @@ func (c comboBoxText) Insert(position int, id string, text string) {
 	var _arg3 *C.char            // out
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(position)
+	_arg1 = (C.int)(position)
 	_arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(C.CString(text))
@@ -276,7 +275,7 @@ func (c comboBoxText) InsertText(position int, text string) {
 	var _arg2 *C.char            // out
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(position)
+	_arg1 = (C.int)(position)
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -324,7 +323,7 @@ func (c comboBoxText) Remove(position int) {
 	var _arg1 C.int              // out
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(position)
+	_arg1 = (C.int)(position)
 
 	C.gtk_combo_box_text_remove(_arg0, _arg1)
 }

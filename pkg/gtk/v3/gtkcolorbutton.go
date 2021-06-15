@@ -103,11 +103,10 @@ func NewColorButton() ColorButton {
 
 // NewColorButtonWithColor constructs a class ColorButton.
 func NewColorButtonWithColor(color *gdk.Color) ColorButton {
-	var _arg1 *C.GdkColor // out
+	var _arg1 *C.GdkColor      // out
+	var _cret C.GtkColorButton // in
 
 	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
-
-	var _cret C.GtkColorButton // in
 
 	_cret = C.gtk_color_button_new_with_color(_arg1)
 
@@ -120,11 +119,10 @@ func NewColorButtonWithColor(color *gdk.Color) ColorButton {
 
 // NewColorButtonWithRGBA constructs a class ColorButton.
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
-	var _arg1 *C.GdkRGBA // out
+	var _arg1 *C.GdkRGBA       // out
+	var _cret C.GtkColorButton // in
 
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
-
-	var _cret C.GtkColorButton // in
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
@@ -138,10 +136,9 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 // Alpha returns the current alpha value.
 func (b colorButton) Alpha() uint16 {
 	var _arg0 *C.GtkColorButton // out
+	var _cret C.guint16         // in
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.gtk_color_button_get_alpha(_arg0)
 
@@ -155,10 +152,9 @@ func (b colorButton) Alpha() uint16 {
 // Color sets @color to be the current color in the ColorButton widget.
 func (b colorButton) Color() gdk.Color {
 	var _arg0 *C.GtkColorButton // out
+	var _color gdk.Color
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-
-	var _color gdk.Color
 
 	C.gtk_color_button_get_color(_arg0, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
@@ -168,10 +164,9 @@ func (b colorButton) Color() gdk.Color {
 // Title gets the title of the color selection dialog.
 func (b colorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 
@@ -185,10 +180,9 @@ func (b colorButton) Title() string {
 // UseAlpha does the color selection dialog use the alpha channel ?
 func (b colorButton) UseAlpha() bool {
 	var _arg0 *C.GtkColorButton // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_color_button_get_use_alpha(_arg0)
 
@@ -207,7 +201,7 @@ func (b colorButton) SetAlpha(alpha uint16) {
 	var _arg1 C.guint16         // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-	_arg1 = C.guint16(alpha)
+	_arg1 = (C.guint16)(alpha)
 
 	C.gtk_color_button_set_alpha(_arg0, _arg1)
 }

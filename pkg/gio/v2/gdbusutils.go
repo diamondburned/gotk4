@@ -30,11 +30,10 @@ import "C"
 // g_dbus_escape_object_path_bytestring().
 func DBusEscapeObjectPath(s string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(s))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_escape_object_path(_arg1)
 
@@ -62,18 +61,13 @@ func DBusEscapeObjectPath(s string) string {
 // This can be reversed with g_dbus_unescape_object_path().
 func DBusEscapeObjectPathBytestring(bytes []byte) string {
 	var _arg1 *C.guint8
-
-	_arg1 = (*C.guint8)(C.malloc(C.ulong((len(bytes) + 1)) * C.ulong(C.sizeof_guint8)))
-	defer C.free(unsafe.Pointer(_arg1))
+	var _cret *C.gchar // in
 
 	{
-		out := unsafe.Slice(_arg1, len(bytes))
-		for i := range bytes {
-			out[i] = C.guint8(bytes[i])
-		}
+		var zero byte
+		bytes = append(bytes, zero)
 	}
-
-	var _cret *C.gchar // in
+	_arg1 = (*C.guint8)(unsafe.Pointer(&bytes[0]))
 
 	_cret = C.g_dbus_escape_object_path_bytestring(_arg1)
 
@@ -127,11 +121,10 @@ func DBusGenerateGuid() string {
 func DBusGValueToGVariant(gvalue **externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GVariantType // out
+	var _cret *C.GVariant     // in
 
 	_arg1 = (*C.GValue)(gvalue.GValue)
 	_arg2 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
 
@@ -158,10 +151,9 @@ func DBusGValueToGVariant(gvalue **externglib.Value, typ *glib.VariantType) *gli
 // @out_gvalue.
 func DBusGVariantToGValue(value *glib.Variant) *externglib.Value {
 	var _arg1 *C.GVariant // out
+	var _arg2 C.GValue    // in
 
 	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	var _arg2 C.GValue // in
 
 	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
 
@@ -176,13 +168,12 @@ func DBusGVariantToGValue(value *glib.Variant) *externglib.Value {
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DBusIsGuid(string string) bool {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
+func DBusIsGuid(_string string) bool {
+	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_guid(_arg1)
 
@@ -196,13 +187,12 @@ func DBusIsGuid(string string) bool {
 }
 
 // DBusIsInterfaceName checks if @string is a valid D-Bus interface name.
-func DBusIsInterfaceName(string string) bool {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
+func DBusIsInterfaceName(_string string) bool {
+	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_interface_name(_arg1)
 
@@ -217,13 +207,12 @@ func DBusIsInterfaceName(string string) bool {
 
 // DBusIsMemberName checks if @string is a valid D-Bus member (e.g. signal or
 // method) name.
-func DBusIsMemberName(string string) bool {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
+func DBusIsMemberName(_string string) bool {
+	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_member_name(_arg1)
 
@@ -238,13 +227,12 @@ func DBusIsMemberName(string string) bool {
 
 // DBusIsName checks if @string is a valid D-Bus bus name (either unique or
 // well-known).
-func DBusIsName(string string) bool {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
+func DBusIsName(_string string) bool {
+	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_name(_arg1)
 
@@ -258,13 +246,12 @@ func DBusIsName(string string) bool {
 }
 
 // DBusIsUniqueName checks if @string is a valid D-Bus unique bus name.
-func DBusIsUniqueName(string string) bool {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
+func DBusIsUniqueName(_string string) bool {
+	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_unique_name(_arg1)
 
@@ -285,11 +272,10 @@ func DBusIsUniqueName(string string) bool {
 // allowed (e.g `_63` is not valid, the string should contain `c` instead).
 func DBusUnescapeObjectPath(s string) []byte {
 	var _arg1 *C.gchar // out
+	var _cret *C.guint8
 
 	_arg1 = (*C.gchar)(C.CString(s))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.guint8
 
 	_cret = C.g_dbus_unescape_object_path(_arg1)
 

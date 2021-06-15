@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
@@ -61,22 +60,6 @@ type UnixFDMessage interface {
 	// return a reference to the caller, but the returned list is valid for the
 	// lifetime of @message.
 	FdList() UnixFDList
-	// StealFds returns the array of file descriptors that is contained in this
-	// object.
-	//
-	// After this call, the descriptors are no longer contained in @message.
-	// Further calls will return an empty list (unless more descriptors have
-	// been added).
-	//
-	// The return result of this function must be freed with g_free(). The
-	// caller is also responsible for closing all of the file descriptors.
-	//
-	// If @length is non-nil then it is set to the number of file descriptors in
-	// the returned array. The returned array is also terminated with -1.
-	//
-	// This function never returns nil. In case there are no file descriptors
-	// contained in @message, an empty array is returned.
-	StealFds() []int
 }
 
 // unixFDMessage implements the UnixFDMessage class.
@@ -115,11 +98,10 @@ func NewUnixFDMessage() UnixFDMessage {
 
 // NewUnixFDMessageWithFdList constructs a class UnixFDMessage.
 func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
-	var _arg1 *C.GUnixFDList // out
+	var _arg1 *C.GUnixFDList   // out
+	var _cret C.GUnixFDMessage // in
 
 	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-
-	var _cret C.GUnixFDMessage // in
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 
@@ -141,11 +123,10 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 func (m unixFDMessage) AppendFd(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(fd)
-
-	var _cerr *C.GError // in
+	_arg1 = (C.gint)(fd)
 
 	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
 
@@ -161,10 +142,9 @@ func (m unixFDMessage) AppendFd(fd int) error {
 // lifetime of @message.
 func (m unixFDMessage) FdList() UnixFDList {
 	var _arg0 *C.GUnixFDMessage // out
+	var _cret *C.GUnixFDList    // in
 
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GUnixFDList // in
 
 	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
 
@@ -173,39 +153,4 @@ func (m unixFDMessage) FdList() UnixFDList {
 	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(UnixFDList)
 
 	return _unixFDList
-}
-
-// StealFds returns the array of file descriptors that is contained in this
-// object.
-//
-// After this call, the descriptors are no longer contained in @message.
-// Further calls will return an empty list (unless more descriptors have
-// been added).
-//
-// The return result of this function must be freed with g_free(). The
-// caller is also responsible for closing all of the file descriptors.
-//
-// If @length is non-nil then it is set to the number of file descriptors in
-// the returned array. The returned array is also terminated with -1.
-//
-// This function never returns nil. In case there are no file descriptors
-// contained in @message, an empty array is returned.
-func (m unixFDMessage) StealFds() []int {
-	var _arg0 *C.GUnixFDMessage // out
-
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.gint
-	var _arg1 C.gint // in
-
-	_cret = C.g_unix_fd_message_steal_fds(_arg0, &_arg1)
-
-	var _gints []int
-
-	_gints = unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg1)
-	runtime.SetFinalizer(&_gints, func(v *[]int) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-
-	return _gints
 }

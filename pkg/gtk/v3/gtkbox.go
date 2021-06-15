@@ -152,11 +152,10 @@ func marshalBox(p uintptr) (interface{}, error) {
 func NewBox(orientation Orientation, spacing int) Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gint           // out
+	var _cret C.GtkBox         // in
 
 	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = C.gint(spacing)
-
-	var _cret C.GtkBox // in
+	_arg2 = (C.gint)(spacing)
 
 	_cret = C.gtk_box_new(_arg1, _arg2)
 
@@ -169,11 +168,10 @@ func NewBox(orientation Orientation, spacing int) Box {
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
 func (b box) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkBox // out
+	var _arg0 *C.GtkBox             // out
+	var _cret C.GtkBaselinePosition // in
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkBaselinePosition // in
 
 	_cret = C.gtk_box_get_baseline_position(_arg0)
 
@@ -186,11 +184,10 @@ func (b box) BaselinePosition() BaselinePosition {
 
 // CenterWidget retrieves the center widget of the box.
 func (b box) CenterWidget() Widget {
-	var _arg0 *C.GtkBox // out
+	var _arg0 *C.GtkBox    // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_box_get_center_widget(_arg0)
 
@@ -204,11 +201,10 @@ func (b box) CenterWidget() Widget {
 // Homogeneous returns whether the box is homogeneous (all children are the
 // same size). See gtk_box_set_homogeneous().
 func (b box) Homogeneous() bool {
-	var _arg0 *C.GtkBox // out
+	var _arg0 *C.GtkBox  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_box_get_homogeneous(_arg0)
 
@@ -224,10 +220,9 @@ func (b box) Homogeneous() bool {
 // Spacing gets the value set by gtk_box_set_spacing().
 func (b box) Spacing() int {
 	var _arg0 *C.GtkBox // out
+	var _cret C.gint    // in
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_box_get_spacing(_arg0)
 
@@ -256,7 +251,7 @@ func (b box) PackEnd(child Widget, expand bool, fill bool, padding uint) {
 	if fill {
 		_arg3 = C.TRUE
 	}
-	_arg4 = C.guint(padding)
+	_arg4 = (C.guint)(padding)
 
 	C.gtk_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -279,7 +274,7 @@ func (b box) PackStart(child Widget, expand bool, fill bool, padding uint) {
 	if fill {
 		_arg3 = C.TRUE
 	}
-	_arg4 = C.guint(padding)
+	_arg4 = (C.guint)(padding)
 
 	C.gtk_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -287,16 +282,15 @@ func (b box) PackStart(child Widget, expand bool, fill bool, padding uint) {
 // QueryChildPacking obtains information about how @child is packed into
 // @box.
 func (b box) QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType PackType) {
-	var _arg0 *C.GtkBox    // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
+	var _arg0 *C.GtkBox     // out
+	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // in
 	var _arg3 C.gboolean    // in
 	var _arg4 C.guint       // in
 	var _arg5 C.GtkPackType // in
+
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_query_child_packing(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -333,7 +327,7 @@ func (b box) ReorderChild(child Widget, position int) {
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.gint(position)
+	_arg2 = (C.gint)(position)
 
 	C.gtk_box_reorder_child(_arg0, _arg1, _arg2)
 }
@@ -383,7 +377,7 @@ func (b box) SetChildPacking(child Widget, expand bool, fill bool, padding uint,
 	if fill {
 		_arg3 = C.TRUE
 	}
-	_arg4 = C.guint(padding)
+	_arg4 = (C.guint)(padding)
 	_arg5 = (C.GtkPackType)(packType)
 
 	C.gtk_box_set_child_packing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -410,7 +404,7 @@ func (b box) SetSpacing(spacing int) {
 	var _arg1 C.gint    // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.gint(spacing)
+	_arg1 = (C.gint)(spacing)
 
 	C.gtk_box_set_spacing(_arg0, _arg1)
 }

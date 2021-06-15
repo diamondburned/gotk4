@@ -157,8 +157,6 @@ func (cg *callbackGenerator) renderBlock() bool {
 		secReturn
 	)
 
-	cap := len(cg.Parameters.Parameters) + 2
-
 	cg.pen.Linef(secPrefix, "v := box.Get(uintptr(%s))", callbackArg(*cg.Closure))
 	cg.pen.Linef(secPrefix, "if v == nil {")
 	cg.pen.Linef(secPrefix, "  panic(`callback not found`)")
@@ -167,77 +165,89 @@ func (cg *callbackGenerator) renderBlock() bool {
 
 	cg.pen.Linef(secFnCall, "fn := v.(%s)", cg.GoName)
 
-	inputValues := make([]ValueProp, 0, cap)
-	outputValues := make([]ValueProp, 0, cap)
+	callbackValues := make([]ConversionValue, 0, len(cg.Parameters.Parameters)+2)
 
 	for i, param := range cg.Parameters.Parameters {
-		switch param.Direction {
-		case "inout": // TODO
-			return false
-		case "out":
-			// No need to have this declare a variable, since we're using the
-			// walrus operator in the function call.
-			outputValues = append(outputValues, NewValuePropParam(
-				SnakeToGo(false, param.Name), callbackArg(i),
-				i, param.ParameterAttrs,
-			))
-		default:
-			inputValues = append(inputValues, NewValuePropParam(
-				callbackArg(i), SnakeToGo(false, param.Name),
-				i, param.ParameterAttrs,
-			))
+		if param.Skip {
+			continue
 		}
+
+		if param.Direction == "" {
+			param.Direction = "in" // default
+		}
+
+		var in string
+		var out string
+		var dir ConversionDirection
+
+		switch param.Direction {
+		case "in":
+			in = callbackArg(i)
+			out = SnakeToGo(false, param.Name)
+			dir = ConvertCToGo
+		case "out":
+			in = SnakeToGo(false, param.Name)
+			out = callbackArg(i)
+			dir = ConvertGoToC
+		default:
+			// TODO: inout
+			return false
+		}
+
+		value := NewConversionValue(in, out, i, dir, param.ParameterAttrs)
+		callbackValues = append(callbackValues, value)
 	}
 
 	var hasReturn bool
 	if !returnIsVoid(cg.ReturnValue) {
 		hasReturn = true
-		outputValues = append(outputValues, NewValuePropReturn(
-			returnName(cg.CallableAttrs), "cret", *cg.ReturnValue,
-		))
+		returnName := returnName(cg.CallableAttrs)
+
+		value := NewConversionValueReturn(returnName, "cret", ConvertGoToC, *cg.ReturnValue)
+		callbackValues = append(callbackValues, value)
 	}
 
-	convertedIns := cg.fg.CGoConverter(cg.Name, inputValues).ConvertAll()
-	if convertedIns == nil {
-		cg.fg.Logln(LogSkip, "callback (no C->Go conversion)", cFunctionSig(cg.CallableAttrs))
+	convert := NewTypeConverter(cg.fg, cg.Name, callbackValues)
+	results := convert.ConvertAll()
+	if results == nil {
+		cg.fg.Logln(LogSkip, "callback has no conversion", cFunctionSig(cg.CallableAttrs))
 		return false
 	}
 
-	convertedOuts := cg.fg.GoCConverter(cg.Name, outputValues).ConvertAll()
-	if convertedOuts == nil {
-		cg.fg.Logln(LogSkip, "callback (no Go->C conversion)", cFunctionSig(cg.CallableAttrs))
-		return false
+	cg.fg.applyConvertedFxs(results)
+
+	goCallArgs := pen.NewJoints(", ", len(results))
+	goCallRets := pen.NewJoints(", ", len(results))
+
+	goTypeArgs := pen.NewJoints(", ", len(results))
+	goTypeRets := pen.NewJoints(", ", len(results))
+
+	for _, result := range results {
+		if result.Skip {
+			continue
+		}
+
+		switch result.Direction {
+		case ConvertCToGo:
+			goCallArgs.Add(result.OutCall)
+			goTypeArgs.Addf("%s %s", result.OutName, result.OutType)
+
+			cg.pen.Line(secInputPre, result.OutDeclare)
+			cg.pen.Line(secInputConv, result.Conversion)
+
+		case ConvertGoToC:
+			goCallRets.Add(result.InCall)
+			goTypeArgs.Addf("%s %s", result.InName, result.InType)
+
+			cg.pen.Line(secOutputPre, result.OutDeclare)
+			cg.pen.Line(secOutputConv, result.Conversion)
+		}
 	}
 
-	cg.fg.applyConvertedFxs(convertedIns)
-	cg.fg.applyConvertedFxs(convertedOuts)
-
-	goArgs := pen.NewJoints(", ", len(convertedIns))
-	callbackArgs := pen.NewJoints(", ", cap)
-
-	for _, converted := range convertedIns {
-		goArgs.Addf("%s %s", converted.OutName, converted.OutType)
-		callbackArgs.Add(converted.OutCall)
-
-		cg.pen.Line(secInputPre, converted.OutDeclare)
-		cg.pen.Line(secInputConv, converted.Conversion)
-	}
-
-	goRets := pen.NewJoints(", ", len(convertedOuts))
-	callbackRets := pen.NewJoints(", ", cap)
-
-	for _, converted := range convertedOuts {
-		goRets.Addf("%s %s", converted.InName, converted.InType)
-		callbackRets.Add(converted.InCall)
-
-		cg.pen.Line(secOutputPre, converted.OutDeclare)
-		cg.pen.Line(secOutputConv, converted.Conversion)
-	}
-
-	if callbackRets.Len() == 0 {
-		cg.pen.Linef(secFnCall, "fn(%s)", callbackArgs.Join())
+	if goCallRets.Len() == 0 {
+		cg.pen.Linef(secFnCall, "fn(%s)", goCallArgs.Join())
 	} else {
-		cg.pen.Linef(secFnCall, "%s := fn(%s)", callbackRets.Join(), callbackArgs.Join())
+		cg.pen.Linef(secFnCall, "%s := fn(%s)", goCallRets.Join(), goCallArgs.Join())
 	}
 
 	if hasReturn {
@@ -246,9 +256,9 @@ func (cg *callbackGenerator) renderBlock() bool {
 
 	cg.Block = cg.pen.String()
 
-	cg.GoTail = "(" + goArgs.Join() + ")"
-	if goRets.Len() > 0 {
-		cg.GoTail += " (" + goRets.Join() + ")"
+	cg.GoTail = "(" + goTypeArgs.Join() + ")"
+	if goTypeRets.Len() > 0 {
+		cg.GoTail += " (" + goTypeRets.Join() + ")"
 	}
 
 	// Only add the import now, since we know that the callback will be

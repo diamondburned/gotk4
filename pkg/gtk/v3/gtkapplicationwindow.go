@@ -171,11 +171,10 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 
 // NewApplicationWindow constructs a class ApplicationWindow.
 func NewApplicationWindow(application Application) ApplicationWindow {
-	var _arg1 *C.GtkApplication // out
+	var _arg1 *C.GtkApplication      // out
+	var _cret C.GtkApplicationWindow // in
 
 	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-
-	var _cret C.GtkApplicationWindow // in
 
 	_cret = C.gtk_application_window_new(_arg1)
 
@@ -190,10 +189,9 @@ func NewApplicationWindow(application Application) ApplicationWindow {
 // call to gtk_application_window_set_help_overlay().
 func (w applicationWindow) HelpOverlay() ShortcutsWindow {
 	var _arg0 *C.GtkApplicationWindow // out
+	var _cret *C.GtkShortcutsWindow   // in
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
-
-	var _cret *C.GtkShortcutsWindow // in
 
 	_cret = C.gtk_application_window_get_help_overlay(_arg0)
 
@@ -208,10 +206,9 @@ func (w applicationWindow) HelpOverlay() ShortcutsWindow {
 // added to a Application, returns `0`.
 func (w applicationWindow) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
+	var _cret C.guint                 // in
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_application_window_get_id(_arg0)
 
@@ -226,10 +223,9 @@ func (w applicationWindow) ID() uint {
 // menu and menubar as needed.
 func (w applicationWindow) ShowMenubar() bool {
 	var _arg0 *C.GtkApplicationWindow // out
+	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_application_window_get_show_menubar(_arg0)
 

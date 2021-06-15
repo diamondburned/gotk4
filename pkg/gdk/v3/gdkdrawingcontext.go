@@ -80,10 +80,9 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 // gdk_window_begin_draw_frame() and gdk_window_end_draw_frame().
 func (c drawingContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GdkDrawingContext // out
+	var _cret *C.cairo_t           // in
 
 	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.cairo_t // in
 
 	_cret = C.gdk_drawing_context_get_cairo_context(_arg0)
 
@@ -97,10 +96,9 @@ func (c drawingContext) CairoContext() *cairo.Context {
 // Clip retrieves a copy of the clip region used when creating the @context.
 func (c drawingContext) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
+	var _cret *C.cairo_region_t    // in
 
 	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.cairo_region_t // in
 
 	_cret = C.gdk_drawing_context_get_clip(_arg0)
 
@@ -117,10 +115,9 @@ func (c drawingContext) Clip() *cairo.Region {
 // Window retrieves the window that created the drawing @context.
 func (c drawingContext) Window() Window {
 	var _arg0 *C.GdkDrawingContext // out
+	var _cret *C.GdkWindow         // in
 
 	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkWindow // in
 
 	_cret = C.gdk_drawing_context_get_window(_arg0)
 
@@ -134,10 +131,9 @@ func (c drawingContext) Window() Window {
 // IsValid checks whether the given DrawingContext is valid.
 func (c drawingContext) IsValid() bool {
 	var _arg0 *C.GdkDrawingContext // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_drawing_context_is_valid(_arg0)
 

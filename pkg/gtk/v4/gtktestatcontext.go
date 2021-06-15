@@ -25,7 +25,7 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(line)
+	_arg3 = (C.int)(line)
 	_arg4 = (*C.char)(C.CString(fn))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(C.CString(expr))
@@ -41,11 +41,10 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn
 func TestAccessibleHasProperty(accessible Accessible, property AccessibleProperty) bool {
 	var _arg1 *C.GtkAccessible        // out
 	var _arg2 C.GtkAccessibleProperty // out
+	var _cret C.gboolean              // in
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = (C.GtkAccessibleProperty)(property)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_accessible_has_property(_arg1, _arg2)
 
@@ -62,11 +61,10 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelation) bool {
 	var _arg1 *C.GtkAccessible        // out
 	var _arg2 C.GtkAccessibleRelation // out
+	var _cret C.gboolean              // in
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = (C.GtkAccessibleRelation)(relation)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_accessible_has_relation(_arg1, _arg2)
 
@@ -84,11 +82,10 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 	var _arg1 *C.GtkAccessible    // out
 	var _arg2 C.GtkAccessibleRole // out
+	var _cret C.gboolean          // in
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = (C.GtkAccessibleRole)(role)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_accessible_has_role(_arg1, _arg2)
 
@@ -105,11 +102,10 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 	var _arg1 *C.GtkAccessible     // out
 	var _arg2 C.GtkAccessibleState // out
+	var _cret C.gboolean           // in
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = (C.GtkAccessibleState)(state)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_accessible_has_state(_arg1, _arg2)
 

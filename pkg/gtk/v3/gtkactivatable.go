@@ -358,10 +358,9 @@ func (a activatable) DoSetRelatedAction(action Action) {
 // RelatedAction gets the related Action for @activatable.
 func (a activatable) RelatedAction() Action {
 	var _arg0 *C.GtkActivatable // out
+	var _cret *C.GtkAction      // in
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkAction // in
 
 	_cret = C.gtk_activatable_get_related_action(_arg0)
 
@@ -377,10 +376,9 @@ func (a activatable) RelatedAction() Action {
 // appearance.
 func (a activatable) UseActionAppearance() bool {
 	var _arg0 *C.GtkActivatable // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_activatable_get_use_action_appearance(_arg0)
 

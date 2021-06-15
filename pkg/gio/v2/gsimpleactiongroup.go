@@ -115,12 +115,11 @@ func (s simpleActionGroup) Insert(action Action) {
 func (s simpleActionGroup) Lookup(actionName string) Action {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
+	var _cret *C.GAction            // in
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GAction // in
 
 	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
 

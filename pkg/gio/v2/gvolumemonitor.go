@@ -76,12 +76,11 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 func (v volumeMonitor) MountForUUID(uuid string) Mount {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
+	var _cret *C.GMount         // in
 
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GMount // in
 
 	_cret = C.g_volume_monitor_get_mount_for_uuid(_arg0, _arg1)
 
@@ -97,12 +96,11 @@ func (v volumeMonitor) MountForUUID(uuid string) Mount {
 func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
+	var _cret *C.GVolume        // in
 
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GVolume // in
 
 	_cret = C.g_volume_monitor_get_volume_for_uuid(_arg0, _arg1)
 

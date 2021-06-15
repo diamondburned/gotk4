@@ -125,10 +125,9 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 // Transform retrieves the transformation of the child.
 func (c fixedLayoutChild) Transform() *gsk.Transform {
 	var _arg0 *C.GtkFixedLayoutChild // out
+	var _cret *C.GskTransform        // in
 
 	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gtk_fixed_layout_child_get_transform(_arg0)
 

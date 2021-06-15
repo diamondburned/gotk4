@@ -22,20 +22,19 @@ func SelectionConvert(requestor Window, selection Atom, target Atom, time_ uint3
 	var _arg4 C.guint32    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	_arg4 = C.guint32(time_)
+	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg4 = (C.guint32)(time_)
 
 	C.gdk_selection_convert(_arg1, _arg2, _arg3, _arg4)
 }
 
 // SelectionOwnerGet determines the owner of the given selection.
 func SelectionOwnerGet(selection Atom) Window {
-	var _arg1 C.GdkAtom // out
-
-	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-
+	var _arg1 C.GdkAtom    // out
 	var _cret *C.GdkWindow // in
+
+	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gdk_selection_owner_get(_arg1)
 
@@ -54,11 +53,10 @@ func SelectionOwnerGet(selection Atom) Window {
 func SelectionOwnerGetForDisplay(display Display, selection Atom) Window {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.GdkAtom     // out
+	var _cret *C.GdkWindow  // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-
-	var _cret *C.GdkWindow // in
+	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gdk_selection_owner_get_for_display(_arg1, _arg2)
 
@@ -75,15 +73,14 @@ func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent boo
 	var _arg2 C.GdkAtom    // out
 	var _arg3 C.guint32    // out
 	var _arg4 C.gboolean   // out
+	var _cret C.gboolean   // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(owner.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg3 = C.guint32(time_)
+	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = (C.guint32)(time_)
 	if sendEvent {
 		_arg4 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_selection_owner_set(_arg1, _arg2, _arg3, _arg4)
 
@@ -104,16 +101,15 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, 
 	var _arg3 C.GdkAtom     // out
 	var _arg4 C.guint32     // out
 	var _arg5 C.gboolean    // out
+	var _cret C.gboolean    // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(owner.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg4 = C.guint32(time_)
+	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg4 = (C.guint32)(time_)
 	if sendEvent {
 		_arg5 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_selection_owner_set_for_display(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -135,10 +131,10 @@ func SelectionSendNotify(requestor Window, selection Atom, target Atom, property
 	var _arg5 C.guint32    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	_arg4 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	_arg5 = C.guint32(time_)
+	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg4 = *(*C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg5 = (C.guint32)(time_)
 
 	C.gdk_selection_send_notify(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -154,10 +150,10 @@ func SelectionSendNotifyForDisplay(display Display, requestor Window, selection 
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg4 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	_arg5 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	_arg6 = C.guint32(time_)
+	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg4 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg5 = *(*C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg6 = (C.guint32)(time_)
 
 	C.gdk_selection_send_notify_for_display(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

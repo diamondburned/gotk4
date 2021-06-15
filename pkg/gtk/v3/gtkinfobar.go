@@ -196,7 +196,7 @@ func (i infoBar) AddActionWidget(child Widget, responseId int) {
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.gint(responseId)
+	_arg2 = (C.gint)(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
 }
@@ -209,13 +209,12 @@ func (i infoBar) AddButton(buttonText string, responseId int) Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
+	var _cret *C.GtkWidget  // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(responseId)
-
-	var _cret *C.GtkWidget // in
+	_arg2 = (C.gint)(responseId)
 
 	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
 
@@ -229,10 +228,9 @@ func (i infoBar) AddButton(buttonText string, responseId int) Button {
 // ActionArea returns the action area of @info_bar.
 func (i infoBar) ActionArea() Box {
 	var _arg0 *C.GtkInfoBar // out
+	var _cret *C.GtkWidget  // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_info_bar_get_action_area(_arg0)
 
@@ -246,10 +244,9 @@ func (i infoBar) ActionArea() Box {
 // ContentArea returns the content area of @info_bar.
 func (i infoBar) ContentArea() Box {
 	var _arg0 *C.GtkInfoBar // out
+	var _cret *C.GtkWidget  // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_info_bar_get_content_area(_arg0)
 
@@ -262,11 +259,10 @@ func (i infoBar) ContentArea() Box {
 
 // MessageType returns the message type of the message area.
 func (i infoBar) MessageType() MessageType {
-	var _arg0 *C.GtkInfoBar // out
+	var _arg0 *C.GtkInfoBar    // out
+	var _cret C.GtkMessageType // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret C.GtkMessageType // in
 
 	_cret = C.gtk_info_bar_get_message_type(_arg0)
 
@@ -279,10 +275,9 @@ func (i infoBar) MessageType() MessageType {
 
 func (i infoBar) Revealed() bool {
 	var _arg0 *C.GtkInfoBar // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_info_bar_get_revealed(_arg0)
 
@@ -299,10 +294,9 @@ func (i infoBar) Revealed() bool {
 // button.
 func (i infoBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkInfoBar // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
 
@@ -321,7 +315,7 @@ func (i infoBar) Response(responseId int) {
 	var _arg1 C.gint        // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = C.gint(responseId)
+	_arg1 = (C.gint)(responseId)
 
 	C.gtk_info_bar_response(_arg0, _arg1)
 }
@@ -337,7 +331,7 @@ func (i infoBar) SetDefaultResponse(responseId int) {
 	var _arg1 C.gint        // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = C.gint(responseId)
+	_arg1 = (C.gint)(responseId)
 
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
 }
@@ -364,7 +358,7 @@ func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg2 C.gboolean    // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = C.gint(responseId)
+	_arg1 = (C.gint)(responseId)
 	if setting {
 		_arg2 = C.TRUE
 	}

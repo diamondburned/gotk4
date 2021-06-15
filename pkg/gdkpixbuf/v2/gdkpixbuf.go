@@ -48,11 +48,10 @@ func marshalPixbufNonAnim(p uintptr) (interface{}, error) {
 
 // NewPixbufNonAnim constructs a class PixbufNonAnim.
 func NewPixbufNonAnim(pixbuf Pixbuf) PixbufNonAnim {
-	var _arg1 *C.GdkPixbuf // out
+	var _arg1 *C.GdkPixbuf       // out
+	var _cret C.GdkPixbufNonAnim // in
 
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	var _cret C.GdkPixbufNonAnim // in
 
 	_cret = C.gdk_pixbuf_non_anim_new(_arg1)
 

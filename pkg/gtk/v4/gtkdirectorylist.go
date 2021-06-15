@@ -130,14 +130,13 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 
 // NewDirectoryList constructs a class DirectoryList.
 func NewDirectoryList(attributes string, file gio.File) DirectoryList {
-	var _arg1 *C.char  // out
-	var _arg2 *C.GFile // out
+	var _arg1 *C.char            // out
+	var _arg2 *C.GFile           // out
+	var _cret C.GtkDirectoryList // in
 
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkDirectoryList // in
 
 	_cret = C.gtk_directory_list_new(_arg1, _arg2)
 
@@ -151,10 +150,9 @@ func NewDirectoryList(attributes string, file gio.File) DirectoryList {
 // Attributes gets the attributes queried on the children.
 func (s directoryList) Attributes() string {
 	var _arg0 *C.GtkDirectoryList // out
+	var _cret *C.char             // in
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_directory_list_get_attributes(_arg0)
 
@@ -175,10 +173,9 @@ func (s directoryList) Attributes() string {
 // successfully queried files will remain in the list.
 func (s directoryList) Error() error {
 	var _arg0 *C.GtkDirectoryList // out
+	var _cret *C.GError           // in
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GError // in
 
 	_cret = C.gtk_directory_list_get_error(_arg0)
 
@@ -192,10 +189,9 @@ func (s directoryList) Error() error {
 // File gets the file whose children are currently enumerated.
 func (s directoryList) File() gio.File {
 	var _arg0 *C.GtkDirectoryList // out
+	var _cret *C.GFile            // in
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.gtk_directory_list_get_file(_arg0)
 
@@ -210,10 +206,9 @@ func (s directoryList) File() gio.File {
 // gtk_directory_list_set_io_priority().
 func (s directoryList) IOPriority() int {
 	var _arg0 *C.GtkDirectoryList // out
+	var _cret C.int               // in
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_directory_list_get_io_priority(_arg0)
 
@@ -228,10 +223,9 @@ func (s directoryList) IOPriority() int {
 // for changes.
 func (s directoryList) Monitored() bool {
 	var _arg0 *C.GtkDirectoryList // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_directory_list_get_monitored(_arg0)
 
@@ -251,10 +245,9 @@ func (s directoryList) Monitored() bool {
 // The order in which are added is undefined and may change in between runs.
 func (s directoryList) IsLoading() bool {
 	var _arg0 *C.GtkDirectoryList // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_directory_list_is_loading(_arg0)
 
@@ -310,7 +303,7 @@ func (s directoryList) SetIOPriority(ioPriority int) {
 	var _arg1 C.int               // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(ioPriority)
+	_arg1 = (C.int)(ioPriority)
 
 	C.gtk_directory_list_set_io_priority(_arg0, _arg1)
 }

@@ -155,11 +155,10 @@ func NewFileFilter() FileFilter {
 
 // NewFileFilterFromGVariant constructs a class FileFilter.
 func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
-	var _arg1 *C.GVariant // out
+	var _arg1 *C.GVariant     // out
+	var _cret C.GtkFileFilter // in
 
 	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	var _cret C.GtkFileFilter // in
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
@@ -213,11 +212,10 @@ func (f fileFilter) AddPixbufFormats() {
 func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 *C.GtkFileFilterInfo // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkFileFilterInfo)(unsafe.Pointer(filterInfo.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
 
@@ -234,10 +232,9 @@ func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
 // gtk_file_filter_set_name().
 func (f fileFilter) Name() string {
 	var _arg0 *C.GtkFileFilter // out
+	var _cret *C.gchar         // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
 
@@ -254,11 +251,10 @@ func (f fileFilter) Name() string {
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of FileChooser.
 func (f fileFilter) Needed() FileFilterFlags {
-	var _arg0 *C.GtkFileFilter // out
+	var _arg0 *C.GtkFileFilter     // out
+	var _cret C.GtkFileFilterFlags // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret C.GtkFileFilterFlags // in
 
 	_cret = C.gtk_file_filter_get_needed(_arg0)
 
@@ -286,10 +282,9 @@ func (f fileFilter) SetName(name string) {
 // ToGVariant: serialize a file filter to an a{sv} variant.
 func (f fileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
+	var _cret *C.GVariant      // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 
@@ -319,39 +314,4 @@ func WrapFileFilterInfo(ptr unsafe.Pointer) *FileFilterInfo {
 // Native returns the underlying C source pointer.
 func (f *FileFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
-}
-
-// Contains gets the field inside the struct.
-func (f *FileFilterInfo) Contains() FileFilterFlags {
-	var v FileFilterFlags // out
-	v = FileFilterFlags(f.native.contains)
-	return v
-}
-
-// Filename gets the field inside the struct.
-func (f *FileFilterInfo) Filename() string {
-	var v string // out
-	v = C.GoString(f.native.filename)
-	return v
-}
-
-// URI gets the field inside the struct.
-func (f *FileFilterInfo) URI() string {
-	var v string // out
-	v = C.GoString(f.native.uri)
-	return v
-}
-
-// DisplayName gets the field inside the struct.
-func (f *FileFilterInfo) DisplayName() string {
-	var v string // out
-	v = C.GoString(f.native.display_name)
-	return v
-}
-
-// MIMEType gets the field inside the struct.
-func (f *FileFilterInfo) MIMEType() string {
-	var v string // out
-	v = C.GoString(f.native.mime_type)
-	return v
 }

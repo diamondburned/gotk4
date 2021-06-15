@@ -90,7 +90,7 @@ func (r cellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg1 C.int                  // out
 
 	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(r.Native()))
-	_arg1 = C.int(numberOfRows)
+	_arg1 = (C.int)(numberOfRows)
 
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)
 }

@@ -61,12 +61,11 @@ func marshalTimeZone(p uintptr) (interface{}, error) {
 
 // NewTimeZone constructs a struct TimeZone.
 func NewTimeZone(identifier string) *TimeZone {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar     // out
+	var _cret *C.GTimeZone // in
 
 	_arg1 = (*C.gchar)(C.CString(identifier))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GTimeZone // in
 
 	_cret = C.g_time_zone_new(_arg1)
 
@@ -82,12 +81,11 @@ func NewTimeZone(identifier string) *TimeZone {
 
 // NewTimeZoneIdentifier constructs a struct TimeZone.
 func NewTimeZoneIdentifier(identifier string) *TimeZone {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar     // out
+	var _cret *C.GTimeZone // in
 
 	_arg1 = (*C.gchar)(C.CString(identifier))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GTimeZone // in
 
 	_cret = C.g_time_zone_new_identifier(_arg1)
 
@@ -119,11 +117,10 @@ func NewTimeZoneLocal() *TimeZone {
 
 // NewTimeZoneOffset constructs a struct TimeZone.
 func NewTimeZoneOffset(seconds int32) *TimeZone {
-	var _arg1 C.gint32 // out
-
-	_arg1 = C.gint32(seconds)
-
+	var _arg1 C.gint32     // out
 	var _cret *C.GTimeZone // in
+
+	_arg1 = (C.gint32)(seconds)
 
 	_cret = C.g_time_zone_new_offset(_arg1)
 
@@ -176,12 +173,11 @@ func (t *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.GTimeType  // out
 	var _arg2 *C.gint64    // out
+	var _cret C.gint       // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.GTimeType)(typ)
-	_arg2 = *C.gint64(time_)
-
-	var _cret C.gint // in
+	_arg2 = (*C.gint64)(time_)
 
 	_cret = C.g_time_zone_adjust_time(_arg0, _arg1, _arg2)
 
@@ -212,12 +208,11 @@ func (t *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.GTimeType  // out
 	var _arg2 C.gint64     // out
+	var _cret C.gint       // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.GTimeType)(typ)
-	_arg2 = C.gint64(time_)
-
-	var _cret C.gint // in
+	_arg2 = (C.gint64)(time_)
 
 	_cret = C.g_time_zone_find_interval(_arg0, _arg1, _arg2)
 
@@ -236,11 +231,10 @@ func (t *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 func (t *TimeZone) Abbreviation(interval int) string {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gint(interval)
-
-	var _cret *C.gchar // in
+	_arg1 = (C.gint)(interval)
 
 	_cret = C.g_time_zone_get_abbreviation(_arg0, _arg1)
 
@@ -261,10 +255,9 @@ func (t *TimeZone) Abbreviation(interval int) string {
 // this function.
 func (t *TimeZone) Identifier() string {
 	var _arg0 *C.GTimeZone // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_time_zone_get_identifier(_arg0)
 
@@ -284,11 +277,10 @@ func (t *TimeZone) Identifier() string {
 func (t *TimeZone) Offset(interval int) int32 {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
+	var _cret C.gint32     // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gint(interval)
-
-	var _cret C.gint32 // in
+	_arg1 = (C.gint)(interval)
 
 	_cret = C.g_time_zone_get_offset(_arg0, _arg1)
 
@@ -304,11 +296,10 @@ func (t *TimeZone) Offset(interval int) int32 {
 func (t *TimeZone) IsDst(interval int) bool {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gint(interval)
-
-	var _cret C.gboolean // in
+	_arg1 = (C.gint)(interval)
 
 	_cret = C.g_time_zone_is_dst(_arg0, _arg1)
 
@@ -324,10 +315,9 @@ func (t *TimeZone) IsDst(interval int) bool {
 // Ref increases the reference count on @tz.
 func (t *TimeZone) Ref() *TimeZone {
 	var _arg0 *C.GTimeZone // out
+	var _cret *C.GTimeZone // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GTimeZone // in
 
 	_cret = C.g_time_zone_ref(_arg0)
 

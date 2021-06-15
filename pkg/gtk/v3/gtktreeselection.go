@@ -117,10 +117,9 @@ func marshalTreeSelection(p uintptr) (interface{}, error) {
 // @tree.
 func (s treeSelection) CountSelectedRows() int {
 	var _arg0 *C.GtkTreeSelection // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_tree_selection_count_selected_rows(_arg0)
 
@@ -135,10 +134,9 @@ func (s treeSelection) CountSelectedRows() int {
 // gtk_tree_selection_set_mode().
 func (s treeSelection) Mode() SelectionMode {
 	var _arg0 *C.GtkTreeSelection // out
+	var _cret C.GtkSelectionMode  // in
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSelectionMode // in
 
 	_cret = C.gtk_tree_selection_get_mode(_arg0)
 
@@ -156,12 +154,11 @@ func (s treeSelection) Mode() SelectionMode {
 // you use @selection is K_SELECTION_MULTIPLE.
 func (s treeSelection) Selected() (TreeModel, TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _arg1 *C.GtkTreeModel // in
+	var _arg1 *C.GtkTreeModel     // in
 	var _iter TreeIter
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
@@ -181,10 +178,9 @@ func (s treeSelection) Selected() (TreeModel, TreeIter, bool) {
 // TreeView returns the tree view associated with @selection.
 func (s treeSelection) TreeView() TreeView {
 	var _arg0 *C.GtkTreeSelection // out
+	var _cret *C.GtkTreeView      // in
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkTreeView // in
 
 	_cret = C.gtk_tree_selection_get_tree_view(_arg0)
 
@@ -199,11 +195,10 @@ func (s treeSelection) TreeView() TreeView {
 func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeIter      // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_selection_iter_is_selected(_arg0, _arg1)
 
@@ -221,11 +216,10 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 func (s treeSelection) PathIsSelected(path *TreePath) bool {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_selection_path_is_selected(_arg0, _arg1)
 

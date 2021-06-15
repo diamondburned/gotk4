@@ -151,10 +151,9 @@ func (o overlay) AddOverlay(widget Widget) {
 // Child gets the child widget of @overlay.
 func (o overlay) Child() Widget {
 	var _arg0 *C.GtkOverlay // out
+	var _cret *C.GtkWidget  // in
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_overlay_get_child(_arg0)
 
@@ -169,11 +168,10 @@ func (o overlay) Child() Widget {
 func (o overlay) ClipOverlay(widget Widget) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_overlay_get_clip_overlay(_arg0, _arg1)
 
@@ -191,11 +189,10 @@ func (o overlay) ClipOverlay(widget Widget) bool {
 func (o overlay) MeasureOverlay(widget Widget) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_overlay_get_measure_overlay(_arg0, _arg1)
 

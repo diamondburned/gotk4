@@ -159,14 +159,13 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 	var _arg1 C.guint    // out
 	var _arg2 C.guint    // out
 	var _arg3 C.gboolean // out
+	var _cret C.GtkTable // in
 
-	_arg1 = C.guint(rows)
-	_arg2 = C.guint(columns)
+	_arg1 = (C.guint)(rows)
+	_arg2 = (C.guint)(columns)
 	if homogeneous {
 		_arg3 = C.TRUE
 	}
-
-	var _cret C.GtkTable // in
 
 	_cret = C.gtk_table_new(_arg1, _arg2, _arg3)
 
@@ -207,14 +206,14 @@ func (t table) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.guint(leftAttach)
-	_arg3 = C.guint(rightAttach)
-	_arg4 = C.guint(topAttach)
-	_arg5 = C.guint(bottomAttach)
+	_arg2 = (C.guint)(leftAttach)
+	_arg3 = (C.guint)(rightAttach)
+	_arg4 = (C.guint)(topAttach)
+	_arg5 = (C.guint)(bottomAttach)
 	_arg6 = (C.GtkAttachOptions)(xoptions)
 	_arg7 = (C.GtkAttachOptions)(yoptions)
-	_arg8 = C.guint(xpadding)
-	_arg9 = C.guint(ypadding)
+	_arg8 = (C.guint)(xpadding)
+	_arg9 = (C.guint)(ypadding)
 
 	C.gtk_table_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
@@ -234,10 +233,10 @@ func (t table) AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, 
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.guint(leftAttach)
-	_arg3 = C.guint(rightAttach)
-	_arg4 = C.guint(topAttach)
-	_arg5 = C.guint(bottomAttach)
+	_arg2 = (C.guint)(leftAttach)
+	_arg3 = (C.guint)(rightAttach)
+	_arg4 = (C.guint)(topAttach)
+	_arg5 = (C.guint)(bottomAttach)
 
 	C.gtk_table_attach_defaults(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -247,11 +246,10 @@ func (t table) AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, 
 func (t table) ColSpacing(column uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
+	var _cret C.guint     // in
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = C.guint(column)
-
-	var _cret C.guint // in
+	_arg1 = (C.guint)(column)
 
 	_cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
 
@@ -267,10 +265,9 @@ func (t table) ColSpacing(column uint) uint {
 // gtk_table_set_col_spacings())
 func (t table) DefaultColSpacing() uint {
 	var _arg0 *C.GtkTable // out
+	var _cret C.guint     // in
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 
@@ -286,10 +283,9 @@ func (t table) DefaultColSpacing() uint {
 // gtk_table_set_row_spacings())
 func (t table) DefaultRowSpacing() uint {
 	var _arg0 *C.GtkTable // out
+	var _cret C.guint     // in
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 
@@ -304,10 +300,9 @@ func (t table) DefaultRowSpacing() uint {
 // same width and height. (See gtk_table_set_homogeneous ())
 func (t table) Homogeneous() bool {
 	var _arg0 *C.GtkTable // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_table_get_homogeneous(_arg0)
 
@@ -325,11 +320,10 @@ func (t table) Homogeneous() bool {
 func (t table) RowSpacing(row uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
+	var _cret C.guint     // in
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = C.guint(row)
-
-	var _cret C.guint // in
+	_arg1 = (C.guint)(row)
 
 	_cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
 
@@ -343,11 +337,10 @@ func (t table) RowSpacing(row uint) uint {
 // Size gets the number of rows and columns in the table.
 func (t table) Size() (rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // in
+	var _arg2 C.guint     // in
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-
-	var _arg1 C.guint // in
-	var _arg2 C.guint // in
 
 	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
 
@@ -368,8 +361,8 @@ func (t table) Resize(rows uint, columns uint) {
 	var _arg2 C.guint     // out
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = C.guint(rows)
-	_arg2 = C.guint(columns)
+	_arg1 = (C.guint)(rows)
+	_arg2 = (C.guint)(columns)
 
 	C.gtk_table_resize(_arg0, _arg1, _arg2)
 }
@@ -382,8 +375,8 @@ func (t table) SetColSpacing(column uint, spacing uint) {
 	var _arg2 C.guint     // out
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = C.guint(column)
-	_arg2 = C.guint(spacing)
+	_arg1 = (C.guint)(column)
+	_arg2 = (C.guint)(spacing)
 
 	C.gtk_table_set_col_spacing(_arg0, _arg1, _arg2)
 }
@@ -395,7 +388,7 @@ func (t table) SetColSpacings(spacing uint) {
 	var _arg1 C.guint     // out
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = C.guint(spacing)
+	_arg1 = (C.guint)(spacing)
 
 	C.gtk_table_set_col_spacings(_arg0, _arg1)
 }
@@ -422,8 +415,8 @@ func (t table) SetRowSpacing(row uint, spacing uint) {
 	var _arg2 C.guint     // out
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = C.guint(row)
-	_arg2 = C.guint(spacing)
+	_arg1 = (C.guint)(row)
+	_arg2 = (C.guint)(spacing)
 
 	C.gtk_table_set_row_spacing(_arg0, _arg1, _arg2)
 }
@@ -435,7 +428,7 @@ func (t table) SetRowSpacings(spacing uint) {
 	var _arg1 C.guint     // out
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = C.guint(spacing)
+	_arg1 = (C.guint)(spacing)
 
 	C.gtk_table_set_row_spacings(_arg0, _arg1)
 }
@@ -459,55 +452,6 @@ func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Widget gets the field inside the struct.
-func (t *TableChild) Widget() Widget {
-	var v Widget // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget.Native()))).(Widget)
-	return v
-}
-
-// LeftAttach gets the field inside the struct.
-func (t *TableChild) LeftAttach() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.left_attach)
-	return v
-}
-
-// RightAttach gets the field inside the struct.
-func (t *TableChild) RightAttach() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.right_attach)
-	return v
-}
-
-// TopAttach gets the field inside the struct.
-func (t *TableChild) TopAttach() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.top_attach)
-	return v
-}
-
-// BottomAttach gets the field inside the struct.
-func (t *TableChild) BottomAttach() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.bottom_attach)
-	return v
-}
-
-// Xpadding gets the field inside the struct.
-func (t *TableChild) Xpadding() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.xpadding)
-	return v
-}
-
-// Ypadding gets the field inside the struct.
-func (t *TableChild) Ypadding() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.ypadding)
-	return v
-}
-
 type TableRowCol struct {
 	native C.GtkTableRowCol
 }
@@ -525,25 +469,4 @@ func WrapTableRowCol(ptr unsafe.Pointer) *TableRowCol {
 // Native returns the underlying C source pointer.
 func (t *TableRowCol) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// Requisition gets the field inside the struct.
-func (t *TableRowCol) Requisition() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.requisition)
-	return v
-}
-
-// Allocation gets the field inside the struct.
-func (t *TableRowCol) Allocation() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.allocation)
-	return v
-}
-
-// Spacing gets the field inside the struct.
-func (t *TableRowCol) Spacing() uint16 {
-	var v uint16 // out
-	v = (uint16)(t.native.spacing)
-	return v
 }

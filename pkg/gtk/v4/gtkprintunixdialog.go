@@ -162,14 +162,13 @@ func marshalPrintUnixDialog(p uintptr) (interface{}, error) {
 
 // NewPrintUnixDialog constructs a class PrintUnixDialog.
 func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
-	var _arg1 *C.char      // out
-	var _arg2 *C.GtkWindow // out
+	var _arg1 *C.char              // out
+	var _arg2 *C.GtkWindow         // out
+	var _cret C.GtkPrintUnixDialog // in
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkPrintUnixDialog // in
 
 	_cret = C.gtk_print_unix_dialog_new(_arg1, _arg2)
 
@@ -196,10 +195,9 @@ func (d printUnixDialog) AddCustomTab(child Widget, tabLabel Widget) {
 // CurrentPage gets the current page of the `GtkPrintUnixDialog`.
 func (d printUnixDialog) CurrentPage() int {
 	var _arg0 *C.GtkPrintUnixDialog // out
+	var _cret C.int                 // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_print_unix_dialog_get_current_page(_arg0)
 
@@ -213,10 +211,9 @@ func (d printUnixDialog) CurrentPage() int {
 // EmbedPageSetup gets whether to embed the page setup.
 func (d printUnixDialog) EmbedPageSetup() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_unix_dialog_get_embed_page_setup(_arg0)
 
@@ -232,10 +229,9 @@ func (d printUnixDialog) EmbedPageSetup() bool {
 // HasSelection gets whether there is a selection.
 func (d printUnixDialog) HasSelection() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_unix_dialog_get_has_selection(_arg0)
 
@@ -251,11 +247,10 @@ func (d printUnixDialog) HasSelection() bool {
 // ManualCapabilities gets the capabilities that have been set on this
 // `GtkPrintUnixDialog`.
 func (d printUnixDialog) ManualCapabilities() PrintCapabilities {
-	var _arg0 *C.GtkPrintUnixDialog // out
+	var _arg0 *C.GtkPrintUnixDialog  // out
+	var _cret C.GtkPrintCapabilities // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret C.GtkPrintCapabilities // in
 
 	_cret = C.gtk_print_unix_dialog_get_manual_capabilities(_arg0)
 
@@ -269,10 +264,9 @@ func (d printUnixDialog) ManualCapabilities() PrintCapabilities {
 // PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
 func (d printUnixDialog) PageSetup() PageSetup {
 	var _arg0 *C.GtkPrintUnixDialog // out
+	var _cret *C.GtkPageSetup       // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPageSetup // in
 
 	_cret = C.gtk_print_unix_dialog_get_page_setup(_arg0)
 
@@ -286,10 +280,9 @@ func (d printUnixDialog) PageSetup() PageSetup {
 // PageSetupSet gets whether a page setup was set by the user.
 func (d printUnixDialog) PageSetupSet() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_unix_dialog_get_page_setup_set(_arg0)
 
@@ -305,10 +298,9 @@ func (d printUnixDialog) PageSetupSet() bool {
 // SelectedPrinter gets the currently selected printer.
 func (d printUnixDialog) SelectedPrinter() Printer {
 	var _arg0 *C.GtkPrintUnixDialog // out
+	var _cret *C.GtkPrinter         // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPrinter // in
 
 	_cret = C.gtk_print_unix_dialog_get_selected_printer(_arg0)
 
@@ -326,10 +318,9 @@ func (d printUnixDialog) SelectedPrinter() Printer {
 // want to keep it.
 func (d printUnixDialog) Settings() PrintSettings {
 	var _arg0 *C.GtkPrintUnixDialog // out
+	var _cret *C.GtkPrintSettings   // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPrintSettings // in
 
 	_cret = C.gtk_print_unix_dialog_get_settings(_arg0)
 
@@ -344,10 +335,9 @@ func (d printUnixDialog) Settings() PrintSettings {
 // selection.
 func (d printUnixDialog) SupportSelection() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_unix_dialog_get_support_selection(_arg0)
 
@@ -369,7 +359,7 @@ func (d printUnixDialog) SetCurrentPage(currentPage int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = C.int(currentPage)
+	_arg1 = (C.int)(currentPage)
 
 	C.gtk_print_unix_dialog_set_current_page(_arg0, _arg1)
 }

@@ -89,12 +89,11 @@ func NewToggleToolButton() ToggleToolButton {
 
 // NewToggleToolButtonFromStock constructs a class ToggleToolButton.
 func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar              // out
+	var _cret C.GtkToggleToolButton // in
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkToggleToolButton // in
 
 	_cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
 
@@ -109,10 +108,9 @@ func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
 // true if the toggle button is pressed in and false if it is raised.
 func (b toggleToolButton) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_tool_button_get_active(_arg0)
 

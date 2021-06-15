@@ -142,12 +142,11 @@ func (c cssProvider) LoadFromData(data []byte) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg2 = C.gssize(len(data))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
-
-	var _cerr *C.GError // in
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)
 
@@ -163,11 +162,10 @@ func (c cssProvider) LoadFromData(data []byte) error {
 func (c cssProvider) LoadFromFile(file gio.File) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.GFile          // out
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cerr *C.GError // in
 
 	C.gtk_css_provider_load_from_file(_arg0, _arg1, &_cerr)
 
@@ -183,12 +181,11 @@ func (c cssProvider) LoadFromFile(file gio.File) error {
 func (c cssProvider) LoadFromPath(path string) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.gtk_css_provider_load_from_path(_arg0, _arg1, &_cerr)
 
@@ -223,10 +220,9 @@ func (c cssProvider) LoadFromResource(resourcePath string) {
 // basically create a duplicate of this @provider.
 func (p cssProvider) String() string {
 	var _arg0 *C.GtkCssProvider // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
 

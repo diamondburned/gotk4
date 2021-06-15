@@ -64,10 +64,9 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 // NewBoolFilter constructs a class BoolFilter.
 func NewBoolFilter(expression Expression) BoolFilter {
 	var _arg1 *C.GtkExpression // out
+	var _cret C.GtkBoolFilter  // in
 
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	var _cret C.GtkBoolFilter // in
 
 	_cret = C.gtk_bool_filter_new(_arg1)
 
@@ -82,10 +81,9 @@ func NewBoolFilter(expression Expression) BoolFilter {
 // item should be filtered.
 func (s boolFilter) Expression() Expression {
 	var _arg0 *C.GtkBoolFilter // out
+	var _cret *C.GtkExpression // in
 
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkExpression // in
 
 	_cret = C.gtk_bool_filter_get_expression(_arg0)
 
@@ -99,10 +97,9 @@ func (s boolFilter) Expression() Expression {
 // Invert returns whether the filter inverts the expression.
 func (s boolFilter) Invert() bool {
 	var _arg0 *C.GtkBoolFilter // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_bool_filter_get_invert(_arg0)
 

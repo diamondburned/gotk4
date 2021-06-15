@@ -176,15 +176,14 @@ func (s sorter) Changed(change SorterChange) {
 // The sorter may signal it conforms to additional constraints via the
 // return value of [method@Gtk.Sorter.get_order].
 func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
-	var _arg0 *C.GtkSorter // out
-	var _arg1 C.gpointer   // out
-	var _arg2 C.gpointer   // out
+	var _arg0 *C.GtkSorter  // out
+	var _arg1 C.gpointer    // out
+	var _arg2 C.gpointer    // out
+	var _cret C.GtkOrdering // in
 
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GObject)(unsafe.Pointer(item1.Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(item2.Native()))
-
-	var _cret C.GtkOrdering // in
 
 	_cret = C.gtk_sorter_compare(_arg0, _arg1, _arg2)
 
@@ -201,11 +200,10 @@ func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 //
 // This function is intended to allow optimizations.
 func (s sorter) Order() SorterOrder {
-	var _arg0 *C.GtkSorter // out
+	var _arg0 *C.GtkSorter     // out
+	var _cret C.GtkSorterOrder // in
 
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSorterOrder // in
 
 	_cret = C.gtk_sorter_get_order(_arg0)
 

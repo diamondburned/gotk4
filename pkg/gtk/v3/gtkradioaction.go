@@ -82,11 +82,12 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 
 // NewRadioAction constructs a class RadioAction.
 func NewRadioAction(name string, label string, tooltip string, stockId string, value int) RadioAction {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
-	var _arg3 *C.gchar // out
-	var _arg4 *C.gchar // out
-	var _arg5 C.gint   // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
+	var _arg3 *C.gchar         // out
+	var _arg4 *C.gchar         // out
+	var _arg5 C.gint           // out
+	var _cret C.GtkRadioAction // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -96,9 +97,7 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = C.gint(value)
-
-	var _cret C.GtkRadioAction // in
+	_arg5 = (C.gint)(value)
 
 	_cret = C.gtk_radio_action_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -113,10 +112,9 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 // the group to which @action belongs.
 func (a radioAction) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
+	var _cret C.gint            // in
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
 
@@ -162,7 +160,7 @@ func (a radioAction) SetCurrentValue(currentValue int) {
 	var _arg1 C.gint            // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
-	_arg1 = C.gint(currentValue)
+	_arg1 = (C.gint)(currentValue)
 
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)
 }

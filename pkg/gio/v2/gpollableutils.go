@@ -38,6 +38,8 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 	var _arg3 C.gsize
 	var _arg4 C.gboolean      // out
 	var _arg5 *C.GCancellable // out
+	var _cret C.gssize        // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -46,9 +48,6 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 		_arg4 = C.TRUE
 	}
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_pollable_stream_read(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -77,6 +76,8 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 	var _arg3 C.gsize
 	var _arg4 C.gboolean      // out
 	var _arg5 *C.GCancellable // out
+	var _cret C.gssize        // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -85,9 +86,6 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 		_arg4 = C.TRUE
 	}
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_pollable_stream_write(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -121,7 +119,9 @@ func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, c
 	var _arg2 *C.void
 	var _arg3 C.gsize
 	var _arg4 C.gboolean      // out
+	var _arg5 C.gsize         // in
 	var _arg6 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -131,10 +131,7 @@ func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, c
 	}
 	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _arg5 C.gsize   // in
-	var _cerr *C.GError // in
-
-	C.g_pollable_stream_write_all(_arg1, _arg2, _arg3, _arg4, _arg6, &_arg5, &_cerr)
+	C.g_pollable_stream_write_all(_arg1, _arg2, _arg3, _arg4, &_arg5, _arg6, &_cerr)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out

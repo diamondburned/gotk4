@@ -312,10 +312,9 @@ func (s simpleAsyncResult) CompleteInIdle() {
 // asynchronous result.
 func (s simpleAsyncResult) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_simple_async_result_get_op_res_gboolean(_arg0)
 
@@ -331,10 +330,9 @@ func (s simpleAsyncResult) OpResGboolean() bool {
 // OpResGssize gets a gssize from the asynchronous result.
 func (s simpleAsyncResult) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
+	var _cret C.gssize              // in
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gssize // in
 
 	_cret = C.g_simple_async_result_get_op_res_gssize(_arg0)
 
@@ -353,10 +351,9 @@ func (s simpleAsyncResult) OpResGssize() int {
 // function will return true with @dest set appropriately.
 func (s simpleAsyncResult) PropagateError() error {
 	var _arg0 *C.GSimpleAsyncResult // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_simple_async_result_propagate_error(_arg0, &_cerr)
 
@@ -444,7 +441,7 @@ func (s simpleAsyncResult) SetOpResGssize(opRes int) {
 	var _arg1 C.gssize              // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gssize(opRes)
+	_arg1 = (C.gssize)(opRes)
 
 	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)
 }

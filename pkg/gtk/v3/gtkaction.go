@@ -220,10 +220,11 @@ func marshalAction(p uintptr) (interface{}, error) {
 
 // NewAction constructs a class Action.
 func NewAction(name string, label string, tooltip string, stockId string) Action {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
-	var _arg3 *C.gchar // out
-	var _arg4 *C.gchar // out
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.gchar    // out
+	var _arg3 *C.gchar    // out
+	var _arg4 *C.gchar    // out
+	var _cret C.GtkAction // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -233,8 +234,6 @@ func NewAction(name string, label string, tooltip string, stockId string) Action
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg4))
-
-	var _cret C.GtkAction // in
 
 	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -293,11 +292,10 @@ func (a action) ConnectAccelerator() {
 func (a action) CreateIcon(iconSize int) Widget {
 	var _arg0 *C.GtkAction  // out
 	var _arg1 C.GtkIconSize // out
+	var _cret *C.GtkWidget  // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-	_arg1 = C.GtkIconSize(iconSize)
-
-	var _cret *C.GtkWidget // in
+	_arg1 = (C.GtkIconSize)(iconSize)
 
 	_cret = C.gtk_action_create_icon(_arg0, _arg1)
 
@@ -313,10 +311,9 @@ func (a action) CreateIcon(iconSize int) Widget {
 // that menu.
 func (a action) CreateMenu() Widget {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_action_create_menu(_arg0)
 
@@ -331,10 +328,9 @@ func (a action) CreateMenu() Widget {
 // action.
 func (a action) CreateMenuItem() Widget {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_action_create_menu_item(_arg0)
 
@@ -349,10 +345,9 @@ func (a action) CreateMenuItem() Widget {
 // action.
 func (a action) CreateToolItem() Widget {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_action_create_tool_item(_arg0)
 
@@ -376,10 +371,9 @@ func (a action) DisconnectAccelerator() {
 // AccelPath returns the accel path for this action.
 func (a action) AccelPath() string {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_accel_path(_arg0)
 
@@ -394,10 +388,9 @@ func (a action) AccelPath() string {
 // show their image, if available.
 func (a action) AlwaysShowImage() bool {
 	var _arg0 *C.GtkAction // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_always_show_image(_arg0)
 
@@ -413,10 +406,9 @@ func (a action) AlwaysShowImage() bool {
 // GIcon gets the gicon of @action.
 func (a action) GIcon() gio.Icon {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.GIcon     // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.gtk_action_get_gicon(_arg0)
 
@@ -430,10 +422,9 @@ func (a action) GIcon() gio.Icon {
 // IconName gets the icon name of @action.
 func (a action) IconName() string {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_icon_name(_arg0)
 
@@ -447,10 +438,9 @@ func (a action) IconName() string {
 // IsImportant checks whether @action is important or not
 func (a action) IsImportant() bool {
 	var _arg0 *C.GtkAction // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_is_important(_arg0)
 
@@ -466,10 +456,9 @@ func (a action) IsImportant() bool {
 // Label gets the label text of @action.
 func (a action) Label() string {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_label(_arg0)
 
@@ -483,10 +472,9 @@ func (a action) Label() string {
 // Name returns the name of the action.
 func (a action) Name() string {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_name(_arg0)
 
@@ -502,10 +490,9 @@ func (a action) Name() string {
 // gtk_action_is_sensitive() for that.
 func (a action) Sensitive() bool {
 	var _arg0 *C.GtkAction // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_sensitive(_arg0)
 
@@ -521,10 +508,9 @@ func (a action) Sensitive() bool {
 // ShortLabel gets the short label text of @action.
 func (a action) ShortLabel() string {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_short_label(_arg0)
 
@@ -538,10 +524,9 @@ func (a action) ShortLabel() string {
 // StockID gets the stock id of @action.
 func (a action) StockID() string {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_stock_id(_arg0)
 
@@ -555,10 +540,9 @@ func (a action) StockID() string {
 // Tooltip gets the tooltip text of @action.
 func (a action) Tooltip() string {
 	var _arg0 *C.GtkAction // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_tooltip(_arg0)
 
@@ -574,10 +558,9 @@ func (a action) Tooltip() string {
 // gtk_action_is_sensitive() for that.
 func (a action) Visible() bool {
 	var _arg0 *C.GtkAction // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_visible(_arg0)
 
@@ -593,10 +576,9 @@ func (a action) Visible() bool {
 // VisibleHorizontal checks whether @action is visible when horizontal
 func (a action) VisibleHorizontal() bool {
 	var _arg0 *C.GtkAction // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_visible_horizontal(_arg0)
 
@@ -612,10 +594,9 @@ func (a action) VisibleHorizontal() bool {
 // VisibleVertical checks whether @action is visible when horizontal
 func (a action) VisibleVertical() bool {
 	var _arg0 *C.GtkAction // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_visible_vertical(_arg0)
 
@@ -631,10 +612,9 @@ func (a action) VisibleVertical() bool {
 // IsSensitive returns whether the action is effectively sensitive.
 func (a action) IsSensitive() bool {
 	var _arg0 *C.GtkAction // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_is_sensitive(_arg0)
 
@@ -650,10 +630,9 @@ func (a action) IsSensitive() bool {
 // IsVisible returns whether the action is effectively visible.
 func (a action) IsVisible() bool {
 	var _arg0 *C.GtkAction // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_is_visible(_arg0)
 

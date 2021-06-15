@@ -67,11 +67,10 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 
 // NewMediaControls constructs a class MediaControls.
 func NewMediaControls(stream MediaStream) MediaControls {
-	var _arg1 *C.GtkMediaStream // out
+	var _arg1 *C.GtkMediaStream  // out
+	var _cret C.GtkMediaControls // in
 
 	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
-
-	var _cret C.GtkMediaControls // in
 
 	_cret = C.gtk_media_controls_new(_arg1)
 
@@ -85,10 +84,9 @@ func NewMediaControls(stream MediaStream) MediaControls {
 // MediaStream gets the media stream managed by @controls or nil if none.
 func (c mediaControls) MediaStream() MediaStream {
 	var _arg0 *C.GtkMediaControls // out
+	var _cret *C.GtkMediaStream   // in
 
 	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkMediaStream // in
 
 	_cret = C.gtk_media_controls_get_media_stream(_arg0)
 

@@ -29,7 +29,7 @@ func GetDebugFlags() uint {
 func SetDebugFlags(flags uint) {
 	var _arg1 C.guint // out
 
-	_arg1 = C.guint(flags)
+	_arg1 = (C.guint)(flags)
 
 	C.gtk_set_debug_flags(_arg1)
 }

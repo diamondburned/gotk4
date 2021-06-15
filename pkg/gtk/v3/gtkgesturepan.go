@@ -70,11 +70,10 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 func NewGesturePan(widget Widget, orientation Orientation) GesturePan {
 	var _arg1 *C.GtkWidget     // out
 	var _arg2 C.GtkOrientation // out
+	var _cret C.GtkGesturePan  // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkGesturePan // in
 
 	_cret = C.gtk_gesture_pan_new(_arg1, _arg2)
 
@@ -89,10 +88,9 @@ func NewGesturePan(widget Widget, orientation Orientation) GesturePan {
 // @gesture expects.
 func (g gesturePan) Orientation() Orientation {
 	var _arg0 *C.GtkGesturePan // out
+	var _cret C.GtkOrientation // in
 
 	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
-
-	var _cret C.GtkOrientation // in
 
 	_cret = C.gtk_gesture_pan_get_orientation(_arg0)
 

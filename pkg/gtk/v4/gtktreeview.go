@@ -570,10 +570,9 @@ func NewTreeView() TreeView {
 // NewTreeViewWithModel constructs a class TreeView.
 func NewTreeViewWithModel(model TreeModel) TreeView {
 	var _arg1 *C.GtkTreeModel // out
+	var _cret C.GtkTreeView   // in
 
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkTreeView // in
 
 	_cret = C.gtk_tree_view_new_with_model(_arg1)
 
@@ -590,11 +589,10 @@ func NewTreeViewWithModel(model TreeModel) TreeView {
 func (t treeView) AppendColumn(column TreeViewColumn) int {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreeViewColumn // out
+	var _cret C.int                // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_tree_view_append_column(_arg0, _arg1)
 
@@ -619,11 +617,10 @@ func (t treeView) CollapseAll() {
 func (t treeView) CollapseRow(path *TreePath) bool {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 *C.GtkTreePath // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_collapse_row(_arg0, _arg1)
 
@@ -652,13 +649,12 @@ func (t treeView) ConvertBinWindowToTreeCoords(bx int, by int) (tx int, ty int) 
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(bx)
-	_arg2 = C.int(by)
-
-	var _arg3 C.int // in
-	var _arg4 C.int // in
+	_arg1 = (C.int)(bx)
+	_arg2 = (C.int)(by)
 
 	C.gtk_tree_view_convert_bin_window_to_tree_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
@@ -677,13 +673,12 @@ func (t treeView) ConvertBinWindowToWidgetCoords(bx int, by int) (wx int, wy int
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(bx)
-	_arg2 = C.int(by)
-
-	var _arg3 C.int // in
-	var _arg4 C.int // in
+	_arg1 = (C.int)(bx)
+	_arg2 = (C.int)(by)
 
 	C.gtk_tree_view_convert_bin_window_to_widget_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
@@ -702,13 +697,12 @@ func (t treeView) ConvertTreeToBinWindowCoords(tx int, ty int) (bx int, by int) 
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(tx)
-	_arg2 = C.int(ty)
-
-	var _arg3 C.int // in
-	var _arg4 C.int // in
+	_arg1 = (C.int)(tx)
+	_arg2 = (C.int)(ty)
 
 	C.gtk_tree_view_convert_tree_to_bin_window_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
@@ -727,13 +721,12 @@ func (t treeView) ConvertTreeToWidgetCoords(tx int, ty int) (wx int, wy int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(tx)
-	_arg2 = C.int(ty)
-
-	var _arg3 C.int // in
-	var _arg4 C.int // in
+	_arg1 = (C.int)(tx)
+	_arg2 = (C.int)(ty)
 
 	C.gtk_tree_view_convert_tree_to_widget_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
@@ -752,13 +745,12 @@ func (t treeView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(wx)
-	_arg2 = C.int(wy)
-
-	var _arg3 C.int // in
-	var _arg4 C.int // in
+	_arg1 = (C.int)(wx)
+	_arg2 = (C.int)(wy)
 
 	C.gtk_tree_view_convert_widget_to_bin_window_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
@@ -777,13 +769,12 @@ func (t treeView) ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(wx)
-	_arg2 = C.int(wy)
-
-	var _arg3 C.int // in
-	var _arg4 C.int // in
+	_arg1 = (C.int)(wx)
+	_arg2 = (C.int)(wy)
 
 	C.gtk_tree_view_convert_widget_to_tree_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
@@ -799,13 +790,12 @@ func (t treeView) ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty int) {
 // CreateRowDragIcon creates a #cairo_surface_t representation of the row at
 // @path. This image is used for a drag icon.
 func (t treeView) CreateRowDragIcon(path *TreePath) gdk.Paintable {
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 *C.GtkTreePath // out
+	var _arg0 *C.GtkTreeView  // out
+	var _arg1 *C.GtkTreePath  // out
+	var _cret *C.GdkPaintable // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret *C.GdkPaintable // in
 
 	_cret = C.gtk_tree_view_create_row_drag_icon(_arg0, _arg1)
 
@@ -860,14 +850,13 @@ func (t treeView) ExpandRow(path *TreePath, openAll bool) bool {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 *C.GtkTreePath // out
 	var _arg2 C.gboolean     // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	if openAll {
 		_arg2 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_expand_row(_arg0, _arg1, _arg2)
 
@@ -896,10 +885,9 @@ func (t treeView) ExpandToPath(path *TreePath) {
 // gtk_tree_view_set_activate_on_single_click().
 func (t treeView) ActivateOnSingleClick() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_activate_on_single_click(_arg0)
 
@@ -926,12 +914,11 @@ func (t treeView) BackgroundArea(path *TreePath, column TreeViewColumn) gdk.Rect
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreePath       // out
 	var _arg2 *C.GtkTreeViewColumn // out
+	var _rect gdk.Rectangle
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	_arg2 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
-
-	var _rect gdk.Rectangle
 
 	C.gtk_tree_view_get_background_area(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
@@ -951,12 +938,11 @@ func (t treeView) CellArea(path *TreePath, column TreeViewColumn) gdk.Rectangle 
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreePath       // out
 	var _arg2 *C.GtkTreeViewColumn // out
+	var _rect gdk.Rectangle
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	_arg2 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
-
-	var _rect gdk.Rectangle
 
 	C.gtk_tree_view_get_cell_area(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
@@ -965,13 +951,12 @@ func (t treeView) CellArea(path *TreePath, column TreeViewColumn) gdk.Rectangle 
 
 // Column gets the TreeViewColumn at the given position in the #tree_view.
 func (t treeView) Column(n int) TreeViewColumn {
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 C.int          // out
+	var _arg0 *C.GtkTreeView       // out
+	var _arg1 C.int                // out
+	var _cret *C.GtkTreeViewColumn // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(n)
-
-	var _cret *C.GtkTreeViewColumn // in
+	_arg1 = (C.int)(n)
 
 	_cret = C.gtk_tree_view_get_column(_arg0, _arg1)
 
@@ -990,11 +975,10 @@ func (t treeView) Column(n int) TreeViewColumn {
 // are done with it.
 func (t treeView) Cursor() (*TreePath, TreeViewColumn) {
 	var _arg0 *C.GtkTreeView // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
 	var _path *TreePath
 	var _arg2 *C.GtkTreeViewColumn // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 
 	C.gtk_tree_view_get_cursor(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
 
@@ -1014,14 +998,13 @@ func (t treeView) DestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPos
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(dragX)
-	_arg2 = C.int(dragY)
-
 	var _path *TreePath
 	var _arg4 C.GtkTreeViewDropPosition // in
 	var _cret C.gboolean                // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
+	_arg1 = (C.int)(dragX)
+	_arg2 = (C.int)(dragY)
 
 	_cret = C.gtk_tree_view_get_dest_row_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4)
 
@@ -1040,11 +1023,10 @@ func (t treeView) DestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPos
 // feedback.
 func (t treeView) DragDestRow() (*TreePath, TreeViewDropPosition) {
 	var _arg0 *C.GtkTreeView // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
 	var _path *TreePath
 	var _arg2 C.GtkTreeViewDropPosition // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 
 	C.gtk_tree_view_get_drag_dest_row(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
 
@@ -1059,10 +1041,9 @@ func (t treeView) DragDestRow() (*TreePath, TreeViewDropPosition) {
 // searching by typing in text.
 func (t treeView) EnableSearch() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_enable_search(_arg0)
 
@@ -1079,10 +1060,9 @@ func (t treeView) EnableSearch() bool {
 // @tree_view.
 func (t treeView) EnableTreeLines() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_enable_tree_lines(_arg0)
 
@@ -1099,11 +1079,10 @@ func (t treeView) EnableTreeLines() bool {
 // nil if none has been set. This column has the expander arrow drawn next
 // to it.
 func (t treeView) ExpanderColumn() TreeViewColumn {
-	var _arg0 *C.GtkTreeView // out
+	var _arg0 *C.GtkTreeView       // out
+	var _cret *C.GtkTreeViewColumn // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GtkTreeViewColumn // in
 
 	_cret = C.gtk_tree_view_get_expander_column(_arg0)
 
@@ -1118,10 +1097,9 @@ func (t treeView) ExpanderColumn() TreeViewColumn {
 // @tree_view.
 func (t treeView) FixedHeightMode() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_fixed_height_mode(_arg0)
 
@@ -1136,11 +1114,10 @@ func (t treeView) FixedHeightMode() bool {
 
 // GridLines returns which grid lines are enabled in @tree_view.
 func (t treeView) GridLines() TreeViewGridLines {
-	var _arg0 *C.GtkTreeView // out
+	var _arg0 *C.GtkTreeView         // out
+	var _cret C.GtkTreeViewGridLines // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GtkTreeViewGridLines // in
 
 	_cret = C.gtk_tree_view_get_grid_lines(_arg0)
 
@@ -1154,10 +1131,9 @@ func (t treeView) GridLines() TreeViewGridLines {
 // HeadersClickable returns whether all header columns are clickable.
 func (t treeView) HeadersClickable() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_headers_clickable(_arg0)
 
@@ -1173,10 +1149,9 @@ func (t treeView) HeadersClickable() bool {
 // HeadersVisible returns true if the headers on the @tree_view are visible.
 func (t treeView) HeadersVisible() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_headers_visible(_arg0)
 
@@ -1193,10 +1168,9 @@ func (t treeView) HeadersVisible() bool {
 // @tree_view.
 func (t treeView) HoverExpand() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_hover_expand(_arg0)
 
@@ -1213,10 +1187,9 @@ func (t treeView) HoverExpand() bool {
 // @tree_view.
 func (t treeView) HoverSelection() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_hover_selection(_arg0)
 
@@ -1233,10 +1206,9 @@ func (t treeView) HoverSelection() bool {
 // child levels in @tree_view.
 func (t treeView) LevelIndentation() int {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_tree_view_get_level_indentation(_arg0)
 
@@ -1250,11 +1222,10 @@ func (t treeView) LevelIndentation() int {
 // Model returns the model the TreeView is based on. Returns nil if the
 // model is unset.
 func (t treeView) Model() TreeModel {
-	var _arg0 *C.GtkTreeView // out
+	var _arg0 *C.GtkTreeView  // out
+	var _cret *C.GtkTreeModel // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GtkTreeModel // in
 
 	_cret = C.gtk_tree_view_get_model(_arg0)
 
@@ -1268,10 +1239,9 @@ func (t treeView) Model() TreeModel {
 // NColumns queries the number of columns in the given @tree_view.
 func (t treeView) NColumns() uint {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.guint        // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_tree_view_get_n_columns(_arg0)
 
@@ -1302,16 +1272,15 @@ func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
 	var _path *TreePath
 	var _arg4 *C.GtkTreeViewColumn // in
 	var _arg5 C.int                // in
 	var _arg6 C.int                // in
 	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
+	_arg1 = (C.int)(x)
+	_arg2 = (C.int)(y)
 
 	_cret = C.gtk_tree_view_get_path_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4, &_arg5, &_arg6)
 
@@ -1334,10 +1303,9 @@ func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn
 // drag-and-drop. See gtk_tree_view_set_reorderable().
 func (t treeView) Reorderable() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_reorderable(_arg0)
 
@@ -1355,10 +1323,9 @@ func (t treeView) Reorderable() bool {
 // the user to select multiple rows by dragging the mouse.
 func (t treeView) RubberBanding() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_rubber_banding(_arg0)
 
@@ -1374,10 +1341,9 @@ func (t treeView) RubberBanding() bool {
 // SearchColumn gets the column searched on by the interactive search code.
 func (t treeView) SearchColumn() int {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_tree_view_get_search_column(_arg0)
 
@@ -1393,10 +1359,9 @@ func (t treeView) SearchColumn() int {
 // nil will be returned.
 func (t treeView) SearchEntry() Editable {
 	var _arg0 *C.GtkTreeView // out
+	var _cret *C.GtkEditable // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GtkEditable // in
 
 	_cret = C.gtk_tree_view_get_search_entry(_arg0)
 
@@ -1409,11 +1374,10 @@ func (t treeView) SearchEntry() Editable {
 
 // Selection gets the TreeSelection associated with @tree_view.
 func (t treeView) Selection() TreeSelection {
-	var _arg0 *C.GtkTreeView // out
+	var _arg0 *C.GtkTreeView      // out
+	var _cret *C.GtkTreeSelection // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GtkTreeSelection // in
 
 	_cret = C.gtk_tree_view_get_selection(_arg0)
 
@@ -1427,10 +1391,9 @@ func (t treeView) Selection() TreeSelection {
 // ShowExpanders returns whether or not expanders are drawn in @tree_view.
 func (t treeView) ShowExpanders() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_get_show_expanders(_arg0)
 
@@ -1447,10 +1410,9 @@ func (t treeView) ShowExpanders() bool {
 // used for displaying tooltips on @tree_view’s rows.
 func (t treeView) TooltipColumn() int {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_tree_view_get_tooltip_column(_arg0)
 
@@ -1473,22 +1435,21 @@ func (t treeView) TooltipColumn() int {
 // that row and the corresponding model. @x and @y will always be converted
 // to be relative to @tree_view’s bin_window if @keyboard_tooltip is false.
 func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool) {
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-	var _arg3 C.gboolean     // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-	if keyboardTip {
-		_arg3 = C.TRUE
-	}
-
+	var _arg0 *C.GtkTreeView  // out
+	var _arg1 C.int           // out
+	var _arg2 C.int           // out
+	var _arg3 C.gboolean      // out
 	var _arg4 *C.GtkTreeModel // in
 	var _path *TreePath
 	var _iter TreeIter
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
+	_arg1 = (C.int)(x)
+	_arg2 = (C.int)(y)
+	if keyboardTip {
+		_arg3 = C.TRUE
+	}
 
 	_cret = C.gtk_tree_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, (**C.GtkTreePath)(unsafe.Pointer(&_path)), (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
@@ -1511,12 +1472,11 @@ func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *Tr
 // The paths should be freed with gtk_tree_path_free() after use.
 func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool) {
 	var _arg0 *C.GtkTreeView // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
 	var _startPath *TreePath
 	var _endPath *TreePath
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gtk_tree_view_get_visible_range(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_startPath)), (**C.GtkTreePath)(unsafe.Pointer(&_endPath)))
 
@@ -1536,10 +1496,9 @@ func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 // tree.
 func (t treeView) VisibleRect() gdk.Rectangle {
 	var _arg0 *C.GtkTreeView // out
+	var _visibleRect gdk.Rectangle
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _visibleRect gdk.Rectangle
 
 	C.gtk_tree_view_get_visible_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_visibleRect)))
 
@@ -1554,12 +1513,11 @@ func (t treeView) InsertColumn(column TreeViewColumn, position int) int {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreeViewColumn // out
 	var _arg2 C.int                // out
+	var _cret C.int                // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
-	_arg2 = C.int(position)
-
-	var _cret C.int // in
+	_arg2 = (C.int)(position)
 
 	_cret = C.gtk_tree_view_insert_column(_arg0, _arg1, _arg2)
 
@@ -1592,16 +1550,15 @@ func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewCol
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
 	var _path *TreePath
 	var _arg4 *C.GtkTreeViewColumn // in
 	var _arg5 C.int                // in
 	var _arg6 C.int                // in
 	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
+	_arg1 = (C.int)(x)
+	_arg2 = (C.int)(y)
 
 	_cret = C.gtk_tree_view_is_blank_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4, &_arg5, &_arg6)
 
@@ -1624,10 +1581,9 @@ func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewCol
 // currently being done in @tree_view.
 func (t treeView) IsRubberBandingActive() bool {
 	var _arg0 *C.GtkTreeView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_is_rubber_banding_active(_arg0)
 
@@ -1658,11 +1614,10 @@ func (t treeView) MoveColumnAfter(column TreeViewColumn, baseColumn TreeViewColu
 func (t treeView) RemoveColumn(column TreeViewColumn) int {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreeViewColumn // out
+	var _cret C.int                // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_tree_view_remove_column(_arg0, _arg1)
 
@@ -1691,11 +1646,10 @@ func (t treeView) RowActivated(path *TreePath, column TreeViewColumn) {
 func (t treeView) RowExpanded(path *TreePath) bool {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 *C.GtkTreePath // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_view_row_expanded(_arg0, _arg1)
 
@@ -1739,8 +1693,8 @@ func (t treeView) ScrollToCell(path *TreePath, column TreeViewColumn, useAlign b
 	if useAlign {
 		_arg3 = C.TRUE
 	}
-	_arg4 = C.float(rowAlign)
-	_arg5 = C.float(colAlign)
+	_arg4 = (C.float)(rowAlign)
+	_arg5 = (C.float)(colAlign)
 
 	C.gtk_tree_view_scroll_to_cell(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -1758,8 +1712,8 @@ func (t treeView) ScrollToPoint(treeX int, treeY int) {
 	var _arg2 C.int          // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(treeX)
-	_arg2 = C.int(treeY)
+	_arg1 = (C.int)(treeX)
+	_arg2 = (C.int)(treeY)
 
 	C.gtk_tree_view_scroll_to_point(_arg0, _arg1, _arg2)
 }
@@ -1994,7 +1948,7 @@ func (t treeView) SetLevelIndentation(indentation int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(indentation)
+	_arg1 = (C.int)(indentation)
 
 	C.gtk_tree_view_set_level_indentation(_arg0, _arg1)
 }
@@ -2066,7 +2020,7 @@ func (t treeView) SetSearchColumn(column int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(column)
+	_arg1 = (C.int)(column)
 
 	C.gtk_tree_view_set_search_column(_arg0, _arg1)
 }
@@ -2148,7 +2102,7 @@ func (t treeView) SetTooltipColumn(column int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = C.int(column)
+	_arg1 = (C.int)(column)
 
 	C.gtk_tree_view_set_tooltip_column(_arg0, _arg1)
 }

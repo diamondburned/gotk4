@@ -142,11 +142,10 @@ func NewCredentials() Credentials {
 // G_CREDENTIALS_TYPE_APPLE_XUCRED).
 func (c credentials) UnixPid() (int, error) {
 	var _arg0 *C.GCredentials // out
+	var _cret C.pid_t         // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
-
-	var _cret C.pid_t   // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_credentials_get_unix_pid(_arg0, &_cerr)
 
@@ -167,11 +166,10 @@ func (c credentials) UnixPid() (int, error) {
 // user.
 func (c credentials) UnixUser() (uint, error) {
 	var _arg0 *C.GCredentials // out
+	var _cret C.uid_t         // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
-
-	var _cret C.uid_t   // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_credentials_get_unix_user(_arg0, &_cerr)
 
@@ -191,11 +189,10 @@ func (c credentials) UnixUser() (uint, error) {
 func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_credentials_is_same_user(_arg0, _arg1, &_cerr)
 
@@ -216,11 +213,10 @@ func (c credentials) IsSameUser(otherCredentials Credentials) error {
 func (c credentials) SetUnixUser(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
-	_arg1 = C.uid_t(uid)
-
-	var _cerr *C.GError // in
+	_arg1 = (C.uid_t)(uid)
 
 	C.g_credentials_set_unix_user(_arg0, _arg1, &_cerr)
 
@@ -236,10 +232,9 @@ func (c credentials) SetUnixUser(uid uint) error {
 // returned string may change in future GLib release.
 func (c credentials) String() string {
 	var _arg0 *C.GCredentials // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_credentials_to_string(_arg0)
 

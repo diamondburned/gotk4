@@ -25,13 +25,12 @@ import "C"
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
+	var _arg3 C.gint   // in
+	var _arg4 C.gint   // in
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(length)
-
-	var _arg3 C.gint // in
-	var _arg4 C.gint // in
+	_arg2 = (C.gint)(length)
 
 	C.pango_find_paragraph_boundary(_arg1, _arg2, &_arg3, &_arg4)
 
@@ -61,8 +60,8 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = C.int(level)
+	_arg2 = (C.int)(length)
+	_arg3 = (C.int)(level)
 	_arg4 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 	_arg6 = C.int(len(logAttrs))
 	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))

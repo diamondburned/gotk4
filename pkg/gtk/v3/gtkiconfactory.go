@@ -206,12 +206,11 @@ func (f iconFactory) AddDefault() {
 func (f iconFactory) Lookup(stockId string) *IconSet {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
+	var _cret *C.GtkIconSet     // in
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkIconSet // in
 
 	_cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
 

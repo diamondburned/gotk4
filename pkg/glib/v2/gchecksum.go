@@ -50,12 +50,11 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar
 	var _arg3 C.gsize
+	var _cret *C.gchar // in
 
 	_arg1 = (C.GChecksumType)(checksumType)
 	_arg3 = C.gsize(len(data))
 	_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_compute_checksum_for_data(_arg1, _arg2, _arg3)
 
@@ -74,13 +73,12 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.gchar        // out
 	var _arg3 C.gssize        // out
+	var _cret *C.gchar        // in
 
 	_arg1 = (C.GChecksumType)(checksumType)
 	_arg2 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.gssize(length)
-
-	var _cret *C.gchar // in
+	_arg3 = (C.gssize)(length)
 
 	_cret = C.g_compute_checksum_for_string(_arg1, _arg2, _arg3)
 
@@ -117,10 +115,9 @@ func marshalChecksum(p uintptr) (interface{}, error) {
 // NewChecksum constructs a struct Checksum.
 func NewChecksum(checksumType ChecksumType) *Checksum {
 	var _arg1 C.GChecksumType // out
+	var _cret *C.GChecksum    // in
 
 	_arg1 = (C.GChecksumType)(checksumType)
-
-	var _cret *C.GChecksum // in
 
 	_cret = C.g_checksum_new(_arg1)
 
@@ -144,10 +141,9 @@ func (c *Checksum) Native() unsafe.Pointer {
 // be closed as well.
 func (c *Checksum) Copy() *Checksum {
 	var _arg0 *C.GChecksum // out
+	var _cret *C.GChecksum // in
 
 	_arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GChecksum // in
 
 	_cret = C.g_checksum_copy(_arg0)
 
@@ -178,10 +174,9 @@ func (c *Checksum) Free() {
 // The hexadecimal characters will be lower case.
 func (c *Checksum) String() string {
 	var _arg0 *C.GChecksum // out
+	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_checksum_get_string(_arg0)
 

@@ -68,11 +68,10 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 
 // NewFileIcon constructs a class FileIcon.
 func NewFileIcon(file File) FileIcon {
-	var _arg1 *C.GFile // out
+	var _arg1 *C.GFile    // out
+	var _cret C.GFileIcon // in
 
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GFileIcon // in
 
 	_cret = C.g_file_icon_new(_arg1)
 
@@ -86,10 +85,9 @@ func NewFileIcon(file File) FileIcon {
 // File gets the #GFile associated with the given @icon.
 func (i fileIcon) File() File {
 	var _arg0 *C.GFileIcon // out
+	var _cret *C.GFile     // in
 
 	_arg0 = (*C.GFileIcon)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.g_file_icon_get_file(_arg0)
 

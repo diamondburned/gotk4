@@ -133,13 +133,6 @@ type RecentChooser interface {
 	ShowTips() bool
 	// SortType gets the value set by gtk_recent_chooser_set_sort_type().
 	SortType() RecentSortType
-	// Uris gets the URI of the recently used resources.
-	//
-	// The return value of this function is affected by the “sort-type” and
-	// “limit” properties of @chooser.
-	//
-	// Since the returned array is nil terminated, @length may be nil.
-	Uris() []string
 	// SetFilter sets @filter as the current RecentFilter object used by
 	// @chooser to affect the displayed recently used resources.
 	SetFilter(filter RecentFilter)
@@ -210,10 +203,9 @@ func (c recentChooser) AddFilter(filter RecentFilter) {
 // CurrentItem gets the RecentInfo currently selected by @chooser.
 func (c recentChooser) CurrentItem() *RecentInfo {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GtkRecentInfo    // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkRecentInfo // in
 
 	_cret = C.gtk_recent_chooser_get_current_item(_arg0)
 
@@ -230,10 +222,9 @@ func (c recentChooser) CurrentItem() *RecentInfo {
 // CurrentURI gets the URI currently selected by @chooser.
 func (c recentChooser) CurrentURI() string {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_chooser_get_current_uri(_arg0)
 
@@ -249,10 +240,9 @@ func (c recentChooser) CurrentURI() string {
 // the display of the recently used resources.
 func (c recentChooser) Filter() RecentFilter {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GtkRecentFilter  // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkRecentFilter // in
 
 	_cret = C.gtk_recent_chooser_get_filter(_arg0)
 
@@ -267,10 +257,9 @@ func (c recentChooser) Filter() RecentFilter {
 // and gtk_recent_chooser_get_uris().
 func (c recentChooser) Limit() int {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_recent_chooser_get_limit(_arg0)
 
@@ -285,10 +274,9 @@ func (c recentChooser) Limit() int {
 // recently used resources selector. See gtk_recent_chooser_set_local_only()
 func (c recentChooser) LocalOnly() bool {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_chooser_get_local_only(_arg0)
 
@@ -304,10 +292,9 @@ func (c recentChooser) LocalOnly() bool {
 // SelectMultiple gets whether @chooser can select multiple items.
 func (c recentChooser) SelectMultiple() bool {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_chooser_get_select_multiple(_arg0)
 
@@ -324,10 +311,9 @@ func (c recentChooser) SelectMultiple() bool {
 // resource.
 func (c recentChooser) ShowIcons() bool {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_chooser_get_show_icons(_arg0)
 
@@ -344,10 +330,9 @@ func (c recentChooser) ShowIcons() bool {
 // resources that were not found.
 func (c recentChooser) ShowNotFound() bool {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_chooser_get_show_not_found(_arg0)
 
@@ -364,10 +349,9 @@ func (c recentChooser) ShowNotFound() bool {
 // resources registered as private.
 func (c recentChooser) ShowPrivate() bool {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_chooser_get_show_private(_arg0)
 
@@ -384,10 +368,9 @@ func (c recentChooser) ShowPrivate() bool {
 // full path of a recently user resource.
 func (c recentChooser) ShowTips() bool {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_chooser_get_show_tips(_arg0)
 
@@ -403,10 +386,9 @@ func (c recentChooser) ShowTips() bool {
 // SortType gets the value set by gtk_recent_chooser_set_sort_type().
 func (c recentChooser) SortType() RecentSortType {
 	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.GtkRecentSortType // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkRecentSortType // in
 
 	_cret = C.gtk_recent_chooser_get_sort_type(_arg0)
 
@@ -415,37 +397,6 @@ func (c recentChooser) SortType() RecentSortType {
 	_recentSortType = RecentSortType(_cret)
 
 	return _recentSortType
-}
-
-// Uris gets the URI of the recently used resources.
-//
-// The return value of this function is affected by the “sort-type” and
-// “limit” properties of @chooser.
-//
-// Since the returned array is nil terminated, @length may be nil.
-func (c recentChooser) Uris() []string {
-	var _arg0 *C.GtkRecentChooser // out
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret **C.gchar
-	var _arg1 C.gsize // in
-
-	_cret = C.gtk_recent_chooser_get_uris(_arg0, &_arg1)
-
-	var _utf8s []string
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		defer C.free(unsafe.Pointer(_cret))
-		_utf8s = make([]string, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_utf8s[i] = C.GoString(src[i])
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-
-	return _utf8s
 }
 
 // RemoveFilter removes @filter from the list of RecentFilter objects held
@@ -474,12 +425,11 @@ func (c recentChooser) SelectAll() {
 func (c recentChooser) SelectURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.gtk_recent_chooser_select_uri(_arg0, _arg1, &_cerr)
 
@@ -494,12 +444,11 @@ func (c recentChooser) SelectURI(uri string) error {
 func (c recentChooser) SetCurrentURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.gtk_recent_chooser_set_current_uri(_arg0, _arg1, &_cerr)
 
@@ -529,7 +478,7 @@ func (c recentChooser) SetLimit(limit int) {
 	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(limit)
+	_arg1 = (C.gint)(limit)
 
 	C.gtk_recent_chooser_set_limit(_arg0, _arg1)
 }

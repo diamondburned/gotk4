@@ -111,12 +111,11 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 
 // NewDBusObjectManagerServer constructs a class DBusObjectManagerServer.
 func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar                   // out
+	var _cret C.GDBusObjectManagerServer // in
 
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GDBusObjectManagerServer // in
 
 	_cret = C.g_dbus_object_manager_server_new(_arg1)
 
@@ -164,10 +163,9 @@ func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
 // Connection gets the BusConnection used by @manager.
 func (m dBusObjectManagerServer) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectManagerServer // out
+	var _cret *C.GDBusConnection          // in
 
 	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GDBusConnection // in
 
 	_cret = C.g_dbus_object_manager_server_get_connection(_arg0)
 
@@ -182,11 +180,10 @@ func (m dBusObjectManagerServer) Connection() DBusConnection {
 func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
+	var _cret C.gboolean                  // in
 
 	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_dbus_object_manager_server_is_exported(_arg0, _arg1)
 
@@ -219,12 +216,11 @@ func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
 func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.gchar                    // out
+	var _cret C.gboolean                  // in
 
 	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_dbus_object_manager_server_unexport(_arg0, _arg1)
 

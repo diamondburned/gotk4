@@ -273,10 +273,9 @@ func marshalBinding(p uintptr) (interface{}, error) {
 // binding then this function will return nil.
 func (b binding) DupSource() gextras.Objector {
 	var _arg0 *C.GBinding // out
+	var _cret *C.GObject  // in
 
 	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GObject // in
 
 	_cret = C.g_binding_dup_source(_arg0)
 
@@ -295,10 +294,9 @@ func (b binding) DupSource() gextras.Objector {
 // binding then this function will return nil.
 func (b binding) DupTarget() gextras.Objector {
 	var _arg0 *C.GBinding // out
+	var _cret *C.GObject  // in
 
 	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GObject // in
 
 	_cret = C.g_binding_dup_target(_arg0)
 
@@ -311,11 +309,10 @@ func (b binding) DupTarget() gextras.Objector {
 
 // Flags retrieves the flags passed when constructing the #GBinding.
 func (b binding) Flags() BindingFlags {
-	var _arg0 *C.GBinding // out
+	var _arg0 *C.GBinding     // out
+	var _cret C.GBindingFlags // in
 
 	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GBindingFlags // in
 
 	_cret = C.g_binding_get_flags(_arg0)
 
@@ -338,10 +335,9 @@ func (b binding) Flags() BindingFlags {
 // the meantime.
 func (b binding) Source() gextras.Objector {
 	var _arg0 *C.GBinding // out
+	var _cret *C.GObject  // in
 
 	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GObject // in
 
 	_cret = C.g_binding_get_source(_arg0)
 
@@ -356,10 +352,9 @@ func (b binding) Source() gextras.Objector {
 // used as the source of the binding.
 func (b binding) SourceProperty() string {
 	var _arg0 *C.GBinding // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_binding_get_source_property(_arg0)
 
@@ -382,10 +377,9 @@ func (b binding) SourceProperty() string {
 // the meantime.
 func (b binding) Target() gextras.Objector {
 	var _arg0 *C.GBinding // out
+	var _cret *C.GObject  // in
 
 	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GObject // in
 
 	_cret = C.g_binding_get_target(_arg0)
 
@@ -400,10 +394,9 @@ func (b binding) Target() gextras.Objector {
 // used as the target of the binding.
 func (b binding) TargetProperty() string {
 	var _arg0 *C.GBinding // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_binding_get_target_property(_arg0)
 

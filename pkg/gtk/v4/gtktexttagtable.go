@@ -104,11 +104,10 @@ func NewTextTagTable() TextTagTable {
 func (t textTagTable) Add(tag TextTag) bool {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 
@@ -124,10 +123,9 @@ func (t textTagTable) Add(tag TextTag) bool {
 // Size returns the size of the table (number of tags)
 func (t textTagTable) Size() int {
 	var _arg0 *C.GtkTextTagTable // out
+	var _cret C.int              // in
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_text_tag_table_get_size(_arg0)
 
@@ -142,12 +140,11 @@ func (t textTagTable) Size() int {
 func (t textTagTable) Lookup(name string) TextTag {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.char            // out
+	var _cret *C.GtkTextTag      // in
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkTextTag // in
 
 	_cret = C.gtk_text_tag_table_lookup(_arg0, _arg1)
 

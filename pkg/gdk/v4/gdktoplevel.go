@@ -270,10 +270,10 @@ func (t toplevel) BeginMove(device Device, button int, x float64, y float64, tim
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg2 = C.int(button)
-	_arg3 = C.double(x)
-	_arg4 = C.double(y)
-	_arg5 = C.guint32(timestamp)
+	_arg2 = (C.int)(button)
+	_arg3 = (C.double)(x)
+	_arg4 = (C.double)(y)
+	_arg5 = (C.guint32)(timestamp)
 
 	C.gdk_toplevel_begin_move(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -293,10 +293,10 @@ func (t toplevel) BeginResize(edge SurfaceEdge, device Device, button int, x flo
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.GdkSurfaceEdge)(edge)
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg3 = C.int(button)
-	_arg4 = C.double(x)
-	_arg5 = C.double(y)
-	_arg6 = C.guint32(timestamp)
+	_arg3 = (C.int)(button)
+	_arg4 = (C.double)(x)
+	_arg5 = (C.double)(y)
+	_arg6 = (C.guint32)(timestamp)
 
 	C.gdk_toplevel_begin_resize(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -310,7 +310,7 @@ func (t toplevel) Focus(timestamp uint32) {
 	var _arg1 C.guint32      // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-	_arg1 = C.guint32(timestamp)
+	_arg1 = (C.guint32)(timestamp)
 
 	C.gdk_toplevel_focus(_arg0, _arg1)
 }
@@ -318,11 +318,10 @@ func (t toplevel) Focus(timestamp uint32) {
 // State gets the bitwise or of the currently active surface state flags,
 // from the `GdkToplevelState` enumeration.
 func (t toplevel) State() ToplevelState {
-	var _arg0 *C.GdkToplevel // out
+	var _arg0 *C.GdkToplevel     // out
+	var _cret C.GdkToplevelState // in
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GdkToplevelState // in
 
 	_cret = C.gdk_toplevel_get_state(_arg0)
 
@@ -370,10 +369,9 @@ func (t toplevel) InhibitSystemShortcuts(event Event) {
 // The windowing system may choose to ignore the request.
 func (t toplevel) Lower() bool {
 	var _arg0 *C.GdkToplevel // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_toplevel_lower(_arg0)
 
@@ -391,10 +389,9 @@ func (t toplevel) Lower() bool {
 // The windowing system may choose to ignore the request.
 func (t toplevel) Minimize() bool {
 	var _arg0 *C.GdkToplevel // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_toplevel_minimize(_arg0)
 
@@ -550,11 +547,10 @@ func (t toplevel) SetTransientFor(parent Surface) {
 func (t toplevel) ShowWindowMenu(event Event) bool {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkEvent    // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
 
@@ -571,10 +567,9 @@ func (t toplevel) ShowWindowMenu(event Event) bool {
 // tiled window states.
 func (t toplevel) SupportsEdgeConstraints() bool {
 	var _arg0 *C.GdkToplevel // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_toplevel_supports_edge_constraints(_arg0)
 

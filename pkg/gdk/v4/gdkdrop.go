@@ -152,11 +152,10 @@ func (s drop) Finish(action DragAction) {
 // [method@Gdk.Drop.status] or [method@Gdk.Drop.finish]. The source side
 // will not change this value anymore once a drop has started.
 func (s drop) Actions() DragAction {
-	var _arg0 *C.GdkDrop // out
+	var _arg0 *C.GdkDrop      // out
+	var _cret C.GdkDragAction // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gdk_drop_get_actions(_arg0)
 
@@ -169,11 +168,10 @@ func (s drop) Actions() DragAction {
 
 // Device returns the `GdkDevice` performing the drop.
 func (s drop) Device() Device {
-	var _arg0 *C.GdkDrop // out
+	var _arg0 *C.GdkDrop   // out
+	var _cret *C.GdkDevice // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDevice // in
 
 	_cret = C.gdk_drop_get_device(_arg0)
 
@@ -186,11 +184,10 @@ func (s drop) Device() Device {
 
 // Display gets the `GdkDisplay` that @self was created for.
 func (s drop) Display() Display {
-	var _arg0 *C.GdkDrop // out
+	var _arg0 *C.GdkDrop    // out
+	var _cret *C.GdkDisplay // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_drop_get_display(_arg0)
 
@@ -207,10 +204,9 @@ func (s drop) Display() Display {
 // If it is not, nil is returned.
 func (s drop) Drag() Drag {
 	var _arg0 *C.GdkDrop // out
+	var _cret *C.GdkDrag // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDrag // in
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 
@@ -224,11 +220,10 @@ func (s drop) Drag() Drag {
 // Formats returns the `GdkContentFormats` that the drop offers the data to
 // be read in.
 func (s drop) Formats() *ContentFormats {
-	var _arg0 *C.GdkDrop // out
+	var _arg0 *C.GdkDrop           // out
+	var _cret *C.GdkContentFormats // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkContentFormats // in
 
 	_cret = C.gdk_drop_get_formats(_arg0)
 
@@ -241,11 +236,10 @@ func (s drop) Formats() *ContentFormats {
 
 // Surface returns the `GdkSurface` performing the drop.
 func (s drop) Surface() Surface {
-	var _arg0 *C.GdkDrop // out
+	var _arg0 *C.GdkDrop    // out
+	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gdk_drop_get_surface(_arg0)
 
@@ -267,13 +261,12 @@ func (s drop) Surface() Surface {
 func (s drop) ReadFinish(result gio.AsyncResult) (string, gio.InputStream, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
 	var _arg2 *C.char         // in
 	var _cret *C.GInputStream // in
 	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -295,12 +288,11 @@ func (s drop) ReadFinish(result gio.AsyncResult) (string, gio.InputStream, error
 func (s drop) ReadValueFinish(result gio.AsyncResult) (**externglib.Value, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GValue       // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GValue // in
-	var _cerr *C.GError // in
 
 	_cret = C.gdk_drop_read_value_finish(_arg0, _arg1, &_cerr)
 

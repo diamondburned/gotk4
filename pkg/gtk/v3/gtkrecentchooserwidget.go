@@ -81,11 +81,10 @@ func NewRecentChooserWidget() RecentChooserWidget {
 
 // NewRecentChooserWidgetForManager constructs a class RecentChooserWidget.
 func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget {
-	var _arg1 *C.GtkRecentManager // out
+	var _arg1 *C.GtkRecentManager      // out
+	var _cret C.GtkRecentChooserWidget // in
 
 	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-
-	var _cret C.GtkRecentChooserWidget // in
 
 	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 

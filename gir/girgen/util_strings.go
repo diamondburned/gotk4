@@ -196,8 +196,10 @@ func SnakeToGo(pascal bool, snakeString string) string {
 	return PascalToGo(snakeString)
 }
 
-// See Go specs, section Keywords.
+// goKeywords includes both Go types and keywords. This is primarily to prevent
+// collisions with meaningful Go words.
 var goKeywords = map[string]struct{}{
+	// Keywords.
 	"break":       {},
 	"default":     {},
 	"func":        {},
@@ -223,6 +225,28 @@ var goKeywords = map[string]struct{}{
 	"import":      {},
 	"return":      {},
 	"var":         {},
+
+	// Types.
+	"bool":       {},
+	"byte":       {},
+	"complex128": {},
+	"complex64":  {},
+	"error":      {},
+	"float32":    {},
+	"float64":    {},
+	"int":        {},
+	"int16":      {},
+	"int32":      {},
+	"int64":      {},
+	"int8":       {},
+	"rune":       {},
+	"string":     {},
+	"uint":       {},
+	"uint16":     {},
+	"uint32":     {},
+	"uint64":     {},
+	"uint8":      {},
+	"uintptr":    {},
 }
 
 // cgoField formats the C field name to not be confused with a Go keyword.

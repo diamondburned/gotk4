@@ -198,11 +198,10 @@ func (s ioStream) ClearPending() {
 func (s ioStream) Close(cancellable Cancellable) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_io_stream_close(_arg0, _arg1, &_cerr)
 
@@ -217,11 +216,10 @@ func (s ioStream) Close(cancellable Cancellable) error {
 func (s ioStream) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
 
@@ -235,11 +233,10 @@ func (s ioStream) CloseFinish(result AsyncResult) error {
 // InputStream gets the input stream for this object. This is used for
 // reading.
 func (s ioStream) InputStream() InputStream {
-	var _arg0 *C.GIOStream // out
+	var _arg0 *C.GIOStream    // out
+	var _cret *C.GInputStream // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GInputStream // in
 
 	_cret = C.g_io_stream_get_input_stream(_arg0)
 
@@ -253,11 +250,10 @@ func (s ioStream) InputStream() InputStream {
 // OutputStream gets the output stream for this object. This is used for
 // writing.
 func (s ioStream) OutputStream() OutputStream {
-	var _arg0 *C.GIOStream // out
+	var _arg0 *C.GIOStream     // out
+	var _cret *C.GOutputStream // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GOutputStream // in
 
 	_cret = C.g_io_stream_get_output_stream(_arg0)
 
@@ -271,10 +267,9 @@ func (s ioStream) OutputStream() OutputStream {
 // HasPending checks if a stream has pending actions.
 func (s ioStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_io_stream_has_pending(_arg0)
 
@@ -290,10 +285,9 @@ func (s ioStream) HasPending() bool {
 // IsClosed checks if a stream is closed.
 func (s ioStream) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_io_stream_is_closed(_arg0)
 
@@ -310,10 +304,9 @@ func (s ioStream) IsClosed() bool {
 // already set or @stream is closed, it will return false and set @error.
 func (s ioStream) SetPending() error {
 	var _arg0 *C.GIOStream // out
+	var _cerr *C.GError    // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_io_stream_set_pending(_arg0, &_cerr)
 

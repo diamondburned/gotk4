@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,12 +54,11 @@ func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
 func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
-	var _arg1 *C.char // out
+	var _arg1 *C.char                  // out
+	var _cret *C.GFileAttributeMatcher // in
 
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GFileAttributeMatcher // in
 
 	_cret = C.g_file_attribute_matcher_new(_arg1)
 
@@ -88,12 +86,11 @@ func (f *FileAttributeMatcher) Native() unsafe.Pointer {
 func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(ns))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_attribute_matcher_enumerate_namespace(_arg0, _arg1)
 
@@ -109,10 +106,9 @@ func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 // EnumerateNext gets the next matched attribute from a AttributeMatcher.
 func (m *FileAttributeMatcher) EnumerateNext() string {
 	var _arg0 *C.GFileAttributeMatcher // out
+	var _cret *C.char                  // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_attribute_matcher_enumerate_next(_arg0)
 
@@ -129,12 +125,11 @@ func (m *FileAttributeMatcher) EnumerateNext() string {
 func (m *FileAttributeMatcher) Matches(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_attribute_matcher_matches(_arg0, _arg1)
 
@@ -152,12 +147,11 @@ func (m *FileAttributeMatcher) Matches(attribute string) bool {
 func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_attribute_matcher_matches_only(_arg0, _arg1)
 
@@ -173,10 +167,9 @@ func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 // Ref references a file attribute matcher.
 func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
+	var _cret *C.GFileAttributeMatcher // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GFileAttributeMatcher // in
 
 	_cret = C.g_file_attribute_matcher_ref(_arg0)
 
@@ -200,11 +193,10 @@ func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.GFileAttributeMatcher // out
+	var _cret *C.GFileAttributeMatcher // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(subtract.Native()))
-
-	var _cret *C.GFileAttributeMatcher // in
 
 	_cret = C.g_file_attribute_matcher_subtract(_arg0, _arg1)
 
@@ -224,10 +216,9 @@ func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAtt
 // omit needless parts.
 func (m *FileAttributeMatcher) String() string {
 	var _arg0 *C.GFileAttributeMatcher // out
+	var _cret *C.char                  // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_attribute_matcher_to_string(_arg0)
 
@@ -276,10 +267,9 @@ func (i *IOExtension) Native() unsafe.Pointer {
 // points, under different names.
 func (e *IOExtension) Name() string {
 	var _arg0 *C.GIOExtension // out
+	var _cret *C.char         // in
 
 	_arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_io_extension_get_name(_arg0)
 
@@ -293,10 +283,9 @@ func (e *IOExtension) Name() string {
 // Priority gets the priority with which @extension was registered.
 func (e *IOExtension) Priority() int {
 	var _arg0 *C.GIOExtension // out
+	var _cret C.gint          // in
 
 	_arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_io_extension_get_priority(_arg0)
 
@@ -310,10 +299,9 @@ func (e *IOExtension) Priority() int {
 // Type gets the type associated with @extension.
 func (e *IOExtension) Type() externglib.Type {
 	var _arg0 *C.GIOExtension // out
+	var _cret C.GType         // in
 
 	_arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.g_io_extension_get_type(_arg0)
 
@@ -349,12 +337,11 @@ func (i *IOExtensionPoint) Native() unsafe.Pointer {
 func (e *IOExtensionPoint) ExtensionByName(name string) *IOExtension {
 	var _arg0 *C.GIOExtensionPoint // out
 	var _arg1 *C.char              // out
+	var _cret *C.GIOExtension      // in
 
 	_arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GIOExtension // in
 
 	_cret = C.g_io_extension_point_get_extension_by_name(_arg0, _arg1)
 
@@ -368,10 +355,9 @@ func (e *IOExtensionPoint) ExtensionByName(name string) *IOExtension {
 // RequiredType gets the required type for @extension_point.
 func (e *IOExtensionPoint) RequiredType() externglib.Type {
 	var _arg0 *C.GIOExtensionPoint // out
+	var _cret C.GType              // in
 
 	_arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.g_io_extension_point_get_required_type(_arg0)
 
@@ -471,41 +457,6 @@ func (i *InputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// Address gets the field inside the struct.
-func (i *InputMessage) Address() SocketAddress {
-	var v SocketAddress // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(i.native.address.Native()))).(SocketAddress)
-	return v
-}
-
-// NumVectors gets the field inside the struct.
-func (i *InputMessage) NumVectors() uint {
-	var v uint // out
-	v = (uint)(i.native.num_vectors)
-	return v
-}
-
-// BytesReceived gets the field inside the struct.
-func (i *InputMessage) BytesReceived() uint {
-	var v uint // out
-	v = (uint)(i.native.bytes_received)
-	return v
-}
-
-// Flags gets the field inside the struct.
-func (i *InputMessage) Flags() int {
-	var v int // out
-	v = (int)(i.native.flags)
-	return v
-}
-
-// NumControlMessages gets the field inside the struct.
-func (i *InputMessage) NumControlMessages() *uint {
-	var v *uint // out
-	v = (*uint)(i.native.num_control_messages)
-	return v
-}
-
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
@@ -526,13 +477,6 @@ func WrapInputVector(ptr unsafe.Pointer) *InputVector {
 // Native returns the underlying C source pointer.
 func (i *InputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
-}
-
-// Size gets the field inside the struct.
-func (i *InputVector) Size() uint {
-	var v uint // out
-	v = (uint)(i.native.size)
-	return v
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -561,41 +505,6 @@ func (o *OutputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// Address gets the field inside the struct.
-func (o *OutputMessage) Address() SocketAddress {
-	var v SocketAddress // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.address.Native()))).(SocketAddress)
-	return v
-}
-
-// Vectors gets the field inside the struct.
-func (o *OutputMessage) Vectors() *OutputVector {
-	var v *OutputVector // out
-	v = WrapOutputVector(unsafe.Pointer(o.native.vectors))
-	return v
-}
-
-// NumVectors gets the field inside the struct.
-func (o *OutputMessage) NumVectors() uint {
-	var v uint // out
-	v = (uint)(o.native.num_vectors)
-	return v
-}
-
-// BytesSent gets the field inside the struct.
-func (o *OutputMessage) BytesSent() uint {
-	var v uint // out
-	v = (uint)(o.native.bytes_sent)
-	return v
-}
-
-// NumControlMessages gets the field inside the struct.
-func (o *OutputMessage) NumControlMessages() uint {
-	var v uint // out
-	v = (uint)(o.native.num_control_messages)
-	return v
-}
-
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
@@ -616,13 +525,6 @@ func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
 // Native returns the underlying C source pointer.
 func (o *OutputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
-}
-
-// Size gets the field inside the struct.
-func (o *OutputVector) Size() uint {
-	var v uint // out
-	v = (uint)(o.native.size)
-	return v
 }
 
 // Resource applications and libraries often contain binary or textual data that
@@ -809,14 +711,13 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
+	var _cret **C.char
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _cret **C.char
-	var _cerr *C.GError // in
 
 	_cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, &_cerr)
 
@@ -849,15 +750,14 @@ func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uin
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
+	var _arg3 C.gsize                // in
+	var _arg4 C.guint32              // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _arg3 C.gsize   // in
-	var _arg4 C.guint32 // in
-	var _cerr *C.GError // in
 
 	C.g_resource_get_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -880,14 +780,13 @@ func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (Inp
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
+	var _cret *C.GInputStream        // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _cret *C.GInputStream // in
-	var _cerr *C.GError       // in
 
 	_cret = C.g_resource_open_stream(_arg0, _arg1, _arg2, &_cerr)
 
@@ -904,10 +803,9 @@ func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (Inp
 // function is MT-safe and may be called from any thread.
 func (r *Resource) Ref() *Resource {
 	var _arg0 *C.GResource // out
+	var _cret *C.GResource // in
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GResource // in
 
 	_cret = C.g_resource_ref(_arg0)
 
@@ -965,18 +863,17 @@ func marshalSrvTarget(p uintptr) (interface{}, error) {
 
 // NewSrvTarget constructs a struct SrvTarget.
 func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget {
-	var _arg1 *C.gchar  // out
-	var _arg2 C.guint16 // out
-	var _arg3 C.guint16 // out
-	var _arg4 C.guint16 // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.guint16     // out
+	var _arg3 C.guint16     // out
+	var _arg4 C.guint16     // out
+	var _cret *C.GSrvTarget // in
 
 	_arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(port)
-	_arg3 = C.guint16(priority)
-	_arg4 = C.guint16(weight)
-
-	var _cret *C.GSrvTarget // in
+	_arg2 = (C.guint16)(port)
+	_arg3 = (C.guint16)(priority)
+	_arg4 = (C.guint16)(weight)
 
 	_cret = C.g_srv_target_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -998,10 +895,9 @@ func (s *SrvTarget) Native() unsafe.Pointer {
 // Copy copies @target
 func (t *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
+	var _cret *C.GSrvTarget // in
 
 	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GSrvTarget // in
 
 	_cret = C.g_srv_target_copy(_arg0)
 
@@ -1030,10 +926,9 @@ func (t *SrvTarget) Free() {
 // it if it does.)
 func (t *SrvTarget) Hostname() string {
 	var _arg0 *C.GSrvTarget // out
+	var _cret *C.gchar      // in
 
 	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_srv_target_get_hostname(_arg0)
 
@@ -1047,10 +942,9 @@ func (t *SrvTarget) Hostname() string {
 // Port gets @target's port
 func (t *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
+	var _cret C.guint16     // in
 
 	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.g_srv_target_get_port(_arg0)
 
@@ -1065,10 +959,9 @@ func (t *SrvTarget) Port() uint16 {
 // #GResolver already sorts the targets according to the algorithm in RFC 2782.
 func (t *SrvTarget) Priority() uint16 {
 	var _arg0 *C.GSrvTarget // out
+	var _cret C.guint16     // in
 
 	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.g_srv_target_get_priority(_arg0)
 
@@ -1083,10 +976,9 @@ func (t *SrvTarget) Priority() uint16 {
 // already sorts the targets according to the algorithm in RFC 2782.
 func (t *SrvTarget) Weight() uint16 {
 	var _arg0 *C.GSrvTarget // out
+	var _cret C.guint16     // in
 
 	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.g_srv_target_get_weight(_arg0)
 

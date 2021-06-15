@@ -134,12 +134,11 @@ func NewFixed() Fixed {
 func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
+	var _arg2 C.double     // in
+	var _arg3 C.double     // in
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _arg2 C.double // in
-	var _arg3 C.double // in
 
 	C.gtk_fixed_get_child_position(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -155,13 +154,12 @@ func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 // ChildTransform retrieves the transformation for @widget set using
 // gtk_fixed_set_child_transform().
 func (f fixed) ChildTransform(widget Widget) *gsk.Transform {
-	var _arg0 *C.GtkFixed  // out
-	var _arg1 *C.GtkWidget // out
+	var _arg0 *C.GtkFixed     // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret *C.GskTransform // in
 
 	_cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
 
@@ -182,8 +180,8 @@ func (f fixed) Move(widget Widget, x float64, y float64) {
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
+	_arg2 = (C.double)(x)
+	_arg3 = (C.double)(y)
 
 	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
 }
@@ -197,8 +195,8 @@ func (f fixed) Put(widget Widget, x float64, y float64) {
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
+	_arg2 = (C.double)(x)
+	_arg3 = (C.double)(y)
 
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
 }

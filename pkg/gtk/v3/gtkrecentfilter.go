@@ -185,7 +185,7 @@ func (f recentFilter) AddAge(days int) {
 	var _arg1 C.gint             // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
-	_arg1 = C.gint(days)
+	_arg1 = (C.gint)(days)
 
 	C.gtk_recent_filter_add_age(_arg0, _arg1)
 }
@@ -263,11 +263,10 @@ func (f recentFilter) AddPixbufFormats() {
 func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 *C.GtkRecentFilterInfo // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkRecentFilterInfo)(unsafe.Pointer(filterInfo.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_filter_filter(_arg0, _arg1)
 
@@ -284,10 +283,9 @@ func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 // gtk_recent_filter_set_name().
 func (f recentFilter) Name() string {
 	var _arg0 *C.GtkRecentFilter // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_filter_get_name(_arg0)
 
@@ -304,11 +302,10 @@ func (f recentFilter) Name() string {
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
 func (f recentFilter) Needed() RecentFilterFlags {
-	var _arg0 *C.GtkRecentFilter // out
+	var _arg0 *C.GtkRecentFilter     // out
+	var _cret C.GtkRecentFilterFlags // in
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret C.GtkRecentFilterFlags // in
 
 	_cret = C.gtk_recent_filter_get_needed(_arg0)
 
@@ -352,75 +349,4 @@ func WrapRecentFilterInfo(ptr unsafe.Pointer) *RecentFilterInfo {
 // Native returns the underlying C source pointer.
 func (r *RecentFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// Contains gets the field inside the struct.
-func (r *RecentFilterInfo) Contains() RecentFilterFlags {
-	var v RecentFilterFlags // out
-	v = RecentFilterFlags(r.native.contains)
-	return v
-}
-
-// URI gets the field inside the struct.
-func (r *RecentFilterInfo) URI() string {
-	var v string // out
-	v = C.GoString(r.native.uri)
-	return v
-}
-
-// DisplayName gets the field inside the struct.
-func (r *RecentFilterInfo) DisplayName() string {
-	var v string // out
-	v = C.GoString(r.native.display_name)
-	return v
-}
-
-// MIMEType gets the field inside the struct.
-func (r *RecentFilterInfo) MIMEType() string {
-	var v string // out
-	v = C.GoString(r.native.mime_type)
-	return v
-}
-
-// Applications gets the field inside the struct.
-func (r *RecentFilterInfo) Applications() []string {
-	var v []string
-	{
-		var i int
-		for p := r.native.applications; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(r.native.applications, i)
-		v = make([]string, i)
-		for i := range src {
-			v[i] = C.GoString(src[i])
-		}
-	}
-	return v
-}
-
-// Groups gets the field inside the struct.
-func (r *RecentFilterInfo) Groups() []string {
-	var v []string
-	{
-		var i int
-		for p := r.native.groups; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(r.native.groups, i)
-		v = make([]string, i)
-		for i := range src {
-			v[i] = C.GoString(src[i])
-		}
-	}
-	return v
-}
-
-// Age gets the field inside the struct.
-func (r *RecentFilterInfo) Age() int {
-	var v int // out
-	v = (int)(r.native.age)
-	return v
 }

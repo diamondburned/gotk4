@@ -155,12 +155,11 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 
 // NewNamedAction constructs a class NamedAction.
 func NewNamedAction(name string) NamedAction {
-	var _arg1 *C.char // out
+	var _arg1 *C.char          // out
+	var _cret C.GtkNamedAction // in
 
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkNamedAction // in
 
 	_cret = C.gtk_named_action_new(_arg1)
 
@@ -174,10 +173,9 @@ func NewNamedAction(name string) NamedAction {
 // ActionName returns the name of the action that will be activated.
 func (s namedAction) ActionName() string {
 	var _arg0 *C.GtkNamedAction // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_named_action_get_action_name(_arg0)
 
@@ -281,13 +279,12 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 }
 
 // NewShortcutActionParseString constructs a class ShortcutAction.
-func NewShortcutActionParseString(string string) ShortcutAction {
-	var _arg1 *C.char // out
-
-	_arg1 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
+func NewShortcutActionParseString(_string string) ShortcutAction {
+	var _arg1 *C.char             // out
 	var _cret C.GtkShortcutAction // in
+
+	_arg1 = (*C.char)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_action_parse_string(_arg1)
 
@@ -310,13 +307,12 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 	var _arg1 C.GtkShortcutActionFlags // out
 	var _arg2 *C.GtkWidget             // out
 	var _arg3 *C.GVariant              // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkShortcutActionFlags)(flags)
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
 
@@ -335,10 +331,9 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 // when debugging.
 func (s shortcutAction) String() string {
 	var _arg0 *C.GtkShortcutAction // out
+	var _cret *C.char              // in
 
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_shortcut_action_to_string(_arg0)
 
@@ -384,12 +379,11 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 
 // NewSignalAction constructs a class SignalAction.
 func NewSignalAction(signalName string) SignalAction {
-	var _arg1 *C.char // out
+	var _arg1 *C.char           // out
+	var _cret C.GtkSignalAction // in
 
 	_arg1 = (*C.char)(C.CString(signalName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkSignalAction // in
 
 	_cret = C.gtk_signal_action_new(_arg1)
 
@@ -403,10 +397,9 @@ func NewSignalAction(signalName string) SignalAction {
 // SignalName returns the name of the signal that will be emitted.
 func (s signalAction) SignalName() string {
 	var _arg0 *C.GtkSignalAction // out
+	var _cret *C.char            // in
 
 	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_signal_action_get_signal_name(_arg0)
 

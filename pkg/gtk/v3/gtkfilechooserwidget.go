@@ -68,10 +68,9 @@ func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 // NewFileChooserWidget constructs a class FileChooserWidget.
 func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	var _arg1 C.GtkFileChooserAction // out
+	var _cret C.GtkFileChooserWidget // in
 
 	_arg1 = (C.GtkFileChooserAction)(action)
-
-	var _cret C.GtkFileChooserWidget // in
 
 	_cret = C.gtk_file_chooser_widget_new(_arg1)
 

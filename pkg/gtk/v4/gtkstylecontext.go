@@ -239,7 +239,7 @@ func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
-	_arg2 = C.guint(priority)
+	_arg2 = (C.guint)(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
 }
@@ -247,10 +247,9 @@ func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
 // Border gets the border for a given state as a `GtkBorder`.
 func (c styleContext) Border() Border {
 	var _arg0 *C.GtkStyleContext // out
+	var _border Border
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _border Border
 
 	C.gtk_style_context_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
 
@@ -260,10 +259,9 @@ func (c styleContext) Border() Border {
 // Color gets the foreground color for a given state.
 func (c styleContext) Color() gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
+	var _color gdk.RGBA
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _color gdk.RGBA
 
 	C.gtk_style_context_get_color(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
@@ -273,10 +271,9 @@ func (c styleContext) Color() gdk.RGBA {
 // Display returns the `GdkDisplay` to which @context is attached.
 func (c styleContext) Display() gdk.Display {
 	var _arg0 *C.GtkStyleContext // out
+	var _cret *C.GdkDisplay      // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gtk_style_context_get_display(_arg0)
 
@@ -290,10 +287,9 @@ func (c styleContext) Display() gdk.Display {
 // Margin gets the margin for a given state as a `GtkBorder`.
 func (c styleContext) Margin() Border {
 	var _arg0 *C.GtkStyleContext // out
+	var _margin Border
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _margin Border
 
 	C.gtk_style_context_get_margin(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_margin)))
 
@@ -303,10 +299,9 @@ func (c styleContext) Margin() Border {
 // Padding gets the padding for a given state as a `GtkBorder`.
 func (c styleContext) Padding() Border {
 	var _arg0 *C.GtkStyleContext // out
+	var _padding Border
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _padding Border
 
 	C.gtk_style_context_get_padding(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_padding)))
 
@@ -316,10 +311,9 @@ func (c styleContext) Padding() Border {
 // Scale returns the scale used for assets.
 func (c styleContext) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
+	var _cret C.int              // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
 
@@ -338,10 +332,9 @@ func (c styleContext) Scale() int {
 // [method@Gtk.Widget.get_state_flags].
 func (c styleContext) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
+	var _cret C.GtkStateFlags    // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkStateFlags // in
 
 	_cret = C.gtk_style_context_get_state(_arg0)
 
@@ -357,12 +350,11 @@ func (c styleContext) State() StateFlags {
 func (c styleContext) HasClass(className string) bool {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
 
@@ -379,13 +371,12 @@ func (c styleContext) HasClass(className string) bool {
 func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
+	var _color gdk.RGBA
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _color gdk.RGBA
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
@@ -475,7 +466,7 @@ func (c styleContext) SetScale(scale int) {
 	var _arg1 C.int              // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(scale)
+	_arg1 = (C.int)(scale)
 
 	C.gtk_style_context_set_scale(_arg0, _arg1)
 }
@@ -503,11 +494,10 @@ func (c styleContext) SetState(flags StateFlags) {
 func (c styleContext) String(flags StyleContextPrintFlags) string {
 	var _arg0 *C.GtkStyleContext          // out
 	var _arg1 C.GtkStyleContextPrintFlags // out
+	var _cret *C.char                     // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStyleContextPrintFlags)(flags)
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
 

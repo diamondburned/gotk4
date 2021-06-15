@@ -36,10 +36,6 @@ type TextChildAnchor interface {
 	// if you plan to use this function — otherwise all deleted child anchors
 	// will also be finalized.
 	Deleted() bool
-	// Widgets gets a list of all widgets anchored at this child anchor.
-	//
-	// The order in which the widgets are returned is not defined.
-	Widgets() []Widget
 }
 
 // textChildAnchor implements the TextChildAnchor class.
@@ -85,10 +81,9 @@ func NewTextChildAnchor() TextChildAnchor {
 // will also be finalized.
 func (a textChildAnchor) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 
@@ -99,31 +94,4 @@ func (a textChildAnchor) Deleted() bool {
 	}
 
 	return _ok
-}
-
-// Widgets gets a list of all widgets anchored at this child anchor.
-//
-// The order in which the widgets are returned is not defined.
-func (a textChildAnchor) Widgets() []Widget {
-	var _arg0 *C.GtkTextChildAnchor // out
-
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
-
-	var _cret **C.GtkWidget
-	var _arg1 C.guint // in
-
-	_cret = C.gtk_text_child_anchor_get_widgets(_arg0, &_arg1)
-
-	var _widgets []Widget
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		defer C.free(unsafe.Pointer(_cret))
-		_widgets = make([]Widget, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_widgets[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i].Native()))).(Widget)
-		}
-	}
-
-	return _widgets
 }

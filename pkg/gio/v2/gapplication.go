@@ -644,12 +644,11 @@ func marshalApplication(p uintptr) (interface{}, error) {
 func NewApplication(applicationId string, flags ApplicationFlags) Application {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GApplicationFlags // out
+	var _cret C.GApplication      // in
 
 	_arg1 = (*C.gchar)(C.CString(applicationId))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GApplicationFlags)(flags)
-
-	var _cret C.GApplication // in
 
 	_cret = C.g_application_new(_arg1, _arg2)
 
@@ -699,7 +698,7 @@ func (a application) AddMainOption(longName string, shortName byte, flags glib.O
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(longName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.char(shortName)
+	_arg2 = (C.char)(shortName)
 	_arg3 = (C.GOptionFlags)(flags)
 	_arg4 = (C.GOptionArg)(arg)
 	_arg5 = (*C.char)(C.CString(description))
@@ -766,15 +765,11 @@ func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg1 *C.GOptionEntry
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong((len(entries) + 1)) * C.ulong(C.sizeof_GOptionEntry)))
-	defer C.free(unsafe.Pointer(_arg1))
-
 	{
-		out := unsafe.Slice(_arg1, len(entries))
-		for i := range entries {
-			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
-		}
+		var zero glib.OptionEntry
+		entries = append(entries, zero)
 	}
+	_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
 
 	C.g_application_add_main_option_entries(_arg0, _arg1)
 }
@@ -834,10 +829,9 @@ func (a application) BindBusyProperty(object gextras.Objector, property string) 
 // ApplicationID gets the unique identifier for @application.
 func (a application) ApplicationID() string {
 	var _arg0 *C.GApplication // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_application_get_application_id(_arg0)
 
@@ -862,11 +856,10 @@ func (a application) ApplicationID() string {
 // This function must not be called before the application has been
 // registered. See g_application_get_is_registered().
 func (a application) DBusConnection() DBusConnection {
-	var _arg0 *C.GApplication // out
+	var _arg0 *C.GApplication    // out
+	var _cret *C.GDBusConnection // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GDBusConnection // in
 
 	_cret = C.g_application_get_dbus_connection(_arg0)
 
@@ -894,10 +887,9 @@ func (a application) DBusConnection() DBusConnection {
 // registered. See g_application_get_is_registered().
 func (a application) DBusObjectPath() string {
 	var _arg0 *C.GApplication // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_application_get_dbus_object_path(_arg0)
 
@@ -912,11 +904,10 @@ func (a application) DBusObjectPath() string {
 //
 // See Flags.
 func (a application) Flags() ApplicationFlags {
-	var _arg0 *C.GApplication // out
+	var _arg0 *C.GApplication     // out
+	var _cret C.GApplicationFlags // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GApplicationFlags // in
 
 	_cret = C.g_application_get_flags(_arg0)
 
@@ -934,10 +925,9 @@ func (a application) Flags() ApplicationFlags {
 // g_application_release() before the application stops running.
 func (a application) InactivityTimeout() uint {
 	var _arg0 *C.GApplication // out
+	var _cret C.guint         // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.g_application_get_inactivity_timeout(_arg0)
 
@@ -952,10 +942,9 @@ func (a application) InactivityTimeout() uint {
 // g_application_mark_busy() or g_application_bind_busy_property().
 func (a application) IsBusy() bool {
 	var _arg0 *C.GApplication // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_application_get_is_busy(_arg0)
 
@@ -974,10 +963,9 @@ func (a application) IsBusy() bool {
 // successfully called.
 func (a application) IsRegistered() bool {
 	var _arg0 *C.GApplication // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_application_get_is_registered(_arg0)
 
@@ -1002,10 +990,9 @@ func (a application) IsRegistered() bool {
 // g_application_get_is_registered().
 func (a application) IsRemote() bool {
 	var _arg0 *C.GApplication // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_application_get_is_remote(_arg0)
 
@@ -1023,10 +1010,9 @@ func (a application) IsRemote() bool {
 // See g_application_set_resource_base_path() for more information.
 func (a application) ResourceBasePath() string {
 	var _arg0 *C.GApplication // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_application_get_resource_base_path(_arg0)
 
@@ -1094,7 +1080,6 @@ func (a application) Open(files []File, hint string) {
 	_arg2 = C.gint(len(files))
 	_arg1 = (**C.GFile)(C.malloc(C.ulong(len(files)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(files))
 		for i := range files {
@@ -1158,11 +1143,10 @@ func (a application) Quit() {
 func (a application) Register(cancellable Cancellable) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_application_register(_arg0, _arg1, &_cerr)
 
@@ -1264,12 +1248,12 @@ func (a application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
 	var _arg2 **C.char
 	var _arg1 C.int
+	var _cret C.int // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = C.int(len(argv))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
-
 	{
 		out := unsafe.Slice(_arg2, len(argv))
 		for i := range argv {
@@ -1277,8 +1261,6 @@ func (a application) Run(argv []string) int {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-
-	var _cret C.int // in
 
 	_cret = C.g_application_run(_arg0, _arg1, _arg2)
 
@@ -1400,7 +1382,7 @@ func (a application) SetInactivityTimeout(inactivityTimeout uint) {
 	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = C.guint(inactivityTimeout)
+	_arg1 = (C.guint)(inactivityTimeout)
 
 	C.g_application_set_inactivity_timeout(_arg0, _arg1)
 }

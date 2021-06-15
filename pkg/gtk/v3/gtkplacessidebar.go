@@ -299,10 +299,9 @@ func (s placesSidebar) AddShortcut(location gio.File) {
 // gtk_places_sidebar_set_local_only().
 func (s placesSidebar) LocalOnly() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_places_sidebar_get_local_only(_arg0)
 
@@ -326,10 +325,9 @@ func (s placesSidebar) LocalOnly() bool {
 // callbacks for your menu items.
 func (s placesSidebar) Location() gio.File {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret *C.GFile            // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.gtk_places_sidebar_get_location(_arg0)
 
@@ -347,11 +345,10 @@ func (s placesSidebar) Location() gio.File {
 func (s placesSidebar) NthBookmark(n int) gio.File {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gint              // out
+	var _cret *C.GFile            // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(n)
-
-	var _cret *C.GFile // in
+	_arg1 = (C.gint)(n)
 
 	_cret = C.gtk_places_sidebar_get_nth_bookmark(_arg0, _arg1)
 
@@ -364,11 +361,10 @@ func (s placesSidebar) NthBookmark(n int) gio.File {
 
 // OpenFlags gets the open flags.
 func (s placesSidebar) OpenFlags() PlacesOpenFlags {
-	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg0 *C.GtkPlacesSidebar  // out
+	var _cret C.GtkPlacesOpenFlags // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPlacesOpenFlags // in
 
 	_cret = C.gtk_places_sidebar_get_open_flags(_arg0)
 
@@ -383,10 +379,9 @@ func (s placesSidebar) OpenFlags() PlacesOpenFlags {
 // gtk_places_sidebar_set_show_connect_to_server()
 func (s placesSidebar) ShowConnectToServer() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_places_sidebar_get_show_connect_to_server(_arg0)
 
@@ -403,10 +398,9 @@ func (s placesSidebar) ShowConnectToServer() bool {
 // gtk_places_sidebar_set_show_desktop()
 func (s placesSidebar) ShowDesktop() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_places_sidebar_get_show_desktop(_arg0)
 
@@ -423,10 +417,9 @@ func (s placesSidebar) ShowDesktop() bool {
 // gtk_places_sidebar_set_show_enter_location()
 func (s placesSidebar) ShowEnterLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_places_sidebar_get_show_enter_location(_arg0)
 
@@ -443,10 +436,9 @@ func (s placesSidebar) ShowEnterLocation() bool {
 // gtk_places_sidebar_set_show_other_locations()
 func (s placesSidebar) ShowOtherLocations() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_places_sidebar_get_show_other_locations(_arg0)
 
@@ -463,10 +455,9 @@ func (s placesSidebar) ShowOtherLocations() bool {
 // gtk_places_sidebar_set_show_recent()
 func (s placesSidebar) ShowRecent() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_places_sidebar_get_show_recent(_arg0)
 
@@ -483,10 +474,9 @@ func (s placesSidebar) ShowRecent() bool {
 // gtk_places_sidebar_set_show_starred_location()
 func (s placesSidebar) ShowStarredLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_places_sidebar_get_show_starred_location(_arg0)
 
@@ -503,10 +493,9 @@ func (s placesSidebar) ShowStarredLocation() bool {
 // gtk_places_sidebar_set_show_trash()
 func (s placesSidebar) ShowTrash() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_places_sidebar_get_show_trash(_arg0)
 

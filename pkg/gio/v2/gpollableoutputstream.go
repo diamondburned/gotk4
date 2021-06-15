@@ -124,10 +124,9 @@ func marshalPollableOutputStream(p uintptr) (interface{}, error) {
 // stream cannot switch from pollable to non-pollable or vice versa.
 func (s pollableOutputStream) CanPoll() bool {
 	var _arg0 *C.GPollableOutputStream // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_pollable_output_stream_can_poll(_arg0)
 
@@ -149,10 +148,9 @@ func (s pollableOutputStream) CanPoll() bool {
 // will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 func (s pollableOutputStream) IsWritable() bool {
 	var _arg0 *C.GPollableOutputStream // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_pollable_output_stream_is_writable(_arg0)
 
@@ -185,14 +183,13 @@ func (s pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancel
 	var _arg1 *C.void
 	var _arg2 C.gsize
 	var _arg3 *C.GCancellable // out
+	var _cret C.gssize        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -226,18 +223,17 @@ func (s pollableOutputStream) WritevNonblocking(vectors []OutputVector, cancella
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
-	var _arg4 *C.GCancellable // out
+	var _arg3 C.gsize           // in
+	var _arg4 *C.GCancellable   // out
+	var _cret C.GPollableReturn // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(vectors))
 	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _arg3 C.gsize           // in
-	var _cret C.GPollableReturn // in
-	var _cerr *C.GError         // in
-
-	_cret = C.g_pollable_output_stream_writev_nonblocking(_arg0, _arg1, _arg2, _arg4, &_arg3, &_cerr)
+	_cret = C.g_pollable_output_stream_writev_nonblocking(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
 
 	var _bytesWritten uint             // out
 	var _pollableReturn PollableReturn // out

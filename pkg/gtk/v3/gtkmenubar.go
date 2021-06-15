@@ -87,10 +87,9 @@ func NewMenuBar() MenuBar {
 // NewMenuBarFromModel constructs a class MenuBar.
 func NewMenuBarFromModel(model gio.MenuModel) MenuBar {
 	var _arg1 *C.GMenuModel // out
+	var _cret C.GtkMenuBar  // in
 
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkMenuBar // in
 
 	_cret = C.gtk_menu_bar_new_from_model(_arg1)
 
@@ -104,11 +103,10 @@ func NewMenuBarFromModel(model gio.MenuModel) MenuBar {
 // ChildPackDirection retrieves the current child pack direction of the
 // menubar. See gtk_menu_bar_set_child_pack_direction().
 func (m menuBar) ChildPackDirection() PackDirection {
-	var _arg0 *C.GtkMenuBar // out
+	var _arg0 *C.GtkMenuBar      // out
+	var _cret C.GtkPackDirection // in
 
 	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GtkPackDirection // in
 
 	_cret = C.gtk_menu_bar_get_child_pack_direction(_arg0)
 
@@ -122,11 +120,10 @@ func (m menuBar) ChildPackDirection() PackDirection {
 // PackDirection retrieves the current pack direction of the menubar. See
 // gtk_menu_bar_set_pack_direction().
 func (m menuBar) PackDirection() PackDirection {
-	var _arg0 *C.GtkMenuBar // out
+	var _arg0 *C.GtkMenuBar      // out
+	var _cret C.GtkPackDirection // in
 
 	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GtkPackDirection // in
 
 	_cret = C.gtk_menu_bar_get_pack_direction(_arg0)
 

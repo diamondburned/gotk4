@@ -126,11 +126,10 @@ func NewFileFilter() FileFilter {
 
 // NewFileFilterFromGVariant constructs a class FileFilter.
 func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
-	var _arg1 *C.GVariant // out
+	var _arg1 *C.GVariant     // out
+	var _cret C.GtkFileFilter // in
 
 	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	var _cret C.GtkFileFilter // in
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
@@ -185,10 +184,9 @@ func (f fileFilter) AddPixbufFormats() {
 // principally for use in the implementation of `GtkFileChooser`.
 func (f fileFilter) Attributes() []string {
 	var _arg0 *C.GtkFileFilter // out
+	var _cret **C.char
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret **C.char
 
 	_cret = C.gtk_file_filter_get_attributes(_arg0)
 
@@ -215,10 +213,9 @@ func (f fileFilter) Attributes() []string {
 // See [method@Gtk.FileFilter.set_name].
 func (f fileFilter) Name() string {
 	var _arg0 *C.GtkFileFilter // out
+	var _cret *C.char          // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
 
@@ -247,10 +244,9 @@ func (f fileFilter) SetName(name string) {
 // ToGVariant: serialize a file filter to an `a{sv}` variant.
 func (f fileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
+	var _cret *C.GVariant      // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 

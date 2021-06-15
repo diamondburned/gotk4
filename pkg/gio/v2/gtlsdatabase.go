@@ -170,11 +170,10 @@ func marshalTLSDatabase(p uintptr) (interface{}, error) {
 func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GTlsCertificate // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_tls_database_create_certificate_handle(_arg0, _arg1)
 
@@ -205,6 +204,8 @@ func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSIn
 	var _arg2 *C.GTlsInteraction        // out
 	var _arg3 C.GTlsDatabaseLookupFlags // out
 	var _arg4 *C.GCancellable           // out
+	var _cret *C.GTlsCertificate        // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(handle))
@@ -212,9 +213,6 @@ func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSIn
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg3 = (C.GTlsDatabaseLookupFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GTlsCertificate // in
-	var _cerr *C.GError          // in
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -234,14 +232,13 @@ func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSIn
 // If the handle is no longer valid, or does not point to a certificate in
 // this database, then nil will be returned.
 func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error) {
-	var _arg0 *C.GTlsDatabase // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GTlsDatabase    // out
+	var _arg1 *C.GAsyncResult    // out
+	var _cret *C.GTlsCertificate // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GTlsCertificate // in
-	var _cerr *C.GError          // in
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle_finish(_arg0, _arg1, &_cerr)
 
@@ -269,15 +266,14 @@ func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interac
 	var _arg2 *C.GTlsInteraction        // out
 	var _arg3 C.GTlsDatabaseLookupFlags // out
 	var _arg4 *C.GCancellable           // out
+	var _cret *C.GTlsCertificate        // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg3 = (C.GTlsDatabaseLookupFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GTlsCertificate // in
-	var _cerr *C.GError          // in
 
 	_cret = C.g_tls_database_lookup_certificate_issuer(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -294,14 +290,13 @@ func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interac
 // operation. See g_tls_database_lookup_certificate_issuer() for more
 // information.
 func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error) {
-	var _arg0 *C.GTlsDatabase // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GTlsDatabase    // out
+	var _arg1 *C.GAsyncResult    // out
+	var _cret *C.GTlsCertificate // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GTlsCertificate // in
-	var _cerr *C.GError          // in
 
 	_cret = C.g_tls_database_lookup_certificate_issuer_finish(_arg0, _arg1, &_cerr)
 
@@ -358,6 +353,8 @@ func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity 
 	var _arg4 *C.GTlsInteraction        // out
 	var _arg5 C.GTlsDatabaseVerifyFlags // out
 	var _arg6 *C.GCancellable           // out
+	var _cret C.GTlsCertificateFlags    // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(chain.Native()))
@@ -367,9 +364,6 @@ func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity 
 	_arg4 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg5 = (C.GTlsDatabaseVerifyFlags)(flags)
 	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GTlsCertificateFlags // in
-	var _cerr *C.GError              // in
 
 	_cret = C.g_tls_database_verify_chain(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_cerr)
 
@@ -393,14 +387,13 @@ func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity 
 // will be set accordingly. @error is not set when @chain is successfully
 // analyzed but found to be invalid.
 func (s tlsDatabase) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
-	var _arg0 *C.GTlsDatabase // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GTlsDatabase        // out
+	var _arg1 *C.GAsyncResult        // out
+	var _cret C.GTlsCertificateFlags // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret C.GTlsCertificateFlags // in
-	var _cerr *C.GError              // in
 
 	_cret = C.g_tls_database_verify_chain_finish(_arg0, _arg1, &_cerr)
 

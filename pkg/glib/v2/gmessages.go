@@ -67,7 +67,7 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(line)
+	_arg3 = (C.int)(line)
 	_arg4 = (*C.char)(C.CString(prettyFunction))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(C.CString(expression))
@@ -86,7 +86,7 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint(handlerId)
+	_arg2 = (C.guint)(handlerId)
 
 	C.g_log_remove_handler(_arg1, _arg2)
 }
@@ -109,10 +109,9 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 // fatal. See [Using Structured Logging][using-structured-logging].
 func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 C.GLogLevelFlags // out
+	var _cret C.GLogLevelFlags // in
 
 	_arg1 = (C.GLogLevelFlags)(fatalMask)
-
-	var _cret C.GLogLevelFlags // in
 
 	_cret = C.g_log_set_always_fatal(_arg1)
 
@@ -139,12 +138,11 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.GLogLevelFlags // out
+	var _cret C.GLogLevelFlags // in
 
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GLogLevelFlags)(fatalMask)
-
-	var _cret C.GLogLevelFlags // in
 
 	_cret = C.g_log_set_fatal_mask(_arg1, _arg2)
 
@@ -250,12 +248,11 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.char          // out
+	var _cret C.gboolean       // in
 
 	_arg1 = (C.GLogLevelFlags)(logLevel)
 	_arg2 = (*C.char)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
 
@@ -282,6 +279,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 	var _arg2 *C.GLogField
 	var _arg3 C.gsize
 	var _arg4 C.gboolean // out
+	var _cret *C.gchar   // in
 
 	_arg1 = (C.GLogLevelFlags)(logLevel)
 	_arg3 = C.gsize(len(fields))
@@ -289,8 +287,6 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 	if useColor {
 		_arg4 = C.TRUE
 	}
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_log_writer_format_fields(_arg1, _arg2, _arg3, _arg4)
 
@@ -311,11 +307,10 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 //
 //    is_journald = g_log_writer_is_journald (fileno (stderr));
 func LogWriterIsJournald(outputFd int) bool {
-	var _arg1 C.gint // out
-
-	_arg1 = C.gint(outputFd)
-
+	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
+
+	_arg1 = (C.gint)(outputFd)
 
 	_cret = C.g_log_writer_is_journald(_arg1)
 
@@ -332,11 +327,10 @@ func LogWriterIsJournald(outputFd int) bool {
 // supports ANSI color escape sequences. If so, they can safely be used when
 // formatting log messages.
 func LogWriterSupportsColor(outputFd int) bool {
-	var _arg1 C.gint // out
-
-	_arg1 = C.gint(outputFd)
-
+	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
+
+	_arg1 = (C.gint)(outputFd)
 
 	_cret = C.g_log_writer_supports_color(_arg1)
 
@@ -373,18 +367,4 @@ func WrapLogField(ptr unsafe.Pointer) *LogField {
 // Native returns the underlying C source pointer.
 func (l *LogField) Native() unsafe.Pointer {
 	return unsafe.Pointer(&l.native)
-}
-
-// Key gets the field inside the struct.
-func (l *LogField) Key() string {
-	var v string // out
-	v = C.GoString(l.native.key)
-	return v
-}
-
-// Length gets the field inside the struct.
-func (l *LogField) Length() int {
-	var v int // out
-	v = (int)(l.native.length)
-	return v
 }

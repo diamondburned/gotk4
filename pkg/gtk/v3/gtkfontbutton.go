@@ -119,12 +119,11 @@ func NewFontButton() FontButton {
 
 // NewFontButtonWithFont constructs a class FontButton.
 func NewFontButtonWithFont(fontname string) FontButton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar        // out
+	var _cret C.GtkFontButton // in
 
 	_arg1 = (*C.gchar)(C.CString(fontname))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkFontButton // in
 
 	_cret = C.gtk_font_button_new_with_font(_arg1)
 
@@ -143,10 +142,9 @@ func NewFontButtonWithFont(fontname string) FontButton {
 // properties from the FontDescription object.
 func (f fontButton) FontName() string {
 	var _arg0 *C.GtkFontButton // out
+	var _cret *C.gchar         // in
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_font_button_get_font_name(_arg0)
 
@@ -160,10 +158,9 @@ func (f fontButton) FontName() string {
 // ShowSize returns whether the font size will be shown in the label.
 func (f fontButton) ShowSize() bool {
 	var _arg0 *C.GtkFontButton // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_font_button_get_show_size(_arg0)
 
@@ -180,10 +177,9 @@ func (f fontButton) ShowSize() bool {
 // label.
 func (f fontButton) ShowStyle() bool {
 	var _arg0 *C.GtkFontButton // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_font_button_get_show_style(_arg0)
 
@@ -199,10 +195,9 @@ func (f fontButton) ShowStyle() bool {
 // Title retrieves the title of the font chooser dialog.
 func (f fontButton) Title() string {
 	var _arg0 *C.GtkFontButton // out
+	var _cret *C.gchar         // in
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_font_button_get_title(_arg0)
 
@@ -216,10 +211,9 @@ func (f fontButton) Title() string {
 // UseFont returns whether the selected font is used in the label.
 func (f fontButton) UseFont() bool {
 	var _arg0 *C.GtkFontButton // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_font_button_get_use_font(_arg0)
 
@@ -235,10 +229,9 @@ func (f fontButton) UseFont() bool {
 // UseSize returns whether the selected size is used in the label.
 func (f fontButton) UseSize() bool {
 	var _arg0 *C.GtkFontButton // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_font_button_get_use_size(_arg0)
 
@@ -256,12 +249,11 @@ func (f fontButton) UseSize() bool {
 func (f fontButton) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.gchar         // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(fontname))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_font_button_set_font_name(_arg0, _arg1)
 

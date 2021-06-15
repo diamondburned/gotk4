@@ -87,11 +87,10 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 
 // NewBufferedOutputStream constructs a class BufferedOutputStream.
 func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
-	var _arg1 *C.GOutputStream // out
+	var _arg1 *C.GOutputStream        // out
+	var _cret C.GBufferedOutputStream // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-
-	var _cret C.GBufferedOutputStream // in
 
 	_cret = C.g_buffered_output_stream_new(_arg1)
 
@@ -104,13 +103,12 @@ func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 
 // NewBufferedOutputStreamSized constructs a class BufferedOutputStream.
 func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOutputStream {
-	var _arg1 *C.GOutputStream // out
-	var _arg2 C.gsize          // out
+	var _arg1 *C.GOutputStream        // out
+	var _arg2 C.gsize                 // out
+	var _cret C.GBufferedOutputStream // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-	_arg2 = C.gsize(size)
-
-	var _cret C.GBufferedOutputStream // in
+	_arg2 = (C.gsize)(size)
 
 	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
 
@@ -124,10 +122,9 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 // AutoGrow checks if the buffer automatically grows as data is added.
 func (s bufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
 
@@ -143,10 +140,9 @@ func (s bufferedOutputStream) AutoGrow() bool {
 // BufferSize gets the size of the buffer in the @stream.
 func (s bufferedOutputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
+	var _cret C.gsize                  // in
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gsize // in
 
 	_cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
 
@@ -179,7 +175,7 @@ func (s bufferedOutputStream) SetBufferSize(size uint) {
 	var _arg1 C.gsize                  // out
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gsize(size)
+	_arg1 = (C.gsize)(size)
 
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)
 }

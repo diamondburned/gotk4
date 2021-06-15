@@ -196,10 +196,9 @@ func (m *MainContext) Native() unsafe.Pointer {
 // g_main_context_dispatch().
 func (c *MainContext) Acquire() bool {
 	var _arg0 *C.GMainContext // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_main_context_acquire(_arg0)
 
@@ -222,7 +221,7 @@ func (c *MainContext) AddPoll(fd *PollFD, priority int) {
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd.Native()))
-	_arg2 = C.gint(priority)
+	_arg2 = (C.gint)(priority)
 
 	C.g_main_context_add_poll(_arg0, _arg1, _arg2)
 }
@@ -239,13 +238,12 @@ func (c *MainContext) Check(maxPriority int, fds []PollFD) bool {
 	var _arg1 C.gint          // out
 	var _arg2 *C.GPollFD
 	var _arg3 C.gint
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(maxPriority)
+	_arg1 = (C.gint)(maxPriority)
 	_arg3 = C.gint(len(fds))
 	_arg2 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_main_context_check(_arg0, _arg1, _arg2, _arg3)
 
@@ -275,10 +273,9 @@ func (c *MainContext) Dispatch() {
 // may be blocking to get ownership of @context.
 func (c *MainContext) IsOwner() bool {
 	var _arg0 *C.GMainContext // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_main_context_is_owner(_arg0)
 
@@ -305,13 +302,12 @@ func (c *MainContext) IsOwner() bool {
 func (c *MainContext) Iteration(mayBlock bool) bool {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gboolean      // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 	if mayBlock {
 		_arg1 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_main_context_iteration(_arg0, _arg1)
 
@@ -327,10 +323,9 @@ func (c *MainContext) Iteration(mayBlock bool) bool {
 // Pending checks if any sources have pending events for the given context.
 func (c *MainContext) Pending() bool {
 	var _arg0 *C.GMainContext // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_main_context_pending(_arg0)
 
@@ -360,11 +355,10 @@ func (c *MainContext) PopThreadDefault() {
 // before you may call this function.
 func (c *MainContext) Prepare() (int, bool) {
 	var _arg0 *C.GMainContext // out
+	var _arg1 C.gint          // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 C.gint     // in
-	var _cret C.gboolean // in
 
 	_cret = C.g_main_context_prepare(_arg0, &_arg1)
 
@@ -422,10 +416,9 @@ func (c *MainContext) PushThreadDefault() {
 // Ref increases the reference count on a Context object by one.
 func (c *MainContext) Ref() *MainContext {
 	var _arg0 *C.GMainContext // out
+	var _cret *C.GMainContext // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GMainContext // in
 
 	_cret = C.g_main_context_ref(_arg0)
 
@@ -521,13 +514,12 @@ func marshalMainLoop(p uintptr) (interface{}, error) {
 func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var _arg1 *C.GMainContext // out
 	var _arg2 C.gboolean      // out
+	var _cret *C.GMainLoop    // in
 
 	_arg1 = (*C.GMainContext)(unsafe.Pointer(context.Native()))
 	if isRunning {
 		_arg2 = C.TRUE
 	}
-
-	var _cret *C.GMainLoop // in
 
 	_cret = C.g_main_loop_new(_arg1, _arg2)
 
@@ -548,11 +540,10 @@ func (m *MainLoop) Native() unsafe.Pointer {
 
 // Context returns the Context of @loop.
 func (l *MainLoop) Context() *MainContext {
-	var _arg0 *C.GMainLoop // out
+	var _arg0 *C.GMainLoop    // out
+	var _cret *C.GMainContext // in
 
 	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GMainContext // in
 
 	_cret = C.g_main_loop_get_context(_arg0)
 
@@ -567,10 +558,9 @@ func (l *MainLoop) Context() *MainContext {
 // g_main_loop_run().
 func (l *MainLoop) IsRunning() bool {
 	var _arg0 *C.GMainLoop // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_main_loop_is_running(_arg0)
 
@@ -599,10 +589,9 @@ func (l *MainLoop) Quit() {
 // Ref increases the reference count on a Loop object by one.
 func (l *MainLoop) Ref() *MainLoop {
 	var _arg0 *C.GMainLoop // out
+	var _cret *C.GMainLoop // in
 
 	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GMainLoop // in
 
 	_cret = C.g_main_loop_ref(_arg0)
 

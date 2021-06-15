@@ -206,7 +206,7 @@ func (i infoBar) AddActionWidget(child Widget, responseId int) {
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.int(responseId)
+	_arg2 = (C.int)(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
 }
@@ -221,13 +221,12 @@ func (i infoBar) AddButton(buttonText string, responseId int) Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
+	var _cret *C.GtkWidget  // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(responseId)
-
-	var _cret *C.GtkWidget // in
+	_arg2 = (C.int)(responseId)
 
 	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
 
@@ -251,11 +250,10 @@ func (i infoBar) AddChild(widget Widget) {
 
 // MessageType returns the message type of the message area.
 func (i infoBar) MessageType() MessageType {
-	var _arg0 *C.GtkInfoBar // out
+	var _arg0 *C.GtkInfoBar    // out
+	var _cret C.GtkMessageType // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret C.GtkMessageType // in
 
 	_cret = C.gtk_info_bar_get_message_type(_arg0)
 
@@ -269,10 +267,9 @@ func (i infoBar) MessageType() MessageType {
 // Revealed returns whether the info bar is currently revealed.
 func (i infoBar) Revealed() bool {
 	var _arg0 *C.GtkInfoBar // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_info_bar_get_revealed(_arg0)
 
@@ -289,10 +286,9 @@ func (i infoBar) Revealed() bool {
 // button.
 func (i infoBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkInfoBar // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
 
@@ -337,7 +333,7 @@ func (i infoBar) Response(responseId int) {
 	var _arg1 C.int         // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(responseId)
+	_arg1 = (C.int)(responseId)
 
 	C.gtk_info_bar_response(_arg0, _arg1)
 }
@@ -354,7 +350,7 @@ func (i infoBar) SetDefaultResponse(responseId int) {
 	var _arg1 C.int         // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(responseId)
+	_arg1 = (C.int)(responseId)
 
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
 }
@@ -384,7 +380,7 @@ func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg2 C.gboolean    // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(responseId)
+	_arg1 = (C.int)(responseId)
 	if setting {
 		_arg2 = C.TRUE
 	}

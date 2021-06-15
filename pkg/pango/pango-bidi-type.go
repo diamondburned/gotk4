@@ -74,14 +74,13 @@ func marshalBidiType(p uintptr) (interface{}, error) {
 // FindBaseDir searches a string the first character that has a strong
 // direction, according to the Unicode bidirectional algorithm.
 func FindBaseDir(text string, length int) Direction {
-	var _arg1 *C.gchar // out
-	var _arg2 C.gint   // out
+	var _arg1 *C.gchar         // out
+	var _arg2 C.gint           // out
+	var _cret C.PangoDirection // in
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(length)
-
-	var _cret C.PangoDirection // in
+	_arg2 = (C.gint)(length)
 
 	_cret = C.pango_find_base_dir(_arg1, _arg2)
 
@@ -101,11 +100,10 @@ func FindBaseDir(text string, length int) Direction {
 func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gunichar // out
+	var _cret C.gboolean  // in
 
-	_arg1 = C.gunichar(ch)
-	_arg2 = *C.gunichar(mirroredCh)
-
-	var _cret C.gboolean // in
+	_arg1 = (C.gunichar)(ch)
+	_arg2 = (*C.gunichar)(mirroredCh)
 
 	_cret = C.pango_get_mirror_char(_arg1, _arg2)
 
@@ -128,11 +126,10 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 // type of a character is needed, [type_func@Pango.BidiType.for_unichar] can be
 // used instead.
 func UnicharDirection(ch uint32) Direction {
-	var _arg1 C.gunichar // out
-
-	_arg1 = C.gunichar(ch)
-
+	var _arg1 C.gunichar       // out
 	var _cret C.PangoDirection // in
+
+	_arg1 = (C.gunichar)(ch)
 
 	_cret = C.pango_unichar_direction(_arg1)
 

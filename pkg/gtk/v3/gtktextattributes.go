@@ -6,8 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,27 +40,6 @@ func WrapTextAppearance(ptr unsafe.Pointer) *TextAppearance {
 // Native returns the underlying C source pointer.
 func (t *TextAppearance) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// BgColor gets the field inside the struct.
-func (t *TextAppearance) BgColor() gdk.Color {
-	var v gdk.Color // out
-	v = *gdk.WrapColor(unsafe.Pointer(&t.native.bg_color))
-	return v
-}
-
-// FgColor gets the field inside the struct.
-func (t *TextAppearance) FgColor() gdk.Color {
-	var v gdk.Color // out
-	v = *gdk.WrapColor(unsafe.Pointer(&t.native.fg_color))
-	return v
-}
-
-// Rise gets the field inside the struct.
-func (t *TextAppearance) Rise() int {
-	var v int // out
-	v = (int)(t.native.rise)
-	return v
 }
 
 // TextAttributes: using TextAttributes directly should rarely be necessary.
@@ -109,118 +86,12 @@ func (t *TextAttributes) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Appearance gets the field inside the struct.
-func (t *TextAttributes) Appearance() TextAppearance {
-	var v TextAppearance // out
-	v = *WrapTextAppearance(unsafe.Pointer(&t.native.appearance))
-	return v
-}
-
-// Justification gets the field inside the struct.
-func (t *TextAttributes) Justification() Justification {
-	var v Justification // out
-	v = Justification(t.native.justification)
-	return v
-}
-
-// Direction gets the field inside the struct.
-func (t *TextAttributes) Direction() TextDirection {
-	var v TextDirection // out
-	v = TextDirection(t.native.direction)
-	return v
-}
-
-// Font gets the field inside the struct.
-func (t *TextAttributes) Font() *pango.FontDescription {
-	var v *pango.FontDescription // out
-	v = pango.WrapFontDescription(unsafe.Pointer(t.native.font))
-	return v
-}
-
-// FontScale gets the field inside the struct.
-func (t *TextAttributes) FontScale() float64 {
-	var v float64 // out
-	v = (float64)(t.native.font_scale)
-	return v
-}
-
-// LeftMargin gets the field inside the struct.
-func (t *TextAttributes) LeftMargin() int {
-	var v int // out
-	v = (int)(t.native.left_margin)
-	return v
-}
-
-// RightMargin gets the field inside the struct.
-func (t *TextAttributes) RightMargin() int {
-	var v int // out
-	v = (int)(t.native.right_margin)
-	return v
-}
-
-// Indent gets the field inside the struct.
-func (t *TextAttributes) Indent() int {
-	var v int // out
-	v = (int)(t.native.indent)
-	return v
-}
-
-// PixelsAboveLines gets the field inside the struct.
-func (t *TextAttributes) PixelsAboveLines() int {
-	var v int // out
-	v = (int)(t.native.pixels_above_lines)
-	return v
-}
-
-// PixelsBelowLines gets the field inside the struct.
-func (t *TextAttributes) PixelsBelowLines() int {
-	var v int // out
-	v = (int)(t.native.pixels_below_lines)
-	return v
-}
-
-// PixelsInsideWrap gets the field inside the struct.
-func (t *TextAttributes) PixelsInsideWrap() int {
-	var v int // out
-	v = (int)(t.native.pixels_inside_wrap)
-	return v
-}
-
-// Tabs gets the field inside the struct.
-func (t *TextAttributes) Tabs() *pango.TabArray {
-	var v *pango.TabArray // out
-	v = pango.WrapTabArray(unsafe.Pointer(t.native.tabs))
-	return v
-}
-
-// WrapMode gets the field inside the struct.
-func (t *TextAttributes) WrapMode() WrapMode {
-	var v WrapMode // out
-	v = WrapMode(t.native.wrap_mode)
-	return v
-}
-
-// Language gets the field inside the struct.
-func (t *TextAttributes) Language() *pango.Language {
-	var v *pango.Language // out
-	v = pango.WrapLanguage(unsafe.Pointer(t.native.language))
-	return v
-}
-
-// LetterSpacing gets the field inside the struct.
-func (t *TextAttributes) LetterSpacing() int {
-	var v int // out
-	v = (int)(t.native.letter_spacing)
-	return v
-}
-
 // Copy copies @src and returns a new TextAttributes.
 func (s *TextAttributes) Copy() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
+	var _cret *C.GtkTextAttributes // in
 
 	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkTextAttributes // in
 
 	_cret = C.gtk_text_attributes_copy(_arg0)
 
@@ -249,10 +120,9 @@ func (s *TextAttributes) CopyValues(dest *TextAttributes) {
 // Ref increments the reference count on @values.
 func (v *TextAttributes) Ref() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
+	var _cret *C.GtkTextAttributes // in
 
 	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GtkTextAttributes // in
 
 	_cret = C.gtk_text_attributes_ref(_arg0)
 

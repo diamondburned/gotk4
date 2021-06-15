@@ -124,13 +124,12 @@ func marshalPadController(p uintptr) (interface{}, error) {
 
 // NewPadController constructs a class PadController.
 func NewPadController(group gio.ActionGroup, pad gdk.Device) PadController {
-	var _arg1 *C.GActionGroup // out
-	var _arg2 *C.GdkDevice    // out
+	var _arg1 *C.GActionGroup    // out
+	var _arg2 *C.GdkDevice       // out
+	var _cret C.GtkPadController // in
 
 	_arg1 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
-
-	var _cret C.GtkPadController // in
 
 	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
 
@@ -160,8 +159,8 @@ func (c padController) SetAction(typ PadActionType, index int, mode int, label s
 
 	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkPadActionType)(typ)
-	_arg2 = C.int(index)
-	_arg3 = C.int(mode)
+	_arg2 = (C.int)(index)
+	_arg3 = (C.int)(mode)
 	_arg4 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(C.CString(actionName))
@@ -205,39 +204,4 @@ func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
 // Native returns the underlying C source pointer.
 func (p *PadActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
-}
-
-// Type gets the field inside the struct.
-func (p *PadActionEntry) Type() PadActionType {
-	var v PadActionType // out
-	v = PadActionType(p.native._type)
-	return v
-}
-
-// Index gets the field inside the struct.
-func (p *PadActionEntry) Index() int {
-	var v int // out
-	v = (int)(p.native.index)
-	return v
-}
-
-// Mode gets the field inside the struct.
-func (p *PadActionEntry) Mode() int {
-	var v int // out
-	v = (int)(p.native.mode)
-	return v
-}
-
-// Label gets the field inside the struct.
-func (p *PadActionEntry) Label() string {
-	var v string // out
-	v = C.GoString(p.native.label)
-	return v
-}
-
-// ActionName gets the field inside the struct.
-func (p *PadActionEntry) ActionName() string {
-	var v string // out
-	v = C.GoString(p.native.action_name)
-	return v
 }

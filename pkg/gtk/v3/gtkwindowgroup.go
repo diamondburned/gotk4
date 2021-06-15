@@ -103,11 +103,10 @@ func (w windowGroup) AddWindow(window Window) {
 func (w windowGroup) CurrentDeviceGrab(device gdk.Device) Widget {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GdkDevice      // out
+	var _cret *C.GtkWidget      // in
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
 
@@ -122,10 +121,9 @@ func (w windowGroup) CurrentDeviceGrab(device gdk.Device) Widget {
 // gtk_grab_add().
 func (w windowGroup) CurrentGrab() Widget {
 	var _arg0 *C.GtkWindowGroup // out
+	var _cret *C.GtkWidget      // in
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_window_group_get_current_grab(_arg0)
 

@@ -56,11 +56,10 @@ func (t *ToplevelSize) Native() unsafe.Pointer {
 // toplevel can be presented.
 func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
 	var _arg0 *C.GdkToplevelSize // out
+	var _arg1 C.int              // in
+	var _arg2 C.int              // in
 
 	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-
-	var _arg1 C.int // in
-	var _arg2 C.int // in
 
 	C.gdk_toplevel_size_get_bounds(_arg0, &_arg1, &_arg2)
 
@@ -88,8 +87,8 @@ func (s *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
 	var _arg2 C.int              // out
 
 	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(minWidth)
-	_arg2 = C.int(minHeight)
+	_arg1 = (C.int)(minWidth)
+	_arg2 = (C.int)(minHeight)
 
 	C.gdk_toplevel_size_set_min_size(_arg0, _arg1, _arg2)
 }
@@ -107,10 +106,10 @@ func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) 
 	var _arg4 C.int              // out
 
 	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(left)
-	_arg2 = C.int(right)
-	_arg3 = C.int(top)
-	_arg4 = C.int(bottom)
+	_arg1 = (C.int)(left)
+	_arg2 = (C.int)(right)
+	_arg3 = (C.int)(top)
+	_arg4 = (C.int)(bottom)
 
 	C.gdk_toplevel_size_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -127,8 +126,8 @@ func (s *ToplevelSize) SetSize(width int, height int) {
 	var _arg2 C.int              // out
 
 	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
+	_arg1 = (C.int)(width)
+	_arg2 = (C.int)(height)
 
 	C.gdk_toplevel_size_set_size(_arg0, _arg1, _arg2)
 }

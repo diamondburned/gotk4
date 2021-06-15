@@ -408,8 +408,6 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 		return nil
 	}
 
-	ng.Logln(LogDebug, "for gir type before ignoring:", typ.Name)
-
 	// Pretend that ignored types don't exist. typ is a copy, so we can do this.
 	if ng.mustIgnore(&typ.Name, &typ.CType) {
 		return nil
@@ -419,13 +417,6 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	if result == nil {
 		warnUnknownType(ng, typ.Name)
 		return nil
-	}
-
-	if ng.current.Namespace.Name == "PangoCairo" {
-		if name := result.Name(false); name == "Font" {
-			name = result.Name(true)
-			ng.Logln(LogDebug, "found result", name, "from", typ.Name)
-		}
 	}
 
 	// TODO: these checks shouldn't use as much load as they should, since that

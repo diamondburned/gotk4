@@ -79,10 +79,9 @@ func NewEventControllerFocus() EventControllerFocus {
 // children.
 func (s eventControllerFocus) ContainsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
+	var _cret C.gboolean                 // in
 
 	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
 
@@ -99,10 +98,9 @@ func (s eventControllerFocus) ContainsFocus() bool {
 // children.
 func (s eventControllerFocus) IsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
+	var _cret C.gboolean                 // in
 
 	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
 

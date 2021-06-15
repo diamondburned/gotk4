@@ -136,11 +136,10 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 
 // Enumerate creates a AddressEnumerator for @connectable.
 func (c socketConnectable) Enumerate() SocketAddressEnumerator {
-	var _arg0 *C.GSocketConnectable // out
+	var _arg0 *C.GSocketConnectable       // out
+	var _cret *C.GSocketAddressEnumerator // in
 
 	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSocketAddressEnumerator // in
 
 	_cret = C.g_socket_connectable_enumerate(_arg0)
 
@@ -159,11 +158,10 @@ func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 // g_socket_connectable_proxy_enumerate(), this will fall back to calling
 // g_socket_connectable_enumerate().
 func (c socketConnectable) ProXYEnumerate() SocketAddressEnumerator {
-	var _arg0 *C.GSocketConnectable // out
+	var _arg0 *C.GSocketConnectable       // out
+	var _cret *C.GSocketAddressEnumerator // in
 
 	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSocketAddressEnumerator // in
 
 	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
 
@@ -183,10 +181,9 @@ func (c socketConnectable) ProXYEnumerate() SocketAddressEnumerator {
 // implementation’s type name will be returned as a fallback.
 func (c socketConnectable) String() string {
 	var _arg0 *C.GSocketConnectable // out
+	var _cret *C.gchar              // in
 
 	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_socket_connectable_to_string(_arg0)
 

@@ -209,13 +209,12 @@ func NewLevelBar() LevelBar {
 
 // NewLevelBarForInterval constructs a class LevelBar.
 func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
-	var _arg1 C.double // out
-	var _arg2 C.double // out
-
-	_arg1 = C.double(minValue)
-	_arg2 = C.double(maxValue)
-
+	var _arg1 C.double      // out
+	var _arg2 C.double      // out
 	var _cret C.GtkLevelBar // in
+
+	_arg1 = (C.double)(minValue)
+	_arg2 = (C.double)(maxValue)
 
 	_cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
 
@@ -244,7 +243,7 @@ func (s levelBar) AddOffsetValue(name string, value float64) {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.double(value)
+	_arg2 = (C.double)(value)
 
 	C.gtk_level_bar_add_offset_value(_arg0, _arg1, _arg2)
 }
@@ -252,10 +251,9 @@ func (s levelBar) AddOffsetValue(name string, value float64) {
 // Inverted returns whether the levelbar is inverted.
 func (s levelBar) Inverted() bool {
 	var _arg0 *C.GtkLevelBar // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_level_bar_get_inverted(_arg0)
 
@@ -271,10 +269,9 @@ func (s levelBar) Inverted() bool {
 // MaxValue returns the `max-value` of the `GtkLevelBar`.
 func (s levelBar) MaxValue() float64 {
 	var _arg0 *C.GtkLevelBar // out
+	var _cret C.double       // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_level_bar_get_max_value(_arg0)
 
@@ -288,10 +285,9 @@ func (s levelBar) MaxValue() float64 {
 // MinValue returns the `min-value of the `GtkLevelBar`.
 func (s levelBar) MinValue() float64 {
 	var _arg0 *C.GtkLevelBar // out
+	var _cret C.double       // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_level_bar_get_min_value(_arg0)
 
@@ -304,11 +300,10 @@ func (s levelBar) MinValue() float64 {
 
 // Mode returns the `mode` of the `GtkLevelBar`.
 func (s levelBar) Mode() LevelBarMode {
-	var _arg0 *C.GtkLevelBar // out
+	var _arg0 *C.GtkLevelBar    // out
+	var _cret C.GtkLevelBarMode // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkLevelBarMode // in
 
 	_cret = C.gtk_level_bar_get_mode(_arg0)
 
@@ -324,13 +319,12 @@ func (s levelBar) Mode() LevelBarMode {
 func (s levelBar) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.char        // out
+	var _arg2 C.double       // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _arg2 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
 
@@ -348,10 +342,9 @@ func (s levelBar) OffsetValue(name string) (float64, bool) {
 // Value returns the `value` of the `GtkLevelBar`.
 func (s levelBar) Value() float64 {
 	var _arg0 *C.GtkLevelBar // out
+	var _cret C.double       // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_level_bar_get_value(_arg0)
 
@@ -399,7 +392,7 @@ func (s levelBar) SetMaxValue(value float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-	_arg1 = C.double(value)
+	_arg1 = (C.double)(value)
 
 	C.gtk_level_bar_set_max_value(_arg0, _arg1)
 }
@@ -413,7 +406,7 @@ func (s levelBar) SetMinValue(value float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-	_arg1 = C.double(value)
+	_arg1 = (C.double)(value)
 
 	C.gtk_level_bar_set_min_value(_arg0, _arg1)
 }
@@ -435,7 +428,7 @@ func (s levelBar) SetValue(value float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-	_arg1 = C.double(value)
+	_arg1 = (C.double)(value)
 
 	C.gtk_level_bar_set_value(_arg0, _arg1)
 }

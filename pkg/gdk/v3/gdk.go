@@ -89,10 +89,9 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 // hardware identificators.
 func (t deviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
+	var _cret C.guint64        // in
 
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint64 // in
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
 
@@ -107,10 +106,9 @@ func (t deviceTool) HardwareID() uint64 {
 // physical tool (eg. a tablet pen) across program executions.
 func (t deviceTool) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
+	var _cret C.guint64        // in
 
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint64 // in
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
 
@@ -123,11 +121,10 @@ func (t deviceTool) Serial() uint64 {
 
 // ToolType gets the DeviceToolType of the tool.
 func (t deviceTool) ToolType() DeviceToolType {
-	var _arg0 *C.GdkDeviceTool // out
+	var _arg0 *C.GdkDeviceTool    // out
+	var _cret C.GdkDeviceToolType // in
 
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GdkDeviceToolType // in
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
 
@@ -212,10 +209,9 @@ func marshalDragContext(p uintptr) (interface{}, error) {
 // gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
 func (c dragContext) Actions() DragAction {
 	var _arg0 *C.GdkDragContext // out
+	var _cret C.GdkDragAction   // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gdk_drag_context_get_actions(_arg0)
 
@@ -229,10 +225,9 @@ func (c dragContext) Actions() DragAction {
 // DestWindow returns the destination window for the DND operation.
 func (c dragContext) DestWindow() Window {
 	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GdkWindow      // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkWindow // in
 
 	_cret = C.gdk_drag_context_get_dest_window(_arg0)
 
@@ -246,10 +241,9 @@ func (c dragContext) DestWindow() Window {
 // Device returns the Device associated to the drag context.
 func (c dragContext) Device() Device {
 	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GdkDevice      // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkDevice // in
 
 	_cret = C.gdk_drag_context_get_device(_arg0)
 
@@ -267,10 +261,9 @@ func (c dragContext) Device() Device {
 // @context and will be destroyed when the drag operation is over.
 func (c dragContext) DragWindow() Window {
 	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GdkWindow      // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkWindow // in
 
 	_cret = C.gdk_drag_context_get_drag_window(_arg0)
 
@@ -284,10 +277,9 @@ func (c dragContext) DragWindow() Window {
 // Protocol returns the drag protocol that is used by this context.
 func (c dragContext) Protocol() DragProtocol {
 	var _arg0 *C.GdkDragContext // out
+	var _cret C.GdkDragProtocol // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GdkDragProtocol // in
 
 	_cret = C.gdk_drag_context_get_protocol(_arg0)
 
@@ -301,10 +293,9 @@ func (c dragContext) Protocol() DragProtocol {
 // SelectedAction determines the action chosen by the drag destination.
 func (c dragContext) SelectedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
+	var _cret C.GdkDragAction   // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gdk_drag_context_get_selected_action(_arg0)
 
@@ -318,10 +309,9 @@ func (c dragContext) SelectedAction() DragAction {
 // SourceWindow returns the Window where the DND operation started.
 func (c dragContext) SourceWindow() Window {
 	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GdkWindow      // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkWindow // in
 
 	_cret = C.gdk_drag_context_get_source_window(_arg0)
 
@@ -335,10 +325,9 @@ func (c dragContext) SourceWindow() Window {
 // SuggestedAction determines the suggested drag action of the context.
 func (c dragContext) SuggestedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
+	var _cret C.GdkDragAction   // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gdk_drag_context_get_suggested_action(_arg0)
 
@@ -368,12 +357,11 @@ func (c dragContext) ManageDnd(ipcWindow Window, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragAction   // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(ipcWindow.Native()))
 	_arg2 = (C.GdkDragAction)(actions)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
 
@@ -407,8 +395,8 @@ func (c dragContext) SetHotspot(hotX int, hotY int) {
 	var _arg2 C.gint            // out
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(hotX)
-	_arg2 = C.gint(hotY)
+	_arg1 = (C.gint)(hotX)
+	_arg2 = (C.gint)(hotY)
 
 	C.gdk_drag_context_set_hotspot(_arg0, _arg1, _arg2)
 }

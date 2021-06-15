@@ -102,10 +102,9 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 // The iterator is not advanced.
 func (i menuAttributeIter) Name() string {
 	var _arg0 *C.GMenuAttributeIter // out
+	var _cret *C.gchar              // in
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_menu_attribute_iter_get_name(_arg0)
 
@@ -132,12 +131,11 @@ func (i menuAttributeIter) Name() string {
 // unreffed using g_variant_unref() when it is no longer in use.
 func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
-
-	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
-
-	var _arg1 *C.gchar // in
+	var _arg1 *C.gchar              // in
 	var _value *glib.Variant
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
 
 	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, (**C.GVariant)(unsafe.Pointer(&_value)))
 
@@ -159,10 +157,9 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 // The iterator is not advanced.
 func (i menuAttributeIter) Value() *glib.Variant {
 	var _arg0 *C.GMenuAttributeIter // out
+	var _cret *C.GVariant           // in
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_menu_attribute_iter_get_value(_arg0)
 
@@ -186,10 +183,9 @@ func (i menuAttributeIter) Value() *glib.Variant {
 // exists at all).
 func (i menuAttributeIter) Next() bool {
 	var _arg0 *C.GMenuAttributeIter // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_menu_attribute_iter_next(_arg0)
 
@@ -266,10 +262,9 @@ func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 // The iterator is not advanced.
 func (i menuLinkIter) Name() string {
 	var _arg0 *C.GMenuLinkIter // out
+	var _cret *C.gchar         // in
 
 	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_menu_link_iter_get_name(_arg0)
 
@@ -296,12 +291,11 @@ func (i menuLinkIter) Name() string {
 // unreffed using g_object_unref() when it is no longer in use.
 func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
 	var _arg0 *C.GMenuLinkIter // out
+	var _arg1 *C.gchar         // in
+	var _arg2 *C.GMenuModel    // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
-
-	var _arg1 *C.gchar      // in
-	var _arg2 *C.GMenuModel // in
-	var _cret C.gboolean    // in
 
 	_cret = C.g_menu_link_iter_get_next(_arg0, &_arg1, &_arg2)
 
@@ -323,10 +317,9 @@ func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
 // The iterator is not advanced.
 func (i menuLinkIter) Value() MenuModel {
 	var _arg0 *C.GMenuLinkIter // out
+	var _cret *C.GMenuModel    // in
 
 	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GMenuModel // in
 
 	_cret = C.g_menu_link_iter_get_value(_arg0)
 
@@ -346,10 +339,9 @@ func (i menuLinkIter) Value() MenuModel {
 // all).
 func (i menuLinkIter) Next() bool {
 	var _arg0 *C.GMenuLinkIter // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_menu_link_iter_next(_arg0)
 
@@ -566,14 +558,13 @@ func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedT
 	var _arg1 C.gint          // out
 	var _arg2 *C.gchar        // out
 	var _arg3 *C.GVariantType // out
+	var _cret *C.GVariant     // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(itemIndex)
+	_arg1 = (C.gint)(itemIndex)
 	_arg2 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_menu_model_get_item_attribute_value(_arg0, _arg1, _arg2, _arg3)
 
@@ -596,13 +587,12 @@ func (m menuModel) ItemLink(itemIndex int, link string) MenuModel {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
+	var _cret *C.GMenuModel // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(itemIndex)
+	_arg1 = (C.gint)(itemIndex)
 	_arg2 = (*C.gchar)(C.CString(link))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GMenuModel // in
 
 	_cret = C.g_menu_model_get_item_link(_arg0, _arg1, _arg2)
 
@@ -616,10 +606,9 @@ func (m menuModel) ItemLink(itemIndex int, link string) MenuModel {
 // NItems: query the number of items in @model.
 func (m menuModel) NItems() int {
 	var _arg0 *C.GMenuModel // out
+	var _cret C.gint        // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_menu_model_get_n_items(_arg0)
 
@@ -636,10 +625,9 @@ func (m menuModel) NItems() int {
 // Consumers of the model may make optimisations accordingly.
 func (m menuModel) IsMutable() bool {
 	var _arg0 *C.GMenuModel // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_menu_model_is_mutable(_arg0)
 
@@ -675,9 +663,9 @@ func (m menuModel) ItemsChanged(position int, removed int, added int) {
 	var _arg3 C.gint        // out
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(position)
-	_arg2 = C.gint(removed)
-	_arg3 = C.gint(added)
+	_arg1 = (C.gint)(position)
+	_arg2 = (C.gint)(removed)
+	_arg3 = (C.gint)(added)
 
 	C.g_menu_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }
@@ -687,13 +675,12 @@ func (m menuModel) ItemsChanged(position int, removed int, added int) {
 //
 // You must free the iterator with g_object_unref() when you are done.
 func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
-	var _arg0 *C.GMenuModel // out
-	var _arg1 C.gint        // out
+	var _arg0 *C.GMenuModel         // out
+	var _arg1 C.gint                // out
+	var _cret *C.GMenuAttributeIter // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(itemIndex)
-
-	var _cret *C.GMenuAttributeIter // in
+	_arg1 = (C.gint)(itemIndex)
 
 	_cret = C.g_menu_model_iterate_item_attributes(_arg0, _arg1)
 
@@ -709,13 +696,12 @@ func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
 //
 // You must free the iterator with g_object_unref() when you are done.
 func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
-	var _arg0 *C.GMenuModel // out
-	var _arg1 C.gint        // out
+	var _arg0 *C.GMenuModel    // out
+	var _arg1 C.gint           // out
+	var _cret *C.GMenuLinkIter // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(itemIndex)
-
-	var _cret *C.GMenuLinkIter // in
+	_arg1 = (C.gint)(itemIndex)
 
 	_cret = C.g_menu_model_iterate_item_links(_arg0, _arg1)
 

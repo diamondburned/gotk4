@@ -186,11 +186,10 @@ func marshalMount(p uintptr) (interface{}, error) {
 
 // CanEject checks if @mount can be ejected.
 func (m mount) CanEject() bool {
-	var _arg0 *C.GMount // out
+	var _arg0 *C.GMount  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_mount_can_eject(_arg0)
 
@@ -205,11 +204,10 @@ func (m mount) CanEject() bool {
 
 // CanUnmount checks if @mount can be unmounted.
 func (m mount) CanUnmount() bool {
-	var _arg0 *C.GMount // out
+	var _arg0 *C.GMount  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_mount_can_unmount(_arg0)
 
@@ -228,11 +226,10 @@ func (m mount) CanUnmount() bool {
 func (m mount) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -249,11 +246,10 @@ func (m mount) EjectFinish(result AsyncResult) error {
 func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -269,10 +265,9 @@ func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 // user (e.g. the home directory, or the root of the volume).
 func (m mount) DefaultLocation() File {
 	var _arg0 *C.GMount // out
+	var _cret *C.GFile  // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.g_mount_get_default_location(_arg0)
 
@@ -289,10 +284,9 @@ func (m mount) DefaultLocation() File {
 // object to get the #GDrive.
 func (m mount) Drive() Drive {
 	var _arg0 *C.GMount // out
+	var _cret *C.GDrive // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GDrive // in
 
 	_cret = C.g_mount_get_drive(_arg0)
 
@@ -306,10 +300,9 @@ func (m mount) Drive() Drive {
 // Icon gets the icon for @mount.
 func (m mount) Icon() Icon {
 	var _arg0 *C.GMount // out
+	var _cret *C.GIcon  // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_mount_get_icon(_arg0)
 
@@ -323,10 +316,9 @@ func (m mount) Icon() Icon {
 // Name gets the name of @mount.
 func (m mount) Name() string {
 	var _arg0 *C.GMount // out
+	var _cret *C.char   // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_mount_get_name(_arg0)
 
@@ -341,10 +333,9 @@ func (m mount) Name() string {
 // Root gets the root directory on @mount.
 func (m mount) Root() File {
 	var _arg0 *C.GMount // out
+	var _cret *C.GFile  // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.g_mount_get_root(_arg0)
 
@@ -358,10 +349,9 @@ func (m mount) Root() File {
 // SortKey gets the sort key for @mount, if any.
 func (m mount) SortKey() string {
 	var _arg0 *C.GMount // out
+	var _cret *C.gchar  // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_mount_get_sort_key(_arg0)
 
@@ -375,10 +365,9 @@ func (m mount) SortKey() string {
 // SymbolicIcon gets the symbolic icon for @mount.
 func (m mount) SymbolicIcon() Icon {
 	var _arg0 *C.GMount // out
+	var _cret *C.GIcon  // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 
@@ -394,10 +383,9 @@ func (m mount) SymbolicIcon() Icon {
 // an opaque string. Returns nil if there is no UUID available.
 func (m mount) UUID() string {
 	var _arg0 *C.GMount // out
+	var _cret *C.char   // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_mount_get_uuid(_arg0)
 
@@ -411,11 +399,10 @@ func (m mount) UUID() string {
 
 // Volume gets the volume for the @mount.
 func (m mount) Volume() Volume {
-	var _arg0 *C.GMount // out
+	var _arg0 *C.GMount  // out
+	var _cret *C.GVolume // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GVolume // in
 
 	_cret = C.g_mount_get_volume(_arg0)
 
@@ -433,12 +420,11 @@ func (m mount) Volume() Volume {
 func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret **C.gchar
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret **C.gchar
-	var _cerr *C.GError // in
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
 
@@ -476,15 +462,14 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 	var _arg0 *C.GMount       // out
 	var _arg1 C.gboolean      // out
 	var _arg2 *C.GCancellable // out
+	var _cret **C.gchar
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret **C.gchar
-	var _cerr *C.GError // in
 
 	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
 
@@ -531,11 +516,10 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 // manage shadow mounts (and shadows the underlying mount) if the activation
 // root on a #GVolume is set.
 func (m mount) IsShadowed() bool {
-	var _arg0 *C.GMount // out
+	var _arg0 *C.GMount  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_mount_is_shadowed(_arg0)
 
@@ -554,11 +538,10 @@ func (m mount) IsShadowed() bool {
 func (m mount) RemountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_mount_remount_finish(_arg0, _arg1, &_cerr)
 
@@ -587,11 +570,10 @@ func (m mount) Shadow() {
 func (m mount) UnmountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_mount_unmount_finish(_arg0, _arg1, &_cerr)
 
@@ -608,11 +590,10 @@ func (m mount) UnmountFinish(result AsyncResult) error {
 func (m mount) UnmountWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
 

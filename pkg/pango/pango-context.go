@@ -214,11 +214,10 @@ func (c context) Changed() {
 //
 // See [method@Pango.Context.set_base_dir].
 func (c context) BaseDir() Direction {
-	var _arg0 *C.PangoContext // out
+	var _arg0 *C.PangoContext  // out
+	var _cret C.PangoDirection // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.PangoDirection // in
 
 	_cret = C.pango_context_get_base_dir(_arg0)
 
@@ -234,10 +233,9 @@ func (c context) BaseDir() Direction {
 // See [method@Pango.Context.set_base_gravity].
 func (c context) BaseGravity() Gravity {
 	var _arg0 *C.PangoContext // out
+	var _cret C.PangoGravity  // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.PangoGravity // in
 
 	_cret = C.pango_context_get_base_gravity(_arg0)
 
@@ -250,11 +248,10 @@ func (c context) BaseGravity() Gravity {
 
 // FontDescription: retrieve the default font description for the context.
 func (c context) FontDescription() *FontDescription {
-	var _arg0 *C.PangoContext // out
+	var _arg0 *C.PangoContext         // out
+	var _cret *C.PangoFontDescription // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoFontDescription // in
 
 	_cret = C.pango_context_get_font_description(_arg0)
 
@@ -268,10 +265,9 @@ func (c context) FontDescription() *FontDescription {
 // FontMap gets the `PangoFontMap` used to look up fonts for this context.
 func (c context) FontMap() FontMap {
 	var _arg0 *C.PangoContext // out
+	var _cret *C.PangoFontMap // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoFontMap // in
 
 	_cret = C.pango_context_get_font_map(_arg0)
 
@@ -290,10 +286,9 @@ func (c context) FontMap() FontMap {
 // from the current context matrix.
 func (c context) Gravity() Gravity {
 	var _arg0 *C.PangoContext // out
+	var _cret C.PangoGravity  // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.PangoGravity // in
 
 	_cret = C.pango_context_get_gravity(_arg0)
 
@@ -308,11 +303,10 @@ func (c context) Gravity() Gravity {
 //
 // See [method@Pango.Context.set_gravity_hint] for details.
 func (c context) GravityHint() GravityHint {
-	var _arg0 *C.PangoContext // out
+	var _arg0 *C.PangoContext    // out
+	var _cret C.PangoGravityHint // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.PangoGravityHint // in
 
 	_cret = C.pango_context_get_gravity_hint(_arg0)
 
@@ -325,11 +319,10 @@ func (c context) GravityHint() GravityHint {
 
 // Language retrieves the global language tag for the context.
 func (c context) Language() *Language {
-	var _arg0 *C.PangoContext // out
+	var _arg0 *C.PangoContext  // out
+	var _cret *C.PangoLanguage // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoLanguage // in
 
 	_cret = C.pango_context_get_language(_arg0)
 
@@ -349,10 +342,9 @@ func (c context) Language() *Language {
 // See [method@Pango.Context.set_matrix].
 func (c context) Matrix() *Matrix {
 	var _arg0 *C.PangoContext // out
+	var _cret *C.PangoMatrix  // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoMatrix // in
 
 	_cret = C.pango_context_get_matrix(_arg0)
 
@@ -379,12 +371,11 @@ func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 *C.PangoLanguage        // out
+	var _cret *C.PangoFontMetrics     // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
-
-	var _cret *C.PangoFontMetrics // in
 
 	_cret = C.pango_context_get_metrics(_arg0, _arg1, _arg2)
 
@@ -402,10 +393,9 @@ func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics
 // should round glyph positions and widths.
 func (c context) RoundGlyphPositions() bool {
 	var _arg0 *C.PangoContext // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.pango_context_get_round_glyph_positions(_arg0)
 
@@ -432,10 +422,9 @@ func (c context) RoundGlyphPositions() bool {
 // `PangoContext` changes, like `PangoLayout`.
 func (c context) Serial() uint {
 	var _arg0 *C.PangoContext // out
+	var _cret C.guint         // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.pango_context_get_serial(_arg0)
 
@@ -449,11 +438,10 @@ func (c context) Serial() uint {
 // ListFamilies: list all families for a context.
 func (c context) ListFamilies() []FontFamily {
 	var _arg0 *C.PangoContext // out
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-
 	var _arg1 **C.PangoFontFamily
 	var _arg2 C.int // in
+
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	C.pango_context_list_families(_arg0, &_arg1, &_arg2)
 
@@ -476,11 +464,10 @@ func (c context) ListFamilies() []FontFamily {
 func (c context) LoadFont(desc *FontDescription) Font {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
+	var _cret *C.PangoFont            // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
-
-	var _cret *C.PangoFont // in
 
 	_cret = C.pango_context_load_font(_arg0, _arg1)
 
@@ -497,12 +484,11 @@ func (c context) LoadFontset(desc *FontDescription, language *Language) Fontset 
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 *C.PangoLanguage        // out
+	var _cret *C.PangoFontset         // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
-
-	var _cret *C.PangoFontset // in
 
 	_cret = C.pango_context_load_fontset(_arg0, _arg1, _arg2)
 

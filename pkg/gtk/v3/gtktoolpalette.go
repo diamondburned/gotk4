@@ -214,11 +214,10 @@ func (p toolPalette) AddDragDest(widget Widget, flags DestDefaults, targets Tool
 func (p toolPalette) DragItem(selection *SelectionData) Widget {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkSelectionData // out
+	var _cret *C.GtkWidget        // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selection.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_tool_palette_get_drag_item(_arg0, _arg1)
 
@@ -231,15 +230,14 @@ func (p toolPalette) DragItem(selection *SelectionData) Widget {
 
 // DropGroup gets the group at position (x, y).
 func (p toolPalette) DropGroup(x int, y int) ToolItemGroup {
-	var _arg0 *C.GtkToolPalette // out
-	var _arg1 C.gint            // out
-	var _arg2 C.gint            // out
+	var _arg0 *C.GtkToolPalette   // out
+	var _arg1 C.gint              // out
+	var _arg2 C.gint              // out
+	var _cret *C.GtkToolItemGroup // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-
-	var _cret *C.GtkToolItemGroup // in
+	_arg1 = (C.gint)(x)
+	_arg2 = (C.gint)(y)
 
 	_cret = C.gtk_tool_palette_get_drop_group(_arg0, _arg1, _arg2)
 
@@ -256,12 +254,11 @@ func (p toolPalette) DropItem(x int, y int) ToolItem {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out
+	var _cret *C.GtkToolItem    // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-
-	var _cret *C.GtkToolItem // in
+	_arg1 = (C.gint)(x)
+	_arg2 = (C.gint)(y)
 
 	_cret = C.gtk_tool_palette_get_drop_item(_arg0, _arg1, _arg2)
 
@@ -277,11 +274,10 @@ func (p toolPalette) DropItem(x int, y int) ToolItem {
 func (p toolPalette) Exclusive(group ToolItemGroup) bool {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tool_palette_get_exclusive(_arg0, _arg1)
 
@@ -299,11 +295,10 @@ func (p toolPalette) Exclusive(group ToolItemGroup) bool {
 func (p toolPalette) Expand(group ToolItemGroup) bool {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tool_palette_get_expand(_arg0, _arg1)
 
@@ -321,11 +316,10 @@ func (p toolPalette) Expand(group ToolItemGroup) bool {
 func (p toolPalette) GroupPosition(group ToolItemGroup) int {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_tool_palette_get_group_position(_arg0, _arg1)
 
@@ -339,10 +333,9 @@ func (p toolPalette) GroupPosition(group ToolItemGroup) int {
 // HAdjustment gets the horizontal adjustment of the tool palette.
 func (p toolPalette) HAdjustment() Adjustment {
 	var _arg0 *C.GtkToolPalette // out
+	var _cret *C.GtkAdjustment  // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_tool_palette_get_hadjustment(_arg0)
 
@@ -357,10 +350,9 @@ func (p toolPalette) HAdjustment() Adjustment {
 // gtk_tool_palette_set_icon_size().
 func (p toolPalette) IconSize() int {
 	var _arg0 *C.GtkToolPalette // out
+	var _cret C.GtkIconSize     // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-
-	var _cret C.GtkIconSize // in
 
 	_cret = C.gtk_tool_palette_get_icon_size(_arg0)
 
@@ -374,10 +366,9 @@ func (p toolPalette) IconSize() int {
 // Style gets the style (icons, text or both) of items in the tool palette.
 func (p toolPalette) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolPalette // out
+	var _cret C.GtkToolbarStyle // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-
-	var _cret C.GtkToolbarStyle // in
 
 	_cret = C.gtk_tool_palette_get_style(_arg0)
 
@@ -391,10 +382,9 @@ func (p toolPalette) Style() ToolbarStyle {
 // VAdjustment gets the vertical adjustment of the tool palette.
 func (p toolPalette) VAdjustment() Adjustment {
 	var _arg0 *C.GtkToolPalette // out
+	var _cret *C.GtkAdjustment  // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_tool_palette_get_vadjustment(_arg0)
 
@@ -459,7 +449,7 @@ func (p toolPalette) SetGroupPosition(group ToolItemGroup, position int) {
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg2 = C.gint(position)
+	_arg2 = (C.gint)(position)
 
 	C.gtk_tool_palette_set_group_position(_arg0, _arg1, _arg2)
 }
@@ -470,7 +460,7 @@ func (p toolPalette) SetIconSize(iconSize int) {
 	var _arg1 C.GtkIconSize     // out
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-	_arg1 = C.GtkIconSize(iconSize)
+	_arg1 = (C.GtkIconSize)(iconSize)
 
 	C.gtk_tool_palette_set_icon_size(_arg0, _arg1)
 }

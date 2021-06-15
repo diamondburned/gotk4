@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 )
 
@@ -12,40 +11,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// Base64Decode: decode a sequence of Base-64 encoded text into binary data.
-// Note that the returned binary data is not necessarily zero-terminated, so it
-// should not be used as a character string.
-func Base64Decode(text string) []byte {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.guchar
-	var _arg2 C.gsize // in
-
-	_cret = C.g_base64_decode(_arg1, &_arg2)
-
-	var _guint8s []byte
-
-	_guint8s = unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg2)
-	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-
-	return _guint8s
-}
-
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
 func Base64Encode(data []byte) string {
 	var _arg1 *C.guchar
 	var _arg2 C.gsize
+	var _cret *C.gchar // in
 
 	_arg2 = C.gsize(len(data))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_base64_encode(_arg1, _arg2)
 

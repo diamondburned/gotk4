@@ -84,12 +84,11 @@ func NewFilenameCompleter() FilenameCompleter {
 func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
+	var _cret *C.char               // in
 
 	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.char // in
 
 	_cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
 
@@ -105,12 +104,11 @@ func (c filenameCompleter) CompletionSuffix(initialText string) string {
 func (c filenameCompleter) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
+	var _cret **C.char
 
 	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret **C.char
 
 	_cret = C.g_filename_completer_get_completions(_arg0, _arg1)
 

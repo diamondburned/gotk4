@@ -71,10 +71,9 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 // Family gets the socket family type of @address.
 func (a socketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
+	var _cret C.GSocketFamily   // in
 
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GSocketFamily // in
 
 	_cret = C.g_socket_address_get_family(_arg0)
 
@@ -89,10 +88,9 @@ func (a socketAddress) Family() SocketFamily {
 // use this to allocate memory to pass to g_socket_address_to_native().
 func (a socketAddress) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
+	var _cret C.gssize          // in
 
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gssize // in
 
 	_cret = C.g_socket_address_get_native_size(_arg0)
 

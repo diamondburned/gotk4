@@ -54,11 +54,10 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 
 // NewEventControllerMotion constructs a class EventControllerMotion.
 func NewEventControllerMotion(widget Widget) EventControllerMotion {
-	var _arg1 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget               // out
+	var _cret C.GtkEventControllerMotion // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkEventControllerMotion // in
 
 	_cret = C.gtk_event_controller_motion_new(_arg1)
 

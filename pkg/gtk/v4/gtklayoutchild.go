@@ -66,10 +66,9 @@ func marshalLayoutChild(p uintptr) (interface{}, error) {
 // @layout_child.
 func (l layoutChild) ChildWidget() Widget {
 	var _arg0 *C.GtkLayoutChild // out
+	var _cret *C.GtkWidget      // in
 
 	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_layout_child_get_child_widget(_arg0)
 
@@ -83,11 +82,10 @@ func (l layoutChild) ChildWidget() Widget {
 // LayoutManager retrieves the `GtkLayoutManager` instance that created the
 // given @layout_child.
 func (l layoutChild) LayoutManager() LayoutManager {
-	var _arg0 *C.GtkLayoutChild // out
+	var _arg0 *C.GtkLayoutChild   // out
+	var _cret *C.GtkLayoutManager // in
 
 	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GtkLayoutManager // in
 
 	_cret = C.gtk_layout_child_get_layout_manager(_arg0)
 

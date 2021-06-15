@@ -86,11 +86,10 @@ func marshalSeat(p uintptr) (interface{}, error) {
 
 // Capabilities returns the capabilities this Seat currently has.
 func (s seat) Capabilities() SeatCapabilities {
-	var _arg0 *C.GdkSeat // out
+	var _arg0 *C.GdkSeat            // out
+	var _cret C.GdkSeatCapabilities // in
 
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GdkSeatCapabilities // in
 
 	_cret = C.gdk_seat_get_capabilities(_arg0)
 
@@ -103,11 +102,10 @@ func (s seat) Capabilities() SeatCapabilities {
 
 // Display returns the Display this seat belongs to.
 func (s seat) Display() Display {
-	var _arg0 *C.GdkSeat // out
+	var _arg0 *C.GdkSeat    // out
+	var _cret *C.GdkDisplay // in
 
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_seat_get_display(_arg0)
 
@@ -120,11 +118,10 @@ func (s seat) Display() Display {
 
 // Keyboard returns the master device that routes keyboard events.
 func (s seat) Keyboard() Device {
-	var _arg0 *C.GdkSeat // out
+	var _arg0 *C.GdkSeat   // out
+	var _cret *C.GdkDevice // in
 
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDevice // in
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 
@@ -137,11 +134,10 @@ func (s seat) Keyboard() Device {
 
 // Pointer returns the master device that routes pointer events.
 func (s seat) Pointer() Device {
-	var _arg0 *C.GdkSeat // out
+	var _arg0 *C.GdkSeat   // out
+	var _cret *C.GdkDevice // in
 
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDevice // in
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 

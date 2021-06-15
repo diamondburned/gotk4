@@ -121,12 +121,11 @@ func marshalFrame(p uintptr) (interface{}, error) {
 
 // NewFrame constructs a class Frame.
 func NewFrame(label string) Frame {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _cret C.GtkFrame // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkFrame // in
 
 	_cret = C.gtk_frame_new(_arg1)
 
@@ -142,10 +141,9 @@ func NewFrame(label string) Frame {
 // non-nil argument was passed to gtk_frame_new().)
 func (f frame) Label() string {
 	var _arg0 *C.GtkFrame // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_frame_get_label(_arg0)
 
@@ -160,11 +158,10 @@ func (f frame) Label() string {
 // gtk_frame_set_label_align().
 func (f frame) LabelAlign() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkFrame // out
+	var _arg1 C.gfloat    // in
+	var _arg2 C.gfloat    // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _arg1 C.gfloat // in
-	var _arg2 C.gfloat // in
 
 	C.gtk_frame_get_label_align(_arg0, &_arg1, &_arg2)
 
@@ -180,11 +177,10 @@ func (f frame) LabelAlign() (xalign float32, yalign float32) {
 // LabelWidget retrieves the label widget for the frame. See
 // gtk_frame_set_label_widget().
 func (f frame) LabelWidget() Widget {
-	var _arg0 *C.GtkFrame // out
+	var _arg0 *C.GtkFrame  // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
 
@@ -198,11 +194,10 @@ func (f frame) LabelWidget() Widget {
 // ShadowType retrieves the shadow type of the frame. See
 // gtk_frame_set_shadow_type().
 func (f frame) ShadowType() ShadowType {
-	var _arg0 *C.GtkFrame // out
+	var _arg0 *C.GtkFrame     // out
+	var _cret C.GtkShadowType // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret C.GtkShadowType // in
 
 	_cret = C.gtk_frame_get_shadow_type(_arg0)
 
@@ -234,8 +229,8 @@ func (f frame) SetLabelAlign(xalign float32, yalign float32) {
 	var _arg2 C.gfloat    // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
+	_arg1 = (C.gfloat)(xalign)
+	_arg2 = (C.gfloat)(yalign)
 
 	C.gtk_frame_set_label_align(_arg0, _arg1, _arg2)
 }

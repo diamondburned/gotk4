@@ -27,7 +27,7 @@ import "C"
 func BusUnownName(ownerId uint) {
 	var _arg1 C.guint // out
 
-	_arg1 = C.guint(ownerId)
+	_arg1 = (C.guint)(ownerId)
 
 	C.g_bus_unown_name(_arg1)
 }

@@ -124,10 +124,9 @@ func NewTreeExpander() TreeExpander {
 // Child gets the child widget displayed by @self.
 func (s treeExpander) Child() Widget {
 	var _arg0 *C.GtkTreeExpander // out
+	var _cret *C.GtkWidget       // in
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_tree_expander_get_child(_arg0)
 
@@ -147,10 +146,9 @@ func (s treeExpander) Child() Widget {
 // “`
 func (s treeExpander) Item() gextras.Objector {
 	var _arg0 *C.GtkTreeExpander // out
+	var _cret C.gpointer         // in
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gpointer // in
 
 	_cret = C.gtk_tree_expander_get_item(_arg0)
 
@@ -164,10 +162,9 @@ func (s treeExpander) Item() gextras.Objector {
 // ListRow gets the list row managed by @self.
 func (s treeExpander) ListRow() TreeListRow {
 	var _arg0 *C.GtkTreeExpander // out
+	var _cret *C.GtkTreeListRow  // in
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkTreeListRow // in
 
 	_cret = C.gtk_tree_expander_get_list_row(_arg0)
 

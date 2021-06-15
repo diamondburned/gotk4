@@ -149,15 +149,11 @@ func (c *OptionContext) AddMainEntries(entries []OptionEntry, translationDomain 
 	var _arg2 *C.gchar // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong((len(entries) + 1)) * C.ulong(C.sizeof_GOptionEntry)))
-	defer C.free(unsafe.Pointer(_arg1))
-
 	{
-		out := unsafe.Slice(_arg1, len(entries))
-		for i := range entries {
-			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
-		}
+		var zero OptionEntry
+		entries = append(entries, zero)
 	}
+	_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
 	_arg2 = (*C.gchar)(C.CString(translationDomain))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -178,10 +174,9 @@ func (c *OptionContext) Free() {
 // Description returns the description. See g_option_context_set_description().
 func (c *OptionContext) Description() string {
 	var _arg0 *C.GOptionContext // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_option_context_get_description(_arg0)
 
@@ -202,14 +197,13 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 	var _arg0 *C.GOptionContext // out
 	var _arg1 C.gboolean        // out
 	var _arg2 *C.GOptionGroup   // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if mainHelp {
 		_arg1 = C.TRUE
 	}
 	_arg2 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_option_context_get_help(_arg0, _arg1, _arg2)
 
@@ -225,10 +219,9 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 // @context. See g_option_context_set_help_enabled().
 func (c *OptionContext) HelpEnabled() bool {
 	var _arg0 *C.GOptionContext // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_option_context_get_help_enabled(_arg0)
 
@@ -245,10 +238,9 @@ func (c *OptionContext) HelpEnabled() bool {
 // g_option_context_set_ignore_unknown_options().
 func (c *OptionContext) IgnoreUnknownOptions() bool {
 	var _arg0 *C.GOptionContext // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_option_context_get_ignore_unknown_options(_arg0)
 
@@ -264,10 +256,9 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 // MainGroup returns a pointer to the main group of @context.
 func (c *OptionContext) MainGroup() *OptionGroup {
 	var _arg0 *C.GOptionContext // out
+	var _cret *C.GOptionGroup   // in
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GOptionGroup // in
 
 	_cret = C.g_option_context_get_main_group(_arg0)
 
@@ -283,10 +274,9 @@ func (c *OptionContext) MainGroup() *OptionGroup {
 // See g_option_context_set_strict_posix() for more information.
 func (c *OptionContext) StrictPosix() bool {
 	var _arg0 *C.GOptionContext // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_option_context_get_strict_posix(_arg0)
 
@@ -302,10 +292,9 @@ func (c *OptionContext) StrictPosix() bool {
 // Summary returns the summary. See g_option_context_set_summary().
 func (c *OptionContext) Summary() string {
 	var _arg0 *C.GOptionContext // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_option_context_get_summary(_arg0)
 
@@ -467,48 +456,6 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// LongName gets the field inside the struct.
-func (o *OptionEntry) LongName() string {
-	var v string // out
-	v = C.GoString(o.native.long_name)
-	return v
-}
-
-// ShortName gets the field inside the struct.
-func (o *OptionEntry) ShortName() byte {
-	var v byte // out
-	v = (byte)(o.native.short_name)
-	return v
-}
-
-// Flags gets the field inside the struct.
-func (o *OptionEntry) Flags() int {
-	var v int // out
-	v = (int)(o.native.flags)
-	return v
-}
-
-// Arg gets the field inside the struct.
-func (o *OptionEntry) Arg() OptionArg {
-	var v OptionArg // out
-	v = OptionArg(o.native.arg)
-	return v
-}
-
-// Description gets the field inside the struct.
-func (o *OptionEntry) Description() string {
-	var v string // out
-	v = C.GoString(o.native.description)
-	return v
-}
-
-// ArgDescription gets the field inside the struct.
-func (o *OptionEntry) ArgDescription() string {
-	var v string // out
-	v = C.GoString(o.native.arg_description)
-	return v
-}
-
 // OptionGroup: a `GOptionGroup` struct defines the options in a single group.
 // The struct has only private fields and should not be directly accessed.
 //
@@ -546,15 +493,11 @@ func (g *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg1 *C.GOptionEntry
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong((len(entries) + 1)) * C.ulong(C.sizeof_GOptionEntry)))
-	defer C.free(unsafe.Pointer(_arg1))
-
 	{
-		out := unsafe.Slice(_arg1, len(entries))
-		for i := range entries {
-			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
-		}
+		var zero OptionEntry
+		entries = append(entries, zero)
 	}
+	_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
 
 	C.g_option_group_add_entries(_arg0, _arg1)
 }
@@ -572,10 +515,9 @@ func (g *OptionGroup) Free() {
 // Ref increments the reference count of @group by one.
 func (g *OptionGroup) Ref() *OptionGroup {
 	var _arg0 *C.GOptionGroup // out
+	var _cret *C.GOptionGroup // in
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
-
-	var _cret *C.GOptionGroup // in
 
 	_cret = C.g_option_group_ref(_arg0)
 

@@ -193,11 +193,10 @@ func RCAddDefaultFile(filename string) {
 // function is not useful for applications and should not be used.
 func RCFindModuleInPath(moduleFile string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(moduleFile))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_find_module_in_path(_arg1)
 
@@ -216,13 +215,12 @@ func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile str
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.GScanner    // out
 	var _arg3 *C.gchar       // out
+	var _cret *C.gchar       // in
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 	_arg3 = (*C.gchar)(C.CString(pixmapFile))
 	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
 
@@ -314,10 +312,9 @@ func RCGetModuleDir() string {
 // not be created.)
 func RCGetStyle(widget Widget) Style {
 	var _arg1 *C.GtkWidget // out
+	var _cret *C.GtkStyle  // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret *C.GtkStyle // in
 
 	_cret = C.gtk_rc_get_style(_arg1)
 
@@ -346,6 +343,7 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 	var _arg2 *C.char        // out
 	var _arg3 *C.char        // out
 	var _arg4 C.GType        // out
+	var _cret *C.GtkStyle    // in
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (*C.char)(C.CString(widgetPath))
@@ -353,8 +351,6 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 	_arg3 = (*C.char)(C.CString(classPath))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(typ)
-
-	var _cret *C.GtkStyle // in
 
 	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)
 
@@ -396,11 +392,10 @@ func RCParse(filename string) {
 // support symbolic colors.
 func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
-
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
-
 	var _color gdk.Color
 	var _cret C.guint // in
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 
 	_cret = C.gtk_rc_parse_color(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
@@ -417,12 +412,11 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
+	var _color gdk.Color
+	var _cret C.guint // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
-
-	var _color gdk.Color
-	var _cret C.guint // in
 
 	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
@@ -438,11 +432,10 @@ func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
 func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 	var _arg1 *C.GScanner            // out
 	var _arg2 *C.GtkPathPriorityType // out
+	var _cret C.guint                // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 	_arg2 = (*C.GtkPathPriorityType)(priority)
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_rc_parse_priority(_arg1, _arg2)
 
@@ -456,12 +449,11 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 // RCParseState parses a StateType variable from the format expected in a RC
 // file.
 func RCParseState(scanner *glib.Scanner) (StateType, uint) {
-	var _arg1 *C.GScanner // out
-
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
-
+	var _arg1 *C.GScanner    // out
 	var _arg2 C.GtkStateType // in
 	var _cret C.guint        // in
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 
 	_cret = C.gtk_rc_parse_state(_arg1, &_arg2)
 
@@ -507,13 +499,12 @@ func RCReparseAll() bool {
 func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 C.gboolean     // out
+	var _cret C.gboolean     // in
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	if forceLoad {
 		_arg2 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_rc_reparse_all_for_settings(_arg1, _arg2)
 
@@ -547,9 +538,8 @@ func RCResetStyles(settings Settings) {
 func RCSetDefaultFiles(filenames []string) {
 	var _arg1 **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(filenames) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(filenames)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(filenames))
 		for i := range filenames {
@@ -610,10 +600,9 @@ func NewRCStyle() RCStyle {
 // copy an RC style that is a member of a class derived from RcStyle.
 func (o rcStyle) Copy() RCStyle {
 	var _arg0 *C.GtkRcStyle // out
+	var _cret *C.GtkRcStyle // in
 
 	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkRcStyle // in
 
 	_cret = C.gtk_rc_style_copy(_arg0)
 

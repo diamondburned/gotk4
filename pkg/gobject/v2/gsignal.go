@@ -3,7 +3,6 @@
 package gobject
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -105,7 +104,7 @@ func ClearSignalHandler(handlerIdPtr *uint32, instance gextras.Objector) {
 	var _arg1 *C.gulong  // out
 	var _arg2 C.gpointer // out
 
-	_arg1 = *C.gulong(handlerIdPtr)
+	_arg1 = (*C.gulong)(handlerIdPtr)
 	_arg2 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 
 	C.g_clear_signal_handler(_arg1, _arg2)
@@ -114,11 +113,10 @@ func ClearSignalHandler(handlerIdPtr *uint32, instance gextras.Objector) {
 // SignalGetInvocationHint returns the invocation hint of the innermost signal
 // emission of instance.
 func SignalGetInvocationHint(instance gextras.Objector) *SignalInvocationHint {
-	var _arg1 C.gpointer // out
+	var _arg1 C.gpointer               // out
+	var _cret *C.GSignalInvocationHint // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
-
-	var _cret *C.GSignalInvocationHint // in
 
 	_cret = C.g_signal_get_invocation_hint(_arg1)
 
@@ -142,7 +140,7 @@ func SignalHandlerBlock(instance gextras.Objector, handlerId uint32) {
 	var _arg2 C.gulong   // out
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
-	_arg2 = C.gulong(handlerId)
+	_arg2 = (C.gulong)(handlerId)
 
 	C.g_signal_handler_block(_arg1, _arg2)
 }
@@ -158,7 +156,7 @@ func SignalHandlerDisconnect(instance gextras.Objector, handlerId uint32) {
 	var _arg2 C.gulong   // out
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
-	_arg2 = C.gulong(handlerId)
+	_arg2 = (C.gulong)(handlerId)
 
 	C.g_signal_handler_disconnect(_arg1, _arg2)
 }
@@ -168,11 +166,10 @@ func SignalHandlerDisconnect(instance gextras.Objector, handlerId uint32) {
 func SignalHandlerIsConnected(instance gextras.Objector, handlerId uint32) bool {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gulong   // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
-	_arg2 = C.gulong(handlerId)
-
-	var _cret C.gboolean // in
+	_arg2 = (C.gulong)(handlerId)
 
 	_cret = C.g_signal_handler_is_connected(_arg1, _arg2)
 
@@ -202,7 +199,7 @@ func SignalHandlerUnblock(instance gextras.Objector, handlerId uint32) {
 	var _arg2 C.gulong   // out
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
-	_arg2 = C.gulong(handlerId)
+	_arg2 = (C.gulong)(handlerId)
 
 	C.g_signal_handler_unblock(_arg1, _arg2)
 }
@@ -226,12 +223,11 @@ func SignalHandlersDestroy(instance gextras.Objector) {
 // rules for valid names. The rules for signal names are the same as those for
 // property names.
 func SignalIsValidName(name string) bool {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_signal_is_valid_name(_arg1)
 
@@ -242,29 +238,6 @@ func SignalIsValidName(name string) bool {
 	}
 
 	return _ok
-}
-
-// SignalListIds lists the signals by id that a certain instance or interface
-// type created. Further information about the signals can be acquired through
-// g_signal_query().
-func SignalListIds(itype externglib.Type) []uint {
-	var _arg1 C.GType // out
-
-	_arg1 = C.GType(itype)
-
-	var _cret *C.guint
-	var _arg2 C.guint // in
-
-	_cret = C.g_signal_list_ids(_arg1, &_arg2)
-
-	var _guints []uint
-
-	_guints = unsafe.Slice((*uint)(unsafe.Pointer(_cret)), _arg2)
-	runtime.SetFinalizer(&_guints, func(v *[]uint) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-
-	return _guints
 }
 
 // SignalLookup: given the name of the signal and the type of object it connects
@@ -281,12 +254,11 @@ func SignalListIds(itype externglib.Type) []uint {
 func SignalLookup(name string, itype externglib.Type) uint {
 	var _arg1 *C.gchar // out
 	var _arg2 C.GType  // out
+	var _cret C.guint  // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GType(itype)
-
-	var _cret C.guint // in
 
 	_cret = C.g_signal_lookup(_arg1, _arg2)
 
@@ -301,11 +273,10 @@ func SignalLookup(name string, itype externglib.Type) uint {
 //
 // Two different signals may have the same name, if they have differing types.
 func SignalName(signalId uint) string {
-	var _arg1 C.guint // out
-
-	_arg1 = C.guint(signalId)
-
+	var _arg1 C.guint  // out
 	var _cret *C.gchar // in
+
+	_arg1 = (C.guint)(signalId)
 
 	_cret = C.g_signal_name(_arg1)
 
@@ -323,10 +294,9 @@ func SignalName(signalId uint) string {
 // structure should be considered constant and have to be left untouched.
 func SignalQuery(signalId uint) SignalQuery {
 	var _arg1 C.guint // out
-
-	_arg1 = C.guint(signalId)
-
 	var _query SignalQuery
+
+	_arg1 = (C.guint)(signalId)
 
 	C.g_signal_query(_arg1, (*C.GSignalQuery)(unsafe.Pointer(&_query)))
 
@@ -338,8 +308,8 @@ func SignalRemoveEmissionHook(signalId uint, hookId uint32) {
 	var _arg1 C.guint  // out
 	var _arg2 C.gulong // out
 
-	_arg1 = C.guint(signalId)
-	_arg2 = C.gulong(hookId)
+	_arg1 = (C.guint)(signalId)
+	_arg2 = (C.gulong)(hookId)
 
 	C.g_signal_remove_emission_hook(_arg1, _arg2)
 }
@@ -380,20 +350,6 @@ func (s *SignalInvocationHint) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// SignalID gets the field inside the struct.
-func (s *SignalInvocationHint) SignalID() uint {
-	var v uint // out
-	v = (uint)(s.native.signal_id)
-	return v
-}
-
-// RunType gets the field inside the struct.
-func (s *SignalInvocationHint) RunType() SignalFlags {
-	var v SignalFlags // out
-	v = SignalFlags(s.native.run_type)
-	return v
-}
-
 // SignalQuery: a structure holding in-depth information for a specific signal.
 // It is filled in by the g_signal_query() function.
 type SignalQuery struct {
@@ -413,46 +369,4 @@ func WrapSignalQuery(ptr unsafe.Pointer) *SignalQuery {
 // Native returns the underlying C source pointer.
 func (s *SignalQuery) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// SignalID gets the field inside the struct.
-func (s *SignalQuery) SignalID() uint {
-	var v uint // out
-	v = (uint)(s.native.signal_id)
-	return v
-}
-
-// SignalName gets the field inside the struct.
-func (s *SignalQuery) SignalName() string {
-	var v string // out
-	v = C.GoString(s.native.signal_name)
-	return v
-}
-
-// Itype gets the field inside the struct.
-func (s *SignalQuery) Itype() externglib.Type {
-	var v externglib.Type // out
-	v = externglib.Type(s.native.itype)
-	return v
-}
-
-// SignalFlags gets the field inside the struct.
-func (s *SignalQuery) SignalFlags() SignalFlags {
-	var v SignalFlags // out
-	v = SignalFlags(s.native.signal_flags)
-	return v
-}
-
-// ReturnType gets the field inside the struct.
-func (s *SignalQuery) ReturnType() externglib.Type {
-	var v externglib.Type // out
-	v = externglib.Type(s.native.return_type)
-	return v
-}
-
-// NParams gets the field inside the struct.
-func (s *SignalQuery) NParams() uint {
-	var v uint // out
-	v = (uint)(s.native.n_params)
-	return v
 }

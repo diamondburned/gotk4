@@ -138,11 +138,10 @@ func GetLanguageNames() []string {
 // g_get_language_names_with_category("LC_MESSAGES").
 func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _arg1 *C.gchar // out
+	var _cret **C.gchar
 
 	_arg1 = (*C.gchar)(C.CString(categoryName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret **C.gchar
 
 	_cret = C.g_get_language_names_with_category(_arg1)
 
@@ -181,11 +180,10 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 // g_get_language_names().
 func GetLocaleVariants(locale string) []string {
 	var _arg1 *C.gchar // out
+	var _cret **C.gchar
 
 	_arg1 = (*C.gchar)(C.CString(locale))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret **C.gchar
 
 	_cret = C.g_get_locale_variants(_arg1)
 

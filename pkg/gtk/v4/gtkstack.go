@@ -289,13 +289,12 @@ func NewStack() Stack {
 
 // AddChild adds a child to @stack.
 func (s stack) AddChild(child Widget) StackPage {
-	var _arg0 *C.GtkStack  // out
-	var _arg1 *C.GtkWidget // out
+	var _arg0 *C.GtkStack     // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkStackPage // in
 
 	_cret = C.gtk_stack_add_child(_arg0, _arg1)
 
@@ -310,16 +309,15 @@ func (s stack) AddChild(child Widget) StackPage {
 //
 // The child is identified by the @name.
 func (s stack) AddNamed(child Widget, name string) StackPage {
-	var _arg0 *C.GtkStack  // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.char      // out
+	var _arg0 *C.GtkStack     // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.char         // out
+	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GtkStackPage // in
 
 	_cret = C.gtk_stack_add_named(_arg0, _arg1, _arg2)
 
@@ -336,10 +334,11 @@ func (s stack) AddNamed(child Widget, name string) StackPage {
 // `GtkStackSwitcher` to represent @child in a tab bar, so it should be
 // short.
 func (s stack) AddTitled(child Widget, name string, title string) StackPage {
-	var _arg0 *C.GtkStack  // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.char      // out
-	var _arg3 *C.char      // out
+	var _arg0 *C.GtkStack     // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.char         // out
+	var _arg3 *C.char         // out
+	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -347,8 +346,6 @@ func (s stack) AddTitled(child Widget, name string, title string) StackPage {
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret *C.GtkStackPage // in
 
 	_cret = C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
 
@@ -363,14 +360,13 @@ func (s stack) AddTitled(child Widget, name string, title string) StackPage {
 //
 // Returns nil if there is no child with this name.
 func (s stack) ChildByName(name string) Widget {
-	var _arg0 *C.GtkStack // out
-	var _arg1 *C.char     // out
+	var _arg0 *C.GtkStack  // out
+	var _arg1 *C.char      // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
 
@@ -384,10 +380,9 @@ func (s stack) ChildByName(name string) Widget {
 // Hhomogeneous gets whether @stack is horizontally homogeneous.
 func (s stack) Hhomogeneous() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_hhomogeneous(_arg0)
 
@@ -404,10 +399,9 @@ func (s stack) Hhomogeneous() bool {
 // between the sizes of children on page switch.
 func (s stack) InterpolateSize() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_interpolate_size(_arg0)
 
@@ -422,13 +416,12 @@ func (s stack) InterpolateSize() bool {
 
 // Page returns the `GtkStackPage` object for @child.
 func (s stack) Page(child Widget) StackPage {
-	var _arg0 *C.GtkStack  // out
-	var _arg1 *C.GtkWidget // out
+	var _arg0 *C.GtkStack     // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkStackPage // in
 
 	_cret = C.gtk_stack_get_page(_arg0, _arg1)
 
@@ -445,11 +438,10 @@ func (s stack) Page(child Widget) StackPage {
 // [iface@Gtk.SelectionModel] and can be used to track and modify the
 // visible page.
 func (s stack) Pages() SelectionModel {
-	var _arg0 *C.GtkStack // out
+	var _arg0 *C.GtkStack          // out
+	var _cret *C.GtkSelectionModel // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSelectionModel // in
 
 	_cret = C.gtk_stack_get_pages(_arg0)
 
@@ -464,10 +456,9 @@ func (s stack) Pages() SelectionModel {
 // transitions between pages in @stack will take.
 func (s stack) TransitionDuration() uint {
 	var _arg0 *C.GtkStack // out
+	var _cret C.guint     // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_stack_get_transition_duration(_arg0)
 
@@ -482,10 +473,9 @@ func (s stack) TransitionDuration() uint {
 // from one page to another.
 func (s stack) TransitionRunning() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_transition_running(_arg0)
 
@@ -501,11 +491,10 @@ func (s stack) TransitionRunning() bool {
 // TransitionType gets the type of animation that will be used for
 // transitions between pages in @stack.
 func (s stack) TransitionType() StackTransitionType {
-	var _arg0 *C.GtkStack // out
+	var _arg0 *C.GtkStack              // out
+	var _cret C.GtkStackTransitionType // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkStackTransitionType // in
 
 	_cret = C.gtk_stack_get_transition_type(_arg0)
 
@@ -519,10 +508,9 @@ func (s stack) TransitionType() StackTransitionType {
 // Vhomogeneous gets whether @stack is vertically homogeneous.
 func (s stack) Vhomogeneous() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_vhomogeneous(_arg0)
 
@@ -539,11 +527,10 @@ func (s stack) Vhomogeneous() bool {
 //
 // Returns nil if there are no visible children.
 func (s stack) VisibleChild() Widget {
-	var _arg0 *C.GtkStack // out
+	var _arg0 *C.GtkStack  // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_stack_get_visible_child(_arg0)
 
@@ -560,10 +547,9 @@ func (s stack) VisibleChild() Widget {
 // Returns nil if there is no visible child.
 func (s stack) VisibleChildName() string {
 	var _arg0 *C.GtkStack // out
+	var _cret *C.char     // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_stack_get_visible_child_name(_arg0)
 
@@ -629,7 +615,7 @@ func (s stack) SetTransitionDuration(duration uint) {
 	var _arg1 C.guint     // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(duration)
+	_arg1 = (C.guint)(duration)
 
 	C.gtk_stack_set_transition_duration(_arg0, _arg1)
 }
@@ -787,10 +773,9 @@ func marshalStackPage(p uintptr) (interface{}, error) {
 // Child returns the stack child to which @self belongs.
 func (s stackPage) Child() Widget {
 	var _arg0 *C.GtkStackPage // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_stack_page_get_child(_arg0)
 
@@ -804,10 +789,9 @@ func (s stackPage) Child() Widget {
 // IconName returns the icon name of the page.
 func (s stackPage) IconName() string {
 	var _arg0 *C.GtkStackPage // out
+	var _cret *C.char         // in
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_stack_page_get_icon_name(_arg0)
 
@@ -821,10 +805,9 @@ func (s stackPage) IconName() string {
 // Name returns the name of the page.
 func (s stackPage) Name() string {
 	var _arg0 *C.GtkStackPage // out
+	var _cret *C.char         // in
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_stack_page_get_name(_arg0)
 
@@ -838,10 +821,9 @@ func (s stackPage) Name() string {
 // NeedsAttention returns whether the page is marked as “needs attention”.
 func (s stackPage) NeedsAttention() bool {
 	var _arg0 *C.GtkStackPage // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_page_get_needs_attention(_arg0)
 
@@ -857,10 +839,9 @@ func (s stackPage) NeedsAttention() bool {
 // Title gets the page title.
 func (s stackPage) Title() string {
 	var _arg0 *C.GtkStackPage // out
+	var _cret *C.char         // in
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_stack_page_get_title(_arg0)
 
@@ -875,10 +856,9 @@ func (s stackPage) Title() string {
 // mnemonics.
 func (s stackPage) UseUnderline() bool {
 	var _arg0 *C.GtkStackPage // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_page_get_use_underline(_arg0)
 
@@ -897,10 +877,9 @@ func (s stackPage) UseUnderline() bool {
 // its widget.
 func (s stackPage) Visible() bool {
 	var _arg0 *C.GtkStackPage // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_page_get_visible(_arg0)
 

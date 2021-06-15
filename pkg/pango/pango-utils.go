@@ -21,10 +21,9 @@ import "C"
 // different from g_unichar_iszerowidth() and is at best misnamed.
 func IsZeroWidth(ch uint32) bool {
 	var _arg1 C.gunichar // out
-
-	_arg1 = C.gunichar(ch)
-
 	var _cret C.gboolean // in
+
+	_arg1 = (C.gunichar)(ch)
 
 	_cret = C.pango_is_zero_width(_arg1)
 
@@ -51,13 +50,12 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 	var _arg1 *C.gchar          // out
 	var _arg2 C.int             // out
 	var _arg3 *C.PangoDirection // out
+	var _cret *C.guint8         // in
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
+	_arg2 = (C.int)(length)
 	_arg3 = (*C.PangoDirection)(pbaseDir)
-
-	var _cret *C.guint8 // in
 
 	_cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
 
@@ -79,7 +77,10 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg1 C.GType    // out
 	var _arg2 *C.char    // out
+	var _arg3 C.int      // in
 	var _arg4 C.gboolean // out
+	var _arg5 *C.char    // in
+	var _cret C.gboolean // in
 
 	_arg1 = C.GType(typ)
 	_arg2 = (*C.char)(C.CString(str))
@@ -88,11 +89,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 		_arg4 = C.TRUE
 	}
 
-	var _arg3 C.int      // in
-	var _arg5 *C.char    // in
-	var _cret C.gboolean // in
-
-	_cret = C.pango_parse_enum(_arg1, _arg2, _arg4, &_arg3, &_arg5)
+	_cret = C.pango_parse_enum(_arg1, _arg2, &_arg3, _arg4, &_arg5)
 
 	var _value int             // out
 	var _possibleValues string // out
@@ -115,8 +112,10 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 // "ultra_expanded". Case variations are ignored and the '_' characters may be
 // omitted.
 func ParseStretch(str string, warn bool) (Stretch, bool) {
-	var _arg1 *C.char    // out
-	var _arg3 C.gboolean // out
+	var _arg1 *C.char        // out
+	var _arg2 C.PangoStretch // in
+	var _arg3 C.gboolean     // out
+	var _cret C.gboolean     // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -124,10 +123,7 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 		_arg3 = C.TRUE
 	}
 
-	var _arg2 C.PangoStretch // in
-	var _cret C.gboolean     // in
-
-	_cret = C.pango_parse_stretch(_arg1, _arg3, &_arg2)
+	_cret = C.pango_parse_stretch(_arg1, &_arg2, _arg3)
 
 	var _stretch Stretch // out
 	var _ok bool         // out
@@ -145,8 +141,10 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 // The allowed values are "normal", "italic" and "oblique", case variations
 // being ignored.
 func ParseStyle(str string, warn bool) (Style, bool) {
-	var _arg1 *C.char    // out
-	var _arg3 C.gboolean // out
+	var _arg1 *C.char      // out
+	var _arg2 C.PangoStyle // in
+	var _arg3 C.gboolean   // out
+	var _cret C.gboolean   // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -154,10 +152,7 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 		_arg3 = C.TRUE
 	}
 
-	var _arg2 C.PangoStyle // in
-	var _cret C.gboolean   // in
-
-	_cret = C.pango_parse_style(_arg1, _arg3, &_arg2)
+	_cret = C.pango_parse_style(_arg1, &_arg2, _arg3)
 
 	var _style Style // out
 	var _ok bool     // out
@@ -175,8 +170,10 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 // The allowed values are "normal" and "smallcaps" or "small_caps", case
 // variations being ignored.
 func ParseVariant(str string, warn bool) (Variant, bool) {
-	var _arg1 *C.char    // out
-	var _arg3 C.gboolean // out
+	var _arg1 *C.char        // out
+	var _arg2 C.PangoVariant // in
+	var _arg3 C.gboolean     // out
+	var _cret C.gboolean     // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -184,10 +181,7 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 		_arg3 = C.TRUE
 	}
 
-	var _arg2 C.PangoVariant // in
-	var _cret C.gboolean     // in
-
-	_cret = C.pango_parse_variant(_arg1, _arg3, &_arg2)
+	_cret = C.pango_parse_variant(_arg1, &_arg2, _arg3)
 
 	var _variant Variant // out
 	var _ok bool         // out
@@ -205,8 +199,10 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 // The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
 // "ultraleight" and integers. Case variations are ignored.
 func ParseWeight(str string, warn bool) (Weight, bool) {
-	var _arg1 *C.char    // out
-	var _arg3 C.gboolean // out
+	var _arg1 *C.char       // out
+	var _arg2 C.PangoWeight // in
+	var _arg3 C.gboolean    // out
+	var _cret C.gboolean    // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -214,10 +210,7 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 		_arg3 = C.TRUE
 	}
 
-	var _arg2 C.PangoWeight // in
-	var _cret C.gboolean    // in
-
-	_cret = C.pango_parse_weight(_arg1, _arg3, &_arg2)
+	_cret = C.pango_parse_weight(_arg1, &_arg2, _arg3)
 
 	var _weight Weight // out
 	var _ok bool       // out
@@ -234,11 +227,10 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 // stripping white space and substituting ~/ with $HOME/.
 func SplitFileList(str string) []string {
 	var _arg1 *C.char // out
+	var _cret **C.char
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret **C.char
 
 	_cret = C.pango_split_file_list(_arg1)
 
@@ -264,11 +256,10 @@ func SplitFileList(str string) []string {
 // TrimString trims leading and trailing whitespace from a string.
 func TrimString(str string) string {
 	var _arg1 *C.char // out
+	var _cret *C.char // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.char // in
 
 	_cret = C.pango_trim_string(_arg1)
 
@@ -314,15 +305,14 @@ func Version() int {
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
 func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) string {
-	var _arg1 C.int // out
-	var _arg2 C.int // out
-	var _arg3 C.int // out
-
-	_arg1 = C.int(requiredMajor)
-	_arg2 = C.int(requiredMinor)
-	_arg3 = C.int(requiredMicro)
-
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
 	var _cret *C.char // in
+
+	_arg1 = (C.int)(requiredMajor)
+	_arg2 = (C.int)(requiredMinor)
+	_arg3 = (C.int)(requiredMicro)
 
 	_cret = C.pango_version_check(_arg1, _arg2, _arg3)
 

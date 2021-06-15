@@ -95,11 +95,10 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 
 // NewLockButton constructs a class LockButton.
 func NewLockButton(permission gio.Permission) LockButton {
-	var _arg1 *C.GPermission // out
+	var _arg1 *C.GPermission  // out
+	var _cret C.GtkLockButton // in
 
 	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-
-	var _cret C.GtkLockButton // in
 
 	_cret = C.gtk_lock_button_new(_arg1)
 
@@ -113,10 +112,9 @@ func NewLockButton(permission gio.Permission) LockButton {
 // Permission obtains the #GPermission object that controls @button.
 func (b lockButton) Permission() gio.Permission {
 	var _arg0 *C.GtkLockButton // out
+	var _cret *C.GPermission   // in
 
 	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GPermission // in
 
 	_cret = C.gtk_lock_button_get_permission(_arg0)
 

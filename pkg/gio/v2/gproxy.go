@@ -92,14 +92,13 @@ func (p proXY) Connect(connection IOStream, proxyAddress ProXYAddress, cancellab
 	var _arg1 *C.GIOStream     // out
 	var _arg2 *C.GProxyAddress // out
 	var _arg3 *C.GCancellable  // out
+	var _cret *C.GIOStream     // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GIOStream // in
-	var _cerr *C.GError    // in
 
 	_cret = C.g_proxy_connect(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -116,12 +115,11 @@ func (p proXY) Connect(connection IOStream, proxyAddress ProXYAddress, cancellab
 func (p proXY) ConnectFinish(result AsyncResult) (IOStream, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GIOStream    // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GIOStream // in
-	var _cerr *C.GError    // in
 
 	_cret = C.g_proxy_connect_finish(_arg0, _arg1, &_cerr)
 
@@ -142,11 +140,10 @@ func (p proXY) ConnectFinish(result AsyncResult) (IOStream, error) {
 // containing the stringified IP address to g_proxy_connect() or
 // g_proxy_connect_async().
 func (p proXY) SupportsHostname() bool {
-	var _arg0 *C.GProxy // out
+	var _arg0 *C.GProxy  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_proxy_supports_hostname(_arg0)
 

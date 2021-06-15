@@ -100,12 +100,11 @@ func (c socketConnection) Connect(address SocketAddress, cancellable Cancellable
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GSocketAddress    // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_socket_connection_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -121,11 +120,10 @@ func (c socketConnection) Connect(address SocketAddress, cancellable Cancellable
 func (c socketConnection) ConnectFinish(result AsyncResult) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_socket_connection_connect_finish(_arg0, _arg1, &_cerr)
 
@@ -139,11 +137,10 @@ func (c socketConnection) ConnectFinish(result AsyncResult) error {
 // LocalAddress: try to get the local address of a socket connection.
 func (c socketConnection) LocalAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocketConnection // out
+	var _cret *C.GSocketAddress    // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSocketAddress // in
-	var _cerr *C.GError         // in
 
 	_cret = C.g_socket_connection_get_local_address(_arg0, &_cerr)
 
@@ -165,11 +162,10 @@ func (c socketConnection) LocalAddress() (SocketAddress, error) {
 // e.g. "Connecting to example.com (10.42.77.3)...".
 func (c socketConnection) RemoteAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocketConnection // out
+	var _cret *C.GSocketAddress    // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSocketAddress // in
-	var _cerr *C.GError         // in
 
 	_cret = C.g_socket_connection_get_remote_address(_arg0, &_cerr)
 
@@ -187,10 +183,9 @@ func (c socketConnection) RemoteAddress() (SocketAddress, error) {
 // Connection APIs.
 func (c socketConnection) Socket() Socket {
 	var _arg0 *C.GSocketConnection // out
+	var _cret *C.GSocket           // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSocket // in
 
 	_cret = C.g_socket_connection_get_socket(_arg0)
 
@@ -205,10 +200,9 @@ func (c socketConnection) Socket() Socket {
 // calling g_socket_is_connected() on @connection's underlying #GSocket.
 func (c socketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_socket_connection_is_connected(_arg0)
 

@@ -310,10 +310,9 @@ func (l constraintLayout) AddGuide(guide ConstraintGuide) {
 // the slowdowns.
 func (l constraintLayout) ObserveConstraints() gio.ListModel {
 	var _arg0 *C.GtkConstraintLayout // out
+	var _cret *C.GListModel          // in
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
 
@@ -335,10 +334,9 @@ func (l constraintLayout) ObserveConstraints() gio.ListModel {
 // the slowdowns.
 func (l constraintLayout) ObserveGuides() gio.ListModel {
 	var _arg0 *C.GtkConstraintLayout // out
+	var _cret *C.GListModel          // in
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
 

@@ -80,10 +80,9 @@ func marshalTexture(p uintptr) (interface{}, error) {
 // NewTextureForPixbuf constructs a class Texture.
 func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 	var _arg1 *C.GdkPixbuf // out
+	var _cret C.GdkTexture // in
 
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	var _cret C.GdkTexture // in
 
 	_cret = C.gdk_texture_new_for_pixbuf(_arg1)
 
@@ -96,12 +95,11 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 
 // NewTextureFromFile constructs a class Texture.
 func NewTextureFromFile(file gio.File) (Texture, error) {
-	var _arg1 *C.GFile // out
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
+	var _arg1 *C.GFile     // out
 	var _cret C.GdkTexture // in
 	var _cerr *C.GError    // in
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
 
@@ -116,12 +114,11 @@ func NewTextureFromFile(file gio.File) (Texture, error) {
 
 // NewTextureFromResource constructs a class Texture.
 func NewTextureFromResource(resourcePath string) Texture {
-	var _arg1 *C.char // out
+	var _arg1 *C.char      // out
+	var _cret C.GdkTexture // in
 
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkTexture // in
 
 	_cret = C.gdk_texture_new_from_resource(_arg1)
 
@@ -135,10 +132,9 @@ func NewTextureFromResource(resourcePath string) Texture {
 // Height returns the height of the @texture, in pixels.
 func (t texture) Height() int {
 	var _arg0 *C.GdkTexture // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_texture_get_height(_arg0)
 
@@ -152,10 +148,9 @@ func (t texture) Height() int {
 // Width returns the width of @texture, in pixels.
 func (t texture) Width() int {
 	var _arg0 *C.GdkTexture // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_texture_get_width(_arg0)
 
@@ -175,12 +170,11 @@ func (t texture) Width() int {
 func (t texture) SaveToPng(filename string) bool {
 	var _arg0 *C.GdkTexture // out
 	var _arg1 *C.char       // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_texture_save_to_png(_arg0, _arg1)
 

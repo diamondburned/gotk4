@@ -89,14 +89,13 @@ func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.GCancellable     // out
+	var _cret *C.GFileInfo        // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileInfo // in
-	var _cerr *C.GError    // in
 
 	_cret = C.g_file_input_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -113,12 +112,11 @@ func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (
 func (s fileInputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.GAsyncResult     // out
+	var _cret *C.GFileInfo        // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GFileInfo // in
-	var _cerr *C.GError    // in
 
 	_cret = C.g_file_input_stream_query_info_finish(_arg0, _arg1, &_cerr)
 

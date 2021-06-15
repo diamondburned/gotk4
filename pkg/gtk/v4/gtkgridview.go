@@ -135,11 +135,10 @@ func marshalGridView(p uintptr) (interface{}, error) {
 func NewGridView(model SelectionModel, factory ListItemFactory) GridView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
+	var _cret C.GtkGridView         // in
 
 	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
-
-	var _cret C.GtkGridView // in
 
 	_cret = C.gtk_grid_view_new(_arg1, _arg2)
 
@@ -154,10 +153,9 @@ func NewGridView(model SelectionModel, factory ListItemFactory) GridView {
 // the mouse.
 func (s gridView) EnableRubberband() bool {
 	var _arg0 *C.GtkGridView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_grid_view_get_enable_rubberband(_arg0)
 
@@ -172,11 +170,10 @@ func (s gridView) EnableRubberband() bool {
 
 // Factory gets the factory that's currently used to populate list items.
 func (s gridView) Factory() ListItemFactory {
-	var _arg0 *C.GtkGridView // out
+	var _arg0 *C.GtkGridView        // out
+	var _cret *C.GtkListItemFactory // in
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkListItemFactory // in
 
 	_cret = C.gtk_grid_view_get_factory(_arg0)
 
@@ -190,10 +187,9 @@ func (s gridView) Factory() ListItemFactory {
 // MaxColumns gets the maximum number of columns that the grid will use.
 func (s gridView) MaxColumns() uint {
 	var _arg0 *C.GtkGridView // out
+	var _cret C.guint        // in
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_grid_view_get_max_columns(_arg0)
 
@@ -207,10 +203,9 @@ func (s gridView) MaxColumns() uint {
 // MinColumns gets the minimum number of columns that the grid will use.
 func (s gridView) MinColumns() uint {
 	var _arg0 *C.GtkGridView // out
+	var _cret C.guint        // in
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_grid_view_get_min_columns(_arg0)
 
@@ -223,11 +218,10 @@ func (s gridView) MinColumns() uint {
 
 // Model gets the model that's currently used to read the items displayed.
 func (s gridView) Model() SelectionModel {
-	var _arg0 *C.GtkGridView // out
+	var _arg0 *C.GtkGridView       // out
+	var _cret *C.GtkSelectionModel // in
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSelectionModel // in
 
 	_cret = C.gtk_grid_view_get_model(_arg0)
 
@@ -242,10 +236,9 @@ func (s gridView) Model() SelectionModel {
 // click and selected on hover.
 func (s gridView) SingleClickActivate() bool {
 	var _arg0 *C.GtkGridView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_grid_view_get_single_click_activate(_arg0)
 
@@ -295,7 +288,7 @@ func (s gridView) SetMaxColumns(maxColumns uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(maxColumns)
+	_arg1 = (C.guint)(maxColumns)
 
 	C.gtk_grid_view_set_max_columns(_arg0, _arg1)
 }
@@ -311,7 +304,7 @@ func (s gridView) SetMinColumns(minColumns uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(minColumns)
+	_arg1 = (C.guint)(minColumns)
 
 	C.gtk_grid_view_set_min_columns(_arg0, _arg1)
 }

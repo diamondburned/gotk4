@@ -140,11 +140,10 @@ const (
 // error message string; it may be translated and/or change in future versions
 // of GLib.
 func SpawnCheckExitStatus(exitStatus int) error {
-	var _arg1 C.gint // out
-
-	_arg1 = C.gint(exitStatus)
-
+	var _arg1 C.gint    // out
 	var _cerr *C.GError // in
+
+	_arg1 = (C.gint)(exitStatus)
 
 	C.g_spawn_check_exit_status(_arg1, &_cerr)
 
@@ -165,12 +164,11 @@ func SpawnCheckExitStatus(exitStatus int) error {
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
 func SpawnCommandLineAsync(commandLine string) error {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar  // out
+	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.g_spawn_command_line_async(_arg1, &_cerr)
 
@@ -203,14 +201,13 @@ func SpawnCommandLineAsync(commandLine string) error {
 // 'e:\\folder\\argument.txt'".
 func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(commandLine))
-	defer C.free(unsafe.Pointer(_arg1))
-
 	var _arg2 *C.gchar
 	var _arg3 *C.gchar
 	var _arg4 C.gint    // in
 	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_spawn_command_line_sync(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 

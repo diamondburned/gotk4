@@ -83,11 +83,10 @@ func marshalFont(p uintptr) (interface{}, error) {
 func (f font) Glyph(wc uint32) uint {
 	var _arg0 *C.PangoFcFont // out
 	var _arg1 C.gunichar     // out
+	var _cret C.guint        // in
 
 	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
-	_arg1 = C.gunichar(wc)
-
-	var _cret C.guint // in
+	_arg1 = (C.gunichar)(wc)
 
 	_cret = C.pango_fc_font_get_glyph(_arg0, _arg1)
 
@@ -105,11 +104,10 @@ func (f font) Glyph(wc uint32) uint {
 // The returned array is only valid as long as the font and its fontmap are
 // valid.
 func (f font) Languages() **pango.Language {
-	var _arg0 *C.PangoFcFont // out
+	var _arg0 *C.PangoFcFont    // out
+	var _cret **C.PangoLanguage // in
 
 	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
-
-	var _cret **C.PangoLanguage // in
 
 	_cret = C.pango_fc_font_get_languages(_arg0)
 
@@ -124,11 +122,10 @@ func (f font) Languages() **pango.Language {
 func (f font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFcFont // out
 	var _arg1 C.gunichar     // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
-	_arg1 = C.gunichar(wc)
-
-	var _cret C.gboolean // in
+	_arg1 = (C.gunichar)(wc)
 
 	_cret = C.pango_fc_font_has_char(_arg0, _arg1)
 

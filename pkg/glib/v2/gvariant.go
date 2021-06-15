@@ -365,12 +365,11 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	var _arg1 *C.GVariantType // out
 	var _arg2 **C.GVariant
 	var _arg3 C.gsize
+	var _cret *C.GVariant // in
 
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(childType.Native()))
 	_arg3 = C.gsize(len(children))
 	_arg2 = (**C.GVariant)(unsafe.Pointer(&children[0]))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_array(_arg1, _arg2, _arg3)
 
@@ -383,13 +382,12 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 
 // NewVariantBoolean constructs a struct Variant.
 func NewVariantBoolean(value bool) *Variant {
-	var _arg1 C.gboolean // out
+	var _arg1 C.gboolean  // out
+	var _cret *C.GVariant // in
 
 	if value {
 		_arg1 = C.TRUE
 	}
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_boolean(_arg1)
 
@@ -402,11 +400,10 @@ func NewVariantBoolean(value bool) *Variant {
 
 // NewVariantByte constructs a struct Variant.
 func NewVariantByte(value byte) *Variant {
-	var _arg1 C.guint8 // out
-
-	_arg1 = C.guint8(value)
-
+	var _arg1 C.guint8    // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.guint8)(value)
 
 	_cret = C.g_variant_new_byte(_arg1)
 
@@ -418,20 +415,11 @@ func NewVariantByte(value byte) *Variant {
 }
 
 // NewVariantBytestring constructs a struct Variant.
-func NewVariantBytestring(string []byte) *Variant {
+func NewVariantBytestring(_string []byte) *Variant {
 	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.malloc(C.ulong((len(string) + 1)) * C.ulong(C.sizeof_guint8)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	{
-		out := unsafe.Slice(_arg1, len(string))
-		for i := range string {
-			out[i] = C.guint8(string[i])
-		}
-	}
-
 	var _cret *C.GVariant // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(&_string[0]))
 
 	_cret = C.g_variant_new_bytestring(_arg1)
 
@@ -446,11 +434,11 @@ func NewVariantBytestring(string []byte) *Variant {
 func NewVariantBytestringArray(strv []string) *Variant {
 	var _arg1 **C.gchar
 	var _arg2 C.gssize
+	var _cret *C.GVariant // in
 
 	_arg2 = C.gssize(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(strv))
 		for i := range strv {
@@ -458,8 +446,6 @@ func NewVariantBytestringArray(strv []string) *Variant {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_bytestring_array(_arg1, _arg2)
 
@@ -474,11 +460,10 @@ func NewVariantBytestringArray(strv []string) *Variant {
 func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 	var _arg1 *C.GVariant // out
 	var _arg2 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg1 = (*C.GVariant)(unsafe.Pointer(key.Native()))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_dict_entry(_arg1, _arg2)
 
@@ -491,11 +476,10 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 
 // NewVariantDouble constructs a struct Variant.
 func NewVariantDouble(value float64) *Variant {
-	var _arg1 C.gdouble // out
-
-	_arg1 = C.gdouble(value)
-
+	var _arg1 C.gdouble   // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.gdouble)(value)
 
 	_cret = C.g_variant_new_double(_arg1)
 
@@ -508,11 +492,10 @@ func NewVariantDouble(value float64) *Variant {
 
 // NewVariantHandle constructs a struct Variant.
 func NewVariantHandle(value int32) *Variant {
-	var _arg1 C.gint32 // out
-
-	_arg1 = C.gint32(value)
-
+	var _arg1 C.gint32    // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.gint32)(value)
 
 	_cret = C.g_variant_new_handle(_arg1)
 
@@ -525,11 +508,10 @@ func NewVariantHandle(value int32) *Variant {
 
 // NewVariantInt16 constructs a struct Variant.
 func NewVariantInt16(value int16) *Variant {
-	var _arg1 C.gint16 // out
-
-	_arg1 = C.gint16(value)
-
+	var _arg1 C.gint16    // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.gint16)(value)
 
 	_cret = C.g_variant_new_int16(_arg1)
 
@@ -542,11 +524,10 @@ func NewVariantInt16(value int16) *Variant {
 
 // NewVariantInt32 constructs a struct Variant.
 func NewVariantInt32(value int32) *Variant {
-	var _arg1 C.gint32 // out
-
-	_arg1 = C.gint32(value)
-
+	var _arg1 C.gint32    // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.gint32)(value)
 
 	_cret = C.g_variant_new_int32(_arg1)
 
@@ -559,11 +540,10 @@ func NewVariantInt32(value int32) *Variant {
 
 // NewVariantInt64 constructs a struct Variant.
 func NewVariantInt64(value int64) *Variant {
-	var _arg1 C.gint64 // out
-
-	_arg1 = C.gint64(value)
-
+	var _arg1 C.gint64    // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.gint64)(value)
 
 	_cret = C.g_variant_new_int64(_arg1)
 
@@ -578,11 +558,10 @@ func NewVariantInt64(value int64) *Variant {
 func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 	var _arg1 *C.GVariantType // out
 	var _arg2 *C.GVariant     // out
+	var _cret *C.GVariant     // in
 
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(childType.Native()))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_maybe(_arg1, _arg2)
 
@@ -595,12 +574,11 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 
 // NewVariantObjectPath constructs a struct Variant.
 func NewVariantObjectPath(objectPath string) *Variant {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar    // out
+	var _cret *C.GVariant // in
 
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_object_path(_arg1)
 
@@ -615,11 +593,11 @@ func NewVariantObjectPath(objectPath string) *Variant {
 func NewVariantObjv(strv []string) *Variant {
 	var _arg1 **C.gchar
 	var _arg2 C.gssize
+	var _cret *C.GVariant // in
 
 	_arg2 = C.gssize(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(strv))
 		for i := range strv {
@@ -627,8 +605,6 @@ func NewVariantObjv(strv []string) *Variant {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_objv(_arg1, _arg2)
 
@@ -641,12 +617,11 @@ func NewVariantObjv(strv []string) *Variant {
 
 // NewVariantSignature constructs a struct Variant.
 func NewVariantSignature(signature string) *Variant {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar    // out
+	var _cret *C.GVariant // in
 
 	_arg1 = (*C.gchar)(C.CString(signature))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_signature(_arg1)
 
@@ -658,13 +633,12 @@ func NewVariantSignature(signature string) *Variant {
 }
 
 // NewVariantString constructs a struct Variant.
-func NewVariantString(string string) *Variant {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
+func NewVariantString(_string string) *Variant {
+	var _arg1 *C.gchar    // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (*C.gchar)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_new_string(_arg1)
 
@@ -679,11 +653,11 @@ func NewVariantString(string string) *Variant {
 func NewVariantStrv(strv []string) *Variant {
 	var _arg1 **C.gchar
 	var _arg2 C.gssize
+	var _cret *C.GVariant // in
 
 	_arg2 = C.gssize(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(strv))
 		for i := range strv {
@@ -691,8 +665,6 @@ func NewVariantStrv(strv []string) *Variant {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_strv(_arg1, _arg2)
 
@@ -707,11 +679,10 @@ func NewVariantStrv(strv []string) *Variant {
 func NewVariantTuple(children []*Variant) *Variant {
 	var _arg1 **C.GVariant
 	var _arg2 C.gsize
+	var _cret *C.GVariant // in
 
 	_arg2 = C.gsize(len(children))
 	_arg1 = (**C.GVariant)(unsafe.Pointer(&children[0]))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_tuple(_arg1, _arg2)
 
@@ -724,11 +695,10 @@ func NewVariantTuple(children []*Variant) *Variant {
 
 // NewVariantUint16 constructs a struct Variant.
 func NewVariantUint16(value uint16) *Variant {
-	var _arg1 C.guint16 // out
-
-	_arg1 = C.guint16(value)
-
+	var _arg1 C.guint16   // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.guint16)(value)
 
 	_cret = C.g_variant_new_uint16(_arg1)
 
@@ -741,11 +711,10 @@ func NewVariantUint16(value uint16) *Variant {
 
 // NewVariantUint32 constructs a struct Variant.
 func NewVariantUint32(value uint32) *Variant {
-	var _arg1 C.guint32 // out
-
-	_arg1 = C.guint32(value)
-
+	var _arg1 C.guint32   // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.guint32)(value)
 
 	_cret = C.g_variant_new_uint32(_arg1)
 
@@ -758,11 +727,10 @@ func NewVariantUint32(value uint32) *Variant {
 
 // NewVariantUint64 constructs a struct Variant.
 func NewVariantUint64(value uint64) *Variant {
-	var _arg1 C.guint64 // out
-
-	_arg1 = C.guint64(value)
-
+	var _arg1 C.guint64   // out
 	var _cret *C.GVariant // in
+
+	_arg1 = (C.guint64)(value)
 
 	_cret = C.g_variant_new_uint64(_arg1)
 
@@ -776,10 +744,9 @@ func NewVariantUint64(value uint64) *Variant {
 // NewVariantVariant constructs a struct Variant.
 func NewVariantVariant(value *Variant) *Variant {
 	var _arg1 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_new_variant(_arg1)
 
@@ -807,10 +774,9 @@ func (v *Variant) Native() unsafe.Pointer {
 // The returned value is always in normal form and is marked as trusted.
 func (v *Variant) Byteswap() *Variant {
 	var _arg0 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_byteswap(_arg0)
 
@@ -842,6 +808,7 @@ func (v *Variant) CheckFormatString(formatString string, copyOnly bool) bool {
 	var _arg0 *C.GVariant // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.gboolean  // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.gchar)(C.CString(formatString))
@@ -849,8 +816,6 @@ func (v *Variant) CheckFormatString(formatString string, copyOnly bool) bool {
 	if copyOnly {
 		_arg2 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_variant_check_format_string(_arg0, _arg1, _arg2)
 
@@ -865,11 +830,10 @@ func (v *Variant) CheckFormatString(formatString string, copyOnly bool) bool {
 
 // Classify classifies @value according to its top-level type.
 func (v *Variant) Classify() VariantClass {
-	var _arg0 *C.GVariant // out
+	var _arg0 *C.GVariant     // out
+	var _cret C.GVariantClass // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.GVariantClass // in
 
 	_cret = C.g_variant_classify(_arg0)
 
@@ -901,11 +865,10 @@ func (v *Variant) Classify() VariantClass {
 func (o *Variant) Compare(two Variant) int {
 	var _arg0 C.gpointer // out
 	var _arg1 C.gpointer // out
+	var _cret C.gint     // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(two.Native()))
-
-	var _cret C.gint // in
+	_arg0 = *(*C.gpointer)(unsafe.Pointer(o.Native()))
+	_arg1 = *(*C.gpointer)(unsafe.Pointer(two.Native()))
 
 	_cret = C.g_variant_compare(_arg0, _arg1)
 
@@ -916,97 +879,6 @@ func (o *Variant) Compare(two Variant) int {
 	return _gint
 }
 
-// DupBytestring: similar to g_variant_get_bytestring() except that instead of
-// returning a constant string, the string is duplicated.
-//
-// The return value must be freed using g_free().
-func (v *Variant) DupBytestring() []byte {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.gchar
-	var _arg1 C.gsize // in
-
-	_cret = C.g_variant_dup_bytestring(_arg0, &_arg1)
-
-	var _guint8s []byte
-
-	_guint8s = unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1)
-	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-
-	return _guint8s
-}
-
-// DupBytestringArray gets the contents of an array of array of bytes #GVariant.
-// This call makes a deep copy; the return result should be released with
-// g_strfreev().
-//
-// If @length is non-nil then the number of elements in the result is stored
-// there. In any case, the resulting array will be nil-terminated.
-//
-// For an empty array, @length will be set to 0 and a pointer to a nil pointer
-// will be returned.
-func (v *Variant) DupBytestringArray() []string {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret **C.gchar
-	var _arg1 C.gsize // in
-
-	_cret = C.g_variant_dup_bytestring_array(_arg0, &_arg1)
-
-	var _utf8s []string
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		defer C.free(unsafe.Pointer(_cret))
-		_utf8s = make([]string, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_utf8s[i] = C.GoString(src[i])
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-
-	return _utf8s
-}
-
-// DupObjv gets the contents of an array of object paths #GVariant. This call
-// makes a deep copy; the return result should be released with g_strfreev().
-//
-// If @length is non-nil then the number of elements in the result is stored
-// there. In any case, the resulting array will be nil-terminated.
-//
-// For an empty array, @length will be set to 0 and a pointer to a nil pointer
-// will be returned.
-func (v *Variant) DupObjv() []string {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret **C.gchar
-	var _arg1 C.gsize // in
-
-	_cret = C.g_variant_dup_objv(_arg0, &_arg1)
-
-	var _utf8s []string
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		defer C.free(unsafe.Pointer(_cret))
-		_utf8s = make([]string, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_utf8s[i] = C.GoString(src[i])
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-
-	return _utf8s
-}
-
 // DupString: similar to g_variant_get_string() except that instead of returning
 // a constant string, the string is duplicated.
 //
@@ -1015,11 +887,10 @@ func (v *Variant) DupObjv() []string {
 // The return value must be freed using g_free().
 func (v *Variant) DupString() (uint, string) {
 	var _arg0 *C.GVariant // out
+	var _arg1 C.gsize     // in
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _arg1 C.gsize  // in
-	var _cret *C.gchar // in
 
 	_cret = C.g_variant_dup_string(_arg0, &_arg1)
 
@@ -1033,39 +904,6 @@ func (v *Variant) DupString() (uint, string) {
 	return _length, _utf8
 }
 
-// DupStrv gets the contents of an array of strings #GVariant. This call makes a
-// deep copy; the return result should be released with g_strfreev().
-//
-// If @length is non-nil then the number of elements in the result is stored
-// there. In any case, the resulting array will be nil-terminated.
-//
-// For an empty array, @length will be set to 0 and a pointer to a nil pointer
-// will be returned.
-func (v *Variant) DupStrv() []string {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret **C.gchar
-	var _arg1 C.gsize // in
-
-	_cret = C.g_variant_dup_strv(_arg0, &_arg1)
-
-	var _utf8s []string
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		defer C.free(unsafe.Pointer(_cret))
-		_utf8s = make([]string, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_utf8s[i] = C.GoString(src[i])
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-
-	return _utf8s
-}
-
 // Equal checks if @one and @two have the same type and value.
 //
 // The types of @one and @two are #gconstpointer only to allow use of this
@@ -1073,11 +911,10 @@ func (v *Variant) DupStrv() []string {
 func (o *Variant) Equal(two Variant) bool {
 	var _arg0 C.gpointer // out
 	var _arg1 C.gpointer // out
-
-	_arg0 = (C.gpointer)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(two.Native()))
-
 	var _cret C.gboolean // in
+
+	_arg0 = *(*C.gpointer)(unsafe.Pointer(o.Native()))
+	_arg1 = *(*C.gpointer)(unsafe.Pointer(two.Native()))
 
 	_cret = C.g_variant_equal(_arg0, _arg1)
 
@@ -1096,10 +933,9 @@ func (o *Variant) Equal(two Variant) bool {
 // G_VARIANT_TYPE_BOOLEAN.
 func (v *Variant) Boolean() bool {
 	var _arg0 *C.GVariant // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_variant_get_boolean(_arg0)
 
@@ -1118,10 +954,9 @@ func (v *Variant) Boolean() bool {
 // G_VARIANT_TYPE_BYTE.
 func (v *Variant) Byte() byte {
 	var _arg0 *C.GVariant // out
+	var _cret C.guint8    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.guint8 // in
 
 	_cret = C.g_variant_get_byte(_arg0)
 
@@ -1152,10 +987,9 @@ func (v *Variant) Byte() byte {
 // The return value remains valid as long as @value exists.
 func (v *Variant) Bytestring() []byte {
 	var _arg0 *C.GVariant // out
+	var _cret *C.gchar
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.gchar
 
 	_cret = C.g_variant_get_bytestring(_arg0)
 
@@ -1175,39 +1009,6 @@ func (v *Variant) Bytestring() []byte {
 	}
 
 	return _guint8s
-}
-
-// BytestringArray gets the contents of an array of array of bytes #GVariant.
-// This call makes a shallow copy; the return result should be released with
-// g_free(), but the individual strings must not be modified.
-//
-// If @length is non-nil then the number of elements in the result is stored
-// there. In any case, the resulting array will be nil-terminated.
-//
-// For an empty array, @length will be set to 0 and a pointer to a nil pointer
-// will be returned.
-func (v *Variant) BytestringArray() []string {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret **C.gchar
-	var _arg1 C.gsize // in
-
-	_cret = C.g_variant_get_bytestring_array(_arg0, &_arg1)
-
-	var _utf8s []string
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		defer C.free(unsafe.Pointer(_cret))
-		_utf8s = make([]string, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_utf8s[i] = C.GoString(src[i])
-		}
-	}
-
-	return _utf8s
 }
 
 // ChildValue reads a child item out of a container #GVariant instance. This
@@ -1235,11 +1036,10 @@ func (v *Variant) BytestringArray() []string {
 func (v *Variant) ChildValue(index_ uint) *Variant {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gsize     // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-	_arg1 = C.gsize(index_)
-
-	var _cret *C.GVariant // in
+	_arg1 = (C.gsize)(index_)
 
 	_cret = C.g_variant_get_child_value(_arg0, _arg1)
 
@@ -1259,10 +1059,9 @@ func (v *Variant) ChildValue(index_ uint) *Variant {
 // G_VARIANT_TYPE_DOUBLE.
 func (v *Variant) Double() float64 {
 	var _arg0 *C.GVariant // out
+	var _cret C.gdouble   // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gdouble // in
 
 	_cret = C.g_variant_get_double(_arg0)
 
@@ -1283,10 +1082,9 @@ func (v *Variant) Double() float64 {
 // probably don't need them.
 func (v *Variant) Handle() int32 {
 	var _arg0 *C.GVariant // out
+	var _cret C.gint32    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gint32 // in
 
 	_cret = C.g_variant_get_handle(_arg0)
 
@@ -1303,10 +1101,9 @@ func (v *Variant) Handle() int32 {
 // G_VARIANT_TYPE_INT16.
 func (v *Variant) Int16() int16 {
 	var _arg0 *C.GVariant // out
+	var _cret C.gint16    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gint16 // in
 
 	_cret = C.g_variant_get_int16(_arg0)
 
@@ -1323,10 +1120,9 @@ func (v *Variant) Int16() int16 {
 // G_VARIANT_TYPE_INT32.
 func (v *Variant) Int32() int32 {
 	var _arg0 *C.GVariant // out
+	var _cret C.gint32    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gint32 // in
 
 	_cret = C.g_variant_get_int32(_arg0)
 
@@ -1343,10 +1139,9 @@ func (v *Variant) Int32() int32 {
 // G_VARIANT_TYPE_INT64.
 func (v *Variant) Int64() int64 {
 	var _arg0 *C.GVariant // out
+	var _cret C.gint64    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gint64 // in
 
 	_cret = C.g_variant_get_int64(_arg0)
 
@@ -1361,10 +1156,9 @@ func (v *Variant) Int64() int64 {
 // value is Nothing, then this function returns nil.
 func (v *Variant) Maybe() *Variant {
 	var _arg0 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_get_maybe(_arg0)
 
@@ -1403,10 +1197,9 @@ func (v *Variant) Maybe() *Variant {
 // reference to it.
 func (v *Variant) NormalForm() *Variant {
 	var _arg0 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_get_normal_form(_arg0)
 
@@ -1418,39 +1211,6 @@ func (v *Variant) NormalForm() *Variant {
 	})
 
 	return _variant
-}
-
-// Objv gets the contents of an array of object paths #GVariant. This call makes
-// a shallow copy; the return result should be released with g_free(), but the
-// individual strings must not be modified.
-//
-// If @length is non-nil then the number of elements in the result is stored
-// there. In any case, the resulting array will be nil-terminated.
-//
-// For an empty array, @length will be set to 0 and a pointer to a nil pointer
-// will be returned.
-func (v *Variant) Objv() []string {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret **C.gchar
-	var _arg1 C.gsize // in
-
-	_cret = C.g_variant_get_objv(_arg0, &_arg1)
-
-	var _utf8s []string
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		defer C.free(unsafe.Pointer(_cret))
-		_utf8s = make([]string, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_utf8s[i] = C.GoString(src[i])
-		}
-	}
-
-	return _utf8s
 }
 
 // Size determines the number of bytes that would be required to store @value
@@ -1465,10 +1225,9 @@ func (v *Variant) Objv() []string {
 // approximately O(n) in the number of values involved.
 func (v *Variant) Size() uint {
 	var _arg0 *C.GVariant // out
+	var _cret C.gsize     // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gsize // in
 
 	_cret = C.g_variant_get_size(_arg0)
 
@@ -1498,11 +1257,10 @@ func (v *Variant) Size() uint {
 // The return value remains valid as long as @value exists.
 func (v *Variant) String() (uint, string) {
 	var _arg0 *C.GVariant // out
+	var _arg1 C.gsize     // in
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _arg1 C.gsize  // in
-	var _cret *C.gchar // in
 
 	_cret = C.g_variant_get_string(_arg0, &_arg1)
 
@@ -1515,48 +1273,14 @@ func (v *Variant) String() (uint, string) {
 	return _length, _utf8
 }
 
-// Strv gets the contents of an array of strings #GVariant. This call makes a
-// shallow copy; the return result should be released with g_free(), but the
-// individual strings must not be modified.
-//
-// If @length is non-nil then the number of elements in the result is stored
-// there. In any case, the resulting array will be nil-terminated.
-//
-// For an empty array, @length will be set to 0 and a pointer to a nil pointer
-// will be returned.
-func (v *Variant) Strv() []string {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret **C.gchar
-	var _arg1 C.gsize // in
-
-	_cret = C.g_variant_get_strv(_arg0, &_arg1)
-
-	var _utf8s []string
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		defer C.free(unsafe.Pointer(_cret))
-		_utf8s = make([]string, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_utf8s[i] = C.GoString(src[i])
-		}
-	}
-
-	return _utf8s
-}
-
 // Type determines the type of @value.
 //
 // The return value is valid for the lifetime of @value and must not be freed.
 func (v *Variant) Type() *VariantType {
-	var _arg0 *C.GVariant // out
+	var _arg0 *C.GVariant     // out
+	var _cret *C.GVariantType // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GVariantType // in
 
 	_cret = C.g_variant_get_type(_arg0)
 
@@ -1572,10 +1296,9 @@ func (v *Variant) Type() *VariantType {
 // belongs to #GVariant and must not be freed.
 func (v *Variant) TypeString() string {
 	var _arg0 *C.GVariant // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_variant_get_type_string(_arg0)
 
@@ -1592,10 +1315,9 @@ func (v *Variant) TypeString() string {
 // G_VARIANT_TYPE_UINT16.
 func (v *Variant) Uint16() uint16 {
 	var _arg0 *C.GVariant // out
+	var _cret C.guint16   // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.g_variant_get_uint16(_arg0)
 
@@ -1612,10 +1334,9 @@ func (v *Variant) Uint16() uint16 {
 // G_VARIANT_TYPE_UINT32.
 func (v *Variant) Uint32() uint32 {
 	var _arg0 *C.GVariant // out
+	var _cret C.guint32   // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.g_variant_get_uint32(_arg0)
 
@@ -1632,10 +1353,9 @@ func (v *Variant) Uint32() uint32 {
 // G_VARIANT_TYPE_UINT64.
 func (v *Variant) Uint64() uint64 {
 	var _arg0 *C.GVariant // out
+	var _cret C.guint64   // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.guint64 // in
 
 	_cret = C.g_variant_get_uint64(_arg0)
 
@@ -1650,10 +1370,9 @@ func (v *Variant) Uint64() uint64 {
 // contained in @value.
 func (v *Variant) Variant() *Variant {
 	var _arg0 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_get_variant(_arg0)
 
@@ -1678,10 +1397,9 @@ func (v *Variant) Variant() *Variant {
 // Table. @value must be a #GVariant.
 func (v *Variant) Hash() uint {
 	var _arg0 C.gpointer // out
+	var _cret C.guint    // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(v.Native()))
-
-	var _cret C.guint // in
+	_arg0 = *(*C.gpointer)(unsafe.Pointer(v.Native()))
 
 	_cret = C.g_variant_hash(_arg0)
 
@@ -1695,10 +1413,9 @@ func (v *Variant) Hash() uint {
 // IsContainer checks if @value is a container.
 func (v *Variant) IsContainer() bool {
 	var _arg0 *C.GVariant // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_variant_is_container(_arg0)
 
@@ -1722,10 +1439,9 @@ func (v *Variant) IsContainer() bool {
 // counts.
 func (v *Variant) IsFloating() bool {
 	var _arg0 *C.GVariant // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_variant_is_floating(_arg0)
 
@@ -1752,10 +1468,9 @@ func (v *Variant) IsFloating() bool {
 // GVariant is guaranteed to handle nesting up to at least 64 levels.
 func (v *Variant) IsNormalForm() bool {
 	var _arg0 *C.GVariant // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_variant_is_normal_form(_arg0)
 
@@ -1772,11 +1487,10 @@ func (v *Variant) IsNormalForm() bool {
 func (v *Variant) IsOfType(typ *VariantType) bool {
 	var _arg0 *C.GVariant     // out
 	var _arg1 *C.GVariantType // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_variant_is_of_type(_arg0, _arg1)
 
@@ -1814,13 +1528,12 @@ func (d *Variant) LookupValue(key string, expectedType *VariantType) *Variant {
 	var _arg0 *C.GVariant     // out
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.GVariantType // out
+	var _cret *C.GVariant     // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_lookup_value(_arg0, _arg1, _arg2)
 
@@ -1846,10 +1559,9 @@ func (d *Variant) LookupValue(key string, expectedType *VariantType) *Variant {
 // This function is O(1).
 func (v *Variant) NChildren() uint {
 	var _arg0 *C.GVariant // out
+	var _cret C.gsize     // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gsize // in
 
 	_cret = C.g_variant_n_children(_arg0)
 
@@ -1868,13 +1580,12 @@ func (v *Variant) NChildren() uint {
 func (v *Variant) Print(typeAnnotate bool) string {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gboolean  // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 	if typeAnnotate {
 		_arg1 = C.TRUE
 	}
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_variant_print(_arg0, _arg1)
 
@@ -1889,10 +1600,9 @@ func (v *Variant) Print(typeAnnotate bool) string {
 // Ref increases the reference count of @value.
 func (v *Variant) Ref() *Variant {
 	var _arg0 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_ref(_arg0)
 
@@ -1928,10 +1638,9 @@ func (v *Variant) Ref() *Variant {
 // where values are not floating.
 func (v *Variant) RefSink() *Variant {
 	var _arg0 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_ref_sink(_arg0)
 
@@ -1976,10 +1685,9 @@ func (v *Variant) RefSink() *Variant {
 // best to avoid this situation.
 func (v *Variant) TakeRef() *Variant {
 	var _arg0 *C.GVariant // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_take_ref(_arg0)
 
@@ -2032,11 +1740,10 @@ func marshalVariantBuilder(p uintptr) (interface{}, error) {
 
 // NewVariantBuilder constructs a struct VariantBuilder.
 func NewVariantBuilder(typ *VariantType) *VariantBuilder {
-	var _arg1 *C.GVariantType // out
+	var _arg1 *C.GVariantType    // out
+	var _cret *C.GVariantBuilder // in
 
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
-
-	var _cret *C.GVariantBuilder // in
 
 	_cret = C.g_variant_builder_new(_arg1)
 
@@ -2105,10 +1812,9 @@ func (b *VariantBuilder) Close() {
 // impossible to infer the type of the empty array.
 func (b *VariantBuilder) End() *Variant {
 	var _arg0 *C.GVariantBuilder // out
+	var _cret *C.GVariant        // in
 
 	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_builder_end(_arg0)
 
@@ -2170,10 +1876,9 @@ func (b *VariantBuilder) Open(typ *VariantType) {
 // happen.
 func (b *VariantBuilder) Ref() *VariantBuilder {
 	var _arg0 *C.GVariantBuilder // out
+	var _cret *C.GVariantBuilder // in
 
 	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GVariantBuilder // in
 
 	_cret = C.g_variant_builder_ref(_arg0)
 
@@ -2280,11 +1985,10 @@ func marshalVariantDict(p uintptr) (interface{}, error) {
 
 // NewVariantDict constructs a struct VariantDict.
 func NewVariantDict(fromAsv *Variant) *VariantDict {
-	var _arg1 *C.GVariant // out
+	var _arg1 *C.GVariant     // out
+	var _cret *C.GVariantDict // in
 
 	_arg1 = (*C.GVariant)(unsafe.Pointer(fromAsv.Native()))
-
-	var _cret *C.GVariantDict // in
 
 	_cret = C.g_variant_dict_new(_arg1)
 
@@ -2327,12 +2031,11 @@ func (d *VariantDict) Clear() {
 func (d *VariantDict) Contains(key string) bool {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_variant_dict_contains(_arg0, _arg1)
 
@@ -2354,10 +2057,9 @@ func (d *VariantDict) Contains(key string) bool {
 // stack-allocated).
 func (d *VariantDict) End() *Variant {
 	var _arg0 *C.GVariantDict // out
+	var _cret *C.GVariant     // in
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_dict_end(_arg0)
 
@@ -2398,13 +2100,12 @@ func (d *VariantDict) LookupValue(key string, expectedType *VariantType) *Varian
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.GVariantType // out
+	var _cret *C.GVariant     // in
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_variant_dict_lookup_value(_arg0, _arg1, _arg2)
 
@@ -2423,10 +2124,9 @@ func (d *VariantDict) LookupValue(key string, expectedType *VariantType) *Varian
 // Don't call this on stack-allocated Dict instances or bad things will happen.
 func (d *VariantDict) Ref() *VariantDict {
 	var _arg0 *C.GVariantDict // out
+	var _cret *C.GVariantDict // in
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GVariantDict // in
 
 	_cret = C.g_variant_dict_ref(_arg0)
 
@@ -2444,12 +2144,11 @@ func (d *VariantDict) Ref() *VariantDict {
 func (d *VariantDict) Remove(key string) bool {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_variant_dict_remove(_arg0, _arg1)
 

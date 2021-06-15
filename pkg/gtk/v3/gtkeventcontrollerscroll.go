@@ -116,11 +116,10 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 func NewEventControllerScroll(widget Widget, flags EventControllerScrollFlags) EventControllerScroll {
 	var _arg1 *C.GtkWidget                    // out
 	var _arg2 C.GtkEventControllerScrollFlags // out
+	var _cret C.GtkEventControllerScroll      // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (C.GtkEventControllerScrollFlags)(flags)
-
-	var _cret C.GtkEventControllerScroll // in
 
 	_cret = C.gtk_event_controller_scroll_new(_arg1, _arg2)
 
@@ -133,11 +132,10 @@ func NewEventControllerScroll(widget Widget, flags EventControllerScrollFlags) E
 
 // Flags gets the flags conditioning the scroll controller behavior.
 func (c eventControllerScroll) Flags() EventControllerScrollFlags {
-	var _arg0 *C.GtkEventControllerScroll // out
+	var _arg0 *C.GtkEventControllerScroll     // out
+	var _cret C.GtkEventControllerScrollFlags // in
 
 	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkEventControllerScrollFlags // in
 
 	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
 

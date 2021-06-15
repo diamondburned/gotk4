@@ -140,11 +140,10 @@ func (d drag) DropDone(success bool) {
 // Actions determines the bitmask of possible actions proposed by the
 // source.
 func (d drag) Actions() DragAction {
-	var _arg0 *C.GdkDrag // out
+	var _arg0 *C.GdkDrag      // out
+	var _cret C.GdkDragAction // in
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gdk_drag_get_actions(_arg0)
 
@@ -158,11 +157,10 @@ func (d drag) Actions() DragAction {
 // Content returns the `GdkContentProvider` associated to the `GdkDrag`
 // object.
 func (d drag) Content() ContentProvider {
-	var _arg0 *C.GdkDrag // out
+	var _arg0 *C.GdkDrag            // out
+	var _cret *C.GdkContentProvider // in
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkContentProvider // in
 
 	_cret = C.gdk_drag_get_content(_arg0)
 
@@ -175,11 +173,10 @@ func (d drag) Content() ContentProvider {
 
 // Device returns the `GdkDevice` associated to the `GdkDrag` object.
 func (d drag) Device() Device {
-	var _arg0 *C.GdkDrag // out
+	var _arg0 *C.GdkDrag   // out
+	var _cret *C.GdkDevice // in
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkDevice // in
 
 	_cret = C.gdk_drag_get_device(_arg0)
 
@@ -192,11 +189,10 @@ func (d drag) Device() Device {
 
 // Display gets the `GdkDisplay` that the drag object was created for.
 func (d drag) Display() Display {
-	var _arg0 *C.GdkDrag // out
+	var _arg0 *C.GdkDrag    // out
+	var _cret *C.GdkDisplay // in
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_drag_get_display(_arg0)
 
@@ -215,11 +211,10 @@ func (d drag) Display() Display {
 // operation. The surface is owned by @drag and will be destroyed when the
 // drag operation is over.
 func (d drag) DragSurface() Surface {
-	var _arg0 *C.GdkDrag // out
+	var _arg0 *C.GdkDrag    // out
+	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gdk_drag_get_drag_surface(_arg0)
 
@@ -232,11 +227,10 @@ func (d drag) DragSurface() Surface {
 
 // Formats retrieves the formats supported by this `GdkDrag` object.
 func (d drag) Formats() *ContentFormats {
-	var _arg0 *C.GdkDrag // out
+	var _arg0 *C.GdkDrag           // out
+	var _cret *C.GdkContentFormats // in
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkContentFormats // in
 
 	_cret = C.gdk_drag_get_formats(_arg0)
 
@@ -249,11 +243,10 @@ func (d drag) Formats() *ContentFormats {
 
 // SelectedAction determines the action chosen by the drag destination.
 func (d drag) SelectedAction() DragAction {
-	var _arg0 *C.GdkDrag // out
+	var _arg0 *C.GdkDrag      // out
+	var _cret C.GdkDragAction // in
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gdk_drag_get_selected_action(_arg0)
 
@@ -266,11 +259,10 @@ func (d drag) SelectedAction() DragAction {
 
 // Surface returns the `GdkSurface` where the drag originates.
 func (d drag) Surface() Surface {
-	var _arg0 *C.GdkDrag // out
+	var _arg0 *C.GdkDrag    // out
+	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gdk_drag_get_surface(_arg0)
 
@@ -291,8 +283,8 @@ func (d drag) SetHotspot(hotX int, hotY int) {
 	var _arg2 C.int      // out
 
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
-	_arg1 = C.int(hotX)
-	_arg2 = C.int(hotY)
+	_arg1 = (C.int)(hotX)
+	_arg2 = (C.int)(hotY)
 
 	C.gdk_drag_set_hotspot(_arg0, _arg1, _arg2)
 }

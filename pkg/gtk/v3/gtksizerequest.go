@@ -23,12 +23,11 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	var _arg1 C.gint              // out
 	var _arg2 C.guint             // out
 	var _arg3 *C.GtkRequestedSize // out
+	var _cret C.gint              // in
 
-	_arg1 = C.gint(extraSpace)
-	_arg2 = C.guint(nRequestedSizes)
+	_arg1 = (C.gint)(extraSpace)
+	_arg2 = (C.guint)(nRequestedSizes)
 	_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(sizes.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
 
@@ -59,18 +58,4 @@ func WrapRequestedSize(ptr unsafe.Pointer) *RequestedSize {
 // Native returns the underlying C source pointer.
 func (r *RequestedSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// MinimumSize gets the field inside the struct.
-func (r *RequestedSize) MinimumSize() int {
-	var v int // out
-	v = (int)(r.native.minimum_size)
-	return v
-}
-
-// NaturalSize gets the field inside the struct.
-func (r *RequestedSize) NaturalSize() int {
-	var v int // out
-	v = (int)(r.native.natural_size)
-	return v
 }

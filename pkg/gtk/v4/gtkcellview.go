@@ -134,11 +134,10 @@ func NewCellView() CellView {
 func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	var _arg1 *C.GtkCellArea        // out
 	var _arg2 *C.GtkCellAreaContext // out
+	var _cret C.GtkCellView         // in
 
 	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-
-	var _cret C.GtkCellView // in
 
 	_cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
 
@@ -151,12 +150,11 @@ func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 
 // NewCellViewWithMarkup constructs a class CellView.
 func NewCellViewWithMarkup(markup string) CellView {
-	var _arg1 *C.char // out
+	var _arg1 *C.char       // out
+	var _cret C.GtkCellView // in
 
 	_arg1 = (*C.char)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCellView // in
 
 	_cret = C.gtk_cell_view_new_with_markup(_arg1)
 
@@ -169,12 +167,11 @@ func NewCellViewWithMarkup(markup string) CellView {
 
 // NewCellViewWithText constructs a class CellView.
 func NewCellViewWithText(text string) CellView {
-	var _arg1 *C.char // out
+	var _arg1 *C.char       // out
+	var _cret C.GtkCellView // in
 
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCellView // in
 
 	_cret = C.gtk_cell_view_new_with_text(_arg1)
 
@@ -188,10 +185,9 @@ func NewCellViewWithText(text string) CellView {
 // NewCellViewWithTexture constructs a class CellView.
 func NewCellViewWithTexture(texture gdk.Texture) CellView {
 	var _arg1 *C.GdkTexture // out
+	var _cret C.GtkCellView // in
 
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
-
-	var _cret C.GtkCellView // in
 
 	_cret = C.gtk_cell_view_new_with_texture(_arg1)
 
@@ -206,10 +202,9 @@ func NewCellViewWithTexture(texture gdk.Texture) CellView {
 // If no row is currently displayed, nil is returned.
 func (c cellView) DisplayedRow() *TreePath {
 	var _arg0 *C.GtkCellView // out
+	var _cret *C.GtkTreePath // in
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreePath // in
 
 	_cret = C.gtk_cell_view_get_displayed_row(_arg0)
 
@@ -227,10 +222,9 @@ func (c cellView) DisplayedRow() *TreePath {
 // cells in a sensitive state.
 func (c cellView) DrawSensitive() bool {
 	var _arg0 *C.GtkCellView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
 
@@ -247,10 +241,9 @@ func (c cellView) DrawSensitive() bool {
 // the entire TreeModel.
 func (c cellView) FitModel() bool {
 	var _arg0 *C.GtkCellView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_view_get_fit_model(_arg0)
 
@@ -266,11 +259,10 @@ func (c cellView) FitModel() bool {
 // Model returns the model for @cell_view. If no model is used nil is
 // returned.
 func (c cellView) Model() TreeModel {
-	var _arg0 *C.GtkCellView // out
+	var _arg0 *C.GtkCellView  // out
+	var _cret *C.GtkTreeModel // in
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreeModel // in
 
 	_cret = C.gtk_cell_view_get_model(_arg0)
 

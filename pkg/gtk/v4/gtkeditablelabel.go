@@ -94,12 +94,11 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 
 // NewEditableLabel constructs a class EditableLabel.
 func NewEditableLabel(str string) EditableLabel {
-	var _arg1 *C.char // out
+	var _arg1 *C.char            // out
+	var _cret C.GtkEditableLabel // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkEditableLabel // in
 
 	_cret = C.gtk_editable_label_new(_arg1)
 
@@ -113,10 +112,9 @@ func NewEditableLabel(str string) EditableLabel {
 // Editing returns whether the label is currently in “editing mode”.
 func (s editableLabel) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_editable_label_get_editing(_arg0)
 

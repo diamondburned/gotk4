@@ -51,10 +51,9 @@ func marshalPlugAccessible(p uintptr) (interface{}, error) {
 
 func (p plugAccessible) ID() string {
 	var _arg0 *C.GtkPlugAccessible // out
+	var _cret *C.gchar             // in
 
 	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_plug_accessible_get_id(_arg0)
 

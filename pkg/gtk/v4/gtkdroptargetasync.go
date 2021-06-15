@@ -101,11 +101,10 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) DropTargetAsync {
 	var _arg1 *C.GdkContentFormats // out
 	var _arg2 C.GdkDragAction      // out
+	var _cret C.GtkDropTargetAsync // in
 
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
 	_arg2 = (C.GdkDragAction)(actions)
-
-	var _cret C.GtkDropTargetAsync // in
 
 	_cret = C.gtk_drop_target_async_new(_arg1, _arg2)
 
@@ -119,10 +118,9 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) Dro
 // Actions gets the actions that this drop target supports.
 func (s dropTargetAsync) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTargetAsync // out
+	var _cret C.GdkDragAction       // in
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gtk_drop_target_async_get_actions(_arg0)
 
@@ -138,10 +136,9 @@ func (s dropTargetAsync) Actions() gdk.DragAction {
 // If the result is nil, all formats are expected to be supported.
 func (s dropTargetAsync) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTargetAsync // out
+	var _cret *C.GdkContentFormats  // in
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkContentFormats // in
 
 	_cret = C.gtk_drop_target_async_get_formats(_arg0)
 

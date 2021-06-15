@@ -77,10 +77,9 @@ func NewGestureRotate() GestureRotate {
 // active, 0 is returned.
 func (g gestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out
+	var _cret C.double            // in
 
 	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 

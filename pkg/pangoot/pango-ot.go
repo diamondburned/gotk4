@@ -62,11 +62,10 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 
 // NewBuffer constructs a struct Buffer.
 func NewBuffer(font pangofc.Font) *Buffer {
-	var _arg1 *C.PangoFcFont // out
+	var _arg1 *C.PangoFcFont   // out
+	var _cret *C.PangoOTBuffer // in
 
 	_arg1 = (*C.PangoFcFont)(unsafe.Pointer(font.Native()))
-
-	var _cret *C.PangoOTBuffer // in
 
 	_cret = C.pango_ot_buffer_new(_arg1)
 
@@ -94,9 +93,9 @@ func (b *Buffer) AddGlyph(glyph uint, properties uint, cluster uint) {
 	var _arg3 C.guint          // out
 
 	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = C.guint(glyph)
-	_arg2 = C.guint(properties)
-	_arg3 = C.guint(cluster)
+	_arg1 = (C.guint)(glyph)
+	_arg2 = (C.guint)(properties)
+	_arg3 = (C.guint)(cluster)
 
 	C.pango_ot_buffer_add_glyph(_arg0, _arg1, _arg2, _arg3)
 }
@@ -124,11 +123,10 @@ func (b *Buffer) Destroy() {
 // not modified.
 func (b *Buffer) Glyphs() []Glyph {
 	var _arg0 *C.PangoOTBuffer // out
-
-	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
-
 	var _arg1 *C.PangoOTGlyph
 	var _arg2 C.int // in
+
+	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
 
 	C.pango_ot_buffer_get_glyphs(_arg0, &_arg1, &_arg2)
 
@@ -207,20 +205,6 @@ func (f *FeatureMap) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// FeatureName gets the field inside the struct.
-func (f *FeatureMap) FeatureName() [5]byte {
-	var v [5]byte
-	v = *(*[5]byte)(unsafe.Pointer(&f.native.feature_name))
-	return v
-}
-
-// PropertyBit gets the field inside the struct.
-func (f *FeatureMap) PropertyBit() uint32 {
-	var v uint32 // out
-	v = (uint32)(f.native.property_bit)
-	return v
-}
-
 // Glyph: the OTGlyph structure represents a single glyph together with
 // information used for OpenType layout processing of the glyph. It contains the
 // following fields.
@@ -241,48 +225,6 @@ func WrapGlyph(ptr unsafe.Pointer) *Glyph {
 // Native returns the underlying C source pointer.
 func (g *Glyph) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
-}
-
-// Glyph gets the field inside the struct.
-func (g *Glyph) Glyph() uint32 {
-	var v uint32 // out
-	v = (uint32)(g.native.glyph)
-	return v
-}
-
-// Properties gets the field inside the struct.
-func (g *Glyph) Properties() uint {
-	var v uint // out
-	v = (uint)(g.native.properties)
-	return v
-}
-
-// Cluster gets the field inside the struct.
-func (g *Glyph) Cluster() uint {
-	var v uint // out
-	v = (uint)(g.native.cluster)
-	return v
-}
-
-// Component gets the field inside the struct.
-func (g *Glyph) Component() uint16 {
-	var v uint16 // out
-	v = (uint16)(g.native.component)
-	return v
-}
-
-// LigID gets the field inside the struct.
-func (g *Glyph) LigID() uint16 {
-	var v uint16 // out
-	v = (uint16)(g.native.ligID)
-	return v
-}
-
-// Internal gets the field inside the struct.
-func (g *Glyph) Internal() uint {
-	var v uint // out
-	v = (uint)(g.native.internal)
-	return v
 }
 
 // RulesetDescription: the OTRuleset structure holds all the information needed
@@ -315,72 +257,15 @@ func (r *RulesetDescription) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Script gets the field inside the struct.
-func (r *RulesetDescription) Script() pango.Script {
-	var v pango.Script // out
-	v = pango.Script(r.native.script)
-	return v
-}
-
-// Language gets the field inside the struct.
-func (r *RulesetDescription) Language() *pango.Language {
-	var v *pango.Language // out
-	v = pango.WrapLanguage(unsafe.Pointer(r.native.language))
-	return v
-}
-
-// StaticGsubFeatures gets the field inside the struct.
-func (r *RulesetDescription) StaticGsubFeatures() *FeatureMap {
-	var v *FeatureMap // out
-	v = WrapFeatureMap(unsafe.Pointer(r.native.static_gsub_features))
-	return v
-}
-
-// NStaticGsubFeatures gets the field inside the struct.
-func (r *RulesetDescription) NStaticGsubFeatures() uint {
-	var v uint // out
-	v = (uint)(r.native.n_static_gsub_features)
-	return v
-}
-
-// StaticGposFeatures gets the field inside the struct.
-func (r *RulesetDescription) StaticGposFeatures() *FeatureMap {
-	var v *FeatureMap // out
-	v = WrapFeatureMap(unsafe.Pointer(r.native.static_gpos_features))
-	return v
-}
-
-// NStaticGposFeatures gets the field inside the struct.
-func (r *RulesetDescription) NStaticGposFeatures() uint {
-	var v uint // out
-	v = (uint)(r.native.n_static_gpos_features)
-	return v
-}
-
-// OtherFeatures gets the field inside the struct.
-func (r *RulesetDescription) OtherFeatures() *FeatureMap {
-	var v *FeatureMap // out
-	v = WrapFeatureMap(unsafe.Pointer(r.native.other_features))
-	return v
-}
-
-// NOtherFeatures gets the field inside the struct.
-func (r *RulesetDescription) NOtherFeatures() uint {
-	var v uint // out
-	v = (uint)(r.native.n_other_features)
-	return v
-}
-
 // Copy creates a copy of @desc, which should be freed with
 // pango_ot_ruleset_description_free(). Primarily used internally by
 // pango_ot_ruleset_get_for_description() to cache rulesets for ruleset
 // descriptions.
 func (d *RulesetDescription) Copy() *RulesetDescription {
 	var _arg0 *C.PangoOTRulesetDescription // out
+	var _cret *C.PangoOTRulesetDescription // in
 
 	_arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.PangoOTRulesetDescription // in
 
 	_cret = C.pango_ot_ruleset_description_copy(_arg0)
 
@@ -404,11 +289,10 @@ func (d *RulesetDescription) Copy() *RulesetDescription {
 func (d *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
 	var _arg0 *C.PangoOTRulesetDescription // out
 	var _arg1 *C.PangoOTRulesetDescription // out
+	var _cret C.gboolean                   // in
 
 	_arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc2.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.pango_ot_ruleset_description_equal(_arg0, _arg1)
 
@@ -435,10 +319,9 @@ func (d *RulesetDescription) Free() {
 // for example, as an argument to g_hash_table_new().
 func (d *RulesetDescription) Hash() uint {
 	var _arg0 *C.PangoOTRulesetDescription // out
+	var _cret C.guint                      // in
 
 	_arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.pango_ot_ruleset_description_hash(_arg0)
 

@@ -165,10 +165,9 @@ func (b searchBar) ConnectEntry(entry Editable) {
 // Child gets the child widget of @bar.
 func (b searchBar) Child() Widget {
 	var _arg0 *C.GtkSearchBar // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_bar_get_child(_arg0)
 
@@ -182,10 +181,9 @@ func (b searchBar) Child() Widget {
 // KeyCaptureWidget gets the widget that @bar is capturing key events from.
 func (b searchBar) KeyCaptureWidget() Widget {
 	var _arg0 *C.GtkSearchBar // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
 
@@ -199,10 +197,9 @@ func (b searchBar) KeyCaptureWidget() Widget {
 // SearchMode returns whether the search mode is on or off.
 func (b searchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 
@@ -218,10 +215,9 @@ func (b searchBar) SearchMode() bool {
 // ShowCloseButton returns whether the close button is shown.
 func (b searchBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 

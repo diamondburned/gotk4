@@ -96,12 +96,11 @@ func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 	var _arg0 *C.GdkDevicePad       // out
 	var _arg1 C.GdkDevicePadFeature // out
 	var _arg2 C.gint                // out
+	var _cret C.gint                // in
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
 	_arg1 = (C.GdkDevicePadFeature)(feature)
-	_arg2 = C.gint(featureIdx)
-
-	var _cret C.gint // in
+	_arg2 = (C.gint)(featureIdx)
 
 	_cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
 
@@ -116,11 +115,10 @@ func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 func (p devicePad) GroupNModes(groupIdx int) int {
 	var _arg0 *C.GdkDevicePad // out
 	var _arg1 C.gint          // out
+	var _cret C.gint          // in
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	_arg1 = C.gint(groupIdx)
-
-	var _cret C.gint // in
+	_arg1 = (C.gint)(groupIdx)
 
 	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
 
@@ -135,11 +133,10 @@ func (p devicePad) GroupNModes(groupIdx int) int {
 func (p devicePad) NFeatures(feature DevicePadFeature) int {
 	var _arg0 *C.GdkDevicePad       // out
 	var _arg1 C.GdkDevicePadFeature // out
+	var _cret C.gint                // in
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
 	_arg1 = (C.GdkDevicePadFeature)(feature)
-
-	var _cret C.gint // in
 
 	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
 
@@ -155,10 +152,9 @@ func (p devicePad) NFeatures(feature DevicePadFeature) int {
 // that is affected collectively by a same current mode.
 func (p devicePad) NGroups() int {
 	var _arg0 *C.GdkDevicePad // out
+	var _cret C.gint          // in
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gdk_device_pad_get_n_groups(_arg0)
 

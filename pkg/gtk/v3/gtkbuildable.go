@@ -117,13 +117,12 @@ func (b buildable) ConstructChild(builder Builder, name string) gextras.Objector
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.gchar        // out
+	var _cret *C.GObject      // in
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GObject // in
 
 	_cret = C.gtk_buildable_construct_child(_arg0, _arg1, _arg2)
 
@@ -140,13 +139,12 @@ func (b buildable) InternalChild(builder Builder, childname string) gextras.Obje
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.gchar        // out
+	var _cret *C.GObject      // in
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.gchar)(C.CString(childname))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GObject // in
 
 	_cret = C.gtk_buildable_get_internal_child(_arg0, _arg1, _arg2)
 
@@ -163,10 +161,9 @@ func (b buildable) InternalChild(builder Builder, childname string) gextras.Obje
 // used to construct the @buildable.
 func (b buildable) Name() string {
 	var _arg0 *C.GtkBuildable // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_buildable_get_name(_arg0)
 

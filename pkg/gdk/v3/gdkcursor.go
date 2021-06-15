@@ -253,10 +253,9 @@ func marshalCursor(p uintptr) (interface{}, error) {
 // NewCursor constructs a class Cursor.
 func NewCursor(cursorType CursorType) Cursor {
 	var _arg1 C.GdkCursorType // out
+	var _cret C.GdkCursor     // in
 
 	_arg1 = (C.GdkCursorType)(cursorType)
-
-	var _cret C.GdkCursor // in
 
 	_cret = C.gdk_cursor_new(_arg1)
 
@@ -271,11 +270,10 @@ func NewCursor(cursorType CursorType) Cursor {
 func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
 	var _arg1 *C.GdkDisplay   // out
 	var _arg2 C.GdkCursorType // out
+	var _cret C.GdkCursor     // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (C.GdkCursorType)(cursorType)
-
-	var _cret C.GdkCursor // in
 
 	_cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
 
@@ -290,12 +288,11 @@ func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
 func NewCursorFromName(display Display, name string) Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out
+	var _cret C.GdkCursor   // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GdkCursor // in
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
@@ -312,13 +309,12 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 	var _arg2 *C.GdkPixbuf  // out
 	var _arg3 C.gint        // out
 	var _arg4 C.gint        // out
+	var _cret C.GdkCursor   // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	_arg3 = C.gint(x)
-	_arg4 = C.gint(y)
-
-	var _cret C.GdkCursor // in
+	_arg3 = (C.gint)(x)
+	_arg4 = (C.gint)(y)
 
 	_cret = C.gdk_cursor_new_from_pixbuf(_arg1, _arg2, _arg3, _arg4)
 
@@ -335,13 +331,12 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 	var _arg2 *C.cairo_surface_t // out
 	var _arg3 C.gdouble          // out
 	var _arg4 C.gdouble          // out
+	var _cret C.GdkCursor        // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	_arg3 = C.gdouble(x)
-	_arg4 = C.gdouble(y)
-
-	var _cret C.GdkCursor // in
+	_arg3 = (C.gdouble)(x)
+	_arg4 = (C.gdouble)(y)
 
 	_cret = C.gdk_cursor_new_from_surface(_arg1, _arg2, _arg3, _arg4)
 
@@ -354,11 +349,10 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 
 // CursorType returns the cursor type for this cursor.
 func (c cursor) CursorType() CursorType {
-	var _arg0 *C.GdkCursor // out
+	var _arg0 *C.GdkCursor    // out
+	var _cret C.GdkCursorType // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GdkCursorType // in
 
 	_cret = C.gdk_cursor_get_cursor_type(_arg0)
 
@@ -371,11 +365,10 @@ func (c cursor) CursorType() CursorType {
 
 // Display returns the display on which the Cursor is defined.
 func (c cursor) Display() Display {
-	var _arg0 *C.GdkCursor // out
+	var _arg0 *C.GdkCursor  // out
+	var _cret *C.GdkDisplay // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_cursor_get_display(_arg0)
 
@@ -393,10 +386,9 @@ func (c cursor) Display() Display {
 // nil is returned.
 func (c cursor) Image() gdkpixbuf.Pixbuf {
 	var _arg0 *C.GdkCursor // out
+	var _cret *C.GdkPixbuf // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkPixbuf // in
 
 	_cret = C.gdk_cursor_get_image(_arg0)
 
@@ -414,13 +406,12 @@ func (c cursor) Image() gdkpixbuf.Pixbuf {
 // the cursor, GDK may not be able to obtain the image data. In this case,
 // nil is returned.
 func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
-	var _arg0 *C.GdkCursor // out
-
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
+	var _arg0 *C.GdkCursor       // out
 	var _arg1 C.gdouble          // in
 	var _arg2 C.gdouble          // in
 	var _cret *C.cairo_surface_t // in
+
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
 
@@ -441,10 +432,9 @@ func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 // Ref adds a reference to @cursor.
 func (c cursor) Ref() Cursor {
 	var _arg0 *C.GdkCursor // out
+	var _cret *C.GdkCursor // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkCursor // in
 
 	_cret = C.gdk_cursor_ref(_arg0)
 

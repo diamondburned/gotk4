@@ -102,10 +102,9 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 // stream cannot switch from pollable to non-pollable or vice versa.
 func (s pollableInputStream) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
+	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_pollable_input_stream_can_poll(_arg0)
 
@@ -127,10 +126,9 @@ func (s pollableInputStream) CanPoll() bool {
 // will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 func (s pollableInputStream) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
+	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_pollable_input_stream_is_readable(_arg0)
 
@@ -159,14 +157,13 @@ func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancella
 	var _arg1 *C.void
 	var _arg2 C.gsize
 	var _arg3 *C.GCancellable // out
+	var _cret C.gssize        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, _arg1, _arg2, _arg3, &_cerr)
 

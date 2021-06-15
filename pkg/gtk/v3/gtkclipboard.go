@@ -119,10 +119,6 @@ type Clipboard interface {
 	// using the main loop, so events, timeouts, etc, may be dispatched during
 	// the wait.
 	WaitForImage() gdkpixbuf.Pixbuf
-	// WaitForRichText requests the contents of the clipboard as rich text. This
-	// function waits for the data to be received using the main loop, so
-	// events, timeouts, etc, may be dispatched during the wait.
-	WaitForRichText(buffer TextBuffer) (gdk.Atom, []byte)
 	// WaitForTargets returns a list of targets that are present on the
 	// clipboard, or nil if there aren’t any targets available. The returned
 	// list must be freed with g_free(). This function waits for the data to be
@@ -223,10 +219,9 @@ func (c clipboard) Clear() {
 // Display gets the Display associated with @clipboard
 func (c clipboard) Display() gdk.Display {
 	var _arg0 *C.GtkClipboard // out
+	var _cret *C.GdkDisplay   // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gtk_clipboard_get_display(_arg0)
 
@@ -243,10 +238,9 @@ func (c clipboard) Display() gdk.Display {
 // by gtk_clipboard_set_with_owner().
 func (c clipboard) Owner() gextras.Objector {
 	var _arg0 *C.GtkClipboard // out
+	var _cret *C.GObject      // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GObject // in
 
 	_cret = C.gtk_clipboard_get_owner(_arg0)
 
@@ -300,7 +294,7 @@ func (c clipboard) SetText(text string, len int) {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(len)
+	_arg2 = (C.gint)(len)
 
 	C.gtk_clipboard_set_text(_arg0, _arg1, _arg2)
 }
@@ -319,13 +313,12 @@ func (c clipboard) Store() {
 // target. This function waits for the data to be received using the main
 // loop, so events, timeouts, etc, may be dispatched during the wait.
 func (c clipboard) WaitForContents(target gdk.Atom) *SelectionData {
-	var _arg0 *C.GtkClipboard // out
-	var _arg1 C.GdkAtom       // out
+	var _arg0 *C.GtkClipboard     // out
+	var _arg1 C.GdkAtom           // out
+	var _cret *C.GtkSelectionData // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-
-	var _cret *C.GtkSelectionData // in
+	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_contents(_arg0, _arg1)
 
@@ -345,10 +338,9 @@ func (c clipboard) WaitForContents(target gdk.Atom) *SelectionData {
 // the wait.
 func (c clipboard) WaitForImage() gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkClipboard // out
+	var _cret *C.GdkPixbuf    // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkPixbuf // in
 
 	_cret = C.gtk_clipboard_wait_for_image(_arg0)
 
@@ -359,32 +351,6 @@ func (c clipboard) WaitForImage() gdkpixbuf.Pixbuf {
 	return _pixbuf
 }
 
-// WaitForRichText requests the contents of the clipboard as rich text. This
-// function waits for the data to be received using the main loop, so
-// events, timeouts, etc, may be dispatched during the wait.
-func (c clipboard) WaitForRichText(buffer TextBuffer) (gdk.Atom, []byte) {
-	var _arg0 *C.GtkClipboard  // out
-	var _arg1 *C.GtkTextBuffer // out
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-
-	var _format gdk.Atom
-	var _cret *C.guint8
-	var _arg3 C.gsize // in
-
-	_cret = C.gtk_clipboard_wait_for_rich_text(_arg0, _arg1, (*C.GdkAtom)(unsafe.Pointer(&_format)), &_arg3)
-
-	var _guint8s []byte
-
-	_guint8s = unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg3)
-	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-
-	return _format, _guint8s
-}
-
 // WaitForTargets returns a list of targets that are present on the
 // clipboard, or nil if there aren’t any targets available. The returned
 // list must be freed with g_free(). This function waits for the data to be
@@ -392,12 +358,11 @@ func (c clipboard) WaitForRichText(buffer TextBuffer) (gdk.Atom, []byte) {
 // during the wait.
 func (c clipboard) WaitForTargets() ([]gdk.Atom, bool) {
 	var _arg0 *C.GtkClipboard // out
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
 	var _arg1 *C.GdkAtom
 	var _arg2 C.gint     // in
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_targets(_arg0, &_arg1, &_arg2)
 
@@ -421,10 +386,9 @@ func (c clipboard) WaitForTargets() ([]gdk.Atom, bool) {
 // during the wait.
 func (c clipboard) WaitForText() string {
 	var _arg0 *C.GtkClipboard // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_clipboard_wait_for_text(_arg0)
 
@@ -441,10 +405,9 @@ func (c clipboard) WaitForText() string {
 // timeouts, etc, may be dispatched during the wait.
 func (c clipboard) WaitForUris() []string {
 	var _arg0 *C.GtkClipboard // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.gtk_clipboard_wait_for_uris(_arg0)
 
@@ -478,10 +441,9 @@ func (c clipboard) WaitForUris() []string {
 // actual image data.
 func (c clipboard) WaitIsImageAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_image_available(_arg0)
 
@@ -506,11 +468,10 @@ func (c clipboard) WaitIsImageAvailable() bool {
 func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
 	var _arg0 *C.GtkClipboard  // out
 	var _arg1 *C.GtkTextBuffer // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_rich_text_available(_arg0, _arg1)
 
@@ -532,11 +493,10 @@ func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
 func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
 	var _arg0 *C.GtkClipboard // out
 	var _arg1 C.GdkAtom       // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-
-	var _cret C.gboolean // in
+	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(target.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_target_available(_arg0, _arg1)
 
@@ -560,10 +520,9 @@ func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
 // actual text.
 func (c clipboard) WaitIsTextAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_text_available(_arg0)
 
@@ -587,10 +546,9 @@ func (c clipboard) WaitIsTextAvailable() bool {
 // actual URI data.
 func (c clipboard) WaitIsUrisAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_uris_available(_arg0)
 

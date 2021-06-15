@@ -37,12 +37,11 @@ import "C"
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
 func BusGetFinish(res AsyncResult) (DBusConnection, error) {
-	var _arg1 *C.GAsyncResult // out
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
+	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_bus_get_finish(_arg1, &_cerr)
 
@@ -71,14 +70,13 @@ func BusGetFinish(res AsyncResult) (DBusConnection, error) {
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
 func BusGetSync(busType BusType, cancellable Cancellable) (DBusConnection, error) {
-	var _arg1 C.GBusType      // out
-	var _arg2 *C.GCancellable // out
+	var _arg1 C.GBusType         // out
+	var _arg2 *C.GCancellable    // out
+	var _cret *C.GDBusConnection // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (C.GBusType)(busType)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GDBusConnection // in
-	var _cerr *C.GError          // in
 
 	_cret = C.g_bus_get_sync(_arg1, _arg2, &_cerr)
 

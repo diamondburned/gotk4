@@ -125,10 +125,9 @@ func marshalDisplayManager(p uintptr) (interface{}, error) {
 // DefaultDisplay gets the default `GdkDisplay`.
 func (m displayManager) DefaultDisplay() Display {
 	var _arg0 *C.GdkDisplayManager // out
+	var _cret *C.GdkDisplay        // in
 
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_display_manager_get_default_display(_arg0)
 
@@ -143,12 +142,11 @@ func (m displayManager) DefaultDisplay() Display {
 func (m displayManager) OpenDisplay(name string) Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.char              // out
+	var _cret *C.GdkDisplay        // in
 
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 

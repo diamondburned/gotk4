@@ -119,10 +119,9 @@ func NewHandleBox() HandleBox {
 // ChildDetached: whether the handlebox’s child is currently detached.
 func (h handleBox) ChildDetached() bool {
 	var _arg0 *C.GtkHandleBox // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_handle_box_get_child_detached(_arg0)
 
@@ -138,11 +137,10 @@ func (h handleBox) ChildDetached() bool {
 // HandlePosition gets the handle position of the handle box. See
 // gtk_handle_box_set_handle_position().
 func (h handleBox) HandlePosition() PositionType {
-	var _arg0 *C.GtkHandleBox // out
+	var _arg0 *C.GtkHandleBox   // out
+	var _cret C.GtkPositionType // in
 
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
-
-	var _cret C.GtkPositionType // in
 
 	_cret = C.gtk_handle_box_get_handle_position(_arg0)
 
@@ -157,10 +155,9 @@ func (h handleBox) HandlePosition() PositionType {
 // gtk_handle_box_set_shadow_type().
 func (h handleBox) ShadowType() ShadowType {
 	var _arg0 *C.GtkHandleBox // out
+	var _cret C.GtkShadowType // in
 
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
-
-	var _cret C.GtkShadowType // in
 
 	_cret = C.gtk_handle_box_get_shadow_type(_arg0)
 
@@ -174,11 +171,10 @@ func (h handleBox) ShadowType() ShadowType {
 // SnapEdge gets the edge used for determining reattachment of the handle
 // box. See gtk_handle_box_set_snap_edge().
 func (h handleBox) SnapEdge() PositionType {
-	var _arg0 *C.GtkHandleBox // out
+	var _arg0 *C.GtkHandleBox   // out
+	var _cret C.GtkPositionType // in
 
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
-
-	var _cret C.GtkPositionType // in
 
 	_cret = C.gtk_handle_box_get_snap_edge(_arg0)
 

@@ -117,12 +117,11 @@ func marshalCursor(p uintptr) (interface{}, error) {
 func NewCursorFromName(name string, fallback Cursor) Cursor {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GdkCursor // out
+	var _cret C.GdkCursor  // in
 
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
-
-	var _cret C.GdkCursor // in
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
@@ -139,13 +138,12 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 	var _arg2 C.int         // out
 	var _arg3 C.int         // out
 	var _arg4 *C.GdkCursor  // out
+	var _cret C.GdkCursor   // in
 
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
-	_arg2 = C.int(hotspotX)
-	_arg3 = C.int(hotspotY)
+	_arg2 = (C.int)(hotspotX)
+	_arg3 = (C.int)(hotspotY)
 	_arg4 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
-
-	var _cret C.GdkCursor // in
 
 	_cret = C.gdk_cursor_new_from_texture(_arg1, _arg2, _arg3, _arg4)
 
@@ -165,10 +163,9 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 // is used on does not support textured cursors.
 func (c cursor) Fallback() Cursor {
 	var _arg0 *C.GdkCursor // out
+	var _cret *C.GdkCursor // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkCursor // in
 
 	_cret = C.gdk_cursor_get_fallback(_arg0)
 
@@ -188,10 +185,9 @@ func (c cursor) Fallback() Cursor {
 // [ctor@Gdk.Cursor.new_from_texture].
 func (c cursor) HotspotX() int {
 	var _arg0 *C.GdkCursor // out
+	var _cret C.int        // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_cursor_get_hotspot_x(_arg0)
 
@@ -211,10 +207,9 @@ func (c cursor) HotspotX() int {
 // [ctor@Gdk.Cursor.new_from_texture].
 func (c cursor) HotspotY() int {
 	var _arg0 *C.GdkCursor // out
+	var _cret C.int        // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_cursor_get_hotspot_y(_arg0)
 
@@ -230,10 +225,9 @@ func (c cursor) HotspotY() int {
 // If the cursor is not a named cursor, nil will be returned.
 func (c cursor) Name() string {
 	var _arg0 *C.GdkCursor // out
+	var _cret *C.char      // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_cursor_get_name(_arg0)
 
@@ -248,11 +242,10 @@ func (c cursor) Name() string {
 //
 // If the cursor is a named cursor, nil will be returned.
 func (c cursor) Texture() Texture {
-	var _arg0 *C.GdkCursor // out
+	var _arg0 *C.GdkCursor  // out
+	var _cret *C.GdkTexture // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkTexture // in
 
 	_cret = C.gdk_cursor_get_texture(_arg0)
 

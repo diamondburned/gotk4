@@ -112,10 +112,9 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 // Display gets the `GdkDisplay` that @context is for.
 func (c appLaunchContext) Display() Display {
 	var _arg0 *C.GdkAppLaunchContext // out
+	var _cret *C.GdkDisplay          // in
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_app_launch_context_get_display(_arg0)
 
@@ -140,7 +139,7 @@ func (c appLaunchContext) SetDesktop(desktop int) {
 	var _arg1 C.int                  // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(desktop)
+	_arg1 = (C.int)(desktop)
 
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
 }
@@ -196,7 +195,7 @@ func (c appLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg1 C.guint32              // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.guint32(timestamp)
+	_arg1 = (C.guint32)(timestamp)
 
 	C.gdk_app_launch_context_set_timestamp(_arg0, _arg1)
 }

@@ -68,10 +68,9 @@ func (t *Tree) Destroy() {
 // etc.
 func (t *Tree) Height() int {
 	var _arg0 *C.GTree // out
+	var _cret C.gint   // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_tree_height(_arg0)
 
@@ -85,10 +84,9 @@ func (t *Tree) Height() int {
 // Nnodes gets the number of nodes in a #GTree.
 func (t *Tree) Nnodes() int {
 	var _arg0 *C.GTree // out
+	var _cret C.gint   // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_tree_nnodes(_arg0)
 
@@ -102,11 +100,10 @@ func (t *Tree) Nnodes() int {
 // NodeFirst returns the first in-order node of the tree, or nil for an empty
 // tree.
 func (t *Tree) NodeFirst() *TreeNode {
-	var _arg0 *C.GTree // out
+	var _arg0 *C.GTree     // out
+	var _cret *C.GTreeNode // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GTreeNode // in
 
 	_cret = C.g_tree_node_first(_arg0)
 
@@ -120,11 +117,10 @@ func (t *Tree) NodeFirst() *TreeNode {
 // NodeLast returns the last in-order node of the tree, or nil for an empty
 // tree.
 func (t *Tree) NodeLast() *TreeNode {
-	var _arg0 *C.GTree // out
+	var _arg0 *C.GTree     // out
+	var _cret *C.GTreeNode // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GTreeNode // in
 
 	_cret = C.g_tree_node_last(_arg0)
 
@@ -140,10 +136,9 @@ func (t *Tree) NodeLast() *TreeNode {
 // It is safe to call this function from any thread.
 func (t *Tree) Ref() *Tree {
 	var _arg0 *C.GTree // out
+	var _cret *C.GTree // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GTree // in
 
 	_cret = C.g_tree_ref(_arg0)
 
@@ -194,10 +189,9 @@ func (t *TreeNode) Native() unsafe.Pointer {
 // was already the last one.
 func (n *TreeNode) Next() *TreeNode {
 	var _arg0 *C.GTreeNode // out
+	var _cret *C.GTreeNode // in
 
 	_arg0 = (*C.GTreeNode)(unsafe.Pointer(n.Native()))
-
-	var _cret *C.GTreeNode // in
 
 	_cret = C.g_tree_node_next(_arg0)
 
@@ -212,10 +206,9 @@ func (n *TreeNode) Next() *TreeNode {
 // node was already the first one.
 func (n *TreeNode) Previous() *TreeNode {
 	var _arg0 *C.GTreeNode // out
+	var _cret *C.GTreeNode // in
 
 	_arg0 = (*C.GTreeNode)(unsafe.Pointer(n.Native()))
-
-	var _cret *C.GTreeNode // in
 
 	_cret = C.g_tree_node_previous(_arg0)
 

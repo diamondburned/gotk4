@@ -64,11 +64,10 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 
 // NewMultiSelection constructs a class MultiSelection.
 func NewMultiSelection(model gio.ListModel) MultiSelection {
-	var _arg1 *C.GListModel // out
+	var _arg1 *C.GListModel       // out
+	var _cret C.GtkMultiSelection // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkMultiSelection // in
 
 	_cret = C.gtk_multi_selection_new(_arg1)
 
@@ -82,10 +81,9 @@ func NewMultiSelection(model gio.ListModel) MultiSelection {
 // Model returns the underlying model of @self.
 func (s multiSelection) Model() gio.ListModel {
 	var _arg0 *C.GtkMultiSelection // out
+	var _cret *C.GListModel        // in
 
 	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_multi_selection_get_model(_arg0)
 

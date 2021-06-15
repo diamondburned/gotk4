@@ -29,14 +29,13 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	var _arg3 C.gint             // out
 	var _arg4 C.gint             // out
 	var _arg5 C.gint             // out
+	var _cret *C.GdkPixbuf       // in
 
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	_arg2 = C.gint(srcX)
-	_arg3 = C.gint(srcY)
-	_arg4 = C.gint(width)
-	_arg5 = C.gint(height)
-
-	var _cret *C.GdkPixbuf // in
+	_arg2 = (C.gint)(srcX)
+	_arg3 = (C.gint)(srcY)
+	_arg4 = (C.gint)(width)
+	_arg5 = (C.gint)(height)
 
 	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -79,14 +78,13 @@ func PixbufGetFromWindow(window Window, srcX int, srcY int, width int, height in
 	var _arg3 C.gint       // out
 	var _arg4 C.gint       // out
 	var _arg5 C.gint       // out
+	var _cret *C.GdkPixbuf // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = C.gint(srcX)
-	_arg3 = C.gint(srcY)
-	_arg4 = C.gint(width)
-	_arg5 = C.gint(height)
-
-	var _cret *C.GdkPixbuf // in
+	_arg2 = (C.gint)(srcX)
+	_arg3 = (C.gint)(srcY)
+	_arg4 = (C.gint)(width)
+	_arg5 = (C.gint)(height)
 
 	_cret = C.gdk_pixbuf_get_from_window(_arg1, _arg2, _arg3, _arg4, _arg5)
 

@@ -39,15 +39,14 @@ import "C"
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK+.
 func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
-	var _arg3 C.guint // out
-
-	_arg1 = C.guint(requiredMajor)
-	_arg2 = C.guint(requiredMinor)
-	_arg3 = C.guint(requiredMicro)
-
+	var _arg1 C.guint  // out
+	var _arg2 C.guint  // out
+	var _arg3 C.guint  // out
 	var _cret *C.gchar // in
+
+	_arg1 = (C.guint)(requiredMajor)
+	_arg2 = (C.guint)(requiredMinor)
+	_arg3 = (C.guint)(requiredMicro)
 
 	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 
@@ -333,13 +332,12 @@ func GetMinorVersion() uint {
 // if you are using g_option_context_parse() to parse your commandline
 // arguments.
 func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
-	var _arg1 C.gboolean // out
+	var _arg1 C.gboolean      // out
+	var _cret *C.GOptionGroup // in
 
 	if openDefaultDisplay {
 		_arg1 = C.TRUE
 	}
-
-	var _cret *C.GOptionGroup // in
 
 	_cret = C.gtk_get_option_group(_arg1)
 
@@ -370,7 +368,7 @@ func GrabGetCurrent() Widget {
 func KeySnooperRemove(snooperHandlerId uint) {
 	var _arg1 C.guint // out
 
-	_arg1 = C.guint(snooperHandlerId)
+	_arg1 = (C.guint)(snooperHandlerId)
 
 	C.gtk_key_snooper_remove(_arg1)
 }
@@ -406,12 +404,11 @@ func MainIteration() bool {
 // available either return or block depending on the value of @blocking.
 func MainIterationDo(blocking bool) bool {
 	var _arg1 C.gboolean // out
+	var _cret C.gboolean // in
 
 	if blocking {
 		_arg1 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_main_iteration_do(_arg1)
 

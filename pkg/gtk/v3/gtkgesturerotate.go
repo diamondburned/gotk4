@@ -58,11 +58,10 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 
 // NewGestureRotate constructs a class GestureRotate.
 func NewGestureRotate(widget Widget) GestureRotate {
-	var _arg1 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget       // out
+	var _cret C.GtkGestureRotate // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureRotate // in
 
 	_cret = C.gtk_gesture_rotate_new(_arg1)
 
@@ -78,10 +77,9 @@ func NewGestureRotate(widget Widget) GestureRotate {
 // is not active, 0 is returned.
 func (g gestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out
+	var _cret C.gdouble           // in
 
 	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
-
-	var _cret C.gdouble // in
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 

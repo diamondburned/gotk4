@@ -65,13 +65,12 @@ func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
 
 // NewTcpWrapperConnection constructs a class TcpWrapperConnection.
 func NewTcpWrapperConnection(baseIoStream IOStream, socket Socket) TcpWrapperConnection {
-	var _arg1 *C.GIOStream // out
-	var _arg2 *C.GSocket   // out
+	var _arg1 *C.GIOStream            // out
+	var _arg2 *C.GSocket              // out
+	var _cret C.GTcpWrapperConnection // in
 
 	_arg1 = (*C.GIOStream)(unsafe.Pointer(baseIoStream.Native()))
 	_arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-
-	var _cret C.GTcpWrapperConnection // in
 
 	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
 
@@ -85,10 +84,9 @@ func NewTcpWrapperConnection(baseIoStream IOStream, socket Socket) TcpWrapperCon
 // BaseIOStream gets @conn's base OStream
 func (c tcpWrapperConnection) BaseIOStream() IOStream {
 	var _arg0 *C.GTcpWrapperConnection // out
+	var _cret *C.GIOStream             // in
 
 	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GIOStream // in
 
 	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
 

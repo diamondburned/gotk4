@@ -251,10 +251,9 @@ func NewComboBoxWithEntry() ComboBox {
 // NewComboBoxWithModel constructs a class ComboBox.
 func NewComboBoxWithModel(model TreeModel) ComboBox {
 	var _arg1 *C.GtkTreeModel // out
+	var _cret C.GtkComboBox   // in
 
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkComboBox // in
 
 	_cret = C.gtk_combo_box_new_with_model(_arg1)
 
@@ -268,10 +267,9 @@ func NewComboBoxWithModel(model TreeModel) ComboBox {
 // NewComboBoxWithModelAndEntry constructs a class ComboBox.
 func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 	var _arg1 *C.GtkTreeModel // out
+	var _cret C.GtkComboBox   // in
 
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkComboBox // in
 
 	_cret = C.gtk_combo_box_new_with_model_and_entry(_arg1)
 
@@ -290,10 +288,9 @@ func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 // [struct@Gtk.TreePath] of the active item.
 func (c comboBox) Active() int {
 	var _arg0 *C.GtkComboBox // out
+	var _cret C.int          // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_combo_box_get_active(_arg0)
 
@@ -319,10 +316,9 @@ func (c comboBox) Active() int {
 // then nil is returned.
 func (c comboBox) ActiveID() string {
 	var _arg0 *C.GtkComboBox // out
+	var _cret *C.char        // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_combo_box_get_active_id(_arg0)
 
@@ -338,11 +334,10 @@ func (c comboBox) ActiveID() string {
 // If no item is active, @iter is left unchanged.
 func (c comboBox) ActiveIter() (TreeIter, bool) {
 	var _arg0 *C.GtkComboBox // out
-
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
 	var _iter TreeIter
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_combo_box_get_active_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
@@ -358,11 +353,10 @@ func (c comboBox) ActiveIter() (TreeIter, bool) {
 // ButtonSensitivity returns whether the combo box sets the dropdown button
 // sensitive or not when there are no items in the model.
 func (c comboBox) ButtonSensitivity() SensitivityType {
-	var _arg0 *C.GtkComboBox // out
+	var _arg0 *C.GtkComboBox       // out
+	var _cret C.GtkSensitivityType // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkSensitivityType // in
 
 	_cret = C.gtk_combo_box_get_button_sensitivity(_arg0)
 
@@ -376,10 +370,9 @@ func (c comboBox) ButtonSensitivity() SensitivityType {
 // Child gets the child widget of @combo_box.
 func (c comboBox) Child() Widget {
 	var _arg0 *C.GtkComboBox // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_combo_box_get_child(_arg0)
 
@@ -394,10 +387,9 @@ func (c comboBox) Child() Widget {
 // strings from to display in the internal entry.
 func (c comboBox) EntryTextColumn() int {
 	var _arg0 *C.GtkComboBox // out
+	var _cret C.int          // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_combo_box_get_entry_text_column(_arg0)
 
@@ -411,10 +403,9 @@ func (c comboBox) EntryTextColumn() int {
 // HasEntry returns whether the combo box has an entry.
 func (c comboBox) HasEntry() bool {
 	var _arg0 *C.GtkComboBox // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_get_has_entry(_arg0)
 
@@ -431,10 +422,9 @@ func (c comboBox) HasEntry() bool {
 // for values from.
 func (c comboBox) IDColumn() int {
 	var _arg0 *C.GtkComboBox // out
+	var _cret C.int          // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_combo_box_get_id_column(_arg0)
 
@@ -447,11 +437,10 @@ func (c comboBox) IDColumn() int {
 
 // Model returns the `GtkTreeModel` of @combo_box.
 func (c comboBox) Model() TreeModel {
-	var _arg0 *C.GtkComboBox // out
+	var _arg0 *C.GtkComboBox  // out
+	var _cret *C.GtkTreeModel // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreeModel // in
 
 	_cret = C.gtk_combo_box_get_model(_arg0)
 
@@ -465,10 +454,9 @@ func (c comboBox) Model() TreeModel {
 // PopupFixedWidth gets whether the popup uses a fixed width.
 func (c comboBox) PopupFixedWidth() bool {
 	var _arg0 *C.GtkComboBox // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_get_popup_fixed_width(_arg0)
 
@@ -529,7 +517,7 @@ func (c comboBox) SetActive(index_ int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(index_)
+	_arg1 = (C.int)(index_)
 
 	C.gtk_combo_box_set_active(_arg0, _arg1)
 }
@@ -546,12 +534,11 @@ func (c comboBox) SetActive(index_ int) {
 func (c comboBox) SetActiveID(activeId string) bool {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.char        // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(activeId))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_set_active_id(_arg0, _arg1)
 
@@ -614,7 +601,7 @@ func (c comboBox) SetEntryTextColumn(textColumn int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(textColumn)
+	_arg1 = (C.int)(textColumn)
 
 	C.gtk_combo_box_set_entry_text_column(_arg0, _arg1)
 }
@@ -629,7 +616,7 @@ func (c comboBox) SetIDColumn(idColumn int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(idColumn)
+	_arg1 = (C.int)(idColumn)
 
 	C.gtk_combo_box_set_id_column(_arg0, _arg1)
 }

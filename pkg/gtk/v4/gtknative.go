@@ -83,11 +83,10 @@ func marshalNative(p uintptr) (interface{}, error) {
 
 // Renderer returns the renderer that is used for this `GtkNative`.
 func (s native) Renderer() gsk.Renderer {
-	var _arg0 *C.GtkNative // out
+	var _arg0 *C.GtkNative   // out
+	var _cret *C.GskRenderer // in
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GskRenderer // in
 
 	_cret = C.gtk_native_get_renderer(_arg0)
 
@@ -100,11 +99,10 @@ func (s native) Renderer() gsk.Renderer {
 
 // Surface returns the surface of this `GtkNative`.
 func (s native) Surface() gdk.Surface {
-	var _arg0 *C.GtkNative // out
+	var _arg0 *C.GtkNative  // out
+	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gtk_native_get_surface(_arg0)
 
@@ -121,11 +119,10 @@ func (s native) Surface() gdk.Surface {
 // widget coordinates.
 func (s native) SurfaceTransform() (x float64, y float64) {
 	var _arg0 *C.GtkNative // out
+	var _arg1 C.double     // in
+	var _arg2 C.double     // in
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
-
-	var _arg1 C.double // in
-	var _arg2 C.double // in
 
 	C.gtk_native_get_surface_transform(_arg0, &_arg1, &_arg2)
 

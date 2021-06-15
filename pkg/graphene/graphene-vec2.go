@@ -70,11 +70,10 @@ func (v *Vec2) Native() unsafe.Pointer {
 func (a *Vec2) Add(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
-
-	var _res Vec2
 
 	C.graphene_vec2_add(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -87,11 +86,10 @@ func (a *Vec2) Add(b *Vec2) Vec2 {
 func (a *Vec2) Divide(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
-
-	var _res Vec2
 
 	C.graphene_vec2_divide(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -102,11 +100,10 @@ func (a *Vec2) Divide(b *Vec2) Vec2 {
 func (a *Vec2) Dot(b *Vec2) float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _cret C.float            // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
-
-	var _cret C.float // in
 
 	_cret = C.graphene_vec2_dot(_arg0, _arg1)
 
@@ -121,11 +118,10 @@ func (a *Vec2) Dot(b *Vec2) float32 {
 func (v *Vec2) Equal(v2 *Vec2) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _cret C._Bool            // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(v2.Native()))
-
-	var _cret C._Bool // in
 
 	_cret = C.graphene_vec2_equal(_arg0, _arg1)
 
@@ -150,10 +146,9 @@ func (v *Vec2) Free() {
 // X retrieves the X component of the #graphene_vec2_t.
 func (v *Vec2) X() float32 {
 	var _arg0 *C.graphene_vec2_t // out
+	var _cret C.float            // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-
-	var _cret C.float // in
 
 	_cret = C.graphene_vec2_get_x(_arg0)
 
@@ -167,10 +162,9 @@ func (v *Vec2) X() float32 {
 // Y retrieves the Y component of the #graphene_vec2_t.
 func (v *Vec2) Y() float32 {
 	var _arg0 *C.graphene_vec2_t // out
+	var _cret C.float            // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-
-	var _cret C.float // in
 
 	_cret = C.graphene_vec2_get_y(_arg0)
 
@@ -188,12 +182,11 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
+	var _cret *C.graphene_vec2_t // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-	_arg1 = C.float(x)
-	_arg2 = C.float(y)
-
-	var _cret *C.graphene_vec2_t // in
+	_arg1 = (C.float)(x)
+	_arg2 = (C.float)(y)
 
 	_cret = C.graphene_vec2_init(_arg0, _arg1, _arg2)
 
@@ -208,11 +201,10 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.float
+	var _cret *C.graphene_vec2_t // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.float)(unsafe.Pointer(&src))
-
-	var _cret *C.graphene_vec2_t // in
 
 	_cret = C.graphene_vec2_init_from_float(_arg0, _arg1)
 
@@ -227,11 +219,10 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _cret *C.graphene_vec2_t // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(src.Native()))
-
-	var _cret *C.graphene_vec2_t // in
 
 	_cret = C.graphene_vec2_init_from_vec2(_arg0, _arg1)
 
@@ -247,12 +238,11 @@ func (v *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
 	var _arg2 C.double           // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(v2.Native()))
-	_arg2 = C.double(factor)
-
-	var _res Vec2
+	_arg2 = (C.double)(factor)
 
 	C.graphene_vec2_interpolate(_arg0, _arg1, _arg2, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -262,10 +252,9 @@ func (v *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 // Length computes the length of the given vector.
 func (v *Vec2) Length() float32 {
 	var _arg0 *C.graphene_vec2_t // out
+	var _cret C.float            // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-
-	var _cret C.float // in
 
 	_cret = C.graphene_vec2_length(_arg0)
 
@@ -281,11 +270,10 @@ func (v *Vec2) Length() float32 {
 func (a *Vec2) Max(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
-
-	var _res Vec2
 
 	C.graphene_vec2_max(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -297,11 +285,10 @@ func (a *Vec2) Max(b *Vec2) Vec2 {
 func (a *Vec2) Min(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
-
-	var _res Vec2
 
 	C.graphene_vec2_min(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -313,11 +300,10 @@ func (a *Vec2) Min(b *Vec2) Vec2 {
 func (a *Vec2) Multiply(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
-
-	var _res Vec2
 
 	C.graphene_vec2_multiply(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -330,12 +316,11 @@ func (v *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
 	var _arg2 C.float            // out
+	var _cret C._Bool            // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(v2.Native()))
-	_arg2 = C.float(epsilon)
-
-	var _cret C._Bool // in
+	_arg2 = (C.float)(epsilon)
 
 	_cret = C.graphene_vec2_near(_arg0, _arg1, _arg2)
 
@@ -351,10 +336,9 @@ func (v *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 // Negate negates the given #graphene_vec2_t.
 func (v *Vec2) Negate() Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-
-	var _res Vec2
 
 	C.graphene_vec2_negate(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -364,10 +348,9 @@ func (v *Vec2) Negate() Vec2 {
 // Normalize computes the normalized vector for the given vector @v.
 func (v *Vec2) Normalize() Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-
-	var _res Vec2
 
 	C.graphene_vec2_normalize(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -379,11 +362,10 @@ func (v *Vec2) Normalize() Vec2 {
 func (v *Vec2) Scale(factor float32) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-	_arg1 = C.float(factor)
-
-	var _res Vec2
+	_arg1 = (C.float)(factor)
 
 	C.graphene_vec2_scale(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -396,11 +378,10 @@ func (v *Vec2) Scale(factor float32) Vec2 {
 func (a *Vec2) Subtract(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
-
-	var _res Vec2
 
 	C.graphene_vec2_subtract(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
@@ -410,10 +391,9 @@ func (a *Vec2) Subtract(b *Vec2) Vec2 {
 // ToFloat stores the components of @v into an array.
 func (v *Vec2) ToFloat() [2]float32 {
 	var _arg0 *C.graphene_vec2_t // out
+	var _arg1 [2]C.float
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-
-	var _arg1 [2]C.float
 
 	C.graphene_vec2_to_float(_arg0, &_arg1[0])
 

@@ -156,10 +156,9 @@ func marshalPaned(p uintptr) (interface{}, error) {
 // NewPaned constructs a class Paned.
 func NewPaned(orientation Orientation) Paned {
 	var _arg1 C.GtkOrientation // out
+	var _cret C.GtkPaned       // in
 
 	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkPaned // in
 
 	_cret = C.gtk_paned_new(_arg1)
 
@@ -174,11 +173,10 @@ func NewPaned(orientation Orientation) Paned {
 //
 // See also: `GtkPaned`:end-child
 func (p paned) EndChild() Widget {
-	var _arg0 *C.GtkPaned // out
+	var _arg0 *C.GtkPaned  // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_paned_get_end_child(_arg0)
 
@@ -192,10 +190,9 @@ func (p paned) EndChild() Widget {
 // Position obtains the position of the divider between the two panes.
 func (p paned) Position() int {
 	var _arg0 *C.GtkPaned // out
+	var _cret C.int       // in
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_paned_get_position(_arg0)
 
@@ -209,10 +206,9 @@ func (p paned) Position() int {
 // ResizeEndChild returns whether the end child can be resized.
 func (p paned) ResizeEndChild() bool {
 	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_paned_get_resize_end_child(_arg0)
 
@@ -228,10 +224,9 @@ func (p paned) ResizeEndChild() bool {
 // ResizeStartChild returns whether the start child can be resized.
 func (p paned) ResizeStartChild() bool {
 	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_paned_get_resize_start_child(_arg0)
 
@@ -247,10 +242,9 @@ func (p paned) ResizeStartChild() bool {
 // ShrinkEndChild returns whether the end child can be shrunk.
 func (p paned) ShrinkEndChild() bool {
 	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_paned_get_shrink_end_child(_arg0)
 
@@ -266,10 +260,9 @@ func (p paned) ShrinkEndChild() bool {
 // ShrinkStartChild returns whether the start child can be shrunk.
 func (p paned) ShrinkStartChild() bool {
 	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_paned_get_shrink_start_child(_arg0)
 
@@ -286,11 +279,10 @@ func (p paned) ShrinkStartChild() bool {
 //
 // See also: `GtkPaned`:start-child
 func (p paned) StartChild() Widget {
-	var _arg0 *C.GtkPaned // out
+	var _arg0 *C.GtkPaned  // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_paned_get_start_child(_arg0)
 
@@ -304,10 +296,9 @@ func (p paned) StartChild() Widget {
 // WideHandle gets whether the separator should be wide.
 func (p paned) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
 
@@ -337,7 +328,7 @@ func (p paned) SetPosition(position int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-	_arg1 = C.int(position)
+	_arg1 = (C.int)(position)
 
 	C.gtk_paned_set_position(_arg0, _arg1)
 }

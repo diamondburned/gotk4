@@ -141,12 +141,11 @@ func marshalUnixConnection(p uintptr) (interface{}, error) {
 func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
+	var _cret *C.GCredentials    // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GCredentials // in
-	var _cerr *C.GError       // in
 
 	_cret = C.g_unix_connection_receive_credentials(_arg0, _arg1, &_cerr)
 
@@ -164,12 +163,11 @@ func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials
 func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
+	var _cret *C.GCredentials    // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GCredentials // in
-	var _cerr *C.GError       // in
 
 	_cret = C.g_unix_connection_receive_credentials_finish(_arg0, _arg1, &_cerr)
 
@@ -191,12 +189,11 @@ func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (Credential
 func (c unixConnection) ReceiveFd(cancellable Cancellable) (int, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
+	var _cret C.gint             // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_unix_connection_receive_fd(_arg0, _arg1, &_cerr)
 
@@ -229,11 +226,10 @@ func (c unixConnection) ReceiveFd(cancellable Cancellable) (int, error) {
 func (c unixConnection) SendCredentials(cancellable Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_unix_connection_send_credentials(_arg0, _arg1, &_cerr)
 
@@ -249,11 +245,10 @@ func (c unixConnection) SendCredentials(cancellable Cancellable) error {
 func (c unixConnection) SendCredentialsFinish(result AsyncResult) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_unix_connection_send_credentials_finish(_arg0, _arg1, &_cerr)
 
@@ -274,12 +269,11 @@ func (c unixConnection) SendFd(fd int, cancellable Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 C.gint             // out
 	var _arg2 *C.GCancellable    // out
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(fd)
+	_arg1 = (C.gint)(fd)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_unix_connection_send_fd(_arg0, _arg1, _arg2, &_cerr)
 

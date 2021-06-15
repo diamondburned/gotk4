@@ -102,10 +102,9 @@ func marshalGestureSingle(p uintptr) (interface{}, error) {
 // If this is 0, the gesture reacts to any button press.
 func (g gestureSingle) Button() uint {
 	var _arg0 *C.GtkGestureSingle // out
+	var _cret C.guint             // in
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_gesture_single_get_button(_arg0)
 
@@ -120,10 +119,9 @@ func (g gestureSingle) Button() uint {
 // @gesture, or 0 if there is none.
 func (g gestureSingle) CurrentButton() uint {
 	var _arg0 *C.GtkGestureSingle // out
+	var _cret C.guint             // in
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_gesture_single_get_current_button(_arg0)
 
@@ -140,10 +138,9 @@ func (g gestureSingle) CurrentButton() uint {
 // This is only meaningful if [method@Gtk.Gesture.is_active] returns true.
 func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGestureSingle // out
+	var _cret *C.GdkEventSequence // in
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
-
-	var _cret *C.GdkEventSequence // in
 
 	_cret = C.gtk_gesture_single_get_current_sequence(_arg0)
 
@@ -162,10 +159,9 @@ func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
 // For more information, see [method@Gtk.GestureSingle.set_exclusive].
 func (g gestureSingle) Exclusive() bool {
 	var _arg0 *C.GtkGestureSingle // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_single_get_exclusive(_arg0)
 
@@ -181,10 +177,9 @@ func (g gestureSingle) Exclusive() bool {
 // TouchOnly returns true if the gesture is only triggered by touch events.
 func (g gestureSingle) TouchOnly() bool {
 	var _arg0 *C.GtkGestureSingle // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_single_get_touch_only(_arg0)
 
@@ -206,7 +201,7 @@ func (g gestureSingle) SetButton(button uint) {
 	var _arg1 C.guint             // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
-	_arg1 = C.guint(button)
+	_arg1 = (C.guint)(button)
 
 	C.gtk_gesture_single_set_button(_arg0, _arg1)
 }

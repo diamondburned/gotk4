@@ -44,7 +44,7 @@ func PropertyDelete(window Window, property Atom) {
 	var _arg2 C.GdkAtom    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(property.Native()))
 
 	C.gdk_property_delete(_arg1, _arg2)
 }
@@ -67,19 +67,18 @@ func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length u
 	var _arg4 C.gulong     // out
 	var _arg5 C.gulong     // out
 	var _arg6 C.gint       // out
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(typ.Native()))
-	_arg4 = C.gulong(offset)
-	_arg5 = C.gulong(length)
-	_arg6 = C.gint(pdelete)
-
 	var _actualPropertyType Atom
 	var _arg8 C.gint // in
 	var _arg10 *C.guchar
 	var _arg9 C.gint     // in
 	var _cret C.gboolean // in
+
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg3 = *(*C.GdkAtom)(unsafe.Pointer(typ.Native()))
+	_arg4 = (C.gulong)(offset)
+	_arg5 = (C.gulong)(length)
+	_arg6 = (C.gint)(pdelete)
 
 	_cret = C.gdk_property_get(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, (*C.GdkAtom)(unsafe.Pointer(&_actualPropertyType)), &_arg8, &_arg9, &_arg10)
 
@@ -107,15 +106,14 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int
 	var _arg3 C.gint        // out
 	var _arg4 *C.guchar
 	var _arg5 C.gint
-
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(encoding.Native()))
-	_arg3 = C.gint(format)
-	_arg5 = C.gint(len(text))
-	_arg4 = (*C.guchar)(unsafe.Pointer(&text[0]))
-
 	var _arg6 **C.gchar
 	var _cret C.gint // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = *(*C.GdkAtom)(unsafe.Pointer(encoding.Native()))
+	_arg3 = (C.gint)(format)
+	_arg5 = C.gint(len(text))
+	_arg4 = (*C.guchar)(unsafe.Pointer(&text[0]))
 
 	_cret = C.gdk_text_property_to_utf8_list_for_display(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
 
@@ -146,11 +144,10 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int
 // some other form of approximation.
 func UTF8ToStringTarget(str string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gdk_utf8_to_string_target(_arg1)
 

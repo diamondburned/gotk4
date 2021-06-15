@@ -126,11 +126,10 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 
 // NewWindowControls constructs a class WindowControls.
 func NewWindowControls(side PackType) WindowControls {
-	var _arg1 C.GtkPackType // out
+	var _arg1 C.GtkPackType       // out
+	var _cret C.GtkWindowControls // in
 
 	_arg1 = (C.GtkPackType)(side)
-
-	var _cret C.GtkWindowControls // in
 
 	_cret = C.gtk_window_controls_new(_arg1)
 
@@ -144,10 +143,9 @@ func NewWindowControls(side PackType) WindowControls {
 // DecorationLayout gets the decoration layout of this `GtkWindowControls`.
 func (s windowControls) DecorationLayout() string {
 	var _arg0 *C.GtkWindowControls // out
+	var _cret *C.char              // in
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
 
@@ -161,10 +159,9 @@ func (s windowControls) DecorationLayout() string {
 // Empty gets whether the widget has any window buttons.
 func (s windowControls) Empty() bool {
 	var _arg0 *C.GtkWindowControls // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_window_controls_get_empty(_arg0)
 
@@ -180,10 +177,9 @@ func (s windowControls) Empty() bool {
 // Side gets the side to which this `GtkWindowControls` instance belongs.
 func (s windowControls) Side() PackType {
 	var _arg0 *C.GtkWindowControls // out
+	var _cret C.GtkPackType        // in
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPackType // in
 
 	_cret = C.gtk_window_controls_get_side(_arg0)
 

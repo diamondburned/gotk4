@@ -82,10 +82,9 @@ func NewDropControllerMotion() DropControllerMotion {
 // @self or one of its children.
 func (s dropControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
+	var _cret C.gboolean                 // in
 
 	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
 
@@ -102,10 +101,9 @@ func (s dropControllerMotion) ContainsPointer() bool {
 // widget of @self.
 func (s dropControllerMotion) Drop() gdk.Drop {
 	var _arg0 *C.GtkDropControllerMotion // out
+	var _cret *C.GdkDrop                 // in
 
 	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDrop // in
 
 	_cret = C.gtk_drop_controller_motion_get_drop(_arg0)
 
@@ -120,10 +118,9 @@ func (s dropControllerMotion) Drop() gdk.Drop {
 // @self, not one of its children.
 func (s dropControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
+	var _cret C.gboolean                 // in
 
 	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
 

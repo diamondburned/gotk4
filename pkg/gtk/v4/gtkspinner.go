@@ -95,10 +95,9 @@ func NewSpinner() Spinner {
 // Spinning returns whether the spinner is spinning.
 func (s spinner) Spinning() bool {
 	var _arg0 *C.GtkSpinner // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_spinner_get_spinning(_arg0)
 

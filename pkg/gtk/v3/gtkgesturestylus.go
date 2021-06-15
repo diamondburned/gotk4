@@ -63,11 +63,10 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 
 // NewGestureStylus constructs a class GestureStylus.
 func NewGestureStylus(widget Widget) GestureStylus {
-	var _arg1 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget       // out
+	var _cret C.GtkGestureStylus // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureStylus // in
 
 	_cret = C.gtk_gesture_stylus_new(_arg1)
 
@@ -84,12 +83,11 @@ func NewGestureStylus(widget Widget) GestureStylus {
 func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 C.GdkAxisUse        // out
+	var _arg2 C.gdouble           // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 	_arg1 = (C.GdkAxisUse)(axis)
-
-	var _arg2 C.gdouble  // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
 
@@ -110,10 +108,9 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 // GestureStylus::proximity signal handlers.
 func (g gestureStylus) DeviceTool() gdk.DeviceTool {
 	var _arg0 *C.GtkGestureStylus // out
+	var _cret *C.GdkDeviceTool    // in
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
-
-	var _cret *C.GdkDeviceTool // in
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
 

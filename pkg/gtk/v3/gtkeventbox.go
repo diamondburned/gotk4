@@ -118,10 +118,9 @@ func NewEventBox() EventBox {
 // windows of its child. See gtk_event_box_set_above_child() for details.
 func (e eventBox) AboveChild() bool {
 	var _arg0 *C.GtkEventBox // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_box_get_above_child(_arg0)
 
@@ -138,10 +137,9 @@ func (e eventBox) AboveChild() bool {
 // gtk_event_box_set_visible_window() for details.
 func (e eventBox) VisibleWindow() bool {
 	var _arg0 *C.GtkEventBox // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_box_get_visible_window(_arg0)
 

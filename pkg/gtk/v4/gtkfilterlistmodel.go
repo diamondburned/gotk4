@@ -110,13 +110,12 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 
 // NewFilterListModel constructs a class FilterListModel.
 func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel {
-	var _arg1 *C.GListModel // out
-	var _arg2 *C.GtkFilter  // out
+	var _arg1 *C.GListModel        // out
+	var _arg2 *C.GtkFilter         // out
+	var _cret C.GtkFilterListModel // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
-
-	var _cret C.GtkFilterListModel // in
 
 	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)
 
@@ -130,10 +129,9 @@ func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel {
 // Filter gets the `GtkFilter` currently set on @self.
 func (s filterListModel) Filter() Filter {
 	var _arg0 *C.GtkFilterListModel // out
+	var _cret *C.GtkFilter          // in
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkFilter // in
 
 	_cret = C.gtk_filter_list_model_get_filter(_arg0)
 
@@ -149,10 +147,9 @@ func (s filterListModel) Filter() Filter {
 // See [method@Gtk.FilterListModel.set_incremental].
 func (s filterListModel) Incremental() bool {
 	var _arg0 *C.GtkFilterListModel // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_filter_list_model_get_incremental(_arg0)
 
@@ -168,10 +165,9 @@ func (s filterListModel) Incremental() bool {
 // Model gets the model currently filtered or nil if none.
 func (s filterListModel) Model() gio.ListModel {
 	var _arg0 *C.GtkFilterListModel // out
+	var _cret *C.GListModel         // in
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_filter_list_model_get_model(_arg0)
 
@@ -198,10 +194,9 @@ func (s filterListModel) Model() gio.ListModel {
 // returns 0.
 func (s filterListModel) Pending() uint {
 	var _arg0 *C.GtkFilterListModel // out
+	var _cret C.guint               // in
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_filter_list_model_get_pending(_arg0)
 

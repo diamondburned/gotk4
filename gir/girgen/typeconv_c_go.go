@@ -7,31 +7,18 @@ import (
 
 // C to Go type conversions.
 
-// TypeConversionToGo describes the conversion context, that is all the values
-// that may or may not be converted for the conversion routine to use.
-type TypeConversionToGo struct {
-	conversionTo
-}
-
-// CGoConverter returns a new converter that converts a value from C to Go.
-func (fg *FileGenerator) CGoConverter(parent string, values []ValueProp) *TypeConversionToGo {
-	conv := &TypeConversionToGo{}
-	conv.conversionTo = newConversionTo(fg, parent, values, conv)
-	return conv
-}
-
-func (conv *TypeConversionToGo) convert(value *ValueConverted) bool {
+func (conv *TypeConverter) cgoConvert(value *ValueConverted) bool {
 	switch {
 	case value.AnyType.Array != nil:
-		return conv.arrayConverter(value)
+		return conv.cgoArrayConverter(value)
 	case value.AnyType.Type != nil:
-		return conv.typeConverter(value)
+		return conv.cgoTypeConverter(value)
 	default:
 		return false
 	}
 }
 
-func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
+func (conv *TypeConverter) cgoArrayConverter(value *ValueConverted) bool {
 	if value.AnyType.Array.Type == nil {
 		conv.log(LogDebug, "C->Go skipping nested array", value.AnyType.Array.CType)
 		return value.Optional // ok if optional
@@ -46,7 +33,7 @@ func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
 	}
 
 	value.InType = anyTypeCGo(value.AnyType)
-	if value.ParameterIsOutput {
+	if value.ParameterIsOutput() {
 		// Dereference the input type, as we'll be passing in references.
 		value.InType = strings.TrimPrefix(value.InType, "*")
 	}
@@ -188,14 +175,14 @@ func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
 	return false
 }
 
-func (conv *TypeConversionToGo) typeConverter(value *ValueConverted) bool {
+func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 	for _, unsupported := range unsupportedCTypes {
 		if unsupported == value.AnyType.Type.Name {
 			return false
 		}
 	}
 
-	if !value.resolveType(&conv.conversionTo, true) {
+	if !value.resolveType(conv) {
 		return false
 	}
 

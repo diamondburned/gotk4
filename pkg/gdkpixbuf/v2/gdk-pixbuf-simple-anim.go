@@ -59,15 +59,14 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 
 // NewPixbufSimpleAnim constructs a class PixbufSimpleAnim.
 func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
-	var _arg1 C.gint   // out
-	var _arg2 C.gint   // out
-	var _arg3 C.gfloat // out
-
-	_arg1 = C.gint(width)
-	_arg2 = C.gint(height)
-	_arg3 = C.gfloat(rate)
-
+	var _arg1 C.gint                // out
+	var _arg2 C.gint                // out
+	var _arg3 C.gfloat              // out
 	var _cret C.GdkPixbufSimpleAnim // in
+
+	_arg1 = (C.gint)(width)
+	_arg2 = (C.gint)(height)
+	_arg3 = (C.gfloat)(rate)
 
 	_cret = C.gdk_pixbuf_simple_anim_new(_arg1, _arg2, _arg3)
 
@@ -94,10 +93,9 @@ func (a pixbufSimpleAnim) AddFrame(pixbuf Pixbuf) {
 // end.
 func (a pixbufSimpleAnim) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
 

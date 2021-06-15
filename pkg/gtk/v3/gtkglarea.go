@@ -217,10 +217,9 @@ func (a glArea) AttachBuffers() {
 // AutoRender returns whether the area is in auto render mode or not.
 func (a glArea) AutoRender() bool {
 	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_auto_render(_arg0)
 
@@ -235,11 +234,10 @@ func (a glArea) AutoRender() bool {
 
 // Context retrieves the GLContext used by @area.
 func (a glArea) Context() gdk.GLContext {
-	var _arg0 *C.GtkGLArea // out
+	var _arg0 *C.GtkGLArea    // out
+	var _cret *C.GdkGLContext // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkGLContext // in
 
 	_cret = C.gtk_gl_area_get_context(_arg0)
 
@@ -253,10 +251,9 @@ func (a glArea) Context() gdk.GLContext {
 // Error gets the current error set on the @area.
 func (a glArea) Error() error {
 	var _arg0 *C.GtkGLArea // out
+	var _cret *C.GError    // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GError // in
 
 	_cret = C.gtk_gl_area_get_error(_arg0)
 
@@ -270,10 +267,9 @@ func (a glArea) Error() error {
 // HasAlpha returns whether the area has an alpha component.
 func (a glArea) HasAlpha() bool {
 	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_has_alpha(_arg0)
 
@@ -289,10 +285,9 @@ func (a glArea) HasAlpha() bool {
 // HasDepthBuffer returns whether the area has a depth buffer.
 func (a glArea) HasDepthBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_has_depth_buffer(_arg0)
 
@@ -308,10 +303,9 @@ func (a glArea) HasDepthBuffer() bool {
 // HasStencilBuffer returns whether the area has a stencil buffer.
 func (a glArea) HasStencilBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_has_stencil_buffer(_arg0)
 
@@ -328,11 +322,10 @@ func (a glArea) HasStencilBuffer() bool {
 // gtk_gl_area_set_required_version().
 func (a glArea) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	var _arg1 C.gint // in
-	var _arg2 C.gint // in
 
 	C.gtk_gl_area_get_required_version(_arg0, &_arg1, &_arg2)
 
@@ -348,10 +341,9 @@ func (a glArea) RequiredVersion() (major int, minor int) {
 // UseES retrieves the value set by gtk_gl_area_set_use_es().
 func (a glArea) UseES() bool {
 	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_use_es(_arg0)
 
@@ -485,8 +477,8 @@ func (a glArea) SetRequiredVersion(major int, minor int) {
 	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-	_arg1 = C.gint(major)
-	_arg2 = C.gint(minor)
+	_arg1 = (C.gint)(major)
+	_arg2 = (C.gint)(minor)
 
 	C.gtk_gl_area_set_required_version(_arg0, _arg1, _arg2)
 }

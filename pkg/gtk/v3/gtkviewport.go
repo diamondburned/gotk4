@@ -95,11 +95,10 @@ func marshalViewport(p uintptr) (interface{}, error) {
 func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
+	var _cret C.GtkViewport    // in
 
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
 	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
-
-	var _cret C.GtkViewport // in
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
@@ -113,10 +112,9 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 // BinWindow gets the bin window of the Viewport.
 func (v viewport) BinWindow() gdk.Window {
 	var _arg0 *C.GtkViewport // out
+	var _cret *C.GdkWindow   // in
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GdkWindow // in
 
 	_cret = C.gtk_viewport_get_bin_window(_arg0)
 
@@ -129,11 +127,10 @@ func (v viewport) BinWindow() gdk.Window {
 
 // HAdjustment returns the horizontal adjustment of the viewport.
 func (v viewport) HAdjustment() Adjustment {
-	var _arg0 *C.GtkViewport // out
+	var _arg0 *C.GtkViewport   // out
+	var _cret *C.GtkAdjustment // in
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_viewport_get_hadjustment(_arg0)
 
@@ -147,11 +144,10 @@ func (v viewport) HAdjustment() Adjustment {
 // ShadowType gets the shadow type of the Viewport. See
 // gtk_viewport_set_shadow_type().
 func (v viewport) ShadowType() ShadowType {
-	var _arg0 *C.GtkViewport // out
+	var _arg0 *C.GtkViewport  // out
+	var _cret C.GtkShadowType // in
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-
-	var _cret C.GtkShadowType // in
 
 	_cret = C.gtk_viewport_get_shadow_type(_arg0)
 
@@ -164,11 +160,10 @@ func (v viewport) ShadowType() ShadowType {
 
 // VAdjustment returns the vertical adjustment of the viewport.
 func (v viewport) VAdjustment() Adjustment {
-	var _arg0 *C.GtkViewport // out
+	var _arg0 *C.GtkViewport   // out
+	var _cret *C.GtkAdjustment // in
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_viewport_get_vadjustment(_arg0)
 
@@ -182,10 +177,9 @@ func (v viewport) VAdjustment() Adjustment {
 // ViewWindow gets the view window of the Viewport.
 func (v viewport) ViewWindow() gdk.Window {
 	var _arg0 *C.GtkViewport // out
+	var _cret *C.GdkWindow   // in
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GdkWindow // in
 
 	_cret = C.gtk_viewport_get_view_window(_arg0)
 

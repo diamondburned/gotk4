@@ -82,9 +82,10 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 
 // NewNetworkService constructs a class NetworkService.
 func NewNetworkService(service string, protocol string, domain string) NetworkService {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
-	var _arg3 *C.gchar // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.gchar          // out
+	var _arg3 *C.gchar          // out
+	var _cret C.GNetworkService // in
 
 	_arg1 = (*C.gchar)(C.CString(service))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -92,8 +93,6 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret C.GNetworkService // in
 
 	_cret = C.g_network_service_new(_arg1, _arg2, _arg3)
 
@@ -108,10 +107,9 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 // ASCII-encoded, depending on what @srv was created with.
 func (s networkService) Domain() string {
 	var _arg0 *C.GNetworkService // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_network_service_get_domain(_arg0)
 
@@ -125,10 +123,9 @@ func (s networkService) Domain() string {
 // Protocol gets @srv's protocol name (eg, "tcp").
 func (s networkService) Protocol() string {
 	var _arg0 *C.GNetworkService // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_network_service_get_protocol(_arg0)
 
@@ -143,10 +140,9 @@ func (s networkService) Protocol() string {
 // service name is used as scheme.
 func (s networkService) Scheme() string {
 	var _arg0 *C.GNetworkService // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_network_service_get_scheme(_arg0)
 
@@ -160,10 +156,9 @@ func (s networkService) Scheme() string {
 // Service gets @srv's service name (eg, "ldap").
 func (s networkService) Service() string {
 	var _arg0 *C.GNetworkService // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_network_service_get_service(_arg0)
 

@@ -78,10 +78,9 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 // display, or nil if no ID has been defined.
 func (d waylandDisplay) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
 
@@ -97,12 +96,11 @@ func (d waylandDisplay) StartupNotificationID() string {
 func (d waylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(global))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
 
@@ -124,7 +122,7 @@ func (d waylandDisplay) SetCursorTheme(name string, size int) {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(size)
+	_arg2 = (C.int)(size)
 
 	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }

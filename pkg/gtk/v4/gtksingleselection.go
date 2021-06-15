@@ -104,11 +104,10 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 
 // NewSingleSelection constructs a class SingleSelection.
 func NewSingleSelection(model gio.ListModel) SingleSelection {
-	var _arg1 *C.GListModel // out
+	var _arg1 *C.GListModel        // out
+	var _cret C.GtkSingleSelection // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkSingleSelection // in
 
 	_cret = C.gtk_single_selection_new(_arg1)
 
@@ -123,10 +122,9 @@ func NewSingleSelection(model gio.ListModel) SingleSelection {
 // gtk_single_selection_set_autoselect().
 func (s singleSelection) Autoselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_single_selection_get_autoselect(_arg0)
 
@@ -143,10 +141,9 @@ func (s singleSelection) Autoselect() bool {
 // and allows unselecting the selected item.
 func (s singleSelection) CanUnselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_single_selection_get_can_unselect(_arg0)
 
@@ -162,10 +159,9 @@ func (s singleSelection) CanUnselect() bool {
 // Model gets the model that @self is wrapping.
 func (s singleSelection) Model() gio.ListModel {
 	var _arg0 *C.GtkSingleSelection // out
+	var _cret *C.GListModel         // in
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_single_selection_get_model(_arg0)
 
@@ -181,10 +177,9 @@ func (s singleSelection) Model() gio.ListModel {
 // If no item is selected, GTK_INVALID_LIST_POSITION is returned.
 func (s singleSelection) Selected() uint {
 	var _arg0 *C.GtkSingleSelection // out
+	var _cret C.guint               // in
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_single_selection_get_selected(_arg0)
 
@@ -200,10 +195,9 @@ func (s singleSelection) Selected() uint {
 // If no item is selected, nil is returned.
 func (s singleSelection) SelectedItem() gextras.Objector {
 	var _arg0 *C.GtkSingleSelection // out
+	var _cret C.gpointer            // in
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gpointer // in
 
 	_cret = C.gtk_single_selection_get_selected_item(_arg0)
 
@@ -274,7 +268,7 @@ func (s singleSelection) SetSelected(position uint) {
 	var _arg1 C.guint               // out
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
+	_arg1 = (C.guint)(position)
 
 	C.gtk_single_selection_set_selected(_arg0, _arg1)
 }

@@ -99,11 +99,10 @@ func NewRecentChooserMenu() RecentChooserMenu {
 
 // NewRecentChooserMenuForManager constructs a class RecentChooserMenu.
 func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
-	var _arg1 *C.GtkRecentManager // out
+	var _arg1 *C.GtkRecentManager    // out
+	var _cret C.GtkRecentChooserMenu // in
 
 	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-
-	var _cret C.GtkRecentChooserMenu // in
 
 	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 
@@ -118,10 +117,9 @@ func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
 // gtk_recent_chooser_menu_set_show_numbers().
 func (m recentChooserMenu) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentChooserMenu // out
+	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
 

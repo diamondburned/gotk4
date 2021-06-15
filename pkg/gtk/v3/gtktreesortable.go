@@ -84,12 +84,11 @@ func marshalTreeSortable(p uintptr) (interface{}, error) {
 // GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
 func (s treeSortable) SortColumnID() (int, SortType, bool) {
 	var _arg0 *C.GtkTreeSortable // out
+	var _arg1 C.gint             // in
+	var _arg2 C.GtkSortType      // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
-
-	var _arg1 C.gint        // in
-	var _arg2 C.GtkSortType // in
-	var _cret C.gboolean    // in
 
 	_cret = C.gtk_tree_sortable_get_sort_column_id(_arg0, &_arg1, &_arg2)
 
@@ -111,10 +110,9 @@ func (s treeSortable) SortColumnID() (int, SortType, bool) {
 // model can go back to the default state, or not.
 func (s treeSortable) HasDefaultSortFunc() bool {
 	var _arg0 *C.GtkTreeSortable // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_sortable_has_default_sort_func(_arg0)
 
@@ -142,7 +140,7 @@ func (s treeSortable) SetSortColumnID(sortColumnId int, order SortType) {
 	var _arg2 C.GtkSortType      // out
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(sortColumnId)
+	_arg1 = (C.gint)(sortColumnId)
 	_arg2 = (C.GtkSortType)(order)
 
 	C.gtk_tree_sortable_set_sort_column_id(_arg0, _arg1, _arg2)

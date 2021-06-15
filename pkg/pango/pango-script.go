@@ -301,14 +301,13 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 
 // NewScriptIter constructs a struct ScriptIter.
 func NewScriptIter(text string, length int) *ScriptIter {
-	var _arg1 *C.char // out
-	var _arg2 C.int   // out
+	var _arg1 *C.char            // out
+	var _arg2 C.int              // out
+	var _cret *C.PangoScriptIter // in
 
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-
-	var _cret *C.PangoScriptIter // in
+	_arg2 = (C.int)(length)
 
 	_cret = C.pango_script_iter_new(_arg1, _arg2)
 
@@ -345,12 +344,11 @@ func (i *ScriptIter) Free() {
 // must be prepared to handle unknown values.
 func (i *ScriptIter) Range() (start string, end string, script Script) {
 	var _arg0 *C.PangoScriptIter // out
+	var _arg1 *C.char            // in
+	var _arg2 *C.char            // in
+	var _arg3 C.PangoScript      // in
 
 	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
-
-	var _arg1 *C.char       // in
-	var _arg2 *C.char       // in
-	var _arg3 C.PangoScript // in
 
 	C.pango_script_iter_get_range(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -371,10 +369,9 @@ func (i *ScriptIter) Range() (start string, end string, script Script) {
 // it is left unchanged and false is returned.
 func (i *ScriptIter) Next() bool {
 	var _arg0 *C.PangoScriptIter // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.pango_script_iter_next(_arg0)
 

@@ -146,12 +146,11 @@ func NewButton() Button {
 
 // NewButtonFromIconName constructs a class Button.
 func NewButtonFromIconName(iconName string) Button {
-	var _arg1 *C.char // out
+	var _arg1 *C.char     // out
+	var _cret C.GtkButton // in
 
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkButton // in
 
 	_cret = C.gtk_button_new_from_icon_name(_arg1)
 
@@ -164,12 +163,11 @@ func NewButtonFromIconName(iconName string) Button {
 
 // NewButtonWithLabel constructs a class Button.
 func NewButtonWithLabel(label string) Button {
-	var _arg1 *C.char // out
+	var _arg1 *C.char     // out
+	var _cret C.GtkButton // in
 
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkButton // in
 
 	_cret = C.gtk_button_new_with_label(_arg1)
 
@@ -182,12 +180,11 @@ func NewButtonWithLabel(label string) Button {
 
 // NewButtonWithMnemonic constructs a class Button.
 func NewButtonWithMnemonic(label string) Button {
-	var _arg1 *C.char // out
+	var _arg1 *C.char     // out
+	var _cret C.GtkButton // in
 
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkButton // in
 
 	_cret = C.gtk_button_new_with_mnemonic(_arg1)
 
@@ -201,10 +198,9 @@ func NewButtonWithMnemonic(label string) Button {
 // Child gets the child widget of @button.
 func (b button) Child() Widget {
 	var _arg0 *C.GtkButton // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_button_get_child(_arg0)
 
@@ -218,10 +214,9 @@ func (b button) Child() Widget {
 // HasFrame returns whether the button has a frame.
 func (b button) HasFrame() bool {
 	var _arg0 *C.GtkButton // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_button_get_has_frame(_arg0)
 
@@ -241,10 +236,9 @@ func (b button) HasFrame() bool {
 // empty button with [ctor@Gtk.Button.new] to use as a container.
 func (b button) IconName() string {
 	var _arg0 *C.GtkButton // out
+	var _cret *C.char      // in
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_button_get_icon_name(_arg0)
 
@@ -262,10 +256,9 @@ func (b button) IconName() string {
 // button with [ctor@Gtk.Button.new] to use as a container.
 func (b button) Label() string {
 	var _arg0 *C.GtkButton // out
+	var _cret *C.char      // in
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_button_get_label(_arg0)
 
@@ -281,10 +274,9 @@ func (b button) Label() string {
 // See [method@Gtk.Button.set_use_underline].
 func (b button) UseUnderline() bool {
 	var _arg0 *C.GtkButton // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_button_get_use_underline(_arg0)
 

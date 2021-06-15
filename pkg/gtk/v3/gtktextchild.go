@@ -78,10 +78,9 @@ func NewTextChildAnchor() TextChildAnchor {
 // child anchors will also be finalized.
 func (a textChildAnchor) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 

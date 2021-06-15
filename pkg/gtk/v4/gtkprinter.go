@@ -178,6 +178,7 @@ func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
 	var _arg1 *C.char            // out
 	var _arg2 *C.GtkPrintBackend // out
 	var _arg3 C.gboolean         // out
+	var _cret C.GtkPrinter       // in
 
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -185,8 +186,6 @@ func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
 	if virtual_ {
 		_arg3 = C.TRUE
 	}
-
-	var _cret C.GtkPrinter // in
 
 	_cret = C.gtk_printer_new(_arg1, _arg2, _arg3)
 
@@ -200,10 +199,9 @@ func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
 // AcceptsPDF returns whether the printer accepts input in PDF format.
 func (p printer) AcceptsPDF() bool {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_accepts_pdf(_arg0)
 
@@ -219,10 +217,9 @@ func (p printer) AcceptsPDF() bool {
 // AcceptsPS returns whether the printer accepts input in PostScript format.
 func (p printer) AcceptsPS() bool {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_accepts_ps(_arg0)
 
@@ -239,11 +236,10 @@ func (p printer) AcceptsPS() bool {
 func (a printer) Compare(b Printer) int {
 	var _arg0 *C.GtkPrinter // out
 	var _arg1 *C.GtkPrinter // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkPrinter)(unsafe.Pointer(b.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_printer_compare(_arg0, _arg1)
 
@@ -256,11 +252,10 @@ func (a printer) Compare(b Printer) int {
 
 // Backend returns the backend of the printer.
 func (p printer) Backend() *PrintBackend {
-	var _arg0 *C.GtkPrinter // out
+	var _arg0 *C.GtkPrinter      // out
+	var _cret *C.GtkPrintBackend // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkPrintBackend // in
 
 	_cret = C.gtk_printer_get_backend(_arg0)
 
@@ -281,11 +276,10 @@ func (p printer) Backend() *PrintBackend {
 // [method@Gtk.Printer.has_details] and
 // [method@Gtk.Printer.request_details].
 func (p printer) Capabilities() PrintCapabilities {
-	var _arg0 *C.GtkPrinter // out
+	var _arg0 *C.GtkPrinter          // out
+	var _cret C.GtkPrintCapabilities // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.GtkPrintCapabilities // in
 
 	_cret = C.gtk_printer_get_capabilities(_arg0)
 
@@ -298,11 +292,10 @@ func (p printer) Capabilities() PrintCapabilities {
 
 // DefaultPageSize returns default page size of @printer.
 func (p printer) DefaultPageSize() PageSetup {
-	var _arg0 *C.GtkPrinter // out
+	var _arg0 *C.GtkPrinter   // out
+	var _cret *C.GtkPageSetup // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkPageSetup // in
 
 	_cret = C.gtk_printer_get_default_page_size(_arg0)
 
@@ -316,10 +309,9 @@ func (p printer) DefaultPageSize() PageSetup {
 // Description gets the description of the printer.
 func (p printer) Description() string {
 	var _arg0 *C.GtkPrinter // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_printer_get_description(_arg0)
 
@@ -340,14 +332,13 @@ func (p printer) Description() string {
 // [method@Gtk.Printer.request_details].
 func (p printer) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrinter // out
+	var _arg1 C.double      // in
+	var _arg2 C.double      // in
+	var _arg3 C.double      // in
+	var _arg4 C.double      // in
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _arg1 C.double   // in
-	var _arg2 C.double   // in
-	var _arg3 C.double   // in
-	var _arg4 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -380,15 +371,14 @@ func (p printer) HardMargins() (top float64, bottom float64, left float64, right
 func (p printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrinter   // out
 	var _arg1 *C.GtkPaperSize // out
+	var _arg2 C.double        // in
+	var _arg3 C.double        // in
+	var _arg4 C.double        // in
+	var _arg5 C.double        // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize.Native()))
-
-	var _arg2 C.double   // in
-	var _arg3 C.double   // in
-	var _arg4 C.double   // in
-	var _arg5 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_get_hard_margins_for_paper_size(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -412,10 +402,9 @@ func (p printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bot
 // IconName gets the name of the icon to use for the printer.
 func (p printer) IconName() string {
 	var _arg0 *C.GtkPrinter // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_printer_get_icon_name(_arg0)
 
@@ -429,10 +418,9 @@ func (p printer) IconName() string {
 // JobCount gets the number of jobs currently queued on the printer.
 func (p printer) JobCount() int {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_printer_get_job_count(_arg0)
 
@@ -446,10 +434,9 @@ func (p printer) JobCount() int {
 // Location returns a description of the location of the printer.
 func (p printer) Location() string {
 	var _arg0 *C.GtkPrinter // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_printer_get_location(_arg0)
 
@@ -463,10 +450,9 @@ func (p printer) Location() string {
 // Name returns the name of the printer.
 func (p printer) Name() string {
 	var _arg0 *C.GtkPrinter // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_printer_get_name(_arg0)
 
@@ -481,10 +467,9 @@ func (p printer) Name() string {
 // the printer.
 func (p printer) StateMessage() string {
 	var _arg0 *C.GtkPrinter // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_printer_get_state_message(_arg0)
 
@@ -498,10 +483,9 @@ func (p printer) StateMessage() string {
 // HasDetails returns whether the printer details are available.
 func (p printer) HasDetails() bool {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_has_details(_arg0)
 
@@ -517,10 +501,9 @@ func (p printer) HasDetails() bool {
 // IsAcceptingJobs returns whether the printer is accepting jobs
 func (p printer) IsAcceptingJobs() bool {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_is_accepting_jobs(_arg0)
 
@@ -537,10 +520,9 @@ func (p printer) IsAcceptingJobs() bool {
 // new jobs).
 func (p printer) IsActive() bool {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_is_active(_arg0)
 
@@ -556,10 +538,9 @@ func (p printer) IsActive() bool {
 // IsDefault returns whether the printer is the default printer.
 func (p printer) IsDefault() bool {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_is_default(_arg0)
 
@@ -577,10 +558,9 @@ func (p printer) IsDefault() bool {
 // A paused printer still accepts jobs, but it is not printing them.
 func (p printer) IsPaused() bool {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_is_paused(_arg0)
 
@@ -597,10 +577,9 @@ func (p printer) IsPaused() bool {
 // actual printer hardware, but something like a CUPS class).
 func (p printer) IsVirtual() bool {
 	var _arg0 *C.GtkPrinter // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_printer_is_virtual(_arg0)
 

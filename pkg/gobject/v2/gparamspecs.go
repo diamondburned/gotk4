@@ -29,6 +29,7 @@ func ParamSpecBoolean(name string, nick string, blurb string, defaultValue bool,
 	var _arg3 *C.gchar      // out
 	var _arg4 C.gboolean    // out
 	var _arg5 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -40,8 +41,6 @@ func ParamSpecBoolean(name string, nick string, blurb string, defaultValue bool,
 		_arg4 = C.TRUE
 	}
 	_arg5 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_boolean(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -62,6 +61,7 @@ func ParamSpecBoxed(name string, nick string, blurb string, boxedType externglib
 	var _arg3 *C.gchar      // out
 	var _arg4 C.GType       // out
 	var _arg5 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -71,8 +71,6 @@ func ParamSpecBoxed(name string, nick string, blurb string, boxedType externglib
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(boxedType)
 	_arg5 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_boxed(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -93,6 +91,7 @@ func ParamSpecChar(name string, nick string, blurb string, minimum int8, maximum
 	var _arg5 C.gint8       // out
 	var _arg6 C.gint8       // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -100,12 +99,10 @@ func ParamSpecChar(name string, nick string, blurb string, minimum int8, maximum
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gint8(minimum)
-	_arg5 = C.gint8(maximum)
-	_arg6 = C.gint8(defaultValue)
+	_arg4 = (C.gint8)(minimum)
+	_arg5 = (C.gint8)(maximum)
+	_arg6 = (C.gint8)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_char(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -128,6 +125,7 @@ func ParamSpecDouble(name string, nick string, blurb string, minimum float64, ma
 	var _arg5 C.gdouble     // out
 	var _arg6 C.gdouble     // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -135,12 +133,10 @@ func ParamSpecDouble(name string, nick string, blurb string, minimum float64, ma
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gdouble(minimum)
-	_arg5 = C.gdouble(maximum)
-	_arg6 = C.gdouble(defaultValue)
+	_arg4 = (C.gdouble)(minimum)
+	_arg5 = (C.gdouble)(maximum)
+	_arg6 = (C.gdouble)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_double(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -162,6 +158,7 @@ func ParamSpecEnum(name string, nick string, blurb string, enumType externglib.T
 	var _arg4 C.GType       // out
 	var _arg5 C.gint        // out
 	var _arg6 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -170,10 +167,8 @@ func ParamSpecEnum(name string, nick string, blurb string, enumType externglib.T
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(enumType)
-	_arg5 = C.gint(defaultValue)
+	_arg5 = (C.gint)(defaultValue)
 	_arg6 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_enum(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -195,6 +190,7 @@ func ParamSpecFlags(name string, nick string, blurb string, flagsType externglib
 	var _arg4 C.GType       // out
 	var _arg5 C.guint       // out
 	var _arg6 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -203,10 +199,8 @@ func ParamSpecFlags(name string, nick string, blurb string, flagsType externglib
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(flagsType)
-	_arg5 = C.guint(defaultValue)
+	_arg5 = (C.guint)(defaultValue)
 	_arg6 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_flags(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -229,6 +223,7 @@ func ParamSpecFloat(name string, nick string, blurb string, minimum float32, max
 	var _arg5 C.gfloat      // out
 	var _arg6 C.gfloat      // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -236,12 +231,10 @@ func ParamSpecFloat(name string, nick string, blurb string, minimum float32, max
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gfloat(minimum)
-	_arg5 = C.gfloat(maximum)
-	_arg6 = C.gfloat(defaultValue)
+	_arg4 = (C.gfloat)(minimum)
+	_arg5 = (C.gfloat)(maximum)
+	_arg6 = (C.gfloat)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_float(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -262,6 +255,7 @@ func ParamSpecGType(name string, nick string, blurb string, isAType externglib.T
 	var _arg3 *C.gchar      // out
 	var _arg4 C.GType       // out
 	var _arg5 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -271,8 +265,6 @@ func ParamSpecGType(name string, nick string, blurb string, isAType externglib.T
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(isAType)
 	_arg5 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_gtype(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -294,6 +286,7 @@ func ParamSpecInt(name string, nick string, blurb string, minimum int, maximum i
 	var _arg5 C.gint        // out
 	var _arg6 C.gint        // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -301,12 +294,10 @@ func ParamSpecInt(name string, nick string, blurb string, minimum int, maximum i
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gint(minimum)
-	_arg5 = C.gint(maximum)
-	_arg6 = C.gint(defaultValue)
+	_arg4 = (C.gint)(minimum)
+	_arg5 = (C.gint)(maximum)
+	_arg6 = (C.gint)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_int(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -329,6 +320,7 @@ func ParamSpecInt64(name string, nick string, blurb string, minimum int64, maxim
 	var _arg5 C.gint64      // out
 	var _arg6 C.gint64      // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -336,12 +328,10 @@ func ParamSpecInt64(name string, nick string, blurb string, minimum int64, maxim
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gint64(minimum)
-	_arg5 = C.gint64(maximum)
-	_arg6 = C.gint64(defaultValue)
+	_arg4 = (C.gint64)(minimum)
+	_arg5 = (C.gint64)(maximum)
+	_arg6 = (C.gint64)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_int64(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -364,6 +354,7 @@ func ParamSpecLong(name string, nick string, blurb string, minimum int32, maximu
 	var _arg5 C.glong       // out
 	var _arg6 C.glong       // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -371,12 +362,10 @@ func ParamSpecLong(name string, nick string, blurb string, minimum int32, maximu
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.glong(minimum)
-	_arg5 = C.glong(maximum)
-	_arg6 = C.glong(defaultValue)
+	_arg4 = (C.glong)(minimum)
+	_arg5 = (C.glong)(maximum)
+	_arg6 = (C.glong)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_long(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -397,6 +386,7 @@ func ParamSpecObject(name string, nick string, blurb string, objectType externgl
 	var _arg3 *C.gchar      // out
 	var _arg4 C.GType       // out
 	var _arg5 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -406,8 +396,6 @@ func ParamSpecObject(name string, nick string, blurb string, objectType externgl
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(objectType)
 	_arg5 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_object(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -428,6 +416,7 @@ func ParamSpecParam(name string, nick string, blurb string, paramType externglib
 	var _arg3 *C.gchar      // out
 	var _arg4 C.GType       // out
 	var _arg5 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -437,8 +426,6 @@ func ParamSpecParam(name string, nick string, blurb string, paramType externglib
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(paramType)
 	_arg5 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_param(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -459,6 +446,7 @@ func ParamSpecPointer(name string, nick string, blurb string, flags ParamFlags) 
 	var _arg2 *C.gchar      // out
 	var _arg3 *C.gchar      // out
 	var _arg4 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -467,8 +455,6 @@ func ParamSpecPointer(name string, nick string, blurb string, flags ParamFlags) 
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_pointer(_arg1, _arg2, _arg3, _arg4)
 
@@ -488,6 +474,7 @@ func ParamSpecString(name string, nick string, blurb string, defaultValue string
 	var _arg3 *C.gchar      // out
 	var _arg4 *C.gchar      // out
 	var _arg5 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -498,8 +485,6 @@ func ParamSpecString(name string, nick string, blurb string, defaultValue string
 	_arg4 = (*C.gchar)(C.CString(defaultValue))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_string(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -520,6 +505,7 @@ func ParamSpecUchar(name string, nick string, blurb string, minimum byte, maximu
 	var _arg5 C.guint8      // out
 	var _arg6 C.guint8      // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -527,12 +513,10 @@ func ParamSpecUchar(name string, nick string, blurb string, minimum byte, maximu
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.guint8(minimum)
-	_arg5 = C.guint8(maximum)
-	_arg6 = C.guint8(defaultValue)
+	_arg4 = (C.guint8)(minimum)
+	_arg5 = (C.guint8)(maximum)
+	_arg6 = (C.guint8)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_uchar(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -555,6 +539,7 @@ func ParamSpecUint(name string, nick string, blurb string, minimum uint, maximum
 	var _arg5 C.guint       // out
 	var _arg6 C.guint       // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -562,12 +547,10 @@ func ParamSpecUint(name string, nick string, blurb string, minimum uint, maximum
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.guint(minimum)
-	_arg5 = C.guint(maximum)
-	_arg6 = C.guint(defaultValue)
+	_arg4 = (C.guint)(minimum)
+	_arg5 = (C.guint)(maximum)
+	_arg6 = (C.guint)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_uint(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -590,6 +573,7 @@ func ParamSpecUint64(name string, nick string, blurb string, minimum uint64, max
 	var _arg5 C.guint64     // out
 	var _arg6 C.guint64     // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -597,12 +581,10 @@ func ParamSpecUint64(name string, nick string, blurb string, minimum uint64, max
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.guint64(minimum)
-	_arg5 = C.guint64(maximum)
-	_arg6 = C.guint64(defaultValue)
+	_arg4 = (C.guint64)(minimum)
+	_arg5 = (C.guint64)(maximum)
+	_arg6 = (C.guint64)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_uint64(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -625,6 +607,7 @@ func ParamSpecUlong(name string, nick string, blurb string, minimum uint32, maxi
 	var _arg5 C.gulong      // out
 	var _arg6 C.gulong      // out
 	var _arg7 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -632,12 +615,10 @@ func ParamSpecUlong(name string, nick string, blurb string, minimum uint32, maxi
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gulong(minimum)
-	_arg5 = C.gulong(maximum)
-	_arg6 = C.gulong(defaultValue)
+	_arg4 = (C.gulong)(minimum)
+	_arg5 = (C.gulong)(maximum)
+	_arg6 = (C.gulong)(defaultValue)
 	_arg7 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_ulong(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -659,6 +640,7 @@ func ParamSpecUnichar(name string, nick string, blurb string, defaultValue uint3
 	var _arg3 *C.gchar      // out
 	var _arg4 C.gunichar    // out
 	var _arg5 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -666,10 +648,8 @@ func ParamSpecUnichar(name string, nick string, blurb string, defaultValue uint3
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gunichar(defaultValue)
+	_arg4 = (C.gunichar)(defaultValue)
 	_arg5 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_unichar(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -693,6 +673,7 @@ func ParamSpecVariant(name string, nick string, blurb string, typ *glib.VariantT
 	var _arg4 *C.GVariantType // out
 	var _arg5 *C.GVariant     // out
 	var _arg6 C.GParamFlags   // out
+	var _cret *C.GParamSpec   // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -703,8 +684,6 @@ func ParamSpecVariant(name string, nick string, blurb string, typ *glib.VariantT
 	_arg4 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
 	_arg5 = (*C.GVariant)(unsafe.Pointer(defaultValue.Native()))
 	_arg6 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.g_param_spec_variant(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 

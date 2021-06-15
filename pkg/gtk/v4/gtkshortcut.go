@@ -79,11 +79,10 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutAction  // out
+	var _cret C.GtkShortcut         // in
 
 	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(trigger.Native()))
 	_arg2 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
-
-	var _cret C.GtkShortcut // in
 
 	_cret = C.gtk_shortcut_new(_arg1, _arg2)
 
@@ -96,11 +95,10 @@ func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 
 // Action gets the action that is activated by this shortcut.
 func (s shortcut) Action() ShortcutAction {
-	var _arg0 *C.GtkShortcut // out
+	var _arg0 *C.GtkShortcut       // out
+	var _cret *C.GtkShortcutAction // in
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkShortcutAction // in
 
 	_cret = C.gtk_shortcut_get_action(_arg0)
 
@@ -115,10 +113,9 @@ func (s shortcut) Action() ShortcutAction {
 // shortcut.
 func (s shortcut) Arguments() *glib.Variant {
 	var _arg0 *C.GtkShortcut // out
+	var _cret *C.GVariant    // in
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.gtk_shortcut_get_arguments(_arg0)
 
@@ -131,11 +128,10 @@ func (s shortcut) Arguments() *glib.Variant {
 
 // Trigger gets the trigger used to trigger @self.
 func (s shortcut) Trigger() ShortcutTrigger {
-	var _arg0 *C.GtkShortcut // out
+	var _arg0 *C.GtkShortcut        // out
+	var _cret *C.GtkShortcutTrigger // in
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkShortcutTrigger // in
 
 	_cret = C.gtk_shortcut_get_trigger(_arg0)
 

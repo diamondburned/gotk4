@@ -89,10 +89,9 @@ func NewCellRendererToggle() CellRendererToggle {
 // gtk_cell_renderer_toggle_set_activatable().
 func (t cellRendererToggle) Activatable() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
 
@@ -109,10 +108,9 @@ func (t cellRendererToggle) Activatable() bool {
 // gtk_cell_renderer_toggle_set_active().
 func (t cellRendererToggle) Active() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_renderer_toggle_get_active(_arg0)
 
@@ -129,10 +127,9 @@ func (t cellRendererToggle) Active() bool {
 // checkboxes.
 func (t cellRendererToggle) Radio() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_renderer_toggle_get_radio(_arg0)
 

@@ -100,10 +100,9 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 // Axes gets the axes of the tool.
 func (t deviceTool) Axes() AxisFlags {
 	var _arg0 *C.GdkDeviceTool // out
+	var _cret C.GdkAxisFlags   // in
 
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GdkAxisFlags // in
 
 	_cret = C.gdk_device_tool_get_axes(_arg0)
 
@@ -127,10 +126,9 @@ func (t deviceTool) Axes() AxisFlags {
 // different hardware identificators.
 func (t deviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
+	var _cret C.guint64        // in
 
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint64 // in
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
 
@@ -147,10 +145,9 @@ func (t deviceTool) HardwareID() uint64 {
 // across program executions.
 func (t deviceTool) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
+	var _cret C.guint64        // in
 
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
-
-	var _cret C.guint64 // in
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
 
@@ -163,11 +160,10 @@ func (t deviceTool) Serial() uint64 {
 
 // ToolType gets the `GdkDeviceToolType` of the tool.
 func (t deviceTool) ToolType() DeviceToolType {
-	var _arg0 *C.GdkDeviceTool // out
+	var _arg0 *C.GdkDeviceTool    // out
+	var _cret C.GdkDeviceToolType // in
 
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GdkDeviceToolType // in
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
 

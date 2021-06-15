@@ -32,38 +32,3 @@ func WrapIMContextInfo(ptr unsafe.Pointer) *IMContextInfo {
 func (i *IMContextInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
-
-// ContextID gets the field inside the struct.
-func (i *IMContextInfo) ContextID() string {
-	var v string // out
-	v = C.GoString(i.native.context_id)
-	return v
-}
-
-// ContextName gets the field inside the struct.
-func (i *IMContextInfo) ContextName() string {
-	var v string // out
-	v = C.GoString(i.native.context_name)
-	return v
-}
-
-// Domain gets the field inside the struct.
-func (i *IMContextInfo) Domain() string {
-	var v string // out
-	v = C.GoString(i.native.domain)
-	return v
-}
-
-// DomainDirname gets the field inside the struct.
-func (i *IMContextInfo) DomainDirname() string {
-	var v string // out
-	v = C.GoString(i.native.domain_dirname)
-	return v
-}
-
-// DefaultLocales gets the field inside the struct.
-func (i *IMContextInfo) DefaultLocales() string {
-	var v string // out
-	v = C.GoString(i.native.default_locales)
-	return v
-}

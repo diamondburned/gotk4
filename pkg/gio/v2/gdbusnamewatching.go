@@ -28,7 +28,7 @@ import "C"
 func BusUnwatchName(watcherId uint) {
 	var _arg1 C.guint // out
 
-	_arg1 = C.guint(watcherId)
+	_arg1 = (C.guint)(watcherId)
 
 	C.g_bus_unwatch_name(_arg1)
 }

@@ -89,12 +89,11 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 
 // NewDBusObjectSkeleton constructs a class DBusObjectSkeleton.
 func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar              // out
+	var _cret C.GDBusObjectSkeleton // in
 
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GDBusObjectSkeleton // in
 
 	_cret = C.g_dbus_object_skeleton_new(_arg1)
 

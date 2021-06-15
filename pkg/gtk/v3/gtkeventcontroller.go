@@ -72,10 +72,9 @@ func marshalEventController(p uintptr) (interface{}, error) {
 // events.
 func (c eventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
+	var _cret C.GtkPropagationPhase // in
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkPropagationPhase // in
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
@@ -89,10 +88,9 @@ func (c eventController) PropagationPhase() PropagationPhase {
 // Widget returns the Widget this controller relates to.
 func (c eventController) Widget() Widget {
 	var _arg0 *C.GtkEventController // out
+	var _cret *C.GtkWidget          // in
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 

@@ -34,13 +34,12 @@ import "C"
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
+	var _cret **C.char
+	var _cerr *C.GError // in
 
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _cret **C.char
-	var _cerr *C.GError // in
 
 	_cret = C.g_resources_enumerate_children(_arg1, _arg2, &_cerr)
 
@@ -72,14 +71,13 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
+	var _arg3 C.gsize                // in
+	var _arg4 C.guint32              // in
+	var _cerr *C.GError              // in
 
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _arg3 C.gsize   // in
-	var _arg4 C.guint32 // in
-	var _cerr *C.GError // in
 
 	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -102,13 +100,12 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStream, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
+	var _cret *C.GInputStream        // in
+	var _cerr *C.GError              // in
 
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	var _cret *C.GInputStream // in
-	var _cerr *C.GError       // in
 
 	_cret = C.g_resources_open_stream(_arg1, _arg2, &_cerr)
 
@@ -184,10 +181,9 @@ func (s *StaticResource) Fini() {
 // other code.
 func (s *StaticResource) Resource() *Resource {
 	var _arg0 *C.GStaticResource // out
+	var _cret *C.GResource       // in
 
 	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GResource // in
 
 	_cret = C.g_static_resource_get_resource(_arg0)
 

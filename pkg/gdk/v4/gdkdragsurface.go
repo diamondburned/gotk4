@@ -54,12 +54,11 @@ func (d dragSurface) Present(width int, height int) bool {
 	var _arg0 *C.GdkDragSurface // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(d.Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	var _cret C.gboolean // in
+	_arg1 = (C.int)(width)
+	_arg2 = (C.int)(height)
 
 	_cret = C.gdk_drag_surface_present(_arg0, _arg1, _arg2)
 

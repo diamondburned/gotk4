@@ -61,10 +61,9 @@ func (f *FrameTimings) Native() unsafe.Pointer {
 // FrameTimings.
 func (t *FrameTimings) Complete() bool {
 	var _arg0 *C.GdkFrameTimings // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_frame_timings_get_complete(_arg0)
 
@@ -81,10 +80,9 @@ func (t *FrameTimings) Complete() bool {
 // frame was drawn.
 func (t *FrameTimings) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameTimings // out
+	var _cret C.gint64           // in
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_frame_counter(_arg0)
 
@@ -100,10 +98,9 @@ func (t *FrameTimings) FrameCounter() int64 {
 // gdk_frame_clock_get_frame_time().
 func (t *FrameTimings) FrameTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
+	var _cret C.gint64           // in
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_frame_time(_arg0)
 
@@ -125,10 +122,9 @@ func (t *FrameTimings) FrameTime() int64 {
 // synchronization.
 func (t *FrameTimings) PredictedPresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
+	var _cret C.gint64           // in
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_predicted_presentation_time(_arg0)
 
@@ -143,10 +139,9 @@ func (t *FrameTimings) PredictedPresentationTime() int64 {
 // frame became visible to the user.
 func (t *FrameTimings) PresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
+	var _cret C.gint64           // in
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_presentation_time(_arg0)
 
@@ -162,10 +157,9 @@ func (t *FrameTimings) PresentationTime() int64 {
 // during the “vertical blanking interval”.
 func (t *FrameTimings) RefreshInterval() int64 {
 	var _arg0 *C.GdkFrameTimings // out
+	var _cret C.gint64           // in
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_refresh_interval(_arg0)
 
@@ -179,10 +173,9 @@ func (t *FrameTimings) RefreshInterval() int64 {
 // Ref increases the reference count of @timings.
 func (t *FrameTimings) Ref() *FrameTimings {
 	var _arg0 *C.GdkFrameTimings // out
+	var _cret *C.GdkFrameTimings // in
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GdkFrameTimings // in
 
 	_cret = C.gdk_frame_timings_ref(_arg0)
 

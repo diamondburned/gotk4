@@ -994,16 +994,15 @@ func marshalFile(p uintptr) (interface{}, error) {
 // G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
 // too, and depend on what kind of filesystem the file is on.
 func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
-	var _arg0 *C.GFile           // out
-	var _arg1 C.GFileCreateFlags // out
-	var _arg2 *C.GCancellable    // out
+	var _arg0 *C.GFile             // out
+	var _arg1 C.GFileCreateFlags   // out
+	var _arg2 *C.GCancellable      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GFileCreateFlags)(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileOutputStream // in
-	var _cerr *C.GError            // in
 
 	_cret = C.g_file_append_to(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1019,14 +1018,13 @@ func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutp
 // AppendToFinish finishes an asynchronous file append operation started
 // with g_file_append_to_async().
 func (f file) AppendToFinish(res AsyncResult) (FileOutputStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GFile             // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileOutputStream // in
-	var _cerr *C.GError            // in
 
 	_cret = C.g_file_append_to_finish(_arg0, _arg1, &_cerr)
 
@@ -1052,13 +1050,12 @@ func (f file) BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancell
 	var _arg0 *C.GFile         // out
 	var _arg1 C.GFileCopyFlags // out
 	var _arg2 *C.GCancellable  // out
+	var _cret *C.char          // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GFileCopyFlags)(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.char   // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_file_build_attribute_list_for_copy(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1084,13 +1081,12 @@ func (s file) CopyAttributes(destination File, flags FileCopyFlags, cancellable 
 	var _arg1 *C.GFile         // out
 	var _arg2 C.GFileCopyFlags // out
 	var _arg3 *C.GCancellable  // out
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
 	_arg2 = (C.GFileCopyFlags)(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_copy_attributes(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -1105,11 +1101,10 @@ func (s file) CopyAttributes(destination File, flags FileCopyFlags, cancellable 
 func (f file) CopyFinish(res AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_copy_finish(_arg0, _arg1, &_cerr)
 
@@ -1139,16 +1134,15 @@ func (f file) CopyFinish(res AsyncResult) error {
 // Other errors are possible too, and depend on what kind of filesystem the
 // file is on.
 func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
-	var _arg0 *C.GFile           // out
-	var _arg1 C.GFileCreateFlags // out
-	var _arg2 *C.GCancellable    // out
+	var _arg0 *C.GFile             // out
+	var _arg1 C.GFileCreateFlags   // out
+	var _arg2 *C.GCancellable      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GFileCreateFlags)(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileOutputStream // in
-	var _cerr *C.GError            // in
 
 	_cret = C.g_file_create(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1164,14 +1158,13 @@ func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (FileOutput
 // CreateFinish finishes an asynchronous file create operation started with
 // g_file_create_async().
 func (f file) CreateFinish(res AsyncResult) (FileOutputStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GFile             // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileOutputStream // in
-	var _cerr *C.GError            // in
 
 	_cret = C.g_file_create_finish(_arg0, _arg1, &_cerr)
 
@@ -1210,13 +1203,12 @@ func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (F
 	var _arg0 *C.GFile           // out
 	var _arg1 C.GFileCreateFlags // out
 	var _arg2 *C.GCancellable    // out
+	var _cret *C.GFileIOStream   // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GFileCreateFlags)(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileIOStream // in
-	var _cerr *C.GError        // in
 
 	_cret = C.g_file_create_readwrite(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1232,14 +1224,13 @@ func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (F
 // CreateReadwriteFinish finishes an asynchronous file create operation
 // started with g_file_create_readwrite_async().
 func (f file) CreateReadwriteFinish(res AsyncResult) (FileIOStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GAsyncResult  // out
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileIOStream // in
-	var _cerr *C.GError        // in
 
 	_cret = C.g_file_create_readwrite_finish(_arg0, _arg1, &_cerr)
 
@@ -1276,11 +1267,10 @@ func (f file) CreateReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 func (f file) Delete(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_delete(_arg0, _arg1, &_cerr)
 
@@ -1295,11 +1285,10 @@ func (f file) Delete(cancellable Cancellable) error {
 func (f file) DeleteFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_delete_finish(_arg0, _arg1, &_cerr)
 
@@ -1322,10 +1311,9 @@ func (f file) DeleteFinish(result AsyncResult) error {
 // This call does no blocking I/O.
 func (f file) Dup() File {
 	var _arg0 *C.GFile // out
+	var _cret *C.GFile // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.g_file_dup(_arg0)
 
@@ -1341,11 +1329,10 @@ func (f file) Dup() File {
 func (f file) EjectMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_eject_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -1361,11 +1348,10 @@ func (f file) EjectMountableFinish(result AsyncResult) error {
 func (f file) EjectMountableWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_eject_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -1401,15 +1387,14 @@ func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, can
 	var _arg1 *C.char               // out
 	var _arg2 C.GFileQueryInfoFlags // out
 	var _arg3 *C.GCancellable       // out
+	var _cret *C.GFileEnumerator    // in
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GFileQueryInfoFlags)(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileEnumerator // in
-	var _cerr *C.GError          // in
 
 	_cret = C.g_file_enumerate_children(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -1425,14 +1410,13 @@ func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, can
 // EnumerateChildrenFinish finishes an async enumerate children operation.
 // See g_file_enumerate_children_async().
 func (f file) EnumerateChildrenFinish(res AsyncResult) (FileEnumerator, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GFile           // out
+	var _arg1 *C.GAsyncResult    // out
+	var _cret *C.GFileEnumerator // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileEnumerator // in
-	var _cerr *C.GError          // in
 
 	_cret = C.g_file_enumerate_children_finish(_arg0, _arg1, &_cerr)
 
@@ -1452,13 +1436,12 @@ func (f file) EnumerateChildrenFinish(res AsyncResult) (FileEnumerator, error) {
 //
 // This call does no blocking I/O.
 func (f file) Equal(file2 File) bool {
-	var _arg0 *C.GFile // out
-	var _arg1 *C.GFile // out
+	var _arg0 *C.GFile   // out
+	var _arg1 *C.GFile   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file2.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_equal(_arg0, _arg1)
 
@@ -1483,12 +1466,11 @@ func (f file) Equal(file2 File) bool {
 func (f file) FindEnclosingMount(cancellable Cancellable) (Mount, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
+	var _cret *C.GMount       // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GMount // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_file_find_enclosing_mount(_arg0, _arg1, &_cerr)
 
@@ -1506,12 +1488,11 @@ func (f file) FindEnclosingMount(cancellable Cancellable) (Mount, error) {
 func (f file) FindEnclosingMountFinish(res AsyncResult) (Mount, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GMount       // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GMount // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_file_find_enclosing_mount_finish(_arg0, _arg1, &_cerr)
 
@@ -1540,10 +1521,9 @@ func (f file) FindEnclosingMountFinish(res AsyncResult) (Mount, error) {
 // This call does no blocking I/O.
 func (f file) Basename() string {
 	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_get_basename(_arg0)
 
@@ -1565,12 +1545,11 @@ func (f file) Basename() string {
 func (f file) Child(name string) File {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GFile // in
 
 	_cret = C.g_file_get_child(_arg0, _arg1)
 
@@ -1590,15 +1569,14 @@ func (f file) Child(name string) File {
 //
 // This call does no blocking I/O.
 func (f file) ChildForDisplayName(displayName string) (File, error) {
-	var _arg0 *C.GFile // out
-	var _arg1 *C.char  // out
+	var _arg0 *C.GFile  // out
+	var _arg1 *C.char   // out
+	var _cret *C.GFile  // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GFile  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
 
@@ -1617,10 +1595,9 @@ func (f file) ChildForDisplayName(displayName string) (File, error) {
 // This call does no blocking I/O.
 func (f file) Parent() File {
 	var _arg0 *C.GFile // out
+	var _cret *C.GFile // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.g_file_get_parent(_arg0)
 
@@ -1645,10 +1622,9 @@ func (f file) Parent() File {
 // This call does no blocking I/O.
 func (f file) ParseName() string {
 	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_get_parse_name(_arg0)
 
@@ -1667,10 +1643,9 @@ func (f file) ParseName() string {
 // This call does no blocking I/O.
 func (f file) Path() string {
 	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_get_path(_arg0)
 
@@ -1688,11 +1663,10 @@ func (f file) Path() string {
 func (p file) RelativePath(descendant File) string {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.GFile // out
+	var _cret *C.char  // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(descendant.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_get_relative_path(_arg0, _arg1)
 
@@ -1709,10 +1683,9 @@ func (p file) RelativePath(descendant File) string {
 // This call does no blocking I/O.
 func (f file) URI() string {
 	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_get_uri(_arg0)
 
@@ -1738,10 +1711,9 @@ func (f file) URI() string {
 // This call does no blocking I/O.
 func (f file) URIScheme() string {
 	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_get_uri_scheme(_arg0)
 
@@ -1759,13 +1731,12 @@ func (f file) URIScheme() string {
 // at all. If @parent is non-nil then true is only returned if @file is an
 // immediate child of @parent.
 func (f file) HasParent(parent File) bool {
-	var _arg0 *C.GFile // out
-	var _arg1 *C.GFile // out
+	var _arg0 *C.GFile   // out
+	var _arg1 *C.GFile   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_has_parent(_arg0, _arg1)
 
@@ -1792,13 +1763,12 @@ func (f file) HasParent(parent File) bool {
 // filesystem point of view), because the prefix of @file is an alias of
 // @prefix.
 func (f file) HasPrefix(prefix File) bool {
-	var _arg0 *C.GFile // out
-	var _arg1 *C.GFile // out
+	var _arg0 *C.GFile   // out
+	var _arg1 *C.GFile   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(prefix.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_has_prefix(_arg0, _arg1)
 
@@ -1815,14 +1785,13 @@ func (f file) HasPrefix(prefix File) bool {
 //
 // This call does no blocking I/O.
 func (f file) HasURIScheme(uriScheme string) bool {
-	var _arg0 *C.GFile // out
-	var _arg1 *C.char  // out
+	var _arg0 *C.GFile   // out
+	var _arg1 *C.char    // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(uriScheme))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_has_uri_scheme(_arg0, _arg1)
 
@@ -1840,10 +1809,9 @@ func (f file) HasURIScheme(uriScheme string) bool {
 // This call does no blocking I/O.
 func (f file) Hash() uint {
 	var _arg0 C.gpointer // out
+	var _cret C.guint    // in
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(f.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.g_file_hash(_arg0)
 
@@ -1866,11 +1834,10 @@ func (f file) Hash() uint {
 //
 // This call does no blocking I/O.
 func (f file) IsNative() bool {
-	var _arg0 *C.GFile // out
+	var _arg0 *C.GFile   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_is_native(_arg0)
 
@@ -1894,14 +1861,13 @@ func (f file) IsNative() bool {
 func (f file) LoadContents(cancellable Cancellable) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
-
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
 	var _arg2 *C.char
 	var _arg3 C.gsize   // in
 	var _arg4 *C.char   // in
 	var _cerr *C.GError // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_load_contents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
@@ -1928,14 +1894,13 @@ func (f file) LoadContents(cancellable Cancellable) ([]byte, string, error) {
 func (f file) LoadContentsFinish(res AsyncResult) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
 	var _arg2 *C.char
 	var _arg3 C.gsize   // in
 	var _arg4 *C.char   // in
 	var _cerr *C.GError // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_load_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
@@ -1962,14 +1927,13 @@ func (f file) LoadContentsFinish(res AsyncResult) ([]byte, string, error) {
 func (f file) LoadPartialContentsFinish(res AsyncResult) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
-
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
 	var _arg2 *C.char
 	var _arg3 C.gsize   // in
 	var _arg4 *C.char   // in
 	var _cerr *C.GError // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_load_partial_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
@@ -2005,11 +1969,10 @@ func (f file) LoadPartialContentsFinish(res AsyncResult) ([]byte, string, error)
 func (f file) MakeDirectory(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_make_directory(_arg0, _arg1, &_cerr)
 
@@ -2025,11 +1988,10 @@ func (f file) MakeDirectory(cancellable Cancellable) error {
 func (f file) MakeDirectoryFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_make_directory_finish(_arg0, _arg1, &_cerr)
 
@@ -2056,11 +2018,10 @@ func (f file) MakeDirectoryFinish(result AsyncResult) error {
 func (f file) MakeDirectoryWithParents(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_make_directory_with_parents(_arg0, _arg1, &_cerr)
 
@@ -2081,13 +2042,12 @@ func (f file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) err
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(symlinkValue))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_make_symbolic_link(_arg0, _arg1, _arg2, &_cerr)
 
@@ -2104,14 +2064,13 @@ func (f file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) err
 func (f file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _arg2 C.guint64       // in
+	var _arg3 C.guint64       // in
+	var _arg4 C.guint64       // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _arg2 C.guint64 // in
-	var _arg3 C.guint64 // in
-	var _arg4 C.guint64 // in
-	var _cerr *C.GError // in
 
 	C.g_file_measure_disk_usage_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
@@ -2138,13 +2097,12 @@ func (f file) Monitor(flags FileMonitorFlags, cancellable Cancellable) (FileMoni
 	var _arg0 *C.GFile            // out
 	var _arg1 C.GFileMonitorFlags // out
 	var _arg2 *C.GCancellable     // out
+	var _cret *C.GFileMonitor     // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GFileMonitorFlags)(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileMonitor // in
-	var _cerr *C.GError       // in
 
 	_cret = C.g_file_monitor(_arg0, _arg1, _arg2, &_cerr)
 
@@ -2173,13 +2131,12 @@ func (f file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) 
 	var _arg0 *C.GFile            // out
 	var _arg1 C.GFileMonitorFlags // out
 	var _arg2 *C.GCancellable     // out
+	var _cret *C.GFileMonitor     // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GFileMonitorFlags)(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileMonitor // in
-	var _cerr *C.GError       // in
 
 	_cret = C.g_file_monitor_directory(_arg0, _arg1, _arg2, &_cerr)
 
@@ -2209,13 +2166,12 @@ func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (File
 	var _arg0 *C.GFile            // out
 	var _arg1 C.GFileMonitorFlags // out
 	var _arg2 *C.GCancellable     // out
+	var _cret *C.GFileMonitor     // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GFileMonitorFlags)(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileMonitor // in
-	var _cerr *C.GError       // in
 
 	_cret = C.g_file_monitor_file(_arg0, _arg1, _arg2, &_cerr)
 
@@ -2233,11 +2189,10 @@ func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (File
 func (l file) MountEnclosingVolumeFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_mount_enclosing_volume_finish(_arg0, _arg1, &_cerr)
 
@@ -2256,12 +2211,11 @@ func (l file) MountEnclosingVolumeFinish(result AsyncResult) error {
 func (f file) MountMountableFinish(result AsyncResult) (File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GFile        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GFile  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_file_mount_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -2290,14 +2244,13 @@ func (f file) MountMountableFinish(result AsyncResult) (File, error) {
 // read and write streaming, rather than just opening for reading or
 // writing.
 func (f file) OpenReadwrite(cancellable Cancellable) (FileIOStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GCancellable // out
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GCancellable  // out
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileIOStream // in
-	var _cerr *C.GError        // in
 
 	_cret = C.g_file_open_readwrite(_arg0, _arg1, &_cerr)
 
@@ -2313,14 +2266,13 @@ func (f file) OpenReadwrite(cancellable Cancellable) (FileIOStream, error) {
 // OpenReadwriteFinish finishes an asynchronous file read operation started
 // with g_file_open_readwrite_async().
 func (f file) OpenReadwriteFinish(res AsyncResult) (FileIOStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GAsyncResult  // out
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileIOStream // in
-	var _cerr *C.GError        // in
 
 	_cret = C.g_file_open_readwrite_finish(_arg0, _arg1, &_cerr)
 
@@ -2341,10 +2293,9 @@ func (f file) OpenReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 // This call does no blocking I/O.
 func (f file) PeekPath() string {
 	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_file_peek_path(_arg0)
 
@@ -2363,11 +2314,10 @@ func (f file) PeekPath() string {
 func (f file) PollMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_poll_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -2387,12 +2337,11 @@ func (f file) PollMountableFinish(result AsyncResult) error {
 func (f file) QueryDefaultHandler(cancellable Cancellable) (AppInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
+	var _cret *C.GAppInfo     // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GAppInfo // in
-	var _cerr *C.GError   // in
 
 	_cret = C.g_file_query_default_handler(_arg0, _arg1, &_cerr)
 
@@ -2410,12 +2359,11 @@ func (f file) QueryDefaultHandler(cancellable Cancellable) (AppInfo, error) {
 func (f file) QueryDefaultHandlerFinish(result AsyncResult) (AppInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GAppInfo     // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GAppInfo // in
-	var _cerr *C.GError   // in
 
 	_cret = C.g_file_query_default_handler_finish(_arg0, _arg1, &_cerr)
 
@@ -2454,11 +2402,10 @@ func (f file) QueryDefaultHandlerFinish(result AsyncResult) (AppInfo, error) {
 func (f file) QueryExists(cancellable Cancellable) bool {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_query_exists(_arg0, _arg1)
 
@@ -2480,12 +2427,11 @@ func (f file) QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable) F
 	var _arg0 *C.GFile              // out
 	var _arg1 C.GFileQueryInfoFlags // out
 	var _arg2 *C.GCancellable       // out
+	var _cret C.GFileType           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GFileQueryInfoFlags)(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GFileType // in
 
 	_cret = C.g_file_query_file_type(_arg0, _arg1, _arg2)
 
@@ -2524,14 +2470,13 @@ func (f file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (F
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
+	var _cret *C.GFileInfo    // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileInfo // in
-	var _cerr *C.GError    // in
 
 	_cret = C.g_file_query_filesystem_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -2549,12 +2494,11 @@ func (f file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (F
 func (f file) QueryFilesystemInfoFinish(res AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GFileInfo    // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileInfo // in
-	var _cerr *C.GError    // in
 
 	_cret = C.g_file_query_filesystem_info_finish(_arg0, _arg1, &_cerr)
 
@@ -2599,15 +2543,14 @@ func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable
 	var _arg1 *C.char               // out
 	var _arg2 C.GFileQueryInfoFlags // out
 	var _arg3 *C.GCancellable       // out
+	var _cret *C.GFileInfo          // in
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GFileQueryInfoFlags)(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileInfo // in
-	var _cerr *C.GError    // in
 
 	_cret = C.g_file_query_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -2625,12 +2568,11 @@ func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable
 func (f file) QueryInfoFinish(res AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GFileInfo    // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileInfo // in
-	var _cerr *C.GError    // in
 
 	_cret = C.g_file_query_info_finish(_arg0, _arg1, &_cerr)
 
@@ -2655,14 +2597,13 @@ func (f file) QueryInfoFinish(res AsyncResult) (FileInfo, error) {
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeInfoList, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GCancellable // out
+	var _arg0 *C.GFile                  // out
+	var _arg1 *C.GCancellable           // out
+	var _cret *C.GFileAttributeInfoList // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileAttributeInfoList // in
-	var _cerr *C.GError                 // in
 
 	_cret = C.g_file_query_settable_attributes(_arg0, _arg1, &_cerr)
 
@@ -2686,14 +2627,13 @@ func (f file) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeIn
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeInfoList, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GCancellable // out
+	var _arg0 *C.GFile                  // out
+	var _arg1 *C.GCancellable           // out
+	var _cret *C.GFileAttributeInfoList // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileAttributeInfoList // in
-	var _cerr *C.GError                 // in
 
 	_cret = C.g_file_query_writable_namespaces(_arg0, _arg1, &_cerr)
 
@@ -2721,14 +2661,13 @@ func (f file) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeIn
 // will be returned. Other errors are possible too, and depend on what kind
 // of filesystem the file is on.
 func (f file) Read(cancellable Cancellable) (FileInputStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GCancellable // out
+	var _arg0 *C.GFile            // out
+	var _arg1 *C.GCancellable     // out
+	var _cret *C.GFileInputStream // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileInputStream // in
-	var _cerr *C.GError           // in
 
 	_cret = C.g_file_read(_arg0, _arg1, &_cerr)
 
@@ -2744,14 +2683,13 @@ func (f file) Read(cancellable Cancellable) (FileInputStream, error) {
 // ReadFinish finishes an asynchronous file read operation started with
 // g_file_read_async().
 func (f file) ReadFinish(res AsyncResult) (FileInputStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GFile            // out
+	var _arg1 *C.GAsyncResult     // out
+	var _cret *C.GFileInputStream // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileInputStream // in
-	var _cerr *C.GError           // in
 
 	_cret = C.g_file_read_finish(_arg0, _arg1, &_cerr)
 
@@ -2803,11 +2741,13 @@ func (f file) ReadFinish(res AsyncResult) (FileInputStream, error) {
 // returned. Other errors are possible too, and depend on what kind of
 // filesystem the file is on.
 func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
-	var _arg0 *C.GFile           // out
-	var _arg1 *C.char            // out
-	var _arg2 C.gboolean         // out
-	var _arg3 C.GFileCreateFlags // out
-	var _arg4 *C.GCancellable    // out
+	var _arg0 *C.GFile             // out
+	var _arg1 *C.char              // out
+	var _arg2 C.gboolean           // out
+	var _arg3 C.GFileCreateFlags   // out
+	var _arg4 *C.GCancellable      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(etag))
@@ -2817,9 +2757,6 @@ func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cance
 	}
 	_arg3 = (C.GFileCreateFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileOutputStream // in
-	var _cerr *C.GError            // in
 
 	_cret = C.g_file_replace(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -2856,7 +2793,9 @@ func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, fla
 	var _arg3 *C.char            // out
 	var _arg4 C.gboolean         // out
 	var _arg5 C.GFileCreateFlags // out
+	var _arg6 *C.char            // in
 	var _arg7 *C.GCancellable    // out
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg2 = C.gsize(len(contents))
@@ -2869,10 +2808,7 @@ func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, fla
 	_arg5 = (C.GFileCreateFlags)(flags)
 	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _arg6 *C.char   // in
-	var _cerr *C.GError // in
-
-	C.g_file_replace_contents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg7, &_arg6, &_cerr)
+	C.g_file_replace_contents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, _arg7, &_cerr)
 
 	var _newEtag string // out
 	var _goerr error    // out
@@ -2890,12 +2826,11 @@ func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, fla
 func (f file) ReplaceContentsFinish(res AsyncResult) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.char         // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _arg2 *C.char   // in
-	var _cerr *C.GError // in
 
 	C.g_file_replace_contents_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -2912,14 +2847,13 @@ func (f file) ReplaceContentsFinish(res AsyncResult) (string, error) {
 // ReplaceFinish finishes an asynchronous file replace operation started
 // with g_file_replace_async().
 func (f file) ReplaceFinish(res AsyncResult) (FileOutputStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GFile             // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileOutputStream // in
-	var _cerr *C.GError            // in
 
 	_cret = C.g_file_replace_finish(_arg0, _arg1, &_cerr)
 
@@ -2948,6 +2882,8 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 	var _arg2 C.gboolean         // out
 	var _arg3 C.GFileCreateFlags // out
 	var _arg4 *C.GCancellable    // out
+	var _cret *C.GFileIOStream   // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(etag))
@@ -2957,9 +2893,6 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 	}
 	_arg3 = (C.GFileCreateFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileIOStream // in
-	var _cerr *C.GError        // in
 
 	_cret = C.g_file_replace_readwrite(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -2975,14 +2908,13 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 // ReplaceReadwriteFinish finishes an asynchronous file replace operation
 // started with g_file_replace_readwrite_async().
 func (f file) ReplaceReadwriteFinish(res AsyncResult) (FileIOStream, error) {
-	var _arg0 *C.GFile        // out
-	var _arg1 *C.GAsyncResult // out
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GAsyncResult  // out
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFileIOStream // in
-	var _cerr *C.GError        // in
 
 	_cret = C.g_file_replace_readwrite_finish(_arg0, _arg1, &_cerr)
 
@@ -3002,12 +2934,11 @@ func (f file) ReplaceReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 func (f file) ResolveRelativePath(relativePath string) File {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(relativePath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GFile // in
 
 	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
 
@@ -3031,6 +2962,7 @@ func (f file) SetAttributeByteString(attribute string, value string, flags FileQ
 	var _arg2 *C.char               // out
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _arg4 *C.GCancellable       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
@@ -3039,8 +2971,6 @@ func (f file) SetAttributeByteString(attribute string, value string, flags FileQ
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (C.GFileQueryInfoFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_set_attribute_byte_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -3063,15 +2993,14 @@ func (f file) SetAttributeInt32(attribute string, value int32, flags FileQueryIn
 	var _arg2 C.gint32              // out
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _arg4 *C.GCancellable       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint32(value)
+	_arg2 = (C.gint32)(value)
 	_arg3 = (C.GFileQueryInfoFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_set_attribute_int32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -3094,15 +3023,14 @@ func (f file) SetAttributeInt64(attribute string, value int64, flags FileQueryIn
 	var _arg2 C.gint64              // out
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _arg4 *C.GCancellable       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint64(value)
+	_arg2 = (C.gint64)(value)
 	_arg3 = (C.GFileQueryInfoFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_set_attribute_int64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -3126,6 +3054,7 @@ func (f file) SetAttributeString(attribute string, value string, flags FileQuery
 	var _arg2 *C.char               // out
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _arg4 *C.GCancellable       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
@@ -3134,8 +3063,6 @@ func (f file) SetAttributeString(attribute string, value string, flags FileQuery
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (C.GFileQueryInfoFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_set_attribute_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -3159,15 +3086,14 @@ func (f file) SetAttributeUint32(attribute string, value uint32, flags FileQuery
 	var _arg2 C.guint32             // out
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _arg4 *C.GCancellable       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint32(value)
+	_arg2 = (C.guint32)(value)
 	_arg3 = (C.GFileQueryInfoFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_set_attribute_uint32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -3191,15 +3117,14 @@ func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQuery
 	var _arg2 C.guint64             // out
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _arg4 *C.GCancellable       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint64(value)
+	_arg2 = (C.guint64)(value)
 	_arg3 = (C.GFileQueryInfoFlags)(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_set_attribute_uint64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -3215,12 +3140,11 @@ func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQuery
 func (f file) SetAttributesFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.GFileInfo    // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _arg2 *C.GFileInfo // in
-	var _cerr *C.GError    // in
 
 	C.g_file_set_attributes_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -3250,13 +3174,12 @@ func (f file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, can
 	var _arg1 *C.GFileInfo          // out
 	var _arg2 C.GFileQueryInfoFlags // out
 	var _arg3 *C.GCancellable       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg2 = (C.GFileQueryInfoFlags)(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_set_attributes_from_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -3286,14 +3209,13 @@ func (f file) SetDisplayName(displayName string, cancellable Cancellable) (File,
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
+	var _cret *C.GFile        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFile  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_file_set_display_name(_arg0, _arg1, _arg2, &_cerr)
 
@@ -3311,12 +3233,11 @@ func (f file) SetDisplayName(displayName string, cancellable Cancellable) (File,
 func (f file) SetDisplayNameFinish(res AsyncResult) (File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GFile        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GFile  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_file_set_display_name_finish(_arg0, _arg1, &_cerr)
 
@@ -3337,11 +3258,10 @@ func (f file) SetDisplayNameFinish(res AsyncResult) (File, error) {
 func (f file) StartMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_start_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -3360,11 +3280,10 @@ func (f file) StartMountableFinish(result AsyncResult) error {
 func (f file) StopMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_stop_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -3380,11 +3299,10 @@ func (f file) StopMountableFinish(result AsyncResult) error {
 // false, you cannot perform asynchronous operations on @file in a thread
 // that has a thread-default context.
 func (f file) SupportsThreadContexts() bool {
-	var _arg0 *C.GFile // out
+	var _arg0 *C.GFile   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_supports_thread_contexts(_arg0)
 
@@ -3411,11 +3329,10 @@ func (f file) SupportsThreadContexts() bool {
 func (f file) Trash(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_trash(_arg0, _arg1, &_cerr)
 
@@ -3431,11 +3348,10 @@ func (f file) Trash(cancellable Cancellable) error {
 func (f file) TrashFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_trash_finish(_arg0, _arg1, &_cerr)
 
@@ -3454,11 +3370,10 @@ func (f file) TrashFinish(result AsyncResult) error {
 func (f file) UnmountMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_unmount_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -3477,11 +3392,10 @@ func (f file) UnmountMountableFinish(result AsyncResult) error {
 func (f file) UnmountMountableWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_file_unmount_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
 

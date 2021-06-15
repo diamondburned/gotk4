@@ -67,11 +67,10 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 
 // NewNoSelection constructs a class NoSelection.
 func NewNoSelection(model gio.ListModel) NoSelection {
-	var _arg1 *C.GListModel // out
+	var _arg1 *C.GListModel    // out
+	var _cret C.GtkNoSelection // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkNoSelection // in
 
 	_cret = C.gtk_no_selection_new(_arg1)
 
@@ -85,10 +84,9 @@ func NewNoSelection(model gio.ListModel) NoSelection {
 // Model gets the model that @self is wrapping.
 func (s noSelection) Model() gio.ListModel {
 	var _arg0 *C.GtkNoSelection // out
+	var _cret *C.GListModel     // in
 
 	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_no_selection_get_model(_arg0)
 

@@ -91,10 +91,9 @@ func marshalPopup(p uintptr) (interface{}, error) {
 // Autohide returns whether this popup is set to hide on outside clicks.
 func (p popup) Autohide() bool {
 	var _arg0 *C.GdkPopup // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_popup_get_autohide(_arg0)
 
@@ -109,11 +108,10 @@ func (p popup) Autohide() bool {
 
 // Parent returns the parent surface of a popup.
 func (p popup) Parent() Surface {
-	var _arg0 *C.GdkPopup // out
+	var _arg0 *C.GdkPopup   // out
+	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gdk_popup_get_parent(_arg0)
 
@@ -127,10 +125,9 @@ func (p popup) Parent() Surface {
 // PositionX obtains the position of the popup relative to its parent.
 func (p popup) PositionX() int {
 	var _arg0 *C.GdkPopup // out
+	var _cret C.int       // in
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_popup_get_position_x(_arg0)
 
@@ -144,10 +141,9 @@ func (p popup) PositionX() int {
 // PositionY obtains the position of the popup relative to its parent.
 func (p popup) PositionY() int {
 	var _arg0 *C.GdkPopup // out
+	var _cret C.int       // in
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_popup_get_position_y(_arg0)
 
@@ -163,11 +159,10 @@ func (p popup) PositionY() int {
 // The value returned may change after calling [method@Gdk.Popup.present],
 // or after the [signal@Gdk.Surface::layout] signal is emitted.
 func (p popup) RectAnchor() Gravity {
-	var _arg0 *C.GdkPopup // out
+	var _arg0 *C.GdkPopup  // out
+	var _cret C.GdkGravity // in
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
-
-	var _cret C.GdkGravity // in
 
 	_cret = C.gdk_popup_get_rect_anchor(_arg0)
 
@@ -183,11 +178,10 @@ func (p popup) RectAnchor() Gravity {
 // The value returned may change after calling [method@Gdk.Popup.present],
 // or after the [signal@Gdk.Surface::layout] signal is emitted.
 func (p popup) SurfaceAnchor() Gravity {
-	var _arg0 *C.GdkPopup // out
+	var _arg0 *C.GdkPopup  // out
+	var _cret C.GdkGravity // in
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
-
-	var _cret C.GdkGravity // in
 
 	_cret = C.gdk_popup_get_surface_anchor(_arg0)
 
@@ -218,13 +212,12 @@ func (p popup) Present(width int, height int, layout *PopupLayout) bool {
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
 	var _arg3 *C.GdkPopupLayout // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
+	_arg1 = (C.int)(width)
+	_arg2 = (C.int)(height)
 	_arg3 = (*C.GdkPopupLayout)(unsafe.Pointer(layout.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_popup_present(_arg0, _arg1, _arg2, _arg3)
 

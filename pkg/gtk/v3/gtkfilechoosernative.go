@@ -235,6 +235,7 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 	var _arg3 C.GtkFileChooserAction // out
 	var _arg4 *C.gchar               // out
 	var _arg5 *C.gchar               // out
+	var _cret C.GtkFileChooserNative // in
 
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -244,8 +245,6 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(C.CString(cancelLabel))
 	defer C.free(unsafe.Pointer(_arg5))
-
-	var _cret C.GtkFileChooserNative // in
 
 	_cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -259,10 +258,9 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 // AcceptLabel retrieves the custom label text for the accept button.
 func (s fileChooserNative) AcceptLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
+	var _cret *C.char                 // in
 
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
 
@@ -276,10 +274,9 @@ func (s fileChooserNative) AcceptLabel() string {
 // CancelLabel retrieves the custom label text for the cancel button.
 func (s fileChooserNative) CancelLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
+	var _cret *C.char                 // in
 
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
 

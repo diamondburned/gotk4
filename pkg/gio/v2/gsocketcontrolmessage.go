@@ -88,10 +88,9 @@ func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 // message. This is often SOL_SOCKET.
 func (m socketControlMessage) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
+	var _cret C.int                    // in
 
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.g_socket_control_message_get_level(_arg0)
 
@@ -106,10 +105,9 @@ func (m socketControlMessage) Level() int {
 // instance, for UNIX fd passing this would be SCM_RIGHTS.
 func (m socketControlMessage) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
+	var _cret C.int                    // in
 
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.g_socket_control_message_get_msg_type(_arg0)
 
@@ -124,10 +122,9 @@ func (m socketControlMessage) MsgType() int {
 // headers or alignment.
 func (m socketControlMessage) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
+	var _cret C.gsize                  // in
 
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gsize // in
 
 	_cret = C.g_socket_control_message_get_size(_arg0)
 

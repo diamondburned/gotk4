@@ -25,13 +25,12 @@ func init() {
 //
 // If @string is not a valid mime type, nil is returned instead. See RFC 2048
 // for the syntax if mime types.
-func InternMIMEType(string string) string {
+func InternMIMEType(_string string) string {
 	var _arg1 *C.char // out
-
-	_arg1 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
 	var _cret *C.char // in
+
+	_arg1 = (*C.char)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_intern_mime_type(_arg1)
 
@@ -125,10 +124,9 @@ func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 // objects should not be kept around.
 func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 	var _arg0 *C.GdkContentFormatsBuilder // out
+	var _cret *C.GdkContentFormatsBuilder // in
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GdkContentFormatsBuilder // in
 
 	_cret = C.gdk_content_formats_builder_ref(_arg0)
 
@@ -148,10 +146,9 @@ func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 // [method@Gdk.ContentFormatsBuilder.free_to_formats].
 func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _arg0 *C.GdkContentFormatsBuilder // out
+	var _cret *C.GdkContentFormats        // in
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GdkContentFormats // in
 
 	_cret = C.gdk_content_formats_builder_to_formats(_arg0)
 

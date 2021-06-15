@@ -127,9 +127,9 @@ func (m layoutManager) Allocate(widget Widget, width int, height int, baseline i
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.int(width)
-	_arg3 = C.int(height)
-	_arg4 = C.int(baseline)
+	_arg2 = (C.int)(width)
+	_arg3 = (C.int)(height)
+	_arg4 = (C.int)(baseline)
 
 	C.gtk_layout_manager_allocate(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -145,11 +145,10 @@ func (m layoutManager) Allocate(widget Widget, width int, height int, baseline i
 func (m layoutManager) LayoutChild(child Widget) LayoutChild {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
+	var _cret *C.GtkLayoutChild   // in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkLayoutChild // in
 
 	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
 
@@ -162,11 +161,10 @@ func (m layoutManager) LayoutChild(child Widget) LayoutChild {
 
 // RequestMode retrieves the request mode of @manager.
 func (m layoutManager) RequestMode() SizeRequestMode {
-	var _arg0 *C.GtkLayoutManager // out
+	var _arg0 *C.GtkLayoutManager  // out
+	var _cret C.GtkSizeRequestMode // in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GtkSizeRequestMode // in
 
 	_cret = C.gtk_layout_manager_get_request_mode(_arg0)
 
@@ -180,10 +178,9 @@ func (m layoutManager) RequestMode() SizeRequestMode {
 // Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
 func (m layoutManager) Widget() Widget {
 	var _arg0 *C.GtkLayoutManager // out
+	var _cret *C.GtkWidget        // in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_layout_manager_get_widget(_arg0)
 
@@ -216,16 +213,15 @@ func (m layoutManager) Measure(widget Widget, orientation Orientation, forSize i
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkOrientation    // out
 	var _arg3 C.int               // out
+	var _arg4 C.int               // in
+	var _arg5 C.int               // in
+	var _arg6 C.int               // in
+	var _arg7 C.int               // in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (C.GtkOrientation)(orientation)
-	_arg3 = C.int(forSize)
-
-	var _arg4 C.int // in
-	var _arg5 C.int // in
-	var _arg6 C.int // in
-	var _arg7 C.int // in
+	_arg3 = (C.int)(forSize)
 
 	C.gtk_layout_manager_measure(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
 

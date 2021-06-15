@@ -32,6 +32,7 @@ func ParamSpecExpression(name string, nick string, blurb string, flags gobject.P
 	var _arg2 *C.char       // out
 	var _arg3 *C.char       // out
 	var _arg4 C.GParamFlags // out
+	var _cret *C.GParamSpec // in
 
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -40,8 +41,6 @@ func ParamSpecExpression(name string, nick string, blurb string, flags gobject.P
 	_arg3 = (*C.char)(C.CString(blurb))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (C.GParamFlags)(flags)
-
-	var _cret *C.GParamSpec // in
 
 	_cret = C.gtk_param_spec_expression(_arg1, _arg2, _arg3, _arg4)
 
@@ -55,11 +54,10 @@ func ParamSpecExpression(name string, nick string, blurb string, flags gobject.P
 // ValueDupExpression retrieves the `GtkExpression` stored inside the given
 // `value`, and acquires a reference to it.
 func ValueDupExpression(value **externglib.Value) Expression {
-	var _arg1 *C.GValue // out
+	var _arg1 *C.GValue        // out
+	var _cret *C.GtkExpression // in
 
 	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cret *C.GtkExpression // in
 
 	_cret = C.gtk_value_dup_expression(_arg1)
 
@@ -73,11 +71,10 @@ func ValueDupExpression(value **externglib.Value) Expression {
 // ValueGetExpression retrieves the `GtkExpression` stored inside the given
 // `value`.
 func ValueGetExpression(value **externglib.Value) Expression {
-	var _arg1 *C.GValue // out
+	var _arg1 *C.GValue        // out
+	var _cret *C.GtkExpression // in
 
 	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cret *C.GtkExpression // in
 
 	_cret = C.gtk_value_get_expression(_arg1)
 
@@ -150,11 +147,10 @@ func (e *ExpressionWatch) Native() unsafe.Pointer {
 func (w *ExpressionWatch) Evaluate(value **externglib.Value) bool {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _arg1 *C.GValue             // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_expression_watch_evaluate(_arg0, _arg1)
 
@@ -170,10 +166,9 @@ func (w *ExpressionWatch) Evaluate(value **externglib.Value) bool {
 // Ref acquires a reference on the given `GtkExpressionWatch`.
 func (w *ExpressionWatch) Ref() *ExpressionWatch {
 	var _arg0 *C.GtkExpressionWatch // out
+	var _cret *C.GtkExpressionWatch // in
 
 	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
-
-	var _cret *C.GtkExpressionWatch // in
 
 	_cret = C.gtk_expression_watch_ref(_arg0)
 

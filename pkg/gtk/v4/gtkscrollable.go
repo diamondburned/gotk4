@@ -120,11 +120,10 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 // at the right position.
 func (s scrollable) Border() (Border, bool) {
 	var _arg0 *C.GtkScrollable // out
-
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
 	var _border Border
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_scrollable_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
 
@@ -140,10 +139,9 @@ func (s scrollable) Border() (Border, bool) {
 // HAdjustment retrieves the `GtkAdjustment` used for horizontal scrolling.
 func (s scrollable) HAdjustment() Adjustment {
 	var _arg0 *C.GtkScrollable // out
+	var _cret *C.GtkAdjustment // in
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_scrollable_get_hadjustment(_arg0)
 
@@ -156,11 +154,10 @@ func (s scrollable) HAdjustment() Adjustment {
 
 // HScrollPolicy gets the horizontal `GtkScrollablePolicy`.
 func (s scrollable) HScrollPolicy() ScrollablePolicy {
-	var _arg0 *C.GtkScrollable // out
+	var _arg0 *C.GtkScrollable      // out
+	var _cret C.GtkScrollablePolicy // in
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkScrollablePolicy // in
 
 	_cret = C.gtk_scrollable_get_hscroll_policy(_arg0)
 
@@ -174,10 +171,9 @@ func (s scrollable) HScrollPolicy() ScrollablePolicy {
 // VAdjustment retrieves the `GtkAdjustment` used for vertical scrolling.
 func (s scrollable) VAdjustment() Adjustment {
 	var _arg0 *C.GtkScrollable // out
+	var _cret *C.GtkAdjustment // in
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_scrollable_get_vadjustment(_arg0)
 
@@ -190,11 +186,10 @@ func (s scrollable) VAdjustment() Adjustment {
 
 // VScrollPolicy gets the vertical `GtkScrollablePolicy`.
 func (s scrollable) VScrollPolicy() ScrollablePolicy {
-	var _arg0 *C.GtkScrollable // out
+	var _arg0 *C.GtkScrollable      // out
+	var _cret C.GtkScrollablePolicy // in
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkScrollablePolicy // in
 
 	_cret = C.gtk_scrollable_get_vscroll_policy(_arg0)
 

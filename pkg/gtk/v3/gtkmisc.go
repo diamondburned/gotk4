@@ -80,11 +80,10 @@ func marshalMisc(p uintptr) (interface{}, error) {
 // See gtk_misc_set_alignment().
 func (m misc) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkMisc // out
+	var _arg1 C.gfloat   // in
+	var _arg2 C.gfloat   // in
 
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
-
-	var _arg1 C.gfloat // in
-	var _arg2 C.gfloat // in
 
 	C.gtk_misc_get_alignment(_arg0, &_arg1, &_arg2)
 
@@ -101,11 +100,10 @@ func (m misc) Alignment() (xalign float32, yalign float32) {
 // gtk_misc_set_padding().
 func (m misc) Padding() (xpad int, ypad int) {
 	var _arg0 *C.GtkMisc // out
+	var _arg1 C.gint     // in
+	var _arg2 C.gint     // in
 
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
-
-	var _arg1 C.gint // in
-	var _arg2 C.gint // in
 
 	C.gtk_misc_get_padding(_arg0, &_arg1, &_arg2)
 
@@ -125,8 +123,8 @@ func (m misc) SetAlignment(xalign float32, yalign float32) {
 	var _arg2 C.gfloat   // out
 
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
+	_arg1 = (C.gfloat)(xalign)
+	_arg2 = (C.gfloat)(yalign)
 
 	C.gtk_misc_set_alignment(_arg0, _arg1, _arg2)
 }
@@ -138,8 +136,8 @@ func (m misc) SetPadding(xpad int, ypad int) {
 	var _arg2 C.gint     // out
 
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(xpad)
-	_arg2 = C.gint(ypad)
+	_arg1 = (C.gint)(xpad)
+	_arg2 = (C.gint)(ypad)
 
 	C.gtk_misc_set_padding(_arg0, _arg1, _arg2)
 }

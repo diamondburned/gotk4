@@ -119,13 +119,12 @@ func marshalIcon(p uintptr) (interface{}, error) {
 
 // Equal checks if two icons are equal.
 func (i icon) Equal(icon2 Icon) bool {
-	var _arg0 *C.GIcon // out
-	var _arg1 *C.GIcon // out
+	var _arg0 *C.GIcon   // out
+	var _arg1 *C.GIcon   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
 
@@ -145,11 +144,10 @@ func (i icon) Equal(icon2 Icon) bool {
 // machine, (as opposed to over the network), and within the same file
 // system namespace.
 func (i icon) Serialize() *glib.Variant {
-	var _arg0 *C.GIcon // out
+	var _arg0 *C.GIcon    // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_icon_serialize(_arg0)
 
@@ -180,10 +178,9 @@ func (i icon) Serialize() *glib.Variant {
 // is simply the name (such as `network-server`).
 func (i icon) String() string {
 	var _arg0 *C.GIcon // out
+	var _cret *C.gchar // in
 
 	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_icon_to_string(_arg0)
 

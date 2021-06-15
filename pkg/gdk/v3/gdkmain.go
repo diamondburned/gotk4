@@ -156,17 +156,16 @@ func GetProgramClass() string {
 // up when the grab ends, you should handle the EventGrabBroken events that are
 // emitted when the grab ends unvoluntarily.
 func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
-	var _arg1 *C.GdkWindow // out
-	var _arg2 C.gboolean   // out
-	var _arg3 C.guint32    // out
+	var _arg1 *C.GdkWindow    // out
+	var _arg2 C.gboolean      // out
+	var _arg3 C.guint32       // out
+	var _cret C.GdkGrabStatus // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}
-	_arg3 = C.guint32(time_)
-
-	var _cret C.GdkGrabStatus // in
+	_arg3 = (C.guint32)(time_)
 
 	_cret = C.gdk_keyboard_grab(_arg1, _arg2, _arg3)
 
@@ -182,7 +181,7 @@ func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 func KeyboardUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
 
-	_arg1 = C.guint32(time_)
+	_arg1 = (C.guint32)(time_)
 
 	C.gdk_keyboard_ungrab(_arg1)
 }
@@ -234,12 +233,13 @@ func NotifyStartupCompleteWithID(startupId string) {
 // up when the grab ends, you should handle the EventGrabBroken events that are
 // emitted when the grab ends unvoluntarily.
 func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo Window, cursor Cursor, time_ uint32) GrabStatus {
-	var _arg1 *C.GdkWindow   // out
-	var _arg2 C.gboolean     // out
-	var _arg3 C.GdkEventMask // out
-	var _arg4 *C.GdkWindow   // out
-	var _arg5 *C.GdkCursor   // out
-	var _arg6 C.guint32      // out
+	var _arg1 *C.GdkWindow    // out
+	var _arg2 C.gboolean      // out
+	var _arg3 C.GdkEventMask  // out
+	var _arg4 *C.GdkWindow    // out
+	var _arg5 *C.GdkCursor    // out
+	var _arg6 C.guint32       // out
+	var _cret C.GdkGrabStatus // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	if ownerEvents {
@@ -248,9 +248,7 @@ func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo
 	_arg3 = (C.GdkEventMask)(eventMask)
 	_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
 	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-	_arg6 = C.guint32(time_)
-
-	var _cret C.GdkGrabStatus // in
+	_arg6 = (C.guint32)(time_)
 
 	_cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -285,7 +283,7 @@ func PointerIsGrabbed() bool {
 func PointerUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
 
-	_arg1 = C.guint32(time_)
+	_arg1 = (C.guint32)(time_)
 
 	C.gdk_pointer_ungrab(_arg1)
 }
@@ -335,7 +333,7 @@ func SetAllowedBackends(backends string) {
 func SetDoubleClickTime(msec uint) {
 	var _arg1 C.guint // out
 
-	_arg1 = C.guint(msec)
+	_arg1 = (C.guint)(msec)
 
 	C.gdk_set_double_click_time(_arg1)
 }

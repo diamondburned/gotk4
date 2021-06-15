@@ -118,11 +118,10 @@ func NewVideo() Video {
 
 // NewVideoForFile constructs a class Video.
 func NewVideoForFile(file gio.File) Video {
-	var _arg1 *C.GFile // out
+	var _arg1 *C.GFile   // out
+	var _cret C.GtkVideo // in
 
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkVideo // in
 
 	_cret = C.gtk_video_new_for_file(_arg1)
 
@@ -135,12 +134,11 @@ func NewVideoForFile(file gio.File) Video {
 
 // NewVideoForFilename constructs a class Video.
 func NewVideoForFilename(filename string) Video {
-	var _arg1 *C.char // out
+	var _arg1 *C.char    // out
+	var _cret C.GtkVideo // in
 
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkVideo // in
 
 	_cret = C.gtk_video_new_for_filename(_arg1)
 
@@ -154,10 +152,9 @@ func NewVideoForFilename(filename string) Video {
 // NewVideoForMediaStream constructs a class Video.
 func NewVideoForMediaStream(stream MediaStream) Video {
 	var _arg1 *C.GtkMediaStream // out
+	var _cret C.GtkVideo        // in
 
 	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
-
-	var _cret C.GtkVideo // in
 
 	_cret = C.gtk_video_new_for_media_stream(_arg1)
 
@@ -170,12 +167,11 @@ func NewVideoForMediaStream(stream MediaStream) Video {
 
 // NewVideoForResource constructs a class Video.
 func NewVideoForResource(resourcePath string) Video {
-	var _arg1 *C.char // out
+	var _arg1 *C.char    // out
+	var _cret C.GtkVideo // in
 
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkVideo // in
 
 	_cret = C.gtk_video_new_for_resource(_arg1)
 
@@ -189,10 +185,9 @@ func NewVideoForResource(resourcePath string) Video {
 // Autoplay returns true if videos have been set to loop.
 func (s video) Autoplay() bool {
 	var _arg0 *C.GtkVideo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_video_get_autoplay(_arg0)
 
@@ -208,10 +203,9 @@ func (s video) Autoplay() bool {
 // File gets the file played by @self or nil if not playing back a file.
 func (s video) File() gio.File {
 	var _arg0 *C.GtkVideo // out
+	var _cret *C.GFile    // in
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.gtk_video_get_file(_arg0)
 
@@ -225,10 +219,9 @@ func (s video) File() gio.File {
 // Loop returns true if videos have been set to loop.
 func (s video) Loop() bool {
 	var _arg0 *C.GtkVideo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_video_get_loop(_arg0)
 
@@ -243,11 +236,10 @@ func (s video) Loop() bool {
 
 // MediaStream gets the media stream managed by @self or nil if none.
 func (s video) MediaStream() MediaStream {
-	var _arg0 *C.GtkVideo // out
+	var _arg0 *C.GtkVideo       // out
+	var _cret *C.GtkMediaStream // in
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkMediaStream // in
 
 	_cret = C.gtk_video_get_media_stream(_arg0)
 

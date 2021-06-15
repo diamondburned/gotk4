@@ -59,10 +59,9 @@ func marshalOrientable(p uintptr) (interface{}, error) {
 // Orientation retrieves the orientation of the @orientable.
 func (o orientable) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
+	var _cret C.GtkOrientation // in
 
 	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
-
-	var _cret C.GtkOrientation // in
 
 	_cret = C.gtk_orientable_get_orientation(_arg0)
 

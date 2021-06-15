@@ -3,7 +3,6 @@
 package gdkpixdata
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
@@ -90,14 +89,13 @@ const (
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata // out
 	var _arg2 C.gboolean    // out
+	var _cret *C.GdkPixbuf  // in
+	var _cerr *C.GError     // in
 
 	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata.Native()))
 	if copyPixels {
 		_arg2 = C.TRUE
 	}
-
-	var _cret *C.GdkPixbuf // in
-	var _cerr *C.GError    // in
 
 	_cret = C.gdk_pixbuf_from_pixdata(_arg1, _arg2, &_cerr)
 
@@ -138,48 +136,6 @@ func (p *Pixdata) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Magic gets the field inside the struct.
-func (p *Pixdata) Magic() uint32 {
-	var v uint32 // out
-	v = (uint32)(p.native.magic)
-	return v
-}
-
-// Length gets the field inside the struct.
-func (p *Pixdata) Length() int32 {
-	var v int32 // out
-	v = (int32)(p.native.length)
-	return v
-}
-
-// PixdataType gets the field inside the struct.
-func (p *Pixdata) PixdataType() uint32 {
-	var v uint32 // out
-	v = (uint32)(p.native.pixdata_type)
-	return v
-}
-
-// Rowstride gets the field inside the struct.
-func (p *Pixdata) Rowstride() uint32 {
-	var v uint32 // out
-	v = (uint32)(p.native.rowstride)
-	return v
-}
-
-// Width gets the field inside the struct.
-func (p *Pixdata) Width() uint32 {
-	var v uint32 // out
-	v = (uint32)(p.native.width)
-	return v
-}
-
-// Height gets the field inside the struct.
-func (p *Pixdata) Height() uint32 {
-	var v uint32 // out
-	v = (uint32)(p.native.height)
-	return v
-}
-
 // Deserialize deserializes (reconstruct) a Pixdata structure from a byte
 // stream.
 //
@@ -196,12 +152,11 @@ func (p *Pixdata) Deserialize(stream []byte) error {
 	var _arg0 *C.GdkPixdata // out
 	var _arg2 *C.guint8
 	var _arg1 C.guint
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
 	_arg1 = C.guint(len(stream))
 	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
-
-	var _cerr *C.GError // in
 
 	C.gdk_pixdata_deserialize(_arg0, _arg1, _arg2, &_cerr)
 
@@ -210,27 +165,4 @@ func (p *Pixdata) Deserialize(stream []byte) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// Serialize serializes a Pixdata structure into a byte stream. The byte stream
-// consists of a straightforward writeout of the Pixdata fields in network byte
-// order, plus the @pixel_data bytes the structure points to.
-func (p *Pixdata) Serialize() []byte {
-	var _arg0 *C.GdkPixdata // out
-
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.guint8
-	var _arg1 C.guint // in
-
-	_cret = C.gdk_pixdata_serialize(_arg0, &_arg1)
-
-	var _guint8s []byte
-
-	_guint8s = unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1)
-	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-
-	return _guint8s
 }

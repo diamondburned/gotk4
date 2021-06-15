@@ -193,7 +193,7 @@ func (rg *recordGenerator) getters() []recordGetter {
 	}
 
 	recv := FirstLetter(rg.GoName)
-	fields := make([]ValueProp, 0, len(rg.Fields))
+	fields := make([]ConversionValue, 0, len(rg.Fields))
 	goNames := make([]string, 0, len(rg.Fields))
 
 	for _, field := range rg.Fields {
@@ -211,11 +211,11 @@ func (rg *recordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		fields = append(fields, NewValuePropField(recv, "v", field))
+		fields = append(fields, NewConversionValueField(recv, "v", field))
 		goNames = append(goNames, goName)
 	}
 
-	converter := rg.fg.CGoConverter(rg.Name, fields)
+	converter := NewTypeConverter(rg.fg, rg.Name, fields)
 	for i := range fields {
 		converted := converter.Convert(i)
 		if converted == nil {

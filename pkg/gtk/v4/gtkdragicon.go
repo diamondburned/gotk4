@@ -80,10 +80,9 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 // Child gets the widget currently used as drag icon.
 func (s dragIcon) Child() Widget {
 	var _arg0 *C.GtkDragIcon // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_drag_icon_get_child(_arg0)
 

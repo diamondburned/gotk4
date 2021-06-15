@@ -216,11 +216,10 @@ func (s inputStream) ClearPending() {
 func (s inputStream) Close(cancellable Cancellable) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_input_stream_close(_arg0, _arg1, &_cerr)
 
@@ -236,11 +235,10 @@ func (s inputStream) Close(cancellable Cancellable) error {
 func (s inputStream) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_input_stream_close_finish(_arg0, _arg1, &_cerr)
 
@@ -254,10 +252,9 @@ func (s inputStream) CloseFinish(result AsyncResult) error {
 // HasPending checks if an input stream has pending actions.
 func (s inputStream) HasPending() bool {
 	var _arg0 *C.GInputStream // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_input_stream_has_pending(_arg0)
 
@@ -273,10 +270,9 @@ func (s inputStream) HasPending() bool {
 // IsClosed checks if an input stream is closed.
 func (s inputStream) IsClosed() bool {
 	var _arg0 *C.GInputStream // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_input_stream_is_closed(_arg0)
 
@@ -313,17 +309,16 @@ func (s inputStream) IsClosed() bool {
 // On error -1 is returned and @error is set accordingly.
 func (s inputStream) Read(cancellable Cancellable) ([]byte, int, error) {
 	var _arg0 *C.GInputStream // out
+	var _arg1 C.void
+	var _arg2 C.gsize         // in
 	var _arg3 *C.GCancellable // out
+	var _cret C.gssize        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _arg1 C.void
-	var _arg2 C.gsize   // in
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
-
-	_cret = C.g_input_stream_read(_arg0, _arg3, &_arg1, &_arg2, &_cerr)
+	_cret = C.g_input_stream_read(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
 
 	var _buffer []byte
 	var _gssize int  // out
@@ -364,17 +359,16 @@ func (s inputStream) Read(cancellable Cancellable) ([]byte, int, error) {
 // write your own loop around g_input_stream_read().
 func (s inputStream) ReadAll(cancellable Cancellable) ([]byte, uint, error) {
 	var _arg0 *C.GInputStream // out
+	var _arg1 C.void
+	var _arg2 C.gsize         // in
+	var _arg3 C.gsize         // in
 	var _arg4 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _arg1 C.void
-	var _arg2 C.gsize   // in
-	var _arg3 C.gsize   // in
-	var _cerr *C.GError // in
-
-	C.g_input_stream_read_all(_arg0, _arg4, &_arg1, &_arg2, &_arg3, &_cerr)
+	C.g_input_stream_read_all(_arg0, &_arg1, &_arg2, &_arg3, _arg4, &_cerr)
 
 	var _buffer []byte
 	var _bytesRead uint // out
@@ -405,12 +399,11 @@ func (s inputStream) ReadAll(cancellable Cancellable) ([]byte, uint, error) {
 func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
+	var _arg2 C.gsize         // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _arg2 C.gsize   // in
-	var _cerr *C.GError // in
 
 	C.g_input_stream_read_all_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -427,12 +420,11 @@ func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
 func (s inputStream) ReadFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret C.gssize        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_input_stream_read_finish(_arg0, _arg1, &_cerr)
 
@@ -449,10 +441,9 @@ func (s inputStream) ReadFinish(result AsyncResult) (int, error) {
 // already set or @stream is closed, it will return false and set @error.
 func (s inputStream) SetPending() error {
 	var _arg0 *C.GInputStream // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_input_stream_set_pending(_arg0, &_cerr)
 
@@ -482,13 +473,12 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 C.gsize         // out
 	var _arg2 *C.GCancellable // out
+	var _cret C.gssize        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gsize(count)
+	_arg1 = (C.gsize)(count)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_input_stream_skip(_arg0, _arg1, _arg2, &_cerr)
 
@@ -505,12 +495,11 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
 func (s inputStream) SkipFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret C.gssize        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_input_stream_skip_finish(_arg0, _arg1, &_cerr)
 

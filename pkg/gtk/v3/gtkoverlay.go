@@ -137,11 +137,10 @@ func (o overlay) AddOverlay(widget Widget) {
 func (o overlay) OverlayPassThrough(widget Widget) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
 
@@ -168,7 +167,7 @@ func (o overlay) ReorderOverlay(child Widget, index_ int) {
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.int(index_)
+	_arg2 = (C.int)(index_)
 
 	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
 }

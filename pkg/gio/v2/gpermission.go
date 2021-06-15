@@ -151,11 +151,10 @@ func marshalPermission(p uintptr) (interface{}, error) {
 func (p permission) Acquire(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_permission_acquire(_arg0, _arg1, &_cerr)
 
@@ -174,11 +173,10 @@ func (p permission) Acquire(cancellable Cancellable) error {
 func (p permission) AcquireFinish(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
 
@@ -194,10 +192,9 @@ func (p permission) AcquireFinish(result AsyncResult) error {
 // @permission represents the permission to perform.
 func (p permission) Allowed() bool {
 	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_permission_get_allowed(_arg0)
 
@@ -215,10 +212,9 @@ func (p permission) Allowed() bool {
 // g_permission_acquire().
 func (p permission) CanAcquire() bool {
 	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_permission_get_can_acquire(_arg0)
 
@@ -236,10 +232,9 @@ func (p permission) CanAcquire() bool {
 // g_permission_release().
 func (p permission) CanRelease() bool {
 	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_permission_get_can_release(_arg0)
 
@@ -295,11 +290,10 @@ func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 func (p permission) Release(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_permission_release(_arg0, _arg1, &_cerr)
 
@@ -318,11 +312,10 @@ func (p permission) Release(cancellable Cancellable) error {
 func (p permission) ReleaseFinish(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
 

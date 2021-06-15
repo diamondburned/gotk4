@@ -25,10 +25,9 @@ func init() {
 // X11GetServerTime: routine to get the current X server time stamp.
 func X11GetServerTime(surface X11Surface) uint32 {
 	var _arg1 *C.GdkSurface // out
+	var _cret C.guint32     // in
 
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
@@ -130,10 +129,9 @@ func marshalX11Surface(p uintptr) (interface{}, error) {
 // Desktop gets the number of the workspace @surface is on.
 func (s x11Surface) Desktop() uint32 {
 	var _arg0 *C.GdkSurface // out
+	var _cret C.guint32     // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_surface_get_desktop(_arg0)
 
@@ -147,10 +145,9 @@ func (s x11Surface) Desktop() uint32 {
 // Group returns the group this surface belongs to.
 func (s x11Surface) Group() gdk.Surface {
 	var _arg0 *C.GdkSurface // out
+	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gdk_x11_surface_get_group(_arg0)
 
@@ -183,7 +180,7 @@ func (s x11Surface) MoveToDesktop(desktop uint32) {
 	var _arg1 C.guint32     // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint32(desktop)
+	_arg1 = (C.guint32)(desktop)
 
 	C.gdk_x11_surface_move_to_desktop(_arg0, _arg1)
 }
@@ -298,7 +295,7 @@ func (s x11Surface) SetUserTime(timestamp uint32) {
 	var _arg1 C.guint32     // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint32(timestamp)
+	_arg1 = (C.guint32)(timestamp)
 
 	C.gdk_x11_surface_set_user_time(_arg0, _arg1)
 }

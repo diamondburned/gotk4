@@ -40,38 +40,3 @@ func WrapCSSLocation(ptr unsafe.Pointer) *CSSLocation {
 func (c *CSSLocation) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
-
-// Bytes gets the field inside the struct.
-func (c *CSSLocation) Bytes() uint {
-	var v uint // out
-	v = (uint)(c.native.bytes)
-	return v
-}
-
-// Chars gets the field inside the struct.
-func (c *CSSLocation) Chars() uint {
-	var v uint // out
-	v = (uint)(c.native.chars)
-	return v
-}
-
-// Lines gets the field inside the struct.
-func (c *CSSLocation) Lines() uint {
-	var v uint // out
-	v = (uint)(c.native.lines)
-	return v
-}
-
-// LineBytes gets the field inside the struct.
-func (c *CSSLocation) LineBytes() uint {
-	var v uint // out
-	v = (uint)(c.native.line_bytes)
-	return v
-}
-
-// LineChars gets the field inside the struct.
-func (c *CSSLocation) LineChars() uint {
-	var v uint // out
-	v = (uint)(c.native.line_chars)
-	return v
-}

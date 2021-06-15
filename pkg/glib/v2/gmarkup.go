@@ -122,12 +122,11 @@ const (
 func MarkupEscapeText(text string, length int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(length)
-
-	var _cret *C.gchar // in
+	_arg2 = (C.gssize)(length)
 
 	_cret = C.g_markup_escape_text(_arg1, _arg2)
 
@@ -174,10 +173,9 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 // elements are still open.
 func (c *MarkupParseContext) EndParse() error {
 	var _arg0 *C.GMarkupParseContext // out
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_markup_parse_context_end_parse(_arg0, &_cerr)
 
@@ -207,10 +205,9 @@ func (c *MarkupParseContext) Free() {
 // g_markup_parse_context_get_element_stack().
 func (c *MarkupParseContext) Element() string {
 	var _arg0 *C.GMarkupParseContext // out
+	var _cret *C.gchar               // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_markup_parse_context_get_element(_arg0)
 
@@ -227,11 +224,10 @@ func (c *MarkupParseContext) Element() string {
 // could come up with for error messages."
 func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg0 *C.GMarkupParseContext // out
+	var _arg1 C.gint                 // in
+	var _arg2 C.gint                 // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 C.gint // in
-	var _arg2 C.gint // in
 
 	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
 
@@ -257,13 +253,12 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.gchar               // out
 	var _arg2 C.gssize               // out
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(textLen)
-
-	var _cerr *C.GError // in
+	_arg2 = (C.gssize)(textLen)
 
 	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, &_cerr)
 
@@ -277,10 +272,9 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 // Ref increases the reference count of @context.
 func (c *MarkupParseContext) Ref() *MarkupParseContext {
 	var _arg0 *C.GMarkupParseContext // out
+	var _cret *C.GMarkupParseContext // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GMarkupParseContext // in
 
 	_cret = C.g_markup_parse_context_ref(_arg0)
 

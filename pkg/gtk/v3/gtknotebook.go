@@ -323,12 +323,11 @@ func (n notebook) AppendPage(child Widget, tabLabel Widget) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_notebook_append_page(_arg0, _arg1, _arg2)
 
@@ -346,13 +345,12 @@ func (n notebook) AppendPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
 	var _arg3 *C.GtkWidget   // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 	_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_notebook_append_page_menu(_arg0, _arg1, _arg2, _arg3)
 
@@ -383,11 +381,10 @@ func (n notebook) DetachTab(child Widget) {
 func (n notebook) ActionWidget(packType PackType) Widget {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 C.GtkPackType  // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (C.GtkPackType)(packType)
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_notebook_get_action_widget(_arg0, _arg1)
 
@@ -401,10 +398,9 @@ func (n notebook) ActionWidget(packType PackType) Widget {
 // CurrentPage returns the page number of the current page.
 func (n notebook) CurrentPage() int {
 	var _arg0 *C.GtkNotebook // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_notebook_get_current_page(_arg0)
 
@@ -418,10 +414,9 @@ func (n notebook) CurrentPage() int {
 // GroupName gets the current group name for @notebook.
 func (n notebook) GroupName() string {
 	var _arg0 *C.GtkNotebook // out
+	var _cret *C.gchar       // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_notebook_get_group_name(_arg0)
 
@@ -436,11 +431,10 @@ func (n notebook) GroupName() string {
 func (n notebook) MenuLabel(child Widget) Widget {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_notebook_get_menu_label(_arg0, _arg1)
 
@@ -456,11 +450,10 @@ func (n notebook) MenuLabel(child Widget) Widget {
 func (n notebook) MenuLabelText(child Widget) string {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
+	var _cret *C.gchar       // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_notebook_get_menu_label_text(_arg0, _arg1)
 
@@ -474,10 +467,9 @@ func (n notebook) MenuLabelText(child Widget) string {
 // NPages gets the number of pages in a notebook.
 func (n notebook) NPages() int {
 	var _arg0 *C.GtkNotebook // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_notebook_get_n_pages(_arg0)
 
@@ -492,11 +484,10 @@ func (n notebook) NPages() int {
 func (n notebook) NthPage(pageNum int) Widget {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 C.gint         // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = C.gint(pageNum)
-
-	var _cret *C.GtkWidget // in
+	_arg1 = (C.gint)(pageNum)
 
 	_cret = C.gtk_notebook_get_nth_page(_arg0, _arg1)
 
@@ -511,10 +502,9 @@ func (n notebook) NthPage(pageNum int) Widget {
 // See gtk_notebook_set_scrollable().
 func (n notebook) Scrollable() bool {
 	var _arg0 *C.GtkNotebook // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_notebook_get_scrollable(_arg0)
 
@@ -531,10 +521,9 @@ func (n notebook) Scrollable() bool {
 // pages. See gtk_notebook_set_show_border().
 func (n notebook) ShowBorder() bool {
 	var _arg0 *C.GtkNotebook // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_notebook_get_show_border(_arg0)
 
@@ -551,10 +540,9 @@ func (n notebook) ShowBorder() bool {
 // gtk_notebook_set_show_tabs().
 func (n notebook) ShowTabs() bool {
 	var _arg0 *C.GtkNotebook // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_notebook_get_show_tabs(_arg0)
 
@@ -572,11 +560,10 @@ func (n notebook) ShowTabs() bool {
 func (n notebook) TabDetachable(child Widget) bool {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_notebook_get_tab_detachable(_arg0, _arg1)
 
@@ -592,10 +579,9 @@ func (n notebook) TabDetachable(child Widget) bool {
 // TabHborder returns the horizontal width of a tab border.
 func (n notebook) TabHborder() uint16 {
 	var _arg0 *C.GtkNotebook // out
+	var _cret C.guint16      // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.gtk_notebook_get_tab_hborder(_arg0)
 
@@ -612,11 +598,10 @@ func (n notebook) TabHborder() uint16 {
 func (n notebook) TabLabel(child Widget) Widget {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_notebook_get_tab_label(_arg0, _arg1)
 
@@ -632,11 +617,10 @@ func (n notebook) TabLabel(child Widget) Widget {
 func (n notebook) TabLabelText(child Widget) string {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
+	var _cret *C.gchar       // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_notebook_get_tab_label_text(_arg0, _arg1)
 
@@ -650,11 +634,10 @@ func (n notebook) TabLabelText(child Widget) string {
 // TabPos gets the edge at which the tabs for switching pages in the
 // notebook are drawn.
 func (n notebook) TabPos() PositionType {
-	var _arg0 *C.GtkNotebook // out
+	var _arg0 *C.GtkNotebook    // out
+	var _cret C.GtkPositionType // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.GtkPositionType // in
 
 	_cret = C.gtk_notebook_get_tab_pos(_arg0)
 
@@ -670,11 +653,10 @@ func (n notebook) TabPos() PositionType {
 func (n notebook) TabReorderable(child Widget) bool {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_notebook_get_tab_reorderable(_arg0, _arg1)
 
@@ -690,10 +672,9 @@ func (n notebook) TabReorderable(child Widget) bool {
 // TabVborder returns the vertical width of a tab border.
 func (n notebook) TabVborder() uint16 {
 	var _arg0 *C.GtkNotebook // out
+	var _cret C.guint16      // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.gtk_notebook_get_tab_vborder(_arg0)
 
@@ -710,13 +691,12 @@ func (n notebook) InsertPage(child Widget, tabLabel Widget, position int) int {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
 	var _arg3 C.gint         // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
-	_arg3 = C.gint(position)
-
-	var _cret C.gint // in
+	_arg3 = (C.gint)(position)
 
 	_cret = C.gtk_notebook_insert_page(_arg0, _arg1, _arg2, _arg3)
 
@@ -735,14 +715,13 @@ func (n notebook) InsertPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 	var _arg2 *C.GtkWidget   // out
 	var _arg3 *C.GtkWidget   // out
 	var _arg4 C.gint         // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 	_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
-	_arg4 = C.gint(position)
-
-	var _cret C.gint // in
+	_arg4 = (C.gint)(position)
 
 	_cret = C.gtk_notebook_insert_page_menu(_arg0, _arg1, _arg2, _arg3, _arg4)
 
@@ -768,11 +747,10 @@ func (n notebook) NextPage() {
 func (n notebook) PageNum(child Widget) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_notebook_page_num(_arg0, _arg1)
 
@@ -808,12 +786,11 @@ func (n notebook) PrependPage(child Widget, tabLabel Widget) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_notebook_prepend_page(_arg0, _arg1, _arg2)
 
@@ -831,13 +808,12 @@ func (n notebook) PrependPageMenu(child Widget, tabLabel Widget, menuLabel Widge
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
 	var _arg3 *C.GtkWidget   // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 	_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_notebook_prepend_page_menu(_arg0, _arg1, _arg2, _arg3)
 
@@ -865,7 +841,7 @@ func (n notebook) RemovePage(pageNum int) {
 	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = C.gint(pageNum)
+	_arg1 = (C.gint)(pageNum)
 
 	C.gtk_notebook_remove_page(_arg0, _arg1)
 }
@@ -881,7 +857,7 @@ func (n notebook) ReorderChild(child Widget, position int) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.gint(position)
+	_arg2 = (C.gint)(position)
 
 	C.gtk_notebook_reorder_child(_arg0, _arg1, _arg2)
 }
@@ -914,7 +890,7 @@ func (n notebook) SetCurrentPage(pageNum int) {
 	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = C.gint(pageNum)
+	_arg1 = (C.gint)(pageNum)
 
 	C.gtk_notebook_set_current_page(_arg0, _arg1)
 }

@@ -190,7 +190,7 @@ func (c cellLayout) AddAttribute(cell CellRenderer, attribute string, column int
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg2 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(column)
+	_arg3 = (C.int)(column)
 
 	C.gtk_cell_layout_add_attribute(_arg0, _arg1, _arg2, _arg3)
 }
@@ -222,10 +222,9 @@ func (c cellLayout) ClearAttributes(cell CellRenderer) {
 // @cell_layout.
 func (c cellLayout) Area() CellArea {
 	var _arg0 *C.GtkCellLayout // out
+	var _cret *C.GtkCellArea   // in
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkCellArea // in
 
 	_cret = C.gtk_cell_layout_get_area(_arg0)
 
@@ -285,7 +284,7 @@ func (c cellLayout) Reorder(cell CellRenderer, position int) {
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg2 = C.int(position)
+	_arg2 = (C.int)(position)
 
 	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
 }

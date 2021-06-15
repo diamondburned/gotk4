@@ -138,10 +138,9 @@ func NewSearchEntry() SearchEntry {
 // from.
 func (e searchEntry) KeyCaptureWidget() Widget {
 	var _arg0 *C.GtkSearchEntry // out
+	var _cret *C.GtkWidget      // in
 
 	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
 

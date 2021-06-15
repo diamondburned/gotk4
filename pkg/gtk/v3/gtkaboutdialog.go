@@ -266,9 +266,8 @@ func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(sectionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong((len(people) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(people)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
-
 	{
 		out := unsafe.Slice(_arg2, len(people))
 		for i := range people {
@@ -284,10 +283,9 @@ func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 // secondary credits dialog.
 func (a aboutDialog) Artists() []string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.gtk_about_dialog_get_artists(_arg0)
 
@@ -313,10 +311,9 @@ func (a aboutDialog) Artists() []string {
 // secondary credits dialog.
 func (a aboutDialog) Authors() []string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.gtk_about_dialog_get_authors(_arg0)
 
@@ -341,10 +338,9 @@ func (a aboutDialog) Authors() []string {
 // Comments returns the comments string.
 func (a aboutDialog) Comments() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_comments(_arg0)
 
@@ -358,10 +354,9 @@ func (a aboutDialog) Comments() string {
 // Copyright returns the copyright string.
 func (a aboutDialog) Copyright() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_copyright(_arg0)
 
@@ -376,10 +371,9 @@ func (a aboutDialog) Copyright() string {
 // of the secondary credits dialog.
 func (a aboutDialog) Documenters() []string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.gtk_about_dialog_get_documenters(_arg0)
 
@@ -404,10 +398,9 @@ func (a aboutDialog) Documenters() []string {
 // License returns the license information.
 func (a aboutDialog) License() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_license(_arg0)
 
@@ -422,10 +415,9 @@ func (a aboutDialog) License() string {
 // gtk_about_dialog_set_license_type()
 func (a aboutDialog) LicenseType() License {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret C.GtkLicense      // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GtkLicense // in
 
 	_cret = C.gtk_about_dialog_get_license_type(_arg0)
 
@@ -439,10 +431,9 @@ func (a aboutDialog) LicenseType() License {
 // Logo returns the pixbuf displayed as logo in the about dialog.
 func (a aboutDialog) Logo() gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.GdkPixbuf      // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkPixbuf // in
 
 	_cret = C.gtk_about_dialog_get_logo(_arg0)
 
@@ -456,10 +447,9 @@ func (a aboutDialog) Logo() gdkpixbuf.Pixbuf {
 // LogoIconName returns the icon name displayed as logo in the about dialog.
 func (a aboutDialog) LogoIconName() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
 
@@ -473,10 +463,9 @@ func (a aboutDialog) LogoIconName() string {
 // ProgramName returns the program name displayed in the about dialog.
 func (a aboutDialog) ProgramName() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_program_name(_arg0)
 
@@ -491,10 +480,9 @@ func (a aboutDialog) ProgramName() string {
 // displayed in the translators tab of the secondary credits dialog.
 func (a aboutDialog) TranslatorCredits() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
 
@@ -508,10 +496,9 @@ func (a aboutDialog) TranslatorCredits() string {
 // Version returns the version string.
 func (a aboutDialog) Version() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_version(_arg0)
 
@@ -525,10 +512,9 @@ func (a aboutDialog) Version() string {
 // Website returns the website URL.
 func (a aboutDialog) Website() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_website(_arg0)
 
@@ -542,10 +528,9 @@ func (a aboutDialog) Website() string {
 // WebsiteLabel returns the label used for the website link.
 func (a aboutDialog) WebsiteLabel() string {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_about_dialog_get_website_label(_arg0)
 
@@ -560,10 +545,9 @@ func (a aboutDialog) WebsiteLabel() string {
 // wrapped.
 func (a aboutDialog) WrapLicense() bool {
 	var _arg0 *C.GtkAboutDialog // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
 
@@ -583,9 +567,8 @@ func (a aboutDialog) SetArtists(artists []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(artists) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(artists)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(artists))
 		for i := range artists {
@@ -604,9 +587,8 @@ func (a aboutDialog) SetAuthors(authors []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(authors) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(authors)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(authors))
 		for i := range authors {
@@ -651,9 +633,8 @@ func (a aboutDialog) SetDocumenters(documenters []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(documenters) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(documenters)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(documenters))
 		for i := range documenters {

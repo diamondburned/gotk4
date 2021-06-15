@@ -66,11 +66,10 @@ func marshalBin(p uintptr) (interface{}, error) {
 // widget. The returned widget does not have a reference added, so you do
 // not need to unref it.
 func (b bin) Child() Widget {
-	var _arg0 *C.GtkBin // out
+	var _arg0 *C.GtkBin    // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkBin)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_bin_get_child(_arg0)
 

@@ -90,11 +90,10 @@ func (p printOperationPreview) EndPreview() {
 func (p printOperationPreview) IsSelected(pageNr int) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.gint                      // out
+	var _cret C.gboolean                  // in
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
-	_arg1 = C.gint(pageNr)
-
-	var _cret C.gboolean // in
+	_arg1 = (C.gint)(pageNr)
 
 	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
 
@@ -120,7 +119,7 @@ func (p printOperationPreview) RenderPage(pageNr int) {
 	var _arg1 C.gint                      // out
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
-	_arg1 = C.gint(pageNr)
+	_arg1 = (C.gint)(pageNr)
 
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)
 }

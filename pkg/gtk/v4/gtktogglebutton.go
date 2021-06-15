@@ -166,12 +166,11 @@ func NewToggleButton() ToggleButton {
 
 // NewToggleButtonWithLabel constructs a class ToggleButton.
 func NewToggleButtonWithLabel(label string) ToggleButton {
-	var _arg1 *C.char // out
+	var _arg1 *C.char           // out
+	var _cret C.GtkToggleButton // in
 
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkToggleButton // in
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
 
@@ -184,12 +183,11 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 
 // NewToggleButtonWithMnemonic constructs a class ToggleButton.
 func NewToggleButtonWithMnemonic(label string) ToggleButton {
-	var _arg1 *C.char // out
+	var _arg1 *C.char           // out
+	var _cret C.GtkToggleButton // in
 
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkToggleButton // in
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
@@ -206,10 +204,9 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 // raised.
 func (t toggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
 

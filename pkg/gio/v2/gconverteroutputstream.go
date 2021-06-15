@@ -68,13 +68,12 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 
 // NewConverterOutputStream constructs a class ConverterOutputStream.
 func NewConverterOutputStream(baseStream OutputStream, converter Converter) ConverterOutputStream {
-	var _arg1 *C.GOutputStream // out
-	var _arg2 *C.GConverter    // out
+	var _arg1 *C.GOutputStream         // out
+	var _arg2 *C.GConverter            // out
+	var _cret C.GConverterOutputStream // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 	_arg2 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
-
-	var _cret C.GConverterOutputStream // in
 
 	_cret = C.g_converter_output_stream_new(_arg1, _arg2)
 
@@ -88,10 +87,9 @@ func NewConverterOutputStream(baseStream OutputStream, converter Converter) Conv
 // Converter gets the #GConverter that is used by @converter_stream.
 func (c converterOutputStream) Converter() Converter {
 	var _arg0 *C.GConverterOutputStream // out
+	var _cret *C.GConverter             // in
 
 	_arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GConverter // in
 
 	_cret = C.g_converter_output_stream_get_converter(_arg0)
 

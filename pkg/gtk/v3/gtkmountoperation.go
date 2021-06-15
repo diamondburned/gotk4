@@ -68,11 +68,10 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 
 // NewMountOperation constructs a class MountOperation.
 func NewMountOperation(parent Window) MountOperation {
-	var _arg1 *C.GtkWindow // out
+	var _arg1 *C.GtkWindow        // out
+	var _cret C.GtkMountOperation // in
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkMountOperation // in
 
 	_cret = C.gtk_mount_operation_new(_arg1)
 
@@ -86,10 +85,9 @@ func NewMountOperation(parent Window) MountOperation {
 // Parent gets the transient parent used by the MountOperation
 func (o mountOperation) Parent() Window {
 	var _arg0 *C.GtkMountOperation // out
+	var _cret *C.GtkWindow         // in
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkWindow // in
 
 	_cret = C.gtk_mount_operation_get_parent(_arg0)
 
@@ -104,10 +102,9 @@ func (o mountOperation) Parent() Window {
 // shown.
 func (o mountOperation) Screen() gdk.Screen {
 	var _arg0 *C.GtkMountOperation // out
+	var _cret *C.GdkScreen         // in
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GdkScreen // in
 
 	_cret = C.gtk_mount_operation_get_screen(_arg0)
 
@@ -122,10 +119,9 @@ func (o mountOperation) Screen() gdk.Screen {
 // window.
 func (o mountOperation) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_mount_operation_is_showing(_arg0)
 

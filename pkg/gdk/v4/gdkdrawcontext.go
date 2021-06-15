@@ -165,10 +165,9 @@ func (c drawContext) EndFrame() {
 // Display retrieves the `GdkDisplay` the @context is created for
 func (c drawContext) Display() Display {
 	var _arg0 *C.GdkDrawContext // out
+	var _cret *C.GdkDisplay     // in
 
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_draw_context_get_display(_arg0)
 
@@ -190,10 +189,9 @@ func (c drawContext) Display() Display {
 // [method@Gdk.DrawContext.end_frame], nil will be returned.
 func (c drawContext) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
+	var _cret *C.cairo_region_t // in
 
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.cairo_region_t // in
 
 	_cret = C.gdk_draw_context_get_frame_region(_arg0)
 
@@ -207,10 +205,9 @@ func (c drawContext) FrameRegion() *cairo.Region {
 // Surface retrieves the surface that @context is bound to.
 func (c drawContext) Surface() Surface {
 	var _arg0 *C.GdkDrawContext // out
+	var _cret *C.GdkSurface     // in
 
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gdk_draw_context_get_surface(_arg0)
 
@@ -229,10 +226,9 @@ func (c drawContext) Surface() Surface {
 // commands may be effecting the contents of the @context's surface.
 func (c drawContext) IsInFrame() bool {
 	var _arg0 *C.GdkDrawContext // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_draw_context_is_in_frame(_arg0)
 

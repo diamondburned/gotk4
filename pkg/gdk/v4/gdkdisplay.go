@@ -250,11 +250,10 @@ func (d display) Close() {
 func (d display) DeviceIsGrabbed(device Device) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkDevice  // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 
@@ -289,11 +288,10 @@ func (d display) Flush() {
 // AppLaunchContext returns a `GdkAppLaunchContext` suitable for launching
 // applications on the given display.
 func (d display) AppLaunchContext() AppLaunchContext {
-	var _arg0 *C.GdkDisplay // out
+	var _arg0 *C.GdkDisplay          // out
+	var _cret *C.GdkAppLaunchContext // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkAppLaunchContext // in
 
 	_cret = C.gdk_display_get_app_launch_context(_arg0)
 
@@ -306,11 +304,10 @@ func (d display) AppLaunchContext() AppLaunchContext {
 
 // Clipboard gets the clipboard used for copy/paste operations.
 func (d display) Clipboard() Clipboard {
-	var _arg0 *C.GdkDisplay // out
+	var _arg0 *C.GdkDisplay   // out
+	var _cret *C.GdkClipboard // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkClipboard // in
 
 	_cret = C.gdk_display_get_clipboard(_arg0)
 
@@ -327,10 +324,9 @@ func (d display) Clipboard() Clipboard {
 // return nil.
 func (d display) DefaultSeat() Seat {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GdkSeat    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkSeat // in
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
 
@@ -348,11 +344,10 @@ func (d display) DefaultSeat() Seat {
 func (d display) MonitorAtSurface(surface Surface) Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkSurface // out
+	var _cret *C.GdkMonitor // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	var _cret *C.GdkMonitor // in
 
 	_cret = C.gdk_display_get_monitor_at_surface(_arg0, _arg1)
 
@@ -372,10 +367,9 @@ func (d display) MonitorAtSurface(surface Surface) Monitor {
 // monitor changes to the monitor of this display.
 func (s display) Monitors() gio.ListModel {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GListModel // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gdk_display_get_monitors(_arg0)
 
@@ -389,10 +383,9 @@ func (s display) Monitors() gio.ListModel {
 // Name gets the name of the display.
 func (d display) Name() string {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_display_get_name(_arg0)
 
@@ -408,11 +401,10 @@ func (d display) Name() string {
 // On backends where the primary clipboard is not supported natively, GDK
 // emulates this clipboard locally.
 func (d display) PrimaryClipboard() Clipboard {
-	var _arg0 *C.GdkDisplay // out
+	var _arg0 *C.GdkDisplay   // out
+	var _cret *C.GdkClipboard // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkClipboard // in
 
 	_cret = C.gdk_display_get_primary_clipboard(_arg0)
 
@@ -429,13 +421,12 @@ func (d display) Setting(name string, value **externglib.Value) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.GValue     // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(value.GValue)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
 
@@ -452,10 +443,9 @@ func (d display) Setting(name string, value **externglib.Value) bool {
 // display, or nil if no ID has been defined.
 func (d display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_display_get_startup_notification_id(_arg0)
 
@@ -469,10 +459,9 @@ func (d display) StartupNotificationID() string {
 // IsClosed finds out if the display has been closed.
 func (d display) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_display_is_closed(_arg0)
 
@@ -497,10 +486,9 @@ func (d display) IsClosed() bool {
 // On modern displays, this value is always true.
 func (d display) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_display_is_composited(_arg0)
 
@@ -525,10 +513,9 @@ func (d display) IsComposited() bool {
 // On modern displays, this value is always true.
 func (d display) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_display_is_rgba(_arg0)
 
@@ -553,15 +540,14 @@ func (d display) IsRGBA() bool {
 func (d display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = C.guint(keycode)
-
 	var _arg2 *C.GdkKeymapKey
 	var _arg4 C.int // in
 	var _arg3 *C.guint
 	var _arg4 C.int      // in
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.guint)(keycode)
 
 	_cret = C.gdk_display_map_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -602,13 +588,12 @@ func (d display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 func (d display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = C.guint(keyval)
-
 	var _arg2 *C.GdkKeymapKey
 	var _arg3 C.int      // in
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.guint)(keyval)
 
 	_cret = C.gdk_display_map_keyval(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -667,10 +652,9 @@ func (d display) PutEvent(event Event) {
 // On modern displays, this value is always true.
 func (d display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_display_supports_input_shapes(_arg0)
 
@@ -725,17 +709,16 @@ func (d display) TranslateKey(keycode uint, state ModifierType, group int) (keyv
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
 	var _arg3 C.int             // out
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = C.guint(keycode)
-	_arg2 = (C.GdkModifierType)(state)
-	_arg3 = C.int(group)
-
 	var _arg4 C.guint           // in
 	var _arg5 C.int             // in
 	var _arg6 C.int             // in
 	var _arg7 C.GdkModifierType // in
 	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.guint)(keycode)
+	_arg2 = (C.GdkModifierType)(state)
+	_arg3 = (C.int)(group)
 
 	_cret = C.gdk_display_translate_key(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
 

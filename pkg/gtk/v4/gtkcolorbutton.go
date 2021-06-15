@@ -98,11 +98,10 @@ func NewColorButton() ColorButton {
 
 // NewColorButtonWithRGBA constructs a class ColorButton.
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
-	var _arg1 *C.GdkRGBA // out
+	var _arg1 *C.GdkRGBA       // out
+	var _cret C.GtkColorButton // in
 
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
-
-	var _cret C.GtkColorButton // in
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
@@ -116,10 +115,9 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 // Modal gets whether the dialog is modal.
 func (b colorButton) Modal() bool {
 	var _arg0 *C.GtkColorButton // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_color_button_get_modal(_arg0)
 
@@ -135,10 +133,9 @@ func (b colorButton) Modal() bool {
 // Title gets the title of the color chooser dialog.
 func (b colorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 

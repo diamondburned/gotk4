@@ -85,10 +85,9 @@ func marshalFileMonitor(p uintptr) (interface{}, error) {
 // Cancel cancels a file monitor.
 func (m fileMonitor) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_monitor_cancel(_arg0)
 
@@ -124,10 +123,9 @@ func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitor
 // IsCancelled returns whether the monitor is canceled.
 func (m fileMonitor) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_file_monitor_is_cancelled(_arg0)
 
@@ -147,7 +145,7 @@ func (m fileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg1 C.gint          // out
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(limitMsecs)
+	_arg1 = (C.gint)(limitMsecs)
 
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)
 }

@@ -33,15 +33,14 @@ import "C"
 //      g_enum_complete_type_info (type, info, values);
 //    }
 func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) TypeInfo {
-	var _arg1 C.GType       // out
+	var _arg1 C.GType // out
+	var _info TypeInfo
 	var _arg3 *C.GEnumValue // out
 
 	_arg1 = C.GType(gEnumType)
 	_arg3 = (*C.GEnumValue)(unsafe.Pointer(constValues.Native()))
 
-	var _info TypeInfo
-
-	C.g_enum_complete_type_info(_arg1, _arg3, (*C.GTypeInfo)(unsafe.Pointer(&_info)))
+	C.g_enum_complete_type_info(_arg1, (*C.GTypeInfo)(unsafe.Pointer(&_info)), _arg3)
 
 	return _info
 }
@@ -55,12 +54,11 @@ func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) Typ
 func EnumRegisterStatic(name string, constStaticValues *EnumValue) externglib.Type {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GEnumValue // out
+	var _cret C.GType       // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GEnumValue)(unsafe.Pointer(constStaticValues.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.g_enum_register_static(_arg1, _arg2)
 
@@ -76,13 +74,12 @@ func EnumRegisterStatic(name string, constStaticValues *EnumValue) externglib.Ty
 // This is intended to be used for debugging purposes. The format of the output
 // may change in the future.
 func EnumToString(gEnumType externglib.Type, value int) string {
-	var _arg1 C.GType // out
-	var _arg2 C.gint  // out
+	var _arg1 C.GType  // out
+	var _arg2 C.gint   // out
+	var _cret *C.gchar // in
 
 	_arg1 = C.GType(gEnumType)
-	_arg2 = C.gint(value)
-
-	var _cret *C.gchar // in
+	_arg2 = (C.gint)(value)
 
 	_cret = C.g_enum_to_string(_arg1, _arg2)
 
@@ -98,15 +95,14 @@ func EnumToString(gEnumType externglib.Type, value int) string {
 // complete_type_info() function of a Plugin implementation, see the example for
 // g_enum_complete_type_info() above.
 func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) TypeInfo {
-	var _arg1 C.GType        // out
+	var _arg1 C.GType // out
+	var _info TypeInfo
 	var _arg3 *C.GFlagsValue // out
 
 	_arg1 = C.GType(gFlagsType)
 	_arg3 = (*C.GFlagsValue)(unsafe.Pointer(constValues.Native()))
 
-	var _info TypeInfo
-
-	C.g_flags_complete_type_info(_arg1, _arg3, (*C.GTypeInfo)(unsafe.Pointer(&_info)))
+	C.g_flags_complete_type_info(_arg1, (*C.GTypeInfo)(unsafe.Pointer(&_info)), _arg3)
 
 	return _info
 }
@@ -119,12 +115,11 @@ func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) 
 func FlagsRegisterStatic(name string, constStaticValues *FlagsValue) externglib.Type {
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GFlagsValue // out
+	var _cret C.GType        // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GFlagsValue)(unsafe.Pointer(constStaticValues.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.g_flags_register_static(_arg1, _arg2)
 
@@ -142,13 +137,12 @@ func FlagsRegisterStatic(name string, constStaticValues *FlagsValue) externglib.
 // This is intended to be used for debugging purposes. The format of the output
 // may change in the future.
 func FlagsToString(flagsType externglib.Type, value uint) string {
-	var _arg1 C.GType // out
-	var _arg2 C.guint // out
+	var _arg1 C.GType  // out
+	var _arg2 C.guint  // out
+	var _cret *C.gchar // in
 
 	_arg1 = C.GType(flagsType)
-	_arg2 = C.guint(value)
-
-	var _cret *C.gchar // in
+	_arg2 = (C.guint)(value)
 
 	_cret = C.g_flags_to_string(_arg1, _arg2)
 
@@ -181,27 +175,6 @@ func (e *EnumValue) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Value gets the field inside the struct.
-func (e *EnumValue) Value() int {
-	var v int // out
-	v = (int)(e.native.value)
-	return v
-}
-
-// ValueName gets the field inside the struct.
-func (e *EnumValue) ValueName() string {
-	var v string // out
-	v = C.GoString(e.native.value_name)
-	return v
-}
-
-// ValueNick gets the field inside the struct.
-func (e *EnumValue) ValueNick() string {
-	var v string // out
-	v = C.GoString(e.native.value_nick)
-	return v
-}
-
 // FlagsValue: a structure which contains a single flags value, its name, and
 // its nickname.
 type FlagsValue struct {
@@ -221,25 +194,4 @@ func WrapFlagsValue(ptr unsafe.Pointer) *FlagsValue {
 // Native returns the underlying C source pointer.
 func (f *FlagsValue) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
-}
-
-// Value gets the field inside the struct.
-func (f *FlagsValue) Value() uint {
-	var v uint // out
-	v = (uint)(f.native.value)
-	return v
-}
-
-// ValueName gets the field inside the struct.
-func (f *FlagsValue) ValueName() string {
-	var v string // out
-	v = C.GoString(f.native.value_name)
-	return v
-}
-
-// ValueNick gets the field inside the struct.
-func (f *FlagsValue) ValueNick() string {
-	var v string // out
-	v = C.GoString(f.native.value_nick)
-	return v
 }

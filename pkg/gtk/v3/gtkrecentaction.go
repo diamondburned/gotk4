@@ -72,10 +72,11 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 
 // NewRecentAction constructs a class RecentAction.
 func NewRecentAction(name string, label string, tooltip string, stockId string) RecentAction {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
-	var _arg3 *C.gchar // out
-	var _arg4 *C.gchar // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.gchar          // out
+	var _arg3 *C.gchar          // out
+	var _arg4 *C.gchar          // out
+	var _cret C.GtkRecentAction // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -85,8 +86,6 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg4))
-
-	var _cret C.GtkRecentAction // in
 
 	_cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -104,6 +103,7 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	var _arg3 *C.gchar            // out
 	var _arg4 *C.gchar            // out
 	var _arg5 *C.GtkRecentManager // out
+	var _cret C.GtkRecentAction   // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -114,8 +114,6 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	_arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-
-	var _cret C.GtkRecentAction // in
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -130,10 +128,9 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 // gtk_recent_chooser_menu_set_show_numbers().
 func (a recentAction) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentAction // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_action_get_show_numbers(_arg0)
 

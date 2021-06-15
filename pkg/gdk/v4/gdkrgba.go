@@ -53,43 +53,14 @@ func (r *RGBA) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Red gets the field inside the struct.
-func (r *RGBA) Red() float32 {
-	var v float32 // out
-	v = (float32)(r.native.red)
-	return v
-}
-
-// Green gets the field inside the struct.
-func (r *RGBA) Green() float32 {
-	var v float32 // out
-	v = (float32)(r.native.green)
-	return v
-}
-
-// Blue gets the field inside the struct.
-func (r *RGBA) Blue() float32 {
-	var v float32 // out
-	v = (float32)(r.native.blue)
-	return v
-}
-
-// Alpha gets the field inside the struct.
-func (r *RGBA) Alpha() float32 {
-	var v float32 // out
-	v = (float32)(r.native.alpha)
-	return v
-}
-
 // Copy makes a copy of a `GdkRGBA`.
 //
 // The result must be freed through [method@Gdk.RGBA.free].
 func (r *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
+	var _cret *C.GdkRGBA // in
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GdkRGBA // in
 
 	_cret = C.gdk_rgba_copy(_arg0)
 
@@ -107,11 +78,10 @@ func (r *RGBA) Copy() *RGBA {
 func (p *RGBA) Equal(p2 RGBA) bool {
 	var _arg0 C.gpointer // out
 	var _arg1 C.gpointer // out
-
-	_arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(p2.Native()))
-
 	var _cret C.gboolean // in
+
+	_arg0 = *(*C.gpointer)(unsafe.Pointer(p.Native()))
+	_arg1 = *(*C.gpointer)(unsafe.Pointer(p2.Native()))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 
@@ -137,10 +107,9 @@ func (r *RGBA) Free() {
 // `GdkRGBA`s.
 func (p *RGBA) Hash() uint {
 	var _arg0 C.gpointer // out
+	var _cret C.guint    // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
-
-	var _cret C.guint // in
+	_arg0 = *(*C.gpointer)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gdk_rgba_hash(_arg0)
 
@@ -156,10 +125,9 @@ func (p *RGBA) Hash() uint {
 // That is, drawing with the value would not produce any change.
 func (r *RGBA) IsClear() bool {
 	var _arg0 *C.GdkRGBA // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_rgba_is_clear(_arg0)
 
@@ -178,10 +146,9 @@ func (r *RGBA) IsClear() bool {
 // contents.
 func (r *RGBA) IsOpaque() bool {
 	var _arg0 *C.GdkRGBA // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_rgba_is_opaque(_arg0)
 
@@ -211,12 +178,11 @@ func (r *RGBA) IsOpaque() bool {
 func (r *RGBA) Parse(spec string) bool {
 	var _arg0 *C.GdkRGBA // out
 	var _arg1 *C.char    // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_rgba_parse(_arg0, _arg1)
 
@@ -243,10 +209,9 @@ func (r *RGBA) Parse(spec string) bool {
 // use a different representation.
 func (r *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
+	var _cret *C.char    // in
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_rgba_to_string(_arg0)
 

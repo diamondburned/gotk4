@@ -166,10 +166,9 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 // gdk_x11_display_error_trap_pop_ignored() would be more efficient.
 func (d x11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 
@@ -210,10 +209,9 @@ func (d x11Display) ErrorTrapPush() {
 // gdk_x11_surface_set_group().
 func (d x11Display) DefaultGroup() gdk.Surface {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gdk_x11_display_get_default_group(_arg0)
 
@@ -227,12 +225,11 @@ func (d x11Display) DefaultGroup() gdk.Surface {
 // GlxVersion retrieves the version of the GLX implementation.
 func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.int         // in
+	var _arg2 C.int         // in
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _arg1 C.int      // in
-	var _arg2 C.int      // in
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
 
@@ -260,10 +257,9 @@ func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 // first) may be returned.
 func (d x11Display) PrimaryMonitor() gdk.Monitor {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GdkMonitor // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkMonitor // in
 
 	_cret = C.gdk_x11_display_get_primary_monitor(_arg0)
 
@@ -276,11 +272,10 @@ func (d x11Display) PrimaryMonitor() gdk.Monitor {
 
 // Screen retrieves the X11Screen of the @display.
 func (d x11Display) Screen() X11Screen {
-	var _arg0 *C.GdkDisplay // out
+	var _arg0 *C.GdkDisplay   // out
+	var _cret *C.GdkX11Screen // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkX11Screen // in
 
 	_cret = C.gdk_x11_display_get_screen(_arg0)
 
@@ -294,10 +289,9 @@ func (d x11Display) Screen() X11Screen {
 // StartupNotificationID gets the startup notification ID for a display.
 func (d x11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
 
@@ -313,10 +307,9 @@ func (d x11Display) StartupNotificationID() string {
 // presses or pointer movements. See gdk_x11_surface_set_user_time().
 func (d x11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
+	var _cret C.guint32     // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
 
@@ -356,7 +349,7 @@ func (d x11Display) SetCursorTheme(theme string, size int) {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(theme))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(size)
+	_arg2 = (C.int)(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
@@ -398,7 +391,7 @@ func (d x11Display) SetSurfaceScale(scale int) {
 	var _arg1 C.int         // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = C.int(scale)
+	_arg1 = (C.int)(scale)
 
 	C.gdk_x11_display_set_surface_scale(_arg0, _arg1)
 }
@@ -408,16 +401,15 @@ func (d x11Display) SetSurfaceScale(scale int) {
 func (d x11Display) StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
+	var _arg2 *C.char       // in
+	var _arg3 C.int         // in
+	var _arg4 *C.guchar
+	var _arg5 C.int // in
+	var _cret C.int // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _arg2 *C.char // in
-	var _arg3 C.int   // in
-	var _arg4 *C.guchar
-	var _arg5 C.int // in
-	var _cret C.int // in
 
 	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -448,17 +440,16 @@ func (d x11Display) TextPropertyToTextList(encoding string, format int, text *by
 	var _arg3 *C.guchar     // out
 	var _arg4 C.int         // out
 	var _arg5 ***C.char     // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(encoding))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(format)
-	_arg3 = *C.guchar(text)
-	_arg4 = C.int(length)
+	_arg2 = (C.int)(format)
+	_arg3 = (*C.guchar)(text)
+	_arg4 = (C.int)(length)
 	_arg5 = (***C.char)(C.CString(list))
 	defer C.free(unsafe.Pointer(_arg5))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -483,16 +474,15 @@ func (d x11Display) Ungrab() {
 func (d x11Display) UTF8ToCompoundText(str string) (string, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
+	var _arg2 *C.char       // in
+	var _arg3 C.int         // in
+	var _arg4 *C.guchar
+	var _arg5 C.int      // in
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _arg2 *C.char // in
-	var _arg3 C.int   // in
-	var _arg4 *C.guchar
-	var _arg5 C.int      // in
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 

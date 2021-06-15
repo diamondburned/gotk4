@@ -196,12 +196,11 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 func (a appInfo) AddSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.g_app_info_add_supports_type(_arg0, _arg1, &_cerr)
 
@@ -216,10 +215,9 @@ func (a appInfo) AddSupportsType(contentType string) error {
 // g_app_info_delete().
 func (a appInfo) CanDelete() bool {
 	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_app_info_can_delete(_arg0)
 
@@ -236,10 +234,9 @@ func (a appInfo) CanDelete() bool {
 // from an application.
 func (a appInfo) CanRemoveSupportsType() bool {
 	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_app_info_can_remove_supports_type(_arg0)
 
@@ -259,10 +256,9 @@ func (a appInfo) CanRemoveSupportsType() bool {
 // g_app_info_can_delete().
 func (a appInfo) Delete() bool {
 	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_app_info_delete(_arg0)
 
@@ -278,10 +274,9 @@ func (a appInfo) Delete() bool {
 // Dup creates a duplicate of a Info.
 func (a appInfo) Dup() AppInfo {
 	var _arg0 *C.GAppInfo // out
+	var _cret *C.GAppInfo // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GAppInfo // in
 
 	_cret = C.g_app_info_dup(_arg0)
 
@@ -300,11 +295,10 @@ func (a appInfo) Dup() AppInfo {
 func (a appInfo) Equal(appinfo2 AppInfo) bool {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.GAppInfo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GAppInfo)(unsafe.Pointer(appinfo2.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_app_info_equal(_arg0, _arg1)
 
@@ -321,10 +315,9 @@ func (a appInfo) Equal(appinfo2 AppInfo) bool {
 // started.
 func (a appInfo) Commandline() string {
 	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_app_info_get_commandline(_arg0)
 
@@ -339,10 +332,9 @@ func (a appInfo) Commandline() string {
 // application.
 func (a appInfo) Description() string {
 	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_app_info_get_description(_arg0)
 
@@ -357,10 +349,9 @@ func (a appInfo) Description() string {
 // often more descriptive to the user than the name itself.
 func (a appInfo) DisplayName() string {
 	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_app_info_get_display_name(_arg0)
 
@@ -374,10 +365,9 @@ func (a appInfo) DisplayName() string {
 // Executable gets the executable's name for the installed application.
 func (a appInfo) Executable() string {
 	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_app_info_get_executable(_arg0)
 
@@ -391,10 +381,9 @@ func (a appInfo) Executable() string {
 // Icon gets the icon for the application.
 func (a appInfo) Icon() Icon {
 	var _arg0 *C.GAppInfo // out
+	var _cret *C.GIcon    // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_app_info_get_icon(_arg0)
 
@@ -414,10 +403,9 @@ func (a appInfo) Icon() Icon {
 // been constructed.
 func (a appInfo) ID() string {
 	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_app_info_get_id(_arg0)
 
@@ -431,10 +419,9 @@ func (a appInfo) ID() string {
 // Name gets the installed name of the application.
 func (a appInfo) Name() string {
 	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_app_info_get_name(_arg0)
 
@@ -452,10 +439,9 @@ func (a appInfo) Name() string {
 // exported directly by the application.
 func (a appInfo) SupportedTypes() []string {
 	var _arg0 *C.GAppInfo // out
+	var _cret **C.char
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret **C.char
 
 	_cret = C.g_app_info_get_supported_types(_arg0)
 
@@ -481,11 +467,10 @@ func (a appInfo) SupportedTypes() []string {
 func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_app_info_launch_uris_finish(_arg0, _arg1, &_cerr)
 
@@ -501,12 +486,11 @@ func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 func (a appInfo) RemoveSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.g_app_info_remove_supports_type(_arg0, _arg1, &_cerr)
 
@@ -522,12 +506,11 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 func (a appInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(extension))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.g_app_info_set_as_default_for_extension(_arg0, _arg1, &_cerr)
 
@@ -543,12 +526,11 @@ func (a appInfo) SetAsDefaultForExtension(extension string) error {
 func (a appInfo) SetAsDefaultForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.g_app_info_set_as_default_for_type(_arg0, _arg1, &_cerr)
 
@@ -566,12 +548,11 @@ func (a appInfo) SetAsDefaultForType(contentType string) error {
 func (a appInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.g_app_info_set_as_last_used_for_type(_arg0, _arg1, &_cerr)
 
@@ -586,10 +567,9 @@ func (a appInfo) SetAsLastUsedForType(contentType string) error {
 // list available applications.
 func (a appInfo) ShouldShow() bool {
 	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_app_info_should_show(_arg0)
 
@@ -605,10 +585,9 @@ func (a appInfo) ShouldShow() bool {
 // SupportsFiles checks if the application accepts files as arguments.
 func (a appInfo) SupportsFiles() bool {
 	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_app_info_supports_files(_arg0)
 
@@ -625,10 +604,9 @@ func (a appInfo) SupportsFiles() bool {
 // directories from URIs.
 func (a appInfo) SupportsUris() bool {
 	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_app_info_supports_uris(_arg0)
 
@@ -704,10 +682,9 @@ func NewAppLaunchContext() AppLaunchContext {
 // `KEY=VALUE`.
 func (c appLaunchContext) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
+	var _cret **C.char
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(c.Native()))
-
-	var _cret **C.char
 
 	_cret = C.g_app_launch_context_get_environment(_arg0)
 

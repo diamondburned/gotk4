@@ -69,11 +69,10 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 
 // NewNumericSorter constructs a class NumericSorter.
 func NewNumericSorter(expression Expression) NumericSorter {
-	var _arg1 *C.GtkExpression // out
+	var _arg1 *C.GtkExpression   // out
+	var _cret C.GtkNumericSorter // in
 
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	var _cret C.GtkNumericSorter // in
 
 	_cret = C.gtk_numeric_sorter_new(_arg1)
 
@@ -88,10 +87,9 @@ func NewNumericSorter(expression Expression) NumericSorter {
 // items.
 func (s numericSorter) Expression() Expression {
 	var _arg0 *C.GtkNumericSorter // out
+	var _cret *C.GtkExpression    // in
 
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkExpression // in
 
 	_cret = C.gtk_numeric_sorter_get_expression(_arg0)
 
@@ -105,10 +103,9 @@ func (s numericSorter) Expression() Expression {
 // SortOrder gets whether this sorter will sort smaller numbers first.
 func (s numericSorter) SortOrder() SortType {
 	var _arg0 *C.GtkNumericSorter // out
+	var _cret C.GtkSortType       // in
 
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSortType // in
 
 	_cret = C.gtk_numeric_sorter_get_sort_order(_arg0)
 

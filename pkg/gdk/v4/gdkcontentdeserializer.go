@@ -28,11 +28,10 @@ func init() {
 func ContentDeserializeFinish(result gio.AsyncResult, value **externglib.Value) error {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GValue       // out
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 	_arg2 = (*C.GValue)(value.GValue)
-
-	var _cerr *C.GError // in
 
 	C.gdk_content_deserialize_finish(_arg1, _arg2, &_cerr)
 
@@ -115,10 +114,9 @@ func marshalContentDeserializer(p uintptr) (interface{}, error) {
 // [func@content_deserialize_async].
 func (d contentDeserializer) Cancellable() gio.Cancellable {
 	var _arg0 *C.GdkContentDeserializer // out
+	var _cret *C.GCancellable           // in
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GCancellable // in
 
 	_cret = C.gdk_content_deserializer_get_cancellable(_arg0)
 
@@ -132,10 +130,9 @@ func (d contentDeserializer) Cancellable() gio.Cancellable {
 // GType gets the GType to create an instance of.
 func (d contentDeserializer) GType() externglib.Type {
 	var _arg0 *C.GdkContentDeserializer // out
+	var _cret C.GType                   // in
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.gdk_content_deserializer_get_gtype(_arg0)
 
@@ -151,10 +148,9 @@ func (d contentDeserializer) GType() externglib.Type {
 // This is the stream that was passed to [func@content_deserialize_async].
 func (d contentDeserializer) InputStream() gio.InputStream {
 	var _arg0 *C.GdkContentDeserializer // out
+	var _cret *C.GInputStream           // in
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GInputStream // in
 
 	_cret = C.gdk_content_deserializer_get_input_stream(_arg0)
 
@@ -168,10 +164,9 @@ func (d contentDeserializer) InputStream() gio.InputStream {
 // MIMEType gets the mime type to deserialize from.
 func (d contentDeserializer) MIMEType() string {
 	var _arg0 *C.GdkContentDeserializer // out
+	var _cret *C.char                   // in
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_content_deserializer_get_mime_type(_arg0)
 
@@ -187,10 +182,9 @@ func (d contentDeserializer) MIMEType() string {
 // This is the priority that was passed to [funccontent_deserialize_async].
 func (d contentDeserializer) Priority() int {
 	var _arg0 *C.GdkContentDeserializer // out
+	var _cret C.int                     // in
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_content_deserializer_get_priority(_arg0)
 
@@ -204,10 +198,9 @@ func (d contentDeserializer) Priority() int {
 // Value gets the `GValue` to store the deserialized object in.
 func (d contentDeserializer) Value() **externglib.Value {
 	var _arg0 *C.GdkContentDeserializer // out
+	var _cret *C.GValue                 // in
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GValue // in
 
 	_cret = C.gdk_content_deserializer_get_value(_arg0)
 

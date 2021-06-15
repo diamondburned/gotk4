@@ -54,11 +54,10 @@ func PangoContextGet() pango.Context {
 // want to keep a context around and track changes to the font rendering
 // settings.
 func PangoContextGetForDisplay(display Display) pango.Context {
-	var _arg1 *C.GdkDisplay // out
+	var _arg1 *C.GdkDisplay   // out
+	var _cret *C.PangoContext // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-
-	var _cret *C.PangoContext // in
 
 	_cret = C.gdk_pango_context_get_for_display(_arg1)
 
@@ -83,11 +82,10 @@ func PangoContextGetForDisplay(display Display) pango.Context {
 // to keep a context around and track changes to the screen’s font rendering
 // settings.
 func PangoContextGetForScreen(screen Screen) pango.Context {
-	var _arg1 *C.GdkScreen // out
+	var _arg1 *C.GdkScreen    // out
+	var _cret *C.PangoContext // in
 
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-
-	var _cret *C.PangoContext // in
 
 	_cret = C.gdk_pango_context_get_for_screen(_arg1)
 

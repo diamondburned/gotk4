@@ -23,7 +23,7 @@ type callableGenerator struct {
 
 func newCallableGenerator(ng *NamespaceGenerator) callableGenerator {
 	// Arbitrary sizes, whatever.
-	pen := pen.NewBlockSections(1024, 4096, 1024, 1024, 256, 4096, 128)
+	pen := pen.NewBlockSections(1024, 4096, 256, 1024, 4096, 128)
 
 	return callableGenerator{
 		ng:  ng,
@@ -71,7 +71,7 @@ func cFunctionSig(fn gir.CallableAttrs) string {
 		b.WriteByte(' ')
 	}
 
-	b.WriteString(fn.Name)
+	b.WriteString(fn.CIdentifier)
 	b.WriteByte('(')
 
 	if fn.Parameters != nil && len(fn.Parameters.Parameters) > 0 {
@@ -107,7 +107,6 @@ func (cg *callableGenerator) renderBlock() bool {
 	const (
 		secInputDecl = iota
 		secInputConv
-		secReturnDecl
 		secFnCall
 		secOutputDecl
 		secOutputConv
@@ -115,41 +114,46 @@ func (cg *callableGenerator) renderBlock() bool {
 	)
 
 	var (
-		instanceParam bool
-		inputValues   []ValueProp
-		outputValues  []ValueProp
+		instanceParam  bool
+		callableValues []ConversionValue
 	)
 
 	if cg.Parameters != nil {
-		inputValues = make([]ValueProp, 0, len(cg.Parameters.Parameters))
-		outputValues = make([]ValueProp, 0, len(cg.Parameters.Parameters)+2)
+		callableValues = make([]ConversionValue, 0, len(cg.Parameters.Parameters)+2)
 
 		if cg.Parameters.InstanceParameter != nil {
 			instanceParam = true
-			inputValues = append(inputValues, NewValuePropParam(
-				FirstLetter(cg.Parameters.InstanceParameter.Name),
-				"_arg0",
-				-1, cg.Parameters.InstanceParameter.ParameterAttrs,
+
+			callableValues = append(callableValues, NewConversionValue(
+				FirstLetter(cg.Parameters.InstanceParameter.Name), "_arg0", -1, ConvertGoToC,
+				cg.Parameters.InstanceParameter.ParameterAttrs,
 			))
 		}
 
 		for i, param := range cg.Parameters.Parameters {
-			switch param.Direction {
-			case "inout": // TODO
-				return false
-			case "out":
-				outputValues = append(outputValues, NewValuePropParam(
-					fmt.Sprintf("_arg%d", i+1),
-					"_"+SnakeToGo(false, param.Name),
-					i, param.ParameterAttrs,
-				))
-			default:
-				inputValues = append(inputValues, NewValuePropParam(
-					SnakeToGo(false, param.Name),
-					fmt.Sprintf("_arg%d", i+1),
-					i, param.ParameterAttrs,
-				))
+			if param.Direction == "" {
+				param.Direction = "in"
 			}
+
+			var in string
+			var out string
+			var dir ConversionDirection
+
+			switch param.Direction {
+			case "in":
+				in = SnakeToGo(false, param.Name)
+				out = fmt.Sprintf("_arg%d", i+1)
+				dir = ConvertGoToC
+			case "out":
+				in = fmt.Sprintf("_arg%d", i+1)
+				out = "_" + SnakeToGo(false, param.Name)
+				dir = ConvertCToGo
+			default:
+				return false
+			}
+
+			value := NewConversionValue(in, out, i, dir, param.ParameterAttrs)
+			callableValues = append(callableValues, value)
 		}
 	}
 
@@ -162,81 +166,78 @@ func (cg *callableGenerator) renderBlock() bool {
 		// skip generating this boolean.
 		if !cg.Throws || returnName != "ok" {
 			hasReturn = true
+			returnName = "_" + returnName
 
-			outputValues = append(outputValues, NewValuePropReturn(
-				"_cret", "_"+returnName, *cg.ReturnValue,
-			))
+			value := NewConversionValueReturn("_cret", returnName, ConvertCToGo, *cg.ReturnValue)
+			callableValues = append(callableValues, value)
 		}
 	}
 
 	if cg.Throws {
-		outputValues = append(outputValues, NewThrowValue("_cerr", "_goerr"))
+		callableValues = append(callableValues, NewThrowValue("_cerr", "_goerr"))
 	}
 
-	goc := cg.fg.GoCConverter(cg.Name, inputValues)
-	cgo := cg.fg.CGoConverter(cg.Name, outputValues)
-
-	convertedInputs := goc.ConvertAll()
-	if convertedInputs == nil {
-		cg.fg.Logln(LogSkip, "callable (no Go->C conversion)", cFunctionSig(cg.CallableAttrs))
+	convert := NewTypeConverter(cg.fg, cg.Name, callableValues)
+	results := convert.ConvertAll()
+	if results == nil {
+		cg.fg.Logln(LogSkip, "callable has no conversion", cFunctionSig(cg.CallableAttrs))
 		return false
 	}
 
-	convertedOutputs := cgo.ConvertAll()
-	if convertedOutputs == nil {
-		cg.fg.Logln(LogSkip, "callable (no C->Go conversion)", cFunctionSig(cg.CallableAttrs))
-		return false
-	}
-
-	cg.fg.applyConvertedFxs(convertedInputs)
-	cg.fg.applyConvertedFxs(convertedOutputs)
+	cg.fg.applyConvertedFxs(results)
 
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
 
-	goFnArgs := pen.NewJoints(", ", len(convertedInputs))
-	goFnRets := pen.NewJoints(", ", len(convertedOutputs))
+	goFnArgs := pen.NewJoints(", ", len(results))
+	goFnRets := pen.NewJoints(", ", len(results))
 
-	for i, converted := range convertedInputs {
-		// Skip the instance parameter if any.
-		if i != 0 || !instanceParam {
-			goFnArgs.Addf("%s %s", converted.InName, converted.InType)
+	for i, converted := range results {
+		if converted.Skip {
+			continue
 		}
 
-		// Go inputs are declared in the parameters, so no InDeclare.
-		// C outputs have to be declared (input means C function input).
-		cg.pen.Line(secInputDecl, converted.OutDeclare)
-		// Conversions follow right after declaring all outputs.
-		cg.pen.Line(secInputConv, converted.Conversion)
-	}
+		switch converted.Direction {
+		case ConvertGoToC: // parameter
+			// Skip the instance parameter if any.
+			if i != 0 || !instanceParam {
+				goFnArgs.Addf("%s %s", converted.InName, converted.InType)
+			}
 
-	for _, converted := range convertedOutputs {
-		// decoOut is the name that's used solely for documentation purposes. It
-		// is not used internally at all, and so it doesn't have the underscore.
-		decoOut := strings.TrimPrefix(converted.OutName, "_")
-		goFnRets.Addf("%s %s", decoOut, converted.OutType)
+			// Go inputs are declared in the parameters, so no InDeclare.
+			// C outputs have to be declared (input means C function input).
+			cg.pen.Line(secInputDecl, converted.OutDeclare)
+			// Conversions follow right after declaring all outputs.
+			cg.pen.Line(secInputConv, converted.Conversion)
 
-		goReturns.Add(converted.OutName)
+		case ConvertCToGo: // return
+			// decoOut is the name that's used solely for documentation
+			// purposes. It is not used internally at all, and so it doesn't
+			// have the underscore.
+			decoOut := strings.TrimPrefix(converted.OutName, "_")
+			goFnRets.Addf("%s %s", decoOut, converted.OutType)
 
-		cg.pen.Line(secReturnDecl, converted.InDeclare)
-		// Go outputs should be redeclared.
-		cg.pen.Line(secOutputDecl, converted.OutDeclare)
-		// Conversions follow right after declaring all outputs.
-		cg.pen.Line(secOutputConv, converted.Conversion)
+			goReturns.Add(converted.OutName)
+
+			cg.pen.Line(secInputDecl, converted.InDeclare)
+			// Go outputs should be redeclared.
+			cg.pen.Line(secOutputDecl, converted.OutDeclare)
+			// Conversions follow right after declaring all outputs.
+			cg.pen.Line(secOutputConv, converted.Conversion)
+		}
 	}
 
 	// For C function calling.
-	callParams := pen.NewJoints(", ", len(convertedInputs)+len(convertedOutputs))
-	AddCCallParam(&callParams, goc, cgo)
+	callParams := strings.Join(AddCCallParam(convert), ", ")
 
 	if !hasReturn {
-		cg.pen.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, callParams.Join())
+		cg.pen.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, callParams)
 	} else {
-		cg.pen.Linef(secFnCall, "_cret = C.%s(%s)", cg.CIdentifier, callParams.Join())
+		cg.pen.Linef(secFnCall, "_cret = C.%s(%s)", cg.CIdentifier, callParams)
 		cg.pen.EmptyLine(secFnCall)
 	}
 
-	if len(outputValues) > 0 {
+	if goReturns.Len() > 0 {
 		cg.pen.Line(secReturn, "return "+goReturns.Join())
 	}
 

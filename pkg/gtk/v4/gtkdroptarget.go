@@ -97,10 +97,6 @@ type DropTarget interface {
 	//
 	// If the result is nil, all formats are expected to be supported.
 	Formats() *gdk.ContentFormats
-	// GTypes gets the list of supported `GTypes` for @self.
-	//
-	// If no type have been set, nil will be returned.
-	GTypes() []externglib.Type
 	// Preload gets whether data should be preloaded on hover.
 	Preload() bool
 	// Value gets the current drop data, as a `GValue`.
@@ -146,11 +142,10 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 	var _arg1 C.GType         // out
 	var _arg2 C.GdkDragAction // out
+	var _cret C.GtkDropTarget // in
 
 	_arg1 = C.GType(typ)
 	_arg2 = (C.GdkDragAction)(actions)
-
-	var _cret C.GtkDropTarget // in
 
 	_cret = C.gtk_drop_target_new(_arg1, _arg2)
 
@@ -164,10 +159,9 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 // Actions gets the actions that this drop target supports.
 func (s dropTarget) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTarget // out
+	var _cret C.GdkDragAction  // in
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gtk_drop_target_get_actions(_arg0)
 
@@ -183,10 +177,9 @@ func (s dropTarget) Actions() gdk.DragAction {
 // If no drop operation is going on, nil is returned.
 func (s dropTarget) Drop() gdk.Drop {
 	var _arg0 *C.GtkDropTarget // out
+	var _cret *C.GdkDrop       // in
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDrop // in
 
 	_cret = C.gtk_drop_target_get_drop(_arg0)
 
@@ -201,11 +194,10 @@ func (s dropTarget) Drop() gdk.Drop {
 //
 // If the result is nil, all formats are expected to be supported.
 func (s dropTarget) Formats() *gdk.ContentFormats {
-	var _arg0 *C.GtkDropTarget // out
+	var _arg0 *C.GtkDropTarget     // out
+	var _cret *C.GdkContentFormats // in
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkContentFormats // in
 
 	_cret = C.gtk_drop_target_get_formats(_arg0)
 
@@ -219,39 +211,12 @@ func (s dropTarget) Formats() *gdk.ContentFormats {
 	return _contentFormats
 }
 
-// GTypes gets the list of supported `GTypes` for @self.
-//
-// If no type have been set, nil will be returned.
-func (s dropTarget) GTypes() []externglib.Type {
-	var _arg0 *C.GtkDropTarget // out
-
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GType
-	var _arg1 C.gsize // in
-
-	_cret = C.gtk_drop_target_get_gtypes(_arg0, &_arg1)
-
-	var _gTypes []externglib.Type
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		_gTypes = make([]externglib.Type, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_gTypes[i] = externglib.Type(src[i])
-		}
-	}
-
-	return _gTypes
-}
-
 // Preload gets whether data should be preloaded on hover.
 func (s dropTarget) Preload() bool {
 	var _arg0 *C.GtkDropTarget // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_drop_target_get_preload(_arg0)
 
@@ -267,10 +232,9 @@ func (s dropTarget) Preload() bool {
 // Value gets the current drop data, as a `GValue`.
 func (s dropTarget) Value() **externglib.Value {
 	var _arg0 *C.GtkDropTarget // out
+	var _cret *C.GValue        // in
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GValue // in
 
 	_cret = C.gtk_drop_target_get_value(_arg0)
 
@@ -317,7 +281,6 @@ func (s dropTarget) SetGTypes(types []externglib.Type) {
 	_arg2 = C.gsize(len(types))
 	_arg1 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(types))
 		for i := range types {

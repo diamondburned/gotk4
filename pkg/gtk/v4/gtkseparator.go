@@ -78,10 +78,9 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 // NewSeparator constructs a class Separator.
 func NewSeparator(orientation Orientation) Separator {
 	var _arg1 C.GtkOrientation // out
+	var _cret C.GtkSeparator   // in
 
 	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkSeparator // in
 
 	_cret = C.gtk_separator_new(_arg1)
 

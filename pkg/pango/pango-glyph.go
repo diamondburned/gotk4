@@ -92,20 +92,6 @@ func (g *GlyphInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// Geometry gets the field inside the struct.
-func (g *GlyphInfo) Geometry() GlyphGeometry {
-	var v GlyphGeometry // out
-	v = *WrapGlyphGeometry(unsafe.Pointer(&g.native.geometry))
-	return v
-}
-
-// Attr gets the field inside the struct.
-func (g *GlyphInfo) Attr() GlyphVisAttr {
-	var v GlyphVisAttr // out
-	v = *WrapGlyphVisAttr(unsafe.Pointer(&g.native.attr))
-	return v
-}
-
 // GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
@@ -151,27 +137,12 @@ func (g *GlyphString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// NumGlyphs gets the field inside the struct.
-func (g *GlyphString) NumGlyphs() int {
-	var v int // out
-	v = (int)(g.native.num_glyphs)
-	return v
-}
-
-// LogClusters gets the field inside the struct.
-func (g *GlyphString) LogClusters() *int {
-	var v *int // out
-	v = (*int)(g.native.log_clusters)
-	return v
-}
-
 // Copy: copy a glyph string and associated storage.
 func (s *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
+	var _cret *C.PangoGlyphString // in
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.PangoGlyphString // in
 
 	_cret = C.pango_glyph_string_copy(_arg0)
 
@@ -196,12 +167,11 @@ func (s *GlyphString) Copy() *GlyphString {
 func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
-
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
 
 	C.pango_glyph_string_extents(_arg0, _arg1, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
@@ -218,14 +188,13 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
 	var _arg3 *C.PangoFont        // out
-
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
-	_arg1 = C.int(start)
-	_arg2 = C.int(end)
-	_arg3 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
-
 	var _inkRect Rectangle
 	var _logicalRect Rectangle
+
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
+	_arg1 = (C.int)(start)
+	_arg2 = (C.int)(end)
+	_arg3 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
@@ -249,10 +218,9 @@ func (s *GlyphString) Free() {
 // in the @glyphs.
 func (g *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
+	var _cret C.int               // in
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.pango_glyph_string_get_width(_arg0)
 
@@ -269,7 +237,7 @@ func (s *GlyphString) SetSize(newLen int) {
 	var _arg1 C.gint              // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(newLen)
+	_arg1 = (C.gint)(newLen)
 
 	C.pango_glyph_string_set_size(_arg0, _arg1)
 }

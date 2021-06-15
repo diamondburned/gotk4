@@ -172,11 +172,10 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 func (i asyncInitable) InitFinish(res AsyncResult) error {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
 
@@ -192,12 +191,11 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
+	var _cret *C.GObject        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GObject // in
-	var _cerr *C.GError  // in
 
 	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
 

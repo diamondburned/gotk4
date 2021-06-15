@@ -66,11 +66,10 @@ func marshalFontset(p uintptr) (interface{}, error) {
 func (f fontset) Font(wc uint) Font {
 	var _arg0 *C.PangoFontset // out
 	var _arg1 C.guint         // out
+	var _cret *C.PangoFont    // in
 
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
-	_arg1 = C.guint(wc)
-
-	var _cret *C.PangoFont // in
+	_arg1 = (C.guint)(wc)
 
 	_cret = C.pango_fontset_get_font(_arg0, _arg1)
 
@@ -83,11 +82,10 @@ func (f fontset) Font(wc uint) Font {
 
 // Metrics: get overall metric information for the fonts in the fontset.
 func (f fontset) Metrics() *FontMetrics {
-	var _arg0 *C.PangoFontset // out
+	var _arg0 *C.PangoFontset     // out
+	var _cret *C.PangoFontMetrics // in
 
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.PangoFontMetrics // in
 
 	_cret = C.pango_fontset_get_metrics(_arg0)
 
@@ -138,11 +136,10 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 
 // NewFontsetSimple constructs a class FontsetSimple.
 func NewFontsetSimple(language *Language) FontsetSimple {
-	var _arg1 *C.PangoLanguage // out
+	var _arg1 *C.PangoLanguage     // out
+	var _cret C.PangoFontsetSimple // in
 
 	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
-
-	var _cret C.PangoFontsetSimple // in
 
 	_cret = C.pango_fontset_simple_new(_arg1)
 
@@ -167,10 +164,9 @@ func (f fontsetSimple) Append(font Font) {
 // Size returns the number of fonts in the fontset.
 func (f fontsetSimple) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out
+	var _cret C.int                 // in
 
 	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.pango_fontset_simple_size(_arg0)
 

@@ -166,8 +166,8 @@ func (c cellAreaContext) Allocate(width int, height int) {
 	var _arg2 C.gint                // out
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(width)
-	_arg2 = C.gint(height)
+	_arg1 = (C.gint)(width)
+	_arg2 = (C.gint)(height)
 
 	C.gtk_cell_area_context_allocate(_arg0, _arg1, _arg2)
 }
@@ -179,11 +179,10 @@ func (c cellAreaContext) Allocate(width int, height int) {
 // will be -1.
 func (c cellAreaContext) Allocation() (width int, height int) {
 	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // in
+	var _arg2 C.gint                // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 C.gint // in
-	var _arg2 C.gint // in
 
 	C.gtk_cell_area_context_get_allocation(_arg0, &_arg1, &_arg2)
 
@@ -207,10 +206,9 @@ func (c cellAreaContext) Allocation() (width int, height int) {
 // in order to compute a proper allocation.
 func (c cellAreaContext) Area() CellArea {
 	var _arg0 *C.GtkCellAreaContext // out
+	var _cret *C.GtkCellArea        // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkCellArea // in
 
 	_cret = C.gtk_cell_area_context_get_area(_arg0)
 
@@ -228,11 +226,10 @@ func (c cellAreaContext) Area() CellArea {
 // requesting the size of a CellArea, the returned values are 0.
 func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // in
+	var _arg2 C.gint                // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 C.gint // in
-	var _arg2 C.gint // in
 
 	C.gtk_cell_area_context_get_preferred_height(_arg0, &_arg1, &_arg2)
 
@@ -254,12 +251,11 @@ func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int
 func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
+	var _arg2 C.gint                // in
+	var _arg3 C.gint                // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(width)
-
-	var _arg2 C.gint // in
-	var _arg3 C.gint // in
+	_arg1 = (C.gint)(width)
 
 	C.gtk_cell_area_context_get_preferred_height_for_width(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -279,11 +275,10 @@ func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, 
 // requesting the size of a CellArea, the returned values are 0.
 func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // in
+	var _arg2 C.gint                // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 C.gint // in
-	var _arg2 C.gint // in
 
 	C.gtk_cell_area_context_get_preferred_width(_arg0, &_arg1, &_arg2)
 
@@ -305,12 +300,11 @@ func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 func (c cellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
+	var _arg2 C.gint                // in
+	var _arg3 C.gint                // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(height)
-
-	var _arg2 C.gint // in
-	var _arg3 C.gint // in
+	_arg1 = (C.gint)(height)
 
 	C.gtk_cell_area_context_get_preferred_width_for_height(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -336,8 +330,8 @@ func (c cellAreaContext) PushPreferredHeight(minimumHeight int, naturalHeight in
 	var _arg2 C.gint                // out
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(minimumHeight)
-	_arg2 = C.gint(naturalHeight)
+	_arg1 = (C.gint)(minimumHeight)
+	_arg2 = (C.gint)(naturalHeight)
 
 	C.gtk_cell_area_context_push_preferred_height(_arg0, _arg1, _arg2)
 }
@@ -355,8 +349,8 @@ func (c cellAreaContext) PushPreferredWidth(minimumWidth int, naturalWidth int) 
 	var _arg2 C.gint                // out
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(minimumWidth)
-	_arg2 = C.gint(naturalWidth)
+	_arg1 = (C.gint)(minimumWidth)
+	_arg2 = (C.gint)(naturalWidth)
 
 	C.gtk_cell_area_context_push_preferred_width(_arg0, _arg1, _arg2)
 }

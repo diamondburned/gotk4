@@ -51,27 +51,6 @@ func (f *FileAttributeInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// Name gets the field inside the struct.
-func (f *FileAttributeInfo) Name() string {
-	var v string // out
-	v = C.GoString(f.native.name)
-	return v
-}
-
-// Type gets the field inside the struct.
-func (f *FileAttributeInfo) Type() FileAttributeType {
-	var v FileAttributeType // out
-	v = FileAttributeType(f.native._type)
-	return v
-}
-
-// Flags gets the field inside the struct.
-func (f *FileAttributeInfo) Flags() FileAttributeInfoFlags {
-	var v FileAttributeInfoFlags // out
-	v = FileAttributeInfoFlags(f.native.flags)
-	return v
-}
-
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
 // attributes. The registry stores Key-Value pair formats as AttributeInfos.
 type FileAttributeInfoList struct {
@@ -114,20 +93,6 @@ func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// Infos gets the field inside the struct.
-func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
-	var v *FileAttributeInfo // out
-	v = WrapFileAttributeInfo(unsafe.Pointer(f.native.infos))
-	return v
-}
-
-// NInfos gets the field inside the struct.
-func (f *FileAttributeInfoList) NInfos() int {
-	var v int // out
-	v = (int)(f.native.n_infos)
-	return v
-}
-
 // Add adds a new attribute with @name to the @list, setting its @type and
 // @flags.
 func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
@@ -148,10 +113,9 @@ func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags Fi
 // Dup makes a duplicate of a file attribute info list.
 func (l *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
+	var _cret *C.GFileAttributeInfoList // in
 
 	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GFileAttributeInfoList // in
 
 	_cret = C.g_file_attribute_info_list_dup(_arg0)
 
@@ -169,12 +133,11 @@ func (l *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 func (l *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _arg1 *C.char                   // out
+	var _cret *C.GFileAttributeInfo     // in
 
 	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GFileAttributeInfo // in
 
 	_cret = C.g_file_attribute_info_list_lookup(_arg0, _arg1)
 
@@ -188,10 +151,9 @@ func (l *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 // Ref references a file attribute info list.
 func (l *FileAttributeInfoList) Ref() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
+	var _cret *C.GFileAttributeInfoList // in
 
 	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GFileAttributeInfoList // in
 
 	_cret = C.g_file_attribute_info_list_ref(_arg0)
 

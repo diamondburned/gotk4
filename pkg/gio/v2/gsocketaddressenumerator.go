@@ -101,12 +101,11 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
+	var _cret *C.GSocketAddress           // in
+	var _cerr *C.GError                   // in
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GSocketAddress // in
-	var _cerr *C.GError         // in
 
 	_cret = C.g_socket_address_enumerator_next(_arg0, _arg1, &_cerr)
 
@@ -126,12 +125,11 @@ func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, e
 func (e socketAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out
+	var _cret *C.GSocketAddress           // in
+	var _cerr *C.GError                   // in
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GSocketAddress // in
-	var _cerr *C.GError         // in
 
 	_cret = C.g_socket_address_enumerator_next_finish(_arg0, _arg1, &_cerr)
 

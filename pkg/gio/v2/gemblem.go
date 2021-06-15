@@ -71,11 +71,10 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 
 // NewEmblem constructs a class Emblem.
 func NewEmblem(icon Icon) Emblem {
-	var _arg1 *C.GIcon // out
+	var _arg1 *C.GIcon  // out
+	var _cret C.GEmblem // in
 
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	var _cret C.GEmblem // in
 
 	_cret = C.g_emblem_new(_arg1)
 
@@ -90,11 +89,10 @@ func NewEmblem(icon Icon) Emblem {
 func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 	var _arg1 *C.GIcon        // out
 	var _arg2 C.GEmblemOrigin // out
+	var _cret C.GEmblem       // in
 
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg2 = (C.GEmblemOrigin)(origin)
-
-	var _cret C.GEmblem // in
 
 	_cret = C.g_emblem_new_with_origin(_arg1, _arg2)
 
@@ -108,10 +106,9 @@ func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 // Icon gives back the icon from @emblem.
 func (e emblem) Icon() Icon {
 	var _arg0 *C.GEmblem // out
+	var _cret *C.GIcon   // in
 
 	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_emblem_get_icon(_arg0)
 
@@ -124,11 +121,10 @@ func (e emblem) Icon() Icon {
 
 // Origin gets the origin of the emblem.
 func (e emblem) Origin() EmblemOrigin {
-	var _arg0 *C.GEmblem // out
+	var _arg0 *C.GEmblem      // out
+	var _cret C.GEmblemOrigin // in
 
 	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
-
-	var _cret C.GEmblemOrigin // in
 
 	_cret = C.g_emblem_get_origin(_arg0)
 

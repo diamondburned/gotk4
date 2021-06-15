@@ -72,11 +72,10 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
 	var _arg0 *C.GtkStyleProvider // out
 	var _arg1 *C.GtkWidgetPath    // out
+	var _cret *C.GtkIconFactory   // in
 
 	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
-
-	var _cret *C.GtkIconFactory // in
 
 	_cret = C.gtk_style_provider_get_icon_factory(_arg0, _arg1)
 
@@ -90,13 +89,12 @@ func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
 // Style returns the style settings affecting a widget defined by @path, or
 // nil if @provider doesn’t contemplate styling @path.
 func (p styleProvider) Style(path *WidgetPath) StyleProperties {
-	var _arg0 *C.GtkStyleProvider // out
-	var _arg1 *C.GtkWidgetPath    // out
+	var _arg0 *C.GtkStyleProvider   // out
+	var _arg1 *C.GtkWidgetPath      // out
+	var _cret *C.GtkStyleProperties // in
 
 	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
-
-	var _cret *C.GtkStyleProperties // in
 
 	_cret = C.gtk_style_provider_get_style(_arg0, _arg1)
 
@@ -114,14 +112,13 @@ func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec g
 	var _arg1 *C.GtkWidgetPath    // out
 	var _arg2 C.GtkStateFlags     // out
 	var _arg3 *C.GParamSpec       // out
+	var _arg4 C.GValue            // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 	_arg2 = (C.GtkStateFlags)(state)
 	_arg3 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-
-	var _arg4 C.GValue   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_provider_get_style_property(_arg0, _arg1, _arg2, _arg3, &_arg4)
 

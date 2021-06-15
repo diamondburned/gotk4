@@ -144,12 +144,11 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 
 // NewDBusObjectManagerClientFinish constructs a class DBusObjectManagerClient.
 func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient, error) {
-	var _arg1 *C.GAsyncResult // out
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
+	var _arg1 *C.GAsyncResult            // out
 	var _cret C.GDBusObjectManagerClient // in
 	var _cerr *C.GError                  // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_object_manager_client_new_finish(_arg1, &_cerr)
 
@@ -164,12 +163,11 @@ func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient,
 
 // NewDBusObjectManagerClientForBusFinish constructs a class DBusObjectManagerClient.
 func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerClient, error) {
-	var _arg1 *C.GAsyncResult // out
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
+	var _arg1 *C.GAsyncResult            // out
 	var _cret C.GDBusObjectManagerClient // in
 	var _cerr *C.GError                  // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_object_manager_client_new_for_bus_finish(_arg1, &_cerr)
 
@@ -185,10 +183,9 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerC
 // Connection gets the BusConnection used by @manager.
 func (m dBusObjectManagerClient) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectManagerClient // out
+	var _cret *C.GDBusConnection          // in
 
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GDBusConnection // in
 
 	_cret = C.g_dbus_object_manager_client_get_connection(_arg0)
 
@@ -201,11 +198,10 @@ func (m dBusObjectManagerClient) Connection() DBusConnection {
 
 // Flags gets the flags that @manager was constructed with.
 func (m dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
-	var _arg0 *C.GDBusObjectManagerClient // out
+	var _arg0 *C.GDBusObjectManagerClient     // out
+	var _cret C.GDBusObjectManagerClientFlags // in
 
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GDBusObjectManagerClientFlags // in
 
 	_cret = C.g_dbus_object_manager_client_get_flags(_arg0)
 
@@ -220,10 +216,9 @@ func (m dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 // connection.
 func (m dBusObjectManagerClient) Name() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
+	var _cret *C.gchar                    // in
 
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_object_manager_client_get_name(_arg0)
 
@@ -240,10 +235,9 @@ func (m dBusObjectManagerClient) Name() string {
 // BusObjectManagerClient:name-owner property.
 func (m dBusObjectManagerClient) NameOwner() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
+	var _cret *C.gchar                    // in
 
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_object_manager_client_get_name_owner(_arg0)
 

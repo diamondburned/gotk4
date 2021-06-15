@@ -77,11 +77,10 @@ func marshalArrow(p uintptr) (interface{}, error) {
 func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
 	var _arg1 C.GtkArrowType  // out
 	var _arg2 C.GtkShadowType // out
+	var _cret C.GtkArrow      // in
 
 	_arg1 = (C.GtkArrowType)(arrowType)
 	_arg2 = (C.GtkShadowType)(shadowType)
-
-	var _cret C.GtkArrow // in
 
 	_cret = C.gtk_arrow_new(_arg1, _arg2)
 

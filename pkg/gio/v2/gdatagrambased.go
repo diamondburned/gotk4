@@ -292,11 +292,10 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 C.GIOCondition    // out
+	var _cret C.GIOCondition    // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg1 = (C.GIOCondition)(condition)
-
-	var _cret C.GIOCondition // in
 
 	_cret = C.g_datagram_based_condition_check(_arg0, _arg1)
 
@@ -319,13 +318,12 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 	var _arg1 C.GIOCondition    // out
 	var _arg2 C.gint64          // out
 	var _arg3 *C.GCancellable   // out
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg1 = (C.GIOCondition)(condition)
-	_arg2 = C.gint64(timeout)
+	_arg2 = (C.gint64)(timeout)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -393,16 +391,15 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	var _arg3 C.gint          // out
 	var _arg4 C.gint64        // out
 	var _arg5 *C.GCancellable // out
+	var _cret C.gint          // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
-	_arg3 = C.gint(flags)
-	_arg4 = C.gint64(timeout)
+	_arg3 = (C.gint)(flags)
+	_arg4 = (C.gint64)(timeout)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -466,16 +463,15 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	var _arg3 C.gint          // out
 	var _arg4 C.gint64        // out
 	var _arg5 *C.GCancellable // out
+	var _cret C.gint          // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
-	_arg3 = C.gint(flags)
-	_arg4 = C.gint64(timeout)
+	_arg3 = (C.gint)(flags)
+	_arg4 = (C.gint64)(timeout)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 

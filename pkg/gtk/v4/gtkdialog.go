@@ -299,7 +299,7 @@ func (d dialog) AddActionWidget(child Widget, responseId int) {
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.int(responseId)
+	_arg2 = (C.int)(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
 }
@@ -314,13 +314,12 @@ func (d dialog) AddButton(buttonText string, responseId int) Widget {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(responseId)
-
-	var _cret *C.GtkWidget // in
+	_arg2 = (C.int)(responseId)
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
 
@@ -334,10 +333,9 @@ func (d dialog) AddButton(buttonText string, responseId int) Widget {
 // ContentArea returns the content area of @dialog.
 func (d dialog) ContentArea() Box {
 	var _arg0 *C.GtkDialog // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
 
@@ -354,10 +352,9 @@ func (d dialog) ContentArea() Box {
 // [property@Gtk.Dialog:use-header-bar] property is true.
 func (d dialog) HeaderBar() HeaderBar {
 	var _arg0 *C.GtkDialog // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
 
@@ -373,11 +370,10 @@ func (d dialog) HeaderBar() HeaderBar {
 func (d dialog) ResponseForWidget(widget Widget) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
+	var _cret C.int        // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 
@@ -393,11 +389,10 @@ func (d dialog) ResponseForWidget(widget Widget) int {
 func (d dialog) WidgetForResponse(responseId int) Widget {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = C.int(responseId)
-
-	var _cret *C.GtkWidget // in
+	_arg1 = (C.int)(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
 
@@ -416,7 +411,7 @@ func (d dialog) Response(responseId int) {
 	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = C.int(responseId)
+	_arg1 = (C.int)(responseId)
 
 	C.gtk_dialog_response(_arg0, _arg1)
 }
@@ -430,7 +425,7 @@ func (d dialog) SetDefaultResponse(responseId int) {
 	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = C.int(responseId)
+	_arg1 = (C.int)(responseId)
 
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
 }
@@ -446,7 +441,7 @@ func (d dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = C.int(responseId)
+	_arg1 = (C.int)(responseId)
 	if setting {
 		_arg2 = C.TRUE
 	}

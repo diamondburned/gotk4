@@ -105,7 +105,7 @@ func DragAbort(context DragContext, time_ uint32) {
 	var _arg2 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = C.guint32(time_)
+	_arg2 = (C.guint32)(time_)
 
 	C.gdk_drag_abort(_arg1, _arg2)
 }
@@ -121,7 +121,7 @@ func DragDrop(context DragContext, time_ uint32) {
 	var _arg2 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = C.guint32(time_)
+	_arg2 = (C.guint32)(time_)
 
 	C.gdk_drag_drop(_arg1, _arg2)
 }
@@ -152,10 +152,9 @@ func DragDropDone(context DragContext, success bool) {
 // GDK_DROP_FINISHED event, its return value is meaningless at other times.
 func DragDropSucceeded(context DragContext) bool {
 	var _arg1 *C.GdkDragContext // out
+	var _cret C.gboolean        // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_drag_drop_succeeded(_arg1)
 
@@ -179,15 +178,14 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 	var _arg3 *C.GdkScreen      // out
 	var _arg4 C.gint            // out
 	var _arg5 C.gint            // out
+	var _arg6 *C.GdkWindow      // in
+	var _arg7 C.GdkDragProtocol // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
 	_arg3 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg4 = C.gint(xRoot)
-	_arg5 = C.gint(yRoot)
-
-	var _arg6 *C.GdkWindow      // in
-	var _arg7 C.GdkDragProtocol // in
+	_arg4 = (C.gint)(xRoot)
+	_arg5 = (C.gint)(yRoot)
 
 	C.gdk_drag_find_window_for_screen(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7)
 
@@ -203,10 +201,9 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 // DragGetSelection returns the selection atom for the current source window.
 func DragGetSelection(context DragContext) Atom {
 	var _arg1 *C.GdkDragContext // out
+	var _cret C.GdkAtom         // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-
-	var _cret C.GdkAtom // in
 
 	_cret = C.gdk_drag_get_selection(_arg1)
 
@@ -233,17 +230,16 @@ func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, x
 	var _arg6 C.GdkDragAction   // out
 	var _arg7 C.GdkDragAction   // out
 	var _arg8 C.guint32         // out
+	var _cret C.gboolean        // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(destWindow.Native()))
 	_arg3 = (C.GdkDragProtocol)(protocol)
-	_arg4 = C.gint(xRoot)
-	_arg5 = C.gint(yRoot)
+	_arg4 = (C.gint)(xRoot)
+	_arg5 = (C.gint)(yRoot)
 	_arg6 = (C.GdkDragAction)(suggestedAction)
 	_arg7 = (C.GdkDragAction)(possibleActions)
-	_arg8 = C.guint32(time_)
-
-	var _cret C.gboolean // in
+	_arg8 = (C.guint32)(time_)
 
 	_cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
@@ -267,7 +263,7 @@ func DragStatus(context DragContext, action DragAction, time_ uint32) {
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (C.GdkDragAction)(action)
-	_arg3 = C.guint32(time_)
+	_arg3 = (C.guint32)(time_)
 
 	C.gdk_drag_status(_arg1, _arg2, _arg3)
 }
@@ -284,7 +280,7 @@ func DropFinish(context DragContext, success bool, time_ uint32) {
 	if success {
 		_arg2 = C.TRUE
 	}
-	_arg3 = C.guint32(time_)
+	_arg3 = (C.guint32)(time_)
 
 	C.gdk_drop_finish(_arg1, _arg2, _arg3)
 }
@@ -302,7 +298,7 @@ func DropReply(context DragContext, accepted bool, time_ uint32) {
 	if accepted {
 		_arg2 = C.TRUE
 	}
-	_arg3 = C.guint32(time_)
+	_arg3 = (C.guint32)(time_)
 
 	C.gdk_drop_reply(_arg1, _arg2, _arg3)
 }

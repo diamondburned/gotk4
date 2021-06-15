@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
@@ -73,36 +72,6 @@ type UnixFDList interface {
 	// Length gets the length of @list (ie: the number of file descriptors
 	// contained within).
 	Length() int
-	// PeekFds returns the array of file descriptors that is contained in this
-	// object.
-	//
-	// After this call, the descriptors remain the property of @list. The caller
-	// must not close them and must not free the array. The array is valid only
-	// until @list is changed in any way.
-	//
-	// If @length is non-nil then it is set to the number of file descriptors in
-	// the returned array. The returned array is also terminated with -1.
-	//
-	// This function never returns nil. In case there are no file descriptors
-	// contained in @list, an empty array is returned.
-	PeekFds() []int
-	// StealFds returns the array of file descriptors that is contained in this
-	// object.
-	//
-	// After this call, the descriptors are no longer contained in @list.
-	// Further calls will return an empty list (unless more descriptors have
-	// been added).
-	//
-	// The return result of this function must be freed with g_free(). The
-	// caller is also responsible for closing all of the file descriptors. The
-	// file descriptors in the array are set to close-on-exec.
-	//
-	// If @length is non-nil then it is set to the number of file descriptors in
-	// the returned array. The returned array is also terminated with -1.
-	//
-	// This function never returns nil. In case there are no file descriptors
-	// contained in @list, an empty array is returned.
-	StealFds() []int
 }
 
 // unixFDList implements the UnixFDList class.
@@ -143,11 +112,10 @@ func NewUnixFDList() UnixFDList {
 func NewUnixFDListFromArray(fds []int) UnixFDList {
 	var _arg1 *C.gint
 	var _arg2 C.gint
+	var _cret C.GUnixFDList // in
 
 	_arg2 = C.gint(len(fds))
 	_arg1 = (*C.gint)(unsafe.Pointer(&fds[0]))
-
-	var _cret C.GUnixFDList // in
 
 	_cret = C.g_unix_fd_list_new_from_array(_arg1, _arg2)
 
@@ -173,12 +141,11 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 func (l unixFDList) Append(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
+	var _cret C.gint         // in
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gint(fd)
-
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
+	_arg1 = (C.gint)(fd)
 
 	_cret = C.g_unix_fd_list_append(_arg0, _arg1, &_cerr)
 
@@ -205,12 +172,11 @@ func (l unixFDList) Append(fd int) (int, error) {
 func (l unixFDList) Get(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
+	var _cret C.gint         // in
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gint(index_)
-
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
+	_arg1 = (C.gint)(index_)
 
 	_cret = C.g_unix_fd_list_get(_arg0, _arg1, &_cerr)
 
@@ -227,10 +193,9 @@ func (l unixFDList) Get(index_ int) (int, error) {
 // contained within).
 func (l unixFDList) Length() int {
 	var _arg0 *C.GUnixFDList // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_unix_fd_list_get_length(_arg0)
 
@@ -239,75 +204,4 @@ func (l unixFDList) Length() int {
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// PeekFds returns the array of file descriptors that is contained in this
-// object.
-//
-// After this call, the descriptors remain the property of @list. The caller
-// must not close them and must not free the array. The array is valid only
-// until @list is changed in any way.
-//
-// If @length is non-nil then it is set to the number of file descriptors in
-// the returned array. The returned array is also terminated with -1.
-//
-// This function never returns nil. In case there are no file descriptors
-// contained in @list, an empty array is returned.
-func (l unixFDList) PeekFds() []int {
-	var _arg0 *C.GUnixFDList // out
-
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.gint
-	var _arg1 C.gint // in
-
-	_cret = C.g_unix_fd_list_peek_fds(_arg0, &_arg1)
-
-	var _gints []int
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		_gints = make([]int, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_gints[i] = (int)(src[i])
-		}
-	}
-
-	return _gints
-}
-
-// StealFds returns the array of file descriptors that is contained in this
-// object.
-//
-// After this call, the descriptors are no longer contained in @list.
-// Further calls will return an empty list (unless more descriptors have
-// been added).
-//
-// The return result of this function must be freed with g_free(). The
-// caller is also responsible for closing all of the file descriptors. The
-// file descriptors in the array are set to close-on-exec.
-//
-// If @length is non-nil then it is set to the number of file descriptors in
-// the returned array. The returned array is also terminated with -1.
-//
-// This function never returns nil. In case there are no file descriptors
-// contained in @list, an empty array is returned.
-func (l unixFDList) StealFds() []int {
-	var _arg0 *C.GUnixFDList // out
-
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.gint
-	var _arg1 C.gint // in
-
-	_cret = C.g_unix_fd_list_steal_fds(_arg0, &_arg1)
-
-	var _gints []int
-
-	_gints = unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg1)
-	runtime.SetFinalizer(&_gints, func(v *[]int) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-
-	return _gints
 }

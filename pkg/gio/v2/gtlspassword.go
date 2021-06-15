@@ -93,12 +93,11 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 	var _arg1 C.GTlsPasswordFlags // out
 	var _arg2 *C.gchar            // out
+	var _cret C.GTlsPassword      // in
 
 	_arg1 = (C.GTlsPasswordFlags)(flags)
 	_arg2 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GTlsPassword // in
 
 	_cret = C.g_tls_password_new(_arg1, _arg2)
 
@@ -113,10 +112,9 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 // used for.
 func (p tlsPassword) Description() string {
 	var _arg0 *C.GTlsPassword // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_tls_password_get_description(_arg0)
 
@@ -129,11 +127,10 @@ func (p tlsPassword) Description() string {
 
 // Flags: get flags about the password.
 func (p tlsPassword) Flags() TLSPasswordFlags {
-	var _arg0 *C.GTlsPassword // out
+	var _arg0 *C.GTlsPassword     // out
+	var _cret C.GTlsPasswordFlags // in
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-
-	var _cret C.GTlsPasswordFlags // in
 
 	_cret = C.g_tls_password_get_flags(_arg0)
 
@@ -151,11 +148,10 @@ func (p tlsPassword) Flags() TLSPasswordFlags {
 func (p tlsPassword) Value(length *uint) *byte {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gsize        // out
+	var _cret *C.guchar       // in
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-	_arg1 = *C.gsize(length)
-
-	var _cret *C.guchar // in
+	_arg1 = (*C.gsize)(length)
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
 
@@ -171,10 +167,9 @@ func (p tlsPassword) Value(length *uint) *byte {
 // g_tls_password_get_flags().
 func (p tlsPassword) Warning() string {
 	var _arg0 *C.GTlsPassword // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_tls_password_get_warning(_arg0)
 

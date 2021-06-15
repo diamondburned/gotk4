@@ -162,11 +162,10 @@ func (s filter) Changed(change FilterChange) {
 // This function is meant purely for optimization purposes, filters can
 // choose to omit implementing it, but FilterListModel uses it.
 func (s filter) Strictness() FilterMatch {
-	var _arg0 *C.GtkFilter // out
+	var _arg0 *C.GtkFilter     // out
+	var _cret C.GtkFilterMatch // in
 
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkFilterMatch // in
 
 	_cret = C.gtk_filter_get_strictness(_arg0)
 
@@ -181,11 +180,10 @@ func (s filter) Strictness() FilterMatch {
 func (s filter) Match(item gextras.Objector) bool {
 	var _arg0 *C.GtkFilter // out
 	var _arg1 C.gpointer   // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_filter_match(_arg0, _arg1)
 

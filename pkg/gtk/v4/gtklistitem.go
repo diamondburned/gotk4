@@ -117,10 +117,9 @@ func marshalListItem(p uintptr) (interface{}, error) {
 // gtk_list_item_set_activatable().
 func (s listItem) Activatable() bool {
 	var _arg0 *C.GtkListItem // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_item_get_activatable(_arg0)
 
@@ -137,10 +136,9 @@ func (s listItem) Activatable() bool {
 // if none was set.
 func (s listItem) Child() Widget {
 	var _arg0 *C.GtkListItem // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_list_item_get_child(_arg0)
 
@@ -156,10 +154,9 @@ func (s listItem) Child() Widget {
 // If @self is unbound, this function returns nil.
 func (s listItem) Item() gextras.Objector {
 	var _arg0 *C.GtkListItem // out
+	var _cret C.gpointer     // in
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gpointer // in
 
 	_cret = C.gtk_list_item_get_item(_arg0)
 
@@ -175,10 +172,9 @@ func (s listItem) Item() gextras.Objector {
 // If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
 func (s listItem) Position() uint {
 	var _arg0 *C.GtkListItem // out
+	var _cret C.guint        // in
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_list_item_get_position(_arg0)
 
@@ -195,10 +191,9 @@ func (s listItem) Position() uint {
 // Do not confuse this function with [method@Gtk.ListItem.get_selected].
 func (s listItem) Selectable() bool {
 	var _arg0 *C.GtkListItem // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_item_get_selectable(_arg0)
 
@@ -217,10 +212,9 @@ func (s listItem) Selectable() bool {
 // cannot be set otherwise.
 func (s listItem) Selected() bool {
 	var _arg0 *C.GtkListItem // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_item_get_selected(_arg0)
 

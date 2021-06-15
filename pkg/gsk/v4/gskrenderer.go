@@ -96,10 +96,9 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 // NewRendererForSurface constructs a class Renderer.
 func NewRendererForSurface(surface gdk.Surface) Renderer {
 	var _arg1 *C.GdkSurface // out
+	var _cret C.GskRenderer // in
 
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	var _cret C.GskRenderer // in
 
 	_cret = C.gsk_renderer_new_for_surface(_arg1)
 
@@ -115,10 +114,9 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 // If the renderer has not been realized yet, nil will be returned.
 func (r renderer) Surface() gdk.Surface {
 	var _arg0 *C.GskRenderer // out
+	var _cret *C.GdkSurface  // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GdkSurface // in
 
 	_cret = C.gsk_renderer_get_surface(_arg0)
 
@@ -132,10 +130,9 @@ func (r renderer) Surface() gdk.Surface {
 // IsRealized checks whether the @renderer is realized or not.
 func (r renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gsk_renderer_is_realized(_arg0)
 
@@ -153,11 +150,10 @@ func (r renderer) IsRealized() bool {
 func (r renderer) Realize(surface gdk.Surface) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	var _cerr *C.GError // in
 
 	C.gsk_renderer_realize(_arg0, _arg1, &_cerr)
 
@@ -202,12 +198,11 @@ func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Te
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
+	var _cret *C.GdkTexture      // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
 	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
-
-	var _cret *C.GdkTexture // in
 
 	_cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
 

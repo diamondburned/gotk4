@@ -118,10 +118,9 @@ func NewCoverage() Coverage {
 // Copy: copy an existing `PangoCoverage`.
 func (c coverage) Copy() Coverage {
 	var _arg0 *C.PangoCoverage // out
+	var _cret *C.PangoCoverage // in
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoCoverage // in
 
 	_cret = C.pango_coverage_copy(_arg0)
 
@@ -134,13 +133,12 @@ func (c coverage) Copy() Coverage {
 
 // Get: determine whether a particular index is covered by @coverage.
 func (c coverage) Get(index_ int) CoverageLevel {
-	var _arg0 *C.PangoCoverage // out
-	var _arg1 C.int            // out
+	var _arg0 *C.PangoCoverage     // out
+	var _arg1 C.int                // out
+	var _cret C.PangoCoverageLevel // in
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(index_)
-
-	var _cret C.PangoCoverageLevel // in
+	_arg1 = (C.int)(index_)
 
 	_cret = C.pango_coverage_get(_arg0, _arg1)
 
@@ -167,10 +165,9 @@ func (c coverage) Max(other Coverage) {
 // Ref: increase the reference count on the `PangoCoverage` by one.
 func (c coverage) Ref() Coverage {
 	var _arg0 *C.PangoCoverage // out
+	var _cret *C.PangoCoverage // in
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoCoverage // in
 
 	_cret = C.pango_coverage_ref(_arg0)
 
@@ -188,7 +185,7 @@ func (c coverage) Set(index_ int, level CoverageLevel) {
 	var _arg2 C.PangoCoverageLevel // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-	_arg1 = C.int(index_)
+	_arg1 = (C.int)(index_)
 	_arg2 = (C.PangoCoverageLevel)(level)
 
 	C.pango_coverage_set(_arg0, _arg1, _arg2)
@@ -197,11 +194,10 @@ func (c coverage) Set(index_ int, level CoverageLevel) {
 // ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 func (c coverage) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
-
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-
 	var _arg1 *C.guchar
 	var _arg2 C.int // in
+
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
 	C.pango_coverage_to_bytes(_arg0, &_arg1, &_arg2)
 

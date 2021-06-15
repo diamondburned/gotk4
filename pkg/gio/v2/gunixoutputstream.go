@@ -81,15 +81,14 @@ func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 
 // NewUnixOutputStream constructs a class UnixOutputStream.
 func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
-	var _arg1 C.gint     // out
-	var _arg2 C.gboolean // out
+	var _arg1 C.gint              // out
+	var _arg2 C.gboolean          // out
+	var _cret C.GUnixOutputStream // in
 
-	_arg1 = C.gint(fd)
+	_arg1 = (C.gint)(fd)
 	if closeFd {
 		_arg2 = C.TRUE
 	}
-
-	var _cret C.GUnixOutputStream // in
 
 	_cret = C.g_unix_output_stream_new(_arg1, _arg2)
 
@@ -104,10 +103,9 @@ func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 // when the stream is closed.
 func (s unixOutputStream) CloseFd() bool {
 	var _arg0 *C.GUnixOutputStream // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_unix_output_stream_get_close_fd(_arg0)
 
@@ -123,10 +121,9 @@ func (s unixOutputStream) CloseFd() bool {
 // Fd: return the UNIX file descriptor that the stream writes to.
 func (s unixOutputStream) Fd() int {
 	var _arg0 *C.GUnixOutputStream // out
+	var _cret C.gint               // in
 
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_unix_output_stream_get_fd(_arg0)
 

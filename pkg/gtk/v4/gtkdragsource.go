@@ -168,10 +168,9 @@ func (s dragSource) DragCancel() {
 // Actions gets the actions that are currently set on the `GtkDragSource`.
 func (s dragSource) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDragSource // out
+	var _cret C.GdkDragAction  // in
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GdkDragAction // in
 
 	_cret = C.gtk_drag_source_get_actions(_arg0)
 
@@ -184,11 +183,10 @@ func (s dragSource) Actions() gdk.DragAction {
 
 // Content gets the current content provider of a `GtkDragSource`.
 func (s dragSource) Content() gdk.ContentProvider {
-	var _arg0 *C.GtkDragSource // out
+	var _arg0 *C.GtkDragSource      // out
+	var _cret *C.GdkContentProvider // in
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkContentProvider // in
 
 	_cret = C.gtk_drag_source_get_content(_arg0)
 
@@ -202,10 +200,9 @@ func (s dragSource) Content() gdk.ContentProvider {
 // Drag returns the underlying `GdkDrag` object for an ongoing drag.
 func (s dragSource) Drag() gdk.Drag {
 	var _arg0 *C.GtkDragSource // out
+	var _cret *C.GdkDrag       // in
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDrag // in
 
 	_cret = C.gtk_drag_source_get_drag(_arg0)
 
@@ -273,8 +270,8 @@ func (s dragSource) SetIcon(paintable gdk.Paintable, hotX int, hotY int) {
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-	_arg2 = C.int(hotX)
-	_arg3 = C.int(hotY)
+	_arg2 = (C.int)(hotX)
+	_arg3 = (C.int)(hotY)
 
 	C.gtk_drag_source_set_icon(_arg0, _arg1, _arg2, _arg3)
 }

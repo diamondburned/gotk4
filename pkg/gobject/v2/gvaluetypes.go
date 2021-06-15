@@ -30,11 +30,10 @@ func GTypeGetType() externglib.Type {
 // new pointer type with name @name.
 func PointerTypeRegisterStatic(name string) externglib.Type {
 	var _arg1 *C.gchar // out
+	var _cret C.GType  // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GType // in
 
 	_cret = C.g_pointer_type_register_static(_arg1)
 
@@ -51,10 +50,9 @@ func PointerTypeRegisterStatic(name string) externglib.Type {
 // described may change between different GLib versions.
 func StrdupValueContents(value **externglib.Value) string {
 	var _arg1 *C.GValue // out
+	var _cret *C.gchar  // in
 
 	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_strdup_value_contents(_arg1)
 

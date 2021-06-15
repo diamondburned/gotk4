@@ -122,13 +122,12 @@ func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) 
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GCancellable // out
+	var _cret *C.gchar        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, &_cerr)
 
@@ -151,12 +150,11 @@ func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) 
 func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
+	var _cret *C.gchar        // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
 

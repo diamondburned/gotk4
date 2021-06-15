@@ -16,10 +16,10 @@ import "C"
 func EnvironGetenv(envp []string, variable string) string {
 	var _arg1 **C.gchar
 	var _arg2 *C.gchar // out
+	var _cret *C.gchar // in
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(envp) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
@@ -29,8 +29,6 @@ func EnvironGetenv(envp []string, variable string) string {
 	}
 	_arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_environ_getenv(_arg1, _arg2)
 
@@ -48,8 +46,9 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	var _arg2 *C.gchar   // out
 	var _arg3 *C.gchar   // out
 	var _arg4 C.gboolean // out
+	var _cret **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(envp) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
@@ -63,8 +62,6 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	if overwrite {
 		_arg4 = C.TRUE
 	}
-
-	var _cret **C.gchar
 
 	_cret = C.g_environ_setenv(_arg1, _arg2, _arg3, _arg4)
 
@@ -92,8 +89,9 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 func EnvironUnsetenv(envp []string, variable string) []string {
 	var _arg1 **C.gchar
 	var _arg2 *C.gchar // out
+	var _cret **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(envp) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
@@ -102,8 +100,6 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 	}
 	_arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret **C.gchar
 
 	_cret = C.g_environ_unsetenv(_arg1, _arg2)
 
@@ -168,11 +164,10 @@ func GetEnviron() []string {
 // other environment variables, they are expanded.
 func Getenv(variable string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_getenv(_arg1)
 
@@ -237,6 +232,7 @@ func Setenv(variable string, value string, overwrite bool) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _arg3 C.gboolean // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -245,8 +241,6 @@ func Setenv(variable string, value string, overwrite bool) bool {
 	if overwrite {
 		_arg3 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_setenv(_arg1, _arg2, _arg3)
 

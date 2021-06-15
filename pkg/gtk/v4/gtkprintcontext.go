@@ -151,10 +151,9 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 // `GtkPrintContext`.
 func (c printContext) CreatePangoContext() pango.Context {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret *C.PangoContext    // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoContext // in
 
 	_cret = C.gtk_print_context_create_pango_context(_arg0)
 
@@ -169,10 +168,9 @@ func (c printContext) CreatePangoContext() pango.Context {
 // with the `GtkPrintContext`.
 func (c printContext) CreatePangoLayout() pango.Layout {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret *C.PangoLayout     // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoLayout // in
 
 	_cret = C.gtk_print_context_create_pango_layout(_arg0)
 
@@ -187,10 +185,9 @@ func (c printContext) CreatePangoLayout() pango.Layout {
 // `GtkPrintContext`.
 func (c printContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret *C.cairo_t         // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.cairo_t // in
 
 	_cret = C.gtk_print_context_get_cairo_context(_arg0)
 
@@ -205,10 +202,9 @@ func (c printContext) CairoContext() *cairo.Context {
 // per inch.
 func (c printContext) DPIX() float64 {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret C.double           // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_print_context_get_dpi_x(_arg0)
 
@@ -223,10 +219,9 @@ func (c printContext) DPIX() float64 {
 // per inch.
 func (c printContext) DPIY() float64 {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret C.double           // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_print_context_get_dpi_y(_arg0)
 
@@ -241,14 +236,13 @@ func (c printContext) DPIY() float64 {
 // `GtkPrintContext`, in units.
 func (c printContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrintContext // out
+	var _arg1 C.double           // in
+	var _arg2 C.double           // in
+	var _arg3 C.double           // in
+	var _arg4 C.double           // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 C.double   // in
-	var _arg2 C.double   // in
-	var _arg3 C.double   // in
-	var _arg4 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -272,10 +266,9 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 // Height obtains the height of the `GtkPrintContext`, in pixels.
 func (c printContext) Height() float64 {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret C.double           // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_print_context_get_height(_arg0)
 
@@ -290,10 +283,9 @@ func (c printContext) Height() float64 {
 // of the `GtkPrintContext`.
 func (c printContext) PageSetup() PageSetup {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret *C.GtkPageSetup    // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkPageSetup // in
 
 	_cret = C.gtk_print_context_get_page_setup(_arg0)
 
@@ -308,10 +300,9 @@ func (c printContext) PageSetup() PageSetup {
 // `GtkPrintContext`.
 func (c printContext) PangoFontmap() pango.FontMap {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret *C.PangoFontMap    // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoFontMap // in
 
 	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
 
@@ -325,10 +316,9 @@ func (c printContext) PangoFontmap() pango.FontMap {
 // Width obtains the width of the `GtkPrintContext`, in pixels.
 func (c printContext) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
+	var _cret C.double           // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_print_context_get_width(_arg0)
 
@@ -352,8 +342,8 @@ func (c printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY floa
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = C.double(dpiX)
-	_arg3 = C.double(dpiY)
+	_arg2 = (C.double)(dpiX)
+	_arg3 = (C.double)(dpiY)
 
 	C.gtk_print_context_set_cairo_context(_arg0, _arg1, _arg2, _arg3)
 }

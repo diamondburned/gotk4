@@ -125,7 +125,7 @@ type ActionGroup interface {
 	// TranslateString translates a string using the function set with
 	// gtk_action_group_set_translate_func(). This is mainly intended for
 	// language bindings.
-	TranslateString(string string) string
+	TranslateString(_string string) string
 }
 
 // actionGroup implements the ActionGroup class.
@@ -153,12 +153,11 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 
 // NewActionGroup constructs a class ActionGroup.
 func NewActionGroup(name string) ActionGroup {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar         // out
+	var _cret C.GtkActionGroup // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkActionGroup // in
 
 	_cret = C.gtk_action_group_new(_arg1)
 
@@ -208,10 +207,9 @@ func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 // AccelGroup gets the accelerator group.
 func (a actionGroup) AccelGroup() AccelGroup {
 	var _arg0 *C.GtkActionGroup // out
+	var _cret *C.GtkAccelGroup  // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkAccelGroup // in
 
 	_cret = C.gtk_action_group_get_accel_group(_arg0)
 
@@ -226,12 +224,11 @@ func (a actionGroup) AccelGroup() AccelGroup {
 func (a actionGroup) Action(actionName string) Action {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
+	var _cret *C.GtkAction      // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkAction // in
 
 	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
 
@@ -245,10 +242,9 @@ func (a actionGroup) Action(actionName string) Action {
 // Name gets the name of the action group.
 func (a actionGroup) Name() string {
 	var _arg0 *C.GtkActionGroup // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_group_get_name(_arg0)
 
@@ -265,10 +261,9 @@ func (a actionGroup) Name() string {
 // sensitive.
 func (a actionGroup) Sensitive() bool {
 	var _arg0 *C.GtkActionGroup // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_group_get_sensitive(_arg0)
 
@@ -286,10 +281,9 @@ func (a actionGroup) Sensitive() bool {
 // visible (see gtk_action_get_visible()) and their group is visible.
 func (a actionGroup) Visible() bool {
 	var _arg0 *C.GtkActionGroup // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_group_get_visible(_arg0)
 
@@ -371,15 +365,14 @@ func (a actionGroup) SetVisible(visible bool) {
 // TranslateString translates a string using the function set with
 // gtk_action_group_set_translate_func(). This is mainly intended for
 // language bindings.
-func (a actionGroup) TranslateString(string string) string {
+func (a actionGroup) TranslateString(_string string) string {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(string))
+	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
 
@@ -411,41 +404,6 @@ func (a *ActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Name gets the field inside the struct.
-func (a *ActionEntry) Name() string {
-	var v string // out
-	v = C.GoString(a.native.name)
-	return v
-}
-
-// StockID gets the field inside the struct.
-func (a *ActionEntry) StockID() string {
-	var v string // out
-	v = C.GoString(a.native.stock_id)
-	return v
-}
-
-// Label gets the field inside the struct.
-func (a *ActionEntry) Label() string {
-	var v string // out
-	v = C.GoString(a.native.label)
-	return v
-}
-
-// Accelerator gets the field inside the struct.
-func (a *ActionEntry) Accelerator() string {
-	var v string // out
-	v = C.GoString(a.native.accelerator)
-	return v
-}
-
-// Tooltip gets the field inside the struct.
-func (a *ActionEntry) Tooltip() string {
-	var v string // out
-	v = C.GoString(a.native.tooltip)
-	return v
-}
-
 // RadioActionEntry structs are used with gtk_action_group_add_radio_actions()
 // to construct groups of radio actions.
 type RadioActionEntry struct {
@@ -467,48 +425,6 @@ func (r *RadioActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Name gets the field inside the struct.
-func (r *RadioActionEntry) Name() string {
-	var v string // out
-	v = C.GoString(r.native.name)
-	return v
-}
-
-// StockID gets the field inside the struct.
-func (r *RadioActionEntry) StockID() string {
-	var v string // out
-	v = C.GoString(r.native.stock_id)
-	return v
-}
-
-// Label gets the field inside the struct.
-func (r *RadioActionEntry) Label() string {
-	var v string // out
-	v = C.GoString(r.native.label)
-	return v
-}
-
-// Accelerator gets the field inside the struct.
-func (r *RadioActionEntry) Accelerator() string {
-	var v string // out
-	v = C.GoString(r.native.accelerator)
-	return v
-}
-
-// Tooltip gets the field inside the struct.
-func (r *RadioActionEntry) Tooltip() string {
-	var v string // out
-	v = C.GoString(r.native.tooltip)
-	return v
-}
-
-// Value gets the field inside the struct.
-func (r *RadioActionEntry) Value() int {
-	var v int // out
-	v = (int)(r.native.value)
-	return v
-}
-
 // ToggleActionEntry structs are used with gtk_action_group_add_toggle_actions()
 // to construct toggle actions.
 type ToggleActionEntry struct {
@@ -528,48 +444,4 @@ func WrapToggleActionEntry(ptr unsafe.Pointer) *ToggleActionEntry {
 // Native returns the underlying C source pointer.
 func (t *ToggleActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// Name gets the field inside the struct.
-func (t *ToggleActionEntry) Name() string {
-	var v string // out
-	v = C.GoString(t.native.name)
-	return v
-}
-
-// StockID gets the field inside the struct.
-func (t *ToggleActionEntry) StockID() string {
-	var v string // out
-	v = C.GoString(t.native.stock_id)
-	return v
-}
-
-// Label gets the field inside the struct.
-func (t *ToggleActionEntry) Label() string {
-	var v string // out
-	v = C.GoString(t.native.label)
-	return v
-}
-
-// Accelerator gets the field inside the struct.
-func (t *ToggleActionEntry) Accelerator() string {
-	var v string // out
-	v = C.GoString(t.native.accelerator)
-	return v
-}
-
-// Tooltip gets the field inside the struct.
-func (t *ToggleActionEntry) Tooltip() string {
-	var v string // out
-	v = C.GoString(t.native.tooltip)
-	return v
-}
-
-// IsActive gets the field inside the struct.
-func (t *ToggleActionEntry) IsActive() bool {
-	var v bool // out
-	if t.native.is_active != 0 {
-		v = true
-	}
-	return v
 }

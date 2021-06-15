@@ -124,10 +124,9 @@ func NewSocketService() SocketService {
 // connecting clients queue up until the service is started.
 func (s socketService) IsActive() bool {
 	var _arg0 *C.GSocketService // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_socket_service_is_active(_arg0)
 

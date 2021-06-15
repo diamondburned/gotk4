@@ -19,7 +19,7 @@ import "C"
 func Usleep(microseconds uint32) {
 	var _arg1 C.gulong // out
 
-	_arg1 = C.gulong(microseconds)
+	_arg1 = (C.gulong)(microseconds)
 
 	C.g_usleep(_arg1)
 }
@@ -71,11 +71,10 @@ func (t *Timer) Destroy() {
 func (t *Timer) Elapsed(microseconds *uint32) float64 {
 	var _arg0 *C.GTimer // out
 	var _arg1 *C.gulong // out
+	var _cret C.gdouble // in
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-	_arg1 = *C.gulong(microseconds)
-
-	var _cret C.gdouble // in
+	_arg1 = (*C.gulong)(microseconds)
 
 	_cret = C.g_timer_elapsed(_arg0, _arg1)
 
@@ -88,11 +87,10 @@ func (t *Timer) Elapsed(microseconds *uint32) float64 {
 
 // IsActive exposes whether the timer is currently active.
 func (t *Timer) IsActive() bool {
-	var _arg0 *C.GTimer // out
+	var _arg0 *C.GTimer  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_timer_is_active(_arg0)
 

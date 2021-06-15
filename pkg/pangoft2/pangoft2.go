@@ -20,11 +20,10 @@ import "C"
 func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	var _arg1 *C.PangoFont     // out
 	var _arg2 *C.PangoLanguage // out
+	var _cret *C.PangoCoverage // in
 
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
-
-	var _cret *C.PangoCoverage // in
 
 	_cret = C.pango_ft2_font_get_coverage(_arg1, _arg2)
 

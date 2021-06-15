@@ -276,10 +276,9 @@ func (m menuShell) Deselect() {
 // was opened up.
 func (m menuShell) ParentShell() Widget {
 	var _arg0 *C.GtkMenuShell // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_menu_shell_get_parent_shell(_arg0)
 
@@ -293,10 +292,9 @@ func (m menuShell) ParentShell() Widget {
 // SelectedItem gets the currently selected item.
 func (m menuShell) SelectedItem() Widget {
 	var _arg0 *C.GtkMenuShell // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_menu_shell_get_selected_item(_arg0)
 
@@ -311,10 +309,9 @@ func (m menuShell) SelectedItem() Widget {
 // popup.
 func (m menuShell) TakeFocus() bool {
 	var _arg0 *C.GtkMenuShell // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_shell_get_take_focus(_arg0)
 
@@ -336,7 +333,7 @@ func (m menuShell) Insert(child Widget, position int) {
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.gint(position)
+	_arg2 = (C.gint)(position)
 
 	C.gtk_menu_shell_insert(_arg0, _arg1, _arg2)
 }

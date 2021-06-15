@@ -108,10 +108,9 @@ func NewActionBar() ActionBar {
 // CenterWidget retrieves the center bar widget of the bar.
 func (a actionBar) CenterWidget() Widget {
 	var _arg0 *C.GtkActionBar // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_action_bar_get_center_widget(_arg0)
 
@@ -125,10 +124,9 @@ func (a actionBar) CenterWidget() Widget {
 // Revealed gets whether the contents of the action bar are revealed.
 func (a actionBar) Revealed() bool {
 	var _arg0 *C.GtkActionBar // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_bar_get_revealed(_arg0)
 

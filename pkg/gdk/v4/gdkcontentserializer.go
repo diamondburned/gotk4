@@ -27,10 +27,9 @@ func init() {
 // ContentSerializeFinish finishes a content serialization operation.
 func ContentSerializeFinish(result gio.AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.gdk_content_serialize_finish(_arg1, &_cerr)
 
@@ -112,10 +111,9 @@ func marshalContentSerializer(p uintptr) (interface{}, error) {
 // This is the `GCancellable` that was passed to [content_serialize_async].
 func (s contentSerializer) Cancellable() gio.Cancellable {
 	var _arg0 *C.GdkContentSerializer // out
+	var _cret *C.GCancellable         // in
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GCancellable // in
 
 	_cret = C.gdk_content_serializer_get_cancellable(_arg0)
 
@@ -129,10 +127,9 @@ func (s contentSerializer) Cancellable() gio.Cancellable {
 // GType gets the `GType` to of the object to serialize.
 func (s contentSerializer) GType() externglib.Type {
 	var _arg0 *C.GdkContentSerializer // out
+	var _cret C.GType                 // in
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.gdk_content_serializer_get_gtype(_arg0)
 
@@ -146,10 +143,9 @@ func (s contentSerializer) GType() externglib.Type {
 // MIMEType gets the mime type to serialize to.
 func (s contentSerializer) MIMEType() string {
 	var _arg0 *C.GdkContentSerializer // out
+	var _cret *C.char                 // in
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_content_serializer_get_mime_type(_arg0)
 
@@ -165,10 +161,9 @@ func (s contentSerializer) MIMEType() string {
 // This is the stream that was passed to [func@content_serialize_async].
 func (s contentSerializer) OutputStream() gio.OutputStream {
 	var _arg0 *C.GdkContentSerializer // out
+	var _cret *C.GOutputStream        // in
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GOutputStream // in
 
 	_cret = C.gdk_content_serializer_get_output_stream(_arg0)
 
@@ -184,10 +179,9 @@ func (s contentSerializer) OutputStream() gio.OutputStream {
 // This is the priority that was passed to [func@content_serialize_async].
 func (s contentSerializer) Priority() int {
 	var _arg0 *C.GdkContentSerializer // out
+	var _cret C.int                   // in
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_content_serializer_get_priority(_arg0)
 
@@ -201,10 +195,9 @@ func (s contentSerializer) Priority() int {
 // Value gets the `GValue` to read the object to serialize from.
 func (s contentSerializer) Value() **externglib.Value {
 	var _arg0 *C.GdkContentSerializer // out
+	var _cret *C.GValue               // in
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GValue // in
 
 	_cret = C.gdk_content_serializer_get_value(_arg0)
 

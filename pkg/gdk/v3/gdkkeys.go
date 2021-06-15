@@ -27,11 +27,10 @@ func init() {
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var _arg1 C.guint // out
-
-	_arg1 = C.guint(symbol)
-
 	var _arg2 C.guint // in
 	var _arg3 C.guint // in
+
+	_arg1 = (C.guint)(symbol)
 
 	C.gdk_keyval_convert_case(_arg1, &_arg2, &_arg3)
 
@@ -50,11 +49,10 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 // without the leading “GDK_KEY_”.
 func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.gchar // out
+	var _cret C.guint  // in
 
 	_arg1 = (*C.gchar)(C.CString(keyvalName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.guint // in
 
 	_cret = C.gdk_keyval_from_name(_arg1)
 
@@ -67,11 +65,10 @@ func KeyvalFromName(keyvalName string) uint {
 
 // KeyvalIsLower returns true if the given key value is in lower case.
 func KeyvalIsLower(keyval uint) bool {
-	var _arg1 C.guint // out
-
-	_arg1 = C.guint(keyval)
-
+	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
+
+	_arg1 = (C.guint)(keyval)
 
 	_cret = C.gdk_keyval_is_lower(_arg1)
 
@@ -86,11 +83,10 @@ func KeyvalIsLower(keyval uint) bool {
 
 // KeyvalIsUpper returns true if the given key value is in upper case.
 func KeyvalIsUpper(keyval uint) bool {
-	var _arg1 C.guint // out
-
-	_arg1 = C.guint(keyval)
-
+	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
+
+	_arg1 = (C.guint)(keyval)
 
 	_cret = C.gdk_keyval_is_upper(_arg1)
 
@@ -108,11 +104,10 @@ func KeyvalIsUpper(keyval uint) bool {
 // The names are the same as those in the `gdk/gdkkeysyms.h` header file but
 // without the leading “GDK_KEY_”.
 func KeyvalName(keyval uint) string {
-	var _arg1 C.guint // out
-
-	_arg1 = C.guint(keyval)
-
+	var _arg1 C.guint  // out
 	var _cret *C.gchar // in
+
+	_arg1 = (C.guint)(keyval)
 
 	_cret = C.gdk_keyval_name(_arg1)
 
@@ -126,10 +121,9 @@ func KeyvalName(keyval uint) string {
 // KeyvalToLower converts a key value to lower case, if applicable.
 func KeyvalToLower(keyval uint) uint {
 	var _arg1 C.guint // out
-
-	_arg1 = C.guint(keyval)
-
 	var _cret C.guint // in
+
+	_arg1 = (C.guint)(keyval)
 
 	_cret = C.gdk_keyval_to_lower(_arg1)
 
@@ -143,11 +137,10 @@ func KeyvalToLower(keyval uint) uint {
 // KeyvalToUnicode: convert from a GDK key symbol to the corresponding ISO10646
 // (Unicode) character.
 func KeyvalToUnicode(keyval uint) uint32 {
-	var _arg1 C.guint // out
-
-	_arg1 = C.guint(keyval)
-
+	var _arg1 C.guint   // out
 	var _cret C.guint32 // in
+
+	_arg1 = (C.guint)(keyval)
 
 	_cret = C.gdk_keyval_to_unicode(_arg1)
 
@@ -161,10 +154,9 @@ func KeyvalToUnicode(keyval uint) uint32 {
 // KeyvalToUpper converts a key value to upper case, if applicable.
 func KeyvalToUpper(keyval uint) uint {
 	var _arg1 C.guint // out
-
-	_arg1 = C.guint(keyval)
-
 	var _cret C.guint // in
+
+	_arg1 = (C.guint)(keyval)
 
 	_cret = C.gdk_keyval_to_upper(_arg1)
 
@@ -178,10 +170,9 @@ func KeyvalToUpper(keyval uint) uint {
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out
+	var _cret C.guint   // in
 
-	_arg1 = C.guint32(wc)
-
-	var _cret C.guint // in
+	_arg1 = (C.guint32)(wc)
 
 	_cret = C.gdk_unicode_to_keyval(_arg1)
 
@@ -302,10 +293,9 @@ func marshalKeymap(p uintptr) (interface{}, error) {
 // CapsLockState returns whether the Caps Lock modifer is locked.
 func (k keymap) CapsLockState() bool {
 	var _arg0 *C.GdkKeymap // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_keymap_get_caps_lock_state(_arg0)
 
@@ -320,11 +310,10 @@ func (k keymap) CapsLockState() bool {
 
 // Direction returns the direction of effective layout of the keymap.
 func (k keymap) Direction() pango.Direction {
-	var _arg0 *C.GdkKeymap // out
+	var _arg0 *C.GdkKeymap     // out
+	var _cret C.PangoDirection // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-
-	var _cret C.PangoDirection // in
 
 	_cret = C.gdk_keymap_get_direction(_arg0)
 
@@ -343,15 +332,14 @@ func (k keymap) Direction() pango.Direction {
 func (k keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	_arg1 = C.guint(hardwareKeycode)
-
 	var _arg2 *C.GdkKeymapKey
 	var _arg4 C.gint // in
 	var _arg3 *C.guint
 	var _arg4 C.gint     // in
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = (C.guint)(hardwareKeycode)
 
 	_cret = C.gdk_keymap_get_entries_for_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -386,13 +374,12 @@ func (k keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bo
 func (k keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	_arg1 = C.guint(keyval)
-
 	var _arg2 *C.GdkKeymapKey
 	var _arg3 C.gint     // in
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = (C.guint)(keyval)
 
 	_cret = C.gdk_keymap_get_entries_for_keyval(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -422,11 +409,10 @@ func (k keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 func (k keymap) ModifierMask(intent ModifierIntent) ModifierType {
 	var _arg0 *C.GdkKeymap        // out
 	var _arg1 C.GdkModifierIntent // out
+	var _cret C.GdkModifierType   // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 	_arg1 = (C.GdkModifierIntent)(intent)
-
-	var _cret C.GdkModifierType // in
 
 	_cret = C.gdk_keymap_get_modifier_mask(_arg0, _arg1)
 
@@ -440,10 +426,9 @@ func (k keymap) ModifierMask(intent ModifierIntent) ModifierType {
 // ModifierState returns the current modifier state.
 func (k keymap) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
+	var _cret C.guint      // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gdk_keymap_get_modifier_state(_arg0)
 
@@ -457,10 +442,9 @@ func (k keymap) ModifierState() uint {
 // NumLockState returns whether the Num Lock modifer is locked.
 func (k keymap) NumLockState() bool {
 	var _arg0 *C.GdkKeymap // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_keymap_get_num_lock_state(_arg0)
 
@@ -476,10 +460,9 @@ func (k keymap) NumLockState() bool {
 // ScrollLockState returns whether the Scroll Lock modifer is locked.
 func (k keymap) ScrollLockState() bool {
 	var _arg0 *C.GdkKeymap // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_keymap_get_scroll_lock_state(_arg0)
 
@@ -496,10 +479,9 @@ func (k keymap) ScrollLockState() bool {
 // left-to-right languages are in use.
 func (k keymap) HaveBidiLayouts() bool {
 	var _arg0 *C.GdkKeymap // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_keymap_have_bidi_layouts(_arg0)
 
@@ -520,11 +502,10 @@ func (k keymap) HaveBidiLayouts() bool {
 func (k keymap) LookupKey(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 *C.GdkKeymapKey // out
+	var _cret C.guint         // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 	_arg1 = (*C.GdkKeymapKey)(unsafe.Pointer(key.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gdk_keymap_lookup_key(_arg0, _arg1)
 
@@ -569,17 +550,16 @@ func (k keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType,
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
 	var _arg3 C.gint            // out
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	_arg1 = C.guint(hardwareKeycode)
-	_arg2 = (C.GdkModifierType)(state)
-	_arg3 = C.gint(group)
-
 	var _arg4 C.guint           // in
 	var _arg5 C.gint            // in
 	var _arg6 C.gint            // in
 	var _arg7 C.GdkModifierType // in
 	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = (C.guint)(hardwareKeycode)
+	_arg2 = (C.GdkModifierType)(state)
+	_arg3 = (C.gint)(group)
 
 	_cret = C.gdk_keymap_translate_keyboard_state(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
 
@@ -618,25 +598,4 @@ func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
 // Native returns the underlying C source pointer.
 func (k *KeymapKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
-}
-
-// Keycode gets the field inside the struct.
-func (k *KeymapKey) Keycode() uint {
-	var v uint // out
-	v = (uint)(k.native.keycode)
-	return v
-}
-
-// Group gets the field inside the struct.
-func (k *KeymapKey) Group() int {
-	var v int // out
-	v = (int)(k.native.group)
-	return v
-}
-
-// Level gets the field inside the struct.
-func (k *KeymapKey) Level() int {
-	var v int // out
-	v = (int)(k.native.level)
-	return v
 }

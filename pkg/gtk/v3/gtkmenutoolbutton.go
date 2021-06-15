@@ -94,14 +94,13 @@ func marshalMenuToolButton(p uintptr) (interface{}, error) {
 
 // NewMenuToolButton constructs a class MenuToolButton.
 func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
-	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.gchar     // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 *C.gchar            // out
+	var _cret C.GtkMenuToolButton // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkMenuToolButton // in
 
 	_cret = C.gtk_menu_tool_button_new(_arg1, _arg2)
 
@@ -114,12 +113,11 @@ func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
 
 // NewMenuToolButtonFromStock constructs a class MenuToolButton.
 func NewMenuToolButtonFromStock(stockId string) MenuToolButton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar            // out
+	var _cret C.GtkMenuToolButton // in
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkMenuToolButton // in
 
 	_cret = C.gtk_menu_tool_button_new_from_stock(_arg1)
 
@@ -133,10 +131,9 @@ func NewMenuToolButtonFromStock(stockId string) MenuToolButton {
 // Menu gets the Menu associated with MenuToolButton.
 func (b menuToolButton) Menu() Widget {
 	var _arg0 *C.GtkMenuToolButton // out
+	var _cret *C.GtkWidget         // in
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_menu_tool_button_get_menu(_arg0)
 

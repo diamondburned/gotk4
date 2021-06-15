@@ -124,10 +124,9 @@ func marshalNumerableIcon(p uintptr) (interface{}, error) {
 // reference to the returned #GIcon.
 func (s numerableIcon) BackgroundGIcon() gio.Icon {
 	var _arg0 *C.GtkNumerableIcon // out
+	var _cret *C.GIcon            // in
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
 
@@ -142,10 +141,9 @@ func (s numerableIcon) BackgroundGIcon() gio.Icon {
 // image, or nil if there’s none.
 func (s numerableIcon) BackgroundIconName() string {
 	var _arg0 *C.GtkNumerableIcon // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_numerable_icon_get_background_icon_name(_arg0)
 
@@ -159,10 +157,9 @@ func (s numerableIcon) BackgroundIconName() string {
 // Count returns the value currently displayed by @self.
 func (s numerableIcon) Count() int {
 	var _arg0 *C.GtkNumerableIcon // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_numerable_icon_get_count(_arg0)
 
@@ -176,10 +173,9 @@ func (s numerableIcon) Count() int {
 // Label returns the currently displayed label of the icon, or nil.
 func (s numerableIcon) Label() string {
 	var _arg0 *C.GtkNumerableIcon // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_numerable_icon_get_label(_arg0)
 
@@ -194,10 +190,9 @@ func (s numerableIcon) Label() string {
 // nil if there’s none.
 func (s numerableIcon) StyleContext() StyleContext {
 	var _arg0 *C.GtkNumerableIcon // out
+	var _cret *C.GtkStyleContext  // in
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkStyleContext // in
 
 	_cret = C.gtk_numerable_icon_get_style_context(_arg0)
 
@@ -259,7 +254,7 @@ func (s numerableIcon) SetCount(count int) {
 	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(count)
+	_arg1 = (C.gint)(count)
 
 	C.gtk_numerable_icon_set_count(_arg0, _arg1)
 }

@@ -28,12 +28,11 @@ import "C"
 // that for instance things like text files can be executables (i.e. scripts and
 // batch files).
 func ContentTypeCanBeExecutable(typ string) bool {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_can_be_executable(_arg1)
 
@@ -48,15 +47,14 @@ func ContentTypeCanBeExecutable(typ string) bool {
 
 // ContentTypeEquals compares two content types for equality.
 func ContentTypeEquals(type1 string, type2 string) bool {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _arg2 *C.gchar   // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(type1))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(type2))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_equals(_arg1, _arg2)
 
@@ -73,11 +71,10 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 // name.
 func ContentTypeFromMIMEType(mimeType string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_content_type_from_mime_type(_arg1)
 
@@ -93,11 +90,10 @@ func ContentTypeFromMIMEType(mimeType string) string {
 // type.
 func ContentTypeGetDescription(typ string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_content_type_get_description(_arg1)
 
@@ -116,11 +112,10 @@ func ContentTypeGetDescription(typ string) string {
 // specification for more on the generic icon name.
 func ContentTypeGetGenericIconName(typ string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_content_type_get_generic_icon_name(_arg1)
 
@@ -135,11 +130,10 @@ func ContentTypeGetGenericIconName(typ string) string {
 // ContentTypeGetIcon gets the icon for a content type.
 func ContentTypeGetIcon(typ string) Icon {
 	var _arg1 *C.gchar // out
+	var _cret *C.GIcon // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_content_type_get_icon(_arg1)
 
@@ -179,11 +173,10 @@ func ContentTypeGetMIMEDirs() []string {
 // registered.
 func ContentTypeGetMIMEType(typ string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_content_type_get_mime_type(_arg1)
 
@@ -198,11 +191,10 @@ func ContentTypeGetMIMEType(typ string) string {
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
 func ContentTypeGetSymbolicIcon(typ string) Icon {
 	var _arg1 *C.gchar // out
+	var _cret *C.GIcon // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
 
@@ -221,14 +213,13 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.guchar
 	var _arg3 C.gsize
+	var _arg4 C.gboolean // in
+	var _cret *C.gchar   // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = C.gsize(len(data))
 	_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
-
-	var _arg4 C.gboolean // in
-	var _cret *C.gchar   // in
 
 	_cret = C.g_content_type_guess(_arg1, _arg2, _arg3, &_arg4)
 
@@ -258,10 +249,9 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 // g_mount_guess_content_type().
 func ContentTypeGuessForTree(root File) []string {
 	var _arg1 *C.GFile // out
+	var _cret **C.gchar
 
 	_arg1 = (*C.GFile)(unsafe.Pointer(root.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.g_content_type_guess_for_tree(_arg1)
 
@@ -286,15 +276,14 @@ func ContentTypeGuessForTree(root File) []string {
 
 // ContentTypeIsA determines if @type is a subset of @supertype.
 func ContentTypeIsA(typ string, supertype string) bool {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _arg2 *C.gchar   // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(supertype))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_is_a(_arg1, _arg2)
 
@@ -310,15 +299,14 @@ func ContentTypeIsA(typ string, supertype string) bool {
 // ContentTypeIsMIMEType determines if @type is a subset of @mime_type.
 // Convenience wrapper around g_content_type_is_a().
 func ContentTypeIsMIMEType(typ string, mimeType string) bool {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _arg2 *C.gchar   // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_is_mime_type(_arg1, _arg2)
 
@@ -335,12 +323,11 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 // type. On UNIX this is the "application/octet-stream" mimetype, while on win32
 // it is "*" and on OSX it is a dynamic type or octet-stream.
 func ContentTypeIsUnknown(typ string) bool {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_is_unknown(_arg1)
 
@@ -377,9 +364,8 @@ func ContentTypeIsUnknown(typ string) bool {
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var _arg1 **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(dirs) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(dirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(dirs))
 		for i := range dirs {

@@ -131,10 +131,9 @@ func NewColorSelection() ColorSelection {
 // CurrentAlpha returns the current alpha value.
 func (c colorSelection) CurrentAlpha() uint16 {
 	var _arg0 *C.GtkColorSelection // out
+	var _cret C.guint16            // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.gtk_color_selection_get_current_alpha(_arg0)
 
@@ -149,10 +148,9 @@ func (c colorSelection) CurrentAlpha() uint16 {
 // widget.
 func (c colorSelection) CurrentColor() gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
+	var _color gdk.Color
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _color gdk.Color
 
 	C.gtk_color_selection_get_current_color(_arg0, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
@@ -163,10 +161,9 @@ func (c colorSelection) CurrentColor() gdk.Color {
 // widget.
 func (c colorSelection) CurrentRGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
+	var _rgba gdk.RGBA
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _rgba gdk.RGBA
 
 	C.gtk_color_selection_get_current_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_rgba)))
 
@@ -176,10 +173,9 @@ func (c colorSelection) CurrentRGBA() gdk.RGBA {
 // HasOpacityControl determines whether the colorsel has an opacity control.
 func (c colorSelection) HasOpacityControl() bool {
 	var _arg0 *C.GtkColorSelection // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_color_selection_get_has_opacity_control(_arg0)
 
@@ -195,10 +191,9 @@ func (c colorSelection) HasOpacityControl() bool {
 // HasPalette determines whether the color selector has a color palette.
 func (c colorSelection) HasPalette() bool {
 	var _arg0 *C.GtkColorSelection // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_color_selection_get_has_palette(_arg0)
 
@@ -214,10 +209,9 @@ func (c colorSelection) HasPalette() bool {
 // PreviousAlpha returns the previous alpha value.
 func (c colorSelection) PreviousAlpha() uint16 {
 	var _arg0 *C.GtkColorSelection // out
+	var _cret C.guint16            // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.gtk_color_selection_get_previous_alpha(_arg0)
 
@@ -231,10 +225,9 @@ func (c colorSelection) PreviousAlpha() uint16 {
 // PreviousColor fills @color in with the original color value.
 func (c colorSelection) PreviousColor() gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
+	var _color gdk.Color
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _color gdk.Color
 
 	C.gtk_color_selection_get_previous_color(_arg0, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
@@ -244,10 +237,9 @@ func (c colorSelection) PreviousColor() gdk.Color {
 // PreviousRGBA fills @rgba in with the original color value.
 func (c colorSelection) PreviousRGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
+	var _rgba gdk.RGBA
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _rgba gdk.RGBA
 
 	C.gtk_color_selection_get_previous_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_rgba)))
 
@@ -257,10 +249,9 @@ func (c colorSelection) PreviousRGBA() gdk.RGBA {
 // IsAdjusting gets the current state of the @colorsel.
 func (c colorSelection) IsAdjusting() bool {
 	var _arg0 *C.GtkColorSelection // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_color_selection_is_adjusting(_arg0)
 
@@ -282,7 +273,7 @@ func (c colorSelection) SetCurrentAlpha(alpha uint16) {
 	var _arg1 C.guint16            // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-	_arg1 = C.guint16(alpha)
+	_arg1 = (C.guint16)(alpha)
 
 	C.gtk_color_selection_set_current_alpha(_arg0, _arg1)
 }
@@ -351,7 +342,7 @@ func (c colorSelection) SetPreviousAlpha(alpha uint16) {
 	var _arg1 C.guint16            // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-	_arg1 = C.guint16(alpha)
+	_arg1 = (C.guint16)(alpha)
 
 	C.gtk_color_selection_set_previous_alpha(_arg0, _arg1)
 }

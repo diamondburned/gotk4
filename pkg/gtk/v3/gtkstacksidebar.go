@@ -90,10 +90,9 @@ func NewStackSidebar() StackSidebar {
 // Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
 func (s stackSidebar) Stack() Stack {
 	var _arg0 *C.GtkStackSidebar // out
+	var _cret *C.GtkStack        // in
 
 	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkStack // in
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
 

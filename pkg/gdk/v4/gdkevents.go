@@ -254,12 +254,11 @@ func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
+	var _arg3 C.double    // in
+	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
-
-	var _arg3 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
 
@@ -281,13 +280,12 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
+	var _arg3 C.double    // in
+	var _arg4 C.double    // in
+	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
-
-	var _arg3 C.double   // in
-	var _arg4 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
 
@@ -311,12 +309,11 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
+	var _arg3 C.double    // in
+	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
-
-	var _arg3 C.double   // in
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
 

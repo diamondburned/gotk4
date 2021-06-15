@@ -103,10 +103,9 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 // last byte written in the stream that has not been truncated away.
 func (o memoryOutputStream) DataSize() uint {
 	var _arg0 *C.GMemoryOutputStream // out
+	var _cret C.gsize                // in
 
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gsize // in
 
 	_cret = C.g_memory_output_stream_get_data_size(_arg0)
 
@@ -133,10 +132,9 @@ func (o memoryOutputStream) DataSize() uint {
 // stream, use g_memory_output_stream_get_data_size().
 func (o memoryOutputStream) Size() uint {
 	var _arg0 *C.GMemoryOutputStream // out
+	var _cret C.gsize                // in
 
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gsize // in
 
 	_cret = C.g_memory_output_stream_get_size(_arg0)
 

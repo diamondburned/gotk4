@@ -81,17 +81,16 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 
 // NewAlignment constructs a class Alignment.
 func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32) Alignment {
-	var _arg1 C.gfloat // out
-	var _arg2 C.gfloat // out
-	var _arg3 C.gfloat // out
-	var _arg4 C.gfloat // out
-
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
-	_arg3 = C.gfloat(xscale)
-	_arg4 = C.gfloat(yscale)
-
+	var _arg1 C.gfloat       // out
+	var _arg2 C.gfloat       // out
+	var _arg3 C.gfloat       // out
+	var _arg4 C.gfloat       // out
 	var _cret C.GtkAlignment // in
+
+	_arg1 = (C.gfloat)(xalign)
+	_arg2 = (C.gfloat)(yalign)
+	_arg3 = (C.gfloat)(xscale)
+	_arg4 = (C.gfloat)(yscale)
 
 	_cret = C.gtk_alignment_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -106,13 +105,12 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 // gtk_alignment_set_padding ().
 func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
+	var _arg1 C.guint         // in
+	var _arg2 C.guint         // in
+	var _arg3 C.guint         // in
+	var _arg4 C.guint         // in
 
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
-
-	var _arg1 C.guint // in
-	var _arg2 C.guint // in
-	var _arg3 C.guint // in
-	var _arg4 C.guint // in
 
 	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -138,10 +136,10 @@ func (a alignment) Set(xalign float32, yalign float32, xscale float32, yscale fl
 	var _arg4 C.gfloat        // out
 
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
-	_arg3 = C.gfloat(xscale)
-	_arg4 = C.gfloat(yscale)
+	_arg1 = (C.gfloat)(xalign)
+	_arg2 = (C.gfloat)(yalign)
+	_arg3 = (C.gfloat)(xscale)
+	_arg4 = (C.gfloat)(yscale)
 
 	C.gtk_alignment_set(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -158,10 +156,10 @@ func (a alignment) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft u
 	var _arg4 C.guint         // out
 
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
-	_arg1 = C.guint(paddingTop)
-	_arg2 = C.guint(paddingBottom)
-	_arg3 = C.guint(paddingLeft)
-	_arg4 = C.guint(paddingRight)
+	_arg1 = (C.guint)(paddingTop)
+	_arg2 = (C.guint)(paddingBottom)
+	_arg3 = (C.guint)(paddingLeft)
+	_arg4 = (C.guint)(paddingRight)
 
 	C.gtk_alignment_set_padding(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

@@ -43,10 +43,9 @@ func (b *BitsetIter) Native() unsafe.Pointer {
 // this function returns 0.
 func (i *BitsetIter) Value() uint {
 	var _arg0 *C.GtkBitsetIter // out
+	var _cret C.guint          // in
 
 	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_bitset_iter_get_value(_arg0)
 
@@ -60,10 +59,9 @@ func (i *BitsetIter) Value() uint {
 // IsValid checks if @iter points to a valid value.
 func (i *BitsetIter) IsValid() bool {
 	var _arg0 *C.GtkBitsetIter // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_bitset_iter_is_valid(_arg0)
 
@@ -82,11 +80,10 @@ func (i *BitsetIter) IsValid() bool {
 // and @iter is invalidated.
 func (i *BitsetIter) Next() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
+	var _arg1 C.guint          // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
-
-	var _arg1 C.guint    // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_bitset_iter_next(_arg0, &_arg1)
 
@@ -107,11 +104,10 @@ func (i *BitsetIter) Next() (uint, bool) {
 // and @iter is invalidated.
 func (i *BitsetIter) Previous() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
+	var _arg1 C.guint          // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
-
-	var _arg1 C.guint    // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_bitset_iter_previous(_arg0, &_arg1)
 

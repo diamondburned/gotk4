@@ -70,12 +70,11 @@ func marshalDBusObjectProXY(p uintptr) (interface{}, error) {
 func NewDBusObjectProXY(connection DBusConnection, objectPath string) DBusObjectProXY {
 	var _arg1 *C.GDBusConnection // out
 	var _arg2 *C.gchar           // out
+	var _cret C.GDBusObjectProxy // in
 
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GDBusObjectProxy // in
 
 	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
 
@@ -89,10 +88,9 @@ func NewDBusObjectProXY(connection DBusConnection, objectPath string) DBusObject
 // Connection gets the connection that @proxy is for.
 func (p dBusObjectProXY) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectProxy // out
+	var _cret *C.GDBusConnection  // in
 
 	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GDBusConnection // in
 
 	_cret = C.g_dbus_object_proxy_get_connection(_arg0)
 

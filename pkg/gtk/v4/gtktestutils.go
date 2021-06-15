@@ -2,35 +2,10 @@
 
 package gtk
 
-import (
-	"unsafe"
-)
-
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
-
-// TestListAllTypes: return the type ids that have been registered after calling
-// gtk_test_register_all_types().
-func TestListAllTypes() []externglib.Type {
-	var _cret *C.GType
-	var _arg1 C.guint // in
-
-	_cret = C.gtk_test_list_all_types(&_arg1)
-
-	var _gTypes []externglib.Type
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		_gTypes = make([]externglib.Type, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_gTypes[i] = externglib.Type(src[i])
-		}
-	}
-
-	return _gTypes
-}
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
 //

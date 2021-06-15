@@ -121,10 +121,9 @@ func NewPasswordEntry() PasswordEntry {
 // gtk_password_entry_set_extra_menu().
 func (e passwordEntry) ExtraMenu() gio.MenuModel {
 	var _arg0 *C.GtkPasswordEntry // out
+	var _cret *C.GMenuModel       // in
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GMenuModel // in
 
 	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
 
@@ -139,10 +138,9 @@ func (e passwordEntry) ExtraMenu() gio.MenuModel {
 // contents.
 func (e passwordEntry) ShowPeekIcon() bool {
 	var _arg0 *C.GtkPasswordEntry // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
 

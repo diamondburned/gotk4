@@ -304,12 +304,11 @@ func marshalLabel(p uintptr) (interface{}, error) {
 
 // NewLabel constructs a class Label.
 func NewLabel(str string) Label {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _cret C.GtkLabel // in
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkLabel // in
 
 	_cret = C.gtk_label_new(_arg1)
 
@@ -322,12 +321,11 @@ func NewLabel(str string) Label {
 
 // NewLabelWithMnemonic constructs a class Label.
 func NewLabelWithMnemonic(str string) Label {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar   // out
+	var _cret C.GtkLabel // in
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkLabel // in
 
 	_cret = C.gtk_label_new_with_mnemonic(_arg1)
 
@@ -342,10 +340,9 @@ func NewLabelWithMnemonic(str string) Label {
 // gtk_label_set_angle().
 func (l label) Angle() float64 {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gdouble   // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gdouble // in
 
 	_cret = C.gtk_label_get_angle(_arg0)
 
@@ -362,11 +359,10 @@ func (l label) Angle() float64 {
 // If you want to get the effective attributes for the label, use
 // pango_layout_get_attribute (gtk_label_get_layout (label)).
 func (l label) Attributes() *pango.AttrList {
-	var _arg0 *C.GtkLabel // out
+	var _arg0 *C.GtkLabel      // out
+	var _cret *C.PangoAttrList // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.PangoAttrList // in
 
 	_cret = C.gtk_label_get_attributes(_arg0)
 
@@ -385,10 +381,9 @@ func (l label) Attributes() *pango.AttrList {
 // for use in a Widget::query-tooltip handler.
 func (l label) CurrentURI() string {
 	var _arg0 *C.GtkLabel // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_label_get_current_uri(_arg0)
 
@@ -402,11 +397,10 @@ func (l label) CurrentURI() string {
 // Ellipsize returns the ellipsizing position of the label. See
 // gtk_label_set_ellipsize().
 func (l label) Ellipsize() pango.EllipsizeMode {
-	var _arg0 *C.GtkLabel // out
+	var _arg0 *C.GtkLabel          // out
+	var _cret C.PangoEllipsizeMode // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.PangoEllipsizeMode // in
 
 	_cret = C.gtk_label_get_ellipsize(_arg0)
 
@@ -420,11 +414,10 @@ func (l label) Ellipsize() pango.EllipsizeMode {
 // Justify returns the justification of the label. See
 // gtk_label_set_justify().
 func (l label) Justify() Justification {
-	var _arg0 *C.GtkLabel // out
+	var _arg0 *C.GtkLabel        // out
+	var _cret C.GtkJustification // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.GtkJustification // in
 
 	_cret = C.gtk_label_get_justify(_arg0)
 
@@ -440,10 +433,9 @@ func (l label) Justify() Justification {
 // gtk_label_get_text()).
 func (l label) Label() string {
 	var _arg0 *C.GtkLabel // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_label_get_label(_arg0)
 
@@ -460,11 +452,10 @@ func (l label) Label() string {
 // @label so need not be freed by the caller. The @label is free to recreate
 // its layout at any time, so it should be considered read-only.
 func (l label) Layout() pango.Layout {
-	var _arg0 *C.GtkLabel // out
+	var _arg0 *C.GtkLabel    // out
+	var _cret *C.PangoLayout // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.PangoLayout // in
 
 	_cret = C.gtk_label_get_layout(_arg0)
 
@@ -485,11 +476,10 @@ func (l label) Layout() pango.Layout {
 // using PANGO_PIXELS() or NGO_SCALE.
 func (l label) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkLabel // out
+	var _arg1 C.gint      // in
+	var _arg2 C.gint      // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _arg1 C.gint // in
-	var _arg2 C.gint // in
 
 	C.gtk_label_get_layout_offsets(_arg0, &_arg1, &_arg2)
 
@@ -506,10 +496,9 @@ func (l label) LayoutOffsets() (x int, y int) {
 // See gtk_label_set_line_wrap().
 func (l label) LineWrap() bool {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_label_get_line_wrap(_arg0)
 
@@ -525,11 +514,10 @@ func (l label) LineWrap() bool {
 // LineWrapMode returns line wrap mode used by the label. See
 // gtk_label_set_line_wrap_mode().
 func (l label) LineWrapMode() pango.WrapMode {
-	var _arg0 *C.GtkLabel // out
+	var _arg0 *C.GtkLabel     // out
+	var _cret C.PangoWrapMode // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.PangoWrapMode // in
 
 	_cret = C.gtk_label_get_line_wrap_mode(_arg0)
 
@@ -544,10 +532,9 @@ func (l label) LineWrapMode() pango.WrapMode {
 // should be limited. See gtk_label_set_lines().
 func (l label) Lines() int {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gint      // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_label_get_lines(_arg0)
 
@@ -562,10 +549,9 @@ func (l label) Lines() int {
 // characters. See gtk_label_set_width_chars().
 func (l label) MaxWidthChars() int {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gint      // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_label_get_max_width_chars(_arg0)
 
@@ -581,10 +567,9 @@ func (l label) MaxWidthChars() int {
 // there is no mnemonic set up it returns K_KEY_VoidSymbol.
 func (l label) MnemonicKeyval() uint {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.guint     // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_label_get_mnemonic_keyval(_arg0)
 
@@ -598,11 +583,10 @@ func (l label) MnemonicKeyval() uint {
 // MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
 // of this label. See gtk_label_set_mnemonic_widget().
 func (l label) MnemonicWidget() Widget {
-	var _arg0 *C.GtkLabel // out
+	var _arg0 *C.GtkLabel  // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_label_get_mnemonic_widget(_arg0)
 
@@ -616,10 +600,9 @@ func (l label) MnemonicWidget() Widget {
 // Selectable gets the value set by gtk_label_set_selectable().
 func (l label) Selectable() bool {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_label_get_selectable(_arg0)
 
@@ -636,12 +619,11 @@ func (l label) Selectable() bool {
 // returning true if there’s a selection.
 func (l label) SelectionBounds() (start int, end int, ok bool) {
 	var _arg0 *C.GtkLabel // out
+	var _arg1 C.gint      // in
+	var _arg2 C.gint      // in
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _arg1 C.gint     // in
-	var _arg2 C.gint     // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_label_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
@@ -661,10 +643,9 @@ func (l label) SelectionBounds() (start int, end int, ok bool) {
 // SingleLineMode returns whether the label is in single line mode.
 func (l label) SingleLineMode() bool {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_label_get_single_line_mode(_arg0)
 
@@ -682,10 +663,9 @@ func (l label) SingleLineMode() bool {
 // Pango markup. (See gtk_label_get_label())
 func (l label) Text() string {
 	var _arg0 *C.GtkLabel // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_label_get_text(_arg0)
 
@@ -700,10 +680,9 @@ func (l label) Text() string {
 // clicked links.
 func (l label) TrackVisitedLinks() bool {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_label_get_track_visited_links(_arg0)
 
@@ -721,10 +700,9 @@ func (l label) TrackVisitedLinks() bool {
 // gtk_label_set_use_markup ().
 func (l label) UseMarkup() bool {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_label_get_use_markup(_arg0)
 
@@ -741,10 +719,9 @@ func (l label) UseMarkup() bool {
 // a mnemonic. See gtk_label_set_use_underline().
 func (l label) UseUnderline() bool {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_label_get_use_underline(_arg0)
 
@@ -761,10 +738,9 @@ func (l label) UseUnderline() bool {
 // gtk_label_set_width_chars().
 func (l label) WidthChars() int {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gint      // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_label_get_width_chars(_arg0)
 
@@ -778,10 +754,9 @@ func (l label) WidthChars() int {
 // Xalign gets the Label:xalign property for @label.
 func (l label) Xalign() float32 {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gfloat    // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gfloat // in
 
 	_cret = C.gtk_label_get_xalign(_arg0)
 
@@ -795,10 +770,9 @@ func (l label) Xalign() float32 {
 // Yalign gets the Label:yalign property for @label.
 func (l label) Yalign() float32 {
 	var _arg0 *C.GtkLabel // out
+	var _cret C.gfloat    // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gfloat // in
 
 	_cret = C.gtk_label_get_yalign(_arg0)
 
@@ -819,8 +793,8 @@ func (l label) SelectRegion(startOffset int, endOffset int) {
 	var _arg2 C.gint      // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gint(startOffset)
-	_arg2 = C.gint(endOffset)
+	_arg1 = (C.gint)(startOffset)
+	_arg2 = (C.gint)(endOffset)
 
 	C.gtk_label_select_region(_arg0, _arg1, _arg2)
 }
@@ -834,7 +808,7 @@ func (l label) SetAngle(angle float64) {
 	var _arg1 C.gdouble   // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gdouble(angle)
+	_arg1 = (C.gdouble)(angle)
 
 	C.gtk_label_set_angle(_arg0, _arg1)
 }
@@ -943,7 +917,7 @@ func (l label) SetLines(lines int) {
 	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gint(lines)
+	_arg1 = (C.gint)(lines)
 
 	C.gtk_label_set_lines(_arg0, _arg1)
 }
@@ -1008,7 +982,7 @@ func (l label) SetMaxWidthChars(nChars int) {
 	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gint(nChars)
+	_arg1 = (C.gint)(nChars)
 
 	C.gtk_label_set_max_width_chars(_arg0, _arg1)
 }
@@ -1164,7 +1138,7 @@ func (l label) SetWidthChars(nChars int) {
 	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gint(nChars)
+	_arg1 = (C.gint)(nChars)
 
 	C.gtk_label_set_width_chars(_arg0, _arg1)
 }
@@ -1175,7 +1149,7 @@ func (l label) SetXalign(xalign float32) {
 	var _arg1 C.gfloat    // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gfloat(xalign)
+	_arg1 = (C.gfloat)(xalign)
 
 	C.gtk_label_set_xalign(_arg0, _arg1)
 }
@@ -1186,7 +1160,7 @@ func (l label) SetYalign(yalign float32) {
 	var _arg1 C.gfloat    // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.gfloat(yalign)
+	_arg1 = (C.gfloat)(yalign)
 
 	C.gtk_label_set_yalign(_arg0, _arg1)
 }

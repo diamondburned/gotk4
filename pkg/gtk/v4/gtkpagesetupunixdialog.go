@@ -85,14 +85,13 @@ func marshalPageSetupUnixDialog(p uintptr) (interface{}, error) {
 
 // NewPageSetupUnixDialog constructs a class PageSetupUnixDialog.
 func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
-	var _arg1 *C.char      // out
-	var _arg2 *C.GtkWindow // out
+	var _arg1 *C.char                  // out
+	var _arg2 *C.GtkWindow             // out
+	var _cret C.GtkPageSetupUnixDialog // in
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkPageSetupUnixDialog // in
 
 	_cret = C.gtk_page_setup_unix_dialog_new(_arg1, _arg2)
 
@@ -106,10 +105,9 @@ func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
 // PageSetup gets the currently selected page setup from the dialog.
 func (d pageSetupUnixDialog) PageSetup() PageSetup {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
+	var _cret *C.GtkPageSetup           // in
 
 	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPageSetup // in
 
 	_cret = C.gtk_page_setup_unix_dialog_get_page_setup(_arg0)
 
@@ -123,10 +121,9 @@ func (d pageSetupUnixDialog) PageSetup() PageSetup {
 // PrintSettings gets the current print settings from the dialog.
 func (d pageSetupUnixDialog) PrintSettings() PrintSettings {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
+	var _cret *C.GtkPrintSettings       // in
 
 	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPrintSettings // in
 
 	_cret = C.gtk_page_setup_unix_dialog_get_print_settings(_arg0)
 

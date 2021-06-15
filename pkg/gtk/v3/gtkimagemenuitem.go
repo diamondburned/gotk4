@@ -128,14 +128,13 @@ func NewImageMenuItem() ImageMenuItem {
 
 // NewImageMenuItemFromStock constructs a class ImageMenuItem.
 func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuItem {
-	var _arg1 *C.gchar         // out
-	var _arg2 *C.GtkAccelGroup // out
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.GtkAccelGroup   // out
+	var _cret C.GtkImageMenuItem // in
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
-
-	var _cret C.GtkImageMenuItem // in
 
 	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
 
@@ -148,12 +147,11 @@ func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuI
 
 // NewImageMenuItemWithLabel constructs a class ImageMenuItem.
 func NewImageMenuItemWithLabel(label string) ImageMenuItem {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar           // out
+	var _cret C.GtkImageMenuItem // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkImageMenuItem // in
 
 	_cret = C.gtk_image_menu_item_new_with_label(_arg1)
 
@@ -166,12 +164,11 @@ func NewImageMenuItemWithLabel(label string) ImageMenuItem {
 
 // NewImageMenuItemWithMnemonic constructs a class ImageMenuItem.
 func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar           // out
+	var _cret C.GtkImageMenuItem // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkImageMenuItem // in
 
 	_cret = C.gtk_image_menu_item_new_with_mnemonic(_arg1)
 
@@ -186,10 +183,9 @@ func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
 // Settings:gtk-menu-images setting and always show the image, if available.
 func (i imageMenuItem) AlwaysShowImage() bool {
 	var _arg0 *C.GtkImageMenuItem // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_image_menu_item_get_always_show_image(_arg0)
 
@@ -206,10 +202,9 @@ func (i imageMenuItem) AlwaysShowImage() bool {
 // @image_menu_item. See gtk_image_menu_item_set_image().
 func (i imageMenuItem) Image() Widget {
 	var _arg0 *C.GtkImageMenuItem // out
+	var _cret *C.GtkWidget        // in
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_image_menu_item_get_image(_arg0)
 
@@ -224,10 +219,9 @@ func (i imageMenuItem) Image() Widget {
 // id to select the stock item for the item.
 func (i imageMenuItem) UseStock() bool {
 	var _arg0 *C.GtkImageMenuItem // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_image_menu_item_get_use_stock(_arg0)
 

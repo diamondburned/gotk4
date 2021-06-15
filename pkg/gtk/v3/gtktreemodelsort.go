@@ -156,11 +156,10 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 
 // NewTreeModelSortWithModel constructs a class TreeModelSort.
 func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort {
-	var _arg1 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreeModel    // out
+	var _cret C.GtkTreeModelSort // in
 
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(childModel.Native()))
-
-	var _cret C.GtkTreeModelSort // in
 
 	_cret = C.gtk_tree_model_sort_new_with_model(_arg1)
 
@@ -191,15 +190,14 @@ func (t treeModelSort) ClearCache() {
 // returned since 2.14.
 func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelSort // out
-	var _arg2 *C.GtkTreeIter      // out
+	var _sortIter TreeIter
+	var _arg2 *C.GtkTreeIter // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter.Native()))
 
-	var _sortIter TreeIter
-	var _cret C.gboolean // in
-
-	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_sortIter)))
+	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_sortIter)), _arg2)
 
 	var _ok bool // out
 
@@ -218,11 +216,10 @@ func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bo
 func (t treeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreePath      // out
+	var _cret *C.GtkTreePath      // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(childPath.Native()))
-
-	var _cret *C.GtkTreePath // in
 
 	_cret = C.gtk_tree_model_sort_convert_child_path_to_path(_arg0, _arg1)
 
@@ -240,14 +237,13 @@ func (t treeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 // @sorted_iter.
 func (t treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelSort // out
-	var _arg2 *C.GtkTreeIter      // out
+	var _childIter TreeIter
+	var _arg2 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sortedIter.Native()))
 
-	var _childIter TreeIter
-
-	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_childIter)))
+	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_childIter)), _arg2)
 
 	return _childIter
 }
@@ -260,11 +256,10 @@ func (t treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter {
 func (t treeModelSort) ConvertPathToChildPath(sortedPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreePath      // out
+	var _cret *C.GtkTreePath      // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(sortedPath.Native()))
-
-	var _cret *C.GtkTreePath // in
 
 	_cret = C.gtk_tree_model_sort_convert_path_to_child_path(_arg0, _arg1)
 
@@ -281,10 +276,9 @@ func (t treeModelSort) ConvertPathToChildPath(sortedPath *TreePath) *TreePath {
 // Model returns the model the TreeModelSort is sorting.
 func (t treeModelSort) Model() TreeModel {
 	var _arg0 *C.GtkTreeModelSort // out
+	var _cret *C.GtkTreeModel     // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GtkTreeModel // in
 
 	_cret = C.gtk_tree_model_sort_get_model(_arg0)
 
@@ -302,11 +296,10 @@ func (t treeModelSort) Model() TreeModel {
 func (t treeModelSort) IterIsValid(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreeIter      // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_model_sort_iter_is_valid(_arg0, _arg1)
 

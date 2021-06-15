@@ -88,12 +88,11 @@ func NewCheckButton() CheckButton {
 
 // NewCheckButtonWithLabel constructs a class CheckButton.
 func NewCheckButtonWithLabel(label string) CheckButton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar         // out
+	var _cret C.GtkCheckButton // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCheckButton // in
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
 
@@ -106,12 +105,11 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 
 // NewCheckButtonWithMnemonic constructs a class CheckButton.
 func NewCheckButtonWithMnemonic(label string) CheckButton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar         // out
+	var _cret C.GtkCheckButton // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCheckButton // in
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
 

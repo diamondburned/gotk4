@@ -226,13 +226,12 @@ func marshalSurface(p uintptr) (interface{}, error) {
 func NewSurfacePopup(parent Surface, autohide bool) Surface {
 	var _arg1 *C.GdkSurface // out
 	var _arg2 C.gboolean    // out
+	var _cret C.GdkSurface  // in
 
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
 	if autohide {
 		_arg2 = C.TRUE
 	}
-
-	var _cret C.GdkSurface // in
 
 	_cret = C.gdk_surface_new_popup(_arg1, _arg2)
 
@@ -246,10 +245,9 @@ func NewSurfacePopup(parent Surface, autohide bool) Surface {
 // NewSurfaceToplevel constructs a class Surface.
 func NewSurfaceToplevel(display Display) Surface {
 	var _arg1 *C.GdkDisplay // out
+	var _cret C.GdkSurface  // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-
-	var _cret C.GdkSurface // in
 
 	_cret = C.gdk_surface_new_toplevel(_arg1)
 
@@ -275,11 +273,10 @@ func (s surface) Beep() {
 // CreateCairoContext creates a new `GdkCairoContext` for rendering on
 // @surface.
 func (s surface) CreateCairoContext() CairoContext {
-	var _arg0 *C.GdkSurface // out
+	var _arg0 *C.GdkSurface      // out
+	var _cret *C.GdkCairoContext // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkCairoContext // in
 
 	_cret = C.gdk_surface_create_cairo_context(_arg0)
 
@@ -297,12 +294,11 @@ func (s surface) CreateCairoContext() CairoContext {
 // using the returned `GdkGLContext`, you will need to call
 // [method@Gdk.GLContext.make_current] or [method@Gdk.GLContext.realize].
 func (s surface) CreateGLContext() (GLContext, error) {
-	var _arg0 *C.GdkSurface // out
-
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
+	var _arg0 *C.GdkSurface   // out
 	var _cret *C.GdkGLContext // in
 	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_create_gl_context(_arg0, &_cerr)
 
@@ -331,17 +327,16 @@ func (s surface) CreateGLContext() (GLContext, error) {
 // pointer to a “nil” surface if @other is already in an error state or any
 // other error occurs.
 func (s surface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
-	var _arg0 *C.GdkSurface     // out
-	var _arg1 C.cairo_content_t // out
-	var _arg2 C.int             // out
-	var _arg3 C.int             // out
+	var _arg0 *C.GdkSurface      // out
+	var _arg1 C.cairo_content_t  // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+	var _cret *C.cairo_surface_t // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.cairo_content_t)(content)
-	_arg2 = C.int(width)
-	_arg3 = C.int(height)
-
-	var _cret *C.cairo_surface_t // in
+	_arg2 = (C.int)(width)
+	_arg3 = (C.int)(height)
 
 	_cret = C.gdk_surface_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
 
@@ -360,12 +355,11 @@ func (s surface) CreateSimilarSurface(content cairo.Content, width int, height i
 //
 // If the creation of the `GdkVulkanContext` failed, @error will be set.
 func (s surface) CreateVulkanContext() (VulkanContext, error) {
-	var _arg0 *C.GdkSurface // out
-
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
+	var _arg0 *C.GdkSurface       // out
 	var _cret *C.GdkVulkanContext // in
 	var _cerr *C.GError           // in
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_create_vulkan_context(_arg0, &_cerr)
 
@@ -402,10 +396,9 @@ func (s surface) Destroy() {
 // surface, and it is using the cursor for its parent surface.
 func (s surface) Cursor() Cursor {
 	var _arg0 *C.GdkSurface // out
+	var _cret *C.GdkCursor  // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkCursor // in
 
 	_cret = C.gdk_surface_get_cursor(_arg0)
 
@@ -424,11 +417,10 @@ func (s surface) Cursor() Cursor {
 func (s surface) DeviceCursor(device Device) Cursor {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkDevice  // out
+	var _cret *C.GdkCursor  // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	var _cret *C.GdkCursor // in
 
 	_cret = C.gdk_surface_get_device_cursor(_arg0, _arg1)
 
@@ -444,16 +436,15 @@ func (s surface) DeviceCursor(device Device) Cursor {
 // The position is given in coordinates relative to the upper left corner of
 // @surface.
 func (s surface) DevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool) {
-	var _arg0 *C.GdkSurface // out
-	var _arg1 *C.GdkDevice  // out
-
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
+	var _arg0 *C.GdkSurface     // out
+	var _arg1 *C.GdkDevice      // out
 	var _arg2 C.double          // in
 	var _arg3 C.double          // in
 	var _arg4 C.GdkModifierType // in
 	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_surface_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -475,10 +466,9 @@ func (s surface) DevicePosition(device Device) (x float64, y float64, mask Modif
 // Display gets the `GdkDisplay` associated with a `GdkSurface`.
 func (s surface) Display() Display {
 	var _arg0 *C.GdkSurface // out
+	var _cret *C.GdkDisplay // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_surface_get_display(_arg0)
 
@@ -494,11 +484,10 @@ func (s surface) Display() Display {
 // The frame clock for a surface never changes unless the surface is
 // reparented to a new toplevel surface.
 func (s surface) FrameClock() FrameClock {
-	var _arg0 *C.GdkSurface // out
+	var _arg0 *C.GdkSurface    // out
+	var _cret *C.GdkFrameClock // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkFrameClock // in
 
 	_cret = C.gdk_surface_get_frame_clock(_arg0)
 
@@ -515,10 +504,9 @@ func (s surface) FrameClock() FrameClock {
 // (see [method@Gdk.Surface.get_scale_factor]).
 func (s surface) Height() int {
 	var _arg0 *C.GdkSurface // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_surface_get_height(_arg0)
 
@@ -535,10 +523,9 @@ func (s surface) Height() int {
 // [method@Gdk.Popup.present].
 func (s surface) Mapped() bool {
 	var _arg0 *C.GdkSurface // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_surface_get_mapped(_arg0)
 
@@ -564,10 +551,9 @@ func (s surface) Mapped() bool {
 // The scale of a surface may change during runtime.
 func (s surface) ScaleFactor() int {
 	var _arg0 *C.GdkSurface // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_surface_get_scale_factor(_arg0)
 
@@ -584,10 +570,9 @@ func (s surface) ScaleFactor() int {
 // (see [method@Gdk.Surface.get_scale_factor]).
 func (s surface) Width() int {
 	var _arg0 *C.GdkSurface // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_surface_get_width(_arg0)
 
@@ -615,10 +600,9 @@ func (s surface) Hide() {
 // IsDestroyed: check to see if a surface is destroyed.
 func (s surface) IsDestroyed() bool {
 	var _arg0 *C.GdkSurface // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_surface_is_destroyed(_arg0)
 

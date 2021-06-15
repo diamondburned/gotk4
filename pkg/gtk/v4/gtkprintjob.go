@@ -44,8 +44,6 @@ type PrintJob interface {
 	NUpLayout() NumberUpLayout
 	// NumCopies gets the number of copies of this job.
 	NumCopies() int
-	// PageRanges gets the page ranges for this job.
-	PageRanges() []PageRange
 	// PageSet gets the `GtkPageSet` setting for this job.
 	PageSet() PageSet
 	// Pages gets the `GtkPrintPages` setting for this job.
@@ -149,14 +147,13 @@ func NewPrintJob(title string, printer Printer, settings PrintSettings, pageSetu
 	var _arg2 *C.GtkPrinter       // out
 	var _arg3 *C.GtkPrintSettings // out
 	var _arg4 *C.GtkPageSetup     // out
+	var _cret C.GtkPrintJob       // in
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkPrinter)(unsafe.Pointer(printer.Native()))
 	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg4 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
-
-	var _cret C.GtkPrintJob // in
 
 	_cret = C.gtk_print_job_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -170,10 +167,9 @@ func NewPrintJob(title string, printer Printer, settings PrintSettings, pageSetu
 // Collate gets whether this job is printed collated.
 func (j printJob) Collate() bool {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_job_get_collate(_arg0)
 
@@ -189,10 +185,9 @@ func (j printJob) Collate() bool {
 // NUp gets the n-up setting for this job.
 func (j printJob) NUp() uint {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret C.guint        // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_print_job_get_n_up(_arg0)
 
@@ -205,11 +200,10 @@ func (j printJob) NUp() uint {
 
 // NUpLayout gets the n-up layout setting for this job.
 func (j printJob) NUpLayout() NumberUpLayout {
-	var _arg0 *C.GtkPrintJob // out
+	var _arg0 *C.GtkPrintJob      // out
+	var _cret C.GtkNumberUpLayout // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.GtkNumberUpLayout // in
 
 	_cret = C.gtk_print_job_get_n_up_layout(_arg0)
 
@@ -223,10 +217,9 @@ func (j printJob) NUpLayout() NumberUpLayout {
 // NumCopies gets the number of copies of this job.
 func (j printJob) NumCopies() int {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret C.int          // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_print_job_get_num_copies(_arg0)
 
@@ -237,37 +230,12 @@ func (j printJob) NumCopies() int {
 	return _gint
 }
 
-// PageRanges gets the page ranges for this job.
-func (j printJob) PageRanges() []PageRange {
-	var _arg0 *C.GtkPrintJob // out
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret *C.GtkPageRange
-	var _arg1 C.int // in
-
-	_cret = C.gtk_print_job_get_page_ranges(_arg0, &_arg1)
-
-	var _pageRanges []PageRange
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		_pageRanges = make([]PageRange, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_pageRanges[i] = *WrapPageRange(unsafe.Pointer(&src[i]))
-		}
-	}
-
-	return _pageRanges
-}
-
 // PageSet gets the `GtkPageSet` setting for this job.
 func (j printJob) PageSet() PageSet {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret C.GtkPageSet   // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.GtkPageSet // in
 
 	_cret = C.gtk_print_job_get_page_set(_arg0)
 
@@ -280,11 +248,10 @@ func (j printJob) PageSet() PageSet {
 
 // Pages gets the `GtkPrintPages` setting for this job.
 func (j printJob) Pages() PrintPages {
-	var _arg0 *C.GtkPrintJob // out
+	var _arg0 *C.GtkPrintJob  // out
+	var _cret C.GtkPrintPages // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.GtkPrintPages // in
 
 	_cret = C.gtk_print_job_get_pages(_arg0)
 
@@ -298,10 +265,9 @@ func (j printJob) Pages() PrintPages {
 // Printer gets the `GtkPrinter` of the print job.
 func (j printJob) Printer() Printer {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret *C.GtkPrinter  // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret *C.GtkPrinter // in
 
 	_cret = C.gtk_print_job_get_printer(_arg0)
 
@@ -315,10 +281,9 @@ func (j printJob) Printer() Printer {
 // Reverse gets whether this job is printed reversed.
 func (j printJob) Reverse() bool {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_job_get_reverse(_arg0)
 
@@ -334,10 +299,9 @@ func (j printJob) Reverse() bool {
 // Rotate gets whether the job is printed rotated.
 func (j printJob) Rotate() bool {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_job_get_rotate(_arg0)
 
@@ -353,10 +317,9 @@ func (j printJob) Rotate() bool {
 // Scale gets the scale for this job.
 func (j printJob) Scale() float64 {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret C.double       // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_print_job_get_scale(_arg0)
 
@@ -369,11 +332,10 @@ func (j printJob) Scale() float64 {
 
 // Settings gets the `GtkPrintSettings` of the print job.
 func (j printJob) Settings() PrintSettings {
-	var _arg0 *C.GtkPrintJob // out
+	var _arg0 *C.GtkPrintJob      // out
+	var _cret *C.GtkPrintSettings // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret *C.GtkPrintSettings // in
 
 	_cret = C.gtk_print_job_get_settings(_arg0)
 
@@ -386,11 +348,10 @@ func (j printJob) Settings() PrintSettings {
 
 // Status gets the status of the print job.
 func (j printJob) Status() PrintStatus {
-	var _arg0 *C.GtkPrintJob // out
+	var _arg0 *C.GtkPrintJob   // out
+	var _cret C.GtkPrintStatus // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.GtkPrintStatus // in
 
 	_cret = C.gtk_print_job_get_status(_arg0)
 
@@ -404,12 +365,11 @@ func (j printJob) Status() PrintStatus {
 // Surface gets a cairo surface onto which the pages of the print job should
 // be rendered.
 func (j printJob) Surface() (*cairo.Surface, error) {
-	var _arg0 *C.GtkPrintJob // out
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
+	var _arg0 *C.GtkPrintJob     // out
 	var _cret *C.cairo_surface_t // in
 	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
 
 	_cret = C.gtk_print_job_get_surface(_arg0, &_cerr)
 
@@ -425,10 +385,9 @@ func (j printJob) Surface() (*cairo.Surface, error) {
 // Title gets the job title.
 func (j printJob) Title() string {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret *C.char        // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_print_job_get_title(_arg0)
 
@@ -444,10 +403,9 @@ func (j printJob) Title() string {
 // For details, see [method@Gtk.PrintJob.set_track_print_status].
 func (j printJob) TrackPrintStatus() bool {
 	var _arg0 *C.GtkPrintJob // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_job_get_track_print_status(_arg0)
 
@@ -479,7 +437,7 @@ func (j printJob) SetNUp(nUp uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = C.guint(nUp)
+	_arg1 = (C.guint)(nUp)
 
 	C.gtk_print_job_set_n_up(_arg0, _arg1)
 }
@@ -501,7 +459,7 @@ func (j printJob) SetNumCopies(numCopies int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = C.int(numCopies)
+	_arg1 = (C.int)(numCopies)
 
 	C.gtk_print_job_set_num_copies(_arg0, _arg1)
 }
@@ -518,7 +476,7 @@ func (j printJob) SetPageRanges(ranges []PageRange) {
 	{
 		out := unsafe.Slice(_arg1, len(ranges))
 		for i := range ranges {
-			out[i] = (C.GtkPageRange)(unsafe.Pointer(ranges[i].Native()))
+			out[i] = *(*C.GtkPageRange)(unsafe.Pointer(ranges[i].Native()))
 		}
 	}
 
@@ -581,7 +539,7 @@ func (j printJob) SetScale(scale float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = C.double(scale)
+	_arg1 = (C.double)(scale)
 
 	C.gtk_print_job_set_scale(_arg0, _arg1)
 }
@@ -598,11 +556,10 @@ func (j printJob) SetScale(scale float64) {
 func (j printJob) SetSourceFd(fd int) error {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.int          // out
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = C.int(fd)
-
-	var _cerr *C.GError // in
+	_arg1 = (C.int)(fd)
 
 	C.gtk_print_job_set_source_fd(_arg0, _arg1, &_cerr)
 
@@ -622,12 +579,11 @@ func (j printJob) SetSourceFd(fd int) error {
 func (j printJob) SetSourceFile(filename string) error {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 *C.char        // out
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.gtk_print_job_set_source_file(_arg0, _arg1, &_cerr)
 

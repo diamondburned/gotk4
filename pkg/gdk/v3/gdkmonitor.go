@@ -133,10 +133,9 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 // Display gets the display that this monitor belongs to.
 func (m monitor) Display() Display {
 	var _arg0 *C.GdkMonitor // out
+	var _cret *C.GdkDisplay // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_monitor_get_display(_arg0)
 
@@ -152,10 +151,9 @@ func (m monitor) Display() Display {
 // pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
 func (m monitor) Geometry() Rectangle {
 	var _arg0 *C.GdkMonitor // out
+	var _geometry Rectangle
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _geometry Rectangle
 
 	C.gdk_monitor_get_geometry(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_geometry)))
 
@@ -165,10 +163,9 @@ func (m monitor) Geometry() Rectangle {
 // HeightMm gets the height in millimeters of the monitor.
 func (m monitor) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_height_mm(_arg0)
 
@@ -187,10 +184,9 @@ func (m monitor) HeightMm() int {
 // PNP ID registry is located at https://uefi.org/pnp_id_list
 func (m monitor) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_monitor_get_manufacturer(_arg0)
 
@@ -204,10 +200,9 @@ func (m monitor) Manufacturer() string {
 // Model gets the a string identifying the monitor model, if available.
 func (m monitor) Model() string {
 	var _arg0 *C.GdkMonitor // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_monitor_get_model(_arg0)
 
@@ -224,10 +219,9 @@ func (m monitor) Model() string {
 // 60000.
 func (m monitor) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
 
@@ -247,10 +241,9 @@ func (m monitor) RefreshRate() int {
 // better to use gdk_window_get_scale_factor() instead.
 func (m monitor) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 
@@ -264,11 +257,10 @@ func (m monitor) ScaleFactor() int {
 // SubpixelLayout gets information about the layout of red, green and blue
 // primaries for each pixel in this monitor, if available.
 func (m monitor) SubpixelLayout() SubpixelLayout {
-	var _arg0 *C.GdkMonitor // out
+	var _arg0 *C.GdkMonitor       // out
+	var _cret C.GdkSubpixelLayout // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GdkSubpixelLayout // in
 
 	_cret = C.gdk_monitor_get_subpixel_layout(_arg0)
 
@@ -282,10 +274,9 @@ func (m monitor) SubpixelLayout() SubpixelLayout {
 // WidthMm gets the width in millimeters of the monitor.
 func (m monitor) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_width_mm(_arg0)
 
@@ -310,10 +301,9 @@ func (m monitor) WidthMm() int {
 // not apply.
 func (m monitor) Workarea() Rectangle {
 	var _arg0 *C.GdkMonitor // out
+	var _workarea Rectangle
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _workarea Rectangle
 
 	C.gdk_monitor_get_workarea(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_workarea)))
 
@@ -324,10 +314,9 @@ func (m monitor) Workarea() Rectangle {
 // gdk_display_get_primary_monitor()).
 func (m monitor) IsPrimary() bool {
 	var _arg0 *C.GdkMonitor // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_monitor_is_primary(_arg0)
 

@@ -44,11 +44,10 @@ func (s *Sequence) Free() {
 
 // BeginIter returns the begin iterator for @seq.
 func (s *Sequence) BeginIter() *SequenceIter {
-	var _arg0 *C.GSequence // out
+	var _arg0 *C.GSequence     // out
+	var _cret *C.GSequenceIter // in
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GSequenceIter // in
 
 	_cret = C.g_sequence_get_begin_iter(_arg0)
 
@@ -61,11 +60,10 @@ func (s *Sequence) BeginIter() *SequenceIter {
 
 // EndIter returns the end iterator for @seg
 func (s *Sequence) EndIter() *SequenceIter {
-	var _arg0 *C.GSequence // out
+	var _arg0 *C.GSequence     // out
+	var _cret *C.GSequenceIter // in
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GSequenceIter // in
 
 	_cret = C.g_sequence_get_end_iter(_arg0)
 
@@ -79,13 +77,12 @@ func (s *Sequence) EndIter() *SequenceIter {
 // IterAtPos returns the iterator at position @pos. If @pos is negative or
 // larger than the number of items in @seq, the end iterator is returned.
 func (s *Sequence) IterAtPos(pos int) *SequenceIter {
-	var _arg0 *C.GSequence // out
-	var _arg1 C.gint       // out
+	var _arg0 *C.GSequence     // out
+	var _arg1 C.gint           // out
+	var _cret *C.GSequenceIter // in
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(pos)
-
-	var _cret *C.GSequenceIter // in
+	_arg1 = (C.gint)(pos)
 
 	_cret = C.g_sequence_get_iter_at_pos(_arg0, _arg1)
 
@@ -101,10 +98,9 @@ func (s *Sequence) IterAtPos(pos int) *SequenceIter {
 // g_sequence_is_empty() when comparing the length to zero.
 func (s *Sequence) Length() int {
 	var _arg0 *C.GSequence // out
+	var _cret C.gint       // in
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_sequence_get_length(_arg0)
 
@@ -122,10 +118,9 @@ func (s *Sequence) Length() int {
 // implemented in O(1) running time.
 func (s *Sequence) IsEmpty() bool {
 	var _arg0 *C.GSequence // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_sequence_is_empty(_arg0)
 
@@ -166,11 +161,10 @@ func (s *SequenceIter) Native() unsafe.Pointer {
 func (a *SequenceIter) Compare(b *SequenceIter) int {
 	var _arg0 *C.GSequenceIter // out
 	var _arg1 *C.GSequenceIter // out
+	var _cret C.gint           // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GSequenceIter)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_sequence_iter_compare(_arg0, _arg1)
 
@@ -184,10 +178,9 @@ func (a *SequenceIter) Compare(b *SequenceIter) int {
 // Position returns the position of @iter
 func (i *SequenceIter) Position() int {
 	var _arg0 *C.GSequenceIter // out
+	var _cret C.gint           // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_sequence_iter_get_position(_arg0)
 
@@ -201,10 +194,9 @@ func (i *SequenceIter) Position() int {
 // Sequence returns the #GSequence that @iter points into.
 func (i *SequenceIter) Sequence() *Sequence {
 	var _arg0 *C.GSequenceIter // out
+	var _cret *C.GSequence     // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GSequence // in
 
 	_cret = C.g_sequence_iter_get_sequence(_arg0)
 
@@ -218,10 +210,9 @@ func (i *SequenceIter) Sequence() *Sequence {
 // IsBegin returns whether @iter is the begin iterator
 func (i *SequenceIter) IsBegin() bool {
 	var _arg0 *C.GSequenceIter // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_sequence_iter_is_begin(_arg0)
 
@@ -237,10 +228,9 @@ func (i *SequenceIter) IsBegin() bool {
 // IsEnd returns whether @iter is the end iterator
 func (i *SequenceIter) IsEnd() bool {
 	var _arg0 *C.GSequenceIter // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_sequence_iter_is_end(_arg0)
 
@@ -260,11 +250,10 @@ func (i *SequenceIter) IsEnd() bool {
 func (i *SequenceIter) Move(delta int) *SequenceIter {
 	var _arg0 *C.GSequenceIter // out
 	var _arg1 C.gint           // out
+	var _cret *C.GSequenceIter // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
-	_arg1 = C.gint(delta)
-
-	var _cret *C.GSequenceIter // in
+	_arg1 = (C.gint)(delta)
 
 	_cret = C.g_sequence_iter_move(_arg0, _arg1)
 
@@ -279,10 +268,9 @@ func (i *SequenceIter) Move(delta int) *SequenceIter {
 // is the end iterator, the end iterator is returned.
 func (i *SequenceIter) Next() *SequenceIter {
 	var _arg0 *C.GSequenceIter // out
+	var _cret *C.GSequenceIter // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GSequenceIter // in
 
 	_cret = C.g_sequence_iter_next(_arg0)
 
@@ -297,10 +285,9 @@ func (i *SequenceIter) Next() *SequenceIter {
 // @iter is the begin iterator, the begin iterator is returned.
 func (i *SequenceIter) Prev() *SequenceIter {
 	var _arg0 *C.GSequenceIter // out
+	var _cret *C.GSequenceIter // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GSequenceIter // in
 
 	_cret = C.g_sequence_iter_prev(_arg0)
 

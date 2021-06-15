@@ -116,7 +116,7 @@ func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, col
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = C.int(colorsPerLine)
+	_arg2 = (C.int)(colorsPerLine)
 	_arg3 = C.int(len(colors))
 	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(&colors[0]))
 
@@ -126,10 +126,9 @@ func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, col
 // RGBA gets the currently-selected color.
 func (c colorChooser) RGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
+	var _color gdk.RGBA
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
-
-	var _color gdk.RGBA
 
 	C.gtk_color_chooser_get_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
@@ -139,10 +138,9 @@ func (c colorChooser) RGBA() gdk.RGBA {
 // UseAlpha returns whether the color chooser shows the alpha channel.
 func (c colorChooser) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_color_chooser_get_use_alpha(_arg0)
 

@@ -184,12 +184,11 @@ func (t toolbar) DropIndex(x int, y int) int {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out
+	var _cret C.gint        // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-
-	var _cret C.gint // in
+	_arg1 = (C.gint)(x)
+	_arg2 = (C.gint)(y)
 
 	_cret = C.gtk_toolbar_get_drop_index(_arg0, _arg1, _arg2)
 
@@ -204,10 +203,9 @@ func (t toolbar) DropIndex(x int, y int) int {
 // gtk_toolbar_set_icon_size().
 func (t toolbar) IconSize() IconSize {
 	var _arg0 *C.GtkToolbar // out
+	var _cret C.GtkIconSize // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GtkIconSize // in
 
 	_cret = C.gtk_toolbar_get_icon_size(_arg0)
 
@@ -223,11 +221,10 @@ func (t toolbar) IconSize() IconSize {
 func (t toolbar) ItemIndex(item ToolItem) int {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
 
@@ -241,10 +238,9 @@ func (t toolbar) ItemIndex(item ToolItem) int {
 // NItems returns the number of items on the toolbar.
 func (t toolbar) NItems() int {
 	var _arg0 *C.GtkToolbar // out
+	var _cret C.gint        // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_toolbar_get_n_items(_arg0)
 
@@ -258,13 +254,12 @@ func (t toolbar) NItems() int {
 // NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
 // not contain an @n'th item.
 func (t toolbar) NthItem(n int) ToolItem {
-	var _arg0 *C.GtkToolbar // out
-	var _arg1 C.gint        // out
+	var _arg0 *C.GtkToolbar  // out
+	var _arg1 C.gint         // out
+	var _cret *C.GtkToolItem // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gint(n)
-
-	var _cret *C.GtkToolItem // in
+	_arg1 = (C.gint)(n)
 
 	_cret = C.gtk_toolbar_get_nth_item(_arg0, _arg1)
 
@@ -278,11 +273,10 @@ func (t toolbar) NthItem(n int) ToolItem {
 // ReliefStyle returns the relief style of buttons on @toolbar. See
 // gtk_button_set_relief().
 func (t toolbar) ReliefStyle() ReliefStyle {
-	var _arg0 *C.GtkToolbar // out
+	var _arg0 *C.GtkToolbar    // out
+	var _cret C.GtkReliefStyle // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GtkReliefStyle // in
 
 	_cret = C.gtk_toolbar_get_relief_style(_arg0)
 
@@ -297,10 +291,9 @@ func (t toolbar) ReliefStyle() ReliefStyle {
 // gtk_toolbar_set_show_arrow().
 func (t toolbar) ShowArrow() bool {
 	var _arg0 *C.GtkToolbar // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_toolbar_get_show_arrow(_arg0)
 
@@ -316,11 +309,10 @@ func (t toolbar) ShowArrow() bool {
 // Style retrieves whether the toolbar has text, icons, or both . See
 // gtk_toolbar_set_style().
 func (t toolbar) Style() ToolbarStyle {
-	var _arg0 *C.GtkToolbar // out
+	var _arg0 *C.GtkToolbar     // out
+	var _cret C.GtkToolbarStyle // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GtkToolbarStyle // in
 
 	_cret = C.gtk_toolbar_get_style(_arg0)
 
@@ -341,7 +333,7 @@ func (t toolbar) Insert(item ToolItem, pos int) {
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
-	_arg2 = C.gint(pos)
+	_arg2 = (C.gint)(pos)
 
 	C.gtk_toolbar_insert(_arg0, _arg1, _arg2)
 }
@@ -361,7 +353,7 @@ func (t toolbar) SetDropHighlightItem(toolItem ToolItem, index_ int) {
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
-	_arg2 = C.gint(index_)
+	_arg2 = (C.gint)(index_)
 
 	C.gtk_toolbar_set_drop_highlight_item(_arg0, _arg1, _arg2)
 }

@@ -466,10 +466,9 @@ func (c container) ChildSetProperty(child Widget, propertyName string, value **e
 // can be added, e.g. for a Paned which already has two children.
 func (c container) ChildType() externglib.Type {
 	var _arg0 *C.GtkContainer // out
+	var _cret C.GType         // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.gtk_container_child_type(_arg0)
 
@@ -484,10 +483,9 @@ func (c container) ChildType() externglib.Type {
 // gtk_container_set_border_width().
 func (c container) BorderWidth() uint {
 	var _arg0 *C.GtkContainer // out
+	var _cret C.guint         // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_container_get_border_width(_arg0)
 
@@ -503,10 +501,9 @@ func (c container) BorderWidth() uint {
 // gtk_window_get_focus().
 func (c container) FocusChild() Widget {
 	var _arg0 *C.GtkContainer // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_container_get_focus_child(_arg0)
 
@@ -520,11 +517,10 @@ func (c container) FocusChild() Widget {
 // FocusHAdjustment retrieves the horizontal focus adjustment for the
 // container. See gtk_container_set_focus_hadjustment ().
 func (c container) FocusHAdjustment() Adjustment {
-	var _arg0 *C.GtkContainer // out
+	var _arg0 *C.GtkContainer  // out
+	var _cret *C.GtkAdjustment // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_container_get_focus_hadjustment(_arg0)
 
@@ -538,11 +534,10 @@ func (c container) FocusHAdjustment() Adjustment {
 // FocusVAdjustment retrieves the vertical focus adjustment for the
 // container. See gtk_container_set_focus_vadjustment().
 func (c container) FocusVAdjustment() Adjustment {
-	var _arg0 *C.GtkContainer // out
+	var _arg0 *C.GtkContainer  // out
+	var _cret *C.GtkAdjustment // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_container_get_focus_vadjustment(_arg0)
 
@@ -556,13 +551,12 @@ func (c container) FocusVAdjustment() Adjustment {
 // PathForChild returns a newly created widget path representing all the
 // widget hierarchy from the toplevel down to and including @child.
 func (c container) PathForChild(child Widget) *WidgetPath {
-	var _arg0 *C.GtkContainer // out
-	var _arg1 *C.GtkWidget    // out
+	var _arg0 *C.GtkContainer  // out
+	var _arg1 *C.GtkWidget     // out
+	var _cret *C.GtkWidgetPath // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkWidgetPath // in
 
 	_cret = C.gtk_container_get_path_for_child(_arg0, _arg1)
 
@@ -580,10 +574,9 @@ func (c container) PathForChild(child Widget) *WidgetPath {
 // gtk_container_set_resize_mode ().
 func (c container) ResizeMode() ResizeMode {
 	var _arg0 *C.GtkContainer // out
+	var _cret C.GtkResizeMode // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkResizeMode // in
 
 	_cret = C.gtk_container_get_resize_mode(_arg0)
 
@@ -661,7 +654,7 @@ func (c container) SetBorderWidth(borderWidth uint) {
 	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
-	_arg1 = C.guint(borderWidth)
+	_arg1 = (C.guint)(borderWidth)
 
 	C.gtk_container_set_border_width(_arg0, _arg1)
 }

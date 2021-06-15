@@ -27,20 +27,19 @@ import "C"
 // obtained by g_strreverse(). This works only if the string does not contain
 // any multibyte characters. GLib offers the g_utf8_strreverse() function to
 // reverse UTF-8 encoded strings.
-func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringReversed string) bool {
+func PatternMatch(pspec *PatternSpec, stringLength uint, _string string, stringReversed string) bool {
 	var _arg1 *C.GPatternSpec // out
 	var _arg2 C.guint         // out
 	var _arg3 *C.gchar        // out
 	var _arg4 *C.gchar        // out
+	var _cret C.gboolean      // in
 
 	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
-	_arg2 = C.guint(stringLength)
-	_arg3 = (*C.gchar)(C.CString(string))
+	_arg2 = (C.guint)(stringLength)
+	_arg3 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(stringReversed))
 	defer C.free(unsafe.Pointer(_arg4))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_pattern_match(_arg1, _arg2, _arg3, _arg4)
 
@@ -57,16 +56,15 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 // this function is to be called in a loop, it's more efficient to compile the
 // pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 // repeatedly.
-func PatternMatchSimple(pattern string, string string) bool {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
+func PatternMatchSimple(pattern string, _string string) bool {
+	var _arg1 *C.gchar   // out
+	var _arg2 *C.gchar   // out
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(string))
+	_arg2 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_pattern_match_simple(_arg1, _arg2)
 
@@ -82,15 +80,14 @@ func PatternMatchSimple(pattern string, string string) bool {
 // PatternMatchString matches a string against a compiled pattern. If the string
 // is to be matched against more than one pattern, consider using
 // g_pattern_match() instead while supplying the reversed string.
-func PatternMatchString(pspec *PatternSpec, string string) bool {
+func PatternMatchString(pspec *PatternSpec, _string string) bool {
 	var _arg1 *C.GPatternSpec // out
 	var _arg2 *C.gchar        // out
+	var _cret C.gboolean      // in
 
 	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
-	_arg2 = (*C.gchar)(C.CString(string))
+	_arg2 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_pattern_match_string(_arg1, _arg2)
 
@@ -129,11 +126,10 @@ func (p *PatternSpec) Native() unsafe.Pointer {
 func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 	var _arg0 *C.GPatternSpec // out
 	var _arg1 *C.GPatternSpec // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec2.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_pattern_spec_equal(_arg0, _arg1)
 

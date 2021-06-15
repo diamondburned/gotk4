@@ -64,11 +64,10 @@ func marshalFlattenListModel(p uintptr) (interface{}, error) {
 
 // NewFlattenListModel constructs a class FlattenListModel.
 func NewFlattenListModel(model gio.ListModel) FlattenListModel {
-	var _arg1 *C.GListModel // out
+	var _arg1 *C.GListModel         // out
+	var _cret C.GtkFlattenListModel // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkFlattenListModel // in
 
 	_cret = C.gtk_flatten_list_model_new(_arg1)
 
@@ -82,10 +81,9 @@ func NewFlattenListModel(model gio.ListModel) FlattenListModel {
 // Model gets the model set via gtk_flatten_list_model_set_model().
 func (s flattenListModel) Model() gio.ListModel {
 	var _arg0 *C.GtkFlattenListModel // out
+	var _cret *C.GListModel          // in
 
 	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_flatten_list_model_get_model(_arg0)
 
@@ -100,11 +98,10 @@ func (s flattenListModel) Model() gio.ListModel {
 func (s flattenListModel) ModelForItem(position uint) gio.ListModel {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 C.guint                // out
+	var _cret *C.GListModel          // in
 
 	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
-
-	var _cret *C.GListModel // in
+	_arg1 = (C.guint)(position)
 
 	_cret = C.gtk_flatten_list_model_get_model_for_item(_arg0, _arg1)
 

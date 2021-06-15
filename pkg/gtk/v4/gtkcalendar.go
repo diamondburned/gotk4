@@ -153,11 +153,10 @@ func (c calendar) ClearMarks() {
 func (c calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	_arg1 = C.guint(day)
-
-	var _cret C.gboolean // in
+	_arg1 = (C.guint)(day)
 
 	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
 
@@ -176,10 +175,9 @@ func (c calendar) DayIsMarked(day uint) bool {
 // This is the value of the [property@Gtk.Calendar:show-day-names] property.
 func (s calendar) ShowDayNames() bool {
 	var _arg0 *C.GtkCalendar // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_calendar_get_show_day_names(_arg0)
 
@@ -197,10 +195,9 @@ func (s calendar) ShowDayNames() bool {
 // This is the value of the [property@Gtk.Calendar:show-heading] property.
 func (s calendar) ShowHeading() bool {
 	var _arg0 *C.GtkCalendar // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_calendar_get_show_heading(_arg0)
 
@@ -219,10 +216,9 @@ func (s calendar) ShowHeading() bool {
 // property.
 func (s calendar) ShowWeekNumbers() bool {
 	var _arg0 *C.GtkCalendar // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_calendar_get_show_week_numbers(_arg0)
 
@@ -241,7 +237,7 @@ func (c calendar) MarkDay(day uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	_arg1 = C.guint(day)
+	_arg1 = (C.guint)(day)
 
 	C.gtk_calendar_mark_day(_arg0, _arg1)
 }
@@ -294,7 +290,7 @@ func (c calendar) UnmarkDay(day uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	_arg1 = C.guint(day)
+	_arg1 = (C.guint)(day)
 
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
 }

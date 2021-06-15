@@ -169,12 +169,11 @@ func NewToggleButton() ToggleButton {
 
 // NewToggleButtonWithLabel constructs a class ToggleButton.
 func NewToggleButtonWithLabel(label string) ToggleButton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar          // out
+	var _cret C.GtkToggleButton // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkToggleButton // in
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
 
@@ -187,12 +186,11 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 
 // NewToggleButtonWithMnemonic constructs a class ToggleButton.
 func NewToggleButtonWithMnemonic(label string) ToggleButton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar          // out
+	var _cret C.GtkToggleButton // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkToggleButton // in
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
@@ -207,10 +205,9 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 // if the toggle button is pressed in and false if it is raised.
 func (t toggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
 
@@ -226,10 +223,9 @@ func (t toggleButton) Active() bool {
 // Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
 func (t toggleButton) Inconsistent() bool {
 	var _arg0 *C.GtkToggleButton // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_button_get_inconsistent(_arg0)
 
@@ -246,10 +242,9 @@ func (t toggleButton) Inconsistent() bool {
 // and label. See gtk_toggle_button_set_mode().
 func (t toggleButton) Mode() bool {
 	var _arg0 *C.GtkToggleButton // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_button_get_mode(_arg0)
 

@@ -35,13 +35,12 @@ const (
 // Free the returned vector with g_strfreev().
 func ShellParseArgv(commandLine string) ([]string, error) {
 	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(C.CString(commandLine))
-	defer C.free(unsafe.Pointer(_arg1))
-
 	var _arg3 **C.gchar
 	var _arg2 C.gint    // in
 	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_shell_parse_argv(_arg1, &_arg2, &_arg3, &_cerr)
 
@@ -69,11 +68,10 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 // double quotes may be used).
 func ShellQuote(unquotedString string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(unquotedString))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_shell_quote(_arg1)
 
@@ -104,13 +102,12 @@ func ShellQuote(unquotedString string) string {
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
 func ShellUnquote(quotedString string) (string, error) {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar  // out
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(quotedString))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
 
 	_cret = C.g_shell_unquote(_arg1, &_cerr)
 

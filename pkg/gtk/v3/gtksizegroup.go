@@ -144,10 +144,9 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 // NewSizeGroup constructs a class SizeGroup.
 func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
+	var _cret C.GtkSizeGroup     // in
 
 	_arg1 = (C.GtkSizeGroupMode)(mode)
-
-	var _cret C.GtkSizeGroup // in
 
 	_cret = C.gtk_size_group_new(_arg1)
 
@@ -180,10 +179,9 @@ func (s sizeGroup) AddWidget(widget Widget) {
 // the size.
 func (s sizeGroup) IgnoreHidden() bool {
 	var _arg0 *C.GtkSizeGroup // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_size_group_get_ignore_hidden(_arg0)
 
@@ -199,11 +197,10 @@ func (s sizeGroup) IgnoreHidden() bool {
 // Mode gets the current mode of the size group. See
 // gtk_size_group_set_mode().
 func (s sizeGroup) Mode() SizeGroupMode {
-	var _arg0 *C.GtkSizeGroup // out
+	var _arg0 *C.GtkSizeGroup    // out
+	var _cret C.GtkSizeGroupMode // in
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSizeGroupMode // in
 
 	_cret = C.gtk_size_group_get_mode(_arg0)
 

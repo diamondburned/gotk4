@@ -71,10 +71,9 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 // GDK_SOURCE_TABLET_PAD.
 func (d waylandDevice) NodePath() string {
 	var _arg0 *C.GdkDevice // out
+	var _cret *C.char      // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gdk_wayland_device_get_node_path(_arg0)
 

@@ -76,17 +76,16 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 C.int            // out
+	var _arg2 *C.char          // in
 	var _arg3 *C.GCancellable  // out
+	var _cret *C.GInputStream  // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(size)
+	_arg1 = (C.int)(size)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _arg2 *C.char         // in
-	var _cret *C.GInputStream // in
-	var _cerr *C.GError       // in
-
-	_cret = C.g_loadable_icon_load(_arg0, _arg1, _arg3, &_arg2, &_cerr)
+	_cret = C.g_loadable_icon_load(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 
 	var _typ string              // out
 	var _inputStream InputStream // out
@@ -105,13 +104,12 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStre
 func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 *C.GAsyncResult  // out
+	var _arg2 *C.char          // in
+	var _cret *C.GInputStream  // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _arg2 *C.char         // in
-	var _cret *C.GInputStream // in
-	var _cerr *C.GError       // in
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
 

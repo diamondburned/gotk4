@@ -87,11 +87,10 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 
 // NewContentProviderForValue constructs a class ContentProvider.
 func NewContentProviderForValue(value **externglib.Value) ContentProvider {
-	var _arg1 *C.GValue // out
+	var _arg1 *C.GValue            // out
+	var _cret C.GdkContentProvider // in
 
 	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cret C.GdkContentProvider // in
 
 	_cret = C.gdk_content_provider_new_for_value(_arg1)
 
@@ -106,6 +105,7 @@ func NewContentProviderForValue(value **externglib.Value) ContentProvider {
 func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 	var _arg1 **C.GdkContentProvider
 	var _arg2 C.gsize
+	var _cret C.GdkContentProvider // in
 
 	_arg2 = C.gsize(len(providers))
 	_arg1 = (**C.GdkContentProvider)(C.malloc(C.ulong(len(providers)) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -115,8 +115,6 @@ func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 			out[i] = (*C.GdkContentProvider)(unsafe.Pointer(providers[i].Native()))
 		}
 	}
-
-	var _cret C.GdkContentProvider // in
 
 	_cret = C.gdk_content_provider_new_union(_arg1, _arg2)
 
@@ -146,11 +144,10 @@ func (p contentProvider) ContentChanged() {
 func (p contentProvider) Value(value **externglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GValue             // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cerr *C.GError // in
 
 	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
 
@@ -165,10 +162,9 @@ func (p contentProvider) Value(value **externglib.Value) error {
 // contents in.
 func (p contentProvider) RefFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
+	var _cret *C.GdkContentFormats  // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GdkContentFormats // in
 
 	_cret = C.gdk_content_provider_ref_formats(_arg0)
 
@@ -191,10 +187,9 @@ func (p contentProvider) RefFormats() *ContentFormats {
 // [method@Gdk.ContentProvider.ref_formats].
 func (p contentProvider) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
+	var _cret *C.GdkContentFormats  // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GdkContentFormats // in
 
 	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
 
@@ -214,11 +209,10 @@ func (p contentProvider) RefStorableFormats() *ContentFormats {
 func (p contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GAsyncResult       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
 

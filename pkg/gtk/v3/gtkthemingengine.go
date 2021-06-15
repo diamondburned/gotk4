@@ -110,11 +110,10 @@ func marshalThemingEngine(p uintptr) (interface{}, error) {
 func (e themingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
+	var _color gdk.RGBA
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
-
-	var _color gdk.RGBA
 
 	C.gtk_theming_engine_get_background_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
@@ -125,11 +124,10 @@ func (e themingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 func (e themingEngine) Border(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
+	var _border Border
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
-
-	var _border Border
 
 	C.gtk_theming_engine_get_border(_arg0, _arg1, (*C.GtkBorder)(unsafe.Pointer(&_border)))
 
@@ -140,11 +138,10 @@ func (e themingEngine) Border(state StateFlags) Border {
 func (e themingEngine) BorderColor(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
+	var _color gdk.RGBA
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
-
-	var _color gdk.RGBA
 
 	C.gtk_theming_engine_get_border_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
@@ -155,11 +152,10 @@ func (e themingEngine) BorderColor(state StateFlags) gdk.RGBA {
 func (e themingEngine) Color(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
+	var _color gdk.RGBA
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
-
-	var _color gdk.RGBA
 
 	C.gtk_theming_engine_get_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
@@ -169,10 +165,9 @@ func (e themingEngine) Color(state StateFlags) gdk.RGBA {
 // Direction returns the widget direction used for rendering.
 func (e themingEngine) Direction() TextDirection {
 	var _arg0 *C.GtkThemingEngine // out
+	var _cret C.GtkTextDirection  // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-
-	var _cret C.GtkTextDirection // in
 
 	_cret = C.gtk_theming_engine_get_direction(_arg0)
 
@@ -185,13 +180,12 @@ func (e themingEngine) Direction() TextDirection {
 
 // Font returns the font description for a given state.
 func (e themingEngine) Font(state StateFlags) *pango.FontDescription {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
+	var _arg0 *C.GtkThemingEngine     // out
+	var _arg1 C.GtkStateFlags         // out
+	var _cret *C.PangoFontDescription // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
-
-	var _cret *C.PangoFontDescription // in
 
 	_cret = C.gtk_theming_engine_get_font(_arg0, _arg1)
 
@@ -205,10 +199,9 @@ func (e themingEngine) Font(state StateFlags) *pango.FontDescription {
 // JunctionSides returns the widget direction used for rendering.
 func (e themingEngine) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkThemingEngine // out
+	var _cret C.GtkJunctionSides  // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-
-	var _cret C.GtkJunctionSides // in
 
 	_cret = C.gtk_theming_engine_get_junction_sides(_arg0)
 
@@ -223,11 +216,10 @@ func (e themingEngine) JunctionSides() JunctionSides {
 func (e themingEngine) Margin(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
+	var _margin Border
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
-
-	var _margin Border
 
 	C.gtk_theming_engine_get_margin(_arg0, _arg1, (*C.GtkBorder)(unsafe.Pointer(&_margin)))
 
@@ -238,11 +230,10 @@ func (e themingEngine) Margin(state StateFlags) Border {
 func (e themingEngine) Padding(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
+	var _padding Border
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
-
-	var _padding Border
 
 	C.gtk_theming_engine_get_padding(_arg0, _arg1, (*C.GtkBorder)(unsafe.Pointer(&_padding)))
 
@@ -252,10 +243,9 @@ func (e themingEngine) Padding(state StateFlags) Border {
 // Path returns the widget path used for style matching.
 func (e themingEngine) Path() *WidgetPath {
 	var _arg0 *C.GtkThemingEngine // out
+	var _cret *C.GtkWidgetPath    // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GtkWidgetPath // in
 
 	_cret = C.gtk_theming_engine_get_path(_arg0)
 
@@ -272,13 +262,12 @@ func (e themingEngine) Property(property string, state StateFlags) *externglib.V
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GtkStateFlags     // out
+	var _arg3 C.GValue            // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GtkStateFlags)(state)
-
-	var _arg3 C.GValue // in
 
 	C.gtk_theming_engine_get_property(_arg0, _arg1, _arg2, &_arg3)
 
@@ -295,10 +284,9 @@ func (e themingEngine) Property(property string, state StateFlags) *externglib.V
 // Screen returns the Screen to which @engine currently rendering to.
 func (e themingEngine) Screen() gdk.Screen {
 	var _arg0 *C.GtkThemingEngine // out
+	var _cret *C.GdkScreen        // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GdkScreen // in
 
 	_cret = C.gtk_theming_engine_get_screen(_arg0)
 
@@ -312,10 +300,9 @@ func (e themingEngine) Screen() gdk.Screen {
 // State returns the state used when rendering.
 func (e themingEngine) State() StateFlags {
 	var _arg0 *C.GtkThemingEngine // out
+	var _cret C.GtkStateFlags     // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-
-	var _cret C.GtkStateFlags // in
 
 	_cret = C.gtk_theming_engine_get_state(_arg0)
 
@@ -330,12 +317,11 @@ func (e themingEngine) State() StateFlags {
 func (e themingEngine) StyleProperty(propertyName string) *externglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
+	var _arg2 C.GValue            // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _arg2 C.GValue // in
 
 	C.gtk_theming_engine_get_style_property(_arg0, _arg1, &_arg2)
 
@@ -351,12 +337,11 @@ func (e themingEngine) StyleProperty(propertyName string) *externglib.Value {
 func (e themingEngine) HasClass(styleClass string) bool {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(styleClass))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_theming_engine_has_class(_arg0, _arg1)
 
@@ -375,13 +360,12 @@ func (e themingEngine) HasClass(styleClass string) bool {
 func (e themingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
+	var _arg2 C.GtkRegionFlags    // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(styleRegion))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _arg2 C.GtkRegionFlags // in
-	var _cret C.gboolean       // in
 
 	_cret = C.gtk_theming_engine_has_region(_arg0, _arg1, &_arg2)
 
@@ -401,13 +385,12 @@ func (e themingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 func (e themingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
+	var _color gdk.RGBA
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _color gdk.RGBA
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
@@ -431,12 +414,11 @@ func (e themingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 func (e themingEngine) StateIsRunning(state StateType) (float64, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateType      // out
+	var _arg2 C.gdouble           // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateType)(state)
-
-	var _arg2 C.gdouble  // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_theming_engine_state_is_running(_arg0, _arg1, &_arg2)
 

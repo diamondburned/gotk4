@@ -96,10 +96,9 @@ func marshalProXYResolver(p uintptr) (interface{}, error) {
 // resolver that returns true for this method.)
 func (r proXYResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_proxy_resolver_is_supported(_arg0)
 
@@ -128,14 +127,13 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GCancellable   // out
+	var _cret **C.gchar
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret **C.gchar
-	var _cerr *C.GError // in
 
 	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
 
@@ -166,12 +164,11 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
+	var _cret **C.gchar
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret **C.gchar
-	var _cerr *C.GError // in
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
 

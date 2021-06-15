@@ -91,15 +91,14 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 
 // NewAppChooserDialog constructs a class AppChooserDialog.
 func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppChooserDialog {
-	var _arg1 *C.GtkWindow     // out
-	var _arg2 C.GtkDialogFlags // out
-	var _arg3 *C.GFile         // out
+	var _arg1 *C.GtkWindow          // out
+	var _arg2 C.GtkDialogFlags      // out
+	var _arg3 *C.GFile              // out
+	var _cret C.GtkAppChooserDialog // in
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (C.GtkDialogFlags)(flags)
 	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkAppChooserDialog // in
 
 	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
 
@@ -112,16 +111,15 @@ func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppCho
 
 // NewAppChooserDialogForContentType constructs a class AppChooserDialog.
 func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, contentType string) AppChooserDialog {
-	var _arg1 *C.GtkWindow     // out
-	var _arg2 C.GtkDialogFlags // out
-	var _arg3 *C.char          // out
+	var _arg1 *C.GtkWindow          // out
+	var _arg2 C.GtkDialogFlags      // out
+	var _arg3 *C.char               // out
+	var _cret C.GtkAppChooserDialog // in
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (C.GtkDialogFlags)(flags)
 	_arg3 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret C.GtkAppChooserDialog // in
 
 	_cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
 
@@ -135,10 +133,9 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 // Heading returns the text to display at the top of the dialog.
 func (s appChooserDialog) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog // out
+	var _cret *C.char                // in
 
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
 
@@ -152,10 +149,9 @@ func (s appChooserDialog) Heading() string {
 // Widget returns the `GtkAppChooserWidget` of this dialog.
 func (s appChooserDialog) Widget() Widget {
 	var _arg0 *C.GtkAppChooserDialog // out
+	var _cret *C.GtkWidget           // in
 
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
 

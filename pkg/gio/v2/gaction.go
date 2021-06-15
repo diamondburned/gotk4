@@ -208,10 +208,9 @@ func (a action) ChangeState(value *glib.Variant) {
 // its state changed from outside callers.
 func (a action) Enabled() bool {
 	var _arg0 *C.GAction // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_action_get_enabled(_arg0)
 
@@ -227,10 +226,9 @@ func (a action) Enabled() bool {
 // Name queries the name of @action.
 func (a action) Name() string {
 	var _arg0 *C.GAction // out
+	var _cret *C.gchar   // in
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_action_get_name(_arg0)
 
@@ -250,11 +248,10 @@ func (a action) Name() string {
 // In the case that this function returns nil, you must not give any
 // #GVariant, but nil instead.
 func (a action) ParameterType() *glib.VariantType {
-	var _arg0 *C.GAction // out
+	var _arg0 *C.GAction      // out
+	var _cret *C.GVariantType // in
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GVariantType // in
 
 	_cret = C.g_action_get_parameter_type(_arg0)
 
@@ -274,11 +271,10 @@ func (a action) ParameterType() *glib.VariantType {
 // The return value (if non-nil) should be freed with g_variant_unref() when
 // it is no longer required.
 func (a action) State() *glib.Variant {
-	var _arg0 *C.GAction // out
+	var _arg0 *C.GAction  // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_action_get_state(_arg0)
 
@@ -311,11 +307,10 @@ func (a action) State() *glib.Variant {
 // The return value (if non-nil) should be freed with g_variant_unref() when
 // it is no longer required.
 func (a action) StateHint() *glib.Variant {
-	var _arg0 *C.GAction // out
+	var _arg0 *C.GAction  // out
+	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.g_action_get_state_hint(_arg0)
 
@@ -341,11 +336,10 @@ func (a action) StateHint() *glib.Variant {
 // then this function will return nil. In that case, g_action_get_state()
 // will return nil and you must not call g_action_change_state().
 func (a action) StateType() *glib.VariantType {
-	var _arg0 *C.GAction // out
+	var _arg0 *C.GAction      // out
+	var _cret *C.GVariantType // in
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GVariantType // in
 
 	_cret = C.g_action_get_state_type(_arg0)
 

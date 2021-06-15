@@ -115,12 +115,11 @@ func marshalFrame(p uintptr) (interface{}, error) {
 
 // NewFrame constructs a class Frame.
 func NewFrame(label string) Frame {
-	var _arg1 *C.char // out
+	var _arg1 *C.char    // out
+	var _cret C.GtkFrame // in
 
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkFrame // in
 
 	_cret = C.gtk_frame_new(_arg1)
 
@@ -133,11 +132,10 @@ func NewFrame(label string) Frame {
 
 // Child gets the child widget of @frame.
 func (f frame) Child() Widget {
-	var _arg0 *C.GtkFrame // out
+	var _arg0 *C.GtkFrame  // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_frame_get_child(_arg0)
 
@@ -153,10 +151,9 @@ func (f frame) Child() Widget {
 // If the frame's label widget is not a `GtkLabel`, nil is returned.
 func (f frame) Label() string {
 	var _arg0 *C.GtkFrame // out
+	var _cret *C.char     // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_frame_get_label(_arg0)
 
@@ -170,10 +167,9 @@ func (f frame) Label() string {
 // LabelAlign retrieves the X alignment of the frame’s label.
 func (f frame) LabelAlign() float32 {
 	var _arg0 *C.GtkFrame // out
+	var _cret C.float     // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret C.float // in
 
 	_cret = C.gtk_frame_get_label_align(_arg0)
 
@@ -186,11 +182,10 @@ func (f frame) LabelAlign() float32 {
 
 // LabelWidget retrieves the label widget for the frame.
 func (f frame) LabelWidget() Widget {
-	var _arg0 *C.GtkFrame // out
+	var _arg0 *C.GtkFrame  // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
 
@@ -233,7 +228,7 @@ func (f frame) SetLabelAlign(xalign float32) {
 	var _arg1 C.float     // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-	_arg1 = C.float(xalign)
+	_arg1 = (C.float)(xalign)
 
 	C.gtk_frame_set_label_align(_arg0, _arg1)
 }

@@ -84,12 +84,11 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 
 // NewTextTag constructs a class TextTag.
 func NewTextTag(name string) TextTag {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar     // out
+	var _cret C.GtkTextTag // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkTextTag // in
 
 	_cret = C.gtk_text_tag_new(_arg1)
 
@@ -120,10 +119,9 @@ func (t textTag) Changed(sizeChanged bool) {
 // Priority: get the tag priority.
 func (t textTag) Priority() int {
 	var _arg0 *C.GtkTextTag // out
+	var _cret C.gint        // in
 
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_text_tag_get_priority(_arg0)
 
@@ -149,7 +147,7 @@ func (t textTag) SetPriority(priority int) {
 	var _arg1 C.gint        // out
 
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gint(priority)
+	_arg1 = (C.gint)(priority)
 
 	C.gtk_text_tag_set_priority(_arg0, _arg1)
 }

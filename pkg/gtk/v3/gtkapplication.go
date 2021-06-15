@@ -357,12 +357,11 @@ func marshalApplication(p uintptr) (interface{}, error) {
 func NewApplication(applicationId string, flags gio.ApplicationFlags) Application {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GApplicationFlags // out
+	var _cret C.GtkApplication    // in
 
 	_arg1 = (*C.gchar)(C.CString(applicationId))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GApplicationFlags)(flags)
-
-	var _cret C.GtkApplication // in
 
 	_cret = C.gtk_application_new(_arg1, _arg2)
 
@@ -434,12 +433,11 @@ func (a application) AddWindow(window Window) {
 func (a application) AccelsForAction(detailedActionName string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret **C.gchar
 
 	_cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
 
@@ -480,12 +478,11 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 func (a application) ActionsForAccel(accel string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(accel))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret **C.gchar
 
 	_cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
 
@@ -516,10 +513,9 @@ func (a application) ActionsForAccel(accel string) []string {
 // this application.
 func (a application) ActiveWindow() Window {
 	var _arg0 *C.GtkApplication // out
+	var _cret *C.GtkWindow      // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWindow // in
 
 	_cret = C.gtk_application_get_active_window(_arg0)
 
@@ -534,10 +530,9 @@ func (a application) ActiveWindow() Window {
 // gtk_application_set_app_menu().
 func (a application) AppMenu() gio.MenuModel {
 	var _arg0 *C.GtkApplication // out
+	var _cret *C.GMenuModel     // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GMenuModel // in
 
 	_cret = C.gtk_application_get_app_menu(_arg0)
 
@@ -553,12 +548,11 @@ func (a application) AppMenu() gio.MenuModel {
 func (a application) MenuByID(id string) gio.Menu {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
+	var _cret *C.GMenu          // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GMenu // in
 
 	_cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
 
@@ -573,10 +567,9 @@ func (a application) MenuByID(id string) gio.Menu {
 // gtk_application_set_menubar().
 func (a application) Menubar() gio.MenuModel {
 	var _arg0 *C.GtkApplication // out
+	var _cret *C.GMenuModel     // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GMenuModel // in
 
 	_cret = C.gtk_application_get_menubar(_arg0)
 
@@ -594,11 +587,10 @@ func (a application) Menubar() gio.MenuModel {
 func (a application) WindowByID(id uint) Window {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
+	var _cret *C.GtkWindow      // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = C.guint(id)
-
-	var _cret *C.GtkWindow // in
+	_arg1 = (C.guint)(id)
 
 	_cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
 
@@ -635,14 +627,13 @@ func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reaso
 	var _arg1 *C.GtkWindow                 // out
 	var _arg2 C.GtkApplicationInhibitFlags // out
 	var _arg3 *C.gchar                     // out
+	var _cret C.guint                      // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = (C.GtkApplicationInhibitFlags)(flags)
 	_arg3 = (*C.gchar)(C.CString(reason))
 	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
 
@@ -661,11 +652,10 @@ func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reaso
 func (a application) IsInhibited(flags ApplicationInhibitFlags) bool {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 C.GtkApplicationInhibitFlags // out
+	var _cret C.gboolean                   // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (C.GtkApplicationInhibitFlags)(flags)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_application_is_inhibited(_arg0, _arg1)
 
@@ -682,10 +672,9 @@ func (a application) IsInhibited(flags ApplicationInhibitFlags) bool {
 // associated accelerators. See gtk_application_set_accels_for_action().
 func (a application) ListActionDescriptions() []string {
 	var _arg0 *C.GtkApplication // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.gtk_application_list_action_descriptions(_arg0)
 
@@ -742,10 +731,9 @@ func (a application) ListActionDescriptions() []string {
 // anyway, then this menu will be replaced with your own.
 func (a application) PrefersAppMenu() bool {
 	var _arg0 *C.GtkApplication // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_application_prefers_app_menu(_arg0)
 
@@ -806,9 +794,8 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong((len(accels) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(accels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
-
 	{
 		out := unsafe.Slice(_arg2, len(accels))
 		for i := range accels {
@@ -882,7 +869,7 @@ func (a application) Uninhibit(cookie uint) {
 	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = C.guint(cookie)
+	_arg1 = (C.guint)(cookie)
 
 	C.gtk_application_uninhibit(_arg0, _arg1)
 }

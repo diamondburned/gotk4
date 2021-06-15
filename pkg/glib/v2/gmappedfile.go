@@ -46,17 +46,16 @@ func marshalMappedFile(p uintptr) (interface{}, error) {
 
 // NewMappedFile constructs a struct MappedFile.
 func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
-	var _arg1 *C.gchar   // out
-	var _arg2 C.gboolean // out
+	var _arg1 *C.gchar       // out
+	var _arg2 C.gboolean     // out
+	var _cret *C.GMappedFile // in
+	var _cerr *C.GError      // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 	if writable {
 		_arg2 = C.TRUE
 	}
-
-	var _cret *C.GMappedFile // in
-	var _cerr *C.GError      // in
 
 	_cret = C.g_mapped_file_new(_arg1, _arg2, &_cerr)
 
@@ -74,16 +73,15 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 
 // NewMappedFileFromFd constructs a struct MappedFile.
 func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
-	var _arg1 C.gint     // out
-	var _arg2 C.gboolean // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gboolean     // out
+	var _cret *C.GMappedFile // in
+	var _cerr *C.GError      // in
 
-	_arg1 = C.gint(fd)
+	_arg1 = (C.gint)(fd)
 	if writable {
 		_arg2 = C.TRUE
 	}
-
-	var _cret *C.GMappedFile // in
-	var _cerr *C.GError      // in
 
 	_cret = C.g_mapped_file_new_from_fd(_arg1, _arg2, &_cerr)
 
@@ -122,10 +120,9 @@ func (f *MappedFile) Free() {
 // If the file is empty then nil is returned.
 func (f *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
+	var _cret *C.gchar       // in
 
 	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_mapped_file_get_contents(_arg0)
 
@@ -140,10 +137,9 @@ func (f *MappedFile) Contents() string {
 // Length returns the length of the contents of a File.
 func (f *MappedFile) Length() uint {
 	var _arg0 *C.GMappedFile // out
+	var _cret C.gsize        // in
 
 	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
-
-	var _cret C.gsize // in
 
 	_cret = C.g_mapped_file_get_length(_arg0)
 
@@ -158,10 +154,9 @@ func (f *MappedFile) Length() uint {
 // function from any thread.
 func (f *MappedFile) Ref() *MappedFile {
 	var _arg0 *C.GMappedFile // out
+	var _cret *C.GMappedFile // in
 
 	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GMappedFile // in
 
 	_cret = C.g_mapped_file_ref(_arg0)
 

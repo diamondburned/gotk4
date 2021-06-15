@@ -4,8 +4,6 @@ package gsk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #cgo pkg-config: gtk4
@@ -33,20 +31,6 @@ func (c *ColorStop) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// Offset gets the field inside the struct.
-func (c *ColorStop) Offset() float32 {
-	var v float32 // out
-	v = (float32)(c.native.offset)
-	return v
-}
-
-// Color gets the field inside the struct.
-func (c *ColorStop) Color() gdk.RGBA {
-	var v gdk.RGBA // out
-	v = *gdk.WrapRGBA(unsafe.Pointer(&c.native.color))
-	return v
-}
-
 // ParseLocation: a location in a parse buffer.
 type ParseLocation struct {
 	native C.GskParseLocation
@@ -67,41 +51,6 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Bytes gets the field inside the struct.
-func (p *ParseLocation) Bytes() uint {
-	var v uint // out
-	v = (uint)(p.native.bytes)
-	return v
-}
-
-// Chars gets the field inside the struct.
-func (p *ParseLocation) Chars() uint {
-	var v uint // out
-	v = (uint)(p.native.chars)
-	return v
-}
-
-// Lines gets the field inside the struct.
-func (p *ParseLocation) Lines() uint {
-	var v uint // out
-	v = (uint)(p.native.lines)
-	return v
-}
-
-// LineBytes gets the field inside the struct.
-func (p *ParseLocation) LineBytes() uint {
-	var v uint // out
-	v = (uint)(p.native.line_bytes)
-	return v
-}
-
-// LineChars gets the field inside the struct.
-func (p *ParseLocation) LineChars() uint {
-	var v uint // out
-	v = (uint)(p.native.line_chars)
-	return v
-}
-
 // Shadow: the shadow parameters in a shadow node.
 type Shadow struct {
 	native C.GskShadow
@@ -120,32 +69,4 @@ func WrapShadow(ptr unsafe.Pointer) *Shadow {
 // Native returns the underlying C source pointer.
 func (s *Shadow) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// Color gets the field inside the struct.
-func (s *Shadow) Color() gdk.RGBA {
-	var v gdk.RGBA // out
-	v = *gdk.WrapRGBA(unsafe.Pointer(&s.native.color))
-	return v
-}
-
-// Dx gets the field inside the struct.
-func (s *Shadow) Dx() float32 {
-	var v float32 // out
-	v = (float32)(s.native.dx)
-	return v
-}
-
-// Dy gets the field inside the struct.
-func (s *Shadow) Dy() float32 {
-	var v float32 // out
-	v = (float32)(s.native.dy)
-	return v
-}
-
-// Radius gets the field inside the struct.
-func (s *Shadow) Radius() float32 {
-	var v float32 // out
-	v = (float32)(s.native.radius)
-	return v
 }

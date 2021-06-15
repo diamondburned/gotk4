@@ -77,14 +77,13 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 
 // NewNetworkAddress constructs a class NetworkAddress.
 func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
-	var _arg1 *C.gchar  // out
-	var _arg2 C.guint16 // out
+	var _arg1 *C.gchar          // out
+	var _arg2 C.guint16         // out
+	var _cret C.GNetworkAddress // in
 
 	_arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(port)
-
-	var _cret C.GNetworkAddress // in
+	_arg2 = (C.guint16)(port)
 
 	_cret = C.g_network_address_new(_arg1, _arg2)
 
@@ -97,11 +96,10 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 
 // NewNetworkAddressLoopback constructs a class NetworkAddress.
 func NewNetworkAddressLoopback(port uint16) NetworkAddress {
-	var _arg1 C.guint16 // out
-
-	_arg1 = C.guint16(port)
-
+	var _arg1 C.guint16         // out
 	var _cret C.GNetworkAddress // in
+
+	_arg1 = (C.guint16)(port)
 
 	_cret = C.g_network_address_new_loopback(_arg1)
 
@@ -116,10 +114,9 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 // ASCII-encoded, depending on what @addr was created with.
 func (a networkAddress) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_network_address_get_hostname(_arg0)
 
@@ -133,10 +130,9 @@ func (a networkAddress) Hostname() string {
 // Port gets @addr's port number
 func (a networkAddress) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
+	var _cret C.guint16          // in
 
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.guint16 // in
 
 	_cret = C.g_network_address_get_port(_arg0)
 
@@ -150,10 +146,9 @@ func (a networkAddress) Port() uint16 {
 // Scheme gets @addr's scheme
 func (a networkAddress) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
+	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_network_address_get_scheme(_arg0)
 

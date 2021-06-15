@@ -45,29 +45,14 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Bounds gets the field inside the struct.
-func (r *RoundedRect) Bounds() graphene.Rect {
-	var v graphene.Rect // out
-	v = *graphene.WrapRect(unsafe.Pointer(&r.native.bounds))
-	return v
-}
-
-// Corner gets the field inside the struct.
-func (r *RoundedRect) Corner() [4]graphene.Size {
-	var v [4]graphene.Size
-	v = *(*[4]graphene.Size)(unsafe.Pointer(&r.native.corner))
-	return v
-}
-
 // ContainsPoint checks if the given @point is inside the rounded rectangle.
 func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	var _arg0 *C.GskRoundedRect   // out
 	var _arg1 *C.graphene_point_t // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gsk_rounded_rect_contains_point(_arg0, _arg1)
 
@@ -85,11 +70,10 @@ func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gsk_rounded_rect_contains_rect(_arg0, _arg1)
 
@@ -113,6 +97,7 @@ func (s *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRig
 	var _arg3 *C.graphene_size_t // out
 	var _arg4 *C.graphene_size_t // out
 	var _arg5 *C.graphene_size_t // out
+	var _cret *C.GskRoundedRect  // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
@@ -120,8 +105,6 @@ func (s *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRig
 	_arg3 = (*C.graphene_size_t)(unsafe.Pointer(topRight.Native()))
 	_arg4 = (*C.graphene_size_t)(unsafe.Pointer(bottomRight.Native()))
 	_arg5 = (*C.graphene_size_t)(unsafe.Pointer(bottomLeft.Native()))
-
-	var _cret *C.GskRoundedRect // in
 
 	_cret = C.gsk_rounded_rect_init(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -139,11 +122,10 @@ func (s *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRig
 func (s *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 *C.GskRoundedRect // out
+	var _cret *C.GskRoundedRect // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(src.Native()))
-
-	var _cret *C.GskRoundedRect // in
 
 	_cret = C.gsk_rounded_rect_init_copy(_arg0, _arg1)
 
@@ -160,12 +142,11 @@ func (s *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Round
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 C.float            // out
+	var _cret *C.GskRoundedRect  // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
-	_arg2 = C.float(radius)
-
-	var _cret *C.GskRoundedRect // in
+	_arg2 = (C.float)(radius)
 
 	_cret = C.gsk_rounded_rect_init_from_rect(_arg0, _arg1, _arg2)
 
@@ -181,11 +162,10 @@ func (s *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Round
 func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gsk_rounded_rect_intersects_rect(_arg0, _arg1)
 
@@ -205,10 +185,9 @@ func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 // [ctor@Gsk.RoundedClipNode.new] should be called.
 func (s *RoundedRect) IsRectilinear() bool {
 	var _arg0 *C.GskRoundedRect // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gsk_rounded_rect_is_rectilinear(_arg0)
 
@@ -227,10 +206,9 @@ func (s *RoundedRect) IsRectilinear() bool {
 // ensure that the corner values are positive and the corners do not overlap.
 func (s *RoundedRect) Normalize() *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
+	var _cret *C.GskRoundedRect // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GskRoundedRect // in
 
 	_cret = C.gsk_rounded_rect_normalize(_arg0)
 
@@ -248,12 +226,11 @@ func (s *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 C.float           // out
 	var _arg2 C.float           // out
+	var _cret *C.GskRoundedRect // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
-	_arg1 = C.float(dx)
-	_arg2 = C.float(dy)
-
-	var _cret *C.GskRoundedRect // in
+	_arg1 = (C.float)(dx)
+	_arg2 = (C.float)(dy)
 
 	_cret = C.gsk_rounded_rect_offset(_arg0, _arg1, _arg2)
 
@@ -278,14 +255,13 @@ func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left fl
 	var _arg2 C.float           // out
 	var _arg3 C.float           // out
 	var _arg4 C.float           // out
+	var _cret *C.GskRoundedRect // in
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
-	_arg1 = C.float(top)
-	_arg2 = C.float(right)
-	_arg3 = C.float(bottom)
-	_arg4 = C.float(left)
-
-	var _cret *C.GskRoundedRect // in
+	_arg1 = (C.float)(top)
+	_arg2 = (C.float)(right)
+	_arg3 = (C.float)(bottom)
+	_arg4 = (C.float)(left)
 
 	_cret = C.gsk_rounded_rect_shrink(_arg0, _arg1, _arg2, _arg3, _arg4)
 

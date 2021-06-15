@@ -23,15 +23,14 @@ import "C"
 // running gtk_main()-loop when destroyed, and it will automatically be
 // destroyed upon test function teardown.
 func TestCreateSimpleWindow(windowTitle string, dialogText string) Widget {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(C.CString(windowTitle))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(dialogText))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_test_create_simple_window(_arg1, _arg2)
 
@@ -52,12 +51,11 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) Widget {
 func TestFindLabel(widget Widget, labelPattern string) Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.gchar)(C.CString(labelPattern))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_test_find_label(_arg1, _arg2)
 
@@ -77,11 +75,10 @@ func TestFindLabel(widget Widget, labelPattern string) Widget {
 func TestFindSibling(baseWidget Widget, widgetType externglib.Type) Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GType      // out
+	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(baseWidget.Native()))
 	_arg2 = C.GType(widgetType)
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_test_find_sibling(_arg1, _arg2)
 
@@ -103,13 +100,12 @@ func TestFindWidget(widget Widget, labelPattern string, widgetType externglib.Ty
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 	var _arg3 C.GType      // out
+	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.gchar)(C.CString(labelPattern))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GType(widgetType)
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_test_find_widget(_arg1, _arg2, _arg3)
 
@@ -118,27 +114,6 @@ func TestFindWidget(widget Widget, labelPattern string, widgetType externglib.Ty
 	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
 	return _ret
-}
-
-// TestListAllTypes: return the type ids that have been registered after calling
-// gtk_test_register_all_types().
-func TestListAllTypes() []externglib.Type {
-	var _cret *C.GType
-	var _arg1 C.guint // in
-
-	_cret = C.gtk_test_list_all_types(&_arg1)
-
-	var _gTypes []externglib.Type
-
-	{
-		src := unsafe.Slice(_cret, _arg1)
-		_gTypes = make([]externglib.Type, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_gTypes[i] = externglib.Type(src[i])
-		}
-	}
-
-	return _gTypes
 }
 
 // TestRegisterAllTypes: force registration of all core Gtk+ and Gdk object
@@ -154,10 +129,9 @@ func TestRegisterAllTypes() {
 // @widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
 func TestSliderGetValue(widget Widget) float64 {
 	var _arg1 *C.GtkWidget // out
+	var _cret C.double     // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_test_slider_get_value(_arg1)
 
@@ -177,7 +151,7 @@ func TestSliderSetPerc(widget Widget, percentage float64) {
 	var _arg2 C.double     // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.double(percentage)
+	_arg2 = (C.double)(percentage)
 
 	C.gtk_test_slider_set_perc(_arg1, _arg2)
 }
@@ -189,14 +163,13 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
 	var _arg3 C.gboolean       // out
+	var _cret C.gboolean       // in
 
 	_arg1 = (*C.GtkSpinButton)(unsafe.Pointer(spinner.Native()))
-	_arg2 = C.guint(button)
+	_arg2 = (C.guint)(button)
 	if upwards {
 		_arg3 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_spin_button_click(_arg1, _arg2, _arg3)
 
@@ -213,10 +186,9 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 // GtkEditable (entry and text widgets) or GtkTextView.
 func TestTextGet(widget Widget) string {
 	var _arg1 *C.GtkWidget // out
+	var _cret *C.gchar     // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_test_text_get(_arg1)
 
@@ -230,12 +202,12 @@ func TestTextGet(widget Widget) string {
 
 // TestTextSet: set the text string of @widget to @string if it is a GtkLabel,
 // GtkEditable (entry and text widgets) or GtkTextView.
-func TestTextSet(widget Widget, string string) {
+func TestTextSet(widget Widget, _string string) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.gchar)(C.CString(string))
+	_arg2 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_test_text_set(_arg1, _arg2)
@@ -253,12 +225,11 @@ func TestWidgetClick(widget Widget, button uint, modifiers gdk.ModifierType) boo
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
+	var _cret C.gboolean        // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.guint(button)
+	_arg2 = (C.guint)(button)
 	_arg3 = (C.GdkModifierType)(modifiers)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_widget_click(_arg1, _arg2, _arg3)
 
@@ -282,12 +253,11 @@ func TestWidgetSendKey(widget Widget, keyval uint, modifiers gdk.ModifierType) b
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
+	var _cret C.gboolean        // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.guint(keyval)
+	_arg2 = (C.guint)(keyval)
 	_arg3 = (C.GdkModifierType)(modifiers)
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_widget_send_key(_arg1, _arg2, _arg3)
 

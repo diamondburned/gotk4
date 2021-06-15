@@ -70,10 +70,9 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 // NewZlibDecompressor constructs a class ZlibDecompressor.
 func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 	var _arg1 C.GZlibCompressorFormat // out
+	var _cret C.GZlibDecompressor     // in
 
 	_arg1 = (C.GZlibCompressorFormat)(format)
-
-	var _cret C.GZlibDecompressor // in
 
 	_cret = C.g_zlib_decompressor_new(_arg1)
 
@@ -91,10 +90,9 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 // stream at all.
 func (d zlibDecompressor) FileInfo() FileInfo {
 	var _arg0 *C.GZlibDecompressor // out
+	var _cret *C.GFileInfo         // in
 
 	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GFileInfo // in
 
 	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
 

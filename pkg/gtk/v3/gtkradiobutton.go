@@ -140,10 +140,9 @@ func marshalRadioButton(p uintptr) (interface{}, error) {
 // NewRadioButtonFromWidget constructs a class RadioButton.
 func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
+	var _cret C.GtkRadioButton  // in
 
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
-
-	var _cret C.GtkRadioButton // in
 
 	_cret = C.gtk_radio_button_new_from_widget(_arg1)
 
@@ -158,12 +157,11 @@ func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
 func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label string) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
+	var _cret C.GtkRadioButton  // in
 
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioButton // in
 
 	_cret = C.gtk_radio_button_new_with_label_from_widget(_arg1, _arg2)
 
@@ -178,12 +176,11 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label strin
 func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label string) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
+	var _cret C.GtkRadioButton  // in
 
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioButton // in
 
 	_cret = C.gtk_radio_button_new_with_mnemonic_from_widget(_arg1, _arg2)
 

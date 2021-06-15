@@ -124,12 +124,11 @@ func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn {
 	var _arg1 *C.char               // out
 	var _arg2 *C.GtkListItemFactory // out
+	var _cret C.GtkColumnViewColumn // in
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
-
-	var _cret C.GtkColumnViewColumn // in
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
 
@@ -145,10 +144,9 @@ func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn
 // If @self has not been added to a column view yet, nil is returned.
 func (s columnViewColumn) ColumnView() ColumnView {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.GtkColumnView       // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkColumnView // in
 
 	_cret = C.gtk_column_view_column_get_column_view(_arg0)
 
@@ -162,10 +160,9 @@ func (s columnViewColumn) ColumnView() ColumnView {
 // Expand returns whether this column should expand.
 func (s columnViewColumn) Expand() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_column_view_column_get_expand(_arg0)
 
@@ -182,10 +179,9 @@ func (s columnViewColumn) Expand() bool {
 // this column.
 func (s columnViewColumn) Factory() ListItemFactory {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.GtkListItemFactory  // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkListItemFactory // in
 
 	_cret = C.gtk_column_view_column_get_factory(_arg0)
 
@@ -199,10 +195,9 @@ func (s columnViewColumn) Factory() ListItemFactory {
 // FixedWidth gets the fixed width of the column.
 func (s columnViewColumn) FixedWidth() int {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret C.int                  // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_column_view_column_get_fixed_width(_arg0)
 
@@ -217,10 +212,9 @@ func (s columnViewColumn) FixedWidth() int {
 // for the column header.
 func (s columnViewColumn) HeaderMenu() gio.MenuModel {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.GMenuModel          // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GMenuModel // in
 
 	_cret = C.gtk_column_view_column_get_header_menu(_arg0)
 
@@ -234,10 +228,9 @@ func (s columnViewColumn) HeaderMenu() gio.MenuModel {
 // Resizable returns whether this column is resizable.
 func (s columnViewColumn) Resizable() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_column_view_column_get_resizable(_arg0)
 
@@ -253,10 +246,9 @@ func (s columnViewColumn) Resizable() bool {
 // Sorter returns the sorter that is associated with the column.
 func (s columnViewColumn) Sorter() Sorter {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.GtkSorter           // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSorter // in
 
 	_cret = C.gtk_column_view_column_get_sorter(_arg0)
 
@@ -270,10 +262,9 @@ func (s columnViewColumn) Sorter() Sorter {
 // Title returns the title set with gtk_column_view_column_set_title().
 func (s columnViewColumn) Title() string {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.char                // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_column_view_column_get_title(_arg0)
 
@@ -287,10 +278,9 @@ func (s columnViewColumn) Title() string {
 // Visible returns whether this column is visible.
 func (s columnViewColumn) Visible() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_column_view_column_get_visible(_arg0)
 
@@ -341,7 +331,7 @@ func (s columnViewColumn) SetFixedWidth(fixedWidth int) {
 	var _arg1 C.int                  // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(fixedWidth)
+	_arg1 = (C.int)(fixedWidth)
 
 	C.gtk_column_view_column_set_fixed_width(_arg0, _arg1)
 }

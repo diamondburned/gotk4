@@ -37,20 +37,6 @@ func (t *TimeVal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// TvSec gets the field inside the struct.
-func (t *TimeVal) TvSec() int32 {
-	var v int32 // out
-	v = (int32)(t.native.tv_sec)
-	return v
-}
-
-// TvUsec gets the field inside the struct.
-func (t *TimeVal) TvUsec() int32 {
-	var v int32 // out
-	v = (int32)(t.native.tv_usec)
-	return v
-}
-
 // Add adds the given number of microseconds to @time_. @microseconds can also
 // be negative to decrease the value of @time_.
 func (t *TimeVal) Add(microseconds int32) {
@@ -58,7 +44,7 @@ func (t *TimeVal) Add(microseconds int32) {
 	var _arg1 C.glong     // out
 
 	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
-	_arg1 = C.glong(microseconds)
+	_arg1 = (C.glong)(microseconds)
 
 	C.g_time_val_add(_arg0, _arg1)
 }
@@ -96,10 +82,9 @@ func (t *TimeVal) Add(microseconds int32) {
 // 2.54; before then, GLib would crash under the same conditions.
 func (t *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
 

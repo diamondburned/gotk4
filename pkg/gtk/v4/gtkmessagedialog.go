@@ -151,10 +151,9 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 // corresponding function in the parent [class@Gtk.Dialog].
 func (m messageDialog) MessageArea() Widget {
 	var _arg0 *C.GtkMessageDialog // out
+	var _cret *C.GtkWidget        // in
 
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 

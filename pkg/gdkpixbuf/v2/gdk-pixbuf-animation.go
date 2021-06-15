@@ -122,13 +122,12 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 
 // NewPixbufAnimationFromFile constructs a class PixbufAnimation.
 func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
-	var _arg1 *C.char // out
+	var _arg1 *C.char              // out
+	var _cret C.GdkPixbufAnimation // in
+	var _cerr *C.GError            // in
 
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkPixbufAnimation // in
-	var _cerr *C.GError            // in
 
 	_cret = C.gdk_pixbuf_animation_new_from_file(_arg1, &_cerr)
 
@@ -143,13 +142,12 @@ func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
 
 // NewPixbufAnimationFromResource constructs a class PixbufAnimation.
 func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error) {
-	var _arg1 *C.char // out
+	var _arg1 *C.char              // out
+	var _cret C.GdkPixbufAnimation // in
+	var _cerr *C.GError            // in
 
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkPixbufAnimation // in
-	var _cerr *C.GError            // in
 
 	_cret = C.gdk_pixbuf_animation_new_from_resource(_arg1, &_cerr)
 
@@ -164,14 +162,13 @@ func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error
 
 // NewPixbufAnimationFromStream constructs a class PixbufAnimation.
 func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancellable) (PixbufAnimation, error) {
-	var _arg1 *C.GInputStream // out
-	var _arg2 *C.GCancellable // out
+	var _arg1 *C.GInputStream      // out
+	var _arg2 *C.GCancellable      // out
+	var _cret C.GdkPixbufAnimation // in
+	var _cerr *C.GError            // in
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GdkPixbufAnimation // in
-	var _cerr *C.GError            // in
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
 
@@ -186,12 +183,11 @@ func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancel
 
 // NewPixbufAnimationFromStreamFinish constructs a class PixbufAnimation.
 func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) (PixbufAnimation, error) {
-	var _arg1 *C.GAsyncResult // out
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
-
+	var _arg1 *C.GAsyncResult      // out
 	var _cret C.GdkPixbufAnimation // in
 	var _cerr *C.GError            // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, &_cerr)
 
@@ -207,10 +203,9 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) (PixbufAnim
 // Height queries the height of the bounding box of a pixbuf animation.
 func (a pixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
+	var _cret C.int                 // in
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_pixbuf_animation_get_height(_arg0)
 
@@ -254,13 +249,12 @@ func (a pixbufAnimation) Height() int {
 //
 // A delay time of -1 is possible, indicating "infinite".
 func (a pixbufAnimation) Iter(startTime *glib.TimeVal) PixbufAnimationIter {
-	var _arg0 *C.GdkPixbufAnimation // out
-	var _arg1 *C.GTimeVal           // out
+	var _arg0 *C.GdkPixbufAnimation     // out
+	var _arg1 *C.GTimeVal               // out
+	var _cret *C.GdkPixbufAnimationIter // in
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GTimeVal)(unsafe.Pointer(startTime.Native()))
-
-	var _cret *C.GdkPixbufAnimationIter // in
 
 	_cret = C.gdk_pixbuf_animation_get_iter(_arg0, _arg1)
 
@@ -284,10 +278,9 @@ func (a pixbufAnimation) Iter(startTime *glib.TimeVal) PixbufAnimationIter {
 // `NULL`.
 func (a pixbufAnimation) StaticImage() Pixbuf {
 	var _arg0 *C.GdkPixbufAnimation // out
+	var _cret *C.GdkPixbuf          // in
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkPixbuf // in
 
 	_cret = C.gdk_pixbuf_animation_get_static_image(_arg0)
 
@@ -301,10 +294,9 @@ func (a pixbufAnimation) StaticImage() Pixbuf {
 // Width queries the width of the bounding box of a pixbuf animation.
 func (a pixbufAnimation) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
+	var _cret C.int                 // in
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_pixbuf_animation_get_width(_arg0)
 
@@ -323,10 +315,9 @@ func (a pixbufAnimation) Width() int {
 // image.
 func (a pixbufAnimation) IsStaticImage() bool {
 	var _arg0 *C.GdkPixbufAnimation // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_animation_is_static_image(_arg0)
 
@@ -444,11 +435,10 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 func (i pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _arg1 *C.GTimeVal               // out
+	var _cret C.gboolean                // in
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTimeVal)(unsafe.Pointer(currentTime.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_animation_iter_advance(_arg0, _arg1)
 
@@ -472,10 +462,9 @@ func (i pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 // for GIF images is currently 20 milliseconds.
 func (i pixbufAnimationIter) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
+	var _cret C.int                     // in
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
 
@@ -503,10 +492,9 @@ func (i pixbufAnimationIter) DelayTime() int {
 // recycled as you advance the iterator.
 func (i pixbufAnimationIter) Pixbuf() Pixbuf {
 	var _arg0 *C.GdkPixbufAnimationIter // out
+	var _cret *C.GdkPixbuf              // in
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GdkPixbuf // in
 
 	_cret = C.gdk_pixbuf_animation_iter_get_pixbuf(_arg0)
 
@@ -525,10 +513,9 @@ func (i pixbufAnimationIter) Pixbuf() Pixbuf {
 // you will need to redraw the screen for the updated area.
 func (i pixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
+	var _cret C.gboolean                // in
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_animation_iter_on_currently_loading_frame(_arg0)
 

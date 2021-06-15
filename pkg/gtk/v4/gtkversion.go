@@ -31,12 +31,11 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
 	var _arg3 C.guint // out
-
-	_arg1 = C.guint(requiredMajor)
-	_arg2 = C.guint(requiredMinor)
-	_arg3 = C.guint(requiredMicro)
-
 	var _cret *C.char // in
+
+	_arg1 = (C.guint)(requiredMajor)
+	_arg2 = (C.guint)(requiredMinor)
+	_arg3 = (C.guint)(requiredMicro)
 
 	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 

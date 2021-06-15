@@ -53,48 +53,6 @@ func (m *Matrix) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// XX gets the field inside the struct.
-func (m *Matrix) XX() float64 {
-	var v float64 // out
-	v = (float64)(m.native.xx)
-	return v
-}
-
-// XY gets the field inside the struct.
-func (m *Matrix) XY() float64 {
-	var v float64 // out
-	v = (float64)(m.native.xy)
-	return v
-}
-
-// YX gets the field inside the struct.
-func (m *Matrix) YX() float64 {
-	var v float64 // out
-	v = (float64)(m.native.yx)
-	return v
-}
-
-// YY gets the field inside the struct.
-func (m *Matrix) YY() float64 {
-	var v float64 // out
-	v = (float64)(m.native.yy)
-	return v
-}
-
-// X0 gets the field inside the struct.
-func (m *Matrix) X0() float64 {
-	var v float64 // out
-	v = (float64)(m.native.x0)
-	return v
-}
-
-// Y0 gets the field inside the struct.
-func (m *Matrix) Y0() float64 {
-	var v float64 // out
-	v = (float64)(m.native.y0)
-	return v
-}
-
 // Concat changes the transformation represented by @matrix to be the
 // transformation given by first applying transformation given by @new_matrix
 // then applying the original transformation.
@@ -111,10 +69,9 @@ func (m *Matrix) Concat(newMatrix *Matrix) {
 // Copy copies a `PangoMatrix`.
 func (m *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
+	var _cret *C.PangoMatrix // in
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.PangoMatrix // in
 
 	_cret = C.pango_matrix_copy(_arg0)
 
@@ -145,10 +102,9 @@ func (m *Matrix) Free() {
 // well, use [method@Pango.Matrix.get_font_scale_factors].
 func (m *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
+	var _cret C.double       // in
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
@@ -169,11 +125,10 @@ func (m *Matrix) FontScaleFactor() float64 {
 // Note that output numbers will always be non-negative.
 func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg0 *C.PangoMatrix // out
+	var _arg1 C.double       // in
+	var _arg2 C.double       // in
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-
-	var _arg1 C.double // in
-	var _arg2 C.double // in
 
 	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
 
@@ -194,7 +149,7 @@ func (m *Matrix) Rotate(degrees float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = C.double(degrees)
+	_arg1 = (C.double)(degrees)
 
 	C.pango_matrix_rotate(_arg0, _arg1)
 }
@@ -208,8 +163,8 @@ func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg2 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = C.double(scaleX)
-	_arg2 = C.double(scaleY)
+	_arg1 = (C.double)(scaleX)
+	_arg2 = (C.double)(scaleY)
 
 	C.pango_matrix_scale(_arg0, _arg1, _arg2)
 }
@@ -223,8 +178,8 @@ func (m *Matrix) Translate(tx float64, ty float64) {
 	var _arg2 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = C.double(tx)
-	_arg2 = C.double(ty)
+	_arg1 = (C.double)(tx)
+	_arg2 = (C.double)(ty)
 
 	C.pango_matrix_translate(_arg0, _arg1, _arg2)
 }

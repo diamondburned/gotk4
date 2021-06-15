@@ -112,12 +112,11 @@ func NewCheckMenuItem() CheckMenuItem {
 
 // NewCheckMenuItemWithLabel constructs a class CheckMenuItem.
 func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar           // out
+	var _cret C.GtkCheckMenuItem // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCheckMenuItem // in
 
 	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
 
@@ -130,12 +129,11 @@ func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 
 // NewCheckMenuItemWithMnemonic constructs a class CheckMenuItem.
 func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar           // out
+	var _cret C.GtkCheckMenuItem // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCheckMenuItem // in
 
 	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
 
@@ -150,10 +148,9 @@ func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
 // gtk_check_menu_item_set_active ().
 func (c checkMenuItem) Active() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_menu_item_get_active(_arg0)
 
@@ -169,10 +166,9 @@ func (c checkMenuItem) Active() bool {
 // DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
 func (c checkMenuItem) DrawAsRadio() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
 
@@ -189,10 +185,9 @@ func (c checkMenuItem) DrawAsRadio() bool {
 // gtk_check_menu_item_set_inconsistent().
 func (c checkMenuItem) Inconsistent() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
 

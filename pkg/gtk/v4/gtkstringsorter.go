@@ -69,11 +69,10 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 
 // NewStringSorter constructs a class StringSorter.
 func NewStringSorter(expression Expression) StringSorter {
-	var _arg1 *C.GtkExpression // out
+	var _arg1 *C.GtkExpression  // out
+	var _cret C.GtkStringSorter // in
 
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	var _cret C.GtkStringSorter // in
 
 	_cret = C.gtk_string_sorter_new(_arg1)
 
@@ -88,10 +87,9 @@ func NewStringSorter(expression Expression) StringSorter {
 // items.
 func (s stringSorter) Expression() Expression {
 	var _arg0 *C.GtkStringSorter // out
+	var _cret *C.GtkExpression   // in
 
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkExpression // in
 
 	_cret = C.gtk_string_sorter_get_expression(_arg0)
 
@@ -105,10 +103,9 @@ func (s stringSorter) Expression() Expression {
 // IgnoreCase gets whether the sorter ignores case differences.
 func (s stringSorter) IgnoreCase() bool {
 	var _arg0 *C.GtkStringSorter // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_string_sorter_get_ignore_case(_arg0)
 

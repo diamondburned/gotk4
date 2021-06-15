@@ -83,11 +83,10 @@ func marshalRoot(p uintptr) (interface{}, error) {
 
 // Display returns the display that this `GtkRoot` is on.
 func (s root) Display() gdk.Display {
-	var _arg0 *C.GtkRoot // out
+	var _arg0 *C.GtkRoot    // out
+	var _cret *C.GdkDisplay // in
 
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gtk_root_get_display(_arg0)
 
@@ -104,11 +103,10 @@ func (s root) Display() gdk.Display {
 // active; if the root is not focused then `gtk_widget_has_focus (widget)`
 // will be false for the widget.
 func (s root) Focus() Widget {
-	var _arg0 *C.GtkRoot // out
+	var _arg0 *C.GtkRoot   // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_root_get_focus(_arg0)
 

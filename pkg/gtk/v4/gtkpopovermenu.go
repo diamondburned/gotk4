@@ -183,11 +183,10 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 
 // NewPopoverMenuFromModel constructs a class PopoverMenu.
 func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
-	var _arg1 *C.GMenuModel // out
+	var _arg1 *C.GMenuModel    // out
+	var _cret C.GtkPopoverMenu // in
 
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkPopoverMenu // in
 
 	_cret = C.gtk_popover_menu_new_from_model(_arg1)
 
@@ -202,11 +201,10 @@ func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) PopoverMenu {
 	var _arg1 *C.GMenuModel         // out
 	var _arg2 C.GtkPopoverMenuFlags // out
+	var _cret C.GtkPopoverMenu      // in
 
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (C.GtkPopoverMenuFlags)(flags)
-
-	var _cret C.GtkPopoverMenu // in
 
 	_cret = C.gtk_popover_menu_new_from_model_full(_arg1, _arg2)
 
@@ -225,13 +223,12 @@ func (p popoverMenu) AddChild(child Widget, id string) bool {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 *C.char           // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_popover_menu_add_child(_arg0, _arg1, _arg2)
 
@@ -247,10 +244,9 @@ func (p popoverMenu) AddChild(child Widget, id string) bool {
 // MenuModel returns the menu model used to populate the popover.
 func (p popoverMenu) MenuModel() gio.MenuModel {
 	var _arg0 *C.GtkPopoverMenu // out
+	var _cret *C.GMenuModel     // in
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GMenuModel // in
 
 	_cret = C.gtk_popover_menu_get_menu_model(_arg0)
 
@@ -266,11 +262,10 @@ func (p popoverMenu) MenuModel() gio.MenuModel {
 func (p popoverMenu) RemoveChild(child Widget) bool {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GtkWidget      // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_popover_menu_remove_child(_arg0, _arg1)
 

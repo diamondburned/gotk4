@@ -79,10 +79,9 @@ func NewGestureZoom() GestureZoom {
 // If @gesture is not active, 1 is returned.
 func (g gestureZoom) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
+	var _cret C.double          // in
 
 	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
-
-	var _cret C.double // in
 
 	_cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
 

@@ -136,12 +136,11 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_network_monitor_can_reach(_arg0, _arg1, _arg2, &_cerr)
 
@@ -157,11 +156,10 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	var _arg0 *C.GNetworkMonitor // out
 	var _arg1 *C.GAsyncResult    // out
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_network_monitor_can_reach_finish(_arg0, _arg1, &_cerr)
 
@@ -192,11 +190,10 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 // connect to remote servers, but should gracefully fall back to their
 // "offline" behavior if the connection attempt fails.
 func (m networkMonitor) Connectivity() NetworkConnectivity {
-	var _arg0 *C.GNetworkMonitor // out
+	var _arg0 *C.GNetworkMonitor     // out
+	var _cret C.GNetworkConnectivity // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GNetworkConnectivity // in
 
 	_cret = C.g_network_monitor_get_connectivity(_arg0)
 
@@ -213,10 +210,9 @@ func (m networkMonitor) Connectivity() NetworkConnectivity {
 // reachable. See Monitor:network-available for more details.
 func (m networkMonitor) NetworkAvailable() bool {
 	var _arg0 *C.GNetworkMonitor // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_network_monitor_get_network_available(_arg0)
 
@@ -233,10 +229,9 @@ func (m networkMonitor) NetworkAvailable() bool {
 // Monitor:network-metered for more details.
 func (m networkMonitor) NetworkMetered() bool {
 	var _arg0 *C.GNetworkMonitor // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_network_monitor_get_network_metered(_arg0)
 

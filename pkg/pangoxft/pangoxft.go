@@ -68,11 +68,10 @@ func marshalFont(p uintptr) (interface{}, error) {
 func (f font) Glyph(wc uint32) uint {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
+	var _cret C.guint      // in
 
 	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
-	_arg1 = C.gunichar(wc)
-
-	var _cret C.guint // in
+	_arg1 = (C.gunichar)(wc)
 
 	_cret = C.pango_xft_font_get_glyph(_arg0, _arg1)
 
@@ -89,11 +88,10 @@ func (f font) Glyph(wc uint32) uint {
 func (f font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
-	_arg1 = C.gunichar(wc)
-
-	var _cret C.gboolean // in
+	_arg1 = (C.gunichar)(wc)
 
 	_cret = C.pango_xft_font_has_char(_arg0, _arg1)
 

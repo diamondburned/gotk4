@@ -91,11 +91,10 @@ func marshalViewport(p uintptr) (interface{}, error) {
 func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
+	var _cret C.GtkViewport    // in
 
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
 	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
-
-	var _cret C.GtkViewport // in
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
@@ -109,10 +108,9 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 // Child gets the child widget of @viewport.
 func (v viewport) Child() Widget {
 	var _arg0 *C.GtkViewport // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_viewport_get_child(_arg0)
 
@@ -127,10 +125,9 @@ func (v viewport) Child() Widget {
 // child in view.
 func (v viewport) ScrollToFocus() bool {
 	var _arg0 *C.GtkViewport // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
 

@@ -204,10 +204,9 @@ func (p cssProvider) LoadNamed(name string, variant string) {
 // will basically create a duplicate of this @provider.
 func (p cssProvider) String() string {
 	var _arg0 *C.GtkCssProvider // out
+	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
 

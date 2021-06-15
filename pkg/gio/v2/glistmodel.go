@@ -156,10 +156,9 @@ func marshalListModel(p uintptr) (interface{}, error) {
 // The item type of a Model can not change during the life of the model.
 func (l listModel) ItemType() externglib.Type {
 	var _arg0 *C.GListModel // out
+	var _cret C.GType       // in
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.GType // in
 
 	_cret = C.g_list_model_get_item_type(_arg0)
 
@@ -177,10 +176,9 @@ func (l listModel) ItemType() externglib.Type {
 // until g_list_model_get_item() returns nil.
 func (l listModel) NItems() uint {
 	var _arg0 *C.GListModel // out
+	var _cret C.guint       // in
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.g_list_model_get_n_items(_arg0)
 
@@ -199,11 +197,10 @@ func (l listModel) NItems() uint {
 func (l listModel) Object(position uint) gextras.Objector {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
+	var _cret *C.GObject    // in
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.guint(position)
-
-	var _cret *C.GObject // in
+	_arg1 = (C.guint)(position)
 
 	_cret = C.g_list_model_get_object(_arg0, _arg1)
 
@@ -240,9 +237,9 @@ func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
 	var _arg3 C.guint       // out
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(removed)
-	_arg3 = C.guint(added)
+	_arg1 = (C.guint)(position)
+	_arg2 = (C.guint)(removed)
+	_arg3 = (C.guint)(added)
 
 	C.g_list_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }

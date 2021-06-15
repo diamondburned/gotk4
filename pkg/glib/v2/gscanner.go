@@ -108,31 +108,3 @@ func WrapScannerConfig(ptr unsafe.Pointer) *ScannerConfig {
 func (s *ScannerConfig) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
-
-// CsetSkipCharacters gets the field inside the struct.
-func (s *ScannerConfig) CsetSkipCharacters() string {
-	var v string // out
-	v = C.GoString(s.native.cset_skip_characters)
-	return v
-}
-
-// CsetIdentifierFirst gets the field inside the struct.
-func (s *ScannerConfig) CsetIdentifierFirst() string {
-	var v string // out
-	v = C.GoString(s.native.cset_identifier_first)
-	return v
-}
-
-// CsetIdentifierNth gets the field inside the struct.
-func (s *ScannerConfig) CsetIdentifierNth() string {
-	var v string // out
-	v = C.GoString(s.native.cset_identifier_nth)
-	return v
-}
-
-// CpairCommentSingle gets the field inside the struct.
-func (s *ScannerConfig) CpairCommentSingle() string {
-	var v string // out
-	v = C.GoString(s.native.cpair_comment_single)
-	return v
-}

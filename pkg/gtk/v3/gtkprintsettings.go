@@ -91,8 +91,6 @@ type PrintSettings interface {
 	Orientation() PageOrientation
 	// OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	OutputBin() string
-	// PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-	PageRanges() []PageRange
 	// PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 	PageSet() PageSet
 	// PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
@@ -251,13 +249,12 @@ func NewPrintSettings() PrintSettings {
 
 // NewPrintSettingsFromFile constructs a class PrintSettings.
 func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar           // out
+	var _cret C.GtkPrintSettings // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkPrintSettings // in
-	var _cerr *C.GError          // in
 
 	_cret = C.gtk_print_settings_new_from_file(_arg1, &_cerr)
 
@@ -272,11 +269,10 @@ func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
 
 // NewPrintSettingsFromGVariant constructs a class PrintSettings.
 func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
-	var _arg1 *C.GVariant // out
+	var _arg1 *C.GVariant        // out
+	var _cret C.GtkPrintSettings // in
 
 	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	var _cret C.GtkPrintSettings // in
 
 	_cret = C.gtk_print_settings_new_from_gvariant(_arg1)
 
@@ -289,15 +285,14 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 
 // NewPrintSettingsFromKeyFile constructs a class PrintSettings.
 func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (PrintSettings, error) {
-	var _arg1 *C.GKeyFile // out
-	var _arg2 *C.gchar    // out
+	var _arg1 *C.GKeyFile        // out
+	var _arg2 *C.gchar           // out
+	var _cret C.GtkPrintSettings // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	_arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkPrintSettings // in
-	var _cerr *C.GError          // in
 
 	_cret = C.gtk_print_settings_new_from_key_file(_arg1, _arg2, &_cerr)
 
@@ -313,10 +308,9 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (Print
 // Copy copies a PrintSettings object.
 func (o printSettings) Copy() PrintSettings {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.GtkPrintSettings // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkPrintSettings // in
 
 	_cret = C.gtk_print_settings_copy(_arg0)
 
@@ -331,12 +325,11 @@ func (o printSettings) Copy() PrintSettings {
 func (s printSettings) Get(key string) string {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get(_arg0, _arg1)
 
@@ -354,12 +347,11 @@ func (s printSettings) Get(key string) string {
 func (s printSettings) Bool(key string) bool {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_get_bool(_arg0, _arg1)
 
@@ -375,10 +367,9 @@ func (s printSettings) Bool(key string) bool {
 // Collate gets the value of GTK_PRINT_SETTINGS_COLLATE.
 func (s printSettings) Collate() bool {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_get_collate(_arg0)
 
@@ -394,10 +385,9 @@ func (s printSettings) Collate() bool {
 // DefaultSource gets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
 func (s printSettings) DefaultSource() string {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_default_source(_arg0)
 
@@ -411,10 +401,9 @@ func (s printSettings) DefaultSource() string {
 // Dither gets the value of GTK_PRINT_SETTINGS_DITHER.
 func (s printSettings) Dither() string {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_dither(_arg0)
 
@@ -429,12 +418,11 @@ func (s printSettings) Dither() string {
 func (s printSettings) Double(key string) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
+	var _cret C.gdouble           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_double(_arg0, _arg1)
 
@@ -454,13 +442,12 @@ func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gdouble           // out
+	var _cret C.gdouble           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gdouble(def)
-
-	var _cret C.gdouble // in
+	_arg2 = (C.gdouble)(def)
 
 	_cret = C.gtk_print_settings_get_double_with_default(_arg0, _arg1, _arg2)
 
@@ -474,10 +461,9 @@ func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
 // Duplex gets the value of GTK_PRINT_SETTINGS_DUPLEX.
 func (s printSettings) Duplex() PrintDuplex {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.GtkPrintDuplex    // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPrintDuplex // in
 
 	_cret = C.gtk_print_settings_get_duplex(_arg0)
 
@@ -491,10 +477,9 @@ func (s printSettings) Duplex() PrintDuplex {
 // Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
 func (s printSettings) Finishings() string {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_finishings(_arg0)
 
@@ -509,12 +494,11 @@ func (s printSettings) Finishings() string {
 func (s printSettings) Int(key string) int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_int(_arg0, _arg1)
 
@@ -531,13 +515,12 @@ func (s printSettings) IntWithDefault(key string, def int) int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gint              // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(def)
-
-	var _cret C.gint // in
+	_arg2 = (C.gint)(def)
 
 	_cret = C.gtk_print_settings_get_int_with_default(_arg0, _arg1, _arg2)
 
@@ -554,13 +537,12 @@ func (s printSettings) Length(key string, unit Unit) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GtkUnit           // out
+	var _cret C.gdouble           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GtkUnit)(unit)
-
-	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_length(_arg0, _arg1, _arg2)
 
@@ -576,10 +558,9 @@ func (s printSettings) Length(key string, unit Unit) float64 {
 // The set of media types is defined in PWG 5101.1-2002 PWG.
 func (s printSettings) MediaType() string {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_media_type(_arg0)
 
@@ -593,10 +574,9 @@ func (s printSettings) MediaType() string {
 // NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
 func (s printSettings) NCopies() int {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_n_copies(_arg0)
 
@@ -610,10 +590,9 @@ func (s printSettings) NCopies() int {
 // NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
 func (s printSettings) NumberUp() int {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_number_up(_arg0)
 
@@ -627,10 +606,9 @@ func (s printSettings) NumberUp() int {
 // NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
 func (s printSettings) NumberUpLayout() NumberUpLayout {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.GtkNumberUpLayout // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkNumberUpLayout // in
 
 	_cret = C.gtk_print_settings_get_number_up_layout(_arg0)
 
@@ -644,11 +622,10 @@ func (s printSettings) NumberUpLayout() NumberUpLayout {
 // Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
 // to a PageOrientation.
 func (s printSettings) Orientation() PageOrientation {
-	var _arg0 *C.GtkPrintSettings // out
+	var _arg0 *C.GtkPrintSettings  // out
+	var _cret C.GtkPageOrientation // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPageOrientation // in
 
 	_cret = C.gtk_print_settings_get_orientation(_arg0)
 
@@ -662,10 +639,9 @@ func (s printSettings) Orientation() PageOrientation {
 // OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 func (s printSettings) OutputBin() string {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_output_bin(_arg0)
 
@@ -676,34 +652,12 @@ func (s printSettings) OutputBin() string {
 	return _utf8
 }
 
-// PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-func (s printSettings) PageRanges() []PageRange {
-	var _arg0 *C.GtkPrintSettings // out
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkPageRange
-	var _arg1 C.gint // in
-
-	_cret = C.gtk_print_settings_get_page_ranges(_arg0, &_arg1)
-
-	var _pageRanges []PageRange
-
-	_pageRanges = unsafe.Slice((*PageRange)(unsafe.Pointer(_cret)), _arg1)
-	runtime.SetFinalizer(&_pageRanges, func(v *[]PageRange) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-
-	return _pageRanges
-}
-
 // PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 func (s printSettings) PageSet() PageSet {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.GtkPageSet        // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPageSet // in
 
 	_cret = C.gtk_print_settings_get_page_set(_arg0)
 
@@ -719,11 +673,10 @@ func (s printSettings) PageSet() PageSet {
 func (s printSettings) PaperHeight(unit Unit) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkUnit           // out
+	var _cret C.gdouble           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
-
-	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_paper_height(_arg0, _arg1)
 
@@ -738,10 +691,9 @@ func (s printSettings) PaperHeight(unit Unit) float64 {
 // a PaperSize.
 func (s printSettings) PaperSize() *PaperSize {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.GtkPaperSize     // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkPaperSize // in
 
 	_cret = C.gtk_print_settings_get_paper_size(_arg0)
 
@@ -760,11 +712,10 @@ func (s printSettings) PaperSize() *PaperSize {
 func (s printSettings) PaperWidth(unit Unit) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkUnit           // out
+	var _cret C.gdouble           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
-
-	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_paper_width(_arg0, _arg1)
 
@@ -778,10 +729,9 @@ func (s printSettings) PaperWidth(unit Unit) float64 {
 // PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
 func (s printSettings) PrintPages() PrintPages {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.GtkPrintPages     // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPrintPages // in
 
 	_cret = C.gtk_print_settings_get_print_pages(_arg0)
 
@@ -796,10 +746,9 @@ func (s printSettings) PrintPages() PrintPages {
 // GTK_PRINT_SETTINGS_PRINTER.
 func (s printSettings) Printer() string {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_printer(_arg0)
 
@@ -813,10 +762,9 @@ func (s printSettings) Printer() string {
 // PrinterLpi gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
 func (s printSettings) PrinterLpi() float64 {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gdouble           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_printer_lpi(_arg0)
 
@@ -830,10 +778,9 @@ func (s printSettings) PrinterLpi() float64 {
 // Quality gets the value of GTK_PRINT_SETTINGS_QUALITY.
 func (s printSettings) Quality() PrintQuality {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.GtkPrintQuality   // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPrintQuality // in
 
 	_cret = C.gtk_print_settings_get_quality(_arg0)
 
@@ -847,10 +794,9 @@ func (s printSettings) Quality() PrintQuality {
 // Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
 func (s printSettings) Resolution() int {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_resolution(_arg0)
 
@@ -864,10 +810,9 @@ func (s printSettings) Resolution() int {
 // ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
 func (s printSettings) ResolutionX() int {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_resolution_x(_arg0)
 
@@ -881,10 +826,9 @@ func (s printSettings) ResolutionX() int {
 // ResolutionY gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
 func (s printSettings) ResolutionY() int {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_resolution_y(_arg0)
 
@@ -898,10 +842,9 @@ func (s printSettings) ResolutionY() int {
 // Reverse gets the value of GTK_PRINT_SETTINGS_REVERSE.
 func (s printSettings) Reverse() bool {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_get_reverse(_arg0)
 
@@ -917,10 +860,9 @@ func (s printSettings) Reverse() bool {
 // Scale gets the value of GTK_PRINT_SETTINGS_SCALE.
 func (s printSettings) Scale() float64 {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gdouble           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_scale(_arg0)
 
@@ -934,10 +876,9 @@ func (s printSettings) Scale() float64 {
 // UseColor gets the value of GTK_PRINT_SETTINGS_USE_COLOR.
 func (s printSettings) UseColor() bool {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_get_use_color(_arg0)
 
@@ -954,12 +895,11 @@ func (s printSettings) UseColor() bool {
 func (s printSettings) HasKey(key string) bool {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_has_key(_arg0, _arg1)
 
@@ -978,12 +918,11 @@ func (s printSettings) HasKey(key string) bool {
 func (s printSettings) LoadFile(fileName string) error {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.gtk_print_settings_load_file(_arg0, _arg1, &_cerr)
 
@@ -1001,13 +940,12 @@ func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) erro
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GKeyFile         // out
 	var _arg2 *C.gchar            // out
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	_arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cerr *C.GError // in
 
 	C.gtk_print_settings_load_key_file(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1095,7 +1033,7 @@ func (s printSettings) SetDouble(key string, value float64) {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gdouble(value)
+	_arg2 = (C.gdouble)(value)
 
 	C.gtk_print_settings_set_double(_arg0, _arg1, _arg2)
 }
@@ -1132,7 +1070,7 @@ func (s printSettings) SetInt(key string, value int) {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(value)
+	_arg2 = (C.gint)(value)
 
 	C.gtk_print_settings_set_int(_arg0, _arg1, _arg2)
 }
@@ -1147,7 +1085,7 @@ func (s printSettings) SetLength(key string, value float64, unit Unit) {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gdouble(value)
+	_arg2 = (C.gdouble)(value)
 	_arg3 = (C.GtkUnit)(unit)
 
 	C.gtk_print_settings_set_length(_arg0, _arg1, _arg2, _arg3)
@@ -1173,7 +1111,7 @@ func (s printSettings) SetNCopies(numCopies int) {
 	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(numCopies)
+	_arg1 = (C.gint)(numCopies)
 
 	C.gtk_print_settings_set_n_copies(_arg0, _arg1)
 }
@@ -1184,7 +1122,7 @@ func (s printSettings) SetNumberUp(numberUp int) {
 	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(numberUp)
+	_arg1 = (C.gint)(numberUp)
 
 	C.gtk_print_settings_set_number_up(_arg0, _arg1)
 }
@@ -1254,7 +1192,7 @@ func (s printSettings) SetPaperHeight(height float64, unit Unit) {
 	var _arg2 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gdouble(height)
+	_arg1 = (C.gdouble)(height)
 	_arg2 = (C.GtkUnit)(unit)
 
 	C.gtk_print_settings_set_paper_height(_arg0, _arg1, _arg2)
@@ -1279,7 +1217,7 @@ func (s printSettings) SetPaperWidth(width float64, unit Unit) {
 	var _arg2 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gdouble(width)
+	_arg1 = (C.gdouble)(width)
 	_arg2 = (C.GtkUnit)(unit)
 
 	C.gtk_print_settings_set_paper_width(_arg0, _arg1, _arg2)
@@ -1315,7 +1253,7 @@ func (s printSettings) SetPrinterLpi(lpi float64) {
 	var _arg1 C.gdouble           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gdouble(lpi)
+	_arg1 = (C.gdouble)(lpi)
 
 	C.gtk_print_settings_set_printer_lpi(_arg0, _arg1)
 }
@@ -1338,7 +1276,7 @@ func (s printSettings) SetResolution(resolution int) {
 	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(resolution)
+	_arg1 = (C.gint)(resolution)
 
 	C.gtk_print_settings_set_resolution(_arg0, _arg1)
 }
@@ -1351,8 +1289,8 @@ func (s printSettings) SetResolutionXY(resolutionX int, resolutionY int) {
 	var _arg2 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(resolutionX)
-	_arg2 = C.gint(resolutionY)
+	_arg1 = (C.gint)(resolutionX)
+	_arg2 = (C.gint)(resolutionY)
 
 	C.gtk_print_settings_set_resolution_xy(_arg0, _arg1, _arg2)
 }
@@ -1376,7 +1314,7 @@ func (s printSettings) SetScale(scale float64) {
 	var _arg1 C.gdouble           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gdouble(scale)
+	_arg1 = (C.gdouble)(scale)
 
 	C.gtk_print_settings_set_scale(_arg0, _arg1)
 }
@@ -1400,12 +1338,11 @@ func (s printSettings) SetUseColor(useColor bool) {
 func (s printSettings) ToFile(fileName string) error {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cerr *C.GError // in
 
 	C.gtk_print_settings_to_file(_arg0, _arg1, &_cerr)
 
@@ -1419,10 +1356,9 @@ func (s printSettings) ToFile(fileName string) error {
 // ToGVariant: serialize print settings to an a{sv} variant.
 func (s printSettings) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.GVariant         // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GVariant // in
 
 	_cret = C.gtk_print_settings_to_gvariant(_arg0)
 
@@ -1479,18 +1415,4 @@ func WrapPageRange(ptr unsafe.Pointer) *PageRange {
 // Native returns the underlying C source pointer.
 func (p *PageRange) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
-}
-
-// Start gets the field inside the struct.
-func (p *PageRange) Start() int {
-	var v int // out
-	v = (int)(p.native.start)
-	return v
-}
-
-// End gets the field inside the struct.
-func (p *PageRange) End() int {
-	var v int // out
-	v = (int)(p.native.end)
-	return v
 }

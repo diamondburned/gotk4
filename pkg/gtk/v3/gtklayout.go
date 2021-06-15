@@ -108,11 +108,10 @@ func marshalLayout(p uintptr) (interface{}, error) {
 func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
+	var _cret C.GtkLayout      // in
 
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
 	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
-
-	var _cret C.GtkLayout // in
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
 
@@ -127,10 +126,9 @@ func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 // operations.
 func (l layout) BinWindow() gdk.Window {
 	var _arg0 *C.GtkLayout // out
+	var _cret *C.GdkWindow // in
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GdkWindow // in
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
 
@@ -148,11 +146,10 @@ func (l layout) BinWindow() gdk.Window {
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 func (l layout) HAdjustment() Adjustment {
-	var _arg0 *C.GtkLayout // out
+	var _arg0 *C.GtkLayout     // out
+	var _cret *C.GtkAdjustment // in
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_layout_get_hadjustment(_arg0)
 
@@ -168,11 +165,10 @@ func (l layout) HAdjustment() Adjustment {
 // ().
 func (l layout) Size() (width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
+	var _arg1 C.guint      // in
+	var _arg2 C.guint      // in
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-
-	var _arg1 C.guint // in
-	var _arg2 C.guint // in
 
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
 
@@ -192,11 +188,10 @@ func (l layout) Size() (width uint, height uint) {
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 func (l layout) VAdjustment() Adjustment {
-	var _arg0 *C.GtkLayout // out
+	var _arg0 *C.GtkLayout     // out
+	var _cret *C.GtkAdjustment // in
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GtkAdjustment // in
 
 	_cret = C.gtk_layout_get_vadjustment(_arg0)
 
@@ -216,8 +211,8 @@ func (l layout) Move(childWidget Widget, x int, y int) {
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
-	_arg2 = C.gint(x)
-	_arg3 = C.gint(y)
+	_arg2 = (C.gint)(x)
+	_arg3 = (C.gint)(y)
 
 	C.gtk_layout_move(_arg0, _arg1, _arg2, _arg3)
 }
@@ -232,8 +227,8 @@ func (l layout) Put(childWidget Widget, x int, y int) {
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
-	_arg2 = C.gint(x)
-	_arg3 = C.gint(y)
+	_arg2 = (C.gint)(x)
+	_arg3 = (C.gint)(y)
 
 	C.gtk_layout_put(_arg0, _arg1, _arg2, _arg3)
 }
@@ -258,8 +253,8 @@ func (l layout) SetSize(width uint, height uint) {
 	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = C.guint(width)
-	_arg2 = C.guint(height)
+	_arg1 = (C.guint)(width)
+	_arg2 = (C.guint)(height)
 
 	C.gtk_layout_set_size(_arg0, _arg1, _arg2)
 }

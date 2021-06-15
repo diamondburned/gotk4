@@ -21,14 +21,13 @@ func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string
 	var _arg3 C.gsize
 	var _arg4 *C.guchar
 	var _arg5 C.gsize
+	var _cret *C.gchar // in
 
 	_arg1 = (C.GChecksumType)(digestType)
 	_arg3 = C.gsize(len(key))
 	_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
 	_arg5 = C.gsize(len(data))
 	_arg4 = (*C.guchar)(unsafe.Pointer(&data[0]))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_compute_hmac_for_data(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -49,15 +48,14 @@ func ComputeHMACForString(digestType ChecksumType, key []byte, str string, lengt
 	var _arg3 C.gsize
 	var _arg4 *C.gchar // out
 	var _arg5 C.gssize // out
+	var _cret *C.gchar // in
 
 	_arg1 = (C.GChecksumType)(digestType)
 	_arg3 = C.gsize(len(key))
 	_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
 	_arg4 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = C.gssize(length)
-
-	var _cret *C.gchar // in
+	_arg5 = (C.gssize)(length)
 
 	_cret = C.g_compute_hmac_for_string(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -98,10 +96,9 @@ func (h *HMAC) Native() unsafe.Pointer {
 // The hexadecimal characters will be lower case.
 func (h *HMAC) String() string {
 	var _arg0 *C.GHmac // out
+	var _cret *C.gchar // in
 
 	_arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_hmac_get_string(_arg0)
 

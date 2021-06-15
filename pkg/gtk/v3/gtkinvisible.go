@@ -77,11 +77,10 @@ func NewInvisible() Invisible {
 
 // NewInvisibleForScreen constructs a class Invisible.
 func NewInvisibleForScreen(screen gdk.Screen) Invisible {
-	var _arg1 *C.GdkScreen // out
+	var _arg1 *C.GdkScreen   // out
+	var _cret C.GtkInvisible // in
 
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-
-	var _cret C.GtkInvisible // in
 
 	_cret = C.gtk_invisible_new_for_screen(_arg1)
 
@@ -95,10 +94,9 @@ func NewInvisibleForScreen(screen gdk.Screen) Invisible {
 // Screen returns the Screen object associated with @invisible
 func (i invisible) Screen() gdk.Screen {
 	var _arg0 *C.GtkInvisible // out
+	var _cret *C.GdkScreen    // in
 
 	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GdkScreen // in
 
 	_cret = C.gtk_invisible_get_screen(_arg0)
 

@@ -126,10 +126,9 @@ func (f fontMap) ConfigChanged() {
 // calling this function.
 func (f fontMap) CreateContext() pango.Context {
 	var _arg0 *C.PangoFcFontMap // out
+	var _cret *C.PangoContext   // in
 
 	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.PangoContext // in
 
 	_cret = C.pango_fc_font_map_create_context(_arg0)
 

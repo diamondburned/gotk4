@@ -183,7 +183,7 @@ func (s multiFilter) Remove(position uint) {
 	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
+	_arg1 = (C.guint)(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)
 }

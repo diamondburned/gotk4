@@ -82,13 +82,12 @@ func marshalVBox(p uintptr) (interface{}, error) {
 func NewVBox(homogeneous bool, spacing int) VBox {
 	var _arg1 C.gboolean // out
 	var _arg2 C.gint     // out
+	var _cret C.GtkVBox  // in
 
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
-	_arg2 = C.gint(spacing)
-
-	var _cret C.GtkVBox // in
+	_arg2 = (C.gint)(spacing)
 
 	_cret = C.gtk_vbox_new(_arg1, _arg2)
 

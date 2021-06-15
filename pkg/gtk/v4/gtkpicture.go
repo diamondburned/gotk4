@@ -192,11 +192,10 @@ func NewPicture() Picture {
 
 // NewPictureForFile constructs a class Picture.
 func NewPictureForFile(file gio.File) Picture {
-	var _arg1 *C.GFile // out
+	var _arg1 *C.GFile     // out
+	var _cret C.GtkPicture // in
 
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkPicture // in
 
 	_cret = C.gtk_picture_new_for_file(_arg1)
 
@@ -209,12 +208,11 @@ func NewPictureForFile(file gio.File) Picture {
 
 // NewPictureForFilename constructs a class Picture.
 func NewPictureForFilename(filename string) Picture {
-	var _arg1 *C.char // out
+	var _arg1 *C.char      // out
+	var _cret C.GtkPicture // in
 
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkPicture // in
 
 	_cret = C.gtk_picture_new_for_filename(_arg1)
 
@@ -228,10 +226,9 @@ func NewPictureForFilename(filename string) Picture {
 // NewPictureForPaintable constructs a class Picture.
 func NewPictureForPaintable(paintable gdk.Paintable) Picture {
 	var _arg1 *C.GdkPaintable // out
+	var _cret C.GtkPicture    // in
 
 	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-
-	var _cret C.GtkPicture // in
 
 	_cret = C.gtk_picture_new_for_paintable(_arg1)
 
@@ -245,10 +242,9 @@ func NewPictureForPaintable(paintable gdk.Paintable) Picture {
 // NewPictureForPixbuf constructs a class Picture.
 func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
 	var _arg1 *C.GdkPixbuf // out
+	var _cret C.GtkPicture // in
 
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	var _cret C.GtkPicture // in
 
 	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
 
@@ -261,12 +257,11 @@ func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
 
 // NewPictureForResource constructs a class Picture.
 func NewPictureForResource(resourcePath string) Picture {
-	var _arg1 *C.char // out
+	var _arg1 *C.char      // out
+	var _cret C.GtkPicture // in
 
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkPicture // in
 
 	_cret = C.gtk_picture_new_for_resource(_arg1)
 
@@ -283,10 +278,9 @@ func NewPictureForResource(resourcePath string) Picture {
 // textually.
 func (s picture) AlternativeText() string {
 	var _arg0 *C.GtkPicture // out
+	var _cret *C.char       // in
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_picture_get_alternative_text(_arg0)
 
@@ -300,10 +294,9 @@ func (s picture) AlternativeText() string {
 // CanShrink returns whether the `GtkPicture` respects its contents size.
 func (s picture) CanShrink() bool {
 	var _arg0 *C.GtkPicture // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_picture_get_can_shrink(_arg0)
 
@@ -322,10 +315,9 @@ func (s picture) CanShrink() bool {
 // [method@Gtk.Picture.set_paintable] was used, then nil is returned.
 func (s picture) File() gio.File {
 	var _arg0 *C.GtkPicture // out
+	var _cret *C.GFile      // in
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile // in
 
 	_cret = C.gtk_picture_get_file(_arg0)
 
@@ -340,10 +332,9 @@ func (s picture) File() gio.File {
 // aspect ratio.
 func (s picture) KeepAspectRatio() bool {
 	var _arg0 *C.GtkPicture // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
 
@@ -358,11 +349,10 @@ func (s picture) KeepAspectRatio() bool {
 
 // Paintable gets the `GdkPaintable` being displayed by the `GtkPicture`.
 func (s picture) Paintable() gdk.Paintable {
-	var _arg0 *C.GtkPicture // out
+	var _arg0 *C.GtkPicture   // out
+	var _cret *C.GdkPaintable // in
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkPaintable // in
 
 	_cret = C.gtk_picture_get_paintable(_arg0)
 

@@ -93,10 +93,9 @@ func NewSeparatorToolItem() SeparatorToolItem {
 // gtk_separator_tool_item_set_draw().
 func (i separatorToolItem) Draw() bool {
 	var _arg0 *C.GtkSeparatorToolItem // out
+	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
 

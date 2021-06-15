@@ -76,10 +76,9 @@ func marshalTcpConnection(p uintptr) (interface{}, error) {
 // g_tcp_connection_set_graceful_disconnect().
 func (c tcpConnection) GracefulDisconnect() bool {
 	var _arg0 *C.GTcpConnection // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
 

@@ -159,12 +159,11 @@ func NewMenuItem() MenuItem {
 
 // NewMenuItemWithLabel constructs a class MenuItem.
 func NewMenuItemWithLabel(label string) MenuItem {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar      // out
+	var _cret C.GtkMenuItem // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkMenuItem // in
 
 	_cret = C.gtk_menu_item_new_with_label(_arg1)
 
@@ -177,12 +176,11 @@ func NewMenuItemWithLabel(label string) MenuItem {
 
 // NewMenuItemWithMnemonic constructs a class MenuItem.
 func NewMenuItemWithMnemonic(label string) MenuItem {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar      // out
+	var _cret C.GtkMenuItem // in
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkMenuItem // in
 
 	_cret = C.gtk_menu_item_new_with_mnemonic(_arg1)
 
@@ -217,10 +215,9 @@ func (m menuItem) Deselect() {
 // See gtk_menu_item_set_accel_path() for details.
 func (m menuItem) AccelPath() string {
 	var _arg0 *C.GtkMenuItem // out
+	var _cret *C.gchar       // in
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_menu_item_get_accel_path(_arg0)
 
@@ -234,10 +231,9 @@ func (m menuItem) AccelPath() string {
 // Label sets @text on the @menu_item label
 func (m menuItem) Label() string {
 	var _arg0 *C.GtkMenuItem // out
+	var _cret *C.gchar       // in
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_menu_item_get_label(_arg0)
 
@@ -252,10 +248,9 @@ func (m menuItem) Label() string {
 // submenu indicator, regardless if it has a submenu or not.
 func (m menuItem) ReserveIndicator() bool {
 	var _arg0 *C.GtkMenuItem // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_item_get_reserve_indicator(_arg0)
 
@@ -272,10 +267,9 @@ func (m menuItem) ReserveIndicator() bool {
 // side of the menu bar.
 func (m menuItem) RightJustified() bool {
 	var _arg0 *C.GtkMenuItem // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_item_get_right_justified(_arg0)
 
@@ -292,10 +286,9 @@ func (m menuItem) RightJustified() bool {
 // gtk_menu_item_set_submenu().
 func (m menuItem) Submenu() Widget {
 	var _arg0 *C.GtkMenuItem // out
+	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_menu_item_get_submenu(_arg0)
 
@@ -310,10 +303,9 @@ func (m menuItem) Submenu() Widget {
 // character should be used for the mnemonic accelerator key.
 func (m menuItem) UseUnderline() bool {
 	var _arg0 *C.GtkMenuItem // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_item_get_use_underline(_arg0)
 
@@ -442,7 +434,7 @@ func (m menuItem) ToggleSizeAllocate(allocation int) {
 	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gint(allocation)
+	_arg1 = (C.gint)(allocation)
 
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
 }

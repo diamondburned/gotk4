@@ -96,10 +96,9 @@ func NewStackSwitcher() StackSwitcher {
 // Stack retrieves the stack. See gtk_stack_switcher_set_stack().
 func (s stackSwitcher) Stack() Stack {
 	var _arg0 *C.GtkStackSwitcher // out
+	var _cret *C.GtkStack         // in
 
 	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkStack // in
 
 	_cret = C.gtk_stack_switcher_get_stack(_arg0)
 

@@ -74,9 +74,10 @@ func init() {
 // directory specified by the SettingsBackend:defaults-dir property, and a list
 // of locked keys from a text file with the name `locks` in the same location.
 func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup string) SettingsBackend {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
-	var _arg3 *C.gchar // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.gchar            // out
+	var _arg3 *C.gchar            // out
+	var _cret *C.GSettingsBackend // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -84,8 +85,6 @@ func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup strin
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(rootGroup))
 	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret *C.GSettingsBackend // in
 
 	_cret = C.g_keyfile_settings_backend_new(_arg1, _arg2, _arg3)
 

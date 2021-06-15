@@ -68,11 +68,10 @@ const (
 func BitNthLsf(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
+	var _cret C.gint   // in
 
-	_arg1 = C.gulong(mask)
-	_arg2 = C.gint(nthBit)
-
-	var _cret C.gint // in
+	_arg1 = (C.gulong)(mask)
+	_arg2 = (C.gint)(nthBit)
 
 	_cret = C.g_bit_nth_lsf(_arg1, _arg2)
 
@@ -90,11 +89,10 @@ func BitNthLsf(mask uint32, nthBit int) int {
 func BitNthMsf(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
+	var _cret C.gint   // in
 
-	_arg1 = C.gulong(mask)
-	_arg2 = C.gint(nthBit)
-
-	var _cret C.gint // in
+	_arg1 = (C.gulong)(mask)
+	_arg2 = (C.gint)(nthBit)
 
 	_cret = C.g_bit_nth_msf(_arg1, _arg2)
 
@@ -109,10 +107,9 @@ func BitNthMsf(mask uint32, nthBit int) int {
 // 4, 3 bits are needed.
 func BitStorage(number uint32) uint {
 	var _arg1 C.gulong // out
+	var _cret C.guint  // in
 
-	_arg1 = C.gulong(number)
-
-	var _cret C.guint // in
+	_arg1 = (C.gulong)(number)
 
 	_cret = C.g_bit_storage(_arg1)
 
@@ -139,11 +136,10 @@ func BitStorage(number uint32) uint {
 // contains the full name including the type suffix.
 func FindProgramInPath(program string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(program))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_find_program_in_path(_arg1)
 
@@ -170,10 +166,9 @@ func FindProgramInPath(program string) string {
 // formatted.
 func FormatSize(size uint64) string {
 	var _arg1 C.guint64 // out
+	var _cret *C.gchar  // in
 
-	_arg1 = C.guint64(size)
-
-	var _cret *C.gchar // in
+	_arg1 = (C.guint64)(size)
 
 	_cret = C.g_format_size(_arg1)
 
@@ -195,10 +190,9 @@ func FormatSize(size uint64) string {
 // This string should be freed with g_free() when not needed any longer.
 func FormatSizeForDisplay(size int64) string {
 	var _arg1 C.goffset // out
+	var _cret *C.gchar  // in
 
-	_arg1 = C.goffset(size)
-
-	var _cret *C.gchar // in
+	_arg1 = (C.goffset)(size)
 
 	_cret = C.g_format_size_for_display(_arg1)
 
@@ -217,11 +211,10 @@ func FormatSizeForDisplay(size int64) string {
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	var _arg1 C.guint64          // out
 	var _arg2 C.GFormatSizeFlags // out
+	var _cret *C.gchar           // in
 
-	_arg1 = C.guint64(size)
+	_arg1 = (C.guint64)(size)
 	_arg2 = (C.GFormatSizeFlags)(flags)
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_format_size_full(_arg1, _arg2)
 
@@ -317,11 +310,10 @@ func GetHostName() string {
 // always check if the result is nil.
 func GetOsInfo(keyName string) string {
 	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(C.CString(keyName))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_get_os_info(_arg1)
 
@@ -627,10 +619,9 @@ func GetUserRuntimeDir() string {
 // reflect any change once the special directories are loaded.
 func GetUserSpecialDir(directory UserDirectory) string {
 	var _arg1 C.GUserDirectory // out
+	var _cret *C.gchar         // in
 
 	_arg1 = (C.GUserDirectory)(directory)
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_special_dir(_arg1)
 
@@ -651,17 +642,16 @@ func GetUserSpecialDir(directory UserDirectory) string {
 //
 // If @string is equal to "help", all the available keys in @keys are printed
 // out to standard error.
-func ParseDebugString(string string, keys []DebugKey) uint {
+func ParseDebugString(_string string, keys []DebugKey) uint {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.GDebugKey
 	var _arg3 C.guint
+	var _cret C.guint // in
 
-	_arg1 = (*C.gchar)(C.CString(string))
+	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = C.guint(len(keys))
 	_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
-
-	var _cret C.guint // in
 
 	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)
 
@@ -739,18 +729,4 @@ func WrapDebugKey(ptr unsafe.Pointer) *DebugKey {
 // Native returns the underlying C source pointer.
 func (d *DebugKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
-}
-
-// Key gets the field inside the struct.
-func (d *DebugKey) Key() string {
-	var v string // out
-	v = C.GoString(d.native.key)
-	return v
-}
-
-// Value gets the field inside the struct.
-func (d *DebugKey) Value() uint {
-	var v uint // out
-	v = (uint)(d.native.value)
-	return v
 }

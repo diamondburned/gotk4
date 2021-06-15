@@ -121,10 +121,9 @@ func (b searchBar) ConnectEntry(entry Entry) {
 // SearchMode returns whether the search mode is on or off.
 func (b searchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 
@@ -140,10 +139,9 @@ func (b searchBar) SearchMode() bool {
 // ShowCloseButton returns whether the close button is shown.
 func (b searchBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 

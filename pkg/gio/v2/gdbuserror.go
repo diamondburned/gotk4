@@ -40,17 +40,3 @@ func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
 func (d *DBusErrorEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
-
-// ErrorCode gets the field inside the struct.
-func (d *DBusErrorEntry) ErrorCode() int {
-	var v int // out
-	v = (int)(d.native.error_code)
-	return v
-}
-
-// DBusErrorName gets the field inside the struct.
-func (d *DBusErrorEntry) DBusErrorName() string {
-	var v string // out
-	v = C.GoString(d.native.dbus_error_name)
-	return v
-}

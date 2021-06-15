@@ -112,11 +112,10 @@ func marshalListStore(p uintptr) (interface{}, error) {
 
 // NewListStore constructs a class ListStore.
 func NewListStore(itemType externglib.Type) ListStore {
-	var _arg1 C.GType // out
+	var _arg1 C.GType      // out
+	var _cret C.GListStore // in
 
 	_arg1 = C.GType(itemType)
-
-	var _cret C.GListStore // in
 
 	_cret = C.g_list_store_new(_arg1)
 
@@ -152,12 +151,11 @@ func (s listStore) Append(item gextras.Objector) {
 func (s listStore) Find(item gextras.Objector) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
+	var _arg2 C.guint       // in
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
-
-	var _arg2 C.guint    // in
-	var _cret C.gboolean // in
 
 	_cret = C.g_list_store_find(_arg0, _arg1, &_arg2)
 
@@ -186,7 +184,7 @@ func (s listStore) Insert(position uint, item gextras.Objector) {
 	var _arg2 C.gpointer    // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
+	_arg1 = (C.guint)(position)
 	_arg2 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_insert(_arg0, _arg1, _arg2)
@@ -202,7 +200,7 @@ func (s listStore) Remove(position uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
+	_arg1 = (C.guint)(position)
 
 	C.g_list_store_remove(_arg0, _arg1)
 }
@@ -237,12 +235,11 @@ func (s listStore) Splice(position uint, nRemovals uint, additions []gextras.Obj
 	var _arg4 C.guint
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nRemovals)
+	_arg1 = (C.guint)(position)
+	_arg2 = (C.guint)(nRemovals)
 	_arg4 = C.guint(len(additions))
 	_arg3 = (*C.gpointer)(C.malloc(C.ulong(len(additions)) * C.ulong(C.sizeof_GObject)))
 	defer C.free(unsafe.Pointer(_arg3))
-
 	{
 		out := unsafe.Slice(_arg3, len(additions))
 		for i := range additions {

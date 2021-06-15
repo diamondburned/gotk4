@@ -29,14 +29,13 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	var _arg3 C.int              // out
 	var _arg4 C.int              // out
 	var _arg5 C.int              // out
+	var _cret *C.GdkPixbuf       // in
 
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	_arg2 = C.int(srcX)
-	_arg3 = C.int(srcY)
-	_arg4 = C.int(width)
-	_arg5 = C.int(height)
-
-	var _cret *C.GdkPixbuf // in
+	_arg2 = (C.int)(srcX)
+	_arg3 = (C.int)(srcY)
+	_arg4 = (C.int)(width)
+	_arg5 = (C.int)(height)
 
 	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -53,10 +52,9 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 // almost certainly convert the pixbuf back into a texture to draw it on screen.
 func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkTexture // out
+	var _cret *C.GdkPixbuf  // in
 
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
-
-	var _cret *C.GdkPixbuf // in
 
 	_cret = C.gdk_pixbuf_get_from_texture(_arg1)
 

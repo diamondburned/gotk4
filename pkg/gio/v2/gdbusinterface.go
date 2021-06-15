@@ -77,10 +77,9 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 // DupObject gets the BusObject that @interface_ belongs to, if any.
 func (i dBusInterface) DupObject() DBusObject {
 	var _arg0 *C.GDBusInterface // out
+	var _cret *C.GDBusObject    // in
 
 	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusObject // in
 
 	_cret = C.g_dbus_interface_dup_object(_arg0)
 
@@ -94,11 +93,10 @@ func (i dBusInterface) DupObject() DBusObject {
 // Info gets D-Bus introspection information for the D-Bus interface
 // implemented by @interface_.
 func (i dBusInterface) Info() *DBusInterfaceInfo {
-	var _arg0 *C.GDBusInterface // out
+	var _arg0 *C.GDBusInterface     // out
+	var _cret *C.GDBusInterfaceInfo // in
 
 	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusInterfaceInfo // in
 
 	_cret = C.g_dbus_interface_get_info(_arg0)
 

@@ -180,10 +180,9 @@ func NewHeaderBar() HeaderBar {
 // DecorationLayout gets the decoration layout of the `GtkHeaderBar`.
 func (b headerBar) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret *C.char         // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
@@ -198,10 +197,9 @@ func (b headerBar) DecorationLayout() string {
 // window title buttons.
 func (b headerBar) ShowTitleButtons() bool {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_header_bar_get_show_title_buttons(_arg0)
 
@@ -219,10 +217,9 @@ func (b headerBar) ShowTitleButtons() bool {
 // See [method@Gtk.HeaderBar.set_title_widget].
 func (b headerBar) TitleWidget() Widget {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_header_bar_get_title_widget(_arg0)
 

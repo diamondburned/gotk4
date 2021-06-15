@@ -89,10 +89,9 @@ func (c imMulticontext) AppendMenuitems(menushell MenuShell) {
 // ContextID gets the id of the currently active slave of the @context.
 func (c imMulticontext) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
+	var _cret *C.char              // in
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
 

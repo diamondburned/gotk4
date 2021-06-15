@@ -203,8 +203,8 @@ func (e editable) DeleteText(startPos int, endPos int) {
 	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = C.gint(startPos)
-	_arg2 = C.gint(endPos)
+	_arg1 = (C.gint)(startPos)
+	_arg2 = (C.gint)(endPos)
 
 	C.gtk_editable_delete_text(_arg0, _arg1, _arg2)
 }
@@ -219,12 +219,11 @@ func (e editable) Chars(startPos int, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
+	var _cret *C.gchar       // in
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = C.gint(startPos)
-	_arg2 = C.gint(endPos)
-
-	var _cret *C.gchar // in
+	_arg1 = (C.gint)(startPos)
+	_arg2 = (C.gint)(endPos)
 
 	_cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
 
@@ -240,10 +239,9 @@ func (e editable) Chars(startPos int, endPos int) string {
 // gtk_editable_set_editable().
 func (e editable) Editable() bool {
 	var _arg0 *C.GtkEditable // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_editable_get_editable(_arg0)
 
@@ -262,10 +260,9 @@ func (e editable) Editable() bool {
 // Note that this position is in characters, not in bytes.
 func (e editable) Position() int {
 	var _arg0 *C.GtkEditable // out
+	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_editable_get_position(_arg0)
 
@@ -283,12 +280,11 @@ func (e editable) Position() int {
 // Note that positions are specified in characters, not bytes.
 func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // in
+	var _arg2 C.gint         // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-
-	var _arg1 C.gint     // in
-	var _arg2 C.gint     // in
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
@@ -327,8 +323,8 @@ func (e editable) SelectRegion(startPos int, endPos int) {
 	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = C.gint(startPos)
-	_arg2 = C.gint(endPos)
+	_arg1 = (C.gint)(startPos)
+	_arg2 = (C.gint)(endPos)
 
 	C.gtk_editable_select_region(_arg0, _arg1, _arg2)
 }
@@ -359,7 +355,7 @@ func (e editable) SetPosition(position int) {
 	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = C.gint(position)
+	_arg1 = (C.gint)(position)
 
 	C.gtk_editable_set_position(_arg0, _arg1)
 }

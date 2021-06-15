@@ -360,11 +360,10 @@ func marshalTask(p uintptr) (interface{}, error) {
 
 // Cancellable gets @task's #GCancellable
 func (t task) Cancellable() Cancellable {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask        // out
+	var _cret *C.GCancellable // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GCancellable // in
 
 	_cret = C.g_task_get_cancellable(_arg0)
 
@@ -378,11 +377,10 @@ func (t task) Cancellable() Cancellable {
 // CheckCancellable gets @task's check-cancellable flag. See
 // g_task_set_check_cancellable() for more details.
 func (t task) CheckCancellable() bool {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_task_get_check_cancellable(_arg0)
 
@@ -399,11 +397,10 @@ func (t task) CheckCancellable() bool {
 // true after the task’s callback is invoked, and will return false if
 // called from inside the callback.
 func (t task) Completed() bool {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_task_get_completed(_arg0)
 
@@ -424,11 +421,10 @@ func (t task) Completed() bool {
 // This will always return a non-nil value, even if the task's context is
 // the default Context.
 func (t task) Context() *glib.MainContext {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask        // out
+	var _cret *C.GMainContext // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GMainContext // in
 
 	_cret = C.g_task_get_context(_arg0)
 
@@ -442,10 +438,9 @@ func (t task) Context() *glib.MainContext {
 // Name gets @task’s name. See g_task_set_name().
 func (t task) Name() string {
 	var _arg0 *C.GTask // out
+	var _cret *C.gchar // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_task_get_name(_arg0)
 
@@ -459,10 +454,9 @@ func (t task) Name() string {
 // Priority gets @task's priority
 func (t task) Priority() int {
 	var _arg0 *C.GTask // out
+	var _cret C.gint   // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.g_task_get_priority(_arg0)
 
@@ -476,11 +470,10 @@ func (t task) Priority() int {
 // ReturnOnCancel gets @task's return-on-cancel flag. See
 // g_task_set_return_on_cancel() for more details.
 func (t task) ReturnOnCancel() bool {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_task_get_return_on_cancel(_arg0)
 
@@ -496,11 +489,10 @@ func (t task) ReturnOnCancel() bool {
 // SourceObject gets the source object from @task. Like
 // g_async_result_get_source_object(), but does not ref the object.
 func (t task) SourceObject() gextras.Objector {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask   // out
+	var _cret C.gpointer // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gpointer // in
 
 	_cret = C.g_task_get_source_object(_arg0)
 
@@ -513,11 +505,10 @@ func (t task) SourceObject() gextras.Objector {
 
 // HadError tests if @task resulted in an error.
 func (t task) HadError() bool {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_task_had_error(_arg0)
 
@@ -538,11 +529,10 @@ func (t task) HadError() bool {
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
 func (t task) PropagateBoolean() error {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask  // out
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_task_propagate_boolean(_arg0, &_cerr)
 
@@ -561,12 +551,11 @@ func (t task) PropagateBoolean() error {
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
 func (t task) PropagateInt() (int, error) {
-	var _arg0 *C.GTask // out
-
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
+	var _arg0 *C.GTask  // out
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
+
+	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	_cret = C.g_task_propagate_int(_arg0, &_cerr)
 
@@ -590,12 +579,11 @@ func (t task) PropagateInt() (int, error) {
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
 func (t task) PropagateValue() (*externglib.Value, error) {
-	var _arg0 *C.GTask // out
-
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
+	var _arg0 *C.GTask  // out
 	var _arg1 C.GValue  // in
 	var _cerr *C.GError // in
+
+	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	C.g_task_propagate_value(_arg0, &_arg1, &_cerr)
 
@@ -647,11 +635,10 @@ func (t task) ReturnError(err error) {
 // task (see g_task_return_pointer() for more discussion of exactly what
 // this means).
 func (t task) ReturnErrorIfCancelled() bool {
-	var _arg0 *C.GTask // out
+	var _arg0 *C.GTask   // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_task_return_error_if_cancelled(_arg0)
 
@@ -671,7 +658,7 @@ func (t task) ReturnInt(result int) {
 	var _arg1 C.gssize // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gssize(result)
+	_arg1 = (C.gssize)(result)
 
 	C.g_task_return_int(_arg0, _arg1)
 }
@@ -751,7 +738,7 @@ func (t task) SetPriority(priority int) {
 	var _arg1 C.gint   // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gint(priority)
+	_arg1 = (C.gint)(priority)
 
 	C.g_task_set_priority(_arg0, _arg1)
 }
@@ -785,13 +772,12 @@ func (t task) SetPriority(priority int) {
 func (t task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 	if returnOnCancel {
 		_arg1 = C.TRUE
 	}
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_task_set_return_on_cancel(_arg0, _arg1)
 

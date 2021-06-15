@@ -118,12 +118,11 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 
 // NewAppChooserButton constructs a class AppChooserButton.
 func NewAppChooserButton(contentType string) AppChooserButton {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar              // out
+	var _cret C.GtkAppChooserButton // in
 
 	_arg1 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkAppChooserButton // in
 
 	_cret = C.gtk_app_chooser_button_new(_arg1)
 
@@ -169,10 +168,9 @@ func (s appChooserButton) AppendSeparator() {
 // Heading returns the text to display at the top of the dialog.
 func (s appChooserButton) Heading() string {
 	var _arg0 *C.GtkAppChooserButton // out
+	var _cret *C.gchar               // in
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
 
@@ -187,10 +185,9 @@ func (s appChooserButton) Heading() string {
 // AppChooserButton:show-default-item property.
 func (s appChooserButton) ShowDefaultItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
 
@@ -207,10 +204,9 @@ func (s appChooserButton) ShowDefaultItem() bool {
 // AppChooserButton:show-dialog-item property.
 func (s appChooserButton) ShowDialogItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
 

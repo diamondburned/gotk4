@@ -84,10 +84,9 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 // Model gets the model that is currently being mapped or nil if none.
 func (s mapListModel) Model() gio.ListModel {
 	var _arg0 *C.GtkMapListModel // out
+	var _cret *C.GListModel      // in
 
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_map_list_model_get_model(_arg0)
 
@@ -101,10 +100,9 @@ func (s mapListModel) Model() gio.ListModel {
 // HasMap checks if a map function is currently set on @self.
 func (s mapListModel) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_map_list_model_has_map(_arg0)
 

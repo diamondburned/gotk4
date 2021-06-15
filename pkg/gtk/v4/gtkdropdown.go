@@ -135,11 +135,10 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 func NewDropDown(model gio.ListModel, expression Expression) DropDown {
 	var _arg1 *C.GListModel    // out
 	var _arg2 *C.GtkExpression // out
+	var _cret C.GtkDropDown    // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	var _cret C.GtkDropDown // in
 
 	_cret = C.gtk_drop_down_new(_arg1, _arg2)
 
@@ -153,10 +152,10 @@ func NewDropDown(model gio.ListModel, expression Expression) DropDown {
 // NewDropDownFromStrings constructs a class DropDown.
 func NewDropDownFromStrings(strings []string) DropDown {
 	var _arg1 **C.char
+	var _cret C.GtkDropDown // in
 
-	_arg1 = (**C.char)(C.malloc(C.ulong((len(strings) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.char)(C.malloc(C.ulong(len(strings)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(strings))
 		for i := range strings {
@@ -164,8 +163,6 @@ func NewDropDownFromStrings(strings []string) DropDown {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-
-	var _cret C.GtkDropDown // in
 
 	_cret = C.gtk_drop_down_new_from_strings(_arg1)
 
@@ -179,10 +176,9 @@ func NewDropDownFromStrings(strings []string) DropDown {
 // EnableSearch returns whether search is enabled.
 func (s dropDown) EnableSearch() bool {
 	var _arg0 *C.GtkDropDown // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_drop_down_get_enable_search(_arg0)
 
@@ -200,11 +196,10 @@ func (s dropDown) EnableSearch() bool {
 //
 // See [method@Gtk.DropDown.set_expression].
 func (s dropDown) Expression() Expression {
-	var _arg0 *C.GtkDropDown // out
+	var _arg0 *C.GtkDropDown   // out
+	var _cret *C.GtkExpression // in
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkExpression // in
 
 	_cret = C.gtk_drop_down_get_expression(_arg0)
 
@@ -221,11 +216,10 @@ func (s dropDown) Expression() Expression {
 // button. It is also used for items in the popup if
 // [property@Gtk.DropDown:list-factory] is not set.
 func (s dropDown) Factory() ListItemFactory {
-	var _arg0 *C.GtkDropDown // out
+	var _arg0 *C.GtkDropDown        // out
+	var _cret *C.GtkListItemFactory // in
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkListItemFactory // in
 
 	_cret = C.gtk_drop_down_get_factory(_arg0)
 
@@ -239,11 +233,10 @@ func (s dropDown) Factory() ListItemFactory {
 // ListFactory gets the factory that's currently used to populate list items
 // in the popup.
 func (s dropDown) ListFactory() ListItemFactory {
-	var _arg0 *C.GtkDropDown // out
+	var _arg0 *C.GtkDropDown        // out
+	var _cret *C.GtkListItemFactory // in
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkListItemFactory // in
 
 	_cret = C.gtk_drop_down_get_list_factory(_arg0)
 
@@ -257,10 +250,9 @@ func (s dropDown) ListFactory() ListItemFactory {
 // Model gets the model that provides the displayed items.
 func (s dropDown) Model() gio.ListModel {
 	var _arg0 *C.GtkDropDown // out
+	var _cret *C.GListModel  // in
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_drop_down_get_model(_arg0)
 
@@ -274,10 +266,9 @@ func (s dropDown) Model() gio.ListModel {
 // Selected gets the position of the selected item.
 func (s dropDown) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
+	var _cret C.guint        // in
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_drop_down_get_selected(_arg0)
 
@@ -292,10 +283,9 @@ func (s dropDown) Selected() uint {
 // returned.
 func (s dropDown) SelectedItem() gextras.Objector {
 	var _arg0 *C.GtkDropDown // out
+	var _cret C.gpointer     // in
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gpointer // in
 
 	_cret = C.gtk_drop_down_get_selected_item(_arg0)
 
@@ -379,7 +369,7 @@ func (s dropDown) SetSelected(position uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
+	_arg1 = (C.guint)(position)
 
 	C.gtk_drop_down_set_selected(_arg0, _arg1)
 }

@@ -76,11 +76,10 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _arg2 C.int                   // out
+	var _cret C.GZlibCompressor       // in
 
 	_arg1 = (C.GZlibCompressorFormat)(format)
-	_arg2 = C.int(level)
-
-	var _cret C.GZlibCompressor // in
+	_arg2 = (C.int)(level)
 
 	_cret = C.g_zlib_compressor_new(_arg1, _arg2)
 
@@ -94,10 +93,9 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 // FileInfo returns the Compressor:file-info property.
 func (c zlibCompressor) FileInfo() FileInfo {
 	var _arg0 *C.GZlibCompressor // out
+	var _cret *C.GFileInfo       // in
 
 	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GFileInfo // in
 
 	_cret = C.g_zlib_compressor_get_file_info(_arg0)
 

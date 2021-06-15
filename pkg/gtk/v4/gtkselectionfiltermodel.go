@@ -63,11 +63,10 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 
 // NewSelectionFilterModel constructs a class SelectionFilterModel.
 func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
-	var _arg1 *C.GtkSelectionModel // out
+	var _arg1 *C.GtkSelectionModel      // out
+	var _cret C.GtkSelectionFilterModel // in
 
 	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkSelectionFilterModel // in
 
 	_cret = C.gtk_selection_filter_model_new(_arg1)
 
@@ -81,10 +80,9 @@ func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
 // Model gets the model currently filtered or nil if none.
 func (s selectionFilterModel) Model() SelectionModel {
 	var _arg0 *C.GtkSelectionFilterModel // out
+	var _cret *C.GtkSelectionModel       // in
 
 	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSelectionModel // in
 
 	_cret = C.gtk_selection_filter_model_get_model(_arg0)
 

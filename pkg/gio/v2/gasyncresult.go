@@ -158,10 +158,9 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 // SourceObject gets the source object from a Result.
 func (r asyncResult) SourceObject() gextras.Objector {
 	var _arg0 *C.GAsyncResult // out
+	var _cret *C.GObject      // in
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GObject // in
 
 	_cret = C.g_async_result_get_source_object(_arg0)
 
@@ -182,10 +181,9 @@ func (r asyncResult) SourceObject() gextras.Objector {
 // extracted by virtual methods, to enable subclasses to chain up correctly.
 func (r asyncResult) LegacyPropagateError() error {
 	var _arg0 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_async_result_legacy_propagate_error(_arg0, &_cerr)
 

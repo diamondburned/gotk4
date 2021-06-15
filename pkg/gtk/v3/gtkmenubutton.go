@@ -220,10 +220,9 @@ func NewMenuButton() MenuButton {
 // AlignWidget returns the parent Widget to use to line up with menu.
 func (m menuButton) AlignWidget() Widget {
 	var _arg0 *C.GtkMenuButton // out
+	var _cret *C.GtkWidget     // in
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_menu_button_get_align_widget(_arg0)
 
@@ -238,10 +237,9 @@ func (m menuButton) AlignWidget() Widget {
 // up.
 func (m menuButton) Direction() ArrowType {
 	var _arg0 *C.GtkMenuButton // out
+	var _cret C.GtkArrowType   // in
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GtkArrowType // in
 
 	_cret = C.gtk_menu_button_get_direction(_arg0)
 
@@ -255,10 +253,9 @@ func (m menuButton) Direction() ArrowType {
 // MenuModel returns the Model used to generate the popup.
 func (m menuButton) MenuModel() gio.MenuModel {
 	var _arg0 *C.GtkMenuButton // out
+	var _cret *C.GMenuModel    // in
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GMenuModel // in
 
 	_cret = C.gtk_menu_button_get_menu_model(_arg0)
 
@@ -273,10 +270,9 @@ func (m menuButton) MenuModel() gio.MenuModel {
 // not using a Popover, this function returns nil.
 func (m menuButton) Popover() Popover {
 	var _arg0 *C.GtkMenuButton // out
+	var _cret *C.GtkPopover    // in
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkPopover // in
 
 	_cret = C.gtk_menu_button_get_popover(_arg0)
 
@@ -291,10 +287,9 @@ func (m menuButton) Popover() Popover {
 // not use a Menu, this function returns nil.
 func (m menuButton) Popup() Menu {
 	var _arg0 *C.GtkMenuButton // out
+	var _cret *C.GtkMenu       // in
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkMenu // in
 
 	_cret = C.gtk_menu_button_get_popup(_arg0)
 
@@ -309,10 +304,9 @@ func (m menuButton) Popup() Menu {
 // the menu model.
 func (m menuButton) UsePopover() bool {
 	var _arg0 *C.GtkMenuButton // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_button_get_use_popover(_arg0)
 

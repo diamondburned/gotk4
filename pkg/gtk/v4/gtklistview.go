@@ -176,11 +176,10 @@ func marshalListView(p uintptr) (interface{}, error) {
 func NewListView(model SelectionModel, factory ListItemFactory) ListView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
+	var _cret C.GtkListView         // in
 
 	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
-
-	var _cret C.GtkListView // in
 
 	_cret = C.gtk_list_view_new(_arg1, _arg2)
 
@@ -195,10 +194,9 @@ func NewListView(model SelectionModel, factory ListItemFactory) ListView {
 // the mouse.
 func (s listView) EnableRubberband() bool {
 	var _arg0 *C.GtkListView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_view_get_enable_rubberband(_arg0)
 
@@ -213,11 +211,10 @@ func (s listView) EnableRubberband() bool {
 
 // Factory gets the factory that's currently used to populate list items.
 func (s listView) Factory() ListItemFactory {
-	var _arg0 *C.GtkListView // out
+	var _arg0 *C.GtkListView        // out
+	var _cret *C.GtkListItemFactory // in
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkListItemFactory // in
 
 	_cret = C.gtk_list_view_get_factory(_arg0)
 
@@ -230,11 +227,10 @@ func (s listView) Factory() ListItemFactory {
 
 // Model gets the model that's currently used to read the items displayed.
 func (s listView) Model() SelectionModel {
-	var _arg0 *C.GtkListView // out
+	var _arg0 *C.GtkListView       // out
+	var _cret *C.GtkSelectionModel // in
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSelectionModel // in
 
 	_cret = C.gtk_list_view_get_model(_arg0)
 
@@ -249,10 +245,9 @@ func (s listView) Model() SelectionModel {
 // between rows.
 func (s listView) ShowSeparators() bool {
 	var _arg0 *C.GtkListView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_view_get_show_separators(_arg0)
 
@@ -269,10 +264,9 @@ func (s listView) ShowSeparators() bool {
 // click and selected on hover.
 func (s listView) SingleClickActivate() bool {
 	var _arg0 *C.GtkListView // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_view_get_single_click_activate(_arg0)
 

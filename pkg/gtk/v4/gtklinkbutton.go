@@ -106,12 +106,11 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 
 // NewLinkButton constructs a class LinkButton.
 func NewLinkButton(uri string) LinkButton {
-	var _arg1 *C.char // out
+	var _arg1 *C.char         // out
+	var _cret C.GtkLinkButton // in
 
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkLinkButton // in
 
 	_cret = C.gtk_link_button_new(_arg1)
 
@@ -124,15 +123,14 @@ func NewLinkButton(uri string) LinkButton {
 
 // NewLinkButtonWithLabel constructs a class LinkButton.
 func NewLinkButtonWithLabel(uri string, label string) LinkButton {
-	var _arg1 *C.char // out
-	var _arg2 *C.char // out
+	var _arg1 *C.char         // out
+	var _arg2 *C.char         // out
+	var _cret C.GtkLinkButton // in
 
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkLinkButton // in
 
 	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
 
@@ -146,10 +144,9 @@ func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 // URI retrieves the URI of the `GtkLinkButton`.
 func (l linkButton) URI() string {
 	var _arg0 *C.GtkLinkButton // out
+	var _cret *C.char          // in
 
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_link_button_get_uri(_arg0)
 
@@ -168,10 +165,9 @@ func (l linkButton) URI() string {
 // The state may also be changed using [method@Gtk.LinkButton.set_visited].
 func (l linkButton) Visited() bool {
 	var _arg0 *C.GtkLinkButton // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_link_button_get_visited(_arg0)
 

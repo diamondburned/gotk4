@@ -90,13 +90,12 @@ func marshalTLSCertificate(p uintptr) (interface{}, error) {
 
 // NewTLSCertificateFromFile constructs a class TLSCertificate.
 func NewTLSCertificateFromFile(file string) (TLSCertificate, error) {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar          // out
+	var _cret C.GTlsCertificate // in
+	var _cerr *C.GError         // in
 
 	_arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GTlsCertificate // in
-	var _cerr *C.GError         // in
 
 	_cret = C.g_tls_certificate_new_from_file(_arg1, &_cerr)
 
@@ -111,16 +110,15 @@ func NewTLSCertificateFromFile(file string) (TLSCertificate, error) {
 
 // NewTLSCertificateFromFiles constructs a class TLSCertificate.
 func NewTLSCertificateFromFiles(certFile string, keyFile string) (TLSCertificate, error) {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.gchar          // out
+	var _cret C.GTlsCertificate // in
+	var _cerr *C.GError         // in
 
 	_arg1 = (*C.gchar)(C.CString(certFile))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(keyFile))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GTlsCertificate // in
-	var _cerr *C.GError         // in
 
 	_cret = C.g_tls_certificate_new_from_files(_arg1, _arg2, &_cerr)
 
@@ -135,15 +133,14 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (TLSCertificate
 
 // NewTLSCertificateFromPem constructs a class TLSCertificate.
 func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
-	var _arg1 *C.gchar // out
-	var _arg2 C.gssize // out
+	var _arg1 *C.gchar          // out
+	var _arg2 C.gssize          // out
+	var _cret C.GTlsCertificate // in
+	var _cerr *C.GError         // in
 
 	_arg1 = (*C.gchar)(C.CString(data))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(length)
-
-	var _cret C.GTlsCertificate // in
-	var _cerr *C.GError         // in
+	_arg2 = (C.gssize)(length)
 
 	_cret = C.g_tls_certificate_new_from_pem(_arg1, _arg2, &_cerr)
 
@@ -158,16 +155,15 @@ func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 
 // NewTLSCertificateFromPkcs11Uris constructs a class TLSCertificate.
 func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri string) (TLSCertificate, error) {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.gchar          // out
+	var _cret C.GTlsCertificate // in
+	var _cerr *C.GError         // in
 
 	_arg1 = (*C.gchar)(C.CString(pkcs11Uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(privateKeyPkcs11Uri))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GTlsCertificate // in
-	var _cerr *C.GError         // in
 
 	_cret = C.g_tls_certificate_new_from_pkcs11_uris(_arg1, _arg2, &_cerr)
 
@@ -183,10 +179,9 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 // Issuer gets the Certificate representing @cert's issuer, if known
 func (c tlsCertificate) Issuer() TLSCertificate {
 	var _arg0 *C.GTlsCertificate // out
+	var _cret *C.GTlsCertificate // in
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GTlsCertificate // in
 
 	_cret = C.g_tls_certificate_get_issuer(_arg0)
 
@@ -205,11 +200,10 @@ func (c tlsCertificate) Issuer() TLSCertificate {
 func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 	var _arg0 *C.GTlsCertificate // out
 	var _arg1 *C.GTlsCertificate // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certTwo.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
 
@@ -240,15 +234,14 @@ func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 // (All other CertificateFlags values will always be set or unset as
 // appropriate.)
 func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
-	var _arg0 *C.GTlsCertificate    // out
-	var _arg1 *C.GSocketConnectable // out
-	var _arg2 *C.GTlsCertificate    // out
+	var _arg0 *C.GTlsCertificate     // out
+	var _arg1 *C.GSocketConnectable  // out
+	var _arg2 *C.GTlsCertificate     // out
+	var _cret C.GTlsCertificateFlags // in
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(trustedCa.Native()))
-
-	var _cret C.GTlsCertificateFlags // in
 
 	_cret = C.g_tls_certificate_verify(_arg0, _arg1, _arg2)
 

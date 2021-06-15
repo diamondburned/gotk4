@@ -80,12 +80,11 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 
 // NewThemedIcon constructs a class ThemedIcon.
 func NewThemedIcon(iconname string) ThemedIcon {
-	var _arg1 *C.char // out
+	var _arg1 *C.char       // out
+	var _cret C.GThemedIcon // in
 
 	_arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GThemedIcon // in
 
 	_cret = C.g_themed_icon_new(_arg1)
 
@@ -100,11 +99,11 @@ func NewThemedIcon(iconname string) ThemedIcon {
 func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 	var _arg1 **C.char
 	var _arg2 C.int
+	var _cret C.GThemedIcon // in
 
 	_arg2 = C.int(len(iconnames))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(iconnames)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(iconnames))
 		for i := range iconnames {
@@ -112,8 +111,6 @@ func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-
-	var _cret C.GThemedIcon // in
 
 	_cret = C.g_themed_icon_new_from_names(_arg1, _arg2)
 
@@ -126,12 +123,11 @@ func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 
 // NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
 func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
-	var _arg1 *C.char // out
+	var _arg1 *C.char       // out
+	var _cret C.GThemedIcon // in
 
 	_arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GThemedIcon // in
 
 	_cret = C.g_themed_icon_new_with_default_fallbacks(_arg1)
 
@@ -160,10 +156,9 @@ func (i themedIcon) AppendName(iconname string) {
 // Names gets the names of icons from within @icon.
 func (i themedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
+	var _cret **C.gchar
 
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
-
-	var _cret **C.gchar
 
 	_cret = C.g_themed_icon_get_names(_arg0)
 

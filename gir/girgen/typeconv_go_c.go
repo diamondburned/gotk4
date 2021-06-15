@@ -6,37 +6,73 @@ import (
 
 // Go to C type conversions.
 
-// TypeConversionToC describes a conversion of one or more Go values to C using
-// CGo.
-type TypeConversionToC struct {
-	conversionTo
-}
-
-// GoCConverter returns a new converter that converts a value from Go to C.
-func (fg *FileGenerator) GoCConverter(parent string, values []ValueProp) *TypeConversionToC {
-	conv := &TypeConversionToC{}
-	conv.conversionTo = newConversionTo(fg, parent, values, conv)
-	return conv
-}
-
-func (conv *TypeConversionToC) convert(value *ValueConverted) bool {
+func (conv *TypeConverter) gocConvert(value *ValueConverted) bool {
 	switch {
 	case value.AnyType.Type != nil:
-		return conv.typeConverter(value)
+		return conv.gocTypeConverter(value)
 	case value.AnyType.Array != nil:
-		return conv.arrayConverter(value)
+		return conv.gocArrayConverter(value)
 	default:
 		return false
 	}
 }
 
-func (conv *TypeConversionToC) arrayConverter(value *ValueConverted) bool {
+func (conv *TypeConverter) gocArrayConverter(value *ValueConverted) bool {
 	if value.AnyType.Array.Type == nil {
 		conv.log(LogDebug, "Go->C skipping nested array", value.AnyType.Array.CType)
 		return value.Optional
 	}
 
 	array := value.AnyType.Array
+
+	// This is always the same.
+	value.OutType = anyTypeCGo(value.AnyType)
+	value.outDecl.Linef("var %s %s", value.OutName, value.OutType)
+
+	// Length is roughly always the same as well.
+	var length *ValueConverted
+	if array.Length != nil {
+		length = conv.convertParam(*array.Length)
+		// Ensure length is present.
+		if length == nil {
+			return false
+		}
+
+		// Length has no input, as it's from the slice.
+		value.outDecl.Linef("var %s %s", length.OutName, length.OutType)
+		value.p.Linef("%s = %s(len(%s))", length.OutName, length.OutType, value.InName)
+	}
+
+	// These cases have invalid inner type names that aren't useful to us, so we
+	// handle them on our own.
+	switch {
+	case cleanCType(array.CType) == "gchar*":
+		// This is technically a []byte, and we should use a []byte, because the
+		// C code may mutate the backing array. The internal type is "utf8",
+		// which is false, because the C type is just a single character.
+		value.InType = "[]byte"
+		value.inDecl.Linef("var %s []byte", value.InName)
+
+		// Only hand over Go memory if we're not copying.
+		if !value.isTransferring() {
+			value.addImport("unsafe")
+			value.p.Linef(
+				"%s = (%s)(unsafe.Pointer(&%s[0]))",
+				value.OutName, value.OutType, value.InName,
+			)
+
+			return true
+		}
+
+		// Use CString, which copies. Since we're transferring ownership to C,
+		// don't free it after we're done.
+		value.p.Linef(
+			"%s = (%s)(C.CString(%s))",
+			value.OutName, value.OutType, value.InName,
+		)
+
+		return true
+	}
 
 	inner := conv.convertInner(value, value.InName+"[i]", "out[i]")
 	if inner == nil {
@@ -51,10 +87,6 @@ func (conv *TypeConversionToC) arrayConverter(value *ValueConverted) bool {
 		value.inDecl.Linef("var %s %s", value.InName, value.InType)
 	}
 
-	// This is always the same.
-	value.OutType = anyTypeCGo(value.AnyType)
-	value.outDecl.Linef("var %s %s", value.OutName, value.OutType)
-
 	switch {
 	case array.FixedSize > 0:
 		// Safe to do if this is a primitive AND we're not setting this inside a
@@ -65,8 +97,7 @@ func (conv *TypeConversionToC) arrayConverter(value *ValueConverted) bool {
 			// properly.
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s))",
-				value.OutName, value.OutType, value.InName,
-			)
+				value.OutName, value.OutType, value.InName)
 
 			return true
 		}
@@ -86,23 +117,13 @@ func (conv *TypeConversionToC) arrayConverter(value *ValueConverted) bool {
 		return true
 
 	case array.Length != nil:
-		length := conv.convertParam(*array.Length)
-		if length == nil {
-			return false
-		}
-
-		// Length has no input, as it's from the slice.
-		value.outDecl.Linef("var %s %s", length.OutName, length.OutType)
-		value.p.Linef("%s = %s(len(%s))", length.OutName, length.OutType, value.InName)
-
 		// Use the backing array with the appropriate transfer-ownership rule
 		// for primitive types; see type_c_go.go.
 		if !value.isTransferring() && inner.resolved.CanCast() {
 			value.addImport("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
-				value.OutName, value.OutType, value.InName,
-			)
+				value.OutName, value.OutType, value.InName)
 
 			return true
 		}
@@ -115,7 +136,6 @@ func (conv *TypeConversionToC) arrayConverter(value *ValueConverted) bool {
 		)
 		if !value.isTransferring() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
-			value.p.EmptyLine()
 		}
 
 		value.p.Descend()
@@ -156,12 +176,25 @@ func (conv *TypeConversionToC) arrayConverter(value *ValueConverted) bool {
 	case array.IsZeroTerminated():
 		value.addImport("unsafe")
 
+		// See if we can possibly reuse the Go slice in a shorter way.
+		if !value.isTransferring() && inner.resolved.CanCast() {
+			value.p.Descend()
+			value.p.Linef("var zero %s", inner.InType)
+			value.p.Linef("%s = append(%[1]s, zero)", value.InName)
+			value.p.Ascend()
+
+			value.p.Linef(
+				"%s = (%s)(unsafe.Pointer(&%s[0]))",
+				value.OutName, value.OutType, value.InName)
+
+			return true
+		}
+
 		value.p.Linef(
 			"%s = (%s)(%s)",
 			value.OutName, value.OutType, inner.cmalloc(value.InName, true))
 		if !value.isTransferring() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
-			value.p.EmptyLine()
 		}
 
 		value.p.Descend()
@@ -181,14 +214,14 @@ func (conv *TypeConversionToC) arrayConverter(value *ValueConverted) bool {
 	return false
 }
 
-func (conv *TypeConversionToC) typeConverter(value *ValueConverted) bool {
+func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 	for _, unsupported := range unsupportedCTypes {
 		if unsupported == value.AnyType.Type.CType {
 			return false
 		}
 	}
 
-	if !value.resolveType(&conv.conversionTo, false) {
+	if !value.resolveType(conv) {
 		return false
 	}
 
@@ -225,7 +258,7 @@ func (conv *TypeConversionToC) typeConverter(value *ValueConverted) bool {
 		return true
 
 	case value.resolved.IsPrimitive():
-		value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
+		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
 		return true
 	}
 
@@ -275,7 +308,25 @@ func (conv *TypeConversionToC) typeConverter(value *ValueConverted) bool {
 		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
 		return true
 
-	case result.Class != nil, result.Record != nil, result.Interface != nil:
+	case result.Record != nil:
+		// Handle records similarly to classes but with an edge case to account
+		// for the current pointer count, since Native takes in and returns a
+		// reference. Go methods automatically take the reference of a value, so
+		// we only need to dereference the result.
+		outType := value.OutType
+		outPref := ""
+		if value.resolved.Ptr == 0 {
+			outType = "*" + outType
+			outPref = "*"
+		}
+
+		value.p.Linef(
+			"%s = %s(%s)(unsafe.Pointer(%s.Native()))",
+			value.OutName, outPref, outType, value.InName,
+		)
+		return true
+
+	case result.Class != nil, result.Interface != nil:
 		value.p.Linef(
 			"%s = (%s)(unsafe.Pointer(%s.Native()))",
 			value.OutName, value.OutType, value.InName,

@@ -101,10 +101,9 @@ func NewSwitch() Switch {
 // Active gets whether the Switch is in its “on” or “off” state.
 func (s _switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_switch_get_active(_arg0)
 
@@ -120,10 +119,9 @@ func (s _switch) Active() bool {
 // State gets the underlying state of the Switch.
 func (s _switch) State() bool {
 	var _arg0 *C.GtkSwitch // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_switch_get_state(_arg0)
 

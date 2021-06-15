@@ -217,7 +217,7 @@ func (c cancellable) Disconnect(handlerId uint32) {
 	var _arg1 C.gulong        // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gulong(handlerId)
+	_arg1 = (C.gulong)(handlerId)
 
 	C.g_cancellable_disconnect(_arg0, _arg1)
 }
@@ -237,10 +237,9 @@ func (c cancellable) Disconnect(handlerId uint32) {
 // See also g_cancellable_make_pollfd().
 func (c cancellable) Fd() int {
 	var _arg0 *C.GCancellable // out
+	var _cret C.int           // in
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.g_cancellable_get_fd(_arg0)
 
@@ -254,10 +253,9 @@ func (c cancellable) Fd() int {
 // IsCancelled checks if a cancellable job has been cancelled.
 func (c cancellable) IsCancelled() bool {
 	var _arg0 *C.GCancellable // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_cancellable_is_cancelled(_arg0)
 
@@ -290,11 +288,10 @@ func (c cancellable) IsCancelled() bool {
 func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	var _arg0 *C.GCancellable // out
 	var _arg1 *C.GPollFD      // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
 
@@ -373,10 +370,9 @@ func (c cancellable) Reset() {
 // notify that the operation was cancelled.
 func (c cancellable) SetErrorIfCancelled() error {
 	var _arg0 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_cancellable_set_error_if_cancelled(_arg0, &_cerr)
 

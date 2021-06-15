@@ -39,8 +39,8 @@ func X11RegisterStandardEventType(display X11Display, eventBase int, nEvents int
 	var _arg3 C.gint        // out
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = C.gint(eventBase)
-	_arg3 = C.gint(nEvents)
+	_arg2 = (C.gint)(eventBase)
+	_arg3 = (C.gint)(nEvents)
 
 	C.gdk_x11_register_standard_event_type(_arg1, _arg2, _arg3)
 }
@@ -180,10 +180,9 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 // See gdk_error_trap_pop() for the all-displays-at-once equivalent.
 func (d x11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
+	var _cret C.gint        // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 
@@ -226,10 +225,9 @@ func (d x11Display) ErrorTrapPush() {
 // StartupNotificationID gets the startup notification ID for a display.
 func (d x11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
+	var _cret *C.gchar      // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
 
@@ -245,10 +243,9 @@ func (d x11Display) StartupNotificationID() string {
 // presses or pointer movements. See gdk_x11_window_set_user_time().
 func (d x11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
+	var _cret C.guint32     // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
 
@@ -289,7 +286,7 @@ func (d x11Display) SetCursorTheme(theme string, size int) {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(theme))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(size)
+	_arg2 = (C.gint)(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
@@ -331,7 +328,7 @@ func (d x11Display) SetWindowScale(scale int) {
 	var _arg1 C.gint        // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = C.gint(scale)
+	_arg1 = (C.gint)(scale)
 
 	C.gdk_x11_display_set_window_scale(_arg0, _arg1)
 }
@@ -341,16 +338,15 @@ func (d x11Display) SetWindowScale(scale int) {
 func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-
 	var _encoding gdk.Atom
 	var _arg3 C.gint // in
 	var _arg4 *C.guchar
 	var _arg5 C.gint // in
 	var _cret C.gint // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, (*C.GdkAtom)(unsafe.Pointer(&_encoding)), &_arg3, &_arg4, &_arg5)
 
@@ -379,16 +375,15 @@ func (d x11Display) TextPropertyToTextList(encoding gdk.Atom, format int, text *
 	var _arg3 *C.guchar     // out
 	var _arg4 C.gint        // out
 	var _arg5 ***C.gchar    // out
+	var _cret C.gint        // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.GdkAtom)(unsafe.Pointer(encoding.Native()))
-	_arg2 = C.gint(format)
-	_arg3 = *C.guchar(text)
-	_arg4 = C.gint(length)
+	_arg1 = *(*C.GdkAtom)(unsafe.Pointer(encoding.Native()))
+	_arg2 = (C.gint)(format)
+	_arg3 = (*C.guchar)(text)
+	_arg4 = (C.gint)(length)
 	_arg5 = (***C.gchar)(C.CString(list))
 	defer C.free(unsafe.Pointer(_arg5))
-
-	var _cret C.gint // in
 
 	_cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -413,16 +408,15 @@ func (d x11Display) Ungrab() {
 func (d x11Display) UTF8ToCompoundText(str string) (gdk.Atom, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-
 	var _encoding gdk.Atom
 	var _arg3 C.gint // in
 	var _arg4 *C.guchar
 	var _arg5 C.gint     // in
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, (*C.GdkAtom)(unsafe.Pointer(&_encoding)), &_arg3, &_arg4, &_arg5)
 

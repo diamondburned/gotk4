@@ -161,7 +161,7 @@ func (t tooltip) SetIconFromGIcon(gicon gio.Icon, size int) {
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
-	_arg2 = C.GtkIconSize(size)
+	_arg2 = (C.GtkIconSize)(size)
 
 	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1, _arg2)
 }
@@ -177,7 +177,7 @@ func (t tooltip) SetIconFromIconName(iconName string, size int) {
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkIconSize(size)
+	_arg2 = (C.GtkIconSize)(size)
 
 	C.gtk_tooltip_set_icon_from_icon_name(_arg0, _arg1, _arg2)
 }
@@ -193,7 +193,7 @@ func (t tooltip) SetIconFromStock(stockId string, size int) {
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkIconSize(size)
+	_arg2 = (C.GtkIconSize)(size)
 
 	C.gtk_tooltip_set_icon_from_stock(_arg0, _arg1, _arg2)
 }

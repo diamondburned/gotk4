@@ -63,53 +63,13 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount gets the field inside the struct.
-func (d *DBusAnnotationInfo) RefCount() int {
-	var v int // out
-	v = (int)(d.native.ref_count)
-	return v
-}
-
-// Key gets the field inside the struct.
-func (d *DBusAnnotationInfo) Key() string {
-	var v string // out
-	v = C.GoString(d.native.key)
-	return v
-}
-
-// Value gets the field inside the struct.
-func (d *DBusAnnotationInfo) Value() string {
-	var v string // out
-	v = C.GoString(d.native.value)
-	return v
-}
-
-// Annotations gets the field inside the struct.
-func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (i *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
 	var _arg0 *C.GDBusAnnotationInfo // out
+	var _cret *C.GDBusAnnotationInfo // in
 
 	_arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusAnnotationInfo // in
 
 	_cret = C.g_dbus_annotation_info_ref(_arg0)
 
@@ -159,53 +119,13 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount gets the field inside the struct.
-func (d *DBusArgInfo) RefCount() int {
-	var v int // out
-	v = (int)(d.native.ref_count)
-	return v
-}
-
-// Name gets the field inside the struct.
-func (d *DBusArgInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// Signature gets the field inside the struct.
-func (d *DBusArgInfo) Signature() string {
-	var v string // out
-	v = C.GoString(d.native.signature)
-	return v
-}
-
-// Annotations gets the field inside the struct.
-func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (i *DBusArgInfo) Ref() *DBusArgInfo {
 	var _arg0 *C.GDBusArgInfo // out
+	var _cret *C.GDBusArgInfo // in
 
 	_arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusArgInfo // in
 
 	_cret = C.g_dbus_arg_info_ref(_arg0)
 
@@ -255,92 +175,6 @@ func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount gets the field inside the struct.
-func (d *DBusInterfaceInfo) RefCount() int {
-	var v int // out
-	v = (int)(d.native.ref_count)
-	return v
-}
-
-// Name gets the field inside the struct.
-func (d *DBusInterfaceInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// Methods gets the field inside the struct.
-func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
-	var v []*DBusMethodInfo
-	{
-		var i int
-		for p := d.native.methods; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.methods, i)
-		v = make([]*DBusMethodInfo, i)
-		for i := range src {
-			v[i] = WrapDBusMethodInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
-// Signals gets the field inside the struct.
-func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
-	var v []*DBusSignalInfo
-	{
-		var i int
-		for p := d.native.signals; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.signals, i)
-		v = make([]*DBusSignalInfo, i)
-		for i := range src {
-			v[i] = WrapDBusSignalInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
-// Properties gets the field inside the struct.
-func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
-	var v []*DBusPropertyInfo
-	{
-		var i int
-		for p := d.native.properties; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.properties, i)
-		v = make([]*DBusPropertyInfo, i)
-		for i := range src {
-			v[i] = WrapDBusPropertyInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
-// Annotations gets the field inside the struct.
-func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
 // CacheBuild builds a lookup-cache to speed up
 // g_dbus_interface_info_lookup_method(), g_dbus_interface_info_lookup_signal()
 // and g_dbus_interface_info_lookup_property().
@@ -376,12 +210,11 @@ func (i *DBusInterfaceInfo) CacheRelease() {
 func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusMethodInfo    // in
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GDBusMethodInfo // in
 
 	_cret = C.g_dbus_interface_info_lookup_method(_arg0, _arg1)
 
@@ -399,12 +232,11 @@ func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusPropertyInfo  // in
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GDBusPropertyInfo // in
 
 	_cret = C.g_dbus_interface_info_lookup_property(_arg0, _arg1)
 
@@ -422,12 +254,11 @@ func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusSignalInfo    // in
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GDBusSignalInfo // in
 
 	_cret = C.g_dbus_interface_info_lookup_signal(_arg0, _arg1)
 
@@ -442,10 +273,9 @@ func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 // reference count.
 func (i *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
+	var _cret *C.GDBusInterfaceInfo // in
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusInterfaceInfo // in
 
 	_cret = C.g_dbus_interface_info_ref(_arg0)
 
@@ -495,82 +325,13 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount gets the field inside the struct.
-func (d *DBusMethodInfo) RefCount() int {
-	var v int // out
-	v = (int)(d.native.ref_count)
-	return v
-}
-
-// Name gets the field inside the struct.
-func (d *DBusMethodInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// InArgs gets the field inside the struct.
-func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
-	var v []*DBusArgInfo
-	{
-		var i int
-		for p := d.native.in_args; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.in_args, i)
-		v = make([]*DBusArgInfo, i)
-		for i := range src {
-			v[i] = WrapDBusArgInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
-// OutArgs gets the field inside the struct.
-func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
-	var v []*DBusArgInfo
-	{
-		var i int
-		for p := d.native.out_args; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.out_args, i)
-		v = make([]*DBusArgInfo, i)
-		for i := range src {
-			v[i] = WrapDBusArgInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
-// Annotations gets the field inside the struct.
-func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (i *DBusMethodInfo) Ref() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInfo // out
+	var _cret *C.GDBusMethodInfo // in
 
 	_arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusMethodInfo // in
 
 	_cret = C.g_dbus_method_info_ref(_arg0)
 
@@ -617,13 +378,12 @@ func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
 func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar         // out
+	var _cret *C.GDBusNodeInfo // in
+	var _cerr *C.GError        // in
 
 	_arg1 = (*C.gchar)(C.CString(xmlData))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GDBusNodeInfo // in
-	var _cerr *C.GError        // in
 
 	_cret = C.g_dbus_node_info_new_for_xml(_arg1, &_cerr)
 
@@ -644,86 +404,17 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount gets the field inside the struct.
-func (d *DBusNodeInfo) RefCount() int {
-	var v int // out
-	v = (int)(d.native.ref_count)
-	return v
-}
-
-// Path gets the field inside the struct.
-func (d *DBusNodeInfo) Path() string {
-	var v string // out
-	v = C.GoString(d.native.path)
-	return v
-}
-
-// Interfaces gets the field inside the struct.
-func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
-	var v []*DBusInterfaceInfo
-	{
-		var i int
-		for p := d.native.interfaces; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.interfaces, i)
-		v = make([]*DBusInterfaceInfo, i)
-		for i := range src {
-			v[i] = WrapDBusInterfaceInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
-// Nodes gets the field inside the struct.
-func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
-	var v []*DBusNodeInfo
-	{
-		var i int
-		for p := d.native.nodes; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.nodes, i)
-		v = make([]*DBusNodeInfo, i)
-		for i := range src {
-			v[i] = WrapDBusNodeInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
-// Annotations gets the field inside the struct.
-func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
 // LookupInterface looks up information about an interface.
 //
 // The cost of this function is O(n) in number of interfaces.
 func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
-	var _arg0 *C.GDBusNodeInfo // out
-	var _arg1 *C.gchar         // out
+	var _arg0 *C.GDBusNodeInfo      // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusInterfaceInfo // in
 
 	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GDBusInterfaceInfo // in
 
 	_cret = C.g_dbus_node_info_lookup_interface(_arg0, _arg1)
 
@@ -738,10 +429,9 @@ func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 // reference count.
 func (i *DBusNodeInfo) Ref() *DBusNodeInfo {
 	var _arg0 *C.GDBusNodeInfo // out
+	var _cret *C.GDBusNodeInfo // in
 
 	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusNodeInfo // in
 
 	_cret = C.g_dbus_node_info_ref(_arg0)
 
@@ -791,60 +481,13 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount gets the field inside the struct.
-func (d *DBusPropertyInfo) RefCount() int {
-	var v int // out
-	v = (int)(d.native.ref_count)
-	return v
-}
-
-// Name gets the field inside the struct.
-func (d *DBusPropertyInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// Signature gets the field inside the struct.
-func (d *DBusPropertyInfo) Signature() string {
-	var v string // out
-	v = C.GoString(d.native.signature)
-	return v
-}
-
-// Flags gets the field inside the struct.
-func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
-	var v DBusPropertyInfoFlags // out
-	v = DBusPropertyInfoFlags(d.native.flags)
-	return v
-}
-
-// Annotations gets the field inside the struct.
-func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (i *DBusPropertyInfo) Ref() *DBusPropertyInfo {
 	var _arg0 *C.GDBusPropertyInfo // out
+	var _cret *C.GDBusPropertyInfo // in
 
 	_arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusPropertyInfo // in
 
 	_cret = C.g_dbus_property_info_ref(_arg0)
 
@@ -894,64 +537,13 @@ func (d *DBusSignalInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount gets the field inside the struct.
-func (d *DBusSignalInfo) RefCount() int {
-	var v int // out
-	v = (int)(d.native.ref_count)
-	return v
-}
-
-// Name gets the field inside the struct.
-func (d *DBusSignalInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// Args gets the field inside the struct.
-func (d *DBusSignalInfo) Args() []*DBusArgInfo {
-	var v []*DBusArgInfo
-	{
-		var i int
-		for p := d.native.args; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.args, i)
-		v = make([]*DBusArgInfo, i)
-		for i := range src {
-			v[i] = WrapDBusArgInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
-// Annotations gets the field inside the struct.
-func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		for p := d.native.annotations; *p != nil; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src[i]))
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (i *DBusSignalInfo) Ref() *DBusSignalInfo {
 	var _arg0 *C.GDBusSignalInfo // out
+	var _cret *C.GDBusSignalInfo // in
 
 	_arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusSignalInfo // in
 
 	_cret = C.g_dbus_signal_info_ref(_arg0)
 

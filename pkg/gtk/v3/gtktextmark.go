@@ -98,16 +98,15 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 
 // NewTextMark constructs a class TextMark.
 func NewTextMark(name string, leftGravity bool) TextMark {
-	var _arg1 *C.gchar   // out
-	var _arg2 C.gboolean // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gboolean    // out
+	var _cret C.GtkTextMark // in
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	if leftGravity {
 		_arg2 = C.TRUE
 	}
-
-	var _cret C.GtkTextMark // in
 
 	_cret = C.gtk_text_mark_new(_arg1, _arg2)
 
@@ -121,11 +120,10 @@ func NewTextMark(name string, leftGravity bool) TextMark {
 // Buffer gets the buffer this mark is located inside, or nil if the mark is
 // deleted.
 func (m textMark) Buffer() TextBuffer {
-	var _arg0 *C.GtkTextMark // out
+	var _arg0 *C.GtkTextMark   // out
+	var _cret *C.GtkTextBuffer // in
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkTextBuffer // in
 
 	_cret = C.gtk_text_mark_get_buffer(_arg0)
 
@@ -141,10 +139,9 @@ func (m textMark) Buffer() TextBuffer {
 // to add it to a buffer again.
 func (m textMark) Deleted() bool {
 	var _arg0 *C.GtkTextMark // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_mark_get_deleted(_arg0)
 
@@ -160,10 +157,9 @@ func (m textMark) Deleted() bool {
 // LeftGravity determines whether the mark has left gravity.
 func (m textMark) LeftGravity() bool {
 	var _arg0 *C.GtkTextMark // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
 
@@ -179,10 +175,9 @@ func (m textMark) LeftGravity() bool {
 // Name returns the mark name; returns NULL for anonymous marks.
 func (m textMark) Name() string {
 	var _arg0 *C.GtkTextMark // out
+	var _cret *C.gchar       // in
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_text_mark_get_name(_arg0)
 
@@ -197,10 +192,9 @@ func (m textMark) Name() string {
 // for it).
 func (m textMark) Visible() bool {
 	var _arg0 *C.GtkTextMark // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_mark_get_visible(_arg0)
 

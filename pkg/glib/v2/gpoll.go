@@ -38,12 +38,11 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 	var _arg1 *C.GPollFD // out
 	var _arg2 C.guint    // out
 	var _arg3 C.gint     // out
+	var _cret C.gint     // in
 
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(fds.Native()))
-	_arg2 = C.guint(nfds)
-	_arg3 = C.gint(timeout)
-
-	var _cret C.gint // in
+	_arg2 = (C.guint)(nfds)
+	_arg3 = (C.gint)(timeout)
 
 	_cret = C.g_poll(_arg1, _arg2, _arg3)
 
@@ -78,25 +77,4 @@ func marshalPollFD(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (p *PollFD) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
-}
-
-// Fd gets the field inside the struct.
-func (p *PollFD) Fd() int {
-	var v int // out
-	v = (int)(p.native.fd)
-	return v
-}
-
-// Events gets the field inside the struct.
-func (p *PollFD) Events() uint16 {
-	var v uint16 // out
-	v = (uint16)(p.native.events)
-	return v
-}
-
-// Revents gets the field inside the struct.
-func (p *PollFD) Revents() uint16 {
-	var v uint16 // out
-	v = (uint16)(p.native.revents)
-	return v
 }

@@ -106,10 +106,9 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 // ClipOverlay retrieves whether the child is clipped.
 func (c overlayLayoutChild) ClipOverlay() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
 
@@ -125,10 +124,9 @@ func (c overlayLayoutChild) ClipOverlay() bool {
 // Measure retrieves whether the child is measured.
 func (c overlayLayoutChild) Measure() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
+	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_overlay_layout_child_get_measure(_arg0)
 

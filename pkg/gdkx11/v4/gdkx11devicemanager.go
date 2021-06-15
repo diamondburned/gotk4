@@ -18,11 +18,10 @@ import "C"
 func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceId int) X11DeviceXI2 {
 	var _arg1 *C.GdkX11DeviceManagerXI2 // out
 	var _arg2 C.int                     // out
+	var _cret *C.GdkDevice              // in
 
 	_arg1 = (*C.GdkX11DeviceManagerXI2)(unsafe.Pointer(deviceManager.Native()))
-	_arg2 = C.int(deviceId)
-
-	var _cret *C.GdkDevice // in
+	_arg2 = (C.int)(deviceId)
 
 	_cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)
 

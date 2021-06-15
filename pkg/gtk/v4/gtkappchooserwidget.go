@@ -121,12 +121,11 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 
 // NewAppChooserWidget constructs a class AppChooserWidget.
 func NewAppChooserWidget(contentType string) AppChooserWidget {
-	var _arg1 *C.char // out
+	var _arg1 *C.char               // out
+	var _cret C.GtkAppChooserWidget // in
 
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkAppChooserWidget // in
 
 	_cret = C.gtk_app_chooser_widget_new(_arg1)
 
@@ -141,10 +140,9 @@ func NewAppChooserWidget(contentType string) AppChooserWidget {
 // that can handle the content type.
 func (s appChooserWidget) DefaultText() string {
 	var _arg0 *C.GtkAppChooserWidget // out
+	var _cret *C.char                // in
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
 
@@ -159,10 +157,9 @@ func (s appChooserWidget) DefaultText() string {
 // flat list.
 func (s appChooserWidget) ShowAll() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
 
@@ -179,10 +176,9 @@ func (s appChooserWidget) ShowAll() bool {
 // for the content type in a separate section.
 func (s appChooserWidget) ShowDefault() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
 
@@ -199,10 +195,9 @@ func (s appChooserWidget) ShowDefault() bool {
 // applications for the content type in a separate section.
 func (s appChooserWidget) ShowFallback() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
 
@@ -219,10 +214,9 @@ func (s appChooserWidget) ShowFallback() bool {
 // unrelated to the content type.
 func (s appChooserWidget) ShowOther() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
 
@@ -239,10 +233,9 @@ func (s appChooserWidget) ShowOther() bool {
 // applications for the content type in a separate section.
 func (s appChooserWidget) ShowRecommended() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
 

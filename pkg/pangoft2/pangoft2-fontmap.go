@@ -80,8 +80,8 @@ func (f fontMap) SetResolution(dpiX float64, dpiY float64) {
 	var _arg2 C.double           // out
 
 	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
-	_arg1 = C.double(dpiX)
-	_arg2 = C.double(dpiY)
+	_arg1 = (C.double)(dpiX)
+	_arg2 = (C.double)(dpiY)
 
 	C.pango_ft2_font_map_set_resolution(_arg0, _arg1, _arg2)
 }

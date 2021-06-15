@@ -115,8 +115,8 @@ func (f fixed) Move(widget Widget, x int, y int) {
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.gint(x)
-	_arg3 = C.gint(y)
+	_arg2 = (C.gint)(x)
+	_arg3 = (C.gint)(y)
 
 	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
 }
@@ -130,8 +130,8 @@ func (f fixed) Put(widget Widget, x int, y int) {
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.gint(x)
-	_arg3 = C.gint(y)
+	_arg2 = (C.gint)(x)
+	_arg3 = (C.gint)(y)
 
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
 }
@@ -153,25 +153,4 @@ func WrapFixedChild(ptr unsafe.Pointer) *FixedChild {
 // Native returns the underlying C source pointer.
 func (f *FixedChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
-}
-
-// Widget gets the field inside the struct.
-func (f *FixedChild) Widget() Widget {
-	var v Widget // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget.Native()))).(Widget)
-	return v
-}
-
-// X gets the field inside the struct.
-func (f *FixedChild) X() int {
-	var v int // out
-	v = (int)(f.native.x)
-	return v
-}
-
-// Y gets the field inside the struct.
-func (f *FixedChild) Y() int {
-	var v int // out
-	v = (int)(f.native.y)
-	return v
 }

@@ -64,10 +64,9 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 // NewHScrollbar constructs a class HScrollbar.
 func NewHScrollbar(adjustment Adjustment) HScrollbar {
 	var _arg1 *C.GtkAdjustment // out
+	var _cret C.GtkHScrollbar  // in
 
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-
-	var _cret C.GtkHScrollbar // in
 
 	_cret = C.gtk_hscrollbar_new(_arg1)
 

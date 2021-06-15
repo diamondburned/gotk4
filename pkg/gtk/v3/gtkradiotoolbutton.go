@@ -72,10 +72,9 @@ func marshalRadioToolButton(p uintptr) (interface{}, error) {
 // NewRadioToolButtonFromWidget constructs a class RadioToolButton.
 func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
+	var _cret C.GtkRadioToolButton  // in
 
 	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
-
-	var _cret C.GtkRadioToolButton // in
 
 	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
 
@@ -90,12 +89,11 @@ func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
 func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string) RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _arg2 *C.gchar              // out
+	var _cret C.GtkRadioToolButton  // in
 
 	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioToolButton // in
 
 	_cret = C.gtk_radio_tool_button_new_with_stock_from_widget(_arg1, _arg2)
 

@@ -90,10 +90,9 @@ func NewWindowHandle() WindowHandle {
 // Child gets the child widget of @self.
 func (s windowHandle) Child() Widget {
 	var _arg0 *C.GtkWindowHandle // out
+	var _cret *C.GtkWidget       // in
 
 	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_window_handle_get_child(_arg0)
 

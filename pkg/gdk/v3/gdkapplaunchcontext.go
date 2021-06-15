@@ -135,7 +135,7 @@ func (c appLaunchContext) SetDesktop(desktop int) {
 	var _arg1 C.gint                 // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gint(desktop)
+	_arg1 = (C.gint)(desktop)
 
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
 }
@@ -215,7 +215,7 @@ func (c appLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg1 C.guint32              // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.guint32(timestamp)
+	_arg1 = (C.guint32)(timestamp)
 
 	C.gdk_app_launch_context_set_timestamp(_arg0, _arg1)
 }

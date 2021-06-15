@@ -44,13 +44,13 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType 
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg3 = C.int(source)
-	_arg4 = C.int(sourceType)
-	_arg5 = C.int(bufferScale)
-	_arg6 = C.int(x)
-	_arg7 = C.int(y)
-	_arg8 = C.int(width)
-	_arg9 = C.int(height)
+	_arg3 = (C.int)(source)
+	_arg4 = (C.int)(sourceType)
+	_arg5 = (C.int)(bufferScale)
+	_arg6 = (C.int)(x)
+	_arg7 = (C.int)(y)
+	_arg8 = (C.int)(width)
+	_arg9 = (C.int)(height)
 
 	C.gdk_cairo_draw_from_gl(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
@@ -84,10 +84,9 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 // cairo_surface_set_device_offset().
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
+	var _cret *C.cairo_region_t  // in
 
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-
-	var _cret *C.cairo_region_t // in
 
 	_cret = C.gdk_cairo_region_create_from_surface(_arg1)
 
@@ -113,8 +112,8 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	_arg3 = C.double(pixbufX)
-	_arg4 = C.double(pixbufY)
+	_arg3 = (C.double)(pixbufX)
+	_arg4 = (C.double)(pixbufY)
 
 	C.gdk_cairo_set_source_pixbuf(_arg1, _arg2, _arg3, _arg4)
 }

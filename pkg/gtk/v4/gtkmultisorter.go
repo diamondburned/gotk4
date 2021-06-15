@@ -105,7 +105,7 @@ func (s multiSorter) Remove(position uint) {
 	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
+	_arg1 = (C.guint)(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)
 }

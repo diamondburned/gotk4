@@ -277,14 +277,13 @@ func (s stack) AddTitled(child Widget, name string, title string) {
 // ChildByName finds the child of the Stack with the name given as the
 // argument. Returns nil if there is no child with this name.
 func (s stack) ChildByName(name string) Widget {
-	var _arg0 *C.GtkStack // out
-	var _arg1 *C.gchar    // out
+	var _arg0 *C.GtkStack  // out
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
 
@@ -299,10 +298,9 @@ func (s stack) ChildByName(name string) Widget {
 // gtk_stack_set_hhomogeneous().
 func (s stack) Hhomogeneous() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_hhomogeneous(_arg0)
 
@@ -319,10 +317,9 @@ func (s stack) Hhomogeneous() bool {
 // gtk_stack_set_homogeneous().
 func (s stack) Homogeneous() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_homogeneous(_arg0)
 
@@ -339,10 +336,9 @@ func (s stack) Homogeneous() bool {
 // the sizes of children on page switch.
 func (s stack) InterpolateSize() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_interpolate_size(_arg0)
 
@@ -359,10 +355,9 @@ func (s stack) InterpolateSize() bool {
 // transitions between pages in @stack will take.
 func (s stack) TransitionDuration() uint {
 	var _arg0 *C.GtkStack // out
+	var _cret C.guint     // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_stack_get_transition_duration(_arg0)
 
@@ -377,10 +372,9 @@ func (s stack) TransitionDuration() uint {
 // from one page to another.
 func (s stack) TransitionRunning() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_transition_running(_arg0)
 
@@ -396,11 +390,10 @@ func (s stack) TransitionRunning() bool {
 // TransitionType gets the type of animation that will be used for
 // transitions between pages in @stack.
 func (s stack) TransitionType() StackTransitionType {
-	var _arg0 *C.GtkStack // out
+	var _arg0 *C.GtkStack              // out
+	var _cret C.GtkStackTransitionType // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkStackTransitionType // in
 
 	_cret = C.gtk_stack_get_transition_type(_arg0)
 
@@ -415,10 +408,9 @@ func (s stack) TransitionType() StackTransitionType {
 // gtk_stack_set_vhomogeneous().
 func (s stack) Vhomogeneous() bool {
 	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_stack_get_vhomogeneous(_arg0)
 
@@ -434,11 +426,10 @@ func (s stack) Vhomogeneous() bool {
 // VisibleChild gets the currently visible child of @stack, or nil if there
 // are no visible children.
 func (s stack) VisibleChild() Widget {
-	var _arg0 *C.GtkStack // out
+	var _arg0 *C.GtkStack  // out
+	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_stack_get_visible_child(_arg0)
 
@@ -453,10 +444,9 @@ func (s stack) VisibleChild() Widget {
 // @stack, or nil if there is no visible child.
 func (s stack) VisibleChildName() string {
 	var _arg0 *C.GtkStack // out
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_stack_get_visible_child_name(_arg0)
 
@@ -526,7 +516,7 @@ func (s stack) SetTransitionDuration(duration uint) {
 	var _arg1 C.guint     // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(duration)
+	_arg1 = (C.guint)(duration)
 
 	C.gtk_stack_set_transition_duration(_arg0, _arg1)
 }

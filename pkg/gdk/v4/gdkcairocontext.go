@@ -73,10 +73,9 @@ func marshalCairoContext(p uintptr) (interface{}, error) {
 // [method@Gdk.DrawContext.end_frame] is called.
 func (s cairoContext) CairoCreate() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out
+	var _cret *C.cairo_t         // in
 
 	_arg0 = (*C.GdkCairoContext)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.cairo_t // in
 
 	_cret = C.gdk_cairo_context_cairo_create(_arg0)
 

@@ -37,17 +37,11 @@ func movePtr(orig, into string) string {
 	return strings.Repeat("*", ptr) + into
 }
 
-// cleanCType cleans the underlying C type of pointers and special keywords for
-// CGo.
+// cleanCType cleans the underlying C type of and special keywords for
+// comparison.
 func cleanCType(cType string) string {
 	cType = ctypePrefixEraser.Replace(cType)
-	cType = strings.ReplaceAll(cType, "*", "")
 	cType = strings.TrimSpace(cType)
-
-	if replace, ok := cgoPrimitiveTypes[cType]; ok {
-		cType = replace
-	}
-
 	return cType
 }
 
@@ -57,8 +51,18 @@ func anyTypeIsVoid(any gir.AnyType) bool {
 }
 
 // cgoTypeFromC converts a C type to a CGo type.
-func cgoTypeFromC(ctype string) string {
-	return movePtr(ctype, "C."+cleanCType(ctype))
+func cgoTypeFromC(cType string) string {
+	originalCType := cType
+
+	cType = ctypePrefixEraser.Replace(cType)
+	cType = strings.ReplaceAll(cType, "*", "")
+	cType = strings.TrimSpace(cType)
+
+	if replace, ok := cgoPrimitiveTypes[cType]; ok {
+		cType = replace
+	}
+
+	return movePtr(originalCType, "C."+cleanCType(cType))
 }
 
 // anyTypeCGo returns the CGo type for a GIR AnyType. An empty string is

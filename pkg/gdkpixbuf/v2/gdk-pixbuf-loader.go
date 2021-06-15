@@ -165,13 +165,12 @@ func NewPixbufLoader() PixbufLoader {
 
 // NewPixbufLoaderWithMIMEType constructs a class PixbufLoader.
 func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
-	var _arg1 *C.char // out
+	var _arg1 *C.char           // out
+	var _cret C.GdkPixbufLoader // in
+	var _cerr *C.GError         // in
 
 	_arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkPixbufLoader // in
-	var _cerr *C.GError         // in
 
 	_cret = C.gdk_pixbuf_loader_new_with_mime_type(_arg1, &_cerr)
 
@@ -186,13 +185,12 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
 
 // NewPixbufLoaderWithType constructs a class PixbufLoader.
 func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
-	var _arg1 *C.char // out
+	var _arg1 *C.char           // out
+	var _cret C.GdkPixbufLoader // in
+	var _cerr *C.GError         // in
 
 	_arg1 = (*C.char)(C.CString(imageType))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkPixbufLoader // in
-	var _cerr *C.GError         // in
 
 	_cret = C.gdk_pixbuf_loader_new_with_type(_arg1, &_cerr)
 
@@ -222,10 +220,9 @@ func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
 // so you will need to explicitly release any reference you hold.
 func (l pixbufLoader) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
-
-	var _cerr *C.GError // in
 
 	C.gdk_pixbuf_loader_close(_arg0, &_cerr)
 
@@ -246,11 +243,10 @@ func (l pixbufLoader) Close() error {
 // If the loader doesn't have enough bytes yet, and hasn't emitted the
 // `area-prepared` signal, this function will return `NULL`.
 func (l pixbufLoader) Animation() PixbufAnimation {
-	var _arg0 *C.GdkPixbufLoader // out
+	var _arg0 *C.GdkPixbufLoader    // out
+	var _cret *C.GdkPixbufAnimation // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GdkPixbufAnimation // in
 
 	_cret = C.gdk_pixbuf_loader_get_animation(_arg0)
 
@@ -265,10 +261,9 @@ func (l pixbufLoader) Animation() PixbufAnimation {
 // currently loading image file.
 func (l pixbufLoader) Format() *PixbufFormat {
 	var _arg0 *C.GdkPixbufLoader // out
+	var _cret *C.GdkPixbufFormat // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GdkPixbufFormat // in
 
 	_cret = C.gdk_pixbuf_loader_get_format(_arg0)
 
@@ -296,10 +291,9 @@ func (l pixbufLoader) Format() *PixbufFormat {
 // image" of the animation (see gdk_pixbuf_animation_get_static_image()).
 func (l pixbufLoader) Pixbuf() Pixbuf {
 	var _arg0 *C.GdkPixbufLoader // out
+	var _cret *C.GdkPixbuf       // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GdkPixbuf // in
 
 	_cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
 
@@ -324,8 +318,8 @@ func (l pixbufLoader) SetSize(width int, height int) {
 	var _arg2 C.int              // out
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
+	_arg1 = (C.int)(width)
+	_arg2 = (C.int)(height)
 
 	C.gdk_pixbuf_loader_set_size(_arg0, _arg1, _arg2)
 }
@@ -335,12 +329,11 @@ func (l pixbufLoader) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar
 	var _arg2 C.gsize
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 	_arg2 = C.gsize(len(buf))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
-
-	var _cerr *C.GError // in
 
 	C.gdk_pixbuf_loader_write(_arg0, _arg1, _arg2, &_cerr)
 

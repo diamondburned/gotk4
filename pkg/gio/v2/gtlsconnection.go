@@ -240,12 +240,11 @@ func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLS
 	var _arg0 *C.GTlsConnection      // out
 	var _arg1 *C.GTlsCertificate     // out
 	var _arg2 C.GTlsCertificateFlags // out
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(peerCert.Native()))
 	_arg2 = (C.GTlsCertificateFlags)(errors)
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_tls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
 
@@ -261,11 +260,10 @@ func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLS
 // Certificate gets @conn's certificate, as set by
 // g_tls_connection_set_certificate().
 func (c tlsConnection) Certificate() TLSCertificate {
-	var _arg0 *C.GTlsConnection // out
+	var _arg0 *C.GTlsConnection  // out
+	var _cret *C.GTlsCertificate // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GTlsCertificate // in
 
 	_cret = C.g_tls_connection_get_certificate(_arg0)
 
@@ -293,12 +291,11 @@ func (c tlsConnection) Certificate() TLSCertificate {
 func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GTlsConnection        // out
 	var _arg1 C.GTlsChannelBindingType // out
+	var _arg2 C.GByteArray
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GTlsChannelBindingType)(typ)
-
-	var _arg2 C.GByteArray
-	var _cerr *C.GError // in
 
 	C.g_tls_connection_get_channel_binding_data(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -326,10 +323,9 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, er
 // certificates. See g_tls_connection_set_database().
 func (c tlsConnection) Database() TLSDatabase {
 	var _arg0 *C.GTlsConnection // out
+	var _cret *C.GTlsDatabase   // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GTlsDatabase // in
 
 	_cret = C.g_tls_connection_get_database(_arg0)
 
@@ -344,11 +340,10 @@ func (c tlsConnection) Database() TLSDatabase {
 // It will be used for things like prompting the user for passwords. If nil
 // is returned, then no user interaction will occur for this connection.
 func (c tlsConnection) Interaction() TLSInteraction {
-	var _arg0 *C.GTlsConnection // out
+	var _arg0 *C.GTlsConnection  // out
+	var _cret *C.GTlsInteraction // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GTlsInteraction // in
 
 	_cret = C.g_tls_connection_get_interaction(_arg0)
 
@@ -368,10 +363,9 @@ func (c tlsConnection) Interaction() TLSInteraction {
 // g_tls_connection_set_advertised_protocols().
 func (c tlsConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GTlsConnection // out
+	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_tls_connection_get_negotiated_protocol(_arg0)
 
@@ -386,11 +380,10 @@ func (c tlsConnection) NegotiatedProtocol() string {
 // completed or failed. (It is not set during the emission of
 // Connection::accept-certificate.)
 func (c tlsConnection) PeerCertificate() TLSCertificate {
-	var _arg0 *C.GTlsConnection // out
+	var _arg0 *C.GTlsConnection  // out
+	var _cret *C.GTlsCertificate // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GTlsCertificate // in
 
 	_cret = C.g_tls_connection_get_peer_certificate(_arg0)
 
@@ -405,11 +398,10 @@ func (c tlsConnection) PeerCertificate() TLSCertificate {
 // peer's certificate, after the handshake has completed or failed. (It is
 // not set during the emission of Connection::accept-certificate.)
 func (c tlsConnection) PeerCertificateErrors() TLSCertificateFlags {
-	var _arg0 *C.GTlsConnection // out
+	var _arg0 *C.GTlsConnection      // out
+	var _cret C.GTlsCertificateFlags // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GTlsCertificateFlags // in
 
 	_cret = C.g_tls_connection_get_peer_certificate_errors(_arg0)
 
@@ -423,11 +415,10 @@ func (c tlsConnection) PeerCertificateErrors() TLSCertificateFlags {
 // RehandshakeMode gets @conn rehandshaking mode. See
 // g_tls_connection_set_rehandshake_mode() for details.
 func (c tlsConnection) RehandshakeMode() TLSRehandshakeMode {
-	var _arg0 *C.GTlsConnection // out
+	var _arg0 *C.GTlsConnection     // out
+	var _cret C.GTlsRehandshakeMode // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GTlsRehandshakeMode // in
 
 	_cret = C.g_tls_connection_get_rehandshake_mode(_arg0)
 
@@ -443,10 +434,9 @@ func (c tlsConnection) RehandshakeMode() TLSRehandshakeMode {
 // g_tls_connection_set_require_close_notify() for details.
 func (c tlsConnection) RequireCloseNotify() bool {
 	var _arg0 *C.GTlsConnection // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_tls_connection_get_require_close_notify(_arg0)
 
@@ -464,10 +454,9 @@ func (c tlsConnection) RequireCloseNotify() bool {
 // g_tls_connection_set_use_system_certdb().
 func (c tlsConnection) UseSystemCertdb() bool {
 	var _arg0 *C.GTlsConnection // out
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_tls_connection_get_use_system_certdb(_arg0)
 
@@ -511,11 +500,10 @@ func (c tlsConnection) UseSystemCertdb() bool {
 func (c tlsConnection) Handshake(cancellable Cancellable) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GCancellable   // out
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_tls_connection_handshake(_arg0, _arg1, &_cerr)
 
@@ -531,11 +519,10 @@ func (c tlsConnection) Handshake(cancellable Cancellable) error {
 func (c tlsConnection) HandshakeFinish(result AsyncResult) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GAsyncResult   // out
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_tls_connection_handshake_finish(_arg0, _arg1, &_cerr)
 
@@ -562,9 +549,8 @@ func (c tlsConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong((len(protocols) + 1)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(protocols)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
-
 	{
 		out := unsafe.Slice(_arg1, len(protocols))
 		for i := range protocols {

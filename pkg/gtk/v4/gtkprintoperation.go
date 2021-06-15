@@ -136,12 +136,11 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 	var _arg1 *C.GtkWindow        // out
 	var _arg2 *C.GtkPageSetup     // out
 	var _arg3 *C.GtkPrintSettings // out
+	var _cret *C.GtkPageSetup     // in
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
 	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-
-	var _cret *C.GtkPageSetup // in
 
 	_cret = C.gtk_print_run_page_setup_dialog(_arg1, _arg2, _arg3)
 
@@ -498,10 +497,9 @@ func (o printOperation) DrawPageFinish() {
 // DefaultPageSetup returns the default page setup.
 func (o printOperation) DefaultPageSetup() PageSetup {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret *C.GtkPageSetup      // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkPageSetup // in
 
 	_cret = C.gtk_print_operation_get_default_page_setup(_arg0)
 
@@ -515,10 +513,9 @@ func (o printOperation) DefaultPageSetup() PageSetup {
 // EmbedPageSetup gets whether page setup selection combos are embedded
 func (o printOperation) EmbedPageSetup() bool {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_operation_get_embed_page_setup(_arg0)
 
@@ -540,10 +537,9 @@ func (o printOperation) EmbedPageSetup() bool {
 // The returned `GError` will contain more details on what went wrong.
 func (o printOperation) Error() error {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cerr *C.GError // in
 
 	C.gtk_print_operation_get_error(_arg0, &_cerr)
 
@@ -557,10 +553,9 @@ func (o printOperation) Error() error {
 // HasSelection gets whether there is a selection.
 func (o printOperation) HasSelection() bool {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_operation_get_has_selection(_arg0)
 
@@ -585,10 +580,9 @@ func (o printOperation) HasSelection() bool {
 // This is typically used to track the progress of print operation.
 func (o printOperation) NPagesToPrint() int {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret C.int                // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_print_operation_get_n_pages_to_print(_arg0)
 
@@ -606,10 +600,9 @@ func (o printOperation) NPagesToPrint() int {
 // [method@Gtk.PrintOperation.run] have been called.
 func (o printOperation) PrintSettings() PrintSettings {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret *C.GtkPrintSettings  // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkPrintSettings // in
 
 	_cret = C.gtk_print_operation_get_print_settings(_arg0)
 
@@ -625,10 +618,9 @@ func (o printOperation) PrintSettings() PrintSettings {
 // Also see [method@Gtk.PrintOperation.get_status_string].
 func (o printOperation) Status() PrintStatus {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret C.GtkPrintStatus     // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret C.GtkPrintStatus // in
 
 	_cret = C.gtk_print_operation_get_status(_arg0)
 
@@ -649,10 +641,9 @@ func (o printOperation) Status() PrintStatus {
 // is suitable for programmatic use.
 func (o printOperation) StatusString() string {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret *C.char              // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_print_operation_get_status_string(_arg0)
 
@@ -666,10 +657,9 @@ func (o printOperation) StatusString() string {
 // SupportSelection gets whether the application supports print of selection
 func (o printOperation) SupportSelection() bool {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_operation_get_support_selection(_arg0)
 
@@ -693,10 +683,9 @@ func (o printOperation) SupportSelection() bool {
 // status then tracks the print job status on the printer.
 func (o printOperation) IsFinished() bool {
 	var _arg0 *C.GtkPrintOperation // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_operation_is_finished(_arg0)
 
@@ -752,13 +741,12 @@ func (o printOperation) Run(action PrintOperationAction, parent Window) (PrintOp
 	var _arg0 *C.GtkPrintOperation      // out
 	var _arg1 C.GtkPrintOperationAction // out
 	var _arg2 *C.GtkWindow              // out
+	var _cret C.GtkPrintOperationResult // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = (C.GtkPrintOperationAction)(action)
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkPrintOperationResult // in
-	var _cerr *C.GError                 // in
 
 	_cret = C.gtk_print_operation_run(_arg0, _arg1, _arg2, &_cerr)
 
@@ -798,7 +786,7 @@ func (o printOperation) SetCurrentPage(currentPage int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = C.int(currentPage)
+	_arg1 = (C.int)(currentPage)
 
 	C.gtk_print_operation_set_current_page(_arg0, _arg1)
 }
@@ -933,7 +921,7 @@ func (o printOperation) SetNPages(nPages int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = C.int(nPages)
+	_arg1 = (C.int)(nPages)
 
 	C.gtk_print_operation_set_n_pages(_arg0, _arg1)
 }

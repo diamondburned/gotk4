@@ -85,11 +85,10 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 
 // NewDataOutputStream constructs a class DataOutputStream.
 func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
-	var _arg1 *C.GOutputStream // out
+	var _arg1 *C.GOutputStream    // out
+	var _cret C.GDataOutputStream // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-
-	var _cret C.GDataOutputStream // in
 
 	_cret = C.g_data_output_stream_new(_arg1)
 
@@ -102,11 +101,10 @@ func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 
 // ByteOrder gets the byte order for the stream.
 func (s dataOutputStream) ByteOrder() DataStreamByteOrder {
-	var _arg0 *C.GDataOutputStream // out
+	var _arg0 *C.GDataOutputStream   // out
+	var _cret C.GDataStreamByteOrder // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GDataStreamByteOrder // in
 
 	_cret = C.g_data_output_stream_get_byte_order(_arg0)
 
@@ -122,12 +120,11 @@ func (s dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guchar             // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guchar(data)
+	_arg1 = (C.guchar)(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_data_output_stream_put_byte(_arg0, _arg1, _arg2, &_cerr)
 
@@ -143,12 +140,11 @@ func (s dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint16             // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint16(data)
+	_arg1 = (C.gint16)(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_data_output_stream_put_int16(_arg0, _arg1, _arg2, &_cerr)
 
@@ -164,12 +160,11 @@ func (s dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint32             // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint32(data)
+	_arg1 = (C.gint32)(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_data_output_stream_put_int32(_arg0, _arg1, _arg2, &_cerr)
 
@@ -185,12 +180,11 @@ func (s dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint64             // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint64(data)
+	_arg1 = (C.gint64)(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_data_output_stream_put_int64(_arg0, _arg1, _arg2, &_cerr)
 
@@ -206,13 +200,12 @@ func (s dataOutputStream) PutString(str string, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_data_output_stream_put_string(_arg0, _arg1, _arg2, &_cerr)
 
@@ -228,12 +221,11 @@ func (s dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error 
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint16            // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint16(data)
+	_arg1 = (C.guint16)(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_data_output_stream_put_uint16(_arg0, _arg1, _arg2, &_cerr)
 
@@ -249,12 +241,11 @@ func (s dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error 
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint32            // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint32(data)
+	_arg1 = (C.guint32)(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_data_output_stream_put_uint32(_arg0, _arg1, _arg2, &_cerr)
 
@@ -270,12 +261,11 @@ func (s dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error 
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint64            // out
 	var _arg2 *C.GCancellable      // out
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint64(data)
+	_arg1 = (C.guint64)(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_data_output_stream_put_uint64(_arg0, _arg1, _arg2, &_cerr)
 

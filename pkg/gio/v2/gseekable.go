@@ -124,10 +124,9 @@ func marshalSeekable(p uintptr) (interface{}, error) {
 // CanSeek tests if the stream supports the Iface.
 func (s seekable) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_seekable_can_seek(_arg0)
 
@@ -144,10 +143,9 @@ func (s seekable) CanSeek() bool {
 // g_seekable_truncate().
 func (s seekable) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_seekable_can_truncate(_arg0)
 
@@ -179,13 +177,12 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 	var _arg1 C.goffset       // out
 	var _arg2 C.GSeekType     // out
 	var _arg3 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
-	_arg1 = C.goffset(offset)
+	_arg1 = (C.goffset)(offset)
 	_arg2 = (C.GSeekType)(typ)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_seekable_seek(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -199,10 +196,9 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 // Tell tells the current position within the stream.
 func (s seekable) Tell() int64 {
 	var _arg0 *C.GSeekable // out
+	var _cret C.goffset    // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
-
-	var _cret C.goffset // in
 
 	_cret = C.g_seekable_tell(_arg0)
 
@@ -227,12 +223,11 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
-	_arg1 = C.goffset(offset)
+	_arg1 = (C.goffset)(offset)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_seekable_truncate(_arg0, _arg1, _arg2, &_cerr)
 

@@ -91,10 +91,9 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 // used to construct the @buildable.
 func (b buildable) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
+	var _cret *C.char         // in
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_buildable_get_buildable_id(_arg0)
 
@@ -132,10 +131,9 @@ func (b *BuildableParseContext) Native() unsafe.Pointer {
 // gtk_buildable_parse_context_get_element_stack().
 func (c *BuildableParseContext) Element() string {
 	var _arg0 *C.GtkBuildableParseContext // out
+	var _cret *C.char                     // in
 
 	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_buildable_parse_context_get_element(_arg0)
 
@@ -159,10 +157,9 @@ func (c *BuildableParseContext) Element() string {
 // the name of the element that is being processed.
 func (c *BuildableParseContext) ElementStack() []string {
 	var _arg0 *C.GtkBuildableParseContext // out
+	var _cret *C.GPtrArray
 
 	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GPtrArray
 
 	_cret = C.gtk_buildable_parse_context_get_element_stack(_arg0)
 
@@ -190,11 +187,10 @@ func (c *BuildableParseContext) ElementStack() []string {
 // could come up with for error messages."
 func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg0 *C.GtkBuildableParseContext // out
+	var _arg1 C.int                       // in
+	var _arg2 C.int                       // in
 
 	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
-
-	var _arg1 C.int // in
-	var _arg2 C.int // in
 
 	C.gtk_buildable_parse_context_get_position(_arg0, &_arg1, &_arg2)
 

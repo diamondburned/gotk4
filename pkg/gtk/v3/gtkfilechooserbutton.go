@@ -112,12 +112,11 @@ func marshalFileChooserButton(p uintptr) (interface{}, error) {
 func NewFileChooserButton(title string, action FileChooserAction) FileChooserButton {
 	var _arg1 *C.gchar               // out
 	var _arg2 C.GtkFileChooserAction // out
+	var _cret C.GtkFileChooserButton // in
 
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GtkFileChooserAction)(action)
-
-	var _cret C.GtkFileChooserButton // in
 
 	_cret = C.gtk_file_chooser_button_new(_arg1, _arg2)
 
@@ -130,11 +129,10 @@ func NewFileChooserButton(title string, action FileChooserAction) FileChooserBut
 
 // NewFileChooserButtonWithDialog constructs a class FileChooserButton.
 func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
-	var _arg1 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget           // out
+	var _cret C.GtkFileChooserButton // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(dialog.Native()))
-
-	var _cret C.GtkFileChooserButton // in
 
 	_cret = C.gtk_file_chooser_button_new_with_dialog(_arg1)
 
@@ -149,10 +147,9 @@ func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
 // with the mouse. See gtk_file_chooser_button_set_focus_on_click().
 func (b fileChooserButton) FocusOnClick() bool {
 	var _arg0 *C.GtkFileChooserButton // out
+	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_button_get_focus_on_click(_arg0)
 
@@ -169,10 +166,9 @@ func (b fileChooserButton) FocusOnClick() bool {
 // returned value should not be modified or freed.
 func (b fileChooserButton) Title() string {
 	var _arg0 *C.GtkFileChooserButton // out
+	var _cret *C.gchar                // in
 
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_file_chooser_button_get_title(_arg0)
 
@@ -187,10 +183,9 @@ func (b fileChooserButton) Title() string {
 // entry and/or label.
 func (b fileChooserButton) WidthChars() int {
 	var _arg0 *C.GtkFileChooserButton // out
+	var _cret C.gint                  // in
 
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_file_chooser_button_get_width_chars(_arg0)
 
@@ -236,7 +231,7 @@ func (b fileChooserButton) SetWidthChars(nChars int) {
 	var _arg1 C.gint                  // out
 
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
-	_arg1 = C.gint(nChars)
+	_arg1 = (C.gint)(nChars)
 
 	C.gtk_file_chooser_button_set_width_chars(_arg0, _arg1)
 }

@@ -65,27 +65,6 @@ func (i *Item) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// Offset gets the field inside the struct.
-func (i *Item) Offset() int {
-	var v int // out
-	v = (int)(i.native.offset)
-	return v
-}
-
-// Length gets the field inside the struct.
-func (i *Item) Length() int {
-	var v int // out
-	v = (int)(i.native.length)
-	return v
-}
-
-// NumChars gets the field inside the struct.
-func (i *Item) NumChars() int {
-	var v int // out
-	v = (int)(i.native.num_chars)
-	return v
-}
-
 // ApplyAttrs: add attributes to a `PangoItem`.
 //
 // The idea is that you have attributes that don't affect itemization, such as
@@ -109,10 +88,9 @@ func (i *Item) ApplyAttrs(iter *AttrIterator) {
 // Copy: copy an existing `PangoItem` structure.
 func (i *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
+	var _cret *C.PangoItem // in
 
 	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.PangoItem // in
 
 	_cret = C.pango_item_copy(_arg0)
 
@@ -149,12 +127,11 @@ func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
+	var _cret *C.PangoItem // in
 
 	_arg0 = (*C.PangoItem)(unsafe.Pointer(o.Native()))
-	_arg1 = C.int(splitIndex)
-	_arg2 = C.int(splitOffset)
-
-	var _cret *C.PangoItem // in
+	_arg1 = (C.int)(splitIndex)
+	_arg2 = (C.int)(splitOffset)
 
 	_cret = C.pango_item_split(_arg0, _arg1, _arg2)
 

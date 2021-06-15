@@ -150,11 +150,10 @@ func marshalDrive(p uintptr) (interface{}, error) {
 
 // CanEject checks if a drive can be ejected.
 func (d drive) CanEject() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_can_eject(_arg0)
 
@@ -169,11 +168,10 @@ func (d drive) CanEject() bool {
 
 // CanPollForMedia checks if a drive can be polled for media changes.
 func (d drive) CanPollForMedia() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_can_poll_for_media(_arg0)
 
@@ -188,11 +186,10 @@ func (d drive) CanPollForMedia() bool {
 
 // CanStart checks if a drive can be started.
 func (d drive) CanStart() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_can_start(_arg0)
 
@@ -207,11 +204,10 @@ func (d drive) CanStart() bool {
 
 // CanStartDegraded checks if a drive can be started degraded.
 func (d drive) CanStartDegraded() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_can_start_degraded(_arg0)
 
@@ -226,11 +222,10 @@ func (d drive) CanStartDegraded() bool {
 
 // CanStop checks if a drive can be stopped.
 func (d drive) CanStop() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_can_stop(_arg0)
 
@@ -247,11 +242,10 @@ func (d drive) CanStop() bool {
 func (d drive) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_drive_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -268,11 +262,10 @@ func (d drive) EjectFinish(result AsyncResult) error {
 func (d drive) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_drive_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -287,10 +280,9 @@ func (d drive) EjectWithOperationFinish(result AsyncResult) error {
 // g_drive_get_identifier() to obtain the identifiers themselves.
 func (d drive) EnumerateIdentifiers() []string {
 	var _arg0 *C.GDrive // out
+	var _cret **C.char
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret **C.char
 
 	_cret = C.g_drive_enumerate_identifiers(_arg0)
 
@@ -316,10 +308,9 @@ func (d drive) EnumerateIdentifiers() []string {
 // Icon gets the icon for @drive.
 func (d drive) Icon() Icon {
 	var _arg0 *C.GDrive // out
+	var _cret *C.GIcon  // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_drive_get_icon(_arg0)
 
@@ -335,12 +326,11 @@ func (d drive) Icon() Icon {
 func (d drive) Identifier(kind string) string {
 	var _arg0 *C.GDrive // out
 	var _arg1 *C.char   // out
+	var _cret *C.char   // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(kind))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.char // in
 
 	_cret = C.g_drive_get_identifier(_arg0, _arg1)
 
@@ -355,10 +345,9 @@ func (d drive) Identifier(kind string) string {
 // Name gets the name of @drive.
 func (d drive) Name() string {
 	var _arg0 *C.GDrive // out
+	var _cret *C.char   // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.g_drive_get_name(_arg0)
 
@@ -373,10 +362,9 @@ func (d drive) Name() string {
 // SortKey gets the sort key for @drive, if any.
 func (d drive) SortKey() string {
 	var _arg0 *C.GDrive // out
+	var _cret *C.gchar  // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.g_drive_get_sort_key(_arg0)
 
@@ -389,11 +377,10 @@ func (d drive) SortKey() string {
 
 // StartStopType gets a hint about how a drive can be started/stopped.
 func (d drive) StartStopType() DriveStartStopType {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive             // out
+	var _cret C.GDriveStartStopType // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.GDriveStartStopType // in
 
 	_cret = C.g_drive_get_start_stop_type(_arg0)
 
@@ -407,10 +394,9 @@ func (d drive) StartStopType() DriveStartStopType {
 // SymbolicIcon gets the icon for @drive.
 func (d drive) SymbolicIcon() Icon {
 	var _arg0 *C.GDrive // out
+	var _cret *C.GIcon  // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_drive_get_symbolic_icon(_arg0)
 
@@ -425,11 +411,10 @@ func (d drive) SymbolicIcon() Icon {
 // polling the drive for media changes; see
 // g_drive_is_media_check_automatic() for more details.
 func (d drive) HasMedia() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_has_media(_arg0)
 
@@ -444,11 +429,10 @@ func (d drive) HasMedia() bool {
 
 // HasVolumes: check if @drive has any mountable volumes.
 func (d drive) HasVolumes() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_has_volumes(_arg0)
 
@@ -464,11 +448,10 @@ func (d drive) HasVolumes() bool {
 // IsMediaCheckAutomatic checks if @drive is capable of automatically
 // detecting media changes.
 func (d drive) IsMediaCheckAutomatic() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_is_media_check_automatic(_arg0)
 
@@ -483,11 +466,10 @@ func (d drive) IsMediaCheckAutomatic() bool {
 
 // IsMediaRemovable checks if the @drive supports removable media.
 func (d drive) IsMediaRemovable() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_is_media_removable(_arg0)
 
@@ -503,11 +485,10 @@ func (d drive) IsMediaRemovable() bool {
 // IsRemovable checks if the #GDrive and/or its media is considered
 // removable by the user. See g_drive_is_media_removable().
 func (d drive) IsRemovable() bool {
-	var _arg0 *C.GDrive // out
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.g_drive_is_removable(_arg0)
 
@@ -525,11 +506,10 @@ func (d drive) IsRemovable() bool {
 func (d drive) PollForMediaFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_drive_poll_for_media_finish(_arg0, _arg1, &_cerr)
 
@@ -544,11 +524,10 @@ func (d drive) PollForMediaFinish(result AsyncResult) error {
 func (d drive) StartFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_drive_start_finish(_arg0, _arg1, &_cerr)
 
@@ -563,11 +542,10 @@ func (d drive) StartFinish(result AsyncResult) error {
 func (d drive) StopFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cerr *C.GError // in
 
 	C.g_drive_stop_finish(_arg0, _arg1, &_cerr)
 

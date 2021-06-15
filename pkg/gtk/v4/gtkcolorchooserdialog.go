@@ -81,14 +81,13 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 
 // NewColorChooserDialog constructs a class ColorChooserDialog.
 func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
-	var _arg1 *C.char      // out
-	var _arg2 *C.GtkWindow // out
+	var _arg1 *C.char                 // out
+	var _arg2 *C.GtkWindow            // out
+	var _cret C.GtkColorChooserDialog // in
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkColorChooserDialog // in
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 

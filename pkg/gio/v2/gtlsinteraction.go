@@ -192,16 +192,15 @@ func marshalTLSInteraction(p uintptr) (interface{}, error) {
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
 func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
-	var _arg0 *C.GTlsInteraction // out
-	var _arg1 *C.GTlsPassword    // out
-	var _arg2 *C.GCancellable    // out
+	var _arg0 *C.GTlsInteraction      // out
+	var _arg1 *C.GTlsPassword         // out
+	var _arg2 *C.GCancellable         // out
+	var _cret C.GTlsInteractionResult // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GTlsInteractionResult // in
-	var _cerr *C.GError               // in
 
 	_cret = C.g_tls_interaction_ask_password(_arg0, _arg1, _arg2, &_cerr)
 
@@ -225,14 +224,13 @@ func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellabl
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code.
 func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (TLSInteractionResult, error) {
-	var _arg0 *C.GTlsInteraction // out
-	var _arg1 *C.GAsyncResult    // out
+	var _arg0 *C.GTlsInteraction      // out
+	var _arg1 *C.GAsyncResult         // out
+	var _cret C.GTlsInteractionResult // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret C.GTlsInteractionResult // in
-	var _cerr *C.GError               // in
 
 	_cret = C.g_tls_interaction_ask_password_finish(_arg0, _arg1, &_cerr)
 
@@ -266,16 +264,15 @@ func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (TLSInteractionRes
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
 func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
-	var _arg0 *C.GTlsInteraction // out
-	var _arg1 *C.GTlsPassword    // out
-	var _arg2 *C.GCancellable    // out
+	var _arg0 *C.GTlsInteraction      // out
+	var _arg1 *C.GTlsPassword         // out
+	var _arg2 *C.GCancellable         // out
+	var _cret C.GTlsInteractionResult // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GTlsInteractionResult // in
-	var _cerr *C.GError               // in
 
 	_cret = C.g_tls_interaction_invoke_ask_password(_arg0, _arg1, _arg2, &_cerr)
 
@@ -313,14 +310,13 @@ func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags
 	var _arg1 *C.GTlsConnection             // out
 	var _arg2 C.GTlsCertificateRequestFlags // out
 	var _arg3 *C.GCancellable               // out
+	var _cret C.GTlsInteractionResult       // in
+	var _cerr *C.GError                     // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = (C.GTlsCertificateRequestFlags)(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GTlsInteractionResult // in
-	var _cerr *C.GError               // in
 
 	_cret = C.g_tls_interaction_invoke_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -356,14 +352,13 @@ func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCe
 	var _arg1 *C.GTlsConnection             // out
 	var _arg2 C.GTlsCertificateRequestFlags // out
 	var _arg3 *C.GCancellable               // out
+	var _cret C.GTlsInteractionResult       // in
+	var _cerr *C.GError                     // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = (C.GTlsCertificateRequestFlags)(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GTlsInteractionResult // in
-	var _cerr *C.GError               // in
 
 	_cret = C.g_tls_interaction_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -389,14 +384,13 @@ func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCe
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code.
 func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error) {
-	var _arg0 *C.GTlsInteraction // out
-	var _arg1 *C.GAsyncResult    // out
+	var _arg0 *C.GTlsInteraction      // out
+	var _arg1 *C.GAsyncResult         // out
+	var _cret C.GTlsInteractionResult // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret C.GTlsInteractionResult // in
-	var _cerr *C.GError               // in
 
 	_cret = C.g_tls_interaction_request_certificate_finish(_arg0, _arg1, &_cerr)
 

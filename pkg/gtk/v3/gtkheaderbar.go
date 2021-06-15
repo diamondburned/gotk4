@@ -150,10 +150,9 @@ func NewHeaderBar() HeaderBar {
 // gtk_header_bar_set_custom_title().
 func (b headerBar) CustomTitle() Widget {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_header_bar_get_custom_title(_arg0)
 
@@ -168,10 +167,9 @@ func (b headerBar) CustomTitle() Widget {
 // gtk_header_bar_set_decoration_layout().
 func (b headerBar) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
@@ -186,10 +184,9 @@ func (b headerBar) DecorationLayout() string {
 // subtitle, regardless if one is currently set or not.
 func (b headerBar) HasSubtitle() bool {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_header_bar_get_has_subtitle(_arg0)
 
@@ -206,10 +203,9 @@ func (b headerBar) HasSubtitle() bool {
 // decorations.
 func (b headerBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_header_bar_get_show_close_button(_arg0)
 
@@ -226,10 +222,9 @@ func (b headerBar) ShowCloseButton() bool {
 // gtk_header_bar_set_subtitle().
 func (b headerBar) Subtitle() string {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_header_bar_get_subtitle(_arg0)
 
@@ -243,10 +238,9 @@ func (b headerBar) Subtitle() string {
 // Title retrieves the title of the header. See gtk_header_bar_set_title().
 func (b headerBar) Title() string {
 	var _arg0 *C.GtkHeaderBar // out
+	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_header_bar_get_title(_arg0)
 

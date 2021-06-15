@@ -74,13 +74,12 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 
 // NewEmblemedIcon constructs a class EmblemedIcon.
 func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
-	var _arg1 *C.GIcon   // out
-	var _arg2 *C.GEmblem // out
+	var _arg1 *C.GIcon        // out
+	var _arg2 *C.GEmblem      // out
+	var _cret C.GEmblemedIcon // in
 
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
-
-	var _cret C.GEmblemedIcon // in
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
 
@@ -114,10 +113,9 @@ func (e emblemedIcon) ClearEmblems() {
 // Icon gets the main icon for @emblemed.
 func (e emblemedIcon) Icon() Icon {
 	var _arg0 *C.GEmblemedIcon // out
+	var _cret *C.GIcon         // in
 
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GIcon // in
 
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
 

@@ -74,11 +74,10 @@ func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 
 // NewGestureMultiPress constructs a class GestureMultiPress.
 func NewGestureMultiPress(widget Widget) GestureMultiPress {
-	var _arg1 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget           // out
+	var _cret C.GtkGestureMultiPress // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureMultiPress // in
 
 	_cret = C.gtk_gesture_multi_press_new(_arg1)
 
@@ -95,11 +94,10 @@ func NewGestureMultiPress(widget Widget) GestureMultiPress {
 // area represents.
 func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGestureMultiPress // out
-
-	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
-
 	var _rect gdk.Rectangle
 	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_gesture_multi_press_get_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 

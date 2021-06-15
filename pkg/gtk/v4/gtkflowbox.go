@@ -210,10 +210,9 @@ func NewFlowBox() FlowBox {
 // ActivateOnSingleClick returns whether children activate on single clicks.
 func (b flowBox) ActivateOnSingleClick() bool {
 	var _arg0 *C.GtkFlowBox // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_flow_box_get_activate_on_single_click(_arg0)
 
@@ -228,13 +227,12 @@ func (b flowBox) ActivateOnSingleClick() bool {
 
 // ChildAtIndex gets the nth child in the @box.
 func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
-	var _arg0 *C.GtkFlowBox // out
-	var _arg1 C.int         // out
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.int              // out
+	var _cret *C.GtkFlowBoxChild // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.int(idx)
-
-	var _cret *C.GtkFlowBoxChild // in
+	_arg1 = (C.int)(idx)
 
 	_cret = C.gtk_flow_box_get_child_at_index(_arg0, _arg1)
 
@@ -249,15 +247,14 @@ func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
 //
 // Both @x and @y are assumed to be relative to the origin of @box.
 func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
-	var _arg0 *C.GtkFlowBox // out
-	var _arg1 C.int         // out
-	var _arg2 C.int         // out
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
+	var _cret *C.GtkFlowBoxChild // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
-	var _cret *C.GtkFlowBoxChild // in
+	_arg1 = (C.int)(x)
+	_arg2 = (C.int)(y)
 
 	_cret = C.gtk_flow_box_get_child_at_pos(_arg0, _arg1, _arg2)
 
@@ -271,10 +268,9 @@ func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
 // ColumnSpacing gets the horizontal spacing.
 func (b flowBox) ColumnSpacing() uint {
 	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_flow_box_get_column_spacing(_arg0)
 
@@ -288,10 +284,9 @@ func (b flowBox) ColumnSpacing() uint {
 // Homogeneous returns whether the box is homogeneous.
 func (b flowBox) Homogeneous() bool {
 	var _arg0 *C.GtkFlowBox // out
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_flow_box_get_homogeneous(_arg0)
 
@@ -307,10 +302,9 @@ func (b flowBox) Homogeneous() bool {
 // MaxChildrenPerLine gets the maximum number of children per line.
 func (b flowBox) MaxChildrenPerLine() uint {
 	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_flow_box_get_max_children_per_line(_arg0)
 
@@ -324,10 +318,9 @@ func (b flowBox) MaxChildrenPerLine() uint {
 // MinChildrenPerLine gets the minimum number of children per line.
 func (b flowBox) MinChildrenPerLine() uint {
 	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_flow_box_get_min_children_per_line(_arg0)
 
@@ -341,10 +334,9 @@ func (b flowBox) MinChildrenPerLine() uint {
 // RowSpacing gets the vertical spacing.
 func (b flowBox) RowSpacing() uint {
 	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_flow_box_get_row_spacing(_arg0)
 
@@ -357,11 +349,10 @@ func (b flowBox) RowSpacing() uint {
 
 // SelectionMode gets the selection mode of @box.
 func (b flowBox) SelectionMode() SelectionMode {
-	var _arg0 *C.GtkFlowBox // out
+	var _arg0 *C.GtkFlowBox      // out
+	var _cret C.GtkSelectionMode // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkSelectionMode // in
 
 	_cret = C.gtk_flow_box_get_selection_mode(_arg0)
 
@@ -386,7 +377,7 @@ func (b flowBox) Insert(widget Widget, position int) {
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.int(position)
+	_arg2 = (C.int)(position)
 
 	C.gtk_flow_box_insert(_arg0, _arg1, _arg2)
 }
@@ -469,7 +460,7 @@ func (b flowBox) SetColumnSpacing(spacing uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.guint(spacing)
+	_arg1 = (C.guint)(spacing)
 
 	C.gtk_flow_box_set_column_spacing(_arg0, _arg1)
 }
@@ -518,7 +509,7 @@ func (b flowBox) SetMaxChildrenPerLine(nChildren uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.guint(nChildren)
+	_arg1 = (C.guint)(nChildren)
 
 	C.gtk_flow_box_set_max_children_per_line(_arg0, _arg1)
 }
@@ -530,7 +521,7 @@ func (b flowBox) SetMinChildrenPerLine(nChildren uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.guint(nChildren)
+	_arg1 = (C.guint)(nChildren)
 
 	C.gtk_flow_box_set_min_children_per_line(_arg0, _arg1)
 }
@@ -541,7 +532,7 @@ func (b flowBox) SetRowSpacing(spacing uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.guint(spacing)
+	_arg1 = (C.guint)(spacing)
 
 	C.gtk_flow_box_set_row_spacing(_arg0, _arg1)
 }
@@ -705,10 +696,9 @@ func (c flowBoxChild) Changed() {
 // Child gets the child widget of @self.
 func (s flowBoxChild) Child() Widget {
 	var _arg0 *C.GtkFlowBoxChild // out
+	var _cret *C.GtkWidget       // in
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_flow_box_child_get_child(_arg0)
 
@@ -722,10 +712,9 @@ func (s flowBoxChild) Child() Widget {
 // Index gets the current index of the @child in its `GtkFlowBox` container.
 func (c flowBoxChild) Index() int {
 	var _arg0 *C.GtkFlowBoxChild // out
+	var _cret C.int              // in
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
-
-	var _cret C.int // in
 
 	_cret = C.gtk_flow_box_child_get_index(_arg0)
 
@@ -740,10 +729,9 @@ func (c flowBoxChild) Index() int {
 // `GtkFlowBox` container.
 func (c flowBoxChild) IsSelected() bool {
 	var _arg0 *C.GtkFlowBoxChild // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_flow_box_child_is_selected(_arg0)
 

@@ -144,11 +144,10 @@ func NewShortcutController() ShortcutController {
 
 // NewShortcutControllerForModel constructs a class ShortcutController.
 func NewShortcutControllerForModel(model gio.ListModel) ShortcutController {
-	var _arg1 *C.GListModel // out
+	var _arg1 *C.GListModel           // out
+	var _cret C.GtkShortcutController // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkShortcutController // in
 
 	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
 
@@ -177,10 +176,9 @@ func (s shortcutController) AddShortcut(shortcut Shortcut) {
 // activates its shortcuts.
 func (s shortcutController) MnemonicsModifiers() gdk.ModifierType {
 	var _arg0 *C.GtkShortcutController // out
+	var _cret C.GdkModifierType        // in
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GdkModifierType // in
 
 	_cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(_arg0)
 
@@ -195,10 +193,9 @@ func (s shortcutController) MnemonicsModifiers() gdk.ModifierType {
 // See gtk_shortcut_controller_set_scope() for details.
 func (s shortcutController) Scope() ShortcutScope {
 	var _arg0 *C.GtkShortcutController // out
+	var _cret C.GtkShortcutScope       // in
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkShortcutScope // in
 
 	_cret = C.gtk_shortcut_controller_get_scope(_arg0)
 

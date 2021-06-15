@@ -69,12 +69,11 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 
 // NewShortcutLabel constructs a class ShortcutLabel.
 func NewShortcutLabel(accelerator string) ShortcutLabel {
-	var _arg1 *C.gchar // out
+	var _arg1 *C.gchar           // out
+	var _cret C.GtkShortcutLabel // in
 
 	_arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkShortcutLabel // in
 
 	_cret = C.gtk_shortcut_label_new(_arg1)
 
@@ -88,10 +87,9 @@ func NewShortcutLabel(accelerator string) ShortcutLabel {
 // Accelerator retrieves the current accelerator of @self.
 func (s shortcutLabel) Accelerator() string {
 	var _arg0 *C.GtkShortcutLabel // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_shortcut_label_get_accelerator(_arg0)
 
@@ -106,10 +104,9 @@ func (s shortcutLabel) Accelerator() string {
 // set.
 func (s shortcutLabel) DisabledText() string {
 	var _arg0 *C.GtkShortcutLabel // out
+	var _cret *C.gchar            // in
 
 	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.gchar // in
 
 	_cret = C.gtk_shortcut_label_get_disabled_text(_arg0)
 

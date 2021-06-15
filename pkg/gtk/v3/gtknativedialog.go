@@ -162,10 +162,9 @@ func (s nativeDialog) Destroy() {
 // gtk_native_dialog_set_modal().
 func (s nativeDialog) Modal() bool {
 	var _arg0 *C.GtkNativeDialog // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_native_dialog_get_modal(_arg0)
 
@@ -181,10 +180,9 @@ func (s nativeDialog) Modal() bool {
 // Title gets the title of the NativeDialog.
 func (s nativeDialog) Title() string {
 	var _arg0 *C.GtkNativeDialog // out
+	var _cret *C.char            // in
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.char // in
 
 	_cret = C.gtk_native_dialog_get_title(_arg0)
 
@@ -199,10 +197,9 @@ func (s nativeDialog) Title() string {
 // gtk_native_dialog_set_transient_for().
 func (s nativeDialog) TransientFor() Window {
 	var _arg0 *C.GtkNativeDialog // out
+	var _cret *C.GtkWindow       // in
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWindow // in
 
 	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
 
@@ -216,10 +213,9 @@ func (s nativeDialog) TransientFor() Window {
 // Visible determines whether the dialog is visible.
 func (s nativeDialog) Visible() bool {
 	var _arg0 *C.GtkNativeDialog // out
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_native_dialog_get_visible(_arg0)
 
@@ -275,10 +271,9 @@ func (s nativeDialog) Hide() {
 // gtk_native_dialog_run() call.
 func (s nativeDialog) Run() int {
 	var _arg0 *C.GtkNativeDialog // out
+	var _cret C.gint             // in
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gtk_native_dialog_run(_arg0)
 

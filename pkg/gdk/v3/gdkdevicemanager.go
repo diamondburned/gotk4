@@ -172,10 +172,9 @@ func marshalDeviceManager(p uintptr) (interface{}, error) {
 // operate on.
 func (d deviceManager) ClientPointer() Device {
 	var _arg0 *C.GdkDeviceManager // out
+	var _cret *C.GdkDevice        // in
 
 	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkDevice // in
 
 	_cret = C.gdk_device_manager_get_client_pointer(_arg0)
 
@@ -189,10 +188,9 @@ func (d deviceManager) ClientPointer() Device {
 // Display gets the Display associated to @device_manager.
 func (d deviceManager) Display() Display {
 	var _arg0 *C.GdkDeviceManager // out
+	var _cret *C.GdkDisplay       // in
 
 	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_device_manager_get_display(_arg0)
 

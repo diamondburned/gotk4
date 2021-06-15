@@ -64,41 +64,12 @@ func (b *Border) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// Left gets the field inside the struct.
-func (b *Border) Left() int16 {
-	var v int16 // out
-	v = (int16)(b.native.left)
-	return v
-}
-
-// Right gets the field inside the struct.
-func (b *Border) Right() int16 {
-	var v int16 // out
-	v = (int16)(b.native.right)
-	return v
-}
-
-// Top gets the field inside the struct.
-func (b *Border) Top() int16 {
-	var v int16 // out
-	v = (int16)(b.native.top)
-	return v
-}
-
-// Bottom gets the field inside the struct.
-func (b *Border) Bottom() int16 {
-	var v int16 // out
-	v = (int16)(b.native.bottom)
-	return v
-}
-
 // Copy copies a Border-struct.
 func (b *Border) Copy() *Border {
 	var _arg0 *C.GtkBorder // out
+	var _cret *C.GtkBorder // in
 
 	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkBorder // in
 
 	_cret = C.gtk_border_copy(_arg0)
 

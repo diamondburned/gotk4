@@ -110,13 +110,12 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 
 // NewSortListModel constructs a class SortListModel.
 func NewSortListModel(model gio.ListModel, sorter Sorter) SortListModel {
-	var _arg1 *C.GListModel // out
-	var _arg2 *C.GtkSorter  // out
+	var _arg1 *C.GListModel      // out
+	var _arg2 *C.GtkSorter       // out
+	var _cret C.GtkSortListModel // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
-
-	var _cret C.GtkSortListModel // in
 
 	_cret = C.gtk_sort_list_model_new(_arg1, _arg2)
 
@@ -132,10 +131,9 @@ func NewSortListModel(model gio.ListModel, sorter Sorter) SortListModel {
 // See [method@Gtk.SortListModel.set_incremental].
 func (s sortListModel) Incremental() bool {
 	var _arg0 *C.GtkSortListModel // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_sort_list_model_get_incremental(_arg0)
 
@@ -151,10 +149,9 @@ func (s sortListModel) Incremental() bool {
 // Model gets the model currently sorted or nil if none.
 func (s sortListModel) Model() gio.ListModel {
 	var _arg0 *C.GtkSortListModel // out
+	var _cret *C.GListModel       // in
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel // in
 
 	_cret = C.gtk_sort_list_model_get_model(_arg0)
 
@@ -181,10 +178,9 @@ func (s sortListModel) Model() gio.ListModel {
 // 0.
 func (s sortListModel) Pending() uint {
 	var _arg0 *C.GtkSortListModel // out
+	var _cret C.guint             // in
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.guint // in
 
 	_cret = C.gtk_sort_list_model_get_pending(_arg0)
 
@@ -198,10 +194,9 @@ func (s sortListModel) Pending() uint {
 // Sorter gets the sorter that is used to sort @self.
 func (s sortListModel) Sorter() Sorter {
 	var _arg0 *C.GtkSortListModel // out
+	var _cret *C.GtkSorter        // in
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSorter // in
 
 	_cret = C.gtk_sort_list_model_get_sorter(_arg0)
 

@@ -114,10 +114,9 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 // NewButtonBox constructs a class ButtonBox.
 func NewButtonBox(orientation Orientation) ButtonBox {
 	var _arg1 C.GtkOrientation // out
+	var _cret C.GtkButtonBox   // in
 
 	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkButtonBox // in
 
 	_cret = C.gtk_button_box_new(_arg1)
 
@@ -133,11 +132,10 @@ func NewButtonBox(orientation Orientation) ButtonBox {
 func (w buttonBox) ChildNonHomogeneous(child Widget) bool {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
 
@@ -155,11 +153,10 @@ func (w buttonBox) ChildNonHomogeneous(child Widget) bool {
 func (w buttonBox) ChildSecondary(child Widget) bool {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret C.gboolean // in
 
 	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
 
@@ -175,11 +172,10 @@ func (w buttonBox) ChildSecondary(child Widget) bool {
 // Layout retrieves the method being used to arrange the buttons in a button
 // box.
 func (w buttonBox) Layout() ButtonBoxStyle {
-	var _arg0 *C.GtkButtonBox // out
+	var _arg0 *C.GtkButtonBox     // out
+	var _cret C.GtkButtonBoxStyle // in
 
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
-
-	var _cret C.GtkButtonBoxStyle // in
 
 	_cret = C.gtk_button_box_get_layout(_arg0)
 

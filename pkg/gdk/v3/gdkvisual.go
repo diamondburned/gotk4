@@ -180,10 +180,9 @@ func marshalVisual(p uintptr) (interface{}, error) {
 // Not all GDK backend provide a meaningful value for this function.
 func (v visual) BitsPerRGB() int {
 	var _arg0 *C.GdkVisual // out
+	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gdk_visual_get_bits_per_rgb(_arg0)
 
@@ -202,12 +201,11 @@ func (v visual) BitsPerRGB() int {
 // particular primary.
 func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
+	var _arg1 C.guint32    // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _arg1 C.guint32 // in
-	var _arg2 C.gint    // in
-	var _arg3 C.gint    // in
 
 	C.gdk_visual_get_blue_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -228,11 +226,10 @@ func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 // with XImages, and not all backends return meaningful information for
 // this.
 func (v visual) ByteOrder() ByteOrder {
-	var _arg0 *C.GdkVisual // out
+	var _arg0 *C.GdkVisual   // out
+	var _cret C.GdkByteOrder // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _cret C.GdkByteOrder // in
 
 	_cret = C.gdk_visual_get_byte_order(_arg0)
 
@@ -248,10 +245,9 @@ func (v visual) ByteOrder() ByteOrder {
 // You have to use platform-specific APIs to manipulate colormaps.
 func (v visual) ColormapSize() int {
 	var _arg0 *C.GdkVisual // out
+	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gdk_visual_get_colormap_size(_arg0)
 
@@ -265,10 +261,9 @@ func (v visual) ColormapSize() int {
 // Depth returns the bit depth of this visual.
 func (v visual) Depth() int {
 	var _arg0 *C.GdkVisual // out
+	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _cret C.gint // in
 
 	_cret = C.gdk_visual_get_depth(_arg0)
 
@@ -287,12 +282,11 @@ func (v visual) Depth() int {
 // particular primary.
 func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
+	var _arg1 C.guint32    // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _arg1 C.guint32 // in
-	var _arg2 C.gint    // in
-	var _arg3 C.gint    // in
 
 	C.gdk_visual_get_green_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -315,12 +309,11 @@ func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 // particular primary.
 func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
+	var _arg1 C.guint32    // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _arg1 C.guint32 // in
-	var _arg2 C.gint    // in
-	var _arg3 C.gint    // in
 
 	C.gdk_visual_get_red_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -338,10 +331,9 @@ func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 // Screen gets the screen to which this visual belongs
 func (v visual) Screen() Screen {
 	var _arg0 *C.GdkVisual // out
+	var _cret *C.GdkScreen // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GdkScreen // in
 
 	_cret = C.gdk_visual_get_screen(_arg0)
 
@@ -355,11 +347,10 @@ func (v visual) Screen() Screen {
 // VisualType returns the type of visual this is (PseudoColor, TrueColor,
 // etc).
 func (v visual) VisualType() VisualType {
-	var _arg0 *C.GdkVisual // out
+	var _arg0 *C.GdkVisual    // out
+	var _cret C.GdkVisualType // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
-
-	var _cret C.GdkVisualType // in
 
 	_cret = C.gdk_visual_get_visual_type(_arg0)
 

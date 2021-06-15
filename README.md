@@ -1,5 +1,7 @@
 # gotk4
 
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+
 A GTK4 bindings generator for Go.
 
 Progress tracker: https://github.com/diamondburned/gotk4/issues/2

@@ -252,6 +252,8 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 
 	case value.resolved.IsBuiltin("error"):
 		value.addImportInternal("gerror")
+		value.addImport("unsafe")
+
 		value.p.Linef("%s = (*C.GError)(gerror.New(unsafe.Pointer(%s)))", value.OutName, value.InName)
 		if !value.isTransferring() {
 			value.p.Linef("defer C.g_error_free(%s)", value.OutName)
@@ -271,6 +273,13 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 			)
 		}
 		return true
+	}
+
+	// Only add these imports afterwards, since all imports above are manually
+	// resolved.
+	if value.needsNamespace {
+		// We're using the PublicType, so add that import.
+		value.importPubl(value.resolved)
 	}
 
 	switch ensureNamespace(conv.ng.current, value.AnyType.Type.Name) {
@@ -316,7 +325,11 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 
 	switch {
 	case result.Enum != nil, result.Bitfield != nil:
-		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
+		if value.resolved.Ptr == 0 {
+			value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
+			return true
+		}
+		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.OutName, value.OutType, value.InName)
 		return true
 
 	case result.Record != nil:

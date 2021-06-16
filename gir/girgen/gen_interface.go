@@ -1,6 +1,8 @@
 package girgen
 
 import (
+	"fmt"
+
 	"github.com/diamondburned/gotk4/gir"
 )
 
@@ -60,7 +62,7 @@ var interfaceTmpl = newGoTemplate(`
 	{{ end }}
 
 	{{ range .Methods }}
-	{{ GoDoc .Doc 1 .Name }}
+	{{ GoDoc .Doc 0 .Name }}
 	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)
@@ -74,8 +76,12 @@ type ifaceGenerator struct {
 	Virtuals []callableGenerator // for overrider
 	Methods  []callableGenerator // for big interface
 
-	fg *FileGenerator
 	ng *NamespaceGenerator
+}
+
+type ifaceMethod struct {
+	*callableGenerator
+	StructName string
 }
 
 func newIfaceGenerator(ng *NamespaceGenerator) *ifaceGenerator {
@@ -88,17 +94,16 @@ func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 	ig.TypeTree = ig.ng.TypeTree()
 	ig.TypeTree.Level = 2
 
-	ig.fg = ig.ng.FileFromSource(iface.DocElements)
 	ig.Interface = iface
 	ig.InterfaceName = PascalToGo(iface.Name)
 	ig.StructName = UnexportPascal(ig.InterfaceName)
 
 	if !ig.TypeTree.Resolve(iface.Name) {
-		ig.fg.Logln(LogSkip, "interface", ig.InterfaceName, "cannot be type-resolved")
+		ig.Logln(LogSkip, "cannot be type-resolved")
 		return false
 	}
 
-	ig.TypeTree.ImportChildren(ig.fg)
+	ig.TypeTree.ImportChildren(ig.ng)
 	ig.updateMethods()
 
 	return true
@@ -141,6 +146,14 @@ func (ig *ifaceGenerator) IsVirtual(name string) bool {
 	return false
 }
 
+func (ig *ifaceGenerator) Logln(lvl LogLevel, v ...interface{}) {
+	v = append(v, nil)
+	copy(v[1:], v)
+	v[0] = fmt.Sprintf("interface %s (C.%s):", ig.InterfaceName, ig.CType)
+
+	ig.ng.Logln(lvl, v...)
+}
+
 func (ng *NamespaceGenerator) generateIfaces() {
 	ig := newIfaceGenerator(ng)
 
@@ -151,15 +164,14 @@ func (ng *NamespaceGenerator) generateIfaces() {
 		if ng.mustIgnore(&iface.Name, &iface.CType) {
 			continue
 		}
-
 		if !ig.Use(iface) {
 			continue
 		}
 
 		if iface.GLibGetType != "" && !ng.mustIgnoreC(iface.GLibGetType) {
-			ig.fg.addMarshaler(iface.GLibGetType, ig.InterfaceName)
+			ng.addMarshaler(iface.GLibGetType, ig.InterfaceName)
 		}
 
-		ig.fg.pen.WriteTmpl(interfaceTmpl, &ig)
+		ng.pen.WriteTmpl(interfaceTmpl, &ig)
 	}
 }

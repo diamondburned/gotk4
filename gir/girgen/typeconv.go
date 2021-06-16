@@ -187,19 +187,16 @@ func (prop *ConversionValue) isTransferring() bool {
 }
 
 type TypeConverter struct {
-	ng      *NamespaceGenerator
-	logger  lineLogger
-	parent  string
 	results []ValueConverted
+	ng      *NamespaceGenerator
+	logger  LineLogger
 }
 
 // NewTypeConverter creates a new type converter from the given file generator.
 // The converter will add no side effects to the given file generator.
-func NewTypeConverter(fg *FileGenerator, parent string, values []ConversionValue) *TypeConverter {
+func NewTypeConverter(ng *NamespaceGenerator, values []ConversionValue) *TypeConverter {
 	conv := TypeConverter{
-		ng:      fg.parent,
-		logger:  fg,
-		parent:  parent,
+		ng:      ng,
 		results: make([]ValueConverted, len(values)),
 	}
 
@@ -293,6 +290,13 @@ func AddCCallParam(converter *TypeConverter) []string {
 	return params
 }
 
+// UseLogger sets the logger to be used instead of the given NamespaceGenrator.
+func (conv *TypeConverter) UseLogger(logger LineLogger) {
+	if conv != nil {
+		conv.logger = logger
+	}
+}
+
 // ConvertAll converts all values.
 func (conv *TypeConverter) ConvertAll() []ValueConverted {
 	// Allow calling with a nil TypeConverter to allow the constructor to return
@@ -362,10 +366,8 @@ func (conv *TypeConverter) convert(result *ValueConverted) bool {
 	}
 
 	if result.InType == "" || result.OutType == "" {
-		log.Panicf(
-			"missing CGoType or GoType for parent %s, %s -> %s",
-			conv.parent, result.InName, result.OutName,
-		)
+		conv.log(LogError, "missing CGoType or GoType for", result.InName, "->", result.OutName)
+		panic("see above")
 	}
 
 	// Only finalize when succeeded.
@@ -435,13 +437,11 @@ func (conv *TypeConverter) convertParam(at int) *ValueConverted {
 }
 
 func (conv *TypeConverter) log(lvl LogLevel, v ...interface{}) {
-	if conv.parent != "" {
-		v = append(v, nil)
-		copy(v[1:], v)
-		v[0] = "in " + conv.parent
+	if conv.logger == nil {
+		conv.ng.Logln(lvl, v...)
+	} else {
+		conv.logger.Logln(lvl, v...)
 	}
-
-	conv.logger.Logln(lvl, v...)
 }
 
 // ValueConverted is the result of conversion for a single value.
@@ -505,6 +505,10 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 		return false
 	}
 
+	if value.Direction == ConvertCToGo && strings.Contains(anyTypeC(value.AnyType), "PangoContext") {
+		conv.log(LogDebug, "anyType:", anyTypeC(value.AnyType))
+	}
+
 	// ResolveType already checks this, but we can early bail.
 	if !value.AnyType.Type.IsIntrospectable() {
 		return false
@@ -536,10 +540,6 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 	}
 
 	value.needsNamespace = value.resolved.NeedsNamespace(conv.ng.current)
-	if value.needsNamespace {
-		// We're using the PublicType, so add that import.
-		value.importPubl(value.resolved)
-	}
 
 	// If this is the output parameter, then the pointer count should be less.
 	// This only affects the Go type.
@@ -563,11 +563,6 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 		value.InType = strings.TrimPrefix(value.InType, "*")
 	}
 
-	// if value.Direction == ConvertCToGo && anyTypeC(value.AnyType) == "PangoContext*" {
-	// 	conv.log(LogDebug, "resolved to CGoType", value.resolved.CGoType())
-	// 	conv.log(LogDebug, "inType:", value.InType)
-	// }
-
 	value.inDecl.Linef("var %s %s // in", value.InName, value.InType)
 	value.outDecl.Linef("var %s %s // out", value.OutName, value.OutType)
 
@@ -588,7 +583,7 @@ func (value *ValueConverted) cgoSetObject() {
 		gobjectFunction = "Take"
 	}
 
-	value.addGLibImport()
+	value.needsExternGLib()
 	value.addImport("unsafe")
 
 	if value.WrapObject != "" {

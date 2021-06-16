@@ -252,7 +252,10 @@ func (typ *ResolvedType) ImplType(needsNamespace bool) string {
 	name, _ := typ.Extern.Result.Info()
 	name = PascalToGo(name)
 
-	if typ.Extern.Result.Class != nil {
+	switch {
+	case typ.Extern.Result.Class != nil:
+		fallthrough
+	case typ.Extern.Result.Interface != nil:
 		name = UnexportPascal(name)
 	}
 
@@ -328,10 +331,7 @@ type TypeResolver interface {
 	Namespace() *gir.NamespaceFindResult
 }
 
-var (
-	_ TypeResolver = (*FileGenerator)(nil)
-	_ TypeResolver = (*NamespaceGenerator)(nil)
-)
+var _ TypeResolver = (*NamespaceGenerator)(nil)
 
 // FindType finds the given GIR type.
 func (ng *NamespaceGenerator) FindType(girType string) *gir.TypeFindResult {
@@ -446,17 +446,4 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	}
 
 	return typeFromResult(ng.gen, typ, result)
-}
-
-// FindType finds the given GIR type.
-func (fg *FileGenerator) FindType(girType string) *gir.TypeFindResult {
-	return fg.parent.gen.Repos.FindType(fg.parent.current, girType)
-}
-
-// ResolveType resolves the GIR type and adds it to the import header.
-func (fg *FileGenerator) ResolveType(typ gir.Type) *ResolvedType {
-	resolved := fg.parent.ResolveType(typ)
-	fg.importImpl(resolved)
-	fg.importPubl(resolved)
-	return resolved
 }

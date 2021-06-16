@@ -45,8 +45,7 @@ func (ng *NamespaceGenerator) generateFuncs() {
 			continue
 		}
 
-		fileGen := fg.fg
-		fileGen.pen.WriteTmpl(functionTmpl, &fg)
+		ng.pen.WriteTmpl(functionTmpl, &fg)
 	}
 }
 

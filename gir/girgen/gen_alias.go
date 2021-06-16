@@ -5,7 +5,7 @@ import "github.com/diamondburned/gotk4/gir"
 var aliasTmpl = newGoTemplate(`
 	{{ $name := (PascalToGo .Name) }}
 	{{ GoDoc .Doc 0 $name }}
-	type {{ $name }} {{ .GoType }}
+	type {{ $name }} = {{ .GoType }}
 `)
 
 type aliasData struct {
@@ -22,19 +22,20 @@ func (ng *NamespaceGenerator) generateAliases() {
 			continue
 		}
 
-		fg := ng.FileFromSource(alias.DocElements)
-
-		goType, ok := GoType(fg, alias.Type, true)
-		if !ok {
+		resolved := ng.ResolveType(alias.Type)
+		if resolved == nil {
 			continue
 		}
 
+		needsNamespace := resolved.NeedsNamespace(ng.Namespace())
+
+		goType := resolved.PublicType(needsNamespace)
 		if goType == "" {
-			fg.Logln(LogSkip, "alias", alias.Name, "is opaque type")
+			ng.Logln(LogSkip, "alias", alias.Name, "is opaque type")
 			continue
 		}
 
-		fg.pen.WriteTmpl(aliasTmpl, aliasData{
+		ng.pen.WriteTmpl(aliasTmpl, aliasData{
 			Alias:  alias,
 			GoType: goType,
 		})

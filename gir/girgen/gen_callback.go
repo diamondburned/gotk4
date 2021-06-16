@@ -51,7 +51,6 @@ type callbackGenerator struct {
 	Destroy *int
 
 	pen *pen.BlockSections
-	fg  *FileGenerator
 	ng  *NamespaceGenerator
 }
 
@@ -64,11 +63,9 @@ func newCallbackGenerator(ng *NamespaceGenerator) callbackGenerator {
 
 // Use sets the callback generator to the given GIR callback.
 func (cg *callbackGenerator) Use(cb gir.Callback) bool {
-	cg.fg = cg.ng.FileFromSource(cb.DocElements)
-
 	// We can't use the callback if it has no closure parameters.
 	if cb.Parameters == nil || len(cb.Parameters.Parameters) == 0 {
-		cg.fg.Logln(LogSkip, "callback", cb.Name, "no closure parameter")
+		cg.Logln(LogSkip, "no closure parameter")
 		return false
 	}
 
@@ -76,7 +73,7 @@ func (cg *callbackGenerator) Use(cb gir.Callback) bool {
 	// separately and mostly manually. There are also no good ways to detect
 	// this.
 	if strings.HasSuffix(cb.Name, "DestroyNotify") {
-		cg.fg.Logln(LogSkip, "callback", cb.Name, "is DestroyNotify")
+		cg.Logln(LogSkip, "is DestroyNotify")
 		return false
 	}
 
@@ -85,7 +82,7 @@ func (cg *callbackGenerator) Use(cb gir.Callback) bool {
 
 	cg.Closure = findClosure(cb.Parameters.Parameters)
 	if cg.Closure == nil {
-		cg.fg.Logln(LogSkip, "callback", cb.Name, "is missing closure arg")
+		cg.Logln(LogSkip, "is missing closure arg")
 		return false
 	}
 
@@ -121,7 +118,7 @@ func (cg *callbackGenerator) cgoTail() string {
 	for i, param := range cg.Parameters.Parameters {
 		ctype := anyTypeC(param.AnyType)
 		if ctype == "" {
-			cg.fg.Logln(LogSkip, "callback", cg.Name, "anyTypeC parameter is empty")
+			cg.Logln(LogSkip, "anyTypeC parameter is empty")
 			return "" // probably var_args
 		}
 
@@ -134,7 +131,7 @@ func (cg *callbackGenerator) cgoTail() string {
 	if !returnIsVoid(cg.ReturnValue) {
 		ctype := anyTypeC(cg.ReturnValue.AnyType)
 		if ctype == "" {
-			cg.fg.Logln(LogSkip, "callback", cg.Name, "anyTypeC return is empty")
+			cg.Logln(LogSkip, "anyTypeC return is empty")
 			return ""
 		}
 
@@ -207,14 +204,16 @@ func (cg *callbackGenerator) renderBlock() bool {
 		callbackValues = append(callbackValues, value)
 	}
 
-	convert := NewTypeConverter(cg.fg, cg.Name, callbackValues)
+	convert := NewTypeConverter(cg.ng, callbackValues)
+	convert.UseLogger(cg)
+
 	results := convert.ConvertAll()
 	if results == nil {
-		cg.fg.Logln(LogSkip, "callback has no conversion", cFunctionSig(cg.CallableAttrs))
+		cg.Logln(LogSkip, "has no conversion", cFunctionSig(cg.CallableAttrs))
 		return false
 	}
 
-	cg.fg.applyConvertedFxs(results)
+	cg.ng.applyConvertedFxs(results)
 
 	goCallArgs := pen.NewJoints(", ", len(results))
 	goCallRets := pen.NewJoints(", ", len(results))
@@ -263,9 +262,17 @@ func (cg *callbackGenerator) renderBlock() bool {
 
 	// Only add the import now, since we know that the callback will be
 	// generated.
-	cg.fg.addImportInternal("box")
+	cg.ng.addImportInternal("box")
 
 	return true
+}
+
+func (cg *callbackGenerator) Logln(lvl LogLevel, v ...interface{}) {
+	v = append(v, nil)
+	copy(v[1:], v)
+	v[0] = fmt.Sprintf("callback %s (C.%s):", cg.Name, cg.CIdentifier)
+
+	cg.ng.Logln(lvl, v...)
 }
 
 func (ng *NamespaceGenerator) generateCallbacks() {
@@ -282,6 +289,6 @@ func (ng *NamespaceGenerator) generateCallbacks() {
 			continue
 		}
 
-		cg.fg.pen.WriteTmpl(callbackTmpl, &cg)
+		cg.ng.pen.WriteTmpl(callbackTmpl, &cg)
 	}
 }

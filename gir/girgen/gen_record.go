@@ -1,6 +1,7 @@
 package girgen
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -74,13 +75,14 @@ var recordTmpl = newGoTemplate(`
 
 type recordGenerator struct {
 	gir.Record
-	GoName  string
+	GoName string
+
+	// TODO: move these out of here.
 	Methods []callableGenerator
 	Getters []recordGetter
 
 	Callable callableGenerator
 
-	fg *FileGenerator
 	ng *NamespaceGenerator
 }
 
@@ -98,7 +100,7 @@ func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
 }
 
 // canRecord returns true if this record is allowed.
-func canRecord(ng *NamespaceGenerator, rec gir.Record, logger TypeResolver) bool {
+func canRecord(ng *NamespaceGenerator, rec gir.Record, logger LineLogger) bool {
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
 	// to C? Not sure, but we likely don't need it.
 	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
@@ -116,7 +118,7 @@ func canRecord(ng *NamespaceGenerator, rec gir.Record, logger TypeResolver) bool
 		// Check the type against the ignored list, since ignores are usually
 		// important, and CGo might still try to resolve an ignored type.
 		if mustIgnoreAny(ng, field.AnyType) {
-			tryLogln(logger, LogDebug, "record", rec.Name, "ignored, field", field.Name)
+			tryLogln(logger, LogDebug, "ignored because field", field.Name)
 			return false
 		}
 	}
@@ -144,9 +146,7 @@ func recordIsOpaque(rec gir.Record) bool {
 }
 
 func (rg *recordGenerator) Use(rec gir.Record) bool {
-	rg.fg = rg.ng.FileFromSource(rec.DocElements)
-
-	if !canRecord(rg.ng, rec, rg.fg) {
+	if !canRecord(rg.ng, rec, rg) {
 		return false
 	}
 
@@ -221,14 +221,16 @@ func (rg *recordGenerator) getters() []recordGetter {
 		goNames = append(goNames, goName)
 	}
 
-	converter := NewTypeConverter(rg.fg, rg.Name, fields)
+	converter := NewTypeConverter(rg.ng, fields)
+	converter.UseLogger(rg)
+
 	for i := range fields {
 		converted := converter.Convert(i)
 		if converted == nil {
 			continue
 		}
 
-		converted.ApplySideEffects(&rg.fg.SideEffects)
+		converted.ApplySideEffects(&rg.ng.SideEffects)
 
 		b := pen.NewBlock()
 		b.Linef(converted.OutDeclare)
@@ -243,6 +245,14 @@ func (rg *recordGenerator) getters() []recordGetter {
 	}
 
 	return getters
+}
+
+func (rg *recordGenerator) Logln(lvl LogLevel, v ...interface{}) {
+	v = append(v, nil)
+	copy(v[1:], v)
+	v[0] = fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.CType)
+
+	rg.ng.Logln(lvl, v...)
 }
 
 func (ng *NamespaceGenerator) generateRecords() {
@@ -260,12 +270,12 @@ func (ng *NamespaceGenerator) generateRecords() {
 		}
 
 		// Need unsafe for the wrapper.
-		rg.fg.addImport("unsafe")
+		ng.addImport("unsafe")
 
 		if record.GLibGetType != "" && !ng.mustIgnoreC(record.GLibGetType) {
-			rg.fg.addMarshaler(record.GLibGetType, rg.GoName)
+			ng.addMarshaler(record.GLibGetType, rg.GoName)
 		}
 
-		rg.fg.pen.WriteTmpl(recordTmpl, &rg)
+		ng.pen.WriteTmpl(recordTmpl, &rg)
 	}
 }

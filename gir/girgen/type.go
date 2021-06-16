@@ -47,6 +47,13 @@ func movePtr(orig, into string) string {
 	return strings.Repeat("*", ptr) + into
 }
 
+// moveCPtr moves the same number of pointers from the given orig string into
+// another string as prefix, for C  types.
+func moveCPtr(orig, into string) string {
+	ptr := strings.Count(orig, "*")
+	return into + strings.Repeat("*", ptr)
+}
+
 // cleanCType cleans the underlying C type of and special keywords for
 // comparison.
 func cleanCType(cType string) string {

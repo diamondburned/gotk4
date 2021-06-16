@@ -19,7 +19,6 @@ type callableGenerator struct {
 
 	pen *pen.BlockSections
 	ng  *NamespaceGenerator
-	fg  *FileGenerator
 }
 
 func newCallableGenerator(ng *NamespaceGenerator) callableGenerator {
@@ -47,8 +46,6 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 		cg.reset()
 		return false
 	}
-
-	cg.fg = cg.ng.FileFromSource(cattrs.DocElements)
 
 	cg.Name = SnakeToGo(true, cattrs.Name)
 	cg.CallableAttrs = cattrs
@@ -182,14 +179,23 @@ func (cg *callableGenerator) renderBlock() bool {
 		callableValues = append(callableValues, NewThrowValue("_cerr", "_goerr"))
 	}
 
-	convert := NewTypeConverter(cg.fg, cg.Name, callableValues)
+	convert := NewTypeConverter(cg.ng, callableValues)
+	convert.UseLogger(cg)
+
 	results := convert.ConvertAll()
 	if results == nil {
-		cg.fg.Logln(LogSkip, "callable has no conversion", cFunctionSig(cg.CallableAttrs))
+		cg.Logln(LogSkip, "no conversion", cFunctionSig(cg.CallableAttrs))
 		return false
 	}
 
-	cg.fg.applyConvertedFxs(results)
+	// cg.fg.applyConvertedFxs(results)
+	for _, result := range results {
+		result.ApplySideEffects(&cg.ng.SideEffects)
+
+		for path := range result.Imports {
+			cg.Logln(LogDebug, cg.CIdentifier, "type", anyTypeCGo(result.AnyType), "imports", path)
+		}
+	}
 
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
@@ -251,6 +257,14 @@ func (cg *callableGenerator) renderBlock() bool {
 
 	cg.pen.Reset()
 	return true
+}
+
+func (cg *callableGenerator) Logln(lvl LogLevel, v ...interface{}) {
+	v = append(v, nil)
+	copy(v[1:], v)
+	v[0] = fmt.Sprintf("callable %s (C.%s):", cg.Name, cg.CIdentifier)
+
+	cg.ng.Logln(lvl, v...)
 }
 
 func formatReturnSig(joints pen.Joints) string {
@@ -344,36 +358,36 @@ func anyTypeName(typ gir.AnyType, or string) string {
 // callableRenameGetters renames the given list of callables to have idiomatic
 // Go getter names.
 func callableRenameGetters(callables []callableGenerator) {
-	methodNames := make(map[string]struct{}, len(callables))
-	for _, callable := range callables {
-		methodNames[callable.Name] = struct{}{}
-	}
-
 	for i, callable := range callables {
-		var newName string
+		newName := renameGetter(callable.Name)
 
-		switch callable.Name {
-		case "ToString":
-			newName = "String"
-
-		default:
-			if !strings.HasPrefix(callable.Name, "Get") || callable.Name == "Get" {
-				continue
-			}
-
-			newName = strings.TrimPrefix(callable.Name, "Get")
+		if findCallable(callables, newName) > -1 {
+			continue
 		}
-
-		_, dup := methodNames[newName]
-		if dup {
-			continue // skip
-		}
-
-		delete(methodNames, callable.Name)
-		methodNames[newName] = struct{}{}
 
 		callables[i].Name = newName
 	}
+}
+
+func findCallable(callables []callableGenerator, goName string) int {
+	for i, callable := range callables {
+		if callable.Name == goName {
+			return i
+		}
+	}
+	return -1
+}
+
+func renameGetter(name string) string {
+	if name == "ToString" {
+		return "String"
+	}
+
+	if strings.HasPrefix(name, "Get") && name != "Get" {
+		return strings.TrimPrefix(name, "Get")
+	}
+
+	return name
 }
 
 // callableGrow grows or shrinks the callables slice to the given length. The

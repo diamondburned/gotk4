@@ -13,7 +13,10 @@ var packages = []Package{
 	}},
 	{"gdk-pixbuf-2.0", nil},
 	{"graphene-1.0", nil},
-	{"pango", nil},
+	{"pango", []string{
+		"Pango-1.0",
+		"PangoCairo-1.0",
+	}},
 	{"gtk4", nil},     // includes Gdk
 	{"gtk+-3.0", nil}, // includes Gdk
 }
@@ -25,12 +28,12 @@ var filters = []girgen.FilterMatcher{
 
 	// Broadway is not included, so we don't generate code for it.
 	girgen.FileFilter("../gsk/broadway/gskbroadwayrenderer.h"),
-
 	// Output buffer parameter is not actually array.
 	girgen.AbsoluteFilter("GLib.unichar_to_utf8"),
-
 	// Collision due to case conversions.
 	girgen.TypeRenamer("GLib.file_test", "test_file"),
+	// Requires special header, is optional function.
+	girgen.AbsoluteFilter("Gio.networking_init"),
 
 	girgen.FileFilter("garray.h"),
 	girgen.FileFilter("gasyncqueue.h"),
@@ -47,10 +50,12 @@ var filters = []girgen.FilterMatcher{
 	girgen.FileFilter("glist.h"),
 	girgen.FileFilter("gmacros.h"),
 	girgen.FileFilter("gmem.h"),
+	girgen.FileFilter("gnetworking.h"), // needs header
 	girgen.FileFilter("gprintf.h"),
 	girgen.FileFilter("grcbox.h"),
 	girgen.FileFilter("grefcount.h"),
 	girgen.FileFilter("grefstring.h"),
+	girgen.FileFilter("gsettingsbackend.h"),
 	girgen.FileFilter("gslice.h"),
 	girgen.FileFilter("gslist.h"),
 	girgen.FileFilter("gstdio.h"),

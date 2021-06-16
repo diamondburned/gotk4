@@ -225,12 +225,21 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 
 	case value.resolved.IsBuiltin("error"):
 		value.addImportInternal("gerror")
+		value.addImport("unsafe")
+
 		value.p.Linef("%s = gerror.Take(unsafe.Pointer(%s))", value.OutName, value.InName)
 		return true
 
 	case value.resolved.IsPrimitive():
 		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
 		return true
+	}
+
+	// Only add these imports afterwards, since all imports above are manually
+	// resolved.
+	if value.needsNamespace {
+		// We're using the PublicType, so add that import.
+		value.importPubl(value.resolved)
 	}
 
 	// Resolve special-case GLib types.
@@ -245,14 +254,14 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 		return true
 
 	case "GObject.Type", "GType":
-		value.addGLibImport()
+		value.needsExternGLib()
 		value.needsGLibObject()
 		value.p.Linef("%s = externglib.Type(%s)", value.OutName, value.InName)
 		return true
 
 	case "GObject.Value":
 		value.addImport("unsafe")
-		value.addGLibImport()
+		value.needsExternGLib()
 		value.needsGLibObject()
 
 		value.p.Linef(
@@ -261,6 +270,8 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 
 		// Set this to be freed if we have the ownership now.
 		if value.isTransferring() {
+			value.addImport("runtime")
+
 			// https://pkg.go.dev/github.com/gotk3/gotk3/glib?utm_source=godoc#Value
 			value.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.OutName)
 			value.p.Linef("  C.g_value_unset((*C.GValue)(v.GValue))")

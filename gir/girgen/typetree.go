@@ -16,7 +16,10 @@ type TypeTree struct {
 	// to something more than -1.
 	Level int
 
-	res TypeResolver
+	res interface {
+		TypeResolver
+		LineLogger
+	}
 }
 
 // TypeTree returns a new type tree for resolving.
@@ -168,9 +171,9 @@ func (tree *TypeTree) resolveParents(parents ...*ResolvedType) bool {
 
 // ImportChildren imports the type tree's public children into the given file
 // generator.
-func (tree *TypeTree) ImportChildren(fg *FileGenerator) {
+func (tree *TypeTree) ImportChildren(ng *NamespaceGenerator) {
 	for _, req := range tree.Requires {
-		fg.importPubl(req.Resolved)
+		ng.importPubl(req.Resolved)
 	}
 }
 
@@ -207,7 +210,7 @@ func (tree *TypeTree) Wrap(obj string) string {
 			// gextras.Objector), so obj satisfies it.
 			for _, glibType := range []string{"InitiallyUnowned", "Object"} {
 				if typ.Resolved.IsExternGLib(glibType) {
-					p.Line("Objector: obj,")
+					p.Linef("Objector: %s,", obj)
 					goto glibContinue
 				}
 			}
@@ -224,7 +227,7 @@ func (tree *TypeTree) Wrap(obj string) string {
 
 		p.Linef(
 			"%s: %s(%s),",
-			typ.Resolved.PublicType(namespace),
+			typ.Resolved.PublicType(false),
 			typ.Resolved.WrapName(namespace),
 			obj,
 		)

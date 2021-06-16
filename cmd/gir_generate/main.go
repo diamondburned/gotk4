@@ -136,18 +136,14 @@ func writeNamespace(ng *girgen.NamespaceGenerator) error {
 		dir = filepath.Join(dir, fmt.Sprintf("v%d", version))
 	}
 
-	files, genErr := ng.Generate()
+	if err := os.MkdirAll(dir, 0777); err != nil {
+		return errors.Wrapf(err, "failed to mkdir -p %q", dir)
+	}
 
-	if len(files) > 0 {
-		if err := os.MkdirAll(dir, os.ModePerm|os.ModeDir); err != nil {
-			return errors.Wrap(err, "mkdir -p failed")
-		}
+	b, genErr := ng.Generate()
 
-		for name, data := range files {
-			if err := os.WriteFile(filepath.Join(dir, name), data, 0666); err != nil {
-				return errors.Wrapf(err, "failed to write %s", name)
-			}
-		}
+	if err := os.WriteFile(filepath.Join(dir, pkg+".go"), b, 0666); err != nil {
+		return errors.Wrapf(err, "failed to write pkg %q", pkg)
 	}
 
 	// Preserve the generation error, but give it last priority.

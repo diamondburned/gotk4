@@ -55,11 +55,22 @@ in unstable.mkShell {
 
 	# The native build inputs, which contains dependencies only needed during
 	# generation time and build time.
-	nativeBuildInputs = with unstable; [
-		gobjectIntrospection
-		pkgconfig
-		go
-		gopls
-		goimports
-	];
+	nativeBuildInputs =
+		with unstable;
+		let sh = systemPkgs.writeShellScriptBin;
+		in [
+			# Build/generation dependencies.
+			gobjectIntrospection
+			pkgconfig
+			go
+
+			# Development tools.
+			gopls
+			goimports
+
+			# Compile tools.
+			zig
+			(sh "zcc" ''ZIG_LOCAL_CACHE_DIR=$TMP/z ${unstable.zig}/bin/zig cc  -target x86_64-linux "$@"'')
+			(sh "zxx" ''ZIG_LOCAL_CACHE_DIR=$TMP/z ${unstable.zig}/bin/zig c++ -target x86_64-linux "$@"'')
+		];
 }

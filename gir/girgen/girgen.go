@@ -79,11 +79,7 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 		return nil
 	}
 
-	return &NamespaceGenerator{
-		pkgPath: g.ModPath(res.Namespace),
-		gen:     g,
-		current: res,
-	}
+	return NewNamespaceGenerator(g, res)
 }
 
 type LogLevel uint8
@@ -143,14 +139,13 @@ func (lvl LogLevel) colorf(f string, v ...interface{}) string {
 	}
 }
 
-type lineLogger interface {
+type LineLogger interface {
 	Logln(LogLevel, ...interface{})
 }
 
 var (
-	_ lineLogger = (*Generator)(nil)
-	_ lineLogger = (*FileGenerator)(nil)
-	_ lineLogger = (*NamespaceGenerator)(nil)
+	_ LineLogger = (*Generator)(nil)
+	_ LineLogger = (*NamespaceGenerator)(nil)
 )
 
 // Logln Logs using the Logger.
@@ -172,17 +167,16 @@ func (g *Generator) Logln(level LogLevel, v ...interface{}) {
 	g.Logger.Println(v...)
 }
 
-func tryLogln(iface TypeResolver, level LogLevel, v ...interface{}) {
-	if iface == nil {
+func tryLogln(logger LineLogger, level LogLevel, v ...interface{}) {
+	if logger == nil {
 		// Intentionally nil.
 		return
 	}
 
-	logger := iface.(lineLogger)
 	logger.Logln(level, v...)
 }
 
-func warnUnknownType(logger TypeResolver, typ string) {
+func warnUnknownType(logger LineLogger, typ string) {
 	tryLogln(logger, LogUnknown, strconv.Quote(typ))
 }
 

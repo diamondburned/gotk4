@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/core/gerror"
+	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -4811,8 +4811,44 @@ type ActionableOverrider interface {
 // [method@Gtk.Widget.insert_action_group] will be consulted as well.
 type Actionable interface {
 	Widget
-	ActionableOverrider
 
+	// ActionName gets the action name for @actionable.
+	ActionName() string
+	// ActionTargetValue gets the current target value of @actionable.
+	ActionTargetValue() *glib.Variant
+	// SetActionName specifies the name of the action with which this widget
+	// should be associated.
+	//
+	// If @action_name is nil then the widget will be unassociated from any
+	// previous action.
+	//
+	// Usually this function is used when the widget is located (or will be
+	// located) within the hierarchy of a `GtkApplicationWindow`.
+	//
+	// Names are of the form “win.save” or “app.quit” for actions on the
+	// containing `GtkApplicationWindow` or its associated `GtkApplication`,
+	// respectively. This is the same form used for actions in the `GMenu`
+	// associated with the window.
+	SetActionName(actionName string)
+	// SetActionTargetValue sets the target value of an actionable widget.
+	//
+	// If @target_value is nil then the target value is unset.
+	//
+	// The target value has two purposes. First, it is used as the parameter to
+	// activation of the action associated with the `GtkActionable` widget.
+	// Second, it is used to determine if the widget should be rendered as
+	// “active” — the widget is active if the state is equal to the given
+	// target.
+	//
+	// Consider the example of associating a set of buttons with a `GAction`
+	// with string state in a typical “radio button” situation. Each button will
+	// be associated with the same action, but with a different target value for
+	// that action. Clicking on a particular button will activate the action
+	// with the target of that button, which will typically cause the action’s
+	// state to change to that value. Since the action’s state is now equal to
+	// the target value of the button, the button will now be rendered as active
+	// (and the other buttons, with different targets, rendered inactive).
+	SetActionTargetValue(targetValue *glib.Variant)
 	// SetDetailedActionName sets the action-name and associated string target
 	// value of an actionable widget.
 	//
@@ -5068,7 +5104,6 @@ type BuildableOverrider interface {
 // `GtkBuilder` XML format or run any extra routines at deserialization time.
 type Buildable interface {
 	gextras.Objector
-	BuildableOverrider
 
 	// BuildableID gets the ID of the @buildable object.
 	//
@@ -5141,7 +5176,6 @@ type BuilderScopeOverrider interface {
 // C language which can be created via [ctor@Gtk.BuilderCScope.new].
 type BuilderScope interface {
 	gextras.Objector
-	BuilderScopeOverrider
 }
 
 // builderScope implements the BuilderScope interface.
@@ -5194,7 +5228,24 @@ type CellEditableOverrider interface {
 // temporary widgets should be configured for editing, get the new value, etc.
 type CellEditable interface {
 	Widget
-	CellEditableOverrider
+
+	// EditingDone emits the CellEditable::editing-done signal.
+	EditingDone()
+	// RemoveWidget emits the CellEditable::remove-widget signal.
+	RemoveWidget()
+	// StartEditing begins editing on a @cell_editable.
+	//
+	// The CellRenderer for the cell creates and returns a CellEditable from
+	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
+	//
+	// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
+	// for editing a cell, e.g. making the Esc key emit
+	// CellEditable::editing-done.
+	//
+	// Note that the @cell_editable is created on-demand for the current edit;
+	// its lifetime is temporary and does not persist across other edits and/or
+	// cells.
+	StartEditing(event gdk.Event)
 }
 
 // cellEditable implements the CellEditable interface.
@@ -5385,7 +5436,41 @@ type CellLayoutOverrider interface {
 // init() and into a constructor() for your class.
 type CellLayout interface {
 	gextras.Objector
-	CellLayoutOverrider
+
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	ClearAttributes(cell CellRenderer)
+	// Area returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	Area() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	Reorder(cell CellRenderer, position int)
 }
 
 // cellLayout implements the CellLayout interface.
@@ -5562,10 +5647,30 @@ type ColorChooserOverrider interface {
 // [class@Gtk.ColorButton].
 type ColorChooser interface {
 	gextras.Objector
-	ColorChooserOverrider
 
+	// AddPalette adds a palette to the color chooser.
+	//
+	// If @orientation is horizontal, the colors are grouped in rows, with
+	// @colors_per_line colors in each row. If @horizontal is false, the colors
+	// are grouped in columns instead.
+	//
+	// The default color palette of [class@Gtk.ColorChooserWidget] has 45
+	// colors, organized in columns of 5 colors (this includes some grays).
+	//
+	// The layout of the color chooser widget works best when the palettes have
+	// 9-10 columns.
+	//
+	// Calling this function for the first time has the side effect of removing
+	// the default color palette from the color chooser.
+	//
+	// If @colors is nil, removes all previously added palettes.
+	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
+	// RGBA gets the currently-selected color.
+	RGBA() gdk.RGBA
 	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
+	// SetRGBA sets the color.
+	SetRGBA(color *gdk.RGBA)
 	// SetUseAlpha sets whether or not the color chooser should use the alpha
 	// channel.
 	SetUseAlpha(useAlpha bool)
@@ -5852,12 +5957,20 @@ type EditableOverrider interface {
 // them on the delegate obtained via [method@Gtk.Editable.get_delegate].
 type Editable interface {
 	Widget
-	EditableOverrider
 
 	// DeleteSelection deletes the currently selected text of the editable.
 	//
 	// This call doesn’t do anything if there is no selected text.
 	DeleteSelection()
+	// DeleteText deletes a sequence of characters.
+	//
+	// The characters that are deleted are those characters at positions from
+	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
+	// then the characters deleted are those from @start_pos to the end of the
+	// text.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	DeleteText(startPos int, endPos int)
 	// FinishDelegate undoes the setup done by
 	// [method@Gtk.Editable.init_delegate].
 	//
@@ -5875,6 +5988,11 @@ type Editable interface {
 	//
 	// Note that positions are specified in characters, not bytes.
 	Chars(startPos int, endPos int) string
+	// Delegate gets the `GtkEditable` that @editable is delegating its
+	// implementation to.
+	//
+	// Typically, the delegate is a [class@Gtk.Text] widget.
+	Delegate() Editable
 	// Editable retrieves whether @editable is editable.
 	Editable() bool
 	// EnableUndo gets if undo/redo actions are enabled for @editable
@@ -5887,6 +6005,18 @@ type Editable interface {
 	//
 	// Note that this position is in characters, not in bytes.
 	Position() int
+	// SelectionBounds retrieves the selection bound of the editable.
+	//
+	// @start_pos will be filled with the start of the selection and @end_pos
+	// with end. If no text was selected both will be identical and false will
+	// be returned.
+	//
+	// Note that positions are specified in characters, not bytes.
+	SelectionBounds() (startPos int, endPos int, ok bool)
+	// Text retrieves the contents of @editable.
+	//
+	// The returned string is owned by GTK and must not be modified or freed.
+	Text() string
 	// WidthChars gets the number of characters of space reserved for the
 	// contents of the editable.
 	WidthChars() int
@@ -7142,7 +7272,6 @@ type FontChooserOverrider interface {
 // [class@Gtk.FontButton].
 type FontChooser interface {
 	gextras.Objector
-	FontChooserOverrider
 
 	// Font gets the currently-selected font name.
 	//
@@ -7166,8 +7295,25 @@ type FontChooser interface {
 	// Use [method@Pango.FontDescription.equal] if you want to compare two font
 	// descriptions.
 	FontDesc() *pango.FontDescription
+	// FontFace gets the `PangoFontFace` representing the selected font group
+	// details (i.e. family, slant, weight, width, etc).
+	//
+	// If the selected font is not installed, returns nil.
+	FontFace() pango.FontFace
+	// FontFamily gets the `PangoFontFamily` representing the selected font
+	// family.
+	//
+	// Font families are a collection of font faces.
+	//
+	// If the selected font is not installed, returns nil.
+	FontFamily() pango.FontFamily
 	// FontFeatures gets the currently-selected font features.
 	FontFeatures() string
+	// FontMap gets the custom font map of this font chooser widget, or nil if
+	// it does not have one.
+	FontMap() pango.FontMap
+	// FontSize: the selected font size.
+	FontSize() int
 	// Language gets the language that is used for font features.
 	Language() string
 	// Level returns the current level of granularity for selecting fonts.
@@ -7180,6 +7326,27 @@ type FontChooser interface {
 	SetFont(fontname string)
 	// SetFontDesc sets the currently-selected font from @font_desc.
 	SetFontDesc(fontDesc *pango.FontDescription)
+	// SetFontMap sets a custom font map to use for this font chooser widget.
+	//
+	// A custom font map can be used to present application-specific fonts
+	// instead of or in addition to the normal system fonts.
+	//
+	// “`c FcConfig *config; PangoFontMap *fontmap;
+	//
+	// config = FcInitLoadConfigAndFonts (); FcConfigAppFontAddFile (config,
+	// my_app_font_file);
+	//
+	// fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+	// pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
+	//
+	// gtk_font_chooser_set_font_map (font_chooser, fontmap); “`
+	//
+	// Note that other GTK widgets will only be able to use the
+	// application-specific font if it is present in the font map they use:
+	//
+	// “`c context = gtk_widget_get_pango_context (label);
+	// pango_context_set_font_map (context, fontmap); “`
+	SetFontMap(fontmap pango.FontMap)
 	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
 	// SetLevel sets the desired level of granularity for selecting fonts.
@@ -7755,7 +7922,25 @@ type PrintOperationPreviewOverrider interface {
 // [signal@Gtk.PrintOperation::preview] signal by [class@Gtk.PrintOperation].
 type PrintOperationPreview interface {
 	gextras.Objector
-	PrintOperationPreviewOverrider
+
+	// EndPreview ends a preview.
+	//
+	// This function must be called to finish a custom print preview.
+	EndPreview()
+	// IsSelected returns whether the given page is included in the set of pages
+	// that have been selected for printing.
+	IsSelected(pageNr int) bool
+	// RenderPage renders a page to the preview.
+	//
+	// This is using the print context that was passed to the
+	// [signal@Gtk.PrintOperation::preview] handler together with @preview.
+	//
+	// A custom print preview should use this function to render the currently
+	// selected page.
+	//
+	// Note that this function requires a suitable cairo context to be
+	// associated with the print context.
+	RenderPage(pageNr int)
 }
 
 // printOperationPreview implements the PrintOperationPreview interface.
@@ -7846,7 +8031,8 @@ func (p printOperationPreview) RenderPage(pageNr int) {
 // `GtkRoot` also maintains the location of keyboard focus inside its widget
 // hierarchy, with [method@Gtk.Root.set_focus] and [method@Gtk.Root.get_focus].
 type Root interface {
-	NativeWidget
+	Native
+	Widget
 
 	// Display returns the display that this `GtkRoot` is on.
 	Display() gdk.Display
@@ -7987,8 +8173,14 @@ type ScrollableOverrider interface {
 // scroll its contents.
 type Scrollable interface {
 	gextras.Objector
-	ScrollableOverrider
 
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable.
+	//
+	// An example for this would be treeview headers. GTK can use this
+	// information to display overlaid graphics, like the overshoot indication,
+	// at the right position.
+	Border() (Border, bool)
 	// HAdjustment retrieves the `GtkAdjustment` used for horizontal scrolling.
 	HAdjustment() Adjustment
 	// HScrollPolicy gets the horizontal `GtkScrollablePolicy`.
@@ -8266,7 +8458,6 @@ type SelectionModelOverrider interface {
 // selection.
 type SelectionModel interface {
 	gio.ListModel
-	SelectionModelOverrider
 
 	// Selection gets the set containing all currently selected items in the
 	// model.
@@ -8276,12 +8467,60 @@ type SelectionModel interface {
 	// interested in a few, consider
 	// [method@Gtk.SelectionModel.get_selection_in_range].
 	Selection() *Bitset
+	// SelectionInRange gets the set of selected items in a range.
+	//
+	// This function is an optimization for
+	// [method@Gtk.SelectionModel.get_selection] when you are only interested in
+	// part of the model's selected state. A common use case is in response to
+	// the [signal@Gtk.SelectionModel::selection-changed] signal.
+	SelectionInRange(position uint, nItems uint) *Bitset
+	// IsSelected checks if the given item is selected.
+	IsSelected(position uint) bool
+	// SelectAll requests to select all items in the model.
+	SelectAll() bool
+	// SelectItem requests to select an item in the model.
+	SelectItem(position uint, unselectRest bool) bool
+	// SelectRange requests to select a range of items in the model.
+	SelectRange(position uint, nItems uint, unselectRest bool) bool
 	// SelectionChanged: helper function for implementations of
 	// `GtkSelectionModel`.
 	//
 	// Call this when a the selection changes to emit the
 	// [signal@Gtk.SelectionModel::selection-changed] signal.
 	SelectionChanged(position uint, nItems uint)
+	// SetSelection: make selection changes.
+	//
+	// This is the most advanced selection updating method that allows the most
+	// fine-grained control over selection changes. If you can, you should try
+	// the simpler versions, as implementations are more likely to implement
+	// support for those.
+	//
+	// Requests that the selection state of all positions set in @mask be
+	// updated to the respective value in the @selected bitmask.
+	//
+	// In pseudocode, it would look something like this:
+	//
+	// “`c for (i = 0; i < n_items; i++) { // don't change values not in the
+	// mask if (!gtk_bitset_contains (mask, i)) continue;
+	//
+	//      if (gtk_bitset_contains (selected, i))
+	//        select_item (i);
+	//      else
+	//        unselect_item (i);
+	//    }
+	//
+	// gtk_selection_model_selection_changed (model, first_changed_item,
+	// n_changed_items); “`
+	//
+	// @mask and @selected must not be modified. They may refer to the same
+	// bitset, which would mean that every item in the set should be selected.
+	SetSelection(selected *Bitset, mask *Bitset) bool
+	// UnselectAll requests to unselect all items in the model.
+	UnselectAll() bool
+	// UnselectItem requests to unselect an item in the model.
+	UnselectItem(position uint) bool
+	// UnselectRange requests to unselect a range of items in the model.
+	UnselectRange(position uint, nItems uint) bool
 }
 
 // selectionModel implements the SelectionModel interface.
@@ -8590,7 +8829,6 @@ type ShortcutManagerOverrider interface {
 // GTK_SHORTCUT_SCOPE_MANAGED.
 type ShortcutManager interface {
 	gextras.Objector
-	ShortcutManagerOverrider
 }
 
 // shortcutManager implements the ShortcutManager interface.
@@ -8669,7 +8907,20 @@ type TreeDragDestOverrider interface {
 // TreeDragDest: interface for Drag-and-Drop destinations in `GtkTreeView`.
 type TreeDragDest interface {
 	gextras.Objector
-	TreeDragDestOverrider
+
+	// DragDataReceived asks the TreeDragDest to insert a row before the path
+	// @dest, deriving the contents of the row from @value. If @dest is outside
+	// the tree so that inserting before it is impossible, false will be
+	// returned. Also, false may be returned if the new row is not created for
+	// some model-specific reason. Should robustly handle a @dest no longer
+	// found in the model!
+	DragDataReceived(dest *TreePath, value **externglib.Value) bool
+	// RowDropPossible determines whether a drop is possible before the given
+	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
+	// in @value at that location. @dest_path does not have to exist; the return
+	// value will almost certainly be false if the parent of @dest_path doesn’t
+	// exist, though.
+	RowDropPossible(destPath *TreePath, value **externglib.Value) bool
 }
 
 // treeDragDest implements the TreeDragDest interface.
@@ -8767,7 +9018,21 @@ type TreeDragSourceOverrider interface {
 // TreeDragSource: interface for Drag-and-Drop destinations in `GtkTreeView`.
 type TreeDragSource interface {
 	gextras.Objector
-	TreeDragSourceOverrider
+
+	// DragDataDelete asks the TreeDragSource to delete the row at @path,
+	// because it was moved somewhere else via drag-and-drop. Returns false if
+	// the deletion fails because @path no longer exists, or for some
+	// model-specific reason. Should robustly handle a @path no longer found in
+	// the model!
+	DragDataDelete(path *TreePath) bool
+	// DragDataGet asks the TreeDragSource to return a ContentProvider
+	// representing the row at @path. Should robustly handle a @path no longer
+	// found in the model!
+	DragDataGet(path *TreePath) gdk.ContentProvider
+	// RowDraggable asks the TreeDragSource whether a particular row can be used
+	// as the source of a DND operation. If the source doesn’t implement this
+	// interface, the row is assumed draggable.
+	RowDraggable(path *TreePath) bool
 }
 
 // treeDragSource implements the TreeDragSource interface.
@@ -9133,27 +9398,135 @@ type TreeModelOverrider interface {
 // always referenced when any view is attached).
 type TreeModel interface {
 	gextras.Objector
-	TreeModelOverrider
 
 	// NewFilter creates a new TreeModel, with @child_model as the child_model
 	// and @root as the virtual root.
 	NewFilter(root *TreePath) TreeModel
+	// ColumnType returns the type of the column.
+	ColumnType(index_ int) externglib.Type
+	// Flags returns a set of flags supported by this interface.
+	//
+	// The flags are a bitwise combination of TreeModelFlags. The flags
+	// supported should not change during the lifetime of the @tree_model.
+	Flags() TreeModelFlags
+	// Iter sets @iter to a valid iterator pointing to @path. If @path does not
+	// exist, @iter is set to an invalid iterator and false is returned.
+	Iter(path *TreePath) (TreeIter, bool)
 	// IterFirst initializes @iter with the first iterator in the tree (the one
 	// at the path "0") and returns true. Returns false if the tree is empty.
 	IterFirst() (TreeIter, bool)
 	// IterFromString sets @iter to a valid iterator pointing to @path_string,
 	// if it exists. Otherwise, @iter is left invalid and false is returned.
 	IterFromString(pathString string) (TreeIter, bool)
+	// NColumns returns the number of columns supported by @tree_model.
+	NColumns() int
+	// Path returns a newly-created TreePath-struct referenced by @iter.
+	//
+	// This path should be freed with gtk_tree_path_free().
+	Path(iter *TreeIter) *TreePath
 	// StringFromIter generates a string representation of the iter.
 	//
 	// This string is a “:” separated list of numbers. For example, “4:10:0:3”
 	// would be an acceptable return value for this string.
 	StringFromIter(iter *TreeIter) string
+	// Value initializes and sets @value to that at @column.
+	//
+	// When done with @value, g_value_unset() needs to be called to free any
+	// allocated memory.
+	Value(iter *TreeIter, column int) *externglib.Value
+	// IterChildren sets @iter to point to the first child of @parent.
+	//
+	// If @parent has no children, false is returned and @iter is set to be
+	// invalid. @parent will remain a valid node after this function has been
+	// called.
+	//
+	// If @parent is nil returns the first node, equivalent to
+	// `gtk_tree_model_get_iter_first (tree_model, iter);`
+	IterChildren(parent *TreeIter) (TreeIter, bool)
+	// IterHasChild returns true if @iter has children, false otherwise.
+	IterHasChild(iter *TreeIter) bool
+	// IterNChildren returns the number of children that @iter has.
+	//
+	// As a special case, if @iter is nil, then the number of toplevel nodes is
+	// returned.
+	IterNChildren(iter *TreeIter) int
+	// IterNext sets @iter to point to the node following it at the current
+	// level.
+	//
+	// If there is no next @iter, false is returned and @iter is set to be
+	// invalid.
+	IterNext(iter *TreeIter) bool
+	// IterNthChild sets @iter to be the child of @parent, using the given
+	// index.
+	//
+	// The first index is 0. If @n is too big, or @parent has no children, @iter
+	// is set to an invalid iterator and false is returned. @parent will remain
+	// a valid node after this function has been called. As a special case, if
+	// @parent is nil, then the @n-th root node is set.
+	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
+	// IterParent sets @iter to be the parent of @child.
+	//
+	// If @child is at the toplevel, and doesn’t have a parent, then @iter is
+	// set to an invalid iterator and false is returned. @child will remain a
+	// valid node after this function has been called.
+	//
+	// @iter will be initialized before the lookup is performed, so @child and
+	// @iter cannot point to the same memory location.
+	IterParent(child *TreeIter) (TreeIter, bool)
+	// IterPrevious sets @iter to point to the previous node at the current
+	// level.
+	//
+	// If there is no previous @iter, false is returned and @iter is set to be
+	// invalid.
+	IterPrevious(iter *TreeIter) bool
+	// RefNode lets the tree ref the node.
+	//
+	// This is an optional method for models to implement. To be more specific,
+	// models may ignore this call as it exists primarily for performance
+	// reasons.
+	//
+	// This function is primarily meant as a way for views to let caching models
+	// know when nodes are being displayed (and hence, whether or not to cache
+	// that node). Being displayed means a node is in an expanded branch,
+	// regardless of whether the node is currently visible in the viewport. For
+	// example, a file-system based model would not want to keep the entire
+	// file-hierarchy in memory, just the sections that are currently being
+	// displayed by every current view.
+	//
+	// A model should be expected to be able to get an iter independent of its
+	// reffed state.
+	RefNode(iter *TreeIter)
+	// RowChanged emits the TreeModel::row-changed signal on @tree_model.
+	RowChanged(path *TreePath, iter *TreeIter)
+	// RowDeleted emits the TreeModel::row-deleted signal on @tree_model.
+	//
+	// This should be called by models after a row has been removed. The
+	// location pointed to by @path should be the location that the row
+	// previously was at. It may not be a valid location anymore.
+	//
+	// Nodes that are deleted are not unreffed, this means that any outstanding
+	// references on the deleted node should not be released.
+	RowDeleted(path *TreePath)
+	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
+	// @tree_model. This should be called by models after the child state of a
+	// node changes.
+	RowHasChildToggled(path *TreePath, iter *TreeIter)
+	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
+	RowInserted(path *TreePath, iter *TreeIter)
 	// RowsReorderedWithLength emits the TreeModel::rows-reordered signal on
 	// @tree_model.
 	//
 	// This should be called by models when their rows have been reordered.
 	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int)
+	// UnrefNode lets the tree unref the node.
+	//
+	// This is an optional method for models to implement. To be more specific,
+	// models may ignore this call as it exists primarily for performance
+	// reasons. For more information on what this means, see
+	// gtk_tree_model_ref_node().
+	//
+	// Please note that nodes that are deleted are not unreffed.
+	UnrefNode(iter *TreeIter)
 }
 
 // treeModel implements the TreeModel interface.
@@ -9706,7 +10079,29 @@ type TreeSortableOverrider interface {
 // model.
 type TreeSortable interface {
 	TreeModel
-	TreeSortableOverrider
+
+	// SortColumnID fills in @sort_column_id and @order with the current sort
+	// column and the order. It returns true unless the @sort_column_id is
+	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
+	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
+	SortColumnID() (int, SortType, bool)
+	// HasDefaultSortFunc returns true if the model has a default sort function.
+	// This is used primarily by GtkTreeViewColumns in order to determine if a
+	// model can go back to the default state, or not.
+	HasDefaultSortFunc() bool
+	// SetSortColumnID sets the current sort column to be @sort_column_id. The
+	// @sortable will resort itself to reflect this change, after emitting a
+	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
+	// regular column id, or one of the following special values:
+	//
+	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
+	// will be used, if it is set
+	//
+	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
+	SetSortColumnID(sortColumnId int, order SortType)
+	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
+	// @sortable.
+	SortColumnChanged()
 }
 
 // treeSortable implements the TreeSortable interface.
@@ -77406,13 +77801,13 @@ type Widget interface {
 	//
 	// See [method@Gtk.Widget.set_name] for the significance of widget names.
 	Name() string
-	// Native returns the `GtkNative` widget that contains @widget.
+	// NativeWidget returns the `GtkNative` widget that contains @widget.
 	//
 	// This function will return nil if the widget is not contained inside a
 	// widget tree with a native ancestor.
 	//
 	// `GtkNative` widgets will return themselves here.
-	Native() Native
+	NativeWidget() Native
 	// NextSibling returns the widgets next sibling.
 	//
 	// This API is primarily meant for widget implementations.
@@ -79353,13 +79748,13 @@ func (w widget) Name() string {
 	return _utf8
 }
 
-// Native returns the `GtkNative` widget that contains @widget.
+// NativeWidget returns the `GtkNative` widget that contains @widget.
 //
 // This function will return nil if the widget is not contained inside a widget
 // tree with a native ancestor.
 //
 // `GtkNative` widgets will return themselves here.
-func (w widget) Native() Native {
+func (w widget) NativeWidget() Native {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkNative // in
 

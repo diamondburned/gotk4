@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/diamondburned/gotk4/core/pen"
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/internal/pen"
 )
 
 type callableGenerator struct {
@@ -357,12 +357,24 @@ func anyTypeName(typ gir.AnyType, or string) string {
 
 // callableRenameGetters renames the given list of callables to have idiomatic
 // Go getter names.
-func callableRenameGetters(callables []callableGenerator) {
+func callableRenameGetters(parentName string, callables []callableGenerator) {
 	for i, callable := range callables {
 		newName := renameGetter(callable.Name)
 
+		// Avoid duplicating method names with Objector.
+		// TODO: account for other interfaces as well.
+		objectorMethod := parentName != "" && isObjectorMethod(newName)
+		if objectorMethod {
+			newName += parentName
+		}
+
 		if findCallable(callables, newName) > -1 {
-			continue
+			if !objectorMethod {
+				continue
+			}
+
+			// We cannot not rename this method if it's an objectorMethod.
+			newName += "_"
 		}
 
 		callables[i].Name = newName

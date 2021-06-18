@@ -25,9 +25,26 @@ func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
 	return ptr
 }
 
-var cTypePrefixes = []string{"const", "volatile"}
+var objectorMethods = map[string]struct{}{
+	"Connect":           {},
+	"ConnectAfter":      {},
+	"HandlerBlock":      {},
+	"HandlerDisconnect": {},
+	"HandlerUnblock":    {},
+	"GetProperty":       {},
+	"SetProperty":       {},
+	"Native":            {},
+}
 
-var cTypePrefixEraser *strings.Replacer
+func isObjectorMethod(goName string) bool {
+	_, is := objectorMethods[goName]
+	return is
+}
+
+var (
+	cTypePrefixes     = []string{"const", "volatile"}
+	cTypePrefixEraser *strings.Replacer
+)
 
 func init() {
 	replacers := make([]string, len(cTypePrefixes)*4)

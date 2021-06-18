@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/internal/pen"
+	"github.com/diamondburned/gotk4/core/pen"
 )
 
 // ConversionDirection is the conversion direction between Go and C.

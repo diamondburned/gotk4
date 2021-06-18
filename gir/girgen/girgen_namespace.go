@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/diamondburned/gotk4/core/pen"
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/internal/pen"
 	"github.com/pkg/errors"
 )
 
@@ -322,7 +322,7 @@ type SideEffects struct {
 	CallbackDelete bool
 }
 
-const internalImportPath = "github.com/diamondburned/gotk4/internal"
+const internalImportPath = "github.com/diamondburned/gotk4/core"
 
 func (sides *SideEffects) addImportInternal(internal string) {
 	sides.addImport(internalImportPath + "/" + internal)

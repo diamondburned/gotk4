@@ -21,6 +21,17 @@ let unstable = import (systemPkgs.fetchFromGitHub {
 				};
 				doCheck = false;
 			});
+			# go = super.go_2-dev.overrideAttrs (old: {
+			# 	version = "tip-cgo-dynobject";
+			# 	src = super.fetchFromGitHub {
+			# 		owner = "diamondburned";
+			# 		repo  = "go";
+			# 		# cmd/cgo: output cgo pragmas as object instead of go
+			# 		rev    = "890ad67fba53661f44c0a9136006390cc18bcb31";
+			# 		sha256 = "sha256:1wnw7i5vhsqhbg001gfr3shm77jp5ghiz6af60d4876jlhj0p9h2";
+			# 	};
+			# 	doCheck = false;
+			# });
 			gopls = self.buildGoModule rec {
 				pname = "gopls";
 				version = "0.7.0";
@@ -42,6 +53,9 @@ let unstable = import (systemPkgs.fetchFromGitHub {
 };
 
 in unstable.mkShell {
+	# Disable this to allow -O0.
+	hardeningDisable = [ "fortify" ];
+
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.
 	buildInputs = with unstable; [
@@ -67,10 +81,14 @@ in unstable.mkShell {
 			# Development tools.
 			gopls
 			goimports
+			expect
+
+			# minitime is a mini-output time wrapper.
+			(sh "minitime" "command time --format $'%C -> %es\\n' \"$@\"")
 
 			# Compile tools.
-			zig
-			(sh "zcc" ''ZIG_LOCAL_CACHE_DIR=$TMP/z ${unstable.zig}/bin/zig cc  -target x86_64-linux "$@"'')
-			(sh "zxx" ''ZIG_LOCAL_CACHE_DIR=$TMP/z ${unstable.zig}/bin/zig c++ -target x86_64-linux "$@"'')
+			# zig
+			# (sh "zcc" ''ZIG_LOCAL_CACHE_DIR=$TMP/z ${unstable.zig}/bin/zig cc  -target x86_64-linux "$@"'')
+			# (sh "zxx" ''ZIG_LOCAL_CACHE_DIR=$TMP/z ${unstable.zig}/bin/zig c++ -target x86_64-linux "$@"'')
 		];
 }

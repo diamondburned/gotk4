@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/core/gerror"
+	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -6682,8 +6682,45 @@ type ActionableOverrider interface {
 // gtk_widget_insert_action_group() will be consulted as well.
 type Actionable interface {
 	Widget
-	ActionableOverrider
 
+	// ActionName gets the action name for @actionable.
+	//
+	// See gtk_actionable_set_action_name() for more information.
+	ActionName() string
+	// ActionTargetValue gets the current target value of @actionable.
+	//
+	// See gtk_actionable_set_action_target_value() for more information.
+	ActionTargetValue() *glib.Variant
+	// SetActionName specifies the name of the action with which this widget
+	// should be associated. If @action_name is nil then the widget will be
+	// unassociated from any previous action.
+	//
+	// Usually this function is used when the widget is located (or will be
+	// located) within the hierarchy of a ApplicationWindow.
+	//
+	// Names are of the form “win.save” or “app.quit” for actions on the
+	// containing ApplicationWindow or its associated Application, respectively.
+	// This is the same form used for actions in the #GMenu associated with the
+	// window.
+	SetActionName(actionName string)
+	// SetActionTargetValue sets the target value of an actionable widget.
+	//
+	// If @target_value is nil then the target value is unset.
+	//
+	// The target value has two purposes. First, it is used as the parameter to
+	// activation of the action associated with the Actionable widget. Second,
+	// it is used to determine if the widget should be rendered as “active” —
+	// the widget is active if the state is equal to the given target.
+	//
+	// Consider the example of associating a set of buttons with a #GAction with
+	// string state in a typical “radio button” situation. Each button will be
+	// associated with the same action, but with a different target value for
+	// that action. Clicking on a particular button will activate the action
+	// with the target of that button, which will typically cause the action’s
+	// state to change to that value. Since the action’s state is now equal to
+	// the target value of the button, the button will now be rendered as active
+	// (and the other buttons, with different targets, rendered inactive).
+	SetActionTargetValue(targetValue *glib.Variant)
 	// SetDetailedActionName sets the action-name and associated string target
 	// value of an actionable widget.
 	//
@@ -7068,7 +7105,6 @@ type ActivatableOverrider interface {
 //    }
 type Activatable interface {
 	gextras.Objector
-	ActivatableOverrider
 
 	// DoSetRelatedAction: this is a utility function for Activatable
 	// implementors.
@@ -7107,6 +7143,11 @@ type Activatable interface {
 	// gtk_activatable_sync_action_properties() to update @activatable > if
 	// needed.
 	SetUseActionAppearance(useAppearance bool)
+	// SyncActionProperties: this is called to update the activatable
+	// completely, this is called internally when the Activatable:related-action
+	// property is set or unset and by the implementing class when
+	// Activatable:use-action-appearance changes.
+	SyncActionProperties(action Action)
 }
 
 // activatable implements the Activatable interface.
@@ -7373,7 +7414,33 @@ type BuildableOverrider interface {
 // Builder format or run any extra routines at deserialization time.
 type Buildable interface {
 	gextras.Objector
-	BuildableOverrider
+
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// InternalChild: get the internal child called @childname of the @buildable
+	// object.
+	InternalChild(builder Builder, childname string) gextras.Objector
+	// Name gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	Name() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	SetBuildableProperty(builder Builder, name string, value **externglib.Value)
+	// SetName sets the name of the @buildable object.
+	SetName(name string)
 }
 
 // buildable implements the Buildable interface.
@@ -7544,7 +7611,22 @@ type CellAccessibleParentOverrider interface {
 
 type CellAccessibleParent interface {
 	gextras.Objector
-	CellAccessibleParentOverrider
+
+	Activate(cell CellAccessible)
+
+	Edit(cell CellAccessible)
+
+	ExpandCollapse(cell CellAccessible)
+
+	CellArea(cell CellAccessible) gdk.Rectangle
+
+	CellPosition(cell CellAccessible) (row int, column int)
+
+	ChildIndex(cell CellAccessible) int
+
+	RendererState(cell CellAccessible) CellRendererState
+
+	GrabFocus(cell CellAccessible) bool
 }
 
 // cellAccessibleParent implements the CellAccessibleParent interface.
@@ -7699,7 +7781,11 @@ type CellEditableOverrider interface {
 // value, etc.
 type CellEditable interface {
 	Widget
-	CellEditableOverrider
+
+	// EditingDone emits the CellEditable::editing-done signal.
+	EditingDone()
+	// RemoveWidget emits the CellEditable::remove-widget signal.
+	RemoveWidget()
 }
 
 // cellEditable implements the CellEditable interface.
@@ -7868,7 +7954,41 @@ type CellLayoutOverrider interface {
 // init() and into a constructor() for your class.
 type CellLayout interface {
 	gextras.Objector
-	CellLayoutOverrider
+
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	ClearAttributes(cell CellRenderer)
+	// Area returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	Area() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	Reorder(cell CellRenderer, position int)
 }
 
 // cellLayout implements the CellLayout interface.
@@ -8042,10 +8162,30 @@ type ColorChooserOverrider interface {
 // ColorChooserWidget, ColorChooserDialog and ColorButton.
 type ColorChooser interface {
 	gextras.Objector
-	ColorChooserOverrider
 
+	// AddPalette adds a palette to the color chooser. If @orientation is
+	// horizontal, the colors are grouped in rows, with @colors_per_line colors
+	// in each row. If @horizontal is false, the colors are grouped in columns
+	// instead.
+	//
+	// The default color palette of ColorChooserWidget has 27 colors, organized
+	// in columns of 3 colors. The default gray palette has 9 grays in a single
+	// row.
+	//
+	// The layout of the color chooser widget works best when the palettes have
+	// 9-10 columns.
+	//
+	// Calling this function for the first time has the side effect of removing
+	// the default color and gray palettes from the color chooser.
+	//
+	// If @colors is nil, removes all previously added palettes.
+	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
+	// RGBA gets the currently-selected color.
+	RGBA() gdk.RGBA
 	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
+	// SetRGBA sets the color.
+	SetRGBA(color *gdk.RGBA)
 	// SetUseAlpha sets whether or not the color chooser should use the alpha
 	// channel.
 	SetUseAlpha(useAlpha bool)
@@ -8245,7 +8385,6 @@ type EditableOverrider interface {
 //    }
 type Editable interface {
 	gextras.Objector
-	EditableOverrider
 
 	// CopyClipboard copies the contents of the currently selected content in
 	// the editable and puts it on the clipboard.
@@ -8256,9 +8395,34 @@ type Editable interface {
 	// DeleteSelection deletes the currently selected text of the editable. This
 	// call doesn’t do anything if there is no selected text.
 	DeleteSelection()
+	// DeleteText deletes a sequence of characters. The characters that are
+	// deleted are those characters at positions from @start_pos up to, but not
+	// including @end_pos. If @end_pos is negative, then the characters deleted
+	// are those from @start_pos to the end of the text.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	DeleteText(startPos int, endPos int)
+	// Chars retrieves a sequence of characters. The characters that are
+	// retrieved are those characters at positions from @start_pos up to, but
+	// not including @end_pos. If @end_pos is negative, then the characters
+	// retrieved are those characters from @start_pos to the end of the text.
+	//
+	// Note that positions are specified in characters, not bytes.
+	Chars(startPos int, endPos int) string
 	// Editable retrieves whether @editable is editable. See
 	// gtk_editable_set_editable().
 	Editable() bool
+	// Position retrieves the current position of the cursor relative to the
+	// start of the content of the editable.
+	//
+	// Note that this position is in characters, not in bytes.
+	Position() int
+	// SelectionBounds retrieves the selection bound of the editable. start_pos
+	// will be filled with the start of the selection and @end_pos with end. If
+	// no text was selected both will be identical and false will be returned.
+	//
+	// Note that positions are specified in characters, not bytes.
+	SelectionBounds() (startPos int, endPos int, ok bool)
 	// PasteClipboard pastes the content of the clipboard to the current
 	// position of the cursor in the editable.
 	PasteClipboard()
@@ -8272,6 +8436,14 @@ type Editable interface {
 	// SetEditable determines if the user can edit the text in the editable
 	// widget or not.
 	SetEditable(isEditable bool)
+	// SetPosition sets the cursor position in the editable to the given value.
+	//
+	// The cursor is displayed before the character with the given (base 0)
+	// index in the contents of the editable. The value must be less than or
+	// equal to the number of characters in the editable. A value of -1
+	// indicates that the position should be set after the last character of the
+	// editable. Note that @position is in characters, not in bytes.
+	SetPosition(position int)
 }
 
 // editable implements the Editable interface.
@@ -10178,7 +10350,6 @@ type FontChooserOverrider interface {
 // interface has been introducted in GTK+ 3.2.
 type FontChooser interface {
 	gextras.Objector
-	FontChooserOverrider
 
 	// Font gets the currently-selected font name.
 	//
@@ -10202,8 +10373,23 @@ type FontChooser interface {
 	// Use pango_font_description_equal() if you want to compare two font
 	// descriptions.
 	FontDesc() *pango.FontDescription
+	// FontFace gets the FontFace representing the selected font group details
+	// (i.e. family, slant, weight, width, etc).
+	//
+	// If the selected font is not installed, returns nil.
+	FontFace() pango.FontFace
+	// FontFamily gets the FontFamily representing the selected font family.
+	// Font families are a collection of font faces.
+	//
+	// If the selected font is not installed, returns nil.
+	FontFamily() pango.FontFamily
 	// FontFeatures gets the currently-selected font features.
 	FontFeatures() string
+	// FontMap gets the custom font map of this font chooser widget, or nil if
+	// it does not have one.
+	FontMap() pango.FontMap
+	// FontSize: the selected font size.
+	FontSize() int
 	// Language gets the language that is used for font features.
 	Language() string
 	// Level returns the current level of granularity for selecting fonts.
@@ -10216,6 +10402,27 @@ type FontChooser interface {
 	SetFont(fontname string)
 	// SetFontDesc sets the currently-selected font from @font_desc.
 	SetFontDesc(fontDesc *pango.FontDescription)
+	// SetFontMap sets a custom font map to use for this font chooser widget. A
+	// custom font map can be used to present application-specific fonts instead
+	// of or in addition to the normal system fonts.
+	//
+	//    FcConfig *config;
+	//    PangoFontMap *fontmap;
+	//
+	//    config = FcInitLoadConfigAndFonts ();
+	//    FcConfigAppFontAddFile (config, my_app_font_file);
+	//
+	//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+	//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
+	//
+	//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
+	//
+	// Note that other GTK+ widgets will only be able to use the
+	// application-specific font if it is present in the font map they use:
+	//
+	//    context = gtk_widget_get_pango_context (label);
+	//    pango_context_set_font_map (context, fontmap);
+	SetFontMap(fontmap pango.FontMap)
 	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
 	// SetLevel sets the desired level of granularity for selecting fonts.
@@ -10649,7 +10856,23 @@ type PrintOperationPreviewOverrider interface {
 
 type PrintOperationPreview interface {
 	gextras.Objector
-	PrintOperationPreviewOverrider
+
+	// EndPreview ends a preview.
+	//
+	// This function must be called to finish a custom print preview.
+	EndPreview()
+	// IsSelected returns whether the given page is included in the set of pages
+	// that have been selected for printing.
+	IsSelected(pageNr int) bool
+	// RenderPage renders a page to the preview, using the print context that
+	// was passed to the PrintOperation::preview handler together with @preview.
+	//
+	// A custom iprint preview should use this function in its ::expose handler
+	// to render the currently selected page.
+	//
+	// Note that this function requires a suitable cairo context to be
+	// associated with the print context.
+	RenderPage(pageNr int)
 }
 
 // printOperationPreview implements the PrintOperationPreview interface.
@@ -10762,10 +10985,17 @@ type RecentChooserOverrider interface {
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooser interface {
 	gextras.Objector
-	RecentChooserOverrider
 
+	// AddFilter adds @filter to the list of RecentFilter objects held by
+	// @chooser.
+	//
+	// If no previous filter objects were defined, this function will call
+	// gtk_recent_chooser_set_filter().
+	AddFilter(filter RecentFilter)
 	// CurrentItem gets the RecentInfo currently selected by @chooser.
 	CurrentItem() *RecentInfo
+	// CurrentURI gets the URI currently selected by @chooser.
+	CurrentURI() string
 	// Filter gets the RecentFilter object currently used by @chooser to affect
 	// the display of the recently used resources.
 	Filter() RecentFilter
@@ -10791,6 +11021,16 @@ type RecentChooser interface {
 	ShowTips() bool
 	// SortType gets the value set by gtk_recent_chooser_set_sort_type().
 	SortType() RecentSortType
+	// RemoveFilter removes @filter from the list of RecentFilter objects held
+	// by @chooser.
+	RemoveFilter(filter RecentFilter)
+	// SelectAll selects all the items inside @chooser, if the @chooser supports
+	// multiple selection.
+	SelectAll()
+	// SelectURI selects @uri inside @chooser.
+	SelectURI(uri string) error
+	// SetCurrentURI sets @uri as the current URI for @chooser.
+	SetCurrentURI(uri string) error
 	// SetFilter sets @filter as the current RecentFilter object used by
 	// @chooser to affect the displayed recently used resources.
 	SetFilter(filter RecentFilter)
@@ -10820,6 +11060,10 @@ type RecentChooser interface {
 	// SetSortType changes the sorting order of the recently used resources list
 	// displayed by @chooser.
 	SetSortType(sortType RecentSortType)
+	// UnselectAll unselects all the items inside @chooser.
+	UnselectAll()
+	// UnselectURI unselects @uri inside @chooser.
+	UnselectURI(uri string)
 }
 
 // recentChooser implements the RecentChooser interface.
@@ -11294,8 +11538,12 @@ type ScrollableOverrider interface {
 // scrollable widget should scroll its contents.
 type Scrollable interface {
 	gextras.Objector
-	ScrollableOverrider
 
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable. An example for this would be treeview headers. GTK+ can
+	// use this information to display overlayed graphics, like the overshoot
+	// indication, at the right position.
+	Border() (Border, bool)
 	// HAdjustment retrieves the Adjustment used for horizontal scrolling.
 	HAdjustment() Adjustment
 	// HScrollPolicy gets the horizontal ScrollablePolicy.
@@ -11487,7 +11735,13 @@ type StyleProviderOverrider interface {
 // gtk_style_context_add_provider_for_screen().
 type StyleProvider interface {
 	gextras.Objector
-	StyleProviderOverrider
+
+	// IconFactory returns the IconFactory defined to be in use for @path, or
+	// nil if none is defined.
+	IconFactory(path *WidgetPath) IconFactory
+	// Style returns the style settings affecting a widget defined by @path, or
+	// nil if @provider doesn’t contemplate styling @path.
+	Style(path *WidgetPath) StyleProperties
 }
 
 // styleProvider implements the StyleProvider interface.
@@ -11596,7 +11850,47 @@ type ToolShellOverrider interface {
 // additional information when embedding ToolItem widgets.
 type ToolShell interface {
 	Widget
-	ToolShellOverrider
+
+	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_ellipsize_mode() instead.
+	EllipsizeMode() pango.EllipsizeMode
+	// IconSize retrieves the icon size for the tool shell. Tool items must not
+	// call this function directly, but rely on gtk_tool_item_get_icon_size()
+	// instead.
+	IconSize() int
+	// Orientation retrieves the current orientation for the tool shell. Tool
+	// items must not call this function directly, but rely on
+	// gtk_tool_item_get_orientation() instead.
+	Orientation() Orientation
+	// ReliefStyle returns the relief style of buttons on @shell. Tool items
+	// must not call this function directly, but rely on
+	// gtk_tool_item_get_relief_style() instead.
+	ReliefStyle() ReliefStyle
+	// Style retrieves whether the tool shell has text, icons, or both. Tool
+	// items must not call this function directly, but rely on
+	// gtk_tool_item_get_toolbar_style() instead.
+	Style() ToolbarStyle
+	// TextAlignment retrieves the current text alignment for the tool shell.
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_text_alignment() instead.
+	TextAlignment() float32
+	// TextOrientation retrieves the current text orientation for the tool
+	// shell. Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_text_orientation() instead.
+	TextOrientation() Orientation
+	// TextSizeGroup retrieves the current text size group for the tool shell.
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_text_size_group() instead.
+	TextSizeGroup() SizeGroup
+	// RebuildMenu: calling this function signals the tool shell that the
+	// overflow menu item for tool items have changed. If there is an overflow
+	// menu and if it is visible when this function it called, the menu will be
+	// rebuilt.
+	//
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_rebuild_menu() instead.
+	RebuildMenu()
 }
 
 // toolShell implements the ToolShell interface.
@@ -11797,7 +12091,20 @@ type TreeDragDestOverrider interface {
 
 type TreeDragDest interface {
 	gextras.Objector
-	TreeDragDestOverrider
+
+	// DragDataReceived asks the TreeDragDest to insert a row before the path
+	// @dest, deriving the contents of the row from @selection_data. If @dest is
+	// outside the tree so that inserting before it is impossible, false will be
+	// returned. Also, false may be returned if the new row is not created for
+	// some model-specific reason. Should robustly handle a @dest no longer
+	// found in the model!
+	DragDataReceived(dest *TreePath, selectionData *SelectionData) bool
+	// RowDropPossible determines whether a drop is possible before the given
+	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
+	// in @selection_data at that location. @dest_path does not have to exist;
+	// the return value will almost certainly be false if the parent of
+	// @dest_path doesn’t exist, though.
+	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
 // treeDragDest implements the TreeDragDest interface.
@@ -11896,7 +12203,22 @@ type TreeDragSourceOverrider interface {
 
 type TreeDragSource interface {
 	gextras.Objector
-	TreeDragSourceOverrider
+
+	// DragDataDelete asks the TreeDragSource to delete the row at @path,
+	// because it was moved somewhere else via drag-and-drop. Returns false if
+	// the deletion fails because @path no longer exists, or for some
+	// model-specific reason. Should robustly handle a @path no longer found in
+	// the model!
+	DragDataDelete(path *TreePath) bool
+	// DragDataGet asks the TreeDragSource to fill in @selection_data with a
+	// representation of the row at @path. @selection_data->target gives the
+	// required type of the data. Should robustly handle a @path no longer found
+	// in the model!
+	DragDataGet(path *TreePath, selectionData *SelectionData) bool
+	// RowDraggable asks the TreeDragSource whether a particular row can be used
+	// as the source of a DND operation. If the source doesn’t implement this
+	// interface, the row is assumed draggable.
+	RowDraggable(path *TreePath) bool
 }
 
 // treeDragSource implements the TreeDragSource interface.
@@ -12253,27 +12575,135 @@ type TreeModelOverrider interface {
 // always referenced when any view is attached).
 type TreeModel interface {
 	gextras.Objector
-	TreeModelOverrider
 
 	// NewFilter creates a new TreeModel, with @child_model as the child_model
 	// and @root as the virtual root.
 	NewFilter(root *TreePath) TreeModel
+	// ColumnType returns the type of the column.
+	ColumnType(index_ int) externglib.Type
+	// Flags returns a set of flags supported by this interface.
+	//
+	// The flags are a bitwise combination of TreeModelFlags. The flags
+	// supported should not change during the lifetime of the @tree_model.
+	Flags() TreeModelFlags
+	// Iter sets @iter to a valid iterator pointing to @path. If @path does not
+	// exist, @iter is set to an invalid iterator and false is returned.
+	Iter(path *TreePath) (TreeIter, bool)
 	// IterFirst initializes @iter with the first iterator in the tree (the one
 	// at the path "0") and returns true. Returns false if the tree is empty.
 	IterFirst() (TreeIter, bool)
 	// IterFromString sets @iter to a valid iterator pointing to @path_string,
 	// if it exists. Otherwise, @iter is left invalid and false is returned.
 	IterFromString(pathString string) (TreeIter, bool)
+	// NColumns returns the number of columns supported by @tree_model.
+	NColumns() int
+	// Path returns a newly-created TreePath-struct referenced by @iter.
+	//
+	// This path should be freed with gtk_tree_path_free().
+	Path(iter *TreeIter) *TreePath
 	// StringFromIter generates a string representation of the iter.
 	//
 	// This string is a “:” separated list of numbers. For example, “4:10:0:3”
 	// would be an acceptable return value for this string.
 	StringFromIter(iter *TreeIter) string
+	// Value initializes and sets @value to that at @column.
+	//
+	// When done with @value, g_value_unset() needs to be called to free any
+	// allocated memory.
+	Value(iter *TreeIter, column int) *externglib.Value
+	// IterChildren sets @iter to point to the first child of @parent.
+	//
+	// If @parent has no children, false is returned and @iter is set to be
+	// invalid. @parent will remain a valid node after this function has been
+	// called.
+	//
+	// If @parent is nil returns the first node, equivalent to
+	// `gtk_tree_model_get_iter_first (tree_model, iter);`
+	IterChildren(parent *TreeIter) (TreeIter, bool)
+	// IterHasChild returns true if @iter has children, false otherwise.
+	IterHasChild(iter *TreeIter) bool
+	// IterNChildren returns the number of children that @iter has.
+	//
+	// As a special case, if @iter is nil, then the number of toplevel nodes is
+	// returned.
+	IterNChildren(iter *TreeIter) int
+	// IterNext sets @iter to point to the node following it at the current
+	// level.
+	//
+	// If there is no next @iter, false is returned and @iter is set to be
+	// invalid.
+	IterNext(iter *TreeIter) bool
+	// IterNthChild sets @iter to be the child of @parent, using the given
+	// index.
+	//
+	// The first index is 0. If @n is too big, or @parent has no children, @iter
+	// is set to an invalid iterator and false is returned. @parent will remain
+	// a valid node after this function has been called. As a special case, if
+	// @parent is nil, then the @n-th root node is set.
+	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
+	// IterParent sets @iter to be the parent of @child.
+	//
+	// If @child is at the toplevel, and doesn’t have a parent, then @iter is
+	// set to an invalid iterator and false is returned. @child will remain a
+	// valid node after this function has been called.
+	//
+	// @iter will be initialized before the lookup is performed, so @child and
+	// @iter cannot point to the same memory location.
+	IterParent(child *TreeIter) (TreeIter, bool)
+	// IterPrevious sets @iter to point to the previous node at the current
+	// level.
+	//
+	// If there is no previous @iter, false is returned and @iter is set to be
+	// invalid.
+	IterPrevious(iter *TreeIter) bool
+	// RefNode lets the tree ref the node.
+	//
+	// This is an optional method for models to implement. To be more specific,
+	// models may ignore this call as it exists primarily for performance
+	// reasons.
+	//
+	// This function is primarily meant as a way for views to let caching models
+	// know when nodes are being displayed (and hence, whether or not to cache
+	// that node). Being displayed means a node is in an expanded branch,
+	// regardless of whether the node is currently visible in the viewport. For
+	// example, a file-system based model would not want to keep the entire
+	// file-hierarchy in memory, just the sections that are currently being
+	// displayed by every current view.
+	//
+	// A model should be expected to be able to get an iter independent of its
+	// reffed state.
+	RefNode(iter *TreeIter)
+	// RowChanged emits the TreeModel::row-changed signal on @tree_model.
+	RowChanged(path *TreePath, iter *TreeIter)
+	// RowDeleted emits the TreeModel::row-deleted signal on @tree_model.
+	//
+	// This should be called by models after a row has been removed. The
+	// location pointed to by @path should be the location that the row
+	// previously was at. It may not be a valid location anymore.
+	//
+	// Nodes that are deleted are not unreffed, this means that any outstanding
+	// references on the deleted node should not be released.
+	RowDeleted(path *TreePath)
+	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
+	// @tree_model. This should be called by models after the child state of a
+	// node changes.
+	RowHasChildToggled(path *TreePath, iter *TreeIter)
+	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
+	RowInserted(path *TreePath, iter *TreeIter)
 	// RowsReorderedWithLength emits the TreeModel::rows-reordered signal on
 	// @tree_model.
 	//
 	// This should be called by models when their rows have been reordered.
 	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int)
+	// UnrefNode lets the tree unref the node.
+	//
+	// This is an optional method for models to implement. To be more specific,
+	// models may ignore this call as it exists primarily for performance
+	// reasons. For more information on what this means, see
+	// gtk_tree_model_ref_node().
+	//
+	// Please note that nodes that are deleted are not unreffed.
+	UnrefNode(iter *TreeIter)
 }
 
 // treeModel implements the TreeModel interface.
@@ -12824,7 +13254,29 @@ type TreeSortableOverrider interface {
 // model.
 type TreeSortable interface {
 	TreeModel
-	TreeSortableOverrider
+
+	// SortColumnID fills in @sort_column_id and @order with the current sort
+	// column and the order. It returns true unless the @sort_column_id is
+	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
+	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
+	SortColumnID() (int, SortType, bool)
+	// HasDefaultSortFunc returns true if the model has a default sort function.
+	// This is used primarily by GtkTreeViewColumns in order to determine if a
+	// model can go back to the default state, or not.
+	HasDefaultSortFunc() bool
+	// SetSortColumnID sets the current sort column to be @sort_column_id. The
+	// @sortable will resort itself to reflect this change, after emitting a
+	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
+	// regular column id, or one of the following special values:
+	//
+	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
+	// will be used, if it is set
+	//
+	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
+	SetSortColumnID(sortColumnId int, order SortType)
+	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
+	// @sortable.
+	SortColumnChanged()
 }
 
 // treeSortable implements the TreeSortable interface.
@@ -65914,8 +66366,8 @@ type StyleProperties interface {
 	// @props_to_merge. If @replace is true, the values will be overwritten, if
 	// it is false, the older values will prevail.
 	Merge(propsToMerge StyleProperties, replace bool)
-	// SetProperty sets a styling property in @props.
-	SetProperty(property string, state StateFlags, value **externglib.Value)
+	// SetPropertyStyleProperties sets a styling property in @props.
+	SetPropertyStyleProperties(property string, state StateFlags, value **externglib.Value)
 	// UnsetProperty unsets a style property in @props.
 	UnsetProperty(property string, state StateFlags)
 }
@@ -66046,8 +66498,8 @@ func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
 }
 
-// SetProperty sets a styling property in @props.
-func (p styleProperties) SetProperty(property string, state StateFlags, value **externglib.Value) {
+// SetPropertyStyleProperties sets a styling property in @props.
+func (p styleProperties) SetPropertyStyleProperties(property string, state StateFlags, value **externglib.Value) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GtkStateFlags       // out

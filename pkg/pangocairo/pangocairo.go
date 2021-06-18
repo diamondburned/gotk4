@@ -5,7 +5,7 @@ package pangocairo
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"

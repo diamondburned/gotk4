@@ -32,6 +32,8 @@ var (
 		"Nomem", "NOMEM",
 		"Beos", "BeOS",
 		"Directfb", "DirectFB",
+		"Ipv4", "IPv4",
+		"Ipv6", "IPv6",
 	)
 	pascalRegex *regexp.Regexp
 )

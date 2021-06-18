@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/diamondburned/gotk4/core/pen"
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/internal/pen"
 )
 
 // recordIgnoreSuffixes is a list of suffixes that structs must not have,
@@ -181,7 +181,7 @@ func (rg *recordGenerator) methods() []callableGenerator {
 		callables = append(callables, cbgen)
 	}
 
-	callableRenameGetters(callables)
+	callableRenameGetters("", callables)
 	return callables
 }
 

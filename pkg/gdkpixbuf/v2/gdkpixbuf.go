@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/core/gerror"
+	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"

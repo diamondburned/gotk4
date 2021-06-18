@@ -25,16 +25,11 @@ var interfaceTmpl = newGoTemplate(`
 	type {{ .InterfaceName }} interface {
 		{{ range .TypeTree.PublicChildren -}}
 		{{ . }}
-		{{- end }}
-		{{ if .Virtuals -}}
-		{{ .InterfaceName }}Overrider
-		{{- end }}
+		{{ end }}
 
 		{{ range .Methods -}}
-		{{ if not ($.IsVirtual .Name) -}}
 		{{ GoDoc .Doc 1 .Name }}
 		{{ .Name }}{{ .Tail }}
-		{{ end -}}
 		{{ end }}
 	}
 
@@ -131,19 +126,8 @@ func (ig *ifaceGenerator) updateMethods() {
 		ig.Methods = append(ig.Methods, cbgen)
 	}
 
-	callableRenameGetters(ig.Methods)
-	callableRenameGetters(ig.Virtuals)
-}
-
-// IsVirtual returns true if the given method name is a virtual method's.
-func (ig *ifaceGenerator) IsVirtual(name string) bool {
-	for _, vmethod := range ig.Virtuals {
-		if vmethod.Name == name {
-			return true
-		}
-	}
-
-	return false
+	callableRenameGetters(ig.InterfaceName, ig.Methods)
+	callableRenameGetters(ig.InterfaceName, ig.Virtuals)
 }
 
 func (ig *ifaceGenerator) Logln(lvl LogLevel, v ...interface{}) {

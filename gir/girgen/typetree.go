@@ -3,7 +3,7 @@ package girgen
 import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/internal/pen"
+	"github.com/diamondburned/gotk4/core/pen"
 )
 
 // TypeTree is a structure for a type that is resolved to the lowest level of

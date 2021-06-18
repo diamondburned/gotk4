@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 

@@ -151,6 +151,12 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	for i, callable := range cg.Methods {
 		newName := renameGetter(callable.Name)
 
+		// Avoid duplicating method names with Objector.
+		// TODO: account for other interfaces as well.
+		if isObjectorMethod(newName) {
+			newName += cg.InterfaceName
+		}
+
 		if !cg.hasField(newName) {
 			cg.Methods[i].Name = newName
 		}

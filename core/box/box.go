@@ -3,7 +3,7 @@ package box
 import (
 	"sync"
 
-	"github.com/diamondburned/gotk4/internal/slab"
+	"github.com/diamondburned/gotk4/core/slab"
 )
 
 var registry struct {

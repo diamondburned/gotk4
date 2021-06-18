@@ -57,7 +57,6 @@ var interfaceTmpl = newGoTemplate(`
 	{{ end }}
 
 	{{ range .Methods }}
-	{{ GoDoc .Doc 0 .Name }}
 	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)

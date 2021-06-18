@@ -458,14 +458,6 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 	return WrapX11Display(obj), nil
 }
 
-// ErrorTrapPop pops the error trap pushed by gdk_x11_display_error_trap_push().
-// Will XSync() if necessary and will always block until the error is known to
-// have occurred or not occurred, so the error code can be returned.
-//
-// If you don’t need to use the return value,
-// gdk_x11_display_error_trap_pop_ignored() would be more efficient.
-//
-// See gdk_error_trap_pop() for the all-displays-at-once equivalent.
 func (d x11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
@@ -481,12 +473,6 @@ func (d x11Display) ErrorTrapPop() int {
 	return _gint
 }
 
-// ErrorTrapPopIgnored pops the error trap pushed by
-// gdk_x11_display_error_trap_push(). Does not block to see if an error
-// occurred; merely records the range of requests to ignore errors for, and
-// ignores those errors if they arrive asynchronously.
-//
-// See gdk_error_trap_pop_ignored() for the all-displays-at-once equivalent.
 func (d x11Display) ErrorTrapPopIgnored() {
 	var _arg0 *C.GdkDisplay // out
 
@@ -495,13 +481,6 @@ func (d x11Display) ErrorTrapPopIgnored() {
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
 }
 
-// ErrorTrapPush begins a range of X requests on @display for which X error
-// events will be ignored. Unignored errors (when no trap is pushed) will abort
-// the application. Use gdk_x11_display_error_trap_pop() or
-// gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
-// function.
-//
-// See also gdk_error_trap_push() to push a trap on all displays.
 func (d x11Display) ErrorTrapPush() {
 	var _arg0 *C.GdkDisplay // out
 
@@ -510,7 +489,6 @@ func (d x11Display) ErrorTrapPush() {
 	C.gdk_x11_display_error_trap_push(_arg0)
 }
 
-// StartupNotificationID gets the startup notification ID for a display.
 func (d x11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.gchar      // in
@@ -526,9 +504,6 @@ func (d x11Display) StartupNotificationID() string {
 	return _utf8
 }
 
-// UserTime returns the timestamp of the last user interaction on @display. The
-// timestamp is taken from events caused by user interaction such as key presses
-// or pointer movements. See gdk_x11_window_set_user_time().
 func (d x11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint32     // in
@@ -544,10 +519,6 @@ func (d x11Display) UserTime() uint32 {
 	return _guint32
 }
 
-// Grab: call XGrabServer() on @display. To ungrab the display again, use
-// gdk_x11_display_ungrab().
-//
-// gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
 func (d x11Display) Grab() {
 	var _arg0 *C.GdkDisplay // out
 
@@ -556,15 +527,6 @@ func (d x11Display) Grab() {
 	C.gdk_x11_display_grab(_arg0)
 }
 
-// SetCursorTheme sets the cursor theme from which the images for cursor should
-// be taken.
-//
-// If the windowing system supports it, existing cursors created with
-// gdk_cursor_new(), gdk_cursor_new_for_display() and gdk_cursor_new_from_name()
-// are updated to reflect the theme change. Custom cursors constructed with
-// gdk_cursor_new_from_pixbuf() will have to be handled by the application (GTK+
-// applications can learn about cursor theme changes by listening for change
-// notification for the corresponding Setting).
 func (d x11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -578,19 +540,6 @@ func (d x11Display) SetCursorTheme(theme string, size int) {
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
 
-// SetStartupNotificationID sets the startup notification ID for a display.
-//
-// This is usually taken from the value of the DESKTOP_STARTUP_ID environment
-// variable, but in some cases (such as the application not being launched using
-// exec()) it can come from other sources.
-//
-// If the ID contains the string "_TIME" then the portion following that string
-// is taken to be the X11 timestamp of the event that triggered the application
-// to be launched and the GDK current event time is set accordingly.
-//
-// The startup ID is also what is used to signal that the startup is complete
-// (for example, when opening a window or when calling
-// gdk_notify_startup_complete()).
 func (d x11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -602,13 +551,6 @@ func (d x11Display) SetStartupNotificationID(startupId string) {
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
 }
 
-// SetWindowScale forces a specific window scale for all windows on this
-// display, instead of using the default or user configured scale. This is can
-// be used to disable scaling support by setting @scale to 1, or to
-// programmatically set the window scale.
-//
-// Once the scale is set by this call it will not change in response to later
-// user configuration changes.
 func (d x11Display) SetWindowScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
@@ -619,8 +561,6 @@ func (d x11Display) SetWindowScale(scale int) {
 	C.gdk_x11_display_set_window_scale(_arg0, _arg1)
 }
 
-// StringToCompoundText: convert a string from the encoding of the current
-// locale into a form suitable for storing in a window property.
 func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -650,10 +590,6 @@ func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format 
 	return _encoding, _format, _ctext, _gint
 }
 
-// TextPropertyToTextList: convert a text string from the encoding as it is
-// stored in a property into an array of strings in the encoding of the current
-// locale. (The elements of the array represent the nul-separated elements of
-// the original text string.)
 func (d x11Display) TextPropertyToTextList(encoding *gdk.Atom, format int, text *byte, length int, list **string) int {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.GdkAtom     // out
@@ -680,8 +616,6 @@ func (d x11Display) TextPropertyToTextList(encoding *gdk.Atom, format int, text 
 	return _gint
 }
 
-// Ungrab: ungrab @display after it has been grabbed with
-// gdk_x11_display_grab().
 func (d x11Display) Ungrab() {
 	var _arg0 *C.GdkDisplay // out
 
@@ -690,7 +624,6 @@ func (d x11Display) Ungrab() {
 	C.gdk_x11_display_ungrab(_arg0)
 }
 
-// UTF8ToCompoundText converts from UTF-8 to compound text.
 func (d x11Display) UTF8ToCompoundText(str string) (gdk.Atom, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -833,9 +766,6 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 	return WrapX11Keymap(obj), nil
 }
 
-// GroupForState extracts the group from the state field sent in an X Key event.
-// This is only needed for code processing raw X events, since EventKey directly
-// includes an is_modifier field.
 func (k x11Keymap) GroupForState(state uint) int {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
@@ -853,11 +783,6 @@ func (k x11Keymap) GroupForState(state uint) int {
 	return _gint
 }
 
-// KeyIsModifier determines whether a particular key code represents a key that
-// is a modifier. That is, it’s a key that normally just affects the keyboard
-// state and the behavior of other keys rather than producing a direct effect
-// itself. This is only needed for code processing raw X events, since EventKey
-// directly includes an is_modifier field.
 func (k x11Keymap) KeyIsModifier(keycode uint) bool {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
@@ -956,10 +881,6 @@ func marshalX11Screen(p uintptr) (interface{}, error) {
 	return WrapX11Screen(obj), nil
 }
 
-// CurrentDesktop returns the current workspace for @screen when running under a
-// window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
 func (s x11Screen) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
@@ -975,10 +896,6 @@ func (s x11Screen) CurrentDesktop() uint32 {
 	return _guint32
 }
 
-// NumberOfDesktops returns the number of workspaces for @screen when running
-// under a window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
 func (s x11Screen) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
@@ -994,7 +911,6 @@ func (s x11Screen) NumberOfDesktops() uint32 {
 	return _guint32
 }
 
-// ScreenNumber returns the index of a Screen.
 func (s x11Screen) ScreenNumber() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.int        // in
@@ -1010,7 +926,6 @@ func (s x11Screen) ScreenNumber() int {
 	return _gint
 }
 
-// WindowManagerName returns the name of the window manager for @screen.
 func (s x11Screen) WindowManagerName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.char      // in
@@ -1026,18 +941,6 @@ func (s x11Screen) WindowManagerName() string {
 	return _utf8
 }
 
-// SupportsNetWmHint: this function is specific to the X11 backend of GDK, and
-// indicates whether the window manager supports a certain hint from the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
-//
-// When using this function, keep in mind that the window manager can change
-// over time; so you shouldn’t use this function in a way that impacts
-// persistent application state. A common bug is that your application can start
-// up before the window manager does when the user logs in, and before the
-// window manager starts gdk_x11_screen_supports_net_wm_hint() will return false
-// for every property. You can monitor the window_manager_changed signal on
-// Screen to detect a window manager change.
 func (s x11Screen) SupportsNetWmHint(property *gdk.Atom) bool {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.GdkAtom    // out
@@ -1165,7 +1068,6 @@ func marshalX11Window(p uintptr) (interface{}, error) {
 	return WrapX11Window(obj), nil
 }
 
-// Desktop gets the number of the workspace @window is on.
 func (w x11Window) Desktop() uint32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.guint32    // in
@@ -1181,11 +1083,6 @@ func (w x11Window) Desktop() uint32 {
 	return _guint32
 }
 
-// MoveToCurrentDesktop moves the window to the correct workspace when running
-// under a window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification. Will not do anything if the window is already on all
-// workspaces.
 func (w x11Window) MoveToCurrentDesktop() {
 	var _arg0 *C.GdkWindow // out
 
@@ -1194,10 +1091,6 @@ func (w x11Window) MoveToCurrentDesktop() {
 	C.gdk_x11_window_move_to_current_desktop(_arg0)
 }
 
-// MoveToDesktop moves the window to the given workspace when running unde a
-// window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
 func (w x11Window) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
@@ -1208,8 +1101,6 @@ func (w x11Window) MoveToDesktop(desktop uint32) {
 	C.gdk_x11_window_move_to_desktop(_arg0, _arg1)
 }
 
-// SetFrameExtents: this is the same as gdk_window_set_shadow_width() but it
-// only works on GdkX11Window.
 func (w x11Window) SetFrameExtents(left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.int        // out
@@ -1226,12 +1117,6 @@ func (w x11Window) SetFrameExtents(left int, right int, top int, bottom int) {
 	C.gdk_x11_window_set_frame_extents(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// SetFrameSyncEnabled: this function can be used to disable frame
-// synchronization for a window. Normally frame synchronziation will be enabled
-// or disabled based on whether the system has a compositor that supports frame
-// synchronization, but if the window is not directly managed by the window
-// manager, then frame synchronziation may need to be disabled. This is the case
-// for a window embedded via the XEMBED protocol.
 func (w x11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1244,12 +1129,6 @@ func (w x11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	C.gdk_x11_window_set_frame_sync_enabled(_arg0, _arg1)
 }
 
-// SetHideTitlebarWhenMaximized: set a hint for the window manager, requesting
-// that the titlebar should be hidden when the window is maximized.
-//
-// Note that this property is automatically updated by GTK+, so this function
-// should only be used by applications which do not use GTK+ to create toplevel
-// windows.
 func (w x11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1262,14 +1141,6 @@ func (w x11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) 
 	C.gdk_x11_window_set_hide_titlebar_when_maximized(_arg0, _arg1)
 }
 
-// SetThemeVariant: GTK+ applications can request a dark theme variant. In order
-// to make other applications - namely window managers using GTK+ for themeing -
-// aware of this choice, GTK+ uses this function to export the requested theme
-// variant as _GTK_THEME_VARIANT property on toplevel windows.
-//
-// Note that this property is automatically updated by GTK+, so this function
-// should only be used by applications which do not use GTK+ to create toplevel
-// windows.
 func (w x11Window) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.char      // out
@@ -1281,16 +1152,6 @@ func (w x11Window) SetThemeVariant(variant string) {
 	C.gdk_x11_window_set_theme_variant(_arg0, _arg1)
 }
 
-// SetUserTime: the application can use this call to update the
-// _NET_WM_USER_TIME property on a toplevel window. This property stores an
-// Xserver time which represents the time of the last user input event received
-// for this window. This property may be used by the window manager to alter the
-// focus, stacking, and/or placement behavior of windows when they are mapped
-// depending on whether the new window was created by a user action or is a
-// "pop-up" window activated by a timer or some other event.
-//
-// Note that this property is automatically updated by GDK, so this function
-// should only be used by applications which handle input events bypassing GDK.
 func (w x11Window) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
@@ -1301,9 +1162,6 @@ func (w x11Window) SetUserTime(timestamp uint32) {
 	C.gdk_x11_window_set_user_time(_arg0, _arg1)
 }
 
-// SetUTF8Property: this function modifies or removes an arbitrary X11 window
-// property of type UTF8_STRING. If the given @window is not a toplevel window,
-// it is ignored.
 func (w x11Window) SetUTF8Property(name string, value string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out

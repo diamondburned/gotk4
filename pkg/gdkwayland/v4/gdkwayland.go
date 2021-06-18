@@ -68,13 +68,6 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 	return WrapWaylandDevice(obj), nil
 }
 
-// NodePath returns the `/dev/input/event*` path of this device.
-//
-// For `GdkDevice`s that possibly coalesce multiple hardware devices (eg. mouse,
-// keyboard, touch,...), this function will return nil.
-//
-// This is most notably implemented for devices of type GDK_SOURCE_PEN,
-// GDK_SOURCE_TABLET_PAD.
 func (d waylandDevice) NodePath() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -143,8 +136,6 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 	return WrapWaylandDisplay(obj), nil
 }
 
-// StartupNotificationID gets the startup notification ID for a Wayland display,
-// or nil if no ID has been defined.
 func (d waylandDisplay) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
@@ -160,8 +151,6 @@ func (d waylandDisplay) StartupNotificationID() string {
 	return _utf8
 }
 
-// QueryRegistry returns true if the the interface was found in the display
-// `wl_registry.global` handler.
 func (d waylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -182,7 +171,6 @@ func (d waylandDisplay) QueryRegistry(global string) bool {
 	return _ok
 }
 
-// SetCursorTheme sets the cursor theme for the given @display.
 func (d waylandDisplay) SetCursorTheme(name string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -196,15 +184,6 @@ func (d waylandDisplay) SetCursorTheme(name string, size int) {
 	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
 
-// SetStartupNotificationID sets the startup notification ID for a display.
-//
-// This is usually taken from the value of the `DESKTOP_STARTUP_ID` environment
-// variable, but in some cases (such as the application not being launched using
-// exec()) it can come from other sources.
-//
-// The startup ID is also what is used to signal that the startup is complete
-// (for example, when opening a window or when calling
-// [method@Gdk.Display.notify_startup_complete]).
 func (d waylandDisplay) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -385,7 +364,6 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 	return WrapWaylandToplevel(obj), nil
 }
 
-// SetApplicationID sets the application id on a `GdkToplevel`.
 func (t waylandToplevel) SetApplicationID(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
@@ -397,14 +375,6 @@ func (t waylandToplevel) SetApplicationID(applicationId string) {
 	C.gdk_wayland_toplevel_set_application_id(_arg0, _arg1)
 }
 
-// SetTransientForExported marks @toplevel as transient for the surface to which
-// the given @parent_handle_str refers.
-//
-// Typically, the handle will originate from a
-// [method@GdkWayland.WaylandToplevel.export_handle] call in another process.
-//
-// Note that this API depends on an unstable Wayland protocol, and thus may
-// require changes in the future.
 func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
@@ -425,14 +395,6 @@ func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	return _ok
 }
 
-// UnexportHandle destroys the handle that was obtained with
-// gdk_wayland_toplevel_export_handle().
-//
-// It is an error to call this function on a surface that does not have a
-// handle.
-//
-// Note that this API depends on an unstable Wayland protocol, and thus may
-// require changes in the future.
 func (t waylandToplevel) UnexportHandle() {
 	var _arg0 *C.GdkToplevel // out
 

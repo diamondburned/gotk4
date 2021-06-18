@@ -4160,13 +4160,6 @@ func marshalAction(p uintptr) (interface{}, error) {
 	return WrapAction(obj), nil
 }
 
-// Activate activates the action.
-//
-// @parameter must be the correct type of parameter for the action (ie: the
-// parameter type given at construction time). If the parameter type was nil
-// then @parameter must also be nil.
-//
-// If the @parameter GVariant is floating, it is consumed.
 func (a action) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
@@ -4177,16 +4170,6 @@ func (a action) Activate(parameter *glib.Variant) {
 	C.g_action_activate(_arg0, _arg1)
 }
 
-// ChangeState: request for the state of @action to be changed to @value.
-//
-// The action must be stateful and @value must be of the correct type. See
-// g_action_get_state_type().
-//
-// This call merely requests a change. The action may refuse to change its state
-// or may change its state to something other than @value. See
-// g_action_get_state_hint().
-//
-// If the @value GVariant is floating, it is consumed.
 func (a action) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
@@ -4197,10 +4180,6 @@ func (a action) ChangeState(value *glib.Variant) {
 	C.g_action_change_state(_arg0, _arg1)
 }
 
-// Enabled checks if @action is currently enabled.
-//
-// An action must be enabled in order to be activated or in order to have its
-// state changed from outside callers.
 func (a action) Enabled() bool {
 	var _arg0 *C.GAction // out
 	var _cret C.gboolean // in
@@ -4218,7 +4197,6 @@ func (a action) Enabled() bool {
 	return _ok
 }
 
-// Name queries the name of @action.
 func (a action) Name() string {
 	var _arg0 *C.GAction // out
 	var _cret *C.gchar   // in
@@ -4234,14 +4212,6 @@ func (a action) Name() string {
 	return _utf8
 }
 
-// ParameterType queries the type of the parameter that must be given when
-// activating @action.
-//
-// When activating the action using g_action_activate(), the #GVariant given to
-// that function must be of the type returned by this function.
-//
-// In the case that this function returns nil, you must not give any #GVariant,
-// but nil instead.
 func (a action) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
@@ -4257,14 +4227,6 @@ func (a action) ParameterType() *glib.VariantType {
 	return _variantType
 }
 
-// State queries the current state of @action.
-//
-// If the action is not stateful then nil will be returned. If the action is
-// stateful then the type of the return value is the type given by
-// g_action_get_state_type().
-//
-// The return value (if non-nil) should be freed with g_variant_unref() when it
-// is no longer required.
 func (a action) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
@@ -4283,23 +4245,6 @@ func (a action) State() *glib.Variant {
 	return _variant
 }
 
-// StateHint requests a hint about the valid range of values for the state of
-// @action.
-//
-// If nil is returned it either means that the action is not stateful or that
-// there is no hint about the valid range of values for the state of the action.
-//
-// If a #GVariant array is returned then each item in the array is a possible
-// value for the state. If a #GVariant pair (ie: two-tuple) is returned then the
-// tuple specifies the inclusive lower and upper bound of valid values for the
-// state.
-//
-// In any case, the information is merely a hint. It may be possible to have a
-// state value outside of the hinted range and setting a value within the range
-// may fail.
-//
-// The return value (if non-nil) should be freed with g_variant_unref() when it
-// is no longer required.
 func (a action) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
@@ -4318,17 +4263,6 @@ func (a action) StateHint() *glib.Variant {
 	return _variant
 }
 
-// StateType queries the type of the state of @action.
-//
-// If the action is stateful (e.g. created with g_simple_action_new_stateful())
-// then this function returns the Type of the state. This is the type of the
-// initial value given as the state. All calls to g_action_change_state() must
-// give a #GVariant of this type and g_action_get_state() will return a
-// #GVariant of the same type.
-//
-// If the action is not stateful (e.g. created with g_simple_action_new()) then
-// this function will return nil. In that case, g_action_get_state() will return
-// nil and you must not call g_action_change_state().
 func (a action) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
@@ -4738,9 +4672,6 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 	return WrapActionGroup(obj), nil
 }
 
-// ActionAdded emits the Group::action-added signal on @action_group.
-//
-// This function should only be called by Group implementations.
 func (a actionGroup) ActionAdded(actionName string) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4752,10 +4683,6 @@ func (a actionGroup) ActionAdded(actionName string) {
 	C.g_action_group_action_added(_arg0, _arg1)
 }
 
-// ActionEnabledChanged emits the Group::action-enabled-changed signal on
-// @action_group.
-//
-// This function should only be called by Group implementations.
 func (a actionGroup) ActionEnabledChanged(actionName string, enabled bool) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4771,9 +4698,6 @@ func (a actionGroup) ActionEnabledChanged(actionName string, enabled bool) {
 	C.g_action_group_action_enabled_changed(_arg0, _arg1, _arg2)
 }
 
-// ActionRemoved emits the Group::action-removed signal on @action_group.
-//
-// This function should only be called by Group implementations.
 func (a actionGroup) ActionRemoved(actionName string) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4785,10 +4709,6 @@ func (a actionGroup) ActionRemoved(actionName string) {
 	C.g_action_group_action_removed(_arg0, _arg1)
 }
 
-// ActionStateChanged emits the Group::action-state-changed signal on
-// @action_group.
-//
-// This function should only be called by Group implementations.
 func (a actionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4802,35 +4722,6 @@ func (a actionGroup) ActionStateChanged(actionName string, state *glib.Variant) 
 	C.g_action_group_action_state_changed(_arg0, _arg1, _arg2)
 }
 
-// ActivateAction: activate the named action within @action_group.
-//
-// If the action is expecting a parameter, then the correct type of parameter
-// must be given as @parameter. If the action is expecting no parameters then
-// @parameter must be nil. See g_action_group_get_action_parameter_type().
-//
-// If the Group implementation supports asynchronous remote activation over
-// D-Bus, this call may return before the relevant D-Bus traffic has been sent,
-// or any replies have been received. In order to block on such asynchronous
-// activation calls, g_dbus_connection_flush() should be called prior to the
-// code, which depends on the result of the action activation. Without flushing
-// the D-Bus connection, there is no guarantee that the action would have been
-// activated.
-//
-// The following code which runs in a remote app instance, shows an example of a
-// "quit" action being activated on the primary app instance over D-Bus. Here
-// g_dbus_connection_flush() is called before `exit()`. Without
-// g_dbus_connection_flush(), the "quit" action may fail to be activated on the
-// primary instance.
-//
-//    // call "quit" action on primary instance
-//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-//
-//    // make sure the action is activated now
-//    g_dbus_connection_flush (...);
-//
-//    g_debug ("application has been terminated. exiting.");
-//
-//    exit (0);
 func (a actionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4844,17 +4735,6 @@ func (a actionGroup) ActivateAction(actionName string, parameter *glib.Variant) 
 	C.g_action_group_activate_action(_arg0, _arg1, _arg2)
 }
 
-// ChangeActionState: request for the state of the named action within
-// @action_group to be changed to @value.
-//
-// The action must be stateful and @value must be of the correct type. See
-// g_action_group_get_action_state_type().
-//
-// This call merely requests a change. The action may refuse to change its state
-// or may change its state to something other than @value. See
-// g_action_group_get_action_state_hint().
-//
-// If the @value GVariant is floating, it is consumed.
 func (a actionGroup) ChangeActionState(actionName string, value *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4868,11 +4748,6 @@ func (a actionGroup) ChangeActionState(actionName string, value *glib.Variant) {
 	C.g_action_group_change_action_state(_arg0, _arg1, _arg2)
 }
 
-// ActionEnabled checks if the named action within @action_group is currently
-// enabled.
-//
-// An action must be enabled in order to be activated or in order to have its
-// state changed from outside callers.
 func (a actionGroup) ActionEnabled(actionName string) bool {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4893,19 +4768,6 @@ func (a actionGroup) ActionEnabled(actionName string) bool {
 	return _ok
 }
 
-// ActionParameterType queries the type of the parameter that must be given when
-// activating the named action within @action_group.
-//
-// When activating the action using g_action_group_activate_action(), the
-// #GVariant given to that function must be of the type returned by this
-// function.
-//
-// In the case that this function returns nil, you must not give any #GVariant,
-// but nil instead.
-//
-// The parameter type of a particular action will never change but it is
-// possible for an action to be removed and for a new action to be added with
-// the same name but a different parameter type.
 func (a actionGroup) ActionParameterType(actionName string) *glib.VariantType {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4924,15 +4786,6 @@ func (a actionGroup) ActionParameterType(actionName string) *glib.VariantType {
 	return _variantType
 }
 
-// ActionState queries the current state of the named action within
-// @action_group.
-//
-// If the action is not stateful then nil will be returned. If the action is
-// stateful then the type of the return value is the type given by
-// g_action_group_get_action_state_type().
-//
-// The return value (if non-nil) should be freed with g_variant_unref() when it
-// is no longer required.
 func (a actionGroup) ActionState(actionName string) *glib.Variant {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4954,23 +4807,6 @@ func (a actionGroup) ActionState(actionName string) *glib.Variant {
 	return _variant
 }
 
-// ActionStateHint requests a hint about the valid range of values for the state
-// of the named action within @action_group.
-//
-// If nil is returned it either means that the action is not stateful or that
-// there is no hint about the valid range of values for the state of the action.
-//
-// If a #GVariant array is returned then each item in the array is a possible
-// value for the state. If a #GVariant pair (ie: two-tuple) is returned then the
-// tuple specifies the inclusive lower and upper bound of valid values for the
-// state.
-//
-// In any case, the information is merely a hint. It may be possible to have a
-// state value outside of the hinted range and setting a value within the range
-// may fail.
-//
-// The return value (if non-nil) should be freed with g_variant_unref() when it
-// is no longer required.
 func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -4992,21 +4828,6 @@ func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
 	return _variant
 }
 
-// ActionStateType queries the type of the state of the named action within
-// @action_group.
-//
-// If the action is stateful then this function returns the Type of the state.
-// All calls to g_action_group_change_action_state() must give a #GVariant of
-// this type and g_action_group_get_action_state() will return a #GVariant of
-// the same type.
-//
-// If the action is not stateful then this function will return nil. In that
-// case, g_action_group_get_action_state() will return nil and you must not call
-// g_action_group_change_action_state().
-//
-// The state type of a particular action will never change but it is possible
-// for an action to be removed and for a new action to be added with the same
-// name but a different state type.
 func (a actionGroup) ActionStateType(actionName string) *glib.VariantType {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -5025,7 +4846,6 @@ func (a actionGroup) ActionStateType(actionName string) *glib.VariantType {
 	return _variantType
 }
 
-// HasAction checks if the named action exists within @action_group.
 func (a actionGroup) HasAction(actionName string) bool {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -5046,10 +4866,6 @@ func (a actionGroup) HasAction(actionName string) bool {
 	return _ok
 }
 
-// ListActions lists the actions contained within @action_group.
-//
-// The caller is responsible for freeing the list with g_strfreev() when it is
-// no longer required.
 func (a actionGroup) ListActions() []string {
 	var _arg0 *C.GActionGroup // out
 	var _cret **C.gchar
@@ -5078,32 +4894,6 @@ func (a actionGroup) ListActions() []string {
 	return _utf8s
 }
 
-// QueryAction queries all aspects of the named action within an @action_group.
-//
-// This function acquires the information available from
-// g_action_group_has_action(), g_action_group_get_action_enabled(),
-// g_action_group_get_action_parameter_type(),
-// g_action_group_get_action_state_type(),
-// g_action_group_get_action_state_hint() and g_action_group_get_action_state()
-// with a single function call.
-//
-// This provides two main benefits.
-//
-// The first is the improvement in efficiency that comes with not having to
-// perform repeated lookups of the action in order to discover different things
-// about it. The second is that implementing Group can now be done by only
-// overriding this one virtual function.
-//
-// The interface provides a default implementation of this function that calls
-// the individual functions, as required, to fetch the information. The
-// interface also provides default implementations of those functions that call
-// this function. All implementations, therefore, must override either this
-// function or all of the others.
-//
-// If the action exists, true is returned and any of the requested fields (as
-// indicated by having a non-nil reference passed in) are filled. If the action
-// doesn't exist, false is returned and the fields may or may not have been
-// modified.
 func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -5205,12 +4995,6 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 	return WrapActionMap(obj), nil
 }
 
-// AddAction adds an action to the @action_map.
-//
-// If the action map already contains an action with the same name as @action
-// then the old action is dropped from the action map.
-//
-// The action map takes its own reference on @action.
 func (a actionMap) AddAction(action Action) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
@@ -5221,9 +5005,6 @@ func (a actionMap) AddAction(action Action) {
 	C.g_action_map_add_action(_arg0, _arg1)
 }
 
-// LookupAction looks up the action with the name @action_name in @action_map.
-//
-// If no such action exists, returns nil.
 func (a actionMap) LookupAction(actionName string) Action {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
@@ -5242,9 +5023,6 @@ func (a actionMap) LookupAction(actionName string) Action {
 	return _action
 }
 
-// RemoveAction removes the named action from the action map.
-//
-// If no action of this name is in the map then nothing happens.
 func (a actionMap) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
@@ -5483,9 +5261,6 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 	return WrapAppInfo(obj), nil
 }
 
-// AddSupportsType adds a content type to the application information to
-// indicate the application is capable of opening files with the given content
-// type.
 func (a appInfo) AddSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -5504,8 +5279,6 @@ func (a appInfo) AddSupportsType(contentType string) error {
 	return _goerr
 }
 
-// CanDelete obtains the information whether the Info can be deleted. See
-// g_app_info_delete().
 func (a appInfo) CanDelete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -5523,8 +5296,6 @@ func (a appInfo) CanDelete() bool {
 	return _ok
 }
 
-// CanRemoveSupportsType checks if a supported content type can be removed from
-// an application.
 func (a appInfo) CanRemoveSupportsType() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -5542,11 +5313,6 @@ func (a appInfo) CanRemoveSupportsType() bool {
 	return _ok
 }
 
-// Delete tries to delete a Info.
-//
-// On some platforms, there may be a difference between user-defined Infos which
-// can be deleted, and system-wide ones which cannot. See
-// g_app_info_can_delete().
 func (a appInfo) Delete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -5564,7 +5330,6 @@ func (a appInfo) Delete() bool {
 	return _ok
 }
 
-// Dup creates a duplicate of a Info.
 func (a appInfo) Dup() AppInfo {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GAppInfo // in
@@ -5580,11 +5345,6 @@ func (a appInfo) Dup() AppInfo {
 	return _appInfo
 }
 
-// Equal checks if two Infos are equal.
-//
-// Note that the check *may not* compare each individual field, and only does an
-// identity check. In case detecting changes in the contents is needed, program
-// code must additionally compare relevant fields.
 func (a appInfo) Equal(appinfo2 AppInfo) bool {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.GAppInfo // out
@@ -5604,7 +5364,6 @@ func (a appInfo) Equal(appinfo2 AppInfo) bool {
 	return _ok
 }
 
-// Commandline gets the commandline with which the application will be started.
 func (a appInfo) Commandline() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -5620,7 +5379,6 @@ func (a appInfo) Commandline() string {
 	return _filename
 }
 
-// Description gets a human-readable description of an installed application.
 func (a appInfo) Description() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -5636,8 +5394,6 @@ func (a appInfo) Description() string {
 	return _utf8
 }
 
-// DisplayName gets the display name of the application. The display name is
-// often more descriptive to the user than the name itself.
 func (a appInfo) DisplayName() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -5653,7 +5409,6 @@ func (a appInfo) DisplayName() string {
 	return _utf8
 }
 
-// Executable gets the executable's name for the installed application.
 func (a appInfo) Executable() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -5669,7 +5424,6 @@ func (a appInfo) Executable() string {
 	return _filename
 }
 
-// Icon gets the icon for the application.
 func (a appInfo) Icon() Icon {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GIcon    // in
@@ -5685,12 +5439,6 @@ func (a appInfo) Icon() Icon {
 	return _icon
 }
 
-// ID gets the ID of an application. An id is a string that identifies the
-// application. The exact format of the id is platform dependent. For instance,
-// on Unix this is the desktop file id from the xdg menu specification.
-//
-// Note that the returned ID may be nil, depending on how the @appinfo has been
-// constructed.
 func (a appInfo) ID() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -5706,7 +5454,6 @@ func (a appInfo) ID() string {
 	return _utf8
 }
 
-// Name gets the installed name of the application.
 func (a appInfo) Name() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -5722,11 +5469,6 @@ func (a appInfo) Name() string {
 	return _utf8
 }
 
-// SupportedTypes retrieves the list of content types that @app_info claims to
-// support. If this information is not provided by the environment, this
-// function will return nil. This function does not take in consideration
-// associations added with g_app_info_add_supports_type(), but only those
-// exported directly by the application.
 func (a appInfo) SupportedTypes() []string {
 	var _arg0 *C.GAppInfo // out
 	var _cret **C.char
@@ -5754,7 +5496,6 @@ func (a appInfo) SupportedTypes() []string {
 	return _utf8s
 }
 
-// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
 func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
@@ -5772,7 +5513,6 @@ func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// RemoveSupportsType removes a supported type from an application, if possible.
 func (a appInfo) RemoveSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -5791,8 +5531,6 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 	return _goerr
 }
 
-// SetAsDefaultForExtension sets the application as the default handler for the
-// given file extension.
 func (a appInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -5811,8 +5549,6 @@ func (a appInfo) SetAsDefaultForExtension(extension string) error {
 	return _goerr
 }
 
-// SetAsDefaultForType sets the application as the default handler for a given
-// type.
 func (a appInfo) SetAsDefaultForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -5831,10 +5567,6 @@ func (a appInfo) SetAsDefaultForType(contentType string) error {
 	return _goerr
 }
 
-// SetAsLastUsedForType sets the application as the last used application for a
-// given type. This will make the application appear as first in the list
-// returned by g_app_info_get_recommended_for_type(), regardless of the default
-// application for that content type.
 func (a appInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -5853,8 +5585,6 @@ func (a appInfo) SetAsLastUsedForType(contentType string) error {
 	return _goerr
 }
 
-// ShouldShow checks if the application info should be shown in menus that list
-// available applications.
 func (a appInfo) ShouldShow() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -5872,7 +5602,6 @@ func (a appInfo) ShouldShow() bool {
 	return _ok
 }
 
-// SupportsFiles checks if the application accepts files as arguments.
 func (a appInfo) SupportsFiles() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -5890,8 +5619,6 @@ func (a appInfo) SupportsFiles() bool {
 	return _ok
 }
 
-// SupportsUris checks if the application supports reading files and directories
-// from URIs.
 func (a appInfo) SupportsUris() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -6046,8 +5773,6 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 	return WrapAsyncInitable(obj), nil
 }
 
-// InitFinish finishes asynchronous initialization and returns the result. See
-// g_async_initable_init_async().
 func (i asyncInitable) InitFinish(res AsyncResult) error {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
@@ -6065,8 +5790,6 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 	return _goerr
 }
 
-// NewFinish finishes the async construction for the various
-// g_async_initable_new calls, returning the created object or nil on error.
 func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
@@ -6211,7 +5934,6 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 	return WrapAsyncResult(obj), nil
 }
 
-// SourceObject gets the source object from a Result.
 func (r asyncResult) SourceObject() gextras.Objector {
 	var _arg0 *C.GAsyncResult // out
 	var _cret *C.GObject      // in
@@ -6227,14 +5949,6 @@ func (r asyncResult) SourceObject() gextras.Objector {
 	return _object
 }
 
-// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
-// g_simple_async_result_propagate_error(). Otherwise it returns false.
-//
-// This can be used for legacy error handling in async *_finish() wrapper
-// functions that traditionally handled AsyncResult error returns themselves
-// rather than calling into the virtual method. This should not be used in new
-// code; Result errors that are set by virtual methods should also be extracted
-// by virtual methods, to enable subclasses to chain up correctly.
 func (r asyncResult) LegacyPropagateError() error {
 	var _arg0 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -6458,83 +6172,6 @@ func marshalConverter(p uintptr) (interface{}, error) {
 	return WrapConverter(obj), nil
 }
 
-// Convert: this is the main operation used when converting data. It is to be
-// called multiple times in a loop, and each time it will do some work, i.e.
-// producing some output (in @outbuf) or consuming some input (from @inbuf) or
-// both. If its not possible to do any work an error is returned.
-//
-// Note that a single call may not consume all input (or any input at all). Also
-// a call may produce output even if given no input, due to state stored in the
-// converter producing output.
-//
-// If any data was either produced or consumed, and then an error happens, then
-// only the successful conversion is reported and the error is returned on the
-// next call.
-//
-// A full conversion loop involves calling this method repeatedly, each time
-// giving it new input and space output space. When there is no more input data
-// after the data in @inbuf, the flag G_CONVERTER_INPUT_AT_END must be set. The
-// loop will be (unless some error happens) returning G_CONVERTER_CONVERTED each
-// time until all data is consumed and all output is produced, then
-// G_CONVERTER_FINISHED is returned instead. Note, that G_CONVERTER_FINISHED may
-// be returned even if G_CONVERTER_INPUT_AT_END is not set, for instance in a
-// decompression converter where the end of data is detectable from the data
-// (and there might even be other data after the end of the compressed data).
-//
-// When some data has successfully been converted @bytes_read and is set to the
-// number of bytes read from @inbuf, and @bytes_written is set to indicate how
-// many bytes was written to @outbuf. If there are more data to output or
-// consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
-// G_CONVERTER_CONVERTED is returned, and if no more data is to be output then
-// G_CONVERTER_FINISHED is returned.
-//
-// On error G_CONVERTER_ERROR is returned and @error is set accordingly. Some
-// errors need special handling:
-//
-// G_IO_ERROR_NO_SPACE is returned if there is not enough space to write the
-// resulting converted data, the application should call the function again with
-// a larger @outbuf to continue.
-//
-// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to fully
-// determine what the conversion should produce, and the
-// G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with an
-// incomplete multibyte sequence when converting text, or when a regexp matches
-// up to the end of the input (and may match further input). It may also happen
-// when @inbuf_size is zero and there is no more data to produce.
-//
-// When this happens the application should read more input and then call the
-// function again. If further input shows that there is no more data call the
-// function again with the same data but with the G_CONVERTER_INPUT_AT_END flag
-// set. This may cause the conversion to finish as e.g. in the regexp match case
-// (or, to fail again with G_IO_ERROR_PARTIAL_INPUT in e.g. a charset conversion
-// where the input is actually partial).
-//
-// After g_converter_convert() has returned G_CONVERTER_FINISHED the converter
-// object is in an invalid state where its not allowed to call
-// g_converter_convert() anymore. At this time you can only free the object or
-// call g_converter_reset() to reset it to the initial state.
-//
-// If the flag G_CONVERTER_FLUSH is set then conversion is modified to try to
-// write out all internal state to the output. The application has to call the
-// function multiple times with the flag set, and when the available input has
-// been consumed and all internal state has been produced then
-// G_CONVERTER_FLUSHED (or G_CONVERTER_FINISHED if really at the end) is
-// returned instead of G_CONVERTER_CONVERTED. This is somewhat similar to what
-// happens at the end of the input stream, but done in the middle of the data.
-//
-// This has different meanings for different conversions. For instance in a
-// compression converter it would mean that we flush all the compression state
-// into output such that if you uncompress the compressed data you get back all
-// the input data. Doing this may make the final file larger due to padding
-// though. Another example is a regexp conversion, where if you at the end of
-// the flushed data have a match, but there is also a potential longer match. In
-// the non-flushed case we would ask for more input, but when flushing we treat
-// this as the end of input and do the match.
-//
-// Flushing is not always possible (like if a charset converter flushes at a
-// partial multibyte sequence). Converters are supposed to try to produce as
-// much output as possible and then return an error (typically
-// G_IO_ERROR_PARTIAL_INPUT).
 func (c converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	var _arg0 *C.GConverter // out
 	var _arg1 *C.void
@@ -6569,9 +6206,6 @@ func (c converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (b
 	return _bytesRead, _bytesWritten, _converterResult, _goerr
 }
 
-// Reset resets all internal state in the converter, making it behave as if it
-// was just created. If the converter has any internal state that would produce
-// output then that output is lost.
 func (c converter) Reset() {
 	var _arg0 *C.GConverter // out
 
@@ -6632,7 +6266,6 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 	return WrapDBusInterface(obj), nil
 }
 
-// DupObject gets the BusObject that @interface_ belongs to, if any.
 func (i dBusInterface) DupObject() DBusObject {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
@@ -6648,8 +6281,6 @@ func (i dBusInterface) DupObject() DBusObject {
 	return _dBusObject
 }
 
-// Info gets D-Bus introspection information for the D-Bus interface implemented
-// by @interface_.
 func (i dBusInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
@@ -6665,9 +6296,6 @@ func (i dBusInterface) Info() *DBusInterfaceInfo {
 	return _dBusInterfaceInfo
 }
 
-// SetObject sets the BusObject for @interface_ to @object.
-//
-// Note that @interface_ will hold a weak reference to @object.
 func (i dBusInterface) SetObject(object DBusObject) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
@@ -6726,8 +6354,6 @@ func marshalDBusObject(p uintptr) (interface{}, error) {
 	return WrapDBusObject(obj), nil
 }
 
-// Interface gets the D-Bus interface with name @interface_name associated with
-// @object, if any.
 func (o dBusObject) Interface(interfaceName string) DBusInterface {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
@@ -6746,7 +6372,6 @@ func (o dBusObject) Interface(interfaceName string) DBusInterface {
 	return _dBusInterface
 }
 
-// ObjectPath gets the object path for @object.
 func (o dBusObject) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
@@ -6823,8 +6448,6 @@ func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManager(obj), nil
 }
 
-// Interface gets the interface proxy for @interface_name at @object_path, if
-// any.
 func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DBusInterface {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
@@ -6846,7 +6469,6 @@ func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DB
 	return _dBusInterface
 }
 
-// Object gets the BusObjectProxy at @object_path, if any.
 func (m dBusObjectManager) Object(objectPath string) DBusObject {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
@@ -6865,7 +6487,6 @@ func (m dBusObjectManager) Object(objectPath string) DBusObject {
 	return _dBusObject
 }
 
-// ObjectPath gets the object path that @manager is for.
 func (m dBusObjectManager) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.gchar              // in
@@ -7242,43 +6863,6 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 	return WrapDatagramBased(obj), nil
 }
 
-// ConditionCheck checks on the readiness of @datagram_based to perform
-// operations. The operations specified in @condition are checked for and masked
-// against the currently-satisfied conditions on @datagram_based. The result is
-// returned.
-//
-// G_IO_IN will be set in the return value if data is available to read with
-// g_datagram_based_receive_messages(), or if the connection is closed remotely
-// (EOS); and if the datagram_based has not been closed locally using some
-// implementation-specific method (such as g_socket_close() or
-// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
-//
-// If the connection is shut down or closed (by calling g_socket_close() or
-// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
-// example), all calls to this function will return G_IO_ERROR_CLOSED.
-//
-// G_IO_OUT will be set if it is expected that at least one byte can be sent
-// using g_datagram_based_send_messages() without blocking. It will not be set
-// if the datagram_based has been closed locally.
-//
-// G_IO_HUP will be set if the connection has been closed locally.
-//
-// G_IO_ERR will be set if there was an asynchronous error in transmitting data
-// previously enqueued using g_datagram_based_send_messages().
-//
-// Note that on Windows, it is possible for an operation to return
-// G_IO_ERROR_WOULD_BLOCK even immediately after
-// g_datagram_based_condition_check() has claimed that the Based is ready for
-// writing. Rather than calling g_datagram_based_condition_check() and then
-// writing to the Based if it succeeds, it is generally better to simply try
-// writing right away, and try again later if the initial attempt returns
-// G_IO_ERROR_WOULD_BLOCK.
-//
-// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
-// conditions will always be set in the output if they are true. Apart from
-// these flags, the output is guaranteed to be masked by @condition.
-//
-// This call never blocks.
 func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 C.GIOCondition    // out
@@ -7296,12 +6880,6 @@ func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOConditi
 	return _ioCondition
 }
 
-// ConditionWait waits for up to @timeout microseconds for condition to become
-// true on @datagram_based. If the condition is met, true is returned.
-//
-// If @cancellable is cancelled before the condition is met, or if @timeout is
-// reached before the condition is met, then false is returned and @error is set
-// appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
 func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 C.GIOCondition    // out
@@ -7323,53 +6901,6 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 	return _goerr
 }
 
-// ReceiveMessages: receive one or more data messages from @datagram_based in
-// one go.
-//
-// @messages must point to an array of Message structs and @num_messages must be
-// the length of this array. Each Message contains a pointer to an array of
-// Vector structs describing the buffers that the data received in each message
-// will be written to.
-//
-// @flags modify how all messages are received. The commonly available arguments
-// for this are available in the MsgFlags enum, but the values there are the
-// same as the system values, and the flags are passed in as-is, so you can pass
-// in system-specific flags too. These flags affect the overall receive
-// operation. Flags affecting individual messages are returned in Message.flags.
-//
-// The other members of Message are treated as described in its documentation.
-//
-// If @timeout is negative the call will block until @num_messages have been
-// received, the connection is closed remotely (EOS), @cancellable is cancelled,
-// or an error occurs.
-//
-// If @timeout is 0 the call will return up to @num_messages without blocking,
-// or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the operating system
-// to be received.
-//
-// If @timeout is positive the call will block on the same conditions as if
-// @timeout were negative. If the timeout is reached before any messages are
-// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
-// number of messages received before timing out. (Note: This is effectively the
-// behaviour of `MSG_WAITFORONE` with recvmmsg().)
-//
-// To be notified when messages are available, wait for the G_IO_IN condition.
-// Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
-// g_datagram_based_receive_messages() even if you were previously notified of a
-// G_IO_IN condition.
-//
-// If the remote peer closes the connection, any messages queued in the
-// underlying receive buffer will be returned, and subsequent calls to
-// g_datagram_based_receive_messages() will return 0 (with no error set).
-//
-// If the connection is shut down or closed (by calling g_socket_close() or
-// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
-// example), all calls to this function will return G_IO_ERROR_CLOSED.
-//
-// On error -1 is returned and @error is set accordingly. An error will only be
-// returned if zero messages could be received; otherwise the number of messages
-// successfully received before the error will be returned. If @cancellable is
-// cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
 func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 *C.GInputMessage
@@ -7398,45 +6929,6 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	return _gint, _goerr
 }
 
-// SendMessages: send one or more data messages from @datagram_based in one go.
-//
-// @messages must point to an array of Message structs and @num_messages must be
-// the length of this array. Each Message contains an address to send the data
-// to, and a pointer to an array of Vector structs to describe the buffers that
-// the data to be sent for each message will be gathered from.
-//
-// @flags modify how the message is sent. The commonly available arguments for
-// this are available in the MsgFlags enum, but the values there are the same as
-// the system values, and the flags are passed in as-is, so you can pass in
-// system-specific flags too.
-//
-// The other members of Message are treated as described in its documentation.
-//
-// If @timeout is negative the call will block until @num_messages have been
-// sent, @cancellable is cancelled, or an error occurs.
-//
-// If @timeout is 0 the call will send up to @num_messages without blocking, or
-// will return G_IO_ERROR_WOULD_BLOCK if there is no space to send messages.
-//
-// If @timeout is positive the call will block on the same conditions as if
-// @timeout were negative. If the timeout is reached before any messages are
-// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the number
-// of messages sent before timing out.
-//
-// To be notified when messages can be sent, wait for the G_IO_OUT condition.
-// Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
-// g_datagram_based_send_messages() even if you were previously notified of a
-// G_IO_OUT condition. (On Windows in particular, this is very common due to the
-// way the underlying APIs work.)
-//
-// If the connection is shut down or closed (by calling g_socket_close() or
-// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
-// example), all calls to this function will return G_IO_ERROR_CLOSED.
-//
-// On error -1 is returned and @error is set accordingly. An error will only be
-// returned if zero messages could be sent; otherwise the number of messages
-// successfully sent before the error will be returned. If @cancellable is
-// cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
 func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 *C.GOutputMessage
@@ -7516,13 +7008,6 @@ func marshalDesktopAppInfoLookup(p uintptr) (interface{}, error) {
 	return WrapDesktopAppInfoLookup(obj), nil
 }
 
-// DefaultForURIScheme gets the default application for launching applications
-// using this URI scheme for a particular AppInfoLookup implementation.
-//
-// The AppInfoLookup interface and this function is used to implement
-// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There is no
-// reason for applications to use it directly. Applications should use
-// g_app_info_get_default_for_uri_scheme().
 func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
 	var _arg0 *C.GDesktopAppInfoLookup // out
 	var _arg1 *C.char                  // out
@@ -7710,7 +7195,6 @@ func marshalDrive(p uintptr) (interface{}, error) {
 	return WrapDrive(obj), nil
 }
 
-// CanEject checks if a drive can be ejected.
 func (d drive) CanEject() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -7728,7 +7212,6 @@ func (d drive) CanEject() bool {
 	return _ok
 }
 
-// CanPollForMedia checks if a drive can be polled for media changes.
 func (d drive) CanPollForMedia() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -7746,7 +7229,6 @@ func (d drive) CanPollForMedia() bool {
 	return _ok
 }
 
-// CanStart checks if a drive can be started.
 func (d drive) CanStart() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -7764,7 +7246,6 @@ func (d drive) CanStart() bool {
 	return _ok
 }
 
-// CanStartDegraded checks if a drive can be started degraded.
 func (d drive) CanStartDegraded() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -7782,7 +7263,6 @@ func (d drive) CanStartDegraded() bool {
 	return _ok
 }
 
-// CanStop checks if a drive can be stopped.
 func (d drive) CanStop() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -7800,7 +7280,6 @@ func (d drive) CanStop() bool {
 	return _ok
 }
 
-// EjectFinish finishes ejecting a drive.
 func (d drive) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -7818,9 +7297,6 @@ func (d drive) EjectFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EjectWithOperationFinish finishes ejecting a drive. If any errors occurred
-// during the operation, @error will be set to contain the errors and false will
-// be returned.
 func (d drive) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -7838,8 +7314,6 @@ func (d drive) EjectWithOperationFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
-// g_drive_get_identifier() to obtain the identifiers themselves.
 func (d drive) EnumerateIdentifiers() []string {
 	var _arg0 *C.GDrive // out
 	var _cret **C.char
@@ -7868,7 +7342,6 @@ func (d drive) EnumerateIdentifiers() []string {
 	return _utf8s
 }
 
-// Icon gets the icon for @drive.
 func (d drive) Icon() Icon {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
@@ -7884,8 +7357,6 @@ func (d drive) Icon() Icon {
 	return _icon
 }
 
-// Identifier gets the identifier of the given kind for @drive. The only
-// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
 func (d drive) Identifier(kind string) string {
 	var _arg0 *C.GDrive // out
 	var _arg1 *C.char   // out
@@ -7905,7 +7376,6 @@ func (d drive) Identifier(kind string) string {
 	return _utf8
 }
 
-// Name gets the name of @drive.
 func (d drive) Name() string {
 	var _arg0 *C.GDrive // out
 	var _cret *C.char   // in
@@ -7922,7 +7392,6 @@ func (d drive) Name() string {
 	return _utf8
 }
 
-// SortKey gets the sort key for @drive, if any.
 func (d drive) SortKey() string {
 	var _arg0 *C.GDrive // out
 	var _cret *C.gchar  // in
@@ -7938,7 +7407,6 @@ func (d drive) SortKey() string {
 	return _utf8
 }
 
-// StartStopType gets a hint about how a drive can be started/stopped.
 func (d drive) StartStopType() DriveStartStopType {
 	var _arg0 *C.GDrive             // out
 	var _cret C.GDriveStartStopType // in
@@ -7954,7 +7422,6 @@ func (d drive) StartStopType() DriveStartStopType {
 	return _driveStartStopType
 }
 
-// SymbolicIcon gets the icon for @drive.
 func (d drive) SymbolicIcon() Icon {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
@@ -7970,9 +7437,6 @@ func (d drive) SymbolicIcon() Icon {
 	return _icon
 }
 
-// HasMedia checks if the @drive has media. Note that the OS may not be polling
-// the drive for media changes; see g_drive_is_media_check_automatic() for more
-// details.
 func (d drive) HasMedia() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -7990,7 +7454,6 @@ func (d drive) HasMedia() bool {
 	return _ok
 }
 
-// HasVolumes: check if @drive has any mountable volumes.
 func (d drive) HasVolumes() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -8008,8 +7471,6 @@ func (d drive) HasVolumes() bool {
 	return _ok
 }
 
-// IsMediaCheckAutomatic checks if @drive is capable of automatically detecting
-// media changes.
 func (d drive) IsMediaCheckAutomatic() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -8027,7 +7488,6 @@ func (d drive) IsMediaCheckAutomatic() bool {
 	return _ok
 }
 
-// IsMediaRemovable checks if the @drive supports removable media.
 func (d drive) IsMediaRemovable() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -8045,8 +7505,6 @@ func (d drive) IsMediaRemovable() bool {
 	return _ok
 }
 
-// IsRemovable checks if the #GDrive and/or its media is considered removable by
-// the user. See g_drive_is_media_removable().
 func (d drive) IsRemovable() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -8064,8 +7522,6 @@ func (d drive) IsRemovable() bool {
 	return _ok
 }
 
-// PollForMediaFinish finishes an operation started with
-// g_drive_poll_for_media() on a drive.
 func (d drive) PollForMediaFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -8083,7 +7539,6 @@ func (d drive) PollForMediaFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// StartFinish finishes starting a drive.
 func (d drive) StartFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -8101,7 +7556,6 @@ func (d drive) StartFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// StopFinish finishes stopping a drive.
 func (d drive) StopFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -8163,7 +7617,6 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 	return WrapDTLSClientConnection(obj), nil
 }
 
-// ServerIdentity gets @conn's expected server identity
 func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
@@ -8179,7 +7632,6 @@ func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
 	return _socketConnectable
 }
 
-// ValidationFlags gets @conn's validation flags
 func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in
@@ -8195,10 +7647,6 @@ func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// SetServerIdentity sets @conn's expected server identity, which is used both
-// to tell servers on virtual hosts which certificate to present, and also to
-// let @conn know what name to look for in the certificate when performing
-// G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 func (c dtlsClientConnection) SetServerIdentity(identity SocketConnectable) {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 *C.GSocketConnectable    // out
@@ -8209,9 +7657,6 @@ func (c dtlsClientConnection) SetServerIdentity(identity SocketConnectable) {
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
 }
 
-// SetValidationFlags sets @conn's validation flags, to override the default set
-// of checks performed when validating a server certificate. By default,
-// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
 func (c dtlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 C.GTlsCertificateFlags   // out
@@ -8535,24 +7980,6 @@ func marshalDTLSConnection(p uintptr) (interface{}, error) {
 	return WrapDTLSConnection(obj), nil
 }
 
-// Close: close the DTLS connection. This is equivalent to calling
-// g_dtls_connection_shutdown() to shut down both sides of the connection.
-//
-// Closing a Connection waits for all buffered but untransmitted data to be sent
-// before it completes. It then sends a `close_notify` DTLS alert to the peer
-// and may wait for a `close_notify` to be received from the peer. It does not
-// close the underlying Connection:base-socket; that must be closed separately.
-//
-// Once @conn is closed, all other operations will return G_IO_ERROR_CLOSED.
-// Closing a Connection multiple times will not return an error.
-//
-// Connections will be automatically closed when the last reference is dropped,
-// but you might want to call this function to make sure resources are released
-// as early as possible.
-//
-// If @cancellable is cancelled, the Connection may be left partially-closed and
-// any pending untransmitted data may be lost. Call g_dtls_connection_close()
-// again to complete closing the Connection.
 func (c dtlsConnection) Close(cancellable Cancellable) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -8570,8 +7997,6 @@ func (c dtlsConnection) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-// CloseFinish: finish an asynchronous TLS close operation. See
-// g_dtls_connection_close() for more information.
 func (c dtlsConnection) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -8589,8 +8014,6 @@ func (c dtlsConnection) CloseFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EmitAcceptCertificate: used by Connection implementations to emit the
-// Connection::accept-certificate signal.
 func (c dtlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool {
 	var _arg0 *C.GDtlsConnection     // out
 	var _arg1 *C.GTlsCertificate     // out
@@ -8612,8 +8035,6 @@ func (c dtlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TL
 	return _ok
 }
 
-// Certificate gets @conn's certificate, as set by
-// g_dtls_connection_set_certificate().
 func (c dtlsConnection) Certificate() TLSCertificate {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsCertificate // in
@@ -8629,19 +8050,6 @@ func (c dtlsConnection) Certificate() TLSCertificate {
 	return _tlsCertificate
 }
 
-// ChannelBindingData: query the TLS backend for TLS channel binding data of
-// @type for @conn.
-//
-// This call retrieves TLS channel binding data as specified in RFC 5056
-// (https://tools.ietf.org/html/rfc5056), RFC 5929
-// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data is
-// returned in @data. The @data is resized by the callee using Array buffer
-// management and will be freed when the @data is destroyed by
-// g_byte_array_unref(). If @data is nil, it will only check whether TLS backend
-// is able to fetch the data (e.g. whether @type is supported by the TLS
-// backend). It does not guarantee that the data will be available though. That
-// could happen if TLS connection does not support @type or the binding data is
-// not available yet due to additional negotiation or input required.
 func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GDtlsConnection       // out
 	var _arg1 C.GTlsChannelBindingType // out
@@ -8674,8 +8082,6 @@ func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, e
 	return _data, _goerr
 }
 
-// Database gets the certificate database that @conn uses to verify peer
-// certificates. See g_dtls_connection_set_database().
 func (c dtlsConnection) Database() TLSDatabase {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsDatabase    // in
@@ -8691,9 +8097,6 @@ func (c dtlsConnection) Database() TLSDatabase {
 	return _tlsDatabase
 }
 
-// Interaction: get the object that will be used to interact with the user. It
-// will be used for things like prompting the user for passwords. If nil is
-// returned, then no user interaction will occur for this connection.
 func (c dtlsConnection) Interaction() TLSInteraction {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsInteraction // in
@@ -8709,13 +8112,6 @@ func (c dtlsConnection) Interaction() TLSInteraction {
 	return _tlsInteraction
 }
 
-// NegotiatedProtocol gets the name of the application-layer protocol negotiated
-// during the handshake.
-//
-// If the peer did not use the ALPN extension, or did not advertise a protocol
-// that matched one of @conn's protocols, or the TLS backend does not support
-// ALPN, then this will be nil. See
-// g_dtls_connection_set_advertised_protocols().
 func (c dtlsConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.gchar           // in
@@ -8731,9 +8127,6 @@ func (c dtlsConnection) NegotiatedProtocol() string {
 	return _utf8
 }
 
-// PeerCertificate gets @conn's peer's certificate after the handshake has
-// completed or failed. (It is not set during the emission of
-// Connection::accept-certificate.)
 func (c dtlsConnection) PeerCertificate() TLSCertificate {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsCertificate // in
@@ -8749,9 +8142,6 @@ func (c dtlsConnection) PeerCertificate() TLSCertificate {
 	return _tlsCertificate
 }
 
-// PeerCertificateErrors gets the errors associated with validating @conn's
-// peer's certificate, after the handshake has completed or failed. (It is not
-// set during the emission of Connection::accept-certificate.)
 func (c dtlsConnection) PeerCertificateErrors() TLSCertificateFlags {
 	var _arg0 *C.GDtlsConnection     // out
 	var _cret C.GTlsCertificateFlags // in
@@ -8767,8 +8157,6 @@ func (c dtlsConnection) PeerCertificateErrors() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// RehandshakeMode gets @conn rehandshaking mode. See
-// g_dtls_connection_set_rehandshake_mode() for details.
 func (c dtlsConnection) RehandshakeMode() TLSRehandshakeMode {
 	var _arg0 *C.GDtlsConnection    // out
 	var _cret C.GTlsRehandshakeMode // in
@@ -8784,9 +8172,6 @@ func (c dtlsConnection) RehandshakeMode() TLSRehandshakeMode {
 	return _tlsRehandshakeMode
 }
 
-// RequireCloseNotify tests whether or not @conn expects a proper TLS close
-// notification when the connection is closed. See
-// g_dtls_connection_set_require_close_notify() for details.
 func (c dtlsConnection) RequireCloseNotify() bool {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret C.gboolean         // in
@@ -8804,30 +8189,6 @@ func (c dtlsConnection) RequireCloseNotify() bool {
 	return _ok
 }
 
-// Handshake attempts a TLS handshake on @conn.
-//
-// On the client side, it is never necessary to call this method; although the
-// connection needs to perform a handshake after connecting, Connection will
-// handle this for you automatically when you try to send or receive data on the
-// connection. You can call g_dtls_connection_handshake() manually if you want
-// to know whether the initial handshake succeeded or failed (as opposed to just
-// immediately trying to use @conn to read or write, in which case, if it fails,
-// it may not be possible to tell if it failed before or after completing the
-// handshake), but beware that servers may reject client authentication after
-// the handshake has completed, so a successful handshake does not indicate the
-// connection will be usable.
-//
-// Likewise, on the server side, although a handshake is necessary at the
-// beginning of the communication, you do not need to call this function
-// explicitly unless you want clearer error reporting.
-//
-// Previously, calling g_dtls_connection_handshake() after the initial handshake
-// would trigger a rehandshake; however, this usage was deprecated in GLib 2.60
-// because rehandshaking was removed from the TLS protocol in TLS 1.3. Since
-// GLib 2.64, calling this function after the initial handshake will no longer
-// do anything.
-//
-// Connection::accept_certificate may be emitted during the handshake.
 func (c dtlsConnection) Handshake(cancellable Cancellable) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -8845,8 +8206,6 @@ func (c dtlsConnection) Handshake(cancellable Cancellable) error {
 	return _goerr
 }
 
-// HandshakeFinish: finish an asynchronous TLS handshake operation. See
-// g_dtls_connection_handshake() for more information.
 func (c dtlsConnection) HandshakeFinish(result AsyncResult) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -8864,17 +8223,6 @@ func (c dtlsConnection) HandshakeFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// SetAdvertisedProtocols sets the list of application-layer protocols to
-// advertise that the caller is willing to speak on this connection. The
-// Application-Layer Protocol Negotiation (ALPN) extension will be used to
-// negotiate a compatible protocol with the peer; use
-// g_dtls_connection_get_negotiated_protocol() to find the negotiated protocol
-// after the handshake. Specifying nil for the the value of @protocols will
-// disable ALPN negotiation.
-//
-// See IANA TLS ALPN Protocol IDs
-// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
-// for a list of registered protocol IDs.
 func (c dtlsConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 **C.gchar
@@ -8893,21 +8241,6 @@ func (c dtlsConnection) SetAdvertisedProtocols(protocols []string) {
 	C.g_dtls_connection_set_advertised_protocols(_arg0, _arg1)
 }
 
-// SetCertificate: this sets the certificate that @conn will present to its peer
-// during the TLS handshake. For a ServerConnection, it is mandatory to set
-// this, and that will normally be done at construct time.
-//
-// For a ClientConnection, this is optional. If a handshake fails with
-// G_TLS_ERROR_CERTIFICATE_REQUIRED, that means that the server requires a
-// certificate, and if you try connecting again, you should call this method
-// first. You can call g_dtls_client_connection_get_accepted_cas() on the failed
-// connection to get a list of Certificate Authorities that the server will
-// accept certificates from.
-//
-// (It is also possible that a server will allow the connection with or without
-// a certificate; in that case, if you don't provide a certificate, you can tell
-// that the server requested one by the fact that
-// g_dtls_client_connection_get_accepted_cas() will return non-nil.)
 func (c dtlsConnection) SetCertificate(certificate TLSCertificate) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsCertificate // out
@@ -8918,13 +8251,6 @@ func (c dtlsConnection) SetCertificate(certificate TLSCertificate) {
 	C.g_dtls_connection_set_certificate(_arg0, _arg1)
 }
 
-// SetDatabase sets the certificate database that is used to verify peer
-// certificates. This is set to the default database by default. See
-// g_tls_backend_get_default_database(). If set to nil, then peer certificate
-// validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
-// Connection::accept-certificate will always be emitted on client-side
-// connections, unless that bit is not set in
-// ClientConnection:validation-flags).
 func (c dtlsConnection) SetDatabase(database TLSDatabase) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsDatabase    // out
@@ -8935,12 +8261,6 @@ func (c dtlsConnection) SetDatabase(database TLSDatabase) {
 	C.g_dtls_connection_set_database(_arg0, _arg1)
 }
 
-// SetInteraction: set the object that will be used to interact with the user.
-// It will be used for things like prompting the user for passwords.
-//
-// The @interaction argument will normally be a derived subclass of Interaction.
-// nil can also be provided if no user interaction should occur for this
-// connection.
 func (c dtlsConnection) SetInteraction(interaction TLSInteraction) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsInteraction // out
@@ -8951,10 +8271,6 @@ func (c dtlsConnection) SetInteraction(interaction TLSInteraction) {
 	C.g_dtls_connection_set_interaction(_arg0, _arg1)
 }
 
-// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
-// longer supported and will have no effect. With TLS 1.3, rehandshaking has
-// been removed from the TLS protocol, replaced by separate post-handshake
-// authentication and rekey operations.
 func (c dtlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg1 C.GTlsRehandshakeMode // out
@@ -8965,27 +8281,6 @@ func (c dtlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	C.g_dtls_connection_set_rehandshake_mode(_arg0, _arg1)
 }
 
-// SetRequireCloseNotify sets whether or not @conn expects a proper TLS close
-// notification before the connection is closed. If this is true (the default),
-// then @conn will expect to receive a TLS close notification from its peer
-// before the connection is closed, and will return a G_TLS_ERROR_EOF error if
-// the connection is closed without proper notification (since this may indicate
-// a network error, or man-in-the-middle attack).
-//
-// In some protocols, the application will know whether or not the connection
-// was closed cleanly based on application-level data (because the
-// application-level data includes a length field, or is somehow
-// self-delimiting); in this case, the close notify is redundant and may be
-// omitted. You can use g_dtls_connection_set_require_close_notify() to tell
-// @conn to allow an "unannounced" connection close, in which case the close
-// will show up as a 0-length read, as in a non-TLS Based, and it is up to the
-// application to check that the data has been fully received.
-//
-// Note that this only affects the behavior when the peer closes the connection;
-// when the application calls g_dtls_connection_close_async() on @conn itself,
-// this will send a close notification regardless of the setting of this
-// property. If you explicitly want to do an unclean close, you can close
-// @conn's Connection:base-socket rather than closing @conn itself.
 func (c dtlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 C.gboolean         // out
@@ -8998,22 +8293,6 @@ func (c dtlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	C.g_dtls_connection_set_require_close_notify(_arg0, _arg1)
 }
 
-// Shutdown: shut down part or all of a DTLS connection.
-//
-// If @shutdown_read is true then the receiving side of the connection is shut
-// down, and further reading is disallowed. Subsequent calls to
-// g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
-//
-// If @shutdown_write is true then the sending side of the connection is shut
-// down, and further writing is disallowed. Subsequent calls to
-// g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
-//
-// It is allowed for both @shutdown_read and @shutdown_write to be TRUE — this
-// is equivalent to calling g_dtls_connection_close().
-//
-// If @cancellable is cancelled, the Connection may be left partially-closed and
-// any pending untransmitted data may be lost. Call g_dtls_connection_shutdown()
-// again to complete closing the Connection.
 func (c dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 C.gboolean         // out
@@ -9039,8 +8318,6 @@ func (c dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancella
 	return _goerr
 }
 
-// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
-// g_dtls_connection_shutdown() for more information.
 func (c dtlsConnection) ShutdownFinish(result AsyncResult) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -10545,21 +9822,6 @@ func marshalFile(p uintptr) (interface{}, error) {
 	return WrapFile(obj), nil
 }
 
-// AppendTo gets an output stream for appending data to the file. If the file
-// doesn't already exist it is created.
-//
-// By default files created are generally readable by everyone, but if you pass
-// FILE_CREATE_PRIVATE in @flags the file will be made readable only to the
-// current user, to the level that is supported on the target filesystem.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// Some file systems don't allow all file names, and may return an
-// G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
-// G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
-// too, and depend on what kind of filesystem the file is on.
 func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 C.GFileCreateFlags   // out
@@ -10582,8 +9844,6 @@ func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutp
 	return _fileOutputStream, _goerr
 }
 
-// AppendToFinish finishes an asynchronous file append operation started with
-// g_file_append_to_async().
 func (f file) AppendToFinish(res AsyncResult) (FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -10604,15 +9864,6 @@ func (f file) AppendToFinish(res AsyncResult) (FileOutputStream, error) {
 	return _fileOutputStream, _goerr
 }
 
-// BuildAttributeListForCopy prepares the file attribute query string for
-// copying to @file.
-//
-// This function prepares an attribute query string to be passed to
-// g_file_query_info() to get a list of attributes normally copied with the file
-// (see g_file_copy_attributes() for the detailed description). This function is
-// used by the implementation of g_file_copy_attributes() and is useful when one
-// needs to query and set the attributes in two stages (e.g., for recursive move
-// of a directory).
 func (f file) BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancellable) (string, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 C.GFileCopyFlags // out
@@ -10636,13 +9887,6 @@ func (f file) BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancell
 	return _utf8, _goerr
 }
 
-// CopyAttributes copies the file attributes from @source to @destination.
-//
-// Normally only a subset of the file attributes are copied, those that are
-// copies in a normal file copy operation (which for instance does not include
-// e.g. owner). However if FILE_COPY_ALL_METADATA is specified in @flags, then
-// all the metadata that is possible to copy is copied. This is useful when
-// implementing move by copy + delete source.
 func (s file) CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) error {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GFile         // out
@@ -10664,7 +9908,6 @@ func (s file) CopyAttributes(destination File, flags FileCopyFlags, cancellable 
 	return _goerr
 }
 
-// CopyFinish finishes copying the file started with g_file_copy_async().
 func (f file) CopyFinish(res AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -10682,22 +9925,6 @@ func (f file) CopyFinish(res AsyncResult) error {
 	return _goerr
 }
 
-// Create creates a new file and returns an output stream for writing to it. The
-// file must not already exist.
-//
-// By default files created are generally readable by everyone, but if you pass
-// FILE_CREATE_PRIVATE in @flags the file will be made readable only to the
-// current user, to the level that is supported on the target filesystem.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If a file or directory with this name already exists the G_IO_ERROR_EXISTS
-// error will be returned. Some file systems don't allow all file names, and may
-// return an G_IO_ERROR_INVALID_FILENAME error, and if the name is to long
-// G_IO_ERROR_FILENAME_TOO_LONG will be returned. Other errors are possible too,
-// and depend on what kind of filesystem the file is on.
 func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 C.GFileCreateFlags   // out
@@ -10720,8 +9947,6 @@ func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (FileOutput
 	return _fileOutputStream, _goerr
 }
 
-// CreateFinish finishes an asynchronous file create operation started with
-// g_file_create_async().
 func (f file) CreateFinish(res AsyncResult) (FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -10742,26 +9967,6 @@ func (f file) CreateFinish(res AsyncResult) (FileOutputStream, error) {
 	return _fileOutputStream, _goerr
 }
 
-// CreateReadwrite creates a new file and returns a stream for reading and
-// writing to it. The file must not already exist.
-//
-// By default files created are generally readable by everyone, but if you pass
-// FILE_CREATE_PRIVATE in @flags the file will be made readable only to the
-// current user, to the level that is supported on the target filesystem.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If a file or directory with this name already exists, the G_IO_ERROR_EXISTS
-// error will be returned. Some file systems don't allow all file names, and may
-// return an G_IO_ERROR_INVALID_FILENAME error, and if the name is too long,
-// G_IO_ERROR_FILENAME_TOO_LONG will be returned. Other errors are possible too,
-// and depend on what kind of filesystem the file is on.
-//
-// Note that in many non-local file cases read and write streams are not
-// supported, so make sure you really need to do read and write streaming,
-// rather than just opening for reading or writing.
 func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error) {
 	var _arg0 *C.GFile           // out
 	var _arg1 C.GFileCreateFlags // out
@@ -10784,8 +9989,6 @@ func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (F
 	return _fileIOStream, _goerr
 }
 
-// CreateReadwriteFinish finishes an asynchronous file create operation started
-// with g_file_create_readwrite_async().
 func (f file) CreateReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -10806,26 +10009,6 @@ func (f file) CreateReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 	return _fileIOStream, _goerr
 }
 
-// Delete deletes a file. If the @file is a directory, it will only be deleted
-// if it is empty. This has the same semantics as g_unlink().
-//
-// If @file doesn’t exist, G_IO_ERROR_NOT_FOUND will be returned. This allows
-// for deletion to be implemented avoiding time-of-check to time-of-use races
-// (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
-//
-//    g_autoptr(GError) local_error = NULL;
-//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
-//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-//      {
-//        // deletion failed for some reason other than the file not existing:
-//        // so report the error
-//        g_warning ("Failed to delete s: s",
-//                   g_file_peek_path (my_file), local_error->message);
-//      }
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) Delete(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -10843,7 +10026,6 @@ func (f file) Delete(cancellable Cancellable) error {
 	return _goerr
 }
 
-// DeleteFinish finishes deleting a file started with g_file_delete_async().
 func (f file) DeleteFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -10861,16 +10043,6 @@ func (f file) DeleteFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// Dup duplicates a #GFile handle. This operation does not duplicate the actual
-// file or directory represented by the #GFile; see g_file_copy() if attempting
-// to copy a file.
-//
-// g_file_dup() is useful when a second handle is needed to the same underlying
-// file, for use in a separate thread (#GFile is not thread-safe). For use
-// within the same thread, use g_object_ref() to increment the existing object’s
-// reference count.
-//
-// This call does no blocking I/O.
 func (f file) Dup() File {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
@@ -10886,8 +10058,6 @@ func (f file) Dup() File {
 	return _ret
 }
 
-// EjectMountableFinish finishes an asynchronous eject operation started by
-// g_file_eject_mountable().
 func (f file) EjectMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -10905,8 +10075,6 @@ func (f file) EjectMountableFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EjectMountableWithOperationFinish finishes an asynchronous eject operation
-// started by g_file_eject_mountable_with_operation().
 func (f file) EjectMountableWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -10924,26 +10092,6 @@ func (f file) EjectMountableWithOperationFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EnumerateChildren gets the requested information about the files in a
-// directory. The result is a Enumerator object that will give out Info objects
-// for all the files in the directory.
-//
-// The @attributes value is a string that specifies the file attributes that
-// should be gathered. It is not an error if it's not possible to read a
-// particular requested attribute from a file - it just won't be set.
-// @attributes should be a comma-separated list of attributes or attribute
-// wildcards. The wildcard "*" means all attributes, and a wildcard like
-// "standard::*" means all attributes in the standard namespace. An example
-// attribute query be "standard::*,owner::user". The standard attributes are
-// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
-// If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY error will be
-// returned. Other errors are possible too.
 func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileEnumerator, error) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
@@ -10969,8 +10117,6 @@ func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, can
 	return _fileEnumerator, _goerr
 }
 
-// EnumerateChildrenFinish finishes an async enumerate children operation. See
-// g_file_enumerate_children_async().
 func (f file) EnumerateChildrenFinish(res AsyncResult) (FileEnumerator, error) {
 	var _arg0 *C.GFile           // out
 	var _arg1 *C.GAsyncResult    // out
@@ -10991,12 +10137,6 @@ func (f file) EnumerateChildrenFinish(res AsyncResult) (FileEnumerator, error) {
 	return _fileEnumerator, _goerr
 }
 
-// Equal checks if the two given #GFiles refer to the same file.
-//
-// Note that two #GFiles that differ can still refer to the same file on the
-// filesystem due to various forms of filename aliasing.
-//
-// This call does no blocking I/O.
 func (f file) Equal(file2 File) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -11016,15 +10156,6 @@ func (f file) Equal(file2 File) bool {
 	return _ok
 }
 
-// FindEnclosingMount gets a #GMount for the #GFile.
-//
-// #GMount is returned only for user interesting locations, see Monitor. If the
-// Iface for @file does not have a #mount, @error will be set to
-// G_IO_ERROR_NOT_FOUND and nil #will be returned.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) FindEnclosingMount(cancellable Cancellable) (Mount, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -11045,8 +10176,6 @@ func (f file) FindEnclosingMount(cancellable Cancellable) (Mount, error) {
 	return _mount, _goerr
 }
 
-// FindEnclosingMountFinish finishes an asynchronous find mount request. See
-// g_file_find_enclosing_mount_async().
 func (f file) FindEnclosingMountFinish(res AsyncResult) (Mount, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11067,20 +10196,6 @@ func (f file) FindEnclosingMountFinish(res AsyncResult) (Mount, error) {
 	return _mount, _goerr
 }
 
-// Basename gets the base name (the last component of the path) for a given
-// #GFile.
-//
-// If called for the top level of a system (such as the filesystem root or a uri
-// like sftp://host/) it will return a single directory separator (and on
-// Windows, possibly a drive letter).
-//
-// The base name is a byte string (not UTF-8). It has no defined encoding or
-// rules other than it may not contain zero bytes. If you want to use filenames
-// in a user interface you should use the display name that you can get by
-// requesting the G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME attribute with
-// g_file_query_info().
-//
-// This call does no blocking I/O.
 func (f file) Basename() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -11097,13 +10212,6 @@ func (f file) Basename() string {
 	return _filename
 }
 
-// Child gets a child of @file with basename equal to @name.
-//
-// Note that the file with that specific name might not exist, but you can still
-// have a #GFile that points to it. You can use this for instance to create that
-// file.
-//
-// This call does no blocking I/O.
 func (f file) Child(name string) File {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
@@ -11122,13 +10230,6 @@ func (f file) Child(name string) File {
 	return _ret
 }
 
-// ChildForDisplayName gets the child of @file for a given @display_name (i.e. a
-// UTF-8 version of the name). If this function fails, it returns nil and @error
-// will be set. This is very useful when constructing a #GFile for a new file
-// and the user entered the filename in the user interface, for instance when
-// you select a directory and type a filename in the file selector.
-//
-// This call does no blocking I/O.
 func (f file) ChildForDisplayName(displayName string) (File, error) {
 	var _arg0 *C.GFile  // out
 	var _arg1 *C.char   // out
@@ -11150,10 +10251,6 @@ func (f file) ChildForDisplayName(displayName string) (File, error) {
 	return _ret, _goerr
 }
 
-// Parent gets the parent directory for the @file. If the @file represents the
-// root directory of the file system, then nil will be returned.
-//
-// This call does no blocking I/O.
 func (f file) Parent() File {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
@@ -11169,18 +10266,6 @@ func (f file) Parent() File {
 	return _ret
 }
 
-// ParseName gets the parse name of the @file. A parse name is a UTF-8 string
-// that describes the file such that one can get the #GFile back using
-// g_file_parse_name().
-//
-// This is generally used to show the #GFile as a nice full-pathname kind of
-// string in a user interface, like in a location entry.
-//
-// For local files with names that can safely be converted to UTF-8 the pathname
-// is used, otherwise the IRI is used (a form of URI that allows UTF-8
-// characters unescaped).
-//
-// This call does no blocking I/O.
 func (f file) ParseName() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -11197,10 +10282,6 @@ func (f file) ParseName() string {
 	return _utf8
 }
 
-// Path gets the local pathname for #GFile, if one exists. If non-nil, this is
-// guaranteed to be an absolute, canonical path. It might contain symlinks.
-//
-// This call does no blocking I/O.
 func (f file) Path() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -11217,9 +10298,6 @@ func (f file) Path() string {
 	return _filename
 }
 
-// RelativePath gets the path for @descendant relative to @parent.
-//
-// This call does no blocking I/O.
 func (p file) RelativePath(descendant File) string {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.GFile // out
@@ -11238,9 +10316,6 @@ func (p file) RelativePath(descendant File) string {
 	return _filename
 }
 
-// URI gets the URI for the @file.
-//
-// This call does no blocking I/O.
 func (f file) URI() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -11257,17 +10332,6 @@ func (f file) URI() string {
 	return _utf8
 }
 
-// URIScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme as:
-//
-//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-//
-// Common schemes include "file", "http", "ftp", etc.
-//
-// The scheme can be different from the one used to construct the #GFile, in
-// that it might be replaced with one that is logically equivalent to the
-// #GFile.
-//
-// This call does no blocking I/O.
 func (f file) URIScheme() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -11284,11 +10348,6 @@ func (f file) URIScheme() string {
 	return _utf8
 }
 
-// HasParent checks if @file has a parent, and optionally, if it is @parent.
-//
-// If @parent is nil then this function returns true if @file has any parent at
-// all. If @parent is non-nil then true is only returned if @file is an
-// immediate child of @parent.
 func (f file) HasParent(parent File) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -11308,18 +10367,6 @@ func (f file) HasParent(parent File) bool {
 	return _ok
 }
 
-// HasPrefix checks whether @file has the prefix specified by @prefix.
-//
-// In other words, if the names of initial elements of @file's pathname match
-// @prefix. Only full pathname elements are matched, so a path like /foo is not
-// considered a prefix of /foobar, only of /foo/bar.
-//
-// A #GFile is not a prefix of itself. If you want to check for equality, use
-// g_file_equal().
-//
-// This call does no I/O, as it works purely on names. As such it can sometimes
-// return false even if @file is inside a @prefix (from a filesystem point of
-// view), because the prefix of @file is an alias of @prefix.
 func (f file) HasPrefix(prefix File) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -11339,9 +10386,6 @@ func (f file) HasPrefix(prefix File) bool {
 	return _ok
 }
 
-// HasURIScheme checks to see if a #GFile has a given URI scheme.
-//
-// This call does no blocking I/O.
 func (f file) HasURIScheme(uriScheme string) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.char    // out
@@ -11362,9 +10406,6 @@ func (f file) HasURIScheme(uriScheme string) bool {
 	return _ok
 }
 
-// Hash creates a hash value for a #GFile.
-//
-// This call does no blocking I/O.
 func (f file) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -11380,17 +10421,6 @@ func (f file) Hash() uint {
 	return _guint
 }
 
-// IsNative checks to see if a file is native to the platform.
-//
-// A native file is one expressed in the platform-native filename format, e.g.
-// "C:\Windows" or "/usr/bin/". This does not mean the file is local, as it
-// might be on a locally mounted remote filesystem.
-//
-// On some systems non-native files may be available using the native filesystem
-// via a userspace filesystem (FUSE), in these cases this call will return
-// false, but g_file_get_path() will still return a native path.
-//
-// This call does no blocking I/O.
 func (f file) IsNative() bool {
 	var _arg0 *C.GFile   // out
 	var _cret C.gboolean // in
@@ -11408,13 +10438,6 @@ func (f file) IsNative() bool {
 	return _ok
 }
 
-// LoadContents loads the content of the file into memory. The data is always
-// zero-terminated, but this is not included in the resultant @length. The
-// returned @contents should be freed with g_free() when no longer needed.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) LoadContents(cancellable Cancellable) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -11443,11 +10466,6 @@ func (f file) LoadContents(cancellable Cancellable) ([]byte, string, error) {
 	return _contents, _etagOut, _goerr
 }
 
-// LoadContentsFinish finishes an asynchronous load of the @file's contents. The
-// contents are placed in @contents, and @length is set to the size of the
-// @contents string. The @contents should be freed with g_free() when no longer
-// needed. If @etag_out is present, it will be set to the new entity tag for the
-// @file.
 func (f file) LoadContentsFinish(res AsyncResult) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11476,10 +10494,6 @@ func (f file) LoadContentsFinish(res AsyncResult) ([]byte, string, error) {
 	return _contents, _etagOut, _goerr
 }
 
-// LoadPartialContentsFinish finishes an asynchronous partial load operation
-// that was started with g_file_load_partial_contents_async(). The data is
-// always zero-terminated, but this is not included in the resultant @length.
-// The returned @contents should be freed with g_free() when no longer needed.
 func (f file) LoadPartialContentsFinish(res AsyncResult) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11508,20 +10522,6 @@ func (f file) LoadPartialContentsFinish(res AsyncResult) ([]byte, string, error)
 	return _contents, _etagOut, _goerr
 }
 
-// MakeDirectory creates a directory. Note that this will only create a child
-// directory of the immediate parent directory of the path or URI given by the
-// #GFile. To recursively create directories, see
-// g_file_make_directory_with_parents(). This function will fail if the parent
-// directory does not exist, setting @error to G_IO_ERROR_NOT_FOUND. If the file
-// system doesn't support creating directories, this function will fail, setting
-// @error to G_IO_ERROR_NOT_SUPPORTED.
-//
-// For a local #GFile the newly created directory will have the default
-// (current) ownership and permissions of the current process.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) MakeDirectory(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -11539,8 +10539,6 @@ func (f file) MakeDirectory(cancellable Cancellable) error {
 	return _goerr
 }
 
-// MakeDirectoryFinish finishes an asynchronous directory creation, started with
-// g_file_make_directory_async().
 func (f file) MakeDirectoryFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11558,19 +10556,6 @@ func (f file) MakeDirectoryFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// MakeDirectoryWithParents creates a directory and any parent directories that
-// may not exist similar to 'mkdir -p'. If the file system does not support
-// creating directories, this function will fail, setting @error to
-// G_IO_ERROR_NOT_SUPPORTED. If the directory itself already exists, this
-// function will fail setting @error to G_IO_ERROR_EXISTS, unlike the similar
-// g_mkdir_with_parents().
-//
-// For a local #GFile the newly created directories will have the default
-// (current) ownership and permissions of the current process.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) MakeDirectoryWithParents(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -11588,12 +10573,6 @@ func (f file) MakeDirectoryWithParents(cancellable Cancellable) error {
 	return _goerr
 }
 
-// MakeSymbolicLink creates a symbolic link named @file which contains the
-// string @symlink_value.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
@@ -11614,9 +10593,6 @@ func (f file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) err
 	return _goerr
 }
 
-// MeasureDiskUsageFinish collects the results from an earlier call to
-// g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for more
-// information.
 func (f file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11643,12 +10619,6 @@ func (f file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numD
 	return _diskUsage, _numDirs, _numFiles, _goerr
 }
 
-// Monitor obtains a file or directory monitor for the given file, depending on
-// the type of the file.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) Monitor(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 C.GFileMonitorFlags // out
@@ -11671,18 +10641,6 @@ func (f file) Monitor(flags FileMonitorFlags, cancellable Cancellable) (FileMoni
 	return _fileMonitor, _goerr
 }
 
-// MonitorDirectory obtains a directory monitor for the given file. This may
-// fail if directory monitoring is not supported.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// It does not make sense for @flags to contain G_FILE_MONITOR_WATCH_HARD_LINKS,
-// since hard links can not be made to directories. It is not possible to
-// monitor all the files in a directory for changes made via hard links; if you
-// want to do this then you must register individual watches with
-// g_file_monitor().
 func (f file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 C.GFileMonitorFlags // out
@@ -11705,19 +10663,6 @@ func (f file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) 
 	return _fileMonitor, _goerr
 }
 
-// MonitorFile obtains a file monitor for the given file. If no file
-// notification mechanism exists, then regular polling of the file is used.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If @flags contains G_FILE_MONITOR_WATCH_HARD_LINKS then the monitor will also
-// attempt to report changes made to the file via another filename (ie, a hard
-// link). Without this flag, you can only rely on changes made through the
-// filename contained in @file to be reported. Using this flag may result in an
-// increase in resource usage, and may not have any effect depending on the
-// Monitor backend and/or filesystem type.
 func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 C.GFileMonitorFlags // out
@@ -11740,8 +10685,6 @@ func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (File
 	return _fileMonitor, _goerr
 }
 
-// MountEnclosingVolumeFinish finishes a mount operation started by
-// g_file_mount_enclosing_volume().
 func (l file) MountEnclosingVolumeFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11759,11 +10702,6 @@ func (l file) MountEnclosingVolumeFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// MountMountableFinish finishes a mount operation. See g_file_mount_mountable()
-// for details.
-//
-// Finish an asynchronous mount operation that was started with
-// g_file_mount_mountable().
 func (f file) MountMountableFinish(result AsyncResult) (File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11784,19 +10722,6 @@ func (f file) MountMountableFinish(result AsyncResult) (File, error) {
 	return _ret, _goerr
 }
 
-// OpenReadwrite opens an existing file for reading and writing. The result is a
-// IOStream that can be used to read and write the contents of the file.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
-// If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error will be
-// returned. Other errors are possible too, and depend on what kind of
-// filesystem the file is on. Note that in many non-local file cases read and
-// write streams are not supported, so make sure you really need to do read and
-// write streaming, rather than just opening for reading or writing.
 func (f file) OpenReadwrite(cancellable Cancellable) (FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GCancellable  // out
@@ -11817,8 +10742,6 @@ func (f file) OpenReadwrite(cancellable Cancellable) (FileIOStream, error) {
 	return _fileIOStream, _goerr
 }
 
-// OpenReadwriteFinish finishes an asynchronous file read operation started with
-// g_file_open_readwrite_async().
 func (f file) OpenReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -11839,12 +10762,6 @@ func (f file) OpenReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 	return _fileIOStream, _goerr
 }
 
-// PeekPath: exactly like g_file_get_path(), but caches the result via
-// g_object_set_qdata_full(). This is useful for example in C applications which
-// mix `g_file_*` APIs with native ones. It also avoids an extra duplicated
-// string when possible, so will be generally more efficient.
-//
-// This call does no blocking I/O.
 func (f file) PeekPath() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -11860,11 +10777,6 @@ func (f file) PeekPath() string {
 	return _filename
 }
 
-// PollMountableFinish finishes a poll operation. See g_file_poll_mountable()
-// for details.
-//
-// Finish an asynchronous poll operation that was polled with
-// g_file_poll_mountable().
 func (f file) PollMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11882,12 +10794,6 @@ func (f file) PollMountableFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// QueryDefaultHandler returns the Info that is registered as the default
-// application to handle the file specified by @file.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) QueryDefaultHandler(cancellable Cancellable) (AppInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -11908,8 +10814,6 @@ func (f file) QueryDefaultHandler(cancellable Cancellable) (AppInfo, error) {
 	return _appInfo, _goerr
 }
 
-// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
-// operation.
 func (f file) QueryDefaultHandlerFinish(result AsyncResult) (AppInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -11930,29 +10834,6 @@ func (f file) QueryDefaultHandlerFinish(result AsyncResult) (AppInfo, error) {
 	return _appInfo, _goerr
 }
 
-// QueryExists: utility function to check if a particular file exists. This is
-// implemented using g_file_query_info() and as such does blocking I/O.
-//
-// Note that in many cases it is racy to first check for file existence
-// (https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use) and then execute
-// something based on the outcome of that, because the file might have been
-// created or removed in between the operations. The general approach to
-// handling that is to not check, but just do the operation and handle the
-// errors as they come.
-//
-// As an example of race-free checking, take the case of reading a file, and if
-// it doesn't exist, creating it. There are two racy versions: read it, and on
-// error create it; and: check if it exists, if not create it. These can both
-// result in two processes creating the file (with perhaps a partially written
-// file as the result). The correct approach is to always try to create the file
-// with g_file_create() which will either atomically create the file or fail
-// with a G_IO_ERROR_EXISTS error.
-//
-// However, in many cases an existence check is useful in a user interface, for
-// instance to make a menu item sensitive/insensitive, so that you don't have to
-// fool users that something is possible and then just show an error dialog. If
-// you do this, you should make sure to also handle the errors that can happen
-// due to races when you execute the operation.
 func (f file) QueryExists(cancellable Cancellable) bool {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -11972,11 +10853,6 @@ func (f file) QueryExists(cancellable Cancellable) bool {
 	return _ok
 }
 
-// QueryFileType: utility function to inspect the Type of a file. This is
-// implemented using g_file_query_info() and as such does blocking I/O.
-//
-// The primary use case of this method is to check if a file is a regular file,
-// directory, or symlink.
 func (f file) QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable) FileType {
 	var _arg0 *C.GFile              // out
 	var _arg1 C.GFileQueryInfoFlags // out
@@ -11996,28 +10872,6 @@ func (f file) QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable) F
 	return _fileType
 }
 
-// QueryFilesystemInfo: similar to g_file_query_info(), but obtains information
-// about the filesystem the @file is on, rather than the file itself. For
-// instance the amount of space available and the type of the filesystem.
-//
-// The @attributes value is a string that specifies the attributes that should
-// be gathered. It is not an error if it's not possible to read a particular
-// requested attribute from a file - it just won't be set. @attributes should be
-// a comma-separated list of attributes or attribute wildcards. The wildcard "*"
-// means all attributes, and a wildcard like "filesystem::*" means all
-// attributes in the filesystem namespace. The standard namespace for filesystem
-// attributes is "filesystem". Common attributes of interest are
-// FILE_ATTRIBUTE_FILESYSTEM_SIZE (the total size of the filesystem in bytes),
-// FILE_ATTRIBUTE_FILESYSTEM_FREE (number of bytes available), and
-// FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the filesystem).
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
-// Other errors are possible too, and depend on what kind of filesystem the file
-// is on.
 func (f file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
@@ -12041,8 +10895,6 @@ func (f file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (F
 	return _fileInfo, _goerr
 }
 
-// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query. See
-// g_file_query_filesystem_info_async().
 func (f file) QueryFilesystemInfoFinish(res AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12063,32 +10915,6 @@ func (f file) QueryFilesystemInfoFinish(res AsyncResult) (FileInfo, error) {
 	return _fileInfo, _goerr
 }
 
-// QueryInfo gets the requested information about specified @file. The result is
-// a Info object that contains key-value attributes (such as the type or size of
-// the file).
-//
-// The @attributes value is a string that specifies the file attributes that
-// should be gathered. It is not an error if it's not possible to read a
-// particular requested attribute from a file - it just won't be set.
-// @attributes should be a comma-separated list of attributes or attribute
-// wildcards. The wildcard "*" means all attributes, and a wildcard like
-// "standard::*" means all attributes in the standard namespace. An example
-// attribute query be "standard::*,owner::user". The standard attributes are
-// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// For symlinks, normally the information about the target of the symlink is
-// returned, rather than information about the symlink itself. However if you
-// pass FILE_QUERY_INFO_NOFOLLOW_SYMLINKS in @flags the information about the
-// symlink itself will be returned. Also, for symlinks that point to
-// non-existing files the information about the symlink itself will be returned.
-//
-// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
-// Other errors are possible too, and depend on what kind of filesystem the file
-// is on.
 func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
@@ -12114,8 +10940,6 @@ func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable
 	return _fileInfo, _goerr
 }
 
-// QueryInfoFinish finishes an asynchronous file info query. See
-// g_file_query_info_async().
 func (f file) QueryInfoFinish(res AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12136,16 +10960,6 @@ func (f file) QueryInfoFinish(res AsyncResult) (FileInfo, error) {
 	return _fileInfo, _goerr
 }
 
-// QuerySettableAttributes: obtain the list of settable attributes for the file.
-//
-// Returns the type and full attribute name of all the attributes that can be
-// set on this file. This doesn't mean setting it will always succeed though,
-// you might get an access failure, or some specific file may not support a
-// specific attribute.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeInfoList, error) {
 	var _arg0 *C.GFile                  // out
 	var _arg1 *C.GCancellable           // out
@@ -12169,13 +10983,6 @@ func (f file) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeIn
 	return _fileAttributeInfoList, _goerr
 }
 
-// QueryWritableNamespaces: obtain the list of attribute namespaces where new
-// attributes can be created by a user. An example of this is extended
-// attributes (in the "xattr" namespace).
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeInfoList, error) {
 	var _arg0 *C.GFile                  // out
 	var _arg1 *C.GCancellable           // out
@@ -12199,17 +11006,6 @@ func (f file) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeIn
 	return _fileAttributeInfoList, _goerr
 }
 
-// Read opens a file for reading. The result is a InputStream that can be used
-// to read the contents of the file.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
-// If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error will be
-// returned. Other errors are possible too, and depend on what kind of
-// filesystem the file is on.
 func (f file) Read(cancellable Cancellable) (FileInputStream, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GCancellable     // out
@@ -12230,8 +11026,6 @@ func (f file) Read(cancellable Cancellable) (FileInputStream, error) {
 	return _fileInputStream, _goerr
 }
 
-// ReadFinish finishes an asynchronous file read operation started with
-// g_file_read_async().
 func (f file) ReadFinish(res AsyncResult) (FileInputStream, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GAsyncResult     // out
@@ -12252,43 +11046,6 @@ func (f file) ReadFinish(res AsyncResult) (FileInputStream, error) {
 	return _fileInputStream, _goerr
 }
 
-// Replace returns an output stream for overwriting the file, possibly creating
-// a backup copy of the file first. If the file doesn't exist, it will be
-// created.
-//
-// This will try to replace the file in the safest way possible so that any
-// errors during the writing will not affect an already existing copy of the
-// file. For instance, for local files it may write to a temporary file and then
-// atomically rename over the destination when the stream is closed.
-//
-// By default files created are generally readable by everyone, but if you pass
-// FILE_CREATE_PRIVATE in @flags the file will be made readable only to the
-// current user, to the level that is supported on the target filesystem.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// If you pass in a non-nil @etag value and @file already exists, then this
-// value is compared to the current entity tag of the file, and if they differ
-// an G_IO_ERROR_WRONG_ETAG error is returned. This generally means that the
-// file has been changed since you last read it. You can get the new etag from
-// g_file_output_stream_get_etag() after you've finished writing and closed the
-// OutputStream. When you load a new file you can use
-// g_file_input_stream_query_info() to get the etag of the file.
-//
-// If @make_backup is true, this function will attempt to make a backup of the
-// current file before overwriting it. If this fails a
-// G_IO_ERROR_CANT_CREATE_BACKUP error will be returned. If you want to replace
-// anyway, try again with @make_backup set to false.
-//
-// If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
-// returned, and if the file is some other form of non-regular file then a
-// G_IO_ERROR_NOT_REGULAR_FILE error will be returned. Some file systems don't
-// allow all file names, and may return an G_IO_ERROR_INVALID_FILENAME error,
-// and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
-// Other errors are possible too, and depend on what kind of filesystem the file
-// is on.
 func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.char              // out
@@ -12318,23 +11075,6 @@ func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cance
 	return _fileOutputStream, _goerr
 }
 
-// ReplaceContents replaces the contents of @file with @contents of @length
-// bytes.
-//
-// If @etag is specified (not nil), any existing file must have that etag, or
-// the error G_IO_ERROR_WRONG_ETAG will be returned.
-//
-// If @make_backup is true, this function will attempt to make a backup of
-// @file. Internally, it uses g_file_replace(), so will try to replace the file
-// contents in the safest way possible. For example, atomic renames are used
-// when replacing local files’ contents.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
-//
-// The returned @new_etag can be used to verify that the file hasn't changed the
-// next time it is saved over.
 func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (string, error) {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char
@@ -12369,9 +11109,6 @@ func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, fla
 	return _newEtag, _goerr
 }
 
-// ReplaceContentsFinish finishes an asynchronous replace of the given @file.
-// See g_file_replace_contents_async(). Sets @new_etag to the new entity tag for
-// the document, if present.
 func (f file) ReplaceContentsFinish(res AsyncResult) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12393,8 +11130,6 @@ func (f file) ReplaceContentsFinish(res AsyncResult) (string, error) {
 	return _newEtag, _goerr
 }
 
-// ReplaceFinish finishes an asynchronous file replace operation started with
-// g_file_replace_async().
 func (f file) ReplaceFinish(res AsyncResult) (FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -12415,16 +11150,6 @@ func (f file) ReplaceFinish(res AsyncResult) (FileOutputStream, error) {
 	return _fileOutputStream, _goerr
 }
 
-// ReplaceReadwrite returns an output stream for overwriting the file in
-// readwrite mode, possibly creating a backup copy of the file first. If the
-// file doesn't exist, it will be created.
-//
-// For details about the behaviour, see g_file_replace() which does the same
-// thing but returns an output stream only.
-//
-// Note that in many non-local file cases read and write streams are not
-// supported, so make sure you really need to do read and write streaming,
-// rather than just opening for reading or writing.
 func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error) {
 	var _arg0 *C.GFile           // out
 	var _arg1 *C.char            // out
@@ -12454,8 +11179,6 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 	return _fileIOStream, _goerr
 }
 
-// ReplaceReadwriteFinish finishes an asynchronous file replace operation
-// started with g_file_replace_readwrite_async().
 func (f file) ReplaceReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -12476,9 +11199,6 @@ func (f file) ReplaceReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 	return _fileIOStream, _goerr
 }
 
-// ResolveRelativePath resolves a relative path for @file to an absolute path.
-//
-// This call does no blocking I/O.
 func (f file) ResolveRelativePath(relativePath string) File {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
@@ -12497,13 +11217,6 @@ func (f file) ResolveRelativePath(relativePath string) File {
 	return _ret
 }
 
-// SetAttributeByteString sets @attribute of type
-// G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value. If @attribute is of a different
-// type, this operation will fail, returning false.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
@@ -12529,12 +11242,6 @@ func (f file) SetAttributeByteString(attribute string, value string, flags FileQ
 	return _goerr
 }
 
-// SetAttributeInt32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
-// @value. If @attribute is of a different type, this operation will fail.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
@@ -12559,12 +11266,6 @@ func (f file) SetAttributeInt32(attribute string, value int32, flags FileQueryIn
 	return _goerr
 }
 
-// SetAttributeInt64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT64 to
-// @value. If @attribute is of a different type, this operation will fail.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
@@ -12589,12 +11290,6 @@ func (f file) SetAttributeInt64(attribute string, value int64, flags FileQueryIn
 	return _goerr
 }
 
-// SetAttributeString sets @attribute of type G_FILE_ATTRIBUTE_TYPE_STRING to
-// @value. If @attribute is of a different type, this operation will fail.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
@@ -12620,12 +11315,6 @@ func (f file) SetAttributeString(attribute string, value string, flags FileQuery
 	return _goerr
 }
 
-// SetAttributeUint32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32 to
-// @value. If @attribute is of a different type, this operation will fail.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
@@ -12650,12 +11339,6 @@ func (f file) SetAttributeUint32(attribute string, value uint32, flags FileQuery
 	return _goerr
 }
 
-// SetAttributeUint64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64 to
-// @value. If @attribute is of a different type, this operation will fail.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
@@ -12680,8 +11363,6 @@ func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQuery
 	return _goerr
 }
 
-// SetAttributesFinish finishes setting an attribute started in
-// g_file_set_attributes_async().
 func (f file) SetAttributesFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12702,17 +11383,6 @@ func (f file) SetAttributesFinish(result AsyncResult) (FileInfo, error) {
 	return _info, _goerr
 }
 
-// SetAttributesFromInfo tries to set all attributes in the Info on the target
-// values, not stopping on the first error.
-//
-// If there is any error during this operation then @error will be set to the
-// first error. Error on particular fields are flagged by setting the "status"
-// field in the attribute value to G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING, which
-// means you can also detect further errors.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GFileInfo          // out
@@ -12734,21 +11404,6 @@ func (f file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, can
 	return _goerr
 }
 
-// SetDisplayName renames @file to the specified display name.
-//
-// The display name is converted from UTF-8 to the correct encoding for the
-// target filesystem if possible and the @file is renamed to this.
-//
-// If you want to implement a rename operation in the user interface the edit
-// name (FILE_ATTRIBUTE_STANDARD_EDIT_NAME) should be used as the initial value
-// in the rename widget, and then the result after editing should be passed to
-// g_file_set_display_name().
-//
-// On success the resulting converted filename is returned.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) SetDisplayName(displayName string, cancellable Cancellable) (File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
@@ -12772,8 +11427,6 @@ func (f file) SetDisplayName(displayName string, cancellable Cancellable) (File,
 	return _ret, _goerr
 }
 
-// SetDisplayNameFinish finishes setting a display name started with
-// g_file_set_display_name_async().
 func (f file) SetDisplayNameFinish(res AsyncResult) (File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12794,11 +11447,6 @@ func (f file) SetDisplayNameFinish(res AsyncResult) (File, error) {
 	return _ret, _goerr
 }
 
-// StartMountableFinish finishes a start operation. See g_file_start_mountable()
-// for details.
-//
-// Finish an asynchronous start operation that was started with
-// g_file_start_mountable().
 func (f file) StartMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12816,11 +11464,6 @@ func (f file) StartMountableFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// StopMountableFinish finishes a stop operation, see g_file_stop_mountable()
-// for details.
-//
-// Finish an asynchronous stop operation that was started with
-// g_file_stop_mountable().
 func (f file) StopMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12838,10 +11481,6 @@ func (f file) StopMountableFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// SupportsThreadContexts checks if @file supports [thread-default
-// contexts][g-main-context-push-thread-default-context]. If this returns false,
-// you cannot perform asynchronous operations on @file in a thread that has a
-// thread-default context.
 func (f file) SupportsThreadContexts() bool {
 	var _arg0 *C.GFile   // out
 	var _cret C.gboolean // in
@@ -12859,16 +11498,6 @@ func (f file) SupportsThreadContexts() bool {
 	return _ok
 }
 
-// Trash sends @file to the "Trashcan", if possible. This is similar to deleting
-// it, but the user can recover it before emptying the trashcan. Not all file
-// systems support trashing, so this call can return the
-// G_IO_ERROR_NOT_SUPPORTED error. Since GLib 2.66, the `x-gvfs-notrash` unix
-// mount option can be used to disable g_file_trash() support for certain
-// mounts, the G_IO_ERROR_NOT_SUPPORTED error will be returned in that case.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (f file) Trash(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -12886,8 +11515,6 @@ func (f file) Trash(cancellable Cancellable) error {
 	return _goerr
 }
 
-// TrashFinish finishes an asynchronous file trashing operation, started with
-// g_file_trash_async().
 func (f file) TrashFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12905,11 +11532,6 @@ func (f file) TrashFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// UnmountMountableFinish finishes an unmount operation, see
-// g_file_unmount_mountable() for details.
-//
-// Finish an asynchronous unmount operation that was started with
-// g_file_unmount_mountable().
 func (f file) UnmountMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12927,11 +11549,6 @@ func (f file) UnmountMountableFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// UnmountMountableWithOperationFinish finishes an unmount operation, see
-// g_file_unmount_mountable_with_operation() for details.
-//
-// Finish an asynchronous unmount operation that was started with
-// g_file_unmount_mountable_with_operation().
 func (f file) UnmountMountableWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -12990,7 +11607,6 @@ func marshalFileDescriptorBased(p uintptr) (interface{}, error) {
 	return WrapFileDescriptorBased(obj), nil
 }
 
-// Fd gets the underlying file descriptor.
 func (f fileDescriptorBased) Fd() int {
 	var _arg0 *C.GFileDescriptorBased // out
 	var _cret C.int                   // in
@@ -13098,7 +11714,6 @@ func marshalIcon(p uintptr) (interface{}, error) {
 	return WrapIcon(obj), nil
 }
 
-// Equal checks if two icons are equal.
 func (i icon) Equal(icon2 Icon) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out
@@ -13118,11 +11733,6 @@ func (i icon) Equal(icon2 Icon) bool {
 	return _ok
 }
 
-// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can be
-// retrieved back by calling g_icon_deserialize() on the returned value. As
-// serialization will avoid using raw icon data when possible, it only makes
-// sense to transfer the #GVariant between processes on the same machine, (as
-// opposed to over the network), and within the same file system namespace.
 func (i icon) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
@@ -13141,21 +11751,6 @@ func (i icon) Serialize() *glib.Variant {
 	return _variant
 }
 
-// String generates a textual representation of @icon that can be used for
-// serialization such as when passing @icon to a different process or saving it
-// to persistent storage. Use g_icon_new_for_string() to get @icon back from the
-// returned string.
-//
-// The encoding of the returned string is proprietary to #GIcon except in the
-// following two cases
-//
-// - If @icon is a Icon, the returned string is a native path (such as
-// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a native
-// file. If the file is not native, the returned string is the result of
-// g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
-//
-// - If @icon is a Icon with exactly one name and no fallbacks, the encoding is
-// simply the name (such as `network-server`).
 func (i icon) String() string {
 	var _arg0 *C.GIcon // out
 	var _cret *C.gchar // in
@@ -13303,43 +11898,6 @@ func marshalInitable(p uintptr) (interface{}, error) {
 	return WrapInitable(obj), nil
 }
 
-// Init initializes the object implementing the interface.
-//
-// This method is intended for language bindings. If writing in C,
-// g_initable_new() should typically be used instead.
-//
-// The object must be initialized before any real use after initial
-// construction, either with this function or g_async_initable_init_async().
-//
-// Implementations may also support cancellation. If @cancellable is not nil,
-// then initialization can be cancelled by triggering the cancellable object
-// from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-// object doesn't support cancellable initialization the error
-// G_IO_ERROR_NOT_SUPPORTED will be returned.
-//
-// If the object is not initialized, or initialization returns with an error,
-// then all operations on the object except g_object_ref() and g_object_unref()
-// are considered to be invalid, and have undefined behaviour. See the
-// [introduction][ginitable] for more details.
-//
-// Callers should not assume that a class which implements #GInitable can be
-// initialized multiple times, unless the class explicitly documents itself as
-// supporting this. Generally, a class’ implementation of init() can assume (and
-// assert) that it will only be called once. Previously, this documentation
-// recommended all #GInitable implementations should be idempotent; that
-// recommendation was relaxed in GLib 2.54.
-//
-// If a class explicitly supports being initialized multiple times, it is
-// recommended that the method is idempotent: multiple calls with the same
-// arguments should return the same results. Only the first call initializes the
-// object; further calls return the result of the first call.
-//
-// One reason why a class might need to support idempotent initialization is if
-// it is designed to be used via the singleton pattern, with a Class.constructor
-// that sometimes returns an existing instance. In this pattern, a caller would
-// expect to be able to call g_initable_init() on the result of g_object_new(),
-// regardless of whether it is in fact a new instance.
 func (i initable) Init(cancellable Cancellable) error {
 	var _arg0 *C.GInitable    // out
 	var _arg1 *C.GCancellable // out
@@ -13486,11 +12044,6 @@ func marshalListModel(p uintptr) (interface{}, error) {
 	return WrapListModel(obj), nil
 }
 
-// ItemType gets the type of the items in @list. All items returned from
-// g_list_model_get_type() are of that type or a subtype, or are an
-// implementation of that interface.
-//
-// The item type of a Model can not change during the life of the model.
 func (l listModel) ItemType() externglib.Type {
 	var _arg0 *C.GListModel // out
 	var _cret C.GType       // in
@@ -13506,11 +12059,6 @@ func (l listModel) ItemType() externglib.Type {
 	return _gType
 }
 
-// NItems gets the number of items in @list.
-//
-// Depending on the model implementation, calling this function may be less
-// efficient than iterating the list with increasing values for @position until
-// g_list_model_get_item() returns nil.
 func (l listModel) NItems() uint {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
@@ -13526,11 +12074,6 @@ func (l listModel) NItems() uint {
 	return _guint
 }
 
-// Object: get the item at @position. If @position is greater than the number of
-// items in @list, nil is returned.
-//
-// nil is never returned for an index that is smaller than the length of the
-// list. See g_list_model_get_n_items().
 func (l listModel) Object(position uint) gextras.Objector {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
@@ -13548,25 +12091,6 @@ func (l listModel) Object(position uint) gextras.Objector {
 	return _object
 }
 
-// ItemsChanged emits the Model::items-changed signal on @list.
-//
-// This function should only be called by classes implementing Model. It has to
-// be called after the internal representation of @list has been updated,
-// because handlers connected to this signal might query the new state of the
-// list.
-//
-// Implementations must only make changes to the model (as visible to its
-// consumer) in places that will not cause problems for that consumer. For
-// models that are driven directly by a write API (such as Store), changes can
-// be reported in response to uses of that API. For models that represent remote
-// data, changes should only be made from a fresh mainloop dispatch. It is
-// particularly not permitted to make changes in response to a call to the Model
-// consumer API.
-//
-// Stated another way: in general, it is assumed that code making a series of
-// accesses to the model via the API, without returning to the mainloop, and
-// without calling other code, will continue to view the same contents of the
-// model.
 func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
@@ -13626,8 +12150,6 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 	return WrapLoadableIcon(obj), nil
 }
 
-// Load loads a loadable icon. For the asynchronous version of this function,
-// see g_loadable_icon_load_async().
 func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 C.int            // out
@@ -13654,8 +12176,6 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStre
 	return _typ, _inputStream, _goerr
 }
 
-// LoadFinish finishes an asynchronous icon load started in
-// g_loadable_icon_load_async().
 func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 *C.GAsyncResult  // out
@@ -13968,7 +12488,6 @@ func marshalMount(p uintptr) (interface{}, error) {
 	return WrapMount(obj), nil
 }
 
-// CanEject checks if @mount can be ejected.
 func (m mount) CanEject() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -13986,7 +12505,6 @@ func (m mount) CanEject() bool {
 	return _ok
 }
 
-// CanUnmount checks if @mount can be unmounted.
 func (m mount) CanUnmount() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -14004,9 +12522,6 @@ func (m mount) CanUnmount() bool {
 	return _ok
 }
 
-// EjectFinish finishes ejecting a mount. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
-// returned.
 func (m mount) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -14024,9 +12539,6 @@ func (m mount) EjectFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EjectWithOperationFinish finishes ejecting a mount. If any errors occurred
-// during the operation, @error will be set to contain the errors and false will
-// be returned.
 func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -14044,9 +12556,6 @@ func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// DefaultLocation gets the default location of @mount. The default location of
-// the given @mount is a path that reflects the main entry point for the user
-// (e.g. the home directory, or the root of the volume).
 func (m mount) DefaultLocation() File {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
@@ -14062,10 +12571,6 @@ func (m mount) DefaultLocation() File {
 	return _file
 }
 
-// Drive gets the drive for the @mount.
-//
-// This is a convenience method for getting the #GVolume and then using that
-// object to get the #GDrive.
 func (m mount) Drive() Drive {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
@@ -14081,7 +12586,6 @@ func (m mount) Drive() Drive {
 	return _drive
 }
 
-// Icon gets the icon for @mount.
 func (m mount) Icon() Icon {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
@@ -14097,7 +12601,6 @@ func (m mount) Icon() Icon {
 	return _icon
 }
 
-// Name gets the name of @mount.
 func (m mount) Name() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
@@ -14114,7 +12617,6 @@ func (m mount) Name() string {
 	return _utf8
 }
 
-// Root gets the root directory on @mount.
 func (m mount) Root() File {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
@@ -14130,7 +12632,6 @@ func (m mount) Root() File {
 	return _file
 }
 
-// SortKey gets the sort key for @mount, if any.
 func (m mount) SortKey() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.gchar  // in
@@ -14146,7 +12647,6 @@ func (m mount) SortKey() string {
 	return _utf8
 }
 
-// SymbolicIcon gets the symbolic icon for @mount.
 func (m mount) SymbolicIcon() Icon {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
@@ -14162,9 +12662,6 @@ func (m mount) SymbolicIcon() Icon {
 	return _icon
 }
 
-// UUID gets the UUID for the @mount. The reference is typically based on the
-// file system UUID for the mount in question and should be considered an opaque
-// string. Returns nil if there is no UUID available.
 func (m mount) UUID() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
@@ -14181,7 +12678,6 @@ func (m mount) UUID() string {
 	return _utf8
 }
 
-// Volume gets the volume for the @mount.
 func (m mount) Volume() Volume {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
@@ -14197,10 +12693,6 @@ func (m mount) Volume() Volume {
 	return _volume
 }
 
-// GuessContentTypeFinish finishes guessing content types of @mount. If any
-// errors occurred during the operation, @error will be set to contain the
-// errors and false will be returned. In particular, you may get an
-// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
 func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -14234,15 +12726,6 @@ func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 	return _utf8s, _goerr
 }
 
-// GuessContentTypeSync tries to guess the type of content stored on @mount.
-// Returns one or more textual identifiers of well-known content types
-// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for camera
-// memory cards. See the shared-mime-info
-// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-// specification for more on x-content types.
-//
-// This is a synchronous operation and as such may block doing IO; see
-// g_mount_guess_content_type() for the asynchronous version.
 func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 C.gboolean      // out
@@ -14280,26 +12763,6 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 	return _utf8s, _goerr
 }
 
-// IsShadowed determines if @mount is shadowed. Applications or libraries should
-// avoid displaying @mount in the user interface if it is shadowed.
-//
-// A mount is said to be shadowed if there exists one or more user visible
-// objects (currently #GMount objects) with a root that is inside the root of
-// @mount.
-//
-// One application of shadow mounts is when exposing a single file system that
-// is used to address several logical volumes. In this situation, a Monitor
-// implementation would create two #GVolume objects (for example, one for the
-// camera functionality of the device and one for a SD card reader on the
-// device) with activation URIs `gphoto2://[usb:001,002]/store1/` and
-// `gphoto2://[usb:001,002]/store2/`. When the underlying mount (with root
-// `gphoto2://[usb:001,002]/`) is mounted, said Monitor implementation would
-// create two #GMount objects (each with their root matching the corresponding
-// volume activation root) that would shadow the original mount.
-//
-// The proxy monitor in GVfs 2.26 and later, automatically creates and manage
-// shadow mounts (and shadows the underlying mount) if the activation root on a
-// #GVolume is set.
 func (m mount) IsShadowed() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -14317,9 +12780,6 @@ func (m mount) IsShadowed() bool {
 	return _ok
 }
 
-// RemountFinish finishes remounting a mount. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
-// returned.
 func (m mount) RemountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -14337,10 +12797,6 @@ func (m mount) RemountFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// Shadow increments the shadow count on @mount. Usually used by Monitor
-// implementations when creating a shadow mount for @mount, see
-// g_mount_is_shadowed() for more information. The caller will need to emit the
-// #GMount::changed signal on @mount manually.
 func (m mount) Shadow() {
 	var _arg0 *C.GMount // out
 
@@ -14349,9 +12805,6 @@ func (m mount) Shadow() {
 	C.g_mount_shadow(_arg0)
 }
 
-// UnmountFinish finishes unmounting a mount. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
-// returned.
 func (m mount) UnmountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -14369,9 +12822,6 @@ func (m mount) UnmountFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// UnmountWithOperationFinish finishes unmounting a mount. If any errors
-// occurred during the operation, @error will be set to contain the errors and
-// false will be returned.
 func (m mount) UnmountWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -14389,10 +12839,6 @@ func (m mount) UnmountWithOperationFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// Unshadow decrements the shadow count on @mount. Usually used by Monitor
-// implementations when destroying a shadow mount for @mount, see
-// g_mount_is_shadowed() for more information. The caller will need to emit the
-// #GMount::changed signal on @mount manually.
 func (m mount) Unshadow() {
 	var _arg0 *C.GMount // out
 
@@ -14505,21 +12951,6 @@ func marshalNetworkMonitor(p uintptr) (interface{}, error) {
 	return WrapNetworkMonitor(obj), nil
 }
 
-// CanReach attempts to determine whether or not the host pointed to by
-// @connectable can be reached, without actually trying to connect to it.
-//
-// This may return true even when Monitor:network-available is false, if, for
-// example, @monitor can determine that @connectable refers to a host on a local
-// network.
-//
-// If @monitor believes that an attempt to connect to @connectable will succeed,
-// it will return true. Otherwise, it will return false and set @error to an
-// appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
-//
-// Note that although this does not attempt to connect to @connectable, it may
-// still block for a brief period of time (eg, trying to do multicast DNS on the
-// local network), so if you do not want to block, you should use
-// g_network_monitor_can_reach_async().
 func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Cancellable) error {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg1 *C.GSocketConnectable // out
@@ -14539,8 +12970,6 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 	return _goerr
 }
 
-// CanReachFinish finishes an async network connectivity test. See
-// g_network_monitor_can_reach_async().
 func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	var _arg0 *C.GNetworkMonitor // out
 	var _arg1 *C.GAsyncResult    // out
@@ -14558,25 +12987,6 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// Connectivity gets a more detailed networking state than
-// g_network_monitor_get_network_available().
-//
-// If Monitor:network-available is false, then the connectivity state will be
-// G_NETWORK_CONNECTIVITY_LOCAL.
-//
-// If Monitor:network-available is true, then the connectivity state will be
-// G_NETWORK_CONNECTIVITY_FULL (if there is full Internet connectivity),
-// G_NETWORK_CONNECTIVITY_LIMITED (if the host has a default route, but appears
-// to be unable to actually reach the full Internet), or
-// G_NETWORK_CONNECTIVITY_PORTAL (if the host is trapped behind a "captive
-// portal" that requires some sort of login or acknowledgement before allowing
-// full Internet access).
-//
-// Note that in the case of G_NETWORK_CONNECTIVITY_LIMITED and
-// G_NETWORK_CONNECTIVITY_PORTAL, it is possible that some sites are reachable
-// but others are not. In this case, applications can attempt to connect to
-// remote servers, but should gracefully fall back to their "offline" behavior
-// if the connection attempt fails.
 func (m networkMonitor) Connectivity() NetworkConnectivity {
 	var _arg0 *C.GNetworkMonitor     // out
 	var _cret C.GNetworkConnectivity // in
@@ -14592,10 +13002,6 @@ func (m networkMonitor) Connectivity() NetworkConnectivity {
 	return _networkConnectivity
 }
 
-// NetworkAvailable checks if the network is available. "Available" here means
-// that the system has a default route available for at least one of IPv4 or
-// IPv6. It does not necessarily imply that the public Internet is reachable.
-// See Monitor:network-available for more details.
 func (m networkMonitor) NetworkAvailable() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
@@ -14613,8 +13019,6 @@ func (m networkMonitor) NetworkAvailable() bool {
 	return _ok
 }
 
-// NetworkMetered checks if the network is metered. See Monitor:network-metered
-// for more details.
 func (m networkMonitor) NetworkMetered() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
@@ -14722,13 +13126,6 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 	return WrapPollableInputStream(obj), nil
 }
 
-// CanPoll checks if @stream is actually pollable. Some classes may implement
-// InputStream but have only certain instances of that class be pollable. If
-// this method returns false, then the behavior of other InputStream methods is
-// undefined.
-//
-// For any given stream, the value returned by this method is constant; a stream
-// cannot switch from pollable to non-pollable or vice versa.
 func (s pollableInputStream) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
@@ -14746,13 +13143,6 @@ func (s pollableInputStream) CanPoll() bool {
 	return _ok
 }
 
-// IsReadable checks if @stream can be read.
-//
-// Note that some stream types may not be able to implement this 100% reliably,
-// and it is possible that a call to g_input_stream_read() after this returns
-// true would still block. To guarantee non-blocking behavior, you should always
-// use g_pollable_input_stream_read_nonblocking(), which will return a
-// G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 func (s pollableInputStream) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
@@ -14770,16 +13160,6 @@ func (s pollableInputStream) IsReadable() bool {
 	return _ok
 }
 
-// ReadNonblocking attempts to read up to @count bytes from @stream into
-// @buffer, as with g_input_stream_read(). If @stream is not currently readable,
-// this will immediately return G_IO_ERROR_WOULD_BLOCK, and you can use
-// g_pollable_input_stream_create_source() to create a #GSource that will be
-// triggered when @stream is readable.
-//
-// Note that since this method never blocks, you cannot actually use
-// @cancellable to cancel it. However, it will return an error if @cancellable
-// has already been cancelled when you call, which may happen if you call this
-// method after a source triggers due to having been cancelled.
 func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.void
@@ -14938,13 +13318,6 @@ func marshalPollableOutputStream(p uintptr) (interface{}, error) {
 	return WrapPollableOutputStream(obj), nil
 }
 
-// CanPoll checks if @stream is actually pollable. Some classes may implement
-// OutputStream but have only certain instances of that class be pollable. If
-// this method returns false, then the behavior of other OutputStream methods is
-// undefined.
-//
-// For any given stream, the value returned by this method is constant; a stream
-// cannot switch from pollable to non-pollable or vice versa.
 func (s pollableOutputStream) CanPoll() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
@@ -14962,13 +13335,6 @@ func (s pollableOutputStream) CanPoll() bool {
 	return _ok
 }
 
-// IsWritable checks if @stream can be written.
-//
-// Note that some stream types may not be able to implement this 100% reliably,
-// and it is possible that a call to g_output_stream_write() after this returns
-// true would still block. To guarantee non-blocking behavior, you should always
-// use g_pollable_output_stream_write_nonblocking(), which will return a
-// G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 func (s pollableOutputStream) IsWritable() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
@@ -14986,20 +13352,6 @@ func (s pollableOutputStream) IsWritable() bool {
 	return _ok
 }
 
-// WriteNonblocking attempts to write up to @count bytes from @buffer to
-// @stream, as with g_output_stream_write(). If @stream is not currently
-// writable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you can
-// use g_pollable_output_stream_create_source() to create a #GSource that will
-// be triggered when @stream is writable.
-//
-// Note that since this method never blocks, you cannot actually use
-// @cancellable to cancel it. However, it will return an error if @cancellable
-// has already been cancelled when you call, which may happen if you call this
-// method after a source triggers due to having been cancelled.
-//
-// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
-// transports like D/TLS require that you re-send the same @buffer and @count in
-// the next write call.
 func (s pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg1 *C.void
@@ -15024,21 +13376,6 @@ func (s pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancel
 	return _gssize, _goerr
 }
 
-// WritevNonblocking attempts to write the bytes contained in the @n_vectors
-// @vectors to @stream, as with g_output_stream_writev(). If @stream is not
-// currently writable, this will immediately return
-// %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
-// g_pollable_output_stream_create_source() to create a #GSource that will be
-// triggered when @stream is writable. @error will *not* be set in that case.
-//
-// Note that since this method never blocks, you cannot actually use
-// @cancellable to cancel it. However, it will return an error if @cancellable
-// has already been cancelled when you call, which may happen if you call this
-// method after a source triggers due to having been cancelled.
-//
-// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some underlying
-// transports like D/TLS require that you re-send the same @vectors and
-// @n_vectors in the next write call.
 func (s pollableOutputStream) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error) {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg1 *C.GOutputVector
@@ -15132,10 +13469,6 @@ func marshalProXY(p uintptr) (interface{}, error) {
 	return WrapProXY(obj), nil
 }
 
-// ConnectProXY: given @connection to communicate with a proxy (eg, a Connection
-// that is connected to the proxy server), this does the necessary handshake to
-// connect to @proxy_address, and if required, wraps the OStream to handle proxy
-// payload.
 func (p proXY) ConnectProXY(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable) (IOStream, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg1 *C.GIOStream     // out
@@ -15160,7 +13493,6 @@ func (p proXY) ConnectProXY(connection IOStream, proxyAddress ProXYAddress, canc
 	return _ioStream, _goerr
 }
 
-// ConnectFinish: see g_proxy_connect().
 func (p proXY) ConnectFinish(result AsyncResult) (IOStream, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out
@@ -15181,12 +13513,6 @@ func (p proXY) ConnectFinish(result AsyncResult) (IOStream, error) {
 	return _ioStream, _goerr
 }
 
-// SupportsHostname: some proxy protocols expect to be passed a hostname, which
-// they will resolve to an IP address themselves. Others, like SOCKS4, do not
-// allow this. This function will return false if @proxy is implementing such a
-// protocol. When false is returned, the caller should resolve the destination
-// hostname first, and then pass a Address containing the stringified IP address
-// to g_proxy_connect() or g_proxy_connect_async().
 func (p proXY) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
 	var _cret C.gboolean // in
@@ -15284,9 +13610,6 @@ func marshalProXYResolver(p uintptr) (interface{}, error) {
 	return WrapProXYResolver(obj), nil
 }
 
-// IsSupported checks if @resolver can be used on this system. (This is used
-// internally; g_proxy_resolver_get_default() will only return a proxy resolver
-// that returns true for this method.)
 func (r proXYResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
@@ -15304,18 +13627,6 @@ func (r proXYResolver) IsSupported() bool {
 	return _ok
 }
 
-// Lookup looks into the system proxy configuration to determine what proxy, if
-// any, to use to connect to @uri. The returned proxy URIs are of the form
-// `<protocol>://[user[:password]@]host:port` or `direct://`, where <protocol>
-// could be http, rtsp, socks or other proxying protocol.
-//
-// If you don't know what network protocol is being used on the socket, you
-// should use `none` as the URI protocol. In this case, the resolver might still
-// return a generic proxy type (such as SOCKS), but would not return
-// protocol-specific proxy types (such as http).
-//
-// `direct://` is used when no proxy is needed. Direct connection should not be
-// attempted unless it is part of the returned array of proxies.
 func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.gchar          // out
@@ -15352,9 +13663,6 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 	return _utf8s, _goerr
 }
 
-// LookupFinish: call this function to obtain the array of proxy URIs when
-// g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
-// for more details.
 func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
@@ -15476,15 +13784,6 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 	return WrapRemoteActionGroup(obj), nil
 }
 
-// ActivateActionFull activates the remote action.
-//
-// This is the same as g_action_group_activate_action() except that it allows
-// for provision of "platform data" to be sent along with the activation
-// request. This typically contains details such as the user interaction
-// timestamp or startup notification information.
-//
-// @platform_data must be non-nil and must have the type G_VARIANT_TYPE_VARDICT.
-// If it is floating, it will be consumed.
 func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -15500,15 +13799,6 @@ func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib
 	C.g_remote_action_group_activate_action_full(_arg0, _arg1, _arg2, _arg3)
 }
 
-// ChangeActionStateFull changes the state of a remote action.
-//
-// This is the same as g_action_group_change_action_state() except that it
-// allows for provision of "platform data" to be sent along with the state
-// change request. This typically contains details such as the user interaction
-// timestamp or startup notification information.
-//
-// @platform_data must be non-nil and must have the type G_VARIANT_TYPE_VARDICT.
-// If it is floating, it will be consumed.
 func (r remoteActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -15633,7 +13923,6 @@ func marshalSeekable(p uintptr) (interface{}, error) {
 	return WrapSeekable(obj), nil
 }
 
-// CanSeek tests if the stream supports the Iface.
 func (s seekable) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
@@ -15651,8 +13940,6 @@ func (s seekable) CanSeek() bool {
 	return _ok
 }
 
-// CanTruncate tests if the length of the stream can be adjusted with
-// g_seekable_truncate().
 func (s seekable) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
@@ -15670,20 +13957,6 @@ func (s seekable) CanTruncate() bool {
 	return _ok
 }
 
-// Seek seeks in the stream by the given @offset, modified by @type.
-//
-// Attempting to seek past the end of the stream will have different results
-// depending on if the stream is fixed-sized or resizable. If the stream is
-// resizable then seeking past the end and then writing will result in zeros
-// filling the empty space. Seeking past the end of a resizable stream and
-// reading will result in EOF. Seeking past the end of a fixed-sized stream will
-// fail.
-//
-// Any operation that would result in a negative offset will fail.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
@@ -15705,7 +13978,6 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 	return _goerr
 }
 
-// Tell tells the current position within the stream.
 func (s seekable) Tell() int64 {
 	var _arg0 *C.GSeekable // out
 	var _cret C.goffset    // in
@@ -15721,15 +13993,6 @@ func (s seekable) Tell() int64 {
 	return _gint64
 }
 
-// Truncate sets the length of the stream to @offset. If the stream was
-// previously larger than @offset, the extra data is discarded. If the stream
-// was previously shorter than @offset, it is extended with NUL ('\0') bytes.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
-// partially finished when the operation was cancelled the partial result will
-// be returned, without an error.
 func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
@@ -15870,7 +14133,6 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 	return WrapSocketConnectable(obj), nil
 }
 
-// Enumerate creates a AddressEnumerator for @connectable.
 func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
@@ -15886,11 +14148,6 @@ func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 	return _socketAddressEnumerator
 }
 
-// ProXYEnumerate creates a AddressEnumerator for @connectable that will return
-// a Address for each of its addresses that you must connect to via a proxy.
-//
-// If @connectable does not implement g_socket_connectable_proxy_enumerate(),
-// this will fall back to calling g_socket_connectable_enumerate().
 func (c socketConnectable) ProXYEnumerate() SocketAddressEnumerator {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
@@ -15906,13 +14163,6 @@ func (c socketConnectable) ProXYEnumerate() SocketAddressEnumerator {
 	return _socketAddressEnumerator
 }
 
-// String: format a Connectable as a string. This is a human-readable format for
-// use in debugging output, and is not a stable serialization format. It is not
-// suitable for use in user interfaces as it exposes too much information for a
-// user.
-//
-// If the Connectable implementation does not support string formatting, the
-// implementation’s type name will be returned as a fallback.
 func (c socketConnectable) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in
@@ -16005,7 +14255,6 @@ func marshalTLSBackend(p uintptr) (interface{}, error) {
 	return WrapTLSBackend(obj), nil
 }
 
-// CertificateType gets the #GType of @backend's Certificate implementation.
 func (b tlsBackend) CertificateType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -16021,8 +14270,6 @@ func (b tlsBackend) CertificateType() externglib.Type {
 	return _gType
 }
 
-// ClientConnectionType gets the #GType of @backend's ClientConnection
-// implementation.
 func (b tlsBackend) ClientConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -16038,7 +14285,6 @@ func (b tlsBackend) ClientConnectionType() externglib.Type {
 	return _gType
 }
 
-// DefaultDatabase gets the default Database used to verify TLS connections.
 func (b tlsBackend) DefaultDatabase() TLSDatabase {
 	var _arg0 *C.GTlsBackend  // out
 	var _cret *C.GTlsDatabase // in
@@ -16054,8 +14300,6 @@ func (b tlsBackend) DefaultDatabase() TLSDatabase {
 	return _tlsDatabase
 }
 
-// DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
-// implementation.
 func (b tlsBackend) DTLSClientConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -16071,8 +14315,6 @@ func (b tlsBackend) DTLSClientConnectionType() externglib.Type {
 	return _gType
 }
 
-// DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
-// implementation.
 func (b tlsBackend) DTLSServerConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -16088,7 +14330,6 @@ func (b tlsBackend) DTLSServerConnectionType() externglib.Type {
 	return _gType
 }
 
-// FileDatabaseType gets the #GType of @backend's FileDatabase implementation.
 func (b tlsBackend) FileDatabaseType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -16104,8 +14345,6 @@ func (b tlsBackend) FileDatabaseType() externglib.Type {
 	return _gType
 }
 
-// ServerConnectionType gets the #GType of @backend's ServerConnection
-// implementation.
 func (b tlsBackend) ServerConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -16121,14 +14360,6 @@ func (b tlsBackend) ServerConnectionType() externglib.Type {
 	return _gType
 }
 
-// SetDefaultDatabase: set the default Database used to verify TLS connections
-//
-// Any subsequent call to g_tls_backend_get_default_database() will return the
-// database set in this call. Existing databases and connections are not
-// modified.
-//
-// Setting a nil default database will reset to using the system default
-// database as if g_tls_backend_set_default_database() had never been called.
 func (b tlsBackend) SetDefaultDatabase(database TLSDatabase) {
 	var _arg0 *C.GTlsBackend  // out
 	var _arg1 *C.GTlsDatabase // out
@@ -16139,8 +14370,6 @@ func (b tlsBackend) SetDefaultDatabase(database TLSDatabase) {
 	C.g_tls_backend_set_default_database(_arg0, _arg1)
 }
 
-// SupportsDTLS checks if DTLS is supported. DTLS support may not be available
-// even if TLS support is available, and vice-versa.
 func (b tlsBackend) SupportsDTLS() bool {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.gboolean     // in
@@ -16158,8 +14387,6 @@ func (b tlsBackend) SupportsDTLS() bool {
 	return _ok
 }
 
-// SupportsTLS checks if TLS is supported; if this returns false for the default
-// Backend, it means no "real" TLS backend is available.
 func (b tlsBackend) SupportsTLS() bool {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.gboolean     // in
@@ -16292,33 +14519,6 @@ func marshalTLSClientConnection(p uintptr) (interface{}, error) {
 	return WrapTLSClientConnection(obj), nil
 }
 
-// CopySessionState: possibly copies session state from one connection to
-// another, for use in TLS session resumption. This is not normally needed, but
-// may be used when the same session needs to be used between different
-// endpoints, as is required by some protocols, such as FTP over TLS. @source
-// should have already completed a handshake and, since TLS 1.3, it should have
-// been used to read data at least once. @conn should not have completed a
-// handshake.
-//
-// It is not possible to know whether a call to this function will actually do
-// anything. Because session resumption is normally used only for performance
-// benefit, the TLS backend might not implement this function. Even if
-// implemented, it may not actually succeed in allowing @conn to resume
-// @source's TLS session, because the server may not have sent a session
-// resumption token to @source, or it may refuse to accept the token from @conn.
-// There is no way to know whether a call to this function is actually
-// successful.
-//
-// Using this function is not required to benefit from session resumption. If
-// the TLS backend supports session resumption, the session will be resumed
-// automatically if it is possible to do so without weakening the privacy
-// guarantees normally provided by TLS, without need to call this function. For
-// example, with TLS 1.3, a session ticket will be automatically copied from any
-// ClientConnection that has previously received session tickets from the
-// server, provided a ticket is available that has not previously been used for
-// session resumption, since session ticket reuse would be a privacy weakness.
-// Using this function causes the ticket to be copied without regard for privacy
-// considerations.
 func (c tlsClientConnection) CopySessionState(source TLSClientConnection) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GTlsClientConnection // out
@@ -16329,7 +14529,6 @@ func (c tlsClientConnection) CopySessionState(source TLSClientConnection) {
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
 }
 
-// ServerIdentity gets @conn's expected server identity
 func (c tlsClientConnection) ServerIdentity() SocketConnectable {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
@@ -16345,8 +14544,6 @@ func (c tlsClientConnection) ServerIdentity() SocketConnectable {
 	return _socketConnectable
 }
 
-// UseSSL3: SSL 3.0 is no longer supported. See
-// g_tls_client_connection_set_use_ssl3() for details.
 func (c tlsClientConnection) UseSSL3() bool {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.gboolean              // in
@@ -16364,7 +14561,6 @@ func (c tlsClientConnection) UseSSL3() bool {
 	return _ok
 }
 
-// ValidationFlags gets @conn's validation flags
 func (c tlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.GTlsCertificateFlags  // in
@@ -16380,10 +14576,6 @@ func (c tlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// SetServerIdentity sets @conn's expected server identity, which is used both
-// to tell servers on virtual hosts which certificate to present, and also to
-// let @conn know what name to look for in the certificate when performing
-// G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 func (c tlsClientConnection) SetServerIdentity(identity SocketConnectable) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GSocketConnectable   // out
@@ -16394,15 +14586,6 @@ func (c tlsClientConnection) SetServerIdentity(identity SocketConnectable) {
 	C.g_tls_client_connection_set_server_identity(_arg0, _arg1)
 }
 
-// SetUseSSL3: since GLib 2.42.1, SSL 3.0 is no longer supported.
-//
-// From GLib 2.42.1 through GLib 2.62, this function could be used to force use
-// of TLS 1.0, the lowest-supported TLS protocol version at the time. In the
-// past, this was needed to connect to broken TLS servers that exhibited
-// protocol version intolerance. Such servers are no longer common, and using
-// TLS 1.0 is no longer considered acceptable.
-//
-// Since GLib 2.64, this function does nothing.
 func (c tlsClientConnection) SetUseSSL3(useSsl3 bool) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 C.gboolean              // out
@@ -16415,9 +14598,6 @@ func (c tlsClientConnection) SetUseSSL3(useSsl3 bool) {
 	C.g_tls_client_connection_set_use_ssl3(_arg0, _arg1)
 }
 
-// SetValidationFlags sets @conn's validation flags, to override the default set
-// of checks performed when validating a server certificate. By default,
-// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
 func (c tlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 C.GTlsCertificateFlags  // out
@@ -16675,7 +14855,6 @@ func marshalVolume(p uintptr) (interface{}, error) {
 	return WrapVolume(obj), nil
 }
 
-// CanEject checks if a volume can be ejected.
 func (v volume) CanEject() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -16693,7 +14872,6 @@ func (v volume) CanEject() bool {
 	return _ok
 }
 
-// CanMount checks if a volume can be mounted.
 func (v volume) CanMount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -16711,9 +14889,6 @@ func (v volume) CanMount() bool {
 	return _ok
 }
 
-// EjectFinish finishes ejecting a volume. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
-// returned.
 func (v volume) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -16731,9 +14906,6 @@ func (v volume) EjectFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EjectWithOperationFinish finishes ejecting a volume. If any errors occurred
-// during the operation, @error will be set to contain the errors and false will
-// be returned.
 func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -16751,9 +14923,6 @@ func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier] that
-// @volume has. Use g_volume_get_identifier() to obtain the identifiers
-// themselves.
 func (v volume) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
 	var _cret **C.char
@@ -16782,19 +14951,6 @@ func (v volume) EnumerateIdentifiers() []string {
 	return _utf8s
 }
 
-// ActivationRoot gets the activation root for a #GVolume if it is known ahead
-// of mount time. Returns nil otherwise. If not nil and if @volume is mounted,
-// then the result of g_mount_get_root() on the #GMount object obtained from
-// g_volume_get_mount() will always either be equal or a prefix of what this
-// function returns. In other words, in code
-//
-//    (g_file_has_prefix (volume_activation_root, mount_root) ||
-//     g_file_equal (volume_activation_root, mount_root))
-//
-// will always be true.
-//
-// Activation roots are typically used in Monitor implementations to find the
-// underlying mount to shadow, see g_mount_is_shadowed() for more details.
 func (v volume) ActivationRoot() File {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GFile   // in
@@ -16810,7 +14966,6 @@ func (v volume) ActivationRoot() File {
 	return _file
 }
 
-// Drive gets the drive for the @volume.
 func (v volume) Drive() Drive {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GDrive  // in
@@ -16826,7 +14981,6 @@ func (v volume) Drive() Drive {
 	return _drive
 }
 
-// Icon gets the icon for @volume.
 func (v volume) Icon() Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
@@ -16842,9 +14996,6 @@ func (v volume) Icon() Icon {
 	return _icon
 }
 
-// Identifier gets the identifier of the given kind for @volume. See the
-// [introduction][volume-identifier] for more information about volume
-// identifiers.
 func (v volume) Identifier(kind string) string {
 	var _arg0 *C.GVolume // out
 	var _arg1 *C.char    // out
@@ -16864,7 +15015,6 @@ func (v volume) Identifier(kind string) string {
 	return _utf8
 }
 
-// Mount gets the mount for the @volume.
 func (v volume) Mount() Mount {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
@@ -16880,7 +15030,6 @@ func (v volume) Mount() Mount {
 	return _mount
 }
 
-// Name gets the name of @volume.
 func (v volume) Name() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
@@ -16897,7 +15046,6 @@ func (v volume) Name() string {
 	return _utf8
 }
 
-// SortKey gets the sort key for @volume, if any.
 func (v volume) SortKey() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.gchar   // in
@@ -16913,7 +15061,6 @@ func (v volume) SortKey() string {
 	return _utf8
 }
 
-// SymbolicIcon gets the symbolic icon for @volume.
 func (v volume) SymbolicIcon() Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
@@ -16929,9 +15076,6 @@ func (v volume) SymbolicIcon() Icon {
 	return _icon
 }
 
-// UUID gets the UUID for the @volume. The reference is typically based on the
-// file system UUID for the volume in question and should be considered an
-// opaque string. Returns nil if there is no UUID available.
 func (v volume) UUID() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
@@ -16948,13 +15092,6 @@ func (v volume) UUID() string {
 	return _utf8
 }
 
-// MountFinish finishes mounting a volume. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
-// returned.
-//
-// If the mount operation succeeded, g_volume_get_mount() on @volume is
-// guaranteed to return the mount right after calling this function; there's no
-// need to listen for the 'mount-added' signal on Monitor.
 func (v volume) MountFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -16972,7 +15109,6 @@ func (v volume) MountFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// ShouldAutomount returns whether the volume should be automatically mounted.
 func (v volume) ShouldAutomount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -17089,9 +15225,6 @@ func NewAppLaunchContext() AppLaunchContext {
 	return _appLaunchContext
 }
 
-// Environment gets the complete environment variable list to be passed to the
-// child process when @context is used to launch an application. This is a
-// nil-terminated array of strings, where each string has the form `KEY=VALUE`.
 func (c appLaunchContext) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _cret **C.char
@@ -17120,9 +15253,6 @@ func (c appLaunchContext) Environment() []string {
 	return _filenames
 }
 
-// LaunchFailed: called when an application has failed to launch, so that it can
-// cancel the application startup notification started in
-// g_app_launch_context_get_startup_notify_id().
 func (c appLaunchContext) LaunchFailed(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -17134,8 +15264,6 @@ func (c appLaunchContext) LaunchFailed(startupNotifyId string) {
 	C.g_app_launch_context_launch_failed(_arg0, _arg1)
 }
 
-// Setenv arranges for @variable to be set to @value in the child's environment
-// when @context is used to launch an application.
 func (c appLaunchContext) Setenv(variable string, value string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -17150,8 +15278,6 @@ func (c appLaunchContext) Setenv(variable string, value string) {
 	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
 }
 
-// Unsetenv arranges for @variable to be unset in the child's environment when
-// @context is used to launch an application.
 func (c appLaunchContext) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -17795,12 +15921,6 @@ func NewApplication(applicationId string, flags ApplicationFlags) Application {
 	return _application
 }
 
-// Activate activates the application.
-//
-// In essence, this results in the #GApplication::activate signal being emitted
-// in the primary instance.
-//
-// The application must be registered before calling this function.
 func (a application) Activate() {
 	var _arg0 *C.GApplication // out
 
@@ -17809,18 +15929,6 @@ func (a application) Activate() {
 	C.g_application_activate(_arg0)
 }
 
-// AddMainOption: add an option to be handled by @application.
-//
-// Calling this function is the equivalent of calling
-// g_application_add_main_option_entries() with a single Entry that has its
-// arg_data member set to nil.
-//
-// The parsed arguments will be packed into a Dict which is passed to
-// #GApplication::handle-local-options. If G_APPLICATION_HANDLES_COMMAND_LINE is
-// set, then it will also be sent to the primary instance. See
-// g_application_add_main_option_entries() for more details.
-//
-// See Entry for more documentation of the arguments.
 func (a application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.char         // out
@@ -17844,54 +15952,6 @@ func (a application) AddMainOption(longName string, shortName byte, flags glib.O
 	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// AddMainOptionEntries adds main option entries to be handled by @application.
-//
-// This function is comparable to g_option_context_add_main_entries().
-//
-// After the commandline arguments are parsed, the
-// #GApplication::handle-local-options signal will be emitted. At this point,
-// the application can inspect the values pointed to by @arg_data in the given
-// Entrys.
-//
-// Unlike Context, #GApplication supports giving a nil @arg_data for a
-// non-callback Entry. This results in the argument in question being packed
-// into a Dict which is also passed to #GApplication::handle-local-options,
-// where it can be inspected and modified. If G_APPLICATION_HANDLES_COMMAND_LINE
-// is set, then the resulting dictionary is sent to the primary instance, where
-// g_application_command_line_get_options_dict() will return it. This "packing"
-// is done according to the type of the argument -- booleans for normal flags,
-// strings for strings, bytestrings for filenames, etc. The packing only occurs
-// if the flag is given (ie: we do not pack a "false" #GVariant in the case that
-// a flag is missing).
-//
-// In general, it is recommended that all commandline arguments are parsed
-// locally. The options dictionary should then be used to transmit the result of
-// the parsing to the primary instance, where g_variant_dict_lookup() can be
-// used. For local options, it is possible to either use @arg_data in the usual
-// way, or to consult (and potentially remove) the option from the options
-// dictionary.
-//
-// This function is new in GLib 2.40. Before then, the only real choice was to
-// send all of the commandline arguments (options and all) to the primary
-// instance for handling. #GApplication ignored them completely on the local
-// side. Calling this function "opts in" to the new behaviour, and in
-// particular, means that unrecognised options will be treated as errors.
-// Unrecognised options have never been ignored when
-// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
-//
-// If #GApplication::handle-local-options needs to see the list of filenames,
-// then the use of G_OPTION_REMAINING is recommended. If @arg_data is nil then
-// G_OPTION_REMAINING can be used as a key into the options dictionary. If you
-// do use G_OPTION_REMAINING then you need to handle these arguments for
-// yourself because once they are consumed, they will no longer be visible to
-// the default handling (which treats them as filenames to be opened).
-//
-// It is important to use the proper GVariant format when retrieving the options
-// with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` - for
-// G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
-// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
-// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use `^a&s`
-// - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
 func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionEntry
@@ -17906,29 +15966,6 @@ func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	C.g_application_add_main_option_entries(_arg0, _arg1)
 }
 
-// AddOptionGroup adds a Group to the commandline handling of @application.
-//
-// This function is comparable to g_option_context_add_group().
-//
-// Unlike g_application_add_main_option_entries(), this function does not deal
-// with nil @arg_data and never transmits options to the primary instance.
-//
-// The reason for that is because, by the time the options arrive at the primary
-// instance, it is typically too late to do anything with them. Taking the GTK
-// option group as an example: GTK will already have been initialised by the
-// time the #GApplication::command-line handler runs. In the case that this is
-// not the first-running instance of the application, the existing instance may
-// already have been running for a very long time.
-//
-// This means that the options from Group are only really usable in the case
-// that the instance of the application being run is the first instance. Passing
-// options like `--display=` or `--gdk-debug=` on future runs will have no
-// effect on the existing primary instance.
-//
-// Calling this function will cause the options in the supplied option group to
-// be parsed, but it does not cause you to be "opted in" to the new
-// functionality whereby unrecognised options are rejected even if
-// G_APPLICATION_HANDLES_COMMAND_LINE was given.
 func (a application) AddOptionGroup(group *glib.OptionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionGroup // out
@@ -17939,11 +15976,6 @@ func (a application) AddOptionGroup(group *glib.OptionGroup) {
 	C.g_application_add_option_group(_arg0, _arg1)
 }
 
-// BindBusyProperty marks @application as busy (see g_application_mark_busy())
-// while @property on @object is true.
-//
-// The binding holds a reference to @application while it is active, but not to
-// @object. Instead, the binding is destroyed when @object is finalized.
 func (a application) BindBusyProperty(object gextras.Objector, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
@@ -17957,7 +15989,6 @@ func (a application) BindBusyProperty(object gextras.Objector, property string) 
 	C.g_application_bind_busy_property(_arg0, _arg1, _arg2)
 }
 
-// ApplicationID gets the unique identifier for @application.
 func (a application) ApplicationID() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -17973,18 +16004,6 @@ func (a application) ApplicationID() string {
 	return _utf8
 }
 
-// DBusConnection gets the BusConnection being used by the application, or nil.
-//
-// If #GApplication is using its D-Bus backend then this function will return
-// the BusConnection being used for uniqueness and communication with the
-// desktop environment and other instances of the application.
-//
-// If #GApplication is not using D-Bus then this function will return nil. This
-// includes the situation where the D-Bus backend would normally be in use but
-// we were unable to connect to the bus.
-//
-// This function must not be called before the application has been registered.
-// See g_application_get_is_registered().
 func (a application) DBusConnection() DBusConnection {
 	var _arg0 *C.GApplication    // out
 	var _cret *C.GDBusConnection // in
@@ -18000,21 +16019,6 @@ func (a application) DBusConnection() DBusConnection {
 	return _dBusConnection
 }
 
-// DBusObjectPath gets the D-Bus object path being used by the application, or
-// nil.
-//
-// If #GApplication is using its D-Bus backend then this function will return
-// the D-Bus object path that #GApplication is using. If the application is the
-// primary instance then there is an object published at this path. If the
-// application is not the primary instance then the result of this function is
-// undefined.
-//
-// If #GApplication is not using D-Bus then this function will return nil. This
-// includes the situation where the D-Bus backend would normally be in use but
-// we were unable to connect to the bus.
-//
-// This function must not be called before the application has been registered.
-// See g_application_get_is_registered().
 func (a application) DBusObjectPath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -18030,9 +16034,6 @@ func (a application) DBusObjectPath() string {
 	return _utf8
 }
 
-// Flags gets the flags for @application.
-//
-// See Flags.
 func (a application) Flags() ApplicationFlags {
 	var _arg0 *C.GApplication     // out
 	var _cret C.GApplicationFlags // in
@@ -18048,10 +16049,6 @@ func (a application) Flags() ApplicationFlags {
 	return _applicationFlags
 }
 
-// InactivityTimeout gets the current inactivity timeout for the application.
-//
-// This is the amount of time (in milliseconds) after the last call to
-// g_application_release() before the application stops running.
 func (a application) InactivityTimeout() uint {
 	var _arg0 *C.GApplication // out
 	var _cret C.guint         // in
@@ -18067,8 +16064,6 @@ func (a application) InactivityTimeout() uint {
 	return _guint
 }
 
-// IsBusy gets the application's current busy state, as set through
-// g_application_mark_busy() or g_application_bind_busy_property().
 func (a application) IsBusy() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -18086,10 +16081,6 @@ func (a application) IsBusy() bool {
 	return _ok
 }
 
-// IsRegistered checks if @application is registered.
-//
-// An application is registered if g_application_register() has been
-// successfully called.
 func (a application) IsRegistered() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -18107,15 +16098,6 @@ func (a application) IsRegistered() bool {
 	return _ok
 }
 
-// IsRemote checks if @application is remote.
-//
-// If @application is remote then it means that another instance of application
-// already exists (the 'primary' instance). Calls to perform actions on
-// @application will result in the actions being performed by the primary
-// instance.
-//
-// The value of this property cannot be accessed before g_application_register()
-// has been called. See g_application_get_is_registered().
 func (a application) IsRemote() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -18133,9 +16115,6 @@ func (a application) IsRemote() bool {
 	return _ok
 }
 
-// ResourceBasePath gets the resource base path of @application.
-//
-// See g_application_set_resource_base_path() for more information.
 func (a application) ResourceBasePath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -18151,13 +16130,6 @@ func (a application) ResourceBasePath() string {
 	return _utf8
 }
 
-// Hold increases the use count of @application.
-//
-// Use this function to indicate that the application has a reason to continue
-// to run. For example, g_application_hold() is called by GTK+ when a toplevel
-// window is on the screen.
-//
-// To cancel the hold, call g_application_release().
 func (a application) Hold() {
 	var _arg0 *C.GApplication // out
 
@@ -18166,15 +16138,6 @@ func (a application) Hold() {
 	C.g_application_hold(_arg0)
 }
 
-// MarkBusy increases the busy count of @application.
-//
-// Use this function to indicate that the application is busy, for instance
-// while a long running operation is pending.
-//
-// The busy state will be exposed to other processes, so a session shell will
-// use that information to indicate the state to the user (e.g. with a spinner).
-//
-// To cancel the busy indication, use g_application_unmark_busy().
 func (a application) MarkBusy() {
 	var _arg0 *C.GApplication // out
 
@@ -18183,20 +16146,6 @@ func (a application) MarkBusy() {
 	C.g_application_mark_busy(_arg0)
 }
 
-// Open opens the given files.
-//
-// In essence, this results in the #GApplication::open signal being emitted in
-// the primary instance.
-//
-// @n_files must be greater than zero.
-//
-// @hint is simply passed through to the ::open signal. It is intended to be
-// used by applications that have multiple modes for opening files (eg: "view"
-// vs "edit", etc). Unless you have a need for this functionality, you should
-// use "".
-//
-// The application must be registered before calling this function and it must
-// have the G_APPLICATION_HANDLES_OPEN flag set.
 func (a application) Open(files []File, hint string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 **C.GFile
@@ -18219,18 +16168,6 @@ func (a application) Open(files []File, hint string) {
 	C.g_application_open(_arg0, _arg1, _arg2, _arg3)
 }
 
-// Quit: immediately quits the application.
-//
-// Upon return to the mainloop, g_application_run() will return, calling only
-// the 'shutdown' function before doing so.
-//
-// The hold count is ignored. Take care if your code has called
-// g_application_hold() on the application and is therefore still expecting it
-// to exist. (Note that you may have called g_application_hold() indirectly, for
-// example through gtk_application_add_window().)
-//
-// The result of calling g_application_run() again after it returns is
-// unspecified.
 func (a application) Quit() {
 	var _arg0 *C.GApplication // out
 
@@ -18239,34 +16176,6 @@ func (a application) Quit() {
 	C.g_application_quit(_arg0)
 }
 
-// Register attempts registration of the application.
-//
-// This is the point at which the application discovers if it is the primary
-// instance or merely acting as a remote for an already-existing primary
-// instance. This is implemented by attempting to acquire the application
-// identifier as a unique bus name on the session bus using GDBus.
-//
-// If there is no application ID or if G_APPLICATION_NON_UNIQUE was given, then
-// this process will always become the primary instance.
-//
-// Due to the internal architecture of GDBus, method calls can be dispatched at
-// any time (even if a main loop is not running). For this reason, you must
-// ensure that any object paths that you wish to register are registered before
-// calling this function.
-//
-// If the application has already been registered then true is returned with no
-// work performed.
-//
-// The #GApplication::startup signal is emitted if registration succeeds and
-// @application is the primary instance (including the non-unique case).
-//
-// In the event of an error (such as @cancellable being cancelled, or a failure
-// to connect to the session bus), false is returned and @error is set
-// appropriately.
-//
-// Note: the return value of this function is not an indicator that this
-// instance is or is not the primary instance of the application. See
-// g_application_get_is_remote() for that.
 func (a application) Register(cancellable Cancellable) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
@@ -18284,12 +16193,6 @@ func (a application) Register(cancellable Cancellable) error {
 	return _goerr
 }
 
-// Release: decrease the use count of @application.
-//
-// When the use count reaches zero, the application will stop running.
-//
-// Never call this function except to cancel the effect of a previous call to
-// g_application_hold().
 func (a application) Release() {
 	var _arg0 *C.GApplication // out
 
@@ -18298,76 +16201,6 @@ func (a application) Release() {
 	C.g_application_release(_arg0)
 }
 
-// Run runs the application.
-//
-// This function is intended to be run from main() and its return value is
-// intended to be returned by main(). Although you are expected to pass the
-// @argc, @argv parameters from main() to this function, it is possible to pass
-// nil if @argv is not available or commandline handling is not required. Note
-// that on Windows, @argc and @argv are ignored, and g_win32_get_command_line()
-// is called internally (for proper support of Unicode commandline arguments).
-//
-// #GApplication will attempt to parse the commandline arguments. You can add
-// commandline flags to the list of recognised options by way of
-// g_application_add_main_option_entries(). After this, the
-// #GApplication::handle-local-options signal is emitted, from which the
-// application can inspect the values of its Entrys.
-//
-// #GApplication::handle-local-options is a good place to handle options such as
-// `--version`, where an immediate reply from the local process is desired
-// (instead of communicating with an already-running instance). A
-// #GApplication::handle-local-options handler can stop further processing by
-// returning a non-negative value, which then becomes the exit status of the
-// process.
-//
-// What happens next depends on the flags: if G_APPLICATION_HANDLES_COMMAND_LINE
-// was specified then the remaining commandline arguments are sent to the
-// primary instance, where a #GApplication::command-line signal is emitted.
-// Otherwise, the remaining commandline arguments are assumed to be a list of
-// files. If there are no files listed, the application is activated via the
-// #GApplication::activate signal. If there are one or more files, and
-// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via the
-// #GApplication::open signal.
-//
-// If you are interested in doing more complicated local handling of the
-// commandline then you should implement your own #GApplication subclass and
-// override local_command_line(). In this case, you most likely want to return
-// true from your local_command_line() implementation to suppress the default
-// handling. See
-// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
-// example.
-//
-// If, after the above is done, the use count of the application is zero then
-// the exit status is returned immediately. If the use count is non-zero then
-// the default main context is iterated until the use count falls to zero, at
-// which point 0 is returned.
-//
-// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run for as
-// much as 10 seconds with a use count of zero while waiting for the message
-// that caused the activation to arrive. After that, if the use count falls to
-// zero the application will exit immediately, except in the case that
-// g_application_set_inactivity_timeout() is in use.
-//
-// This function sets the prgname (g_set_prgname()), if not already set, to the
-// basename of argv[0].
-//
-// Much like g_main_loop_run(), this function will acquire the main context for
-// the duration that the application is running.
-//
-// Since 2.40, applications that are not explicitly flagged as services or
-// launchers (ie: neither G_APPLICATION_IS_SERVICE or G_APPLICATION_IS_LAUNCHER
-// are given as flags) will check (from the default handler for
-// local_command_line) if "--gapplication-service" was given in the command
-// line. If this flag is present then normal commandline processing is
-// interrupted and the G_APPLICATION_IS_SERVICE flag is set. This provides a
-// "compromise" solution whereby running an application directly from the
-// commandline will invoke it in the normal way (which can be useful for
-// debugging) while still allowing applications to be D-Bus activated in service
-// mode. The D-Bus service file should invoke the executable with
-// "--gapplication-service" as the sole commandline argument. This approach is
-// suitable for use by most graphical applications but should not be used from
-// applications like editors that need precise control over when processes
-// invoked via the commandline will exit and what their exit status will be.
 func (a application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
 	var _arg2 **C.char
@@ -18395,30 +16228,6 @@ func (a application) Run(argv []string) int {
 	return _gint
 }
 
-// SendNotification sends a notification on behalf of @application to the
-// desktop shell. There is no guarantee that the notification is displayed
-// immediately, or even at all.
-//
-// Notifications may persist after the application exits. It will be
-// D-Bus-activated when the notification or one of its actions is activated.
-//
-// Modifying @notification after this call has no effect. However, the object
-// can be reused for a later call to this function.
-//
-// @id may be any string that uniquely identifies the event for the application.
-// It does not need to be in any special format. For example, "new-message"
-// might be appropriate for a notification about new messages.
-//
-// If a previous notification was sent with the same @id, it will be replaced
-// with @notification and shown again as if it was a new notification. This
-// works even for notifications sent from a previous execution of the
-// application, as long as @id is the same string.
-//
-// @id may be nil, but it is impossible to replace or withdraw notifications
-// without an id.
-//
-// If @notification is no longer relevant, it can be withdrawn with
-// g_application_withdraw_notification().
 func (a application) SendNotification(id string, notification Notification) {
 	var _arg0 *C.GApplication  // out
 	var _arg1 *C.gchar         // out
@@ -18432,8 +16241,6 @@ func (a application) SendNotification(id string, notification Notification) {
 	C.g_application_send_notification(_arg0, _arg1, _arg2)
 }
 
-// SetActionGroup: this used to be how actions were associated with a
-// #GApplication. Now there is Map for that.
 func (a application) SetActionGroup(actionGroup ActionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GActionGroup // out
@@ -18444,13 +16251,6 @@ func (a application) SetActionGroup(actionGroup ActionGroup) {
 	C.g_application_set_action_group(_arg0, _arg1)
 }
 
-// SetApplicationID sets the unique identifier for @application.
-//
-// The application id can only be modified if @application has not yet been
-// registered.
-//
-// If non-nil, the application id must be valid. See
-// g_application_id_is_valid().
 func (a application) SetApplicationID(applicationId string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -18462,12 +16262,6 @@ func (a application) SetApplicationID(applicationId string) {
 	C.g_application_set_application_id(_arg0, _arg1)
 }
 
-// SetDefault sets or unsets the default application for the process, as
-// returned by g_application_get_default().
-//
-// This function does not take its own reference on @application. If
-// @application is destroyed then the default application will revert back to
-// nil.
 func (a application) SetDefault() {
 	var _arg0 *C.GApplication // out
 
@@ -18476,11 +16270,6 @@ func (a application) SetDefault() {
 	C.g_application_set_default(_arg0)
 }
 
-// SetFlags sets the flags for @application.
-//
-// The flags can only be modified if @application has not yet been registered.
-//
-// See Flags.
 func (a application) SetFlags(flags ApplicationFlags) {
 	var _arg0 *C.GApplication     // out
 	var _arg1 C.GApplicationFlags // out
@@ -18491,14 +16280,6 @@ func (a application) SetFlags(flags ApplicationFlags) {
 	C.g_application_set_flags(_arg0, _arg1)
 }
 
-// SetInactivityTimeout sets the current inactivity timeout for the application.
-//
-// This is the amount of time (in milliseconds) after the last call to
-// g_application_release() before the application stops running.
-//
-// This call has no side effects of its own. The value set here is only used for
-// next time g_application_release() drops the use count to zero. Any timeouts
-// currently in progress are not impacted.
 func (a application) SetInactivityTimeout(inactivityTimeout uint) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.guint         // out
@@ -18509,10 +16290,6 @@ func (a application) SetInactivityTimeout(inactivityTimeout uint) {
 	C.g_application_set_inactivity_timeout(_arg0, _arg1)
 }
 
-// SetOptionContextDescription adds a description to the @application option
-// context.
-//
-// See g_option_context_set_description() for more information.
 func (a application) SetOptionContextDescription(description string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -18524,13 +16301,6 @@ func (a application) SetOptionContextDescription(description string) {
 	C.g_application_set_option_context_description(_arg0, _arg1)
 }
 
-// SetOptionContextParameterString sets the parameter string to be used by the
-// commandline handling of @application.
-//
-// This function registers the argument to be passed to g_option_context_new()
-// when the internal Context of @application is created.
-//
-// See g_option_context_new() for more information about @parameter_string.
 func (a application) SetOptionContextParameterString(parameterString string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -18542,9 +16312,6 @@ func (a application) SetOptionContextParameterString(parameterString string) {
 	C.g_application_set_option_context_parameter_string(_arg0, _arg1)
 }
 
-// SetOptionContextSummary adds a summary to the @application option context.
-//
-// See g_option_context_set_summary() for more information.
 func (a application) SetOptionContextSummary(summary string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -18556,37 +16323,6 @@ func (a application) SetOptionContextSummary(summary string) {
 	C.g_application_set_option_context_summary(_arg0, _arg1)
 }
 
-// SetResourceBasePath sets (or unsets) the base resource path of @application.
-//
-// The path is used to automatically load various [application
-// resources][gresource] such as menu layouts and action descriptions. The
-// various types of resources will be found at fixed names relative to the given
-// base path.
-//
-// By default, the resource base path is determined from the application ID by
-// prefixing '/' and replacing each '.' with '/'. This is done at the time that
-// the #GApplication object is constructed. Changes to the application ID after
-// that point will not have an impact on the resource base path.
-//
-// As an example, if the application has an ID of "org.example.app" then the
-// default resource base path will be "/org/example/app". If this is a
-// Application (and you have not manually changed the path) then Gtk will then
-// search for the menus of the application at "/org/example/app/gtk/menus.ui".
-//
-// See #GResource for more information about adding resources to your
-// application.
-//
-// You can disable automatic resource loading functionality by setting the path
-// to nil.
-//
-// Changing the resource base path once the application is running is not
-// recommended. The point at which the resource path is consulted for forming
-// paths for various purposes is unspecified. When writing a sub-class of
-// #GApplication you should either set the #GApplication:resource-base-path
-// property at construction time, or call this function during the instance
-// initialization. Alternatively, you can call this function in the
-// Class.startup virtual function, before chaining up to the parent
-// implementation.
 func (a application) SetResourceBasePath(resourcePath string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -18598,9 +16334,6 @@ func (a application) SetResourceBasePath(resourcePath string) {
 	C.g_application_set_resource_base_path(_arg0, _arg1)
 }
 
-// UnbindBusyProperty destroys a binding between @property and the busy state of
-// @application that was previously created with
-// g_application_bind_busy_property().
 func (a application) UnbindBusyProperty(object gextras.Objector, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
@@ -18614,13 +16347,6 @@ func (a application) UnbindBusyProperty(object gextras.Objector, property string
 	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
 }
 
-// UnmarkBusy decreases the busy count of @application.
-//
-// When the busy count reaches zero, the new state will be propagated to other
-// processes.
-//
-// This function must only be called to cancel the effect of a previous call to
-// g_application_mark_busy().
 func (a application) UnmarkBusy() {
 	var _arg0 *C.GApplication // out
 
@@ -18629,19 +16355,6 @@ func (a application) UnmarkBusy() {
 	C.g_application_unmark_busy(_arg0)
 }
 
-// WithdrawNotification withdraws a notification that was sent with
-// g_application_send_notification().
-//
-// This call does nothing if a notification with @id doesn't exist or the
-// notification was never sent.
-//
-// This function works even for notifications sent in previous executions of
-// this application, as long @id is the same as it was for the sent
-// notification.
-//
-// Note that notifications are dismissed when the user clicks on one of the
-// buttons in a notification or triggers its default action, so there is no need
-// to explicitly withdraw the notification in that case.
 func (a application) WithdrawNotification(id string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -18851,12 +16564,6 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	return WrapApplicationCommandLine(obj), nil
 }
 
-// CreateFileForArg creates a #GFile corresponding to a filename that was given
-// as part of the invocation of @cmdline.
-//
-// This differs from g_file_new_for_commandline_arg() in that it resolves
-// relative pathnames using the current working directory of the invoking
-// process rather than the local process.
 func (c applicationCommandLine) CreateFileForArg(arg string) File {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
@@ -18875,14 +16582,6 @@ func (c applicationCommandLine) CreateFileForArg(arg string) File {
 	return _file
 }
 
-// Cwd gets the working directory of the command line invocation. The string may
-// contain non-utf8 data.
-//
-// It is possible that the remote application did not send a working directory,
-// so this may be nil.
-//
-// The return value should not be modified or freed and is valid for as long as
-// @cmdline exists.
 func (c applicationCommandLine) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.gchar                   // in
@@ -18898,21 +16597,6 @@ func (c applicationCommandLine) Cwd() string {
 	return _filename
 }
 
-// Environ gets the contents of the 'environ' variable of the command line
-// invocation, as would be returned by g_get_environ(), ie as a nil-terminated
-// list of strings in the form 'NAME=VALUE'. The strings may contain non-utf8
-// data.
-//
-// The remote application usually does not send an environment. Use
-// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it is
-// possible that the environment is still not available (due to invocation
-// messages from other applications).
-//
-// The return value should not be modified or freed and is valid for as long as
-// @cmdline exists.
-//
-// See g_application_command_line_getenv() if you are only interested in the
-// value of a single environment variable.
 func (c applicationCommandLine) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret **C.gchar
@@ -18940,8 +16624,6 @@ func (c applicationCommandLine) Environ() []string {
 	return _filenames
 }
 
-// ExitStatus gets the exit status of @cmdline. See
-// g_application_command_line_set_exit_status() for more information.
 func (c applicationCommandLine) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.int                      // in
@@ -18957,7 +16639,6 @@ func (c applicationCommandLine) ExitStatus() int {
 	return _gint
 }
 
-// IsRemote determines if @cmdline represents a remote invocation.
 func (c applicationCommandLine) IsRemote() bool {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.gboolean                 // in
@@ -18975,16 +16656,6 @@ func (c applicationCommandLine) IsRemote() bool {
 	return _ok
 }
 
-// OptionsDict gets the options there were passed to
-// g_application_command_line().
-//
-// If you did not override local_command_line() then these are the same options
-// that were parsed according to the Entrys added to the application with
-// g_application_add_main_option_entries() and possibly modified from your
-// GApplication::handle-local-options handler.
-//
-// If no options were sent then an empty dictionary is returned so that you
-// don't need to check for nil.
 func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariantDict            // in
@@ -19000,14 +16671,6 @@ func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
 	return _variantDict
 }
 
-// PlatformData gets the platform data associated with the invocation of
-// @cmdline.
-//
-// This is a #GVariant dictionary containing information about the context in
-// which the invocation occurred. It typically contains information like the
-// current working directory and the startup notification ID.
-//
-// For local invocation, it will be nil.
 func (c applicationCommandLine) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariant                // in
@@ -19026,15 +16689,6 @@ func (c applicationCommandLine) PlatformData() *glib.Variant {
 	return _variant
 }
 
-// Stdin gets the stdin of the invoking process.
-//
-// The Stream can be used to read data passed to the standard input of the
-// invoking process. This doesn't work on all platforms. Presently, it is only
-// available on UNIX when using a D-Bus daemon capable of passing file
-// descriptors. If stdin is not available then nil will be returned. In the
-// future, support may be expanded to other platforms.
-//
-// You must only call this function once per commandline invocation.
 func (c applicationCommandLine) Stdin() InputStream {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GInputStream            // in
@@ -19050,17 +16704,6 @@ func (c applicationCommandLine) Stdin() InputStream {
 	return _inputStream
 }
 
-// env gets the value of a particular environment variable of the command line
-// invocation, as would be returned by g_getenv(). The strings may contain
-// non-utf8 data.
-//
-// The remote application usually does not send an environment. Use
-// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it is
-// possible that the environment is still not available (due to invocation
-// messages from other applications).
-//
-// The return value should not be modified or freed and is valid for as long as
-// @cmdline exists.
 func (c applicationCommandLine) env(name string) string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
@@ -19079,25 +16722,6 @@ func (c applicationCommandLine) env(name string) string {
 	return _utf8
 }
 
-// SetExitStatus sets the exit status that will be used when the invoking
-// process exits.
-//
-// The return value of the #GApplication::command-line signal is passed to this
-// function when the handler returns. This is the usual way of setting the exit
-// status.
-//
-// In the event that you want the remote invocation to continue running and want
-// to decide on the exit status in the future, you can use this call. For the
-// case of a remote invocation, the remote process will typically exit when the
-// last reference is dropped on @cmdline. The exit status of the remote process
-// will be equal to the last value that was set with this function.
-//
-// In the case that the commandline invocation is local, the situation is
-// slightly more complicated. If the commandline invocation results in the
-// mainloop running (ie: because the use-count of the application increased to a
-// non-zero value) then the application is considered to have been 'successful'
-// in a certain sense, and the exit status is always zero. If the application
-// use count is zero, though, the exit status of the local CommandLine is used.
 func (c applicationCommandLine) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
@@ -19239,30 +16863,6 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 	return _bufferedInputStream
 }
 
-// Fill tries to read @count bytes from the stream into the buffer. Will block
-// during this read.
-//
-// If @count is zero, returns zero and does nothing. A value of @count larger
-// than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
-//
-// On success, the number of bytes read into the buffer is returned. It is not
-// an error if this is not the same as the requested size, as it can happen e.g.
-// near the end of a file. Zero is returned on end of file (or if @count is
-// zero), but never otherwise.
-//
-// If @count is -1 then the attempted read size is equal to the number of bytes
-// that are required to fill the buffer.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
-// partially finished when the operation was cancelled the partial result will
-// be returned, without an error.
-//
-// On error -1 is returned and @error is set accordingly.
-//
-// For the asynchronous, non-blocking, version of this function, see
-// g_buffered_input_stream_fill_async().
 func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gssize                // out
@@ -19285,7 +16885,6 @@ func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (int, erro
 	return _gssize, _goerr
 }
 
-// FillFinish finishes an asynchronous read.
 func (s bufferedInputStream) FillFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GAsyncResult         // out
@@ -19306,7 +16905,6 @@ func (s bufferedInputStream) FillFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-// Available gets the size of the available data within the stream.
 func (s bufferedInputStream) Available() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
@@ -19322,7 +16920,6 @@ func (s bufferedInputStream) Available() uint {
 	return _gsize
 }
 
-// BufferSize gets the size of the input buffer.
 func (s bufferedInputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
@@ -19338,8 +16935,6 @@ func (s bufferedInputStream) BufferSize() uint {
 	return _gsize
 }
 
-// Peek peeks in the buffer, copying data of size @count into @buffer, offset
-// @offset bytes.
 func (s bufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.void
@@ -19361,19 +16956,6 @@ func (s bufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	return _gsize
 }
 
-// ReadByte tries to read a single byte from the stream or the buffer. Will
-// block during this read.
-//
-// On success, the byte read from the stream is returned. On end of stream -1 is
-// returned but it's not an exceptional error and @error is not set.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
-// partially finished when the operation was cancelled the partial result will
-// be returned, without an error.
-//
-// On error -1 is returned and @error is set accordingly.
 func (s bufferedInputStream) ReadByte(cancellable Cancellable) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
@@ -19394,9 +16976,6 @@ func (s bufferedInputStream) ReadByte(cancellable Cancellable) (int, error) {
 	return _gint, _goerr
 }
 
-// SetBufferSize sets the size of the internal buffer of @stream to @size, or to
-// the size of the contents of the buffer. The buffer can never be resized
-// smaller than its current contents.
 func (s bufferedInputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gsize                 // out
@@ -19497,7 +17076,6 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 	return _bufferedOutputStream
 }
 
-// AutoGrow checks if the buffer automatically grows as data is added.
 func (s bufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gboolean               // in
@@ -19515,7 +17093,6 @@ func (s bufferedOutputStream) AutoGrow() bool {
 	return _ok
 }
 
-// BufferSize gets the size of the buffer in the @stream.
 func (s bufferedOutputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gsize                  // in
@@ -19531,10 +17108,6 @@ func (s bufferedOutputStream) BufferSize() uint {
 	return _gsize
 }
 
-// SetAutoGrow sets whether or not the @stream's buffer should automatically
-// grow. If @auto_grow is true, then each write will just make the buffer
-// larger, and you must manually flush the buffer to actually write out the data
-// to the underlying stream.
 func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
@@ -19547,7 +17120,6 @@ func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	C.g_buffered_output_stream_set_auto_grow(_arg0, _arg1)
 }
 
-// SetBufferSize sets the size of the internal buffer to @size.
 func (s bufferedOutputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out
@@ -19740,21 +17312,6 @@ func NewCancellable() Cancellable {
 	return _cancellable
 }
 
-// Cancel: will set @cancellable to cancelled, and will emit the
-// #GCancellable::cancelled signal. (However, see the warning about race
-// conditions in the documentation for that signal if you are planning to
-// connect to it.)
-//
-// This function is thread-safe. In other words, you can safely call it from a
-// thread other than the one running the operation that was passed the
-// @cancellable.
-//
-// If @cancellable is nil, this function returns immediately for convenience.
-//
-// The convention within GIO is that cancelling an asynchronous operation causes
-// it to complete asynchronously. That is, if you cancel the operation from the
-// same thread in which it is running, then the operation's ReadyCallback will
-// not be invoked until the application returns to the main loop.
 func (c cancellable) Cancel() {
 	var _arg0 *C.GCancellable // out
 
@@ -19763,17 +17320,6 @@ func (c cancellable) Cancel() {
 	C.g_cancellable_cancel(_arg0)
 }
 
-// Disconnect disconnects a handler from a cancellable instance similar to
-// g_signal_handler_disconnect(). Additionally, in the event that a signal
-// handler is currently running, this call will block until the handler has
-// finished. Calling this function from a #GCancellable::cancelled signal
-// handler will therefore result in a deadlock.
-//
-// This avoids a race condition where a thread cancels at the same time as the
-// cancellable operation is finished and the signal handler is removed. See
-// #GCancellable::cancelled for details on how to use this.
-//
-// If @cancellable is nil or @handler_id is `0` this function does nothing.
 func (c cancellable) Disconnect(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
 	var _arg1 C.gulong        // out
@@ -19784,19 +17330,6 @@ func (c cancellable) Disconnect(handlerId uint32) {
 	C.g_cancellable_disconnect(_arg0, _arg1)
 }
 
-// Fd gets the file descriptor for a cancellable job. This can be used to
-// implement cancellable operations on Unix systems. The returned fd will turn
-// readable when @cancellable is cancelled.
-//
-// You are not supposed to read from the fd yourself, just check for readable
-// status. Reading to unset the readable status is done with
-// g_cancellable_reset().
-//
-// After a successful return from this function, you should use
-// g_cancellable_release_fd() to free up resources allocated for the returned
-// file descriptor.
-//
-// See also g_cancellable_make_pollfd().
 func (c cancellable) Fd() int {
 	var _arg0 *C.GCancellable // out
 	var _cret C.int           // in
@@ -19812,7 +17345,6 @@ func (c cancellable) Fd() int {
 	return _gint
 }
 
-// IsCancelled checks if a cancellable job has been cancelled.
 func (c cancellable) IsCancelled() bool {
 	var _arg0 *C.GCancellable // out
 	var _cret C.gboolean      // in
@@ -19830,23 +17362,6 @@ func (c cancellable) IsCancelled() bool {
 	return _ok
 }
 
-// MakePollfd creates a FD corresponding to @cancellable; this can be passed to
-// g_poll() and used to poll for cancellation. This is useful both for unix
-// systems without a native poll and for portability to windows.
-//
-// When this function returns true, you should use g_cancellable_release_fd() to
-// free up resources allocated for the @pollfd. After a false return, do not
-// call g_cancellable_release_fd().
-//
-// If this function returns false, either no @cancellable was given or resource
-// limits prevent this function from allocating the necessary structures for
-// polling. (On Linux, you will likely have reached the maximum number of file
-// descriptors.) The suggested way to handle these cases is to ignore the
-// @cancellable.
-//
-// You are not supposed to read from the fd yourself, just check for readable
-// status. Reading to unset the readable status is done with
-// g_cancellable_reset().
 func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	var _arg0 *C.GCancellable // out
 	var _arg1 *C.GPollFD      // out
@@ -19866,8 +17381,6 @@ func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	return _ok
 }
 
-// PopCurrent pops @cancellable off the cancellable stack (verifying that
-// @cancellable is on the top of the stack).
 func (c cancellable) PopCurrent() {
 	var _arg0 *C.GCancellable // out
 
@@ -19876,14 +17389,6 @@ func (c cancellable) PopCurrent() {
 	C.g_cancellable_pop_current(_arg0)
 }
 
-// PushCurrent pushes @cancellable onto the cancellable stack. The current
-// cancellable can then be received using g_cancellable_get_current().
-//
-// This is useful when implementing cancellable operations in code that does not
-// allow you to pass down the cancellable object.
-//
-// This is typically called automatically by e.g. #GFile operations, so you
-// rarely have to call this yourself.
 func (c cancellable) PushCurrent() {
 	var _arg0 *C.GCancellable // out
 
@@ -19892,15 +17397,6 @@ func (c cancellable) PushCurrent() {
 	C.g_cancellable_push_current(_arg0)
 }
 
-// ReleaseFd releases a resources previously allocated by g_cancellable_get_fd()
-// or g_cancellable_make_pollfd().
-//
-// For compatibility reasons with older releases, calling this function is not
-// strictly required, the resources will be automatically freed when the
-// @cancellable is finalized. However, the @cancellable will block scarce file
-// descriptors until it is finalized if this function is not called. This can
-// cause the application to run out of file descriptors when many #GCancellables
-// are used at the same time.
 func (c cancellable) ReleaseFd() {
 	var _arg0 *C.GCancellable // out
 
@@ -19909,17 +17405,6 @@ func (c cancellable) ReleaseFd() {
 	C.g_cancellable_release_fd(_arg0)
 }
 
-// Reset resets @cancellable to its uncancelled state.
-//
-// If cancellable is currently in use by any cancellable operation then the
-// behavior of this function is undefined.
-//
-// Note that it is generally not a good idea to reuse an existing cancellable
-// for more operations after it has been cancelled once, as this function might
-// tempt you to do. The recommended practice is to drop the reference to a
-// cancellable after cancelling it, and let it die with the outstanding async
-// operations. You should create a fresh cancellable for further async
-// operations.
 func (c cancellable) Reset() {
 	var _arg0 *C.GCancellable // out
 
@@ -19928,8 +17413,6 @@ func (c cancellable) Reset() {
 	C.g_cancellable_reset(_arg0)
 }
 
-// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
-// notify that the operation was cancelled.
 func (c cancellable) SetErrorIfCancelled() error {
 	var _arg0 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -20008,7 +17491,6 @@ func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter
 	return _charsetConverter, _goerr
 }
 
-// NumFallbacks gets the number of fallbacks that @converter has applied so far.
 func (c charsetConverter) NumFallbacks() uint {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in
@@ -20024,7 +17506,6 @@ func (c charsetConverter) NumFallbacks() uint {
 	return _guint
 }
 
-// UseFallback gets the Converter:use-fallback property.
 func (c charsetConverter) UseFallback() bool {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.gboolean           // in
@@ -20042,7 +17523,6 @@ func (c charsetConverter) UseFallback() bool {
 	return _ok
 }
 
-// SetUseFallback sets the Converter:use-fallback property.
 func (c charsetConverter) SetUseFallback(useFallback bool) {
 	var _arg0 *C.GCharsetConverter // out
 	var _arg1 C.gboolean           // out
@@ -20109,7 +17589,6 @@ func NewConverterInputStream(baseStream InputStream, converter Converter) Conver
 	return _converterInputStream
 }
 
-// Converter gets the #GConverter that is used by @converter_stream.
 func (c converterInputStream) Converter() Converter {
 	var _arg0 *C.GConverterInputStream // out
 	var _cret *C.GConverter            // in
@@ -20179,7 +17658,6 @@ func NewConverterOutputStream(baseStream OutputStream, converter Converter) Conv
 	return _converterOutputStream
 }
 
-// Converter gets the #GConverter that is used by @converter_stream.
 func (c converterOutputStream) Converter() Converter {
 	var _arg0 *C.GConverterOutputStream // out
 	var _cret *C.GConverter             // in
@@ -20297,12 +17775,6 @@ func NewCredentials() Credentials {
 	return _credentials
 }
 
-// UnixPid tries to get the UNIX process identifier from @credentials. This
-// method is only available on UNIX platforms.
-//
-// This operation can fail if #GCredentials is not supported on the OS or if the
-// native credentials type does not contain information about the UNIX process
-// ID (for example this is the case for G_CREDENTIALS_TYPE_APPLE_XUCRED).
 func (c credentials) UnixPid() (int, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.pid_t         // in
@@ -20321,11 +17793,6 @@ func (c credentials) UnixPid() (int, error) {
 	return _gint, _goerr
 }
 
-// UnixUser tries to get the UNIX user identifier from @credentials. This method
-// is only available on UNIX platforms.
-//
-// This operation can fail if #GCredentials is not supported on the OS or if the
-// native credentials type does not contain information about the UNIX user.
 func (c credentials) UnixUser() (uint, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.uid_t         // in
@@ -20344,9 +17811,6 @@ func (c credentials) UnixUser() (uint, error) {
 	return _guint, _goerr
 }
 
-// IsSameUser checks if @credentials and @other_credentials is the same user.
-//
-// This operation can fail if #GCredentials is not supported on the the OS.
 func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
@@ -20364,12 +17828,6 @@ func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	return _goerr
 }
 
-// SetUnixUser tries to set the UNIX user identifier on @credentials. This
-// method is only available on UNIX platforms.
-//
-// This operation can fail if #GCredentials is not supported on the OS or if the
-// native credentials type does not contain information about the UNIX user. It
-// can also fail if the OS does not allow the use of "spoofed" credentials.
 func (c credentials) SetUnixUser(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
@@ -20387,9 +17845,6 @@ func (c credentials) SetUnixUser(uid uint) error {
 	return _goerr
 }
 
-// String creates a human-readable textual representation of @credentials that
-// can be used in logging and debug messages. The format of the returned string
-// may change in future GLib release.
 func (c credentials) String() string {
 	var _arg0 *C.GCredentials // out
 	var _cret *C.gchar        // in
@@ -20519,8 +17974,6 @@ func NewDBusAuthObserver() DBusAuthObserver {
 	return _dBusAuthObserver
 }
 
-// AllowMechanism emits the BusAuthObserver::allow-mechanism signal on
-// @observer.
 func (o dBusAuthObserver) AllowMechanism(mechanism string) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.gchar             // out
@@ -20541,8 +17994,6 @@ func (o dBusAuthObserver) AllowMechanism(mechanism string) bool {
 	return _ok
 }
 
-// AuthorizeAuthenticatedPeer emits the
-// BusAuthObserver::authorize-authenticated-peer signal on @observer.
 func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.GIOStream         // out
@@ -21033,7 +18484,6 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	return _dBusConnection, _goerr
 }
 
-// CallFinish finishes an operation started with g_dbus_connection_call().
 func (c dBusConnection) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -21057,38 +18507,6 @@ func (c dBusConnection) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	return _variant, _goerr
 }
 
-// CallSync: synchronously invokes the @method_name method on the
-// @interface_name D-Bus interface on the remote object at @object_path owned by
-// @bus_name.
-//
-// If @connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If @cancellable is canceled, the operation will fail with
-// G_IO_ERROR_CANCELLED. If @parameters contains a value not compatible with the
-// D-Bus protocol, the operation fails with G_IO_ERROR_INVALID_ARGUMENT.
-//
-// If @reply_type is non-nil then the reply will be checked for having this type
-// and an error will be raised if it does not match. Said another way, if you
-// give a @reply_type then any non-nil return value will be of this type.
-//
-// If the @parameters #GVariant is floating, it is consumed. This allows
-// convenient 'inline' use of g_variant_new(), e.g.:
-//
-//    g_dbus_connection_call_sync (connection,
-//                                 "org.freedesktop.StringThings",
-//                                 "/org/freedesktop/StringThings",
-//                                 "org.freedesktop.StringThings",
-//                                 "TwoStrings",
-//                                 g_variant_new ("(ss)",
-//                                                "Thing One",
-//                                                "Thing Two"),
-//                                 NULL,
-//                                 G_DBUS_CALL_FLAGS_NONE,
-//                                 -1,
-//                                 NULL,
-//                                 &error);
-//
-// The calling thread is blocked until a reply is received. See
-// g_dbus_connection_call() for the asynchronous version of this method.
 func (c dBusConnection) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -21132,18 +18550,6 @@ func (c dBusConnection) CallSync(busName string, objectPath string, interfaceNam
 	return _variant, _goerr
 }
 
-// CallWithUnixFdListFinish finishes an operation started with
-// g_dbus_connection_call_with_unix_fd_list().
-//
-// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values in
-// the body of the message. For example, if g_variant_get_handle() returns 5,
-// that is intended to be a reference to the file descriptor that can be
-// accessed by `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
-//
-// When designing D-Bus APIs that are intended to be interoperable, please note
-// that non-GDBus implementations of D-Bus can usually only access file
-// descriptors if they are referenced in this way by a value of type
-// G_VARIANT_TYPE_HANDLE in the body of the message.
 func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GUnixFDList     // in
@@ -21170,11 +18576,6 @@ func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *
 	return _outFdList, _variant, _goerr
 }
 
-// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes and
-// returns FDList objects. See g_dbus_connection_call_with_unix_fd_list() and
-// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
-//
-// This method is only available on UNIX.
 func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -21223,7 +18624,6 @@ func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string
 	return _outFdList, _variant, _goerr
 }
 
-// CloseFinish finishes an operation started with g_dbus_connection_close().
 func (c dBusConnection) CloseFinish(res AsyncResult) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -21241,9 +18641,6 @@ func (c dBusConnection) CloseFinish(res AsyncResult) error {
 	return _goerr
 }
 
-// CloseSync: synchronously closes @connection. The calling thread is blocked
-// until this is done. See g_dbus_connection_close() for the asynchronous
-// version of this method and more details about what it does.
 func (c dBusConnection) CloseSync(cancellable Cancellable) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -21261,13 +18658,6 @@ func (c dBusConnection) CloseSync(cancellable Cancellable) error {
 	return _goerr
 }
 
-// EmitSignal emits a signal.
-//
-// If the parameters GVariant is floating, it is consumed.
-//
-// This can only fail if @parameters is not compatible with the D-Bus protocol
-// (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
-// (G_IO_ERROR_CLOSED).
 func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -21297,26 +18687,6 @@ func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string,
 	return _goerr
 }
 
-// ExportActionGroup exports @action_group on @connection at @object_path.
-//
-// The implemented D-Bus API should be considered private. It is subject to
-// change in the future.
-//
-// A given object path can only have one action group exported on it. If this
-// constraint is violated, the export will fail and 0 will be returned (with
-// @error set accordingly).
-//
-// You can unexport the action group using
-// g_dbus_connection_unexport_action_group() with the return value of this
-// function.
-//
-// The thread default main context is taken at the time of this call. All
-// incoming action activations and state change requests are reported from this
-// context. Any changes on the action group that cause it to emit signals must
-// also come from this same context. Since incoming action activations and state
-// change requests are rather likely to cause changes on the action group, this
-// effectively limits a given action group to being exported from only one main
-// context.
 func (c dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGroup) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -21340,17 +18710,6 @@ func (c dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionG
 	return _guint, _goerr
 }
 
-// ExportMenuModel exports @menu on @connection at @object_path.
-//
-// The implemented D-Bus API should be considered private. It is subject to
-// change in the future.
-//
-// An object path can only have one menu model exported on it. If this
-// constraint is violated, the export will fail and 0 will be returned (with
-// @error set accordingly).
-//
-// You can unexport the menu model using g_dbus_connection_unexport_menu_model()
-// with the return value of this function.
 func (c dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -21374,7 +18733,6 @@ func (c dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (uint
 	return _guint, _goerr
 }
 
-// FlushFinish finishes an operation started with g_dbus_connection_flush().
 func (c dBusConnection) FlushFinish(res AsyncResult) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -21392,9 +18750,6 @@ func (c dBusConnection) FlushFinish(res AsyncResult) error {
 	return _goerr
 }
 
-// FlushSync: synchronously flushes @connection. The calling thread is blocked
-// until this is done. See g_dbus_connection_flush() for the asynchronous
-// version of this method and more details about what it does.
 func (c dBusConnection) FlushSync(cancellable Cancellable) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -21412,7 +18767,6 @@ func (c dBusConnection) FlushSync(cancellable Cancellable) error {
 	return _goerr
 }
 
-// Capabilities gets the capabilities negotiated with the remote peer
 func (c dBusConnection) Capabilities() DBusCapabilityFlags {
 	var _arg0 *C.GDBusConnection     // out
 	var _cret C.GDBusCapabilityFlags // in
@@ -21428,8 +18782,6 @@ func (c dBusConnection) Capabilities() DBusCapabilityFlags {
 	return _dBusCapabilityFlags
 }
 
-// ExitOnClose gets whether the process is terminated when @connection is closed
-// by the remote peer. See BusConnection:exit-on-close for more details.
 func (c dBusConnection) ExitOnClose() bool {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.gboolean         // in
@@ -21447,7 +18799,6 @@ func (c dBusConnection) ExitOnClose() bool {
 	return _ok
 }
 
-// Flags gets the flags used to construct this connection
 func (c dBusConnection) Flags() DBusConnectionFlags {
 	var _arg0 *C.GDBusConnection     // out
 	var _cret C.GDBusConnectionFlags // in
@@ -21463,8 +18814,6 @@ func (c dBusConnection) Flags() DBusConnectionFlags {
 	return _dBusConnectionFlags
 }
 
-// Guid: the GUID of the peer performing the role of server when authenticating.
-// See BusConnection:guid for more details.
 func (c dBusConnection) Guid() string {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.gchar           // in
@@ -21480,11 +18829,6 @@ func (c dBusConnection) Guid() string {
 	return _utf8
 }
 
-// LastSerial retrieves the last serial number assigned to a BusMessage on the
-// current thread. This includes messages sent via both low-level API such as
-// g_dbus_connection_send_message() as well as high-level API such as
-// g_dbus_connection_emit_signal(), g_dbus_connection_call() or
-// g_dbus_proxy_call().
 func (c dBusConnection) LastSerial() uint32 {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.guint32          // in
@@ -21500,14 +18844,6 @@ func (c dBusConnection) LastSerial() uint32 {
 	return _guint32
 }
 
-// PeerCredentials gets the credentials of the authenticated peer. This will
-// always return nil unless @connection acted as a server (e.g.
-// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER was passed) when set up and the
-// client passed credentials as part of the authentication process.
-//
-// In a message bus setup, the message bus is always the server and each
-// application is a client. So this method will always return nil for message
-// bus clients.
 func (c dBusConnection) PeerCredentials() Credentials {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.GCredentials    // in
@@ -21523,10 +18859,6 @@ func (c dBusConnection) PeerCredentials() Credentials {
 	return _credentials
 }
 
-// Stream gets the underlying stream used for IO.
-//
-// While the BusConnection is active, it will interact with this stream from a
-// worker thread, so it is not safe to interact with the stream directly.
 func (c dBusConnection) Stream() IOStream {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.GIOStream       // in
@@ -21542,9 +18874,6 @@ func (c dBusConnection) Stream() IOStream {
 	return _ioStream
 }
 
-// UniqueName gets the unique name of @connection as assigned by the message
-// bus. This can also be used to figure out if @connection is a message bus
-// connection.
 func (c dBusConnection) UniqueName() string {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.gchar           // in
@@ -21560,7 +18889,6 @@ func (c dBusConnection) UniqueName() string {
 	return _utf8
 }
 
-// IsClosed gets whether @connection is closed.
 func (c dBusConnection) IsClosed() bool {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.gboolean         // in
@@ -21578,14 +18906,6 @@ func (c dBusConnection) IsClosed() bool {
 	return _ok
 }
 
-// RemoveFilter removes a filter.
-//
-// Note that since filters run in a different thread, there is a race condition
-// where it is possible that the filter will be running even after calling
-// g_dbus_connection_remove_filter(), so you cannot just free data that the
-// filter might be using. Instead, you should pass a Notify to
-// g_dbus_connection_add_filter(), which will be called when it is guaranteed
-// that the data is no longer needed.
 func (c dBusConnection) RemoveFilter(filterId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -21596,26 +18916,6 @@ func (c dBusConnection) RemoveFilter(filterId uint) {
 	C.g_dbus_connection_remove_filter(_arg0, _arg1)
 }
 
-// SendMessage: asynchronously sends @message to the peer represented by
-// @connection.
-//
-// Unless @flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
-// serial number will be assigned by @connection and set on @message via
-// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
-// number used will be written to this location prior to submitting the message
-// to the underlying transport. While it has a `volatile` qualifier, this is a
-// historical artifact and the argument passed to it should not be `volatile`.
-//
-// If @connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If @message is not well-formed, the operation fails with
-// G_IO_ERROR_INVALID_ARGUMENT.
-//
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
-// descriptors.
-//
-// Note that @message must be unlocked, unless @flags contain the
-// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
 func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
@@ -21638,17 +18938,6 @@ func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFl
 	return _outSerial, _goerr
 }
 
-// SendMessageWithReplyFinish finishes an operation started with
-// g_dbus_connection_send_message_with_reply().
-//
-// Note that @error is only set if a local in-process error occurred. That is to
-// say that the returned BusMessage object may be of type
-// G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode this
-// to a #GError.
-//
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
-// descriptors.
 func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -21669,35 +18958,6 @@ func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage
 	return _dBusMessage, _goerr
 }
 
-// SendMessageWithReplySync: synchronously sends @message to the peer
-// represented by @connection and blocks the calling thread until a reply is
-// received or the timeout is reached. See
-// g_dbus_connection_send_message_with_reply() for the asynchronous version of
-// this method.
-//
-// Unless @flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
-// serial number will be assigned by @connection and set on @message via
-// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
-// number used will be written to this location prior to submitting the message
-// to the underlying transport. While it has a `volatile` qualifier, this is a
-// historical artifact and the argument passed to it should not be `volatile`.
-//
-// If @connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If @cancellable is canceled, the operation will fail with
-// G_IO_ERROR_CANCELLED. If @message is not well-formed, the operation fails
-// with G_IO_ERROR_INVALID_ARGUMENT.
-//
-// Note that @error is only set if a local in-process error occurred. That is to
-// say that the returned BusMessage object may be of type
-// G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode this
-// to a #GError.
-//
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
-// descriptors.
-//
-// Note that @message must be unlocked, unless @flags contain the
-// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
 func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
@@ -21727,15 +18987,6 @@ func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBus
 	return _outSerial, _dBusMessage, _goerr
 }
 
-// SetExitOnClose sets whether the process should be terminated when @connection
-// is closed by the remote peer. See BusConnection:exit-on-close for more
-// details.
-//
-// Note that this function should be used with care. Most modern UNIX desktops
-// tie the notion of a user session with the session bus, and expect all of a
-// user's applications to quit when their bus connection goes away. If you are
-// setting @exit_on_close to false for the shared session bus connection, you
-// should make sure that your application exits when the user session ends.
 func (c dBusConnection) SetExitOnClose(exitOnClose bool) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.gboolean         // out
@@ -21748,14 +18999,6 @@ func (c dBusConnection) SetExitOnClose(exitOnClose bool) {
 	C.g_dbus_connection_set_exit_on_close(_arg0, _arg1)
 }
 
-// SignalUnsubscribe unsubscribes from signals.
-//
-// Note that there may still be D-Bus traffic to process (relating to this
-// signal subscription) in the current thread-default Context after this
-// function has returned. You should continue to iterate the Context until the
-// Notify function passed to g_dbus_connection_signal_subscribe() is called, in
-// order to avoid memory leaks through callbacks queued on the Context after
-// it’s stopped being iterated.
 func (c dBusConnection) SignalUnsubscribe(subscriptionId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -21766,10 +19009,6 @@ func (c dBusConnection) SignalUnsubscribe(subscriptionId uint) {
 	C.g_dbus_connection_signal_unsubscribe(_arg0, _arg1)
 }
 
-// StartMessageProcessing: if @connection was created with
-// G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method starts
-// processing messages. Does nothing on if @connection wasn't created with this
-// flag or if the method has already been called.
 func (c dBusConnection) StartMessageProcessing() {
 	var _arg0 *C.GDBusConnection // out
 
@@ -21778,12 +19017,6 @@ func (c dBusConnection) StartMessageProcessing() {
 	C.g_dbus_connection_start_message_processing(_arg0)
 }
 
-// UnexportActionGroup reverses the effect of a previous call to
-// g_dbus_connection_export_action_group().
-//
-// It is an error to call this function with an ID that wasn't returned from
-// g_dbus_connection_export_action_group() or to call it with the same ID more
-// than once.
 func (c dBusConnection) UnexportActionGroup(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -21794,12 +19027,6 @@ func (c dBusConnection) UnexportActionGroup(exportId uint) {
 	C.g_dbus_connection_unexport_action_group(_arg0, _arg1)
 }
 
-// UnexportMenuModel reverses the effect of a previous call to
-// g_dbus_connection_export_menu_model().
-//
-// It is an error to call this function with an ID that wasn't returned from
-// g_dbus_connection_export_menu_model() or to call it with the same ID more
-// than once.
 func (c dBusConnection) UnexportMenuModel(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -21810,7 +19037,6 @@ func (c dBusConnection) UnexportMenuModel(exportId uint) {
 	C.g_dbus_connection_unexport_menu_model(_arg0, _arg1)
 }
 
-// UnregisterObject unregisters an object.
 func (c dBusConnection) UnregisterObject(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -21830,7 +19056,6 @@ func (c dBusConnection) UnregisterObject(registrationId uint) bool {
 	return _ok
 }
 
-// UnregisterSubtree unregisters a subtree.
 func (c dBusConnection) UnregisterSubtree(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -21925,13 +19150,6 @@ func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 	return WrapDBusInterfaceSkeleton(obj), nil
 }
 
-// Export exports @interface_ at @object_path on @connection.
-//
-// This can be called multiple times to export the same @interface_ onto
-// multiple connections however the @object_path provided must be the same for
-// all connections.
-//
-// Use g_dbus_interface_skeleton_unexport() to unexport the object.
 func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) error {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
@@ -21952,13 +19170,6 @@ func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath stri
 	return _goerr
 }
 
-// Flush: if @interface_ has outstanding changes, request for these changes to
-// be emitted immediately.
-//
-// For example, an exported D-Bus interface may queue up property changes and
-// emit the `org.freedesktop.DBus.Properties.PropertiesChanged` signal later
-// (e.g. in an idle handler). This technique is useful for collapsing multiple
-// property changes into one.
 func (i dBusInterfaceSkeleton) Flush() {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 
@@ -21967,7 +19178,6 @@ func (i dBusInterfaceSkeleton) Flush() {
 	C.g_dbus_interface_skeleton_flush(_arg0)
 }
 
-// Connection gets the first connection that @interface_ is exported on, if any.
 func (i dBusInterfaceSkeleton) Connection() DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusConnection        // in
@@ -21983,8 +19193,6 @@ func (i dBusInterfaceSkeleton) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior of
-// @interface_
 func (i dBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _cret C.GDBusInterfaceSkeletonFlags // in
@@ -22000,8 +19208,6 @@ func (i dBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	return _dBusInterfaceSkeletonFlags
 }
 
-// Info gets D-Bus introspection information for the D-Bus interface implemented
-// by @interface_.
 func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusInterfaceInfo     // in
@@ -22017,7 +19223,6 @@ func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	return _dBusInterfaceInfo
 }
 
-// ObjectPath gets the object path that @interface_ is exported on, if any.
 func (i dBusInterfaceSkeleton) ObjectPath() string {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.gchar                  // in
@@ -22033,7 +19238,6 @@ func (i dBusInterfaceSkeleton) ObjectPath() string {
 	return _utf8
 }
 
-// Properties gets all D-Bus properties for @interface_.
 func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GVariant               // in
@@ -22052,7 +19256,6 @@ func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
 	return _variant
 }
 
-// HasConnection checks if @interface_ is exported on @connection.
 func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
@@ -22072,7 +19275,6 @@ func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
 	return _ok
 }
 
-// SetFlags sets flags describing what the behavior of @skeleton should be.
 func (i dBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _arg1 C.GDBusInterfaceSkeletonFlags // out
@@ -22083,10 +19285,6 @@ func (i dBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
 	C.g_dbus_interface_skeleton_set_flags(_arg0, _arg1)
 }
 
-// Unexport stops exporting @interface_ on all connections it is exported on.
-//
-// To unexport @interface_ from only a single connection, use
-// g_dbus_interface_skeleton_unexport_from_connection()
 func (i dBusInterfaceSkeleton) Unexport() {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 
@@ -22095,10 +19293,6 @@ func (i dBusInterfaceSkeleton) Unexport() {
 	C.g_dbus_interface_skeleton_unexport(_arg0)
 }
 
-// UnexportFromConnection stops exporting @interface_ on @connection.
-//
-// To stop exporting on all connections the interface is exported on, use
-// g_dbus_interface_skeleton_unexport().
 func (i dBusInterfaceSkeleton) UnexportFromConnection(connection DBusConnection) {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
@@ -22425,11 +19619,6 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMes
 	return _dBusMessage
 }
 
-// Copy copies @message. The copy is a deep copy and the returned BusMessage is
-// completely identical except that it is guaranteed to not be locked.
-//
-// This operation can fail if e.g. @message contains file descriptors and the
-// per-process or system-wide open files limit is reached.
 func (m dBusMessage) Copy() (DBusMessage, error) {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
@@ -22448,7 +19637,6 @@ func (m dBusMessage) Copy() (DBusMessage, error) {
 	return _dBusMessage, _goerr
 }
 
-// Arg0: convenience to get the first item in the body of @message.
 func (m dBusMessage) Arg0() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -22464,7 +19652,6 @@ func (m dBusMessage) Arg0() string {
 	return _utf8
 }
 
-// Body gets the body of a message.
 func (m dBusMessage) Body() *glib.Variant {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GVariant     // in
@@ -22480,7 +19667,6 @@ func (m dBusMessage) Body() *glib.Variant {
 	return _variant
 }
 
-// ByteOrder gets the byte order of @message.
 func (m dBusMessage) ByteOrder() DBusMessageByteOrder {
 	var _arg0 *C.GDBusMessage         // out
 	var _cret C.GDBusMessageByteOrder // in
@@ -22496,8 +19682,6 @@ func (m dBusMessage) ByteOrder() DBusMessageByteOrder {
 	return _dBusMessageByteOrder
 }
 
-// Destination: convenience getter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
 func (m dBusMessage) Destination() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -22513,8 +19697,6 @@ func (m dBusMessage) Destination() string {
 	return _utf8
 }
 
-// ErrorName: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME
-// header field.
 func (m dBusMessage) ErrorName() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -22530,7 +19712,6 @@ func (m dBusMessage) ErrorName() string {
 	return _utf8
 }
 
-// Flags gets the flags for @message.
 func (m dBusMessage) Flags() DBusMessageFlags {
 	var _arg0 *C.GDBusMessage     // out
 	var _cret C.GDBusMessageFlags // in
@@ -22546,10 +19727,6 @@ func (m dBusMessage) Flags() DBusMessageFlags {
 	return _dBusMessageFlags
 }
 
-// Header gets a header field on @message.
-//
-// The caller is responsible for checking the type of the returned #GVariant
-// matches what is expected.
 func (m dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
@@ -22567,7 +19744,6 @@ func (m dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	return _variant
 }
 
-// HeaderFields gets an array of all header fields on @message that are set.
 func (m dBusMessage) HeaderFields() []byte {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.guchar
@@ -22595,8 +19771,6 @@ func (m dBusMessage) HeaderFields() []byte {
 	return _guint8s
 }
 
-// Interface: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE
-// header field.
 func (m dBusMessage) Interface() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -22612,9 +19786,6 @@ func (m dBusMessage) Interface() string {
 	return _utf8
 }
 
-// Locked checks whether @message is locked. To monitor changes to this value,
-// conncet to the #GObject::notify signal to listen for changes on the
-// BusMessage:locked property.
 func (m dBusMessage) Locked() bool {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.gboolean      // in
@@ -22632,8 +19803,6 @@ func (m dBusMessage) Locked() bool {
 	return _ok
 }
 
-// Member: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header
-// field.
 func (m dBusMessage) Member() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -22649,7 +19818,6 @@ func (m dBusMessage) Member() string {
 	return _utf8
 }
 
-// MessageType gets the type of @message.
 func (m dBusMessage) MessageType() DBusMessageType {
 	var _arg0 *C.GDBusMessage    // out
 	var _cret C.GDBusMessageType // in
@@ -22665,8 +19833,6 @@ func (m dBusMessage) MessageType() DBusMessageType {
 	return _dBusMessageType
 }
 
-// NumUnixFds: convenience getter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
 func (m dBusMessage) NumUnixFds() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
@@ -22682,8 +19848,6 @@ func (m dBusMessage) NumUnixFds() uint32 {
 	return _guint32
 }
 
-// Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
-// field.
 func (m dBusMessage) Path() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -22699,8 +19863,6 @@ func (m dBusMessage) Path() string {
 	return _utf8
 }
 
-// ReplySerial: convenience getter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
 func (m dBusMessage) ReplySerial() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
@@ -22716,8 +19878,6 @@ func (m dBusMessage) ReplySerial() uint32 {
 	return _guint32
 }
 
-// Sender: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER header
-// field.
 func (m dBusMessage) Sender() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -22733,7 +19893,6 @@ func (m dBusMessage) Sender() string {
 	return _utf8
 }
 
-// Serial gets the serial for @message.
 func (m dBusMessage) Serial() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
@@ -22749,8 +19908,6 @@ func (m dBusMessage) Serial() uint32 {
 	return _guint32
 }
 
-// Signature: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE
-// header field.
 func (m dBusMessage) Signature() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -22766,14 +19923,6 @@ func (m dBusMessage) Signature() string {
 	return _utf8
 }
 
-// UnixFdList gets the UNIX file descriptors associated with @message, if any.
-//
-// This method is only available on UNIX.
-//
-// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values in
-// the body of the message. For example, if g_variant_get_handle() returns 5,
-// that is intended to be a reference to the file descriptor that can be
-// accessed by `g_unix_fd_list_get (list, 5, ...)`.
 func (m dBusMessage) UnixFdList() UnixFDList {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GUnixFDList  // in
@@ -22789,7 +19938,6 @@ func (m dBusMessage) UnixFdList() UnixFDList {
 	return _unixFDList
 }
 
-// Lock: if @message is locked, does nothing. Otherwise locks the message.
 func (m dBusMessage) Lock() {
 	var _arg0 *C.GDBusMessage // out
 
@@ -22798,8 +19946,6 @@ func (m dBusMessage) Lock() {
 	C.g_dbus_message_lock(_arg0)
 }
 
-// NewMethodErrorLiteral creates a new BusMessage that is an error reply to
-// @method_call_message.
 func (m dBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string) DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -22821,8 +19967,6 @@ func (m dBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string
 	return _dBusMessage
 }
 
-// NewMethodReply creates a new BusMessage that is a reply to
-// @method_call_message.
 func (m dBusMessage) NewMethodReply() DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
@@ -22838,37 +19982,6 @@ func (m dBusMessage) NewMethodReply() DBusMessage {
 	return _dBusMessage
 }
 
-// Print produces a human-readable multi-line description of @message.
-//
-// The contents of the description has no ABI guarantees, the contents and
-// formatting is subject to change at any time. Typical output looks something
-// like this:
-//
-//    Flags:   none
-//    Version: 0
-//    Serial:  4
-//    Headers:
-//      path -> objectpath '/org/gtk/GDBus/TestObject'
-//      interface -> 'org.gtk.GDBus.TestInterface'
-//      member -> 'GimmeStdout'
-//      destination -> ':1.146'
-//    Body: ()
-//    UNIX File Descriptors:
-//      (none)
-//
-// or
-//
-//    Flags:   no-reply-expected
-//    Version: 0
-//    Serial:  477
-//    Headers:
-//      reply-serial -> uint32 4
-//      destination -> ':1.159'
-//      sender -> ':1.146'
-//      num-unix-fds -> uint32 1
-//    Body: ()
-//    UNIX File Descriptors:
-//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
 func (m dBusMessage) Print(indent uint) string {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint         // out
@@ -22887,11 +20000,6 @@ func (m dBusMessage) Print(indent uint) string {
 	return _utf8
 }
 
-// SetBody sets the body @message. As a side-effect the
-// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the type string
-// of @body (or cleared if @body is nil).
-//
-// If @body is floating, @message assumes ownership of @body.
 func (m dBusMessage) SetBody(body *glib.Variant) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GVariant     // out
@@ -22902,7 +20010,6 @@ func (m dBusMessage) SetBody(body *glib.Variant) {
 	C.g_dbus_message_set_body(_arg0, _arg1)
 }
 
-// SetByteOrder sets the byte order of @message.
 func (m dBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	var _arg0 *C.GDBusMessage         // out
 	var _arg1 C.GDBusMessageByteOrder // out
@@ -22913,8 +20020,6 @@ func (m dBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	C.g_dbus_message_set_byte_order(_arg0, _arg1)
 }
 
-// SetDestination: convenience setter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
 func (m dBusMessage) SetDestination(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -22926,8 +20031,6 @@ func (m dBusMessage) SetDestination(value string) {
 	C.g_dbus_message_set_destination(_arg0, _arg1)
 }
 
-// SetErrorName: convenience setter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
 func (m dBusMessage) SetErrorName(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -22939,7 +20042,6 @@ func (m dBusMessage) SetErrorName(value string) {
 	C.g_dbus_message_set_error_name(_arg0, _arg1)
 }
 
-// SetFlags sets the flags to set on @message.
 func (m dBusMessage) SetFlags(flags DBusMessageFlags) {
 	var _arg0 *C.GDBusMessage     // out
 	var _arg1 C.GDBusMessageFlags // out
@@ -22950,9 +20052,6 @@ func (m dBusMessage) SetFlags(flags DBusMessageFlags) {
 	C.g_dbus_message_set_flags(_arg0, _arg1)
 }
 
-// SetHeader sets a header field on @message.
-//
-// If @value is floating, @message assumes ownership of @value.
 func (m dBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
@@ -22965,8 +20064,6 @@ func (m dBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.V
 	C.g_dbus_message_set_header(_arg0, _arg1, _arg2)
 }
 
-// SetInterface: convenience setter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
 func (m dBusMessage) SetInterface(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -22978,8 +20075,6 @@ func (m dBusMessage) SetInterface(value string) {
 	C.g_dbus_message_set_interface(_arg0, _arg1)
 }
 
-// SetMember: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
-// header field.
 func (m dBusMessage) SetMember(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -22991,7 +20086,6 @@ func (m dBusMessage) SetMember(value string) {
 	C.g_dbus_message_set_member(_arg0, _arg1)
 }
 
-// SetMessageType sets @message to be of @type.
 func (m dBusMessage) SetMessageType(typ DBusMessageType) {
 	var _arg0 *C.GDBusMessage    // out
 	var _arg1 C.GDBusMessageType // out
@@ -23002,8 +20096,6 @@ func (m dBusMessage) SetMessageType(typ DBusMessageType) {
 	C.g_dbus_message_set_message_type(_arg0, _arg1)
 }
 
-// SetNumUnixFds: convenience setter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
 func (m dBusMessage) SetNumUnixFds(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
@@ -23014,8 +20106,6 @@ func (m dBusMessage) SetNumUnixFds(value uint32) {
 	C.g_dbus_message_set_num_unix_fds(_arg0, _arg1)
 }
 
-// SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
-// field.
 func (m dBusMessage) SetPath(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -23027,8 +20117,6 @@ func (m dBusMessage) SetPath(value string) {
 	C.g_dbus_message_set_path(_arg0, _arg1)
 }
 
-// SetReplySerial: convenience setter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
 func (m dBusMessage) SetReplySerial(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
@@ -23039,8 +20127,6 @@ func (m dBusMessage) SetReplySerial(value uint32) {
 	C.g_dbus_message_set_reply_serial(_arg0, _arg1)
 }
 
-// SetSender: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
-// header field.
 func (m dBusMessage) SetSender(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -23052,7 +20138,6 @@ func (m dBusMessage) SetSender(value string) {
 	C.g_dbus_message_set_sender(_arg0, _arg1)
 }
 
-// SetSerial sets the serial for @message.
 func (m dBusMessage) SetSerial(serial uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
@@ -23063,8 +20148,6 @@ func (m dBusMessage) SetSerial(serial uint32) {
 	C.g_dbus_message_set_serial(_arg0, _arg1)
 }
 
-// SetSignature: convenience setter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
 func (m dBusMessage) SetSignature(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -23076,16 +20159,6 @@ func (m dBusMessage) SetSignature(value string) {
 	C.g_dbus_message_set_signature(_arg0, _arg1)
 }
 
-// SetUnixFdList sets the UNIX file descriptors associated with @message. As a
-// side-effect the G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field is set
-// to the number of fds in @fd_list (or cleared if @fd_list is nil).
-//
-// This method is only available on UNIX.
-//
-// When designing D-Bus APIs that are intended to be interoperable, please note
-// that non-GDBus implementations of D-Bus can usually only access file
-// descriptors if they are referenced by a value of type G_VARIANT_TYPE_HANDLE
-// in the body of the message.
 func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GUnixFDList  // out
@@ -23096,13 +20169,6 @@ func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
 	C.g_dbus_message_set_unix_fd_list(_arg0, _arg1)
 }
 
-// ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does nothing
-// and returns false.
-//
-// Otherwise this method encodes the error in @message as a #GError using
-// g_dbus_error_set_dbus_error() using the information in the
-// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of @message as well as
-// the first string item in @message's body.
 func (m dBusMessage) ToGerror() error {
 	var _arg0 *C.GDBusMessage // out
 	var _cerr *C.GError       // in
@@ -23248,7 +20314,6 @@ func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 	return WrapDBusMethodInvocation(obj), nil
 }
 
-// Connection gets the BusConnection the method was invoked on.
 func (i dBusMethodInvocation) Connection() DBusConnection {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusConnection       // in
@@ -23264,11 +20329,6 @@ func (i dBusMethodInvocation) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-// InterfaceName gets the name of the D-Bus interface the method was invoked on.
-//
-// If this method call is a property Get, Set or GetAll call that has been
-// redirected to the method call handler then "org.freedesktop.DBus.Properties"
-// will be returned. See BusInterfaceVTable for more information.
 func (i dBusMethodInvocation) InterfaceName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
@@ -23284,13 +20344,6 @@ func (i dBusMethodInvocation) InterfaceName() string {
 	return _utf8
 }
 
-// Message gets the BusMessage for the method invocation. This is useful if you
-// need to use low-level protocol features, such as UNIX file descriptor
-// passing, that cannot be properly expressed in the #GVariant API.
-//
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
-// descriptors.
 func (i dBusMethodInvocation) Message() DBusMessage {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusMessage          // in
@@ -23306,12 +20359,6 @@ func (i dBusMethodInvocation) Message() DBusMessage {
 	return _dBusMessage
 }
 
-// MethodInfo gets information about the method call, if any.
-//
-// If this method invocation is a property Get, Set or GetAll call that has been
-// redirected to the method call handler then nil will be returned. See
-// g_dbus_method_invocation_get_property_info() and BusInterfaceVTable for more
-// information.
 func (i dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusMethodInfo       // in
@@ -23327,7 +20374,6 @@ func (i dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	return _dBusMethodInfo
 }
 
-// MethodName gets the name of the method that was invoked.
 func (i dBusMethodInvocation) MethodName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
@@ -23343,7 +20389,6 @@ func (i dBusMethodInvocation) MethodName() string {
 	return _utf8
 }
 
-// ObjectPath gets the object path the method was invoked on.
 func (i dBusMethodInvocation) ObjectPath() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
@@ -23359,9 +20404,6 @@ func (i dBusMethodInvocation) ObjectPath() string {
 	return _utf8
 }
 
-// Parameters gets the parameters of the method invocation. If there are no
-// input parameters then this will return a GVariant with 0 children rather than
-// NULL.
 func (i dBusMethodInvocation) Parameters() *glib.Variant {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GVariant              // in
@@ -23377,17 +20419,6 @@ func (i dBusMethodInvocation) Parameters() *glib.Variant {
 	return _variant
 }
 
-// PropertyInfo gets information about the property that this method call is
-// for, if any.
-//
-// This will only be set in the case of an invocation in response to a property
-// Get or Set call that has been directed to the method call handler for an
-// object on account of its property_get() or property_set() vtable pointers
-// being unset.
-//
-// See BusInterfaceVTable for more information.
-//
-// If the call was GetAll, nil will be returned.
 func (i dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusPropertyInfo     // in
@@ -23403,7 +20434,6 @@ func (i dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	return _dBusPropertyInfo
 }
 
-// Sender gets the bus name that invoked the method.
 func (i dBusMethodInvocation) Sender() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
@@ -23419,10 +20449,6 @@ func (i dBusMethodInvocation) Sender() string {
 	return _utf8
 }
 
-// ReturnDBusError finishes handling a D-Bus method call by returning an error.
-//
-// This method will take ownership of @invocation. See BusInterfaceVTable for
-// more information about the ownership of @invocation.
 func (i dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.gchar                 // out
@@ -23437,11 +20463,6 @@ func (i dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage str
 	C.g_dbus_method_invocation_return_dbus_error(_arg0, _arg1, _arg2)
 }
 
-// ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
-// #GError instead of the error domain, error code and message.
-//
-// This method will take ownership of @invocation. See BusInterfaceVTable for
-// more information about the ownership of @invocation.
 func (i dBusMethodInvocation) ReturnGerror(err error) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GError                // out
@@ -23453,34 +20474,6 @@ func (i dBusMethodInvocation) ReturnGerror(err error) {
 	C.g_dbus_method_invocation_return_gerror(_arg0, _arg1)
 }
 
-// ReturnValue finishes handling a D-Bus method call by returning @parameters.
-// If the @parameters GVariant is floating, it is consumed.
-//
-// It is an error if @parameters is not of the right format: it must be a tuple
-// containing the out-parameters of the D-Bus method. Even if the method has a
-// single out-parameter, it must be contained in a tuple. If the method has no
-// out-parameters, @parameters may be nil or an empty tuple.
-//
-//    GDBusMethodInvocation *invocation = some_invocation;
-//    g_autofree gchar *result_string = NULL;
-//    g_autoptr (GError) error = NULL;
-//
-//    result_string = calculate_result (&error);
-//
-//    if (error != NULL)
-//      g_dbus_method_invocation_return_gerror (invocation, error);
-//    else
-//      g_dbus_method_invocation_return_value (invocation,
-//                                             g_variant_new ("(s)", result_string));
-//
-//    // Do not free @invocation here; returning a value does that
-//
-// This method will take ownership of @invocation. See BusInterfaceVTable for
-// more information about the ownership of @invocation.
-//
-// Since 2.48, if the method call requested for a reply not to be sent then this
-// call will sink @parameters and free @invocation, but otherwise do nothing (as
-// per the recommendations of the D-Bus specification).
 func (i dBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
@@ -23491,13 +20484,6 @@ func (i dBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	C.g_dbus_method_invocation_return_value(_arg0, _arg1)
 }
 
-// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value() but
-// also takes a FDList.
-//
-// This method is only available on UNIX.
-//
-// This method will take ownership of @invocation. See BusInterfaceVTable for
-// more information about the ownership of @invocation.
 func (i dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
@@ -23660,7 +20646,6 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerC
 	return _dBusObjectManagerClient, _goerr
 }
 
-// Connection gets the BusConnection used by @manager.
 func (m dBusObjectManagerClient) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.GDBusConnection          // in
@@ -23676,7 +20661,6 @@ func (m dBusObjectManagerClient) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-// Flags gets the flags that @manager was constructed with.
 func (m dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	var _arg0 *C.GDBusObjectManagerClient     // out
 	var _cret C.GDBusObjectManagerClientFlags // in
@@ -23692,8 +20676,6 @@ func (m dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	return _dBusObjectManagerClientFlags
 }
 
-// Name gets the name that @manager is for, or nil if not a message bus
-// connection.
 func (m dBusObjectManagerClient) Name() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
@@ -23709,9 +20691,6 @@ func (m dBusObjectManagerClient) Name() string {
 	return _utf8
 }
 
-// NameOwner: the unique name that owns the name that @manager is for or nil if
-// no-one currently owns that name. You can connect to the #GObject::notify
-// signal to track changes to the BusObjectManagerClient:name-owner property.
 func (m dBusObjectManagerClient) NameOwner() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
@@ -23829,16 +20808,6 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	return _dBusObjectManagerServer
 }
 
-// Export exports @object on @manager.
-//
-// If there is already a BusObject exported at the object path, then the old
-// object is removed.
-//
-// The object path for @object must be in the hierarchy rooted by the object
-// path for @manager.
-//
-// Note that @manager will take a reference on @object for as long as it is
-// exported.
 func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -23849,10 +20818,6 @@ func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {
 	C.g_dbus_object_manager_server_export(_arg0, _arg1)
 }
 
-// ExportUniquely: like g_dbus_object_manager_server_export() but appends a
-// string of the form _N (with N being a natural number) to @object's object
-// path if an object with the given path already exists. As such, the
-// BusObjectProxy:g-object-path property of @object may be modified.
 func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -23863,7 +20828,6 @@ func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
 	C.g_dbus_object_manager_server_export_uniquely(_arg0, _arg1)
 }
 
-// Connection gets the BusConnection used by @manager.
 func (m dBusObjectManagerServer) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _cret *C.GDBusConnection          // in
@@ -23879,7 +20843,6 @@ func (m dBusObjectManagerServer) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-// IsExported returns whether @object is currently exported on @manager.
 func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -23899,8 +20862,6 @@ func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	return _ok
 }
 
-// SetConnection exports all objects managed by @manager on @connection. If
-// @connection is nil, stops exporting objects.
 func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusConnection          // out
@@ -23911,11 +20872,6 @@ func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
 	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
 }
 
-// Unexport: if @manager has an object at @path, removes the object. Otherwise
-// does nothing.
-//
-// Note that @object_path must be in the hierarchy rooted by the object path for
-// @manager.
 func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.gchar                    // out
@@ -23991,7 +20947,6 @@ func NewDBusObjectProXY(connection DBusConnection, objectPath string) DBusObject
 	return _dBusObjectProxy
 }
 
-// Connection gets the connection that @proxy is for.
 func (p dBusObjectProXY) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectProxy // out
 	var _cret *C.GDBusConnection  // in
@@ -24080,13 +21035,6 @@ func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 	return _dBusObjectSkeleton
 }
 
-// AddInterface adds @interface_ to @object.
-//
-// If @object already contains a BusInterfaceSkeleton with the same interface
-// name, it is removed before @interface_ is added.
-//
-// Note that @object takes its own reference on @interface_ and holds it until
-// removed.
 func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
@@ -24097,8 +21045,6 @@ func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
 	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
 }
 
-// Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
-// interfaces belonging to @object. See that method for when flushing is useful.
 func (o dBusObjectSkeleton) Flush() {
 	var _arg0 *C.GDBusObjectSkeleton // out
 
@@ -24107,7 +21053,6 @@ func (o dBusObjectSkeleton) Flush() {
 	C.g_dbus_object_skeleton_flush(_arg0)
 }
 
-// RemoveInterface removes @interface_ from @object.
 func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
@@ -24118,11 +21063,6 @@ func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 }
 
-// RemoveInterfaceByName removes the BusInterface with @interface_name from
-// @object.
-//
-// If no D-Bus interface of the given interface exists, this function does
-// nothing.
 func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
@@ -24134,7 +21074,6 @@ func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	C.g_dbus_object_skeleton_remove_interface_by_name(_arg0, _arg1)
 }
 
-// SetObjectPath sets the object path for @object.
 func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
@@ -24465,7 +21404,6 @@ func NewDBusProXYSync(connection DBusConnection, flags DBusProXYFlags, info *DBu
 	return _dBusProxy, _goerr
 }
 
-// CallFinish finishes an operation started with g_dbus_proxy_call().
 func (p dBusProXY) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GAsyncResult // out
@@ -24489,37 +21427,6 @@ func (p dBusProXY) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	return _variant, _goerr
 }
 
-// CallSync: synchronously invokes the @method_name method on @proxy.
-//
-// If @method_name contains any dots, then @name is split into interface and
-// method name parts. This allows using @proxy for invoking methods on other
-// interfaces.
-//
-// If the BusConnection associated with @proxy is disconnected then the
-// operation will fail with G_IO_ERROR_CLOSED. If @cancellable is canceled, the
-// operation will fail with G_IO_ERROR_CANCELLED. If @parameters contains a
-// value not compatible with the D-Bus protocol, the operation fails with
-// G_IO_ERROR_INVALID_ARGUMENT.
-//
-// If the @parameters #GVariant is floating, it is consumed. This allows
-// convenient 'inline' use of g_variant_new(), e.g.:
-//
-//    g_dbus_proxy_call_sync (proxy,
-//                            "TwoStrings",
-//                            g_variant_new ("(ss)",
-//                                           "Thing One",
-//                                           "Thing Two"),
-//                            G_DBUS_CALL_FLAGS_NONE,
-//                            -1,
-//                            NULL,
-//                            &error);
-//
-// The calling thread is blocked until a reply is received. See
-// g_dbus_proxy_call() for the asynchronous version of this method.
-//
-// If @proxy has an expected interface (see BusProxy:g-interface-info) and
-// @method_name is referenced by it, then the return value is checked against
-// the return type.
 func (p dBusProXY) CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg1 *C.gchar         // out
@@ -24552,8 +21459,6 @@ func (p dBusProXY) CallSync(methodName string, parameters *glib.Variant, flags D
 	return _variant, _goerr
 }
 
-// CallWithUnixFdListFinish finishes an operation started with
-// g_dbus_proxy_call_with_unix_fd_list().
 func (p dBusProXY) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GUnixFDList  // in
@@ -24580,10 +21485,6 @@ func (p dBusProXY) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.
 	return _outFdList, _variant, _goerr
 }
 
-// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
-// returns FDList objects.
-//
-// This method is only available on UNIX.
 func (p dBusProXY) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg1 *C.gchar         // out
@@ -24621,12 +21522,6 @@ func (p dBusProXY) CallWithUnixFdListSync(methodName string, parameters *glib.Va
 	return _outFdList, _variant, _goerr
 }
 
-// CachedProperty looks up the value for a property from the cache. This call
-// does no blocking IO.
-//
-// If @proxy has an expected interface (see BusProxy:g-interface-info) and
-// @property_name is referenced by it, then @value is checked against the type
-// of the property.
 func (p dBusProXY) CachedProperty(propertyName string) *glib.Variant {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
@@ -24648,7 +21543,6 @@ func (p dBusProXY) CachedProperty(propertyName string) *glib.Variant {
 	return _variant
 }
 
-// CachedPropertyNames gets the names of all cached properties on @proxy.
 func (p dBusProXY) CachedPropertyNames() []string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret **C.gchar
@@ -24677,7 +21571,6 @@ func (p dBusProXY) CachedPropertyNames() []string {
 	return _utf8s
 }
 
-// Connection gets the connection @proxy is for.
 func (p dBusProXY) Connection() DBusConnection {
 	var _arg0 *C.GDBusProxy      // out
 	var _cret *C.GDBusConnection // in
@@ -24693,11 +21586,6 @@ func (p dBusProXY) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-// DefaultTimeout gets the timeout to use if -1 (specifying default timeout) is
-// passed as @timeout_msec in the g_dbus_proxy_call() and
-// g_dbus_proxy_call_sync() functions.
-//
-// See the BusProxy:g-default-timeout property for more details.
 func (p dBusProXY) DefaultTimeout() int {
 	var _arg0 *C.GDBusProxy // out
 	var _cret C.gint        // in
@@ -24713,7 +21601,6 @@ func (p dBusProXY) DefaultTimeout() int {
 	return _gint
 }
 
-// Flags gets the flags that @proxy was constructed with.
 func (p dBusProXY) Flags() DBusProXYFlags {
 	var _arg0 *C.GDBusProxy     // out
 	var _cret C.GDBusProxyFlags // in
@@ -24729,9 +21616,6 @@ func (p dBusProXY) Flags() DBusProXYFlags {
 	return _dBusProxyFlags
 }
 
-// InterfaceInfo returns the BusInterfaceInfo, if any, specifying the interface
-// that @proxy conforms to. See the BusProxy:g-interface-info property for more
-// details.
 func (p dBusProXY) InterfaceInfo() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusProxy         // out
 	var _cret *C.GDBusInterfaceInfo // in
@@ -24747,7 +21631,6 @@ func (p dBusProXY) InterfaceInfo() *DBusInterfaceInfo {
 	return _dBusInterfaceInfo
 }
 
-// InterfaceName gets the D-Bus interface name @proxy is for.
 func (p dBusProXY) InterfaceName() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -24763,7 +21646,6 @@ func (p dBusProXY) InterfaceName() string {
 	return _utf8
 }
 
-// Name gets the name that @proxy was constructed for.
 func (p dBusProXY) Name() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -24779,9 +21661,6 @@ func (p dBusProXY) Name() string {
 	return _utf8
 }
 
-// NameOwner: the unique name that owns the name that @proxy is for or nil if
-// no-one currently owns that name. You may connect to the #GObject::notify
-// signal to track changes to the BusProxy:g-name-owner property.
 func (p dBusProXY) NameOwner() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -24798,7 +21677,6 @@ func (p dBusProXY) NameOwner() string {
 	return _utf8
 }
 
-// ObjectPath gets the object path @proxy is for.
 func (p dBusProXY) ObjectPath() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -24814,36 +21692,6 @@ func (p dBusProXY) ObjectPath() string {
 	return _utf8
 }
 
-// SetCachedProperty: if @value is not nil, sets the cached value for the
-// property with name @property_name to the value in @value.
-//
-// If @value is nil, then the cached value is removed from the property cache.
-//
-// If @proxy has an expected interface (see BusProxy:g-interface-info) and
-// @property_name is referenced by it, then @value is checked against the type
-// of the property.
-//
-// If the @value #GVariant is floating, it is consumed. This allows convenient
-// 'inline' use of g_variant_new(), e.g.
-//
-//    g_dbus_proxy_set_cached_property (proxy,
-//                                      "SomeProperty",
-//                                      g_variant_new ("(si)",
-//                                                    "A String",
-//                                                    42));
-//
-// Normally you will not need to use this method since @proxy is tracking
-// changes using the `org.freedesktop.DBus.Properties.PropertiesChanged` D-Bus
-// signal. However, for performance reasons an object may decide to not use this
-// signal for some properties and instead use a proprietary out-of-band
-// mechanism to transmit changes.
-//
-// As a concrete example, consider an object with a property
-// `ChatroomParticipants` which is an array of strings. Instead of transmitting
-// the same (long) array every time the property changes, it is more efficient
-// to only transmit the delta using e.g. signals
-// `ChatroomParticipantJoined(String name)` and
-// `ChatroomParticipantParted(String name)`.
 func (p dBusProXY) SetCachedProperty(propertyName string, value *glib.Variant) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
@@ -24857,11 +21705,6 @@ func (p dBusProXY) SetCachedProperty(propertyName string, value *glib.Variant) {
 	C.g_dbus_proxy_set_cached_property(_arg0, _arg1, _arg2)
 }
 
-// SetDefaultTimeout sets the timeout to use if -1 (specifying default timeout)
-// is passed as @timeout_msec in the g_dbus_proxy_call() and
-// g_dbus_proxy_call_sync() functions.
-//
-// See the BusProxy:g-default-timeout property for more details.
 func (p dBusProXY) SetDefaultTimeout(timeoutMsec int) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 C.gint        // out
@@ -24872,8 +21715,6 @@ func (p dBusProXY) SetDefaultTimeout(timeoutMsec int) {
 	C.g_dbus_proxy_set_default_timeout(_arg0, _arg1)
 }
 
-// SetInterfaceInfo: ensure that interactions with @proxy conform to the given
-// interface. See the BusProxy:g-interface-info property for more details.
 func (p dBusProXY) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.GDBusInterfaceInfo // out
@@ -24994,9 +21835,6 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 	return _dBusServer, _goerr
 }
 
-// ClientAddress gets a D-Bus address
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses) string
-// that can be used by clients to connect to @server.
 func (s dBusServer) ClientAddress() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
@@ -25012,7 +21850,6 @@ func (s dBusServer) ClientAddress() string {
 	return _utf8
 }
 
-// Flags gets the flags for @server.
 func (s dBusServer) Flags() DBusServerFlags {
 	var _arg0 *C.GDBusServer     // out
 	var _cret C.GDBusServerFlags // in
@@ -25028,7 +21865,6 @@ func (s dBusServer) Flags() DBusServerFlags {
 	return _dBusServerFlags
 }
 
-// Guid gets the GUID for @server.
 func (s dBusServer) Guid() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
@@ -25044,7 +21880,6 @@ func (s dBusServer) Guid() string {
 	return _utf8
 }
 
-// IsActive gets whether @server is active.
 func (s dBusServer) IsActive() bool {
 	var _arg0 *C.GDBusServer // out
 	var _cret C.gboolean     // in
@@ -25062,7 +21897,6 @@ func (s dBusServer) IsActive() bool {
 	return _ok
 }
 
-// Start starts @server.
 func (s dBusServer) Start() {
 	var _arg0 *C.GDBusServer // out
 
@@ -25071,7 +21905,6 @@ func (s dBusServer) Start() {
 	C.g_dbus_server_start(_arg0)
 }
 
-// Stop stops @server.
 func (s dBusServer) Stop() {
 	var _arg0 *C.GDBusServer // out
 
@@ -25251,7 +22084,6 @@ func NewDataInputStream(baseStream InputStream) DataInputStream {
 	return _dataInputStream
 }
 
-// ByteOrder gets the byte order for the data input stream.
 func (s dataInputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataInputStream    // out
 	var _cret C.GDataStreamByteOrder // in
@@ -25267,7 +22099,6 @@ func (s dataInputStream) ByteOrder() DataStreamByteOrder {
 	return _dataStreamByteOrder
 }
 
-// NewlineType gets the current newline type for the @stream.
 func (s dataInputStream) NewlineType() DataStreamNewlineType {
 	var _arg0 *C.GDataInputStream      // out
 	var _cret C.GDataStreamNewlineType // in
@@ -25283,7 +22114,6 @@ func (s dataInputStream) NewlineType() DataStreamNewlineType {
 	return _dataStreamNewlineType
 }
 
-// ReadByte reads an unsigned 8-bit/1-byte value from @stream.
 func (s dataInputStream) ReadByte(cancellable Cancellable) (byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -25304,11 +22134,6 @@ func (s dataInputStream) ReadByte(cancellable Cancellable) (byte, error) {
 	return _guint8, _goerr
 }
 
-// ReadInt16 reads a 16-bit/2-byte value from @stream.
-//
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
-// g_data_input_stream_set_byte_order().
 func (s dataInputStream) ReadInt16(cancellable Cancellable) (int16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -25329,15 +22154,6 @@ func (s dataInputStream) ReadInt16(cancellable Cancellable) (int16, error) {
 	return _gint16, _goerr
 }
 
-// ReadInt32 reads a signed 32-bit/4-byte value from @stream.
-//
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
-// g_data_input_stream_set_byte_order().
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (s dataInputStream) ReadInt32(cancellable Cancellable) (int32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -25358,15 +22174,6 @@ func (s dataInputStream) ReadInt32(cancellable Cancellable) (int32, error) {
 	return _gint32, _goerr
 }
 
-// ReadInt64 reads a 64-bit/8-byte value from @stream.
-//
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
-// g_data_input_stream_set_byte_order().
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (s dataInputStream) ReadInt64(cancellable Cancellable) (int64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -25387,13 +22194,6 @@ func (s dataInputStream) ReadInt64(cancellable Cancellable) (int64, error) {
 	return _gint64, _goerr
 }
 
-// ReadLine reads a line from the data input stream. Note that no encoding
-// checks or conversion is performed; the input is not guaranteed to be UTF-8,
-// and may in fact have embedded NUL characters.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 C.gsize             // in
@@ -25429,9 +22229,6 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 	return _length, _guint8s, _goerr
 }
 
-// ReadLineFinish: finish an asynchronous call started by
-// g_data_input_stream_read_line_async(). Note the warning about string encoding
-// in g_data_input_stream_read_line() applies here as well.
 func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -25467,8 +22264,6 @@ func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error
 	return _length, _guint8s, _goerr
 }
 
-// ReadLineFinishUTF8: finish an asynchronous call started by
-// g_data_input_stream_read_line_async().
 func (s dataInputStream) ReadLineFinishUTF8(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -25493,11 +22288,6 @@ func (s dataInputStream) ReadLineFinishUTF8(result AsyncResult) (uint, string, e
 	return _length, _utf8, _goerr
 }
 
-// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (s dataInputStream) ReadLineUTF8(cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 C.gsize             // in
@@ -25522,11 +22312,6 @@ func (s dataInputStream) ReadLineUTF8(cancellable Cancellable) (uint, string, er
 	return _length, _utf8, _goerr
 }
 
-// ReadUint16 reads an unsigned 16-bit/2-byte value from @stream.
-//
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
-// g_data_input_stream_set_byte_order().
 func (s dataInputStream) ReadUint16(cancellable Cancellable) (uint16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -25547,15 +22332,6 @@ func (s dataInputStream) ReadUint16(cancellable Cancellable) (uint16, error) {
 	return _guint16, _goerr
 }
 
-// ReadUint32 reads an unsigned 32-bit/4-byte value from @stream.
-//
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
-// g_data_input_stream_set_byte_order().
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (s dataInputStream) ReadUint32(cancellable Cancellable) (uint32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -25576,14 +22352,6 @@ func (s dataInputStream) ReadUint32(cancellable Cancellable) (uint32, error) {
 	return _guint32, _goerr
 }
 
-// ReadUint64 reads an unsigned 64-bit/8-byte value from @stream.
-//
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order().
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (s dataInputStream) ReadUint64(cancellable Cancellable) (uint64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -25604,16 +22372,6 @@ func (s dataInputStream) ReadUint64(cancellable Cancellable) (uint64, error) {
 	return _guint64, _goerr
 }
 
-// ReadUntil reads a string from the data input stream, up to the first
-// occurrence of any of the stop characters.
-//
-// Note that, in contrast to g_data_input_stream_read_until_async(), this
-// function consumes the stop character that it finds.
-//
-// Don't use this function in new code. Its functionality is inconsistent with
-// g_data_input_stream_read_until_async(). Both functions will be marked as
-// deprecated in a future release. Use g_data_input_stream_read_upto() instead,
-// but note that that function does not consume the stop character.
 func (s dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.gchar            // out
@@ -25641,8 +22399,6 @@ func (s dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (u
 	return _length, _utf8, _goerr
 }
 
-// ReadUntilFinish: finish an asynchronous call started by
-// g_data_input_stream_read_until_async().
 func (s dataInputStream) ReadUntilFinish(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -25667,16 +22423,6 @@ func (s dataInputStream) ReadUntilFinish(result AsyncResult) (uint, string, erro
 	return _length, _utf8, _goerr
 }
 
-// ReadUpto reads a string from the data input stream, up to the first
-// occurrence of any of the stop characters.
-//
-// In contrast to g_data_input_stream_read_until(), this function does not
-// consume the stop character. You have to use g_data_input_stream_read_byte()
-// to get it before calling g_data_input_stream_read_upto() again.
-//
-// Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
-//
-// The returned string will always be nul-terminated on success.
 func (s dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.gchar            // out
@@ -25706,14 +22452,6 @@ func (s dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellabl
 	return _length, _utf8, _goerr
 }
 
-// ReadUptoFinish: finish an asynchronous call started by
-// g_data_input_stream_read_upto_async().
-//
-// Note that this function does not consume the stop character. You have to use
-// g_data_input_stream_read_byte() to get it before calling
-// g_data_input_stream_read_upto_async() again.
-//
-// The returned string will always be nul-terminated on success.
 func (s dataInputStream) ReadUptoFinish(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -25738,8 +22476,6 @@ func (s dataInputStream) ReadUptoFinish(result AsyncResult) (uint, string, error
 	return _length, _utf8, _goerr
 }
 
-// SetByteOrder: this function sets the byte order for the given @stream. All
-// subsequent reads from the @stream will be read in the given @order.
 func (s dataInputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataInputStream    // out
 	var _arg1 C.GDataStreamByteOrder // out
@@ -25750,11 +22486,6 @@ func (s dataInputStream) SetByteOrder(order DataStreamByteOrder) {
 	C.g_data_input_stream_set_byte_order(_arg0, _arg1)
 }
 
-// SetNewlineType sets the newline type for the @stream.
-//
-// Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
-// chunk ends in "CR" we must read an additional byte to know if this is "CR" or
-// "CR LF", and this might block if there is no more data available.
 func (s dataInputStream) SetNewlineType(typ DataStreamNewlineType) {
 	var _arg0 *C.GDataInputStream      // out
 	var _arg1 C.GDataStreamNewlineType // out
@@ -25832,7 +22563,6 @@ func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 	return _dataOutputStream
 }
 
-// ByteOrder gets the byte order for the stream.
 func (s dataOutputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataOutputStream   // out
 	var _cret C.GDataStreamByteOrder // in
@@ -25848,7 +22578,6 @@ func (s dataOutputStream) ByteOrder() DataStreamByteOrder {
 	return _dataStreamByteOrder
 }
 
-// PutByte puts a byte into the output stream.
 func (s dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guchar             // out
@@ -25868,7 +22597,6 @@ func (s dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
 	return _goerr
 }
 
-// PutInt16 puts a signed 16-bit integer into the output stream.
 func (s dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint16             // out
@@ -25888,7 +22616,6 @@ func (s dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
 	return _goerr
 }
 
-// PutInt32 puts a signed 32-bit integer into the output stream.
 func (s dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint32             // out
@@ -25908,7 +22635,6 @@ func (s dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
 	return _goerr
 }
 
-// PutInt64 puts a signed 64-bit integer into the stream.
 func (s dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint64             // out
@@ -25928,7 +22654,6 @@ func (s dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
 	return _goerr
 }
 
-// PutString puts a string into the output stream.
 func (s dataOutputStream) PutString(str string, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 *C.char              // out
@@ -25949,7 +22674,6 @@ func (s dataOutputStream) PutString(str string, cancellable Cancellable) error {
 	return _goerr
 }
 
-// PutUint16 puts an unsigned 16-bit integer into the output stream.
 func (s dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint16            // out
@@ -25969,7 +22693,6 @@ func (s dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error 
 	return _goerr
 }
 
-// PutUint32 puts an unsigned 32-bit integer into the stream.
 func (s dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint32            // out
@@ -25989,7 +22712,6 @@ func (s dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error 
 	return _goerr
 }
 
-// PutUint64 puts an unsigned 64-bit integer into the stream.
 func (s dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint64            // out
@@ -26009,7 +22731,6 @@ func (s dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error 
 	return _goerr
 }
 
-// SetByteOrder sets the byte order of the data output stream to @order.
 func (s dataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataOutputStream   // out
 	var _arg1 C.GDataStreamByteOrder // out
@@ -26190,10 +22911,6 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 	return _desktopAppInfo
 }
 
-// ActionName gets the user-visible display name of the "additional application
-// action" specified by @action_name.
-//
-// This corresponds to the "Name" key within the keyfile group for the action.
 func (i desktopAppInfo) ActionName(actionName string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.gchar           // out
@@ -26213,9 +22930,6 @@ func (i desktopAppInfo) ActionName(actionName string) string {
 	return _utf8
 }
 
-// Boolean looks up a boolean value in the keyfile backing @info.
-//
-// The @key is looked up in the "Desktop Entry" group.
 func (i desktopAppInfo) Boolean(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
@@ -26236,7 +22950,6 @@ func (i desktopAppInfo) Boolean(key string) bool {
 	return _ok
 }
 
-// Categories gets the categories from the desktop file.
 func (i desktopAppInfo) Categories() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
@@ -26252,9 +22965,6 @@ func (i desktopAppInfo) Categories() string {
 	return _utf8
 }
 
-// Filename: when @info was created from a known filename, return it. In some
-// situations such as the AppInfo returned from
-// g_desktop_app_info_new_from_keyfile(), this function will return nil.
 func (i desktopAppInfo) Filename() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
@@ -26270,7 +22980,6 @@ func (i desktopAppInfo) Filename() string {
 	return _filename
 }
 
-// GenericName gets the generic name from the desktop file.
 func (i desktopAppInfo) GenericName() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
@@ -26286,7 +22995,6 @@ func (i desktopAppInfo) GenericName() string {
 	return _utf8
 }
 
-// IsHidden: a desktop file is hidden if the Hidden key in it is set to True.
 func (i desktopAppInfo) IsHidden() bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret C.gboolean         // in
@@ -26304,7 +23012,6 @@ func (i desktopAppInfo) IsHidden() bool {
 	return _ok
 }
 
-// Keywords gets the keywords from the desktop file.
 func (i desktopAppInfo) Keywords() []string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret **C.char
@@ -26332,10 +23039,6 @@ func (i desktopAppInfo) Keywords() []string {
 	return _utf8s
 }
 
-// LocaleString looks up a localized string value in the keyfile backing @info
-// translated to the current locale.
-//
-// The @key is looked up in the "Desktop Entry" group.
 func (i desktopAppInfo) LocaleString(key string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
@@ -26355,9 +23058,6 @@ func (i desktopAppInfo) LocaleString(key string) string {
 	return _utf8
 }
 
-// Nodisplay gets the value of the NoDisplay key, which helps determine if the
-// application info should be shown in menus. See
-// KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
 func (i desktopAppInfo) Nodisplay() bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret C.gboolean         // in
@@ -26375,17 +23075,6 @@ func (i desktopAppInfo) Nodisplay() bool {
 	return _ok
 }
 
-// ShowIn checks if the application info should be shown in menus that list
-// available applications for a specific name of the desktop, based on the
-// `OnlyShowIn` and `NotShowIn` keys.
-//
-// @desktop_env should typically be given as nil, in which case the
-// `XDG_CURRENT_DESKTOP` environment variable is consulted. If you want to
-// override the default mechanism then you may specify @desktop_env, but this is
-// not recommended.
-//
-// Note that g_app_info_should_show() for @info will include this check (with
-// nil for @desktop_env) as well as additional checks.
 func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.gchar           // out
@@ -26406,9 +23095,6 @@ func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
 	return _ok
 }
 
-// StartupWmClass retrieves the StartupWMClass field from @info. This represents
-// the WM_CLASS property of the main window of the application, if launched
-// through @info.
 func (i desktopAppInfo) StartupWmClass() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
@@ -26424,9 +23110,6 @@ func (i desktopAppInfo) StartupWmClass() string {
 	return _utf8
 }
 
-// String looks up a string value in the keyfile backing @info.
-//
-// The @key is looked up in the "Desktop Entry" group.
 func (i desktopAppInfo) String(key string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
@@ -26446,8 +23129,6 @@ func (i desktopAppInfo) String(key string) string {
 	return _utf8
 }
 
-// HasKey returns whether @key exists in the "Desktop Entry" group of the
-// keyfile backing @info.
 func (i desktopAppInfo) HasKey(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
@@ -26468,21 +23149,6 @@ func (i desktopAppInfo) HasKey(key string) bool {
 	return _ok
 }
 
-// LaunchAction activates the named application action.
-//
-// You may only call this function on action names that were returned from
-// g_desktop_app_info_list_actions().
-//
-// Note that if the main entry of the desktop file indicates that the
-// application supports startup notification, and @launch_context is non-nil,
-// then startup notification will be used when activating the action (and as
-// such, invocation of the action on the receiving side must signal the end of
-// startup notification when it is completed). This is the expected behaviour of
-// applications declaring additional actions, as per the desktop file
-// specification.
-//
-// As with g_app_info_launch() there is no way to detect failures that occur
-// while using this function.
 func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchContext) {
 	var _arg0 *C.GDesktopAppInfo   // out
 	var _arg1 *C.gchar             // out
@@ -26496,11 +23162,6 @@ func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchC
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
 }
 
-// ListActions returns the list of "additional application actions" supported on
-// the desktop file, as per the desktop file specification.
-//
-// As per the specification, this is the list of actions that are explicitly
-// listed in the "Actions" key of the [Desktop Entry] group.
 func (i desktopAppInfo) ListActions() []string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret **C.gchar
@@ -26600,7 +23261,6 @@ func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 	return _emblem
 }
 
-// GetIcon gives back the icon from @emblem.
 func (e emblem) GetIcon() Icon {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
@@ -26616,7 +23276,6 @@ func (e emblem) GetIcon() Icon {
 	return _icon
 }
 
-// Origin gets the origin of the emblem.
 func (e emblem) Origin() EmblemOrigin {
 	var _arg0 *C.GEmblem      // out
 	var _cret C.GEmblemOrigin // in
@@ -26692,7 +23351,6 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 	return _emblemedIcon
 }
 
-// AddEmblem adds @emblem to the #GList of #GEmblems.
 func (e emblemedIcon) AddEmblem(emblem Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
@@ -26703,7 +23361,6 @@ func (e emblemedIcon) AddEmblem(emblem Emblem) {
 	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 }
 
-// ClearEmblems removes all the emblems from @icon.
 func (e emblemedIcon) ClearEmblems() {
 	var _arg0 *C.GEmblemedIcon // out
 
@@ -26712,7 +23369,6 @@ func (e emblemedIcon) ClearEmblems() {
 	C.g_emblemed_icon_clear_emblems(_arg0)
 }
 
-// GetIcon gets the main icon for @emblemed.
 func (e emblemedIcon) GetIcon() Icon {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
@@ -26861,12 +23517,6 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 	return WrapFileEnumerator(obj), nil
 }
 
-// Close releases all resources used by this enumerator, making the enumerator
-// return G_IO_ERROR_CLOSED on all calls.
-//
-// This will be automatically called when the last reference is dropped, but you
-// might want to call this function to make sure resources are released as early
-// as possible.
 func (e fileEnumerator) Close(cancellable Cancellable) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
@@ -26884,17 +23534,6 @@ func (e fileEnumerator) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-// CloseFinish finishes closing a file enumerator, started from
-// g_file_enumerator_close_async().
-//
-// If the file enumerator was already closed when
-// g_file_enumerator_close_async() was called, then this function will report
-// G_IO_ERROR_CLOSED in @error, and return false. If the file enumerator had
-// pending operation when the close operation was started, then this function
-// will report G_IO_ERROR_PENDING, and return false. If @cancellable was not
-// nil, then the operation may have been cancelled by triggering the cancellable
-// object from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be set, and false will be returned.
 func (e fileEnumerator) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
@@ -26912,15 +23551,6 @@ func (e fileEnumerator) CloseFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// Child: return a new #GFile which refers to the file named by @info in the
-// source directory of @enumerator. This function is primarily intended to be
-// used inside loops with g_file_enumerator_next_file().
-//
-// This is a convenience method that's equivalent to:
-//
-//    gchar *name = g_file_info_get_name (info);
-//    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-//                                     name);
 func (e fileEnumerator) Child(info FileInfo) File {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // out
@@ -26938,7 +23568,6 @@ func (e fileEnumerator) Child(info FileInfo) File {
 	return _file
 }
 
-// Container: get the #GFile container which is being enumerated.
 func (e fileEnumerator) Container() File {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret *C.GFile           // in
@@ -26954,7 +23583,6 @@ func (e fileEnumerator) Container() File {
 	return _file
 }
 
-// HasPending checks if the file enumerator has pending operations.
 func (e fileEnumerator) HasPending() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
@@ -26972,7 +23600,6 @@ func (e fileEnumerator) HasPending() bool {
 	return _ok
 }
 
-// IsClosed checks if the file enumerator has been closed.
 func (e fileEnumerator) IsClosed() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
@@ -26990,39 +23617,6 @@ func (e fileEnumerator) IsClosed() bool {
 	return _ok
 }
 
-// Iterate: this is a version of g_file_enumerator_next_file() that's easier to
-// use correctly from C programs. With g_file_enumerator_next_file(), the
-// gboolean return value signifies "end of iteration or error", which requires
-// allocation of a temporary #GError.
-//
-// In contrast, with this function, a false return from
-// g_file_enumerator_iterate() *always* means "error". End of iteration is
-// signaled by @out_info or @out_child being nil.
-//
-// Another crucial difference is that the references for @out_info and
-// @out_child are owned by @direnum (they are cached as hidden properties). You
-// must not unref them in your own code. This makes memory management
-// significantly easier for C code in combination with loops.
-//
-// Finally, this function optionally allows retrieving a #GFile as well.
-//
-// You must specify at least one of @out_info or @out_child.
-//
-// The code pattern for correctly using g_file_enumerator_iterate() from C is:
-//
-//    direnum = g_file_enumerate_children (file, ...);
-//    while (TRUE)
-//      {
-//        GFileInfo *info;
-//        if (!g_file_enumerator_iterate (direnum, &info, NULL, cancellable, error))
-//          goto out;
-//        if (!info)
-//          break;
-//        ... do stuff with "info"; do not unref it! ...
-//      }
-//
-//    out:
-//      g_object_unref (direnum); // Note: frees the last @info
 func (d fileEnumerator) Iterate(cancellable Cancellable) (FileInfo, File, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // in
@@ -27046,16 +23640,6 @@ func (d fileEnumerator) Iterate(cancellable Cancellable) (FileInfo, File, error)
 	return _outInfo, _outChild, _goerr
 }
 
-// NextFile returns information for the next file in the enumerated object. Will
-// block until the information is available. The Info returned from this
-// function will contain attributes that match the attribute string that was
-// passed when the Enumerator was created.
-//
-// See the documentation of Enumerator for information about the order of
-// returned files.
-//
-// On error, returns nil and sets @error to the error. If the enumerator is at
-// the end, nil will be returned and @error will be unset.
 func (e fileEnumerator) NextFile(cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
@@ -27076,7 +23660,6 @@ func (e fileEnumerator) NextFile(cancellable Cancellable) (FileInfo, error) {
 	return _fileInfo, _goerr
 }
 
-// SetPending sets the file enumerator as having pending operations.
 func (e fileEnumerator) SetPending(pending bool) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 C.gboolean         // out
@@ -27159,9 +23742,6 @@ func marshalFileIOStream(p uintptr) (interface{}, error) {
 	return WrapFileIOStream(obj), nil
 }
 
-// Etag gets the entity tag for the file when it has been written. This must be
-// called after the stream has been written and closed, as the etag can change
-// while writing.
 func (s fileIOStream) Etag() string {
 	var _arg0 *C.GFileIOStream // out
 	var _cret *C.char          // in
@@ -27178,21 +23758,6 @@ func (s fileIOStream) Etag() string {
 	return _utf8
 }
 
-// QueryInfo queries a file io stream for the given @attributes. This function
-// blocks while querying the stream. For the asynchronous version of this
-// function, see g_file_io_stream_query_info_async(). While the stream is
-// blocked, the stream will set the pending flag internally, and any other
-// operations on the stream will fail with G_IO_ERROR_PENDING.
-//
-// Can fail if the stream was already closed (with @error being set to
-// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being set
-// to G_IO_ERROR_PENDING), or if querying info is not supported for the stream's
-// interface (with @error being set to G_IO_ERROR_NOT_SUPPORTED). I all cases of
-// failure, nil will be returned.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be set, and nil will be returned.
 func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.char          // out
@@ -27216,8 +23781,6 @@ func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (Fil
 	return _fileInfo, _goerr
 }
 
-// QueryInfoFinish finalizes the asynchronous query started by
-// g_file_io_stream_query_info_async().
 func (s fileIOStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -27289,7 +23852,6 @@ func NewFileIcon(file File) FileIcon {
 	return _fileIcon
 }
 
-// File gets the #GFile associated with the given @icon.
 func (i fileIcon) File() File {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in
@@ -27542,7 +24104,6 @@ func NewFileInfo() FileInfo {
 	return _fileInfo
 }
 
-// ClearStatus clears the status information from @info.
 func (i fileInfo) ClearStatus() {
 	var _arg0 *C.GFileInfo // out
 
@@ -27551,9 +24112,6 @@ func (i fileInfo) ClearStatus() {
 	C.g_file_info_clear_status(_arg0)
 }
 
-// CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute] of
-// @dest_info, and then copies all of the file attributes from @src_info to
-// @dest_info.
 func (s fileInfo) CopyInto(destInfo FileInfo) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GFileInfo // out
@@ -27564,7 +24122,6 @@ func (s fileInfo) CopyInto(destInfo FileInfo) {
 	C.g_file_info_copy_into(_arg0, _arg1)
 }
 
-// Dup duplicates a file info structure.
 func (o fileInfo) Dup() FileInfo {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GFileInfo // in
@@ -27580,8 +24137,6 @@ func (o fileInfo) Dup() FileInfo {
 	return _fileInfo
 }
 
-// AttributeAsString gets the value of a attribute, formatted as a string. This
-// escapes things as needed to make the string valid UTF-8.
 func (i fileInfo) AttributeAsString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27601,8 +24156,6 @@ func (i fileInfo) AttributeAsString(attribute string) string {
 	return _utf8
 }
 
-// AttributeBoolean gets the value of a boolean attribute. If the attribute does
-// not contain a boolean value, false will be returned.
 func (i fileInfo) AttributeBoolean(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27623,8 +24176,6 @@ func (i fileInfo) AttributeBoolean(attribute string) bool {
 	return _ok
 }
 
-// AttributeByteString gets the value of a byte string attribute. If the
-// attribute does not contain a byte string, nil will be returned.
 func (i fileInfo) AttributeByteString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27643,9 +24194,6 @@ func (i fileInfo) AttributeByteString(attribute string) string {
 	return _utf8
 }
 
-// AttributeInt32 gets a signed 32-bit integer contained within the attribute.
-// If the attribute does not contain a signed 32-bit integer, or is invalid, 0
-// will be returned.
 func (i fileInfo) AttributeInt32(attribute string) int32 {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27664,9 +24212,6 @@ func (i fileInfo) AttributeInt32(attribute string) int32 {
 	return _gint32
 }
 
-// AttributeInt64 gets a signed 64-bit integer contained within the attribute.
-// If the attribute does not contain a signed 64-bit integer, or is invalid, 0
-// will be returned.
 func (i fileInfo) AttributeInt64(attribute string) int64 {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27685,8 +24230,6 @@ func (i fileInfo) AttributeInt64(attribute string) int64 {
 	return _gint64
 }
 
-// AttributeObject gets the value of a #GObject attribute. If the attribute does
-// not contain a #GObject, nil will be returned.
 func (i fileInfo) AttributeObject(attribute string) gextras.Objector {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27705,7 +24248,6 @@ func (i fileInfo) AttributeObject(attribute string) gextras.Objector {
 	return _object
 }
 
-// AttributeStatus gets the attribute status for an attribute key.
 func (i fileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 	var _arg0 *C.GFileInfo           // out
 	var _arg1 *C.char                // out
@@ -27724,8 +24266,6 @@ func (i fileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 	return _fileAttributeStatus
 }
 
-// AttributeString gets the value of a string attribute. If the attribute does
-// not contain a string, nil will be returned.
 func (i fileInfo) AttributeString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27744,8 +24284,6 @@ func (i fileInfo) AttributeString(attribute string) string {
 	return _utf8
 }
 
-// AttributeStringv gets the value of a stringv attribute. If the attribute does
-// not contain a stringv, nil will be returned.
 func (i fileInfo) AttributeStringv(attribute string) []string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27776,7 +24314,6 @@ func (i fileInfo) AttributeStringv(attribute string) []string {
 	return _utf8s
 }
 
-// AttributeType gets the attribute type for an attribute key.
 func (i fileInfo) AttributeType(attribute string) FileAttributeType {
 	var _arg0 *C.GFileInfo         // out
 	var _arg1 *C.char              // out
@@ -27795,9 +24332,6 @@ func (i fileInfo) AttributeType(attribute string) FileAttributeType {
 	return _fileAttributeType
 }
 
-// AttributeUint32 gets an unsigned 32-bit integer contained within the
-// attribute. If the attribute does not contain an unsigned 32-bit integer, or
-// is invalid, 0 will be returned.
 func (i fileInfo) AttributeUint32(attribute string) uint32 {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27816,9 +24350,6 @@ func (i fileInfo) AttributeUint32(attribute string) uint32 {
 	return _guint32
 }
 
-// AttributeUint64 gets a unsigned 64-bit integer contained within the
-// attribute. If the attribute does not contain an unsigned 64-bit integer, or
-// is invalid, 0 will be returned.
 func (i fileInfo) AttributeUint64(attribute string) uint64 {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -27837,7 +24368,6 @@ func (i fileInfo) AttributeUint64(attribute string) uint64 {
 	return _guint64
 }
 
-// ContentType gets the file's content type.
 func (i fileInfo) ContentType() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -27853,8 +24383,6 @@ func (i fileInfo) ContentType() string {
 	return _utf8
 }
 
-// DisplayName gets a display name for a file. This is guaranteed to always be
-// set.
 func (i fileInfo) DisplayName() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -27870,7 +24398,6 @@ func (i fileInfo) DisplayName() string {
 	return _utf8
 }
 
-// EditName gets the edit name for a file.
 func (i fileInfo) EditName() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -27886,8 +24413,6 @@ func (i fileInfo) EditName() string {
 	return _utf8
 }
 
-// Etag gets the [entity tag][gfile-etag] for a given Info. See
-// G_FILE_ATTRIBUTE_ETAG_VALUE.
 func (i fileInfo) Etag() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -27903,9 +24428,6 @@ func (i fileInfo) Etag() string {
 	return _utf8
 }
 
-// FileType gets a file's type (whether it is a regular file, symlink, etc).
-// This is different from the file's content type, see
-// g_file_info_get_content_type().
 func (i fileInfo) FileType() FileType {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.GFileType  // in
@@ -27921,7 +24443,6 @@ func (i fileInfo) FileType() FileType {
 	return _fileType
 }
 
-// Icon gets the icon for a file.
 func (i fileInfo) Icon() Icon {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
@@ -27937,7 +24458,6 @@ func (i fileInfo) Icon() Icon {
 	return _icon
 }
 
-// IsBackup checks if a file is a backup file.
 func (i fileInfo) IsBackup() bool {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.gboolean   // in
@@ -27955,7 +24475,6 @@ func (i fileInfo) IsBackup() bool {
 	return _ok
 }
 
-// IsHidden checks if a file is hidden.
 func (i fileInfo) IsHidden() bool {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.gboolean   // in
@@ -27973,7 +24492,6 @@ func (i fileInfo) IsHidden() bool {
 	return _ok
 }
 
-// IsSymlink checks if a file is a symlink.
 func (i fileInfo) IsSymlink() bool {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.gboolean   // in
@@ -27991,8 +24509,6 @@ func (i fileInfo) IsSymlink() bool {
 	return _ok
 }
 
-// ModificationTime gets the modification time of the current @info and sets it
-// in @result.
 func (i fileInfo) ModificationTime() glib.TimeVal {
 	var _arg0 *C.GFileInfo // out
 	var _result glib.TimeVal
@@ -28004,7 +24520,6 @@ func (i fileInfo) ModificationTime() glib.TimeVal {
 	return _result
 }
 
-// Name gets the name for a file. This is guaranteed to always be set.
 func (i fileInfo) Name() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -28020,9 +24535,6 @@ func (i fileInfo) Name() string {
 	return _filename
 }
 
-// Size gets the file's size (in bytes). The size is retrieved through the value
-// of the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted from
-// #guint64 to #goffset before returning the result.
 func (i fileInfo) Size() int64 {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.goffset    // in
@@ -28038,8 +24550,6 @@ func (i fileInfo) Size() int64 {
 	return _gint64
 }
 
-// SortOrder gets the value of the sort_order attribute from the Info. See
-// G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
 func (i fileInfo) SortOrder() int32 {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.gint32     // in
@@ -28055,7 +24565,6 @@ func (i fileInfo) SortOrder() int32 {
 	return _gint32
 }
 
-// SymbolicIcon gets the symbolic icon for a file.
 func (i fileInfo) SymbolicIcon() Icon {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
@@ -28071,7 +24580,6 @@ func (i fileInfo) SymbolicIcon() Icon {
 	return _icon
 }
 
-// SymlinkTarget gets the symlink target for a given Info.
 func (i fileInfo) SymlinkTarget() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -28087,8 +24595,6 @@ func (i fileInfo) SymlinkTarget() string {
 	return _utf8
 }
 
-// HasAttribute checks if a file info structure has an attribute named
-// @attribute.
 func (i fileInfo) HasAttribute(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28109,8 +24615,6 @@ func (i fileInfo) HasAttribute(attribute string) bool {
 	return _ok
 }
 
-// HasNamespace checks if a file info structure has an attribute in the
-// specified @name_space.
 func (i fileInfo) HasNamespace(nameSpace string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28131,7 +24635,6 @@ func (i fileInfo) HasNamespace(nameSpace string) bool {
 	return _ok
 }
 
-// ListAttributes lists the file info structure's attributes.
 func (i fileInfo) ListAttributes(nameSpace string) []string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28163,7 +24666,6 @@ func (i fileInfo) ListAttributes(nameSpace string) []string {
 	return _utf8s
 }
 
-// RemoveAttribute removes all cases of @attribute from @info if it exists.
 func (i fileInfo) RemoveAttribute(attribute string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28175,8 +24677,6 @@ func (i fileInfo) RemoveAttribute(attribute string) {
 	C.g_file_info_remove_attribute(_arg0, _arg1)
 }
 
-// SetAttributeBoolean sets the @attribute to contain the given @attr_value, if
-// possible.
 func (i fileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28192,8 +24692,6 @@ func (i fileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	C.g_file_info_set_attribute_boolean(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeByteString sets the @attribute to contain the given @attr_value,
-// if possible.
 func (i fileInfo) SetAttributeByteString(attribute string, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28208,8 +24706,6 @@ func (i fileInfo) SetAttributeByteString(attribute string, attrValue string) {
 	C.g_file_info_set_attribute_byte_string(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeInt32 sets the @attribute to contain the given @attr_value, if
-// possible.
 func (i fileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28223,8 +24719,6 @@ func (i fileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	C.g_file_info_set_attribute_int32(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeInt64 sets the @attribute to contain the given @attr_value, if
-// possible.
 func (i fileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28238,7 +24732,6 @@ func (i fileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 	C.g_file_info_set_attribute_int64(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeMask sets @mask on @info to match specific attribute types.
 func (i fileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	var _arg0 *C.GFileInfo             // out
 	var _arg1 *C.GFileAttributeMatcher // out
@@ -28249,8 +24742,6 @@ func (i fileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	C.g_file_info_set_attribute_mask(_arg0, _arg1)
 }
 
-// SetAttributeObject sets the @attribute to contain the given @attr_value, if
-// possible.
 func (i fileInfo) SetAttributeObject(attribute string, attrValue gextras.Objector) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28264,12 +24755,6 @@ func (i fileInfo) SetAttributeObject(attribute string, attrValue gextras.Objecto
 	C.g_file_info_set_attribute_object(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeStatus sets the attribute status for an attribute key. This is
-// only needed by external code that implement g_file_set_attributes_from_info()
-// or similar functions.
-//
-// The attribute must exist in @info for this to work. Otherwise false is
-// returned and @info is unchanged.
 func (i fileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
 	var _arg0 *C.GFileInfo           // out
 	var _arg1 *C.char                // out
@@ -28292,8 +24777,6 @@ func (i fileInfo) SetAttributeStatus(attribute string, status FileAttributeStatu
 	return _ok
 }
 
-// SetAttributeString sets the @attribute to contain the given @attr_value, if
-// possible.
 func (i fileInfo) SetAttributeString(attribute string, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28308,10 +24791,6 @@ func (i fileInfo) SetAttributeString(attribute string, attrValue string) {
 	C.g_file_info_set_attribute_string(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeStringv sets the @attribute to contain the given @attr_value, if
-// possible.
-//
-// Sinze: 2.22
 func (i fileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28333,8 +24812,6 @@ func (i fileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	C.g_file_info_set_attribute_stringv(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeUint32 sets the @attribute to contain the given @attr_value, if
-// possible.
 func (i fileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28348,8 +24825,6 @@ func (i fileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	C.g_file_info_set_attribute_uint32(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeUint64 sets the @attribute to contain the given @attr_value, if
-// possible.
 func (i fileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28363,8 +24838,6 @@ func (i fileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 	C.g_file_info_set_attribute_uint64(_arg0, _arg1, _arg2)
 }
 
-// SetContentType sets the content type attribute for a given Info. See
-// G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.
 func (i fileInfo) SetContentType(contentType string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28376,8 +24849,6 @@ func (i fileInfo) SetContentType(contentType string) {
 	C.g_file_info_set_content_type(_arg0, _arg1)
 }
 
-// SetDisplayName sets the display name for the current Info. See
-// G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME.
 func (i fileInfo) SetDisplayName(displayName string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28389,8 +24860,6 @@ func (i fileInfo) SetDisplayName(displayName string) {
 	C.g_file_info_set_display_name(_arg0, _arg1)
 }
 
-// SetEditName sets the edit name for the current file. See
-// G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME.
 func (i fileInfo) SetEditName(editName string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28402,8 +24871,6 @@ func (i fileInfo) SetEditName(editName string) {
 	C.g_file_info_set_edit_name(_arg0, _arg1)
 }
 
-// SetFileType sets the file type in a Info to @type. See
-// G_FILE_ATTRIBUTE_STANDARD_TYPE.
 func (i fileInfo) SetFileType(typ FileType) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.GFileType  // out
@@ -28414,7 +24881,6 @@ func (i fileInfo) SetFileType(typ FileType) {
 	C.g_file_info_set_file_type(_arg0, _arg1)
 }
 
-// SetIcon sets the icon for a given Info. See G_FILE_ATTRIBUTE_STANDARD_ICON.
 func (i fileInfo) SetIcon(icon Icon) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
@@ -28425,8 +24891,6 @@ func (i fileInfo) SetIcon(icon Icon) {
 	C.g_file_info_set_icon(_arg0, _arg1)
 }
 
-// SetIsHidden sets the "is_hidden" attribute in a Info according to @is_hidden.
-// See G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
 func (i fileInfo) SetIsHidden(isHidden bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gboolean   // out
@@ -28439,8 +24903,6 @@ func (i fileInfo) SetIsHidden(isHidden bool) {
 	C.g_file_info_set_is_hidden(_arg0, _arg1)
 }
 
-// SetIsSymlink sets the "is_symlink" attribute in a Info according to
-// @is_symlink. See G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
 func (i fileInfo) SetIsSymlink(isSymlink bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gboolean   // out
@@ -28453,9 +24915,6 @@ func (i fileInfo) SetIsSymlink(isSymlink bool) {
 	C.g_file_info_set_is_symlink(_arg0, _arg1)
 }
 
-// SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
-// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the given
-// time value.
 func (i fileInfo) SetModificationTime(mtime *glib.TimeVal) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GTimeVal  // out
@@ -28466,8 +24925,6 @@ func (i fileInfo) SetModificationTime(mtime *glib.TimeVal) {
 	C.g_file_info_set_modification_time(_arg0, _arg1)
 }
 
-// SetName sets the name attribute for the current Info. See
-// G_FILE_ATTRIBUTE_STANDARD_NAME.
 func (i fileInfo) SetName(name string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28479,8 +24936,6 @@ func (i fileInfo) SetName(name string) {
 	C.g_file_info_set_name(_arg0, _arg1)
 }
 
-// SetSize sets the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file info to
-// the given size.
 func (i fileInfo) SetSize(size int64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.goffset    // out
@@ -28491,8 +24946,6 @@ func (i fileInfo) SetSize(size int64) {
 	C.g_file_info_set_size(_arg0, _arg1)
 }
 
-// SetSortOrder sets the sort order attribute in the file info structure. See
-// G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
 func (i fileInfo) SetSortOrder(sortOrder int32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gint32     // out
@@ -28503,8 +24956,6 @@ func (i fileInfo) SetSortOrder(sortOrder int32) {
 	C.g_file_info_set_sort_order(_arg0, _arg1)
 }
 
-// SetSymbolicIcon sets the symbolic icon for a given Info. See
-// G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
 func (i fileInfo) SetSymbolicIcon(icon Icon) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
@@ -28515,8 +24966,6 @@ func (i fileInfo) SetSymbolicIcon(icon Icon) {
 	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
 }
 
-// SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET attribute
-// in the file info to the given symlink target.
 func (i fileInfo) SetSymlinkTarget(symlinkTarget string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -28528,8 +24977,6 @@ func (i fileInfo) SetSymlinkTarget(symlinkTarget string) {
 	C.g_file_info_set_symlink_target(_arg0, _arg1)
 }
 
-// UnsetAttributeMask unsets a mask set by g_file_info_set_attribute_mask(), if
-// one is set.
 func (i fileInfo) UnsetAttributeMask() {
 	var _arg0 *C.GFileInfo // out
 
@@ -28585,11 +25032,6 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 	return WrapFileInputStream(obj), nil
 }
 
-// QueryInfo queries a file input stream the given @attributes. This function
-// blocks while querying the stream. For the asynchronous (non-blocking) version
-// of this function, see g_file_input_stream_query_info_async(). While the
-// stream is blocked, the stream will set the pending flag internally, and any
-// other operations on the stream will fail with G_IO_ERROR_PENDING.
 func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.char             // out
@@ -28613,7 +25055,6 @@ func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (
 	return _fileInfo, _goerr
 }
 
-// QueryInfoFinish finishes an asynchronous info query operation.
 func (s fileInputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -28685,7 +25126,6 @@ func marshalFileMonitor(p uintptr) (interface{}, error) {
 	return WrapFileMonitor(obj), nil
 }
 
-// Cancel cancels a file monitor.
 func (m fileMonitor) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
@@ -28703,12 +25143,6 @@ func (m fileMonitor) Cancel() bool {
 	return _ok
 }
 
-// EmitEvent emits the Monitor::changed signal if a change has taken place.
-// Should be called from file monitor implementations only.
-//
-// Implementations are responsible to call this method from the [thread-default
-// main context][g-main-context-push-thread-default] of the thread that the
-// monitor was created in.
 func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
 	var _arg1 *C.GFile            // out
@@ -28723,7 +25157,6 @@ func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitor
 	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
 }
 
-// IsCancelled returns whether the monitor is canceled.
 func (m fileMonitor) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
@@ -28741,8 +25174,6 @@ func (m fileMonitor) IsCancelled() bool {
 	return _ok
 }
 
-// SetRateLimit sets the rate limit to which the @monitor will report
-// consecutive change events to the same file.
 func (m fileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
@@ -28818,9 +25249,6 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 	return WrapFileOutputStream(obj), nil
 }
 
-// Etag gets the entity tag for the file when it has been written. This must be
-// called after the stream has been written and closed, as the etag can change
-// while writing.
 func (s fileOutputStream) Etag() string {
 	var _arg0 *C.GFileOutputStream // out
 	var _cret *C.char              // in
@@ -28837,21 +25265,6 @@ func (s fileOutputStream) Etag() string {
 	return _utf8
 }
 
-// QueryInfo queries a file output stream for the given @attributes. This
-// function blocks while querying the stream. For the asynchronous version of
-// this function, see g_file_output_stream_query_info_async(). While the stream
-// is blocked, the stream will set the pending flag internally, and any other
-// operations on the stream will fail with G_IO_ERROR_PENDING.
-//
-// Can fail if the stream was already closed (with @error being set to
-// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being set
-// to G_IO_ERROR_PENDING), or if querying info is not supported for the stream's
-// interface (with @error being set to G_IO_ERROR_NOT_SUPPORTED). In all cases
-// of failure, nil will be returned.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be set, and nil will be returned.
 func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.char              // out
@@ -28875,8 +25288,6 @@ func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) 
 	return _fileInfo, _goerr
 }
 
-// QueryInfoFinish finalizes the asynchronous query started by
-// g_file_output_stream_query_info_async().
 func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.GAsyncResult      // out
@@ -28946,7 +25357,6 @@ func NewFilenameCompleter() FilenameCompleter {
 	return _filenameCompleter
 }
 
-// CompletionSuffix obtains a completion for @initial_text from @completer.
 func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
@@ -28966,7 +25376,6 @@ func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	return _utf8
 }
 
-// Completions gets an array of completion strings for a given initial text.
 func (c filenameCompleter) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
@@ -28998,8 +25407,6 @@ func (c filenameCompleter) Completions(initialText string) []string {
 	return _utf8s
 }
 
-// SetDirsOnly: if @dirs_only is true, @completer will only complete directory
-// names, and not file names.
 func (c filenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out
@@ -29050,7 +25457,6 @@ func marshalFilterInputStream(p uintptr) (interface{}, error) {
 	return WrapFilterInputStream(obj), nil
 }
 
-// BaseStream gets the base stream for the filter stream.
 func (s filterInputStream) BaseStream() InputStream {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret *C.GInputStream       // in
@@ -29066,8 +25472,6 @@ func (s filterInputStream) BaseStream() InputStream {
 	return _inputStream
 }
 
-// CloseBaseStream returns whether the base stream will be closed when @stream
-// is closed.
 func (s filterInputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret C.gboolean            // in
@@ -29085,8 +25489,6 @@ func (s filterInputStream) CloseBaseStream() bool {
 	return _ok
 }
 
-// SetCloseBaseStream sets whether the base stream will be closed when @stream
-// is closed.
 func (s filterInputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterInputStream // out
 	var _arg1 C.gboolean            // out
@@ -29137,7 +25539,6 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 	return WrapFilterOutputStream(obj), nil
 }
 
-// BaseStream gets the base stream for the filter stream.
 func (s filterOutputStream) BaseStream() OutputStream {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret *C.GOutputStream       // in
@@ -29153,8 +25554,6 @@ func (s filterOutputStream) BaseStream() OutputStream {
 	return _outputStream
 }
 
-// CloseBaseStream returns whether the base stream will be closed when @stream
-// is closed.
 func (s filterOutputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret C.gboolean             // in
@@ -29172,8 +25571,6 @@ func (s filterOutputStream) CloseBaseStream() bool {
 	return _ok
 }
 
-// SetCloseBaseStream sets whether the base stream will be closed when @stream
-// is closed.
 func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterOutputStream // out
 	var _arg1 C.gboolean             // out
@@ -29307,7 +25704,6 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 	return WrapIOStream(obj), nil
 }
 
-// ClearPending clears the pending flag on @stream.
 func (s ioStream) ClearPending() {
 	var _arg0 *C.GIOStream // out
 
@@ -29316,38 +25712,6 @@ func (s ioStream) ClearPending() {
 	C.g_io_stream_clear_pending(_arg0)
 }
 
-// Close closes the stream, releasing resources related to it. This will also
-// close the individual input and output streams, if they are not already
-// closed.
-//
-// Once the stream is closed, all other operations will return
-// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an error.
-//
-// Closing a stream will automatically flush any outstanding buffers in the
-// stream.
-//
-// Streams will be automatically closed when the last reference is dropped, but
-// you might want to call this function to make sure resources are released as
-// early as possible.
-//
-// Some streams might keep the backing store of the stream (e.g. a file
-// descriptor) open after the stream is closed. See the documentation for the
-// individual stream for details.
-//
-// On failure the first error that happened will be reported, but the close
-// operation will finish as much as possible. A stream that failed to close will
-// still return G_IO_ERROR_CLOSED for all operations. Still, it is important to
-// check and report the error to the user, otherwise there might be a loss of
-// data as all data might not be written.
-//
-// If @cancellable is not NULL, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation was
-// cancelled, the error G_IO_ERROR_CANCELLED will be returned. Cancelling a
-// close will still leave the stream closed, but some streams can use a faster
-// close that doesn't block to e.g. check errors.
-//
-// The default implementation of this method just calls close on the individual
-// input/output streams.
 func (s ioStream) Close(cancellable Cancellable) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GCancellable // out
@@ -29365,7 +25729,6 @@ func (s ioStream) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-// CloseFinish closes a stream.
 func (s ioStream) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
@@ -29383,7 +25746,6 @@ func (s ioStream) CloseFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// InputStream gets the input stream for this object. This is used for reading.
 func (s ioStream) InputStream() InputStream {
 	var _arg0 *C.GIOStream    // out
 	var _cret *C.GInputStream // in
@@ -29399,8 +25761,6 @@ func (s ioStream) InputStream() InputStream {
 	return _inputStream
 }
 
-// OutputStream gets the output stream for this object. This is used for
-// writing.
 func (s ioStream) OutputStream() OutputStream {
 	var _arg0 *C.GIOStream     // out
 	var _cret *C.GOutputStream // in
@@ -29416,7 +25776,6 @@ func (s ioStream) OutputStream() OutputStream {
 	return _outputStream
 }
 
-// HasPending checks if a stream has pending actions.
 func (s ioStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
@@ -29434,7 +25793,6 @@ func (s ioStream) HasPending() bool {
 	return _ok
 }
 
-// IsClosed checks if a stream is closed.
 func (s ioStream) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
@@ -29452,8 +25810,6 @@ func (s ioStream) IsClosed() bool {
 	return _ok
 }
 
-// SetPending sets @stream to have actions pending. If the pending flag is
-// already set or @stream is closed, it will return false and set @error.
 func (s ioStream) SetPending() error {
 	var _arg0 *C.GIOStream // out
 	var _cerr *C.GError    // in
@@ -29589,7 +25945,6 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	return _inetAddress
 }
 
-// Equal checks if two Address instances are equal, e.g. the same address.
 func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	var _arg0 *C.GInetAddress // out
 	var _arg1 *C.GInetAddress // out
@@ -29609,7 +25964,6 @@ func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	return _ok
 }
 
-// Family gets @address's family
 func (a inetAddress) Family() SocketFamily {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.GSocketFamily // in
@@ -29625,7 +25979,6 @@ func (a inetAddress) Family() SocketFamily {
 	return _socketFamily
 }
 
-// IsAny tests whether @address is the "any" address for its family.
 func (a inetAddress) IsAny() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29643,8 +25996,6 @@ func (a inetAddress) IsAny() bool {
 	return _ok
 }
 
-// IsLinkLocal tests whether @address is a link-local address (that is, if it
-// identifies a host on a local network that is not connected to the Internet).
 func (a inetAddress) IsLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29662,7 +26013,6 @@ func (a inetAddress) IsLinkLocal() bool {
 	return _ok
 }
 
-// IsLoopback tests whether @address is the loopback address for its family.
 func (a inetAddress) IsLoopback() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29680,7 +26030,6 @@ func (a inetAddress) IsLoopback() bool {
 	return _ok
 }
 
-// IsMcGlobal tests whether @address is a global multicast address.
 func (a inetAddress) IsMcGlobal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29698,7 +26047,6 @@ func (a inetAddress) IsMcGlobal() bool {
 	return _ok
 }
 
-// IsMcLinkLocal tests whether @address is a link-local multicast address.
 func (a inetAddress) IsMcLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29716,7 +26064,6 @@ func (a inetAddress) IsMcLinkLocal() bool {
 	return _ok
 }
 
-// IsMcNodeLocal tests whether @address is a node-local multicast address.
 func (a inetAddress) IsMcNodeLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29734,8 +26081,6 @@ func (a inetAddress) IsMcNodeLocal() bool {
 	return _ok
 }
 
-// IsMcOrgLocal tests whether @address is an organization-local multicast
-// address.
 func (a inetAddress) IsMcOrgLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29753,7 +26098,6 @@ func (a inetAddress) IsMcOrgLocal() bool {
 	return _ok
 }
 
-// IsMcSiteLocal tests whether @address is a site-local multicast address.
 func (a inetAddress) IsMcSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29771,7 +26115,6 @@ func (a inetAddress) IsMcSiteLocal() bool {
 	return _ok
 }
 
-// IsMulticast tests whether @address is a multicast address.
 func (a inetAddress) IsMulticast() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29789,10 +26132,6 @@ func (a inetAddress) IsMulticast() bool {
 	return _ok
 }
 
-// IsSiteLocal tests whether @address is a site-local address such as 10.0.0.1
-// (that is, the address identifies a host on a local network that can not be
-// reached directly from the Internet, but which may have outgoing Internet
-// connectivity via a NAT or firewall).
 func (a inetAddress) IsSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -29810,8 +26149,6 @@ func (a inetAddress) IsSiteLocal() bool {
 	return _ok
 }
 
-// NativeSize gets the size of the native raw binary address for @address. This
-// is the size of the data that you get from g_inet_address_to_bytes().
 func (a inetAddress) NativeSize() uint {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gsize         // in
@@ -29827,7 +26164,6 @@ func (a inetAddress) NativeSize() uint {
 	return _gsize
 }
 
-// String converts @address to string form.
 func (a inetAddress) String() string {
 	var _arg0 *C.GInetAddress // out
 	var _cret *C.gchar        // in
@@ -29934,7 +26270,6 @@ func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	return _inetAddressMask, _goerr
 }
 
-// Equal tests if @mask and @mask2 are the same mask.
 func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddressMask // out
@@ -29954,7 +26289,6 @@ func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 	return _ok
 }
 
-// Address gets @mask's base address
 func (m inetAddressMask) Address() InetAddress {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.GInetAddress     // in
@@ -29970,7 +26304,6 @@ func (m inetAddressMask) Address() InetAddress {
 	return _inetAddress
 }
 
-// Family gets the Family of @mask's address
 func (m inetAddressMask) Family() SocketFamily {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.GSocketFamily     // in
@@ -29986,7 +26319,6 @@ func (m inetAddressMask) Family() SocketFamily {
 	return _socketFamily
 }
 
-// Length gets @mask's length
 func (m inetAddressMask) Length() uint {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.guint             // in
@@ -30002,7 +26334,6 @@ func (m inetAddressMask) Length() uint {
 	return _guint
 }
 
-// Matches tests if @address falls within the range described by @mask.
 func (m inetAddressMask) Matches(address InetAddress) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddress     // out
@@ -30022,7 +26353,6 @@ func (m inetAddressMask) Matches(address InetAddress) bool {
 	return _ok
 }
 
-// String converts @mask back to its corresponding string form.
 func (m inetAddressMask) String() string {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.gchar            // in
@@ -30121,7 +26451,6 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 	return _inetSocketAddress
 }
 
-// Address gets @address's Address.
 func (a inetSocketAddress) Address() InetAddress {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret *C.GInetAddress       // in
@@ -30137,8 +26466,6 @@ func (a inetSocketAddress) Address() InetAddress {
 	return _inetAddress
 }
 
-// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an IPv6
-// address.
 func (a inetSocketAddress) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
@@ -30154,7 +26481,6 @@ func (a inetSocketAddress) Flowinfo() uint32 {
 	return _guint32
 }
 
-// Port gets @address's port.
 func (a inetSocketAddress) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint16             // in
@@ -30170,8 +26496,6 @@ func (a inetSocketAddress) Port() uint16 {
 	return _guint16
 }
 
-// ScopeID gets the `sin6_scope_id` field from @address, which must be an IPv6
-// address.
 func (a inetSocketAddress) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
@@ -30335,7 +26659,6 @@ func marshalInputStream(p uintptr) (interface{}, error) {
 	return WrapInputStream(obj), nil
 }
 
-// ClearPending clears the pending flag on @stream.
 func (s inputStream) ClearPending() {
 	var _arg0 *C.GInputStream // out
 
@@ -30344,29 +26667,6 @@ func (s inputStream) ClearPending() {
 	C.g_input_stream_clear_pending(_arg0)
 }
 
-// Close closes the stream, releasing resources related to it.
-//
-// Once the stream is closed, all other operations will return
-// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an error.
-//
-// Streams will be automatically closed when the last reference is dropped, but
-// you might want to call this function to make sure resources are released as
-// early as possible.
-//
-// Some streams might keep the backing store of the stream (e.g. a file
-// descriptor) open after the stream is closed. See the documentation for the
-// individual stream for details.
-//
-// On failure the first error that happened will be reported, but the close
-// operation will finish as much as possible. A stream that failed to close will
-// still return G_IO_ERROR_CLOSED for all operations. Still, it is important to
-// check and report the error to the user.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. Cancelling a close will
-// still leave the stream closed, but some streams can use a faster close that
-// doesn't block to e.g. check errors.
 func (s inputStream) Close(cancellable Cancellable) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GCancellable // out
@@ -30384,8 +26684,6 @@ func (s inputStream) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-// CloseFinish finishes closing a stream asynchronously, started from
-// g_input_stream_close_async().
 func (s inputStream) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -30403,7 +26701,6 @@ func (s inputStream) CloseFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// HasPending checks if an input stream has pending actions.
 func (s inputStream) HasPending() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
@@ -30421,7 +26718,6 @@ func (s inputStream) HasPending() bool {
 	return _ok
 }
 
-// IsClosed checks if an input stream is closed.
 func (s inputStream) IsClosed() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
@@ -30439,27 +26735,6 @@ func (s inputStream) IsClosed() bool {
 	return _ok
 }
 
-// Read tries to read @count bytes from the stream into the buffer starting at
-// @buffer. Will block during this read.
-//
-// If count is zero returns zero and does nothing. A value of @count larger than
-// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
-//
-// On success, the number of bytes read into the buffer is returned. It is not
-// an error if this is not the same as the requested size, as it can happen e.g.
-// near the end of a file. Zero is returned on end of file (or if @count is
-// zero), but never otherwise.
-//
-// The returned @buffer is not a nul-terminated string, it can contain nul bytes
-// at any position, and this function doesn't nul-terminate the @buffer.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
-// partially finished when the operation was cancelled the partial result will
-// be returned, without an error.
-//
-// On error -1 is returned and @error is set accordingly.
 func (s inputStream) Read(cancellable Cancellable) ([]byte, int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 C.void
@@ -30490,25 +26765,6 @@ func (s inputStream) Read(cancellable Cancellable) ([]byte, int, error) {
 	return _buffer, _gssize, _goerr
 }
 
-// ReadAll tries to read @count bytes from the stream into the buffer starting
-// at @buffer. Will block during this read.
-//
-// This function is similar to g_input_stream_read(), except it tries to read as
-// many bytes as requested, only stopping on an error or end of stream.
-//
-// On a successful read of @count bytes, or if we reached the end of the stream,
-// true is returned, and @bytes_read is set to the number of bytes read into
-// @buffer.
-//
-// If there is an error during the operation false is returned and @error is set
-// to indicate the error status.
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then @bytes_read
-// will be set to the number of bytes that were successfully read before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
-// g_input_stream_read().
 func (s inputStream) ReadAll(cancellable Cancellable) ([]byte, uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 C.void
@@ -30539,15 +26795,6 @@ func (s inputStream) ReadAll(cancellable Cancellable) ([]byte, uint, error) {
 	return _buffer, _bytesRead, _goerr
 }
 
-// ReadAllFinish finishes an asynchronous stream read operation started with
-// g_input_stream_read_all_async().
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then @bytes_read
-// will be set to the number of bytes that were successfully read before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
-// g_input_stream_read_async().
 func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -30568,7 +26815,6 @@ func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
 	return _bytesRead, _goerr
 }
 
-// ReadFinish finishes an asynchronous stream read operation.
 func (s inputStream) ReadFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -30589,8 +26835,6 @@ func (s inputStream) ReadFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-// SetPending sets @stream to have actions pending. If the pending flag is
-// already set or @stream is closed, it will return false and set @error.
 func (s inputStream) SetPending() error {
 	var _arg0 *C.GInputStream // out
 	var _cerr *C.GError       // in
@@ -30606,21 +26850,6 @@ func (s inputStream) SetPending() error {
 	return _goerr
 }
 
-// Skip tries to skip @count bytes from the stream. Will block during the
-// operation.
-//
-// This is identical to g_input_stream_read(), from a behaviour standpoint, but
-// the bytes that are skipped are not returned to the user. Some streams have an
-// implementation that is more efficient than reading the data.
-//
-// This function is optional for inherited classes, as the default
-// implementation emulates it using read.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
-// partially finished when the operation was cancelled the partial result will
-// be returned, without an error.
 func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 C.gsize         // out
@@ -30643,7 +26872,6 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
 	return _gssize, _goerr
 }
 
-// SkipFinish finishes a stream skip operation.
 func (s inputStream) SkipFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -30760,12 +26988,6 @@ func NewListStore(itemType externglib.Type) ListStore {
 	return _listStore
 }
 
-// Append appends @item to @store. @item must be of type Store:item-type.
-//
-// This function takes a ref on @item.
-//
-// Use g_list_store_splice() to append multiple items at the same time
-// efficiently.
 func (s listStore) Append(item gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
@@ -30776,12 +26998,6 @@ func (s listStore) Append(item gextras.Objector) {
 	C.g_list_store_append(_arg0, _arg1)
 }
 
-// Find looks up the given @item in the list store by looping over the items
-// until the first occurrence of @item. If @item was not found, then @position
-// will not be set, and this method will return false.
-//
-// If you need to compare the two items with a custom comparison function, use
-// g_list_store_find_with_equal_func() with a custom Func instead.
 func (s listStore) Find(item gextras.Objector) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
@@ -30804,14 +27020,6 @@ func (s listStore) Find(item gextras.Objector) (uint, bool) {
 	return _position, _ok
 }
 
-// Insert inserts @item into @store at @position. @item must be of type
-// Store:item-type or derived from it. @position must be smaller than the length
-// of the list, or equal to it to append.
-//
-// This function takes a ref on @item.
-//
-// Use g_list_store_splice() to insert multiple items at the same time
-// efficiently.
 func (s listStore) Insert(position uint, item gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
@@ -30824,11 +27032,6 @@ func (s listStore) Insert(position uint, item gextras.Objector) {
 	C.g_list_store_insert(_arg0, _arg1, _arg2)
 }
 
-// Remove removes the item from @store that is at @position. @position must be
-// smaller than the current length of the list.
-//
-// Use g_list_store_splice() to remove multiple items at the same time
-// efficiently.
 func (s listStore) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
@@ -30839,7 +27042,6 @@ func (s listStore) Remove(position uint) {
 	C.g_list_store_remove(_arg0, _arg1)
 }
 
-// RemoveAll removes all items from @store.
 func (s listStore) RemoveAll() {
 	var _arg0 *C.GListStore // out
 
@@ -30848,19 +27050,6 @@ func (s listStore) RemoveAll() {
 	C.g_list_store_remove_all(_arg0)
 }
 
-// Splice changes @store by removing @n_removals items and adding @n_additions
-// items to it. @additions must contain @n_additions items of type
-// Store:item-type. nil is not permitted.
-//
-// This function is more efficient than g_list_store_insert() and
-// g_list_store_remove(), because it only emits Model::items-changed once for
-// the change.
-//
-// This function takes a ref on each item in @additions.
-//
-// The parameters @position and @n_removals must be correct (ie: @position +
-// @n_removals must be less than or equal to the length of the list at the time
-// this function is called).
 func (s listStore) Splice(position uint, nRemovals uint, additions []gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
@@ -31001,8 +27190,6 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 	return _memoryOutputStream
 }
 
-// DataSize returns the number of bytes from the start up to including the last
-// byte written in the stream that has not been truncated away.
 func (o memoryOutputStream) DataSize() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
@@ -31018,20 +27205,6 @@ func (o memoryOutputStream) DataSize() uint {
 	return _gsize
 }
 
-// Size gets the size of the currently allocated data area (available from
-// g_memory_output_stream_get_data()).
-//
-// You probably don't want to use this function on resizable streams. See
-// g_memory_output_stream_get_data_size() instead. For resizable streams the
-// size returned by this function is an implementation detail and may be change
-// at any time in response to operations on the stream.
-//
-// If the stream is fixed-sized (ie: no realloc was passed to
-// g_memory_output_stream_new()) then this is the maximum size of the stream and
-// further writes will return G_IO_ERROR_NO_SPACE.
-//
-// In any case, if you want the number of bytes currently written to the stream,
-// use g_memory_output_stream_get_data_size().
 func (o memoryOutputStream) Size() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
@@ -31177,9 +27350,6 @@ func NewMenu() Menu {
 	return _menu
 }
 
-// Append: convenience function for appending a normal menu item to the end of
-// @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
-// alternative.
 func (m menu) Append(label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
@@ -31194,9 +27364,6 @@ func (m menu) Append(label string, detailedAction string) {
 	C.g_menu_append(_arg0, _arg1, _arg2)
 }
 
-// AppendItem appends @item to the end of @menu.
-//
-// See g_menu_insert_item() for more information.
 func (m menu) AppendItem(item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
@@ -31207,9 +27374,6 @@ func (m menu) AppendItem(item MenuItem) {
 	C.g_menu_append_item(_arg0, _arg1)
 }
 
-// AppendSection: convenience function for appending a section menu item to the
-// end of @menu. Combine g_menu_item_new_section() and g_menu_insert_item() for
-// a more flexible alternative.
 func (m menu) AppendSection(label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -31223,9 +27387,6 @@ func (m menu) AppendSection(label string, section MenuModel) {
 	C.g_menu_append_section(_arg0, _arg1, _arg2)
 }
 
-// AppendSubmenu: convenience function for appending a submenu menu item to the
-// end of @menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for
-// a more flexible alternative.
 func (m menu) AppendSubmenu(label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -31239,13 +27400,6 @@ func (m menu) AppendSubmenu(label string, submenu MenuModel) {
 	C.g_menu_append_submenu(_arg0, _arg1, _arg2)
 }
 
-// Freeze marks @menu as frozen.
-//
-// After the menu is frozen, it is an error to attempt to make any changes to
-// it. In effect this means that the #GMenu API must no longer be used.
-//
-// This function causes g_menu_model_is_mutable() to begin returning false,
-// which has some positive performance implications.
 func (m menu) Freeze() {
 	var _arg0 *C.GMenu // out
 
@@ -31254,9 +27408,6 @@ func (m menu) Freeze() {
 	C.g_menu_freeze(_arg0)
 }
 
-// Insert: convenience function for inserting a normal menu item into @menu.
-// Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
-// alternative.
 func (m menu) Insert(position int, label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
@@ -31273,22 +27424,6 @@ func (m menu) Insert(position int, label string, detailedAction string) {
 	C.g_menu_insert(_arg0, _arg1, _arg2, _arg3)
 }
 
-// InsertItem inserts @item into @menu.
-//
-// The "insertion" is actually done by copying all of the attribute and link
-// values of @item and using them to form a new item within @menu. As such,
-// @item itself is not really inserted, but rather, a menu item that is exactly
-// the same as the one presently described by @item.
-//
-// This means that @item is essentially useless after the insertion occurs. Any
-// changes you make to it are ignored unless it is inserted again (at which
-// point its updated values will be copied).
-//
-// You should probably just free @item once you're done.
-//
-// There are many convenience functions to take care of common cases. See
-// g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as well
-// as "prepend" and "append" variants of each of these functions.
 func (m menu) InsertItem(position int, item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 C.gint       // out
@@ -31301,9 +27436,6 @@ func (m menu) InsertItem(position int, item MenuItem) {
 	C.g_menu_insert_item(_arg0, _arg1, _arg2)
 }
 
-// InsertSection: convenience function for inserting a section menu item into
-// @menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a more
-// flexible alternative.
 func (m menu) InsertSection(position int, label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
@@ -31319,9 +27451,6 @@ func (m menu) InsertSection(position int, label string, section MenuModel) {
 	C.g_menu_insert_section(_arg0, _arg1, _arg2, _arg3)
 }
 
-// InsertSubmenu: convenience function for inserting a submenu menu item into
-// @menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
-// flexible alternative.
 func (m menu) InsertSubmenu(position int, label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
@@ -31337,9 +27466,6 @@ func (m menu) InsertSubmenu(position int, label string, submenu MenuModel) {
 	C.g_menu_insert_submenu(_arg0, _arg1, _arg2, _arg3)
 }
 
-// Prepend: convenience function for prepending a normal menu item to the start
-// of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
-// flexible alternative.
 func (m menu) Prepend(label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
@@ -31354,9 +27480,6 @@ func (m menu) Prepend(label string, detailedAction string) {
 	C.g_menu_prepend(_arg0, _arg1, _arg2)
 }
 
-// PrependItem prepends @item to the start of @menu.
-//
-// See g_menu_insert_item() for more information.
 func (m menu) PrependItem(item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
@@ -31367,9 +27490,6 @@ func (m menu) PrependItem(item MenuItem) {
 	C.g_menu_prepend_item(_arg0, _arg1)
 }
 
-// PrependSection: convenience function for prepending a section menu item to
-// the start of @menu. Combine g_menu_item_new_section() and
-// g_menu_insert_item() for a more flexible alternative.
 func (m menu) PrependSection(label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -31383,9 +27503,6 @@ func (m menu) PrependSection(label string, section MenuModel) {
 	C.g_menu_prepend_section(_arg0, _arg1, _arg2)
 }
 
-// PrependSubmenu: convenience function for prepending a submenu menu item to
-// the start of @menu. Combine g_menu_item_new_submenu() and
-// g_menu_insert_item() for a more flexible alternative.
 func (m menu) PrependSubmenu(label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -31399,16 +27516,6 @@ func (m menu) PrependSubmenu(label string, submenu MenuModel) {
 	C.g_menu_prepend_submenu(_arg0, _arg1, _arg2)
 }
 
-// Remove removes an item from the menu.
-//
-// @position gives the index of the item to remove.
-//
-// It is an error if position is not in range the range from 0 to one less than
-// the number of items in the menu.
-//
-// It is not possible to remove items by identity since items are added to the
-// menu simply by copying their links and attributes (ie: identity of the item
-// itself is not preserved).
 func (m menu) Remove(position int) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
@@ -31419,7 +27526,6 @@ func (m menu) Remove(position int) {
 	C.g_menu_remove(_arg0, _arg1)
 }
 
-// RemoveAll removes all items in the menu.
 func (m menu) RemoveAll() {
 	var _arg0 *C.GMenu // out
 
@@ -31489,10 +27595,6 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 	return WrapMenuAttributeIter(obj), nil
 }
 
-// Name gets the name of the attribute at the current iterator position, as a
-// string.
-//
-// The iterator is not advanced.
 func (i menuAttributeIter) Name() string {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.gchar              // in
@@ -31508,20 +27610,6 @@ func (i menuAttributeIter) Name() string {
 	return _utf8
 }
 
-// GetNext: this function combines g_menu_attribute_iter_next() with
-// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
-//
-// First the iterator is advanced to the next (possibly first) attribute. If
-// that fails, then false is returned and there are no other effects.
-//
-// If successful, @name and @value are set to the name and value of the
-// attribute that has just been advanced to. At this point,
-// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value() will
-// return the same values again.
-//
-// The value returned in @name remains valid for as long as the iterator remains
-// at the current position. The value returned in @value must be unreffed using
-// g_variant_unref() when it is no longer in use.
 func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _arg1 *C.gchar              // in
@@ -31545,9 +27633,6 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	return _outName, _value, _ok
 }
 
-// Value gets the value of the attribute at the current iterator position.
-//
-// The iterator is not advanced.
 func (i menuAttributeIter) Value() *glib.Variant {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.GVariant           // in
@@ -31566,12 +27651,6 @@ func (i menuAttributeIter) Value() *glib.Variant {
 	return _variant
 }
 
-// Next attempts to advance the iterator to the next (possibly first) attribute.
-//
-// true is returned on success, or false if there are no more attributes.
-//
-// You must call this function when you first acquire the iterator to advance it
-// to the first attribute (and determine if the first attribute exists at all).
 func (i menuAttributeIter) Next() bool {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret C.gboolean            // in
@@ -31883,10 +27962,6 @@ func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 	return _menuItem
 }
 
-// AttributeValue queries the named @attribute on @menu_item.
-//
-// If @expected_type is specified and the attribute does not have this type, nil
-// is returned. nil is also returned if the attribute simply does not exist.
 func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuItem    // out
 	var _arg1 *C.gchar        // out
@@ -31910,7 +27985,6 @@ func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantTyp
 	return _variant
 }
 
-// Link queries the named @link on @menu_item.
 func (m menuItem) Link(link string) MenuModel {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
@@ -31929,41 +28003,6 @@ func (m menuItem) Link(link string) MenuModel {
 	return _menuModel
 }
 
-// SetActionAndTargetValue sets or unsets the "action" and "target" attributes
-// of @menu_item.
-//
-// If @action is nil then both the "action" and "target" attributes are unset
-// (and @target_value is ignored).
-//
-// If @action is non-nil then the "action" attribute is set. The "target"
-// attribute is then set to the value of @target_value if it is non-nil or unset
-// otherwise.
-//
-// Normal menu items (ie: not submenu, section or other custom item types) are
-// expected to have the "action" attribute set to identify the action that they
-// are associated with. The state type of the action help to determine the
-// disposition of the menu item. See #GAction and Group for an overview of
-// actions.
-//
-// In general, clicking on the menu item will result in activation of the named
-// action with the "target" attribute given as the parameter to the action
-// invocation. If the "target" attribute is not set then the action is invoked
-// with no parameter.
-//
-// If the action has no state then the menu item is usually drawn as a plain
-// menu item (ie: with no additional decoration).
-//
-// If the action has a boolean state then the menu item is usually drawn as a
-// toggle menu item (ie: with a checkmark or equivalent indication). The item
-// should be marked as 'toggled' or 'checked' when the boolean state is true.
-//
-// If the action has a string state then the menu item is usually drawn as a
-// radio menu item (ie: with a radio bullet or equivalent indication). The item
-// should be marked as 'selected' when the string state is equal to the value of
-// the @target property.
-//
-// See g_menu_item_set_action_and_target() or g_menu_item_set_detailed_action()
-// for two equivalent calls that are probably more convenient for most uses.
 func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -31977,23 +28016,6 @@ func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Varia
 	C.g_menu_item_set_action_and_target_value(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeValue sets or unsets an attribute on @menu_item.
-//
-// The attribute to set or unset is specified by @attribute. This can be one of
-// the standard attribute names G_MENU_ATTRIBUTE_LABEL, G_MENU_ATTRIBUTE_ACTION,
-// G_MENU_ATTRIBUTE_TARGET, or a custom attribute name. Attribute names are
-// restricted to lowercase characters, numbers and '-'. Furthermore, the names
-// must begin with a lowercase character, must not end with a '-', and must not
-// contain consecutive dashes.
-//
-// must consist only of lowercase ASCII characters, digits and '-'.
-//
-// If @value is non-nil then it is used as the new value for the attribute. If
-// @value is nil then the attribute is unset. If the @value #GVariant is
-// floating, it is consumed.
-//
-// See also g_menu_item_set_attribute() for a more convenient way to do the
-// same.
 func (m menuItem) SetAttributeValue(attribute string, value *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -32007,18 +28029,6 @@ func (m menuItem) SetAttributeValue(attribute string, value *glib.Variant) {
 	C.g_menu_item_set_attribute_value(_arg0, _arg1, _arg2)
 }
 
-// SetDetailedAction sets the "action" and possibly the "target" attribute of
-// @menu_item.
-//
-// The format of @detailed_action is the same format parsed by
-// g_action_parse_detailed_name().
-//
-// See g_menu_item_set_action_and_target() or
-// g_menu_item_set_action_and_target_value() for more flexible (but slightly
-// less convenient) alternatives.
-//
-// See also g_menu_item_set_action_and_target_value() for a description of the
-// semantics of the action and target attributes.
 func (m menuItem) SetDetailedAction(detailedAction string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -32030,16 +28040,6 @@ func (m menuItem) SetDetailedAction(detailedAction string) {
 	C.g_menu_item_set_detailed_action(_arg0, _arg1)
 }
 
-// SetIcon sets (or unsets) the icon on @menu_item.
-//
-// This call is the same as calling g_icon_serialize() and using the result as
-// the value to g_menu_item_set_attribute_value() for G_MENU_ATTRIBUTE_ICON.
-//
-// This API is only intended for use with "noun" menu items; things like
-// bookmarks or applications in an "Open With" menu. Don't use it on menu items
-// corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
-//
-// If @icon is nil then the icon is unset.
 func (m menuItem) SetIcon(icon Icon) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
@@ -32050,10 +28050,6 @@ func (m menuItem) SetIcon(icon Icon) {
 	C.g_menu_item_set_icon(_arg0, _arg1)
 }
 
-// SetLabel sets or unsets the "label" attribute of @menu_item.
-//
-// If @label is non-nil it is used as the label for the menu item. If it is nil
-// then the label attribute is unset.
 func (m menuItem) SetLabel(label string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -32065,16 +28061,6 @@ func (m menuItem) SetLabel(label string) {
 	C.g_menu_item_set_label(_arg0, _arg1)
 }
 
-// SetLink creates a link from @menu_item to @model if non-nil, or unsets it.
-//
-// Links are used to establish a relationship between a particular menu item and
-// another menu. For example, G_MENU_LINK_SUBMENU is used to associate a submenu
-// with a particular menu item, and G_MENU_LINK_SECTION is used to create a
-// section. Other types of link can be used, but there is no guarantee that
-// clients will be able to make sense of them. Link types are restricted to
-// lowercase characters, numbers and '-'. Furthermore, the names must begin with
-// a lowercase character, must not end with a '-', and must not contain
-// consecutive dashes.
 func (m menuItem) SetLink(link string, model MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
@@ -32088,12 +28074,6 @@ func (m menuItem) SetLink(link string, model MenuModel) {
 	C.g_menu_item_set_link(_arg0, _arg1, _arg2)
 }
 
-// SetSection sets or unsets the "section" link of @menu_item to @section.
-//
-// The effect of having one menu appear as a section of another is exactly as it
-// sounds: the items from @section become a direct part of the menu that
-// @menu_item is added to. See g_menu_item_new_section() for more information
-// about what it means for a menu item to be a section.
 func (m menuItem) SetSection(section MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
@@ -32104,12 +28084,6 @@ func (m menuItem) SetSection(section MenuModel) {
 	C.g_menu_item_set_section(_arg0, _arg1)
 }
 
-// SetSubmenu sets or unsets the "submenu" link of @menu_item to @submenu.
-//
-// If @submenu is non-nil, it is linked to. If it is nil then the link is unset.
-//
-// The effect of having one menu appear as a submenu of another is exactly as it
-// sounds.
 func (m menuItem) SetSubmenu(submenu MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
@@ -32179,9 +28153,6 @@ func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 	return WrapMenuLinkIter(obj), nil
 }
 
-// Name gets the name of the link at the current iterator position.
-//
-// The iterator is not advanced.
 func (i menuLinkIter) Name() string {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret *C.gchar         // in
@@ -32197,19 +28168,6 @@ func (i menuLinkIter) Name() string {
 	return _utf8
 }
 
-// GetNext: this function combines g_menu_link_iter_next() with
-// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
-//
-// First the iterator is advanced to the next (possibly first) link. If that
-// fails, then false is returned and there are no other effects.
-//
-// If successful, @out_link and @value are set to the name and Model of the link
-// that has just been advanced to. At this point, g_menu_link_iter_get_name()
-// and g_menu_link_iter_get_value() will return the same values again.
-//
-// The value returned in @out_link remains valid for as long as the iterator
-// remains at the current position. The value returned in @value must be
-// unreffed using g_object_unref() when it is no longer in use.
 func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
 	var _arg0 *C.GMenuLinkIter // out
 	var _arg1 *C.gchar         // in
@@ -32233,9 +28191,6 @@ func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
 	return _outLink, _value, _ok
 }
 
-// Value gets the linked Model at the current iterator position.
-//
-// The iterator is not advanced.
 func (i menuLinkIter) Value() MenuModel {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret *C.GMenuModel    // in
@@ -32251,12 +28206,6 @@ func (i menuLinkIter) Value() MenuModel {
 	return _menuModel
 }
 
-// Next attempts to advance the iterator to the next (possibly first) link.
-//
-// true is returned on success, or false if there are no more links.
-//
-// You must call this function when you first acquire the iterator to advance it
-// to the first link (and determine if the first link exists at all).
 func (i menuLinkIter) Next() bool {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret C.gboolean       // in
@@ -32462,17 +28411,6 @@ func marshalMenuModel(p uintptr) (interface{}, error) {
 	return WrapMenuModel(obj), nil
 }
 
-// ItemAttributeValue queries the item at position @item_index in @model for the
-// attribute specified by @attribute.
-//
-// If @expected_type is non-nil then it specifies the expected type of the
-// attribute. If it is nil then any type will be accepted.
-//
-// If the attribute exists and matches @expected_type (or if the expected type
-// is unspecified) then the value is returned.
-//
-// If the attribute does not exist, or does not match the expected type then nil
-// is returned.
 func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
 	var _arg1 C.gint          // out
@@ -32498,11 +28436,6 @@ func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedT
 	return _variant
 }
 
-// ItemLink queries the item at position @item_index in @model for the link
-// specified by @link.
-//
-// If the link exists, the linked Model is returned. If the link does not exist,
-// nil is returned.
 func (m menuModel) ItemLink(itemIndex int, link string) MenuModel {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
@@ -32523,7 +28456,6 @@ func (m menuModel) ItemLink(itemIndex int, link string) MenuModel {
 	return _menuModel
 }
 
-// NItems: query the number of items in @model.
 func (m menuModel) NItems() int {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gint        // in
@@ -32539,10 +28471,6 @@ func (m menuModel) NItems() int {
 	return _gint
 }
 
-// IsMutable queries if @model is mutable.
-//
-// An immutable Model will never emit the Model::items-changed signal. Consumers
-// of the model may make optimisations accordingly.
 func (m menuModel) IsMutable() bool {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gboolean    // in
@@ -32560,21 +28488,6 @@ func (m menuModel) IsMutable() bool {
 	return _ok
 }
 
-// ItemsChanged requests emission of the Model::items-changed signal on @model.
-//
-// This function should never be called except by Model subclasses. Any other
-// calls to this function will very likely lead to a violation of the interface
-// of the model.
-//
-// The implementation should update its internal representation of the menu
-// before emitting the signal. The implementation should further expect to
-// receive queries about the new state of the menu (and particularly added menu
-// items) while signal handlers are running.
-//
-// The implementation must dispatch this call directly from a mainloop entry and
-// not in response to calls -- particularly those from the Model API. Said
-// another way: the menu must not change while user code is running without
-// returning to the mainloop.
 func (m menuModel) ItemsChanged(position int, removed int, added int) {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
@@ -32589,10 +28502,6 @@ func (m menuModel) ItemsChanged(position int, removed int, added int) {
 	C.g_menu_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }
 
-// IterateItemAttributes creates a AttributeIter to iterate over the attributes
-// of the item at position @item_index in @model.
-//
-// You must free the iterator with g_object_unref() when you are done.
 func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
 	var _arg0 *C.GMenuModel         // out
 	var _arg1 C.gint                // out
@@ -32610,10 +28519,6 @@ func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
 	return _menuAttributeIter
 }
 
-// IterateItemLinks creates a LinkIter to iterate over the links of the item at
-// position @item_index in @model.
-//
-// You must free the iterator with g_object_unref() when you are done.
 func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
 	var _arg0 *C.GMenuModel    // out
 	var _arg1 C.gint           // out
@@ -32735,8 +28640,6 @@ func NewMountOperation() MountOperation {
 	return _mountOperation
 }
 
-// Anonymous: check to see whether the mount operation is being used for an
-// anonymous user.
 func (o mountOperation) Anonymous() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -32754,7 +28657,6 @@ func (o mountOperation) Anonymous() bool {
 	return _ok
 }
 
-// Choice gets a choice from the mount operation.
 func (o mountOperation) Choice() int {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.int              // in
@@ -32770,7 +28672,6 @@ func (o mountOperation) Choice() int {
 	return _gint
 }
 
-// Domain gets the domain of the mount operation.
 func (o mountOperation) Domain() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -32786,8 +28687,6 @@ func (o mountOperation) Domain() string {
 	return _utf8
 }
 
-// IsTcryptHiddenVolume: check to see whether the mount operation is being used
-// for a TCRYPT hidden volume.
 func (o mountOperation) IsTcryptHiddenVolume() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -32805,8 +28704,6 @@ func (o mountOperation) IsTcryptHiddenVolume() bool {
 	return _ok
 }
 
-// IsTcryptSystemVolume: check to see whether the mount operation is being used
-// for a TCRYPT system volume.
 func (o mountOperation) IsTcryptSystemVolume() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -32824,7 +28721,6 @@ func (o mountOperation) IsTcryptSystemVolume() bool {
 	return _ok
 }
 
-// Password gets a password from the mount operation.
 func (o mountOperation) Password() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -32840,7 +28736,6 @@ func (o mountOperation) Password() string {
 	return _utf8
 }
 
-// PasswordSave gets the state of saving passwords for the mount operation.
 func (o mountOperation) PasswordSave() PasswordSave {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.GPasswordSave    // in
@@ -32856,7 +28751,6 @@ func (o mountOperation) PasswordSave() PasswordSave {
 	return _passwordSave
 }
 
-// Pim gets a PIM from the mount operation.
 func (o mountOperation) Pim() uint {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.guint            // in
@@ -32872,7 +28766,6 @@ func (o mountOperation) Pim() uint {
 	return _guint
 }
 
-// Username: get the user name from the mount operation.
 func (o mountOperation) Username() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -32888,7 +28781,6 @@ func (o mountOperation) Username() string {
 	return _utf8
 }
 
-// Reply emits the Operation::reply signal.
 func (o mountOperation) Reply(result MountOperationResult) {
 	var _arg0 *C.GMountOperation      // out
 	var _arg1 C.GMountOperationResult // out
@@ -32899,8 +28791,6 @@ func (o mountOperation) Reply(result MountOperationResult) {
 	C.g_mount_operation_reply(_arg0, _arg1)
 }
 
-// SetAnonymous sets the mount operation to use an anonymous user if @anonymous
-// is true.
 func (o mountOperation) SetAnonymous(anonymous bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -32913,7 +28803,6 @@ func (o mountOperation) SetAnonymous(anonymous bool) {
 	C.g_mount_operation_set_anonymous(_arg0, _arg1)
 }
 
-// SetChoice sets a default choice for the mount operation.
 func (o mountOperation) SetChoice(choice int) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.int              // out
@@ -32924,7 +28813,6 @@ func (o mountOperation) SetChoice(choice int) {
 	C.g_mount_operation_set_choice(_arg0, _arg1)
 }
 
-// SetDomain sets the mount operation's domain.
 func (o mountOperation) SetDomain(domain string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -32936,8 +28824,6 @@ func (o mountOperation) SetDomain(domain string) {
 	C.g_mount_operation_set_domain(_arg0, _arg1)
 }
 
-// SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume if
-// @hidden_volume is true.
 func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -32950,8 +28836,6 @@ func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	C.g_mount_operation_set_is_tcrypt_hidden_volume(_arg0, _arg1)
 }
 
-// SetIsTcryptSystemVolume sets the mount operation to use a system volume if
-// @system_volume is true.
 func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -32964,7 +28848,6 @@ func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	C.g_mount_operation_set_is_tcrypt_system_volume(_arg0, _arg1)
 }
 
-// SetPassword sets the mount operation's password to @password.
 func (o mountOperation) SetPassword(password string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -32976,7 +28859,6 @@ func (o mountOperation) SetPassword(password string) {
 	C.g_mount_operation_set_password(_arg0, _arg1)
 }
 
-// SetPasswordSave sets the state of saving passwords for the mount operation.
 func (o mountOperation) SetPasswordSave(save PasswordSave) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.GPasswordSave    // out
@@ -32987,7 +28869,6 @@ func (o mountOperation) SetPasswordSave(save PasswordSave) {
 	C.g_mount_operation_set_password_save(_arg0, _arg1)
 }
 
-// SetPim sets the mount operation's PIM to @pim.
 func (o mountOperation) SetPim(pim uint) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.guint            // out
@@ -32998,7 +28879,6 @@ func (o mountOperation) SetPim(pim uint) {
 	C.g_mount_operation_set_pim(_arg0, _arg1)
 }
 
-// SetUsername sets the user name within @op to @username.
 func (o mountOperation) SetUsername(username string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -33159,8 +29039,6 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 	return _networkAddress
 }
 
-// Hostname gets @addr's hostname. This might be either UTF-8 or ASCII-encoded,
-// depending on what @addr was created with.
 func (a networkAddress) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
@@ -33176,7 +29054,6 @@ func (a networkAddress) Hostname() string {
 	return _utf8
 }
 
-// Port gets @addr's port number
 func (a networkAddress) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
@@ -33192,7 +29069,6 @@ func (a networkAddress) Port() uint16 {
 	return _guint16
 }
 
-// Scheme gets @addr's scheme
 func (a networkAddress) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
@@ -33282,8 +29158,6 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 	return _networkService
 }
 
-// Domain gets the domain that @srv serves. This might be either UTF-8 or
-// ASCII-encoded, depending on what @srv was created with.
 func (s networkService) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -33299,7 +29173,6 @@ func (s networkService) Domain() string {
 	return _utf8
 }
 
-// Protocol gets @srv's protocol name (eg, "tcp").
 func (s networkService) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -33315,8 +29188,6 @@ func (s networkService) Protocol() string {
 	return _utf8
 }
 
-// Scheme gets the URI scheme used to resolve proxies. By default, the service
-// name is used as scheme.
 func (s networkService) Scheme() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -33332,7 +29203,6 @@ func (s networkService) Scheme() string {
 	return _utf8
 }
 
-// Service gets @srv's service name (eg, "ldap").
 func (s networkService) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -33348,8 +29218,6 @@ func (s networkService) Service() string {
 	return _utf8
 }
 
-// SetScheme set's the URI scheme used to resolve proxies. By default, the
-// service name is used as scheme.
 func (s networkService) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
@@ -33477,13 +29345,6 @@ func NewNotification(title string) Notification {
 	return _notification
 }
 
-// AddButton adds a button to @notification that activates the action in
-// @detailed_action when clicked. That action must be an application-wide action
-// (starting with "app."). If @detailed_action contains a target, the action
-// will be activated with that target as its parameter.
-//
-// See g_action_parse_detailed_name() for a description of the format for
-// @detailed_action.
 func (n notification) AddButton(label string, detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -33498,12 +29359,6 @@ func (n notification) AddButton(label string, detailedAction string) {
 	C.g_notification_add_button(_arg0, _arg1, _arg2)
 }
 
-// AddButtonWithTargetValue adds a button to @notification that activates
-// @action when clicked. @action must be an application-wide action (it must
-// start with "app.").
-//
-// If @target is non-nil, @action will be activated with @target as its
-// parameter.
 func (n notification) AddButtonWithTargetValue(label string, action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -33520,7 +29375,6 @@ func (n notification) AddButtonWithTargetValue(label string, action string, targ
 	C.g_notification_add_button_with_target_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetBody sets the body of @notification to @body.
 func (n notification) SetBody(body string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -33532,18 +29386,6 @@ func (n notification) SetBody(body string) {
 	C.g_notification_set_body(_arg0, _arg1)
 }
 
-// SetDefaultAction sets the default action of @notification to
-// @detailed_action. This action is activated when the notification is clicked
-// on.
-//
-// The action in @detailed_action must be an application-wide action (it must
-// start with "app."). If @detailed_action contains a target, the given action
-// will be activated with that target as its parameter. See
-// g_action_parse_detailed_name() for a description of the format for
-// @detailed_action.
-//
-// When no default action is set, the application that the notification was sent
-// on is activated.
 func (n notification) SetDefaultAction(detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -33555,15 +29397,6 @@ func (n notification) SetDefaultAction(detailedAction string) {
 	C.g_notification_set_default_action(_arg0, _arg1)
 }
 
-// SetDefaultActionAndTargetValue sets the default action of @notification to
-// @action. This action is activated when the notification is clicked on. It
-// must be an application-wide action (start with "app.").
-//
-// If @target is non-nil, @action will be activated with @target as its
-// parameter.
-//
-// When no default action is set, the application that the notification was sent
-// on is activated.
 func (n notification) SetDefaultActionAndTargetValue(action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -33577,7 +29410,6 @@ func (n notification) SetDefaultActionAndTargetValue(action string, target *glib
 	C.g_notification_set_default_action_and_target_value(_arg0, _arg1, _arg2)
 }
 
-// SetIcon sets the icon of @notification to @icon.
 func (n notification) SetIcon(icon Icon) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
@@ -33588,8 +29420,6 @@ func (n notification) SetIcon(icon Icon) {
 	C.g_notification_set_icon(_arg0, _arg1)
 }
 
-// SetPriority sets the priority of @notification to @priority. See Priority for
-// possible values.
 func (n notification) SetPriority(priority NotificationPriority) {
 	var _arg0 *C.GNotification        // out
 	var _arg1 C.GNotificationPriority // out
@@ -33600,7 +29430,6 @@ func (n notification) SetPriority(priority NotificationPriority) {
 	C.g_notification_set_priority(_arg0, _arg1)
 }
 
-// SetTitle sets the title of @notification to @title.
 func (n notification) SetTitle(title string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -33612,7 +29441,6 @@ func (n notification) SetTitle(title string) {
 	C.g_notification_set_title(_arg0, _arg1)
 }
 
-// SetUrgent: deprecated in favor of g_notification_set_priority().
 func (n notification) SetUrgent(urgent bool) {
 	var _arg0 *C.GNotification // out
 	var _arg1 C.gboolean       // out
@@ -33835,7 +29663,6 @@ func marshalOutputStream(p uintptr) (interface{}, error) {
 	return WrapOutputStream(obj), nil
 }
 
-// ClearPending clears the pending flag on @stream.
 func (s outputStream) ClearPending() {
 	var _arg0 *C.GOutputStream // out
 
@@ -33844,34 +29671,6 @@ func (s outputStream) ClearPending() {
 	C.g_output_stream_clear_pending(_arg0)
 }
 
-// Close closes the stream, releasing resources related to it.
-//
-// Once the stream is closed, all other operations will return
-// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an error.
-//
-// Closing a stream will automatically flush any outstanding buffers in the
-// stream.
-//
-// Streams will be automatically closed when the last reference is dropped, but
-// you might want to call this function to make sure resources are released as
-// early as possible.
-//
-// Some streams might keep the backing store of the stream (e.g. a file
-// descriptor) open after the stream is closed. See the documentation for the
-// individual stream for details.
-//
-// On failure the first error that happened will be reported, but the close
-// operation will finish as much as possible. A stream that failed to close will
-// still return G_IO_ERROR_CLOSED for all operations. Still, it is important to
-// check and report the error to the user, otherwise there might be a loss of
-// data as all data might not be written.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. Cancelling a close will
-// still leave the stream closed, but there some streams can use a faster close
-// that doesn't block to e.g. check errors. On cancellation (as with any error)
-// there is no guarantee that all written data will reach the target.
 func (s outputStream) Close(cancellable Cancellable) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
@@ -33889,7 +29688,6 @@ func (s outputStream) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-// CloseFinish closes an output stream.
 func (s outputStream) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -33907,15 +29705,6 @@ func (s outputStream) CloseFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// Flush forces a write of all user-space buffered data for the given @stream.
-// Will block during the operation. Closing the stream will implicitly cause a
-// flush.
-//
-// This function is optional for inherited classes.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (s outputStream) Flush(cancellable Cancellable) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
@@ -33933,7 +29722,6 @@ func (s outputStream) Flush(cancellable Cancellable) error {
 	return _goerr
 }
 
-// FlushFinish finishes flushing an output stream.
 func (s outputStream) FlushFinish(result AsyncResult) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -33951,7 +29739,6 @@ func (s outputStream) FlushFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// HasPending checks if an output stream has pending actions.
 func (s outputStream) HasPending() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
@@ -33969,7 +29756,6 @@ func (s outputStream) HasPending() bool {
 	return _ok
 }
 
-// IsClosed checks if an output stream has already been closed.
 func (s outputStream) IsClosed() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
@@ -33987,9 +29773,6 @@ func (s outputStream) IsClosed() bool {
 	return _ok
 }
 
-// IsClosing checks if an output stream is being closed. This can be used inside
-// e.g. a flush implementation to see if the flush (or other i/o operation) is
-// called from within the closing operation.
 func (s outputStream) IsClosing() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
@@ -34007,8 +29790,6 @@ func (s outputStream) IsClosing() bool {
 	return _ok
 }
 
-// SetPending sets @stream to have actions pending. If the pending flag is
-// already set or @stream is closed, it will return false and set @error.
 func (s outputStream) SetPending() error {
 	var _arg0 *C.GOutputStream // out
 	var _cerr *C.GError        // in
@@ -34024,7 +29805,6 @@ func (s outputStream) SetPending() error {
 	return _goerr
 }
 
-// Splice splices an input stream into an output stream.
 func (s outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GOutputStream           // out
 	var _arg1 *C.GInputStream            // out
@@ -34049,7 +29829,6 @@ func (s outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, 
 	return _gssize, _goerr
 }
 
-// SpliceFinish finishes an asynchronous stream splice operation.
 func (s outputStream) SpliceFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -34070,25 +29849,6 @@ func (s outputStream) SpliceFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-// Write tries to write @count bytes from @buffer into the stream. Will block
-// during the operation.
-//
-// If count is 0, returns 0 and does nothing. A value of @count larger than
-// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
-//
-// On success, the number of bytes written to the stream is returned. It is not
-// an error if this is not the same as the requested size, as it can happen e.g.
-// on a partial I/O error, or if there is not enough storage in the stream. All
-// writes block until at least one byte is written or an error occurs; 0 is
-// never returned (unless @count is 0).
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
-// partially finished when the operation was cancelled the partial result will
-// be returned, without an error.
-//
-// On error -1 is returned and @error is set accordingly.
 func (s outputStream) Write(buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
@@ -34113,24 +29873,6 @@ func (s outputStream) Write(buffer []byte, cancellable Cancellable) (int, error)
 	return _gssize, _goerr
 }
 
-// WriteAll tries to write @count bytes from @buffer into the stream. Will block
-// during the operation.
-//
-// This function is similar to g_output_stream_write(), except it tries to write
-// as many bytes as requested, only stopping on an error.
-//
-// On a successful write of @count bytes, true is returned, and @bytes_written
-// is set to @count.
-//
-// If there is an error during the operation false is returned and @error is set
-// to indicate the error status.
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then @bytes_written
-// will be set to the number of bytes that were successfully written before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
-// g_output_stream_write().
 func (s outputStream) WriteAll(buffer []byte, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
@@ -34155,15 +29897,6 @@ func (s outputStream) WriteAll(buffer []byte, cancellable Cancellable) (uint, er
 	return _bytesWritten, _goerr
 }
 
-// WriteAllFinish finishes an asynchronous stream write operation started with
-// g_output_stream_write_all_async().
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then @bytes_written
-// will be set to the number of bytes that were successfully written before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
-// g_output_stream_write_async().
 func (s outputStream) WriteAllFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -34184,7 +29917,6 @@ func (s outputStream) WriteAllFinish(result AsyncResult) (uint, error) {
 	return _bytesWritten, _goerr
 }
 
-// WriteBytesFinish finishes a stream write-from-#GBytes operation.
 func (s outputStream) WriteBytesFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -34205,7 +29937,6 @@ func (s outputStream) WriteBytesFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-// WriteFinish finishes a stream write operation.
 func (s outputStream) WriteFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -34226,29 +29957,6 @@ func (s outputStream) WriteFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-// Writev tries to write the bytes contained in the @n_vectors @vectors into the
-// stream. Will block during the operation.
-//
-// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0 and
-// does nothing.
-//
-// On success, the number of bytes written to the stream is returned. It is not
-// an error if this is not the same as the requested size, as it can happen e.g.
-// on a partial I/O error, or if there is not enough storage in the stream. All
-// writes block until at least one byte is written or an error occurs; 0 is
-// never returned (unless @n_vectors is 0 or the sum of all bytes in @vectors is
-// 0).
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
-// partially finished when the operation was cancelled the partial result will
-// be returned, without an error.
-//
-// Some implementations of g_output_stream_writev() may have limitations on the
-// aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if these
-// are exceeded. For example, when writing to a local file on UNIX platforms,
-// the aggregate buffer size must not exceed G_MAXSSIZE bytes.
 func (s outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
@@ -34273,27 +29981,6 @@ func (s outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (u
 	return _bytesWritten, _goerr
 }
 
-// WritevAll tries to write the bytes contained in the @n_vectors @vectors into
-// the stream. Will block during the operation.
-//
-// This function is similar to g_output_stream_writev(), except it tries to
-// write as many bytes as requested, only stopping on an error.
-//
-// On a successful write of all @n_vectors vectors, true is returned, and
-// @bytes_written is set to the sum of all the sizes of @vectors.
-//
-// If there is an error during the operation false is returned and @error is set
-// to indicate the error status.
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then @bytes_written
-// will be set to the number of bytes that were successfully written before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
-// g_output_stream_write().
-//
-// The content of the individual elements of @vectors might be changed by this
-// function.
 func (s outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
@@ -34318,15 +30005,6 @@ func (s outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable)
 	return _bytesWritten, _goerr
 }
 
-// WritevAllFinish finishes an asynchronous stream write operation started with
-// g_output_stream_writev_all_async().
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then @bytes_written
-// will be set to the number of bytes that were successfully written before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
-// g_output_stream_writev_async().
 func (s outputStream) WritevAllFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -34347,7 +30025,6 @@ func (s outputStream) WritevAllFinish(result AsyncResult) (uint, error) {
 	return _bytesWritten, _goerr
 }
 
-// WritevFinish finishes a stream writev operation.
 func (s outputStream) WritevFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -34469,21 +30146,6 @@ func marshalPermission(p uintptr) (interface{}, error) {
 	return WrapPermission(obj), nil
 }
 
-// Acquire attempts to acquire the permission represented by @permission.
-//
-// The precise method by which this happens depends on the permission and the
-// underlying authentication mechanism. A simple example is that a dialog may
-// appear asking the user to enter their password.
-//
-// You should check with g_permission_get_can_acquire() before calling this
-// function.
-//
-// If the permission is acquired then true is returned. Otherwise, false is
-// returned and @error is set appropriately.
-//
-// This call is blocking, likely for a very long time (in the case that user
-// interaction is required). See g_permission_acquire_async() for the
-// non-blocking version.
 func (p permission) Acquire(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
@@ -34501,11 +30163,6 @@ func (p permission) Acquire(cancellable Cancellable) error {
 	return _goerr
 }
 
-// AcquireFinish collects the result of attempting to acquire the permission
-// represented by @permission.
-//
-// This is the second half of the asynchronous version of
-// g_permission_acquire().
 func (p permission) AcquireFinish(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
@@ -34523,9 +30180,6 @@ func (p permission) AcquireFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// Allowed gets the value of the 'allowed' property. This property is true if
-// the caller currently has permission to perform the action that @permission
-// represents the permission to perform.
 func (p permission) Allowed() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -34543,9 +30197,6 @@ func (p permission) Allowed() bool {
 	return _ok
 }
 
-// CanAcquire gets the value of the 'can-acquire' property. This property is
-// true if it is generally possible to acquire the permission by calling
-// g_permission_acquire().
 func (p permission) CanAcquire() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -34563,9 +30214,6 @@ func (p permission) CanAcquire() bool {
 	return _ok
 }
 
-// CanRelease gets the value of the 'can-release' property. This property is
-// true if it is generally possible to release the permission by calling
-// g_permission_release().
 func (p permission) CanRelease() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -34583,11 +30231,6 @@ func (p permission) CanRelease() bool {
 	return _ok
 }
 
-// ImplUpdate: this function is called by the #GPermission implementation to
-// update the properties of the permission. You should never call this function
-// except from a #GPermission implementation.
-//
-// GObject notify signals are generated, as appropriate.
 func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 	var _arg0 *C.GPermission // out
 	var _arg1 C.gboolean     // out
@@ -34608,21 +30251,6 @@ func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 	C.g_permission_impl_update(_arg0, _arg1, _arg2, _arg3)
 }
 
-// Release attempts to release the permission represented by @permission.
-//
-// The precise method by which this happens depends on the permission and the
-// underlying authentication mechanism. In most cases the permission will be
-// dropped immediately without further action.
-//
-// You should check with g_permission_get_can_release() before calling this
-// function.
-//
-// If the permission is released then true is returned. Otherwise, false is
-// returned and @error is set appropriately.
-//
-// This call is blocking, likely for a very long time (in the case that user
-// interaction is required). See g_permission_release_async() for the
-// non-blocking version.
 func (p permission) Release(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
@@ -34640,11 +30268,6 @@ func (p permission) Release(cancellable Cancellable) error {
 	return _goerr
 }
 
-// ReleaseFinish collects the result of attempting to release the permission
-// represented by @permission.
-//
-// This is the second half of the asynchronous version of
-// g_permission_release().
 func (p permission) ReleaseFinish(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
@@ -34853,9 +30476,6 @@ func NewProXYAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 	return _proxyAddress
 }
 
-// DestinationHostname gets @proxy's destination hostname; that is, the name of
-// the host that will be connected to via the proxy, not the name of the proxy
-// itself.
 func (p proXYAddress) DestinationHostname() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -34871,9 +30491,6 @@ func (p proXYAddress) DestinationHostname() string {
 	return _utf8
 }
 
-// DestinationPort gets @proxy's destination port; that is, the port on the
-// destination host that will be connected to via the proxy, not the port number
-// of the proxy itself.
 func (p proXYAddress) DestinationPort() uint16 {
 	var _arg0 *C.GProxyAddress // out
 	var _cret C.guint16        // in
@@ -34889,8 +30506,6 @@ func (p proXYAddress) DestinationPort() uint16 {
 	return _guint16
 }
 
-// DestinationProtocol gets the protocol that is being spoken to the destination
-// server; eg, "http" or "ftp".
 func (p proXYAddress) DestinationProtocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -34906,7 +30521,6 @@ func (p proXYAddress) DestinationProtocol() string {
 	return _utf8
 }
 
-// Password gets @proxy's password.
 func (p proXYAddress) Password() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -34922,7 +30536,6 @@ func (p proXYAddress) Password() string {
 	return _utf8
 }
 
-// Protocol gets @proxy's protocol. eg, "socks" or "http"
 func (p proXYAddress) Protocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -34938,7 +30551,6 @@ func (p proXYAddress) Protocol() string {
 	return _utf8
 }
 
-// URI gets the proxy URI that @proxy was constructed from.
 func (p proXYAddress) URI() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -34954,7 +30566,6 @@ func (p proXYAddress) URI() string {
 	return _utf8
 }
 
-// Username gets @proxy's username.
 func (p proXYAddress) Username() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -35063,14 +30674,6 @@ func marshalResolver(p uintptr) (interface{}, error) {
 	return WrapResolver(obj), nil
 }
 
-// LookupByAddress: synchronously reverse-resolves @address to determine its
-// associated hostname.
-//
-// If the DNS resolution fails, @error (if non-nil) will be set to a value from
-// Error.
-//
-// If @cancellable is non-nil, it can be used to cancel the operation, in which
-// case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
 func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GInetAddress // out
@@ -35094,12 +30697,6 @@ func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) 
 	return _utf8, _goerr
 }
 
-// LookupByAddressFinish retrieves the result of a previous call to
-// g_resolver_lookup_by_address_async().
-//
-// If the DNS resolution failed, @error (if non-nil) will be set to a value from
-// Error. If the operation was cancelled, @error will be set to
-// G_IO_ERROR_CANCELLED.
 func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -35121,15 +30718,6 @@ func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
 	return _utf8, _goerr
 }
 
-// SetDefault sets @resolver to be the application's default resolver (reffing
-// @resolver, and unreffing the previous default resolver, if any). Future calls
-// to g_resolver_get_default() will return this resolver.
-//
-// This can be used if an application wants to perform any sort of DNS caching
-// or "pinning"; it can implement its own #GResolver that calls the original
-// default resolver for DNS operations, and implements its own cache policies on
-// top of that, and then set itself as the default resolver for all later code
-// to use.
 func (r resolver) SetDefault() {
 	var _arg0 *C.GResolver // out
 
@@ -35818,10 +31406,6 @@ func NewSettingsWithPath(schemaId string, path string) Settings {
 	return _settings
 }
 
-// Apply applies any changes that have been made to the settings. This function
-// does nothing unless @settings is in 'delay-apply' mode; see
-// g_settings_delay(). In the normal case settings are always applied
-// immediately.
 func (s settings) Apply() {
 	var _arg0 *C.GSettings // out
 
@@ -35830,23 +31414,6 @@ func (s settings) Apply() {
 	C.g_settings_apply(_arg0)
 }
 
-// Bind: create a binding between the @key in the @settings object and the
-// property @property of @object.
-//
-// The binding uses the default GIO mapping functions to map between the
-// settings and property values. These functions handle booleans, numeric types
-// and string types in a straightforward way. Use g_settings_bind_with_mapping()
-// if you need a custom mapping, or map between types that are not supported by
-// the default mapping functions.
-//
-// Unless the @flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function also
-// establishes a binding between the writability of @key and the "sensitive"
-// property of @object (if @object has a boolean property by that name). See
-// g_settings_bind_writable() for more details about writable bindings.
-//
-// Note that the lifecycle of the binding is tied to @object, and that you can
-// have only one binding per object property. If you bind the same property
-// twice on the same object, the second binding overrides the first one.
 func (s settings) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
 	var _arg0 *C.GSettings         // out
 	var _arg1 *C.gchar             // out
@@ -35865,21 +31432,6 @@ func (s settings) Bind(key string, object gextras.Objector, property string, fla
 	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// BindWritable: create a binding between the writability of @key in the
-// @settings object and the property @property of @object. The property must be
-// boolean; "sensitive" or "visible" properties of widgets are the most likely
-// candidates.
-//
-// Writable bindings are always uni-directional; changes of the writability of
-// the setting will be propagated to the object property, not the other way.
-//
-// When the @inverted argument is true, the binding inverts the value as it
-// passes from the setting to the object, i.e. @property will be set to true if
-// the key is not writable.
-//
-// Note that the lifecycle of the binding is tied to @object, and that you can
-// have only one binding per object property. If you bind the same property
-// twice on the same object, the second binding overrides the first one.
 func (s settings) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -35900,18 +31452,6 @@ func (s settings) BindWritable(key string, object gextras.Objector, property str
 	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// CreateAction creates a #GAction corresponding to a given #GSettings key.
-//
-// The action has the same name as the key.
-//
-// The value of the key becomes the state of the action and the action is
-// enabled when the key is writable. Changing the state of the action results in
-// the key being written to. Changes to the value or writability of the key
-// cause appropriate change notifications to be emitted for the action.
-//
-// For boolean-valued keys, action activations take no parameter and result in
-// the toggling of the value. For all other types, activations take the new
-// value for the key (which must have the correct type).
 func (s settings) CreateAction(key string) Action {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -35930,9 +31470,6 @@ func (s settings) CreateAction(key string) Action {
 	return _action
 }
 
-// Delay changes the #GSettings object into 'delay-apply' mode. In this mode,
-// changes to @settings are not immediately propagated to the backend, but kept
-// locally until g_settings_apply() is called.
 func (s settings) Delay() {
 	var _arg0 *C.GSettings // out
 
@@ -35941,12 +31478,6 @@ func (s settings) Delay() {
 	C.g_settings_delay(_arg0)
 }
 
-// Boolean gets the value that is stored at @key in @settings.
-//
-// A convenience variant of g_settings_get() for booleans.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// boolean type in the schema for @settings.
 func (s settings) Boolean(key string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -35967,11 +31498,6 @@ func (s settings) Boolean(key string) bool {
 	return _ok
 }
 
-// Child creates a child settings object which has a base path of
-// `base-path/@name`, where `base-path` is the base path of @settings.
-//
-// The schema for the child settings object must have been declared in the
-// schema of @settings using a <child> element.
 func (s settings) Child(name string) Settings {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -35990,26 +31516,6 @@ func (s settings) Child(name string) Settings {
 	return _ret
 }
 
-// DefaultValue gets the "default value" of a key.
-//
-// This is the value that would be read if g_settings_reset() were to be called
-// on the key.
-//
-// Note that this may be a different value than returned by
-// g_settings_schema_key_get_default_value() if the system administrator has
-// provided a default value.
-//
-// Comparing the return values of g_settings_get_default_value() and
-// g_settings_get_value() is not sufficient for determining if a value has been
-// set because the user may have explicitly set the value to something that
-// happens to be equal to the default. The difference here is that if the
-// default changes in the future, the user's key will still be set.
-//
-// This function may be useful for adding an indication to a UI of what the
-// default value was before the user set it.
-//
-// It is a programmer error to give a @key that isn't contained in the schema
-// for @settings.
 func (s settings) DefaultValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36031,12 +31537,6 @@ func (s settings) DefaultValue(key string) *glib.Variant {
 	return _variant
 }
 
-// Double gets the value that is stored at @key in @settings.
-//
-// A convenience variant of g_settings_get() for doubles.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// 'double' type in the schema for @settings.
 func (s settings) Double(key string) float64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36055,17 +31555,6 @@ func (s settings) Double(key string) float64 {
 	return _gdouble
 }
 
-// Enum gets the value that is stored in @settings for @key and converts it to
-// the enum value that it represents.
-//
-// In order to use this function the type of the value must be a string and it
-// must be marked in the schema file as an enumerated type.
-//
-// It is a programmer error to give a @key that isn't contained in the schema
-// for @settings or is not marked as an enumerated type.
-//
-// If the value stored in the configuration database is not a valid value for
-// the enumerated type then this function will return the default value.
 func (s settings) Enum(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36084,17 +31573,6 @@ func (s settings) Enum(key string) int {
 	return _gint
 }
 
-// Flags gets the value that is stored in @settings for @key and converts it to
-// the flags value that it represents.
-//
-// In order to use this function the type of the value must be an array of
-// strings and it must be marked in the schema file as a flags type.
-//
-// It is a programmer error to give a @key that isn't contained in the schema
-// for @settings or is not marked as a flags type.
-//
-// If the value stored in the configuration database is not a valid value for
-// the flags type then this function will return the default value.
 func (s settings) Flags(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36113,8 +31591,6 @@ func (s settings) Flags(key string) uint {
 	return _guint
 }
 
-// HasUnapplied returns whether the #GSettings object has any unapplied changes.
-// This can only be the case if it is in 'delayed-apply' mode.
 func (s settings) HasUnapplied() bool {
 	var _arg0 *C.GSettings // out
 	var _cret C.gboolean   // in
@@ -36132,12 +31608,6 @@ func (s settings) HasUnapplied() bool {
 	return _ok
 }
 
-// Int gets the value that is stored at @key in @settings.
-//
-// A convenience variant of g_settings_get() for 32-bit integers.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// int32 type in the schema for @settings.
 func (s settings) Int(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36156,12 +31626,6 @@ func (s settings) Int(key string) int {
 	return _gint
 }
 
-// Int64 gets the value that is stored at @key in @settings.
-//
-// A convenience variant of g_settings_get() for 64-bit integers.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// int64 type in the schema for @settings.
 func (s settings) Int64(key string) int64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36180,7 +31644,6 @@ func (s settings) Int64(key string) int64 {
 	return _gint64
 }
 
-// Range queries the range of a key.
 func (s settings) Range(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36202,12 +31665,6 @@ func (s settings) Range(key string) *glib.Variant {
 	return _variant
 }
 
-// String gets the value that is stored at @key in @settings.
-//
-// A convenience variant of g_settings_get() for strings.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// string type in the schema for @settings.
 func (s settings) String(key string) string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36227,10 +31684,6 @@ func (s settings) String(key string) string {
 	return _utf8
 }
 
-// Strv: a convenience variant of g_settings_get() for string arrays.
-//
-// It is a programmer error to give a @key that isn't specified as having an
-// array of strings type in the schema for @settings.
 func (s settings) Strv(key string) []string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36262,12 +31715,6 @@ func (s settings) Strv(key string) []string {
 	return _utf8s
 }
 
-// Uint gets the value that is stored at @key in @settings.
-//
-// A convenience variant of g_settings_get() for 32-bit unsigned integers.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// uint32 type in the schema for @settings.
 func (s settings) Uint(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36286,12 +31733,6 @@ func (s settings) Uint(key string) uint {
 	return _guint
 }
 
-// Uint64 gets the value that is stored at @key in @settings.
-//
-// A convenience variant of g_settings_get() for 64-bit unsigned integers.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// uint64 type in the schema for @settings.
 func (s settings) Uint64(key string) uint64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36310,23 +31751,6 @@ func (s settings) Uint64(key string) uint64 {
 	return _guint64
 }
 
-// UserValue checks the "user value" of a key, if there is one.
-//
-// The user value of a key is the last value that was set by the user.
-//
-// After calling g_settings_reset() this function should always return nil
-// (assuming something is not wrong with the system configuration).
-//
-// It is possible that g_settings_get_value() will return a different value than
-// this function. This can happen in the case that the user set a value for a
-// key that was subsequently locked down by the system administrator -- this
-// function will return the user's old value.
-//
-// This function may be useful for adding a "reset" option to a UI or for
-// providing indication that a particular value has been changed.
-//
-// It is a programmer error to give a @key that isn't contained in the schema
-// for @settings.
 func (s settings) UserValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36348,10 +31772,6 @@ func (s settings) UserValue(key string) *glib.Variant {
 	return _variant
 }
 
-// Value gets the value that is stored in @settings for @key.
-//
-// It is a programmer error to give a @key that isn't contained in the schema
-// for @settings.
 func (s settings) Value(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36373,7 +31793,6 @@ func (s settings) Value(key string) *glib.Variant {
 	return _variant
 }
 
-// IsWritable finds out if a key can be written or not
 func (s settings) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36394,16 +31813,6 @@ func (s settings) IsWritable(name string) bool {
 	return _ok
 }
 
-// ListChildren gets the list of children on @settings.
-//
-// The list is exactly the list of strings for which it is not an error to call
-// g_settings_get_child().
-//
-// There is little reason to call this function from "normal" code, since you
-// should already know what children are in your schema. This function may still
-// be useful there for introspection reasons, however.
-//
-// You should free the return value with g_strfreev() when you are done with it.
 func (s settings) ListChildren() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar
@@ -36432,13 +31841,6 @@ func (s settings) ListChildren() []string {
 	return _utf8s
 }
 
-// ListKeys introspects the list of keys on @settings.
-//
-// You should probably not be calling this function from "normal" code (since
-// you should already know what keys are in your schema). This function is
-// intended for introspection reasons.
-//
-// You should free the return value with g_strfreev() when you are done with it.
 func (s settings) ListKeys() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar
@@ -36467,8 +31869,6 @@ func (s settings) ListKeys() []string {
 	return _utf8s
 }
 
-// RangeCheck checks if the given @value is of the correct type and within the
-// permitted range for @key.
 func (s settings) RangeCheck(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36491,11 +31891,6 @@ func (s settings) RangeCheck(key string, value *glib.Variant) bool {
 	return _ok
 }
 
-// Reset resets @key to its default value.
-//
-// This call resets the key, as much as possible, to its default value. That
-// might be the value specified in the schema or the one set by the
-// administrator.
 func (s settings) Reset(key string) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36507,11 +31902,6 @@ func (s settings) Reset(key string) {
 	C.g_settings_reset(_arg0, _arg1)
 }
 
-// Revert reverts all non-applied changes to the settings. This function does
-// nothing unless @settings is in 'delay-apply' mode; see g_settings_delay(). In
-// the normal case settings are always applied immediately.
-//
-// Change notifications will be emitted for affected keys.
 func (s settings) Revert() {
 	var _arg0 *C.GSettings // out
 
@@ -36520,12 +31910,6 @@ func (s settings) Revert() {
 	C.g_settings_revert(_arg0)
 }
 
-// SetBoolean sets @key in @settings to @value.
-//
-// A convenience variant of g_settings_set() for booleans.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// boolean type in the schema for @settings.
 func (s settings) SetBoolean(key string, value bool) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36550,12 +31934,6 @@ func (s settings) SetBoolean(key string, value bool) bool {
 	return _ok
 }
 
-// SetDouble sets @key in @settings to @value.
-//
-// A convenience variant of g_settings_set() for doubles.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// 'double' type in the schema for @settings.
 func (s settings) SetDouble(key string, value float64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36578,15 +31956,6 @@ func (s settings) SetDouble(key string, value float64) bool {
 	return _ok
 }
 
-// SetEnum looks up the enumerated type nick for @value and writes it to @key,
-// within @settings.
-//
-// It is a programmer error to give a @key that isn't contained in the schema
-// for @settings or is not marked as an enumerated type, or for @value not to be
-// a valid value for the named type.
-//
-// After performing the write, accessing @key directly with
-// g_settings_get_string() will return the 'nick' associated with @value.
 func (s settings) SetEnum(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36609,16 +31978,6 @@ func (s settings) SetEnum(key string, value int) bool {
 	return _ok
 }
 
-// SetFlags looks up the flags type nicks for the bits specified by @value, puts
-// them in an array of strings and writes the array to @key, within @settings.
-//
-// It is a programmer error to give a @key that isn't contained in the schema
-// for @settings or is not marked as a flags type, or for @value to contain any
-// bits that are not value for the named type.
-//
-// After performing the write, accessing @key directly with
-// g_settings_get_strv() will return an array of 'nicks'; one for each bit in
-// @value.
 func (s settings) SetFlags(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36641,12 +32000,6 @@ func (s settings) SetFlags(key string, value uint) bool {
 	return _ok
 }
 
-// SetInt sets @key in @settings to @value.
-//
-// A convenience variant of g_settings_set() for 32-bit integers.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// int32 type in the schema for @settings.
 func (s settings) SetInt(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36669,12 +32022,6 @@ func (s settings) SetInt(key string, value int) bool {
 	return _ok
 }
 
-// SetInt64 sets @key in @settings to @value.
-//
-// A convenience variant of g_settings_set() for 64-bit integers.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// int64 type in the schema for @settings.
 func (s settings) SetInt64(key string, value int64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36697,12 +32044,6 @@ func (s settings) SetInt64(key string, value int64) bool {
 	return _ok
 }
 
-// SetString sets @key in @settings to @value.
-//
-// A convenience variant of g_settings_set() for strings.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// string type in the schema for @settings.
 func (s settings) SetString(key string, value string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36726,13 +32067,6 @@ func (s settings) SetString(key string, value string) bool {
 	return _ok
 }
 
-// SetStrv sets @key in @settings to @value.
-//
-// A convenience variant of g_settings_set() for string arrays. If @value is
-// nil, then @key is set to be the empty array.
-//
-// It is a programmer error to give a @key that isn't specified as having an
-// array of strings type in the schema for @settings.
 func (s settings) SetStrv(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36763,12 +32097,6 @@ func (s settings) SetStrv(key string, value []string) bool {
 	return _ok
 }
 
-// SetUint sets @key in @settings to @value.
-//
-// A convenience variant of g_settings_set() for 32-bit unsigned integers.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// uint32 type in the schema for @settings.
 func (s settings) SetUint(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36791,12 +32119,6 @@ func (s settings) SetUint(key string, value uint) bool {
 	return _ok
 }
 
-// SetUint64 sets @key in @settings to @value.
-//
-// A convenience variant of g_settings_set() for 64-bit unsigned integers.
-//
-// It is a programmer error to give a @key that isn't specified as having a
-// uint64 type in the schema for @settings.
 func (s settings) SetUint64(key string, value uint64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36819,12 +32141,6 @@ func (s settings) SetUint64(key string, value uint64) bool {
 	return _ok
 }
 
-// SetValue sets @key in @settings to @value.
-//
-// It is a programmer error to give a @key that isn't contained in the schema
-// for @settings or for @value to have the incorrect type, per the schema.
-//
-// If @value is floating then this function consumes the reference.
 func (s settings) SetValue(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -36951,13 +32267,6 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 	return _simpleAction
 }
 
-// SetEnabled sets the action as enabled or not.
-//
-// An action must be enabled in order to be activated or in order to have its
-// state changed from outside callers.
-//
-// This should only be called by the implementor of the action. Users of the
-// action should not attempt to modify its enabled flag.
 func (s simpleAction) SetEnabled(enabled bool) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 C.gboolean       // out
@@ -36970,15 +32279,6 @@ func (s simpleAction) SetEnabled(enabled bool) {
 	C.g_simple_action_set_enabled(_arg0, _arg1)
 }
 
-// SetState sets the state of the action.
-//
-// This directly updates the 'state' property to the given value.
-//
-// This should only be called by the implementor of the action. Users of the
-// action should not attempt to directly modify the 'state' property. Instead,
-// they should call g_action_change_state() to request the change.
-//
-// If the @value GVariant is floating, it is consumed.
 func (s simpleAction) SetState(value *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
@@ -36989,9 +32289,6 @@ func (s simpleAction) SetState(value *glib.Variant) {
 	C.g_simple_action_set_state(_arg0, _arg1)
 }
 
-// SetStateHint sets the state hint for the action.
-//
-// See g_action_get_state_hint() for more information about action state hints.
 func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
@@ -37064,12 +32361,6 @@ func NewSimpleActionGroup() SimpleActionGroup {
 	return _simpleActionGroup
 }
 
-// Insert adds an action to the action group.
-//
-// If the action group already contains an action with the same name as @action
-// then the old action is dropped from the group.
-//
-// The action group takes its own reference on @action.
 func (s simpleActionGroup) Insert(action Action) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
@@ -37080,9 +32371,6 @@ func (s simpleActionGroup) Insert(action Action) {
 	C.g_simple_action_group_insert(_arg0, _arg1)
 }
 
-// Lookup looks up the action with the name @action_name in the group.
-//
-// If no such action exists, returns nil.
 func (s simpleActionGroup) Lookup(actionName string) Action {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -37101,9 +32389,6 @@ func (s simpleActionGroup) Lookup(actionName string) Action {
 	return _action
 }
 
-// Remove removes the named action from the action group.
-//
-// If no action of this name is in the group then nothing happens.
 func (s simpleActionGroup) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -37361,13 +32646,6 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	return WrapSimpleAsyncResult(obj), nil
 }
 
-// Complete completes an asynchronous I/O job immediately. Must be called in the
-// thread where the asynchronous result was to be delivered, as it invokes the
-// callback directly. If you are in a different thread use
-// g_simple_async_result_complete_in_idle().
-//
-// Calling this function takes a reference to @simple for as long as is needed
-// to complete the call.
 func (s simpleAsyncResult) Complete() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
@@ -37376,13 +32654,6 @@ func (s simpleAsyncResult) Complete() {
 	C.g_simple_async_result_complete(_arg0)
 }
 
-// CompleteInIdle completes an asynchronous function in an idle handler in the
-// [thread-default main context][g-main-context-push-thread-default] of the
-// thread that @simple was initially created in (and re-pushes that context
-// around the invocation of the callback).
-//
-// Calling this function takes a reference to @simple for as long as is needed
-// to complete the call.
 func (s simpleAsyncResult) CompleteInIdle() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
@@ -37391,8 +32662,6 @@ func (s simpleAsyncResult) CompleteInIdle() {
 	C.g_simple_async_result_complete_in_idle(_arg0)
 }
 
-// OpResGboolean gets the operation result boolean from within the asynchronous
-// result.
 func (s simpleAsyncResult) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gboolean            // in
@@ -37410,7 +32679,6 @@ func (s simpleAsyncResult) OpResGboolean() bool {
 	return _ok
 }
 
-// OpResGssize gets a gssize from the asynchronous result.
 func (s simpleAsyncResult) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gssize              // in
@@ -37426,12 +32694,6 @@ func (s simpleAsyncResult) OpResGssize() int {
 	return _gssize
 }
 
-// PropagateError propagates an error from within the simple asynchronous result
-// to a given destination.
-//
-// If the #GCancellable given to a prior call to
-// g_simple_async_result_set_check_cancellable() is cancelled then this function
-// will return true with @dest set appropriately.
 func (s simpleAsyncResult) PropagateError() error {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cerr *C.GError             // in
@@ -37447,21 +32709,6 @@ func (s simpleAsyncResult) PropagateError() error {
 	return _goerr
 }
 
-// SetCheckCancellable sets a #GCancellable to check before dispatching results.
-//
-// This function has one very specific purpose: the provided cancellable is
-// checked at the time of g_simple_async_result_propagate_error() If it is
-// cancelled, these functions will return an "Operation was cancelled" error
-// (G_IO_ERROR_CANCELLED).
-//
-// Implementors of cancellable asynchronous functions should use this in order
-// to provide a guarantee to their callers that cancelling an async operation
-// will reliably result in an error being returned for that operation (even if a
-// positive result for the operation has already been sent as an idle to the
-// main context to be dispatched).
-//
-// The checking described above is done regardless of any call to the unrelated
-// g_simple_async_result_set_handle_cancellation() function.
 func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
@@ -37472,7 +32719,6 @@ func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable) {
 	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
 }
 
-// SetFromError sets the result from a #GError.
 func (s simpleAsyncResult) SetFromError(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GError             // out
@@ -37484,12 +32730,6 @@ func (s simpleAsyncResult) SetFromError(err error) {
 	C.g_simple_async_result_set_from_error(_arg0, _arg1)
 }
 
-// SetHandleCancellation sets whether to handle cancellation within the
-// asynchronous operation.
-//
-// This function has nothing to do with
-// g_simple_async_result_set_check_cancellable(). It only refers to the
-// #GCancellable passed to g_simple_async_result_run_in_thread().
 func (s simpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
@@ -37502,8 +32742,6 @@ func (s simpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
 	C.g_simple_async_result_set_handle_cancellation(_arg0, _arg1)
 }
 
-// SetOpResGboolean sets the operation result to a boolean within the
-// asynchronous result.
 func (s simpleAsyncResult) SetOpResGboolean(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
@@ -37516,8 +32754,6 @@ func (s simpleAsyncResult) SetOpResGboolean(opRes bool) {
 	C.g_simple_async_result_set_op_res_gboolean(_arg0, _arg1)
 }
 
-// SetOpResGssize sets the operation result within the asynchronous result to
-// the given @op_res.
 func (s simpleAsyncResult) SetOpResGssize(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gssize              // out
@@ -37685,12 +32921,6 @@ func marshalSimpleProXYResolver(p uintptr) (interface{}, error) {
 	return WrapSimpleProXYResolver(obj), nil
 }
 
-// SetDefaultProXY sets the default proxy on @resolver, to be used for any URIs
-// that don't match ProxyResolver:ignore-hosts or a proxy set via
-// g_simple_proxy_resolver_set_uri_proxy().
-//
-// If @default_proxy starts with "socks://", ProxyResolver will treat it as
-// referring to all three of the socks5, socks4a, and socks4 proxy types.
 func (r simpleProXYResolver) SetDefaultProXY(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
@@ -37702,10 +32932,6 @@ func (r simpleProXYResolver) SetDefaultProXY(defaultProxy string) {
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 }
 
-// SetIgnoreHosts sets the list of ignored hosts.
-//
-// See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
-// argument is interpreted.
 func (r simpleProXYResolver) SetIgnoreHosts(ignoreHosts *string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 **C.gchar               // out
@@ -37717,13 +32943,6 @@ func (r simpleProXYResolver) SetIgnoreHosts(ignoreHosts *string) {
 	C.g_simple_proxy_resolver_set_ignore_hosts(_arg0, _arg1)
 }
 
-// SetURIProXY adds a URI-scheme-specific proxy to @resolver; URIs whose scheme
-// matches @uri_scheme (and which don't match ProxyResolver:ignore-hosts) will
-// be proxied via @proxy.
-//
-// As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
-// ProxyResolver will treat it as referring to all three of the socks5, socks4a,
-// and socks4 proxy types.
 func (r simpleProXYResolver) SetURIProXY(uriScheme string, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
@@ -38459,16 +33678,6 @@ func NewSocketFromFd(fd int) (Socket, error) {
 	return _socket, _goerr
 }
 
-// Accept: accept incoming connections on a connection-based socket. This
-// removes the first outstanding connection request from the listening socket
-// and creates a #GSocket object for it.
-//
-// The @socket must be bound to a local address with g_socket_bind() and must be
-// listening for incoming connections (g_socket_listen()).
-//
-// If there are no outstanding connections then the operation will block or
-// return G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled. To be notified
-// of an incoming connection, wait for the G_IO_IN condition.
 func (s socket) Accept(cancellable Cancellable) (Socket, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GCancellable // out
@@ -38489,28 +33698,6 @@ func (s socket) Accept(cancellable Cancellable) (Socket, error) {
 	return _ret, _goerr
 }
 
-// Bind: when a socket is created it is attached to an address family, but it
-// doesn't have an address in this family. g_socket_bind() assigns the address
-// (sometimes called name) of the socket.
-//
-// It is generally required to bind to a local address before you can receive
-// connections. (See g_socket_listen() and g_socket_accept() ). In certain
-// situations, you may also want to bind a socket that will be used to initiate
-// connections, though this is not normally required.
-//
-// If @socket is a TCP socket, then @allow_reuse controls the setting of the
-// `SO_REUSEADDR` socket option; normally it should be true for server sockets
-// (sockets that you will eventually call g_socket_accept() on), and false for
-// client sockets. (Failing to set this flag on a server socket may cause
-// g_socket_bind() to return G_IO_ERROR_ADDRESS_IN_USE if the server program is
-// stopped and then immediately restarted.)
-//
-// If @socket is a UDP socket, then @allow_reuse determines whether or not other
-// UDP sockets can be bound to the same address at the same time. In particular,
-// you can have several UDP sockets bound to the same address, and they will all
-// receive all of the multicast and broadcast packets sent to that address. (The
-// behavior of unicast UDP packets to an address with multiple listeners is not
-// defined.)
 func (s socket) Bind(address SocketAddress, allowReuse bool) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
@@ -38532,9 +33719,6 @@ func (s socket) Bind(address SocketAddress, allowReuse bool) error {
 	return _goerr
 }
 
-// CheckConnectResult checks and resets the pending connect error for the
-// socket. This is used to check for errors when g_socket_connect() is used in
-// non-blocking mode.
 func (s socket) CheckConnectResult() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
@@ -38550,32 +33734,6 @@ func (s socket) CheckConnectResult() error {
 	return _goerr
 }
 
-// Close closes the socket, shutting down any active connection.
-//
-// Closing a socket does not wait for all outstanding I/O operations to finish,
-// so the caller should not rely on them to be guaranteed to complete even if
-// the close returns with no error.
-//
-// Once the socket is closed, all other operations will return
-// G_IO_ERROR_CLOSED. Closing a socket multiple times will not return an error.
-//
-// Sockets will be automatically closed when the last reference is dropped, but
-// you might want to call this function to make sure resources are released as
-// early as possible.
-//
-// Beware that due to the way that TCP works, it is possible for recently-sent
-// data to be lost if either you close a socket while the G_IO_IN condition is
-// set, or else if the remote connection tries to send something to you after
-// you close the socket but before it has finished reading all of the data you
-// sent. There is no easy generic way to avoid this problem; the easiest fix is
-// to design the network protocol such that the client will never send data "out
-// of turn". Another solution is for the server to half-close the connection by
-// calling g_socket_shutdown() with only the @shutdown_write flag set, and then
-// wait for the client to notice this and close its side of the connection,
-// after which the server can safely call g_socket_close(). (This is what
-// Connection does if you call g_tcp_connection_set_graceful_disconnect(). But
-// of course, this only works if the client will close its connection after the
-// server does.)
 func (s socket) Close() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
@@ -38591,21 +33749,6 @@ func (s socket) Close() error {
 	return _goerr
 }
 
-// ConditionCheck checks on the readiness of @socket to perform operations. The
-// operations specified in @condition are checked for and masked against the
-// currently-satisfied conditions on @socket. The result is returned.
-//
-// Note that on Windows, it is possible for an operation to return
-// G_IO_ERROR_WOULD_BLOCK even immediately after g_socket_condition_check() has
-// claimed that the socket is ready for writing. Rather than calling
-// g_socket_condition_check() and then writing to the socket if it succeeds, it
-// is generally better to simply try writing to the socket right away, and try
-// again later if the initial attempt returns G_IO_ERROR_WOULD_BLOCK.
-//
-// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
-// conditions will always be set in the output if they are true.
-//
-// This call never blocks.
 func (s socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GSocket     // out
 	var _arg1 C.GIOCondition // out
@@ -38623,20 +33766,6 @@ func (s socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	return _ioCondition
 }
 
-// ConditionTimedWait waits for up to @timeout_us microseconds for @condition to
-// become true on @socket. If the condition is met, true is returned.
-//
-// If @cancellable is cancelled before the condition is met, or if @timeout_us
-// (or the socket's #GSocket:timeout) is reached before the condition is met,
-// then false is returned and @error, if non-nil, is set to the appropriate
-// value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-//
-// If you don't want a timeout, use g_socket_condition_wait(). (Alternatively,
-// you can pass -1 for @timeout_us.)
-//
-// Note that although @timeout_us is in microseconds for consistency with other
-// GLib APIs, this function actually only has millisecond resolution, and the
-// behavior is undefined if @timeout_us is not an exact number of milliseconds.
 func (s socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 C.GIOCondition  // out
@@ -38658,15 +33787,6 @@ func (s socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, 
 	return _goerr
 }
 
-// ConditionWait waits for @condition to become true on @socket. When the
-// condition is met, true is returned.
-//
-// If @cancellable is cancelled before the condition is met, or if the socket
-// has a timeout set and it is reached before the condition is met, then false
-// is returned and @error, if non-nil, is set to the appropriate value
-// (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-//
-// See also g_socket_condition_timed_wait().
 func (s socket) ConditionWait(condition glib.IOCondition, cancellable Cancellable) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 C.GIOCondition  // out
@@ -38686,22 +33806,6 @@ func (s socket) ConditionWait(condition glib.IOCondition, cancellable Cancellabl
 	return _goerr
 }
 
-// ConnectSocket: connect the socket to the specified remote address.
-//
-// For connection oriented socket this generally means we attempt to make a
-// connection to the @address. For a connection-less socket it sets the default
-// address for g_socket_send() and discards all incoming datagrams from other
-// sources.
-//
-// Generally connection oriented sockets can only connect once, but
-// connection-less sockets can connect multiple times to change the default
-// address.
-//
-// If the connect call needs to do network I/O it will block, unless
-// non-blocking I/O is enabled. Then G_IO_ERROR_PENDING is returned and the user
-// can be notified of the connection finishing by waiting for the G_IO_OUT
-// condition. The result of the connection must then be checked with
-// g_socket_check_connect_result().
 func (s socket) ConnectSocket(address SocketAddress, cancellable Cancellable) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
@@ -38721,8 +33825,6 @@ func (s socket) ConnectSocket(address SocketAddress, cancellable Cancellable) er
 	return _goerr
 }
 
-// ConnectionFactoryCreateConnection creates a Connection subclass of the right
-// type for @socket.
 func (s socket) ConnectionFactoryCreateConnection() SocketConnection {
 	var _arg0 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
@@ -38738,17 +33840,6 @@ func (s socket) ConnectionFactoryCreateConnection() SocketConnection {
 	return _socketConnection
 }
 
-// AvailableBytes: get the amount of data pending in the OS input buffer,
-// without blocking.
-//
-// If @socket is a UDP or SCTP socket, this will return the size of just the
-// next packet, even if additional packets are buffered after that one.
-//
-// Note that on Windows, this function is rather inefficient in the UDP case,
-// and so if you know any plausible upper bound on the size of the incoming
-// packet, it is better to just do a g_socket_receive() with a buffer of that
-// size, rather than calling g_socket_get_available_bytes() first and then doing
-// a receive of exactly the right size.
 func (s socket) AvailableBytes() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.gssize   // in
@@ -38764,8 +33855,6 @@ func (s socket) AvailableBytes() int {
 	return _gssize
 }
 
-// Blocking gets the blocking mode of the socket. For details on blocking I/O,
-// see g_socket_set_blocking().
 func (s socket) Blocking() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -38783,8 +33872,6 @@ func (s socket) Blocking() bool {
 	return _ok
 }
 
-// Broadcast gets the broadcast setting on @socket; if true, it is possible to
-// send packets to broadcast addresses.
 func (s socket) Broadcast() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -38802,22 +33889,6 @@ func (s socket) Broadcast() bool {
 	return _ok
 }
 
-// Credentials returns the credentials of the foreign process connected to this
-// socket, if any (e.g. it is only supported for G_SOCKET_FAMILY_UNIX sockets).
-//
-// If this operation isn't supported on the OS, the method fails with the
-// G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented by reading the
-// SO_PEERCRED option on the underlying socket.
-//
-// This method can be expected to be available on the following platforms:
-//
-// - Linux since GLib 2.26 - OpenBSD since GLib 2.30 - Solaris, Illumos and
-// OpenSolaris since GLib 2.40 - NetBSD since GLib 2.42 - macOS, tvOS, iOS since
-// GLib 2.66
-//
-// Other ways to obtain credentials from a foreign peer includes the
-// CredentialsMessage type and g_unix_connection_send_credentials() /
-// g_unix_connection_receive_credentials() functions.
 func (s socket) Credentials() (Credentials, error) {
 	var _arg0 *C.GSocket      // out
 	var _cret *C.GCredentials // in
@@ -38836,7 +33907,6 @@ func (s socket) Credentials() (Credentials, error) {
 	return _credentials, _goerr
 }
 
-// Family gets the socket family of the socket.
 func (s socket) Family() SocketFamily {
 	var _arg0 *C.GSocket      // out
 	var _cret C.GSocketFamily // in
@@ -38852,10 +33922,6 @@ func (s socket) Family() SocketFamily {
 	return _socketFamily
 }
 
-// Fd returns the underlying OS socket object. On unix this is a socket file
-// descriptor, and on Windows this is a Winsock2 SOCKET handle. This may be
-// useful for doing platform specific or otherwise unusual operations on the
-// socket.
 func (s socket) Fd() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.int      // in
@@ -38871,8 +33937,6 @@ func (s socket) Fd() int {
 	return _gint
 }
 
-// Keepalive gets the keepalive mode of the socket. For details on this, see
-// g_socket_set_keepalive().
 func (s socket) Keepalive() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -38890,8 +33954,6 @@ func (s socket) Keepalive() bool {
 	return _ok
 }
 
-// ListenBacklog gets the listen backlog setting of the socket. For details on
-// this, see g_socket_set_listen_backlog().
 func (s socket) ListenBacklog() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.gint     // in
@@ -38907,9 +33969,6 @@ func (s socket) ListenBacklog() int {
 	return _gint
 }
 
-// LocalAddress: try to get the local address of a bound socket. This is only
-// useful if the socket has been bound to a local address, either explicitly or
-// implicitly when connecting.
 func (s socket) LocalAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocket        // out
 	var _cret *C.GSocketAddress // in
@@ -38928,9 +33987,6 @@ func (s socket) LocalAddress() (SocketAddress, error) {
 	return _socketAddress, _goerr
 }
 
-// MulticastLoopback gets the multicast loopback setting on @socket; if true
-// (the default), outgoing multicast packets will be looped back to multicast
-// listeners on the same host.
 func (s socket) MulticastLoopback() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -38948,8 +34004,6 @@ func (s socket) MulticastLoopback() bool {
 	return _ok
 }
 
-// MulticastTTL gets the multicast time-to-live setting on @socket; see
-// g_socket_set_multicast_ttl() for more details.
 func (s socket) MulticastTTL() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
@@ -38965,18 +34019,6 @@ func (s socket) MulticastTTL() uint {
 	return _guint
 }
 
-// Option gets the value of an integer-valued option on @socket, as with
-// getsockopt(). (If you need to fetch a non-integer-valued option, you will
-// need to call getsockopt() directly.)
-//
-// The [<gio/gnetworking.h>][gio-gnetworking.h] header pulls in system headers
-// that will define most of the standard/portable socket options. For unusual
-// socket protocols or platform-dependent options, you may need to include
-// additional headers.
-//
-// Note that even for socket options that are a single byte in size, @value is
-// still a pointer to a #gint variable, not a #guchar; g_socket_get_option()
-// will handle the conversion internally.
 func (s socket) Option(level int, optname int) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -38999,8 +34041,6 @@ func (s socket) Option(level int, optname int) (int, error) {
 	return _value, _goerr
 }
 
-// Protocol gets the socket protocol id the socket was created with. In case the
-// protocol is unknown, -1 is returned.
 func (s socket) Protocol() SocketProtocol {
 	var _arg0 *C.GSocket        // out
 	var _cret C.GSocketProtocol // in
@@ -39016,8 +34056,6 @@ func (s socket) Protocol() SocketProtocol {
 	return _socketProtocol
 }
 
-// RemoteAddress: try to get the remote address of a connected socket. This is
-// only useful for connection oriented sockets that have been connected.
 func (s socket) RemoteAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocket        // out
 	var _cret *C.GSocketAddress // in
@@ -39036,7 +34074,6 @@ func (s socket) RemoteAddress() (SocketAddress, error) {
 	return _socketAddress, _goerr
 }
 
-// SocketType gets the socket type of the socket.
 func (s socket) SocketType() SocketType {
 	var _arg0 *C.GSocket    // out
 	var _cret C.GSocketType // in
@@ -39052,8 +34089,6 @@ func (s socket) SocketType() SocketType {
 	return _socketType
 }
 
-// Timeout gets the timeout setting of the socket. For details on this, see
-// g_socket_set_timeout().
 func (s socket) Timeout() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
@@ -39069,8 +34104,6 @@ func (s socket) Timeout() uint {
 	return _guint
 }
 
-// TTL gets the unicast time-to-live setting on @socket; see g_socket_set_ttl()
-// for more details.
 func (s socket) TTL() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
@@ -39086,7 +34119,6 @@ func (s socket) TTL() uint {
 	return _guint
 }
 
-// IsClosed checks whether a socket is closed.
 func (s socket) IsClosed() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -39104,13 +34136,6 @@ func (s socket) IsClosed() bool {
 	return _ok
 }
 
-// IsConnected: check whether the socket is connected. This is only useful for
-// connection-oriented sockets.
-//
-// If using g_socket_shutdown(), this function will return true until the socket
-// has been shut down for reading and writing. If you do a non-blocking connect,
-// this function will not return true until after you call
-// g_socket_check_connect_result().
 func (s socket) IsConnected() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -39128,19 +34153,6 @@ func (s socket) IsConnected() bool {
 	return _ok
 }
 
-// JoinMulticastGroup registers @socket to receive multicast messages sent to
-// @group. @socket must be a G_SOCKET_TYPE_DATAGRAM socket, and must have been
-// bound to an appropriate interface and port with g_socket_bind().
-//
-// If @iface is nil, the system will automatically pick an interface to bind to
-// based on @group.
-//
-// If @source_specific is true, source-specific multicast as defined in RFC 4604
-// is used. Note that on older platforms this may fail with a
-// G_IO_ERROR_NOT_SUPPORTED error.
-//
-// To bind to a given source-specific multicast address, use
-// g_socket_join_multicast_group_ssm() instead.
 func (s socket) JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -39165,20 +34177,6 @@ func (s socket) JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface
 	return _goerr
 }
 
-// JoinMulticastGroupSSM registers @socket to receive multicast messages sent to
-// @group. @socket must be a G_SOCKET_TYPE_DATAGRAM socket, and must have been
-// bound to an appropriate interface and port with g_socket_bind().
-//
-// If @iface is nil, the system will automatically pick an interface to bind to
-// based on @group.
-//
-// If @source_specific is not nil, use source-specific multicast as defined in
-// RFC 4604. Note that on older platforms this may fail with a
-// G_IO_ERROR_NOT_SUPPORTED error.
-//
-// Note that this function can be called multiple times for the same @group with
-// different @source_specific in order to receive multicast packets from more
-// than one source.
 func (s socket) JoinMulticastGroupSSM(group InetAddress, sourceSpecific InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -39201,15 +34199,6 @@ func (s socket) JoinMulticastGroupSSM(group InetAddress, sourceSpecific InetAddr
 	return _goerr
 }
 
-// LeaveMulticastGroup removes @socket from the multicast group defined by
-// @group, @iface, and @source_specific (which must all have the same values
-// they had when you joined the group).
-//
-// @socket remains bound to its address and port, and can still receive unicast
-// messages after calling this.
-//
-// To unbind to a given source-specific multicast address, use
-// g_socket_leave_multicast_group_ssm() instead.
 func (s socket) LeaveMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -39234,12 +34223,6 @@ func (s socket) LeaveMulticastGroup(group InetAddress, sourceSpecific bool, ifac
 	return _goerr
 }
 
-// LeaveMulticastGroupSSM removes @socket from the multicast group defined by
-// @group, @iface, and @source_specific (which must all have the same values
-// they had when you joined the group).
-//
-// @socket remains bound to its address and port, and can still receive unicast
-// messages after calling this.
 func (s socket) LeaveMulticastGroupSSM(group InetAddress, sourceSpecific InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -39262,14 +34245,6 @@ func (s socket) LeaveMulticastGroupSSM(group InetAddress, sourceSpecific InetAdd
 	return _goerr
 }
 
-// Listen marks the socket as a server socket, i.e. a socket that is used to
-// accept incoming requests using g_socket_accept().
-//
-// Before calling this the socket must be bound to a local address using
-// g_socket_bind().
-//
-// To set the maximum amount of outstanding clients, use
-// g_socket_set_listen_backlog().
 func (s socket) Listen() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
@@ -39285,27 +34260,6 @@ func (s socket) Listen() error {
 	return _goerr
 }
 
-// Receive: receive data (up to @size bytes) from a socket. This is mainly used
-// by connection-oriented sockets; it is identical to g_socket_receive_from()
-// with @address set to nil.
-//
-// For G_SOCKET_TYPE_DATAGRAM and G_SOCKET_TYPE_SEQPACKET sockets,
-// g_socket_receive() will always read either 0 or 1 complete messages from the
-// socket. If the received message is too large to fit in @buffer, then the data
-// beyond @size bytes will be discarded, without any explicit indication that
-// this has occurred.
-//
-// For G_SOCKET_TYPE_STREAM sockets, g_socket_receive() can return any number of
-// bytes, up to @size. If more than @size bytes have been received, the
-// additional data will be returned in future calls to g_socket_receive().
-//
-// If the socket is in blocking mode the call will block until there is some
-// data to receive, the connection is closed, or there is an error. If there is
-// no data available and the socket is in non-blocking mode, a
-// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data is
-// available, wait for the G_IO_IN condition.
-//
-// On error -1 is returned and @error is set accordingly.
 func (s socket) Receive(cancellable Cancellable) ([]byte, int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gchar
@@ -39336,12 +34290,6 @@ func (s socket) Receive(cancellable Cancellable) ([]byte, int, error) {
 	return _buffer, _gssize, _goerr
 }
 
-// ReceiveFrom: receive data (up to @size bytes) from a socket.
-//
-// If @address is non-nil then @address will be set equal to the source address
-// of the received packet. @address is owned by the caller.
-//
-// See g_socket_receive() for additional information.
 func (s socket) ReceiveFrom(cancellable Cancellable) (SocketAddress, []byte, int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // in
@@ -39375,52 +34323,6 @@ func (s socket) ReceiveFrom(cancellable Cancellable) (SocketAddress, []byte, int
 	return _address, _buffer, _gssize, _goerr
 }
 
-// ReceiveMessages: receive multiple data messages from @socket in one go. This
-// is the most complicated and fully-featured version of this call. For easier
-// use, see g_socket_receive(), g_socket_receive_from(), and
-// g_socket_receive_message().
-//
-// @messages must point to an array of Message structs and @num_messages must be
-// the length of this array. Each Message contains a pointer to an array of
-// Vector structs describing the buffers that the data received in each message
-// will be written to. Using multiple Vectors is more memory-efficient than
-// manually copying data out of a single buffer to multiple sources, and more
-// system-call-efficient than making multiple calls to g_socket_receive(), such
-// as in scenarios where a lot of data packets need to be received (e.g.
-// high-bandwidth video streaming over RTP/UDP).
-//
-// @flags modify how all messages are received. The commonly available arguments
-// for this are available in the MsgFlags enum, but the values there are the
-// same as the system values, and the flags are passed in as-is, so you can pass
-// in system-specific flags too. These flags affect the overall receive
-// operation. Flags affecting individual messages are returned in Message.flags.
-//
-// The other members of Message are treated as described in its documentation.
-//
-// If #GSocket:blocking is true the call will block until @num_messages have
-// been received, or the end of the stream is reached.
-//
-// If #GSocket:blocking is false the call will return up to @num_messages
-// without blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
-// operating system to be received.
-//
-// In blocking mode, if #GSocket:timeout is positive and is reached before any
-// messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up to
-// @num_messages are returned. (Note: This is effectively the behaviour of
-// `MSG_WAITFORONE` with recvmmsg().)
-//
-// To be notified when messages are available, wait for the G_IO_IN condition.
-// Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
-// g_socket_receive_messages() even if you were previously notified of a G_IO_IN
-// condition.
-//
-// If the remote peer closes the connection, any messages queued in the
-// operating system will be returned, and subsequent calls to
-// g_socket_receive_messages() will return 0 (with no error set).
-//
-// On error -1 is returned and @error is set accordingly. An error will only be
-// returned if zero messages could be received; otherwise the number of messages
-// successfully received before the error will be returned.
 func (s socket) ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 *C.GInputMessage
@@ -39447,9 +34349,6 @@ func (s socket) ReceiveMessages(messages []InputMessage, flags int, cancellable 
 	return _gint, _goerr
 }
 
-// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
-// except that the choice of blocking or non-blocking behavior is determined by
-// the @blocking argument rather than by @socket's properties.
 func (s socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) ([]byte, int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gchar
@@ -39484,20 +34383,6 @@ func (s socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) ([]b
 	return _buffer, _gssize, _goerr
 }
 
-// Send tries to send @size bytes from @buffer on the socket. This is mainly
-// used by connection-oriented sockets; it is identical to g_socket_send_to()
-// with @address set to nil.
-//
-// If the socket is in blocking mode the call will block until there is space
-// for the data in the socket queue. If there is no space available and the
-// socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error will be
-// returned. To be notified when space is available, wait for the G_IO_OUT
-// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
-// g_socket_send() even if you were previously notified of a G_IO_OUT condition.
-// (On Windows in particular, this is very common due to the way the underlying
-// APIs work.)
-//
-// On error -1 is returned and @error is set accordingly.
 func (s socket) Send(buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 *C.gchar
@@ -39522,45 +34407,6 @@ func (s socket) Send(buffer []byte, cancellable Cancellable) (int, error) {
 	return _gssize, _goerr
 }
 
-// SendMessage: send data to @address on @socket. For sending multiple messages
-// see g_socket_send_messages(); for easier use, see g_socket_send() and
-// g_socket_send_to().
-//
-// If @address is nil then the message is sent to the default receiver (set by
-// g_socket_connect()).
-//
-// @vectors must point to an array of Vector structs and @num_vectors must be
-// the length of this array. (If @num_vectors is -1, then @vectors is assumed to
-// be terminated by a Vector with a nil buffer pointer.) The Vector structs
-// describe the buffers that the sent data will be gathered from. Using multiple
-// Vectors is more memory-efficient than manually copying data from multiple
-// sources into a single buffer, and more network-efficient than making multiple
-// calls to g_socket_send().
-//
-// @messages, if non-nil, is taken to point to an array of @num_messages
-// ControlMessage instances. These correspond to the control messages to be sent
-// on the socket. If @num_messages is -1 then @messages is treated as a
-// nil-terminated array.
-//
-// @flags modify how the message is sent. The commonly available arguments for
-// this are available in the MsgFlags enum, but the values there are the same as
-// the system values, and the flags are passed in as-is, so you can pass in
-// system-specific flags too.
-//
-// If the socket is in blocking mode the call will block until there is space
-// for the data in the socket queue. If there is no space available and the
-// socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error will be
-// returned. To be notified when space is available, wait for the G_IO_OUT
-// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
-// g_socket_send() even if you were previously notified of a G_IO_OUT condition.
-// (On Windows in particular, this is very common due to the way the underlying
-// APIs work.)
-//
-// The sum of the sizes of each Vector in vectors must not be greater than
-// G_MAXSSIZE. If the message can be larger than this, then it is mandatory to
-// use the g_socket_send_message_with_timeout() function.
-//
-// On error -1 is returned and @error is set accordingly.
 func (s socket) SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
@@ -39600,13 +34446,6 @@ func (s socket) SendMessage(address SocketAddress, vectors []OutputVector, messa
 	return _gssize, _goerr
 }
 
-// SendMessageWithTimeout: this behaves exactly the same as
-// g_socket_send_message(), except that the choice of timeout behavior is
-// determined by the @timeout_us argument rather than by @socket's properties.
-//
-// On error G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly,
-// or if the socket is currently not writable G_POLLABLE_RETURN_WOULD_BLOCK is
-// returned. @bytes_written will contain 0 in both cases.
 func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (uint, PollableReturn, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
@@ -39651,39 +34490,6 @@ func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVe
 	return _bytesWritten, _pollableReturn, _goerr
 }
 
-// SendMessages: send multiple data messages from @socket in one go. This is the
-// most complicated and fully-featured version of this call. For easier use, see
-// g_socket_send(), g_socket_send_to(), and g_socket_send_message().
-//
-// @messages must point to an array of Message structs and @num_messages must be
-// the length of this array. Each Message contains an address to send the data
-// to, and a pointer to an array of Vector structs to describe the buffers that
-// the data to be sent for each message will be gathered from. Using multiple
-// Vectors is more memory-efficient than manually copying data from multiple
-// sources into a single buffer, and more network-efficient than making multiple
-// calls to g_socket_send(). Sending multiple messages in one go avoids the
-// overhead of making a lot of syscalls in scenarios where a lot of data packets
-// need to be sent (e.g. high-bandwidth video streaming over RTP/UDP), or where
-// the same data needs to be sent to multiple recipients.
-//
-// @flags modify how the message is sent. The commonly available arguments for
-// this are available in the MsgFlags enum, but the values there are the same as
-// the system values, and the flags are passed in as-is, so you can pass in
-// system-specific flags too.
-//
-// If the socket is in blocking mode the call will block until there is space
-// for all the data in the socket queue. If there is no space available and the
-// socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error will be
-// returned if no data was written at all, otherwise the number of messages sent
-// will be returned. To be notified when space is available, wait for the
-// G_IO_OUT condition. Note though that you may still receive
-// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
-// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-// common due to the way the underlying APIs work.)
-//
-// On error -1 is returned and @error is set accordingly. An error will only be
-// returned if zero messages could be sent; otherwise the number of messages
-// successfully sent before the error will be returned.
 func (s socket) SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 *C.GOutputMessage
@@ -39710,10 +34516,6 @@ func (s socket) SendMessages(messages []OutputMessage, flags int, cancellable Ca
 	return _gint, _goerr
 }
 
-// SendTo tries to send @size bytes from @buffer to @address. If @address is nil
-// then the message is sent to the default receiver (set by g_socket_connect()).
-//
-// See g_socket_send() for additional information.
 func (s socket) SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
@@ -39740,9 +34542,6 @@ func (s socket) SendTo(address SocketAddress, buffer []byte, cancellable Cancell
 	return _gssize, _goerr
 }
 
-// SendWithBlocking: this behaves exactly the same as g_socket_send(), except
-// that the choice of blocking or non-blocking behavior is determined by the
-// @blocking argument rather than by @socket's properties.
 func (s socket) SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 *C.gchar
@@ -39771,14 +34570,6 @@ func (s socket) SendWithBlocking(buffer []byte, blocking bool, cancellable Cance
 	return _gssize, _goerr
 }
 
-// SetBlocking sets the blocking mode of the socket. In blocking mode all
-// operations (which don’t take an explicit blocking parameter) block until they
-// succeed or there is an error. In non-blocking mode all functions return
-// results immediately or with a G_IO_ERROR_WOULD_BLOCK error.
-//
-// All sockets are created in blocking mode. However, note that the platform
-// level socket is always non-blocking, and blocking mode is a GSocket level
-// feature.
 func (s socket) SetBlocking(blocking bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -39791,8 +34582,6 @@ func (s socket) SetBlocking(blocking bool) {
 	C.g_socket_set_blocking(_arg0, _arg1)
 }
 
-// SetBroadcast sets whether @socket should allow sending to broadcast
-// addresses. This is false by default.
 func (s socket) SetBroadcast(broadcast bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -39805,20 +34594,6 @@ func (s socket) SetBroadcast(broadcast bool) {
 	C.g_socket_set_broadcast(_arg0, _arg1)
 }
 
-// SetKeepalive sets or unsets the SO_KEEPALIVE flag on the underlying socket.
-// When this flag is set on a socket, the system will attempt to verify that the
-// remote socket endpoint is still present if a sufficiently long period of time
-// passes with no data being exchanged. If the system is unable to verify the
-// presence of the remote endpoint, it will automatically close the connection.
-//
-// This option is only functional on certain kinds of sockets. (Notably,
-// G_SOCKET_PROTOCOL_TCP sockets.)
-//
-// The exact time between pings is system- and protocol-dependent, but will
-// normally be at least two hours. Most commonly, you would set this flag on a
-// server socket if you want to allow clients to remain idle for long periods of
-// time, but also want to ensure that connections are eventually
-// garbage-collected if clients crash or become unreachable.
 func (s socket) SetKeepalive(keepalive bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -39831,13 +34606,6 @@ func (s socket) SetKeepalive(keepalive bool) {
 	C.g_socket_set_keepalive(_arg0, _arg1)
 }
 
-// SetListenBacklog sets the maximum number of outstanding connections allowed
-// when listening on this socket. If more clients than this are connecting to
-// the socket and the application is not handling them on time then the new
-// connections will be refused.
-//
-// Note that this must be called before g_socket_listen() and has no effect if
-// called after that.
 func (s socket) SetListenBacklog(backlog int) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -39848,9 +34616,6 @@ func (s socket) SetListenBacklog(backlog int) {
 	C.g_socket_set_listen_backlog(_arg0, _arg1)
 }
 
-// SetMulticastLoopback sets whether outgoing multicast packets will be received
-// by sockets listening on that multicast address on the same host. This is true
-// by default.
 func (s socket) SetMulticastLoopback(loopback bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -39863,9 +34628,6 @@ func (s socket) SetMulticastLoopback(loopback bool) {
 	C.g_socket_set_multicast_loopback(_arg0, _arg1)
 }
 
-// SetMulticastTTL sets the time-to-live for outgoing multicast datagrams on
-// @socket. By default, this is 1, meaning that multicast packets will not leave
-// the local network.
 func (s socket) SetMulticastTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -39876,14 +34638,6 @@ func (s socket) SetMulticastTTL(ttl uint) {
 	C.g_socket_set_multicast_ttl(_arg0, _arg1)
 }
 
-// SetOption sets the value of an integer-valued option on @socket, as with
-// setsockopt(). (If you need to set a non-integer-valued option, you will need
-// to call setsockopt() directly.)
-//
-// The [<gio/gnetworking.h>][gio-gnetworking.h] header pulls in system headers
-// that will define most of the standard/portable socket options. For unusual
-// socket protocols or platform-dependent options, you may need to include
-// additional headers.
 func (s socket) SetOption(level int, optname int, value int) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -39905,24 +34659,6 @@ func (s socket) SetOption(level int, optname int, value int) error {
 	return _goerr
 }
 
-// SetTimeout sets the time in seconds after which I/O operations on @socket
-// will time out if they have not yet completed.
-//
-// On a blocking socket, this means that any blocking #GSocket operation will
-// time out after @timeout seconds of inactivity, returning
-// G_IO_ERROR_TIMED_OUT.
-//
-// On a non-blocking socket, calls to g_socket_condition_wait() will also fail
-// with G_IO_ERROR_TIMED_OUT after the given time. Sources created with
-// g_socket_create_source() will trigger after @timeout seconds of inactivity,
-// with the requested condition set, at which point calling g_socket_receive(),
-// g_socket_send(), g_socket_check_connect_result(), etc, will fail with
-// G_IO_ERROR_TIMED_OUT.
-//
-// If @timeout is 0 (the default), operations will never time out on their own.
-//
-// Note that if an I/O operation is interrupted by a signal, this may cause the
-// timeout to be reset.
 func (s socket) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -39933,8 +34669,6 @@ func (s socket) SetTimeout(timeout uint) {
 	C.g_socket_set_timeout(_arg0, _arg1)
 }
 
-// SetTTL sets the time-to-live for outgoing unicast packets on @socket. By
-// default the platform-specific default value is used.
 func (s socket) SetTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -39945,20 +34679,6 @@ func (s socket) SetTTL(ttl uint) {
 	C.g_socket_set_ttl(_arg0, _arg1)
 }
 
-// Shutdown: shut down part or all of a full-duplex connection.
-//
-// If @shutdown_read is true then the receiving side of the connection is shut
-// down, and further reading is disallowed.
-//
-// If @shutdown_write is true then the sending side of the connection is shut
-// down, and further writing is disallowed.
-//
-// It is allowed for both @shutdown_read and @shutdown_write to be true.
-//
-// One example where it is useful to shut down only one side of a connection is
-// graceful disconnect for TCP connections where you close the sending side,
-// then wait for the other side to close the connection, thus ensuring that the
-// other side saw all sent data.
 func (s socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -39982,14 +34702,6 @@ func (s socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
 	return _goerr
 }
 
-// SpeaksIPv4 checks if a socket is capable of speaking IPv4.
-//
-// IPv4 sockets are capable of speaking IPv4. On some operating systems and
-// under some combinations of circumstances IPv6 sockets are also capable of
-// speaking IPv4. See RFC 3493 section 3.7 for more information.
-//
-// No other types of sockets are currently considered as being capable of
-// speaking IPv4.
 func (s socket) SpeaksIPv4() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -40044,7 +34756,6 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 	return WrapSocketAddress(obj), nil
 }
 
-// Family gets the socket family type of @address.
 func (a socketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
@@ -40060,8 +34771,6 @@ func (a socketAddress) Family() SocketFamily {
 	return _socketFamily
 }
 
-// NativeSize gets the size of @address's native struct sockaddr. You can use
-// this to allocate memory to pass to g_socket_address_to_native().
 func (a socketAddress) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.gssize          // in
@@ -40132,17 +34841,6 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	return WrapSocketAddressEnumerator(obj), nil
 }
 
-// Next retrieves the next Address from @enumerator. Note that this may block
-// for some amount of time. (Eg, a Address may need to do a DNS lookup before it
-// can return an address.) Use g_socket_address_enumerator_next_async() if you
-// need to avoid blocking.
-//
-// If @enumerator is expected to yield addresses, but for some reason is unable
-// to (eg, because of a DNS error), then the first call to
-// g_socket_address_enumerator_next() will return an appropriate error in
-// *@error. However, if the first call to g_socket_address_enumerator_next()
-// succeeds, then any further internal errors (other than @cancellable being
-// triggered) will be ignored.
 func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
@@ -40163,9 +34861,6 @@ func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, e
 	return _socketAddress, _goerr
 }
 
-// NextFinish retrieves the result of a completed call to
-// g_socket_address_enumerator_next_async(). See
-// g_socket_address_enumerator_next() for more information about error handling.
 func (e socketAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out
@@ -40456,23 +35151,6 @@ func NewSocketClient() SocketClient {
 	return _socketClient
 }
 
-// AddApplicationProXY: enable proxy protocols to be handled by the application.
-// When the indicated proxy protocol is returned by the Resolver, Client will
-// consider this protocol as supported but will not try to find a #GProxy
-// instance to handle handshaking. The application must check for this case by
-// calling g_socket_connection_get_remote_address() on the returned Connection,
-// and seeing if it's a Address of the appropriate type, to determine whether or
-// not it needs to handle the proxy handshaking itself.
-//
-// This should be used for proxy protocols that are dialects of another protocol
-// such as HTTP proxy. It also allows cohabitation of proxy protocols that are
-// reused between protocols. A good example is HTTP. It can be used to proxy
-// HTTP, FTP and Gopher and can also be use as generic socket proxy through the
-// HTTP CONNECT method.
-//
-// When the proxy is detected as being an application proxy, TLS handshake will
-// be skipped. This is required to let the application do the proxy specific
-// handshake.
 func (c socketClient) AddApplicationProXY(protocol string) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 *C.gchar         // out
@@ -40484,25 +35162,6 @@ func (c socketClient) AddApplicationProXY(protocol string) {
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
 }
 
-// ConnectSocketClient tries to resolve the @connectable and make a network
-// connection to it.
-//
-// Upon a successful connection, a new Connection is constructed and returned.
-// The caller owns this new object and must drop their reference to it when
-// finished with it.
-//
-// The type of the Connection object returned depends on the type of the
-// underlying socket that is used. For instance, for a TCP/IP connection it will
-// be a Connection.
-//
-// The socket created will be the same family as the address that the
-// @connectable resolves to, unless family is set with
-// g_socket_client_set_family() or indirectly via
-// g_socket_client_set_local_address(). The socket type defaults to
-// G_SOCKET_TYPE_STREAM but can be set with g_socket_client_set_socket_type().
-//
-// If a local address is specified with g_socket_client_set_local_address() the
-// socket will be bound to this address before connecting.
 func (c socketClient) ConnectSocketClient(connectable SocketConnectable, cancellable Cancellable) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.GSocketConnectable // out
@@ -40525,8 +35184,6 @@ func (c socketClient) ConnectSocketClient(connectable SocketConnectable, cancell
 	return _socketConnection, _goerr
 }
 
-// ConnectFinish finishes an async connect operation. See
-// g_socket_client_connect_async()
 func (c socketClient) ConnectFinish(result AsyncResult) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -40547,35 +35204,6 @@ func (c socketClient) ConnectFinish(result AsyncResult) (SocketConnection, error
 	return _socketConnection, _goerr
 }
 
-// ConnectToHost: this is a helper function for g_socket_client_connect().
-//
-// Attempts to create a TCP connection to the named host.
-//
-// @host_and_port may be in any of a number of recognized formats; an IPv6
-// address, an IPv4 address, or a domain name (in which case a DNS lookup is
-// performed). Quoting with [] is supported for all address types. A port
-// override may be specified in the usual way with a colon. Ports may be given
-// as decimal numbers or symbolic names (in which case an /etc/services lookup
-// is performed).
-//
-// If no port override is given in @host_and_port then @default_port will be
-// used as the port number to connect to.
-//
-// In general, @host_and_port is expected to be provided by the user (allowing
-// them to give the hostname, and a port override if necessary) and
-// @default_port is expected to be provided by the application.
-//
-// In the case that an IP address is given, a single connection attempt is made.
-// In the case that a name is given, multiple connection attempts may be made,
-// in turn and according to the number of address records in DNS, until a
-// connection succeeds.
-//
-// Upon a successful connection, a new Connection is constructed and returned.
-// The caller owns this new object and must drop their reference to it when
-// finished with it.
-//
-// In the event of any failure (DNS error, service not found, no hosts
-// connectable) nil is returned and @error (if non-nil) is set accordingly.
 func (c socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
@@ -40601,8 +35229,6 @@ func (c socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, canc
 	return _socketConnection, _goerr
 }
 
-// ConnectToHostFinish finishes an async connect operation. See
-// g_socket_client_connect_to_host_async()
 func (c socketClient) ConnectToHostFinish(result AsyncResult) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -40623,19 +35249,6 @@ func (c socketClient) ConnectToHostFinish(result AsyncResult) (SocketConnection,
 	return _socketConnection, _goerr
 }
 
-// ConnectToService attempts to create a TCP connection to a service.
-//
-// This call looks up the SRV record for @service at @domain for the "tcp"
-// protocol. It then attempts to connect, in turn, to each of the hosts
-// providing the service until either a connection succeeds or there are no
-// hosts remaining.
-//
-// Upon a successful connection, a new Connection is constructed and returned.
-// The caller owns this new object and must drop their reference to it when
-// finished with it.
-//
-// In the event of any failure (DNS error, service not found, no hosts
-// connectable) nil is returned and @error (if non-nil) is set accordingly.
 func (c socketClient) ConnectToService(domain string, service string, cancellable Cancellable) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
@@ -40662,8 +35275,6 @@ func (c socketClient) ConnectToService(domain string, service string, cancellabl
 	return _socketConnection, _goerr
 }
 
-// ConnectToServiceFinish finishes an async connect operation. See
-// g_socket_client_connect_to_service_async()
 func (c socketClient) ConnectToServiceFinish(result AsyncResult) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -40684,25 +35295,6 @@ func (c socketClient) ConnectToServiceFinish(result AsyncResult) (SocketConnecti
 	return _socketConnection, _goerr
 }
 
-// ConnectToURI: this is a helper function for g_socket_client_connect().
-//
-// Attempts to create a TCP connection with a network URI.
-//
-// @uri may be any valid URI containing an "authority" (hostname/port)
-// component. If a port is not specified in the URI, @default_port will be used.
-// TLS will be negotiated if Client:tls is true. (Client does not know to
-// automatically assume TLS for certain URI schemes.)
-//
-// Using this rather than g_socket_client_connect() or
-// g_socket_client_connect_to_host() allows Client to determine when to use
-// application-specific proxy protocols.
-//
-// Upon a successful connection, a new Connection is constructed and returned.
-// The caller owns this new object and must drop their reference to it when
-// finished with it.
-//
-// In the event of any failure (DNS error, service not found, no hosts
-// connectable) nil is returned and @error (if non-nil) is set accordingly.
 func (c socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
@@ -40728,8 +35320,6 @@ func (c socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable C
 	return _socketConnection, _goerr
 }
 
-// ConnectToURIFinish finishes an async connect operation. See
-// g_socket_client_connect_to_uri_async()
 func (c socketClient) ConnectToURIFinish(result AsyncResult) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -40750,8 +35340,6 @@ func (c socketClient) ConnectToURIFinish(result AsyncResult) (SocketConnection, 
 	return _socketConnection, _goerr
 }
 
-// EnableProXY gets the proxy enable state; see
-// g_socket_client_set_enable_proxy()
 func (c socketClient) EnableProXY() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
@@ -40769,9 +35357,6 @@ func (c socketClient) EnableProXY() bool {
 	return _ok
 }
 
-// Family gets the socket family of the socket client.
-//
-// See g_socket_client_set_family() for details.
 func (c socketClient) Family() SocketFamily {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.GSocketFamily  // in
@@ -40787,9 +35372,6 @@ func (c socketClient) Family() SocketFamily {
 	return _socketFamily
 }
 
-// LocalAddress gets the local address of the socket client.
-//
-// See g_socket_client_set_local_address() for details.
 func (c socketClient) LocalAddress() SocketAddress {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GSocketAddress // in
@@ -40805,9 +35387,6 @@ func (c socketClient) LocalAddress() SocketAddress {
 	return _socketAddress
 }
 
-// Protocol gets the protocol name type of the socket client.
-//
-// See g_socket_client_set_protocol() for details.
 func (c socketClient) Protocol() SocketProtocol {
 	var _arg0 *C.GSocketClient  // out
 	var _cret C.GSocketProtocol // in
@@ -40823,9 +35402,6 @@ func (c socketClient) Protocol() SocketProtocol {
 	return _socketProtocol
 }
 
-// ProXYResolver gets the Resolver being used by @client. Normally, this will be
-// the resolver returned by g_proxy_resolver_get_default(), but you can override
-// it with g_socket_client_set_proxy_resolver().
 func (c socketClient) ProXYResolver() ProXYResolver {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
@@ -40841,9 +35417,6 @@ func (c socketClient) ProXYResolver() ProXYResolver {
 	return _proxyResolver
 }
 
-// SocketType gets the socket type of the socket client.
-//
-// See g_socket_client_set_socket_type() for details.
 func (c socketClient) SocketType() SocketType {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.GSocketType    // in
@@ -40859,9 +35432,6 @@ func (c socketClient) SocketType() SocketType {
 	return _socketType
 }
 
-// Timeout gets the I/O timeout time for sockets created by @client.
-//
-// See g_socket_client_set_timeout() for details.
 func (c socketClient) Timeout() uint {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.guint          // in
@@ -40877,8 +35447,6 @@ func (c socketClient) Timeout() uint {
 	return _guint
 }
 
-// TLS gets whether @client creates TLS connections. See
-// g_socket_client_set_tls() for details.
 func (c socketClient) TLS() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
@@ -40896,8 +35464,6 @@ func (c socketClient) TLS() bool {
 	return _ok
 }
 
-// TLSValidationFlags gets the TLS validation flags used creating TLS
-// connections via @client.
 func (c socketClient) TLSValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GSocketClient       // out
 	var _cret C.GTlsCertificateFlags // in
@@ -40913,12 +35479,6 @@ func (c socketClient) TLSValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// SetEnableProXY sets whether or not @client attempts to make connections via a
-// proxy server. When enabled (the default), Client will use a Resolver to
-// determine if a proxy protocol such as SOCKS is needed, and automatically do
-// the necessary proxy negotiation.
-//
-// See also g_socket_client_set_proxy_resolver().
 func (c socketClient) SetEnableProXY(enable bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
@@ -40931,13 +35491,6 @@ func (c socketClient) SetEnableProXY(enable bool) {
 	C.g_socket_client_set_enable_proxy(_arg0, _arg1)
 }
 
-// SetFamily sets the socket family of the socket client. If this is set to
-// something other than G_SOCKET_FAMILY_INVALID then the sockets created by this
-// object will be of the specified family.
-//
-// This might be useful for instance if you want to force the local connection
-// to be an ipv4 socket, even though the address might be an ipv6 mapped to ipv4
-// address.
 func (c socketClient) SetFamily(family SocketFamily) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.GSocketFamily  // out
@@ -40948,12 +35501,6 @@ func (c socketClient) SetFamily(family SocketFamily) {
 	C.g_socket_client_set_family(_arg0, _arg1)
 }
 
-// SetLocalAddress sets the local address of the socket client. The sockets
-// created by this object will bound to the specified address (if not nil)
-// before connecting.
-//
-// This is useful if you want to ensure that the local side of the connection is
-// on a specific port, or on a specific interface.
 func (c socketClient) SetLocalAddress(address SocketAddress) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GSocketAddress // out
@@ -40964,11 +35511,6 @@ func (c socketClient) SetLocalAddress(address SocketAddress) {
 	C.g_socket_client_set_local_address(_arg0, _arg1)
 }
 
-// SetProtocol sets the protocol of the socket client. The sockets created by
-// this object will use of the specified protocol.
-//
-// If @protocol is G_SOCKET_PROTOCOL_DEFAULT that means to use the default
-// protocol for the socket family and type.
 func (c socketClient) SetProtocol(protocol SocketProtocol) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 C.GSocketProtocol // out
@@ -40979,13 +35521,6 @@ func (c socketClient) SetProtocol(protocol SocketProtocol) {
 	C.g_socket_client_set_protocol(_arg0, _arg1)
 }
 
-// SetProXYResolver overrides the Resolver used by @client. You can call this if
-// you want to use specific proxies, rather than using the system default proxy
-// settings.
-//
-// Note that whether or not the proxy resolver is actually used depends on the
-// setting of Client:enable-proxy, which is not changed by this function (but
-// which is true by default)
 func (c socketClient) SetProXYResolver(proxyResolver ProXYResolver) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
@@ -40996,11 +35531,6 @@ func (c socketClient) SetProXYResolver(proxyResolver ProXYResolver) {
 	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
 }
 
-// SetSocketType sets the socket type of the socket client. The sockets created
-// by this object will be of the specified type.
-//
-// It doesn't make sense to specify a type of G_SOCKET_TYPE_DATAGRAM, as
-// GSocketClient is used for connection oriented services.
 func (c socketClient) SetSocketType(typ SocketType) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.GSocketType    // out
@@ -41011,12 +35541,6 @@ func (c socketClient) SetSocketType(typ SocketType) {
 	C.g_socket_client_set_socket_type(_arg0, _arg1)
 }
 
-// SetTimeout sets the I/O timeout for sockets created by @client. @timeout is a
-// time in seconds, or 0 for no timeout (the default).
-//
-// The timeout value affects the initial connection attempt as well, so setting
-// this may cause calls to g_socket_client_connect(), etc, to fail with
-// G_IO_ERROR_TIMED_OUT.
 func (c socketClient) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.guint          // out
@@ -41027,22 +35551,6 @@ func (c socketClient) SetTimeout(timeout uint) {
 	C.g_socket_client_set_timeout(_arg0, _arg1)
 }
 
-// SetTLS sets whether @client creates TLS (aka SSL) connections. If @tls is
-// true, @client will wrap its connections in a ClientConnection and perform a
-// TLS handshake when connecting.
-//
-// Note that since Client must return a Connection, but ClientConnection is not
-// a Connection, this actually wraps the resulting ClientConnection in a
-// WrapperConnection when returning it. You can use
-// g_tcp_wrapper_connection_get_base_io_stream() on the return value to extract
-// the ClientConnection.
-//
-// If you need to modify the behavior of the TLS handshake (eg, by setting a
-// client-side certificate to use, or connecting to the
-// Connection::accept-certificate signal), you can connect to @client's
-// Client::event signal and wait for it to be emitted with
-// G_SOCKET_CLIENT_TLS_HANDSHAKING, which will give you a chance to see the
-// ClientConnection before the handshake starts.
 func (c socketClient) SetTLS(tls bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
@@ -41055,8 +35563,6 @@ func (c socketClient) SetTLS(tls bool) {
 	C.g_socket_client_set_tls(_arg0, _arg1)
 }
 
-// SetTLSValidationFlags sets the TLS validation flags used when creating TLS
-// connections via @client. The default value is G_TLS_CERTIFICATE_VALIDATE_ALL.
 func (c socketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GSocketClient       // out
 	var _arg1 C.GTlsCertificateFlags // out
@@ -41131,7 +35637,6 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 	return WrapSocketConnection(obj), nil
 }
 
-// ConnectSocketConnection: connect @connection to the specified remote address.
 func (c socketConnection) ConnectSocketConnection(address SocketAddress, cancellable Cancellable) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GSocketAddress    // out
@@ -41151,7 +35656,6 @@ func (c socketConnection) ConnectSocketConnection(address SocketAddress, cancell
 	return _goerr
 }
 
-// ConnectFinish gets the result of a g_socket_connection_connect_async() call.
 func (c socketConnection) ConnectFinish(result AsyncResult) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out
@@ -41169,7 +35673,6 @@ func (c socketConnection) ConnectFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// LocalAddress: try to get the local address of a socket connection.
 func (c socketConnection) LocalAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
@@ -41188,13 +35691,6 @@ func (c socketConnection) LocalAddress() (SocketAddress, error) {
 	return _socketAddress, _goerr
 }
 
-// RemoteAddress: try to get the remote address of a socket connection.
-//
-// Since GLib 2.40, when used with g_socket_client_connect() or
-// g_socket_client_connect_async(), during emission of
-// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address that
-// will be used for the connection. This allows applications to print e.g.
-// "Connecting to example.com (10.42.77.3)...".
 func (c socketConnection) RemoteAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
@@ -41213,9 +35709,6 @@ func (c socketConnection) RemoteAddress() (SocketAddress, error) {
 	return _socketAddress, _goerr
 }
 
-// Socket gets the underlying #GSocket object of the connection. This can be
-// useful if you want to do something unusual on it not supported by the
-// Connection APIs.
 func (c socketConnection) Socket() Socket {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocket           // in
@@ -41231,8 +35724,6 @@ func (c socketConnection) Socket() Socket {
 	return _socket
 }
 
-// IsConnected checks if @connection is connected. This is equivalent to calling
-// g_socket_is_connected() on @connection's underlying #GSocket.
 func (c socketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
 	var _cret C.gboolean           // in
@@ -41303,8 +35794,6 @@ func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 	return WrapSocketControlMessage(obj), nil
 }
 
-// Level returns the "level" (i.e. the originating protocol) of the control
-// message. This is often SOL_SOCKET.
 func (m socketControlMessage) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
@@ -41320,8 +35809,6 @@ func (m socketControlMessage) Level() int {
 	return _gint
 }
 
-// MsgType returns the protocol specific type of the control message. For
-// instance, for UNIX fd passing this would be SCM_RIGHTS.
 func (m socketControlMessage) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
@@ -41337,8 +35824,6 @@ func (m socketControlMessage) MsgType() int {
 	return _gint
 }
 
-// Size returns the space required for the control message, not including
-// headers or alignment.
 func (m socketControlMessage) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.gsize                  // in
@@ -41508,15 +35993,6 @@ func NewSocketListener() SocketListener {
 	return _socketListener
 }
 
-// Accept blocks waiting for a client to connect to any of the sockets added to
-// the listener. Returns a Connection for the socket that was accepted.
-//
-// If @source_object is not nil it will be filled out with the source object
-// specified when the corresponding socket or address was added to the listener.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (l socketListener) Accept(cancellable Cancellable) (gextras.Objector, SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GObject           // in
@@ -41540,8 +36016,6 @@ func (l socketListener) Accept(cancellable Cancellable) (gextras.Objector, Socke
 	return _sourceObject, _socketConnection, _goerr
 }
 
-// AcceptFinish finishes an async accept operation. See
-// g_socket_listener_accept_async()
 func (l socketListener) AcceptFinish(result AsyncResult) (gextras.Objector, SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GAsyncResult      // out
@@ -41565,18 +36039,6 @@ func (l socketListener) AcceptFinish(result AsyncResult) (gextras.Objector, Sock
 	return _sourceObject, _socketConnection, _goerr
 }
 
-// AcceptSocket blocks waiting for a client to connect to any of the sockets
-// added to the listener. Returns the #GSocket that was accepted.
-//
-// If you want to accept the high-level Connection, not a #GSocket, which is
-// often the case, then you should use g_socket_listener_accept() instead.
-//
-// If @source_object is not nil it will be filled out with the source object
-// specified when the corresponding socket or address was added to the listener.
-//
-// If @cancellable is not nil, then the operation can be cancelled by triggering
-// the cancellable object from another thread. If the operation was cancelled,
-// the error G_IO_ERROR_CANCELLED will be returned.
 func (l socketListener) AcceptSocket(cancellable Cancellable) (gextras.Objector, Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GObject         // in
@@ -41600,8 +36062,6 @@ func (l socketListener) AcceptSocket(cancellable Cancellable) (gextras.Objector,
 	return _sourceObject, _socket, _goerr
 }
 
-// AcceptSocketFinish finishes an async accept operation. See
-// g_socket_listener_accept_socket_async()
 func (l socketListener) AcceptSocketFinish(result AsyncResult) (gextras.Objector, Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GAsyncResult    // out
@@ -41625,26 +36085,6 @@ func (l socketListener) AcceptSocketFinish(result AsyncResult) (gextras.Objector
 	return _sourceObject, _socket, _goerr
 }
 
-// AddAddress creates a socket of type @type and protocol @protocol, binds it to
-// @address and adds it to the set of sockets we're accepting sockets from.
-//
-// Note that adding an IPv6 address, depending on the platform, may or may not
-// result in a listener that also accepts IPv4 connections. For more
-// deterministic behavior, see g_socket_listener_add_inet_port().
-//
-// @source_object will be passed out in the various calls to accept to identify
-// this particular source, which is useful if you're listening on multiple
-// addresses and do different things depending on what address is connected to.
-//
-// If successful and @effective_address is non-nil then it will be set to the
-// address that the binding actually occurred at. This is helpful for
-// determining the port number that was used for when requesting a binding to
-// port 0 (ie: "any port"). This address, if requested, belongs to the caller
-// and must be freed.
-//
-// Call g_socket_listener_close() to stop listening on @address; this will not
-// be done automatically when you drop your final reference to @listener, as
-// references may be held internally.
 func (l socketListener) AddAddress(address SocketAddress, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (SocketAddress, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocketAddress  // out
@@ -41671,15 +36111,6 @@ func (l socketListener) AddAddress(address SocketAddress, typ SocketType, protoc
 	return _effectiveAddress, _goerr
 }
 
-// AddAnyInetPort listens for TCP connections on any available port number for
-// both IPv6 and IPv4 (if each is available).
-//
-// This is useful if you need to have a socket for incoming connections but
-// don't care about the specific port number.
-//
-// @source_object will be passed out in the various calls to accept to identify
-// this particular source, which is useful if you're listening on multiple
-// addresses and do different things depending on what address is connected to.
 func (l socketListener) AddAnyInetPort(sourceObject gextras.Objector) (uint16, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GObject         // out
@@ -41700,17 +36131,6 @@ func (l socketListener) AddAnyInetPort(sourceObject gextras.Objector) (uint16, e
 	return _guint16, _goerr
 }
 
-// AddInetPort: helper function for g_socket_listener_add_address() that creates
-// a TCP/IP socket listening on IPv4 and IPv6 (if supported) on the specified
-// port on all interfaces.
-//
-// @source_object will be passed out in the various calls to accept to identify
-// this particular source, which is useful if you're listening on multiple
-// addresses and do different things depending on what address is connected to.
-//
-// Call g_socket_listener_close() to stop listening on @port; this will not be
-// done automatically when you drop your final reference to @listener, as
-// references may be held internally.
 func (l socketListener) AddInetPort(port uint16, sourceObject gextras.Objector) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.guint16          // out
@@ -41730,17 +36150,6 @@ func (l socketListener) AddInetPort(port uint16, sourceObject gextras.Objector) 
 	return _goerr
 }
 
-// AddSocket adds @socket to the set of sockets that we try to accept new
-// clients from. The socket must be bound to a local address and listened to.
-//
-// @source_object will be passed out in the various calls to accept to identify
-// this particular source, which is useful if you're listening on multiple
-// addresses and do different things depending on what address is connected to.
-//
-// The @socket will not be automatically closed when the @listener is finalized
-// unless the listener held the final reference to the socket. Before GLib 2.42,
-// the @socket was automatically closed on finalization of the @listener, even
-// if references to it were held elsewhere.
 func (l socketListener) AddSocket(socket Socket, sourceObject gextras.Objector) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocket         // out
@@ -41760,7 +36169,6 @@ func (l socketListener) AddSocket(socket Socket, sourceObject gextras.Objector) 
 	return _goerr
 }
 
-// Close closes all the sockets in the listener.
 func (l socketListener) Close() {
 	var _arg0 *C.GSocketListener // out
 
@@ -41769,11 +36177,6 @@ func (l socketListener) Close() {
 	C.g_socket_listener_close(_arg0)
 }
 
-// SetBacklog sets the listen backlog on the sockets in the listener. This must
-// be called before adding any sockets, addresses or ports to the Listener (for
-// example, by calling g_socket_listener_add_inet_port()) to be effective.
-//
-// See g_socket_set_listen_backlog() for details
 func (l socketListener) SetBacklog(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out
@@ -41878,9 +36281,6 @@ func NewSocketService() SocketService {
 	return _socketService
 }
 
-// IsActive: check whether the service is active or not. An active service will
-// accept new clients that connect, while a non-active service will let
-// connecting clients queue up until the service is started.
 func (s socketService) IsActive() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
@@ -41898,12 +36298,6 @@ func (s socketService) IsActive() bool {
 	return _ok
 }
 
-// Start restarts the service, i.e. start accepting connections from the added
-// sockets when the mainloop runs. This only needs to be called after the
-// service has been stopped from g_socket_service_stop().
-//
-// This call is thread-safe, so it may be called from a thread handling an
-// incoming client request.
 func (s socketService) Start() {
 	var _arg0 *C.GSocketService // out
 
@@ -41912,21 +36306,6 @@ func (s socketService) Start() {
 	C.g_socket_service_start(_arg0)
 }
 
-// Stop stops the service, i.e. stops accepting connections from the added
-// sockets when the mainloop runs.
-//
-// This call is thread-safe, so it may be called from a thread handling an
-// incoming client request.
-//
-// Note that this only stops accepting new connections; it does not close the
-// listening sockets, and you can call g_socket_service_start() again later to
-// begin listening again. To close the listening sockets, call
-// g_socket_listener_close(). (This will happen automatically when the Service
-// is finalized.)
-//
-// This must be called before calling g_socket_listener_close() as the socket
-// service will start accepting connections immediately when a new socket is
-// added.
 func (s socketService) Stop() {
 	var _arg0 *C.GSocketService // out
 
@@ -42162,11 +36541,6 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (Subprocess, error) {
 	return _subprocess, _goerr
 }
 
-// CommunicateUTF8: like g_subprocess_communicate(), but validates the output of
-// the process as UTF-8, and returns it as a regular NUL terminated string.
-//
-// On error, @stdout_buf and @stderr_buf will be set to undefined values and
-// should not be used.
 func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.char         // out
@@ -42195,8 +36569,6 @@ func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (s
 	return _stdoutBuf, _stderrBuf, _goerr
 }
 
-// CommunicateUTF8Finish: complete an invocation of
-// g_subprocess_communicate_utf8_async().
 func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
@@ -42222,13 +36594,6 @@ func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string,
 	return _stdoutBuf, _stderrBuf, _goerr
 }
 
-// ForceExit: use an operating-system specific method to attempt an immediate,
-// forceful termination of the process. There is no mechanism to determine
-// whether or not the request itself was successful; however, you can use
-// g_subprocess_wait() to monitor the status of the process after calling this
-// function.
-//
-// On Unix, this function sends SIGKILL.
 func (s subprocess) ForceExit() {
 	var _arg0 *C.GSubprocess // out
 
@@ -42237,14 +36602,6 @@ func (s subprocess) ForceExit() {
 	C.g_subprocess_force_exit(_arg0)
 }
 
-// ExitStatus: check the exit status of the subprocess, given that it exited
-// normally. This is the value passed to the exit() system call or the return
-// value from main.
-//
-// This is equivalent to the system WEXITSTATUS macro.
-//
-// It is an error to call this function before g_subprocess_wait() and unless
-// g_subprocess_get_if_exited() returned true.
 func (s subprocess) ExitStatus() int {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
@@ -42260,9 +36617,6 @@ func (s subprocess) ExitStatus() int {
 	return _gint
 }
 
-// Identifier: on UNIX, returns the process ID as a decimal string. On Windows,
-// returns the result of GetProcessId() also as a string. If the subprocess has
-// terminated, this will return nil.
 func (s subprocess) Identifier() string {
 	var _arg0 *C.GSubprocess // out
 	var _cret *C.gchar       // in
@@ -42278,12 +36632,6 @@ func (s subprocess) Identifier() string {
 	return _utf8
 }
 
-// IfExited: check if the given subprocess exited normally (ie: by way of exit()
-// or return from main()).
-//
-// This is equivalent to the system WIFEXITED macro.
-//
-// It is an error to call this function before g_subprocess_wait() has returned.
 func (s subprocess) IfExited() bool {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gboolean     // in
@@ -42301,11 +36649,6 @@ func (s subprocess) IfExited() bool {
 	return _ok
 }
 
-// IfSignaled: check if the given subprocess terminated in response to a signal.
-//
-// This is equivalent to the system WIFSIGNALED macro.
-//
-// It is an error to call this function before g_subprocess_wait() has returned.
 func (s subprocess) IfSignaled() bool {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gboolean     // in
@@ -42323,16 +36666,6 @@ func (s subprocess) IfSignaled() bool {
 	return _ok
 }
 
-// Status gets the raw status code of the process, as from waitpid().
-//
-// This value has no particular meaning, but it can be used with the macros
-// defined by the system headers such as WIFEXITED. It can also be used with
-// g_spawn_check_exit_status().
-//
-// It is more likely that you want to use g_subprocess_get_if_exited() followed
-// by g_subprocess_get_exit_status().
-//
-// It is an error to call this function before g_subprocess_wait() has returned.
 func (s subprocess) Status() int {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
@@ -42348,11 +36681,6 @@ func (s subprocess) Status() int {
 	return _gint
 }
 
-// StderrPipe gets the Stream from which to read the stderr output of
-// @subprocess.
-//
-// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE,
-// otherwise nil will be returned.
 func (s subprocess) StderrPipe() InputStream {
 	var _arg0 *C.GSubprocess  // out
 	var _cret *C.GInputStream // in
@@ -42368,11 +36696,6 @@ func (s subprocess) StderrPipe() InputStream {
 	return _inputStream
 }
 
-// StdinPipe gets the Stream that you can write to in order to give data to the
-// stdin of @subprocess.
-//
-// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE and not
-// G_SUBPROCESS_FLAGS_STDIN_INHERIT, otherwise nil will be returned.
 func (s subprocess) StdinPipe() OutputStream {
 	var _arg0 *C.GSubprocess   // out
 	var _cret *C.GOutputStream // in
@@ -42388,11 +36711,6 @@ func (s subprocess) StdinPipe() OutputStream {
 	return _outputStream
 }
 
-// StdoutPipe gets the Stream from which to read the stdout output of
-// @subprocess.
-//
-// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE,
-// otherwise nil will be returned.
 func (s subprocess) StdoutPipe() InputStream {
 	var _arg0 *C.GSubprocess  // out
 	var _cret *C.GInputStream // in
@@ -42408,11 +36726,6 @@ func (s subprocess) StdoutPipe() InputStream {
 	return _inputStream
 }
 
-// Successful checks if the process was "successful". A process is considered
-// successful if it exited cleanly with an exit status of 0, either by way of
-// the exit() system call or return from main().
-//
-// It is an error to call this function before g_subprocess_wait() has returned.
 func (s subprocess) Successful() bool {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gboolean     // in
@@ -42430,13 +36743,6 @@ func (s subprocess) Successful() bool {
 	return _ok
 }
 
-// TermSig: get the signal number that caused the subprocess to terminate, given
-// that it terminated due to a signal.
-//
-// This is equivalent to the system WTERMSIG macro.
-//
-// It is an error to call this function before g_subprocess_wait() and unless
-// g_subprocess_get_if_signaled() returned true.
 func (s subprocess) TermSig() int {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
@@ -42452,13 +36758,6 @@ func (s subprocess) TermSig() int {
 	return _gint
 }
 
-// SendSignal sends the UNIX signal @signal_num to the subprocess, if it is
-// still running.
-//
-// This API is race-free. If the subprocess has terminated, it will not be
-// signalled.
-//
-// This API is not available on Windows.
 func (s subprocess) SendSignal(signalNum int) {
 	var _arg0 *C.GSubprocess // out
 	var _arg1 C.gint         // out
@@ -42469,16 +36768,6 @@ func (s subprocess) SendSignal(signalNum int) {
 	C.g_subprocess_send_signal(_arg0, _arg1)
 }
 
-// Wait: synchronously wait for the subprocess to terminate.
-//
-// After the process terminates you can query its exit status with functions
-// such as g_subprocess_get_if_exited() and g_subprocess_get_exit_status().
-//
-// This function does not fail in the case of the subprocess having abnormal
-// termination. See g_subprocess_wait_check() for that.
-//
-// Cancelling @cancellable doesn't kill the subprocess. Call
-// g_subprocess_force_exit() if it is desirable.
 func (s subprocess) Wait(cancellable Cancellable) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
@@ -42496,7 +36785,6 @@ func (s subprocess) Wait(cancellable Cancellable) error {
 	return _goerr
 }
 
-// WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
 func (s subprocess) WaitCheck(cancellable Cancellable) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
@@ -42514,8 +36802,6 @@ func (s subprocess) WaitCheck(cancellable Cancellable) error {
 	return _goerr
 }
 
-// WaitCheckFinish collects the result of a previous call to
-// g_subprocess_wait_check_async().
 func (s subprocess) WaitCheckFinish(result AsyncResult) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
@@ -42533,8 +36819,6 @@ func (s subprocess) WaitCheckFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// WaitFinish collects the result of a previous call to
-// g_subprocess_wait_async().
 func (s subprocess) WaitFinish(result AsyncResult) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
@@ -42787,16 +37071,6 @@ func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 	return _subprocessLauncher
 }
 
-// Close closes all the file descriptors previously passed to the object with
-// g_subprocess_launcher_take_fd(), g_subprocess_launcher_take_stderr_fd(), etc.
-//
-// After calling this method, any subsequent calls to
-// g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will return
-// G_IO_ERROR_CLOSED. This method is idempotent if called more than once.
-//
-// This function is called automatically when the Launcher is disposed, but is
-// provided separately so that garbage collected language bindings can call it
-// earlier to guarantee when FDs are closed.
 func (s subprocessLauncher) Close() {
 	var _arg0 *C.GSubprocessLauncher // out
 
@@ -42805,11 +37079,6 @@ func (s subprocessLauncher) Close() {
 	C.g_subprocess_launcher_close(_arg0)
 }
 
-// env returns the value of the environment variable @variable in the
-// environment of processes launched from this launcher.
-//
-// On UNIX, the returned string can be an arbitrary byte string. On Windows, it
-// will be UTF-8.
 func (s subprocessLauncher) env(variable string) string {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -42828,11 +37097,6 @@ func (s subprocessLauncher) env(variable string) string {
 	return _filename
 }
 
-// SetCwd sets the current working directory that processes will be launched
-// with.
-//
-// By default processes are launched with the current working directory of the
-// launching process at the time of launch.
 func (s subprocessLauncher) SetCwd(cwd string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -42844,25 +37108,6 @@ func (s subprocessLauncher) SetCwd(cwd string) {
 	C.g_subprocess_launcher_set_cwd(_arg0, _arg1)
 }
 
-// SetEnviron: replace the entire environment of processes launched from this
-// launcher with the given 'environ' variable.
-//
-// Typically you will build this variable by using g_listenv() to copy the
-// process 'environ' and using the functions g_environ_setenv(),
-// g_environ_unsetenv(), etc.
-//
-// As an alternative, you can use g_subprocess_launcher_setenv(),
-// g_subprocess_launcher_unsetenv(), etc.
-//
-// Pass an empty array to set an empty environment. Pass nil to inherit the
-// parent process’ environment. As of GLib 2.54, the parent process’ environment
-// will be copied when g_subprocess_launcher_set_environ() is called.
-// Previously, it was copied when the subprocess was executed. This means the
-// copied environment may now be modified (using g_subprocess_launcher_setenv(),
-// etc.) before launching the subprocess.
-//
-// On UNIX, all strings in this array can be arbitrary byte strings. On Windows,
-// they should be in UTF-8.
 func (s subprocessLauncher) SetEnviron(env []string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 **C.gchar
@@ -42881,17 +37126,6 @@ func (s subprocessLauncher) SetEnviron(env []string) {
 	C.g_subprocess_launcher_set_environ(_arg0, _arg1)
 }
 
-// SetFlags sets the flags on the launcher.
-//
-// The default flags are G_SUBPROCESS_FLAGS_NONE.
-//
-// You may not set flags that specify conflicting options for how to handle a
-// particular stdio stream (eg: specifying both G_SUBPROCESS_FLAGS_STDIN_PIPE
-// and G_SUBPROCESS_FLAGS_STDIN_INHERIT).
-//
-// You may also not set a flag that conflicts with a previous call to a function
-// like g_subprocess_launcher_set_stdin_file_path() or
-// g_subprocess_launcher_take_stdout_fd().
 func (s subprocessLauncher) SetFlags(flags SubprocessFlags) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.GSubprocessFlags     // out
@@ -42902,21 +37136,6 @@ func (s subprocessLauncher) SetFlags(flags SubprocessFlags) {
 	C.g_subprocess_launcher_set_flags(_arg0, _arg1)
 }
 
-// SetStderrFilePath sets the file path to use as the stderr for spawned
-// processes.
-//
-// If @path is nil then any previously given path is unset.
-//
-// The file will be created or truncated when the process is spawned, as would
-// be the case if using '2>' at the shell.
-//
-// If you want to send both stdout and stderr to the same file then use
-// G_SUBPROCESS_FLAGS_STDERR_MERGE.
-//
-// You may not set a stderr file path if a stderr fd is already set or if the
-// launcher flags contain any flags directing stderr elsewhere.
-//
-// This feature is only available on UNIX.
 func (s subprocessLauncher) SetStderrFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -42928,17 +37147,6 @@ func (s subprocessLauncher) SetStderrFilePath(path string) {
 	C.g_subprocess_launcher_set_stderr_file_path(_arg0, _arg1)
 }
 
-// SetStdinFilePath sets the file path to use as the stdin for spawned
-// processes.
-//
-// If @path is nil then any previously given path is unset.
-//
-// The file must exist or spawning the process will fail.
-//
-// You may not set a stdin file path if a stdin fd is already set or if the
-// launcher flags contain any flags directing stdin elsewhere.
-//
-// This feature is only available on UNIX.
 func (s subprocessLauncher) SetStdinFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -42950,18 +37158,6 @@ func (s subprocessLauncher) SetStdinFilePath(path string) {
 	C.g_subprocess_launcher_set_stdin_file_path(_arg0, _arg1)
 }
 
-// SetStdoutFilePath sets the file path to use as the stdout for spawned
-// processes.
-//
-// If @path is nil then any previously given path is unset.
-//
-// The file will be created or truncated when the process is spawned, as would
-// be the case if using '>' at the shell.
-//
-// You may not set a stdout file path if a stdout fd is already set or if the
-// launcher flags contain any flags directing stdout elsewhere.
-//
-// This feature is only available on UNIX.
 func (s subprocessLauncher) SetStdoutFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -42973,12 +37169,6 @@ func (s subprocessLauncher) SetStdoutFilePath(path string) {
 	C.g_subprocess_launcher_set_stdout_file_path(_arg0, _arg1)
 }
 
-// Setenv sets the environment variable @variable in the environment of
-// processes launched from this launcher.
-//
-// On UNIX, both the variable's name and value can be arbitrary byte strings,
-// except that the variable's name cannot contain '='. On Windows, they should
-// be in UTF-8.
 func (s subprocessLauncher) Setenv(variable string, value string, overwrite bool) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -42997,7 +37187,6 @@ func (s subprocessLauncher) Setenv(variable string, value string, overwrite bool
 	C.g_subprocess_launcher_setenv(_arg0, _arg1, _arg2, _arg3)
 }
 
-// Spawnv creates a #GSubprocess given a provided array of arguments.
 func (s subprocessLauncher) Spawnv(argv []string) (Subprocess, error) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 **C.gchar
@@ -43026,18 +37215,6 @@ func (s subprocessLauncher) Spawnv(argv []string) (Subprocess, error) {
 	return _subprocess, _goerr
 }
 
-// TakeFd: transfer an arbitrary file descriptor from parent process to the
-// child. This function takes ownership of the @source_fd; it will be closed in
-// the parent when @self is freed.
-//
-// By default, all file descriptors from the parent will be closed. This
-// function allows you to create (for example) a custom `pipe()` or
-// `socketpair()` before launching the process, and choose the target descriptor
-// in the child.
-//
-// An example use case is GNUPG, which has a command line argument
-// `--passphrase-fd` providing a file descriptor number where it expects the
-// passphrase to be written.
 func (s subprocessLauncher) TakeFd(sourceFd int, targetFd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
@@ -43050,22 +37227,6 @@ func (s subprocessLauncher) TakeFd(sourceFd int, targetFd int) {
 	C.g_subprocess_launcher_take_fd(_arg0, _arg1, _arg2)
 }
 
-// TakeStderrFd sets the file descriptor to use as the stderr for spawned
-// processes.
-//
-// If @fd is -1 then any previously given fd is unset.
-//
-// Note that the default behaviour is to pass stderr through to the stderr of
-// the parent process.
-//
-// The passed @fd belongs to the Launcher. It will be automatically closed when
-// the launcher is finalized. The file descriptor will also be closed on the
-// child side when executing the spawned process.
-//
-// You may not set a stderr fd if a stderr file path is already set or if the
-// launcher flags contain any flags directing stderr elsewhere.
-//
-// This feature is only available on UNIX.
 func (s subprocessLauncher) TakeStderrFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
@@ -43076,24 +37237,6 @@ func (s subprocessLauncher) TakeStderrFd(fd int) {
 	C.g_subprocess_launcher_take_stderr_fd(_arg0, _arg1)
 }
 
-// TakeStdinFd sets the file descriptor to use as the stdin for spawned
-// processes.
-//
-// If @fd is -1 then any previously given fd is unset.
-//
-// Note that if your intention is to have the stdin of the calling process
-// inherited by the child then G_SUBPROCESS_FLAGS_STDIN_INHERIT is a better way
-// to go about doing that.
-//
-// The passed @fd is noted but will not be touched in the current process. It is
-// therefore necessary that it be kept open by the caller until the subprocess
-// is spawned. The file descriptor will also not be explicitly closed on the
-// child side, so it must be marked O_CLOEXEC if that's what you want.
-//
-// You may not set a stdin fd if a stdin file path is already set or if the
-// launcher flags contain any flags directing stdin elsewhere.
-//
-// This feature is only available on UNIX.
 func (s subprocessLauncher) TakeStdinFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
@@ -43104,23 +37247,6 @@ func (s subprocessLauncher) TakeStdinFd(fd int) {
 	C.g_subprocess_launcher_take_stdin_fd(_arg0, _arg1)
 }
 
-// TakeStdoutFd sets the file descriptor to use as the stdout for spawned
-// processes.
-//
-// If @fd is -1 then any previously given fd is unset.
-//
-// Note that the default behaviour is to pass stdout through to the stdout of
-// the parent process.
-//
-// The passed @fd is noted but will not be touched in the current process. It is
-// therefore necessary that it be kept open by the caller until the subprocess
-// is spawned. The file descriptor will also not be explicitly closed on the
-// child side, so it must be marked O_CLOEXEC if that's what you want.
-//
-// You may not set a stdout fd if a stdout file path is already set or if the
-// launcher flags contain any flags directing stdout elsewhere.
-//
-// This feature is only available on UNIX.
 func (s subprocessLauncher) TakeStdoutFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
@@ -43131,11 +37257,6 @@ func (s subprocessLauncher) TakeStdoutFd(fd int) {
 	C.g_subprocess_launcher_take_stdout_fd(_arg0, _arg1)
 }
 
-// Unsetenv removes the environment variable @variable from the environment of
-// processes launched from this launcher.
-//
-// On UNIX, the variable's name can be an arbitrary byte string not containing
-// '='. On Windows, it should be in UTF-8.
 func (s subprocessLauncher) Unsetenv(variable string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -43472,7 +37593,6 @@ func marshalTask(p uintptr) (interface{}, error) {
 	return WrapTask(obj), nil
 }
 
-// Cancellable gets @task's #GCancellable
 func (t task) Cancellable() Cancellable {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GCancellable // in
@@ -43488,8 +37608,6 @@ func (t task) Cancellable() Cancellable {
 	return _cancellable
 }
 
-// CheckCancellable gets @task's check-cancellable flag. See
-// g_task_set_check_cancellable() for more details.
 func (t task) CheckCancellable() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -43507,9 +37625,6 @@ func (t task) CheckCancellable() bool {
 	return _ok
 }
 
-// Completed gets the value of #GTask:completed. This changes from false to true
-// after the task’s callback is invoked, and will return false if called from
-// inside the callback.
 func (t task) Completed() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -43527,13 +37642,6 @@ func (t task) Completed() bool {
 	return _ok
 }
 
-// Context gets the Context that @task will return its result in (that is, the
-// context that was the [thread-default main
-// context][g-main-context-push-thread-default] at the point when @task was
-// created).
-//
-// This will always return a non-nil value, even if the task's context is the
-// default Context.
 func (t task) Context() *glib.MainContext {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GMainContext // in
@@ -43549,7 +37657,6 @@ func (t task) Context() *glib.MainContext {
 	return _mainContext
 }
 
-// Name gets @task’s name. See g_task_set_name().
 func (t task) Name() string {
 	var _arg0 *C.GTask // out
 	var _cret *C.gchar // in
@@ -43565,7 +37672,6 @@ func (t task) Name() string {
 	return _utf8
 }
 
-// Priority gets @task's priority
 func (t task) Priority() int {
 	var _arg0 *C.GTask // out
 	var _cret C.gint   // in
@@ -43581,8 +37687,6 @@ func (t task) Priority() int {
 	return _gint
 }
 
-// ReturnOnCancel gets @task's return-on-cancel flag. See
-// g_task_set_return_on_cancel() for more details.
 func (t task) ReturnOnCancel() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -43600,8 +37704,6 @@ func (t task) ReturnOnCancel() bool {
 	return _ok
 }
 
-// SourceObject gets the source object from @task. Like
-// g_async_result_get_source_object(), but does not ref the object.
 func (t task) SourceObject() gextras.Objector {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -43617,7 +37719,6 @@ func (t task) SourceObject() gextras.Objector {
 	return _object
 }
 
-// HadError tests if @task resulted in an error.
 func (t task) HadError() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -43635,13 +37736,6 @@ func (t task) HadError() bool {
 	return _ok
 }
 
-// PropagateBoolean gets the result of @task as a #gboolean.
-//
-// If the task resulted in an error, or was cancelled, then this will instead
-// return false and set @error.
-//
-// Since this method transfers ownership of the return value (or error) to the
-// caller, you may only call it once.
 func (t task) PropagateBoolean() error {
 	var _arg0 *C.GTask  // out
 	var _cerr *C.GError // in
@@ -43657,13 +37751,6 @@ func (t task) PropagateBoolean() error {
 	return _goerr
 }
 
-// PropagateInt gets the result of @task as an integer (#gssize).
-//
-// If the task resulted in an error, or was cancelled, then this will instead
-// return -1 and set @error.
-//
-// Since this method transfers ownership of the return value (or error) to the
-// caller, you may only call it once.
 func (t task) PropagateInt() (int, error) {
 	var _arg0 *C.GTask  // out
 	var _cret C.gssize  // in
@@ -43682,16 +37769,6 @@ func (t task) PropagateInt() (int, error) {
 	return _gssize, _goerr
 }
 
-// PropagateValue gets the result of @task as a #GValue, and transfers ownership
-// of that value to the caller. As with g_task_return_value(), this is a generic
-// low-level method; g_task_propagate_pointer() and the like will usually be
-// more useful for C code.
-//
-// If the task resulted in an error, or was cancelled, then this will instead
-// set @error and return false.
-//
-// Since this method transfers ownership of the return value (or error) to the
-// caller, you may only call it once.
 func (t task) PropagateValue() (*externglib.Value, error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 C.GValue  // in
@@ -43710,8 +37787,6 @@ func (t task) PropagateValue() (*externglib.Value, error) {
 	return _value, _goerr
 }
 
-// ReturnBoolean sets @task's result to @result and completes the task (see
-// g_task_return_pointer() for more discussion of exactly what this means).
 func (t task) ReturnBoolean(result bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -43724,16 +37799,6 @@ func (t task) ReturnBoolean(result bool) {
 	C.g_task_return_boolean(_arg0, _arg1)
 }
 
-// ReturnError sets @task's result to @error (which @task assumes ownership of)
-// and completes the task (see g_task_return_pointer() for more discussion of
-// exactly what this means).
-//
-// Note that since the task takes ownership of @error, and since the task may be
-// completed before returning from g_task_return_error(), you cannot assume that
-// @error is still valid after calling this. Call g_error_copy() on the error if
-// you need to keep a local copy as well.
-//
-// See also g_task_return_new_error().
 func (t task) ReturnError(err error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GError // out
@@ -43744,9 +37809,6 @@ func (t task) ReturnError(err error) {
 	C.g_task_return_error(_arg0, _arg1)
 }
 
-// ReturnErrorIfCancelled checks if @task's #GCancellable has been cancelled,
-// and if so, sets @task's error accordingly and completes the task (see
-// g_task_return_pointer() for more discussion of exactly what this means).
 func (t task) ReturnErrorIfCancelled() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -43764,8 +37826,6 @@ func (t task) ReturnErrorIfCancelled() bool {
 	return _ok
 }
 
-// ReturnInt sets @task's result to @result and completes the task (see
-// g_task_return_pointer() for more discussion of exactly what this means).
 func (t task) ReturnInt(result int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gssize // out
@@ -43776,15 +37836,6 @@ func (t task) ReturnInt(result int) {
 	C.g_task_return_int(_arg0, _arg1)
 }
 
-// ReturnValue sets @task's result to @result (by copying it) and completes the
-// task.
-//
-// If @result is nil then a #GValue of type TYPE_POINTER with a value of nil
-// will be used for the result.
-//
-// This is a very generic low-level method intended primarily for use by
-// language bindings; for C code, g_task_return_pointer() and the like will
-// normally be much easier to use.
 func (t task) ReturnValue(result **externglib.Value) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GValue // out
@@ -43795,19 +37846,6 @@ func (t task) ReturnValue(result **externglib.Value) {
 	C.g_task_return_value(_arg0, _arg1)
 }
 
-// SetCheckCancellable sets or clears @task's check-cancellable flag. If this is
-// true (the default), then g_task_propagate_pointer(), etc, and
-// g_task_had_error() will check the task's #GCancellable first, and if it has
-// been cancelled, then they will consider the task to have returned an
-// "Operation was cancelled" error (G_IO_ERROR_CANCELLED), regardless of any
-// other error or return value the task may have had.
-//
-// If @check_cancellable is false, then the #GTask will not check the
-// cancellable itself, and it is up to @task's owner to do this (eg, via
-// g_task_return_error_if_cancelled()).
-//
-// If you are using g_task_set_return_on_cancel() as well, then you must leave
-// check-cancellable set true.
 func (t task) SetCheckCancellable(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -43820,15 +37858,6 @@ func (t task) SetCheckCancellable(checkCancellable bool) {
 	C.g_task_set_check_cancellable(_arg0, _arg1)
 }
 
-// SetName sets @task’s name, used in debugging and profiling. The name defaults
-// to nil.
-//
-// The task name should describe in a human readable way what the task does. For
-// example, ‘Open file’ or ‘Connect to network host’. It is used to set the name
-// of the #GSource used for idle completion of the task.
-//
-// This function may only be called before the @task is first used in a thread
-// other than the one it was constructed in.
 func (t task) SetName(name string) {
 	var _arg0 *C.GTask // out
 	var _arg1 *C.gchar // out
@@ -43840,12 +37869,6 @@ func (t task) SetName(name string) {
 	C.g_task_set_name(_arg0, _arg1)
 }
 
-// SetPriority sets @task's priority. If you do not call this, it will default
-// to G_PRIORITY_DEFAULT.
-//
-// This will affect the priority of #GSources created with
-// g_task_attach_source() and the scheduling of tasks run in threads, and can
-// also be explicitly retrieved later via g_task_get_priority().
 func (t task) SetPriority(priority int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
@@ -43856,31 +37879,6 @@ func (t task) SetPriority(priority int) {
 	C.g_task_set_priority(_arg0, _arg1)
 }
 
-// SetReturnOnCancel sets or clears @task's return-on-cancel flag. This is only
-// meaningful for tasks run via g_task_run_in_thread() or
-// g_task_run_in_thread_sync().
-//
-// If @return_on_cancel is true, then cancelling @task's #GCancellable will
-// immediately cause it to return, as though the task's ThreadFunc had called
-// g_task_return_error_if_cancelled() and then returned.
-//
-// This allows you to create a cancellable wrapper around an uninterruptible
-// function. The ThreadFunc just needs to be careful that it does not modify any
-// externally-visible state after it has been cancelled. To do that, the thread
-// should call g_task_set_return_on_cancel() again to (atomically) set
-// return-on-cancel false before making externally-visible changes; if the task
-// gets cancelled before the return-on-cancel flag could be changed,
-// g_task_set_return_on_cancel() will indicate this by returning false.
-//
-// You can disable and re-enable this flag multiple times if you wish. If the
-// task's #GCancellable is cancelled while return-on-cancel is false, then
-// calling g_task_set_return_on_cancel() to set it true again will cause the
-// task to be cancelled at that point.
-//
-// If the task's #GCancellable is already cancelled before you call
-// g_task_run_in_thread()/g_task_run_in_thread_sync(), then the ThreadFunc will
-// still be run (for consistency), but the task will also be completed right
-// away.
 func (t task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -43944,8 +37942,6 @@ func marshalTCPConnection(p uintptr) (interface{}, error) {
 	return WrapTCPConnection(obj), nil
 }
 
-// GracefulDisconnect checks if graceful disconnects are used. See
-// g_tcp_connection_set_graceful_disconnect().
 func (c tcpConnection) GracefulDisconnect() bool {
 	var _arg0 *C.GTcpConnection // out
 	var _cret C.gboolean        // in
@@ -43963,16 +37959,6 @@ func (c tcpConnection) GracefulDisconnect() bool {
 	return _ok
 }
 
-// SetGracefulDisconnect: this enables graceful disconnects on close. A graceful
-// disconnect means that we signal the receiving end that the connection is
-// terminated and wait for it to close the connection before closing the
-// connection.
-//
-// A graceful disconnect means that we can be sure that we successfully sent all
-// the outstanding data to the other end, or get an error reported. However, it
-// also means we have to wait for all the data to reach the other side and for
-// it to acknowledge this by closing the socket, which may take a while. For
-// this reason it is disabled by default.
 func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	var _arg0 *C.GTcpConnection // out
 	var _arg1 C.gboolean        // out
@@ -44036,7 +38022,6 @@ func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) TCPWrapperCon
 	return _tcpWrapperConnection
 }
 
-// BaseIOStream gets @conn's base OStream
 func (c tcpWrapperConnection) BaseIOStream() IOStream {
 	var _arg0 *C.GTcpWrapperConnection // out
 	var _cret *C.GIOStream             // in
@@ -44197,8 +38182,6 @@ func NewTestDBus(flags TestDBusFlags) TestDBus {
 	return _testDBus
 }
 
-// AddServiceDir: add a path where dbus-daemon will look up .service files. This
-// can't be called after g_test_dbus_up().
 func (s testDBus) AddServiceDir(path string) {
 	var _arg0 *C.GTestDBus // out
 	var _arg1 *C.gchar     // out
@@ -44210,11 +38193,6 @@ func (s testDBus) AddServiceDir(path string) {
 	C.g_test_dbus_add_service_dir(_arg0, _arg1)
 }
 
-// Down: stop the session bus started by g_test_dbus_up().
-//
-// This will wait for the singleton returned by g_bus_get() or g_bus_get_sync()
-// to be destroyed. This is done to ensure that the next unit test won't get a
-// leaked singleton from this test.
 func (s testDBus) Down() {
 	var _arg0 *C.GTestDBus // out
 
@@ -44223,9 +38201,6 @@ func (s testDBus) Down() {
 	C.g_test_dbus_down(_arg0)
 }
 
-// BusAddress: get the address on which dbus-daemon is running. If
-// g_test_dbus_up() has not been called yet, nil is returned. This can be used
-// with g_dbus_connection_new_for_address().
 func (s testDBus) BusAddress() string {
 	var _arg0 *C.GTestDBus // out
 	var _cret *C.gchar     // in
@@ -44241,7 +38216,6 @@ func (s testDBus) BusAddress() string {
 	return _utf8
 }
 
-// Flags: get the flags of the DBus object.
 func (s testDBus) Flags() TestDBusFlags {
 	var _arg0 *C.GTestDBus     // out
 	var _cret C.GTestDBusFlags // in
@@ -44257,12 +38231,6 @@ func (s testDBus) Flags() TestDBusFlags {
 	return _testDBusFlags
 }
 
-// Stop: stop the session bus started by g_test_dbus_up().
-//
-// Unlike g_test_dbus_down(), this won't verify the BusConnection singleton
-// returned by g_bus_get() or g_bus_get_sync() is destroyed. Unit tests wanting
-// to verify behaviour after the session bus has been stopped can use this
-// function but should still call g_test_dbus_down() when done.
 func (s testDBus) Stop() {
 	var _arg0 *C.GTestDBus // out
 
@@ -44271,14 +38239,6 @@ func (s testDBus) Stop() {
 	C.g_test_dbus_stop(_arg0)
 }
 
-// Up: start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS. After this
-// call, it is safe for unit tests to start sending messages on the session bus.
-//
-// If this function is called from setup callback of g_test_add(),
-// g_test_dbus_down() must be called in its teardown callback.
-//
-// If this function is called from unit test's main(), then g_test_dbus_down()
-// must be called after g_test_run().
 func (s testDBus) Up() {
 	var _arg0 *C.GTestDBus // out
 
@@ -44408,10 +38368,6 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	return _themedIcon
 }
 
-// AppendName: append a name to the list of icons from within @icon.
-//
-// Note that doing so invalidates the hash computed by prior calls to
-// g_icon_hash().
 func (i themedIcon) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
@@ -44423,7 +38379,6 @@ func (i themedIcon) AppendName(iconname string) {
 	C.g_themed_icon_append_name(_arg0, _arg1)
 }
 
-// Names gets the names of icons from within @icon.
 func (i themedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar
@@ -44451,10 +38406,6 @@ func (i themedIcon) Names() []string {
 	return _utf8s
 }
 
-// PrependName: prepend a name to the list of icons from within @icon.
-//
-// Note that doing so invalidates the hash computed by prior calls to
-// g_icon_hash().
 func (i themedIcon) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
@@ -44718,7 +38669,6 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	return _tlsCertificate, _goerr
 }
 
-// Issuer gets the Certificate representing @cert's issuer, if known
 func (c tlsCertificate) Issuer() TLSCertificate {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
@@ -44734,11 +38684,6 @@ func (c tlsCertificate) Issuer() TLSCertificate {
 	return _tlsCertificate
 }
 
-// IsSame: check if two Certificate objects represent the same certificate. The
-// raw DER byte data of the two certificates are checked for equality. This has
-// the effect that two certificates may compare equal even if their
-// Certificate:issuer, Certificate:private-key, or Certificate:private-key-pem
-// properties differ.
 func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 	var _arg0 *C.GTlsCertificate // out
 	var _arg1 *C.GTlsCertificate // out
@@ -44758,22 +38703,6 @@ func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 	return _ok
 }
 
-// Verify: this verifies @cert and returns a set of CertificateFlags indicating
-// any problems found with it. This can be used to verify a certificate outside
-// the context of making a connection, or to check a certificate against a CA
-// that is not part of the system CA database.
-//
-// If @identity is not nil, @cert's name(s) will be compared against it, and
-// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does not
-// match. If @identity is nil, that bit will never be set in the return value.
-//
-// If @trusted_ca is not nil, then @cert (or one of the certificates in its
-// chain) must be signed by it, or else G_TLS_CERTIFICATE_UNKNOWN_CA will be set
-// in the return value. If @trusted_ca is nil, that bit will never be set in the
-// return value.
-//
-// (All other CertificateFlags values will always be set or unset as
-// appropriate.)
 func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out
@@ -44995,8 +38924,6 @@ func marshalTLSConnection(p uintptr) (interface{}, error) {
 	return WrapTLSConnection(obj), nil
 }
 
-// EmitAcceptCertificate: used by Connection implementations to emit the
-// Connection::accept-certificate signal.
 func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool {
 	var _arg0 *C.GTlsConnection      // out
 	var _arg1 *C.GTlsCertificate     // out
@@ -45018,8 +38945,6 @@ func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLS
 	return _ok
 }
 
-// Certificate gets @conn's certificate, as set by
-// g_tls_connection_set_certificate().
 func (c tlsConnection) Certificate() TLSCertificate {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsCertificate // in
@@ -45035,19 +38960,6 @@ func (c tlsConnection) Certificate() TLSCertificate {
 	return _tlsCertificate
 }
 
-// ChannelBindingData: query the TLS backend for TLS channel binding data of
-// @type for @conn.
-//
-// This call retrieves TLS channel binding data as specified in RFC 5056
-// (https://tools.ietf.org/html/rfc5056), RFC 5929
-// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data is
-// returned in @data. The @data is resized by the callee using Array buffer
-// management and will be freed when the @data is destroyed by
-// g_byte_array_unref(). If @data is nil, it will only check whether TLS backend
-// is able to fetch the data (e.g. whether @type is supported by the TLS
-// backend). It does not guarantee that the data will be available though. That
-// could happen if TLS connection does not support @type or the binding data is
-// not available yet due to additional negotiation or input required.
 func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GTlsConnection        // out
 	var _arg1 C.GTlsChannelBindingType // out
@@ -45080,8 +38992,6 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, er
 	return _data, _goerr
 }
 
-// Database gets the certificate database that @conn uses to verify peer
-// certificates. See g_tls_connection_set_database().
 func (c tlsConnection) Database() TLSDatabase {
 	var _arg0 *C.GTlsConnection // out
 	var _cret *C.GTlsDatabase   // in
@@ -45097,9 +39007,6 @@ func (c tlsConnection) Database() TLSDatabase {
 	return _tlsDatabase
 }
 
-// Interaction: get the object that will be used to interact with the user. It
-// will be used for things like prompting the user for passwords. If nil is
-// returned, then no user interaction will occur for this connection.
 func (c tlsConnection) Interaction() TLSInteraction {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsInteraction // in
@@ -45115,12 +39022,6 @@ func (c tlsConnection) Interaction() TLSInteraction {
 	return _tlsInteraction
 }
 
-// NegotiatedProtocol gets the name of the application-layer protocol negotiated
-// during the handshake.
-//
-// If the peer did not use the ALPN extension, or did not advertise a protocol
-// that matched one of @conn's protocols, or the TLS backend does not support
-// ALPN, then this will be nil. See g_tls_connection_set_advertised_protocols().
 func (c tlsConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GTlsConnection // out
 	var _cret *C.gchar          // in
@@ -45136,9 +39037,6 @@ func (c tlsConnection) NegotiatedProtocol() string {
 	return _utf8
 }
 
-// PeerCertificate gets @conn's peer's certificate after the handshake has
-// completed or failed. (It is not set during the emission of
-// Connection::accept-certificate.)
 func (c tlsConnection) PeerCertificate() TLSCertificate {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsCertificate // in
@@ -45154,9 +39052,6 @@ func (c tlsConnection) PeerCertificate() TLSCertificate {
 	return _tlsCertificate
 }
 
-// PeerCertificateErrors gets the errors associated with validating @conn's
-// peer's certificate, after the handshake has completed or failed. (It is not
-// set during the emission of Connection::accept-certificate.)
 func (c tlsConnection) PeerCertificateErrors() TLSCertificateFlags {
 	var _arg0 *C.GTlsConnection      // out
 	var _cret C.GTlsCertificateFlags // in
@@ -45172,8 +39067,6 @@ func (c tlsConnection) PeerCertificateErrors() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// RehandshakeMode gets @conn rehandshaking mode. See
-// g_tls_connection_set_rehandshake_mode() for details.
 func (c tlsConnection) RehandshakeMode() TLSRehandshakeMode {
 	var _arg0 *C.GTlsConnection     // out
 	var _cret C.GTlsRehandshakeMode // in
@@ -45189,9 +39082,6 @@ func (c tlsConnection) RehandshakeMode() TLSRehandshakeMode {
 	return _tlsRehandshakeMode
 }
 
-// RequireCloseNotify tests whether or not @conn expects a proper TLS close
-// notification when the connection is closed. See
-// g_tls_connection_set_require_close_notify() for details.
 func (c tlsConnection) RequireCloseNotify() bool {
 	var _arg0 *C.GTlsConnection // out
 	var _cret C.gboolean        // in
@@ -45209,8 +39099,6 @@ func (c tlsConnection) RequireCloseNotify() bool {
 	return _ok
 }
 
-// UseSystemCertdb gets whether @conn uses the system certificate database to
-// verify peer certificates. See g_tls_connection_set_use_system_certdb().
 func (c tlsConnection) UseSystemCertdb() bool {
 	var _arg0 *C.GTlsConnection // out
 	var _cret C.gboolean        // in
@@ -45228,33 +39116,6 @@ func (c tlsConnection) UseSystemCertdb() bool {
 	return _ok
 }
 
-// Handshake attempts a TLS handshake on @conn.
-//
-// On the client side, it is never necessary to call this method; although the
-// connection needs to perform a handshake after connecting (or after sending a
-// "STARTTLS"-type command), Connection will handle this for you automatically
-// when you try to send or receive data on the connection. You can call
-// g_tls_connection_handshake() manually if you want to know whether the initial
-// handshake succeeded or failed (as opposed to just immediately trying to use
-// @conn to read or write, in which case, if it fails, it may not be possible to
-// tell if it failed before or after completing the handshake), but beware that
-// servers may reject client authentication after the handshake has completed,
-// so a successful handshake does not indicate the connection will be usable.
-//
-// Likewise, on the server side, although a handshake is necessary at the
-// beginning of the communication, you do not need to call this function
-// explicitly unless you want clearer error reporting.
-//
-// Previously, calling g_tls_connection_handshake() after the initial handshake
-// would trigger a rehandshake; however, this usage was deprecated in GLib 2.60
-// because rehandshaking was removed from the TLS protocol in TLS 1.3. Since
-// GLib 2.64, calling this function after the initial handshake will no longer
-// do anything.
-//
-// When using a Connection created by Client, the Client performs the initial
-// handshake, so calling this function manually is not recommended.
-//
-// Connection::accept_certificate may be emitted during the handshake.
 func (c tlsConnection) Handshake(cancellable Cancellable) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GCancellable   // out
@@ -45272,8 +39133,6 @@ func (c tlsConnection) Handshake(cancellable Cancellable) error {
 	return _goerr
 }
 
-// HandshakeFinish: finish an asynchronous TLS handshake operation. See
-// g_tls_connection_handshake() for more information.
 func (c tlsConnection) HandshakeFinish(result AsyncResult) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GAsyncResult   // out
@@ -45291,17 +39150,6 @@ func (c tlsConnection) HandshakeFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// SetAdvertisedProtocols sets the list of application-layer protocols to
-// advertise that the caller is willing to speak on this connection. The
-// Application-Layer Protocol Negotiation (ALPN) extension will be used to
-// negotiate a compatible protocol with the peer; use
-// g_tls_connection_get_negotiated_protocol() to find the negotiated protocol
-// after the handshake. Specifying nil for the the value of @protocols will
-// disable ALPN negotiation.
-//
-// See IANA TLS ALPN Protocol IDs
-// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
-// for a list of registered protocol IDs.
 func (c tlsConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 **C.gchar
@@ -45320,21 +39168,6 @@ func (c tlsConnection) SetAdvertisedProtocols(protocols []string) {
 	C.g_tls_connection_set_advertised_protocols(_arg0, _arg1)
 }
 
-// SetCertificate: this sets the certificate that @conn will present to its peer
-// during the TLS handshake. For a ServerConnection, it is mandatory to set
-// this, and that will normally be done at construct time.
-//
-// For a ClientConnection, this is optional. If a handshake fails with
-// G_TLS_ERROR_CERTIFICATE_REQUIRED, that means that the server requires a
-// certificate, and if you try connecting again, you should call this method
-// first. You can call g_tls_client_connection_get_accepted_cas() on the failed
-// connection to get a list of Certificate Authorities that the server will
-// accept certificates from.
-//
-// (It is also possible that a server will allow the connection with or without
-// a certificate; in that case, if you don't provide a certificate, you can tell
-// that the server requested one by the fact that
-// g_tls_client_connection_get_accepted_cas() will return non-nil.)
 func (c tlsConnection) SetCertificate(certificate TLSCertificate) {
 	var _arg0 *C.GTlsConnection  // out
 	var _arg1 *C.GTlsCertificate // out
@@ -45345,13 +39178,6 @@ func (c tlsConnection) SetCertificate(certificate TLSCertificate) {
 	C.g_tls_connection_set_certificate(_arg0, _arg1)
 }
 
-// SetDatabase sets the certificate database that is used to verify peer
-// certificates. This is set to the default database by default. See
-// g_tls_backend_get_default_database(). If set to nil, then peer certificate
-// validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
-// Connection::accept-certificate will always be emitted on client-side
-// connections, unless that bit is not set in
-// ClientConnection:validation-flags).
 func (c tlsConnection) SetDatabase(database TLSDatabase) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GTlsDatabase   // out
@@ -45362,12 +39188,6 @@ func (c tlsConnection) SetDatabase(database TLSDatabase) {
 	C.g_tls_connection_set_database(_arg0, _arg1)
 }
 
-// SetInteraction: set the object that will be used to interact with the user.
-// It will be used for things like prompting the user for passwords.
-//
-// The @interaction argument will normally be a derived subclass of Interaction.
-// nil can also be provided if no user interaction should occur for this
-// connection.
 func (c tlsConnection) SetInteraction(interaction TLSInteraction) {
 	var _arg0 *C.GTlsConnection  // out
 	var _arg1 *C.GTlsInteraction // out
@@ -45378,10 +39198,6 @@ func (c tlsConnection) SetInteraction(interaction TLSInteraction) {
 	C.g_tls_connection_set_interaction(_arg0, _arg1)
 }
 
-// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
-// longer supported and will have no effect. With TLS 1.3, rehandshaking has
-// been removed from the TLS protocol, replaced by separate post-handshake
-// authentication and rekey operations.
 func (c tlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	var _arg0 *C.GTlsConnection     // out
 	var _arg1 C.GTlsRehandshakeMode // out
@@ -45392,31 +39208,6 @@ func (c tlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	C.g_tls_connection_set_rehandshake_mode(_arg0, _arg1)
 }
 
-// SetRequireCloseNotify sets whether or not @conn expects a proper TLS close
-// notification before the connection is closed. If this is true (the default),
-// then @conn will expect to receive a TLS close notification from its peer
-// before the connection is closed, and will return a G_TLS_ERROR_EOF error if
-// the connection is closed without proper notification (since this may indicate
-// a network error, or man-in-the-middle attack).
-//
-// In some protocols, the application will know whether or not the connection
-// was closed cleanly based on application-level data (because the
-// application-level data includes a length field, or is somehow
-// self-delimiting); in this case, the close notify is redundant and sometimes
-// omitted. (TLS 1.1 explicitly allows this; in TLS 1.0 it is technically an
-// error, but often done anyway.) You can use
-// g_tls_connection_set_require_close_notify() to tell @conn to allow an
-// "unannounced" connection close, in which case the close will show up as a
-// 0-length read, as in a non-TLS Connection, and it is up to the application to
-// check that the data has been fully received.
-//
-// Note that this only affects the behavior when the peer closes the connection;
-// when the application calls g_io_stream_close() itself on @conn, this will
-// send a close notification regardless of the setting of this property. If you
-// explicitly want to do an unclean close, you can close @conn's
-// Connection:base-io-stream rather than closing @conn itself, but note that
-// this may only be done when no other operations are pending on @conn or the
-// base I/O stream.
 func (c tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 C.gboolean        // out
@@ -45429,12 +39220,6 @@ func (c tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	C.g_tls_connection_set_require_close_notify(_arg0, _arg1)
 }
 
-// SetUseSystemCertdb sets whether @conn uses the system certificate database to
-// verify peer certificates. This is true by default. If set to false, then peer
-// certificate validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA error
-// (meaning Connection::accept-certificate will always be emitted on client-side
-// connections, unless that bit is not set in
-// ClientConnection:validation-flags).
 func (c tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 C.gboolean        // out
@@ -45574,14 +39359,6 @@ func marshalTLSDatabase(p uintptr) (interface{}, error) {
 	return WrapTLSDatabase(obj), nil
 }
 
-// CreateCertificateHandle: create a handle string for the certificate. The
-// database will only be able to create a handle for certificates that originate
-// from the database. In cases where the database cannot create a handle for a
-// certificate, nil will be returned.
-//
-// This handle should be stable across various instances of the application, and
-// between applications. If a certificate is modified in the database, then it
-// is not guaranteed that this handle will continue to point to it.
 func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GTlsCertificate // out
@@ -45600,19 +39377,6 @@ func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string 
 	return _utf8
 }
 
-// LookupCertificateForHandle: look up a certificate by its handle.
-//
-// The handle should have been created by calling
-// g_tls_database_create_certificate_handle() on a Database object of the same
-// TLS backend. The handle is designed to remain valid across instantiations of
-// the database.
-//
-// If the handle is no longer valid, or does not point to a certificate in this
-// database, then nil will be returned.
-//
-// This function can block, use
-// g_tls_database_lookup_certificate_for_handle_async() to perform the lookup
-// operation asynchronously.
 func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.gchar                  // out
@@ -45640,12 +39404,6 @@ func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSIn
 	return _tlsCertificate, _goerr
 }
 
-// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
-// certificate by its handle. See g_tls_database_lookup_certificate_for_handle()
-// for more information.
-//
-// If the handle is no longer valid, or does not point to a certificate in this
-// database, then nil will be returned.
 func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
@@ -45666,13 +39424,6 @@ func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCe
 	return _tlsCertificate, _goerr
 }
 
-// LookupCertificateIssuer: look up the issuer of @certificate in the database.
-//
-// The Certificate:issuer property of @certificate is not modified, and the two
-// certificates are not hooked into a chain.
-//
-// This function can block, use g_tls_database_lookup_certificate_issuer_async()
-// to perform the lookup operation asynchronously.
 func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.GTlsCertificate        // out
@@ -45699,9 +39450,6 @@ func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interac
 	return _tlsCertificate, _goerr
 }
 
-// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
-// operation. See g_tls_database_lookup_certificate_issuer() for more
-// information.
 func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
@@ -45722,41 +39470,6 @@ func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCerti
 	return _tlsCertificate, _goerr
 }
 
-// VerifyChain determines the validity of a certificate chain after looking up
-// and adding any missing certificates to the chain.
-//
-// @chain is a chain of Certificate objects each pointing to the next
-// certificate in the chain by its Certificate:issuer property. The chain may
-// initially consist of one or more certificates. After the verification process
-// is complete, @chain may be modified by adding missing certificates, or
-// removing extra certificates. If a certificate anchor was found, then it is
-// added to the @chain.
-//
-// @purpose describes the purpose (or usage) for which the certificate is being
-// used. Typically @purpose will be set to
-// TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER which means that the certificate is
-// being used to authenticate a server (and we are acting as the client).
-//
-// The @identity is used to ensure the server certificate is valid for the
-// expected peer identity. If the identity does not match the certificate,
-// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value. If @identity
-// is nil, that bit will never be set in the return value. The peer identity may
-// also be used to check for pinned certificates (trust exceptions) in the
-// database. These may override the normal verification process on a
-// host-by-host basis.
-//
-// Currently there are no @flags, and G_TLS_DATABASE_VERIFY_NONE should be used.
-//
-// If @chain is found to be valid, then the return value will be 0. If @chain is
-// found to be invalid, then the return value will indicate the problems found.
-// If the function is unable to determine whether @chain is valid or not (eg,
-// because @cancellable is triggered before it completes) then the return value
-// will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set accordingly.
-// @error is not set when @chain is successfully analyzed but found to be
-// invalid.
-//
-// This function can block, use g_tls_database_verify_chain_async() to perform
-// the verification operation asynchronously.
 func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.GTlsCertificate        // out
@@ -45788,16 +39501,6 @@ func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity 
 	return _tlsCertificateFlags, _goerr
 }
 
-// VerifyChainFinish: finish an asynchronous verify chain operation. See
-// g_tls_database_verify_chain() for more information.
-//
-// If @chain is found to be valid, then the return value will be 0. If @chain is
-// found to be invalid, then the return value will indicate the problems found.
-// If the function is unable to determine whether @chain is valid or not (eg,
-// because @cancellable is triggered before it completes) then the return value
-// will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set accordingly.
-// @error is not set when @chain is successfully analyzed but found to be
-// invalid.
 func (s tlsDatabase) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase        // out
 	var _arg1 *C.GAsyncResult        // out
@@ -45963,19 +39666,6 @@ func marshalTLSInteraction(p uintptr) (interface{}, error) {
 	return WrapTLSInteraction(obj), nil
 }
 
-// AskPassword: run synchronous interaction to ask the user for a password. In
-// general, g_tls_interaction_invoke_ask_password() should be used instead of
-// this function.
-//
-// Derived subclasses usually implement a password prompt, although they may
-// also choose to provide a password from elsewhere. The @password value will be
-// filled in and then @callback will be called. Alternatively the user may abort
-// this password request, which will usually abort the TLS connection.
-//
-// If the interaction is cancelled by the cancellation object, or by the user
-// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
-// G_IO_ERROR_CANCELLED error code. Certain implementations may not support
-// immediate cancellation.
 func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GTlsPassword         // out
@@ -45998,16 +39688,6 @@ func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellabl
 	return _tlsInteractionResult, _goerr
 }
 
-// AskPasswordFinish: complete an ask password user interaction request. This
-// should be once the g_tls_interaction_ask_password_async() completion callback
-// is called.
-//
-// If G_TLS_INTERACTION_HANDLED is returned, then the Password passed to
-// g_tls_interaction_ask_password() will have its password filled in.
-//
-// If the interaction is cancelled by the cancellation object, or by the user
-// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
-// G_IO_ERROR_CANCELLED error code.
 func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
@@ -46028,24 +39708,6 @@ func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (TLSInteractionRes
 	return _tlsInteractionResult, _goerr
 }
 
-// InvokeAskPassword: invoke the interaction to ask the user for a password. It
-// invokes this interaction in the main loop, specifically the Context returned
-// by g_main_context_get_thread_default() when the interaction is created. This
-// is called by called by Connection or Database to ask the user for a password.
-//
-// Derived subclasses usually implement a password prompt, although they may
-// also choose to provide a password from elsewhere. The @password value will be
-// filled in and then @callback will be called. Alternatively the user may abort
-// this password request, which will usually abort the TLS connection.
-//
-// The implementation can either be a synchronous (eg: modal dialog) or an
-// asynchronous one (eg: modeless dialog). This function will take care of
-// calling which ever one correctly.
-//
-// If the interaction is cancelled by the cancellation object, or by the user
-// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
-// G_IO_ERROR_CANCELLED error code. Certain implementations may not support
-// immediate cancellation.
 func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GTlsPassword         // out
@@ -46068,26 +39730,6 @@ func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Canc
 	return _tlsInteractionResult, _goerr
 }
 
-// InvokeRequestCertificate: invoke the interaction to ask the user to choose a
-// certificate to use with the connection. It invokes this interaction in the
-// main loop, specifically the Context returned by
-// g_main_context_get_thread_default() when the interaction is created. This is
-// called by called by Connection when the peer requests a certificate during
-// the handshake.
-//
-// Derived subclasses usually implement a certificate selector, although they
-// may also choose to provide a certificate from elsewhere. Alternatively the
-// user may abort this certificate request, which may or may not abort the TLS
-// connection.
-//
-// The implementation can either be a synchronous (eg: modal dialog) or an
-// asynchronous one (eg: modeless dialog). This function will take care of
-// calling which ever one correctly.
-//
-// If the interaction is cancelled by the cancellation object, or by the user
-// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
-// G_IO_ERROR_CANCELLED error code. Certain implementations may not support
-// immediate cancellation.
 func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg1 *C.GTlsConnection             // out
@@ -46112,24 +39754,6 @@ func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags
 	return _tlsInteractionResult, _goerr
 }
 
-// RequestCertificate: run synchronous interaction to ask the user to choose a
-// certificate to use with the connection. In general,
-// g_tls_interaction_invoke_request_certificate() should be used instead of this
-// function.
-//
-// Derived subclasses usually implement a certificate selector, although they
-// may also choose to provide a certificate from elsewhere. Alternatively the
-// user may abort this certificate request, which will usually abort the TLS
-// connection.
-//
-// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
-// g_tls_interaction_request_certificate() will have had its
-// Connection:certificate filled in.
-//
-// If the interaction is cancelled by the cancellation object, or by the user
-// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
-// G_IO_ERROR_CANCELLED error code. Certain implementations may not support
-// immediate cancellation.
 func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg1 *C.GTlsConnection             // out
@@ -46154,17 +39778,6 @@ func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCe
 	return _tlsInteractionResult, _goerr
 }
 
-// RequestCertificateFinish: complete a request certificate user interaction
-// request. This should be once the
-// g_tls_interaction_request_certificate_async() completion callback is called.
-//
-// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
-// g_tls_interaction_request_certificate_async() will have had its
-// Connection:certificate filled in.
-//
-// If the interaction is cancelled by the cancellation object, or by the user
-// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
-// G_IO_ERROR_CANCELLED error code.
 func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
@@ -46262,8 +39875,6 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 	return _tlsPassword
 }
 
-// Description: get a description string about what the password will be used
-// for.
 func (p tlsPassword) Description() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
@@ -46279,7 +39890,6 @@ func (p tlsPassword) Description() string {
 	return _utf8
 }
 
-// Flags: get flags about the password.
 func (p tlsPassword) Flags() TLSPasswordFlags {
 	var _arg0 *C.GTlsPassword     // out
 	var _cret C.GTlsPasswordFlags // in
@@ -46295,10 +39905,6 @@ func (p tlsPassword) Flags() TLSPasswordFlags {
 	return _tlsPasswordFlags
 }
 
-// Value: get the password value. If @length is not nil then it will be filled
-// in with the length of the password value. (Note that the password value is
-// not nul-terminated, so you can only pass nil for @length in contexts where
-// you know the password will have a certain fixed length.)
 func (p tlsPassword) Value(length *uint) *byte {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gsize        // out
@@ -46316,9 +39922,6 @@ func (p tlsPassword) Value(length *uint) *byte {
 	return _guint8
 }
 
-// Warning: get a user readable translated warning. Usually this warning is a
-// representation of the password flags returned from
-// g_tls_password_get_flags().
 func (p tlsPassword) Warning() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
@@ -46334,8 +39937,6 @@ func (p tlsPassword) Warning() string {
 	return _utf8
 }
 
-// SetDescription: set a description string about what the password will be used
-// for.
 func (p tlsPassword) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
@@ -46347,7 +39948,6 @@ func (p tlsPassword) SetDescription(description string) {
 	C.g_tls_password_set_description(_arg0, _arg1)
 }
 
-// SetFlags: set flags about the password.
 func (p tlsPassword) SetFlags(flags TLSPasswordFlags) {
 	var _arg0 *C.GTlsPassword     // out
 	var _arg1 C.GTlsPasswordFlags // out
@@ -46358,13 +39958,6 @@ func (p tlsPassword) SetFlags(flags TLSPasswordFlags) {
 	C.g_tls_password_set_flags(_arg0, _arg1)
 }
 
-// SetValue: set the value for this password. The @value will be copied by the
-// password object.
-//
-// Specify the @length, for a non-nul-terminated password. Pass -1 as @length if
-// using a nul-terminated password, and @length will be calculated
-// automatically. (Note that the terminating nul is not considered part of the
-// password in this case.)
 func (p tlsPassword) SetValue(value []byte) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.guchar
@@ -46377,9 +39970,6 @@ func (p tlsPassword) SetValue(value []byte) {
 	C.g_tls_password_set_value(_arg0, _arg1, _arg2)
 }
 
-// SetWarning: set a user readable translated warning. Usually this warning is a
-// representation of the password flags returned from
-// g_tls_password_get_flags().
 func (p tlsPassword) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
@@ -46481,22 +40071,6 @@ func marshalUnixConnection(p uintptr) (interface{}, error) {
 	return WrapUnixConnection(obj), nil
 }
 
-// ReceiveCredentials receives credentials from the sending end of the
-// connection. The sending end has to call g_unix_connection_send_credentials()
-// (or similar) for this to work.
-//
-// As well as reading the credentials this also reads (and discards) a single
-// byte from the stream, as this is required for credentials passing to work on
-// some implementations.
-//
-// This method can be expected to be available on the following platforms:
-//
-// - Linux since GLib 2.26 - FreeBSD since GLib 2.26 - GNU/kFreeBSD since GLib
-// 2.36 - Solaris, Illumos and OpenSolaris since GLib 2.40 - GNU/Hurd since GLib
-// 2.40
-//
-// Other ways to exchange credentials with a foreign peer includes the
-// CredentialsMessage type and g_socket_get_credentials() function.
 func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -46517,8 +40091,6 @@ func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials
 	return _credentials, _goerr
 }
 
-// ReceiveCredentialsFinish finishes an asynchronous receive credentials
-// operation started with g_unix_connection_receive_credentials_async().
 func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -46539,11 +40111,6 @@ func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (Credential
 	return _credentials, _goerr
 }
 
-// ReceiveFd receives a file descriptor from the sending end of the connection.
-// The sending end has to call g_unix_connection_send_fd() for this to work.
-//
-// As well as reading the fd this also reads a single byte from the stream, as
-// this is required for fd passing to work on some implementations.
 func (c unixConnection) ReceiveFd(cancellable Cancellable) (int, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -46564,23 +40131,6 @@ func (c unixConnection) ReceiveFd(cancellable Cancellable) (int, error) {
 	return _gint, _goerr
 }
 
-// SendCredentials passes the credentials of the current user the receiving side
-// of the connection. The receiving end has to call
-// g_unix_connection_receive_credentials() (or similar) to accept the
-// credentials.
-//
-// As well as sending the credentials this also writes a single NUL byte to the
-// stream, as this is required for credentials passing to work on some
-// implementations.
-//
-// This method can be expected to be available on the following platforms:
-//
-// - Linux since GLib 2.26 - FreeBSD since GLib 2.26 - GNU/kFreeBSD since GLib
-// 2.36 - Solaris, Illumos and OpenSolaris since GLib 2.40 - GNU/Hurd since GLib
-// 2.40
-//
-// Other ways to exchange credentials with a foreign peer includes the
-// CredentialsMessage type and g_socket_get_credentials() function.
 func (c unixConnection) SendCredentials(cancellable Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -46598,8 +40148,6 @@ func (c unixConnection) SendCredentials(cancellable Cancellable) error {
 	return _goerr
 }
 
-// SendCredentialsFinish finishes an asynchronous send credentials operation
-// started with g_unix_connection_send_credentials_async().
 func (c unixConnection) SendCredentialsFinish(result AsyncResult) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -46617,12 +40165,6 @@ func (c unixConnection) SendCredentialsFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// SendFd passes a file descriptor to the receiving side of the connection. The
-// receiving end has to call g_unix_connection_receive_fd() to accept the file
-// descriptor.
-//
-// As well as sending the fd this also writes a single byte to the stream, as
-// this is required for fd passing to work on some implementations.
 func (c unixConnection) SendFd(fd int, cancellable Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 C.gint             // out
@@ -46710,7 +40252,6 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCrede
 	return _unixCredentialsMessage
 }
 
-// Credentials gets the credentials stored in @message.
 func (m unixCredentialsMessage) Credentials() Credentials {
 	var _arg0 *C.GUnixCredentialsMessage // out
 	var _cret *C.GCredentials            // in
@@ -46826,18 +40367,6 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 	return _unixFDList
 }
 
-// Append adds a file descriptor to @list.
-//
-// The file descriptor is duplicated using dup(). You keep your copy of the
-// descriptor and the copy contained in @list will be closed when @list is
-// finalized.
-//
-// A possible cause of failure is exceeding the per-process or system-wide file
-// descriptor limit.
-//
-// The index of the file descriptor in the list is returned. If you use this
-// index with g_unix_fd_list_get() then you will receive back a duplicated copy
-// of the same file descriptor.
 func (l unixFDList) Append(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
@@ -46858,16 +40387,6 @@ func (l unixFDList) Append(fd int) (int, error) {
 	return _gint, _goerr
 }
 
-// Get gets a file descriptor out of @list.
-//
-// @index_ specifies the index of the file descriptor to get. It is a programmer
-// error for @index_ to be out of range; see g_unix_fd_list_get_length().
-//
-// The file descriptor is duplicated using dup() and set as close-on-exec before
-// being returned. You must call close() on it when you are done.
-//
-// A possible cause of failure is exceeding the per-process or system-wide file
-// descriptor limit.
 func (l unixFDList) Get(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
@@ -46888,8 +40407,6 @@ func (l unixFDList) Get(index_ int) (int, error) {
 	return _gint, _goerr
 }
 
-// Length gets the length of @list (ie: the number of file descriptors contained
-// within).
 func (l unixFDList) Length() int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret C.gint         // in
@@ -46986,14 +40503,6 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	return _unixFDMessage
 }
 
-// AppendFd adds a file descriptor to @message.
-//
-// The file descriptor is duplicated using dup(). You keep your copy of the
-// descriptor and the copy contained in @message will be closed when @message is
-// finalized.
-//
-// A possible cause of failure is exceeding the per-process or system-wide file
-// descriptor limit.
 func (m unixFDMessage) AppendFd(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
@@ -47011,9 +40520,6 @@ func (m unixFDMessage) AppendFd(fd int) error {
 	return _goerr
 }
 
-// FdList gets the FDList contained in @message. This function does not return a
-// reference to the caller, but the returned list is valid for the lifetime of
-// @message.
 func (m unixFDMessage) FdList() UnixFDList {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.GUnixFDList    // in
@@ -47100,8 +40606,6 @@ func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
 	return _unixInputStream
 }
 
-// CloseFd returns whether the file descriptor of @stream will be closed when
-// the stream is closed.
 func (s unixInputStream) CloseFd() bool {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gboolean          // in
@@ -47119,7 +40623,6 @@ func (s unixInputStream) CloseFd() bool {
 	return _ok
 }
 
-// Fd: return the UNIX file descriptor that the stream reads from.
 func (s unixInputStream) Fd() int {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gint              // in
@@ -47135,8 +40638,6 @@ func (s unixInputStream) Fd() int {
 	return _gint
 }
 
-// SetCloseFd sets whether the file descriptor of @stream shall be closed when
-// the stream is closed.
 func (s unixInputStream) SetCloseFd(closeFd bool) {
 	var _arg0 *C.GUnixInputStream // out
 	var _arg1 C.gboolean          // out
@@ -47198,12 +40699,6 @@ func NewUnixMountMonitor() UnixMountMonitor {
 	return _unixMountMonitor
 }
 
-// SetRateLimit: this function does nothing.
-//
-// Before 2.44, this was a partially-effective way of controlling the rate at
-// which events would be reported under some uncommon circumstances. Since
-// @mount_monitor is a singleton, it also meant that calling this function would
-// have side effects for other users of the monitor.
 func (m unixMountMonitor) SetRateLimit(limitMsec int) {
 	var _arg0 *C.GUnixMountMonitor // out
 	var _arg1 C.int                // out
@@ -47285,8 +40780,6 @@ func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 	return _unixOutputStream
 }
 
-// CloseFd returns whether the file descriptor of @stream will be closed when
-// the stream is closed.
 func (s unixOutputStream) CloseFd() bool {
 	var _arg0 *C.GUnixOutputStream // out
 	var _cret C.gboolean           // in
@@ -47304,7 +40797,6 @@ func (s unixOutputStream) CloseFd() bool {
 	return _ok
 }
 
-// Fd: return the UNIX file descriptor that the stream writes to.
 func (s unixOutputStream) Fd() int {
 	var _arg0 *C.GUnixOutputStream // out
 	var _cret C.gint               // in
@@ -47320,8 +40812,6 @@ func (s unixOutputStream) Fd() int {
 	return _gint
 }
 
-// SetCloseFd sets whether the file descriptor of @stream shall be closed when
-// the stream is closed.
 func (s unixOutputStream) SetCloseFd(closeFd bool) {
 	var _arg0 *C.GUnixOutputStream // out
 	var _arg1 C.gboolean           // out
@@ -47480,7 +40970,6 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSo
 	return _unixSocketAddress
 }
 
-// AddressType gets @address's type.
 func (a unixSocketAddress) AddressType() UnixSocketAddressType {
 	var _arg0 *C.GUnixSocketAddress    // out
 	var _cret C.GUnixSocketAddressType // in
@@ -47496,7 +40985,6 @@ func (a unixSocketAddress) AddressType() UnixSocketAddressType {
 	return _unixSocketAddressType
 }
 
-// IsAbstract tests if @address is abstract.
 func (a unixSocketAddress) IsAbstract() bool {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gboolean            // in
@@ -47514,11 +41002,6 @@ func (a unixSocketAddress) IsAbstract() bool {
 	return _ok
 }
 
-// Path gets @address's path, or for abstract sockets the "name".
-//
-// Guaranteed to be zero-terminated, but an abstract socket may contain embedded
-// zeros, and thus you should use g_unix_socket_address_get_path_len() to get
-// the true length of this string.
 func (a unixSocketAddress) Path() string {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret *C.char               // in
@@ -47534,9 +41017,6 @@ func (a unixSocketAddress) Path() string {
 	return _utf8
 }
 
-// PathLen gets the length of @address's path.
-//
-// For details, see g_unix_socket_address_get_path().
 func (a unixSocketAddress) PathLen() uint {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gsize               // in
@@ -47598,7 +41078,6 @@ func marshalVFS(p uintptr) (interface{}, error) {
 	return WrapVFS(obj), nil
 }
 
-// FileForPath gets a #GFile for @path.
 func (v vfS) FileForPath(path string) File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -47617,10 +41096,6 @@ func (v vfS) FileForPath(path string) File {
 	return _file
 }
 
-// FileForURI gets a #GFile for @uri.
-//
-// This operation never fails, but the returned object might not support any I/O
-// operation if the URI is malformed or if the URI scheme is not supported.
 func (v vfS) FileForURI(uri string) File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -47639,7 +41114,6 @@ func (v vfS) FileForURI(uri string) File {
 	return _file
 }
 
-// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 func (v vfS) SupportedURISchemes() []string {
 	var _arg0 *C.GVfs // out
 	var _cret **C.gchar
@@ -47667,7 +41141,6 @@ func (v vfS) SupportedURISchemes() []string {
 	return _utf8s
 }
 
-// IsActive checks if the VFS is active.
 func (v vfS) IsActive() bool {
 	var _arg0 *C.GVfs    // out
 	var _cret C.gboolean // in
@@ -47685,9 +41158,6 @@ func (v vfS) IsActive() bool {
 	return _ok
 }
 
-// ParseName: this operation never fails, but the returned object might not
-// support any I/O operations if the @parse_name cannot be parsed by the #GVfs
-// module.
 func (v vfS) ParseName(parseName string) File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -47706,8 +41176,6 @@ func (v vfS) ParseName(parseName string) File {
 	return _file
 }
 
-// UnregisterURIScheme unregisters the URI handler for @scheme previously
-// registered with g_vfs_register_uri_scheme().
 func (v vfS) UnregisterURIScheme(scheme string) bool {
 	var _arg0 *C.GVfs    // out
 	var _arg1 *C.char    // out
@@ -47769,7 +41237,6 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 	return WrapVolumeMonitor(obj), nil
 }
 
-// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 func (v volumeMonitor) MountForUUID(uuid string) Mount {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
@@ -47788,7 +41255,6 @@ func (v volumeMonitor) MountForUUID(uuid string) Mount {
 	return _mount
 }
 
-// VolumeForUUID finds a #GVolume object by its UUID (see g_volume_get_uuid())
 func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
@@ -47866,7 +41332,6 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 	return _zlibCompressor
 }
 
-// FileInfo returns the Compressor:file-info property.
 func (c zlibCompressor) FileInfo() FileInfo {
 	var _arg0 *C.GZlibCompressor // out
 	var _cret *C.GFileInfo       // in
@@ -47882,14 +41347,6 @@ func (c zlibCompressor) FileInfo() FileInfo {
 	return _fileInfo
 }
 
-// SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's
-// Compressor:format property is G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be used
-// to set the file name and modification time in the GZIP header of the
-// compressed data.
-//
-// Note: it is an error to call this function while a compression is in
-// progress; it may only be called immediately after creation of @compressor, or
-// after resetting it with g_converter_reset().
 func (c zlibCompressor) SetFileInfo(fileInfo FileInfo) {
 	var _arg0 *C.GZlibCompressor // out
 	var _arg1 *C.GFileInfo       // out
@@ -47952,11 +41409,6 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 	return _zlibDecompressor
 }
 
-// FileInfo retrieves the Info constructed from the GZIP header data of
-// compressed data processed by @compressor, or nil if @decompressor's
-// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
-// header data was not fully processed yet, or it not present in the data stream
-// at all.
 func (d zlibDecompressor) FileInfo() FileInfo {
 	var _arg0 *C.GZlibDecompressor // out
 	var _cret *C.GFileInfo         // in

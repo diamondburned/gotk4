@@ -2249,12 +2249,6 @@ func NewContext() Context {
 	return _context
 }
 
-// Changed forces a change in the context, which will cause any `PangoLayout`
-// using this context to re-layout.
-//
-// This function is only useful when implementing a new backend for Pango,
-// something applications won't do. Backends should call this function if they
-// have attached extra data to the context and such data is changed.
 func (c context) Changed() {
 	var _arg0 *C.PangoContext // out
 
@@ -2263,9 +2257,6 @@ func (c context) Changed() {
 	C.pango_context_changed(_arg0)
 }
 
-// BaseDir retrieves the base direction for the context.
-//
-// See [method@Pango.Context.set_base_dir].
 func (c context) BaseDir() Direction {
 	var _arg0 *C.PangoContext  // out
 	var _cret C.PangoDirection // in
@@ -2281,9 +2272,6 @@ func (c context) BaseDir() Direction {
 	return _direction
 }
 
-// BaseGravity retrieves the base gravity for the context.
-//
-// See [method@Pango.Context.set_base_gravity].
 func (c context) BaseGravity() Gravity {
 	var _arg0 *C.PangoContext // out
 	var _cret C.PangoGravity  // in
@@ -2299,7 +2287,6 @@ func (c context) BaseGravity() Gravity {
 	return _gravity
 }
 
-// FontDescription: retrieve the default font description for the context.
 func (c context) FontDescription() *FontDescription {
 	var _arg0 *C.PangoContext         // out
 	var _cret *C.PangoFontDescription // in
@@ -2315,7 +2302,6 @@ func (c context) FontDescription() *FontDescription {
 	return _fontDescription
 }
 
-// FontMap gets the `PangoFontMap` used to look up fonts for this context.
 func (c context) FontMap() FontMap {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoFontMap // in
@@ -2331,12 +2317,6 @@ func (c context) FontMap() FontMap {
 	return _fontMap
 }
 
-// Gravity retrieves the gravity for the context.
-//
-// This is similar to [method@Pango.Context.get_base_gravity], except for when
-// the base gravity is PANGO_GRAVITY_AUTO for which
-// [type_func@Pango.Gravity.get_for_matrix] is used to return the gravity from
-// the current context matrix.
 func (c context) Gravity() Gravity {
 	var _arg0 *C.PangoContext // out
 	var _cret C.PangoGravity  // in
@@ -2352,9 +2332,6 @@ func (c context) Gravity() Gravity {
 	return _gravity
 }
 
-// GravityHint retrieves the gravity hint for the context.
-//
-// See [method@Pango.Context.set_gravity_hint] for details.
 func (c context) GravityHint() GravityHint {
 	var _arg0 *C.PangoContext    // out
 	var _cret C.PangoGravityHint // in
@@ -2370,7 +2347,6 @@ func (c context) GravityHint() GravityHint {
 	return _gravityHint
 }
 
-// Language retrieves the global language tag for the context.
 func (c context) Language() *Language {
 	var _arg0 *C.PangoContext  // out
 	var _cret *C.PangoLanguage // in
@@ -2389,10 +2365,6 @@ func (c context) Language() *Language {
 	return _language
 }
 
-// Matrix gets the transformation matrix that will be applied when rendering
-// with this context.
-//
-// See [method@Pango.Context.set_matrix].
 func (c context) Matrix() *Matrix {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoMatrix  // in
@@ -2408,17 +2380,6 @@ func (c context) Matrix() *Matrix {
 	return _matrix
 }
 
-// Metrics: get overall metric information for a particular font description.
-//
-// Since the metrics may be substantially different for different scripts, a
-// language tag can be provided to indicate that the metrics should be retrieved
-// that correspond to the script(s) used by that language.
-//
-// The `PangoFontDescription` is interpreted in the same way as by
-// [func@itemize], and the family name may be a comma separated list of names.
-// If characters from multiple of these families would be used to render the
-// string, then the returned fonts would be a composite of the metrics for the
-// fonts loaded for the individual families.
 func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -2441,8 +2402,6 @@ func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics
 	return _fontMetrics
 }
 
-// RoundGlyphPositions returns whether font rendering with this context should
-// round glyph positions and widths.
 func (c context) RoundGlyphPositions() bool {
 	var _arg0 *C.PangoContext // out
 	var _cret C.gboolean      // in
@@ -2460,17 +2419,6 @@ func (c context) RoundGlyphPositions() bool {
 	return _ok
 }
 
-// Serial returns the current serial number of @context.
-//
-// The serial number is initialized to an small number larger than zero when a
-// new context is created and is increased whenever the context is changed using
-// any of the setter functions, or the `PangoFontMap` it uses to find fonts has
-// changed. The serial may wrap, but will never have the value 0. Since it can
-// wrap, never compare it with "less than", always use "not equals".
-//
-// This can be used to automatically detect changes to a `PangoContext`, and is
-// only useful when implementing objects that need update when their
-// `PangoContext` changes, like `PangoLayout`.
 func (c context) Serial() uint {
 	var _arg0 *C.PangoContext // out
 	var _cret C.guint         // in
@@ -2486,7 +2434,6 @@ func (c context) Serial() uint {
 	return _guint
 }
 
-// ListFamilies: list all families for a context.
 func (c context) ListFamilies() []FontFamily {
 	var _arg0 *C.PangoContext // out
 	var _arg1 **C.PangoFontFamily
@@ -2510,8 +2457,6 @@ func (c context) ListFamilies() []FontFamily {
 	return _families
 }
 
-// LoadFont loads the font in one of the fontmaps in the context that is the
-// closest match for @desc.
 func (c context) LoadFont(desc *FontDescription) Font {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -2529,8 +2474,6 @@ func (c context) LoadFont(desc *FontDescription) Font {
 	return _font
 }
 
-// LoadFontset: load a set of fonts in the context that can be used to render a
-// font matching @desc.
 func (c context) LoadFontset(desc *FontDescription, language *Language) Fontset {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -2550,14 +2493,6 @@ func (c context) LoadFontset(desc *FontDescription, language *Language) Fontset 
 	return _fontset
 }
 
-// SetBaseDir sets the base direction for the context.
-//
-// The base direction is used in applying the Unicode bidirectional algorithm;
-// if the @direction is PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL, then the
-// value will be used as the paragraph direction in the Unicode bidirectional
-// algorithm. A value of PANGO_DIRECTION_WEAK_LTR or PANGO_DIRECTION_WEAK_RTL is
-// used only for paragraphs that do not contain any strong characters
-// themselves.
 func (c context) SetBaseDir(direction Direction) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 C.PangoDirection // out
@@ -2568,9 +2503,6 @@ func (c context) SetBaseDir(direction Direction) {
 	C.pango_context_set_base_dir(_arg0, _arg1)
 }
 
-// SetBaseGravity sets the base gravity for the context.
-//
-// The base gravity is used in laying vertical text out.
 func (c context) SetBaseGravity(gravity Gravity) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.PangoGravity  // out
@@ -2581,7 +2513,6 @@ func (c context) SetBaseGravity(gravity Gravity) {
 	C.pango_context_set_base_gravity(_arg0, _arg1)
 }
 
-// SetFontDescription: set the default font description for the context
 func (c context) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -2592,11 +2523,6 @@ func (c context) SetFontDescription(desc *FontDescription) {
 	C.pango_context_set_font_description(_arg0, _arg1)
 }
 
-// SetFontMap sets the font map to be searched when fonts are looked-up in this
-// context.
-//
-// This is only for internal use by Pango backends, a `PangoContext` obtained
-// via one of the recommended methods should already have a suitable font map.
 func (c context) SetFontMap(fontMap FontMap) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoFontMap // out
@@ -2607,11 +2533,6 @@ func (c context) SetFontMap(fontMap FontMap) {
 	C.pango_context_set_font_map(_arg0, _arg1)
 }
 
-// SetGravityHint sets the gravity hint for the context.
-//
-// The gravity hint is used in laying vertical text out, and is only relevant if
-// gravity of the context as returned by [method@Pango.Context.get_gravity] is
-// set to PANGO_GRAVITY_EAST or PANGO_GRAVITY_WEST.
 func (c context) SetGravityHint(hint GravityHint) {
 	var _arg0 *C.PangoContext    // out
 	var _arg1 C.PangoGravityHint // out
@@ -2622,10 +2543,6 @@ func (c context) SetGravityHint(hint GravityHint) {
 	C.pango_context_set_gravity_hint(_arg0, _arg1)
 }
 
-// SetLanguage sets the global language tag for the context.
-//
-// The default language for the locale of the running process can be found using
-// [type_func@Pango.Language.get_default].
 func (c context) SetLanguage(language *Language) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 *C.PangoLanguage // out
@@ -2636,14 +2553,6 @@ func (c context) SetLanguage(language *Language) {
 	C.pango_context_set_language(_arg0, _arg1)
 }
 
-// SetMatrix sets the transformation matrix that will be applied when rendering
-// with this context.
-//
-// Note that reported metrics are in the user space coordinates before the
-// application of the matrix, not device-space coordinates after the application
-// of the matrix. So, they don't scale with the matrix, though they may change
-// slightly for different matrices, depending on how the text is fit to the
-// pixel grid.
 func (c context) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoMatrix  // out
@@ -2654,13 +2563,6 @@ func (c context) SetMatrix(matrix *Matrix) {
 	C.pango_context_set_matrix(_arg0, _arg1)
 }
 
-// SetRoundGlyphPositions sets whether font rendering with this context should
-// round glyph positions and widths to integral positions, in device units.
-//
-// This is useful when the renderer can't handle subpixel positioning of glyphs.
-//
-// The default value is to round glyph positions, to remain compatible with
-// previous Pango behavior.
 func (c context) SetRoundGlyphPositions(roundPositions bool) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.gboolean      // out
@@ -2737,7 +2639,6 @@ func NewCoverage() Coverage {
 	return _coverage
 }
 
-// Copy: copy an existing `PangoCoverage`.
 func (c coverage) Copy() Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
@@ -2753,7 +2654,6 @@ func (c coverage) Copy() Coverage {
 	return _ret
 }
 
-// Get: determine whether a particular index is covered by @coverage.
 func (c coverage) Get(index_ int) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
@@ -2771,9 +2671,6 @@ func (c coverage) Get(index_ int) CoverageLevel {
 	return _coverageLevel
 }
 
-// Max: set the coverage for each index in @coverage to be the max (better)
-// value of the current coverage for the index and the coverage for the
-// corresponding index in @other.
 func (c coverage) Max(other Coverage) {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.PangoCoverage // out
@@ -2784,7 +2681,6 @@ func (c coverage) Max(other Coverage) {
 	C.pango_coverage_max(_arg0, _arg1)
 }
 
-// Ref: increase the reference count on the `PangoCoverage` by one.
 func (c coverage) Ref() Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
@@ -2800,7 +2696,6 @@ func (c coverage) Ref() Coverage {
 	return _ret
 }
 
-// Set: modify a particular index within @coverage
 func (c coverage) Set(index_ int, level CoverageLevel) {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
@@ -2813,7 +2708,6 @@ func (c coverage) Set(index_ int, level CoverageLevel) {
 	C.pango_coverage_set(_arg0, _arg1, _arg2)
 }
 
-// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 func (c coverage) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.guchar
@@ -2833,9 +2727,6 @@ func (c coverage) ToBytes() []byte {
 	return _bytes
 }
 
-// Unref: decrease the reference count on the `PangoCoverage` by one.
-//
-// If the result is zero, free the coverage and all associated memory.
 func (c coverage) Unref() {
 	var _arg0 *C.PangoCoverage // out
 
@@ -2910,10 +2801,6 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return WrapFont(obj), nil
 }
 
-// Describe returns a description of the font, with font size set in points.
-//
-// Use [method@Pango.Font.describe_with_absolute_size] if you want the font size
-// in device units.
 func (f font) Describe() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
@@ -2932,10 +2819,6 @@ func (f font) Describe() *FontDescription {
 	return _fontDescription
 }
 
-// DescribeWithAbsoluteSize returns a description of the font, with absolute
-// font size set in device units.
-//
-// Use [method@Pango.Font.describe] if you want the font size in points.
 func (f font) DescribeWithAbsoluteSize() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
@@ -2954,7 +2837,6 @@ func (f font) DescribeWithAbsoluteSize() *FontDescription {
 	return _fontDescription
 }
 
-// Coverage computes the coverage map for a given font and language tag.
 func (f font) Coverage(language *Language) Coverage {
 	var _arg0 *C.PangoFont     // out
 	var _arg1 *C.PangoLanguage // out
@@ -2972,7 +2854,6 @@ func (f font) Coverage(language *Language) Coverage {
 	return _coverage
 }
 
-// Face gets the `PangoFontFace` to which @font belongs.
 func (f font) Face() FontFace {
 	var _arg0 *C.PangoFont     // out
 	var _cret *C.PangoFontFace // in
@@ -2988,16 +2869,6 @@ func (f font) Face() FontFace {
 	return _fontFace
 }
 
-// FontMap gets the font map for which the font was created.
-//
-// Note that the font maintains a *weak* reference to the font map, so if all
-// references to font map are dropped, the font map will be finalized even if
-// there are fonts created with the font map that are still alive. In that case
-// this function will return nil.
-//
-// It is the responsibility of the user to ensure that the font map is kept
-// alive. In most uses this is not an issue as a Context holds a reference to
-// the font map.
 func (f font) FontMap() FontMap {
 	var _arg0 *C.PangoFont    // out
 	var _cret *C.PangoFontMap // in
@@ -3013,14 +2884,6 @@ func (f font) FontMap() FontMap {
 	return _fontMap
 }
 
-// Metrics gets overall metric information for a font.
-//
-// Since the metrics may be substantially different for different scripts, a
-// language tag can be provided to indicate that the metrics should be retrieved
-// that correspond to the script(s) used by that language.
-//
-// If @font is nil, this function gracefully sets some sane values in the output
-// variables and returns.
 func (f font) Metrics(language *Language) *FontMetrics {
 	var _arg0 *C.PangoFont        // out
 	var _arg1 *C.PangoLanguage    // out
@@ -3041,9 +2904,6 @@ func (f font) Metrics(language *Language) *FontMetrics {
 	return _fontMetrics
 }
 
-// HasChar returns whether the font provides a glyph for this character.
-//
-// Returns true if @font can render @wc
 func (f font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
@@ -3112,9 +2972,6 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 	return WrapFontFace(obj), nil
 }
 
-// Describe returns the family, style, variant, weight and stretch of a
-// `PangoFontFace`. The size field of the resulting font description will be
-// unset.
 func (f fontFace) Describe() *FontDescription {
 	var _arg0 *C.PangoFontFace        // out
 	var _cret *C.PangoFontDescription // in
@@ -3133,9 +2990,6 @@ func (f fontFace) Describe() *FontDescription {
 	return _fontDescription
 }
 
-// FaceName gets a name representing the style of this face among the different
-// faces in the `PangoFontFamily` for the face. The name is suitable for
-// displaying to users.
 func (f fontFace) FaceName() string {
 	var _arg0 *C.PangoFontFace // out
 	var _cret *C.char          // in
@@ -3151,7 +3005,6 @@ func (f fontFace) FaceName() string {
 	return _utf8
 }
 
-// Family gets the `PangoFontFamily` that @face belongs to.
 func (f fontFace) Family() FontFamily {
 	var _arg0 *C.PangoFontFace   // out
 	var _cret *C.PangoFontFamily // in
@@ -3167,9 +3020,6 @@ func (f fontFace) Family() FontFamily {
 	return _fontFamily
 }
 
-// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
-// underlying font rendering engine from another face, perhaps by shearing,
-// emboldening, or lightening it.
 func (f fontFace) IsSynthesized() bool {
 	var _arg0 *C.PangoFontFace // out
 	var _cret C.gboolean       // in
@@ -3187,12 +3037,6 @@ func (f fontFace) IsSynthesized() bool {
 	return _ok
 }
 
-// ListSizes: list the available sizes for a font.
-//
-// This is only applicable to bitmap fonts. For scalable fonts, stores nil at
-// the location pointed to by @sizes and 0 at the location pointed to by
-// @n_sizes. The sizes returned are in Pango units and are sorted in ascending
-// order.
 func (f fontFace) ListSizes() []int {
 	var _arg0 *C.PangoFontFace // out
 	var _arg1 *C.int
@@ -3273,7 +3117,6 @@ func marshalFontFamily(p uintptr) (interface{}, error) {
 	return WrapFontFamily(obj), nil
 }
 
-// Face gets the `PangoFontFace` of @family with the given name.
 func (f fontFamily) Face(name string) FontFace {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 *C.char            // out
@@ -3292,10 +3135,6 @@ func (f fontFamily) Face(name string) FontFace {
 	return _fontFace
 }
 
-// Name gets the name of the family.
-//
-// The name is unique among all fonts for the font backend and can be used in a
-// `PangoFontDescription` to specify that a face from this family is desired.
 func (f fontFamily) Name() string {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret *C.char            // in
@@ -3311,19 +3150,6 @@ func (f fontFamily) Name() string {
 	return _utf8
 }
 
-// IsMonospace: a monospace font is a font designed for text display where the
-// the characters form a regular grid.
-//
-// For Western languages this would mean that the advance width of all
-// characters are the same, but this categorization also includes Asian fonts
-// which include double-width characters: characters that occupy two grid cells.
-// g_unichar_iswide() returns a result that indicates whether a character is
-// typically double-width in a monospace font.
-//
-// The best way to find out the grid-cell size is to call
-// [method@Pango.FontMetrics.get_approximate_digit_width], since the results of
-// [method@Pango.FontMetrics.get_approximate_char_width] may be affected by
-// double-width characters.
 func (f fontFamily) IsMonospace() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
@@ -3341,8 +3167,6 @@ func (f fontFamily) IsMonospace() bool {
 	return _ok
 }
 
-// IsVariable: a variable font is a font which has axes that can be modified to
-// produce different faces.
 func (f fontFamily) IsVariable() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
@@ -3360,10 +3184,6 @@ func (f fontFamily) IsVariable() bool {
 	return _ok
 }
 
-// ListFaces lists the different font faces that make up @family.
-//
-// The faces in a family share a common design, but differ in slant, weight,
-// width and other aspects.
 func (f fontFamily) ListFaces() []FontFace {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 **C.PangoFontFace
@@ -3458,12 +3278,6 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	return WrapFontMap(obj), nil
 }
 
-// Changed forces a change in the context, which will cause any `PangoContext`
-// using this fontmap to change.
-//
-// This function is only useful when implementing a new backend for Pango,
-// something applications won't do. Backends should call this function if they
-// have attached extra data to the context and such data is changed.
 func (f fontMap) Changed() {
 	var _arg0 *C.PangoFontMap // out
 
@@ -3472,14 +3286,6 @@ func (f fontMap) Changed() {
 	C.pango_font_map_changed(_arg0)
 }
 
-// CreateContext creates a `PangoContext` connected to @fontmap.
-//
-// This is equivalent to [ctor@Pango.Context.new] followed by
-// [method@Pango.Context.set_font_map].
-//
-// If you are using Pango as part of a higher-level system, that system may have
-// it's own way of create a `PangoContext`. For instance, the GTK toolkit has,
-// among others, gtk_widget_get_pango_context(). Use those instead.
 func (f fontMap) CreateContext() Context {
 	var _arg0 *C.PangoFontMap // out
 	var _cret *C.PangoContext // in
@@ -3495,7 +3301,6 @@ func (f fontMap) CreateContext() Context {
 	return _context
 }
 
-// Family gets a font family by name.
 func (f fontMap) Family(name string) FontFamily {
 	var _arg0 *C.PangoFontMap    // out
 	var _arg1 *C.char            // out
@@ -3514,18 +3319,6 @@ func (f fontMap) Family(name string) FontFamily {
 	return _fontFamily
 }
 
-// Serial returns the current serial number of @fontmap.
-//
-// The serial number is initialized to an small number larger than zero when a
-// new fontmap is created and is increased whenever the fontmap is changed. It
-// may wrap, but will never have the value 0. Since it can wrap, never compare
-// it with "less than", always use "not equals".
-//
-// The fontmap can only be changed using backend-specific API, like changing
-// fontmap resolution.
-//
-// This can be used to automatically detect changes to a `PangoFontMap`, like in
-// `PangoContext`.
 func (f fontMap) Serial() uint {
 	var _arg0 *C.PangoFontMap // out
 	var _cret C.guint         // in
@@ -3541,7 +3334,6 @@ func (f fontMap) Serial() uint {
 	return _guint
 }
 
-// ListFamilies: list all families for a fontmap.
 func (f fontMap) ListFamilies() []FontFamily {
 	var _arg0 *C.PangoFontMap // out
 	var _arg1 **C.PangoFontFamily
@@ -3565,7 +3357,6 @@ func (f fontMap) ListFamilies() []FontFamily {
 	return _families
 }
 
-// LoadFont: load the font in the fontmap that is the closest match for @desc.
 func (f fontMap) LoadFont(context Context, desc *FontDescription) Font {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
@@ -3585,8 +3376,6 @@ func (f fontMap) LoadFont(context Context, desc *FontDescription) Font {
 	return _font
 }
 
-// LoadFontset: load a set of fonts in the fontmap that can be used to render a
-// font matching @desc.
 func (f fontMap) LoadFontset(context Context, desc *FontDescription, language *Language) Fontset {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
@@ -3646,8 +3435,6 @@ func marshalFontset(p uintptr) (interface{}, error) {
 	return WrapFontset(obj), nil
 }
 
-// Font returns the font in the fontset that contains the best glyph for a
-// Unicode character.
 func (f fontset) Font(wc uint) Font {
 	var _arg0 *C.PangoFontset // out
 	var _arg1 C.guint         // out
@@ -3665,7 +3452,6 @@ func (f fontset) Font(wc uint) Font {
 	return _font
 }
 
-// Metrics: get overall metric information for the fonts in the fontset.
 func (f fontset) Metrics() *FontMetrics {
 	var _arg0 *C.PangoFontset     // out
 	var _cret *C.PangoFontMetrics // in
@@ -3735,7 +3521,6 @@ func NewFontsetSimple(language *Language) FontsetSimple {
 	return _fontsetSimple
 }
 
-// Append adds a font to the fontset.
 func (f fontsetSimple) Append(font Font) {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _arg1 *C.PangoFont          // out
@@ -3746,7 +3531,6 @@ func (f fontsetSimple) Append(font Font) {
 	C.pango_fontset_simple_append(_arg0, _arg1)
 }
 
-// Size returns the number of fonts in the fontset.
 func (f fontsetSimple) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _cret C.int                 // in
@@ -4197,11 +3981,6 @@ func NewLayout(context Context) Layout {
 	return _layout
 }
 
-// ContextChanged forces recomputation of any state in the `PangoLayout` that
-// might depend on the layout's context.
-//
-// This function should be called if you make changes to the context subsequent
-// to creating the layout.
 func (l layout) ContextChanged() {
 	var _arg0 *C.PangoLayout // out
 
@@ -4210,10 +3989,6 @@ func (l layout) ContextChanged() {
 	C.pango_layout_context_changed(_arg0)
 }
 
-// Copy creates a deep copy-by-value of the layout.
-//
-// The attribute list, tab array, and text from the original layout are all
-// copied by value.
 func (s layout) Copy() Layout {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.PangoLayout // in
@@ -4229,8 +4004,6 @@ func (s layout) Copy() Layout {
 	return _layout
 }
 
-// Alignment gets the alignment for the layout: how partial lines are positioned
-// within the horizontal space available.
 func (l layout) Alignment() Alignment {
 	var _arg0 *C.PangoLayout   // out
 	var _cret C.PangoAlignment // in
@@ -4246,7 +4019,6 @@ func (l layout) Alignment() Alignment {
 	return _alignment
 }
 
-// Attributes gets the attribute list for the layout, if any.
 func (l layout) Attributes() *AttrList {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoAttrList // in
@@ -4262,10 +4034,6 @@ func (l layout) Attributes() *AttrList {
 	return _attrList
 }
 
-// AutoDir gets whether to calculate the base direction for the layout according
-// to its contents.
-//
-// See [method@Pango.Layout.set_auto_dir].
 func (l layout) AutoDir() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -4283,7 +4051,6 @@ func (l layout) AutoDir() bool {
 	return _ok
 }
 
-// Baseline gets the Y position of baseline of the first line in @layout.
 func (l layout) Baseline() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -4299,8 +4066,6 @@ func (l layout) Baseline() int {
 	return _gint
 }
 
-// CharacterCount returns the number of Unicode characters in the the text of
-// @layout.
 func (l layout) CharacterCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gint         // in
@@ -4316,7 +4081,6 @@ func (l layout) CharacterCount() int {
 	return _gint
 }
 
-// Context retrieves the `PangoContext` used for this layout.
 func (l layout) Context() Context {
 	var _arg0 *C.PangoLayout  // out
 	var _cret *C.PangoContext // in
@@ -4332,14 +4096,6 @@ func (l layout) Context() Context {
 	return _context
 }
 
-// CursorPos: given an index within a layout, determines the positions that of
-// the strong and weak cursors if the insertion point is at that index.
-//
-// The position of each cursor is stored as a zero-width rectangle. The strong
-// cursor location is the location where characters of the directionality equal
-// to the base direction of the layout are inserted. The weak cursor location is
-// the location where characters of the directionality opposite to the base
-// direction of the layout are inserted.
 func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -4354,7 +4110,6 @@ func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
 	return _strongPos, _weakPos
 }
 
-// Direction gets the text direction at the given character position in @layout.
 func (l layout) Direction(index int) Direction {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
@@ -4372,12 +4127,6 @@ func (l layout) Direction(index int) Direction {
 	return _direction
 }
 
-// Ellipsize gets the type of ellipsization being performed for @layout.
-//
-// See [method@Pango.Layout.set_ellipsize].
-//
-// Use [method@Pango.Layout.is_ellipsized] to query whether any paragraphs were
-// actually ellipsized.
 func (l layout) Ellipsize() EllipsizeMode {
 	var _arg0 *C.PangoLayout       // out
 	var _cret C.PangoEllipsizeMode // in
@@ -4393,16 +4142,6 @@ func (l layout) Ellipsize() EllipsizeMode {
 	return _ellipsizeMode
 }
 
-// Extents computes the logical and ink extents of @layout.
-//
-// Logical extents are usually what you want for positioning things. Note that
-// both extents may have non-zero x and y. You may want to use those to offset
-// where you render the layout. Not doing that is a very typical bug that shows
-// up as right-to-left layouts not being correctly positioned in a layout with a
-// set width.
-//
-// The extents are given in layout coordinates and in Pango units; layout
-// coordinates begin at the top left corner of the layout.
 func (l layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayout // out
 	var _inkRect Rectangle
@@ -4415,7 +4154,6 @@ func (l layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 	return _inkRect, _logicalRect
 }
 
-// FontDescription gets the font description for the layout, if any.
 func (l layout) FontDescription() *FontDescription {
 	var _arg0 *C.PangoLayout          // out
 	var _cret *C.PangoFontDescription // in
@@ -4431,9 +4169,6 @@ func (l layout) FontDescription() *FontDescription {
 	return _fontDescription
 }
 
-// Height gets the height of layout used for ellipsization.
-//
-// See [method@Pango.Layout.set_height] for details.
 func (l layout) Height() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -4449,9 +4184,6 @@ func (l layout) Height() int {
 	return _gint
 }
 
-// Indent gets the paragraph indent width in Pango units.
-//
-// A negative value indicates a hanging indentation.
 func (l layout) Indent() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -4467,7 +4199,6 @@ func (l layout) Indent() int {
 	return _gint
 }
 
-// Iter returns an iterator to iterate over the visual extents of the layout.
 func (l layout) Iter() *LayoutIter {
 	var _arg0 *C.PangoLayout     // out
 	var _cret *C.PangoLayoutIter // in
@@ -4486,8 +4217,6 @@ func (l layout) Iter() *LayoutIter {
 	return _layoutIter
 }
 
-// Justify gets whether each complete line should be stretched to fill the
-// entire width of the layout.
 func (l layout) Justify() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -4505,7 +4234,6 @@ func (l layout) Justify() bool {
 	return _ok
 }
 
-// LineCount retrieves the count of lines for the @layout.
 func (l layout) LineCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -4521,9 +4249,6 @@ func (l layout) LineCount() int {
 	return _gint
 }
 
-// LineSpacing gets the line spacing factor of @layout.
-//
-// See [method@Pango.Layout.set_line_spacing].
 func (l layout) LineSpacing() float32 {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.float        // in
@@ -4539,8 +4264,6 @@ func (l layout) LineSpacing() float32 {
 	return _gfloat
 }
 
-// LogAttrs retrieves an array of logical attributes for each character in the
-// @layout.
 func (l layout) LogAttrs() []LogAttr {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.PangoLogAttr
@@ -4560,12 +4283,6 @@ func (l layout) LogAttrs() []LogAttr {
 	return _attrs
 }
 
-// PixelExtents computes the logical and ink extents of @layout in device units.
-//
-// This function just calls [method@Pango.Layout.get_extents] followed by two
-// [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect such
-// that the rounded rectangles fully contain the unrounded one (that is, passes
-// them as first argument to `pango_extents_to_pixels()`).
 func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayout // out
 	var _inkRect Rectangle
@@ -4578,12 +4295,6 @@ func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	return _inkRect, _logicalRect
 }
 
-// PixelSize determines the logical width and height of a `PangoLayout` in
-// device units.
-//
-// [method@Pango.Layout.get_size] returns the width and height scaled by
-// PANGO_SCALE. This is simply a convenience function around
-// [method@Pango.Layout.get_pixel_extents].
 func (l layout) PixelSize() (width int, height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // in
@@ -4602,17 +4313,6 @@ func (l layout) PixelSize() (width int, height int) {
 	return _width, _height
 }
 
-// Serial returns the current serial number of @layout.
-//
-// The serial number is initialized to an small number larger than zero when a
-// new layout is created and is increased whenever the layout is changed using
-// any of the setter functions, or the `PangoContext` it uses has changed. The
-// serial may wrap, but will never have the value 0. Since it can wrap, never
-// compare it with "less than", always use "not equals".
-//
-// This can be used to automatically detect changes to a `PangoLayout`, and is
-// useful for example to decide whether a layout needs redrawing. To force the
-// serial to be increased, use [method@Pango.Layout.context_changed].
 func (l layout) Serial() uint {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.guint        // in
@@ -4628,9 +4328,6 @@ func (l layout) Serial() uint {
 	return _guint
 }
 
-// SingleParagraphMode obtains whether @layout is in single paragraph mode.
-//
-// See [method@Pango.Layout.set_single_paragraph_mode].
 func (l layout) SingleParagraphMode() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -4648,11 +4345,6 @@ func (l layout) SingleParagraphMode() bool {
 	return _ok
 }
 
-// Size determines the logical width and height of a `PangoLayout` in Pango
-// units.
-//
-// This is simply a convenience function around
-// [method@Pango.Layout.get_extents].
 func (l layout) Size() (width int, height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // in
@@ -4671,7 +4363,6 @@ func (l layout) Size() (width int, height int) {
 	return _width, _height
 }
 
-// Spacing gets the amount of spacing between the lines of the layout.
 func (l layout) Spacing() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -4687,12 +4378,6 @@ func (l layout) Spacing() int {
 	return _gint
 }
 
-// Tabs gets the current `PangoTabArray` used by this layout.
-//
-// If no `PangoTabArray` has been set, then the default tabs are in use and nil
-// is returned. Default tabs are every 8 spaces.
-//
-// The return value should be freed with [method@Pango.TabArray.free].
 func (l layout) Tabs() *TabArray {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoTabArray // in
@@ -4711,8 +4396,6 @@ func (l layout) Tabs() *TabArray {
 	return _tabArray
 }
 
-// Text gets the text in the layout. The returned text should not be freed or
-// modified.
 func (l layout) Text() string {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.char        // in
@@ -4728,12 +4411,6 @@ func (l layout) Text() string {
 	return _utf8
 }
 
-// UnknownGlyphsCount counts the number of unknown glyphs in @layout.
-//
-// This function can be used to determine if there are any fonts available to
-// render all characters in a certain string, or when used in combination with
-// PANGO_ATTR_FALLBACK, to check if a certain font supports all the characters
-// in the string.
 func (l layout) UnknownGlyphsCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -4749,7 +4426,6 @@ func (l layout) UnknownGlyphsCount() int {
 	return _gint
 }
 
-// Width gets the width to which the lines of the `PangoLayout` should wrap.
 func (l layout) Width() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -4765,10 +4441,6 @@ func (l layout) Width() int {
 	return _gint
 }
 
-// Wrap gets the wrap mode for the layout.
-//
-// Use [method@Pango.Layout.is_wrapped] to query whether any paragraphs were
-// actually wrapped.
 func (l layout) Wrap() WrapMode {
 	var _arg0 *C.PangoLayout  // out
 	var _cret C.PangoWrapMode // in
@@ -4784,10 +4456,6 @@ func (l layout) Wrap() WrapMode {
 	return _wrapMode
 }
 
-// IndexToLineX converts from byte @index_ within the @layout to line and X
-// position.
-//
-// The X position is measured from the left edge of the line.
 func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -4812,13 +4480,6 @@ func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
 	return _line, _xPos
 }
 
-// IndexToPos converts from an index within a `PangoLayout` to the onscreen
-// position corresponding to the grapheme at that index.
-//
-// The return value is represented as rectangle. Note that `pos->x` is always
-// the leading edge of the grapheme and `pos->x + pos->width` the trailing edge
-// of the grapheme. If the directionality of the grapheme is right-to-left, then
-// `pos->width` will be negative.
 func (l layout) IndexToPos(index_ int) Rectangle {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -4832,11 +4493,6 @@ func (l layout) IndexToPos(index_ int) Rectangle {
 	return _pos
 }
 
-// IsEllipsized queries whether the layout had to ellipsize any paragraphs.
-//
-// This returns true if the ellipsization mode for @layout is not
-// PANGO_ELLIPSIZE_NONE, a positive width is set on @layout, and there are
-// paragraphs exceeding that width that have to be ellipsized.
 func (l layout) IsEllipsized() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -4854,11 +4510,6 @@ func (l layout) IsEllipsized() bool {
 	return _ok
 }
 
-// IsWrapped queries whether the layout had to wrap any paragraphs.
-//
-// This returns true if a positive width is set on @layout, ellipsization mode
-// of @layout is set to PANGO_ELLIPSIZE_NONE, and there are paragraphs exceeding
-// the layout width that have to be wrapped.
 func (l layout) IsWrapped() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -4876,21 +4527,6 @@ func (l layout) IsWrapped() bool {
 	return _ok
 }
 
-// MoveCursorVisually computes a new cursor position from an old position and a
-// count of positions to move visually.
-//
-// If @direction is positive, then the new strong cursor position will be one
-// position to the right of the old cursor position. If @direction is negative,
-// then the new strong cursor position will be one position to the left of the
-// old cursor position.
-//
-// In the presence of bidirectional text, the correspondence between logical and
-// visual order will depend on the direction of the current run, and there may
-// be jumps when the cursor is moved off of the end of a run.
-//
-// Motion here is in cursor positions, not in characters, so a single call to
-// [method@Pango.Layout.move_cursor_visually] may move the cursor over multiple
-// characters when multiple characters combine to form a single grapheme.
 func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -4919,8 +4555,6 @@ func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, d
 	return _newIndex, _newTrailing
 }
 
-// SetAlignment sets the alignment for the layout: how partial lines are
-// positioned within the horizontal space available.
 func (l layout) SetAlignment(alignment Alignment) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoAlignment // out
@@ -4931,8 +4565,6 @@ func (l layout) SetAlignment(alignment Alignment) {
 	C.pango_layout_set_alignment(_arg0, _arg1)
 }
 
-// SetAttributes sets the text attributes for a layout object. References
-// @attrs, so the caller can unref its reference.
 func (l layout) SetAttributes(attrs *AttrList) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoAttrList // out
@@ -4943,22 +4575,6 @@ func (l layout) SetAttributes(attrs *AttrList) {
 	C.pango_layout_set_attributes(_arg0, _arg1)
 }
 
-// SetAutoDir sets whether to calculate the base direction for the layout
-// according to its contents.
-//
-// When this flag is on (the default), then paragraphs in @layout that begin
-// with strong right-to-left characters (Arabic and Hebrew principally), will
-// have right-to-left layout, paragraphs with letters from other scripts will
-// have left-to-right layout. Paragraphs with only neutral characters get their
-// direction from the surrounding paragraphs.
-//
-// When false, the choice between left-to-right and right-to-left layout is done
-// according to the base direction of the layout's `PangoContext`. (See
-// [method@Pango.Context.set_base_dir]).
-//
-// When the auto-computed direction of a paragraph differs from the base
-// direction of the context, the interpretation of PANGO_ALIGN_LEFT and
-// PANGO_ALIGN_RIGHT are swapped.
 func (l layout) SetAutoDir(autoDir bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -4971,17 +4587,6 @@ func (l layout) SetAutoDir(autoDir bool) {
 	C.pango_layout_set_auto_dir(_arg0, _arg1)
 }
 
-// SetEllipsize sets the type of ellipsization being performed for @layout.
-//
-// Depending on the ellipsization mode @ellipsize text is removed from the
-// start, middle, or end of text so they fit within the width and height of
-// layout set with [method@Pango.Layout.set_width] and
-// [method@Pango.Layout.set_height].
-//
-// If the layout contains characters such as newlines that force it to be layed
-// out in multiple paragraphs, then whether each paragraph is ellipsized
-// separately or the entire layout is ellipsized as a whole depends on the set
-// height of the layout. See [method@Pango.Layout.set_height] for details.
 func (l layout) SetEllipsize(ellipsize EllipsizeMode) {
 	var _arg0 *C.PangoLayout       // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -4992,10 +4597,6 @@ func (l layout) SetEllipsize(ellipsize EllipsizeMode) {
 	C.pango_layout_set_ellipsize(_arg0, _arg1)
 }
 
-// SetFontDescription sets the default font description for the layout.
-//
-// If no font description is set on the layout, the font description from the
-// layout's context is used.
 func (l layout) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoLayout          // out
 	var _arg1 *C.PangoFontDescription // out
@@ -5006,29 +4607,6 @@ func (l layout) SetFontDescription(desc *FontDescription) {
 	C.pango_layout_set_font_description(_arg0, _arg1)
 }
 
-// SetHeight sets the height to which the `PangoLayout` should be ellipsized at.
-//
-// There are two different behaviors, based on whether @height is positive or
-// negative.
-//
-// If @height is positive, it will be the maximum height of the layout. Only
-// lines would be shown that would fit, and if there is any text omitted, an
-// ellipsis added. At least one line is included in each paragraph regardless of
-// how small the height value is. A value of zero will render exactly one line
-// for the entire layout.
-//
-// If @height is negative, it will be the (negative of) maximum number of lines
-// per paragraph. That is, the total number of lines shown may well be more than
-// this value if the layout contains multiple paragraphs of text. The default
-// value of -1 means that first line of each paragraph is ellipsized. This
-// behavior may be changed in the future to act per layout instead of per
-// paragraph. File a bug against pango at https://gitlab.gnome.org/gnome/pango
-// (https://gitlab.gnome.org/gnome/pango) if your code relies on this behavior.
-//
-// Height setting only has effect if a positive width is set on @layout and
-// ellipsization mode of @layout is not PANGO_ELLIPSIZE_NONE. The behavior is
-// undefined if a height other than -1 is set and ellipsization mode is set to
-// PANGO_ELLIPSIZE_NONE, and may change in the future.
 func (l layout) SetHeight(height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -5039,14 +4617,6 @@ func (l layout) SetHeight(height int) {
 	C.pango_layout_set_height(_arg0, _arg1)
 }
 
-// SetIndent sets the width in Pango units to indent each paragraph.
-//
-// A negative value of @indent will produce a hanging indentation. That is, the
-// first line will have the full width, and subsequent lines will be indented by
-// the absolute value of @indent.
-//
-// The indent setting is ignored if layout alignment is set to
-// PANGO_ALIGN_CENTER.
 func (l layout) SetIndent(indent int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -5057,15 +4627,6 @@ func (l layout) SetIndent(indent int) {
 	C.pango_layout_set_indent(_arg0, _arg1)
 }
 
-// SetJustify sets whether each complete line should be stretched to fill the
-// entire width of the layout.
-//
-// Stretching is typically done by adding whitespace, but for some scripts (such
-// as Arabic), the justification may be done in more complex ways, like
-// extending the characters.
-//
-// Note that this setting is not implemented and so is ignored in Pango older
-// than 1.18.
 func (l layout) SetJustify(justify bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -5078,19 +4639,6 @@ func (l layout) SetJustify(justify bool) {
 	C.pango_layout_set_justify(_arg0, _arg1)
 }
 
-// SetLineSpacing sets a factor for line spacing.
-//
-// Typical values are: 0, 1, 1.5, 2. The default values is 0.
-//
-// If @factor is non-zero, lines are placed so that
-//
-//    baseline2 = baseline1 + factor * height2
-//
-// where height2 is the line height of the second line (as determined by the
-// font(s)). In this case, the spacing set with
-// [method@Pango.Layout.set_spacing] is ignored.
-//
-// If @factor is zero, spacing is applied as before.
 func (l layout) SetLineSpacing(factor float32) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.float        // out
@@ -5101,13 +4649,6 @@ func (l layout) SetLineSpacing(factor float32) {
 	C.pango_layout_set_line_spacing(_arg0, _arg1)
 }
 
-// SetMarkup sets the layout text and attribute list from marked-up text.
-//
-// See Pango Markup (pango_markup.html)). Replaces the current text and
-// attribute list.
-//
-// This is the Same as [method@Pango.Layout.set_markup_with_accel], but the
-// markup text isn't scanned for accelerators.
 func (l layout) SetMarkup(markup string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -5121,18 +4662,6 @@ func (l layout) SetMarkup(markup string, length int) {
 	C.pango_layout_set_markup(_arg0, _arg1, _arg2)
 }
 
-// SetMarkupWithAccel sets the layout text and attribute list from marked-up
-// text.
-//
-// See Pango Markup (pango_markup.html)). Replaces the current text and
-// attribute list.
-//
-// If @accel_marker is nonzero, the given character will mark the character
-// following it as an accelerator. For example, @accel_marker might be an
-// ampersand or underscore. All characters marked as an accelerator will receive
-// a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
-// returned in @accel_char. Two @accel_marker characters following each other
-// produce a single literal @accel_marker character.
 func (l layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32 {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -5155,12 +4684,6 @@ func (l layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32
 	return _accelChar
 }
 
-// SetSingleParagraphMode sets the single paragraph mode of @layout.
-//
-// If @setting is true, do not treat newlines and similar characters as
-// paragraph separators; instead, keep all text in a single paragraph, and
-// display a glyph for paragraph separator characters. Used when you want to
-// allow editing of newlines on a single text line.
 func (l layout) SetSingleParagraphMode(setting bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -5173,18 +4696,6 @@ func (l layout) SetSingleParagraphMode(setting bool) {
 	C.pango_layout_set_single_paragraph_mode(_arg0, _arg1)
 }
 
-// SetSpacing sets the amount of spacing in Pango unit between the lines of the
-// layout.
-//
-//
-// When placing lines with spacing, Pango arranges things so that
-//
-// line2.top = line1.bottom + spacing
-//
-// Note: Since 1.44, Pango defaults to using the line height (as determined by
-// the font) for placing lines. The @spacing set with this function is only
-// taken into account when the line height factor is set to zero with
-// [method@Pango.Layout.set_line_spacing].
 func (l layout) SetSpacing(spacing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -5195,11 +4706,6 @@ func (l layout) SetSpacing(spacing int) {
 	C.pango_layout_set_spacing(_arg0, _arg1)
 }
 
-// SetTabs sets the tabs to use for @layout, overriding the default tabs.
-//
-// By default, tabs are every 8 spaces. If @tabs is nil, the default tabs are
-// reinstated. @tabs is copied into the layout; you must free your copy of @tabs
-// yourself.
 func (l layout) SetTabs(tabs *TabArray) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoTabArray // out
@@ -5210,15 +4716,6 @@ func (l layout) SetTabs(tabs *TabArray) {
 	C.pango_layout_set_tabs(_arg0, _arg1)
 }
 
-// SetText sets the text of the layout.
-//
-// This function validates @text and renders invalid UTF-8 with a placeholder
-// glyph.
-//
-// Note that if you have used [method@Pango.Layout.set_markup] or
-// [method@Pango.Layout.set_markup_with_accel] on @layout before, you may want
-// to call [method@Pango.Layout.set_attributes] to clear the attributes set on
-// the layout from the markup as this function does not clear attributes.
 func (l layout) SetText(text string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -5232,10 +4729,6 @@ func (l layout) SetText(text string, length int) {
 	C.pango_layout_set_text(_arg0, _arg1, _arg2)
 }
 
-// SetWidth sets the width to which the lines of the `PangoLayout` should wrap
-// or ellipsized.
-//
-// The default value is -1: no width set.
 func (l layout) SetWidth(width int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -5246,10 +4739,6 @@ func (l layout) SetWidth(width int) {
 	C.pango_layout_set_width(_arg0, _arg1)
 }
 
-// SetWrap sets the wrap mode.
-//
-// The wrap mode only has effect if a width is set on the layout with
-// [method@Pango.Layout.set_width]. To turn off wrapping, set the width to -1.
 func (l layout) SetWrap(wrap WrapMode) {
 	var _arg0 *C.PangoLayout  // out
 	var _arg1 C.PangoWrapMode // out
@@ -5260,15 +4749,6 @@ func (l layout) SetWrap(wrap WrapMode) {
 	C.pango_layout_set_wrap(_arg0, _arg1)
 }
 
-// XYToIndex converts from X and Y position within a layout to the byte index to
-// the character at that logical position.
-//
-// If the Y position is not inside the layout, the closest position is chosen
-// (the position will be clamped inside the layout). If the X position is not
-// within the layout, then the start or the end of the line is chosen as
-// described for [method@Pango.LayoutLine.x_to_index]. If either the X or Y
-// positions were not inside the layout, then the function returns false; on an
-// exact hit, it returns true.
 func (l layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -5421,13 +4901,6 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return WrapRenderer(obj), nil
 }
 
-// Activate does initial setup before rendering operations on @renderer.
-//
-// [method@Pango.Renderer.deactivate] should be called when done drawing. Calls
-// such as [method@Pango.Renderer.draw_layout] automatically activate the layout
-// before drawing on it. Calls to `pango_renderer_activate()` and
-// `pango_renderer_deactivate()` can be nested and the renderer will only be
-// initialized and deinitialized once.
 func (r renderer) Activate() {
 	var _arg0 *C.PangoRenderer // out
 
@@ -5436,9 +4909,6 @@ func (r renderer) Activate() {
 	C.pango_renderer_activate(_arg0)
 }
 
-// Deactivate cleans up after rendering operations on @renderer.
-//
-// See docs for [method@Pango.Renderer.activate].
 func (r renderer) Deactivate() {
 	var _arg0 *C.PangoRenderer // out
 
@@ -5447,14 +4917,6 @@ func (r renderer) Deactivate() {
 	C.pango_renderer_deactivate(_arg0)
 }
 
-// DrawErrorUnderline: draw a squiggly line that approximately covers the given
-// rectangle in the style of an underline used to indicate a spelling error.
-//
-// The width of the underline is rounded to an integer number of up/down
-// segments and the resulting rectangle is centered in the original rectangle.
-//
-// This should be called while @renderer is already active. Use
-// [method@Pango.Renderer.activate] to activate a renderer.
 func (r renderer) DrawErrorUnderline(x int, y int, width int, height int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 C.int            // out
@@ -5471,19 +4933,6 @@ func (r renderer) DrawErrorUnderline(x int, y int, width int, height int) {
 	C.pango_renderer_draw_error_underline(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// DrawGlyphItem draws the glyphs in @glyph_item with the specified
-// `PangoRenderer`, embedding the text associated with the glyphs in the output
-// if the output format supports it.
-//
-// This is useful for rendering text in PDF.
-//
-// Note that @text is the start of the text for layout, which is then indexed by
-// `glyph_item->item->offset`.
-//
-// If @text is nil, this simply calls [method@Pango.Renderer.draw_glyphs].
-//
-// The default implementation of this method simply falls back to
-// [method@Pango.Renderer.draw_glyphs].
 func (r renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
@@ -5501,7 +4950,6 @@ func (r renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
 	C.pango_renderer_draw_glyph_item(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// DrawGlyphs draws the glyphs in @glyphs with the specified `PangoRenderer`.
 func (r renderer) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
@@ -5518,7 +4966,6 @@ func (r renderer) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int) {
 	C.pango_renderer_draw_glyphs(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// DrawLayout draws @layout with the specified `PangoRenderer`.
 func (r renderer) DrawLayout(layout Layout, x int, y int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoLayout   // out
@@ -5533,11 +4980,6 @@ func (r renderer) DrawLayout(layout Layout, x int, y int) {
 	C.pango_renderer_draw_layout(_arg0, _arg1, _arg2, _arg3)
 }
 
-// DrawRectangle draws an axis-aligned rectangle in user space coordinates with
-// the specified `PangoRenderer`.
-//
-// This should be called while @renderer is already active. Use
-// [method@Pango.Renderer.activate] to activate a renderer.
 func (r renderer) DrawRectangle(part RenderPart, x int, y int, width int, height int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -5556,8 +4998,6 @@ func (r renderer) DrawRectangle(part RenderPart, x int, y int, width int, height
 	C.pango_renderer_draw_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the X
-// axis using the given `PangoRenderer`; coordinates are in device space.
 func (r renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -5580,7 +5020,6 @@ func (r renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 fl
 	C.pango_renderer_draw_trapezoid(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-// Alpha gets the current alpha for the specified part.
 func (r renderer) Alpha(part RenderPart) uint16 {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -5598,7 +5037,6 @@ func (r renderer) Alpha(part RenderPart) uint16 {
 	return _guint16
 }
 
-// Color gets the current rendering color for the specified part.
 func (r renderer) Color(part RenderPart) *Color {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -5616,12 +5054,6 @@ func (r renderer) Color(part RenderPart) *Color {
 	return _color
 }
 
-// Layout gets the layout currently being rendered using @renderer.
-//
-// Calling this function only makes sense from inside a subclass's methods, like
-// in its draw_shape vfunc, for example.
-//
-// The returned layout should not be modified while still being rendered.
 func (r renderer) Layout() Layout {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
@@ -5637,9 +5069,6 @@ func (r renderer) Layout() Layout {
 	return _layout
 }
 
-// Matrix gets the transformation matrix that will be applied when rendering.
-//
-// See [method@Pango.Renderer.set_matrix].
 func (r renderer) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
@@ -5655,19 +5084,6 @@ func (r renderer) Matrix() *Matrix {
 	return _matrix
 }
 
-// PartChanged informs Pango that the way that the rendering is done for @part
-// has changed.
-//
-// This should be called if the rendering changes in a way that would prevent
-// multiple pieces being joined together into one drawing call. For instance, if
-// a subclass of `PangoRenderer` was to add a stipple option for drawing
-// underlines, it needs to call
-//
-// “` pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE); “`
-//
-// When the stipple changes or underlines with different stipples might be
-// joined together. Pango automatically calls this for changes to colors. (See
-// [method@Pango.Renderer.set_color])
 func (r renderer) PartChanged(part RenderPart) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -5678,10 +5094,6 @@ func (r renderer) PartChanged(part RenderPart) {
 	C.pango_renderer_part_changed(_arg0, _arg1)
 }
 
-// SetAlpha sets the alpha for part of the rendering.
-//
-// Note that the alpha may only be used if a color is specified for @part as
-// well.
 func (r renderer) SetAlpha(part RenderPart, alpha uint16) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -5694,9 +5106,6 @@ func (r renderer) SetAlpha(part RenderPart, alpha uint16) {
 	C.pango_renderer_set_alpha(_arg0, _arg1, _arg2)
 }
 
-// SetColor sets the color for part of the rendering.
-//
-// Also see [method@Pango.Renderer.set_alpha].
 func (r renderer) SetColor(part RenderPart, color *Color) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -5709,7 +5118,6 @@ func (r renderer) SetColor(part RenderPart, color *Color) {
 	C.pango_renderer_set_color(_arg0, _arg1, _arg2)
 }
 
-// SetMatrix sets the transformation matrix that will be applied when rendering.
 func (r renderer) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out

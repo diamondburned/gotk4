@@ -557,16 +557,6 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 	return _glShader
 }
 
-// Compile tries to compile the @shader for the given @renderer.
-//
-// If there is a problem, this function returns false and reports an error. You
-// should use this function before relying on the shader for rendering and use a
-// fallback with a simpler shader or without shaders if it fails.
-//
-// Note that this will modify the rendering state (for example change the
-// current GL context) and requires the renderer to be set up. This means that
-// the widget has to be realized. Commonly you want to call this from the
-// realize signal of a widget, or during widget snapshot.
 func (s glShader) Compile(renderer Renderer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
@@ -584,8 +574,6 @@ func (s glShader) Compile(renderer Renderer) error {
 	return _goerr
 }
 
-// FindUniformByName looks for a uniform by the name @name, and returns the
-// index of the uniform, or -1 if it was not found.
 func (s glShader) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
@@ -604,8 +592,6 @@ func (s glShader) FindUniformByName(name string) int {
 	return _gint
 }
 
-// ArgsSize: get the size of the data block used to specify arguments for this
-// shader.
 func (s glShader) ArgsSize() uint {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.gsize        // in
@@ -621,11 +607,6 @@ func (s glShader) ArgsSize() uint {
 	return _gsize
 }
 
-// NTextures returns the number of textures that the shader requires.
-//
-// This can be used to check that the a passed shader works in your usecase. It
-// is determined by looking at the highest u_textureN value that the shader
-// defines.
 func (s glShader) NTextures() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
@@ -641,7 +622,6 @@ func (s glShader) NTextures() int {
 	return _gint
 }
 
-// NUniforms: get the number of declared uniforms for this shader.
 func (s glShader) NUniforms() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
@@ -657,8 +637,6 @@ func (s glShader) NUniforms() int {
 	return _gint
 }
 
-// Resource gets the resource path for the GLSL sourcecode being used to render
-// this shader.
 func (s glShader) Resource() string {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.char        // in
@@ -674,8 +652,6 @@ func (s glShader) Resource() string {
 	return _utf8
 }
 
-// UniformName: get the name of the declared uniform for this shader at index
-// @idx.
 func (s glShader) UniformName(idx int) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
@@ -693,8 +669,6 @@ func (s glShader) UniformName(idx int) string {
 	return _utf8
 }
 
-// UniformOffset: get the offset into the data block where data for this
-// uniforms is stored.
 func (s glShader) UniformOffset(idx int) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
@@ -712,8 +686,6 @@ func (s glShader) UniformOffset(idx int) int {
 	return _gint
 }
 
-// UniformType: get the type of the declared uniform for this shader at index
-// @idx.
 func (s glShader) UniformType(idx int) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out
@@ -860,9 +832,6 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 	return _renderer
 }
 
-// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
-//
-// If the renderer has not been realized yet, nil will be returned.
 func (r renderer) Surface() gdk.Surface {
 	var _arg0 *C.GskRenderer // out
 	var _cret *C.GdkSurface  // in
@@ -878,7 +847,6 @@ func (r renderer) Surface() gdk.Surface {
 	return _surface
 }
 
-// IsRealized checks whether the @renderer is realized or not.
 func (r renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
 	var _cret C.gboolean     // in
@@ -896,8 +864,6 @@ func (r renderer) IsRealized() bool {
 	return _ok
 }
 
-// Realize creates the resources needed by the @renderer to render the scene
-// graph.
 func (r renderer) Realize(surface gdk.Surface) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
@@ -915,16 +881,6 @@ func (r renderer) Realize(surface gdk.Surface) error {
 	return _goerr
 }
 
-// Render renders the scene graph, described by a tree of `GskRenderNode`
-// instances, ensuring that the given @region gets redrawn.
-//
-// Renderers must ensure that changes of the contents given by the @root node as
-// well as the area given by @region are redrawn. They are however free to not
-// redraw any pixel outside of @region if they can guarantee that it didn't
-// change.
-//
-// The @renderer will acquire a reference on the `GskRenderNode` tree while the
-// rendering is in progress.
 func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
 	var _arg1 *C.GskRenderNode  // out
@@ -937,14 +893,6 @@ func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
-// RenderTexture renders the scene graph, described by a tree of `GskRenderNode`
-// instances, to a `GdkTexture`.
-//
-// The @renderer will acquire a reference on the `GskRenderNode` tree while the
-// rendering is in progress.
-//
-// If you want to apply any transformations to @root, you should put it into a
-// transform node and pass that node instead.
 func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
@@ -964,7 +912,6 @@ func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Te
 	return _texture
 }
 
-// Unrealize releases all the resources created by gsk_renderer_realize().
 func (r renderer) Unrealize() {
 	var _arg0 *C.GskRenderer // out
 

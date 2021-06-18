@@ -334,8 +334,6 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return WrapFont(obj), nil
 }
 
-// ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font can
-// be referenced and kept using cairo_scaled_font_reference().
 func (f font) ScaledFont() *cairo.ScaledFont {
 	var _arg0 *C.PangoCairoFont      // out
 	var _cret *C.cairo_scaled_font_t // in
@@ -409,7 +407,6 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	return WrapFontMap(obj), nil
 }
 
-// FontType gets the type of Cairo font backend that @fontmap uses.
 func (f fontMap) FontType() cairo.FontType {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.cairo_font_type_t  // in
@@ -425,9 +422,6 @@ func (f fontMap) FontType() cairo.FontType {
 	return _fontType
 }
 
-// Resolution gets the resolution for the fontmap.
-//
-// See [method@PangoCairo.FontMap.set_resolution].
 func (f fontMap) Resolution() float64 {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.double             // in
@@ -443,20 +437,6 @@ func (f fontMap) Resolution() float64 {
 	return _gdouble
 }
 
-// SetDefault sets a default `PangoCairoFontMap` to use with Cairo.
-//
-// This can be used to change the Cairo font backend that the default fontmap
-// uses for example. The old default font map is unreffed and the new font map
-// referenced.
-//
-// Note that since Pango 1.32.6, the default fontmap is per-thread. This
-// function only changes the default fontmap for the current thread. Default
-// fontmaps of existing threads are not changed. Default fontmaps of any new
-// threads will still be created using [type_func@PangoCairo.FontMap.new].
-//
-// A value of nil for @fontmap will cause the current default font map to be
-// released and a new default font map to be created on demand, using
-// [type_func@PangoCairo.FontMap.new].
 func (f fontMap) SetDefault() {
 	var _arg0 *C.PangoCairoFontMap // out
 
@@ -465,11 +445,6 @@ func (f fontMap) SetDefault() {
 	C.pango_cairo_font_map_set_default(_arg0)
 }
 
-// SetResolution sets the resolution for the fontmap.
-//
-// This is a scale factor between points specified in a `PangoFontDescription`
-// and Cairo units. The default value is 96, meaning that a 10 point font will
-// be 13 units high. (10 * 96. / 72. = 13.3).
 func (f fontMap) SetResolution(dpi float64) {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _arg1 C.double             // out

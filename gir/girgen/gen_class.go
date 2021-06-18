@@ -8,38 +8,28 @@ import (
 )
 
 var classTmpl = newGoTemplate(`
-	{{ GoDoc .Doc 0 .InterfaceName }}
-	type {{ .InterfaceName }} interface {
-		{{ range .TypeTree.PublicChildren -}}
-		{{ . }}
-		{{ end }}
-
-		{{ range .Methods }}
-		{{ GoDoc .Doc 1 .Name }}
-		{{ .Name }}{{ .Tail -}}
-		{{ end }}
-	}
-
-	// {{ .StructName }} implements the {{ .InterfaceName }} class.
-	type {{ .StructName }} struct {
-		{{ range .TypeTree.PublicChildren -}}
+	{{ GoDoc .Doc 0 .Name }}
+	type {{ .Name }} struct {
+		{{ range .TypeTree.Children -}}
 		{{ . }}
 		{{ end }}
 	}
 
-	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
-
-	// Wrap{{ .InterfaceName }} wraps a GObject to the right type. It is
-	// primarily used internally.
-	func Wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
-		return {{ .TypeTree.Wrap "obj" }}
+	// {{ .Name }}Class is an interface that the {{ .Name }} class always
+	// implements. It is only used for parameters that take in not just this
+	// class but any other class that extends it.
+	type {{ .Name }}Class interface {
+		gextras.Objector
+		_{{ UnexportPascal .Name }}()
 	}
+
+	func ({{ .Name }}) _{{ UnexportPascal .Name }}() {}
 
 	{{ if .GLibGetType }}
-	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
+	func marshal{{ .Name }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 		obj := externglib.Take(unsafe.Pointer(val))
-		return Wrap{{ .InterfaceName }}(obj), nil
+		return Wrap{{ .Name }}(obj), nil
 	}
 	{{ end }}
 
@@ -49,7 +39,8 @@ var classTmpl = newGoTemplate(`
 	{{ end }}
 
 	{{ range .Methods }}
-	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
+	{{ GoDoc .Doc 0 .Name }}
+	func ({{ .Recv }} {{ $.Name }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)
 
@@ -80,8 +71,7 @@ func classCallableGrow(callables []classCallable, n int) []classCallable {
 
 type classGenerator struct {
 	gir.Class
-	StructName    string
-	InterfaceName string
+	Name string
 
 	Methods      []classCallable
 	Constructors []classCallable
@@ -102,7 +92,7 @@ func newClassGenerator(ng *NamespaceGenerator) *classGenerator {
 
 func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.TypeTree = cg.ng.TypeTree()
-	cg.TypeTree.Level = 2
+	// cg.TypeTree.Level = 2
 
 	if class.Parent == "" {
 		// TODO: check what happens if a class has no parent. It should have a
@@ -112,8 +102,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	}
 
 	cg.Class = class
-	cg.InterfaceName = PascalToGo(class.Name)
-	cg.StructName = UnexportPascal(cg.InterfaceName)
+	cg.Name = PascalToGo(class.Name)
 
 	if !cg.TypeTree.Resolve(class.Name) {
 		cg.Logln(LogSkip, "class", class.Name, "because unknown parent type", class.Parent)
@@ -126,7 +115,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.Constructors = classCallableGrow(cg.Constructors, len(class.Constructors))
 
 	// Initialize the Callable constructor generator.
-	cg.cgen.ReturnWrap = "Wrap" + cg.InterfaceName
+	cg.cgen.ManualWrap = true
 
 	for _, ctor := range class.Constructors {
 		ctor = bodgeClassCtor(class, ctor)
@@ -137,7 +126,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	}
 
 	// Reset the ReturnWrap for methods.
-	cg.cgen.ReturnWrap = ""
+	cg.cgen.ManualWrap = false
 
 	for _, method := range class.Methods {
 		if !cg.cgen.Use(method.CallableAttrs) {
@@ -153,7 +142,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		// Avoid duplicating method names with Objector.
 		// TODO: account for other interfaces as well.
 		if isObjectorMethod(newName) {
-			newName += cg.InterfaceName
+			newName += cg.Name
 		}
 
 		if !cg.hasField(newName) {
@@ -172,7 +161,7 @@ func (cg *classGenerator) hasField(goName string) bool {
 	}
 
 	for _, parent := range cg.TypeTree.Requires {
-		if parent.Resolved.PublicType(false) == goName {
+		if parent.Resolved.GoType(false) == goName {
 			return true
 		}
 	}
@@ -219,7 +208,7 @@ func bodgeClassCtor(class gir.Class, ctor gir.Constructor) gir.Constructor {
 func (cg *classGenerator) Logln(lvl LogLevel, v ...interface{}) {
 	v = append(v, nil)
 	copy(v[1:], v)
-	v[0] = fmt.Sprintf("class %s (C.%s):", cg.InterfaceName, cg.CType)
+	v[0] = fmt.Sprintf("class %s (C.%s):", cg.Name, cg.CType)
 
 	cg.ng.Logln(lvl, v...)
 }
@@ -240,9 +229,11 @@ func (ng *NamespaceGenerator) generateClasses() {
 
 		// Need for the object wrapper.
 		ng.needsExternGLib()
+		// Need for the Class interface.
+		ng.addImportInternal("gextras")
 
 		if class.GLibGetType != "" && !ng.mustIgnoreC(class.GLibGetType) {
-			ng.addMarshaler(class.GLibGetType, clgen.InterfaceName)
+			ng.addMarshaler(class.GLibGetType, clgen.Name)
 		}
 
 		ng.pen.WriteTmpl(classTmpl, &clgen)

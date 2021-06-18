@@ -154,22 +154,12 @@ const (
 // Box: a 3D box, described as the volume between a minimum and a maximum
 // vertices.
 type Box struct {
-	native C.graphene_box_t
-}
-
-// WrapBox wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBox(ptr unsafe.Pointer) *Box {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Box)(ptr)
+	Native C.graphene_box_t
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBox(unsafe.Pointer(b)), nil
+	return (*Box)(unsafe.Pointer(b))
 }
 
 // NewBoxAlloc constructs a struct Box.
@@ -180,7 +170,7 @@ func NewBoxAlloc() *Box {
 
 	var _box *Box // out
 
-	_box = WrapBox(unsafe.Pointer(_cret))
+	_box = *(**Box)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_box, func(v *Box) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -189,8 +179,8 @@ func NewBoxAlloc() *Box {
 }
 
 // Native returns the underlying C source pointer.
-func (b *Box) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
+func (b *Box) Native() uintptr {
+	return uintptr(unsafe.Pointer(&b.Native))
 }
 
 // ContainsBox checks whether the #graphene_box_t @a contains the given
@@ -452,7 +442,7 @@ func (b *Box) Init(min *Point3D, max *Point3D) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = *(**Box)(unsafe.Pointer(&_cret))
 
 	return _ret
 }
@@ -471,7 +461,7 @@ func (b *Box) InitFromBox(src *Box) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = *(**Box)(unsafe.Pointer(&_cret))
 
 	return _ret
 }
@@ -494,7 +484,7 @@ func (b *Box) InitFromPoints(points []Point3D) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = *(**Box)(unsafe.Pointer(&_cret))
 
 	return _ret
 }
@@ -515,7 +505,7 @@ func (b *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = *(**Box)(unsafe.Pointer(&_cret))
 
 	return _ret
 }
@@ -539,7 +529,7 @@ func (b *Box) InitFromVectors(vectors []Vec3) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = *(**Box)(unsafe.Pointer(&_cret))
 
 	return _ret
 }
@@ -587,22 +577,12 @@ func (a *Box) Union(b *Box) Box {
 // The contents of the #graphene_euler_t structure are private and should never
 // be accessed directly.
 type Euler struct {
-	native C.graphene_euler_t
-}
-
-// WrapEuler wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEuler(ptr unsafe.Pointer) *Euler {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Euler)(ptr)
+	Native C.graphene_euler_t
 }
 
 func marshalEuler(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapEuler(unsafe.Pointer(b)), nil
+	return (*Euler)(unsafe.Pointer(b))
 }
 
 // NewEulerAlloc constructs a struct Euler.
@@ -613,7 +593,7 @@ func NewEulerAlloc() *Euler {
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = *(**Euler)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_euler, func(v *Euler) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -622,8 +602,8 @@ func NewEulerAlloc() *Euler {
 }
 
 // Native returns the underlying C source pointer.
-func (e *Euler) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+func (e *Euler) Native() uintptr {
+	return uintptr(unsafe.Pointer(&e.Native))
 }
 
 // Equal checks if two #graphene_euler_t are equal.
@@ -800,7 +780,7 @@ func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = *(**Euler)(unsafe.Pointer(&_cret))
 
 	return _euler
 }
@@ -822,7 +802,7 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = *(**Euler)(unsafe.Pointer(&_cret))
 
 	return _euler
 }
@@ -846,7 +826,7 @@ func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = *(**Euler)(unsafe.Pointer(&_cret))
 
 	return _euler
 }
@@ -870,7 +850,7 @@ func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = *(**Euler)(unsafe.Pointer(&_cret))
 
 	return _euler
 }
@@ -895,7 +875,7 @@ func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrde
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = *(**Euler)(unsafe.Pointer(&_cret))
 
 	return _euler
 }
@@ -919,7 +899,7 @@ func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = *(**Euler)(unsafe.Pointer(&_cret))
 
 	return _euler
 }
@@ -944,7 +924,7 @@ func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder)
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = *(**Euler)(unsafe.Pointer(&_cret))
 
 	return _euler
 }
@@ -1024,22 +1004,12 @@ func (e *Euler) ToVec3() Vec3 {
 // The contents of the `graphene_frustum_t` are private, and should not be
 // modified directly.
 type Frustum struct {
-	native C.graphene_frustum_t
-}
-
-// WrapFrustum wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFrustum(ptr unsafe.Pointer) *Frustum {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Frustum)(ptr)
+	Native C.graphene_frustum_t
 }
 
 func marshalFrustum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFrustum(unsafe.Pointer(b)), nil
+	return (*Frustum)(unsafe.Pointer(b))
 }
 
 // NewFrustumAlloc constructs a struct Frustum.
@@ -1050,7 +1020,7 @@ func NewFrustumAlloc() *Frustum {
 
 	var _frustum *Frustum // out
 
-	_frustum = WrapFrustum(unsafe.Pointer(_cret))
+	_frustum = *(**Frustum)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_frustum, func(v *Frustum) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1059,8 +1029,8 @@ func NewFrustumAlloc() *Frustum {
 }
 
 // Native returns the underlying C source pointer.
-func (f *Frustum) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+func (f *Frustum) Native() uintptr {
+	return uintptr(unsafe.Pointer(&f.Native))
 }
 
 // ContainsPoint checks whether a point is inside the volume defined by the
@@ -1153,7 +1123,7 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 
 	var _frustum *Frustum // out
 
-	_frustum = WrapFrustum(unsafe.Pointer(_cret))
+	_frustum = *(**Frustum)(unsafe.Pointer(&_cret))
 
 	return _frustum
 }
@@ -1172,7 +1142,7 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 
 	var _frustum *Frustum // out
 
-	_frustum = WrapFrustum(unsafe.Pointer(_cret))
+	_frustum = *(**Frustum)(unsafe.Pointer(&_cret))
 
 	return _frustum
 }
@@ -1190,7 +1160,7 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 
 	var _frustum *Frustum // out
 
-	_frustum = WrapFrustum(unsafe.Pointer(_cret))
+	_frustum = *(**Frustum)(unsafe.Pointer(&_cret))
 
 	return _frustum
 }
@@ -1242,22 +1212,12 @@ func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 // The contents of the #graphene_matrix_t structure are private and should never
 // be accessed directly.
 type Matrix struct {
-	native C.graphene_matrix_t
-}
-
-// WrapMatrix wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMatrix(ptr unsafe.Pointer) *Matrix {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Matrix)(ptr)
+	Native C.graphene_matrix_t
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMatrix(unsafe.Pointer(b)), nil
+	return (*Matrix)(unsafe.Pointer(b))
 }
 
 // NewMatrixAlloc constructs a struct Matrix.
@@ -1268,7 +1228,7 @@ func NewMatrixAlloc() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_matrix, func(v *Matrix) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1277,8 +1237,8 @@ func NewMatrixAlloc() *Matrix {
 }
 
 // Native returns the underlying C source pointer.
-func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+func (m *Matrix) Native() uintptr {
+	return uintptr(unsafe.Pointer(&m.Native))
 }
 
 // Decompose decomposes a transformation matrix into its component
@@ -1558,7 +1518,7 @@ func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 f
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1577,7 +1537,7 @@ func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1596,7 +1556,7 @@ func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1621,7 +1581,7 @@ func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1652,7 +1612,7 @@ func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top fl
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1668,7 +1628,7 @@ func (m *Matrix) InitIdentity() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1703,7 +1663,7 @@ func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1731,7 +1691,7 @@ func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom floa
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1756,7 +1716,7 @@ func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zF
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1777,7 +1737,7 @@ func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1799,7 +1759,7 @@ func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1820,7 +1780,7 @@ func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -1839,7 +1799,7 @@ func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = *(**Matrix)(unsafe.Pointer(&_cret))
 
 	return _matrix
 }
@@ -2538,22 +2498,12 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (Point, bool) {
 // The contents of the `graphene_plane_t` are private, and should not be
 // modified directly.
 type Plane struct {
-	native C.graphene_plane_t
-}
-
-// WrapPlane wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPlane(ptr unsafe.Pointer) *Plane {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Plane)(ptr)
+	Native C.graphene_plane_t
 }
 
 func marshalPlane(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPlane(unsafe.Pointer(b)), nil
+	return (*Plane)(unsafe.Pointer(b))
 }
 
 // NewPlaneAlloc constructs a struct Plane.
@@ -2564,7 +2514,7 @@ func NewPlaneAlloc() *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = *(**Plane)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_plane, func(v *Plane) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -2573,8 +2523,8 @@ func NewPlaneAlloc() *Plane {
 }
 
 // Native returns the underlying C source pointer.
-func (p *Plane) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+func (p *Plane) Native() uintptr {
+	return uintptr(unsafe.Pointer(&p.Native))
 }
 
 // Distance computes the distance of @point from a #graphene_plane_t.
@@ -2670,7 +2620,7 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = *(**Plane)(unsafe.Pointer(&_cret))
 
 	return _plane
 }
@@ -2689,7 +2639,7 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = *(**Plane)(unsafe.Pointer(&_cret))
 
 	return _plane
 }
@@ -2710,7 +2660,7 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = *(**Plane)(unsafe.Pointer(&_cret))
 
 	return _plane
 }
@@ -2736,7 +2686,7 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = *(**Plane)(unsafe.Pointer(&_cret))
 
 	return _plane
 }
@@ -2755,7 +2705,7 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = *(**Plane)(unsafe.Pointer(&_cret))
 
 	return _plane
 }
@@ -2810,22 +2760,12 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 
 // Point: a point with two coordinates.
 type Point struct {
-	native C.graphene_point_t
-}
-
-// WrapPoint wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPoint(ptr unsafe.Pointer) *Point {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Point)(ptr)
+	Native C.graphene_point_t
 }
 
 func marshalPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPoint(unsafe.Pointer(b)), nil
+	return (*Point)(unsafe.Pointer(b))
 }
 
 // NewPointAlloc constructs a struct Point.
@@ -2836,7 +2776,7 @@ func NewPointAlloc() *Point {
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = *(**Point)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_point, func(v *Point) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -2845,8 +2785,8 @@ func NewPointAlloc() *Point {
 }
 
 // Native returns the underlying C source pointer.
-func (p *Point) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+func (p *Point) Native() uintptr {
+	return uintptr(unsafe.Pointer(&p.Native))
 }
 
 // Distance computes the distance between @a and @b.
@@ -2923,7 +2863,7 @@ func (p *Point) Init(x float32, y float32) *Point {
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = *(**Point)(unsafe.Pointer(&_cret))
 
 	return _point
 }
@@ -2941,7 +2881,7 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = *(**Point)(unsafe.Pointer(&_cret))
 
 	return _point
 }
@@ -2960,7 +2900,7 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = *(**Point)(unsafe.Pointer(&_cret))
 
 	return _point
 }
@@ -3020,22 +2960,12 @@ func (p *Point) ToVec2() Vec2 {
 
 // Point3D: a point with three components: X, Y, and Z.
 type Point3D struct {
-	native C.graphene_point3d_t
-}
-
-// WrapPoint3D wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPoint3D(ptr unsafe.Pointer) *Point3D {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Point3D)(ptr)
+	Native C.graphene_point3d_t
 }
 
 func marshalPoint3D(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPoint3D(unsafe.Pointer(b)), nil
+	return (*Point3D)(unsafe.Pointer(b))
 }
 
 // NewPoint3DAlloc constructs a struct Point3D.
@@ -3046,7 +2976,7 @@ func NewPoint3DAlloc() *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+	_point3D = *(**Point3D)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_point3D, func(v *Point3D) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -3055,8 +2985,8 @@ func NewPoint3DAlloc() *Point3D {
 }
 
 // Native returns the underlying C source pointer.
-func (p *Point3D) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+func (p *Point3D) Native() uintptr {
+	return uintptr(unsafe.Pointer(&p.Native))
 }
 
 // Cross computes the cross product of the two given #graphene_point3d_t.
@@ -3156,7 +3086,7 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+	_point3D = *(**Point3D)(unsafe.Pointer(&_cret))
 
 	return _point3D
 }
@@ -3175,7 +3105,7 @@ func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+	_point3D = *(**Point3D)(unsafe.Pointer(&_cret))
 
 	return _point3D
 }
@@ -3194,7 +3124,7 @@ func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+	_point3D = *(**Point3D)(unsafe.Pointer(&_cret))
 
 	return _point3D
 }
@@ -3324,22 +3254,12 @@ func (p *Point3D) ToVec3() Vec3 {
 // The contents of a #graphene_quad_t are private and should never be accessed
 // directly.
 type Quad struct {
-	native C.graphene_quad_t
-}
-
-// WrapQuad wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapQuad(ptr unsafe.Pointer) *Quad {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Quad)(ptr)
+	Native C.graphene_quad_t
 }
 
 func marshalQuad(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapQuad(unsafe.Pointer(b)), nil
+	return (*Quad)(unsafe.Pointer(b))
 }
 
 // NewQuadAlloc constructs a struct Quad.
@@ -3350,7 +3270,7 @@ func NewQuadAlloc() *Quad {
 
 	var _quad *Quad // out
 
-	_quad = WrapQuad(unsafe.Pointer(_cret))
+	_quad = *(**Quad)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_quad, func(v *Quad) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -3359,8 +3279,8 @@ func NewQuadAlloc() *Quad {
 }
 
 // Native returns the underlying C source pointer.
-func (q *Quad) Native() unsafe.Pointer {
-	return unsafe.Pointer(&q.native)
+func (q *Quad) Native() uintptr {
+	return uintptr(unsafe.Pointer(&q.Native))
 }
 
 // Bounds computes the bounding rectangle of @q and places it into @r.
@@ -3418,7 +3338,7 @@ func (q *Quad) Point(index_ uint) *Point {
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = *(**Point)(unsafe.Pointer(&_cret))
 
 	return _point
 }
@@ -3442,7 +3362,7 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 
 	var _quad *Quad // out
 
-	_quad = WrapQuad(unsafe.Pointer(_cret))
+	_quad = *(**Quad)(unsafe.Pointer(&_cret))
 
 	return _quad
 }
@@ -3460,7 +3380,7 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 
 	var _quad *Quad // out
 
-	_quad = WrapQuad(unsafe.Pointer(_cret))
+	_quad = *(**Quad)(unsafe.Pointer(&_cret))
 
 	return _quad
 }
@@ -3479,7 +3399,7 @@ func (q *Quad) InitFromRect(r *Rect) *Quad {
 
 	var _quad *Quad // out
 
-	_quad = WrapQuad(unsafe.Pointer(_cret))
+	_quad = *(**Quad)(unsafe.Pointer(&_cret))
 
 	return _quad
 }
@@ -3489,22 +3409,12 @@ func (q *Quad) InitFromRect(r *Rect) *Quad {
 // The contents of the #graphene_quaternion_t structure are private and should
 // never be accessed directly.
 type Quaternion struct {
-	native C.graphene_quaternion_t
-}
-
-// WrapQuaternion wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapQuaternion(ptr unsafe.Pointer) *Quaternion {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Quaternion)(ptr)
+	Native C.graphene_quaternion_t
 }
 
 func marshalQuaternion(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapQuaternion(unsafe.Pointer(b)), nil
+	return (*Quaternion)(unsafe.Pointer(b))
 }
 
 // NewQuaternionAlloc constructs a struct Quaternion.
@@ -3515,7 +3425,7 @@ func NewQuaternionAlloc() *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_quaternion, func(v *Quaternion) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -3524,8 +3434,8 @@ func NewQuaternionAlloc() *Quaternion {
 }
 
 // Native returns the underlying C source pointer.
-func (q *Quaternion) Native() unsafe.Pointer {
-	return unsafe.Pointer(&q.native)
+func (q *Quaternion) Native() uintptr {
+	return uintptr(unsafe.Pointer(&q.Native))
 }
 
 // Add adds two #graphene_quaternion_t @a and @b.
@@ -3608,7 +3518,7 @@ func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternio
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3629,7 +3539,7 @@ func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3654,7 +3564,7 @@ func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Q
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3673,7 +3583,7 @@ func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3692,7 +3602,7 @@ func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3711,7 +3621,7 @@ func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3736,7 +3646,7 @@ func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3754,7 +3664,7 @@ func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3771,7 +3681,7 @@ func (q *Quaternion) InitIdentity() *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = *(**Quaternion)(unsafe.Pointer(&_cret))
 
 	return _quaternion
 }
@@ -3942,22 +3852,12 @@ func (q *Quaternion) ToVec4() Vec4 {
 // The contents of the `graphene_ray_t` structure are private, and should not be
 // modified directly.
 type Ray struct {
-	native C.graphene_ray_t
-}
-
-// WrapRay wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRay(ptr unsafe.Pointer) *Ray {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Ray)(ptr)
+	Native C.graphene_ray_t
 }
 
 func marshalRay(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRay(unsafe.Pointer(b)), nil
+	return (*Ray)(unsafe.Pointer(b))
 }
 
 // NewRayAlloc constructs a struct Ray.
@@ -3968,7 +3868,7 @@ func NewRayAlloc() *Ray {
 
 	var _ray *Ray // out
 
-	_ray = WrapRay(unsafe.Pointer(_cret))
+	_ray = *(**Ray)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_ray, func(v *Ray) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -3977,8 +3877,8 @@ func NewRayAlloc() *Ray {
 }
 
 // Native returns the underlying C source pointer.
-func (r *Ray) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+func (r *Ray) Native() uintptr {
+	return uintptr(unsafe.Pointer(&r.Native))
 }
 
 // Equal checks whether the two given #graphene_ray_t are equal.
@@ -4123,7 +4023,7 @@ func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 
 	var _ray *Ray // out
 
-	_ray = WrapRay(unsafe.Pointer(_cret))
+	_ray = *(**Ray)(unsafe.Pointer(&_cret))
 
 	return _ray
 }
@@ -4142,7 +4042,7 @@ func (r *Ray) InitFromRay(src *Ray) *Ray {
 
 	var _ray *Ray // out
 
-	_ray = WrapRay(unsafe.Pointer(_cret))
+	_ray = *(**Ray)(unsafe.Pointer(&_cret))
 
 	return _ray
 }
@@ -4162,7 +4062,7 @@ func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 
 	var _ray *Ray // out
 
-	_ray = WrapRay(unsafe.Pointer(_cret))
+	_ray = *(**Ray)(unsafe.Pointer(&_cret))
 
 	return _ray
 }
@@ -4315,27 +4215,17 @@ func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 // internally operate on a normalized copy; all functions returning a
 // #graphene_rect_t will always return a normalized rectangle.
 type Rect struct {
-	native C.graphene_rect_t
-}
-
-// WrapRect wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRect(ptr unsafe.Pointer) *Rect {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Rect)(ptr)
+	Native C.graphene_rect_t
 }
 
 func marshalRect(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRect(unsafe.Pointer(b)), nil
+	return (*Rect)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (r *Rect) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+func (r *Rect) Native() uintptr {
+	return uintptr(unsafe.Pointer(&r.Native))
 }
 
 // ContainsPoint checks whether a #graphene_rect_t contains the given
@@ -4605,7 +4495,7 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = *(**Rect)(unsafe.Pointer(&_cret))
 
 	return _rect
 }
@@ -4626,7 +4516,7 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = *(**Rect)(unsafe.Pointer(&_cret))
 
 	return _rect
 }
@@ -4658,7 +4548,7 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = *(**Rect)(unsafe.Pointer(&_cret))
 
 	return _rect
 }
@@ -4750,7 +4640,7 @@ func (r *Rect) Normalize() *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = *(**Rect)(unsafe.Pointer(&_cret))
 
 	return _rect
 }
@@ -4787,7 +4677,7 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = *(**Rect)(unsafe.Pointer(&_cret))
 
 	return _rect
 }
@@ -4870,7 +4760,7 @@ func (r *Rect) RoundToPixel() *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = *(**Rect)(unsafe.Pointer(&_cret))
 
 	return _rect
 }
@@ -4911,61 +4801,31 @@ func (a *Rect) Union(b *Rect) Rect {
 }
 
 type SIMD4F struct {
-	native C.graphene_simd4f_t
-}
-
-// WrapSIMD4F wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSIMD4F(ptr unsafe.Pointer) *SIMD4F {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SIMD4F)(ptr)
+	Native C.graphene_simd4f_t
 }
 
 // Native returns the underlying C source pointer.
-func (s *SIMD4F) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+func (s *SIMD4F) Native() uintptr {
+	return uintptr(unsafe.Pointer(&s.Native))
 }
 
 type SIMD4X4F struct {
-	native C.graphene_simd4x4f_t
-}
-
-// WrapSIMD4X4F wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSIMD4X4F(ptr unsafe.Pointer) *SIMD4X4F {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SIMD4X4F)(ptr)
+	Native C.graphene_simd4x4f_t
 }
 
 // Native returns the underlying C source pointer.
-func (s *SIMD4X4F) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+func (s *SIMD4X4F) Native() uintptr {
+	return uintptr(unsafe.Pointer(&s.Native))
 }
 
 // Size: a size.
 type Size struct {
-	native C.graphene_size_t
-}
-
-// WrapSize wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSize(ptr unsafe.Pointer) *Size {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Size)(ptr)
+	Native C.graphene_size_t
 }
 
 func marshalSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSize(unsafe.Pointer(b)), nil
+	return (*Size)(unsafe.Pointer(b))
 }
 
 // NewSizeAlloc constructs a struct Size.
@@ -4976,7 +4836,7 @@ func NewSizeAlloc() *Size {
 
 	var _size *Size // out
 
-	_size = WrapSize(unsafe.Pointer(_cret))
+	_size = *(**Size)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_size, func(v *Size) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -4985,8 +4845,8 @@ func NewSizeAlloc() *Size {
 }
 
 // Native returns the underlying C source pointer.
-func (s *Size) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+func (s *Size) Native() uintptr {
+	return uintptr(unsafe.Pointer(&s.Native))
 }
 
 // Equal checks whether the two give #graphene_size_t are equal.
@@ -5033,7 +4893,7 @@ func (s *Size) Init(width float32, height float32) *Size {
 
 	var _size *Size // out
 
-	_size = WrapSize(unsafe.Pointer(_cret))
+	_size = *(**Size)(unsafe.Pointer(&_cret))
 
 	return _size
 }
@@ -5052,7 +4912,7 @@ func (s *Size) InitFromSize(src *Size) *Size {
 
 	var _size *Size // out
 
-	_size = WrapSize(unsafe.Pointer(_cret))
+	_size = *(**Size)(unsafe.Pointer(&_cret))
 
 	return _size
 }
@@ -5090,22 +4950,12 @@ func (s *Size) Scale(factor float32) Size {
 
 // Sphere: a sphere, represented by its center and radius.
 type Sphere struct {
-	native C.graphene_sphere_t
-}
-
-// WrapSphere wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSphere(ptr unsafe.Pointer) *Sphere {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Sphere)(ptr)
+	Native C.graphene_sphere_t
 }
 
 func marshalSphere(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSphere(unsafe.Pointer(b)), nil
+	return (*Sphere)(unsafe.Pointer(b))
 }
 
 // NewSphereAlloc constructs a struct Sphere.
@@ -5116,7 +4966,7 @@ func NewSphereAlloc() *Sphere {
 
 	var _sphere *Sphere // out
 
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
+	_sphere = *(**Sphere)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_sphere, func(v *Sphere) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -5125,8 +4975,8 @@ func NewSphereAlloc() *Sphere {
 }
 
 // Native returns the underlying C source pointer.
-func (s *Sphere) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+func (s *Sphere) Native() uintptr {
+	return uintptr(unsafe.Pointer(&s.Native))
 }
 
 // ContainsPoint checks whether the given @point is contained in the volume of a
@@ -5255,7 +5105,7 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 
 	var _sphere *Sphere // out
 
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
+	_sphere = *(**Sphere)(unsafe.Pointer(&_cret))
 
 	return _sphere
 }
@@ -5281,7 +5131,7 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 
 	var _sphere *Sphere // out
 
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
+	_sphere = *(**Sphere)(unsafe.Pointer(&_cret))
 
 	return _sphere
 }
@@ -5307,7 +5157,7 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 
 	var _sphere *Sphere // out
 
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
+	_sphere = *(**Sphere)(unsafe.Pointer(&_cret))
 
 	return _sphere
 }
@@ -5347,22 +5197,12 @@ func (s *Sphere) Translate(point *Point3D) Sphere {
 
 // Triangle: a triangle.
 type Triangle struct {
-	native C.graphene_triangle_t
-}
-
-// WrapTriangle wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTriangle(ptr unsafe.Pointer) *Triangle {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Triangle)(ptr)
+	Native C.graphene_triangle_t
 }
 
 func marshalTriangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTriangle(unsafe.Pointer(b)), nil
+	return (*Triangle)(unsafe.Pointer(b))
 }
 
 // NewTriangleAlloc constructs a struct Triangle.
@@ -5373,7 +5213,7 @@ func NewTriangleAlloc() *Triangle {
 
 	var _triangle *Triangle // out
 
-	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+	_triangle = *(**Triangle)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_triangle, func(v *Triangle) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -5382,8 +5222,8 @@ func NewTriangleAlloc() *Triangle {
 }
 
 // Native returns the underlying C source pointer.
-func (t *Triangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+func (t *Triangle) Native() uintptr {
+	return uintptr(unsafe.Pointer(&t.Native))
 }
 
 // ContainsPoint checks whether the given triangle @t contains the point @p.
@@ -5628,7 +5468,7 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 
 	var _triangle *Triangle // out
 
-	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+	_triangle = *(**Triangle)(unsafe.Pointer(&_cret))
 
 	return _triangle
 }
@@ -5651,7 +5491,7 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 
 	var _triangle *Triangle // out
 
-	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+	_triangle = *(**Triangle)(unsafe.Pointer(&_cret))
 
 	return _triangle
 }
@@ -5674,7 +5514,7 @@ func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 
 	var _triangle *Triangle // out
 
-	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+	_triangle = *(**Triangle)(unsafe.Pointer(&_cret))
 
 	return _triangle
 }
@@ -5684,22 +5524,12 @@ func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 // The contents of the #graphene_vec2_t structure are private and should never
 // be accessed directly.
 type Vec2 struct {
-	native C.graphene_vec2_t
-}
-
-// WrapVec2 wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapVec2(ptr unsafe.Pointer) *Vec2 {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Vec2)(ptr)
+	Native C.graphene_vec2_t
 }
 
 func marshalVec2(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVec2(unsafe.Pointer(b)), nil
+	return (*Vec2)(unsafe.Pointer(b))
 }
 
 // NewVec2Alloc constructs a struct Vec2.
@@ -5710,7 +5540,7 @@ func NewVec2Alloc() *Vec2 {
 
 	var _vec2 *Vec2 // out
 
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
+	_vec2 = *(**Vec2)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_vec2, func(v *Vec2) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -5719,8 +5549,8 @@ func NewVec2Alloc() *Vec2 {
 }
 
 // Native returns the underlying C source pointer.
-func (v *Vec2) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
+func (v *Vec2) Native() uintptr {
+	return uintptr(unsafe.Pointer(&v.Native))
 }
 
 // Add adds each component of the two passed vectors and places each result into
@@ -5850,7 +5680,7 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 
 	var _vec2 *Vec2 // out
 
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
+	_vec2 = *(**Vec2)(unsafe.Pointer(&_cret))
 
 	return _vec2
 }
@@ -5868,7 +5698,7 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 
 	var _vec2 *Vec2 // out
 
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
+	_vec2 = *(**Vec2)(unsafe.Pointer(&_cret))
 
 	return _vec2
 }
@@ -5886,7 +5716,7 @@ func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 
 	var _vec2 *Vec2 // out
 
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
+	_vec2 = *(**Vec2)(unsafe.Pointer(&_cret))
 
 	return _vec2
 }
@@ -6068,22 +5898,12 @@ func (v *Vec2) ToFloat() [2]float32 {
 // The contents of the #graphene_vec3_t structure are private and should never
 // be accessed directly.
 type Vec3 struct {
-	native C.graphene_vec3_t
-}
-
-// WrapVec3 wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapVec3(ptr unsafe.Pointer) *Vec3 {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Vec3)(ptr)
+	Native C.graphene_vec3_t
 }
 
 func marshalVec3(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVec3(unsafe.Pointer(b)), nil
+	return (*Vec3)(unsafe.Pointer(b))
 }
 
 // NewVec3Alloc constructs a struct Vec3.
@@ -6094,7 +5914,7 @@ func NewVec3Alloc() *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+	_vec3 = *(**Vec3)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_vec3, func(v *Vec3) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -6103,8 +5923,8 @@ func NewVec3Alloc() *Vec3 {
 }
 
 // Native returns the underlying C source pointer.
-func (v *Vec3) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
+func (v *Vec3) Native() uintptr {
+	return uintptr(unsafe.Pointer(&v.Native))
 }
 
 // Add adds each component of the two given vectors.
@@ -6332,7 +6152,7 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+	_vec3 = *(**Vec3)(unsafe.Pointer(&_cret))
 
 	return _vec3
 }
@@ -6350,7 +6170,7 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+	_vec3 = *(**Vec3)(unsafe.Pointer(&_cret))
 
 	return _vec3
 }
@@ -6369,7 +6189,7 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+	_vec3 = *(**Vec3)(unsafe.Pointer(&_cret))
 
 	return _vec3
 }
@@ -6550,22 +6370,12 @@ func (v *Vec3) ToFloat() [3]float32 {
 // The contents of the #graphene_vec4_t structure are private and should never
 // be accessed directly.
 type Vec4 struct {
-	native C.graphene_vec4_t
-}
-
-// WrapVec4 wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapVec4(ptr unsafe.Pointer) *Vec4 {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Vec4)(ptr)
+	Native C.graphene_vec4_t
 }
 
 func marshalVec4(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVec4(unsafe.Pointer(b)), nil
+	return (*Vec4)(unsafe.Pointer(b))
 }
 
 // NewVec4Alloc constructs a struct Vec4.
@@ -6576,7 +6386,7 @@ func NewVec4Alloc() *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = *(**Vec4)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_vec4, func(v *Vec4) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -6585,8 +6395,8 @@ func NewVec4Alloc() *Vec4 {
 }
 
 // Native returns the underlying C source pointer.
-func (v *Vec4) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
+func (v *Vec4) Native() uintptr {
+	return uintptr(unsafe.Pointer(&v.Native))
 }
 
 // Add adds each component of the two given vectors.
@@ -6777,7 +6587,7 @@ func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = *(**Vec4)(unsafe.Pointer(&_cret))
 
 	return _vec4
 }
@@ -6796,7 +6606,7 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = *(**Vec4)(unsafe.Pointer(&_cret))
 
 	return _vec4
 }
@@ -6819,7 +6629,7 @@ func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = *(**Vec4)(unsafe.Pointer(&_cret))
 
 	return _vec4
 }
@@ -6840,7 +6650,7 @@ func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = *(**Vec4)(unsafe.Pointer(&_cret))
 
 	return _vec4
 }
@@ -6859,7 +6669,7 @@ func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = *(**Vec4)(unsafe.Pointer(&_cret))
 
 	return _vec4
 }

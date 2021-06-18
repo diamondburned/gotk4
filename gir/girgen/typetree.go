@@ -1,9 +1,8 @@
 package girgen
 
 import (
-	"github.com/davecgh/go-spew/spew"
-	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir"
 )
 
 // TypeTree is a structure for a type that is resolved to the lowest level of
@@ -22,9 +21,11 @@ type TypeTree struct {
 	}
 }
 
-// TypeTree returns a new type tree for resolving.
-func (ng *NamespaceGenerator) TypeTree() TypeTree {
-	return TypeTree{res: ng, Level: -1}
+func NewTypeTree(res interface {
+	TypeResolver
+	LineLogger
+}) TypeTree {
+	return TypeTree{res: res, Level: -1}
 }
 
 func (tree *TypeTree) reset() {
@@ -54,6 +55,9 @@ func (tree *TypeTree) Resolve(toplevel string) bool {
 
 	return tree.ResolveFromType(resolved)
 }
+
+// treeExternGObject is for use in TypeTree ONLY.
+var treeExternGObject = externGLibType("*Object", gir.Type{}, "GObject*")
 
 // ResolveFromType is like Resolve, but the caller directly supplies the
 // resolved top-level type.
@@ -85,7 +89,7 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 	case tree.Resolved.Extern.Result.Class != nil:
 		// Resolving the parent type is crucial to make the class working, so if
 		// this fails, halt and bail.
-		if !tree.resolveName(tree.Resolved.Extern.Result.Class.Parent) {
+		if !tree.resolveType(tree.Resolved.Extern.Result.Class.Parent) {
 			tryLogln(tree.res, LogUnknown,
 				"can't resolve parent", tree.Resolved.Extern.Result.Class.Parent,
 				"for class", tree.Resolved.Extern.Result.Class.Name,
@@ -94,7 +98,7 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 		}
 
 		for _, impl := range tree.Resolved.Extern.Result.Class.Implements {
-			if !tree.resolveName(impl.Name) {
+			if !tree.resolveType(impl.Name) {
 				tryLogln(tree.res, LogUnknown,
 					"can't resolve impl", impl.Name,
 					"for class", tree.Resolved.Extern.Result.Class.Name,
@@ -106,14 +110,12 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 		// All interfaces are derived from GObjects, so we override the list if
 		// it's empty.
 		if len(tree.Resolved.Extern.Result.Interface.Prerequisites) == 0 {
-			return tree.resolveParents(
-				externGLibType("*Object", gir.Type{}, "GObject*"),
-			)
+			return tree.resolveParents(treeExternGObject)
 		}
 
 		for _, prereq := range tree.Resolved.Extern.Result.Interface.Prerequisites {
 			// Like class parents, interface prerequisites are important.
-			if !tree.resolveName(prereq.Name) {
+			if !tree.resolveType(prereq.Name) {
 				tryLogln(tree.res, LogUnknown,
 					"can't resolve prerequisite", prereq.Name,
 					"for interface", tree.Resolved.Extern.Result.Interface.Name,
@@ -133,13 +135,12 @@ func (tree *TypeTree) parentLevel() int {
 	return tree.Level - 1
 }
 
-// resolveName resolves and adds the resolved type into the TypeTree.
-func (tree *TypeTree) resolveName(name string) bool {
+// resolveType resolves and adds the resolved type into the TypeTree.
+func (tree *TypeTree) resolveType(name string) bool {
 	parent := TypeTree{
 		res:   tree.res,
 		Level: tree.parentLevel(),
 	}
-
 	if !parent.Resolve(name) {
 		return false
 	}
@@ -173,64 +174,89 @@ func (tree *TypeTree) resolveParents(parents ...*ResolvedType) bool {
 // generator.
 func (tree *TypeTree) ImportChildren(ng *NamespaceGenerator) {
 	for _, req := range tree.Requires {
-		ng.importPubl(req.Resolved)
+		ng.importResolved(req.Resolved)
 	}
 }
 
-// PublicChildren returns the list of the toplevel type's children as Go
+// Children returns the list of the toplevel type's children as Go
 // exported type names. The namespaces are appropriately prepended if needed.
-func (tree *TypeTree) PublicChildren() []string {
+func (tree *TypeTree) Children() []string {
 	names := make([]string, len(tree.Requires))
 
 	for i, req := range tree.Requires {
 		namespace := req.Resolved.NeedsNamespace(tree.res.Namespace())
-		names[i] = req.Resolved.PublicType(namespace)
+		names[i] = req.Resolved.GoType(namespace)
 	}
 
 	return names
 }
 
+type WrapOutput struct {
+	Wrapper string
+	Imports map[string]string
+}
+
+func (out *WrapOutput) importResolved(res TypeResolver, typ *ResolvedType) {
+	if out.Imports == nil {
+		out.Imports = map[string]string{}
+	}
+
+	if typ.NeedsNamespace(res.Namespace()) {
+		out.Imports[typ.Import.Path] = typ.Import.Package
+	}
+}
+
+// ApplySideEffects applies the side effects from the wrap output to the given
+// side effects ptr.
+func (out *WrapOutput) ApplySideEffects(dst *SideEffects) {
+	for path, alias := range out.Imports {
+		dst.addImportAlias(path, alias)
+	}
+}
+
 // Wrap creates a wrapper that uses public fields to create code that wraps the
-// type tree to the top-level type. The fields are assumed to be public
-// (exported) types. Types are assumed to all have valid wrap functions, so no
-// nested wraps will actually be done.
-//
-// Wrapper functions for all types are assumed to follow this format:
-//
-//    func WrapTypeName(obj *externglib.Object) TypeName
-//
-func (tree *TypeTree) Wrap(obj string) string {
+// type tree to the top-level type.
+func (tree *TypeTree) Wrap(objOrPtr string) WrapOutput {
+	var out WrapOutput
+	out.Wrapper = tree.wrap(objOrPtr, &out)
+	return out
+}
+
+func (tree *TypeTree) wrap(objOrPtr string, out *WrapOutput) string {
+	needsNamespace := tree.Resolved.NeedsNamespace(tree.res.Namespace())
+	if needsNamespace {
+		out.importResolved(tree.res, tree.Resolved)
+	}
+
 	p := pen.NewPiece()
-	p.Write(tree.Resolved.ImplType(false)).Char('{')
+	p.Write(tree.Resolved.GoType(needsNamespace)).Char('{')
 	p.EmptyLine()
 
 	for _, typ := range tree.Requires {
-		if typ.Resolved.Builtin != nil {
-			// If these cases hit, then the type is an Objector (as deefined by
-			// gextras.Objector), so obj satisfies it.
-			for _, glibType := range []string{"InitiallyUnowned", "Object"} {
-				if typ.Resolved.IsExternGLib(glibType) {
-					p.Linef("Objector: %s,", obj)
-					goto glibContinue
-				}
+		switch {
+		case typ.Resolved.IsExternGLib("Object"):
+			out.importResolved(tree.res, treeExternGObject)
+
+			p.Linef(
+				"Object: &%s.Object{%[1]s.ToGObject(%s)},",
+				typ.Resolved.Import.Package, objOrPtr,
+			)
+
+		case typ.Resolved.IsRecord():
+			needsNamespace := typ.Resolved.NeedsNamespace(tree.res.Namespace())
+			if needsNamespace {
+				out.importResolved(tree.res, typ.Resolved)
 			}
 
-			tryLogln(tree.res, LogUnknown, "builtin wrapping:", spew.Sdump(typ.Resolved))
+			p.Linef(
+				"%s: (*%s)(unsafe.Pointer(%s)),",
+				typ.Resolved.GoType(false), typ.Resolved.GoType(needsNamespace), objOrPtr,
+			)
 
-		glibContinue:
-			continue
+		default:
+			// Recursively generate the wrapper for each subtype.
+			p.Linef("%s: %s,", typ.Resolved.GoType(false), typ.wrap(objOrPtr, out))
 		}
-
-		// Extern types are generated by us, so the wrapper guarantee is
-		// provided.
-		namespace := typ.Resolved.NeedsNamespace(tree.res.Namespace())
-
-		p.Linef(
-			"%s: %s(%s),",
-			typ.Resolved.PublicType(false),
-			typ.Resolved.WrapName(namespace),
-			obj,
-		)
 	}
 
 	p.Char('}')

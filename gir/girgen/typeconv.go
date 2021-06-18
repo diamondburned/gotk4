@@ -5,8 +5,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir"
 )
 
 // ConversionDirection is the conversion direction between Go and C.
@@ -54,10 +54,10 @@ type ConversionValue struct {
 	InName  string
 	OutName string
 
-	// WrapObject, if not empty, will make the converter directly wrap to the
-	// object type instead of wrapping it in a Box. This should only be used for
-	// converting within types of the same package.
-	WrapObject string
+	// ManualWrap, if true, will make the converter manually generate a wrapper
+	// to wrap the return value to the exact type instead of using GValue to
+	// infer the type.
+	ManualWrap bool
 
 	// Direction is the direction of conversion.
 	Direction ConversionDirection
@@ -548,7 +548,13 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 	}
 
 	cgoType := value.resolved.CGoType()
-	goType := value.resolved.PublicType(value.needsNamespace)
+	goType := value.resolved.GoType(value.needsNamespace)
+
+	// If the current type is a class and the input is Go, then the type should
+	// be changed to the Class variant to allow polymorphism.
+	if value.Direction == ConvertGoToC && value.resolved.IsClass() {
+		goType += "Class"
+	}
 
 	if value.Direction == ConvertCToGo {
 		value.InType = cgoType
@@ -567,41 +573,6 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 	value.outDecl.Linef("var %s %s // out", value.OutName, value.OutType)
 
 	return true
-}
-
-// cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
-// function. This should only be used for C to Go conversion.
-func (value *ValueConverted) cgoSetObject() {
-	var gobjectFunction string
-	if value.isTransferring() {
-		// Full or container means we implicitly own the object, so we must
-		// not take another reference.
-		gobjectFunction = "AssumeOwnership"
-	} else {
-		// Else the object is either unowned by us or it's a floating
-		// reference. Take our own or sink the object.
-		gobjectFunction = "Take"
-	}
-
-	value.needsExternGLib()
-	value.addImport("unsafe")
-
-	if value.WrapObject != "" {
-		// This is only ever used for local constructors, so we don't need to
-		// mess with namespaces.
-		// TODO: maybe not make such a bad assumption.
-		value.p.Linef(
-			"%s = %s(externglib.%s(unsafe.Pointer(%s)))",
-			value.OutName, value.WrapObject, gobjectFunction, value.InName,
-		)
-		return
-	}
-
-	value.addImportInternal("gextras")
-	value.p.Linef(
-		"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s))).(%s)",
-		value.OutName, gobjectFunction, value.InName, value.OutType,
-	)
 }
 
 func (value *ValueConverted) cmalloc(lenOf string, add1 bool) string {

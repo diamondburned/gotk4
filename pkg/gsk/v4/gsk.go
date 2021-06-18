@@ -299,24 +299,19 @@ func marshalTransformCategory(p uintptr) (interface{}, error) {
 // CairoRenderer: a GSK renderer that is using cairo.
 //
 // Since it is using cairo, this renderer cannot support 3D transformations.
-type CairoRenderer interface {
+type CairoRenderer struct {
 	Renderer
 }
 
-// cairoRenderer implements the CairoRenderer class.
-type cairoRenderer struct {
-	Renderer
+// CairoRendererClass is an interface that the CairoRenderer class always
+// implements. It is only used for parameters that take in not just this
+// class but any other class that extends it.
+type CairoRendererClass interface {
+	gextras.Objector
+	_cairoRenderer()
 }
 
-var _ CairoRenderer = (*cairoRenderer)(nil)
-
-// WrapCairoRenderer wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapCairoRenderer(obj *externglib.Object) CairoRenderer {
-	return cairoRenderer{
-		Renderer: WrapRenderer(obj),
-	}
-}
+func (CairoRenderer) _cairoRenderer() {}
 
 func marshalCairoRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
@@ -338,30 +333,32 @@ func NewCairoRenderer() CairoRenderer {
 
 	var _cairoRenderer CairoRenderer // out
 
-	_cairoRenderer = WrapCairoRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_cairoRenderer = CairoRenderer{
+			Renderer: Renderer{
+				Object: &externglib.Object{externglib.ToGObject(obj)},
+			},
+		}
+	}
 
 	return _cairoRenderer
 }
 
 // GLRenderer: a GSK renderer that is using OpenGL.
-type GLRenderer interface {
+type GLRenderer struct {
 	Renderer
 }
 
-// glRenderer implements the GLRenderer class.
-type glRenderer struct {
-	Renderer
+// GLRendererClass is an interface that the GLRenderer class always
+// implements. It is only used for parameters that take in not just this
+// class but any other class that extends it.
+type GLRendererClass interface {
+	gextras.Objector
+	_glRenderer()
 }
 
-var _ GLRenderer = (*glRenderer)(nil)
-
-// WrapGLRenderer wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapGLRenderer(obj *externglib.Object) GLRenderer {
-	return glRenderer{
-		Renderer: WrapRenderer(obj),
-	}
-}
+func (GLRenderer) _glRenderer() {}
 
 func marshalGLRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
@@ -378,7 +375,14 @@ func NewGLRenderer() GLRenderer {
 
 	var _glRenderer GLRenderer // out
 
-	_glRenderer = WrapGLRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_glRenderer = GLRenderer{
+			Renderer: Renderer{
+				Object: &externglib.Object{externglib.ToGObject(obj)},
+			},
+		}
+	}
 
 	return _glRenderer
 }
@@ -476,62 +480,19 @@ func NewGLRenderer() GLRenderer {
 //    fragColor = position * source1 + (1.0 - position) * source2;
 //
 // } “`
-type GLShader interface {
+type GLShader struct {
+	**externglib.Object
+}
+
+// GLShaderClass is an interface that the GLShader class always
+// implements. It is only used for parameters that take in not just this
+// class but any other class that extends it.
+type GLShaderClass interface {
 	gextras.Objector
-
-	// Compile tries to compile the @shader for the given @renderer.
-	//
-	// If there is a problem, this function returns false and reports an error.
-	// You should use this function before relying on the shader for rendering
-	// and use a fallback with a simpler shader or without shaders if it fails.
-	//
-	// Note that this will modify the rendering state (for example change the
-	// current GL context) and requires the renderer to be set up. This means
-	// that the widget has to be realized. Commonly you want to call this from
-	// the realize signal of a widget, or during widget snapshot.
-	Compile(renderer Renderer) error
-	// FindUniformByName looks for a uniform by the name @name, and returns the
-	// index of the uniform, or -1 if it was not found.
-	FindUniformByName(name string) int
-	// ArgsSize: get the size of the data block used to specify arguments for
-	// this shader.
-	ArgsSize() uint
-	// NTextures returns the number of textures that the shader requires.
-	//
-	// This can be used to check that the a passed shader works in your usecase.
-	// It is determined by looking at the highest u_textureN value that the
-	// shader defines.
-	NTextures() int
-	// NUniforms: get the number of declared uniforms for this shader.
-	NUniforms() int
-	// Resource gets the resource path for the GLSL sourcecode being used to
-	// render this shader.
-	Resource() string
-	// UniformName: get the name of the declared uniform for this shader at
-	// index @idx.
-	UniformName(idx int) string
-	// UniformOffset: get the offset into the data block where data for this
-	// uniforms is stored.
-	UniformOffset(idx int) int
-	// UniformType: get the type of the declared uniform for this shader at
-	// index @idx.
-	UniformType(idx int) GLUniformType
+	_glShader()
 }
 
-// glShader implements the GLShader class.
-type glShader struct {
-	gextras.Objector
-}
-
-var _ GLShader = (*glShader)(nil)
-
-// WrapGLShader wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapGLShader(obj *externglib.Object) GLShader {
-	return glShader{
-		Objector: obj,
-	}
-}
+func (GLShader) _glShader() {}
 
 func marshalGLShader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
@@ -557,7 +518,17 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 	return _glShader
 }
 
-func (s glShader) Compile(renderer Renderer) error {
+// Compile tries to compile the @shader for the given @renderer.
+//
+// If there is a problem, this function returns false and reports an error. You
+// should use this function before relying on the shader for rendering and use a
+// fallback with a simpler shader or without shaders if it fails.
+//
+// Note that this will modify the rendering state (for example change the
+// current GL context) and requires the renderer to be set up. This means that
+// the widget has to be realized. Commonly you want to call this from the
+// realize signal of a widget, or during widget snapshot.
+func (s GLShader) Compile(renderer RendererClass) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
 	var _cerr *C.GError      // in
@@ -574,7 +545,9 @@ func (s glShader) Compile(renderer Renderer) error {
 	return _goerr
 }
 
-func (s glShader) FindUniformByName(name string) int {
+// FindUniformByName looks for a uniform by the name @name, and returns the
+// index of the uniform, or -1 if it was not found.
+func (s GLShader) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
 	var _cret C.int          // in
@@ -592,7 +565,9 @@ func (s glShader) FindUniformByName(name string) int {
 	return _gint
 }
 
-func (s glShader) ArgsSize() uint {
+// ArgsSize: get the size of the data block used to specify arguments for this
+// shader.
+func (s GLShader) ArgsSize() uint {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.gsize        // in
 
@@ -607,7 +582,12 @@ func (s glShader) ArgsSize() uint {
 	return _gsize
 }
 
-func (s glShader) NTextures() int {
+// NTextures returns the number of textures that the shader requires.
+//
+// This can be used to check that the a passed shader works in your usecase. It
+// is determined by looking at the highest u_textureN value that the shader
+// defines.
+func (s GLShader) NTextures() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
@@ -622,7 +602,8 @@ func (s glShader) NTextures() int {
 	return _gint
 }
 
-func (s glShader) NUniforms() int {
+// NUniforms: get the number of declared uniforms for this shader.
+func (s GLShader) NUniforms() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
@@ -637,7 +618,9 @@ func (s glShader) NUniforms() int {
 	return _gint
 }
 
-func (s glShader) Resource() string {
+// Resource gets the resource path for the GLSL sourcecode being used to render
+// this shader.
+func (s GLShader) Resource() string {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.char        // in
 
@@ -652,7 +635,9 @@ func (s glShader) Resource() string {
 	return _utf8
 }
 
-func (s glShader) UniformName(idx int) string {
+// UniformName: get the name of the declared uniform for this shader at index
+// @idx.
+func (s GLShader) UniformName(idx int) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret *C.char        // in
@@ -669,7 +654,9 @@ func (s glShader) UniformName(idx int) string {
 	return _utf8
 }
 
-func (s glShader) UniformOffset(idx int) int {
+// UniformOffset: get the offset into the data block where data for this
+// uniforms is stored.
+func (s GLShader) UniformOffset(idx int) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret C.int          // in
@@ -686,7 +673,9 @@ func (s glShader) UniformOffset(idx int) int {
 	return _gint
 }
 
-func (s glShader) UniformType(idx int) GLUniformType {
+// UniformType: get the type of the declared uniform for this shader at index
+// @idx.
+func (s GLShader) UniformType(idx int) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out
 	var _cret C.GskGLUniformType // in
@@ -703,24 +692,19 @@ func (s glShader) UniformType(idx int) GLUniformType {
 	return _glUniformType
 }
 
-type NglRenderer interface {
+type NglRenderer struct {
 	Renderer
 }
 
-// nglRenderer implements the NglRenderer class.
-type nglRenderer struct {
-	Renderer
+// NglRendererClass is an interface that the NglRenderer class always
+// implements. It is only used for parameters that take in not just this
+// class but any other class that extends it.
+type NglRendererClass interface {
+	gextras.Objector
+	_nglRenderer()
 }
 
-var _ NglRenderer = (*nglRenderer)(nil)
-
-// WrapNglRenderer wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapNglRenderer(obj *externglib.Object) NglRenderer {
-	return nglRenderer{
-		Renderer: WrapRenderer(obj),
-	}
-}
+func (NglRenderer) _nglRenderer() {}
 
 func marshalNglRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
@@ -736,7 +720,14 @@ func NewNglRenderer() NglRenderer {
 
 	var _nglRenderer NglRenderer // out
 
-	_nglRenderer = WrapNglRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_nglRenderer = NglRenderer{
+			Renderer: Renderer{
+				Object: &externglib.Object{externglib.ToGObject(obj)},
+			},
+		}
+	}
 
 	return _nglRenderer
 }
@@ -752,56 +743,19 @@ func NewNglRenderer() NglRenderer {
 // [method@Gsk.Renderer.realize] before calling [method@Gsk.Renderer.render], in
 // order to create the appropriate windowing system resources needed to render
 // the scene.
-type Renderer interface {
+type Renderer struct {
+	**externglib.Object
+}
+
+// RendererClass is an interface that the Renderer class always
+// implements. It is only used for parameters that take in not just this
+// class but any other class that extends it.
+type RendererClass interface {
 	gextras.Objector
-
-	// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
-	//
-	// If the renderer has not been realized yet, nil will be returned.
-	Surface() gdk.Surface
-	// IsRealized checks whether the @renderer is realized or not.
-	IsRealized() bool
-	// Realize creates the resources needed by the @renderer to render the scene
-	// graph.
-	Realize(surface gdk.Surface) error
-	// Render renders the scene graph, described by a tree of `GskRenderNode`
-	// instances, ensuring that the given @region gets redrawn.
-	//
-	// Renderers must ensure that changes of the contents given by the @root
-	// node as well as the area given by @region are redrawn. They are however
-	// free to not redraw any pixel outside of @region if they can guarantee
-	// that it didn't change.
-	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
-	Render(root RenderNode, region *cairo.Region)
-	// RenderTexture renders the scene graph, described by a tree of
-	// `GskRenderNode` instances, to a `GdkTexture`.
-	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
-	//
-	// If you want to apply any transformations to @root, you should put it into
-	// a transform node and pass that node instead.
-	RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
-	// Unrealize releases all the resources created by gsk_renderer_realize().
-	Unrealize()
+	_renderer()
 }
 
-// renderer implements the Renderer class.
-type renderer struct {
-	gextras.Objector
-}
-
-var _ Renderer = (*renderer)(nil)
-
-// WrapRenderer wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapRenderer(obj *externglib.Object) Renderer {
-	return renderer{
-		Objector: obj,
-	}
-}
+func (Renderer) _renderer() {}
 
 func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
@@ -817,7 +771,7 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 // the cairo renderer.
 //
 // The renderer will be realized before it is returned.
-func NewRendererForSurface(surface gdk.Surface) Renderer {
+func NewRendererForSurface(surface gdk.SurfaceClass) Renderer {
 	var _arg1 *C.GdkSurface  // out
 	var _cret *C.GskRenderer // in
 
@@ -827,12 +781,20 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 
 	var _renderer Renderer // out
 
-	_renderer = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_renderer = Renderer{
+			Object: &externglib.Object{externglib.ToGObject(obj)},
+		}
+	}
 
 	return _renderer
 }
 
-func (r renderer) Surface() gdk.Surface {
+// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+//
+// If the renderer has not been realized yet, nil will be returned.
+func (r Renderer) Surface() gdk.Surface {
 	var _arg0 *C.GskRenderer // out
 	var _cret *C.GdkSurface  // in
 
@@ -847,7 +809,8 @@ func (r renderer) Surface() gdk.Surface {
 	return _surface
 }
 
-func (r renderer) IsRealized() bool {
+// IsRealized checks whether the @renderer is realized or not.
+func (r Renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
 	var _cret C.gboolean     // in
 
@@ -864,7 +827,9 @@ func (r renderer) IsRealized() bool {
 	return _ok
 }
 
-func (r renderer) Realize(surface gdk.Surface) error {
+// Realize creates the resources needed by the @renderer to render the scene
+// graph.
+func (r Renderer) Realize(surface gdk.SurfaceClass) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
 	var _cerr *C.GError      // in
@@ -881,7 +846,17 @@ func (r renderer) Realize(surface gdk.Surface) error {
 	return _goerr
 }
 
-func (r renderer) Render(root RenderNode, region *cairo.Region) {
+// Render renders the scene graph, described by a tree of `GskRenderNode`
+// instances, ensuring that the given @region gets redrawn.
+//
+// Renderers must ensure that changes of the contents given by the @root node as
+// well as the area given by @region are redrawn. They are however free to not
+// redraw any pixel outside of @region if they can guarantee that it didn't
+// change.
+//
+// The @renderer will acquire a reference on the `GskRenderNode` tree while the
+// rendering is in progress.
+func (r Renderer) Render(root RenderNodeClass, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.cairo_region_t // out
@@ -893,7 +868,15 @@ func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
+// RenderTexture renders the scene graph, described by a tree of `GskRenderNode`
+// instances, to a `GdkTexture`.
+//
+// The @renderer will acquire a reference on the `GskRenderNode` tree while the
+// rendering is in progress.
+//
+// If you want to apply any transformations to @root, you should put it into a
+// transform node and pass that node instead.
+func (r Renderer) RenderTexture(root RenderNodeClass, viewport *graphene.Rect) gdk.Texture {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -912,7 +895,8 @@ func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Te
 	return _texture
 }
 
-func (r renderer) Unrealize() {
+// Unrealize releases all the resources created by gsk_renderer_realize().
+func (r Renderer) Unrealize() {
 	var _arg0 *C.GskRenderer // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
@@ -921,24 +905,19 @@ func (r renderer) Unrealize() {
 }
 
 // VulkanRenderer: a GSK renderer that is using Vulkan.
-type VulkanRenderer interface {
+type VulkanRenderer struct {
 	Renderer
 }
 
-// vulkanRenderer implements the VulkanRenderer class.
-type vulkanRenderer struct {
-	Renderer
+// VulkanRendererClass is an interface that the VulkanRenderer class always
+// implements. It is only used for parameters that take in not just this
+// class but any other class that extends it.
+type VulkanRendererClass interface {
+	gextras.Objector
+	_vulkanRenderer()
 }
 
-var _ VulkanRenderer = (*vulkanRenderer)(nil)
-
-// WrapVulkanRenderer wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapVulkanRenderer(obj *externglib.Object) VulkanRenderer {
-	return vulkanRenderer{
-		Renderer: WrapRenderer(obj),
-	}
-}
+func (VulkanRenderer) _vulkanRenderer() {}
 
 func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
@@ -953,49 +932,36 @@ func NewVulkanRenderer() VulkanRenderer {
 
 	var _vulkanRenderer VulkanRenderer // out
 
-	_vulkanRenderer = WrapVulkanRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_vulkanRenderer = VulkanRenderer{
+			Renderer: Renderer{
+				Object: &externglib.Object{externglib.ToGObject(obj)},
+			},
+		}
+	}
 
 	return _vulkanRenderer
 }
 
 // ColorStop: a color stop in a gradient node.
 type ColorStop struct {
-	native C.GskColorStop
-}
-
-// WrapColorStop wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapColorStop(ptr unsafe.Pointer) *ColorStop {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ColorStop)(ptr)
+	Native C.GskColorStop
 }
 
 // Native returns the underlying C source pointer.
-func (c *ColorStop) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
+func (c *ColorStop) Native() uintptr {
+	return uintptr(unsafe.Pointer(&c.Native))
 }
 
 // ParseLocation: a location in a parse buffer.
 type ParseLocation struct {
-	native C.GskParseLocation
-}
-
-// WrapParseLocation wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapParseLocation(ptr unsafe.Pointer) *ParseLocation {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ParseLocation)(ptr)
+	Native C.GskParseLocation
 }
 
 // Native returns the underlying C source pointer.
-func (p *ParseLocation) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+func (p *ParseLocation) Native() uintptr {
+	return uintptr(unsafe.Pointer(&p.Native))
 }
 
 // RoundedRect: a rectangular region with rounded corners.
@@ -1012,22 +978,12 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 // The algorithm used for normalizing corner sizes is described in the CSS
 // specification (https://drafts.csswg.org/css-backgrounds-3/#border-radius).
 type RoundedRect struct {
-	native C.GskRoundedRect
-}
-
-// WrapRoundedRect wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRoundedRect(ptr unsafe.Pointer) *RoundedRect {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RoundedRect)(ptr)
+	Native C.GskRoundedRect
 }
 
 // Native returns the underlying C source pointer.
-func (r *RoundedRect) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+func (r *RoundedRect) Native() uintptr {
+	return uintptr(unsafe.Pointer(&r.Native))
 }
 
 // ContainsPoint checks if the given @point is inside the rounded rectangle.
@@ -1095,7 +1051,7 @@ func (s *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRig
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+	_roundedRect = *(**RoundedRect)(unsafe.Pointer(&_cret))
 
 	return _roundedRect
 }
@@ -1116,7 +1072,7 @@ func (s *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+	_roundedRect = *(**RoundedRect)(unsafe.Pointer(&_cret))
 
 	return _roundedRect
 }
@@ -1137,7 +1093,7 @@ func (s *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Round
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+	_roundedRect = *(**RoundedRect)(unsafe.Pointer(&_cret))
 
 	return _roundedRect
 }
@@ -1199,7 +1155,7 @@ func (s *RoundedRect) Normalize() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+	_roundedRect = *(**RoundedRect)(unsafe.Pointer(&_cret))
 
 	return _roundedRect
 }
@@ -1221,7 +1177,7 @@ func (s *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+	_roundedRect = *(**RoundedRect)(unsafe.Pointer(&_cret))
 
 	return _roundedRect
 }
@@ -1252,34 +1208,24 @@ func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left fl
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = WrapRoundedRect(unsafe.Pointer(_cret))
+	_roundedRect = *(**RoundedRect)(unsafe.Pointer(&_cret))
 
 	return _roundedRect
 }
 
 // ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
 type ShaderArgsBuilder struct {
-	native C.GskShaderArgsBuilder
-}
-
-// WrapShaderArgsBuilder wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapShaderArgsBuilder(ptr unsafe.Pointer) *ShaderArgsBuilder {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ShaderArgsBuilder)(ptr)
+	Native C.GskShaderArgsBuilder
 }
 
 func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapShaderArgsBuilder(unsafe.Pointer(b)), nil
+	return (*ShaderArgsBuilder)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+func (s *ShaderArgsBuilder) Native() uintptr {
+	return uintptr(unsafe.Pointer(&s.Native))
 }
 
 // Ref increases the reference count of a `GskShaderArgsBuilder` by one.
@@ -1293,7 +1239,7 @@ func (b *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
 
 	var _shaderArgsBuilder *ShaderArgsBuilder // out
 
-	_shaderArgsBuilder = WrapShaderArgsBuilder(unsafe.Pointer(_cret))
+	_shaderArgsBuilder = *(**ShaderArgsBuilder)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_shaderArgsBuilder, func(v *ShaderArgsBuilder) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1421,22 +1367,12 @@ func (b *ShaderArgsBuilder) Unref() {
 
 // Shadow: the shadow parameters in a shadow node.
 type Shadow struct {
-	native C.GskShadow
-}
-
-// WrapShadow wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapShadow(ptr unsafe.Pointer) *Shadow {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Shadow)(ptr)
+	Native C.GskShadow
 }
 
 // Native returns the underlying C source pointer.
-func (s *Shadow) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+func (s *Shadow) Native() uintptr {
+	return uintptr(unsafe.Pointer(&s.Native))
 }
 
 // Transform: `GskTransform` is an object to describe transform matrices.
@@ -1449,22 +1385,12 @@ func (s *Shadow) Native() unsafe.Pointer {
 // This means code can safely expose them as properties of objects without
 // having to worry about others changing them.
 type Transform struct {
-	native C.GskTransform
-}
-
-// WrapTransform wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTransform(ptr unsafe.Pointer) *Transform {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Transform)(ptr)
+	Native C.GskTransform
 }
 
 func marshalTransform(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTransform(unsafe.Pointer(b)), nil
+	return (*Transform)(unsafe.Pointer(b))
 }
 
 // NewTransform constructs a struct Transform.
@@ -1475,7 +1401,7 @@ func NewTransform() *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1484,8 +1410,8 @@ func NewTransform() *Transform {
 }
 
 // Native returns the underlying C source pointer.
-func (t *Transform) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+func (t *Transform) Native() uintptr {
+	return uintptr(unsafe.Pointer(&t.Native))
 }
 
 // Equal checks two transforms for equality.
@@ -1540,7 +1466,7 @@ func (s *Transform) Invert() *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1561,7 +1487,7 @@ func (n *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1586,7 +1512,7 @@ func (n *Transform) Perspective(depth float32) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1605,7 +1531,7 @@ func (s *Transform) Ref() *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 
 	return _transform
 }
@@ -1624,7 +1550,7 @@ func (n *Transform) Rotate(angle float32) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1649,7 +1575,7 @@ func (n *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1674,7 +1600,7 @@ func (n *Transform) Scale(factorX float32, factorY float32) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1699,7 +1625,7 @@ func (n *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1846,7 +1772,7 @@ func (n *Transform) Transform(other *Transform) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1899,7 +1825,7 @@ func (n *Transform) Translate(point *graphene.Point) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
@@ -1920,7 +1846,7 @@ func (n *Transform) Translate3D(point *graphene.Point3D) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = WrapTransform(unsafe.Pointer(_cret))
+	_transform = *(**Transform)(unsafe.Pointer(&_cret))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})

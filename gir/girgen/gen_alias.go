@@ -28,8 +28,7 @@ func (ng *NamespaceGenerator) generateAliases() {
 		}
 
 		needsNamespace := resolved.NeedsNamespace(ng.Namespace())
-
-		goType := resolved.PublicType(needsNamespace)
+		goType := resolved.GoType(needsNamespace)
 		if goType == "" {
 			ng.Logln(LogSkip, "alias", alias.Name, "is opaque type")
 			continue

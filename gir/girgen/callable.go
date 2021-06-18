@@ -14,7 +14,7 @@ type callableGenerator struct {
 	Tail  string
 	Block string
 
-	ReturnWrap string // passed to ConversionValue, ctor only
+	ManualWrap bool // passed to ConversionValue, ctor only
 	Converts   []string
 
 	pen *pen.BlockSections
@@ -167,9 +167,7 @@ func (cg *callableGenerator) renderBlock() bool {
 			returnName = "_" + returnName
 
 			value := NewConversionValueReturn("_cret", returnName, ConvertCToGo, *cg.ReturnValue)
-			if cg.ReturnWrap != "" {
-				value.WrapObject = cg.ReturnWrap
-			}
+			value.ManualWrap = cg.ManualWrap
 
 			callableValues = append(callableValues, value)
 		}

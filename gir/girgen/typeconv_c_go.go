@@ -238,8 +238,7 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 	// Only add these imports afterwards, since all imports above are manually
 	// resolved.
 	if value.needsNamespace {
-		// We're using the PublicType, so add that import.
-		value.importPubl(value.resolved)
+		value.importResolved(value.resolved)
 	}
 
 	// Resolve special-case GLib types.
@@ -250,7 +249,7 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 		return true
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
-		value.cgoSetObject()
+		cgoSetObject(conv, value)
 		return true
 
 	case "GObject.Type", "GType":
@@ -301,13 +300,14 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 		return true
 
 	case result.Class != nil, result.Interface != nil:
-		value.cgoSetObject()
+		cgoSetObject(conv, value)
 		return true
 
 	case result.Record != nil:
-		// We can slightly cheat here. Since Go structs are declared by wrapping
-		// the C type, we can directly cast to the C type if this is an output
-		// parameter. This saves us a copy.
+		// We can slightly cheat if the value is an output parameter that we
+		// allocate. Since Go structs are declared by wrapping the C type, we
+		// can directly cast to the C type if this is an output parameter. This
+		// saves us a copy.
 		if value.outputAllocs() {
 			value.addImport("unsafe")
 
@@ -322,17 +322,10 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 			return true
 		}
 
-		// We should only use the concrete wrapper for the record, since the
-		// returned type is concretely known here.
-		wrapName := value.resolved.WrapName(value.needsNamespace)
-		valueIn := value.InName
-
-		if value.resolved.Ptr == 0 {
-			wrapName = "*" + wrapName
-			valueIn = "&" + valueIn
-		}
-
-		value.p.Linef("%s = %s(unsafe.Pointer(%s))", value.OutName, wrapName, valueIn)
+		value.p.Linef(
+			"%s = *(*%s)(unsafe.Pointer(&%s))",
+			value.OutName, value.resolved.GoType(value.needsNamespace), value.InName,
+		)
 
 		if value.isTransferring() {
 			value.addImport("runtime")
@@ -365,4 +358,48 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 	}
 
 	return false
+}
+
+// cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
+// function. This should only be used for C to Go conversion.
+func cgoSetObject(conv *TypeConverter, value *ValueConverted) bool {
+	var gobjectFunction string
+	if value.isTransferring() {
+		// Full or container means we implicitly own the object, so we must
+		// not take another reference.
+		gobjectFunction = "AssumeOwnership"
+	} else {
+		// Else the object is either unowned by us or it's a floating
+		// reference. Take our own or sink the object.
+		gobjectFunction = "Take"
+	}
+
+	value.needsExternGLib()
+	value.addImport("unsafe")
+
+	if !value.ManualWrap {
+		value.addImportInternal("gextras")
+		value.p.Linef(
+			"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s))).(%s)",
+			value.OutName, gobjectFunction, value.InName, value.OutType,
+		)
+		return true
+	}
+
+	tree := conv.ng.TypeTree()
+	if !tree.ResolveFromType(value.resolved) {
+		// This shouldn't happen.
+		return false
+	}
+
+	wrapper := tree.Wrap("obj")
+	wrapper.ApplySideEffects(&conv.ng.SideEffects)
+
+	// We have to descend here, because we must only create obj once.
+	value.p.Descend()
+	value.p.Linef("obj := externglib.%s(unsafe.Pointer(%s))", gobjectFunction, value.InName)
+	value.p.Linef("%s = %s", value.OutName, wrapper.Wrapper)
+	value.p.Ascend()
+
+	return true
 }

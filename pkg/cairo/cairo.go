@@ -424,279 +424,159 @@ func marshalRegionOverlap(p uintptr) (interface{}, error) {
 }
 
 type Context struct {
-	native C.cairo_t
-}
-
-// WrapContext wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapContext(ptr unsafe.Pointer) *Context {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Context)(ptr)
+	Native C.cairo_t
 }
 
 func marshalContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapContext(unsafe.Pointer(b)), nil
+	return (*Context)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (c *Context) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
+func (c *Context) Native() uintptr {
+	return uintptr(unsafe.Pointer(&c.Native))
 }
 
 type Device struct {
-	native C.cairo_device_t
-}
-
-// WrapDevice wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDevice(ptr unsafe.Pointer) *Device {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Device)(ptr)
+	Native C.cairo_device_t
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDevice(unsafe.Pointer(b)), nil
+	return (*Device)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (d *Device) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+func (d *Device) Native() uintptr {
+	return uintptr(unsafe.Pointer(&d.Native))
 }
 
 type Surface struct {
-	native C.cairo_surface_t
-}
-
-// WrapSurface wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSurface(ptr unsafe.Pointer) *Surface {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Surface)(ptr)
+	Native C.cairo_surface_t
 }
 
 func marshalSurface(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSurface(unsafe.Pointer(b)), nil
+	return (*Surface)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (s *Surface) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+func (s *Surface) Native() uintptr {
+	return uintptr(unsafe.Pointer(&s.Native))
 }
 
 type Matrix struct {
-	native C.cairo_matrix_t
-}
-
-// WrapMatrix wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMatrix(ptr unsafe.Pointer) *Matrix {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Matrix)(ptr)
+	Native C.cairo_matrix_t
 }
 
 // Native returns the underlying C source pointer.
-func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+func (m *Matrix) Native() uintptr {
+	return uintptr(unsafe.Pointer(&m.Native))
 }
 
 type Pattern struct {
-	native C.cairo_pattern_t
-}
-
-// WrapPattern wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPattern(ptr unsafe.Pointer) *Pattern {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Pattern)(ptr)
+	Native C.cairo_pattern_t
 }
 
 func marshalPattern(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPattern(unsafe.Pointer(b)), nil
+	return (*Pattern)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (p *Pattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+func (p *Pattern) Native() uintptr {
+	return uintptr(unsafe.Pointer(&p.Native))
 }
 
 type Region struct {
-	native C.cairo_region_t
-}
-
-// WrapRegion wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRegion(ptr unsafe.Pointer) *Region {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Region)(ptr)
+	Native C.cairo_region_t
 }
 
 func marshalRegion(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRegion(unsafe.Pointer(b)), nil
+	return (*Region)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (r *Region) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+func (r *Region) Native() uintptr {
+	return uintptr(unsafe.Pointer(&r.Native))
 }
 
 type FontOptions struct {
-	native C.cairo_font_options_t
-}
-
-// WrapFontOptions wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFontOptions(ptr unsafe.Pointer) *FontOptions {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FontOptions)(ptr)
+	Native C.cairo_font_options_t
 }
 
 func marshalFontOptions(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontOptions(unsafe.Pointer(b)), nil
+	return (*FontOptions)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (f *FontOptions) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+func (f *FontOptions) Native() uintptr {
+	return uintptr(unsafe.Pointer(&f.Native))
 }
 
 type FontFace struct {
-	native C.cairo_font_face_t
-}
-
-// WrapFontFace wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFontFace(ptr unsafe.Pointer) *FontFace {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FontFace)(ptr)
+	Native C.cairo_font_face_t
 }
 
 func marshalFontFace(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontFace(unsafe.Pointer(b)), nil
+	return (*FontFace)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (f *FontFace) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+func (f *FontFace) Native() uintptr {
+	return uintptr(unsafe.Pointer(&f.Native))
 }
 
 type ScaledFont struct {
-	native C.cairo_scaled_font_t
-}
-
-// WrapScaledFont wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapScaledFont(ptr unsafe.Pointer) *ScaledFont {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ScaledFont)(ptr)
+	Native C.cairo_scaled_font_t
 }
 
 func marshalScaledFont(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapScaledFont(unsafe.Pointer(b)), nil
+	return (*ScaledFont)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (s *ScaledFont) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+func (s *ScaledFont) Native() uintptr {
+	return uintptr(unsafe.Pointer(&s.Native))
 }
 
 type Path struct {
-	native C.cairo_path_t
-}
-
-// WrapPath wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPath(ptr unsafe.Pointer) *Path {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Path)(ptr)
+	Native C.cairo_path_t
 }
 
 // Native returns the underlying C source pointer.
-func (p *Path) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+func (p *Path) Native() uintptr {
+	return uintptr(unsafe.Pointer(&p.Native))
 }
 
 type Rectangle struct {
-	native C.cairo_rectangle_t
-}
-
-// WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Rectangle)(ptr)
+	Native C.cairo_rectangle_t
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRectangle(unsafe.Pointer(b)), nil
+	return (*Rectangle)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+func (r *Rectangle) Native() uintptr {
+	return uintptr(unsafe.Pointer(&r.Native))
 }
 
 type RectangleInt struct {
-	native C.cairo_rectangle_int_t
-}
-
-// WrapRectangleInt wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRectangleInt(ptr unsafe.Pointer) *RectangleInt {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RectangleInt)(ptr)
+	Native C.cairo_rectangle_int_t
 }
 
 func marshalRectangleInt(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRectangleInt(unsafe.Pointer(b)), nil
+	return (*RectangleInt)(unsafe.Pointer(b))
 }
 
 // Native returns the underlying C source pointer.
-func (r *RectangleInt) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+func (r *RectangleInt) Native() uintptr {
+	return uintptr(unsafe.Pointer(&r.Native))
 }

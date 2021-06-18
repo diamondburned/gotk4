@@ -278,8 +278,7 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 	// Only add these imports afterwards, since all imports above are manually
 	// resolved.
 	if value.needsNamespace {
-		// We're using the PublicType, so add that import.
-		value.importPubl(value.resolved)
+		value.importResolved(value.resolved)
 	}
 
 	switch ensureNamespace(conv.ng.current, value.AnyType.Type.Name) {

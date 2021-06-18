@@ -253,12 +253,12 @@ func TypeHasPointer(resolver TypeResolver, typ *ResolvedType) bool {
 // GoAnyType generates the Go type signature for the AnyType union. An empty
 // string returned is an invalid type. If pub is true, then the returned string
 // will use public interface types for classes instead of implementation types.
-func GoAnyType(resolver TypeResolver, any gir.AnyType, pub bool) (string, bool) {
+func GoAnyType(resolver TypeResolver, any gir.AnyType) (string, bool) {
 	switch {
 	case any.Array != nil:
-		return goArrayType(resolver, *any.Array, pub)
+		return goArrayType(resolver, *any.Array)
 	case any.Type != nil:
-		return GoType(resolver, *any.Type, pub)
+		return GoType(resolver, *any.Type)
 	}
 
 	// Probably varargs, ignore because Cgo.
@@ -266,13 +266,13 @@ func GoAnyType(resolver TypeResolver, any gir.AnyType, pub bool) (string, bool) 
 }
 
 // goArrayType generates the Go type signature for the given array.
-func goArrayType(resolver TypeResolver, array gir.Array, pub bool) (string, bool) {
+func goArrayType(resolver TypeResolver, array gir.Array) (string, bool) {
 	arrayPrefix := "[]"
 	if array.FixedSize > 0 {
 		arrayPrefix = fmt.Sprintf("[%d]", array.FixedSize)
 	}
 
-	child, _ := GoAnyType(resolver, array.AnyType, pub)
+	child, _ := GoAnyType(resolver, array.AnyType)
 	// There can't be []void, so this check ensures there can only be valid
 	// array types.
 	if child == "" {
@@ -284,18 +284,14 @@ func goArrayType(resolver TypeResolver, array gir.Array, pub bool) (string, bool
 
 // GoType is a convenient function that wraps around ResolveType and returns the
 // Go type.
-func GoType(resolver TypeResolver, typ gir.Type, pub bool) (string, bool) {
+func GoType(resolver TypeResolver, typ gir.Type) (string, bool) {
 	resolved := resolver.ResolveType(typ)
 	if resolved == nil {
 		return "", false
 	}
 
 	needsNamespace := resolved.NeedsNamespace(resolver.Namespace())
-
-	if pub {
-		return resolved.PublicType(needsNamespace), true
-	}
-	return resolved.ImplType(needsNamespace), true
+	return resolved.GoType(needsNamespace), true
 }
 
 // ResolveTypeName resolves the given GIR type name. The resolved type will

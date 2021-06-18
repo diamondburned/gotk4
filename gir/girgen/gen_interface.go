@@ -9,11 +9,15 @@ import (
 // TODO: unexported type implementation
 // TODO: methods for implementation
 
+// TODO: find a proper way to add an -er suffix.
+
 var interfaceTmpl = newGoTemplate(`
 	{{ if .Virtuals }}
-	// {{ .InterfaceName }}Overrider contains methods that are overridable. This
-	// interface is a subset of the interface {{ .InterfaceName }}.
-	type {{ .InterfaceName }}Overrider interface {
+	// {{ .Name }}Interface contains virtual methods for {{ .Name }}, or
+	// methods that can be overridden.
+	type {{ .Name }}Interface interface {
+		gextras.Objector
+
 		{{ range .Virtuals -}}
 		{{ GoDoc .Doc 1 .Name }}
 		{{ .Name }}{{ .Tail }}
@@ -21,50 +25,30 @@ var interfaceTmpl = newGoTemplate(`
 	}
 	{{ end }}
 
-	{{ GoDoc .Doc 0 .InterfaceName }}
-	type {{ .InterfaceName }} interface {
-		{{ range .TypeTree.PublicChildren -}}
+	{{ GoDoc .Doc 0 .Name }}
+	type {{ .Name }} struct {
+		{{ range .TypeTree.Children -}}
 		{{ . }}
 		{{ end }}
-
-		{{ range .Methods -}}
-		{{ GoDoc .Doc 1 .Name }}
-		{{ .Name }}{{ .Tail }}
-		{{ end }}
-	}
-
-	// {{ .StructName }} implements the {{ .InterfaceName }} interface.
-	type {{ .StructName }} struct {
-		{{ range .TypeTree.PublicChildren -}}
-		{{ . }}
-		{{ end }}
-	}
-
-	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
-
-	// Wrap{{ .InterfaceName }} wraps a GObject to a type that implements interface
-	// {{ .InterfaceName }}. It is primarily used internally.
-	func Wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
-		return {{ .TypeTree.Wrap "obj" }}
 	}
 
 	{{ if .GLibGetType }}
-	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
+	func marshal{{ .Name }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 		obj := externglib.Take(unsafe.Pointer(val))
-		return Wrap{{ .InterfaceName }}(obj), nil
+		return {{ .TypeTree.Wrap "obj" }}, nil
 	}
 	{{ end }}
 
 	{{ range .Methods }}
-	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
+	{{ GoDoc .Doc 0 .Name }}
+	func ({{ .Recv }} {{ $.Name }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)
 
 type ifaceGenerator struct {
 	gir.Interface
-	InterfaceName string
-	StructName    string
+	Name string
 
 	TypeTree TypeTree
 	Virtuals []callableGenerator // for overrider
@@ -86,11 +70,10 @@ func newIfaceGenerator(ng *NamespaceGenerator) *ifaceGenerator {
 
 func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 	ig.TypeTree = ig.ng.TypeTree()
-	ig.TypeTree.Level = 2
+	// ig.TypeTree.Level = 4
 
 	ig.Interface = iface
-	ig.InterfaceName = PascalToGo(iface.Name)
-	ig.StructName = UnexportPascal(ig.InterfaceName)
+	ig.Name = PascalToGo(iface.Name)
 
 	if !ig.TypeTree.Resolve(iface.Name) {
 		ig.Logln(LogSkip, "cannot be type-resolved")
@@ -125,14 +108,18 @@ func (ig *ifaceGenerator) updateMethods() {
 		ig.Methods = append(ig.Methods, cbgen)
 	}
 
-	callableRenameGetters(ig.InterfaceName, ig.Methods)
-	callableRenameGetters(ig.InterfaceName, ig.Virtuals)
+	if len(ig.Virtuals) > 0 {
+		ig.ng.needsExternGLib()
+	}
+
+	callableRenameGetters(ig.Name, ig.Methods)
+	callableRenameGetters(ig.Name, ig.Virtuals)
 }
 
 func (ig *ifaceGenerator) Logln(lvl LogLevel, v ...interface{}) {
 	v = append(v, nil)
 	copy(v[1:], v)
-	v[0] = fmt.Sprintf("interface %s (C.%s):", ig.InterfaceName, ig.CType)
+	v[0] = fmt.Sprintf("interface %s (C.%s):", ig.Name, ig.CType)
 
 	ig.ng.Logln(lvl, v...)
 }
@@ -152,7 +139,7 @@ func (ng *NamespaceGenerator) generateIfaces() {
 		}
 
 		if iface.GLibGetType != "" && !ng.mustIgnoreC(iface.GLibGetType) {
-			ng.addMarshaler(iface.GLibGetType, ig.InterfaceName)
+			ng.addMarshaler(iface.GLibGetType, ig.Name)
 		}
 
 		ng.pen.WriteTmpl(interfaceTmpl, &ig)

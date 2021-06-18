@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir"
 )
 
 // callbackPrefix is the prefix to prepend to a C callback that bridges Cgo.

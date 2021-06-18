@@ -49,9 +49,27 @@ func (ng *NamespaceGenerator) PackageName() string { return ng.pkgName }
 func (ng *NamespaceGenerator) Logln(level LogLevel, v ...interface{}) {
 	v = append(v, nil)
 	copy(v[1:], v) // shift rightwards once
-	v[0] = fmt.Sprintf("package %s/v%s", ng.pkgName, gir.MajorVersion(ng.current.Namespace.Version))
+	v[0] = ng.logPrefix() + ":"
 
 	ng.gen.Logln(level, v...)
+}
+
+func (ng *NamespaceGenerator) logPrefix() string {
+	return fmt.Sprintf("package %s/v%s", ng.pkgName, gir.MajorVersion(ng.current.Namespace.Version))
+}
+
+// TypeTree returns a new type tree for resolving.
+func (ng *NamespaceGenerator) TypeTree() TypeTree {
+	return NewTypeTree(ng)
+}
+
+// WrapClass generates the class value that wraps the given object.
+func (ng *NamespaceGenerator) WrapClass(typ *ResolvedType, obj string) (WrapOutput, bool) {
+	tree := NewTypeTree(ng)
+	if !tree.ResolveFromType(typ) {
+		return WrapOutput{}, false
+	}
+	return tree.Wrap(obj), true
 }
 
 // Generate generates the current namespace. It returns a filesystem consisting
@@ -172,7 +190,7 @@ func (ng *NamespaceGenerator) Generate() ([]byte, error) {
 	formatted, err := format.Source(out.Bytes())
 	if err != nil {
 		ng.Logln(LogError, "failed to fmt pkg", ng.pkgName)
-		return out.Bytes(), errors.Wrap(err, "fmt "+ng.pkgName)
+		return out.Bytes(), errors.Wrap(err, "fmt "+ng.logPrefix())
 	}
 
 	return formatted, nil
@@ -345,31 +363,15 @@ func (sides *SideEffects) needsExternGLib() {
 	sides.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
 }
 
-func (sides *SideEffects) importPubl(resolved *ResolvedType) {
+func (sides *SideEffects) importResolved(resolved *ResolvedType) {
 	if resolved == nil {
 		return
 	}
-
-	sides.importResolvedType(resolved.PublImport)
+	if resolved.Import.Path != "" {
+		sides.addImportAlias(resolved.Import.Path, resolved.Import.Package)
+	}
 	if resolved.IsCallback() {
 		sides.addCallbackHeader(CallbackCHeader(resolved.Extern.Result.Callback))
-	}
-}
-
-func (sides *SideEffects) importImpl(resolved *ResolvedType) {
-	if resolved == nil {
-		return
-	}
-
-	sides.importResolvedType(resolved.ImplImport)
-	if resolved.IsCallback() {
-		sides.addCallbackHeader(CallbackCHeader(resolved.Extern.Result.Callback))
-	}
-}
-
-func (sides *SideEffects) importResolvedType(imports ResolvedTypeImport) {
-	if imports.Path != "" {
-		sides.addImportAlias(imports.Path, imports.Package)
 	}
 }
 

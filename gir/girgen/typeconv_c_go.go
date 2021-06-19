@@ -128,18 +128,27 @@ func (conv *TypeConverter) cgoArrayConverter(value *ValueConverted) bool {
 			return true
 		}
 
-		value.p.Descend()
-
-		value.p.Linef("src := unsafe.Slice(%s, %s)", value.InName, length.InName)
+		// Make sure to free the input by the time we're done.
 		if value.isTransferring() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
 		}
 
+		if inner.resolved.CanCast() {
+			// We can cast directly, which means no conversion is needed. Use
+			// the faster built-in copy() for this.
+			value.p.Linef("%s = make(%s, %s)", value.OutName, value.OutType, length.InName)
+			value.p.Linef(
+				"copy(%s, unsafe.Slice((*%s)(unsafe.Pointer(%s)), %s))",
+				value.OutName, inner.OutType, value.InName, length.InName)
+			return true
+		}
+
+		value.p.Descend()
+		value.p.Linef("src := unsafe.Slice(%s, %s)", value.InName, length.InName)
 		value.p.Linef("%s = make(%s, %s)", value.OutName, value.OutType, length.InName)
 		value.p.Linef("for i := 0; i < int(%s); i++ {", length.InName)
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
-
 		value.p.Ascend()
 		return true
 
@@ -157,6 +166,30 @@ func (conv *TypeConverter) cgoArrayConverter(value *ValueConverted) bool {
 		value.p.Linef("}")
 
 		value.p.Ascend()
+		return true
+
+	case array.Name == "GLib.ByteArray":
+		value.addImport("unsafe")
+
+		if value.isTransferring() {
+			value.p.Descend()
+			value.p.Linef("var len uintptr")
+			// If we're fully getting the backing array, then we can just steal
+			// it (since we own it now), which is less copying.
+			value.p.Linef("p := C.g_byte_array_steal(&%s, (*C.gsize)(&len))", value.InName)
+			value.p.Linef("%s = unsafe.Slice((*byte)(p), len)", value.OutName)
+			value.p.Linef("runtime.SetFinalizer(&%s, func(v *[]byte) {")
+			value.p.Linef("  C.free(unsafe.Pointer(&(*v)[0]))")
+			value.p.Linef("})")
+			value.p.Ascend()
+			return true
+		}
+
+		value.p.Linef("%s = make([]byte, %s.len)", value.OutName, value.InName)
+		value.p.Linef(
+			// Use the built-in copy(), because it is fast.
+			"copy(%s, unsafe.Slice((*byte)(%s.data), %[2]s.len))",
+			value.OutName, value.InName)
 		return true
 
 	case array.IsZeroTerminated():
@@ -210,7 +243,7 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 		return true
 
 	case value.resolved.IsBuiltin("bool"):
-		switch value.resolved.CType {
+		switch cleanCType(value.resolved.CType, true) {
 		case "gboolean":
 			// gboolean is resolved to C type int, so we have to do regular int
 			// comparison.
@@ -264,9 +297,10 @@ func (conv *TypeConverter) cgoTypeConverter(value *ValueConverted) bool {
 		value.needsExternGLib()
 		value.needsGLibObject()
 
+		r := reffer{value.resolved.Ptr, 1}
 		value.p.Linef(
-			"%s = externglib.ValueFromNative(unsafe.Pointer(%s))",
-			value.OutName, value.InName)
+			"%s = %sexternglib.ValueFromNative(unsafe.Pointer(%s%s))",
+			value.OutName, r.bwd(), r.fwd(), value.InName)
 
 		// Set this to be freed if we have the ownership now.
 		if value.isTransferring() {

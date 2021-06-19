@@ -2,15 +2,22 @@ package girgen
 
 import (
 	"github.com/davecgh/go-spew/spew"
-	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir"
 )
 
 // TypeTree is a structure for a type that is resolved to the lowest level of
 // inheritance.
 type TypeTree struct {
-	Resolved *ResolvedType
+	*ResolvedType
+
+	// Requires contains the direct dependencies of the current type. It may
+	// contain interfaces that are also in other interfaces, which will not
+	// build.
 	Requires []TypeTree
+	// Embeds contains the filtered dependencies, that is, ones that will not
+	// collide when built.
+	Embeds []TypeTree
 
 	// Level sets the maximum recursion level to go. It only applies if set
 	// to something more than -1.
@@ -33,13 +40,9 @@ func (tree *TypeTree) reset() {
 		tree.Requires[i] = TypeTree{}
 	}
 
-	tree.Resolved = nil
+	tree.ResolvedType = nil
+	tree.Embeds = tree.Embeds[:0]
 	tree.Requires = tree.Requires[:0]
-}
-
-// IsInterface returns true if the current type in the tree is an interface.
-func (tree *TypeTree) IsInterface() bool {
-	return tree.Resolved.Extern != nil && tree.Resolved.Extern.Result.Interface != nil
 }
 
 // Resolve resolves the given toplevel type into the TypeTree, overriding the
@@ -59,14 +62,15 @@ func (tree *TypeTree) Resolve(toplevel string) bool {
 // resolved top-level type.
 func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 	tree.reset()
-	tree.Resolved = toplevel
+	tree.ResolvedType = toplevel
 
 	if tree.Level == 0 {
+		// No omit, since we added nothing.
 		return true
 	}
 
 	// Edge cases for builtin types.
-	if tree.Resolved.Builtin != nil {
+	if tree.ResolvedType.Builtin != nil {
 		switch {
 		case toplevel.IsExternGLib("InitiallyUnowned"):
 			return tree.resolveParents(externGLibType("*Object", gir.Type{}, "GObject*"))
@@ -74,56 +78,124 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 			return true
 		}
 
+		tree.omitAmbiguous(false)
 		return true
 	}
 
-	if !tree.Resolved.Extern.Result.IsIntrospectable() {
+	if !tree.ResolvedType.Extern.Result.IsIntrospectable() {
 		return false
 	}
 
 	switch {
-	case tree.Resolved.Extern.Result.Class != nil:
+	case tree.ResolvedType.Extern.Result.Class != nil:
+		// All classes have a GObject parent, so an empty parent is invalid.
+		parent := tree.ResolvedType.Extern.Result.Class.Parent
+		if parent == "" {
+			parent = "GObject.Object"
+		}
+
 		// Resolving the parent type is crucial to make the class working, so if
 		// this fails, halt and bail.
-		if !tree.resolveName(tree.Resolved.Extern.Result.Class.Parent) {
+		if !tree.resolveName(parent) {
 			tryLogln(tree.res, LogUnknown,
-				"can't resolve parent", tree.Resolved.Extern.Result.Class.Parent,
-				"for class", tree.Resolved.Extern.Result.Class.Name,
+				"can't resolve parent", tree.ResolvedType.Extern.Result.Class.Parent,
+				"for class", tree.ResolvedType.Extern.Result.Class.Name,
 			)
 			return false
 		}
 
-		for _, impl := range tree.Resolved.Extern.Result.Class.Implements {
+		for _, impl := range tree.ResolvedType.Extern.Result.Class.Implements {
 			if !tree.resolveName(impl.Name) {
 				tryLogln(tree.res, LogUnknown,
 					"can't resolve impl", impl.Name,
-					"for class", tree.Resolved.Extern.Result.Class.Name,
+					"for class", tree.ResolvedType.Extern.Result.Class.Name,
 				)
 			}
 		}
 
-	case tree.Resolved.Extern.Result.Interface != nil:
+		tree.omitAmbiguous(true)
+
+	case tree.ResolvedType.Extern.Result.Interface != nil:
 		// All interfaces are derived from GObjects, so we override the list if
 		// it's empty.
-		if len(tree.Resolved.Extern.Result.Interface.Prerequisites) == 0 {
+		if len(tree.ResolvedType.Extern.Result.Interface.Prerequisites) == 0 {
 			return tree.resolveParents(
 				externGLibType("*Object", gir.Type{}, "GObject*"),
 			)
 		}
 
-		for _, prereq := range tree.Resolved.Extern.Result.Interface.Prerequisites {
+		for _, prereq := range tree.ResolvedType.Extern.Result.Interface.Prerequisites {
 			// Like class parents, interface prerequisites are important.
 			if !tree.resolveName(prereq.Name) {
 				tryLogln(tree.res, LogUnknown,
 					"can't resolve prerequisite", prereq.Name,
-					"for interface", tree.Resolved.Extern.Result.Interface.Name,
+					"for interface", tree.ResolvedType.Extern.Result.Interface.Name,
 				)
 				return false
 			}
 		}
+
+		tree.omitAmbiguous(true)
+
+	default:
+		tree.omitAmbiguous(false)
 	}
 
 	return true
+}
+
+// omitAmbiguous omits current-level ambiguous types.
+func (tree *TypeTree) omitAmbiguous(actually bool) {
+	// Try and reuse the backing array, but regrow it ourselves if there's not
+	// enough space.
+	tree.Embeds = tree.Embeds[:0]
+	if cap(tree.Embeds) < len(tree.Requires) {
+		tree.Embeds = make([]TypeTree, 0, len(tree.Requires))
+	}
+
+	// No ambiguity if there's less than 2 parents.
+	if !actually || len(tree.Requires) < 2 {
+		copy(tree.Embeds, tree.Requires)
+		return
+	}
+
+	// This loop seems to be quite expensive. We can likely make it much
+	// faster by using a hashmap of prereq names at the current level.
+addLoop:
+	for i, prereqTree := range tree.Requires {
+		for j, otherTree := range tree.Requires {
+			// Skip the same value.
+			if i == j {
+				continue
+			}
+
+			if requiresHasGType(otherTree.Requires, prereqTree.ResolvedType) {
+				// prereqTree is already inside another interface that we
+				// inherit from, so we don't add it to prevent ambiguity.
+				continue addLoop
+			}
+		}
+
+		tree.Embeds = append(tree.Embeds, prereqTree)
+	}
+}
+
+// requiresHasGType scans over the list of resolved types and returns true if
+// any of the resolved types implements the given resolved type.
+func requiresHasGType(requires []TypeTree, typ *ResolvedType) bool {
+	return requiresHasGTyperec(requires, typ.PublicType(true))
+}
+
+func requiresHasGTyperec(requires []TypeTree, publType string) bool {
+	for _, req := range requires {
+		if req.ResolvedType.PublicType(true) == publType {
+			return true
+		}
+		if requiresHasGTyperec(req.Requires, publType) {
+			return true
+		}
+	}
+	return false
 }
 
 func (tree *TypeTree) parentLevel() int {
@@ -169,68 +241,71 @@ func (tree *TypeTree) resolveParents(parents ...*ResolvedType) bool {
 	return true
 }
 
-// ImportChildren imports the type tree's public children into the given file
-// generator.
-func (tree *TypeTree) ImportChildren(ng *NamespaceGenerator) {
-	for _, req := range tree.Requires {
-		ng.importPubl(req.Resolved)
-	}
-}
+// PublicEmbeds returns the list of the toplevel type's children as Go exported
+// type names. The namespaces are appropriately prepended if needed.
+func (tree *TypeTree) PublicEmbeds() []string {
+	names := make([]string, len(tree.Embeds))
 
-// PublicChildren returns the list of the toplevel type's children as Go
-// exported type names. The namespaces are appropriately prepended if needed.
-func (tree *TypeTree) PublicChildren() []string {
-	names := make([]string, len(tree.Requires))
-
-	for i, req := range tree.Requires {
-		namespace := req.Resolved.NeedsNamespace(tree.res.Namespace())
-		names[i] = req.Resolved.PublicType(namespace)
+	for i, req := range tree.Embeds {
+		namespace := req.ResolvedType.NeedsNamespace(tree.res.Namespace())
+		names[i] = req.ResolvedType.PublicType(namespace)
 	}
 
 	return names
 }
 
-// Wrap creates a wrapper that uses public fields to create code that wraps the
-// type tree to the top-level type. The fields are assumed to be public
-// (exported) types. Types are assumed to all have valid wrap functions, so no
-// nested wraps will actually be done.
+// WrapClass creates a wrapper that uses public fields to create code that wraps
+// the type tree to the top-level type. It only generates wrappers for the
+// parent field. The field is assumed to be public (exported) types. Types are
+// assumed to all have valid wrap functions, so no nested wraps will actually be
+// done.
 //
 // Wrapper functions for all types are assumed to follow this format:
 //
 //    func WrapTypeName(obj *externglib.Object) TypeName
 //
-func (tree *TypeTree) Wrap(obj string) string {
+func (tree *TypeTree) WrapClass(obj string) string {
+	return tree.wrap(obj, true)
+}
+
+// WrapInterface creates a wrappper for an interface instead.
+func (tree *TypeTree) WrapInterface(obj string) string {
+	return tree.wrap(obj, false)
+}
+
+func (tree *TypeTree) wrap(obj string, class bool) string {
 	p := pen.NewPiece()
-	p.Write(tree.Resolved.ImplType(false)).Char('{')
+	p.Write(tree.ResolvedType.ImplType(false)).Char('{')
 	p.EmptyLine()
 
 	for _, typ := range tree.Requires {
-		if typ.Resolved.Builtin != nil {
+		if typ.ResolvedType.Builtin != nil {
 			// If these cases hit, then the type is an Objector (as deefined by
 			// gextras.Objector), so obj satisfies it.
-			for _, glibType := range []string{"InitiallyUnowned", "Object"} {
-				if typ.Resolved.IsExternGLib(glibType) {
-					p.Linef("Objector: %s,", obj)
-					goto glibContinue
-				}
+			switch {
+			case typ.ResolvedType.IsExternGLib("InitiallyUnowned"):
+				fallthrough
+			case typ.ResolvedType.IsExternGLib("Object"):
+				p.Linef("Objector: %s,", obj)
+			default:
+				tryLogln(tree.res, LogUnknown, "builtin wrapping:", spew.Sdump(typ.ResolvedType))
 			}
+		} else {
+			// Extern types are generated by us, so the wrapper guarantee is
+			// provided.
+			namespace := typ.ResolvedType.NeedsNamespace(tree.res.Namespace())
 
-			tryLogln(tree.res, LogUnknown, "builtin wrapping:", spew.Sdump(typ.Resolved))
-
-		glibContinue:
-			continue
+			p.Linef(
+				"%s: %s(%s),",
+				typ.ResolvedType.PublicType(false), typ.ResolvedType.WrapName(namespace), obj,
+			)
 		}
 
-		// Extern types are generated by us, so the wrapper guarantee is
-		// provided.
-		namespace := typ.Resolved.NeedsNamespace(tree.res.Namespace())
-
-		p.Linef(
-			"%s: %s(%s),",
-			typ.Resolved.PublicType(false),
-			typ.Resolved.WrapName(namespace),
-			obj,
-		)
+		if class {
+			break
+		} else {
+			continue
+		}
 	}
 
 	p.Char('}')

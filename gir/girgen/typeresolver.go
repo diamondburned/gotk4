@@ -96,9 +96,14 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *ResolvedType {
 		}
 	}
 
-	ptrs := strings.Count(goType, "*")
-	goType = strings.Repeat("*", ptrs) + "externglib." + strings.TrimPrefix(goType, "*")
+	ptrs := int(countPtrs(typ, nil))
 
+	// Some Go types don't want pointers, so we subtract if needed.
+	if ptrs > 0 {
+		ptrs = ptrs - (1 - strings.Count(goType, "*"))
+	}
+
+	goType = "externglib." + strings.TrimPrefix(goType, "*")
 	return &ResolvedType{
 		Builtin:    &goType,
 		ImplImport: implImport,
@@ -171,6 +176,16 @@ func (typ *ResolvedType) IsCallback() bool {
 // IsRecord returns true if the current ResolvedType is a record.
 func (typ *ResolvedType) IsRecord() bool {
 	return typ.Extern != nil && typ.Extern.Result.Record != nil
+}
+
+// IsInterface returns true if the current ResolvedType is an interface.
+func (typ *ResolvedType) IsInterface() bool {
+	return typ.Extern != nil && typ.Extern.Result.Interface != nil
+}
+
+// IsClass returns true if the current ResolvedType is a class.
+func (typ *ResolvedType) IsClass() bool {
+	return typ.Extern != nil && typ.Extern.Result.Class != nil
 }
 
 // IsPrimitive returns true if the resolved type is a builtin type that can be

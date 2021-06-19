@@ -19,6 +19,12 @@ func NewJoints(sep string, cap int) Joints {
 	}
 }
 
+// Reset reuses the internal string slice but resets the state to zero.
+func (j *Joints) Reset(sep string) {
+	j.strs = j.strs[:0]
+	j.sep = sep
+}
+
 // Add adds a new joint.
 func (j *Joints) Add(str string) { j.strs = append(j.strs, str) }
 

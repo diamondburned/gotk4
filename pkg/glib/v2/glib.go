@@ -5078,9 +5078,9 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 	var _argvp []string
 	var _goerr error // out
 
+	defer C.free(unsafe.Pointer(_arg3))
 	{
 		src := unsafe.Slice(_arg3, _arg2)
-		defer C.free(unsafe.Pointer(_arg3))
 		_argvp = make([]string, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			_argvp[i] = C.GoString(src[i])
@@ -7007,23 +7007,17 @@ func VariantGetGType() externglib.Type {
 
 // BookmarkFile: the `GBookmarkFile` structure contains only private data and
 // should not be directly accessed.
-type BookmarkFile struct {
-	native C.GBookmarkFile
-}
+type BookmarkFile C.GBookmarkFile
 
 // WrapBookmarkFile wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapBookmarkFile(ptr unsafe.Pointer) *BookmarkFile {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*BookmarkFile)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (b *BookmarkFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
+	return unsafe.Pointer(b)
 }
 
 // AddApplication adds the application with @name and @exec to the list of
@@ -7859,23 +7853,17 @@ func (b *BookmarkFile) ToFile(filename string) error {
 // Checksum: an opaque structure representing a checksumming operation. To
 // create a new GChecksum, use g_checksum_new(). To free a GChecksum, use
 // g_checksum_free().
-type Checksum struct {
-	native C.GChecksum
-}
+type Checksum C.GChecksum
 
 // WrapChecksum wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapChecksum(ptr unsafe.Pointer) *Checksum {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Checksum)(ptr)
 }
 
 func marshalChecksum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapChecksum(unsafe.Pointer(b)), nil
+	return (*Checksum)(unsafe.Pointer(b)), nil
 }
 
 // NewChecksum constructs a struct Checksum.
@@ -7899,7 +7887,7 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 // Native returns the underlying C source pointer.
 func (c *Checksum) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
+	return unsafe.Pointer(c)
 }
 
 // Copy copies a #GChecksum. If @checksum has been closed, by calling
@@ -7978,43 +7966,31 @@ func (c *Checksum) Update(data []byte) {
 }
 
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().
-type DebugKey struct {
-	native C.GDebugKey
-}
+type DebugKey C.GDebugKey
 
 // WrapDebugKey wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDebugKey(ptr unsafe.Pointer) *DebugKey {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DebugKey)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (d *DebugKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // Dir: an opaque structure representing an opened directory.
-type Dir struct {
-	native C.GDir
-}
+type Dir C.GDir
 
 // WrapDir wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDir(ptr unsafe.Pointer) *Dir {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Dir)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (d *Dir) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // Close closes the directory and deallocates all related resources.
@@ -8066,28 +8042,22 @@ func (d *Dir) Rewind() {
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
 // Table][glib-Hash-Tables]. It should only be accessed via the following
 // functions.
-type HashTable struct {
-	native C.GHashTable
-}
+type HashTable C.GHashTable
 
 // WrapHashTable wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapHashTable(ptr unsafe.Pointer) *HashTable {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*HashTable)(ptr)
 }
 
 func marshalHashTable(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapHashTable(unsafe.Pointer(b)), nil
+	return (*HashTable)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (h *HashTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(&h.native)
+	return unsafe.Pointer(h)
 }
 
 // HashTableIter: a GHashTableIter structure represents an iterator that can be
@@ -8097,23 +8067,17 @@ func (h *HashTable) Native() unsafe.Pointer {
 //
 // The iteration order of a TableIter over the keys/values in a hash table is
 // not defined.
-type HashTableIter struct {
-	native C.GHashTableIter
-}
+type HashTableIter C.GHashTableIter
 
 // WrapHashTableIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapHashTableIter(ptr unsafe.Pointer) *HashTableIter {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*HashTableIter)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (h *HashTableIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(&h.native)
+	return unsafe.Pointer(h)
 }
 
 // Init initializes a key/value pair iterator and associates it with
@@ -8179,23 +8143,17 @@ func (i *HashTableIter) Steal() {
 
 // HMAC: an opaque structure representing a HMAC operation. To create a new
 // GHmac, use g_hmac_new(). To free a GHmac, use g_hmac_unref().
-type HMAC struct {
-	native C.GHmac
-}
+type HMAC C.GHmac
 
 // WrapHMAC wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapHMAC(ptr unsafe.Pointer) *HMAC {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*HMAC)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (h *HMAC) Native() unsafe.Pointer {
-	return unsafe.Pointer(&h.native)
+	return unsafe.Pointer(h)
 }
 
 // String gets the HMAC as a hexadecimal string.
@@ -8250,23 +8208,17 @@ func (h *HMAC) Update(data []byte) {
 
 // KeyFile: the GKeyFile struct contains only private data and should not be
 // accessed directly.
-type KeyFile struct {
-	native C.GKeyFile
-}
+type KeyFile C.GKeyFile
 
 // WrapKeyFile wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapKeyFile(ptr unsafe.Pointer) *KeyFile {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*KeyFile)(ptr)
 }
 
 func marshalKeyFile(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapKeyFile(unsafe.Pointer(b)), nil
+	return (*KeyFile)(unsafe.Pointer(b)), nil
 }
 
 // NewKeyFile constructs a struct KeyFile.
@@ -8287,7 +8239,7 @@ func NewKeyFile() *KeyFile {
 
 // Native returns the underlying C source pointer.
 func (k *KeyFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(&k.native)
+	return unsafe.Pointer(k)
 }
 
 // Boolean returns the value associated with @key under @group_name as a
@@ -9294,44 +9246,32 @@ func (k *KeyFile) Unref() {
 // bytes. If the field contains a string, the string must be UTF-8 encoded and
 // have a trailing nul byte. Otherwise, @length must be set to a non-negative
 // value.
-type LogField struct {
-	native C.GLogField
-}
+type LogField C.GLogField
 
 // WrapLogField wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapLogField(ptr unsafe.Pointer) *LogField {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*LogField)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (l *LogField) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
+	return unsafe.Pointer(l)
 }
 
 // MainContext: the `GMainContext` struct is an opaque data type representing a
 // set of sources to be handled in a main loop.
-type MainContext struct {
-	native C.GMainContext
-}
+type MainContext C.GMainContext
 
 // WrapMainContext wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMainContext(ptr unsafe.Pointer) *MainContext {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*MainContext)(ptr)
 }
 
 func marshalMainContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMainContext(unsafe.Pointer(b)), nil
+	return (*MainContext)(unsafe.Pointer(b)), nil
 }
 
 // NewMainContext constructs a struct MainContext.
@@ -9352,7 +9292,7 @@ func NewMainContext() *MainContext {
 
 // Native returns the underlying C source pointer.
 func (m *MainContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	return unsafe.Pointer(m)
 }
 
 // Acquire tries to become the owner of the specified context. If some other
@@ -9661,23 +9601,17 @@ func (c *MainContext) Wakeup() {
 
 // MainLoop: the `GMainLoop` struct is an opaque data type representing the main
 // event loop of a GLib or GTK+ application.
-type MainLoop struct {
-	native C.GMainLoop
-}
+type MainLoop C.GMainLoop
 
 // WrapMainLoop wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMainLoop(ptr unsafe.Pointer) *MainLoop {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*MainLoop)(ptr)
 }
 
 func marshalMainLoop(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMainLoop(unsafe.Pointer(b)), nil
+	return (*MainLoop)(unsafe.Pointer(b)), nil
 }
 
 // NewMainLoop constructs a struct MainLoop.
@@ -9705,7 +9639,7 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 
 // Native returns the underlying C source pointer.
 func (m *MainLoop) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	return unsafe.Pointer(m)
 }
 
 // Context returns the Context of @loop.
@@ -9799,23 +9733,17 @@ func (l *MainLoop) Unref() {
 // MappedFile: the File represents a file mapping created with
 // g_mapped_file_new(). It has only private members and should not be accessed
 // directly.
-type MappedFile struct {
-	native C.GMappedFile
-}
+type MappedFile C.GMappedFile
 
 // WrapMappedFile wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMappedFile(ptr unsafe.Pointer) *MappedFile {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*MappedFile)(ptr)
 }
 
 func marshalMappedFile(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMappedFile(unsafe.Pointer(b)), nil
+	return (*MappedFile)(unsafe.Pointer(b)), nil
 }
 
 // NewMappedFile constructs a struct MappedFile.
@@ -9873,7 +9801,7 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 
 // Native returns the underlying C source pointer.
 func (m *MappedFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	return unsafe.Pointer(m)
 }
 
 // Free: this call existed before File had refcounting and is currently exactly
@@ -9962,28 +9890,22 @@ func (f *MappedFile) Unref() {
 // you expect to contain marked-up text.
 //
 // See g_markup_parse_context_new(), Parser, and so on for more details.
-type MarkupParseContext struct {
-	native C.GMarkupParseContext
-}
+type MarkupParseContext C.GMarkupParseContext
 
 // WrapMarkupParseContext wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMarkupParseContext(ptr unsafe.Pointer) *MarkupParseContext {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*MarkupParseContext)(ptr)
 }
 
 func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMarkupParseContext(unsafe.Pointer(b)), nil
+	return (*MarkupParseContext)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (m *MarkupParseContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	return unsafe.Pointer(m)
 }
 
 // EndParse signals to the ParseContext that all data has been fed into the
@@ -10120,28 +10042,22 @@ func (c *MarkupParseContext) Unref() {
 
 // MatchInfo: a GMatchInfo is an opaque struct used to return information about
 // matches.
-type MatchInfo struct {
-	native C.GMatchInfo
-}
+type MatchInfo C.GMatchInfo
 
 // WrapMatchInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMatchInfo(ptr unsafe.Pointer) *MatchInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*MatchInfo)(ptr)
 }
 
 func marshalMatchInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMatchInfo(unsafe.Pointer(b)), nil
+	return (*MatchInfo)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (m *MatchInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	return unsafe.Pointer(m)
 }
 
 // ExpandReferences returns a new string containing the text in
@@ -10543,23 +10459,17 @@ func (m *MatchInfo) Unref() {
 
 // Node: the #GNode struct represents one node in a [n-ary
 // tree][glib-N-ary-Trees].
-type Node struct {
-	native C.GNode
-}
+type Node C.GNode
 
 // WrapNode wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapNode(ptr unsafe.Pointer) *Node {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Node)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (n *Node) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
+	return unsafe.Pointer(n)
 }
 
 // ChildPosition gets the position of a #GNode with respect to its siblings.
@@ -10709,23 +10619,17 @@ func (n *Node) Unlink() {
 // OptionContext: a `GOptionContext` struct defines which options are accepted
 // by the commandline option parser. The struct has only private fields and
 // should not be directly accessed.
-type OptionContext struct {
-	native C.GOptionContext
-}
+type OptionContext C.GOptionContext
 
 // WrapOptionContext wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapOptionContext(ptr unsafe.Pointer) *OptionContext {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*OptionContext)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (o *OptionContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	return unsafe.Pointer(o)
 }
 
 // AddGroup adds a Group to the @context, so that parsing with @context will
@@ -11037,23 +10941,17 @@ func (c *OptionContext) SetTranslationDomain(domain string) {
 // OptionEntry: a GOptionEntry struct defines a single option. To have an
 // effect, they must be added to a Group with
 // g_option_context_add_main_entries() or g_option_group_add_entries().
-type OptionEntry struct {
-	native C.GOptionEntry
-}
+type OptionEntry C.GOptionEntry
 
 // WrapOptionEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapOptionEntry(ptr unsafe.Pointer) *OptionEntry {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*OptionEntry)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (o *OptionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	return unsafe.Pointer(o)
 }
 
 // OptionGroup: a `GOptionGroup` struct defines the options in a single group.
@@ -11063,28 +10961,22 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 // need to parse commandline options are expected to provide a function for
 // getting a `GOptionGroup` holding their options, which the application can
 // then add to its Context.
-type OptionGroup struct {
-	native C.GOptionGroup
-}
+type OptionGroup C.GOptionGroup
 
 // WrapOptionGroup wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapOptionGroup(ptr unsafe.Pointer) *OptionGroup {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*OptionGroup)(ptr)
 }
 
 func marshalOptionGroup(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOptionGroup(unsafe.Pointer(b)), nil
+	return (*OptionGroup)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (o *OptionGroup) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	return unsafe.Pointer(o)
 }
 
 // AddEntries adds the options specified in @entries to @group.
@@ -11157,23 +11049,17 @@ func (g *OptionGroup) Unref() {
 
 // PatternSpec: a GPatternSpec struct is the 'compiled' form of a pattern. This
 // structure is opaque and its fields cannot be accessed directly.
-type PatternSpec struct {
-	native C.GPatternSpec
-}
+type PatternSpec C.GPatternSpec
 
 // WrapPatternSpec wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPatternSpec(ptr unsafe.Pointer) *PatternSpec {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*PatternSpec)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (p *PatternSpec) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	return unsafe.Pointer(p)
 }
 
 // Equal compares two compiled pattern specs and returns whether they will match
@@ -11208,49 +11094,37 @@ func (p *PatternSpec) Free() {
 
 // PollFD represents a file descriptor, which events to poll for, and which
 // events occurred.
-type PollFD struct {
-	native C.GPollFD
-}
+type PollFD C.GPollFD
 
 // WrapPollFD wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPollFD(ptr unsafe.Pointer) *PollFD {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*PollFD)(ptr)
 }
 
 func marshalPollFD(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPollFD(unsafe.Pointer(b)), nil
+	return (*PollFD)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (p *PollFD) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	return unsafe.Pointer(p)
 }
 
 // Rand: the GRand struct is an opaque data structure. It should only be
 // accessed through the g_rand_* functions.
-type Rand struct {
-	native C.GRand
-}
+type Rand C.GRand
 
 // WrapRand wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapRand(ptr unsafe.Pointer) *Rand {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Rand)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (r *Rand) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	return unsafe.Pointer(r)
 }
 
 // Double returns the next random #gdouble from @rand_ equally distributed over
@@ -11423,23 +11297,17 @@ func (r *Rand) SetSeedArray(seed *uint32, seedLength uint) {
 //
 // The regular expressions low-level functionalities are obtained through the
 // excellent PCRE (http://www.pcre.org/) library written by Philip Hazel.
-type Regex struct {
-	native C.GRegex
-}
+type Regex C.GRegex
 
 // WrapRegex wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapRegex(ptr unsafe.Pointer) *Regex {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Regex)(ptr)
 }
 
 func marshalRegex(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRegex(unsafe.Pointer(b)), nil
+	return (*Regex)(unsafe.Pointer(b)), nil
 }
 
 // NewRegex constructs a struct Regex.
@@ -11471,7 +11339,7 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 
 // Native returns the underlying C source pointer.
 func (r *Regex) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	return unsafe.Pointer(r)
 }
 
 // CaptureCount returns the number of capturing subpatterns in the pattern.
@@ -12074,44 +11942,32 @@ func (r *Regex) Unref() {
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can
 // be changed during the parsing phase and will affect the lexical parsing of
 // the next unpeeked token.
-type ScannerConfig struct {
-	native C.GScannerConfig
-}
+type ScannerConfig C.GScannerConfig
 
 // WrapScannerConfig wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapScannerConfig(ptr unsafe.Pointer) *ScannerConfig {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*ScannerConfig)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (s *ScannerConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return unsafe.Pointer(s)
 }
 
 // Sequence: the #GSequence struct is an opaque data type representing a
 // [sequence][glib-Sequences] data type.
-type Sequence struct {
-	native C.GSequence
-}
+type Sequence C.GSequence
 
 // WrapSequence wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSequence(ptr unsafe.Pointer) *Sequence {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Sequence)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (s *Sequence) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return unsafe.Pointer(s)
 }
 
 // Free frees the memory allocated for @seq. If @seq has a data destroy function
@@ -12217,23 +12073,17 @@ func (s *Sequence) IsEmpty() bool {
 
 // SequenceIter: the Iter struct is an opaque data type representing an iterator
 // pointing into a #GSequence.
-type SequenceIter struct {
-	native C.GSequenceIter
-}
+type SequenceIter C.GSequenceIter
 
 // WrapSequenceIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSequenceIter(ptr unsafe.Pointer) *SequenceIter {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*SequenceIter)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (s *SequenceIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return unsafe.Pointer(s)
 }
 
 // Compare returns a negative number if @a comes before @b, 0 if they are equal,
@@ -12387,23 +12237,17 @@ func (i *SequenceIter) Prev() *SequenceIter {
 // microsecond-precision time. As such, this type will be removed from a future
 // version of GLib. A consequence of using `glong` for `tv_sec` is that on
 // 32-bit systems `GTimeVal` is subject to the year 2038 problem.
-type TimeVal struct {
-	native C.GTimeVal
-}
+type TimeVal C.GTimeVal
 
 // WrapTimeVal wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTimeVal(ptr unsafe.Pointer) *TimeVal {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*TimeVal)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (t *TimeVal) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	return unsafe.Pointer(t)
 }
 
 // Add adds the given number of microseconds to @time_. @microseconds can also
@@ -12466,23 +12310,17 @@ func (t *TimeVal) ToISO8601() string {
 }
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.
-type TimeZone struct {
-	native C.GTimeZone
-}
+type TimeZone C.GTimeZone
 
 // WrapTimeZone wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTimeZone(ptr unsafe.Pointer) *TimeZone {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*TimeZone)(ptr)
 }
 
 func marshalTimeZone(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTimeZone(unsafe.Pointer(b)), nil
+	return (*TimeZone)(unsafe.Pointer(b)), nil
 }
 
 // NewTimeZone constructs a struct TimeZone.
@@ -12578,7 +12416,7 @@ func NewTimeZoneUtc() *TimeZone {
 
 // Native returns the underlying C source pointer.
 func (t *TimeZone) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	return unsafe.Pointer(t)
 }
 
 // AdjustTime finds an interval within @tz that corresponds to the given @time_,
@@ -12767,23 +12605,17 @@ func (t *TimeZone) Unref() {
 }
 
 // Timer: opaque datatype that records a start time.
-type Timer struct {
-	native C.GTimer
-}
+type Timer C.GTimer
 
 // WrapTimer wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTimer(ptr unsafe.Pointer) *Timer {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Timer)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (t *Timer) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	return unsafe.Pointer(t)
 }
 
 // Continue resumes a timer that has previously been stopped with
@@ -12881,28 +12713,22 @@ func (t *Timer) Stop() {
 // Tree: the GTree struct is an opaque data structure representing a [balanced
 // binary tree][glib-Balanced-Binary-Trees]. It should be accessed only by using
 // the following functions.
-type Tree struct {
-	native C.GTree
-}
+type Tree C.GTree
 
 // WrapTree wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTree(ptr unsafe.Pointer) *Tree {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Tree)(ptr)
 }
 
 func marshalTree(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTree(unsafe.Pointer(b)), nil
+	return (*Tree)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (t *Tree) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	return unsafe.Pointer(t)
 }
 
 // Destroy removes all keys and values from the #GTree and decreases its
@@ -13023,23 +12849,17 @@ func (t *Tree) Unref() {
 }
 
 // TreeNode: an opaque type which identifies a specific node in a #GTree.
-type TreeNode struct {
-	native C.GTreeNode
-}
+type TreeNode C.GTreeNode
 
 // WrapTreeNode wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTreeNode(ptr unsafe.Pointer) *TreeNode {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*TreeNode)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (t *TreeNode) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	return unsafe.Pointer(t)
 }
 
 // Next returns the next in-order node of the tree, or nil if the passed node
@@ -13182,28 +13002,22 @@ func (n *TreeNode) Previous() *TreeNode {
 // G_URI_FLAGS_SCHEME_NORMALIZE however it is not comprehensive. For example,
 // `data:,foo` and `data:;base64,Zm9v` resolve to the same thing according to
 // the `data:` URI specification which GLib does not handle.
-type URI struct {
-	native C.GUri
-}
+type URI C.GUri
 
 // WrapURI wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapURI(ptr unsafe.Pointer) *URI {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*URI)(ptr)
 }
 
 func marshalURI(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapURI(unsafe.Pointer(b)), nil
+	return (*URI)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (u *URI) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
+	return unsafe.Pointer(u)
 }
 
 // AuthParams gets @uri's authentication parameters, which may contain
@@ -13495,23 +13309,17 @@ func (u *URI) ToStringPartial(flags URIHideFlags) string {
 // are typically allocated on the stack and then initialized with
 // g_uri_params_iter_init(). See the documentation for g_uri_params_iter_init()
 // for a usage example.
-type URIParamsIter struct {
-	native C.GUriParamsIter
-}
+type URIParamsIter C.GUriParamsIter
 
 // WrapURIParamsIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapURIParamsIter(ptr unsafe.Pointer) *URIParamsIter {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*URIParamsIter)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (u *URIParamsIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
+	return unsafe.Pointer(u)
 }
 
 // Init initializes an attribute/value pair iterator.
@@ -13819,23 +13627,17 @@ func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
 // use an additional 48 bytes. If we were to have other dictionaries of the same
 // type, we would use more memory for the serialised data and buffer management
 // for those dictionaries, but the type information would be shared.
-type Variant struct {
-	native C.GVariant
-}
+type Variant C.GVariant
 
 // WrapVariant wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariant(ptr unsafe.Pointer) *Variant {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Variant)(ptr)
 }
 
 func marshalVariant(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVariant(unsafe.Pointer(b)), nil
+	return (*Variant)(unsafe.Pointer(b)), nil
 }
 
 // NewVariantArray constructs a struct Variant.
@@ -14237,7 +14039,7 @@ func NewVariantVariant(value *Variant) *Variant {
 
 // Native returns the underlying C source pointer.
 func (v *Variant) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
+	return unsafe.Pointer(v)
 }
 
 // Byteswap performs a byteswapping operation on the contents of @value. The
@@ -15198,23 +15000,17 @@ func (v *Variant) Unref() {
 //
 // Builder is not threadsafe in any way. Do not attempt to access it from more
 // than one thread.
-type VariantBuilder struct {
-	native C.GVariantBuilder
-}
+type VariantBuilder C.GVariantBuilder
 
 // WrapVariantBuilder wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariantBuilder(ptr unsafe.Pointer) *VariantBuilder {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*VariantBuilder)(ptr)
 }
 
 func marshalVariantBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVariantBuilder(unsafe.Pointer(b)), nil
+	return (*VariantBuilder)(unsafe.Pointer(b)), nil
 }
 
 // NewVariantBuilder constructs a struct VariantBuilder.
@@ -15238,7 +15034,7 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 
 // Native returns the underlying C source pointer.
 func (v *VariantBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
+	return unsafe.Pointer(v)
 }
 
 // AddValue adds @value to @builder.
@@ -15443,23 +15239,17 @@ func (b *VariantBuilder) Unref() {
 //
 //        return result;
 //      }
-type VariantDict struct {
-	native C.GVariantDict
-}
+type VariantDict C.GVariantDict
 
 // WrapVariantDict wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariantDict(ptr unsafe.Pointer) *VariantDict {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*VariantDict)(ptr)
 }
 
 func marshalVariantDict(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVariantDict(unsafe.Pointer(b)), nil
+	return (*VariantDict)(unsafe.Pointer(b)), nil
 }
 
 // NewVariantDict constructs a struct VariantDict.
@@ -15483,7 +15273,7 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 
 // Native returns the underlying C source pointer.
 func (v *VariantDict) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
+	return unsafe.Pointer(v)
 }
 
 // Clear releases all memory associated with a Dict without freeing the Dict
@@ -15787,23 +15577,17 @@ func (d *VariantDict) Unref() {
 // to G_VARIANT_TYPE_DICTIONARY. Note that, due to the restriction that the key
 // of a dictionary entry must be a basic type, "{**}" is not a valid type
 // string.
-type VariantType struct {
-	native C.GVariantType
-}
+type VariantType C.GVariantType
 
 // WrapVariantType wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariantType(ptr unsafe.Pointer) *VariantType {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*VariantType)(ptr)
 }
 
 func marshalVariantType(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVariantType(unsafe.Pointer(b)), nil
+	return (*VariantType)(unsafe.Pointer(b)), nil
 }
 
 // NewVariantType constructs a struct VariantType.
@@ -15908,7 +15692,7 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 // Native returns the underlying C source pointer.
 func (v *VariantType) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
+	return unsafe.Pointer(v)
 }
 
 // Copy makes a copy of a Type. It is appropriate to call g_variant_type_free()

@@ -5,8 +5,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir"
 )
 
 // ConversionDirection is the conversion direction between Go and C.
@@ -116,7 +116,7 @@ func NewConversionValueReturn(
 // field. The struct is assumed to have a native field.
 func NewConversionValueField(recv, out string, field gir.Field) ConversionValue {
 	return ConversionValue{
-		InName:         fmt.Sprintf("%s.native.%s", recv, cgoField(field.Name)),
+		InName:         fmt.Sprintf("%s.%s", recv, cgoField(field.Name)),
 		OutName:        out,
 		Direction:      ConvertCToGo,
 		ParameterIndex: UnknownValueIndex,
@@ -233,6 +233,12 @@ func NewTypeConverter(ng *NamespaceGenerator, values []ConversionValue) *TypeCon
 		// Ensure the direction is valid.
 		if value.Direction == 0 {
 			conv.log(LogError, "value", value.InName, "->", value.OutName, "has invalid direction")
+			return nil
+		}
+
+		if value.ParameterAttrs.Direction == "out" && !anyTypeIsPtr(value.AnyType) {
+			// Output direction but not pointer parameter is invalid; bail.
+			conv.log(LogUnusuality, "value type", anyTypeC(value.AnyType), "is output but no ptr")
 			return nil
 		}
 
@@ -635,4 +641,41 @@ func (value *ValueConverted) ptrsz() string {
 	value.addImport("unsafe")
 	// Size of a pointer is the same as uint.
 	return "unsafe.Sizeof(uint(0))"
+}
+
+// ref wraps the given name and references or dereferences the name to be the
+// wanted pointer.
+func ref(v string, is, want uint8) string {
+	return (reffer{is, want}).fwd() + v
+}
+
+type reffer struct {
+	is   uint8
+	want uint8
+}
+
+// fwd creates the pointer prefix to invoke the call.
+func (r reffer) fwd() string {
+	switch {
+	case r.is > r.want:
+		return strings.Repeat("*", int(r.is-r.want))
+	case r.is < r.want:
+		return strings.Repeat("&", int(r.want-r.is))
+	default:
+		return ""
+	}
+}
+
+// bwd creates the pointer prefix to undo the pointer by referencing.
+func (r reffer) bwd() string {
+	// TODO: this is dumb; it doesn't work if the pointer difference is more
+	// than 1.
+	switch {
+	case r.is > r.want:
+		return strings.Repeat("&", int(r.is-r.want))
+	case r.is < r.want:
+		return strings.Repeat("*", int(r.want-r.is))
+	default:
+		return ""
+	}
 }

@@ -306,7 +306,6 @@ func UpdateLayout(cr *cairo.Context, layout pango.Layout) {
 // The actual type of the font will depend on the particular font technology
 // Cairo was compiled to use.
 type Font interface {
-	pango.Font
 
 	// ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font
 	// can be referenced and kept using cairo_scaled_font_reference().
@@ -315,13 +314,12 @@ type Font interface {
 
 // font implements the Font interface.
 type font struct {
-	pango.Font
 }
 
 var _ Font = (*font)(nil)
 
-// WrapFont wraps a GObject to a type that implements interface
-// Font. It is primarily used internally.
+// WrapFont wraps a GObject to a type that implements
+// interface Font. It is primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
 	return font{
 		Font: pango.WrapFont(obj),
@@ -355,7 +353,6 @@ func (f font) ScaledFont() *cairo.ScaledFont {
 // The actual type of the font map will depend on the particular font technology
 // Cairo was compiled to use.
 type FontMap interface {
-	pango.FontMap
 
 	// FontType gets the type of Cairo font backend that @fontmap uses.
 	FontType() cairo.FontType
@@ -388,13 +385,12 @@ type FontMap interface {
 
 // fontMap implements the FontMap interface.
 type fontMap struct {
-	pango.FontMap
 }
 
 var _ FontMap = (*fontMap)(nil)
 
-// WrapFontMap wraps a GObject to a type that implements interface
-// FontMap. It is primarily used internally.
+// WrapFontMap wraps a GObject to a type that implements
+// interface FontMap. It is primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
 	return fontMap{
 		FontMap: pango.WrapFontMap(obj),

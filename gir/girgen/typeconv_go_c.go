@@ -25,6 +25,12 @@ func (conv *TypeConverter) gocArrayConverter(value *ValueConverted) bool {
 
 	array := value.AnyType.Array
 
+	if array.CType == "void*" {
+		// CGo treats void* arrays a bit weirdly: the function's input parameter
+		// type is actually unsafe.Pointer, so we have to wrap it.
+		value.OutCall = fmt.Sprintf("unsafe.Pointer(%s)", value.OutCall)
+	}
+
 	// This is always the same.
 	value.OutType = anyTypeCGo(value.AnyType)
 	value.outDecl.Linef("var %s %s", value.OutName, value.OutType)
@@ -46,7 +52,7 @@ func (conv *TypeConverter) gocArrayConverter(value *ValueConverted) bool {
 	// These cases have invalid inner type names that aren't useful to us, so we
 	// handle them on our own.
 	switch {
-	case cleanCType(array.CType) == "gchar*":
+	case cleanCType(array.CType, false) == "gchar*":
 		// This is technically a []byte, and we should use a []byte, because the
 		// C code may mutate the backing array. The internal type is "utf8",
 		// which is false, because the C type is just a single character.
@@ -174,6 +180,34 @@ func (conv *TypeConverter) gocArrayConverter(value *ValueConverted) bool {
 		value.p.Ascend()
 		return true
 
+	case array.Name == "GLib.ByteArray":
+		// We know that the type will always be []byte if this case hits, so we
+		// don't need to do complicated conversions.
+		value.addImport("unsafe")
+
+		if !value.isTransferring() {
+			// No-copy path that works as long as we don't use unref, because
+			// that will free the Go memory.
+			value.p.Linef(
+				"%s = C.g_byte_array_new_take((*C.guint8)(&%s[0]), C.size(len(%s)))",
+				value.OutName, value.InName, value.InName)
+			// Steal will free the GByteArray, but not the underlying array
+			// itself, which is the Go memory.
+			value.p.Linef("defer C.g_byte_array_steal(%s, nil)", value.InName)
+			return true
+		}
+
+		// https://developer.gnome.org/glib/stable/glib-Byte-Arrays.html#g-byte-array-new
+		value.p.Linef(
+			"%s = C.g_byte_array_sized_new(C.guint(len(%s)))",
+			value.OutName, value.InName)
+		value.p.Linef(
+			"%s = C.g_byte_array_append(%s, (*C.guint8)(&%s[0]), C.guint(len(%s)))",
+			value.OutName, value.OutName, value.InName, value.InName)
+		// unref will free the underlying array as well.
+		value.p.Linef("defer C.g_byte_array_unref(%s)", value.OutName)
+		return true
+
 	case array.IsZeroTerminated():
 		value.addImport("unsafe")
 
@@ -238,7 +272,7 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 		return true
 
 	case value.resolved.IsBuiltin("bool"):
-		switch value.resolved.CType {
+		switch cleanCType(value.resolved.CType, true) {
 		case "gboolean":
 			// Manually use C.TRUE.
 			value.p.Linef("if %s { %s = C.TRUE }", value.InName, value.OutName)
@@ -254,7 +288,7 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 		value.addImportInternal("gerror")
 		value.addImport("unsafe")
 
-		value.p.Linef("%s = (*C.GError)(gerror.New(unsafe.Pointer(%s)))", value.OutName, value.InName)
+		value.p.Linef("%s = (*C.GError)(gerror.New(%s))", value.OutName, value.InName)
 		if !value.isTransferring() {
 			value.p.Linef("defer C.g_error_free(%s)", value.OutName)
 		}
@@ -295,25 +329,29 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 	case "GObject.Type", "GType":
 		value.needsGLibObject()
 		// Just a primitive.
-		value.p.Linef("%s = C.GType(%s)", value.OutName, value.InName)
+		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
 		return true
 
 	case "GObject.Value":
 		value.needsGLibObject()
 		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
-		value.p.Linef("%s = (*C.GValue)(%s.GValue)", value.OutName, value.InName)
+		value.p.Linef(
+			"%s = (%s)(unsafe.Pointer(&%s.GValue))",
+			value.OutName, value.OutType, value.InName)
 		return true
 
 	case "GObject.Object":
 		value.addImport("unsafe")
-		value.p.Linef("%s = (*C.GObject)(unsafe.Pointer(%s.Native()))", value.OutName, value.InName)
+		value.p.Linef(
+			"%s = (%s)(unsafe.Pointer(%s.Native()))",
+			value.OutName, value.OutType, value.InName)
 		return true
 
 	case "GObject.InitiallyUnowned":
 		value.addImport("unsafe")
 		value.p.Linef(
-			"%s = (*C.GInitiallyUnowned)(unsafe.Pointer(%s.Native()))",
-			value.OutName, value.InName)
+			"%s = (%s)(unsafe.Pointer(%s.Native()))",
+			value.OutName, value.OutType, value.InName)
 		return true
 	}
 

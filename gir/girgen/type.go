@@ -73,9 +73,12 @@ func moveCPtr(orig, into string) string {
 
 // cleanCType cleans the underlying C type of and special keywords for
 // comparison.
-func cleanCType(cType string) string {
+func cleanCType(cType string, stripPtr bool) string {
 	cType = cTypePrefixEraser.Replace(cType)
 	cType = strings.TrimSpace(cType)
+	if stripPtr {
+		cType = strings.ReplaceAll(cType, "*", "")
+	}
 	return cType
 }
 
@@ -116,6 +119,11 @@ func anyTypeC(any gir.AnyType) string {
 	default:
 		return ""
 	}
+}
+
+// anyTypeIsPtr returns true if the AnyType contains a pointer.
+func anyTypeIsPtr(any gir.AnyType) bool {
+	return strings.Contains(anyTypeC(any), "*")
 }
 
 // girCTypes maps some primitive GIR types to C types, because people who write

@@ -2642,7 +2642,7 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _resultUncertain bool // out
 	var _utf8 string          // out
 
-	if _arg4 {
+	if _arg4 != 0 {
 		_resultUncertain = true
 	}
 	_utf8 = C.GoString(_cret)
@@ -2999,12 +2999,12 @@ func DBusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DBusGValueToGVariant(gvalue **externglib.Value, typ *glib.VariantType) *glib.Variant {
+func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
 
-	_arg1 = (*C.GValue)(gvalue.GValue)
+	_arg1 = (*C.GValue)(unsafe.Pointer(&gvalue.GValue))
 	_arg2 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
 
 	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
@@ -3030,7 +3030,7 @@ func DBusGValueToGVariant(gvalue **externglib.Value, typ *glib.VariantType) *gli
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DBusGVariantToGValue(value *glib.Variant) *externglib.Value {
+func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 	var _arg1 *C.GVariant // out
 	var _arg2 C.GValue    // in
 
@@ -3038,9 +3038,9 @@ func DBusGVariantToGValue(value *glib.Variant) *externglib.Value {
 
 	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
 
-	var _outGvalue *externglib.Value // out
+	var _outGvalue externglib.Value // out
 
-	_outGvalue = externglib.ValueFromNative(unsafe.Pointer(_arg2))
+	_outGvalue = *externglib.ValueFromNative(unsafe.Pointer(&_arg2))
 
 	return _outGvalue
 }
@@ -3319,7 +3319,7 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 	}
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	_cret = C.g_pollable_stream_read(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	_cret = C.g_pollable_stream_read(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -3357,7 +3357,7 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 	}
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	_cret = C.g_pollable_stream_write(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	_cret = C.g_pollable_stream_write(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -3401,7 +3401,7 @@ func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, c
 	}
 	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	C.g_pollable_stream_write_all(_arg1, _arg2, _arg3, _arg4, &_arg5, _arg6, &_cerr)
+	C.g_pollable_stream_write_all(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, &_arg5, _arg6, &_cerr)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out
@@ -3955,6 +3955,9 @@ func UnixMountsChangedSince(time uint64) bool {
 
 // ActionOverrider contains methods that are overridable. This
 // interface is a subset of the interface Action.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type ActionOverrider interface {
 	// Activate activates the action.
 	//
@@ -4060,7 +4063,6 @@ type ActionOverrider interface {
 // Probably the only useful thing to do with a #GAction is to put it inside of a
 // ActionGroup.
 type Action interface {
-	gextras.Objector
 
 	// Activate activates the action.
 	//
@@ -4141,13 +4143,12 @@ type Action interface {
 
 // action implements the Action interface.
 type action struct {
-	gextras.Objector
 }
 
 var _ Action = (*action)(nil)
 
-// WrapAction wraps a GObject to a type that implements interface
-// Action. It is primarily used internally.
+// WrapAction wraps a GObject to a type that implements
+// interface Action. It is primarily used internally.
 func WrapAction(obj *externglib.Object) Action {
 	return action{
 		Objector: obj,
@@ -4280,6 +4281,9 @@ func (a action) StateType() *glib.VariantType {
 
 // ActionGroupOverrider contains methods that are overridable. This
 // interface is a subset of the interface ActionGroup.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type ActionGroupOverrider interface {
 	// ActionAdded emits the Group::action-added signal on @action_group.
 	//
@@ -4486,7 +4490,6 @@ type ActionGroupOverrider interface {
 // The other virtual functions should not be implemented - their "wrappers" are
 // actually implemented with calls to g_action_group_query_action().
 type ActionGroup interface {
-	gextras.Objector
 
 	// ActionAdded emits the Group::action-added signal on @action_group.
 	//
@@ -4653,13 +4656,12 @@ type ActionGroup interface {
 
 // actionGroup implements the ActionGroup interface.
 type actionGroup struct {
-	gextras.Objector
 }
 
 var _ ActionGroup = (*actionGroup)(nil)
 
-// WrapActionGroup wraps a GObject to a type that implements interface
-// ActionGroup. It is primarily used internally.
+// WrapActionGroup wraps a GObject to a type that implements
+// interface ActionGroup. It is primarily used internally.
 func WrapActionGroup(obj *externglib.Object) ActionGroup {
 	return actionGroup{
 		Objector: obj,
@@ -4914,7 +4916,7 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 
 	var _ok bool // out
 
-	if _arg2 {
+	if _arg2 != 0 {
 		_enabled = true
 	}
 
@@ -4927,6 +4929,9 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 
 // ActionMapOverrider contains methods that are overridable. This
 // interface is a subset of the interface ActionMap.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type ActionMapOverrider interface {
 	// AddAction adds an action to the @action_map.
 	//
@@ -4954,7 +4959,6 @@ type ActionMapOverrider interface {
 // various action groups to unique, prefixed names (e.g. by prepending "app." or
 // "win."). This is the motivation for the 'Map' part of the interface name.
 type ActionMap interface {
-	gextras.Objector
 
 	// AddAction adds an action to the @action_map.
 	//
@@ -4976,13 +4980,12 @@ type ActionMap interface {
 
 // actionMap implements the ActionMap interface.
 type actionMap struct {
-	gextras.Objector
 }
 
 var _ ActionMap = (*actionMap)(nil)
 
-// WrapActionMap wraps a GObject to a type that implements interface
-// ActionMap. It is primarily used internally.
+// WrapActionMap wraps a GObject to a type that implements
+// interface ActionMap. It is primarily used internally.
 func WrapActionMap(obj *externglib.Object) ActionMap {
 	return actionMap{
 		Objector: obj,
@@ -5036,6 +5039,9 @@ func (a actionMap) RemoveAction(actionName string) {
 
 // AppInfoOverrider contains methods that are overridable. This
 // interface is a subset of the interface AppInfo.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type AppInfoOverrider interface {
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
@@ -5159,7 +5165,6 @@ type AppInfoOverrider interface {
 // format of a particular URIs. Different launcher applications (e.g. file
 // managers) may have different ideas of what a given URI means.
 type AppInfo interface {
-	gextras.Objector
 
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
@@ -5242,13 +5247,12 @@ type AppInfo interface {
 
 // appInfo implements the AppInfo interface.
 type appInfo struct {
-	gextras.Objector
 }
 
 var _ AppInfo = (*appInfo)(nil)
 
-// WrapAppInfo wraps a GObject to a type that implements interface
-// AppInfo. It is primarily used internally.
+// WrapAppInfo wraps a GObject to a type that implements
+// interface AppInfo. It is primarily used internally.
 func WrapAppInfo(obj *externglib.Object) AppInfo {
 	return appInfo{
 		Objector: obj,
@@ -5638,6 +5642,9 @@ func (a appInfo) SupportsUris() bool {
 
 // AsyncInitableOverrider contains methods that are overridable. This
 // interface is a subset of the interface AsyncInitable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type AsyncInitableOverrider interface {
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
@@ -5742,7 +5749,6 @@ type AsyncInitableOverrider interface {
 //      iface->init_finish = foo_init_finish;
 //    }
 type AsyncInitable interface {
-	gextras.Objector
 
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
@@ -5754,13 +5760,12 @@ type AsyncInitable interface {
 
 // asyncInitable implements the AsyncInitable interface.
 type asyncInitable struct {
-	gextras.Objector
 }
 
 var _ AsyncInitable = (*asyncInitable)(nil)
 
-// WrapAsyncInitable wraps a GObject to a type that implements interface
-// AsyncInitable. It is primarily used internally.
+// WrapAsyncInitable wraps a GObject to a type that implements
+// interface AsyncInitable. It is primarily used internally.
 func WrapAsyncInitable(obj *externglib.Object) AsyncInitable {
 	return asyncInitable{
 		Objector: obj,
@@ -5812,6 +5817,9 @@ func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 
 // AsyncResultOverrider contains methods that are overridable. This
 // interface is a subset of the interface AsyncResult.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type AsyncResultOverrider interface {
 	// SourceObject gets the source object from a Result.
 	SourceObject() gextras.Objector
@@ -5898,7 +5906,6 @@ type AsyncResultOverrider interface {
 // recommended to choose priorities between G_PRIORITY_LOW and G_PRIORITY_HIGH,
 // with G_PRIORITY_DEFAULT as a default.
 type AsyncResult interface {
-	gextras.Objector
 
 	// SourceObject gets the source object from a Result.
 	SourceObject() gextras.Objector
@@ -5915,13 +5922,12 @@ type AsyncResult interface {
 
 // asyncResult implements the AsyncResult interface.
 type asyncResult struct {
-	gextras.Objector
 }
 
 var _ AsyncResult = (*asyncResult)(nil)
 
-// WrapAsyncResult wraps a GObject to a type that implements interface
-// AsyncResult. It is primarily used internally.
+// WrapAsyncResult wraps a GObject to a type that implements
+// interface AsyncResult. It is primarily used internally.
 func WrapAsyncResult(obj *externglib.Object) AsyncResult {
 	return asyncResult{
 		Objector: obj,
@@ -5966,6 +5972,9 @@ func (r asyncResult) LegacyPropagateError() error {
 
 // ConverterOverrider contains methods that are overridable. This
 // interface is a subset of the interface Converter.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type ConverterOverrider interface {
 	// Convert: this is the main operation used when converting data. It is to
 	// be called multiple times in a loop, and each time it will do some work,
@@ -6061,7 +6070,6 @@ type ConverterOverrider interface {
 // Some example conversions are: character set conversion, compression,
 // decompression and regular expression replace.
 type Converter interface {
-	gextras.Objector
 
 	// Convert: this is the main operation used when converting data. It is to
 	// be called multiple times in a loop, and each time it will do some work,
@@ -6153,13 +6161,12 @@ type Converter interface {
 
 // converter implements the Converter interface.
 type converter struct {
-	gextras.Objector
 }
 
 var _ Converter = (*converter)(nil)
 
-// WrapConverter wraps a GObject to a type that implements interface
-// Converter. It is primarily used internally.
+// WrapConverter wraps a GObject to a type that implements
+// interface Converter. It is primarily used internally.
 func WrapConverter(obj *externglib.Object) Converter {
 	return converter{
 		Objector: obj,
@@ -6191,7 +6198,7 @@ func (c converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (b
 	_arg3 = (*C.void)(unsafe.Pointer(&outbuf[0]))
 	_arg5 = (C.GConverterFlags)(flags)
 
-	_cret = C.g_converter_convert(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7, &_cerr)
+	_cret = C.g_converter_convert(_arg0, unsafe.Pointer(_arg1), _arg2, unsafe.Pointer(_arg3), _arg4, _arg5, &_arg6, &_arg7, &_cerr)
 
 	var _bytesRead uint                  // out
 	var _bytesWritten uint               // out
@@ -6216,6 +6223,9 @@ func (c converter) Reset() {
 
 // DBusInterfaceOverrider contains methods that are overridable. This
 // interface is a subset of the interface DBusInterface.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type DBusInterfaceOverrider interface {
 	// DupObject gets the BusObject that @interface_ belongs to, if any.
 	DupObject() DBusObject
@@ -6232,7 +6242,6 @@ type DBusInterfaceOverrider interface {
 // both on the service side (see BusInterfaceSkeleton) and client side (see
 // BusProxy).
 type DBusInterface interface {
-	gextras.Objector
 
 	// DupObject gets the BusObject that @interface_ belongs to, if any.
 	DupObject() DBusObject
@@ -6247,13 +6256,12 @@ type DBusInterface interface {
 
 // dBusInterface implements the DBusInterface interface.
 type dBusInterface struct {
-	gextras.Objector
 }
 
 var _ DBusInterface = (*dBusInterface)(nil)
 
-// WrapDBusInterface wraps a GObject to a type that implements interface
-// DBusInterface. It is primarily used internally.
+// WrapDBusInterface wraps a GObject to a type that implements
+// interface DBusInterface. It is primarily used internally.
 func WrapDBusInterface(obj *externglib.Object) DBusInterface {
 	return dBusInterface{
 		Objector: obj,
@@ -6308,6 +6316,9 @@ func (i dBusInterface) SetObject(object DBusObject) {
 
 // DBusObjectOverrider contains methods that are overridable. This
 // interface is a subset of the interface DBusObject.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type DBusObjectOverrider interface {
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
@@ -6324,7 +6335,6 @@ type DBusObjectOverrider interface {
 // service side (see BusObjectSkeleton) and the client side (see
 // BusObjectProxy). It is essentially just a container of interfaces.
 type DBusObject interface {
-	gextras.Objector
 
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
@@ -6335,13 +6345,12 @@ type DBusObject interface {
 
 // dBusObject implements the DBusObject interface.
 type dBusObject struct {
-	gextras.Objector
 }
 
 var _ DBusObject = (*dBusObject)(nil)
 
-// WrapDBusObject wraps a GObject to a type that implements interface
-// DBusObject. It is primarily used internally.
+// WrapDBusObject wraps a GObject to a type that implements
+// interface DBusObject. It is primarily used internally.
 func WrapDBusObject(obj *externglib.Object) DBusObject {
 	return dBusObject{
 		Objector: obj,
@@ -6389,6 +6398,9 @@ func (o dBusObject) ObjectPath() string {
 
 // DBusObjectManagerOverrider contains methods that are overridable. This
 // interface is a subset of the interface DBusObjectManager.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
@@ -6416,7 +6428,6 @@ type DBusObjectManagerOverrider interface {
 // See BusObjectManagerClient for the client-side implementation and
 // BusObjectManagerServer for the service-side implementation.
 type DBusObjectManager interface {
-	gextras.Objector
 
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
@@ -6429,13 +6440,12 @@ type DBusObjectManager interface {
 
 // dBusObjectManager implements the DBusObjectManager interface.
 type dBusObjectManager struct {
-	gextras.Objector
 }
 
 var _ DBusObjectManager = (*dBusObjectManager)(nil)
 
-// WrapDBusObjectManager wraps a GObject to a type that implements interface
-// DBusObjectManager. It is primarily used internally.
+// WrapDBusObjectManager wraps a GObject to a type that implements
+// interface DBusObjectManager. It is primarily used internally.
 func WrapDBusObjectManager(obj *externglib.Object) DBusObjectManager {
 	return dBusObjectManager{
 		Objector: obj,
@@ -6504,6 +6514,9 @@ func (m dBusObjectManager) ObjectPath() string {
 
 // DatagramBasedOverrider contains methods that are overridable. This
 // interface is a subset of the interface DatagramBased.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type DatagramBasedOverrider interface {
 	// ConditionCheck checks on the readiness of @datagram_based to perform
 	// operations. The operations specified in @condition are checked for and
@@ -6696,7 +6709,6 @@ type DatagramBasedOverrider interface {
 // Based concurrently from multiple threads, you must implement your own
 // locking.
 type DatagramBased interface {
-	gextras.Objector
 
 	// ConditionCheck checks on the readiness of @datagram_based to perform
 	// operations. The operations specified in @condition are checked for and
@@ -6844,13 +6856,12 @@ type DatagramBased interface {
 
 // datagramBased implements the DatagramBased interface.
 type datagramBased struct {
-	gextras.Objector
 }
 
 var _ DatagramBased = (*datagramBased)(nil)
 
-// WrapDatagramBased wraps a GObject to a type that implements interface
-// DatagramBased. It is primarily used internally.
+// WrapDatagramBased wraps a GObject to a type that implements
+// interface DatagramBased. It is primarily used internally.
 func WrapDatagramBased(obj *externglib.Object) DatagramBased {
 	return datagramBased{
 		Objector: obj,
@@ -6959,6 +6970,9 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 
 // DesktopAppInfoLookupOverrider contains methods that are overridable. This
 // interface is a subset of the interface DesktopAppInfoLookup.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type DesktopAppInfoLookupOverrider interface {
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
@@ -6974,7 +6988,6 @@ type DesktopAppInfoLookupOverrider interface {
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
 // using the following functions.
 type DesktopAppInfoLookup interface {
-	gextras.Objector
 
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
@@ -6989,13 +7002,12 @@ type DesktopAppInfoLookup interface {
 
 // desktopAppInfoLookup implements the DesktopAppInfoLookup interface.
 type desktopAppInfoLookup struct {
-	gextras.Objector
 }
 
 var _ DesktopAppInfoLookup = (*desktopAppInfoLookup)(nil)
 
-// WrapDesktopAppInfoLookup wraps a GObject to a type that implements interface
-// DesktopAppInfoLookup. It is primarily used internally.
+// WrapDesktopAppInfoLookup wraps a GObject to a type that implements
+// interface DesktopAppInfoLookup. It is primarily used internally.
 func WrapDesktopAppInfoLookup(obj *externglib.Object) DesktopAppInfoLookup {
 	return desktopAppInfoLookup{
 		Objector: obj,
@@ -7028,6 +7040,9 @@ func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
 
 // DriveOverrider contains methods that are overridable. This
 // interface is a subset of the interface Drive.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type DriveOverrider interface {
 	// CanEject checks if a drive can be ejected.
 	CanEject() bool
@@ -7117,7 +7132,6 @@ type DriveOverrider interface {
 // For porting from GnomeVFS note that there is no equivalent of #GDrive in that
 // API.
 type Drive interface {
-	gextras.Objector
 
 	// CanEject checks if a drive can be ejected.
 	CanEject() bool
@@ -7176,13 +7190,12 @@ type Drive interface {
 
 // drive implements the Drive interface.
 type drive struct {
-	gextras.Objector
 }
 
 var _ Drive = (*drive)(nil)
 
-// WrapDrive wraps a GObject to a type that implements interface
-// Drive. It is primarily used internally.
+// WrapDrive wraps a GObject to a type that implements
+// interface Drive. It is primarily used internally.
 func WrapDrive(obj *externglib.Object) Drive {
 	return drive{
 		Objector: obj,
@@ -7576,7 +7589,6 @@ func (d drive) StopFinish(result AsyncResult) error {
 // DTLSClientConnection is the client-side subclass of Connection, representing
 // a client-side DTLS connection.
 type DTLSClientConnection interface {
-	DatagramBased
 	DTLSConnection
 
 	// ServerIdentity gets @conn's expected server identity
@@ -7596,14 +7608,13 @@ type DTLSClientConnection interface {
 
 // dtlsClientConnection implements the DTLSClientConnection interface.
 type dtlsClientConnection struct {
-	DatagramBased
 	DTLSConnection
 }
 
 var _ DTLSClientConnection = (*dtlsClientConnection)(nil)
 
-// WrapDTLSClientConnection wraps a GObject to a type that implements interface
-// DTLSClientConnection. It is primarily used internally.
+// WrapDTLSClientConnection wraps a GObject to a type that implements
+// interface DTLSClientConnection. It is primarily used internally.
 func WrapDTLSClientConnection(obj *externglib.Object) DTLSClientConnection {
 	return dtlsClientConnection{
 		DatagramBased:  WrapDatagramBased(obj),
@@ -7669,6 +7680,9 @@ func (c dtlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 
 // DTLSConnectionOverrider contains methods that are overridable. This
 // interface is a subset of the interface DTLSConnection.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type DTLSConnectionOverrider interface {
 	AcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
 
@@ -7761,7 +7775,6 @@ type DTLSConnectionOverrider interface {
 // wish. If they do not, and g_socket_close() is called on the base socket, the
 // Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
 type DTLSConnection interface {
-	DatagramBased
 
 	// Close: close the DTLS connection. This is equivalent to calling
 	// g_dtls_connection_shutdown() to shut down both sides of the connection.
@@ -7961,13 +7974,12 @@ type DTLSConnection interface {
 
 // dtlsConnection implements the DTLSConnection interface.
 type dtlsConnection struct {
-	DatagramBased
 }
 
 var _ DTLSConnection = (*dtlsConnection)(nil)
 
-// WrapDTLSConnection wraps a GObject to a type that implements interface
-// DTLSConnection. It is primarily used internally.
+// WrapDTLSConnection wraps a GObject to a type that implements
+// interface DTLSConnection. It is primarily used internally.
 func WrapDTLSConnection(obj *externglib.Object) DTLSConnection {
 	return dtlsConnection{
 		DatagramBased: WrapDatagramBased(obj),
@@ -8064,19 +8076,8 @@ func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, e
 	var _data []byte
 	var _goerr error // out
 
-	{
-		var i int
-		var z C.guint8
-		for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(_arg2, i)
-		_data = make([]byte, i)
-		for i := range src {
-			_data[i] = (byte)(src[i])
-		}
-	}
+	_data = make([]byte, _arg2.len)
+	copy(_data, unsafe.Slice((*byte)(_arg2.data), _arg2.len))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _data, _goerr
@@ -8338,20 +8339,18 @@ func (c dtlsConnection) ShutdownFinish(result AsyncResult) error {
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
 type DTLSServerConnection interface {
-	DatagramBased
 	DTLSConnection
 }
 
 // dtlsServerConnection implements the DTLSServerConnection interface.
 type dtlsServerConnection struct {
-	DatagramBased
 	DTLSConnection
 }
 
 var _ DTLSServerConnection = (*dtlsServerConnection)(nil)
 
-// WrapDTLSServerConnection wraps a GObject to a type that implements interface
-// DTLSServerConnection. It is primarily used internally.
+// WrapDTLSServerConnection wraps a GObject to a type that implements
+// interface DTLSServerConnection. It is primarily used internally.
 func WrapDTLSServerConnection(obj *externglib.Object) DTLSServerConnection {
 	return dtlsServerConnection{
 		DatagramBased:  WrapDatagramBased(obj),
@@ -8367,6 +8366,9 @@ func marshalDTLSServerConnection(p uintptr) (interface{}, error) {
 
 // FileOverrider contains methods that are overridable. This
 // interface is a subset of the interface File.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type FileOverrider interface {
 	// AppendTo gets an output stream for appending data to the file. If the
 	// file doesn't already exist it is created.
@@ -9026,7 +9028,6 @@ type FileOverrider interface {
 // (http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) for HTTP Etag
 // headers, which are a very similar concept.
 type File interface {
-	gextras.Objector
 
 	// AppendTo gets an output stream for appending data to the file. If the
 	// file doesn't already exist it is created.
@@ -9803,13 +9804,12 @@ type File interface {
 
 // file implements the File interface.
 type file struct {
-	gextras.Objector
 }
 
 var _ File = (*file)(nil)
 
-// WrapFile wraps a GObject to a type that implements interface
-// File. It is primarily used internally.
+// WrapFile wraps a GObject to a type that implements
+// interface File. It is primarily used internally.
 func WrapFile(obj *externglib.Object) File {
 	return file{
 		Objector: obj,
@@ -11568,6 +11568,9 @@ func (f file) UnmountMountableWithOperationFinish(result AsyncResult) error {
 
 // FileDescriptorBasedOverrider contains methods that are overridable. This
 // interface is a subset of the interface FileDescriptorBased.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type FileDescriptorBasedOverrider interface {
 	// Fd gets the underlying file descriptor.
 	Fd() int
@@ -11580,7 +11583,6 @@ type FileDescriptorBasedOverrider interface {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type FileDescriptorBased interface {
-	gextras.Objector
 
 	// Fd gets the underlying file descriptor.
 	Fd() int
@@ -11588,13 +11590,12 @@ type FileDescriptorBased interface {
 
 // fileDescriptorBased implements the FileDescriptorBased interface.
 type fileDescriptorBased struct {
-	gextras.Objector
 }
 
 var _ FileDescriptorBased = (*fileDescriptorBased)(nil)
 
-// WrapFileDescriptorBased wraps a GObject to a type that implements interface
-// FileDescriptorBased. It is primarily used internally.
+// WrapFileDescriptorBased wraps a GObject to a type that implements
+// interface FileDescriptorBased. It is primarily used internally.
 func WrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBased {
 	return fileDescriptorBased{
 		Objector: obj,
@@ -11624,6 +11625,9 @@ func (f fileDescriptorBased) Fd() int {
 
 // IconOverrider contains methods that are overridable. This
 // interface is a subset of the interface Icon.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type IconOverrider interface {
 	// Equal checks if two icons are equal.
 	Equal(icon2 Icon) bool
@@ -11664,7 +11668,6 @@ type IconOverrider interface {
 // gives a result that is understood by g_icon_deserialize(), yielding one of
 // the built-in icon types.
 type Icon interface {
-	gextras.Objector
 
 	// Equal checks if two icons are equal.
 	Equal(icon2 Icon) bool
@@ -11695,13 +11698,12 @@ type Icon interface {
 
 // icon implements the Icon interface.
 type icon struct {
-	gextras.Objector
 }
 
 var _ Icon = (*icon)(nil)
 
-// WrapIcon wraps a GObject to a type that implements interface
-// Icon. It is primarily used internally.
+// WrapIcon wraps a GObject to a type that implements
+// interface Icon. It is primarily used internally.
 func WrapIcon(obj *externglib.Object) Icon {
 	return icon{
 		Objector: obj,
@@ -11769,6 +11771,9 @@ func (i icon) String() string {
 
 // InitableOverrider contains methods that are overridable. This
 // interface is a subset of the interface Initable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type InitableOverrider interface {
 	// Init initializes the object implementing the interface.
 	//
@@ -11834,7 +11839,6 @@ type InitableOverrider interface {
 // construction and automatically initialize them, throwing an exception on
 // failure.
 type Initable interface {
-	gextras.Objector
 
 	// Init initializes the object implementing the interface.
 	//
@@ -11879,13 +11883,12 @@ type Initable interface {
 
 // initable implements the Initable interface.
 type initable struct {
-	gextras.Objector
 }
 
 var _ Initable = (*initable)(nil)
 
-// WrapInitable wraps a GObject to a type that implements interface
-// Initable. It is primarily used internally.
+// WrapInitable wraps a GObject to a type that implements
+// interface Initable. It is primarily used internally.
 func WrapInitable(obj *externglib.Object) Initable {
 	return initable{
 		Objector: obj,
@@ -11917,6 +11920,9 @@ func (i initable) Init(cancellable Cancellable) error {
 
 // ListModelOverrider contains methods that are overridable. This
 // interface is a subset of the interface ListModel.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type ListModelOverrider interface {
 	// Item: get the item at @position. If @position is greater than the number
 	// of items in @list, nil is returned.
@@ -11981,7 +11987,6 @@ type ListModelOverrider interface {
 // [thread-default main context][g-main-context-push-thread-default] in effect
 // at the time that the model was created.
 type ListModel interface {
-	gextras.Objector
 
 	// ItemType gets the type of the items in @list. All items returned from
 	// g_list_model_get_type() are of that type or a subtype, or are an
@@ -12025,13 +12030,12 @@ type ListModel interface {
 
 // listModel implements the ListModel interface.
 type listModel struct {
-	gextras.Objector
 }
 
 var _ ListModel = (*listModel)(nil)
 
-// WrapListModel wraps a GObject to a type that implements interface
-// ListModel. It is primarily used internally.
+// WrapListModel wraps a GObject to a type that implements
+// interface ListModel. It is primarily used internally.
 func WrapListModel(obj *externglib.Object) ListModel {
 	return listModel{
 		Objector: obj,
@@ -12107,6 +12111,9 @@ func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
 
 // LoadableIconOverrider contains methods that are overridable. This
 // interface is a subset of the interface LoadableIcon.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type LoadableIconOverrider interface {
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
@@ -12119,7 +12126,6 @@ type LoadableIconOverrider interface {
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon interface {
-	Icon
 
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
@@ -12131,13 +12137,12 @@ type LoadableIcon interface {
 
 // loadableIcon implements the LoadableIcon interface.
 type loadableIcon struct {
-	Icon
 }
 
 var _ LoadableIcon = (*loadableIcon)(nil)
 
-// WrapLoadableIcon wraps a GObject to a type that implements interface
-// LoadableIcon. It is primarily used internally.
+// WrapLoadableIcon wraps a GObject to a type that implements
+// interface LoadableIcon. It is primarily used internally.
 func WrapLoadableIcon(obj *externglib.Object) LoadableIcon {
 	return loadableIcon{
 		Icon: WrapIcon(obj),
@@ -12202,6 +12207,9 @@ func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 
 // MemoryMonitorOverrider contains methods that are overridable. This
 // interface is a subset of the interface MemoryMonitor.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type MemoryMonitorOverrider interface {
 	LowMemoryWarning(level MemoryMonitorWarningLevel)
 }
@@ -12249,18 +12257,16 @@ type MemoryMonitorOverrider interface {
 // Don't forget to disconnect the Monitor::low-memory-warning signal, and unref
 // the Monitor itself when exiting.
 type MemoryMonitor interface {
-	Initable
 }
 
 // memoryMonitor implements the MemoryMonitor interface.
 type memoryMonitor struct {
-	Initable
 }
 
 var _ MemoryMonitor = (*memoryMonitor)(nil)
 
-// WrapMemoryMonitor wraps a GObject to a type that implements interface
-// MemoryMonitor. It is primarily used internally.
+// WrapMemoryMonitor wraps a GObject to a type that implements
+// interface MemoryMonitor. It is primarily used internally.
 func WrapMemoryMonitor(obj *externglib.Object) MemoryMonitor {
 	return memoryMonitor{
 		Initable: WrapInitable(obj),
@@ -12275,6 +12281,9 @@ func marshalMemoryMonitor(p uintptr) (interface{}, error) {
 
 // MountOverrider contains methods that are overridable. This
 // interface is a subset of the interface Mount.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type MountOverrider interface {
 	// CanEject checks if @mount can be ejected.
 	CanEject() bool
@@ -12367,7 +12376,6 @@ type MountOverrider interface {
 // present when g_mount_unmount_with_operation_finish() is called, then it will
 // be filled with any error information.
 type Mount interface {
-	gextras.Objector
 
 	// CanEject checks if @mount can be ejected.
 	CanEject() bool
@@ -12469,13 +12477,12 @@ type Mount interface {
 
 // mount implements the Mount interface.
 type mount struct {
-	gextras.Objector
 }
 
 var _ Mount = (*mount)(nil)
 
-// WrapMount wraps a GObject to a type that implements interface
-// Mount. It is primarily used internally.
+// WrapMount wraps a GObject to a type that implements
+// interface Mount. It is primarily used internally.
 func WrapMount(obj *externglib.Object) Mount {
 	return mount{
 		Objector: obj,
@@ -12849,6 +12856,9 @@ func (m mount) Unshadow() {
 
 // NetworkMonitorOverrider contains methods that are overridable. This
 // interface is a subset of the interface NetworkMonitor.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type NetworkMonitorOverrider interface {
 	// CanReach attempts to determine whether or not the host pointed to by
 	// @connectable can be reached, without actually trying to connect to it.
@@ -12879,7 +12889,6 @@ type NetworkMonitorOverrider interface {
 //
 // There is also an implementation for use inside Flatpak sandboxes.
 type NetworkMonitor interface {
-	Initable
 
 	// CanReach attempts to determine whether or not the host pointed to by
 	// @connectable can be reached, without actually trying to connect to it.
@@ -12932,13 +12941,12 @@ type NetworkMonitor interface {
 
 // networkMonitor implements the NetworkMonitor interface.
 type networkMonitor struct {
-	Initable
 }
 
 var _ NetworkMonitor = (*networkMonitor)(nil)
 
-// WrapNetworkMonitor wraps a GObject to a type that implements interface
-// NetworkMonitor. It is primarily used internally.
+// WrapNetworkMonitor wraps a GObject to a type that implements
+// interface NetworkMonitor. It is primarily used internally.
 func WrapNetworkMonitor(obj *externglib.Object) NetworkMonitor {
 	return networkMonitor{
 		Initable: WrapInitable(obj),
@@ -13038,6 +13046,9 @@ func (m networkMonitor) NetworkMetered() bool {
 
 // PollableInputStreamOverrider contains methods that are overridable. This
 // interface is a subset of the interface PollableInputStream.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type PollableInputStreamOverrider interface {
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement InputStream but have only certain instances of that class be
@@ -13073,7 +13084,6 @@ type PollableInputStreamOverrider interface {
 // readiness to read. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
 type PollableInputStream interface {
-	InputStream
 
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement InputStream but have only certain instances of that class be
@@ -13107,13 +13117,12 @@ type PollableInputStream interface {
 
 // pollableInputStream implements the PollableInputStream interface.
 type pollableInputStream struct {
-	InputStream
 }
 
 var _ PollableInputStream = (*pollableInputStream)(nil)
 
-// WrapPollableInputStream wraps a GObject to a type that implements interface
-// PollableInputStream. It is primarily used internally.
+// WrapPollableInputStream wraps a GObject to a type that implements
+// interface PollableInputStream. It is primarily used internally.
 func WrapPollableInputStream(obj *externglib.Object) PollableInputStream {
 	return pollableInputStream{
 		InputStream: WrapInputStream(obj),
@@ -13173,7 +13182,7 @@ func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancella
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -13186,6 +13195,9 @@ func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancella
 
 // PollableOutputStreamOverrider contains methods that are overridable. This
 // interface is a subset of the interface PollableOutputStream.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type PollableOutputStreamOverrider interface {
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement OutputStream but have only certain instances of that class be
@@ -13243,7 +13255,6 @@ type PollableOutputStreamOverrider interface {
 // readiness to write. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
 type PollableOutputStream interface {
-	OutputStream
 
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement OutputStream but have only certain instances of that class be
@@ -13299,13 +13310,12 @@ type PollableOutputStream interface {
 
 // pollableOutputStream implements the PollableOutputStream interface.
 type pollableOutputStream struct {
-	OutputStream
 }
 
 var _ PollableOutputStream = (*pollableOutputStream)(nil)
 
-// WrapPollableOutputStream wraps a GObject to a type that implements interface
-// PollableOutputStream. It is primarily used internally.
+// WrapPollableOutputStream wraps a GObject to a type that implements
+// interface PollableOutputStream. It is primarily used internally.
 func WrapPollableOutputStream(obj *externglib.Object) PollableOutputStream {
 	return pollableOutputStream{
 		OutputStream: WrapOutputStream(obj),
@@ -13365,7 +13375,7 @@ func (s pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancel
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -13405,6 +13415,9 @@ func (s pollableOutputStream) WritevNonblocking(vectors []OutputVector, cancella
 
 // ProXYOverrider contains methods that are overridable. This
 // interface is a subset of the interface ProXY.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type ProXYOverrider interface {
 	// ConnectProXY: given @connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
@@ -13429,7 +13442,6 @@ type ProXYOverrider interface {
 // proxy implementation can be retrieved with the name 'socks5' using the
 // function g_io_extension_point_get_extension_by_name().
 type ProXY interface {
-	gextras.Objector
 
 	// ConnectProXY: given @connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
@@ -13450,13 +13462,12 @@ type ProXY interface {
 
 // proXY implements the ProXY interface.
 type proXY struct {
-	gextras.Objector
 }
 
 var _ ProXY = (*proXY)(nil)
 
-// WrapProXY wraps a GObject to a type that implements interface
-// ProXY. It is primarily used internally.
+// WrapProXY wraps a GObject to a type that implements
+// interface ProXY. It is primarily used internally.
 func WrapProXY(obj *externglib.Object) ProXY {
 	return proXY{
 		Objector: obj,
@@ -13532,6 +13543,9 @@ func (p proXY) SupportsHostname() bool {
 
 // ProXYResolverOverrider contains methods that are overridable. This
 // interface is a subset of the interface ProXYResolver.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type ProXYResolverOverrider interface {
 	// IsSupported checks if @resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
@@ -13564,7 +13578,6 @@ type ProXYResolverOverrider interface {
 // in glib-networking. GIO comes with an implementation for use inside Flatpak
 // portals.
 type ProXYResolver interface {
-	gextras.Objector
 
 	// IsSupported checks if @resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
@@ -13591,13 +13604,12 @@ type ProXYResolver interface {
 
 // proXYResolver implements the ProXYResolver interface.
 type proXYResolver struct {
-	gextras.Objector
 }
 
 var _ ProXYResolver = (*proXYResolver)(nil)
 
-// WrapProXYResolver wraps a GObject to a type that implements interface
-// ProXYResolver. It is primarily used internally.
+// WrapProXYResolver wraps a GObject to a type that implements
+// interface ProXYResolver. It is primarily used internally.
 func WrapProXYResolver(obj *externglib.Object) ProXYResolver {
 	return proXYResolver{
 		Objector: obj,
@@ -13698,6 +13710,9 @@ func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
 
 // RemoteActionGroupOverrider contains methods that are overridable. This
 // interface is a subset of the interface RemoteActionGroup.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type RemoteActionGroupOverrider interface {
 	// ActivateActionFull activates the remote action.
 	//
@@ -13739,7 +13754,6 @@ type RemoteActionGroupOverrider interface {
 // calls if available. This provides a mechanism by which to receive platform
 // data for action invocations that arrive by way of D-Bus.
 type RemoteActionGroup interface {
-	ActionGroup
 
 	// ActivateActionFull activates the remote action.
 	//
@@ -13765,13 +13779,12 @@ type RemoteActionGroup interface {
 
 // remoteActionGroup implements the RemoteActionGroup interface.
 type remoteActionGroup struct {
-	ActionGroup
 }
 
 var _ RemoteActionGroup = (*remoteActionGroup)(nil)
 
-// WrapRemoteActionGroup wraps a GObject to a type that implements interface
-// RemoteActionGroup. It is primarily used internally.
+// WrapRemoteActionGroup wraps a GObject to a type that implements
+// interface RemoteActionGroup. It is primarily used internally.
 func WrapRemoteActionGroup(obj *externglib.Object) RemoteActionGroup {
 	return remoteActionGroup{
 		ActionGroup: WrapActionGroup(obj),
@@ -13816,6 +13829,9 @@ func (r remoteActionGroup) ChangeActionStateFull(actionName string, value *glib.
 
 // SeekableOverrider contains methods that are overridable. This
 // interface is a subset of the interface Seekable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type SeekableOverrider interface {
 	// CanSeek tests if the stream supports the Iface.
 	CanSeek() bool
@@ -13865,7 +13881,6 @@ type SeekableOverrider interface {
 // a normal file. Seeking past the end and writing data will usually cause the
 // stream to resize by introducing zero bytes.
 type Seekable interface {
-	gextras.Objector
 
 	// CanSeek tests if the stream supports the Iface.
 	CanSeek() bool
@@ -13904,13 +13919,12 @@ type Seekable interface {
 
 // seekable implements the Seekable interface.
 type seekable struct {
-	gextras.Objector
 }
 
 var _ Seekable = (*seekable)(nil)
 
-// WrapSeekable wraps a GObject to a type that implements interface
-// Seekable. It is primarily used internally.
+// WrapSeekable wraps a GObject to a type that implements
+// interface Seekable. It is primarily used internally.
 func WrapSeekable(obj *externglib.Object) Seekable {
 	return seekable{
 		Objector: obj,
@@ -14014,6 +14028,9 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 
 // SocketConnectableOverrider contains methods that are overridable. This
 // interface is a subset of the interface SocketConnectable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type SocketConnectableOverrider interface {
 	// Enumerate creates a AddressEnumerator for @connectable.
 	Enumerate() SocketAddressEnumerator
@@ -14090,7 +14107,6 @@ type SocketConnectableOverrider interface {
 //        }
 //    }
 type SocketConnectable interface {
-	gextras.Objector
 
 	// Enumerate creates a AddressEnumerator for @connectable.
 	Enumerate() SocketAddressEnumerator
@@ -14114,13 +14130,12 @@ type SocketConnectable interface {
 
 // socketConnectable implements the SocketConnectable interface.
 type socketConnectable struct {
-	gextras.Objector
 }
 
 var _ SocketConnectable = (*socketConnectable)(nil)
 
-// WrapSocketConnectable wraps a GObject to a type that implements interface
-// SocketConnectable. It is primarily used internally.
+// WrapSocketConnectable wraps a GObject to a type that implements
+// interface SocketConnectable. It is primarily used internally.
 func WrapSocketConnectable(obj *externglib.Object) SocketConnectable {
 	return socketConnectable{
 		Objector: obj,
@@ -14181,6 +14196,9 @@ func (c socketConnectable) String() string {
 
 // TLSBackendOverrider contains methods that are overridable. This
 // interface is a subset of the interface TLSBackend.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type TLSBackendOverrider interface {
 	// DefaultDatabase gets the default Database used to verify TLS connections.
 	DefaultDatabase() TLSDatabase
@@ -14194,7 +14212,6 @@ type TLSBackendOverrider interface {
 
 // TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
 type TLSBackend interface {
-	gextras.Objector
 
 	// CertificateType gets the #GType of @backend's Certificate implementation.
 	CertificateType() externglib.Type
@@ -14236,13 +14253,12 @@ type TLSBackend interface {
 
 // tlsBackend implements the TLSBackend interface.
 type tlsBackend struct {
-	gextras.Objector
 }
 
 var _ TLSBackend = (*tlsBackend)(nil)
 
-// WrapTLSBackend wraps a GObject to a type that implements interface
-// TLSBackend. It is primarily used internally.
+// WrapTLSBackend wraps a GObject to a type that implements
+// interface TLSBackend. It is primarily used internally.
 func WrapTLSBackend(obj *externglib.Object) TLSBackend {
 	return tlsBackend{
 		Objector: obj,
@@ -14406,6 +14422,9 @@ func (b tlsBackend) SupportsTLS() bool {
 
 // TLSClientConnectionOverrider contains methods that are overridable. This
 // interface is a subset of the interface TLSClientConnection.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type TLSClientConnectionOverrider interface {
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption. This is not normally needed,
@@ -14440,7 +14459,6 @@ type TLSClientConnectionOverrider interface {
 // TLSClientConnection is the client-side subclass of Connection, representing a
 // client-side TLS connection.
 type TLSClientConnection interface {
-	TLSConnection
 
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption. This is not normally needed,
@@ -14500,13 +14518,12 @@ type TLSClientConnection interface {
 
 // tlsClientConnection implements the TLSClientConnection interface.
 type tlsClientConnection struct {
-	TLSConnection
 }
 
 var _ TLSClientConnection = (*tlsClientConnection)(nil)
 
-// WrapTLSClientConnection wraps a GObject to a type that implements interface
-// TLSClientConnection. It is primarily used internally.
+// WrapTLSClientConnection wraps a GObject to a type that implements
+// interface TLSClientConnection. It is primarily used internally.
 func WrapTLSClientConnection(obj *externglib.Object) TLSClientConnection {
 	return tlsClientConnection{
 		TLSConnection: WrapTLSConnection(obj),
@@ -14612,18 +14629,16 @@ func (c tlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.
 type TLSFileDatabase interface {
-	TLSDatabase
 }
 
 // tlsFileDatabase implements the TLSFileDatabase interface.
 type tlsFileDatabase struct {
-	TLSDatabase
 }
 
 var _ TLSFileDatabase = (*tlsFileDatabase)(nil)
 
-// WrapTLSFileDatabase wraps a GObject to a type that implements interface
-// TLSFileDatabase. It is primarily used internally.
+// WrapTLSFileDatabase wraps a GObject to a type that implements
+// interface TLSFileDatabase. It is primarily used internally.
 func WrapTLSFileDatabase(obj *externglib.Object) TLSFileDatabase {
 	return tlsFileDatabase{
 		TLSDatabase: WrapTLSDatabase(obj),
@@ -14639,18 +14654,16 @@ func marshalTLSFileDatabase(p uintptr) (interface{}, error) {
 // TLSServerConnection is the server-side subclass of Connection, representing a
 // server-side TLS connection.
 type TLSServerConnection interface {
-	TLSConnection
 }
 
 // tlsServerConnection implements the TLSServerConnection interface.
 type tlsServerConnection struct {
-	TLSConnection
 }
 
 var _ TLSServerConnection = (*tlsServerConnection)(nil)
 
-// WrapTLSServerConnection wraps a GObject to a type that implements interface
-// TLSServerConnection. It is primarily used internally.
+// WrapTLSServerConnection wraps a GObject to a type that implements
+// interface TLSServerConnection. It is primarily used internally.
 func WrapTLSServerConnection(obj *externglib.Object) TLSServerConnection {
 	return tlsServerConnection{
 		TLSConnection: WrapTLSConnection(obj),
@@ -14665,6 +14678,9 @@ func marshalTLSServerConnection(p uintptr) (interface{}, error) {
 
 // VolumeOverrider contains methods that are overridable. This
 // interface is a subset of the interface Volume.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
 type VolumeOverrider interface {
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
@@ -14768,7 +14784,6 @@ type VolumeOverrider interface {
 //
 //    Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
 type Volume interface {
-	gextras.Objector
 
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
@@ -14836,13 +14851,12 @@ type Volume interface {
 
 // volume implements the Volume interface.
 type volume struct {
-	gextras.Objector
 }
 
 var _ Volume = (*volume)(nil)
 
-// WrapVolume wraps a GObject to a type that implements interface
-// Volume. It is primarily used internally.
+// WrapVolume wraps a GObject to a type that implements
+// interface Volume. It is primarily used internally.
 func WrapVolume(obj *externglib.Object) Volume {
 	return volume{
 		Objector: obj,
@@ -15142,15 +15156,12 @@ func (v volume) ShouldAutomount() bool {
 // installed applications often come in groups (like during system updates) and
 // rescanning the list on every change is pointless and expensive.
 type AppInfoMonitor interface {
-	gextras.Objector
 }
 
 // appInfoMonitor implements the AppInfoMonitor class.
 type appInfoMonitor struct {
 	gextras.Objector
 }
-
-var _ AppInfoMonitor = (*appInfoMonitor)(nil)
 
 // WrapAppInfoMonitor wraps a GObject to the right type. It is
 // primarily used internally.
@@ -15170,31 +15181,28 @@ func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 // is used to handle for instance startup notification and launching the new
 // application on the same screen as the launching window.
 type AppLaunchContext interface {
-	gextras.Objector
 
 	// Environment gets the complete environment variable list to be passed to
 	// the child process when @context is used to launch an application. This is
 	// a nil-terminated array of strings, where each string has the form
 	// `KEY=VALUE`.
 	Environment() []string
-	// LaunchFailed: called when an application has failed to launch, so that it
-	// can cancel the application startup notification started in
-	// g_app_launch_context_get_startup_notify_id().
-	LaunchFailed(startupNotifyId string)
-	// Setenv arranges for @variable to be set to @value in the child's
-	// environment when @context is used to launch an application.
-	Setenv(variable string, value string)
-	// Unsetenv arranges for @variable to be unset in the child's environment
-	// when @context is used to launch an application.
-	Unsetenv(variable string)
+	// LaunchFailedAppLaunchContext: called when an application has failed to
+	// launch, so that it can cancel the application startup notification
+	// started in g_app_launch_context_get_startup_notify_id().
+	LaunchFailedAppLaunchContext(startupNotifyId string)
+	// SetenvAppLaunchContext arranges for @variable to be set to @value in the
+	// child's environment when @context is used to launch an application.
+	SetenvAppLaunchContext(variable string, value string)
+	// UnsetenvAppLaunchContext arranges for @variable to be unset in the
+	// child's environment when @context is used to launch an application.
+	UnsetenvAppLaunchContext(variable string)
 }
 
 // appLaunchContext implements the AppLaunchContext class.
 type appLaunchContext struct {
 	gextras.Objector
 }
-
-var _ AppLaunchContext = (*appLaunchContext)(nil)
 
 // WrapAppLaunchContext wraps a GObject to the right type. It is
 // primarily used internally.
@@ -15253,7 +15261,7 @@ func (c appLaunchContext) Environment() []string {
 	return _filenames
 }
 
-func (c appLaunchContext) LaunchFailed(startupNotifyId string) {
+func (c appLaunchContext) LaunchFailedAppLaunchContext(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
@@ -15264,7 +15272,7 @@ func (c appLaunchContext) LaunchFailed(startupNotifyId string) {
 	C.g_app_launch_context_launch_failed(_arg0, _arg1)
 }
 
-func (c appLaunchContext) Setenv(variable string, value string) {
+func (c appLaunchContext) SetenvAppLaunchContext(variable string, value string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.char              // out
@@ -15278,7 +15286,7 @@ func (c appLaunchContext) Setenv(variable string, value string) {
 	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
 }
 
-func (c appLaunchContext) Unsetenv(variable string) {
+func (c appLaunchContext) UnsetenvAppLaunchContext(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
@@ -15399,18 +15407,17 @@ func (c appLaunchContext) Unsetenv(variable string) {
 // gapplication-example-dbushooks.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
 type Application interface {
-	gextras.Objector
 	ActionGroup
 	ActionMap
 
-	// Activate activates the application.
+	// ActivateApplication activates the application.
 	//
 	// In essence, this results in the #GApplication::activate signal being
 	// emitted in the primary instance.
 	//
 	// The application must be registered before calling this function.
-	Activate()
-	// AddMainOption: add an option to be handled by @application.
+	ActivateApplication()
+	// AddMainOptionApplication: add an option to be handled by @application.
 	//
 	// Calling this function is the equivalent of calling
 	// g_application_add_main_option_entries() with a single Entry that has its
@@ -15423,8 +15430,8 @@ type Application interface {
 	// more details.
 	//
 	// See Entry for more documentation of the arguments.
-	AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
-	// AddMainOptionEntries adds main option entries to be handled by
+	AddMainOptionApplication(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
+	// AddMainOptionEntriesApplication adds main option entries to be handled by
 	// @application.
 	//
 	// This function is comparable to g_option_context_add_main_entries().
@@ -15475,8 +15482,9 @@ type Application interface {
 	// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
 	// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
 	// `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
-	AddMainOptionEntries(entries []glib.OptionEntry)
-	// AddOptionGroup adds a Group to the commandline handling of @application.
+	AddMainOptionEntriesApplication(entries []glib.OptionEntry)
+	// AddOptionGroupApplication adds a Group to the commandline handling of
+	// @application.
 	//
 	// This function is comparable to g_option_context_add_group().
 	//
@@ -15500,13 +15508,13 @@ type Application interface {
 	// to be parsed, but it does not cause you to be "opted in" to the new
 	// functionality whereby unrecognised options are rejected even if
 	// G_APPLICATION_HANDLES_COMMAND_LINE was given.
-	AddOptionGroup(group *glib.OptionGroup)
-	// BindBusyProperty marks @application as busy (see
+	AddOptionGroupApplication(group *glib.OptionGroup)
+	// BindBusyPropertyApplication marks @application as busy (see
 	// g_application_mark_busy()) while @property on @object is true.
 	//
 	// The binding holds a reference to @application while it is active, but not
 	// to @object. Instead, the binding is destroyed when @object is finalized.
-	BindBusyProperty(object gextras.Objector, property string)
+	BindBusyPropertyApplication(object gextras.Objector, property string)
 	// ApplicationID gets the unique identifier for @application.
 	ApplicationID() string
 	// DBusConnection gets the BusConnection being used by the application, or
@@ -15572,15 +15580,15 @@ type Application interface {
 	//
 	// See g_application_set_resource_base_path() for more information.
 	ResourceBasePath() string
-	// Hold increases the use count of @application.
+	// HoldApplication increases the use count of @application.
 	//
 	// Use this function to indicate that the application has a reason to
 	// continue to run. For example, g_application_hold() is called by GTK+ when
 	// a toplevel window is on the screen.
 	//
 	// To cancel the hold, call g_application_release().
-	Hold()
-	// MarkBusy increases the busy count of @application.
+	HoldApplication()
+	// MarkBusyApplication increases the busy count of @application.
 	//
 	// Use this function to indicate that the application is busy, for instance
 	// while a long running operation is pending.
@@ -15590,8 +15598,8 @@ type Application interface {
 	// spinner).
 	//
 	// To cancel the busy indication, use g_application_unmark_busy().
-	MarkBusy()
-	// Open opens the given files.
+	MarkBusyApplication()
+	// OpenApplication opens the given files.
 	//
 	// In essence, this results in the #GApplication::open signal being emitted
 	// in the primary instance.
@@ -15605,8 +15613,8 @@ type Application interface {
 	//
 	// The application must be registered before calling this function and it
 	// must have the G_APPLICATION_HANDLES_OPEN flag set.
-	Open(files []File, hint string)
-	// Quit: immediately quits the application.
+	OpenApplication(files []File, hint string)
+	// QuitApplication: immediately quits the application.
 	//
 	// Upon return to the mainloop, g_application_run() will return, calling
 	// only the 'shutdown' function before doing so.
@@ -15618,8 +15626,8 @@ type Application interface {
 	//
 	// The result of calling g_application_run() again after it returns is
 	// unspecified.
-	Quit()
-	// Register attempts registration of the application.
+	QuitApplication()
+	// RegisterApplication attempts registration of the application.
 	//
 	// This is the point at which the application discovers if it is the primary
 	// instance or merely acting as a remote for an already-existing primary
@@ -15647,15 +15655,15 @@ type Application interface {
 	// Note: the return value of this function is not an indicator that this
 	// instance is or is not the primary instance of the application. See
 	// g_application_get_is_remote() for that.
-	Register(cancellable Cancellable) error
-	// Release: decrease the use count of @application.
+	RegisterApplication(cancellable Cancellable) error
+	// ReleaseApplication: decrease the use count of @application.
 	//
 	// When the use count reaches zero, the application will stop running.
 	//
 	// Never call this function except to cancel the effect of a previous call
 	// to g_application_hold().
-	Release()
-	// Run runs the application.
+	ReleaseApplication()
+	// RunApplication runs the application.
 	//
 	// This function is intended to be run from main() and its return value is
 	// intended to be returned by main(). Although you are expected to pass the
@@ -15728,10 +15736,10 @@ type Application interface {
 	// applications but should not be used from applications like editors that
 	// need precise control over when processes invoked via the commandline will
 	// exit and what their exit status will be.
-	Run(argv []string) int
-	// SendNotification sends a notification on behalf of @application to the
-	// desktop shell. There is no guarantee that the notification is displayed
-	// immediately, or even at all.
+	RunApplication(argv []string) int
+	// SendNotificationApplication sends a notification on behalf of
+	// @application to the desktop shell. There is no guarantee that the
+	// notification is displayed immediately, or even at all.
 	//
 	// Notifications may persist after the application exits. It will be
 	// D-Bus-activated when the notification or one of its actions is activated.
@@ -15753,34 +15761,34 @@ type Application interface {
 	//
 	// If @notification is no longer relevant, it can be withdrawn with
 	// g_application_withdraw_notification().
-	SendNotification(id string, notification Notification)
-	// SetActionGroup: this used to be how actions were associated with a
-	// #GApplication. Now there is Map for that.
-	SetActionGroup(actionGroup ActionGroup)
-	// SetApplicationID sets the unique identifier for @application.
+	SendNotificationApplication(id string, notification Notification)
+	// SetActionGroupApplication: this used to be how actions were associated
+	// with a #GApplication. Now there is Map for that.
+	SetActionGroupApplication(actionGroup ActionGroup)
+	// SetApplicationIDApplication sets the unique identifier for @application.
 	//
 	// The application id can only be modified if @application has not yet been
 	// registered.
 	//
 	// If non-nil, the application id must be valid. See
 	// g_application_id_is_valid().
-	SetApplicationID(applicationId string)
-	// SetDefault sets or unsets the default application for the process, as
-	// returned by g_application_get_default().
+	SetApplicationIDApplication(applicationId string)
+	// SetDefaultApplication sets or unsets the default application for the
+	// process, as returned by g_application_get_default().
 	//
 	// This function does not take its own reference on @application. If
 	// @application is destroyed then the default application will revert back
 	// to nil.
-	SetDefault()
-	// SetFlags sets the flags for @application.
+	SetDefaultApplication()
+	// SetFlagsApplication sets the flags for @application.
 	//
 	// The flags can only be modified if @application has not yet been
 	// registered.
 	//
 	// See Flags.
-	SetFlags(flags ApplicationFlags)
-	// SetInactivityTimeout sets the current inactivity timeout for the
-	// application.
+	SetFlagsApplication(flags ApplicationFlags)
+	// SetInactivityTimeoutApplication sets the current inactivity timeout for
+	// the application.
 	//
 	// This is the amount of time (in milliseconds) after the last call to
 	// g_application_release() before the application stops running.
@@ -15788,27 +15796,27 @@ type Application interface {
 	// This call has no side effects of its own. The value set here is only used
 	// for next time g_application_release() drops the use count to zero. Any
 	// timeouts currently in progress are not impacted.
-	SetInactivityTimeout(inactivityTimeout uint)
-	// SetOptionContextDescription adds a description to the @application option
-	// context.
+	SetInactivityTimeoutApplication(inactivityTimeout uint)
+	// SetOptionContextDescriptionApplication adds a description to the
+	// @application option context.
 	//
 	// See g_option_context_set_description() for more information.
-	SetOptionContextDescription(description string)
-	// SetOptionContextParameterString sets the parameter string to be used by
-	// the commandline handling of @application.
+	SetOptionContextDescriptionApplication(description string)
+	// SetOptionContextParameterStringApplication sets the parameter string to
+	// be used by the commandline handling of @application.
 	//
 	// This function registers the argument to be passed to
 	// g_option_context_new() when the internal Context of @application is
 	// created.
 	//
 	// See g_option_context_new() for more information about @parameter_string.
-	SetOptionContextParameterString(parameterString string)
-	// SetOptionContextSummary adds a summary to the @application option
-	// context.
+	SetOptionContextParameterStringApplication(parameterString string)
+	// SetOptionContextSummaryApplication adds a summary to the @application
+	// option context.
 	//
 	// See g_option_context_set_summary() for more information.
-	SetOptionContextSummary(summary string)
-	// SetResourceBasePath sets (or unsets) the base resource path of
+	SetOptionContextSummaryApplication(summary string)
+	// SetResourceBasePathApplication sets (or unsets) the base resource path of
 	// @application.
 	//
 	// The path is used to automatically load various [application
@@ -15842,21 +15850,21 @@ type Application interface {
 	// this function during the instance initialization. Alternatively, you can
 	// call this function in the Class.startup virtual function, before chaining
 	// up to the parent implementation.
-	SetResourceBasePath(resourcePath string)
-	// UnbindBusyProperty destroys a binding between @property and the busy
-	// state of @application that was previously created with
+	SetResourceBasePathApplication(resourcePath string)
+	// UnbindBusyPropertyApplication destroys a binding between @property and
+	// the busy state of @application that was previously created with
 	// g_application_bind_busy_property().
-	UnbindBusyProperty(object gextras.Objector, property string)
-	// UnmarkBusy decreases the busy count of @application.
+	UnbindBusyPropertyApplication(object gextras.Objector, property string)
+	// UnmarkBusyApplication decreases the busy count of @application.
 	//
 	// When the busy count reaches zero, the new state will be propagated to
 	// other processes.
 	//
 	// This function must only be called to cancel the effect of a previous call
 	// to g_application_mark_busy().
-	UnmarkBusy()
-	// WithdrawNotification withdraws a notification that was sent with
-	// g_application_send_notification().
+	UnmarkBusyApplication()
+	// WithdrawNotificationApplication withdraws a notification that was sent
+	// with g_application_send_notification().
 	//
 	// This call does nothing if a notification with @id doesn't exist or the
 	// notification was never sent.
@@ -15868,25 +15876,19 @@ type Application interface {
 	// Note that notifications are dismissed when the user clicks on one of the
 	// buttons in a notification or triggers its default action, so there is no
 	// need to explicitly withdraw the notification in that case.
-	WithdrawNotification(id string)
+	WithdrawNotificationApplication(id string)
 }
 
 // application implements the Application class.
 type application struct {
 	gextras.Objector
-	ActionGroup
-	ActionMap
 }
-
-var _ Application = (*application)(nil)
 
 // WrapApplication wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplication(obj *externglib.Object) Application {
 	return application{
-		Objector:    obj,
-		ActionGroup: WrapActionGroup(obj),
-		ActionMap:   WrapActionMap(obj),
+		Objector: obj,
 	}
 }
 
@@ -15921,7 +15923,7 @@ func NewApplication(applicationId string, flags ApplicationFlags) Application {
 	return _application
 }
 
-func (a application) Activate() {
+func (a application) ActivateApplication() {
 	var _arg0 *C.GApplication // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -15929,7 +15931,7 @@ func (a application) Activate() {
 	C.g_application_activate(_arg0)
 }
 
-func (a application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
+func (a application) AddMainOptionApplication(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.char         // out
 	var _arg2 C.char          // out
@@ -15952,7 +15954,7 @@ func (a application) AddMainOption(longName string, shortName byte, flags glib.O
 	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
+func (a application) AddMainOptionEntriesApplication(entries []glib.OptionEntry) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionEntry
 
@@ -15966,7 +15968,7 @@ func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	C.g_application_add_main_option_entries(_arg0, _arg1)
 }
 
-func (a application) AddOptionGroup(group *glib.OptionGroup) {
+func (a application) AddOptionGroupApplication(group *glib.OptionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionGroup // out
 
@@ -15976,13 +15978,13 @@ func (a application) AddOptionGroup(group *glib.OptionGroup) {
 	C.g_application_add_option_group(_arg0, _arg1)
 }
 
-func (a application) BindBusyProperty(object gextras.Objector, property string) {
+func (a application) BindBusyPropertyApplication(object gextras.Objector, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(object.Native()))
 	_arg2 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -16130,7 +16132,7 @@ func (a application) ResourceBasePath() string {
 	return _utf8
 }
 
-func (a application) Hold() {
+func (a application) HoldApplication() {
 	var _arg0 *C.GApplication // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -16138,7 +16140,7 @@ func (a application) Hold() {
 	C.g_application_hold(_arg0)
 }
 
-func (a application) MarkBusy() {
+func (a application) MarkBusyApplication() {
 	var _arg0 *C.GApplication // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -16146,7 +16148,7 @@ func (a application) MarkBusy() {
 	C.g_application_mark_busy(_arg0)
 }
 
-func (a application) Open(files []File, hint string) {
+func (a application) OpenApplication(files []File, hint string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 **C.GFile
 	var _arg2 C.gint
@@ -16168,7 +16170,7 @@ func (a application) Open(files []File, hint string) {
 	C.g_application_open(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (a application) Quit() {
+func (a application) QuitApplication() {
 	var _arg0 *C.GApplication // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -16176,7 +16178,7 @@ func (a application) Quit() {
 	C.g_application_quit(_arg0)
 }
 
-func (a application) Register(cancellable Cancellable) error {
+func (a application) RegisterApplication(cancellable Cancellable) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -16193,7 +16195,7 @@ func (a application) Register(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (a application) Release() {
+func (a application) ReleaseApplication() {
 	var _arg0 *C.GApplication // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -16201,7 +16203,7 @@ func (a application) Release() {
 	C.g_application_release(_arg0)
 }
 
-func (a application) Run(argv []string) int {
+func (a application) RunApplication(argv []string) int {
 	var _arg0 *C.GApplication // out
 	var _arg2 **C.char
 	var _arg1 C.int
@@ -16228,7 +16230,7 @@ func (a application) Run(argv []string) int {
 	return _gint
 }
 
-func (a application) SendNotification(id string, notification Notification) {
+func (a application) SendNotificationApplication(id string, notification Notification) {
 	var _arg0 *C.GApplication  // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GNotification // out
@@ -16241,7 +16243,7 @@ func (a application) SendNotification(id string, notification Notification) {
 	C.g_application_send_notification(_arg0, _arg1, _arg2)
 }
 
-func (a application) SetActionGroup(actionGroup ActionGroup) {
+func (a application) SetActionGroupApplication(actionGroup ActionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GActionGroup // out
 
@@ -16251,7 +16253,7 @@ func (a application) SetActionGroup(actionGroup ActionGroup) {
 	C.g_application_set_action_group(_arg0, _arg1)
 }
 
-func (a application) SetApplicationID(applicationId string) {
+func (a application) SetApplicationIDApplication(applicationId string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
@@ -16262,7 +16264,7 @@ func (a application) SetApplicationID(applicationId string) {
 	C.g_application_set_application_id(_arg0, _arg1)
 }
 
-func (a application) SetDefault() {
+func (a application) SetDefaultApplication() {
 	var _arg0 *C.GApplication // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -16270,7 +16272,7 @@ func (a application) SetDefault() {
 	C.g_application_set_default(_arg0)
 }
 
-func (a application) SetFlags(flags ApplicationFlags) {
+func (a application) SetFlagsApplication(flags ApplicationFlags) {
 	var _arg0 *C.GApplication     // out
 	var _arg1 C.GApplicationFlags // out
 
@@ -16280,7 +16282,7 @@ func (a application) SetFlags(flags ApplicationFlags) {
 	C.g_application_set_flags(_arg0, _arg1)
 }
 
-func (a application) SetInactivityTimeout(inactivityTimeout uint) {
+func (a application) SetInactivityTimeoutApplication(inactivityTimeout uint) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.guint         // out
 
@@ -16290,7 +16292,7 @@ func (a application) SetInactivityTimeout(inactivityTimeout uint) {
 	C.g_application_set_inactivity_timeout(_arg0, _arg1)
 }
 
-func (a application) SetOptionContextDescription(description string) {
+func (a application) SetOptionContextDescriptionApplication(description string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
@@ -16301,7 +16303,7 @@ func (a application) SetOptionContextDescription(description string) {
 	C.g_application_set_option_context_description(_arg0, _arg1)
 }
 
-func (a application) SetOptionContextParameterString(parameterString string) {
+func (a application) SetOptionContextParameterStringApplication(parameterString string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
@@ -16312,7 +16314,7 @@ func (a application) SetOptionContextParameterString(parameterString string) {
 	C.g_application_set_option_context_parameter_string(_arg0, _arg1)
 }
 
-func (a application) SetOptionContextSummary(summary string) {
+func (a application) SetOptionContextSummaryApplication(summary string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
@@ -16323,7 +16325,7 @@ func (a application) SetOptionContextSummary(summary string) {
 	C.g_application_set_option_context_summary(_arg0, _arg1)
 }
 
-func (a application) SetResourceBasePath(resourcePath string) {
+func (a application) SetResourceBasePathApplication(resourcePath string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
@@ -16334,20 +16336,20 @@ func (a application) SetResourceBasePath(resourcePath string) {
 	C.g_application_set_resource_base_path(_arg0, _arg1)
 }
 
-func (a application) UnbindBusyProperty(object gextras.Objector, property string) {
+func (a application) UnbindBusyPropertyApplication(object gextras.Objector, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(object.Native()))
 	_arg2 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
 }
 
-func (a application) UnmarkBusy() {
+func (a application) UnmarkBusyApplication() {
 	var _arg0 *C.GApplication // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -16355,7 +16357,7 @@ func (a application) UnmarkBusy() {
 	C.g_application_unmark_busy(_arg0)
 }
 
-func (a application) WithdrawNotification(id string) {
+func (a application) WithdrawNotificationApplication(id string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
@@ -16364,6 +16366,74 @@ func (a application) WithdrawNotification(id string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_withdraw_notification(_arg0, _arg1)
+}
+
+func (a application) ActionAdded(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
+}
+
+func (a application) ActionEnabledChanged(actionName string, enabled bool) {
+	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
+}
+
+func (a application) ActionRemoved(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
+}
+
+func (a application) ActionStateChanged(actionName string, state *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
+}
+
+func (a application) ActivateAction(actionName string, parameter *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
+}
+
+func (a application) ChangeActionState(actionName string, value *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
+}
+
+func (a application) ActionEnabled(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
+}
+
+func (a application) ActionParameterType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
+}
+
+func (a application) ActionState(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
+}
+
+func (a application) ActionStateHint(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
+}
+
+func (a application) ActionStateType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
+}
+
+func (a application) HasAction(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
+}
+
+func (a application) ListActions() []string {
+	return WrapActionGroup(gextras.InternObject(a)).ListActions()
+}
+
+func (a application) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+}
+
+func (a application) AddAction(action Action) {
+	WrapActionMap(gextras.InternObject(a)).AddAction(action)
+}
+
+func (a application) LookupAction(actionName string) Action {
+	return WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
+}
+
+func (a application) RemoveAction(actionName string) {
+	WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }
 
 // ApplicationCommandLine represents a command-line invocation of an
@@ -16438,15 +16508,14 @@ func (a application) WithdrawNotification(id string) {
 // The complete example can be found here: gapplication-example-cmdline3.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c)
 type ApplicationCommandLine interface {
-	gextras.Objector
 
-	// CreateFileForArg creates a #GFile corresponding to a filename that was
-	// given as part of the invocation of @cmdline.
+	// CreateFileForArgApplicationCommandLine creates a #GFile corresponding to
+	// a filename that was given as part of the invocation of @cmdline.
 	//
 	// This differs from g_file_new_for_commandline_arg() in that it resolves
 	// relative pathnames using the current working directory of the invoking
 	// process rather than the local process.
-	CreateFileForArg(arg string) File
+	CreateFileForArgApplicationCommandLine(arg string) File
 	// Cwd gets the working directory of the command line invocation. The string
 	// may contain non-utf8 data.
 	//
@@ -16519,8 +16588,8 @@ type ApplicationCommandLine interface {
 	// The return value should not be modified or freed and is valid for as long
 	// as @cmdline exists.
 	env(name string) string
-	// SetExitStatus sets the exit status that will be used when the invoking
-	// process exits.
+	// SetExitStatusApplicationCommandLine sets the exit status that will be
+	// used when the invoking process exits.
 	//
 	// The return value of the #GApplication::command-line signal is passed to
 	// this function when the handler returns. This is the usual way of setting
@@ -16540,15 +16609,13 @@ type ApplicationCommandLine interface {
 	// 'successful' in a certain sense, and the exit status is always zero. If
 	// the application use count is zero, though, the exit status of the local
 	// CommandLine is used.
-	SetExitStatus(exitStatus int)
+	SetExitStatusApplicationCommandLine(exitStatus int)
 }
 
 // applicationCommandLine implements the ApplicationCommandLine class.
 type applicationCommandLine struct {
 	gextras.Objector
 }
-
-var _ ApplicationCommandLine = (*applicationCommandLine)(nil)
 
 // WrapApplicationCommandLine wraps a GObject to the right type. It is
 // primarily used internally.
@@ -16564,7 +16631,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	return WrapApplicationCommandLine(obj), nil
 }
 
-func (c applicationCommandLine) CreateFileForArg(arg string) File {
+func (c applicationCommandLine) CreateFileForArgApplicationCommandLine(arg string) File {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 	var _cret *C.GFile                   // in
@@ -16722,7 +16789,7 @@ func (c applicationCommandLine) env(name string) string {
 	return _utf8
 }
 
-func (c applicationCommandLine) SetExitStatus(exitStatus int) {
+func (c applicationCommandLine) SetExitStatusApplicationCommandLine(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
 
@@ -16750,8 +16817,8 @@ type BufferedInputStream interface {
 	FilterInputStream
 	Seekable
 
-	// Fill tries to read @count bytes from the stream into the buffer. Will
-	// block during this read.
+	// FillBufferedInputStream tries to read @count bytes from the stream into
+	// the buffer. Will block during this read.
 	//
 	// If @count is zero, returns zero and does nothing. A value of @count
 	// larger than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
@@ -16774,18 +16841,18 @@ type BufferedInputStream interface {
 	//
 	// For the asynchronous, non-blocking, version of this function, see
 	// g_buffered_input_stream_fill_async().
-	Fill(count int, cancellable Cancellable) (int, error)
-	// FillFinish finishes an asynchronous read.
-	FillFinish(result AsyncResult) (int, error)
+	FillBufferedInputStream(count int, cancellable Cancellable) (int, error)
+	// FillFinishBufferedInputStream finishes an asynchronous read.
+	FillFinishBufferedInputStream(result AsyncResult) (int, error)
 	// Available gets the size of the available data within the stream.
 	Available() uint
 	// BufferSize gets the size of the input buffer.
 	BufferSize() uint
-	// Peek peeks in the buffer, copying data of size @count into @buffer,
-	// offset @offset bytes.
-	Peek(buffer []byte, offset uint) uint
-	// ReadByte tries to read a single byte from the stream or the buffer. Will
-	// block during this read.
+	// PeekBufferedInputStream peeks in the buffer, copying data of size @count
+	// into @buffer, offset @offset bytes.
+	PeekBufferedInputStream(buffer []byte, offset uint) uint
+	// ReadByteBufferedInputStream tries to read a single byte from the stream
+	// or the buffer. Will block during this read.
 	//
 	// On success, the byte read from the stream is returned. On end of stream
 	// -1 is returned but it's not an exceptional error and @error is not set.
@@ -16797,27 +16864,23 @@ type BufferedInputStream interface {
 	// partial result will be returned, without an error.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	ReadByte(cancellable Cancellable) (int, error)
-	// SetBufferSize sets the size of the internal buffer of @stream to @size,
-	// or to the size of the contents of the buffer. The buffer can never be
-	// resized smaller than its current contents.
-	SetBufferSize(size uint)
+	ReadByteBufferedInputStream(cancellable Cancellable) (int, error)
+	// SetBufferSizeBufferedInputStream sets the size of the internal buffer of
+	// @stream to @size, or to the size of the contents of the buffer. The
+	// buffer can never be resized smaller than its current contents.
+	SetBufferSizeBufferedInputStream(size uint)
 }
 
 // bufferedInputStream implements the BufferedInputStream class.
 type bufferedInputStream struct {
 	FilterInputStream
-	Seekable
 }
-
-var _ BufferedInputStream = (*bufferedInputStream)(nil)
 
 // WrapBufferedInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBufferedInputStream(obj *externglib.Object) BufferedInputStream {
 	return bufferedInputStream{
 		FilterInputStream: WrapFilterInputStream(obj),
-		Seekable:          WrapSeekable(obj),
 	}
 }
 
@@ -16863,7 +16926,7 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 	return _bufferedInputStream
 }
 
-func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (int, error) {
+func (s bufferedInputStream) FillBufferedInputStream(count int, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gssize                // out
 	var _arg2 *C.GCancellable         // out
@@ -16885,7 +16948,7 @@ func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (int, erro
 	return _gssize, _goerr
 }
 
-func (s bufferedInputStream) FillFinish(result AsyncResult) (int, error) {
+func (s bufferedInputStream) FillFinishBufferedInputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.gssize                // in
@@ -16935,7 +16998,7 @@ func (s bufferedInputStream) BufferSize() uint {
 	return _gsize
 }
 
-func (s bufferedInputStream) Peek(buffer []byte, offset uint) uint {
+func (s bufferedInputStream) PeekBufferedInputStream(buffer []byte, offset uint) uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.void
 	var _arg3 C.gsize
@@ -16947,7 +17010,7 @@ func (s bufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg2 = (C.gsize)(offset)
 
-	_cret = C.g_buffered_input_stream_peek(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.g_buffered_input_stream_peek(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3)
 
 	var _gsize uint // out
 
@@ -16956,7 +17019,7 @@ func (s bufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	return _gsize
 }
 
-func (s bufferedInputStream) ReadByte(cancellable Cancellable) (int, error) {
+func (s bufferedInputStream) ReadByteBufferedInputStream(cancellable Cancellable) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret C.int                   // in
@@ -16976,7 +17039,7 @@ func (s bufferedInputStream) ReadByte(cancellable Cancellable) (int, error) {
 	return _gint, _goerr
 }
 
-func (s bufferedInputStream) SetBufferSize(size uint) {
+func (s bufferedInputStream) SetBufferSizeBufferedInputStream(size uint) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gsize                 // out
 
@@ -16984,6 +17047,26 @@ func (s bufferedInputStream) SetBufferSize(size uint) {
 	_arg1 = (C.gsize)(size)
 
 	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)
+}
+
+func (s bufferedInputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s bufferedInputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s bufferedInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s bufferedInputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s bufferedInputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
 }
 
 // BufferedOutputStream: buffered output stream implements OutputStream and
@@ -17008,29 +17091,26 @@ type BufferedOutputStream interface {
 	AutoGrow() bool
 	// BufferSize gets the size of the buffer in the @stream.
 	BufferSize() uint
-	// SetAutoGrow sets whether or not the @stream's buffer should automatically
-	// grow. If @auto_grow is true, then each write will just make the buffer
-	// larger, and you must manually flush the buffer to actually write out the
-	// data to the underlying stream.
-	SetAutoGrow(autoGrow bool)
-	// SetBufferSize sets the size of the internal buffer to @size.
-	SetBufferSize(size uint)
+	// SetAutoGrowBufferedOutputStream sets whether or not the @stream's buffer
+	// should automatically grow. If @auto_grow is true, then each write will
+	// just make the buffer larger, and you must manually flush the buffer to
+	// actually write out the data to the underlying stream.
+	SetAutoGrowBufferedOutputStream(autoGrow bool)
+	// SetBufferSizeBufferedOutputStream sets the size of the internal buffer to
+	// @size.
+	SetBufferSizeBufferedOutputStream(size uint)
 }
 
 // bufferedOutputStream implements the BufferedOutputStream class.
 type bufferedOutputStream struct {
 	FilterOutputStream
-	Seekable
 }
-
-var _ BufferedOutputStream = (*bufferedOutputStream)(nil)
 
 // WrapBufferedOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStream {
 	return bufferedOutputStream{
 		FilterOutputStream: WrapFilterOutputStream(obj),
-		Seekable:           WrapSeekable(obj),
 	}
 }
 
@@ -17108,7 +17188,7 @@ func (s bufferedOutputStream) BufferSize() uint {
 	return _gsize
 }
 
-func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
+func (s bufferedOutputStream) SetAutoGrowBufferedOutputStream(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
 
@@ -17120,7 +17200,7 @@ func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	C.g_buffered_output_stream_set_auto_grow(_arg0, _arg1)
 }
 
-func (s bufferedOutputStream) SetBufferSize(size uint) {
+func (s bufferedOutputStream) SetBufferSizeBufferedOutputStream(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out
 
@@ -17130,30 +17210,42 @@ func (s bufferedOutputStream) SetBufferSize(size uint) {
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)
 }
 
+func (s bufferedOutputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s bufferedOutputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s bufferedOutputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s bufferedOutputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s bufferedOutputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+}
+
 // BytesIcon specifies an image held in memory in a common format (usually png)
 // to be used as icon.
 type BytesIcon interface {
-	gextras.Objector
-	Icon
 	LoadableIcon
 }
 
 // bytesIcon implements the BytesIcon class.
 type bytesIcon struct {
 	gextras.Objector
-	Icon
-	LoadableIcon
 }
-
-var _ BytesIcon = (*bytesIcon)(nil)
 
 // WrapBytesIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBytesIcon(obj *externglib.Object) BytesIcon {
 	return bytesIcon{
-		Objector:     obj,
-		Icon:         WrapIcon(obj),
-		LoadableIcon: WrapLoadableIcon(obj),
+		Objector: obj,
 	}
 }
 
@@ -17163,13 +17255,32 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 	return WrapBytesIcon(obj), nil
 }
 
+func (i bytesIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i bytesIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i bytesIcon) String() string {
+	return WrapIcon(gextras.InternObject(i)).String()
+}
+
+func (i bytesIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+}
+
+func (i bytesIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
+}
+
 // Cancellable: GCancellable is a thread-safe operation cancellation stack used
 // throughout GIO to allow for cancellation of synchronous and asynchronous
 // operations.
 type Cancellable interface {
-	gextras.Objector
 
-	// Cancel: will set @cancellable to cancelled, and will emit the
+	// CancelCancellable: will set @cancellable to cancelled, and will emit the
 	// #GCancellable::cancelled signal. (However, see the warning about race
 	// conditions in the documentation for that signal if you are planning to
 	// connect to it.)
@@ -17186,19 +17297,20 @@ type Cancellable interface {
 	// operation from the same thread in which it is running, then the
 	// operation's ReadyCallback will not be invoked until the application
 	// returns to the main loop.
-	Cancel()
-	// Disconnect disconnects a handler from a cancellable instance similar to
-	// g_signal_handler_disconnect(). Additionally, in the event that a signal
-	// handler is currently running, this call will block until the handler has
-	// finished. Calling this function from a #GCancellable::cancelled signal
-	// handler will therefore result in a deadlock.
+	CancelCancellable()
+	// DisconnectCancellable disconnects a handler from a cancellable instance
+	// similar to g_signal_handler_disconnect(). Additionally, in the event that
+	// a signal handler is currently running, this call will block until the
+	// handler has finished. Calling this function from a
+	// #GCancellable::cancelled signal handler will therefore result in a
+	// deadlock.
 	//
 	// This avoids a race condition where a thread cancels at the same time as
 	// the cancellable operation is finished and the signal handler is removed.
 	// See #GCancellable::cancelled for details on how to use this.
 	//
 	// If @cancellable is nil or @handler_id is `0` this function does nothing.
-	Disconnect(handlerId uint32)
+	DisconnectCancellable(handlerId uint32)
 	// Fd gets the file descriptor for a cancellable job. This can be used to
 	// implement cancellable operations on Unix systems. The returned fd will
 	// turn readable when @cancellable is cancelled.
@@ -17213,11 +17325,12 @@ type Cancellable interface {
 	//
 	// See also g_cancellable_make_pollfd().
 	Fd() int
-	// IsCancelled checks if a cancellable job has been cancelled.
-	IsCancelled() bool
-	// MakePollfd creates a FD corresponding to @cancellable; this can be passed
-	// to g_poll() and used to poll for cancellation. This is useful both for
-	// unix systems without a native poll and for portability to windows.
+	// IsCancelledCancellable checks if a cancellable job has been cancelled.
+	IsCancelledCancellable() bool
+	// MakePollfdCancellable creates a FD corresponding to @cancellable; this
+	// can be passed to g_poll() and used to poll for cancellation. This is
+	// useful both for unix systems without a native poll and for portability to
+	// windows.
 	//
 	// When this function returns true, you should use
 	// g_cancellable_release_fd() to free up resources allocated for the
@@ -17232,20 +17345,21 @@ type Cancellable interface {
 	// You are not supposed to read from the fd yourself, just check for
 	// readable status. Reading to unset the readable status is done with
 	// g_cancellable_reset().
-	MakePollfd(pollfd *glib.PollFD) bool
-	// PopCurrent pops @cancellable off the cancellable stack (verifying that
-	// @cancellable is on the top of the stack).
-	PopCurrent()
-	// PushCurrent pushes @cancellable onto the cancellable stack. The current
-	// cancellable can then be received using g_cancellable_get_current().
+	MakePollfdCancellable(pollfd *glib.PollFD) bool
+	// PopCurrentCancellable pops @cancellable off the cancellable stack
+	// (verifying that @cancellable is on the top of the stack).
+	PopCurrentCancellable()
+	// PushCurrentCancellable pushes @cancellable onto the cancellable stack.
+	// The current cancellable can then be received using
+	// g_cancellable_get_current().
 	//
 	// This is useful when implementing cancellable operations in code that does
 	// not allow you to pass down the cancellable object.
 	//
 	// This is typically called automatically by e.g. #GFile operations, so you
 	// rarely have to call this yourself.
-	PushCurrent()
-	// ReleaseFd releases a resources previously allocated by
+	PushCurrentCancellable()
+	// ReleaseFdCancellable releases a resources previously allocated by
 	// g_cancellable_get_fd() or g_cancellable_make_pollfd().
 	//
 	// For compatibility reasons with older releases, calling this function is
@@ -17254,8 +17368,8 @@ type Cancellable interface {
 	// file descriptors until it is finalized if this function is not called.
 	// This can cause the application to run out of file descriptors when many
 	// #GCancellables are used at the same time.
-	ReleaseFd()
-	// Reset resets @cancellable to its uncancelled state.
+	ReleaseFdCancellable()
+	// ResetCancellable resets @cancellable to its uncancelled state.
 	//
 	// If cancellable is currently in use by any cancellable operation then the
 	// behavior of this function is undefined.
@@ -17266,18 +17380,16 @@ type Cancellable interface {
 	// reference to a cancellable after cancelling it, and let it die with the
 	// outstanding async operations. You should create a fresh cancellable for
 	// further async operations.
-	Reset()
-	// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
-	// notify that the operation was cancelled.
-	SetErrorIfCancelled() error
+	ResetCancellable()
+	// SetErrorIfCancelledCancellable: if the @cancellable is cancelled, sets
+	// the error to notify that the operation was cancelled.
+	SetErrorIfCancelledCancellable() error
 }
 
 // cancellable implements the Cancellable class.
 type cancellable struct {
 	gextras.Objector
 }
-
-var _ Cancellable = (*cancellable)(nil)
 
 // WrapCancellable wraps a GObject to the right type. It is
 // primarily used internally.
@@ -17312,7 +17424,7 @@ func NewCancellable() Cancellable {
 	return _cancellable
 }
 
-func (c cancellable) Cancel() {
+func (c cancellable) CancelCancellable() {
 	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -17320,7 +17432,7 @@ func (c cancellable) Cancel() {
 	C.g_cancellable_cancel(_arg0)
 }
 
-func (c cancellable) Disconnect(handlerId uint32) {
+func (c cancellable) DisconnectCancellable(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
 	var _arg1 C.gulong        // out
 
@@ -17345,7 +17457,7 @@ func (c cancellable) Fd() int {
 	return _gint
 }
 
-func (c cancellable) IsCancelled() bool {
+func (c cancellable) IsCancelledCancellable() bool {
 	var _arg0 *C.GCancellable // out
 	var _cret C.gboolean      // in
 
@@ -17362,7 +17474,7 @@ func (c cancellable) IsCancelled() bool {
 	return _ok
 }
 
-func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
+func (c cancellable) MakePollfdCancellable(pollfd *glib.PollFD) bool {
 	var _arg0 *C.GCancellable // out
 	var _arg1 *C.GPollFD      // out
 	var _cret C.gboolean      // in
@@ -17381,7 +17493,7 @@ func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	return _ok
 }
 
-func (c cancellable) PopCurrent() {
+func (c cancellable) PopCurrentCancellable() {
 	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -17389,7 +17501,7 @@ func (c cancellable) PopCurrent() {
 	C.g_cancellable_pop_current(_arg0)
 }
 
-func (c cancellable) PushCurrent() {
+func (c cancellable) PushCurrentCancellable() {
 	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -17397,7 +17509,7 @@ func (c cancellable) PushCurrent() {
 	C.g_cancellable_push_current(_arg0)
 }
 
-func (c cancellable) ReleaseFd() {
+func (c cancellable) ReleaseFdCancellable() {
 	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -17405,7 +17517,7 @@ func (c cancellable) ReleaseFd() {
 	C.g_cancellable_release_fd(_arg0)
 }
 
-func (c cancellable) Reset() {
+func (c cancellable) ResetCancellable() {
 	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -17413,7 +17525,7 @@ func (c cancellable) Reset() {
 	C.g_cancellable_reset(_arg0)
 }
 
-func (c cancellable) SetErrorIfCancelled() error {
+func (c cancellable) SetErrorIfCancelledCancellable() error {
 	var _arg0 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
@@ -17430,7 +17542,6 @@ func (c cancellable) SetErrorIfCancelled() error {
 
 // CharsetConverter is an implementation of #GConverter based on GIConv.
 type CharsetConverter interface {
-	gextras.Objector
 	Converter
 	Initable
 
@@ -17439,26 +17550,20 @@ type CharsetConverter interface {
 	NumFallbacks() uint
 	// UseFallback gets the Converter:use-fallback property.
 	UseFallback() bool
-	// SetUseFallback sets the Converter:use-fallback property.
-	SetUseFallback(useFallback bool)
+	// SetUseFallbackCharsetConverter sets the Converter:use-fallback property.
+	SetUseFallbackCharsetConverter(useFallback bool)
 }
 
 // charsetConverter implements the CharsetConverter class.
 type charsetConverter struct {
 	gextras.Objector
-	Converter
-	Initable
 }
-
-var _ CharsetConverter = (*charsetConverter)(nil)
 
 // WrapCharsetConverter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCharsetConverter(obj *externglib.Object) CharsetConverter {
 	return charsetConverter{
-		Objector:  obj,
-		Converter: WrapConverter(obj),
-		Initable:  WrapInitable(obj),
+		Objector: obj,
 	}
 }
 
@@ -17523,7 +17628,7 @@ func (c charsetConverter) UseFallback() bool {
 	return _ok
 }
 
-func (c charsetConverter) SetUseFallback(useFallback bool) {
+func (c charsetConverter) SetUseFallbackCharsetConverter(useFallback bool) {
 	var _arg0 *C.GCharsetConverter // out
 	var _arg1 C.gboolean           // out
 
@@ -17533,6 +17638,18 @@ func (c charsetConverter) SetUseFallback(useFallback bool) {
 	}
 
 	C.g_charset_converter_set_use_fallback(_arg0, _arg1)
+}
+
+func (c charsetConverter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
+	return WrapConverter(gextras.InternObject(c)).Convert(inbuf, outbuf, flags)
+}
+
+func (c charsetConverter) Reset() {
+	WrapConverter(gextras.InternObject(c)).Reset()
+}
+
+func (i charsetConverter) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
 // ConverterInputStream: converter input stream implements Stream and allows
@@ -17550,17 +17667,13 @@ type ConverterInputStream interface {
 // converterInputStream implements the ConverterInputStream class.
 type converterInputStream struct {
 	FilterInputStream
-	PollableInputStream
 }
-
-var _ ConverterInputStream = (*converterInputStream)(nil)
 
 // WrapConverterInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConverterInputStream(obj *externglib.Object) ConverterInputStream {
 	return converterInputStream{
-		FilterInputStream:   WrapFilterInputStream(obj),
-		PollableInputStream: WrapPollableInputStream(obj),
+		FilterInputStream: WrapFilterInputStream(obj),
 	}
 }
 
@@ -17604,6 +17717,18 @@ func (c converterInputStream) Converter() Converter {
 	return _converter
 }
 
+func (s converterInputStream) CanPoll() bool {
+	return WrapPollableInputStream(gextras.InternObject(s)).CanPoll()
+}
+
+func (s converterInputStream) IsReadable() bool {
+	return WrapPollableInputStream(gextras.InternObject(s)).IsReadable()
+}
+
+func (s converterInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+	return WrapPollableInputStream(gextras.InternObject(s)).ReadNonblocking(buffer, cancellable)
+}
+
 // ConverterOutputStream: converter output stream implements Stream and allows
 // conversion of data of various types during reading.
 //
@@ -17619,17 +17744,13 @@ type ConverterOutputStream interface {
 // converterOutputStream implements the ConverterOutputStream class.
 type converterOutputStream struct {
 	FilterOutputStream
-	PollableOutputStream
 }
-
-var _ ConverterOutputStream = (*converterOutputStream)(nil)
 
 // WrapConverterOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConverterOutputStream(obj *externglib.Object) ConverterOutputStream {
 	return converterOutputStream{
-		FilterOutputStream:   WrapFilterOutputStream(obj),
-		PollableOutputStream: WrapPollableOutputStream(obj),
+		FilterOutputStream: WrapFilterOutputStream(obj),
 	}
 }
 
@@ -17673,6 +17794,22 @@ func (c converterOutputStream) Converter() Converter {
 	return _converter
 }
 
+func (s converterOutputStream) CanPoll() bool {
+	return WrapPollableOutputStream(gextras.InternObject(s)).CanPoll()
+}
+
+func (s converterOutputStream) IsWritable() bool {
+	return WrapPollableOutputStream(gextras.InternObject(s)).IsWritable()
+}
+
+func (s converterOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+	return WrapPollableOutputStream(gextras.InternObject(s)).WriteNonblocking(buffer, cancellable)
+}
+
+func (s converterOutputStream) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error) {
+	return WrapPollableOutputStream(gextras.InternObject(s)).WritevNonblocking(vectors, cancellable)
+}
+
 // Credentials: the #GCredentials type is a reference-counted wrapper for native
 // credentials. This information is typically used for identifying,
 // authenticating and authorizing other processes.
@@ -17704,7 +17841,6 @@ func (c converterOutputStream) Converter() Converter {
 // On Solaris (including OpenSolaris and its derivatives), the native credential
 // type is a `ucred_t`. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
 type Credentials interface {
-	gextras.Objector
 
 	// UnixPid tries to get the UNIX process identifier from @credentials. This
 	// method is only available on UNIX platforms.
@@ -17721,19 +17857,19 @@ type Credentials interface {
 	// the native credentials type does not contain information about the UNIX
 	// user.
 	UnixUser() (uint, error)
-	// IsSameUser checks if @credentials and @other_credentials is the same
-	// user.
+	// IsSameUserCredentials checks if @credentials and @other_credentials is
+	// the same user.
 	//
 	// This operation can fail if #GCredentials is not supported on the the OS.
-	IsSameUser(otherCredentials Credentials) error
-	// SetUnixUser tries to set the UNIX user identifier on @credentials. This
-	// method is only available on UNIX platforms.
+	IsSameUserCredentials(otherCredentials Credentials) error
+	// SetUnixUserCredentials tries to set the UNIX user identifier on
+	// @credentials. This method is only available on UNIX platforms.
 	//
 	// This operation can fail if #GCredentials is not supported on the OS or if
 	// the native credentials type does not contain information about the UNIX
 	// user. It can also fail if the OS does not allow the use of "spoofed"
 	// credentials.
-	SetUnixUser(uid uint) error
+	SetUnixUserCredentials(uid uint) error
 	// String creates a human-readable textual representation of @credentials
 	// that can be used in logging and debug messages. The format of the
 	// returned string may change in future GLib release.
@@ -17744,8 +17880,6 @@ type Credentials interface {
 type credentials struct {
 	gextras.Objector
 }
-
-var _ Credentials = (*credentials)(nil)
 
 // WrapCredentials wraps a GObject to the right type. It is
 // primarily used internally.
@@ -17811,7 +17945,7 @@ func (c credentials) UnixUser() (uint, error) {
 	return _guint, _goerr
 }
 
-func (c credentials) IsSameUser(otherCredentials Credentials) error {
+func (c credentials) IsSameUserCredentials(otherCredentials Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
 	var _cerr *C.GError       // in
@@ -17828,7 +17962,7 @@ func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	return _goerr
 }
 
-func (c credentials) SetUnixUser(uid uint) error {
+func (c credentials) SetUnixUserCredentials(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
 	var _cerr *C.GError       // in
@@ -17865,27 +17999,19 @@ func (c credentials) String() string {
 // as a proxy for an action group that is exported over D-Bus with
 // g_dbus_connection_export_action_group().
 type DBusActionGroup interface {
-	gextras.Objector
-	ActionGroup
 	RemoteActionGroup
 }
 
 // dBusActionGroup implements the DBusActionGroup class.
 type dBusActionGroup struct {
 	gextras.Objector
-	ActionGroup
-	RemoteActionGroup
 }
-
-var _ DBusActionGroup = (*dBusActionGroup)(nil)
 
 // WrapDBusActionGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusActionGroup(obj *externglib.Object) DBusActionGroup {
 	return dBusActionGroup{
-		Objector:          obj,
-		ActionGroup:       WrapActionGroup(obj),
-		RemoteActionGroup: WrapRemoteActionGroup(obj),
+		Objector: obj,
 	}
 }
 
@@ -17893,6 +18019,70 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusActionGroup(obj), nil
+}
+
+func (a dBusActionGroup) ActionAdded(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
+}
+
+func (a dBusActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
+	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
+}
+
+func (a dBusActionGroup) ActionRemoved(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
+}
+
+func (a dBusActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
+}
+
+func (a dBusActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
+}
+
+func (a dBusActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
+}
+
+func (a dBusActionGroup) ActionEnabled(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
+}
+
+func (a dBusActionGroup) ActionParameterType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
+}
+
+func (a dBusActionGroup) ActionState(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
+}
+
+func (a dBusActionGroup) ActionStateHint(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
+}
+
+func (a dBusActionGroup) ActionStateType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
+}
+
+func (a dBusActionGroup) HasAction(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
+}
+
+func (a dBusActionGroup) ListActions() []string {
+	return WrapActionGroup(gextras.InternObject(a)).ListActions()
+}
+
+func (a dBusActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+}
+
+func (r dBusActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
+	WrapRemoteActionGroup(gextras.InternObject(r)).ActivateActionFull(actionName, parameter, platformData)
+}
+
+func (r dBusActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
+	WrapRemoteActionGroup(gextras.InternObject(r)).ChangeActionStateFull(actionName, value, platformData)
 }
 
 // DBusAuthObserver: the BusAuthObserver type provides a mechanism for
@@ -17930,22 +18120,19 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 //      return authorized;
 //    }
 type DBusAuthObserver interface {
-	gextras.Objector
 
-	// AllowMechanism emits the BusAuthObserver::allow-mechanism signal on
-	// @observer.
-	AllowMechanism(mechanism string) bool
-	// AuthorizeAuthenticatedPeer emits the
+	// AllowMechanismDBusAuthObserver emits the BusAuthObserver::allow-mechanism
+	// signal on @observer.
+	AllowMechanismDBusAuthObserver(mechanism string) bool
+	// AuthorizeAuthenticatedPeerDBusAuthObserver emits the
 	// BusAuthObserver::authorize-authenticated-peer signal on @observer.
-	AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool
+	AuthorizeAuthenticatedPeerDBusAuthObserver(stream IOStream, credentials Credentials) bool
 }
 
 // dBusAuthObserver implements the DBusAuthObserver class.
 type dBusAuthObserver struct {
 	gextras.Objector
 }
-
-var _ DBusAuthObserver = (*dBusAuthObserver)(nil)
 
 // WrapDBusAuthObserver wraps a GObject to the right type. It is
 // primarily used internally.
@@ -17974,7 +18161,7 @@ func NewDBusAuthObserver() DBusAuthObserver {
 	return _dBusAuthObserver
 }
 
-func (o dBusAuthObserver) AllowMechanism(mechanism string) bool {
+func (o dBusAuthObserver) AllowMechanismDBusAuthObserver(mechanism string) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.gchar             // out
 	var _cret C.gboolean           // in
@@ -17994,7 +18181,7 @@ func (o dBusAuthObserver) AllowMechanism(mechanism string) bool {
 	return _ok
 }
 
-func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool {
+func (o dBusAuthObserver) AuthorizeAuthenticatedPeerDBusAuthObserver(stream IOStream, credentials Credentials) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GCredentials      // out
@@ -18067,14 +18254,14 @@ func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, credential
 // Here is an example for exporting a #GObject: gdbus-example-export.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
 type DBusConnection interface {
-	gextras.Objector
 	AsyncInitable
 	Initable
 
-	// CallFinish finishes an operation started with g_dbus_connection_call().
-	CallFinish(res AsyncResult) (*glib.Variant, error)
-	// CallSync: synchronously invokes the @method_name method on the
-	// @interface_name D-Bus interface on the remote object at @object_path
+	// CallFinishDBusConnection finishes an operation started with
+	// g_dbus_connection_call().
+	CallFinishDBusConnection(res AsyncResult) (*glib.Variant, error)
+	// CallSyncDBusConnection: synchronously invokes the @method_name method on
+	// the @interface_name D-Bus interface on the remote object at @object_path
 	// owned by @bus_name.
 	//
 	// If @connection is closed then the operation will fail with
@@ -18107,8 +18294,8 @@ type DBusConnection interface {
 	//
 	// The calling thread is blocked until a reply is received. See
 	// g_dbus_connection_call() for the asynchronous version of this method.
-	CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
-	// CallWithUnixFdListFinish finishes an operation started with
+	CallSyncDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
+	// CallWithUnixFdListFinishDBusConnection finishes an operation started with
 	// g_dbus_connection_call_with_unix_fd_list().
 	//
 	// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
@@ -18120,29 +18307,32 @@ type DBusConnection interface {
 	// note that non-GDBus implementations of D-Bus can usually only access file
 	// descriptors if they are referenced in this way by a value of type
 	// G_VARIANT_TYPE_HANDLE in the body of the message.
-	CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error)
-	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
-	// and returns FDList objects. See
+	CallWithUnixFdListFinishDBusConnection(res AsyncResult) (UnixFDList, *glib.Variant, error)
+	// CallWithUnixFdListSyncDBusConnection: like g_dbus_connection_call_sync()
+	// but also takes and returns FDList objects. See
 	// g_dbus_connection_call_with_unix_fd_list() and
 	// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
 	//
 	// This method is only available on UNIX.
-	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
-	// CloseFinish finishes an operation started with g_dbus_connection_close().
-	CloseFinish(res AsyncResult) error
-	// CloseSync: synchronously closes @connection. The calling thread is
-	// blocked until this is done. See g_dbus_connection_close() for the
-	// asynchronous version of this method and more details about what it does.
-	CloseSync(cancellable Cancellable) error
-	// EmitSignal emits a signal.
+	CallWithUnixFdListSyncDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
+	// CloseFinishDBusConnection finishes an operation started with
+	// g_dbus_connection_close().
+	CloseFinishDBusConnection(res AsyncResult) error
+	// CloseSyncDBusConnection: synchronously closes @connection. The calling
+	// thread is blocked until this is done. See g_dbus_connection_close() for
+	// the asynchronous version of this method and more details about what it
+	// does.
+	CloseSyncDBusConnection(cancellable Cancellable) error
+	// EmitSignalDBusConnection emits a signal.
 	//
 	// If the parameters GVariant is floating, it is consumed.
 	//
 	// This can only fail if @parameters is not compatible with the D-Bus
 	// protocol (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
 	// (G_IO_ERROR_CLOSED).
-	EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
-	// ExportActionGroup exports @action_group on @connection at @object_path.
+	EmitSignalDBusConnection(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
+	// ExportActionGroupDBusConnection exports @action_group on @connection at
+	// @object_path.
 	//
 	// The implemented D-Bus API should be considered private. It is subject to
 	// change in the future.
@@ -18162,8 +18352,9 @@ type DBusConnection interface {
 	// activations and state change requests are rather likely to cause changes
 	// on the action group, this effectively limits a given action group to
 	// being exported from only one main context.
-	ExportActionGroup(objectPath string, actionGroup ActionGroup) (uint, error)
-	// ExportMenuModel exports @menu on @connection at @object_path.
+	ExportActionGroupDBusConnection(objectPath string, actionGroup ActionGroup) (uint, error)
+	// ExportMenuModelDBusConnection exports @menu on @connection at
+	// @object_path.
 	//
 	// The implemented D-Bus API should be considered private. It is subject to
 	// change in the future.
@@ -18175,13 +18366,15 @@ type DBusConnection interface {
 	// You can unexport the menu model using
 	// g_dbus_connection_unexport_menu_model() with the return value of this
 	// function.
-	ExportMenuModel(objectPath string, menu MenuModel) (uint, error)
-	// FlushFinish finishes an operation started with g_dbus_connection_flush().
-	FlushFinish(res AsyncResult) error
-	// FlushSync: synchronously flushes @connection. The calling thread is
-	// blocked until this is done. See g_dbus_connection_flush() for the
-	// asynchronous version of this method and more details about what it does.
-	FlushSync(cancellable Cancellable) error
+	ExportMenuModelDBusConnection(objectPath string, menu MenuModel) (uint, error)
+	// FlushFinishDBusConnection finishes an operation started with
+	// g_dbus_connection_flush().
+	FlushFinishDBusConnection(res AsyncResult) error
+	// FlushSyncDBusConnection: synchronously flushes @connection. The calling
+	// thread is blocked until this is done. See g_dbus_connection_flush() for
+	// the asynchronous version of this method and more details about what it
+	// does.
+	FlushSyncDBusConnection(cancellable Cancellable) error
 	// Capabilities gets the capabilities negotiated with the remote peer
 	Capabilities() DBusCapabilityFlags
 	// ExitOnClose gets whether the process is terminated when @connection is
@@ -18217,9 +18410,9 @@ type DBusConnection interface {
 	// bus. This can also be used to figure out if @connection is a message bus
 	// connection.
 	UniqueName() string
-	// IsClosed gets whether @connection is closed.
-	IsClosed() bool
-	// RemoveFilter removes a filter.
+	// IsClosedDBusConnection gets whether @connection is closed.
+	IsClosedDBusConnection() bool
+	// RemoveFilterDBusConnection removes a filter.
 	//
 	// Note that since filters run in a different thread, there is a race
 	// condition where it is possible that the filter will be running even after
@@ -18227,9 +18420,9 @@ type DBusConnection interface {
 	// that the filter might be using. Instead, you should pass a Notify to
 	// g_dbus_connection_add_filter(), which will be called when it is
 	// guaranteed that the data is no longer needed.
-	RemoveFilter(filterId uint)
-	// SendMessage: asynchronously sends @message to the peer represented by
-	// @connection.
+	RemoveFilterDBusConnection(filterId uint)
+	// SendMessageDBusConnection: asynchronously sends @message to the peer
+	// represented by @connection.
 	//
 	// Unless @flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag,
 	// the serial number will be assigned by @connection and set on @message via
@@ -18249,9 +18442,9 @@ type DBusConnection interface {
 	//
 	// Note that @message must be unlocked, unless @flags contain the
 	// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-	SendMessage(message DBusMessage, flags DBusSendMessageFlags) (uint32, error)
-	// SendMessageWithReplyFinish finishes an operation started with
-	// g_dbus_connection_send_message_with_reply().
+	SendMessageDBusConnection(message DBusMessage, flags DBusSendMessageFlags) (uint32, error)
+	// SendMessageWithReplyFinishDBusConnection finishes an operation started
+	// with g_dbus_connection_send_message_with_reply().
 	//
 	// Note that @error is only set if a local in-process error occurred. That
 	// is to say that the returned BusMessage object may be of type
@@ -18261,10 +18454,10 @@ type DBusConnection interface {
 	// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 	// example of how to use this low-level API to send and receive UNIX file
 	// descriptors.
-	SendMessageWithReplyFinish(res AsyncResult) (DBusMessage, error)
-	// SendMessageWithReplySync: synchronously sends @message to the peer
-	// represented by @connection and blocks the calling thread until a reply is
-	// received or the timeout is reached. See
+	SendMessageWithReplyFinishDBusConnection(res AsyncResult) (DBusMessage, error)
+	// SendMessageWithReplySyncDBusConnection: synchronously sends @message to
+	// the peer represented by @connection and blocks the calling thread until a
+	// reply is received or the timeout is reached. See
 	// g_dbus_connection_send_message_with_reply() for the asynchronous version
 	// of this method.
 	//
@@ -18292,10 +18485,10 @@ type DBusConnection interface {
 	//
 	// Note that @message must be unlocked, unless @flags contain the
 	// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-	SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage, error)
-	// SetExitOnClose sets whether the process should be terminated when
-	// @connection is closed by the remote peer. See BusConnection:exit-on-close
-	// for more details.
+	SendMessageWithReplySyncDBusConnection(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage, error)
+	// SetExitOnCloseDBusConnection sets whether the process should be
+	// terminated when @connection is closed by the remote peer. See
+	// BusConnection:exit-on-close for more details.
 	//
 	// Note that this function should be used with care. Most modern UNIX
 	// desktops tie the notion of a user session with the session bus, and
@@ -18303,8 +18496,8 @@ type DBusConnection interface {
 	// goes away. If you are setting @exit_on_close to false for the shared
 	// session bus connection, you should make sure that your application exits
 	// when the user session ends.
-	SetExitOnClose(exitOnClose bool)
-	// SignalUnsubscribe unsubscribes from signals.
+	SetExitOnCloseDBusConnection(exitOnClose bool)
+	// SignalUnsubscribeDBusConnection unsubscribes from signals.
 	//
 	// Note that there may still be D-Bus traffic to process (relating to this
 	// signal subscription) in the current thread-default Context after this
@@ -18312,48 +18505,42 @@ type DBusConnection interface {
 	// the Notify function passed to g_dbus_connection_signal_subscribe() is
 	// called, in order to avoid memory leaks through callbacks queued on the
 	// Context after it’s stopped being iterated.
-	SignalUnsubscribe(subscriptionId uint)
-	// StartMessageProcessing: if @connection was created with
+	SignalUnsubscribeDBusConnection(subscriptionId uint)
+	// StartMessageProcessingDBusConnection: if @connection was created with
 	// G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method starts
 	// processing messages. Does nothing on if @connection wasn't created with
 	// this flag or if the method has already been called.
-	StartMessageProcessing()
-	// UnexportActionGroup reverses the effect of a previous call to
-	// g_dbus_connection_export_action_group().
+	StartMessageProcessingDBusConnection()
+	// UnexportActionGroupDBusConnection reverses the effect of a previous call
+	// to g_dbus_connection_export_action_group().
 	//
 	// It is an error to call this function with an ID that wasn't returned from
 	// g_dbus_connection_export_action_group() or to call it with the same ID
 	// more than once.
-	UnexportActionGroup(exportId uint)
-	// UnexportMenuModel reverses the effect of a previous call to
+	UnexportActionGroupDBusConnection(exportId uint)
+	// UnexportMenuModelDBusConnection reverses the effect of a previous call to
 	// g_dbus_connection_export_menu_model().
 	//
 	// It is an error to call this function with an ID that wasn't returned from
 	// g_dbus_connection_export_menu_model() or to call it with the same ID more
 	// than once.
-	UnexportMenuModel(exportId uint)
-	// UnregisterObject unregisters an object.
-	UnregisterObject(registrationId uint) bool
-	// UnregisterSubtree unregisters a subtree.
-	UnregisterSubtree(registrationId uint) bool
+	UnexportMenuModelDBusConnection(exportId uint)
+	// UnregisterObjectDBusConnection unregisters an object.
+	UnregisterObjectDBusConnection(registrationId uint) bool
+	// UnregisterSubtreeDBusConnection unregisters a subtree.
+	UnregisterSubtreeDBusConnection(registrationId uint) bool
 }
 
 // dBusConnection implements the DBusConnection class.
 type dBusConnection struct {
 	gextras.Objector
-	AsyncInitable
-	Initable
 }
-
-var _ DBusConnection = (*dBusConnection)(nil)
 
 // WrapDBusConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusConnection(obj *externglib.Object) DBusConnection {
 	return dBusConnection{
-		Objector:      obj,
-		AsyncInitable: WrapAsyncInitable(obj),
-		Initable:      WrapInitable(obj),
+		Objector: obj,
 	}
 }
 
@@ -18484,7 +18671,7 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	return _dBusConnection, _goerr
 }
 
-func (c dBusConnection) CallFinish(res AsyncResult) (*glib.Variant, error) {
+func (c dBusConnection) CallFinishDBusConnection(res AsyncResult) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GVariant        // in
@@ -18507,7 +18694,7 @@ func (c dBusConnection) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	return _variant, _goerr
 }
 
-func (c dBusConnection) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
+func (c dBusConnection) CallSyncDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -18550,7 +18737,7 @@ func (c dBusConnection) CallSync(busName string, objectPath string, interfaceNam
 	return _variant, _goerr
 }
 
-func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
+func (c dBusConnection) CallWithUnixFdListFinishDBusConnection(res AsyncResult) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GUnixFDList     // in
 	var _arg2 *C.GAsyncResult    // out
@@ -18576,7 +18763,7 @@ func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *
 	return _outFdList, _variant, _goerr
 }
 
-func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
+func (c dBusConnection) CallWithUnixFdListSyncDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -18624,7 +18811,7 @@ func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string
 	return _outFdList, _variant, _goerr
 }
 
-func (c dBusConnection) CloseFinish(res AsyncResult) error {
+func (c dBusConnection) CloseFinishDBusConnection(res AsyncResult) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -18641,7 +18828,7 @@ func (c dBusConnection) CloseFinish(res AsyncResult) error {
 	return _goerr
 }
 
-func (c dBusConnection) CloseSync(cancellable Cancellable) error {
+func (c dBusConnection) CloseSyncDBusConnection(cancellable Cancellable) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
@@ -18658,7 +18845,7 @@ func (c dBusConnection) CloseSync(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
+func (c dBusConnection) EmitSignalDBusConnection(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -18687,7 +18874,7 @@ func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string,
 	return _goerr
 }
 
-func (c dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGroup) (uint, error) {
+func (c dBusConnection) ExportActionGroupDBusConnection(objectPath string, actionGroup ActionGroup) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GActionGroup    // out
@@ -18710,7 +18897,7 @@ func (c dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionG
 	return _guint, _goerr
 }
 
-func (c dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (uint, error) {
+func (c dBusConnection) ExportMenuModelDBusConnection(objectPath string, menu MenuModel) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GMenuModel      // out
@@ -18733,7 +18920,7 @@ func (c dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (uint
 	return _guint, _goerr
 }
 
-func (c dBusConnection) FlushFinish(res AsyncResult) error {
+func (c dBusConnection) FlushFinishDBusConnection(res AsyncResult) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -18750,7 +18937,7 @@ func (c dBusConnection) FlushFinish(res AsyncResult) error {
 	return _goerr
 }
 
-func (c dBusConnection) FlushSync(cancellable Cancellable) error {
+func (c dBusConnection) FlushSyncDBusConnection(cancellable Cancellable) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
@@ -18889,7 +19076,7 @@ func (c dBusConnection) UniqueName() string {
 	return _utf8
 }
 
-func (c dBusConnection) IsClosed() bool {
+func (c dBusConnection) IsClosedDBusConnection() bool {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.gboolean         // in
 
@@ -18906,7 +19093,7 @@ func (c dBusConnection) IsClosed() bool {
 	return _ok
 }
 
-func (c dBusConnection) RemoveFilter(filterId uint) {
+func (c dBusConnection) RemoveFilterDBusConnection(filterId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -18916,7 +19103,7 @@ func (c dBusConnection) RemoveFilter(filterId uint) {
 	C.g_dbus_connection_remove_filter(_arg0, _arg1)
 }
 
-func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
+func (c dBusConnection) SendMessageDBusConnection(message DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
 	var _arg2 C.GDBusSendMessageFlags // out
@@ -18938,7 +19125,7 @@ func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFl
 	return _outSerial, _goerr
 }
 
-func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage, error) {
+func (c dBusConnection) SendMessageWithReplyFinishDBusConnection(res AsyncResult) (DBusMessage, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusMessage    // in
@@ -18958,7 +19145,7 @@ func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage
 	return _dBusMessage, _goerr
 }
 
-func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage, error) {
+func (c dBusConnection) SendMessageWithReplySyncDBusConnection(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
 	var _arg2 C.GDBusSendMessageFlags // out
@@ -18987,7 +19174,7 @@ func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBus
 	return _outSerial, _dBusMessage, _goerr
 }
 
-func (c dBusConnection) SetExitOnClose(exitOnClose bool) {
+func (c dBusConnection) SetExitOnCloseDBusConnection(exitOnClose bool) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.gboolean         // out
 
@@ -18999,7 +19186,7 @@ func (c dBusConnection) SetExitOnClose(exitOnClose bool) {
 	C.g_dbus_connection_set_exit_on_close(_arg0, _arg1)
 }
 
-func (c dBusConnection) SignalUnsubscribe(subscriptionId uint) {
+func (c dBusConnection) SignalUnsubscribeDBusConnection(subscriptionId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -19009,7 +19196,7 @@ func (c dBusConnection) SignalUnsubscribe(subscriptionId uint) {
 	C.g_dbus_connection_signal_unsubscribe(_arg0, _arg1)
 }
 
-func (c dBusConnection) StartMessageProcessing() {
+func (c dBusConnection) StartMessageProcessingDBusConnection() {
 	var _arg0 *C.GDBusConnection // out
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
@@ -19017,7 +19204,7 @@ func (c dBusConnection) StartMessageProcessing() {
 	C.g_dbus_connection_start_message_processing(_arg0)
 }
 
-func (c dBusConnection) UnexportActionGroup(exportId uint) {
+func (c dBusConnection) UnexportActionGroupDBusConnection(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -19027,7 +19214,7 @@ func (c dBusConnection) UnexportActionGroup(exportId uint) {
 	C.g_dbus_connection_unexport_action_group(_arg0, _arg1)
 }
 
-func (c dBusConnection) UnexportMenuModel(exportId uint) {
+func (c dBusConnection) UnexportMenuModelDBusConnection(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -19037,7 +19224,7 @@ func (c dBusConnection) UnexportMenuModel(exportId uint) {
 	C.g_dbus_connection_unexport_menu_model(_arg0, _arg1)
 }
 
-func (c dBusConnection) UnregisterObject(registrationId uint) bool {
+func (c dBusConnection) UnregisterObjectDBusConnection(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 	var _cret C.gboolean         // in
@@ -19056,7 +19243,7 @@ func (c dBusConnection) UnregisterObject(registrationId uint) bool {
 	return _ok
 }
 
-func (c dBusConnection) UnregisterSubtree(registrationId uint) bool {
+func (c dBusConnection) UnregisterSubtreeDBusConnection(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 	var _cret C.gboolean         // in
@@ -19075,72 +19262,83 @@ func (c dBusConnection) UnregisterSubtree(registrationId uint) bool {
 	return _ok
 }
 
+func (i dBusConnection) InitFinish(res AsyncResult) error {
+	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
+}
+
+func (i dBusConnection) NewFinish(res AsyncResult) (gextras.Objector, error) {
+	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
+}
+
+func (i dBusConnection) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+}
+
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
 // service side.
 type DBusInterfaceSkeleton interface {
-	gextras.Objector
 	DBusInterface
 
-	// Export exports @interface_ at @object_path on @connection.
+	// ExportDBusInterfaceSkeleton exports @interface_ at @object_path on
+	// @connection.
 	//
 	// This can be called multiple times to export the same @interface_ onto
 	// multiple connections however the @object_path provided must be the same
 	// for all connections.
 	//
 	// Use g_dbus_interface_skeleton_unexport() to unexport the object.
-	Export(connection DBusConnection, objectPath string) error
-	// Flush: if @interface_ has outstanding changes, request for these changes
-	// to be emitted immediately.
+	ExportDBusInterfaceSkeleton(connection DBusConnection, objectPath string) error
+	// FlushDBusInterfaceSkeleton: if @interface_ has outstanding changes,
+	// request for these changes to be emitted immediately.
 	//
 	// For example, an exported D-Bus interface may queue up property changes
 	// and emit the `org.freedesktop.DBus.Properties.PropertiesChanged` signal
 	// later (e.g. in an idle handler). This technique is useful for collapsing
 	// multiple property changes into one.
-	Flush()
+	FlushDBusInterfaceSkeleton()
 	// Connection gets the first connection that @interface_ is exported on, if
 	// any.
 	Connection() DBusConnection
 	// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
 	// of @interface_
 	Flags() DBusInterfaceSkeletonFlags
-	// Info gets D-Bus introspection information for the D-Bus interface
+	// GetInfo gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
-	Info() *DBusInterfaceInfo
+	GetInfo() *DBusInterfaceInfo
 	// ObjectPath gets the object path that @interface_ is exported on, if any.
 	ObjectPath() string
 	// Properties gets all D-Bus properties for @interface_.
 	Properties() *glib.Variant
-	// HasConnection checks if @interface_ is exported on @connection.
-	HasConnection(connection DBusConnection) bool
-	// SetFlags sets flags describing what the behavior of @skeleton should be.
-	SetFlags(flags DBusInterfaceSkeletonFlags)
-	// Unexport stops exporting @interface_ on all connections it is exported
-	// on.
+	// HasConnectionDBusInterfaceSkeleton checks if @interface_ is exported on
+	// @connection.
+	HasConnectionDBusInterfaceSkeleton(connection DBusConnection) bool
+	// SetFlagsDBusInterfaceSkeleton sets flags describing what the behavior of
+	// @skeleton should be.
+	SetFlagsDBusInterfaceSkeleton(flags DBusInterfaceSkeletonFlags)
+	// UnexportDBusInterfaceSkeleton stops exporting @interface_ on all
+	// connections it is exported on.
 	//
 	// To unexport @interface_ from only a single connection, use
 	// g_dbus_interface_skeleton_unexport_from_connection()
-	Unexport()
-	// UnexportFromConnection stops exporting @interface_ on @connection.
+	UnexportDBusInterfaceSkeleton()
+	// UnexportFromConnectionDBusInterfaceSkeleton stops exporting @interface_
+	// on @connection.
 	//
 	// To stop exporting on all connections the interface is exported on, use
 	// g_dbus_interface_skeleton_unexport().
-	UnexportFromConnection(connection DBusConnection)
+	UnexportFromConnectionDBusInterfaceSkeleton(connection DBusConnection)
 }
 
 // dBusInterfaceSkeleton implements the DBusInterfaceSkeleton class.
 type dBusInterfaceSkeleton struct {
 	gextras.Objector
-	DBusInterface
 }
-
-var _ DBusInterfaceSkeleton = (*dBusInterfaceSkeleton)(nil)
 
 // WrapDBusInterfaceSkeleton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeleton {
 	return dBusInterfaceSkeleton{
-		Objector:      obj,
-		DBusInterface: WrapDBusInterface(obj),
+		Objector: obj,
 	}
 }
 
@@ -19150,7 +19348,7 @@ func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 	return WrapDBusInterfaceSkeleton(obj), nil
 }
 
-func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) error {
+func (i dBusInterfaceSkeleton) ExportDBusInterfaceSkeleton(connection DBusConnection, objectPath string) error {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
 	var _arg2 *C.gchar                  // out
@@ -19170,7 +19368,7 @@ func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath stri
 	return _goerr
 }
 
-func (i dBusInterfaceSkeleton) Flush() {
+func (i dBusInterfaceSkeleton) FlushDBusInterfaceSkeleton() {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
@@ -19208,7 +19406,7 @@ func (i dBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	return _dBusInterfaceSkeletonFlags
 }
 
-func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
+func (i dBusInterfaceSkeleton) GetInfo() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusInterfaceInfo     // in
 
@@ -19256,7 +19454,7 @@ func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
 	return _variant
 }
 
-func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
+func (i dBusInterfaceSkeleton) HasConnectionDBusInterfaceSkeleton(connection DBusConnection) bool {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
 	var _cret C.gboolean                // in
@@ -19275,7 +19473,7 @@ func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
 	return _ok
 }
 
-func (i dBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
+func (i dBusInterfaceSkeleton) SetFlagsDBusInterfaceSkeleton(flags DBusInterfaceSkeletonFlags) {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _arg1 C.GDBusInterfaceSkeletonFlags // out
 
@@ -19285,7 +19483,7 @@ func (i dBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
 	C.g_dbus_interface_skeleton_set_flags(_arg0, _arg1)
 }
 
-func (i dBusInterfaceSkeleton) Unexport() {
+func (i dBusInterfaceSkeleton) UnexportDBusInterfaceSkeleton() {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
@@ -19293,7 +19491,7 @@ func (i dBusInterfaceSkeleton) Unexport() {
 	C.g_dbus_interface_skeleton_unexport(_arg0)
 }
 
-func (i dBusInterfaceSkeleton) UnexportFromConnection(connection DBusConnection) {
+func (i dBusInterfaceSkeleton) UnexportFromConnectionDBusInterfaceSkeleton(connection DBusConnection) {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
 
@@ -19303,19 +19501,28 @@ func (i dBusInterfaceSkeleton) UnexportFromConnection(connection DBusConnection)
 	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
 }
 
+func (i dBusInterfaceSkeleton) DupObject() DBusObject {
+	return WrapDBusInterface(gextras.InternObject(i)).DupObject()
+}
+
+func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
+	return WrapDBusInterface(gextras.InternObject(i)).Info()
+}
+
+func (i dBusInterfaceSkeleton) SetObject(object DBusObject) {
+	WrapDBusInterface(gextras.InternObject(i)).SetObject(object)
+}
+
 // DBusMenuModel is an implementation of Model that can be used as a proxy for a
 // menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
 type DBusMenuModel interface {
-	MenuModel
 }
 
 // dBusMenuModel implements the DBusMenuModel class.
 type dBusMenuModel struct {
 	MenuModel
 }
-
-var _ DBusMenuModel = (*dBusMenuModel)(nil)
 
 // WrapDBusMenuModel wraps a GObject to the right type. It is
 // primarily used internally.
@@ -19334,14 +19541,14 @@ func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 // DBusMessage: a type for representing D-Bus messages that can be sent or
 // received on a BusConnection.
 type DBusMessage interface {
-	gextras.Objector
 
-	// Copy copies @message. The copy is a deep copy and the returned BusMessage
-	// is completely identical except that it is guaranteed to not be locked.
+	// CopyDBusMessage copies @message. The copy is a deep copy and the returned
+	// BusMessage is completely identical except that it is guaranteed to not be
+	// locked.
 	//
 	// This operation can fail if e.g. @message contains file descriptors and
 	// the per-process or system-wide open files limit is reached.
-	Copy() (DBusMessage, error)
+	CopyDBusMessage() (DBusMessage, error)
 	// Arg0: convenience to get the first item in the body of @message.
 	Arg0() string
 	// Body gets the body of a message.
@@ -19402,15 +19609,17 @@ type DBusMessage interface {
 	// returns 5, that is intended to be a reference to the file descriptor that
 	// can be accessed by `g_unix_fd_list_get (list, 5, ...)`.
 	UnixFdList() UnixFDList
-	// Lock: if @message is locked, does nothing. Otherwise locks the message.
-	Lock()
-	// NewMethodErrorLiteral creates a new BusMessage that is an error reply to
+	// LockDBusMessage: if @message is locked, does nothing. Otherwise locks the
+	// message.
+	LockDBusMessage()
+	// NewMethodErrorLiteralDBusMessage creates a new BusMessage that is an
+	// error reply to @method_call_message.
+	NewMethodErrorLiteralDBusMessage(errorName string, errorMessage string) DBusMessage
+	// NewMethodReplyDBusMessage creates a new BusMessage that is a reply to
 	// @method_call_message.
-	NewMethodErrorLiteral(errorName string, errorMessage string) DBusMessage
-	// NewMethodReply creates a new BusMessage that is a reply to
-	// @method_call_message.
-	NewMethodReply() DBusMessage
-	// Print produces a human-readable multi-line description of @message.
+	NewMethodReplyDBusMessage() DBusMessage
+	// PrintDBusMessage produces a human-readable multi-line description of
+	// @message.
 	//
 	// The contents of the description has no ABI guarantees, the contents and
 	// formatting is subject to change at any time. Typical output looks
@@ -19441,55 +19650,56 @@ type DBusMessage interface {
 	//    Body: ()
 	//    UNIX File Descriptors:
 	//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
-	Print(indent uint) string
-	// SetBody sets the body @message. As a side-effect the
+	PrintDBusMessage(indent uint) string
+	// SetBodyDBusMessage sets the body @message. As a side-effect the
 	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the type
 	// string of @body (or cleared if @body is nil).
 	//
 	// If @body is floating, @message assumes ownership of @body.
-	SetBody(body *glib.Variant)
-	// SetByteOrder sets the byte order of @message.
-	SetByteOrder(byteOrder DBusMessageByteOrder)
-	// SetDestination: convenience setter for the
+	SetBodyDBusMessage(body *glib.Variant)
+	// SetByteOrderDBusMessage sets the byte order of @message.
+	SetByteOrderDBusMessage(byteOrder DBusMessageByteOrder)
+	// SetDestinationDBusMessage: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
-	SetDestination(value string)
-	// SetErrorName: convenience setter for the
+	SetDestinationDBusMessage(value string)
+	// SetErrorNameDBusMessage: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
-	SetErrorName(value string)
-	// SetFlags sets the flags to set on @message.
-	SetFlags(flags DBusMessageFlags)
-	// SetHeader sets a header field on @message.
+	SetErrorNameDBusMessage(value string)
+	// SetFlagsDBusMessage sets the flags to set on @message.
+	SetFlagsDBusMessage(flags DBusMessageFlags)
+	// SetHeaderDBusMessage sets a header field on @message.
 	//
 	// If @value is floating, @message assumes ownership of @value.
-	SetHeader(headerField DBusMessageHeaderField, value *glib.Variant)
-	// SetInterface: convenience setter for the
+	SetHeaderDBusMessage(headerField DBusMessageHeaderField, value *glib.Variant)
+	// SetInterfaceDBusMessage: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
-	SetInterface(value string)
-	// SetMember: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
-	// header field.
-	SetMember(value string)
-	// SetMessageType sets @message to be of @type.
-	SetMessageType(typ DBusMessageType)
-	// SetNumUnixFds: convenience setter for the
+	SetInterfaceDBusMessage(value string)
+	// SetMemberDBusMessage: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header field.
+	SetMemberDBusMessage(value string)
+	// SetMessageTypeDBusMessage sets @message to be of @type.
+	SetMessageTypeDBusMessage(typ DBusMessageType)
+	// SetNumUnixFdsDBusMessage: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-	SetNumUnixFds(value uint32)
-	// SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH
-	// header field.
-	SetPath(value string)
-	// SetReplySerial: convenience setter for the
+	SetNumUnixFdsDBusMessage(value uint32)
+	// SetPathDBusMessage: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_PATH header field.
+	SetPathDBusMessage(value string)
+	// SetReplySerialDBusMessage: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
-	SetReplySerial(value uint32)
-	// SetSender: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
-	// header field.
-	SetSender(value string)
-	// SetSerial sets the serial for @message.
-	SetSerial(serial uint32)
-	// SetSignature: convenience setter for the
+	SetReplySerialDBusMessage(value uint32)
+	// SetSenderDBusMessage: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field.
+	SetSenderDBusMessage(value string)
+	// SetSerialDBusMessage sets the serial for @message.
+	SetSerialDBusMessage(serial uint32)
+	// SetSignatureDBusMessage: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
-	SetSignature(value string)
-	// SetUnixFdList sets the UNIX file descriptors associated with @message. As
-	// a side-effect the G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field
-	// is set to the number of fds in @fd_list (or cleared if @fd_list is nil).
+	SetSignatureDBusMessage(value string)
+	// SetUnixFdListDBusMessage sets the UNIX file descriptors associated with
+	// @message. As a side-effect the G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS
+	// header field is set to the number of fds in @fd_list (or cleared if
+	// @fd_list is nil).
 	//
 	// This method is only available on UNIX.
 	//
@@ -19497,23 +19707,21 @@ type DBusMessage interface {
 	// note that non-GDBus implementations of D-Bus can usually only access file
 	// descriptors if they are referenced by a value of type
 	// G_VARIANT_TYPE_HANDLE in the body of the message.
-	SetUnixFdList(fdList UnixFDList)
-	// ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
-	// nothing and returns false.
+	SetUnixFdListDBusMessage(fdList UnixFDList)
+	// ToGerrorDBusMessage: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR
+	// does nothing and returns false.
 	//
 	// Otherwise this method encodes the error in @message as a #GError using
 	// g_dbus_error_set_dbus_error() using the information in the
 	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of @message as well
 	// as the first string item in @message's body.
-	ToGerror() error
+	ToGerrorDBusMessage() error
 }
 
 // dBusMessage implements the DBusMessage class.
 type dBusMessage struct {
 	gextras.Objector
 }
-
-var _ DBusMessage = (*dBusMessage)(nil)
 
 // WrapDBusMessage wraps a GObject to the right type. It is
 // primarily used internally.
@@ -19619,7 +19827,7 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMes
 	return _dBusMessage
 }
 
-func (m dBusMessage) Copy() (DBusMessage, error) {
+func (m dBusMessage) CopyDBusMessage() (DBusMessage, error) {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
 	var _cerr *C.GError       // in
@@ -19938,7 +20146,7 @@ func (m dBusMessage) UnixFdList() UnixFDList {
 	return _unixFDList
 }
 
-func (m dBusMessage) Lock() {
+func (m dBusMessage) LockDBusMessage() {
 	var _arg0 *C.GDBusMessage // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
@@ -19946,7 +20154,7 @@ func (m dBusMessage) Lock() {
 	C.g_dbus_message_lock(_arg0)
 }
 
-func (m dBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string) DBusMessage {
+func (m dBusMessage) NewMethodErrorLiteralDBusMessage(errorName string, errorMessage string) DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -19967,7 +20175,7 @@ func (m dBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string
 	return _dBusMessage
 }
 
-func (m dBusMessage) NewMethodReply() DBusMessage {
+func (m dBusMessage) NewMethodReplyDBusMessage() DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
 
@@ -19982,7 +20190,7 @@ func (m dBusMessage) NewMethodReply() DBusMessage {
 	return _dBusMessage
 }
 
-func (m dBusMessage) Print(indent uint) string {
+func (m dBusMessage) PrintDBusMessage(indent uint) string {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint         // out
 	var _cret *C.gchar        // in
@@ -20000,7 +20208,7 @@ func (m dBusMessage) Print(indent uint) string {
 	return _utf8
 }
 
-func (m dBusMessage) SetBody(body *glib.Variant) {
+func (m dBusMessage) SetBodyDBusMessage(body *glib.Variant) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GVariant     // out
 
@@ -20010,7 +20218,7 @@ func (m dBusMessage) SetBody(body *glib.Variant) {
 	C.g_dbus_message_set_body(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
+func (m dBusMessage) SetByteOrderDBusMessage(byteOrder DBusMessageByteOrder) {
 	var _arg0 *C.GDBusMessage         // out
 	var _arg1 C.GDBusMessageByteOrder // out
 
@@ -20020,7 +20228,7 @@ func (m dBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	C.g_dbus_message_set_byte_order(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetDestination(value string) {
+func (m dBusMessage) SetDestinationDBusMessage(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -20031,7 +20239,7 @@ func (m dBusMessage) SetDestination(value string) {
 	C.g_dbus_message_set_destination(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetErrorName(value string) {
+func (m dBusMessage) SetErrorNameDBusMessage(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -20042,7 +20250,7 @@ func (m dBusMessage) SetErrorName(value string) {
 	C.g_dbus_message_set_error_name(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetFlags(flags DBusMessageFlags) {
+func (m dBusMessage) SetFlagsDBusMessage(flags DBusMessageFlags) {
 	var _arg0 *C.GDBusMessage     // out
 	var _arg1 C.GDBusMessageFlags // out
 
@@ -20052,7 +20260,7 @@ func (m dBusMessage) SetFlags(flags DBusMessageFlags) {
 	C.g_dbus_message_set_flags(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
+func (m dBusMessage) SetHeaderDBusMessage(headerField DBusMessageHeaderField, value *glib.Variant) {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
 	var _arg2 *C.GVariant               // out
@@ -20064,7 +20272,7 @@ func (m dBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.V
 	C.g_dbus_message_set_header(_arg0, _arg1, _arg2)
 }
 
-func (m dBusMessage) SetInterface(value string) {
+func (m dBusMessage) SetInterfaceDBusMessage(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -20075,7 +20283,7 @@ func (m dBusMessage) SetInterface(value string) {
 	C.g_dbus_message_set_interface(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetMember(value string) {
+func (m dBusMessage) SetMemberDBusMessage(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -20086,7 +20294,7 @@ func (m dBusMessage) SetMember(value string) {
 	C.g_dbus_message_set_member(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetMessageType(typ DBusMessageType) {
+func (m dBusMessage) SetMessageTypeDBusMessage(typ DBusMessageType) {
 	var _arg0 *C.GDBusMessage    // out
 	var _arg1 C.GDBusMessageType // out
 
@@ -20096,7 +20304,7 @@ func (m dBusMessage) SetMessageType(typ DBusMessageType) {
 	C.g_dbus_message_set_message_type(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetNumUnixFds(value uint32) {
+func (m dBusMessage) SetNumUnixFdsDBusMessage(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
 
@@ -20106,7 +20314,7 @@ func (m dBusMessage) SetNumUnixFds(value uint32) {
 	C.g_dbus_message_set_num_unix_fds(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetPath(value string) {
+func (m dBusMessage) SetPathDBusMessage(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -20117,7 +20325,7 @@ func (m dBusMessage) SetPath(value string) {
 	C.g_dbus_message_set_path(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetReplySerial(value uint32) {
+func (m dBusMessage) SetReplySerialDBusMessage(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
 
@@ -20127,7 +20335,7 @@ func (m dBusMessage) SetReplySerial(value uint32) {
 	C.g_dbus_message_set_reply_serial(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetSender(value string) {
+func (m dBusMessage) SetSenderDBusMessage(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -20138,7 +20346,7 @@ func (m dBusMessage) SetSender(value string) {
 	C.g_dbus_message_set_sender(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetSerial(serial uint32) {
+func (m dBusMessage) SetSerialDBusMessage(serial uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
 
@@ -20148,7 +20356,7 @@ func (m dBusMessage) SetSerial(serial uint32) {
 	C.g_dbus_message_set_serial(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetSignature(value string) {
+func (m dBusMessage) SetSignatureDBusMessage(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -20159,7 +20367,7 @@ func (m dBusMessage) SetSignature(value string) {
 	C.g_dbus_message_set_signature(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
+func (m dBusMessage) SetUnixFdListDBusMessage(fdList UnixFDList) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GUnixFDList  // out
 
@@ -20169,7 +20377,7 @@ func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
 	C.g_dbus_message_set_unix_fd_list(_arg0, _arg1)
 }
 
-func (m dBusMessage) ToGerror() error {
+func (m dBusMessage) ToGerrorDBusMessage() error {
 	var _arg0 *C.GDBusMessage // out
 	var _cerr *C.GError       // in
 
@@ -20192,7 +20400,6 @@ func (m dBusMessage) ToGerror() error {
 // argument to the handle_method_call() function in a BusInterfaceVTable that
 // was passed to g_dbus_connection_register_object().
 type DBusMethodInvocation interface {
-	gextras.Objector
 
 	// Connection gets the BusConnection the method was invoked on.
 	Connection() DBusConnection
@@ -20241,20 +20448,22 @@ type DBusMethodInvocation interface {
 	PropertyInfo() *DBusPropertyInfo
 	// Sender gets the bus name that invoked the method.
 	Sender() string
-	// ReturnDBusError finishes handling a D-Bus method call by returning an
-	// error.
+	// ReturnDBusErrorDBusMethodInvocation finishes handling a D-Bus method call
+	// by returning an error.
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnDBusError(errorName string, errorMessage string)
-	// ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
-	// #GError instead of the error domain, error code and message.
+	ReturnDBusErrorDBusMethodInvocation(errorName string, errorMessage string)
+	// ReturnGerrorDBusMethodInvocation: like
+	// g_dbus_method_invocation_return_error() but takes a #GError instead of
+	// the error domain, error code and message.
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnGerror(err error)
-	// ReturnValue finishes handling a D-Bus method call by returning
-	// @parameters. If the @parameters GVariant is floating, it is consumed.
+	ReturnGerrorDBusMethodInvocation(err error)
+	// ReturnValueDBusMethodInvocation finishes handling a D-Bus method call by
+	// returning @parameters. If the @parameters GVariant is floating, it is
+	// consumed.
 	//
 	// It is an error if @parameters is not of the right format: it must be a
 	// tuple containing the out-parameters of the D-Bus method. Even if the
@@ -20282,23 +20491,21 @@ type DBusMethodInvocation interface {
 	// Since 2.48, if the method call requested for a reply not to be sent then
 	// this call will sink @parameters and free @invocation, but otherwise do
 	// nothing (as per the recommendations of the D-Bus specification).
-	ReturnValue(parameters *glib.Variant)
-	// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value()
-	// but also takes a FDList.
+	ReturnValueDBusMethodInvocation(parameters *glib.Variant)
+	// ReturnValueWithUnixFdListDBusMethodInvocation: like
+	// g_dbus_method_invocation_return_value() but also takes a FDList.
 	//
 	// This method is only available on UNIX.
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList)
+	ReturnValueWithUnixFdListDBusMethodInvocation(parameters *glib.Variant, fdList UnixFDList)
 }
 
 // dBusMethodInvocation implements the DBusMethodInvocation class.
 type dBusMethodInvocation struct {
 	gextras.Objector
 }
-
-var _ DBusMethodInvocation = (*dBusMethodInvocation)(nil)
 
 // WrapDBusMethodInvocation wraps a GObject to the right type. It is
 // primarily used internally.
@@ -20449,7 +20656,7 @@ func (i dBusMethodInvocation) Sender() string {
 	return _utf8
 }
 
-func (i dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage string) {
+func (i dBusMethodInvocation) ReturnDBusErrorDBusMethodInvocation(errorName string, errorMessage string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.gchar                 // out
 	var _arg2 *C.gchar                 // out
@@ -20463,18 +20670,18 @@ func (i dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage str
 	C.g_dbus_method_invocation_return_dbus_error(_arg0, _arg1, _arg2)
 }
 
-func (i dBusMethodInvocation) ReturnGerror(err error) {
+func (i dBusMethodInvocation) ReturnGerrorDBusMethodInvocation(err error) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GError                // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	_arg1 = (*C.GError)(gerror.New(err))
 	defer C.g_error_free(_arg1)
 
 	C.g_dbus_method_invocation_return_gerror(_arg0, _arg1)
 }
 
-func (i dBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
+func (i dBusMethodInvocation) ReturnValueDBusMethodInvocation(parameters *glib.Variant) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
 
@@ -20484,7 +20691,7 @@ func (i dBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	C.g_dbus_method_invocation_return_value(_arg0, _arg1)
 }
 
-func (i dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList) {
+func (i dBusMethodInvocation) ReturnValueWithUnixFdListDBusMethodInvocation(parameters *glib.Variant, fdList UnixFDList) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
 	var _arg2 *C.GUnixFDList           // out
@@ -20560,7 +20767,6 @@ func (i dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant
 // the same context and, consequently, will deliver signals in the same main
 // loop.
 type DBusObjectManagerClient interface {
-	gextras.Objector
 	AsyncInitable
 	DBusObjectManager
 	Initable
@@ -20582,21 +20788,13 @@ type DBusObjectManagerClient interface {
 // dBusObjectManagerClient implements the DBusObjectManagerClient class.
 type dBusObjectManagerClient struct {
 	gextras.Objector
-	AsyncInitable
-	DBusObjectManager
-	Initable
 }
-
-var _ DBusObjectManagerClient = (*dBusObjectManagerClient)(nil)
 
 // WrapDBusObjectManagerClient wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectManagerClient(obj *externglib.Object) DBusObjectManagerClient {
 	return dBusObjectManagerClient{
-		Objector:          obj,
-		AsyncInitable:     WrapAsyncInitable(obj),
-		DBusObjectManager: WrapDBusObjectManager(obj),
-		Initable:          WrapInitable(obj),
+		Objector: obj,
 	}
 }
 
@@ -20707,6 +20905,30 @@ func (m dBusObjectManagerClient) NameOwner() string {
 	return _utf8
 }
 
+func (i dBusObjectManagerClient) InitFinish(res AsyncResult) error {
+	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
+}
+
+func (i dBusObjectManagerClient) NewFinish(res AsyncResult) (gextras.Objector, error) {
+	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
+}
+
+func (m dBusObjectManagerClient) Interface(objectPath string, interfaceName string) DBusInterface {
+	return WrapDBusObjectManager(gextras.InternObject(m)).Interface(objectPath, interfaceName)
+}
+
+func (m dBusObjectManagerClient) Object(objectPath string) DBusObject {
+	return WrapDBusObjectManager(gextras.InternObject(m)).Object(objectPath)
+}
+
+func (m dBusObjectManagerClient) ObjectPath() string {
+	return WrapDBusObjectManager(gextras.InternObject(m)).ObjectPath()
+}
+
+func (i dBusObjectManagerClient) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+}
+
 // DBusObjectManagerServer is used to export BusObject instances using the
 // standardized org.freedesktop.DBus.ObjectManager
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
@@ -20728,10 +20950,9 @@ func (m dBusObjectManagerClient) NameOwner() string {
 // used with BusObjectManagerServer or any D-Bus object implementing the
 // org.freedesktop.DBus.ObjectManager interface.
 type DBusObjectManagerServer interface {
-	gextras.Objector
 	DBusObjectManager
 
-	// Export exports @object on @manager.
+	// ExportDBusObjectManagerServer exports @object on @manager.
 	//
 	// If there is already a BusObject exported at the object path, then the old
 	// object is removed.
@@ -20741,41 +20962,39 @@ type DBusObjectManagerServer interface {
 	//
 	// Note that @manager will take a reference on @object for as long as it is
 	// exported.
-	Export(object DBusObjectSkeleton)
-	// ExportUniquely: like g_dbus_object_manager_server_export() but appends a
-	// string of the form _N (with N being a natural number) to @object's object
-	// path if an object with the given path already exists. As such, the
+	ExportDBusObjectManagerServer(object DBusObjectSkeleton)
+	// ExportUniquelyDBusObjectManagerServer: like
+	// g_dbus_object_manager_server_export() but appends a string of the form _N
+	// (with N being a natural number) to @object's object path if an object
+	// with the given path already exists. As such, the
 	// BusObjectProxy:g-object-path property of @object may be modified.
-	ExportUniquely(object DBusObjectSkeleton)
+	ExportUniquelyDBusObjectManagerServer(object DBusObjectSkeleton)
 	// Connection gets the BusConnection used by @manager.
 	Connection() DBusConnection
-	// IsExported returns whether @object is currently exported on @manager.
-	IsExported(object DBusObjectSkeleton) bool
-	// SetConnection exports all objects managed by @manager on @connection. If
-	// @connection is nil, stops exporting objects.
-	SetConnection(connection DBusConnection)
-	// Unexport: if @manager has an object at @path, removes the object.
-	// Otherwise does nothing.
+	// IsExportedDBusObjectManagerServer returns whether @object is currently
+	// exported on @manager.
+	IsExportedDBusObjectManagerServer(object DBusObjectSkeleton) bool
+	// SetConnectionDBusObjectManagerServer exports all objects managed by
+	// @manager on @connection. If @connection is nil, stops exporting objects.
+	SetConnectionDBusObjectManagerServer(connection DBusConnection)
+	// UnexportDBusObjectManagerServer: if @manager has an object at @path,
+	// removes the object. Otherwise does nothing.
 	//
 	// Note that @object_path must be in the hierarchy rooted by the object path
 	// for @manager.
-	Unexport(objectPath string) bool
+	UnexportDBusObjectManagerServer(objectPath string) bool
 }
 
 // dBusObjectManagerServer implements the DBusObjectManagerServer class.
 type dBusObjectManagerServer struct {
 	gextras.Objector
-	DBusObjectManager
 }
-
-var _ DBusObjectManagerServer = (*dBusObjectManagerServer)(nil)
 
 // WrapDBusObjectManagerServer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
 	return dBusObjectManagerServer{
-		Objector:          obj,
-		DBusObjectManager: WrapDBusObjectManager(obj),
+		Objector: obj,
 	}
 }
 
@@ -20808,7 +21027,7 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	return _dBusObjectManagerServer
 }
 
-func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {
+func (m dBusObjectManagerServer) ExportDBusObjectManagerServer(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
@@ -20818,7 +21037,7 @@ func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {
 	C.g_dbus_object_manager_server_export(_arg0, _arg1)
 }
 
-func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
+func (m dBusObjectManagerServer) ExportUniquelyDBusObjectManagerServer(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
@@ -20843,7 +21062,7 @@ func (m dBusObjectManagerServer) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
+func (m dBusObjectManagerServer) IsExportedDBusObjectManagerServer(object DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 	var _cret C.gboolean                  // in
@@ -20862,7 +21081,7 @@ func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	return _ok
 }
 
-func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
+func (m dBusObjectManagerServer) SetConnectionDBusObjectManagerServer(connection DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusConnection          // out
 
@@ -20872,7 +21091,7 @@ func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
 	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
 }
 
-func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
+func (m dBusObjectManagerServer) UnexportDBusObjectManagerServer(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.gchar                    // out
 	var _cret C.gboolean                  // in
@@ -20892,12 +21111,23 @@ func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 	return _ok
 }
 
+func (m dBusObjectManagerServer) Interface(objectPath string, interfaceName string) DBusInterface {
+	return WrapDBusObjectManager(gextras.InternObject(m)).Interface(objectPath, interfaceName)
+}
+
+func (m dBusObjectManagerServer) Object(objectPath string) DBusObject {
+	return WrapDBusObjectManager(gextras.InternObject(m)).Object(objectPath)
+}
+
+func (m dBusObjectManagerServer) ObjectPath() string {
+	return WrapDBusObjectManager(gextras.InternObject(m)).ObjectPath()
+}
+
 // DBusObjectProXY: a BusObjectProxy is an object used to represent a remote
 // object with one or more D-Bus interfaces. Normally, you don't instantiate a
 // BusObjectProxy yourself - typically BusObjectManagerClient is used to obtain
 // it.
 type DBusObjectProXY interface {
-	gextras.Objector
 	DBusObject
 
 	// Connection gets the connection that @proxy is for.
@@ -20907,17 +21137,13 @@ type DBusObjectProXY interface {
 // dBusObjectProXY implements the DBusObjectProXY class.
 type dBusObjectProXY struct {
 	gextras.Objector
-	DBusObject
 }
-
-var _ DBusObjectProXY = (*dBusObjectProXY)(nil)
 
 // WrapDBusObjectProXY wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectProXY(obj *externglib.Object) DBusObjectProXY {
 	return dBusObjectProXY{
-		Objector:   obj,
-		DBusObject: WrapDBusObject(obj),
+		Objector: obj,
 	}
 }
 
@@ -20962,53 +21188,56 @@ func (p dBusObjectProXY) Connection() DBusConnection {
 	return _dBusConnection
 }
 
+func (o dBusObjectProXY) Interface(interfaceName string) DBusInterface {
+	return WrapDBusObject(gextras.InternObject(o)).Interface(interfaceName)
+}
+
+func (o dBusObjectProXY) ObjectPath() string {
+	return WrapDBusObject(gextras.InternObject(o)).ObjectPath()
+}
+
 // DBusObjectSkeleton: a BusObjectSkeleton instance is essentially a group of
 // D-Bus interfaces. The set of exported interfaces on the object may be dynamic
 // and change at runtime.
 //
 // This type is intended to be used with BusObjectManager.
 type DBusObjectSkeleton interface {
-	gextras.Objector
 	DBusObject
 
-	// AddInterface adds @interface_ to @object.
+	// AddInterfaceDBusObjectSkeleton adds @interface_ to @object.
 	//
 	// If @object already contains a BusInterfaceSkeleton with the same
 	// interface name, it is removed before @interface_ is added.
 	//
 	// Note that @object takes its own reference on @interface_ and holds it
 	// until removed.
-	AddInterface(interface_ DBusInterfaceSkeleton)
-	// Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
-	// interfaces belonging to @object. See that method for when flushing is
-	// useful.
-	Flush()
-	// RemoveInterface removes @interface_ from @object.
-	RemoveInterface(interface_ DBusInterfaceSkeleton)
-	// RemoveInterfaceByName removes the BusInterface with @interface_name from
-	// @object.
+	AddInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton)
+	// FlushDBusObjectSkeleton: this method simply calls
+	// g_dbus_interface_skeleton_flush() on all interfaces belonging to @object.
+	// See that method for when flushing is useful.
+	FlushDBusObjectSkeleton()
+	// RemoveInterfaceDBusObjectSkeleton removes @interface_ from @object.
+	RemoveInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton)
+	// RemoveInterfaceByNameDBusObjectSkeleton removes the BusInterface with
+	// @interface_name from @object.
 	//
 	// If no D-Bus interface of the given interface exists, this function does
 	// nothing.
-	RemoveInterfaceByName(interfaceName string)
-	// SetObjectPath sets the object path for @object.
-	SetObjectPath(objectPath string)
+	RemoveInterfaceByNameDBusObjectSkeleton(interfaceName string)
+	// SetObjectPathDBusObjectSkeleton sets the object path for @object.
+	SetObjectPathDBusObjectSkeleton(objectPath string)
 }
 
 // dBusObjectSkeleton implements the DBusObjectSkeleton class.
 type dBusObjectSkeleton struct {
 	gextras.Objector
-	DBusObject
 }
-
-var _ DBusObjectSkeleton = (*dBusObjectSkeleton)(nil)
 
 // WrapDBusObjectSkeleton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectSkeleton(obj *externglib.Object) DBusObjectSkeleton {
 	return dBusObjectSkeleton{
-		Objector:   obj,
-		DBusObject: WrapDBusObject(obj),
+		Objector: obj,
 	}
 }
 
@@ -21035,7 +21264,7 @@ func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 	return _dBusObjectSkeleton
 }
 
-func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
+func (o dBusObjectSkeleton) AddInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
@@ -21045,7 +21274,7 @@ func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
 	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
 }
 
-func (o dBusObjectSkeleton) Flush() {
+func (o dBusObjectSkeleton) FlushDBusObjectSkeleton() {
 	var _arg0 *C.GDBusObjectSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
@@ -21053,7 +21282,7 @@ func (o dBusObjectSkeleton) Flush() {
 	C.g_dbus_object_skeleton_flush(_arg0)
 }
 
-func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
+func (o dBusObjectSkeleton) RemoveInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
@@ -21063,7 +21292,7 @@ func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 }
 
-func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
+func (o dBusObjectSkeleton) RemoveInterfaceByNameDBusObjectSkeleton(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
@@ -21074,7 +21303,7 @@ func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	C.g_dbus_object_skeleton_remove_interface_by_name(_arg0, _arg1)
 }
 
-func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
+func (o dBusObjectSkeleton) SetObjectPathDBusObjectSkeleton(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
@@ -21083,6 +21312,14 @@ func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)
+}
+
+func (o dBusObjectSkeleton) Interface(interfaceName string) DBusInterface {
+	return WrapDBusObject(gextras.InternObject(o)).Interface(interfaceName)
+}
+
+func (o dBusObjectSkeleton) ObjectPath() string {
+	return WrapDBusObject(gextras.InternObject(o)).ObjectPath()
 }
 
 // DBusProXY is a base class used for proxies to access a D-Bus interface on a
@@ -21122,14 +21359,15 @@ func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
 // gdbus-example-watch-proxy.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
 type DBusProXY interface {
-	gextras.Objector
 	AsyncInitable
 	DBusInterface
 	Initable
 
-	// CallFinish finishes an operation started with g_dbus_proxy_call().
-	CallFinish(res AsyncResult) (*glib.Variant, error)
-	// CallSync: synchronously invokes the @method_name method on @proxy.
+	// CallFinishDBusProXY finishes an operation started with
+	// g_dbus_proxy_call().
+	CallFinishDBusProXY(res AsyncResult) (*glib.Variant, error)
+	// CallSyncDBusProXY: synchronously invokes the @method_name method on
+	// @proxy.
 	//
 	// If @method_name contains any dots, then @name is split into interface and
 	// method name parts. This allows using @proxy for invoking methods on other
@@ -21160,15 +21398,15 @@ type DBusProXY interface {
 	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
 	// @method_name is referenced by it, then the return value is checked
 	// against the return type.
-	CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
-	// CallWithUnixFdListFinish finishes an operation started with
+	CallSyncDBusProXY(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
+	// CallWithUnixFdListFinishDBusProXY finishes an operation started with
 	// g_dbus_proxy_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error)
-	// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
-	// returns FDList objects.
+	CallWithUnixFdListFinishDBusProXY(res AsyncResult) (UnixFDList, *glib.Variant, error)
+	// CallWithUnixFdListSyncDBusProXY: like g_dbus_proxy_call_sync() but also
+	// takes and returns FDList objects.
 	//
 	// This method is only available on UNIX.
-	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
+	CallWithUnixFdListSyncDBusProXY(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
 	// CachedProperty looks up the value for a property from the cache. This
 	// call does no blocking IO.
 	//
@@ -21203,8 +21441,8 @@ type DBusProXY interface {
 	NameOwner() string
 	// ObjectPath gets the object path @proxy is for.
 	ObjectPath() string
-	// SetCachedProperty: if @value is not nil, sets the cached value for the
-	// property with name @property_name to the value in @value.
+	// SetCachedPropertyDBusProXY: if @value is not nil, sets the cached value
+	// for the property with name @property_name to the value in @value.
 	//
 	// If @value is nil, then the cached value is removed from the property
 	// cache.
@@ -21234,37 +21472,29 @@ type DBusProXY interface {
 	// more efficient to only transmit the delta using e.g. signals
 	// `ChatroomParticipantJoined(String name)` and
 	// `ChatroomParticipantParted(String name)`.
-	SetCachedProperty(propertyName string, value *glib.Variant)
-	// SetDefaultTimeout sets the timeout to use if -1 (specifying default
-	// timeout) is passed as @timeout_msec in the g_dbus_proxy_call() and
-	// g_dbus_proxy_call_sync() functions.
+	SetCachedPropertyDBusProXY(propertyName string, value *glib.Variant)
+	// SetDefaultTimeoutDBusProXY sets the timeout to use if -1 (specifying
+	// default timeout) is passed as @timeout_msec in the g_dbus_proxy_call()
+	// and g_dbus_proxy_call_sync() functions.
 	//
 	// See the BusProxy:g-default-timeout property for more details.
-	SetDefaultTimeout(timeoutMsec int)
-	// SetInterfaceInfo: ensure that interactions with @proxy conform to the
-	// given interface. See the BusProxy:g-interface-info property for more
-	// details.
-	SetInterfaceInfo(info *DBusInterfaceInfo)
+	SetDefaultTimeoutDBusProXY(timeoutMsec int)
+	// SetInterfaceInfoDBusProXY: ensure that interactions with @proxy conform
+	// to the given interface. See the BusProxy:g-interface-info property for
+	// more details.
+	SetInterfaceInfoDBusProXY(info *DBusInterfaceInfo)
 }
 
 // dBusProXY implements the DBusProXY class.
 type dBusProXY struct {
 	gextras.Objector
-	AsyncInitable
-	DBusInterface
-	Initable
 }
-
-var _ DBusProXY = (*dBusProXY)(nil)
 
 // WrapDBusProXY wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusProXY(obj *externglib.Object) DBusProXY {
 	return dBusProXY{
-		Objector:      obj,
-		AsyncInitable: WrapAsyncInitable(obj),
-		DBusInterface: WrapDBusInterface(obj),
-		Initable:      WrapInitable(obj),
+		Objector: obj,
 	}
 }
 
@@ -21404,7 +21634,7 @@ func NewDBusProXYSync(connection DBusConnection, flags DBusProXYFlags, info *DBu
 	return _dBusProxy, _goerr
 }
 
-func (p dBusProXY) CallFinish(res AsyncResult) (*glib.Variant, error) {
+func (p dBusProXY) CallFinishDBusProXY(res AsyncResult) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GVariant     // in
@@ -21427,7 +21657,7 @@ func (p dBusProXY) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	return _variant, _goerr
 }
 
-func (p dBusProXY) CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
+func (p dBusProXY) CallSyncDBusProXY(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -21459,7 +21689,7 @@ func (p dBusProXY) CallSync(methodName string, parameters *glib.Variant, flags D
 	return _variant, _goerr
 }
 
-func (p dBusProXY) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
+func (p dBusProXY) CallWithUnixFdListFinishDBusProXY(res AsyncResult) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GUnixFDList  // in
 	var _arg2 *C.GAsyncResult // out
@@ -21485,7 +21715,7 @@ func (p dBusProXY) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.
 	return _outFdList, _variant, _goerr
 }
 
-func (p dBusProXY) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
+func (p dBusProXY) CallWithUnixFdListSyncDBusProXY(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -21692,7 +21922,7 @@ func (p dBusProXY) ObjectPath() string {
 	return _utf8
 }
 
-func (p dBusProXY) SetCachedProperty(propertyName string, value *glib.Variant) {
+func (p dBusProXY) SetCachedPropertyDBusProXY(propertyName string, value *glib.Variant) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GVariant   // out
@@ -21705,7 +21935,7 @@ func (p dBusProXY) SetCachedProperty(propertyName string, value *glib.Variant) {
 	C.g_dbus_proxy_set_cached_property(_arg0, _arg1, _arg2)
 }
 
-func (p dBusProXY) SetDefaultTimeout(timeoutMsec int) {
+func (p dBusProXY) SetDefaultTimeoutDBusProXY(timeoutMsec int) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 C.gint        // out
 
@@ -21715,7 +21945,7 @@ func (p dBusProXY) SetDefaultTimeout(timeoutMsec int) {
 	C.g_dbus_proxy_set_default_timeout(_arg0, _arg1)
 }
 
-func (p dBusProXY) SetInterfaceInfo(info *DBusInterfaceInfo) {
+func (p dBusProXY) SetInterfaceInfoDBusProXY(info *DBusInterfaceInfo) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.GDBusInterfaceInfo // out
 
@@ -21723,6 +21953,30 @@ func (p dBusProXY) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	_arg1 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info.Native()))
 
 	C.g_dbus_proxy_set_interface_info(_arg0, _arg1)
+}
+
+func (i dBusProXY) InitFinish(res AsyncResult) error {
+	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
+}
+
+func (i dBusProXY) NewFinish(res AsyncResult) (gextras.Objector, error) {
+	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
+}
+
+func (i dBusProXY) DupObject() DBusObject {
+	return WrapDBusInterface(gextras.InternObject(i)).DupObject()
+}
+
+func (i dBusProXY) Info() *DBusInterfaceInfo {
+	return WrapDBusInterface(gextras.InternObject(i)).Info()
+}
+
+func (i dBusProXY) SetObject(object DBusObject) {
+	WrapDBusInterface(gextras.InternObject(i)).SetObject(object)
+}
+
+func (i dBusProXY) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
 // DBusServer is a helper for listening to and accepting D-Bus connections. This
@@ -21745,7 +21999,6 @@ func (p dBusProXY) SetInterfaceInfo(info *DBusInterfaceInfo) {
 // passing the G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flag to the
 // server.
 type DBusServer interface {
-	gextras.Objector
 	Initable
 
 	// ClientAddress gets a D-Bus address
@@ -21756,28 +22009,24 @@ type DBusServer interface {
 	Flags() DBusServerFlags
 	// Guid gets the GUID for @server.
 	Guid() string
-	// IsActive gets whether @server is active.
-	IsActive() bool
-	// Start starts @server.
-	Start()
-	// Stop stops @server.
-	Stop()
+	// IsActiveDBusServer gets whether @server is active.
+	IsActiveDBusServer() bool
+	// StartDBusServer starts @server.
+	StartDBusServer()
+	// StopDBusServer stops @server.
+	StopDBusServer()
 }
 
 // dBusServer implements the DBusServer class.
 type dBusServer struct {
 	gextras.Objector
-	Initable
 }
-
-var _ DBusServer = (*dBusServer)(nil)
 
 // WrapDBusServer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusServer(obj *externglib.Object) DBusServer {
 	return dBusServer{
 		Objector: obj,
-		Initable: WrapInitable(obj),
 	}
 }
 
@@ -21880,7 +22129,7 @@ func (s dBusServer) Guid() string {
 	return _utf8
 }
 
-func (s dBusServer) IsActive() bool {
+func (s dBusServer) IsActiveDBusServer() bool {
 	var _arg0 *C.GDBusServer // out
 	var _cret C.gboolean     // in
 
@@ -21897,7 +22146,7 @@ func (s dBusServer) IsActive() bool {
 	return _ok
 }
 
-func (s dBusServer) Start() {
+func (s dBusServer) StartDBusServer() {
 	var _arg0 *C.GDBusServer // out
 
 	_arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
@@ -21905,7 +22154,7 @@ func (s dBusServer) Start() {
 	C.g_dbus_server_start(_arg0)
 }
 
-func (s dBusServer) Stop() {
+func (s dBusServer) StopDBusServer() {
 	var _arg0 *C.GDBusServer // out
 
 	_arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
@@ -21913,35 +22162,29 @@ func (s dBusServer) Stop() {
 	C.g_dbus_server_stop(_arg0)
 }
 
+func (i dBusServer) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+}
+
 // DataInputStream: data input stream implements Stream and includes functions
 // for reading structured data directly from a binary input stream.
 type DataInputStream interface {
 	BufferedInputStream
-	Seekable
 
 	// ByteOrder gets the byte order for the data input stream.
 	ByteOrder() DataStreamByteOrder
 	// NewlineType gets the current newline type for the @stream.
 	NewlineType() DataStreamNewlineType
-	// ReadByte reads an unsigned 8-bit/1-byte value from @stream.
-	ReadByte(cancellable Cancellable) (byte, error)
-	// ReadInt16 reads a 16-bit/2-byte value from @stream.
+	// ReadByteDataInputStream reads an unsigned 8-bit/1-byte value from
+	// @stream.
+	ReadByteDataInputStream(cancellable Cancellable) (byte, error)
+	// ReadInt16DataInputStream reads a 16-bit/2-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
 	// g_data_input_stream_get_byte_order() and
 	// g_data_input_stream_set_byte_order().
-	ReadInt16(cancellable Cancellable) (int16, error)
-	// ReadInt32 reads a signed 32-bit/4-byte value from @stream.
-	//
-	// In order to get the correct byte order for this read operation, see
-	// g_data_input_stream_get_byte_order() and
-	// g_data_input_stream_set_byte_order().
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadInt32(cancellable Cancellable) (int32, error)
-	// ReadInt64 reads a 64-bit/8-byte value from @stream.
+	ReadInt16DataInputStream(cancellable Cancellable) (int16, error)
+	// ReadInt32DataInputStream reads a signed 32-bit/4-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
 	// g_data_input_stream_get_byte_order() and
@@ -21950,35 +22193,48 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadInt64(cancellable Cancellable) (int64, error)
-	// ReadLine reads a line from the data input stream. Note that no encoding
-	// checks or conversion is performed; the input is not guaranteed to be
-	// UTF-8, and may in fact have embedded NUL characters.
+	ReadInt32DataInputStream(cancellable Cancellable) (int32, error)
+	// ReadInt64DataInputStream reads a 64-bit/8-byte value from @stream.
+	//
+	// In order to get the correct byte order for this read operation, see
+	// g_data_input_stream_get_byte_order() and
+	// g_data_input_stream_set_byte_order().
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadLine(cancellable Cancellable) (uint, []byte, error)
-	// ReadLineFinish: finish an asynchronous call started by
+	ReadInt64DataInputStream(cancellable Cancellable) (int64, error)
+	// ReadLineDataInputStream reads a line from the data input stream. Note
+	// that no encoding checks or conversion is performed; the input is not
+	// guaranteed to be UTF-8, and may in fact have embedded NUL characters.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	ReadLineDataInputStream(cancellable Cancellable) (uint, []byte, error)
+	// ReadLineFinishDataInputStream: finish an asynchronous call started by
 	// g_data_input_stream_read_line_async(). Note the warning about string
 	// encoding in g_data_input_stream_read_line() applies here as well.
-	ReadLineFinish(result AsyncResult) (uint, []byte, error)
-	// ReadLineFinishUTF8: finish an asynchronous call started by
+	ReadLineFinishDataInputStream(result AsyncResult) (uint, []byte, error)
+	// ReadLineFinishUTF8DataInputStream: finish an asynchronous call started by
 	// g_data_input_stream_read_line_async().
-	ReadLineFinishUTF8(result AsyncResult) (uint, string, error)
-	// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
+	ReadLineFinishUTF8DataInputStream(result AsyncResult) (uint, string, error)
+	// ReadLineUTF8DataInputStream reads a UTF-8 encoded line from the data
+	// input stream.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadLineUTF8(cancellable Cancellable) (uint, string, error)
-	// ReadUint16 reads an unsigned 16-bit/2-byte value from @stream.
+	ReadLineUTF8DataInputStream(cancellable Cancellable) (uint, string, error)
+	// ReadUint16DataInputStream reads an unsigned 16-bit/2-byte value from
+	// @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
 	// g_data_input_stream_get_byte_order() and
 	// g_data_input_stream_set_byte_order().
-	ReadUint16(cancellable Cancellable) (uint16, error)
-	// ReadUint32 reads an unsigned 32-bit/4-byte value from @stream.
+	ReadUint16DataInputStream(cancellable Cancellable) (uint16, error)
+	// ReadUint32DataInputStream reads an unsigned 32-bit/4-byte value from
+	// @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
 	// g_data_input_stream_get_byte_order() and
@@ -21987,8 +22243,9 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadUint32(cancellable Cancellable) (uint32, error)
-	// ReadUint64 reads an unsigned 64-bit/8-byte value from @stream.
+	ReadUint32DataInputStream(cancellable Cancellable) (uint32, error)
+	// ReadUint64DataInputStream reads an unsigned 64-bit/8-byte value from
+	// @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
 	// g_data_input_stream_get_byte_order().
@@ -21996,9 +22253,9 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadUint64(cancellable Cancellable) (uint64, error)
-	// ReadUntil reads a string from the data input stream, up to the first
-	// occurrence of any of the stop characters.
+	ReadUint64DataInputStream(cancellable Cancellable) (uint64, error)
+	// ReadUntilDataInputStream reads a string from the data input stream, up to
+	// the first occurrence of any of the stop characters.
 	//
 	// Note that, in contrast to g_data_input_stream_read_until_async(), this
 	// function consumes the stop character that it finds.
@@ -22008,12 +22265,12 @@ type DataInputStream interface {
 	// marked as deprecated in a future release. Use
 	// g_data_input_stream_read_upto() instead, but note that that function does
 	// not consume the stop character.
-	ReadUntil(stopChars string, cancellable Cancellable) (uint, string, error)
-	// ReadUntilFinish: finish an asynchronous call started by
+	ReadUntilDataInputStream(stopChars string, cancellable Cancellable) (uint, string, error)
+	// ReadUntilFinishDataInputStream: finish an asynchronous call started by
 	// g_data_input_stream_read_until_async().
-	ReadUntilFinish(result AsyncResult) (uint, string, error)
-	// ReadUpto reads a string from the data input stream, up to the first
-	// occurrence of any of the stop characters.
+	ReadUntilFinishDataInputStream(result AsyncResult) (uint, string, error)
+	// ReadUptoDataInputStream reads a string from the data input stream, up to
+	// the first occurrence of any of the stop characters.
 	//
 	// In contrast to g_data_input_stream_read_until(), this function does not
 	// consume the stop character. You have to use
@@ -22023,8 +22280,8 @@ type DataInputStream interface {
 	// Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
 	//
 	// The returned string will always be nul-terminated on success.
-	ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error)
-	// ReadUptoFinish: finish an asynchronous call started by
+	ReadUptoDataInputStream(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error)
+	// ReadUptoFinishDataInputStream: finish an asynchronous call started by
 	// g_data_input_stream_read_upto_async().
 	//
 	// Note that this function does not consume the stop character. You have to
@@ -22032,33 +22289,30 @@ type DataInputStream interface {
 	// g_data_input_stream_read_upto_async() again.
 	//
 	// The returned string will always be nul-terminated on success.
-	ReadUptoFinish(result AsyncResult) (uint, string, error)
-	// SetByteOrder: this function sets the byte order for the given @stream.
-	// All subsequent reads from the @stream will be read in the given @order.
-	SetByteOrder(order DataStreamByteOrder)
-	// SetNewlineType sets the newline type for the @stream.
+	ReadUptoFinishDataInputStream(result AsyncResult) (uint, string, error)
+	// SetByteOrderDataInputStream: this function sets the byte order for the
+	// given @stream. All subsequent reads from the @stream will be read in the
+	// given @order.
+	SetByteOrderDataInputStream(order DataStreamByteOrder)
+	// SetNewlineTypeDataInputStream sets the newline type for the @stream.
 	//
 	// Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a
 	// read chunk ends in "CR" we must read an additional byte to know if this
 	// is "CR" or "CR LF", and this might block if there is no more data
 	// available.
-	SetNewlineType(typ DataStreamNewlineType)
+	SetNewlineTypeDataInputStream(typ DataStreamNewlineType)
 }
 
 // dataInputStream implements the DataInputStream class.
 type dataInputStream struct {
 	BufferedInputStream
-	Seekable
 }
-
-var _ DataInputStream = (*dataInputStream)(nil)
 
 // WrapDataInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDataInputStream(obj *externglib.Object) DataInputStream {
 	return dataInputStream{
 		BufferedInputStream: WrapBufferedInputStream(obj),
-		Seekable:            WrapSeekable(obj),
 	}
 }
 
@@ -22114,7 +22368,7 @@ func (s dataInputStream) NewlineType() DataStreamNewlineType {
 	return _dataStreamNewlineType
 }
 
-func (s dataInputStream) ReadByte(cancellable Cancellable) (byte, error) {
+func (s dataInputStream) ReadByteDataInputStream(cancellable Cancellable) (byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guchar            // in
@@ -22134,7 +22388,7 @@ func (s dataInputStream) ReadByte(cancellable Cancellable) (byte, error) {
 	return _guint8, _goerr
 }
 
-func (s dataInputStream) ReadInt16(cancellable Cancellable) (int16, error) {
+func (s dataInputStream) ReadInt16DataInputStream(cancellable Cancellable) (int16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint16            // in
@@ -22154,7 +22408,7 @@ func (s dataInputStream) ReadInt16(cancellable Cancellable) (int16, error) {
 	return _gint16, _goerr
 }
 
-func (s dataInputStream) ReadInt32(cancellable Cancellable) (int32, error) {
+func (s dataInputStream) ReadInt32DataInputStream(cancellable Cancellable) (int32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint32            // in
@@ -22174,7 +22428,7 @@ func (s dataInputStream) ReadInt32(cancellable Cancellable) (int32, error) {
 	return _gint32, _goerr
 }
 
-func (s dataInputStream) ReadInt64(cancellable Cancellable) (int64, error) {
+func (s dataInputStream) ReadInt64DataInputStream(cancellable Cancellable) (int64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint64            // in
@@ -22194,7 +22448,7 @@ func (s dataInputStream) ReadInt64(cancellable Cancellable) (int64, error) {
 	return _gint64, _goerr
 }
 
-func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error) {
+func (s dataInputStream) ReadLineDataInputStream(cancellable Cancellable) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 C.gsize             // in
 	var _arg2 *C.GCancellable     // out
@@ -22229,7 +22483,7 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 	return _length, _guint8s, _goerr
 }
 
-func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error) {
+func (s dataInputStream) ReadLineFinishDataInputStream(result AsyncResult) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -22264,7 +22518,7 @@ func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error
 	return _length, _guint8s, _goerr
 }
 
-func (s dataInputStream) ReadLineFinishUTF8(result AsyncResult) (uint, string, error) {
+func (s dataInputStream) ReadLineFinishUTF8DataInputStream(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -22288,7 +22542,7 @@ func (s dataInputStream) ReadLineFinishUTF8(result AsyncResult) (uint, string, e
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadLineUTF8(cancellable Cancellable) (uint, string, error) {
+func (s dataInputStream) ReadLineUTF8DataInputStream(cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 C.gsize             // in
 	var _arg2 *C.GCancellable     // out
@@ -22312,7 +22566,7 @@ func (s dataInputStream) ReadLineUTF8(cancellable Cancellable) (uint, string, er
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadUint16(cancellable Cancellable) (uint16, error) {
+func (s dataInputStream) ReadUint16DataInputStream(cancellable Cancellable) (uint16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint16           // in
@@ -22332,7 +22586,7 @@ func (s dataInputStream) ReadUint16(cancellable Cancellable) (uint16, error) {
 	return _guint16, _goerr
 }
 
-func (s dataInputStream) ReadUint32(cancellable Cancellable) (uint32, error) {
+func (s dataInputStream) ReadUint32DataInputStream(cancellable Cancellable) (uint32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint32           // in
@@ -22352,7 +22606,7 @@ func (s dataInputStream) ReadUint32(cancellable Cancellable) (uint32, error) {
 	return _guint32, _goerr
 }
 
-func (s dataInputStream) ReadUint64(cancellable Cancellable) (uint64, error) {
+func (s dataInputStream) ReadUint64DataInputStream(cancellable Cancellable) (uint64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint64           // in
@@ -22372,7 +22626,7 @@ func (s dataInputStream) ReadUint64(cancellable Cancellable) (uint64, error) {
 	return _guint64, _goerr
 }
 
-func (s dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (uint, string, error) {
+func (s dataInputStream) ReadUntilDataInputStream(stopChars string, cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gsize             // in
@@ -22399,7 +22653,7 @@ func (s dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (u
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadUntilFinish(result AsyncResult) (uint, string, error) {
+func (s dataInputStream) ReadUntilFinishDataInputStream(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -22423,7 +22677,7 @@ func (s dataInputStream) ReadUntilFinish(result AsyncResult) (uint, string, erro
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error) {
+func (s dataInputStream) ReadUptoDataInputStream(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gssize            // out
@@ -22452,7 +22706,7 @@ func (s dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellabl
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadUptoFinish(result AsyncResult) (uint, string, error) {
+func (s dataInputStream) ReadUptoFinishDataInputStream(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -22476,7 +22730,7 @@ func (s dataInputStream) ReadUptoFinish(result AsyncResult) (uint, string, error
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) SetByteOrder(order DataStreamByteOrder) {
+func (s dataInputStream) SetByteOrderDataInputStream(order DataStreamByteOrder) {
 	var _arg0 *C.GDataInputStream    // out
 	var _arg1 C.GDataStreamByteOrder // out
 
@@ -22486,7 +22740,7 @@ func (s dataInputStream) SetByteOrder(order DataStreamByteOrder) {
 	C.g_data_input_stream_set_byte_order(_arg0, _arg1)
 }
 
-func (s dataInputStream) SetNewlineType(typ DataStreamNewlineType) {
+func (s dataInputStream) SetNewlineTypeDataInputStream(typ DataStreamNewlineType) {
 	var _arg0 *C.GDataInputStream      // out
 	var _arg1 C.GDataStreamNewlineType // out
 
@@ -22494,6 +22748,26 @@ func (s dataInputStream) SetNewlineType(typ DataStreamNewlineType) {
 	_arg1 = (C.GDataStreamNewlineType)(typ)
 
 	C.g_data_input_stream_set_newline_type(_arg0, _arg1)
+}
+
+func (s dataInputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s dataInputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s dataInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s dataInputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s dataInputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
 }
 
 // DataOutputStream: data output stream implements Stream and includes functions
@@ -22504,40 +22778,42 @@ type DataOutputStream interface {
 
 	// ByteOrder gets the byte order for the stream.
 	ByteOrder() DataStreamByteOrder
-	// PutByte puts a byte into the output stream.
-	PutByte(data byte, cancellable Cancellable) error
-	// PutInt16 puts a signed 16-bit integer into the output stream.
-	PutInt16(data int16, cancellable Cancellable) error
-	// PutInt32 puts a signed 32-bit integer into the output stream.
-	PutInt32(data int32, cancellable Cancellable) error
-	// PutInt64 puts a signed 64-bit integer into the stream.
-	PutInt64(data int64, cancellable Cancellable) error
-	// PutString puts a string into the output stream.
-	PutString(str string, cancellable Cancellable) error
-	// PutUint16 puts an unsigned 16-bit integer into the output stream.
-	PutUint16(data uint16, cancellable Cancellable) error
-	// PutUint32 puts an unsigned 32-bit integer into the stream.
-	PutUint32(data uint32, cancellable Cancellable) error
-	// PutUint64 puts an unsigned 64-bit integer into the stream.
-	PutUint64(data uint64, cancellable Cancellable) error
-	// SetByteOrder sets the byte order of the data output stream to @order.
-	SetByteOrder(order DataStreamByteOrder)
+	// PutByteDataOutputStream puts a byte into the output stream.
+	PutByteDataOutputStream(data byte, cancellable Cancellable) error
+	// PutInt16DataOutputStream puts a signed 16-bit integer into the output
+	// stream.
+	PutInt16DataOutputStream(data int16, cancellable Cancellable) error
+	// PutInt32DataOutputStream puts a signed 32-bit integer into the output
+	// stream.
+	PutInt32DataOutputStream(data int32, cancellable Cancellable) error
+	// PutInt64DataOutputStream puts a signed 64-bit integer into the stream.
+	PutInt64DataOutputStream(data int64, cancellable Cancellable) error
+	// PutStringDataOutputStream puts a string into the output stream.
+	PutStringDataOutputStream(str string, cancellable Cancellable) error
+	// PutUint16DataOutputStream puts an unsigned 16-bit integer into the output
+	// stream.
+	PutUint16DataOutputStream(data uint16, cancellable Cancellable) error
+	// PutUint32DataOutputStream puts an unsigned 32-bit integer into the
+	// stream.
+	PutUint32DataOutputStream(data uint32, cancellable Cancellable) error
+	// PutUint64DataOutputStream puts an unsigned 64-bit integer into the
+	// stream.
+	PutUint64DataOutputStream(data uint64, cancellable Cancellable) error
+	// SetByteOrderDataOutputStream sets the byte order of the data output
+	// stream to @order.
+	SetByteOrderDataOutputStream(order DataStreamByteOrder)
 }
 
 // dataOutputStream implements the DataOutputStream class.
 type dataOutputStream struct {
 	FilterOutputStream
-	Seekable
 }
-
-var _ DataOutputStream = (*dataOutputStream)(nil)
 
 // WrapDataOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDataOutputStream(obj *externglib.Object) DataOutputStream {
 	return dataOutputStream{
 		FilterOutputStream: WrapFilterOutputStream(obj),
-		Seekable:           WrapSeekable(obj),
 	}
 }
 
@@ -22578,7 +22854,7 @@ func (s dataOutputStream) ByteOrder() DataStreamByteOrder {
 	return _dataStreamByteOrder
 }
 
-func (s dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
+func (s dataOutputStream) PutByteDataOutputStream(data byte, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guchar             // out
 	var _arg2 *C.GCancellable      // out
@@ -22597,7 +22873,7 @@ func (s dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
+func (s dataOutputStream) PutInt16DataOutputStream(data int16, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint16             // out
 	var _arg2 *C.GCancellable      // out
@@ -22616,7 +22892,7 @@ func (s dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
+func (s dataOutputStream) PutInt32DataOutputStream(data int32, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint32             // out
 	var _arg2 *C.GCancellable      // out
@@ -22635,7 +22911,7 @@ func (s dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
+func (s dataOutputStream) PutInt64DataOutputStream(data int64, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint64             // out
 	var _arg2 *C.GCancellable      // out
@@ -22654,7 +22930,7 @@ func (s dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s dataOutputStream) PutString(str string, cancellable Cancellable) error {
+func (s dataOutputStream) PutStringDataOutputStream(str string, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
@@ -22674,7 +22950,7 @@ func (s dataOutputStream) PutString(str string, cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error {
+func (s dataOutputStream) PutUint16DataOutputStream(data uint16, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint16            // out
 	var _arg2 *C.GCancellable      // out
@@ -22693,7 +22969,7 @@ func (s dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error 
 	return _goerr
 }
 
-func (s dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error {
+func (s dataOutputStream) PutUint32DataOutputStream(data uint32, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint32            // out
 	var _arg2 *C.GCancellable      // out
@@ -22712,7 +22988,7 @@ func (s dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error 
 	return _goerr
 }
 
-func (s dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error {
+func (s dataOutputStream) PutUint64DataOutputStream(data uint64, cancellable Cancellable) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint64            // out
 	var _arg2 *C.GCancellable      // out
@@ -22731,7 +23007,7 @@ func (s dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error 
 	return _goerr
 }
 
-func (s dataOutputStream) SetByteOrder(order DataStreamByteOrder) {
+func (s dataOutputStream) SetByteOrderDataOutputStream(order DataStreamByteOrder) {
 	var _arg0 *C.GDataOutputStream   // out
 	var _arg1 C.GDataStreamByteOrder // out
 
@@ -22741,13 +23017,32 @@ func (s dataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 	C.g_data_output_stream_set_byte_order(_arg0, _arg1)
 }
 
+func (s dataOutputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s dataOutputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s dataOutputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s dataOutputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s dataOutputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+}
+
 // DesktopAppInfo is an implementation of Info based on desktop files.
 //
 // Note that `<gio/gdesktopappinfo.h>` belongs to the UNIX-specific GIO
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type DesktopAppInfo interface {
-	gextras.Objector
 	AppInfo
 
 	// ActionName gets the user-visible display name of the "additional
@@ -22802,10 +23097,10 @@ type DesktopAppInfo interface {
 	//
 	// The @key is looked up in the "Desktop Entry" group.
 	String(key string) string
-	// HasKey returns whether @key exists in the "Desktop Entry" group of the
-	// keyfile backing @info.
-	HasKey(key string) bool
-	// LaunchAction activates the named application action.
+	// HasKeyDesktopAppInfo returns whether @key exists in the "Desktop Entry"
+	// group of the keyfile backing @info.
+	HasKeyDesktopAppInfo(key string) bool
+	// LaunchActionDesktopAppInfo activates the named application action.
 	//
 	// You may only call this function on action names that were returned from
 	// g_desktop_app_info_list_actions().
@@ -22820,29 +23115,26 @@ type DesktopAppInfo interface {
 	//
 	// As with g_app_info_launch() there is no way to detect failures that occur
 	// while using this function.
-	LaunchAction(actionName string, launchContext AppLaunchContext)
-	// ListActions returns the list of "additional application actions"
-	// supported on the desktop file, as per the desktop file specification.
+	LaunchActionDesktopAppInfo(actionName string, launchContext AppLaunchContext)
+	// ListActionsDesktopAppInfo returns the list of "additional application
+	// actions" supported on the desktop file, as per the desktop file
+	// specification.
 	//
 	// As per the specification, this is the list of actions that are explicitly
 	// listed in the "Actions" key of the [Desktop Entry] group.
-	ListActions() []string
+	ListActionsDesktopAppInfo() []string
 }
 
 // desktopAppInfo implements the DesktopAppInfo class.
 type desktopAppInfo struct {
 	gextras.Objector
-	AppInfo
 }
-
-var _ DesktopAppInfo = (*desktopAppInfo)(nil)
 
 // WrapDesktopAppInfo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfo {
 	return desktopAppInfo{
 		Objector: obj,
-		AppInfo:  WrapAppInfo(obj),
 	}
 }
 
@@ -23129,7 +23421,7 @@ func (i desktopAppInfo) String(key string) string {
 	return _utf8
 }
 
-func (i desktopAppInfo) HasKey(key string) bool {
+func (i desktopAppInfo) HasKeyDesktopAppInfo(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
@@ -23149,7 +23441,7 @@ func (i desktopAppInfo) HasKey(key string) bool {
 	return _ok
 }
 
-func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchContext) {
+func (i desktopAppInfo) LaunchActionDesktopAppInfo(actionName string, launchContext AppLaunchContext) {
 	var _arg0 *C.GDesktopAppInfo   // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.GAppLaunchContext // out
@@ -23162,7 +23454,7 @@ func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchC
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
 }
 
-func (i desktopAppInfo) ListActions() []string {
+func (i desktopAppInfo) ListActionsDesktopAppInfo() []string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret **C.gchar
 
@@ -23189,13 +23481,100 @@ func (i desktopAppInfo) ListActions() []string {
 	return _utf8s
 }
 
+func (a desktopAppInfo) AddSupportsType(contentType string) error {
+	return WrapAppInfo(gextras.InternObject(a)).AddSupportsType(contentType)
+}
+
+func (a desktopAppInfo) CanDelete() bool {
+	return WrapAppInfo(gextras.InternObject(a)).CanDelete()
+}
+
+func (a desktopAppInfo) CanRemoveSupportsType() bool {
+	return WrapAppInfo(gextras.InternObject(a)).CanRemoveSupportsType()
+}
+
+func (a desktopAppInfo) Delete() bool {
+	return WrapAppInfo(gextras.InternObject(a)).Delete()
+}
+
+func (a desktopAppInfo) Dup() AppInfo {
+	return WrapAppInfo(gextras.InternObject(a)).Dup()
+}
+
+func (a desktopAppInfo) Equal(appinfo2 AppInfo) bool {
+	return WrapAppInfo(gextras.InternObject(a)).Equal(appinfo2)
+}
+
+func (a desktopAppInfo) Commandline() string {
+	return WrapAppInfo(gextras.InternObject(a)).Commandline()
+}
+
+func (a desktopAppInfo) Description() string {
+	return WrapAppInfo(gextras.InternObject(a)).Description()
+}
+
+func (a desktopAppInfo) DisplayName() string {
+	return WrapAppInfo(gextras.InternObject(a)).DisplayName()
+}
+
+func (a desktopAppInfo) Executable() string {
+	return WrapAppInfo(gextras.InternObject(a)).Executable()
+}
+
+func (a desktopAppInfo) Icon() Icon {
+	return WrapAppInfo(gextras.InternObject(a)).Icon()
+}
+
+func (a desktopAppInfo) ID() string {
+	return WrapAppInfo(gextras.InternObject(a)).ID()
+}
+
+func (a desktopAppInfo) Name() string {
+	return WrapAppInfo(gextras.InternObject(a)).Name()
+}
+
+func (a desktopAppInfo) SupportedTypes() []string {
+	return WrapAppInfo(gextras.InternObject(a)).SupportedTypes()
+}
+
+func (a desktopAppInfo) LaunchUrisFinish(result AsyncResult) error {
+	return WrapAppInfo(gextras.InternObject(a)).LaunchUrisFinish(result)
+}
+
+func (a desktopAppInfo) RemoveSupportsType(contentType string) error {
+	return WrapAppInfo(gextras.InternObject(a)).RemoveSupportsType(contentType)
+}
+
+func (a desktopAppInfo) SetAsDefaultForExtension(extension string) error {
+	return WrapAppInfo(gextras.InternObject(a)).SetAsDefaultForExtension(extension)
+}
+
+func (a desktopAppInfo) SetAsDefaultForType(contentType string) error {
+	return WrapAppInfo(gextras.InternObject(a)).SetAsDefaultForType(contentType)
+}
+
+func (a desktopAppInfo) SetAsLastUsedForType(contentType string) error {
+	return WrapAppInfo(gextras.InternObject(a)).SetAsLastUsedForType(contentType)
+}
+
+func (a desktopAppInfo) ShouldShow() bool {
+	return WrapAppInfo(gextras.InternObject(a)).ShouldShow()
+}
+
+func (a desktopAppInfo) SupportsFiles() bool {
+	return WrapAppInfo(gextras.InternObject(a)).SupportsFiles()
+}
+
+func (a desktopAppInfo) SupportsUris() bool {
+	return WrapAppInfo(gextras.InternObject(a)).SupportsUris()
+}
+
 // Emblem is an implementation of #GIcon that supports having an emblem, which
 // is an icon with additional properties. It can than be added to a Icon.
 //
 // Currently, only metainformation about the emblem's origin is supported. More
 // may be added in the future.
 type Emblem interface {
-	gextras.Objector
 	Icon
 
 	// GetIcon gives back the icon from @emblem.
@@ -23207,17 +23586,13 @@ type Emblem interface {
 // emblem implements the Emblem class.
 type emblem struct {
 	gextras.Objector
-	Icon
 }
-
-var _ Emblem = (*emblem)(nil)
 
 // WrapEmblem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEmblem(obj *externglib.Object) Emblem {
 	return emblem{
 		Objector: obj,
-		Icon:     WrapIcon(obj),
 	}
 }
 
@@ -23291,6 +23666,18 @@ func (e emblem) Origin() EmblemOrigin {
 	return _emblemOrigin
 }
 
+func (i emblem) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i emblem) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i emblem) String() string {
+	return WrapIcon(gextras.InternObject(i)).String()
+}
+
 // EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
 // an icon. Adding multiple emblems to an icon is ensured via
 // g_emblemed_icon_add_emblem().
@@ -23298,13 +23685,12 @@ func (e emblem) Origin() EmblemOrigin {
 // Note that Icon allows no control over the position of the emblems. See also
 // #GEmblem for more information.
 type EmblemedIcon interface {
-	gextras.Objector
 	Icon
 
-	// AddEmblem adds @emblem to the #GList of #GEmblems.
-	AddEmblem(emblem Emblem)
-	// ClearEmblems removes all the emblems from @icon.
-	ClearEmblems()
+	// AddEmblemEmblemedIcon adds @emblem to the #GList of #GEmblems.
+	AddEmblemEmblemedIcon(emblem Emblem)
+	// ClearEmblemsEmblemedIcon removes all the emblems from @icon.
+	ClearEmblemsEmblemedIcon()
 	// GetIcon gets the main icon for @emblemed.
 	GetIcon() Icon
 }
@@ -23312,17 +23698,13 @@ type EmblemedIcon interface {
 // emblemedIcon implements the EmblemedIcon class.
 type emblemedIcon struct {
 	gextras.Objector
-	Icon
 }
-
-var _ EmblemedIcon = (*emblemedIcon)(nil)
 
 // WrapEmblemedIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEmblemedIcon(obj *externglib.Object) EmblemedIcon {
 	return emblemedIcon{
 		Objector: obj,
-		Icon:     WrapIcon(obj),
 	}
 }
 
@@ -23351,7 +23733,7 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 	return _emblemedIcon
 }
 
-func (e emblemedIcon) AddEmblem(emblem Emblem) {
+func (e emblemedIcon) AddEmblemEmblemedIcon(emblem Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
 
@@ -23361,7 +23743,7 @@ func (e emblemedIcon) AddEmblem(emblem Emblem) {
 	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 }
 
-func (e emblemedIcon) ClearEmblems() {
+func (e emblemedIcon) ClearEmblemsEmblemedIcon() {
 	var _arg0 *C.GEmblemedIcon // out
 
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
@@ -23382,6 +23764,18 @@ func (e emblemedIcon) GetIcon() Icon {
 	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Icon)
 
 	return _icon
+}
+
+func (i emblemedIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i emblemedIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i emblemedIcon) String() string {
+	return WrapIcon(gextras.InternObject(i)).String()
 }
 
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
@@ -23408,17 +23802,16 @@ func (e emblemedIcon) GetIcon() Icon {
 // further actions may be performed on it, and it should be freed with
 // g_object_unref().
 type FileEnumerator interface {
-	gextras.Objector
 
-	// Close releases all resources used by this enumerator, making the
-	// enumerator return G_IO_ERROR_CLOSED on all calls.
+	// CloseFileEnumerator releases all resources used by this enumerator,
+	// making the enumerator return G_IO_ERROR_CLOSED on all calls.
 	//
 	// This will be automatically called when the last reference is dropped, but
 	// you might want to call this function to make sure resources are released
 	// as early as possible.
-	Close(cancellable Cancellable) error
-	// CloseFinish finishes closing a file enumerator, started from
-	// g_file_enumerator_close_async().
+	CloseFileEnumerator(cancellable Cancellable) error
+	// CloseFinishFileEnumerator finishes closing a file enumerator, started
+	// from g_file_enumerator_close_async().
 	//
 	// If the file enumerator was already closed when
 	// g_file_enumerator_close_async() was called, then this function will
@@ -23429,7 +23822,7 @@ type FileEnumerator interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
 	// be returned.
-	CloseFinish(result AsyncResult) error
+	CloseFinishFileEnumerator(result AsyncResult) error
 	// Child: return a new #GFile which refers to the file named by @info in the
 	// source directory of @enumerator. This function is primarily intended to
 	// be used inside loops with g_file_enumerator_next_file().
@@ -23442,14 +23835,15 @@ type FileEnumerator interface {
 	Child(info FileInfo) File
 	// Container: get the #GFile container which is being enumerated.
 	Container() File
-	// HasPending checks if the file enumerator has pending operations.
-	HasPending() bool
-	// IsClosed checks if the file enumerator has been closed.
-	IsClosed() bool
-	// Iterate: this is a version of g_file_enumerator_next_file() that's easier
-	// to use correctly from C programs. With g_file_enumerator_next_file(), the
-	// gboolean return value signifies "end of iteration or error", which
-	// requires allocation of a temporary #GError.
+	// HasPendingFileEnumerator checks if the file enumerator has pending
+	// operations.
+	HasPendingFileEnumerator() bool
+	// IsClosedFileEnumerator checks if the file enumerator has been closed.
+	IsClosedFileEnumerator() bool
+	// IterateFileEnumerator: this is a version of g_file_enumerator_next_file()
+	// that's easier to use correctly from C programs. With
+	// g_file_enumerator_next_file(), the gboolean return value signifies "end
+	// of iteration or error", which requires allocation of a temporary #GError.
 	//
 	// In contrast, with this function, a false return from
 	// g_file_enumerator_iterate() *always* means "error". End of iteration is
@@ -23480,28 +23874,27 @@ type FileEnumerator interface {
 	//
 	//    out:
 	//      g_object_unref (direnum); // Note: frees the last @info
-	Iterate(cancellable Cancellable) (FileInfo, File, error)
-	// NextFile returns information for the next file in the enumerated object.
-	// Will block until the information is available. The Info returned from
-	// this function will contain attributes that match the attribute string
-	// that was passed when the Enumerator was created.
+	IterateFileEnumerator(cancellable Cancellable) (FileInfo, File, error)
+	// NextFileFileEnumerator returns information for the next file in the
+	// enumerated object. Will block until the information is available. The
+	// Info returned from this function will contain attributes that match the
+	// attribute string that was passed when the Enumerator was created.
 	//
 	// See the documentation of Enumerator for information about the order of
 	// returned files.
 	//
 	// On error, returns nil and sets @error to the error. If the enumerator is
 	// at the end, nil will be returned and @error will be unset.
-	NextFile(cancellable Cancellable) (FileInfo, error)
-	// SetPending sets the file enumerator as having pending operations.
-	SetPending(pending bool)
+	NextFileFileEnumerator(cancellable Cancellable) (FileInfo, error)
+	// SetPendingFileEnumerator sets the file enumerator as having pending
+	// operations.
+	SetPendingFileEnumerator(pending bool)
 }
 
 // fileEnumerator implements the FileEnumerator class.
 type fileEnumerator struct {
 	gextras.Objector
 }
-
-var _ FileEnumerator = (*fileEnumerator)(nil)
 
 // WrapFileEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
@@ -23517,7 +23910,7 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 	return WrapFileEnumerator(obj), nil
 }
 
-func (e fileEnumerator) Close(cancellable Cancellable) error {
+func (e fileEnumerator) CloseFileEnumerator(cancellable Cancellable) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
@@ -23534,7 +23927,7 @@ func (e fileEnumerator) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (e fileEnumerator) CloseFinish(result AsyncResult) error {
+func (e fileEnumerator) CloseFinishFileEnumerator(result AsyncResult) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -23583,7 +23976,7 @@ func (e fileEnumerator) Container() File {
 	return _file
 }
 
-func (e fileEnumerator) HasPending() bool {
+func (e fileEnumerator) HasPendingFileEnumerator() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
@@ -23600,7 +23993,7 @@ func (e fileEnumerator) HasPending() bool {
 	return _ok
 }
 
-func (e fileEnumerator) IsClosed() bool {
+func (e fileEnumerator) IsClosedFileEnumerator() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
@@ -23617,7 +24010,7 @@ func (e fileEnumerator) IsClosed() bool {
 	return _ok
 }
 
-func (d fileEnumerator) Iterate(cancellable Cancellable) (FileInfo, File, error) {
+func (d fileEnumerator) IterateFileEnumerator(cancellable Cancellable) (FileInfo, File, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // in
 	var _arg2 *C.GFile           // in
@@ -23640,7 +24033,7 @@ func (d fileEnumerator) Iterate(cancellable Cancellable) (FileInfo, File, error)
 	return _outInfo, _outChild, _goerr
 }
 
-func (e fileEnumerator) NextFile(cancellable Cancellable) (FileInfo, error) {
+func (e fileEnumerator) NextFileFileEnumerator(cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GFileInfo       // in
@@ -23660,7 +24053,7 @@ func (e fileEnumerator) NextFile(cancellable Cancellable) (FileInfo, error) {
 	return _fileInfo, _goerr
 }
 
-func (e fileEnumerator) SetPending(pending bool) {
+func (e fileEnumerator) SetPendingFileEnumerator(pending bool) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 C.gboolean         // out
 
@@ -23697,11 +24090,11 @@ type FileIOStream interface {
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
 	Etag() string
-	// QueryInfo queries a file io stream for the given @attributes. This
-	// function blocks while querying the stream. For the asynchronous version
-	// of this function, see g_file_io_stream_query_info_async(). While the
-	// stream is blocked, the stream will set the pending flag internally, and
-	// any other operations on the stream will fail with G_IO_ERROR_PENDING.
+	// QueryInfoFileIOStream queries a file io stream for the given @attributes.
+	// This function blocks while querying the stream. For the asynchronous
+	// version of this function, see g_file_io_stream_query_info_async(). While
+	// the stream is blocked, the stream will set the pending flag internally,
+	// and any other operations on the stream will fail with G_IO_ERROR_PENDING.
 	//
 	// Can fail if the stream was already closed (with @error being set to
 	// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
@@ -23713,26 +24106,22 @@ type FileIOStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
-	// QueryInfoFinish finalizes the asynchronous query started by
+	QueryInfoFileIOStream(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoFinishFileIOStream finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (FileInfo, error)
+	QueryInfoFinishFileIOStream(result AsyncResult) (FileInfo, error)
 }
 
 // fileIOStream implements the FileIOStream class.
 type fileIOStream struct {
 	IOStream
-	Seekable
 }
-
-var _ FileIOStream = (*fileIOStream)(nil)
 
 // WrapFileIOStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileIOStream(obj *externglib.Object) FileIOStream {
 	return fileIOStream{
 		IOStream: WrapIOStream(obj),
-		Seekable: WrapSeekable(obj),
 	}
 }
 
@@ -23758,7 +24147,7 @@ func (s fileIOStream) Etag() string {
 	return _utf8
 }
 
-func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
+func (s fileIOStream) QueryInfoFileIOStream(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.char          // out
 	var _arg2 *C.GCancellable  // out
@@ -23781,7 +24170,7 @@ func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (Fil
 	return _fileInfo, _goerr
 }
 
-func (s fileIOStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
+func (s fileIOStream) QueryInfoFinishFileIOStream(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileInfo     // in
@@ -23801,10 +24190,28 @@ func (s fileIOStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 	return _fileInfo, _goerr
 }
 
+func (s fileIOStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s fileIOStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s fileIOStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s fileIOStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s fileIOStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+}
+
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon interface {
-	gextras.Objector
-	Icon
 	LoadableIcon
 
 	// File gets the #GFile associated with the given @icon.
@@ -23814,19 +24221,13 @@ type FileIcon interface {
 // fileIcon implements the FileIcon class.
 type fileIcon struct {
 	gextras.Objector
-	Icon
-	LoadableIcon
 }
-
-var _ FileIcon = (*fileIcon)(nil)
 
 // WrapFileIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileIcon(obj *externglib.Object) FileIcon {
 	return fileIcon{
-		Objector:     obj,
-		Icon:         WrapIcon(obj),
-		LoadableIcon: WrapLoadableIcon(obj),
+		Objector: obj,
 	}
 }
 
@@ -23867,6 +24268,26 @@ func (i fileIcon) File() File {
 	return _file
 }
 
+func (i fileIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i fileIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i fileIcon) String() string {
+	return WrapIcon(gextras.InternObject(i)).String()
+}
+
+func (i fileIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+}
+
+func (i fileIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
+}
+
 // FileInfo: functionality for manipulating basic metadata for files. Info
 // implements methods for getting information that all files should contain, and
 // allows for manipulation of extended attributes.
@@ -23891,16 +24312,15 @@ func (i fileIcon) File() File {
 //
 // AttributeMatcher allows for searching through a Info for attributes.
 type FileInfo interface {
-	gextras.Objector
 
-	// ClearStatus clears the status information from @info.
-	ClearStatus()
-	// CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute] of
-	// @dest_info, and then copies all of the file attributes from @src_info to
-	// @dest_info.
-	CopyInto(destInfo FileInfo)
-	// Dup duplicates a file info structure.
-	Dup() FileInfo
+	// ClearStatusFileInfo clears the status information from @info.
+	ClearStatusFileInfo()
+	// CopyIntoFileInfo: first clears all of the
+	// [GFileAttribute][gio-GFileAttribute] of @dest_info, and then copies all
+	// of the file attributes from @src_info to @dest_info.
+	CopyIntoFileInfo(destInfo FileInfo)
+	// DupFileInfo duplicates a file info structure.
+	DupFileInfo() FileInfo
 	// AttributeAsString gets the value of a attribute, formatted as a string.
 	// This escapes things as needed to make the string valid UTF-8.
 	AttributeAsString(attribute string) string
@@ -23977,105 +24397,106 @@ type FileInfo interface {
 	SymbolicIcon() Icon
 	// SymlinkTarget gets the symlink target for a given Info.
 	SymlinkTarget() string
-	// HasAttribute checks if a file info structure has an attribute named
-	// @attribute.
-	HasAttribute(attribute string) bool
-	// HasNamespace checks if a file info structure has an attribute in the
-	// specified @name_space.
-	HasNamespace(nameSpace string) bool
-	// ListAttributes lists the file info structure's attributes.
-	ListAttributes(nameSpace string) []string
-	// RemoveAttribute removes all cases of @attribute from @info if it exists.
-	RemoveAttribute(attribute string)
-	// SetAttributeBoolean sets the @attribute to contain the given @attr_value,
-	// if possible.
-	SetAttributeBoolean(attribute string, attrValue bool)
-	// SetAttributeByteString sets the @attribute to contain the given
+	// HasAttributeFileInfo checks if a file info structure has an attribute
+	// named @attribute.
+	HasAttributeFileInfo(attribute string) bool
+	// HasNamespaceFileInfo checks if a file info structure has an attribute in
+	// the specified @name_space.
+	HasNamespaceFileInfo(nameSpace string) bool
+	// ListAttributesFileInfo lists the file info structure's attributes.
+	ListAttributesFileInfo(nameSpace string) []string
+	// RemoveAttributeFileInfo removes all cases of @attribute from @info if it
+	// exists.
+	RemoveAttributeFileInfo(attribute string)
+	// SetAttributeBooleanFileInfo sets the @attribute to contain the given
 	// @attr_value, if possible.
-	SetAttributeByteString(attribute string, attrValue string)
-	// SetAttributeInt32 sets the @attribute to contain the given @attr_value,
-	// if possible.
-	SetAttributeInt32(attribute string, attrValue int32)
-	// SetAttributeInt64 sets the @attribute to contain the given @attr_value,
-	// if possible.
-	SetAttributeInt64(attribute string, attrValue int64)
-	// SetAttributeMask sets @mask on @info to match specific attribute types.
-	SetAttributeMask(mask *FileAttributeMatcher)
-	// SetAttributeObject sets the @attribute to contain the given @attr_value,
-	// if possible.
-	SetAttributeObject(attribute string, attrValue gextras.Objector)
-	// SetAttributeStatus sets the attribute status for an attribute key. This
-	// is only needed by external code that implement
+	SetAttributeBooleanFileInfo(attribute string, attrValue bool)
+	// SetAttributeByteStringFileInfo sets the @attribute to contain the given
+	// @attr_value, if possible.
+	SetAttributeByteStringFileInfo(attribute string, attrValue string)
+	// SetAttributeInt32FileInfo sets the @attribute to contain the given
+	// @attr_value, if possible.
+	SetAttributeInt32FileInfo(attribute string, attrValue int32)
+	// SetAttributeInt64FileInfo sets the @attribute to contain the given
+	// @attr_value, if possible.
+	SetAttributeInt64FileInfo(attribute string, attrValue int64)
+	// SetAttributeMaskFileInfo sets @mask on @info to match specific attribute
+	// types.
+	SetAttributeMaskFileInfo(mask *FileAttributeMatcher)
+	// SetAttributeObjectFileInfo sets the @attribute to contain the given
+	// @attr_value, if possible.
+	SetAttributeObjectFileInfo(attribute string, attrValue gextras.Objector)
+	// SetAttributeStatusFileInfo sets the attribute status for an attribute
+	// key. This is only needed by external code that implement
 	// g_file_set_attributes_from_info() or similar functions.
 	//
 	// The attribute must exist in @info for this to work. Otherwise false is
 	// returned and @info is unchanged.
-	SetAttributeStatus(attribute string, status FileAttributeStatus) bool
-	// SetAttributeString sets the @attribute to contain the given @attr_value,
-	// if possible.
-	SetAttributeString(attribute string, attrValue string)
-	// SetAttributeStringv sets the @attribute to contain the given @attr_value,
-	// if possible.
+	SetAttributeStatusFileInfo(attribute string, status FileAttributeStatus) bool
+	// SetAttributeStringFileInfo sets the @attribute to contain the given
+	// @attr_value, if possible.
+	SetAttributeStringFileInfo(attribute string, attrValue string)
+	// SetAttributeStringvFileInfo sets the @attribute to contain the given
+	// @attr_value, if possible.
 	//
 	// Sinze: 2.22
-	SetAttributeStringv(attribute string, attrValue []string)
-	// SetAttributeUint32 sets the @attribute to contain the given @attr_value,
-	// if possible.
-	SetAttributeUint32(attribute string, attrValue uint32)
-	// SetAttributeUint64 sets the @attribute to contain the given @attr_value,
-	// if possible.
-	SetAttributeUint64(attribute string, attrValue uint64)
-	// SetContentType sets the content type attribute for a given Info. See
-	// G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.
-	SetContentType(contentType string)
-	// SetDisplayName sets the display name for the current Info. See
+	SetAttributeStringvFileInfo(attribute string, attrValue []string)
+	// SetAttributeUint32FileInfo sets the @attribute to contain the given
+	// @attr_value, if possible.
+	SetAttributeUint32FileInfo(attribute string, attrValue uint32)
+	// SetAttributeUint64FileInfo sets the @attribute to contain the given
+	// @attr_value, if possible.
+	SetAttributeUint64FileInfo(attribute string, attrValue uint64)
+	// SetContentTypeFileInfo sets the content type attribute for a given Info.
+	// See G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.
+	SetContentTypeFileInfo(contentType string)
+	// SetDisplayNameFileInfo sets the display name for the current Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME.
-	SetDisplayName(displayName string)
-	// SetEditName sets the edit name for the current file. See
+	SetDisplayNameFileInfo(displayName string)
+	// SetEditNameFileInfo sets the edit name for the current file. See
 	// G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME.
-	SetEditName(editName string)
-	// SetFileType sets the file type in a Info to @type. See
+	SetEditNameFileInfo(editName string)
+	// SetFileTypeFileInfo sets the file type in a Info to @type. See
 	// G_FILE_ATTRIBUTE_STANDARD_TYPE.
-	SetFileType(typ FileType)
-	// SetIcon sets the icon for a given Info. See
+	SetFileTypeFileInfo(typ FileType)
+	// SetIconFileInfo sets the icon for a given Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_ICON.
-	SetIcon(icon Icon)
-	// SetIsHidden sets the "is_hidden" attribute in a Info according to
+	SetIconFileInfo(icon Icon)
+	// SetIsHiddenFileInfo sets the "is_hidden" attribute in a Info according to
 	// @is_hidden. See G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
-	SetIsHidden(isHidden bool)
-	// SetIsSymlink sets the "is_symlink" attribute in a Info according to
-	// @is_symlink. See G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
-	SetIsSymlink(isSymlink bool)
-	// SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
+	SetIsHiddenFileInfo(isHidden bool)
+	// SetIsSymlinkFileInfo sets the "is_symlink" attribute in a Info according
+	// to @is_symlink. See G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
+	SetIsSymlinkFileInfo(isSymlink bool)
+	// SetModificationTimeFileInfo sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
 	// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the
 	// given time value.
-	SetModificationTime(mtime *glib.TimeVal)
-	// SetName sets the name attribute for the current Info. See
+	SetModificationTimeFileInfo(mtime *glib.TimeVal)
+	// SetNameFileInfo sets the name attribute for the current Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_NAME.
-	SetName(name string)
-	// SetSize sets the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file
-	// info to the given size.
-	SetSize(size int64)
-	// SetSortOrder sets the sort order attribute in the file info structure.
-	// See G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
-	SetSortOrder(sortOrder int32)
-	// SetSymbolicIcon sets the symbolic icon for a given Info. See
+	SetNameFileInfo(name string)
+	// SetSizeFileInfo sets the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the
+	// file info to the given size.
+	SetSizeFileInfo(size int64)
+	// SetSortOrderFileInfo sets the sort order attribute in the file info
+	// structure. See G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
+	SetSortOrderFileInfo(sortOrder int32)
+	// SetSymbolicIconFileInfo sets the symbolic icon for a given Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
-	SetSymbolicIcon(icon Icon)
-	// SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET
-	// attribute in the file info to the given symlink target.
-	SetSymlinkTarget(symlinkTarget string)
-	// UnsetAttributeMask unsets a mask set by g_file_info_set_attribute_mask(),
-	// if one is set.
-	UnsetAttributeMask()
+	SetSymbolicIconFileInfo(icon Icon)
+	// SetSymlinkTargetFileInfo sets the
+	// G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET attribute in the file info to
+	// the given symlink target.
+	SetSymlinkTargetFileInfo(symlinkTarget string)
+	// UnsetAttributeMaskFileInfo unsets a mask set by
+	// g_file_info_set_attribute_mask(), if one is set.
+	UnsetAttributeMaskFileInfo()
 }
 
 // fileInfo implements the FileInfo class.
 type fileInfo struct {
 	gextras.Objector
 }
-
-var _ FileInfo = (*fileInfo)(nil)
 
 // WrapFileInfo wraps a GObject to the right type. It is
 // primarily used internally.
@@ -24104,7 +24525,7 @@ func NewFileInfo() FileInfo {
 	return _fileInfo
 }
 
-func (i fileInfo) ClearStatus() {
+func (i fileInfo) ClearStatusFileInfo() {
 	var _arg0 *C.GFileInfo // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
@@ -24112,7 +24533,7 @@ func (i fileInfo) ClearStatus() {
 	C.g_file_info_clear_status(_arg0)
 }
 
-func (s fileInfo) CopyInto(destInfo FileInfo) {
+func (s fileInfo) CopyIntoFileInfo(destInfo FileInfo) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GFileInfo // out
 
@@ -24122,7 +24543,7 @@ func (s fileInfo) CopyInto(destInfo FileInfo) {
 	C.g_file_info_copy_into(_arg0, _arg1)
 }
 
-func (o fileInfo) Dup() FileInfo {
+func (o fileInfo) DupFileInfo() FileInfo {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GFileInfo // in
 
@@ -24595,7 +25016,7 @@ func (i fileInfo) SymlinkTarget() string {
 	return _utf8
 }
 
-func (i fileInfo) HasAttribute(attribute string) bool {
+func (i fileInfo) HasAttributeFileInfo(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _cret C.gboolean   // in
@@ -24615,7 +25036,7 @@ func (i fileInfo) HasAttribute(attribute string) bool {
 	return _ok
 }
 
-func (i fileInfo) HasNamespace(nameSpace string) bool {
+func (i fileInfo) HasNamespaceFileInfo(nameSpace string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _cret C.gboolean   // in
@@ -24635,7 +25056,7 @@ func (i fileInfo) HasNamespace(nameSpace string) bool {
 	return _ok
 }
 
-func (i fileInfo) ListAttributes(nameSpace string) []string {
+func (i fileInfo) ListAttributesFileInfo(nameSpace string) []string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _cret **C.char
@@ -24666,7 +25087,7 @@ func (i fileInfo) ListAttributes(nameSpace string) []string {
 	return _utf8s
 }
 
-func (i fileInfo) RemoveAttribute(attribute string) {
+func (i fileInfo) RemoveAttributeFileInfo(attribute string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 
@@ -24677,7 +25098,7 @@ func (i fileInfo) RemoveAttribute(attribute string) {
 	C.g_file_info_remove_attribute(_arg0, _arg1)
 }
 
-func (i fileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
+func (i fileInfo) SetAttributeBooleanFileInfo(attribute string, attrValue bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 C.gboolean   // out
@@ -24692,7 +25113,7 @@ func (i fileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	C.g_file_info_set_attribute_boolean(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeByteString(attribute string, attrValue string) {
+func (i fileInfo) SetAttributeByteStringFileInfo(attribute string, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
@@ -24706,7 +25127,7 @@ func (i fileInfo) SetAttributeByteString(attribute string, attrValue string) {
 	C.g_file_info_set_attribute_byte_string(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeInt32(attribute string, attrValue int32) {
+func (i fileInfo) SetAttributeInt32FileInfo(attribute string, attrValue int32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 C.gint32     // out
@@ -24719,7 +25140,7 @@ func (i fileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	C.g_file_info_set_attribute_int32(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeInt64(attribute string, attrValue int64) {
+func (i fileInfo) SetAttributeInt64FileInfo(attribute string, attrValue int64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 C.gint64     // out
@@ -24732,7 +25153,7 @@ func (i fileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 	C.g_file_info_set_attribute_int64(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
+func (i fileInfo) SetAttributeMaskFileInfo(mask *FileAttributeMatcher) {
 	var _arg0 *C.GFileInfo             // out
 	var _arg1 *C.GFileAttributeMatcher // out
 
@@ -24742,7 +25163,7 @@ func (i fileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	C.g_file_info_set_attribute_mask(_arg0, _arg1)
 }
 
-func (i fileInfo) SetAttributeObject(attribute string, attrValue gextras.Objector) {
+func (i fileInfo) SetAttributeObjectFileInfo(attribute string, attrValue gextras.Objector) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.GObject   // out
@@ -24755,7 +25176,7 @@ func (i fileInfo) SetAttributeObject(attribute string, attrValue gextras.Objecto
 	C.g_file_info_set_attribute_object(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
+func (i fileInfo) SetAttributeStatusFileInfo(attribute string, status FileAttributeStatus) bool {
 	var _arg0 *C.GFileInfo           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GFileAttributeStatus // out
@@ -24777,7 +25198,7 @@ func (i fileInfo) SetAttributeStatus(attribute string, status FileAttributeStatu
 	return _ok
 }
 
-func (i fileInfo) SetAttributeString(attribute string, attrValue string) {
+func (i fileInfo) SetAttributeStringFileInfo(attribute string, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
@@ -24791,7 +25212,7 @@ func (i fileInfo) SetAttributeString(attribute string, attrValue string) {
 	C.g_file_info_set_attribute_string(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeStringv(attribute string, attrValue []string) {
+func (i fileInfo) SetAttributeStringvFileInfo(attribute string, attrValue []string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 **C.char
@@ -24812,7 +25233,7 @@ func (i fileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	C.g_file_info_set_attribute_stringv(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
+func (i fileInfo) SetAttributeUint32FileInfo(attribute string, attrValue uint32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 C.guint32    // out
@@ -24825,7 +25246,7 @@ func (i fileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	C.g_file_info_set_attribute_uint32(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
+func (i fileInfo) SetAttributeUint64FileInfo(attribute string, attrValue uint64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 C.guint64    // out
@@ -24838,7 +25259,7 @@ func (i fileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 	C.g_file_info_set_attribute_uint64(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetContentType(contentType string) {
+func (i fileInfo) SetContentTypeFileInfo(contentType string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 
@@ -24849,7 +25270,7 @@ func (i fileInfo) SetContentType(contentType string) {
 	C.g_file_info_set_content_type(_arg0, _arg1)
 }
 
-func (i fileInfo) SetDisplayName(displayName string) {
+func (i fileInfo) SetDisplayNameFileInfo(displayName string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 
@@ -24860,7 +25281,7 @@ func (i fileInfo) SetDisplayName(displayName string) {
 	C.g_file_info_set_display_name(_arg0, _arg1)
 }
 
-func (i fileInfo) SetEditName(editName string) {
+func (i fileInfo) SetEditNameFileInfo(editName string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 
@@ -24871,7 +25292,7 @@ func (i fileInfo) SetEditName(editName string) {
 	C.g_file_info_set_edit_name(_arg0, _arg1)
 }
 
-func (i fileInfo) SetFileType(typ FileType) {
+func (i fileInfo) SetFileTypeFileInfo(typ FileType) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.GFileType  // out
 
@@ -24881,7 +25302,7 @@ func (i fileInfo) SetFileType(typ FileType) {
 	C.g_file_info_set_file_type(_arg0, _arg1)
 }
 
-func (i fileInfo) SetIcon(icon Icon) {
+func (i fileInfo) SetIconFileInfo(icon Icon) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
 
@@ -24891,7 +25312,7 @@ func (i fileInfo) SetIcon(icon Icon) {
 	C.g_file_info_set_icon(_arg0, _arg1)
 }
 
-func (i fileInfo) SetIsHidden(isHidden bool) {
+func (i fileInfo) SetIsHiddenFileInfo(isHidden bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gboolean   // out
 
@@ -24903,7 +25324,7 @@ func (i fileInfo) SetIsHidden(isHidden bool) {
 	C.g_file_info_set_is_hidden(_arg0, _arg1)
 }
 
-func (i fileInfo) SetIsSymlink(isSymlink bool) {
+func (i fileInfo) SetIsSymlinkFileInfo(isSymlink bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gboolean   // out
 
@@ -24915,7 +25336,7 @@ func (i fileInfo) SetIsSymlink(isSymlink bool) {
 	C.g_file_info_set_is_symlink(_arg0, _arg1)
 }
 
-func (i fileInfo) SetModificationTime(mtime *glib.TimeVal) {
+func (i fileInfo) SetModificationTimeFileInfo(mtime *glib.TimeVal) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GTimeVal  // out
 
@@ -24925,7 +25346,7 @@ func (i fileInfo) SetModificationTime(mtime *glib.TimeVal) {
 	C.g_file_info_set_modification_time(_arg0, _arg1)
 }
 
-func (i fileInfo) SetName(name string) {
+func (i fileInfo) SetNameFileInfo(name string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 
@@ -24936,7 +25357,7 @@ func (i fileInfo) SetName(name string) {
 	C.g_file_info_set_name(_arg0, _arg1)
 }
 
-func (i fileInfo) SetSize(size int64) {
+func (i fileInfo) SetSizeFileInfo(size int64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.goffset    // out
 
@@ -24946,7 +25367,7 @@ func (i fileInfo) SetSize(size int64) {
 	C.g_file_info_set_size(_arg0, _arg1)
 }
 
-func (i fileInfo) SetSortOrder(sortOrder int32) {
+func (i fileInfo) SetSortOrderFileInfo(sortOrder int32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gint32     // out
 
@@ -24956,7 +25377,7 @@ func (i fileInfo) SetSortOrder(sortOrder int32) {
 	C.g_file_info_set_sort_order(_arg0, _arg1)
 }
 
-func (i fileInfo) SetSymbolicIcon(icon Icon) {
+func (i fileInfo) SetSymbolicIconFileInfo(icon Icon) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
 
@@ -24966,7 +25387,7 @@ func (i fileInfo) SetSymbolicIcon(icon Icon) {
 	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
 }
 
-func (i fileInfo) SetSymlinkTarget(symlinkTarget string) {
+func (i fileInfo) SetSymlinkTargetFileInfo(symlinkTarget string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 
@@ -24977,7 +25398,7 @@ func (i fileInfo) SetSymlinkTarget(symlinkTarget string) {
 	C.g_file_info_set_symlink_target(_arg0, _arg1)
 }
 
-func (i fileInfo) UnsetAttributeMask() {
+func (i fileInfo) UnsetAttributeMaskFileInfo() {
 	var _arg0 *C.GFileInfo // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
@@ -24998,31 +25419,28 @@ type FileInputStream interface {
 	InputStream
 	Seekable
 
-	// QueryInfo queries a file input stream the given @attributes. This
-	// function blocks while querying the stream. For the asynchronous
-	// (non-blocking) version of this function, see
+	// QueryInfoFileInputStream queries a file input stream the given
+	// @attributes. This function blocks while querying the stream. For the
+	// asynchronous (non-blocking) version of this function, see
 	// g_file_input_stream_query_info_async(). While the stream is blocked, the
 	// stream will set the pending flag internally, and any other operations on
 	// the stream will fail with G_IO_ERROR_PENDING.
-	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
-	// QueryInfoFinish finishes an asynchronous info query operation.
-	QueryInfoFinish(result AsyncResult) (FileInfo, error)
+	QueryInfoFileInputStream(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoFinishFileInputStream finishes an asynchronous info query
+	// operation.
+	QueryInfoFinishFileInputStream(result AsyncResult) (FileInfo, error)
 }
 
 // fileInputStream implements the FileInputStream class.
 type fileInputStream struct {
 	InputStream
-	Seekable
 }
-
-var _ FileInputStream = (*fileInputStream)(nil)
 
 // WrapFileInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileInputStream(obj *externglib.Object) FileInputStream {
 	return fileInputStream{
 		InputStream: WrapInputStream(obj),
-		Seekable:    WrapSeekable(obj),
 	}
 }
 
@@ -25032,7 +25450,7 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 	return WrapFileInputStream(obj), nil
 }
 
-func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
+func (s fileInputStream) QueryInfoFileInputStream(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.GCancellable     // out
@@ -25055,7 +25473,7 @@ func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (
 	return _fileInfo, _goerr
 }
 
-func (s fileInputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
+func (s fileInputStream) QueryInfoFinishFileInputStream(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _cret *C.GFileInfo        // in
@@ -25075,6 +25493,26 @@ func (s fileInputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 	return _fileInfo, _goerr
 }
 
+func (s fileInputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s fileInputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s fileInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s fileInputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s fileInputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+}
+
 // FileMonitor monitors a file or directory for changes.
 //
 // To obtain a Monitor for a file or directory, use g_file_monitor(),
@@ -25087,30 +25525,27 @@ func (s fileInputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 // context is blocked, this may cause notifications to be blocked even if the
 // thread-default context is still running).
 type FileMonitor interface {
-	gextras.Objector
 
-	// Cancel cancels a file monitor.
-	Cancel() bool
-	// EmitEvent emits the Monitor::changed signal if a change has taken place.
-	// Should be called from file monitor implementations only.
+	// CancelFileMonitor cancels a file monitor.
+	CancelFileMonitor() bool
+	// EmitEventFileMonitor emits the Monitor::changed signal if a change has
+	// taken place. Should be called from file monitor implementations only.
 	//
 	// Implementations are responsible to call this method from the
 	// [thread-default main context][g-main-context-push-thread-default] of the
 	// thread that the monitor was created in.
-	EmitEvent(child File, otherFile File, eventType FileMonitorEvent)
-	// IsCancelled returns whether the monitor is canceled.
-	IsCancelled() bool
-	// SetRateLimit sets the rate limit to which the @monitor will report
-	// consecutive change events to the same file.
-	SetRateLimit(limitMsecs int)
+	EmitEventFileMonitor(child File, otherFile File, eventType FileMonitorEvent)
+	// IsCancelledFileMonitor returns whether the monitor is canceled.
+	IsCancelledFileMonitor() bool
+	// SetRateLimitFileMonitor sets the rate limit to which the @monitor will
+	// report consecutive change events to the same file.
+	SetRateLimitFileMonitor(limitMsecs int)
 }
 
 // fileMonitor implements the FileMonitor class.
 type fileMonitor struct {
 	gextras.Objector
 }
-
-var _ FileMonitor = (*fileMonitor)(nil)
 
 // WrapFileMonitor wraps a GObject to the right type. It is
 // primarily used internally.
@@ -25126,7 +25561,7 @@ func marshalFileMonitor(p uintptr) (interface{}, error) {
 	return WrapFileMonitor(obj), nil
 }
 
-func (m fileMonitor) Cancel() bool {
+func (m fileMonitor) CancelFileMonitor() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
@@ -25143,7 +25578,7 @@ func (m fileMonitor) Cancel() bool {
 	return _ok
 }
 
-func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
+func (m fileMonitor) EmitEventFileMonitor(child File, otherFile File, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
 	var _arg1 *C.GFile            // out
 	var _arg2 *C.GFile            // out
@@ -25157,7 +25592,7 @@ func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitor
 	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m fileMonitor) IsCancelled() bool {
+func (m fileMonitor) IsCancelledFileMonitor() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
@@ -25174,7 +25609,7 @@ func (m fileMonitor) IsCancelled() bool {
 	return _ok
 }
 
-func (m fileMonitor) SetRateLimit(limitMsecs int) {
+func (m fileMonitor) SetRateLimitFileMonitor(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
 
@@ -25204,11 +25639,12 @@ type FileOutputStream interface {
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
 	Etag() string
-	// QueryInfo queries a file output stream for the given @attributes. This
-	// function blocks while querying the stream. For the asynchronous version
-	// of this function, see g_file_output_stream_query_info_async(). While the
-	// stream is blocked, the stream will set the pending flag internally, and
-	// any other operations on the stream will fail with G_IO_ERROR_PENDING.
+	// QueryInfoFileOutputStream queries a file output stream for the given
+	// @attributes. This function blocks while querying the stream. For the
+	// asynchronous version of this function, see
+	// g_file_output_stream_query_info_async(). While the stream is blocked, the
+	// stream will set the pending flag internally, and any other operations on
+	// the stream will fail with G_IO_ERROR_PENDING.
 	//
 	// Can fail if the stream was already closed (with @error being set to
 	// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
@@ -25220,26 +25656,22 @@ type FileOutputStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
-	// QueryInfoFinish finalizes the asynchronous query started by
-	// g_file_output_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (FileInfo, error)
+	QueryInfoFileOutputStream(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoFinishFileOutputStream finalizes the asynchronous query started
+	// by g_file_output_stream_query_info_async().
+	QueryInfoFinishFileOutputStream(result AsyncResult) (FileInfo, error)
 }
 
 // fileOutputStream implements the FileOutputStream class.
 type fileOutputStream struct {
 	OutputStream
-	Seekable
 }
-
-var _ FileOutputStream = (*fileOutputStream)(nil)
 
 // WrapFileOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileOutputStream(obj *externglib.Object) FileOutputStream {
 	return fileOutputStream{
 		OutputStream: WrapOutputStream(obj),
-		Seekable:     WrapSeekable(obj),
 	}
 }
 
@@ -25265,7 +25697,7 @@ func (s fileOutputStream) Etag() string {
 	return _utf8
 }
 
-func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
+func (s fileOutputStream) QueryInfoFileOutputStream(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
@@ -25288,7 +25720,7 @@ func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) 
 	return _fileInfo, _goerr
 }
 
-func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
+func (s fileOutputStream) QueryInfoFinishFileOutputStream(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileInfo         // in
@@ -25308,27 +25740,44 @@ func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) 
 	return _fileInfo, _goerr
 }
 
+func (s fileOutputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s fileOutputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s fileOutputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s fileOutputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s fileOutputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+}
+
 // FilenameCompleter completes partial file and directory names given a partial
 // string by looking in the file system for clues. Can return a list of possible
 // completion strings for widget implementations.
 type FilenameCompleter interface {
-	gextras.Objector
 
 	// CompletionSuffix obtains a completion for @initial_text from @completer.
 	CompletionSuffix(initialText string) string
 	// Completions gets an array of completion strings for a given initial text.
 	Completions(initialText string) []string
-	// SetDirsOnly: if @dirs_only is true, @completer will only complete
-	// directory names, and not file names.
-	SetDirsOnly(dirsOnly bool)
+	// SetDirsOnlyFilenameCompleter: if @dirs_only is true, @completer will only
+	// complete directory names, and not file names.
+	SetDirsOnlyFilenameCompleter(dirsOnly bool)
 }
 
 // filenameCompleter implements the FilenameCompleter class.
 type filenameCompleter struct {
 	gextras.Objector
 }
-
-var _ FilenameCompleter = (*filenameCompleter)(nil)
 
 // WrapFilenameCompleter wraps a GObject to the right type. It is
 // primarily used internally.
@@ -25407,7 +25856,7 @@ func (c filenameCompleter) Completions(initialText string) []string {
 	return _utf8s
 }
 
-func (c filenameCompleter) SetDirsOnly(dirsOnly bool) {
+func (c filenameCompleter) SetDirsOnlyFilenameCompleter(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out
 
@@ -25424,24 +25873,21 @@ func (c filenameCompleter) SetDirsOnly(dirsOnly bool) {
 // filtering operations are character set conversion, compression and byte order
 // flipping.
 type FilterInputStream interface {
-	InputStream
 
 	// BaseStream gets the base stream for the filter stream.
 	BaseStream() InputStream
 	// CloseBaseStream returns whether the base stream will be closed when
 	// @stream is closed.
 	CloseBaseStream() bool
-	// SetCloseBaseStream sets whether the base stream will be closed when
-	// @stream is closed.
-	SetCloseBaseStream(closeBase bool)
+	// SetCloseBaseStreamFilterInputStream sets whether the base stream will be
+	// closed when @stream is closed.
+	SetCloseBaseStreamFilterInputStream(closeBase bool)
 }
 
 // filterInputStream implements the FilterInputStream class.
 type filterInputStream struct {
 	InputStream
 }
-
-var _ FilterInputStream = (*filterInputStream)(nil)
 
 // WrapFilterInputStream wraps a GObject to the right type. It is
 // primarily used internally.
@@ -25489,7 +25935,7 @@ func (s filterInputStream) CloseBaseStream() bool {
 	return _ok
 }
 
-func (s filterInputStream) SetCloseBaseStream(closeBase bool) {
+func (s filterInputStream) SetCloseBaseStreamFilterInputStream(closeBase bool) {
 	var _arg0 *C.GFilterInputStream // out
 	var _arg1 C.gboolean            // out
 
@@ -25506,24 +25952,21 @@ func (s filterInputStream) SetCloseBaseStream(closeBase bool) {
 // filtering operations are character set conversion, compression and byte order
 // flipping.
 type FilterOutputStream interface {
-	OutputStream
 
 	// BaseStream gets the base stream for the filter stream.
 	BaseStream() OutputStream
 	// CloseBaseStream returns whether the base stream will be closed when
 	// @stream is closed.
 	CloseBaseStream() bool
-	// SetCloseBaseStream sets whether the base stream will be closed when
-	// @stream is closed.
-	SetCloseBaseStream(closeBase bool)
+	// SetCloseBaseStreamFilterOutputStream sets whether the base stream will be
+	// closed when @stream is closed.
+	SetCloseBaseStreamFilterOutputStream(closeBase bool)
 }
 
 // filterOutputStream implements the FilterOutputStream class.
 type filterOutputStream struct {
 	OutputStream
 }
-
-var _ FilterOutputStream = (*filterOutputStream)(nil)
 
 // WrapFilterOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
@@ -25571,7 +26014,7 @@ func (s filterOutputStream) CloseBaseStream() bool {
 	return _ok
 }
 
-func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
+func (s filterOutputStream) SetCloseBaseStreamFilterOutputStream(closeBase bool) {
 	var _arg0 *C.GFilterOutputStream // out
 	var _arg1 C.gboolean             // out
 
@@ -25628,12 +26071,11 @@ func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
 // state the wrapper stream leaves the base stream in (though they are
 // guaranteed not to crash).
 type IOStream interface {
-	gextras.Objector
 
-	// ClearPending clears the pending flag on @stream.
-	ClearPending()
-	// Close closes the stream, releasing resources related to it. This will
-	// also close the individual input and output streams, if they are not
+	// ClearPendingIOStream clears the pending flag on @stream.
+	ClearPendingIOStream()
+	// CloseIOStream closes the stream, releasing resources related to it. This
+	// will also close the individual input and output streams, if they are not
 	// already closed.
 	//
 	// Once the stream is closed, all other operations will return
@@ -25665,30 +26107,29 @@ type IOStream interface {
 	//
 	// The default implementation of this method just calls close on the
 	// individual input/output streams.
-	Close(cancellable Cancellable) error
-	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResult) error
+	CloseIOStream(cancellable Cancellable) error
+	// CloseFinishIOStream closes a stream.
+	CloseFinishIOStream(result AsyncResult) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
 	InputStream() InputStream
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
 	OutputStream() OutputStream
-	// HasPending checks if a stream has pending actions.
-	HasPending() bool
-	// IsClosed checks if a stream is closed.
-	IsClosed() bool
-	// SetPending sets @stream to have actions pending. If the pending flag is
-	// already set or @stream is closed, it will return false and set @error.
-	SetPending() error
+	// HasPendingIOStream checks if a stream has pending actions.
+	HasPendingIOStream() bool
+	// IsClosedIOStream checks if a stream is closed.
+	IsClosedIOStream() bool
+	// SetPendingIOStream sets @stream to have actions pending. If the pending
+	// flag is already set or @stream is closed, it will return false and set
+	// @error.
+	SetPendingIOStream() error
 }
 
 // ioStream implements the IOStream class.
 type ioStream struct {
 	gextras.Objector
 }
-
-var _ IOStream = (*ioStream)(nil)
 
 // WrapIOStream wraps a GObject to the right type. It is
 // primarily used internally.
@@ -25704,7 +26145,7 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 	return WrapIOStream(obj), nil
 }
 
-func (s ioStream) ClearPending() {
+func (s ioStream) ClearPendingIOStream() {
 	var _arg0 *C.GIOStream // out
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
@@ -25712,7 +26153,7 @@ func (s ioStream) ClearPending() {
 	C.g_io_stream_clear_pending(_arg0)
 }
 
-func (s ioStream) Close(cancellable Cancellable) error {
+func (s ioStream) CloseIOStream(cancellable Cancellable) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -25729,7 +26170,7 @@ func (s ioStream) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s ioStream) CloseFinish(result AsyncResult) error {
+func (s ioStream) CloseFinishIOStream(result AsyncResult) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -25776,7 +26217,7 @@ func (s ioStream) OutputStream() OutputStream {
 	return _outputStream
 }
 
-func (s ioStream) HasPending() bool {
+func (s ioStream) HasPendingIOStream() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
@@ -25793,7 +26234,7 @@ func (s ioStream) HasPending() bool {
 	return _ok
 }
 
-func (s ioStream) IsClosed() bool {
+func (s ioStream) IsClosedIOStream() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
@@ -25810,7 +26251,7 @@ func (s ioStream) IsClosed() bool {
 	return _ok
 }
 
-func (s ioStream) SetPending() error {
+func (s ioStream) SetPendingIOStream() error {
 	var _arg0 *C.GIOStream // out
 	var _cerr *C.GError    // in
 
@@ -25833,10 +26274,10 @@ func (s ioStream) SetPending() error {
 // To actually connect to a remote host, you will need a SocketAddress (which
 // includes a Address as well as a port number).
 type InetAddress interface {
-	gextras.Objector
 
-	// Equal checks if two Address instances are equal, e.g. the same address.
-	Equal(otherAddress InetAddress) bool
+	// EqualInetAddress checks if two Address instances are equal, e.g. the same
+	// address.
+	EqualInetAddress(otherAddress InetAddress) bool
 	// Family gets @address's family
 	Family() SocketFamily
 	// IsAny tests whether @address is the "any" address for its family.
@@ -25876,8 +26317,6 @@ type InetAddress interface {
 type inetAddress struct {
 	gextras.Objector
 }
-
-var _ InetAddress = (*inetAddress)(nil)
 
 // WrapInetAddress wraps a GObject to the right type. It is
 // primarily used internally.
@@ -25945,7 +26384,7 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	return _inetAddress
 }
 
-func (a inetAddress) Equal(otherAddress InetAddress) bool {
+func (a inetAddress) EqualInetAddress(otherAddress InetAddress) bool {
 	var _arg0 *C.GInetAddress // out
 	var _arg1 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -26185,19 +26624,19 @@ func (a inetAddress) String() string {
 // relevant for matching purposes. These are often given in string form. Eg,
 // "10.0.0.0/8", or "fe80::/10".
 type InetAddressMask interface {
-	gextras.Objector
 	Initable
 
-	// Equal tests if @mask and @mask2 are the same mask.
-	Equal(mask2 InetAddressMask) bool
+	// EqualInetAddressMask tests if @mask and @mask2 are the same mask.
+	EqualInetAddressMask(mask2 InetAddressMask) bool
 	// Address gets @mask's base address
 	Address() InetAddress
 	// Family gets the Family of @mask's address
 	Family() SocketFamily
 	// Length gets @mask's length
 	Length() uint
-	// Matches tests if @address falls within the range described by @mask.
-	Matches(address InetAddress) bool
+	// MatchesInetAddressMask tests if @address falls within the range described
+	// by @mask.
+	MatchesInetAddressMask(address InetAddress) bool
 	// String converts @mask back to its corresponding string form.
 	String() string
 }
@@ -26205,17 +26644,13 @@ type InetAddressMask interface {
 // inetAddressMask implements the InetAddressMask class.
 type inetAddressMask struct {
 	gextras.Objector
-	Initable
 }
-
-var _ InetAddressMask = (*inetAddressMask)(nil)
 
 // WrapInetAddressMask wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInetAddressMask(obj *externglib.Object) InetAddressMask {
 	return inetAddressMask{
 		Objector: obj,
-		Initable: WrapInitable(obj),
 	}
 }
 
@@ -26270,7 +26705,7 @@ func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	return _inetAddressMask, _goerr
 }
 
-func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
+func (m inetAddressMask) EqualInetAddressMask(mask2 InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddressMask // out
 	var _cret C.gboolean          // in
@@ -26334,7 +26769,7 @@ func (m inetAddressMask) Length() uint {
 	return _guint
 }
 
-func (m inetAddressMask) Matches(address InetAddress) bool {
+func (m inetAddressMask) MatchesInetAddressMask(address InetAddress) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddress     // out
 	var _cret C.gboolean          // in
@@ -26369,11 +26804,14 @@ func (m inetAddressMask) String() string {
 	return _utf8
 }
 
+func (i inetAddressMask) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+}
+
 // InetSocketAddress: an IPv4 or IPv6 socket address; that is, the combination
 // of a Address and a port number.
 type InetSocketAddress interface {
 	SocketAddress
-	SocketConnectable
 
 	// Address gets @address's Address.
 	Address() InetAddress
@@ -26390,17 +26828,13 @@ type InetSocketAddress interface {
 // inetSocketAddress implements the InetSocketAddress class.
 type inetSocketAddress struct {
 	SocketAddress
-	SocketConnectable
 }
-
-var _ InetSocketAddress = (*inetSocketAddress)(nil)
 
 // WrapInetSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
 	return inetSocketAddress{
-		SocketAddress:     WrapSocketAddress(obj),
-		SocketConnectable: WrapSocketConnectable(obj),
+		SocketAddress: WrapSocketAddress(obj),
 	}
 }
 
@@ -26511,6 +26945,18 @@ func (a inetSocketAddress) ScopeID() uint32 {
 	return _guint32
 }
 
+func (c inetSocketAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c inetSocketAddress) ProXYEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+}
+
+func (c inetSocketAddress) String() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).String()
+}
+
 // InputStream has functions to read from a stream (g_input_stream_read()), to
 // close a stream (g_input_stream_close()) and to skip some content
 // (g_input_stream_skip()).
@@ -26523,11 +26969,10 @@ func (a inetSocketAddress) ScopeID() uint32 {
 //
 // All of these functions have async variants too.
 type InputStream interface {
-	gextras.Objector
 
-	// ClearPending clears the pending flag on @stream.
-	ClearPending()
-	// Close closes the stream, releasing resources related to it.
+	// ClearPendingInputStream clears the pending flag on @stream.
+	ClearPendingInputStream()
+	// CloseInputStream closes the stream, releasing resources related to it.
 	//
 	// Once the stream is closed, all other operations will return
 	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
@@ -26551,60 +26996,16 @@ type InputStream interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
 	// Cancelling a close will still leave the stream closed, but some streams
 	// can use a faster close that doesn't block to e.g. check errors.
-	Close(cancellable Cancellable) error
-	// CloseFinish finishes closing a stream asynchronously, started from
-	// g_input_stream_close_async().
-	CloseFinish(result AsyncResult) error
-	// HasPending checks if an input stream has pending actions.
-	HasPending() bool
-	// IsClosed checks if an input stream is closed.
-	IsClosed() bool
-	// Read tries to read @count bytes from the stream into the buffer starting
-	// at @buffer. Will block during this read.
-	//
-	// If count is zero returns zero and does nothing. A value of @count larger
-	// than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the number of bytes read into the buffer is returned. It is
-	// not an error if this is not the same as the requested size, as it can
-	// happen e.g. near the end of a file. Zero is returned on end of file (or
-	// if @count is zero), but never otherwise.
-	//
-	// The returned @buffer is not a nul-terminated string, it can contain nul
-	// bytes at any position, and this function doesn't nul-terminate the
-	// @buffer.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// On error -1 is returned and @error is set accordingly.
-	Read(cancellable Cancellable) ([]byte, int, error)
-	// ReadAll tries to read @count bytes from the stream into the buffer
-	// starting at @buffer. Will block during this read.
-	//
-	// This function is similar to g_input_stream_read(), except it tries to
-	// read as many bytes as requested, only stopping on an error or end of
-	// stream.
-	//
-	// On a successful read of @count bytes, or if we reached the end of the
-	// stream, true is returned, and @bytes_read is set to the number of bytes
-	// read into @buffer.
-	//
-	// If there is an error during the operation false is returned and @error is
-	// set to indicate the error status.
-	//
-	// As a special exception to the normal conventions for functions that use
-	// #GError, if this function returns false (and sets @error) then
-	// @bytes_read will be set to the number of bytes that were successfully
-	// read before the error was encountered. This functionality is only
-	// available from C. If you need it from another language then you must
-	// write your own loop around g_input_stream_read().
-	ReadAll(cancellable Cancellable) ([]byte, uint, error)
-	// ReadAllFinish finishes an asynchronous stream read operation started with
-	// g_input_stream_read_all_async().
+	CloseInputStream(cancellable Cancellable) error
+	// CloseFinishInputStream finishes closing a stream asynchronously, started
+	// from g_input_stream_close_async().
+	CloseFinishInputStream(result AsyncResult) error
+	// HasPendingInputStream checks if an input stream has pending actions.
+	HasPendingInputStream() bool
+	// IsClosedInputStream checks if an input stream is closed.
+	IsClosedInputStream() bool
+	// ReadAllFinishInputStream finishes an asynchronous stream read operation
+	// started with g_input_stream_read_all_async().
 	//
 	// As a special exception to the normal conventions for functions that use
 	// #GError, if this function returns false (and sets @error) then
@@ -26612,14 +27013,15 @@ type InputStream interface {
 	// read before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_input_stream_read_async().
-	ReadAllFinish(result AsyncResult) (uint, error)
-	// ReadFinish finishes an asynchronous stream read operation.
-	ReadFinish(result AsyncResult) (int, error)
-	// SetPending sets @stream to have actions pending. If the pending flag is
-	// already set or @stream is closed, it will return false and set @error.
-	SetPending() error
-	// Skip tries to skip @count bytes from the stream. Will block during the
-	// operation.
+	ReadAllFinishInputStream(result AsyncResult) (uint, error)
+	// ReadFinishInputStream finishes an asynchronous stream read operation.
+	ReadFinishInputStream(result AsyncResult) (int, error)
+	// SetPendingInputStream sets @stream to have actions pending. If the
+	// pending flag is already set or @stream is closed, it will return false
+	// and set @error.
+	SetPendingInputStream() error
+	// SkipInputStream tries to skip @count bytes from the stream. Will block
+	// during the operation.
 	//
 	// This is identical to g_input_stream_read(), from a behaviour standpoint,
 	// but the bytes that are skipped are not returned to the user. Some streams
@@ -26633,17 +27035,15 @@ type InputStream interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	Skip(count uint, cancellable Cancellable) (int, error)
-	// SkipFinish finishes a stream skip operation.
-	SkipFinish(result AsyncResult) (int, error)
+	SkipInputStream(count uint, cancellable Cancellable) (int, error)
+	// SkipFinishInputStream finishes a stream skip operation.
+	SkipFinishInputStream(result AsyncResult) (int, error)
 }
 
 // inputStream implements the InputStream class.
 type inputStream struct {
 	gextras.Objector
 }
-
-var _ InputStream = (*inputStream)(nil)
 
 // WrapInputStream wraps a GObject to the right type. It is
 // primarily used internally.
@@ -26659,7 +27059,7 @@ func marshalInputStream(p uintptr) (interface{}, error) {
 	return WrapInputStream(obj), nil
 }
 
-func (s inputStream) ClearPending() {
+func (s inputStream) ClearPendingInputStream() {
 	var _arg0 *C.GInputStream // out
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
@@ -26667,7 +27067,7 @@ func (s inputStream) ClearPending() {
 	C.g_input_stream_clear_pending(_arg0)
 }
 
-func (s inputStream) Close(cancellable Cancellable) error {
+func (s inputStream) CloseInputStream(cancellable Cancellable) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -26684,7 +27084,7 @@ func (s inputStream) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s inputStream) CloseFinish(result AsyncResult) error {
+func (s inputStream) CloseFinishInputStream(result AsyncResult) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -26701,7 +27101,7 @@ func (s inputStream) CloseFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (s inputStream) HasPending() bool {
+func (s inputStream) HasPendingInputStream() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
 
@@ -26718,7 +27118,7 @@ func (s inputStream) HasPending() bool {
 	return _ok
 }
 
-func (s inputStream) IsClosed() bool {
+func (s inputStream) IsClosedInputStream() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
 
@@ -26735,67 +27135,7 @@ func (s inputStream) IsClosed() bool {
 	return _ok
 }
 
-func (s inputStream) Read(cancellable Cancellable) ([]byte, int, error) {
-	var _arg0 *C.GInputStream // out
-	var _arg1 C.void
-	var _arg2 C.gsize         // in
-	var _arg3 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	_cret = C.g_input_stream_read(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
-
-	var _buffer []byte
-	var _gssize int  // out
-	var _goerr error // out
-
-	{
-		src := unsafe.Slice(_arg1, _arg2)
-		_buffer = make([]byte, _arg2)
-		for i := 0; i < int(_arg2); i++ {
-			_buffer[i] = (byte)(src[i])
-		}
-	}
-	_gssize = (int)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _buffer, _gssize, _goerr
-}
-
-func (s inputStream) ReadAll(cancellable Cancellable) ([]byte, uint, error) {
-	var _arg0 *C.GInputStream // out
-	var _arg1 C.void
-	var _arg2 C.gsize         // in
-	var _arg3 C.gsize         // in
-	var _arg4 *C.GCancellable // out
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	C.g_input_stream_read_all(_arg0, &_arg1, &_arg2, &_arg3, _arg4, &_cerr)
-
-	var _buffer []byte
-	var _bytesRead uint // out
-	var _goerr error    // out
-
-	{
-		src := unsafe.Slice(_arg1, _arg2)
-		_buffer = make([]byte, _arg2)
-		for i := 0; i < int(_arg2); i++ {
-			_buffer[i] = (byte)(src[i])
-		}
-	}
-	_bytesRead = (uint)(_arg3)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _buffer, _bytesRead, _goerr
-}
-
-func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
+func (s inputStream) ReadAllFinishInputStream(result AsyncResult) (uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 C.gsize         // in
@@ -26815,7 +27155,7 @@ func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
 	return _bytesRead, _goerr
 }
 
-func (s inputStream) ReadFinish(result AsyncResult) (int, error) {
+func (s inputStream) ReadFinishInputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret C.gssize        // in
@@ -26835,7 +27175,7 @@ func (s inputStream) ReadFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-func (s inputStream) SetPending() error {
+func (s inputStream) SetPendingInputStream() error {
 	var _arg0 *C.GInputStream // out
 	var _cerr *C.GError       // in
 
@@ -26850,7 +27190,7 @@ func (s inputStream) SetPending() error {
 	return _goerr
 }
 
-func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
+func (s inputStream) SkipInputStream(count uint, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 C.gsize         // out
 	var _arg2 *C.GCancellable // out
@@ -26872,7 +27212,7 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
 	return _gssize, _goerr
 }
 
-func (s inputStream) SkipFinish(result AsyncResult) (int, error) {
+func (s inputStream) SkipFinishInputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret C.gssize        // in
@@ -26898,41 +27238,41 @@ func (s inputStream) SkipFinish(result AsyncResult) (int, error) {
 // It provides insertions, deletions, and lookups in logarithmic time with a
 // fast path for the common case of iterating the list linearly.
 type ListStore interface {
-	gextras.Objector
 	ListModel
 
-	// Append appends @item to @store. @item must be of type Store:item-type.
+	// AppendListStore appends @item to @store. @item must be of type
+	// Store:item-type.
 	//
 	// This function takes a ref on @item.
 	//
 	// Use g_list_store_splice() to append multiple items at the same time
 	// efficiently.
-	Append(item gextras.Objector)
-	// Find looks up the given @item in the list store by looping over the items
-	// until the first occurrence of @item. If @item was not found, then
-	// @position will not be set, and this method will return false.
+	AppendListStore(item gextras.Objector)
+	// FindListStore looks up the given @item in the list store by looping over
+	// the items until the first occurrence of @item. If @item was not found,
+	// then @position will not be set, and this method will return false.
 	//
 	// If you need to compare the two items with a custom comparison function,
 	// use g_list_store_find_with_equal_func() with a custom Func instead.
-	Find(item gextras.Objector) (uint, bool)
-	// Insert inserts @item into @store at @position. @item must be of type
-	// Store:item-type or derived from it. @position must be smaller than the
-	// length of the list, or equal to it to append.
+	FindListStore(item gextras.Objector) (uint, bool)
+	// InsertListStore inserts @item into @store at @position. @item must be of
+	// type Store:item-type or derived from it. @position must be smaller than
+	// the length of the list, or equal to it to append.
 	//
 	// This function takes a ref on @item.
 	//
 	// Use g_list_store_splice() to insert multiple items at the same time
 	// efficiently.
-	Insert(position uint, item gextras.Objector)
-	// Remove removes the item from @store that is at @position. @position must
-	// be smaller than the current length of the list.
+	InsertListStore(position uint, item gextras.Objector)
+	// RemoveListStore removes the item from @store that is at @position.
+	// @position must be smaller than the current length of the list.
 	//
 	// Use g_list_store_splice() to remove multiple items at the same time
 	// efficiently.
-	Remove(position uint)
-	// RemoveAll removes all items from @store.
-	RemoveAll()
-	// Splice changes @store by removing @n_removals items and adding
+	RemoveListStore(position uint)
+	// RemoveAllListStore removes all items from @store.
+	RemoveAllListStore()
+	// SpliceListStore changes @store by removing @n_removals items and adding
 	// @n_additions items to it. @additions must contain @n_additions items of
 	// type Store:item-type. nil is not permitted.
 	//
@@ -26945,23 +27285,19 @@ type ListStore interface {
 	// The parameters @position and @n_removals must be correct (ie: @position +
 	// @n_removals must be less than or equal to the length of the list at the
 	// time this function is called).
-	Splice(position uint, nRemovals uint, additions []gextras.Objector)
+	SpliceListStore(position uint, nRemovals uint, additions []gextras.Objector)
 }
 
 // listStore implements the ListStore class.
 type listStore struct {
 	gextras.Objector
-	ListModel
 }
-
-var _ ListStore = (*listStore)(nil)
 
 // WrapListStore wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListStore(obj *externglib.Object) ListStore {
 	return listStore{
-		Objector:  obj,
-		ListModel: WrapListModel(obj),
+		Objector: obj,
 	}
 }
 
@@ -26977,7 +27313,7 @@ func NewListStore(itemType externglib.Type) ListStore {
 	var _arg1 C.GType       // out
 	var _cret *C.GListStore // in
 
-	_arg1 = C.GType(itemType)
+	_arg1 = (C.GType)(itemType)
 
 	_cret = C.g_list_store_new(_arg1)
 
@@ -26988,24 +27324,24 @@ func NewListStore(itemType externglib.Type) ListStore {
 	return _listStore
 }
 
-func (s listStore) Append(item gextras.Objector) {
+func (s listStore) AppendListStore(item gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_append(_arg0, _arg1)
 }
 
-func (s listStore) Find(item gextras.Objector) (uint, bool) {
+func (s listStore) FindListStore(item gextras.Objector) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.guint       // in
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(item.Native()))
 
 	_cret = C.g_list_store_find(_arg0, _arg1, &_arg2)
 
@@ -27020,19 +27356,19 @@ func (s listStore) Find(item gextras.Objector) (uint, bool) {
 	return _position, _ok
 }
 
-func (s listStore) Insert(position uint, item gextras.Objector) {
+func (s listStore) InsertListStore(position uint, item gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.gpointer    // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.guint)(position)
-	_arg2 = (*C.GObject)(unsafe.Pointer(item.Native()))
+	_arg2 = (C.gpointer)(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_insert(_arg0, _arg1, _arg2)
 }
 
-func (s listStore) Remove(position uint) {
+func (s listStore) RemoveListStore(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 
@@ -27042,7 +27378,7 @@ func (s listStore) Remove(position uint) {
 	C.g_list_store_remove(_arg0, _arg1)
 }
 
-func (s listStore) RemoveAll() {
+func (s listStore) RemoveAllListStore() {
 	var _arg0 *C.GListStore // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
@@ -27050,7 +27386,7 @@ func (s listStore) RemoveAll() {
 	C.g_list_store_remove_all(_arg0)
 }
 
-func (s listStore) Splice(position uint, nRemovals uint, additions []gextras.Objector) {
+func (s listStore) SpliceListStore(position uint, nRemovals uint, additions []gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out
@@ -27066,11 +27402,27 @@ func (s listStore) Splice(position uint, nRemovals uint, additions []gextras.Obj
 	{
 		out := unsafe.Slice(_arg3, len(additions))
 		for i := range additions {
-			out[i] = (*C.GObject)(unsafe.Pointer(additions[i].Native()))
+			out[i] = (C.GObject)(unsafe.Pointer(additions[i].Native()))
 		}
 	}
 
 	C.g_list_store_splice(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+func (l listStore) ItemType() externglib.Type {
+	return WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l listStore) NItems() uint {
+	return WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l listStore) Object(position uint) gextras.Objector {
+	return WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l listStore) ItemsChanged(position uint, removed uint, added uint) {
+	WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 // MemoryInputStream is a class for using arbitrary memory chunks as input for
@@ -27078,7 +27430,6 @@ func (s listStore) Splice(position uint, nRemovals uint, additions []gextras.Obj
 //
 // As of GLib 2.34, InputStream implements InputStream.
 type MemoryInputStream interface {
-	InputStream
 	PollableInputStream
 	Seekable
 }
@@ -27086,19 +27437,13 @@ type MemoryInputStream interface {
 // memoryInputStream implements the MemoryInputStream class.
 type memoryInputStream struct {
 	InputStream
-	PollableInputStream
-	Seekable
 }
-
-var _ MemoryInputStream = (*memoryInputStream)(nil)
 
 // WrapMemoryInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMemoryInputStream(obj *externglib.Object) MemoryInputStream {
 	return memoryInputStream{
-		InputStream:         WrapInputStream(obj),
-		PollableInputStream: WrapPollableInputStream(obj),
-		Seekable:            WrapSeekable(obj),
+		InputStream: WrapInputStream(obj),
 	}
 }
 
@@ -27121,13 +27466,44 @@ func NewMemoryInputStream() MemoryInputStream {
 	return _memoryInputStream
 }
 
+func (s memoryInputStream) CanPoll() bool {
+	return WrapPollableInputStream(gextras.InternObject(s)).CanPoll()
+}
+
+func (s memoryInputStream) IsReadable() bool {
+	return WrapPollableInputStream(gextras.InternObject(s)).IsReadable()
+}
+
+func (s memoryInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+	return WrapPollableInputStream(gextras.InternObject(s)).ReadNonblocking(buffer, cancellable)
+}
+
+func (s memoryInputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s memoryInputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s memoryInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s memoryInputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s memoryInputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+}
+
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
 // GIO streaming output operations.
 //
 // As of GLib 2.34, OutputStream trivially implements OutputStream: it always
 // polls as ready.
 type MemoryOutputStream interface {
-	OutputStream
 	PollableOutputStream
 	Seekable
 
@@ -27154,19 +27530,13 @@ type MemoryOutputStream interface {
 // memoryOutputStream implements the MemoryOutputStream class.
 type memoryOutputStream struct {
 	OutputStream
-	PollableOutputStream
-	Seekable
 }
-
-var _ MemoryOutputStream = (*memoryOutputStream)(nil)
 
 // WrapMemoryOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStream {
 	return memoryOutputStream{
-		OutputStream:         WrapOutputStream(obj),
-		PollableOutputStream: WrapPollableOutputStream(obj),
-		Seekable:             WrapSeekable(obj),
+		OutputStream: WrapOutputStream(obj),
 	}
 }
 
@@ -27220,6 +27590,42 @@ func (o memoryOutputStream) Size() uint {
 	return _gsize
 }
 
+func (s memoryOutputStream) CanPoll() bool {
+	return WrapPollableOutputStream(gextras.InternObject(s)).CanPoll()
+}
+
+func (s memoryOutputStream) IsWritable() bool {
+	return WrapPollableOutputStream(gextras.InternObject(s)).IsWritable()
+}
+
+func (s memoryOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+	return WrapPollableOutputStream(gextras.InternObject(s)).WriteNonblocking(buffer, cancellable)
+}
+
+func (s memoryOutputStream) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error) {
+	return WrapPollableOutputStream(gextras.InternObject(s)).WritevNonblocking(vectors, cancellable)
+}
+
+func (s memoryOutputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s memoryOutputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s memoryOutputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s memoryOutputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s memoryOutputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+}
+
 // Menu is a simple implementation of Model. You populate a #GMenu by adding
 // Item instances to it.
 //
@@ -27228,37 +27634,36 @@ func (o memoryOutputStream) Size() uint {
 // g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
 // submenu, use g_menu_insert_submenu().
 type Menu interface {
-	MenuModel
 
-	// Append: convenience function for appending a normal menu item to the end
-	// of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
-	// flexible alternative.
-	Append(label string, detailedAction string)
-	// AppendItem appends @item to the end of @menu.
+	// AppendMenu: convenience function for appending a normal menu item to the
+	// end of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a
+	// more flexible alternative.
+	AppendMenu(label string, detailedAction string)
+	// AppendItemMenu appends @item to the end of @menu.
 	//
 	// See g_menu_insert_item() for more information.
-	AppendItem(item MenuItem)
-	// AppendSection: convenience function for appending a section menu item to
-	// the end of @menu. Combine g_menu_item_new_section() and
+	AppendItemMenu(item MenuItem)
+	// AppendSectionMenu: convenience function for appending a section menu item
+	// to the end of @menu. Combine g_menu_item_new_section() and
 	// g_menu_insert_item() for a more flexible alternative.
-	AppendSection(label string, section MenuModel)
-	// AppendSubmenu: convenience function for appending a submenu menu item to
-	// the end of @menu. Combine g_menu_item_new_submenu() and
+	AppendSectionMenu(label string, section MenuModel)
+	// AppendSubmenuMenu: convenience function for appending a submenu menu item
+	// to the end of @menu. Combine g_menu_item_new_submenu() and
 	// g_menu_insert_item() for a more flexible alternative.
-	AppendSubmenu(label string, submenu MenuModel)
-	// Freeze marks @menu as frozen.
+	AppendSubmenuMenu(label string, submenu MenuModel)
+	// FreezeMenu marks @menu as frozen.
 	//
 	// After the menu is frozen, it is an error to attempt to make any changes
 	// to it. In effect this means that the #GMenu API must no longer be used.
 	//
 	// This function causes g_menu_model_is_mutable() to begin returning false,
 	// which has some positive performance implications.
-	Freeze()
-	// Insert: convenience function for inserting a normal menu item into @menu.
-	// Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
-	// alternative.
-	Insert(position int, label string, detailedAction string)
-	// InsertItem inserts @item into @menu.
+	FreezeMenu()
+	// InsertMenu: convenience function for inserting a normal menu item into
+	// @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
+	// flexible alternative.
+	InsertMenu(position int, label string, detailedAction string)
+	// InsertItemMenu inserts @item into @menu.
 	//
 	// The "insertion" is actually done by copying all of the attribute and link
 	// values of @item and using them to form a new item within @menu. As such,
@@ -27274,32 +27679,32 @@ type Menu interface {
 	// There are many convenience functions to take care of common cases. See
 	// g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as
 	// well as "prepend" and "append" variants of each of these functions.
-	InsertItem(position int, item MenuItem)
-	// InsertSection: convenience function for inserting a section menu item
+	InsertItemMenu(position int, item MenuItem)
+	// InsertSectionMenu: convenience function for inserting a section menu item
 	// into @menu. Combine g_menu_item_new_section() and g_menu_insert_item()
 	// for a more flexible alternative.
-	InsertSection(position int, label string, section MenuModel)
-	// InsertSubmenu: convenience function for inserting a submenu menu item
+	InsertSectionMenu(position int, label string, section MenuModel)
+	// InsertSubmenuMenu: convenience function for inserting a submenu menu item
 	// into @menu. Combine g_menu_item_new_submenu() and g_menu_insert_item()
 	// for a more flexible alternative.
-	InsertSubmenu(position int, label string, submenu MenuModel)
-	// Prepend: convenience function for prepending a normal menu item to the
-	// start of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a
-	// more flexible alternative.
-	Prepend(label string, detailedAction string)
-	// PrependItem prepends @item to the start of @menu.
+	InsertSubmenuMenu(position int, label string, submenu MenuModel)
+	// PrependMenu: convenience function for prepending a normal menu item to
+	// the start of @menu. Combine g_menu_item_new() and g_menu_insert_item()
+	// for a more flexible alternative.
+	PrependMenu(label string, detailedAction string)
+	// PrependItemMenu prepends @item to the start of @menu.
 	//
 	// See g_menu_insert_item() for more information.
-	PrependItem(item MenuItem)
-	// PrependSection: convenience function for prepending a section menu item
-	// to the start of @menu. Combine g_menu_item_new_section() and
+	PrependItemMenu(item MenuItem)
+	// PrependSectionMenu: convenience function for prepending a section menu
+	// item to the start of @menu. Combine g_menu_item_new_section() and
 	// g_menu_insert_item() for a more flexible alternative.
-	PrependSection(label string, section MenuModel)
-	// PrependSubmenu: convenience function for prepending a submenu menu item
-	// to the start of @menu. Combine g_menu_item_new_submenu() and
+	PrependSectionMenu(label string, section MenuModel)
+	// PrependSubmenuMenu: convenience function for prepending a submenu menu
+	// item to the start of @menu. Combine g_menu_item_new_submenu() and
 	// g_menu_insert_item() for a more flexible alternative.
-	PrependSubmenu(label string, submenu MenuModel)
-	// Remove removes an item from the menu.
+	PrependSubmenuMenu(label string, submenu MenuModel)
+	// RemoveMenu removes an item from the menu.
 	//
 	// @position gives the index of the item to remove.
 	//
@@ -27309,17 +27714,15 @@ type Menu interface {
 	// It is not possible to remove items by identity since items are added to
 	// the menu simply by copying their links and attributes (ie: identity of
 	// the item itself is not preserved).
-	Remove(position int)
-	// RemoveAll removes all items in the menu.
-	RemoveAll()
+	RemoveMenu(position int)
+	// RemoveAllMenu removes all items in the menu.
+	RemoveAllMenu()
 }
 
 // menu implements the Menu class.
 type menu struct {
 	MenuModel
 }
-
-var _ Menu = (*menu)(nil)
 
 // WrapMenu wraps a GObject to the right type. It is
 // primarily used internally.
@@ -27350,7 +27753,7 @@ func NewMenu() Menu {
 	return _menu
 }
 
-func (m menu) Append(label string, detailedAction string) {
+func (m menu) AppendMenu(label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -27364,7 +27767,7 @@ func (m menu) Append(label string, detailedAction string) {
 	C.g_menu_append(_arg0, _arg1, _arg2)
 }
 
-func (m menu) AppendItem(item MenuItem) {
+func (m menu) AppendItemMenu(item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
 
@@ -27374,7 +27777,7 @@ func (m menu) AppendItem(item MenuItem) {
 	C.g_menu_append_item(_arg0, _arg1)
 }
 
-func (m menu) AppendSection(label string, section MenuModel) {
+func (m menu) AppendSectionMenu(label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -27387,7 +27790,7 @@ func (m menu) AppendSection(label string, section MenuModel) {
 	C.g_menu_append_section(_arg0, _arg1, _arg2)
 }
 
-func (m menu) AppendSubmenu(label string, submenu MenuModel) {
+func (m menu) AppendSubmenuMenu(label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -27400,7 +27803,7 @@ func (m menu) AppendSubmenu(label string, submenu MenuModel) {
 	C.g_menu_append_submenu(_arg0, _arg1, _arg2)
 }
 
-func (m menu) Freeze() {
+func (m menu) FreezeMenu() {
 	var _arg0 *C.GMenu // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
@@ -27408,7 +27811,7 @@ func (m menu) Freeze() {
 	C.g_menu_freeze(_arg0)
 }
 
-func (m menu) Insert(position int, label string, detailedAction string) {
+func (m menu) InsertMenu(position int, label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 	var _arg2 *C.gchar // out
@@ -27424,7 +27827,7 @@ func (m menu) Insert(position int, label string, detailedAction string) {
 	C.g_menu_insert(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m menu) InsertItem(position int, item MenuItem) {
+func (m menu) InsertItemMenu(position int, item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.GMenuItem // out
@@ -27436,7 +27839,7 @@ func (m menu) InsertItem(position int, item MenuItem) {
 	C.g_menu_insert_item(_arg0, _arg1, _arg2)
 }
 
-func (m menu) InsertSection(position int, label string, section MenuModel) {
+func (m menu) InsertSectionMenu(position int, label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -27451,7 +27854,7 @@ func (m menu) InsertSection(position int, label string, section MenuModel) {
 	C.g_menu_insert_section(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m menu) InsertSubmenu(position int, label string, submenu MenuModel) {
+func (m menu) InsertSubmenuMenu(position int, label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -27466,7 +27869,7 @@ func (m menu) InsertSubmenu(position int, label string, submenu MenuModel) {
 	C.g_menu_insert_submenu(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m menu) Prepend(label string, detailedAction string) {
+func (m menu) PrependMenu(label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -27480,7 +27883,7 @@ func (m menu) Prepend(label string, detailedAction string) {
 	C.g_menu_prepend(_arg0, _arg1, _arg2)
 }
 
-func (m menu) PrependItem(item MenuItem) {
+func (m menu) PrependItemMenu(item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
 
@@ -27490,7 +27893,7 @@ func (m menu) PrependItem(item MenuItem) {
 	C.g_menu_prepend_item(_arg0, _arg1)
 }
 
-func (m menu) PrependSection(label string, section MenuModel) {
+func (m menu) PrependSectionMenu(label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -27503,7 +27906,7 @@ func (m menu) PrependSection(label string, section MenuModel) {
 	C.g_menu_prepend_section(_arg0, _arg1, _arg2)
 }
 
-func (m menu) PrependSubmenu(label string, submenu MenuModel) {
+func (m menu) PrependSubmenuMenu(label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -27516,7 +27919,7 @@ func (m menu) PrependSubmenu(label string, submenu MenuModel) {
 	C.g_menu_prepend_submenu(_arg0, _arg1, _arg2)
 }
 
-func (m menu) Remove(position int) {
+func (m menu) RemoveMenu(position int) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 
@@ -27526,7 +27929,7 @@ func (m menu) Remove(position int) {
 	C.g_menu_remove(_arg0, _arg1)
 }
 
-func (m menu) RemoveAll() {
+func (m menu) RemoveAllMenu() {
 	var _arg0 *C.GMenu // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
@@ -27537,7 +27940,6 @@ func (m menu) RemoveAll() {
 // MenuAttributeIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuAttributeIter interface {
-	gextras.Objector
 
 	// Name gets the name of the attribute at the current iterator position, as
 	// a string.
@@ -27563,23 +27965,21 @@ type MenuAttributeIter interface {
 	//
 	// The iterator is not advanced.
 	Value() *glib.Variant
-	// Next attempts to advance the iterator to the next (possibly first)
-	// attribute.
+	// NextMenuAttributeIter attempts to advance the iterator to the next
+	// (possibly first) attribute.
 	//
 	// true is returned on success, or false if there are no more attributes.
 	//
 	// You must call this function when you first acquire the iterator to
 	// advance it to the first attribute (and determine if the first attribute
 	// exists at all).
-	Next() bool
+	NextMenuAttributeIter() bool
 }
 
 // menuAttributeIter implements the MenuAttributeIter class.
 type menuAttributeIter struct {
 	gextras.Objector
 }
-
-var _ MenuAttributeIter = (*menuAttributeIter)(nil)
 
 // WrapMenuAttributeIter wraps a GObject to the right type. It is
 // primarily used internally.
@@ -27651,7 +28051,7 @@ func (i menuAttributeIter) Value() *glib.Variant {
 	return _variant
 }
 
-func (i menuAttributeIter) Next() bool {
+func (i menuAttributeIter) NextMenuAttributeIter() bool {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret C.gboolean            // in
 
@@ -27671,7 +28071,6 @@ func (i menuAttributeIter) Next() bool {
 // MenuItem is an opaque structure type. You must access it using the functions
 // below.
 type MenuItem interface {
-	gextras.Objector
 
 	// AttributeValue queries the named @attribute on @menu_item.
 	//
@@ -27681,7 +28080,7 @@ type MenuItem interface {
 	AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
 	// Link queries the named @link on @menu_item.
 	Link(link string) MenuModel
-	// SetActionAndTargetValue sets or unsets the "action" and "target"
+	// SetActionAndTargetValueMenuItem sets or unsets the "action" and "target"
 	// attributes of @menu_item.
 	//
 	// If @action is nil then both the "action" and "target" attributes are
@@ -27718,8 +28117,8 @@ type MenuItem interface {
 	// See g_menu_item_set_action_and_target() or
 	// g_menu_item_set_detailed_action() for two equivalent calls that are
 	// probably more convenient for most uses.
-	SetActionAndTargetValue(action string, targetValue *glib.Variant)
-	// SetAttributeValue sets or unsets an attribute on @menu_item.
+	SetActionAndTargetValueMenuItem(action string, targetValue *glib.Variant)
+	// SetAttributeValueMenuItem sets or unsets an attribute on @menu_item.
 	//
 	// The attribute to set or unset is specified by @attribute. This can be one
 	// of the standard attribute names G_MENU_ATTRIBUTE_LABEL,
@@ -27736,9 +28135,9 @@ type MenuItem interface {
 	//
 	// See also g_menu_item_set_attribute() for a more convenient way to do the
 	// same.
-	SetAttributeValue(attribute string, value *glib.Variant)
-	// SetDetailedAction sets the "action" and possibly the "target" attribute
-	// of @menu_item.
+	SetAttributeValueMenuItem(attribute string, value *glib.Variant)
+	// SetDetailedActionMenuItem sets the "action" and possibly the "target"
+	// attribute of @menu_item.
 	//
 	// The format of @detailed_action is the same format parsed by
 	// g_action_parse_detailed_name().
@@ -27749,8 +28148,8 @@ type MenuItem interface {
 	//
 	// See also g_menu_item_set_action_and_target_value() for a description of
 	// the semantics of the action and target attributes.
-	SetDetailedAction(detailedAction string)
-	// SetIcon sets (or unsets) the icon on @menu_item.
+	SetDetailedActionMenuItem(detailedAction string)
+	// SetIconMenuItem sets (or unsets) the icon on @menu_item.
 	//
 	// This call is the same as calling g_icon_serialize() and using the result
 	// as the value to g_menu_item_set_attribute_value() for
@@ -27761,14 +28160,14 @@ type MenuItem interface {
 	// items corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 	//
 	// If @icon is nil then the icon is unset.
-	SetIcon(icon Icon)
-	// SetLabel sets or unsets the "label" attribute of @menu_item.
+	SetIconMenuItem(icon Icon)
+	// SetLabelMenuItem sets or unsets the "label" attribute of @menu_item.
 	//
 	// If @label is non-nil it is used as the label for the menu item. If it is
 	// nil then the label attribute is unset.
-	SetLabel(label string)
-	// SetLink creates a link from @menu_item to @model if non-nil, or unsets
-	// it.
+	SetLabelMenuItem(label string)
+	// SetLinkMenuItem creates a link from @menu_item to @model if non-nil, or
+	// unsets it.
 	//
 	// Links are used to establish a relationship between a particular menu item
 	// and another menu. For example, G_MENU_LINK_SUBMENU is used to associate a
@@ -27778,30 +28177,30 @@ type MenuItem interface {
 	// restricted to lowercase characters, numbers and '-'. Furthermore, the
 	// names must begin with a lowercase character, must not end with a '-', and
 	// must not contain consecutive dashes.
-	SetLink(link string, model MenuModel)
-	// SetSection sets or unsets the "section" link of @menu_item to @section.
+	SetLinkMenuItem(link string, model MenuModel)
+	// SetSectionMenuItem sets or unsets the "section" link of @menu_item to
+	// @section.
 	//
 	// The effect of having one menu appear as a section of another is exactly
 	// as it sounds: the items from @section become a direct part of the menu
 	// that @menu_item is added to. See g_menu_item_new_section() for more
 	// information about what it means for a menu item to be a section.
-	SetSection(section MenuModel)
-	// SetSubmenu sets or unsets the "submenu" link of @menu_item to @submenu.
+	SetSectionMenuItem(section MenuModel)
+	// SetSubmenuMenuItem sets or unsets the "submenu" link of @menu_item to
+	// @submenu.
 	//
 	// If @submenu is non-nil, it is linked to. If it is nil then the link is
 	// unset.
 	//
 	// The effect of having one menu appear as a submenu of another is exactly
 	// as it sounds.
-	SetSubmenu(submenu MenuModel)
+	SetSubmenuMenuItem(submenu MenuModel)
 }
 
 // menuItem implements the MenuItem class.
 type menuItem struct {
 	gextras.Objector
 }
-
-var _ MenuItem = (*menuItem)(nil)
 
 // WrapMenuItem wraps a GObject to the right type. It is
 // primarily used internally.
@@ -28003,7 +28402,7 @@ func (m menuItem) Link(link string) MenuModel {
 	return _menuModel
 }
 
-func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
+func (m menuItem) SetActionAndTargetValueMenuItem(action string, targetValue *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
@@ -28016,7 +28415,7 @@ func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Varia
 	C.g_menu_item_set_action_and_target_value(_arg0, _arg1, _arg2)
 }
 
-func (m menuItem) SetAttributeValue(attribute string, value *glib.Variant) {
+func (m menuItem) SetAttributeValueMenuItem(attribute string, value *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
@@ -28029,7 +28428,7 @@ func (m menuItem) SetAttributeValue(attribute string, value *glib.Variant) {
 	C.g_menu_item_set_attribute_value(_arg0, _arg1, _arg2)
 }
 
-func (m menuItem) SetDetailedAction(detailedAction string) {
+func (m menuItem) SetDetailedActionMenuItem(detailedAction string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 
@@ -28040,7 +28439,7 @@ func (m menuItem) SetDetailedAction(detailedAction string) {
 	C.g_menu_item_set_detailed_action(_arg0, _arg1)
 }
 
-func (m menuItem) SetIcon(icon Icon) {
+func (m menuItem) SetIconMenuItem(icon Icon) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
 
@@ -28050,7 +28449,7 @@ func (m menuItem) SetIcon(icon Icon) {
 	C.g_menu_item_set_icon(_arg0, _arg1)
 }
 
-func (m menuItem) SetLabel(label string) {
+func (m menuItem) SetLabelMenuItem(label string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 
@@ -28061,7 +28460,7 @@ func (m menuItem) SetLabel(label string) {
 	C.g_menu_item_set_label(_arg0, _arg1)
 }
 
-func (m menuItem) SetLink(link string, model MenuModel) {
+func (m menuItem) SetLinkMenuItem(link string, model MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -28074,7 +28473,7 @@ func (m menuItem) SetLink(link string, model MenuModel) {
 	C.g_menu_item_set_link(_arg0, _arg1, _arg2)
 }
 
-func (m menuItem) SetSection(section MenuModel) {
+func (m menuItem) SetSectionMenuItem(section MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -28084,7 +28483,7 @@ func (m menuItem) SetSection(section MenuModel) {
 	C.g_menu_item_set_section(_arg0, _arg1)
 }
 
-func (m menuItem) SetSubmenu(submenu MenuModel) {
+func (m menuItem) SetSubmenuMenuItem(submenu MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -28097,7 +28496,6 @@ func (m menuItem) SetSubmenu(submenu MenuModel) {
 // MenuLinkIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuLinkIter interface {
-	gextras.Objector
 
 	// Name gets the name of the link at the current iterator position.
 	//
@@ -28122,22 +28520,21 @@ type MenuLinkIter interface {
 	//
 	// The iterator is not advanced.
 	Value() MenuModel
-	// Next attempts to advance the iterator to the next (possibly first) link.
+	// NextMenuLinkIter attempts to advance the iterator to the next (possibly
+	// first) link.
 	//
 	// true is returned on success, or false if there are no more links.
 	//
 	// You must call this function when you first acquire the iterator to
 	// advance it to the first link (and determine if the first link exists at
 	// all).
-	Next() bool
+	NextMenuLinkIter() bool
 }
 
 // menuLinkIter implements the MenuLinkIter class.
 type menuLinkIter struct {
 	gextras.Objector
 }
-
-var _ MenuLinkIter = (*menuLinkIter)(nil)
 
 // WrapMenuLinkIter wraps a GObject to the right type. It is
 // primarily used internally.
@@ -28206,7 +28603,7 @@ func (i menuLinkIter) Value() MenuModel {
 	return _menuModel
 }
 
-func (i menuLinkIter) Next() bool {
+func (i menuLinkIter) NextMenuLinkIter() bool {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret C.gboolean       // in
 
@@ -28334,7 +28731,6 @@ func (i menuLinkIter) Next() bool {
 // rendered as "selected" when the state of the action is equal to the target
 // value of the menu item.
 type MenuModel interface {
-	gextras.Objector
 
 	// ItemAttributeValue queries the item at position @item_index in @model for
 	// the attribute specified by @attribute.
@@ -28356,13 +28752,13 @@ type MenuModel interface {
 	ItemLink(itemIndex int, link string) MenuModel
 	// NItems: query the number of items in @model.
 	NItems() int
-	// IsMutable queries if @model is mutable.
+	// IsMutableMenuModel queries if @model is mutable.
 	//
 	// An immutable Model will never emit the Model::items-changed signal.
 	// Consumers of the model may make optimisations accordingly.
-	IsMutable() bool
-	// ItemsChanged requests emission of the Model::items-changed signal on
-	// @model.
+	IsMutableMenuModel() bool
+	// ItemsChangedMenuModel requests emission of the Model::items-changed
+	// signal on @model.
 	//
 	// This function should never be called except by Model subclasses. Any
 	// other calls to this function will very likely lead to a violation of the
@@ -28377,25 +28773,23 @@ type MenuModel interface {
 	// and not in response to calls -- particularly those from the Model API.
 	// Said another way: the menu must not change while user code is running
 	// without returning to the mainloop.
-	ItemsChanged(position int, removed int, added int)
-	// IterateItemAttributes creates a AttributeIter to iterate over the
-	// attributes of the item at position @item_index in @model.
+	ItemsChangedMenuModel(position int, removed int, added int)
+	// IterateItemAttributesMenuModel creates a AttributeIter to iterate over
+	// the attributes of the item at position @item_index in @model.
 	//
 	// You must free the iterator with g_object_unref() when you are done.
-	IterateItemAttributes(itemIndex int) MenuAttributeIter
-	// IterateItemLinks creates a LinkIter to iterate over the links of the item
-	// at position @item_index in @model.
+	IterateItemAttributesMenuModel(itemIndex int) MenuAttributeIter
+	// IterateItemLinksMenuModel creates a LinkIter to iterate over the links of
+	// the item at position @item_index in @model.
 	//
 	// You must free the iterator with g_object_unref() when you are done.
-	IterateItemLinks(itemIndex int) MenuLinkIter
+	IterateItemLinksMenuModel(itemIndex int) MenuLinkIter
 }
 
 // menuModel implements the MenuModel class.
 type menuModel struct {
 	gextras.Objector
 }
-
-var _ MenuModel = (*menuModel)(nil)
 
 // WrapMenuModel wraps a GObject to the right type. It is
 // primarily used internally.
@@ -28471,7 +28865,7 @@ func (m menuModel) NItems() int {
 	return _gint
 }
 
-func (m menuModel) IsMutable() bool {
+func (m menuModel) IsMutableMenuModel() bool {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gboolean    // in
 
@@ -28488,7 +28882,7 @@ func (m menuModel) IsMutable() bool {
 	return _ok
 }
 
-func (m menuModel) ItemsChanged(position int, removed int, added int) {
+func (m menuModel) ItemsChangedMenuModel(position int, removed int, added int) {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out
@@ -28502,7 +28896,7 @@ func (m menuModel) ItemsChanged(position int, removed int, added int) {
 	C.g_menu_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
+func (m menuModel) IterateItemAttributesMenuModel(itemIndex int) MenuAttributeIter {
 	var _arg0 *C.GMenuModel         // out
 	var _arg1 C.gint                // out
 	var _cret *C.GMenuAttributeIter // in
@@ -28519,7 +28913,7 @@ func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
 	return _menuAttributeIter
 }
 
-func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
+func (m menuModel) IterateItemLinksMenuModel(itemIndex int) MenuLinkIter {
 	var _arg0 *C.GMenuModel    // out
 	var _arg1 C.gint           // out
 	var _cret *C.GMenuLinkIter // in
@@ -28557,7 +28951,6 @@ func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
 // with Windows. VeraCrypt (https://www.veracrypt.fr/) is a maintained fork of
 // TrueCrypt with various improvements and auditing fixes.
 type MountOperation interface {
-	gextras.Objector
 
 	// Anonymous: check to see whether the mount operation is being used for an
 	// anonymous user.
@@ -28580,38 +28973,37 @@ type MountOperation interface {
 	Pim() uint
 	// Username: get the user name from the mount operation.
 	Username() string
-	// Reply emits the Operation::reply signal.
-	Reply(result MountOperationResult)
-	// SetAnonymous sets the mount operation to use an anonymous user if
-	// @anonymous is true.
-	SetAnonymous(anonymous bool)
-	// SetChoice sets a default choice for the mount operation.
-	SetChoice(choice int)
-	// SetDomain sets the mount operation's domain.
-	SetDomain(domain string)
-	// SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
-	// if @hidden_volume is true.
-	SetIsTcryptHiddenVolume(hiddenVolume bool)
-	// SetIsTcryptSystemVolume sets the mount operation to use a system volume
-	// if @system_volume is true.
-	SetIsTcryptSystemVolume(systemVolume bool)
-	// SetPassword sets the mount operation's password to @password.
-	SetPassword(password string)
-	// SetPasswordSave sets the state of saving passwords for the mount
-	// operation.
-	SetPasswordSave(save PasswordSave)
-	// SetPim sets the mount operation's PIM to @pim.
-	SetPim(pim uint)
-	// SetUsername sets the user name within @op to @username.
-	SetUsername(username string)
+	// ReplyMountOperation emits the Operation::reply signal.
+	ReplyMountOperation(result MountOperationResult)
+	// SetAnonymousMountOperation sets the mount operation to use an anonymous
+	// user if @anonymous is true.
+	SetAnonymousMountOperation(anonymous bool)
+	// SetChoiceMountOperation sets a default choice for the mount operation.
+	SetChoiceMountOperation(choice int)
+	// SetDomainMountOperation sets the mount operation's domain.
+	SetDomainMountOperation(domain string)
+	// SetIsTcryptHiddenVolumeMountOperation sets the mount operation to use a
+	// hidden volume if @hidden_volume is true.
+	SetIsTcryptHiddenVolumeMountOperation(hiddenVolume bool)
+	// SetIsTcryptSystemVolumeMountOperation sets the mount operation to use a
+	// system volume if @system_volume is true.
+	SetIsTcryptSystemVolumeMountOperation(systemVolume bool)
+	// SetPasswordMountOperation sets the mount operation's password to
+	// @password.
+	SetPasswordMountOperation(password string)
+	// SetPasswordSaveMountOperation sets the state of saving passwords for the
+	// mount operation.
+	SetPasswordSaveMountOperation(save PasswordSave)
+	// SetPimMountOperation sets the mount operation's PIM to @pim.
+	SetPimMountOperation(pim uint)
+	// SetUsernameMountOperation sets the user name within @op to @username.
+	SetUsernameMountOperation(username string)
 }
 
 // mountOperation implements the MountOperation class.
 type mountOperation struct {
 	gextras.Objector
 }
-
-var _ MountOperation = (*mountOperation)(nil)
 
 // WrapMountOperation wraps a GObject to the right type. It is
 // primarily used internally.
@@ -28781,7 +29173,7 @@ func (o mountOperation) Username() string {
 	return _utf8
 }
 
-func (o mountOperation) Reply(result MountOperationResult) {
+func (o mountOperation) ReplyMountOperation(result MountOperationResult) {
 	var _arg0 *C.GMountOperation      // out
 	var _arg1 C.GMountOperationResult // out
 
@@ -28791,7 +29183,7 @@ func (o mountOperation) Reply(result MountOperationResult) {
 	C.g_mount_operation_reply(_arg0, _arg1)
 }
 
-func (o mountOperation) SetAnonymous(anonymous bool) {
+func (o mountOperation) SetAnonymousMountOperation(anonymous bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
@@ -28803,7 +29195,7 @@ func (o mountOperation) SetAnonymous(anonymous bool) {
 	C.g_mount_operation_set_anonymous(_arg0, _arg1)
 }
 
-func (o mountOperation) SetChoice(choice int) {
+func (o mountOperation) SetChoiceMountOperation(choice int) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.int              // out
 
@@ -28813,7 +29205,7 @@ func (o mountOperation) SetChoice(choice int) {
 	C.g_mount_operation_set_choice(_arg0, _arg1)
 }
 
-func (o mountOperation) SetDomain(domain string) {
+func (o mountOperation) SetDomainMountOperation(domain string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 
@@ -28824,7 +29216,7 @@ func (o mountOperation) SetDomain(domain string) {
 	C.g_mount_operation_set_domain(_arg0, _arg1)
 }
 
-func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
+func (o mountOperation) SetIsTcryptHiddenVolumeMountOperation(hiddenVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
@@ -28836,7 +29228,7 @@ func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	C.g_mount_operation_set_is_tcrypt_hidden_volume(_arg0, _arg1)
 }
 
-func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
+func (o mountOperation) SetIsTcryptSystemVolumeMountOperation(systemVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
@@ -28848,7 +29240,7 @@ func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	C.g_mount_operation_set_is_tcrypt_system_volume(_arg0, _arg1)
 }
 
-func (o mountOperation) SetPassword(password string) {
+func (o mountOperation) SetPasswordMountOperation(password string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 
@@ -28859,7 +29251,7 @@ func (o mountOperation) SetPassword(password string) {
 	C.g_mount_operation_set_password(_arg0, _arg1)
 }
 
-func (o mountOperation) SetPasswordSave(save PasswordSave) {
+func (o mountOperation) SetPasswordSaveMountOperation(save PasswordSave) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.GPasswordSave    // out
 
@@ -28869,7 +29261,7 @@ func (o mountOperation) SetPasswordSave(save PasswordSave) {
 	C.g_mount_operation_set_password_save(_arg0, _arg1)
 }
 
-func (o mountOperation) SetPim(pim uint) {
+func (o mountOperation) SetPimMountOperation(pim uint) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.guint            // out
 
@@ -28879,7 +29271,7 @@ func (o mountOperation) SetPim(pim uint) {
 	C.g_mount_operation_set_pim(_arg0, _arg1)
 }
 
-func (o mountOperation) SetUsername(username string) {
+func (o mountOperation) SetUsernameMountOperation(username string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 
@@ -28893,23 +29285,18 @@ func (o mountOperation) SetUsername(username string) {
 // NativeSocketAddress: a socket address of some unknown native type.
 type NativeSocketAddress interface {
 	SocketAddress
-	SocketConnectable
 }
 
 // nativeSocketAddress implements the NativeSocketAddress class.
 type nativeSocketAddress struct {
 	SocketAddress
-	SocketConnectable
 }
-
-var _ NativeSocketAddress = (*nativeSocketAddress)(nil)
 
 // WrapNativeSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
 	return nativeSocketAddress{
-		SocketAddress:     WrapSocketAddress(obj),
-		SocketConnectable: WrapSocketConnectable(obj),
+		SocketAddress: WrapSocketAddress(obj),
 	}
 }
 
@@ -28919,16 +29306,25 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	return WrapNativeSocketAddress(obj), nil
 }
 
+func (c nativeSocketAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c nativeSocketAddress) ProXYEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+}
+
+func (c nativeSocketAddress) String() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).String()
+}
+
 type NativeVolumeMonitor interface {
-	VolumeMonitor
 }
 
 // nativeVolumeMonitor implements the NativeVolumeMonitor class.
 type nativeVolumeMonitor struct {
 	VolumeMonitor
 }
-
-var _ NativeVolumeMonitor = (*nativeVolumeMonitor)(nil)
 
 // WrapNativeVolumeMonitor wraps a GObject to the right type. It is
 // primarily used internally.
@@ -28953,7 +29349,6 @@ func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 //
 // See Connectable for an example of using the connectable interface.
 type NetworkAddress interface {
-	gextras.Objector
 	SocketConnectable
 
 	// Hostname gets @addr's hostname. This might be either UTF-8 or
@@ -28968,17 +29363,13 @@ type NetworkAddress interface {
 // networkAddress implements the NetworkAddress class.
 type networkAddress struct {
 	gextras.Objector
-	SocketConnectable
 }
-
-var _ NetworkAddress = (*networkAddress)(nil)
 
 // WrapNetworkAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNetworkAddress(obj *externglib.Object) NetworkAddress {
 	return networkAddress{
-		Objector:          obj,
-		SocketConnectable: WrapSocketConnectable(obj),
+		Objector: obj,
 	}
 }
 
@@ -29084,6 +29475,18 @@ func (a networkAddress) Scheme() string {
 	return _utf8
 }
 
+func (c networkAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c networkAddress) ProXYEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+}
+
+func (c networkAddress) String() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).String()
+}
+
 // NetworkService: like Address does with hostnames, Service provides an easy
 // way to resolve a SRV record, and then attempt to connect to one of the hosts
 // that implements that service, handling service priority/weighting, multiple
@@ -29092,7 +29495,6 @@ func (a networkAddress) Scheme() string {
 // See Target for more information about SRV records, and see Connectable for an
 // example of using the connectable interface.
 type NetworkService interface {
-	gextras.Objector
 	SocketConnectable
 
 	// Domain gets the domain that @srv serves. This might be either UTF-8 or
@@ -29105,25 +29507,21 @@ type NetworkService interface {
 	Scheme() string
 	// Service gets @srv's service name (eg, "ldap").
 	Service() string
-	// SetScheme set's the URI scheme used to resolve proxies. By default, the
-	// service name is used as scheme.
-	SetScheme(scheme string)
+	// SetSchemeNetworkService set's the URI scheme used to resolve proxies. By
+	// default, the service name is used as scheme.
+	SetSchemeNetworkService(scheme string)
 }
 
 // networkService implements the NetworkService class.
 type networkService struct {
 	gextras.Objector
-	SocketConnectable
 }
-
-var _ NetworkService = (*networkService)(nil)
 
 // WrapNetworkService wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNetworkService(obj *externglib.Object) NetworkService {
 	return networkService{
-		Objector:          obj,
-		SocketConnectable: WrapSocketConnectable(obj),
+		Objector: obj,
 	}
 }
 
@@ -29218,7 +29616,7 @@ func (s networkService) Service() string {
 	return _utf8
 }
 
-func (s networkService) SetScheme(scheme string) {
+func (s networkService) SetSchemeNetworkService(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
 
@@ -29227,6 +29625,18 @@ func (s networkService) SetScheme(scheme string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_network_service_set_scheme(_arg0, _arg1)
+}
+
+func (c networkService) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c networkService) ProXYEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+}
+
+func (c networkService) String() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).String()
 }
 
 // Notification is a mechanism for creating a notification to be shown to the
@@ -29250,26 +29660,26 @@ func (s networkService) SetScheme(scheme string) {
 //
 // A notification can be sent with g_application_send_notification().
 type Notification interface {
-	gextras.Objector
 
-	// AddButton adds a button to @notification that activates the action in
-	// @detailed_action when clicked. That action must be an application-wide
-	// action (starting with "app."). If @detailed_action contains a target, the
-	// action will be activated with that target as its parameter.
+	// AddButtonNotification adds a button to @notification that activates the
+	// action in @detailed_action when clicked. That action must be an
+	// application-wide action (starting with "app."). If @detailed_action
+	// contains a target, the action will be activated with that target as its
+	// parameter.
 	//
 	// See g_action_parse_detailed_name() for a description of the format for
 	// @detailed_action.
-	AddButton(label string, detailedAction string)
-	// AddButtonWithTargetValue adds a button to @notification that activates
-	// @action when clicked. @action must be an application-wide action (it must
-	// start with "app.").
+	AddButtonNotification(label string, detailedAction string)
+	// AddButtonWithTargetValueNotification adds a button to @notification that
+	// activates @action when clicked. @action must be an application-wide
+	// action (it must start with "app.").
 	//
 	// If @target is non-nil, @action will be activated with @target as its
 	// parameter.
-	AddButtonWithTargetValue(label string, action string, target *glib.Variant)
-	// SetBody sets the body of @notification to @body.
-	SetBody(body string)
-	// SetDefaultAction sets the default action of @notification to
+	AddButtonWithTargetValueNotification(label string, action string, target *glib.Variant)
+	// SetBodyNotification sets the body of @notification to @body.
+	SetBodyNotification(body string)
+	// SetDefaultActionNotification sets the default action of @notification to
 	// @detailed_action. This action is activated when the notification is
 	// clicked on.
 	//
@@ -29281,34 +29691,33 @@ type Notification interface {
 	//
 	// When no default action is set, the application that the notification was
 	// sent on is activated.
-	SetDefaultAction(detailedAction string)
-	// SetDefaultActionAndTargetValue sets the default action of @notification
-	// to @action. This action is activated when the notification is clicked on.
-	// It must be an application-wide action (start with "app.").
+	SetDefaultActionNotification(detailedAction string)
+	// SetDefaultActionAndTargetValueNotification sets the default action of
+	// @notification to @action. This action is activated when the notification
+	// is clicked on. It must be an application-wide action (start with "app.").
 	//
 	// If @target is non-nil, @action will be activated with @target as its
 	// parameter.
 	//
 	// When no default action is set, the application that the notification was
 	// sent on is activated.
-	SetDefaultActionAndTargetValue(action string, target *glib.Variant)
-	// SetIcon sets the icon of @notification to @icon.
-	SetIcon(icon Icon)
-	// SetPriority sets the priority of @notification to @priority. See Priority
-	// for possible values.
-	SetPriority(priority NotificationPriority)
-	// SetTitle sets the title of @notification to @title.
-	SetTitle(title string)
-	// SetUrgent: deprecated in favor of g_notification_set_priority().
-	SetUrgent(urgent bool)
+	SetDefaultActionAndTargetValueNotification(action string, target *glib.Variant)
+	// SetIconNotification sets the icon of @notification to @icon.
+	SetIconNotification(icon Icon)
+	// SetPriorityNotification sets the priority of @notification to @priority.
+	// See Priority for possible values.
+	SetPriorityNotification(priority NotificationPriority)
+	// SetTitleNotification sets the title of @notification to @title.
+	SetTitleNotification(title string)
+	// SetUrgentNotification: deprecated in favor of
+	// g_notification_set_priority().
+	SetUrgentNotification(urgent bool)
 }
 
 // notification implements the Notification class.
 type notification struct {
 	gextras.Objector
 }
-
-var _ Notification = (*notification)(nil)
 
 // WrapNotification wraps a GObject to the right type. It is
 // primarily used internally.
@@ -29345,7 +29754,7 @@ func NewNotification(title string) Notification {
 	return _notification
 }
 
-func (n notification) AddButton(label string, detailedAction string) {
+func (n notification) AddButtonNotification(label string, detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // out
@@ -29359,7 +29768,7 @@ func (n notification) AddButton(label string, detailedAction string) {
 	C.g_notification_add_button(_arg0, _arg1, _arg2)
 }
 
-func (n notification) AddButtonWithTargetValue(label string, action string, target *glib.Variant) {
+func (n notification) AddButtonWithTargetValueNotification(label string, action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // out
@@ -29375,7 +29784,7 @@ func (n notification) AddButtonWithTargetValue(label string, action string, targ
 	C.g_notification_add_button_with_target_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (n notification) SetBody(body string) {
+func (n notification) SetBodyNotification(body string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
@@ -29386,7 +29795,7 @@ func (n notification) SetBody(body string) {
 	C.g_notification_set_body(_arg0, _arg1)
 }
 
-func (n notification) SetDefaultAction(detailedAction string) {
+func (n notification) SetDefaultActionNotification(detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
@@ -29397,7 +29806,7 @@ func (n notification) SetDefaultAction(detailedAction string) {
 	C.g_notification_set_default_action(_arg0, _arg1)
 }
 
-func (n notification) SetDefaultActionAndTargetValue(action string, target *glib.Variant) {
+func (n notification) SetDefaultActionAndTargetValueNotification(action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -29410,7 +29819,7 @@ func (n notification) SetDefaultActionAndTargetValue(action string, target *glib
 	C.g_notification_set_default_action_and_target_value(_arg0, _arg1, _arg2)
 }
 
-func (n notification) SetIcon(icon Icon) {
+func (n notification) SetIconNotification(icon Icon) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
 
@@ -29420,7 +29829,7 @@ func (n notification) SetIcon(icon Icon) {
 	C.g_notification_set_icon(_arg0, _arg1)
 }
 
-func (n notification) SetPriority(priority NotificationPriority) {
+func (n notification) SetPriorityNotification(priority NotificationPriority) {
 	var _arg0 *C.GNotification        // out
 	var _arg1 C.GNotificationPriority // out
 
@@ -29430,7 +29839,7 @@ func (n notification) SetPriority(priority NotificationPriority) {
 	C.g_notification_set_priority(_arg0, _arg1)
 }
 
-func (n notification) SetTitle(title string) {
+func (n notification) SetTitleNotification(title string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
@@ -29441,7 +29850,7 @@ func (n notification) SetTitle(title string) {
 	C.g_notification_set_title(_arg0, _arg1)
 }
 
-func (n notification) SetUrgent(urgent bool) {
+func (n notification) SetUrgentNotification(urgent bool) {
 	var _arg0 *C.GNotification // out
 	var _arg1 C.gboolean       // out
 
@@ -29465,11 +29874,10 @@ func (n notification) SetUrgent(urgent bool) {
 //
 // All of these functions have async variants too.
 type OutputStream interface {
-	gextras.Objector
 
-	// ClearPending clears the pending flag on @stream.
-	ClearPending()
-	// Close closes the stream, releasing resources related to it.
+	// ClearPendingOutputStream clears the pending flag on @stream.
+	ClearPendingOutputStream()
+	// CloseOutputStream closes the stream, releasing resources related to it.
 	//
 	// Once the stream is closed, all other operations will return
 	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
@@ -29499,11 +29907,11 @@ type OutputStream interface {
 	// streams can use a faster close that doesn't block to e.g. check errors.
 	// On cancellation (as with any error) there is no guarantee that all
 	// written data will reach the target.
-	Close(cancellable Cancellable) error
-	// CloseFinish closes an output stream.
-	CloseFinish(result AsyncResult) error
-	// Flush forces a write of all user-space buffered data for the given
-	// @stream. Will block during the operation. Closing the stream will
+	CloseOutputStream(cancellable Cancellable) error
+	// CloseFinishOutputStream closes an output stream.
+	CloseFinishOutputStream(result AsyncResult) error
+	// FlushOutputStream forces a write of all user-space buffered data for the
+	// given @stream. Will block during the operation. Closing the stream will
 	// implicitly cause a flush.
 	//
 	// This function is optional for inherited classes.
@@ -29511,26 +29919,28 @@ type OutputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Flush(cancellable Cancellable) error
-	// FlushFinish finishes flushing an output stream.
-	FlushFinish(result AsyncResult) error
-	// HasPending checks if an output stream has pending actions.
-	HasPending() bool
-	// IsClosed checks if an output stream has already been closed.
-	IsClosed() bool
-	// IsClosing checks if an output stream is being closed. This can be used
-	// inside e.g. a flush implementation to see if the flush (or other i/o
-	// operation) is called from within the closing operation.
-	IsClosing() bool
-	// SetPending sets @stream to have actions pending. If the pending flag is
-	// already set or @stream is closed, it will return false and set @error.
-	SetPending() error
-	// Splice splices an input stream into an output stream.
-	Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (int, error)
-	// SpliceFinish finishes an asynchronous stream splice operation.
-	SpliceFinish(result AsyncResult) (int, error)
-	// Write tries to write @count bytes from @buffer into the stream. Will
-	// block during the operation.
+	FlushOutputStream(cancellable Cancellable) error
+	// FlushFinishOutputStream finishes flushing an output stream.
+	FlushFinishOutputStream(result AsyncResult) error
+	// HasPendingOutputStream checks if an output stream has pending actions.
+	HasPendingOutputStream() bool
+	// IsClosedOutputStream checks if an output stream has already been closed.
+	IsClosedOutputStream() bool
+	// IsClosingOutputStream checks if an output stream is being closed. This
+	// can be used inside e.g. a flush implementation to see if the flush (or
+	// other i/o operation) is called from within the closing operation.
+	IsClosingOutputStream() bool
+	// SetPendingOutputStream sets @stream to have actions pending. If the
+	// pending flag is already set or @stream is closed, it will return false
+	// and set @error.
+	SetPendingOutputStream() error
+	// SpliceOutputStream splices an input stream into an output stream.
+	SpliceOutputStream(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (int, error)
+	// SpliceFinishOutputStream finishes an asynchronous stream splice
+	// operation.
+	SpliceFinishOutputStream(result AsyncResult) (int, error)
+	// WriteOutputStream tries to write @count bytes from @buffer into the
+	// stream. Will block during the operation.
 	//
 	// If count is 0, returns 0 and does nothing. A value of @count larger than
 	// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
@@ -29548,9 +29958,9 @@ type OutputStream interface {
 	// partial result will be returned, without an error.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	Write(buffer []byte, cancellable Cancellable) (int, error)
-	// WriteAll tries to write @count bytes from @buffer into the stream. Will
-	// block during the operation.
+	WriteOutputStream(buffer []byte, cancellable Cancellable) (int, error)
+	// WriteAllOutputStream tries to write @count bytes from @buffer into the
+	// stream. Will block during the operation.
 	//
 	// This function is similar to g_output_stream_write(), except it tries to
 	// write as many bytes as requested, only stopping on an error.
@@ -29567,9 +29977,9 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_write().
-	WriteAll(buffer []byte, cancellable Cancellable) (uint, error)
-	// WriteAllFinish finishes an asynchronous stream write operation started
-	// with g_output_stream_write_all_async().
+	WriteAllOutputStream(buffer []byte, cancellable Cancellable) (uint, error)
+	// WriteAllFinishOutputStream finishes an asynchronous stream write
+	// operation started with g_output_stream_write_all_async().
 	//
 	// As a special exception to the normal conventions for functions that use
 	// #GError, if this function returns false (and sets @error) then
@@ -29577,13 +29987,14 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_write_async().
-	WriteAllFinish(result AsyncResult) (uint, error)
-	// WriteBytesFinish finishes a stream write-from-#GBytes operation.
-	WriteBytesFinish(result AsyncResult) (int, error)
-	// WriteFinish finishes a stream write operation.
-	WriteFinish(result AsyncResult) (int, error)
-	// Writev tries to write the bytes contained in the @n_vectors @vectors into
-	// the stream. Will block during the operation.
+	WriteAllFinishOutputStream(result AsyncResult) (uint, error)
+	// WriteBytesFinishOutputStream finishes a stream write-from-#GBytes
+	// operation.
+	WriteBytesFinishOutputStream(result AsyncResult) (int, error)
+	// WriteFinishOutputStream finishes a stream write operation.
+	WriteFinishOutputStream(result AsyncResult) (int, error)
+	// WritevOutputStream tries to write the bytes contained in the @n_vectors
+	// @vectors into the stream. Will block during the operation.
 	//
 	// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0
 	// and does nothing.
@@ -29605,9 +30016,9 @@ type OutputStream interface {
 	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
 	// these are exceeded. For example, when writing to a local file on UNIX
 	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-	Writev(vectors []OutputVector, cancellable Cancellable) (uint, error)
-	// WritevAll tries to write the bytes contained in the @n_vectors @vectors
-	// into the stream. Will block during the operation.
+	WritevOutputStream(vectors []OutputVector, cancellable Cancellable) (uint, error)
+	// WritevAllOutputStream tries to write the bytes contained in the
+	// @n_vectors @vectors into the stream. Will block during the operation.
 	//
 	// This function is similar to g_output_stream_writev(), except it tries to
 	// write as many bytes as requested, only stopping on an error.
@@ -29627,9 +30038,9 @@ type OutputStream interface {
 	//
 	// The content of the individual elements of @vectors might be changed by
 	// this function.
-	WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, error)
-	// WritevAllFinish finishes an asynchronous stream write operation started
-	// with g_output_stream_writev_all_async().
+	WritevAllOutputStream(vectors []OutputVector, cancellable Cancellable) (uint, error)
+	// WritevAllFinishOutputStream finishes an asynchronous stream write
+	// operation started with g_output_stream_writev_all_async().
 	//
 	// As a special exception to the normal conventions for functions that use
 	// #GError, if this function returns false (and sets @error) then
@@ -29637,17 +30048,15 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_writev_async().
-	WritevAllFinish(result AsyncResult) (uint, error)
-	// WritevFinish finishes a stream writev operation.
-	WritevFinish(result AsyncResult) (uint, error)
+	WritevAllFinishOutputStream(result AsyncResult) (uint, error)
+	// WritevFinishOutputStream finishes a stream writev operation.
+	WritevFinishOutputStream(result AsyncResult) (uint, error)
 }
 
 // outputStream implements the OutputStream class.
 type outputStream struct {
 	gextras.Objector
 }
-
-var _ OutputStream = (*outputStream)(nil)
 
 // WrapOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
@@ -29663,7 +30072,7 @@ func marshalOutputStream(p uintptr) (interface{}, error) {
 	return WrapOutputStream(obj), nil
 }
 
-func (s outputStream) ClearPending() {
+func (s outputStream) ClearPendingOutputStream() {
 	var _arg0 *C.GOutputStream // out
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -29671,7 +30080,7 @@ func (s outputStream) ClearPending() {
 	C.g_output_stream_clear_pending(_arg0)
 }
 
-func (s outputStream) Close(cancellable Cancellable) error {
+func (s outputStream) CloseOutputStream(cancellable Cancellable) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
@@ -29688,7 +30097,7 @@ func (s outputStream) Close(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s outputStream) CloseFinish(result AsyncResult) error {
+func (s outputStream) CloseFinishOutputStream(result AsyncResult) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
@@ -29705,7 +30114,7 @@ func (s outputStream) CloseFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (s outputStream) Flush(cancellable Cancellable) error {
+func (s outputStream) FlushOutputStream(cancellable Cancellable) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
@@ -29722,7 +30131,7 @@ func (s outputStream) Flush(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s outputStream) FlushFinish(result AsyncResult) error {
+func (s outputStream) FlushFinishOutputStream(result AsyncResult) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
@@ -29739,7 +30148,7 @@ func (s outputStream) FlushFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (s outputStream) HasPending() bool {
+func (s outputStream) HasPendingOutputStream() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
@@ -29756,7 +30165,7 @@ func (s outputStream) HasPending() bool {
 	return _ok
 }
 
-func (s outputStream) IsClosed() bool {
+func (s outputStream) IsClosedOutputStream() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
@@ -29773,7 +30182,7 @@ func (s outputStream) IsClosed() bool {
 	return _ok
 }
 
-func (s outputStream) IsClosing() bool {
+func (s outputStream) IsClosingOutputStream() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
@@ -29790,7 +30199,7 @@ func (s outputStream) IsClosing() bool {
 	return _ok
 }
 
-func (s outputStream) SetPending() error {
+func (s outputStream) SetPendingOutputStream() error {
 	var _arg0 *C.GOutputStream // out
 	var _cerr *C.GError        // in
 
@@ -29805,7 +30214,7 @@ func (s outputStream) SetPending() error {
 	return _goerr
 }
 
-func (s outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (int, error) {
+func (s outputStream) SpliceOutputStream(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GOutputStream           // out
 	var _arg1 *C.GInputStream            // out
 	var _arg2 C.GOutputStreamSpliceFlags // out
@@ -29829,7 +30238,7 @@ func (s outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, 
 	return _gssize, _goerr
 }
 
-func (s outputStream) SpliceFinish(result AsyncResult) (int, error) {
+func (s outputStream) SpliceFinishOutputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
@@ -29849,7 +30258,7 @@ func (s outputStream) SpliceFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-func (s outputStream) Write(buffer []byte, cancellable Cancellable) (int, error) {
+func (s outputStream) WriteOutputStream(buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
@@ -29862,7 +30271,7 @@ func (s outputStream) Write(buffer []byte, cancellable Cancellable) (int, error)
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	_cret = C.g_output_stream_write(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	_cret = C.g_output_stream_write(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -29873,7 +30282,7 @@ func (s outputStream) Write(buffer []byte, cancellable Cancellable) (int, error)
 	return _gssize, _goerr
 }
 
-func (s outputStream) WriteAll(buffer []byte, cancellable Cancellable) (uint, error) {
+func (s outputStream) WriteAllOutputStream(buffer []byte, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
@@ -29886,7 +30295,7 @@ func (s outputStream) WriteAll(buffer []byte, cancellable Cancellable) (uint, er
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	C.g_output_stream_write_all(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
+	C.g_output_stream_write_all(_arg0, unsafe.Pointer(_arg1), _arg2, &_arg3, _arg4, &_cerr)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out
@@ -29897,7 +30306,7 @@ func (s outputStream) WriteAll(buffer []byte, cancellable Cancellable) (uint, er
 	return _bytesWritten, _goerr
 }
 
-func (s outputStream) WriteAllFinish(result AsyncResult) (uint, error) {
+func (s outputStream) WriteAllFinishOutputStream(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in
@@ -29917,7 +30326,7 @@ func (s outputStream) WriteAllFinish(result AsyncResult) (uint, error) {
 	return _bytesWritten, _goerr
 }
 
-func (s outputStream) WriteBytesFinish(result AsyncResult) (int, error) {
+func (s outputStream) WriteBytesFinishOutputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
@@ -29937,7 +30346,7 @@ func (s outputStream) WriteBytesFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-func (s outputStream) WriteFinish(result AsyncResult) (int, error) {
+func (s outputStream) WriteFinishOutputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
@@ -29957,7 +30366,7 @@ func (s outputStream) WriteFinish(result AsyncResult) (int, error) {
 	return _gssize, _goerr
 }
 
-func (s outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (uint, error) {
+func (s outputStream) WritevOutputStream(vectors []OutputVector, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
@@ -29981,7 +30390,7 @@ func (s outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (u
 	return _bytesWritten, _goerr
 }
 
-func (s outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, error) {
+func (s outputStream) WritevAllOutputStream(vectors []OutputVector, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
@@ -30005,7 +30414,7 @@ func (s outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable)
 	return _bytesWritten, _goerr
 }
 
-func (s outputStream) WritevAllFinish(result AsyncResult) (uint, error) {
+func (s outputStream) WritevAllFinishOutputStream(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in
@@ -30025,7 +30434,7 @@ func (s outputStream) WritevAllFinish(result AsyncResult) (uint, error) {
 	return _bytesWritten, _goerr
 }
 
-func (s outputStream) WritevFinish(result AsyncResult) (uint, error) {
+func (s outputStream) WritevFinishOutputStream(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in
@@ -30059,9 +30468,9 @@ func (s outputStream) WritevFinish(result AsyncResult) (uint, error) {
 // decide if it is appropriate to show a "Click here to unlock" button in a
 // dialog and to provide the mechanism to invoke when that button is clicked.
 type Permission interface {
-	gextras.Objector
 
-	// Acquire attempts to acquire the permission represented by @permission.
+	// AcquirePermission attempts to acquire the permission represented by
+	// @permission.
 	//
 	// The precise method by which this happens depends on the permission and
 	// the underlying authentication mechanism. A simple example is that a
@@ -30076,13 +30485,13 @@ type Permission interface {
 	// This call is blocking, likely for a very long time (in the case that user
 	// interaction is required). See g_permission_acquire_async() for the
 	// non-blocking version.
-	Acquire(cancellable Cancellable) error
-	// AcquireFinish collects the result of attempting to acquire the permission
-	// represented by @permission.
+	AcquirePermission(cancellable Cancellable) error
+	// AcquireFinishPermission collects the result of attempting to acquire the
+	// permission represented by @permission.
 	//
 	// This is the second half of the asynchronous version of
 	// g_permission_acquire().
-	AcquireFinish(result AsyncResult) error
+	AcquireFinishPermission(result AsyncResult) error
 	// Allowed gets the value of the 'allowed' property. This property is true
 	// if the caller currently has permission to perform the action that
 	// @permission represents the permission to perform.
@@ -30095,13 +30504,14 @@ type Permission interface {
 	// true if it is generally possible to release the permission by calling
 	// g_permission_release().
 	CanRelease() bool
-	// ImplUpdate: this function is called by the #GPermission implementation to
-	// update the properties of the permission. You should never call this
-	// function except from a #GPermission implementation.
+	// ImplUpdatePermission: this function is called by the #GPermission
+	// implementation to update the properties of the permission. You should
+	// never call this function except from a #GPermission implementation.
 	//
 	// GObject notify signals are generated, as appropriate.
-	ImplUpdate(allowed bool, canAcquire bool, canRelease bool)
-	// Release attempts to release the permission represented by @permission.
+	ImplUpdatePermission(allowed bool, canAcquire bool, canRelease bool)
+	// ReleasePermission attempts to release the permission represented by
+	// @permission.
 	//
 	// The precise method by which this happens depends on the permission and
 	// the underlying authentication mechanism. In most cases the permission
@@ -30116,21 +30526,19 @@ type Permission interface {
 	// This call is blocking, likely for a very long time (in the case that user
 	// interaction is required). See g_permission_release_async() for the
 	// non-blocking version.
-	Release(cancellable Cancellable) error
-	// ReleaseFinish collects the result of attempting to release the permission
-	// represented by @permission.
+	ReleasePermission(cancellable Cancellable) error
+	// ReleaseFinishPermission collects the result of attempting to release the
+	// permission represented by @permission.
 	//
 	// This is the second half of the asynchronous version of
 	// g_permission_release().
-	ReleaseFinish(result AsyncResult) error
+	ReleaseFinishPermission(result AsyncResult) error
 }
 
 // permission implements the Permission class.
 type permission struct {
 	gextras.Objector
 }
-
-var _ Permission = (*permission)(nil)
 
 // WrapPermission wraps a GObject to the right type. It is
 // primarily used internally.
@@ -30146,7 +30554,7 @@ func marshalPermission(p uintptr) (interface{}, error) {
 	return WrapPermission(obj), nil
 }
 
-func (p permission) Acquire(cancellable Cancellable) error {
+func (p permission) AcquirePermission(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -30163,7 +30571,7 @@ func (p permission) Acquire(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (p permission) AcquireFinish(result AsyncResult) error {
+func (p permission) AcquireFinishPermission(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -30231,7 +30639,7 @@ func (p permission) CanRelease() bool {
 	return _ok
 }
 
-func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
+func (p permission) ImplUpdatePermission(allowed bool, canAcquire bool, canRelease bool) {
 	var _arg0 *C.GPermission // out
 	var _arg1 C.gboolean     // out
 	var _arg2 C.gboolean     // out
@@ -30251,7 +30659,7 @@ func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 	C.g_permission_impl_update(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p permission) Release(cancellable Cancellable) error {
+func (p permission) ReleasePermission(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -30268,7 +30676,7 @@ func (p permission) Release(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (p permission) ReleaseFinish(result AsyncResult) error {
+func (p permission) ReleaseFinishPermission(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -30334,24 +30742,19 @@ func (p permission) ReleaseFinish(result AsyncResult) error {
 // setting stored in #GSettings, see g_settings_create_action() instead, and
 // possibly combine its use with g_settings_bind().
 type PropertyAction interface {
-	gextras.Objector
 	Action
 }
 
 // propertyAction implements the PropertyAction class.
 type propertyAction struct {
 	gextras.Objector
-	Action
 }
-
-var _ PropertyAction = (*propertyAction)(nil)
 
 // WrapPropertyAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPropertyAction(obj *externglib.Object) PropertyAction {
 	return propertyAction{
 		Objector: obj,
-		Action:   WrapAction(obj),
 	}
 }
 
@@ -30377,7 +30780,7 @@ func NewPropertyAction(name string, object gextras.Objector, propertyName string
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
 	_arg3 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -30390,10 +30793,41 @@ func NewPropertyAction(name string, object gextras.Objector, propertyName string
 	return _propertyAction
 }
 
+func (a propertyAction) Activate(parameter *glib.Variant) {
+	WrapAction(gextras.InternObject(a)).Activate(parameter)
+}
+
+func (a propertyAction) ChangeState(value *glib.Variant) {
+	WrapAction(gextras.InternObject(a)).ChangeState(value)
+}
+
+func (a propertyAction) Enabled() bool {
+	return WrapAction(gextras.InternObject(a)).Enabled()
+}
+
+func (a propertyAction) Name() string {
+	return WrapAction(gextras.InternObject(a)).Name()
+}
+
+func (a propertyAction) ParameterType() *glib.VariantType {
+	return WrapAction(gextras.InternObject(a)).ParameterType()
+}
+
+func (a propertyAction) State() *glib.Variant {
+	return WrapAction(gextras.InternObject(a)).State()
+}
+
+func (a propertyAction) StateHint() *glib.Variant {
+	return WrapAction(gextras.InternObject(a)).StateHint()
+}
+
+func (a propertyAction) StateType() *glib.VariantType {
+	return WrapAction(gextras.InternObject(a)).StateType()
+}
+
 // ProXYAddress: support for proxied SocketAddress.
 type ProXYAddress interface {
 	InetSocketAddress
-	SocketConnectable
 
 	// DestinationHostname gets @proxy's destination hostname; that is, the name
 	// of the host that will be connected to via the proxy, not the name of the
@@ -30419,17 +30853,13 @@ type ProXYAddress interface {
 // proXYAddress implements the ProXYAddress class.
 type proXYAddress struct {
 	InetSocketAddress
-	SocketConnectable
 }
-
-var _ ProXYAddress = (*proXYAddress)(nil)
 
 // WrapProXYAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapProXYAddress(obj *externglib.Object) ProXYAddress {
 	return proXYAddress{
 		InetSocketAddress: WrapInetSocketAddress(obj),
-		SocketConnectable: WrapSocketConnectable(obj),
 	}
 }
 
@@ -30581,6 +31011,18 @@ func (p proXYAddress) Username() string {
 	return _utf8
 }
 
+func (c proXYAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c proXYAddress) ProXYEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+}
+
+func (c proXYAddress) String() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).String()
+}
+
 // ProXYAddressEnumerator is a wrapper around AddressEnumerator which takes the
 // Address instances returned by the AddressEnumerator and wraps them in Address
 // instances, using the given AddressEnumerator:proxy-resolver.
@@ -30590,15 +31032,12 @@ func (p proXYAddress) Username() string {
 // there should be no need to manually wrap a AddressEnumerator instance with
 // one.
 type ProXYAddressEnumerator interface {
-	SocketAddressEnumerator
 }
 
 // proXYAddressEnumerator implements the ProXYAddressEnumerator class.
 type proXYAddressEnumerator struct {
 	SocketAddressEnumerator
 }
-
-var _ ProXYAddressEnumerator = (*proXYAddressEnumerator)(nil)
 
 // WrapProXYAddressEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
@@ -30623,42 +31062,40 @@ func marshalProXYAddressEnumerator(p uintptr) (interface{}, error) {
 // also implement Connectable, making it easy to connect to a remote
 // host/service.
 type Resolver interface {
-	gextras.Objector
 
-	// LookupByAddress: synchronously reverse-resolves @address to determine its
-	// associated hostname.
+	// LookupByAddressResolver: synchronously reverse-resolves @address to
+	// determine its associated hostname.
 	//
 	// If the DNS resolution fails, @error (if non-nil) will be set to a value
 	// from Error.
 	//
 	// If @cancellable is non-nil, it can be used to cancel the operation, in
 	// which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
-	LookupByAddress(address InetAddress, cancellable Cancellable) (string, error)
-	// LookupByAddressFinish retrieves the result of a previous call to
+	LookupByAddressResolver(address InetAddress, cancellable Cancellable) (string, error)
+	// LookupByAddressFinishResolver retrieves the result of a previous call to
 	// g_resolver_lookup_by_address_async().
 	//
 	// If the DNS resolution failed, @error (if non-nil) will be set to a value
 	// from Error. If the operation was cancelled, @error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupByAddressFinish(result AsyncResult) (string, error)
-	// SetDefault sets @resolver to be the application's default resolver
-	// (reffing @resolver, and unreffing the previous default resolver, if any).
-	// Future calls to g_resolver_get_default() will return this resolver.
+	LookupByAddressFinishResolver(result AsyncResult) (string, error)
+	// SetDefaultResolver sets @resolver to be the application's default
+	// resolver (reffing @resolver, and unreffing the previous default resolver,
+	// if any). Future calls to g_resolver_get_default() will return this
+	// resolver.
 	//
 	// This can be used if an application wants to perform any sort of DNS
 	// caching or "pinning"; it can implement its own #GResolver that calls the
 	// original default resolver for DNS operations, and implements its own
 	// cache policies on top of that, and then set itself as the default
 	// resolver for all later code to use.
-	SetDefault()
+	SetDefaultResolver()
 }
 
 // resolver implements the Resolver class.
 type resolver struct {
 	gextras.Objector
 }
-
-var _ Resolver = (*resolver)(nil)
 
 // WrapResolver wraps a GObject to the right type. It is
 // primarily used internally.
@@ -30674,7 +31111,7 @@ func marshalResolver(p uintptr) (interface{}, error) {
 	return WrapResolver(obj), nil
 }
 
-func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) (string, error) {
+func (r resolver) LookupByAddressResolver(address InetAddress, cancellable Cancellable) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GCancellable // out
@@ -30697,7 +31134,7 @@ func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) 
 	return _utf8, _goerr
 }
 
-func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
+func (r resolver) LookupByAddressFinishResolver(result AsyncResult) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.gchar        // in
@@ -30718,7 +31155,7 @@ func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
 	return _utf8, _goerr
 }
 
-func (r resolver) SetDefault() {
+func (r resolver) SetDefaultResolver() {
 	var _arg0 *C.GResolver // out
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
@@ -31001,15 +31438,14 @@ func (r resolver) SetDefault() {
 // rules. It should not be committed to version control or included in
 // `EXTRA_DIST`.
 type Settings interface {
-	gextras.Objector
 
-	// Apply applies any changes that have been made to the settings. This
-	// function does nothing unless @settings is in 'delay-apply' mode; see
+	// ApplySettings applies any changes that have been made to the settings.
+	// This function does nothing unless @settings is in 'delay-apply' mode; see
 	// g_settings_delay(). In the normal case settings are always applied
 	// immediately.
-	Apply()
-	// Bind: create a binding between the @key in the @settings object and the
-	// property @property of @object.
+	ApplySettings()
+	// BindSettings: create a binding between the @key in the @settings object
+	// and the property @property of @object.
 	//
 	// The binding uses the default GIO mapping functions to map between the
 	// settings and property values. These functions handle booleans, numeric
@@ -31027,11 +31463,11 @@ type Settings interface {
 	// can have only one binding per object property. If you bind the same
 	// property twice on the same object, the second binding overrides the first
 	// one.
-	Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags)
-	// BindWritable: create a binding between the writability of @key in the
-	// @settings object and the property @property of @object. The property must
-	// be boolean; "sensitive" or "visible" properties of widgets are the most
-	// likely candidates.
+	BindSettings(key string, object gextras.Objector, property string, flags SettingsBindFlags)
+	// BindWritableSettings: create a binding between the writability of @key in
+	// the @settings object and the property @property of @object. The property
+	// must be boolean; "sensitive" or "visible" properties of widgets are the
+	// most likely candidates.
 	//
 	// Writable bindings are always uni-directional; changes of the writability
 	// of the setting will be propagated to the object property, not the other
@@ -31045,8 +31481,9 @@ type Settings interface {
 	// can have only one binding per object property. If you bind the same
 	// property twice on the same object, the second binding overrides the first
 	// one.
-	BindWritable(key string, object gextras.Objector, property string, inverted bool)
-	// CreateAction creates a #GAction corresponding to a given #GSettings key.
+	BindWritableSettings(key string, object gextras.Objector, property string, inverted bool)
+	// CreateActionSettings creates a #GAction corresponding to a given
+	// #GSettings key.
 	//
 	// The action has the same name as the key.
 	//
@@ -31059,11 +31496,11 @@ type Settings interface {
 	// For boolean-valued keys, action activations take no parameter and result
 	// in the toggling of the value. For all other types, activations take the
 	// new value for the key (which must have the correct type).
-	CreateAction(key string) Action
-	// Delay changes the #GSettings object into 'delay-apply' mode. In this
-	// mode, changes to @settings are not immediately propagated to the backend,
-	// but kept locally until g_settings_apply() is called.
-	Delay()
+	CreateActionSettings(key string) Action
+	// DelaySettings changes the #GSettings object into 'delay-apply' mode. In
+	// this mode, changes to @settings are not immediately propagated to the
+	// backend, but kept locally until g_settings_apply() is called.
+	DelaySettings()
 	// Boolean gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for booleans.
@@ -31197,9 +31634,9 @@ type Settings interface {
 	// It is a programmer error to give a @key that isn't contained in the
 	// schema for @settings.
 	Value(key string) *glib.Variant
-	// IsWritable finds out if a key can be written or not
-	IsWritable(name string) bool
-	// ListChildren gets the list of children on @settings.
+	// IsWritableSettings finds out if a key can be written or not
+	IsWritableSettings(name string) bool
+	// ListChildrenSettings gets the list of children on @settings.
 	//
 	// The list is exactly the list of strings for which it is not an error to
 	// call g_settings_get_child().
@@ -31210,8 +31647,8 @@ type Settings interface {
 	//
 	// You should free the return value with g_strfreev() when you are done with
 	// it.
-	ListChildren() []string
-	// ListKeys introspects the list of keys on @settings.
+	ListChildrenSettings() []string
+	// ListKeysSettings introspects the list of keys on @settings.
 	//
 	// You should probably not be calling this function from "normal" code
 	// (since you should already know what keys are in your schema). This
@@ -31219,39 +31656,39 @@ type Settings interface {
 	//
 	// You should free the return value with g_strfreev() when you are done with
 	// it.
-	ListKeys() []string
-	// RangeCheck checks if the given @value is of the correct type and within
-	// the permitted range for @key.
-	RangeCheck(key string, value *glib.Variant) bool
-	// Reset resets @key to its default value.
+	ListKeysSettings() []string
+	// RangeCheckSettings checks if the given @value is of the correct type and
+	// within the permitted range for @key.
+	RangeCheckSettings(key string, value *glib.Variant) bool
+	// ResetSettings resets @key to its default value.
 	//
 	// This call resets the key, as much as possible, to its default value. That
 	// might be the value specified in the schema or the one set by the
 	// administrator.
-	Reset(key string)
-	// Revert reverts all non-applied changes to the settings. This function
-	// does nothing unless @settings is in 'delay-apply' mode; see
+	ResetSettings(key string)
+	// RevertSettings reverts all non-applied changes to the settings. This
+	// function does nothing unless @settings is in 'delay-apply' mode; see
 	// g_settings_delay(). In the normal case settings are always applied
 	// immediately.
 	//
 	// Change notifications will be emitted for affected keys.
-	Revert()
-	// SetBoolean sets @key in @settings to @value.
+	RevertSettings()
+	// SetBooleanSettings sets @key in @settings to @value.
 	//
 	// A convenience variant of g_settings_set() for booleans.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// boolean type in the schema for @settings.
-	SetBoolean(key string, value bool) bool
-	// SetDouble sets @key in @settings to @value.
+	SetBooleanSettings(key string, value bool) bool
+	// SetDoubleSettings sets @key in @settings to @value.
 	//
 	// A convenience variant of g_settings_set() for doubles.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// 'double' type in the schema for @settings.
-	SetDouble(key string, value float64) bool
-	// SetEnum looks up the enumerated type nick for @value and writes it to
-	// @key, within @settings.
+	SetDoubleSettings(key string, value float64) bool
+	// SetEnumSettings looks up the enumerated type nick for @value and writes
+	// it to @key, within @settings.
 	//
 	// It is a programmer error to give a @key that isn't contained in the
 	// schema for @settings or is not marked as an enumerated type, or for
@@ -31259,10 +31696,10 @@ type Settings interface {
 	//
 	// After performing the write, accessing @key directly with
 	// g_settings_get_string() will return the 'nick' associated with @value.
-	SetEnum(key string, value int) bool
-	// SetFlags looks up the flags type nicks for the bits specified by @value,
-	// puts them in an array of strings and writes the array to @key, within
-	// @settings.
+	SetEnumSettings(key string, value int) bool
+	// SetFlagsSettings looks up the flags type nicks for the bits specified by
+	// @value, puts them in an array of strings and writes the array to @key,
+	// within @settings.
 	//
 	// It is a programmer error to give a @key that isn't contained in the
 	// schema for @settings or is not marked as a flags type, or for @value to
@@ -31271,66 +31708,64 @@ type Settings interface {
 	// After performing the write, accessing @key directly with
 	// g_settings_get_strv() will return an array of 'nicks'; one for each bit
 	// in @value.
-	SetFlags(key string, value uint) bool
-	// SetInt sets @key in @settings to @value.
+	SetFlagsSettings(key string, value uint) bool
+	// SetIntSettings sets @key in @settings to @value.
 	//
 	// A convenience variant of g_settings_set() for 32-bit integers.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// int32 type in the schema for @settings.
-	SetInt(key string, value int) bool
-	// SetInt64 sets @key in @settings to @value.
+	SetIntSettings(key string, value int) bool
+	// SetInt64Settings sets @key in @settings to @value.
 	//
 	// A convenience variant of g_settings_set() for 64-bit integers.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// int64 type in the schema for @settings.
-	SetInt64(key string, value int64) bool
-	// SetString sets @key in @settings to @value.
+	SetInt64Settings(key string, value int64) bool
+	// SetStringSettings sets @key in @settings to @value.
 	//
 	// A convenience variant of g_settings_set() for strings.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// string type in the schema for @settings.
-	SetString(key string, value string) bool
-	// SetStrv sets @key in @settings to @value.
+	SetStringSettings(key string, value string) bool
+	// SetStrvSettings sets @key in @settings to @value.
 	//
 	// A convenience variant of g_settings_set() for string arrays. If @value is
 	// nil, then @key is set to be the empty array.
 	//
 	// It is a programmer error to give a @key that isn't specified as having an
 	// array of strings type in the schema for @settings.
-	SetStrv(key string, value []string) bool
-	// SetUint sets @key in @settings to @value.
+	SetStrvSettings(key string, value []string) bool
+	// SetUintSettings sets @key in @settings to @value.
 	//
 	// A convenience variant of g_settings_set() for 32-bit unsigned integers.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// uint32 type in the schema for @settings.
-	SetUint(key string, value uint) bool
-	// SetUint64 sets @key in @settings to @value.
+	SetUintSettings(key string, value uint) bool
+	// SetUint64Settings sets @key in @settings to @value.
 	//
 	// A convenience variant of g_settings_set() for 64-bit unsigned integers.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// uint64 type in the schema for @settings.
-	SetUint64(key string, value uint64) bool
-	// SetValue sets @key in @settings to @value.
+	SetUint64Settings(key string, value uint64) bool
+	// SetValueSettings sets @key in @settings to @value.
 	//
 	// It is a programmer error to give a @key that isn't contained in the
 	// schema for @settings or for @value to have the incorrect type, per the
 	// schema.
 	//
 	// If @value is floating then this function consumes the reference.
-	SetValue(key string, value *glib.Variant) bool
+	SetValueSettings(key string, value *glib.Variant) bool
 }
 
 // settings implements the Settings class.
 type settings struct {
 	gextras.Objector
 }
-
-var _ Settings = (*settings)(nil)
 
 // WrapSettings wraps a GObject to the right type. It is
 // primarily used internally.
@@ -31406,7 +31841,7 @@ func NewSettingsWithPath(schemaId string, path string) Settings {
 	return _settings
 }
 
-func (s settings) Apply() {
+func (s settings) ApplySettings() {
 	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
@@ -31414,7 +31849,7 @@ func (s settings) Apply() {
 	C.g_settings_apply(_arg0)
 }
 
-func (s settings) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
+func (s settings) BindSettings(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
 	var _arg0 *C.GSettings         // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gpointer           // out
@@ -31424,7 +31859,7 @@ func (s settings) Bind(key string, object gextras.Objector, property string, fla
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
 	_arg3 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (C.GSettingsBindFlags)(flags)
@@ -31432,7 +31867,7 @@ func (s settings) Bind(key string, object gextras.Objector, property string, fla
 	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (s settings) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
+func (s settings) BindWritableSettings(key string, object gextras.Objector, property string, inverted bool) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gpointer   // out
@@ -31442,7 +31877,7 @@ func (s settings) BindWritable(key string, object gextras.Objector, property str
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
 	_arg3 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg3))
 	if inverted {
@@ -31452,7 +31887,7 @@ func (s settings) BindWritable(key string, object gextras.Objector, property str
 	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (s settings) CreateAction(key string) Action {
+func (s settings) CreateActionSettings(key string) Action {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GAction   // in
@@ -31470,7 +31905,7 @@ func (s settings) CreateAction(key string) Action {
 	return _action
 }
 
-func (s settings) Delay() {
+func (s settings) DelaySettings() {
 	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
@@ -31793,7 +32228,7 @@ func (s settings) Value(key string) *glib.Variant {
 	return _variant
 }
 
-func (s settings) IsWritable(name string) bool {
+func (s settings) IsWritableSettings(name string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gboolean   // in
@@ -31813,7 +32248,7 @@ func (s settings) IsWritable(name string) bool {
 	return _ok
 }
 
-func (s settings) ListChildren() []string {
+func (s settings) ListChildrenSettings() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar
 
@@ -31841,7 +32276,7 @@ func (s settings) ListChildren() []string {
 	return _utf8s
 }
 
-func (s settings) ListKeys() []string {
+func (s settings) ListKeysSettings() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar
 
@@ -31869,7 +32304,7 @@ func (s settings) ListKeys() []string {
 	return _utf8s
 }
 
-func (s settings) RangeCheck(key string, value *glib.Variant) bool {
+func (s settings) RangeCheckSettings(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
@@ -31891,7 +32326,7 @@ func (s settings) RangeCheck(key string, value *glib.Variant) bool {
 	return _ok
 }
 
-func (s settings) Reset(key string) {
+func (s settings) ResetSettings(key string) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 
@@ -31902,7 +32337,7 @@ func (s settings) Reset(key string) {
 	C.g_settings_reset(_arg0, _arg1)
 }
 
-func (s settings) Revert() {
+func (s settings) RevertSettings() {
 	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
@@ -31910,7 +32345,7 @@ func (s settings) Revert() {
 	C.g_settings_revert(_arg0)
 }
 
-func (s settings) SetBoolean(key string, value bool) bool {
+func (s settings) SetBooleanSettings(key string, value bool) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gboolean   // out
@@ -31934,7 +32369,7 @@ func (s settings) SetBoolean(key string, value bool) bool {
 	return _ok
 }
 
-func (s settings) SetDouble(key string, value float64) bool {
+func (s settings) SetDoubleSettings(key string, value float64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gdouble    // out
@@ -31956,7 +32391,7 @@ func (s settings) SetDouble(key string, value float64) bool {
 	return _ok
 }
 
-func (s settings) SetEnum(key string, value int) bool {
+func (s settings) SetEnumSettings(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -31978,7 +32413,7 @@ func (s settings) SetEnum(key string, value int) bool {
 	return _ok
 }
 
-func (s settings) SetFlags(key string, value uint) bool {
+func (s settings) SetFlagsSettings(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint      // out
@@ -32000,7 +32435,7 @@ func (s settings) SetFlags(key string, value uint) bool {
 	return _ok
 }
 
-func (s settings) SetInt(key string, value int) bool {
+func (s settings) SetIntSettings(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -32022,7 +32457,7 @@ func (s settings) SetInt(key string, value int) bool {
 	return _ok
 }
 
-func (s settings) SetInt64(key string, value int64) bool {
+func (s settings) SetInt64Settings(key string, value int64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint64     // out
@@ -32044,7 +32479,7 @@ func (s settings) SetInt64(key string, value int64) bool {
 	return _ok
 }
 
-func (s settings) SetString(key string, value string) bool {
+func (s settings) SetStringSettings(key string, value string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -32067,7 +32502,7 @@ func (s settings) SetString(key string, value string) bool {
 	return _ok
 }
 
-func (s settings) SetStrv(key string, value []string) bool {
+func (s settings) SetStrvSettings(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 **C.gchar
@@ -32097,7 +32532,7 @@ func (s settings) SetStrv(key string, value []string) bool {
 	return _ok
 }
 
-func (s settings) SetUint(key string, value uint) bool {
+func (s settings) SetUintSettings(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint      // out
@@ -32119,7 +32554,7 @@ func (s settings) SetUint(key string, value uint) bool {
 	return _ok
 }
 
-func (s settings) SetUint64(key string, value uint64) bool {
+func (s settings) SetUint64Settings(key string, value uint64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint64    // out
@@ -32141,7 +32576,7 @@ func (s settings) SetUint64(key string, value uint64) bool {
 	return _ok
 }
 
-func (s settings) SetValue(key string, value *glib.Variant) bool {
+func (s settings) SetValueSettings(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
@@ -32169,18 +32604,17 @@ func (s settings) SetValue(key string, value *glib.Variant) bool {
 //
 // See also Action.
 type SimpleAction interface {
-	gextras.Objector
 	Action
 
-	// SetEnabled sets the action as enabled or not.
+	// SetEnabledSimpleAction sets the action as enabled or not.
 	//
 	// An action must be enabled in order to be activated or in order to have
 	// its state changed from outside callers.
 	//
 	// This should only be called by the implementor of the action. Users of the
 	// action should not attempt to modify its enabled flag.
-	SetEnabled(enabled bool)
-	// SetState sets the state of the action.
+	SetEnabledSimpleAction(enabled bool)
+	// SetStateSimpleAction sets the state of the action.
 	//
 	// This directly updates the 'state' property to the given value.
 	//
@@ -32189,28 +32623,24 @@ type SimpleAction interface {
 	// Instead, they should call g_action_change_state() to request the change.
 	//
 	// If the @value GVariant is floating, it is consumed.
-	SetState(value *glib.Variant)
-	// SetStateHint sets the state hint for the action.
+	SetStateSimpleAction(value *glib.Variant)
+	// SetStateHintSimpleAction sets the state hint for the action.
 	//
 	// See g_action_get_state_hint() for more information about action state
 	// hints.
-	SetStateHint(stateHint *glib.Variant)
+	SetStateHintSimpleAction(stateHint *glib.Variant)
 }
 
 // simpleAction implements the SimpleAction class.
 type simpleAction struct {
 	gextras.Objector
-	Action
 }
-
-var _ SimpleAction = (*simpleAction)(nil)
 
 // WrapSimpleAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleAction(obj *externglib.Object) SimpleAction {
 	return simpleAction{
 		Objector: obj,
-		Action:   WrapAction(obj),
 	}
 }
 
@@ -32267,7 +32697,7 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 	return _simpleAction
 }
 
-func (s simpleAction) SetEnabled(enabled bool) {
+func (s simpleAction) SetEnabledSimpleAction(enabled bool) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 C.gboolean       // out
 
@@ -32279,7 +32709,7 @@ func (s simpleAction) SetEnabled(enabled bool) {
 	C.g_simple_action_set_enabled(_arg0, _arg1)
 }
 
-func (s simpleAction) SetState(value *glib.Variant) {
+func (s simpleAction) SetStateSimpleAction(value *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
 
@@ -32289,7 +32719,7 @@ func (s simpleAction) SetState(value *glib.Variant) {
 	C.g_simple_action_set_state(_arg0, _arg1)
 }
 
-func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
+func (s simpleAction) SetStateHintSimpleAction(stateHint *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
 
@@ -32299,46 +32729,72 @@ func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
 	C.g_simple_action_set_state_hint(_arg0, _arg1)
 }
 
+func (a simpleAction) Activate(parameter *glib.Variant) {
+	WrapAction(gextras.InternObject(a)).Activate(parameter)
+}
+
+func (a simpleAction) ChangeState(value *glib.Variant) {
+	WrapAction(gextras.InternObject(a)).ChangeState(value)
+}
+
+func (a simpleAction) Enabled() bool {
+	return WrapAction(gextras.InternObject(a)).Enabled()
+}
+
+func (a simpleAction) Name() string {
+	return WrapAction(gextras.InternObject(a)).Name()
+}
+
+func (a simpleAction) ParameterType() *glib.VariantType {
+	return WrapAction(gextras.InternObject(a)).ParameterType()
+}
+
+func (a simpleAction) State() *glib.Variant {
+	return WrapAction(gextras.InternObject(a)).State()
+}
+
+func (a simpleAction) StateHint() *glib.Variant {
+	return WrapAction(gextras.InternObject(a)).StateHint()
+}
+
+func (a simpleAction) StateType() *glib.VariantType {
+	return WrapAction(gextras.InternObject(a)).StateType()
+}
+
 // SimpleActionGroup is a hash table filled with #GAction objects, implementing
 // the Group and Map interfaces.
 type SimpleActionGroup interface {
-	gextras.Objector
 	ActionGroup
 	ActionMap
 
-	// Insert adds an action to the action group.
+	// InsertSimpleActionGroup adds an action to the action group.
 	//
 	// If the action group already contains an action with the same name as
 	// @action then the old action is dropped from the group.
 	//
 	// The action group takes its own reference on @action.
-	Insert(action Action)
-	// Lookup looks up the action with the name @action_name in the group.
+	InsertSimpleActionGroup(action Action)
+	// LookupSimpleActionGroup looks up the action with the name @action_name in
+	// the group.
 	//
 	// If no such action exists, returns nil.
-	Lookup(actionName string) Action
-	// Remove removes the named action from the action group.
+	LookupSimpleActionGroup(actionName string) Action
+	// RemoveSimpleActionGroup removes the named action from the action group.
 	//
 	// If no action of this name is in the group then nothing happens.
-	Remove(actionName string)
+	RemoveSimpleActionGroup(actionName string)
 }
 
 // simpleActionGroup implements the SimpleActionGroup class.
 type simpleActionGroup struct {
 	gextras.Objector
-	ActionGroup
-	ActionMap
 }
-
-var _ SimpleActionGroup = (*simpleActionGroup)(nil)
 
 // WrapSimpleActionGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleActionGroup(obj *externglib.Object) SimpleActionGroup {
 	return simpleActionGroup{
-		Objector:    obj,
-		ActionGroup: WrapActionGroup(obj),
-		ActionMap:   WrapActionMap(obj),
+		Objector: obj,
 	}
 }
 
@@ -32361,7 +32817,7 @@ func NewSimpleActionGroup() SimpleActionGroup {
 	return _simpleActionGroup
 }
 
-func (s simpleActionGroup) Insert(action Action) {
+func (s simpleActionGroup) InsertSimpleActionGroup(action Action) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
 
@@ -32371,7 +32827,7 @@ func (s simpleActionGroup) Insert(action Action) {
 	C.g_simple_action_group_insert(_arg0, _arg1)
 }
 
-func (s simpleActionGroup) Lookup(actionName string) Action {
+func (s simpleActionGroup) LookupSimpleActionGroup(actionName string) Action {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GAction            // in
@@ -32389,7 +32845,7 @@ func (s simpleActionGroup) Lookup(actionName string) Action {
 	return _action
 }
 
-func (s simpleActionGroup) Remove(actionName string) {
+func (s simpleActionGroup) RemoveSimpleActionGroup(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 
@@ -32398,6 +32854,74 @@ func (s simpleActionGroup) Remove(actionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_simple_action_group_remove(_arg0, _arg1)
+}
+
+func (a simpleActionGroup) ActionAdded(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
+}
+
+func (a simpleActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
+	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
+}
+
+func (a simpleActionGroup) ActionRemoved(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
+}
+
+func (a simpleActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
+}
+
+func (a simpleActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
+}
+
+func (a simpleActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
+}
+
+func (a simpleActionGroup) ActionEnabled(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
+}
+
+func (a simpleActionGroup) ActionParameterType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
+}
+
+func (a simpleActionGroup) ActionState(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
+}
+
+func (a simpleActionGroup) ActionStateHint(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
+}
+
+func (a simpleActionGroup) ActionStateType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
+}
+
+func (a simpleActionGroup) HasAction(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
+}
+
+func (a simpleActionGroup) ListActions() []string {
+	return WrapActionGroup(gextras.InternObject(a)).ListActions()
+}
+
+func (a simpleActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+}
+
+func (a simpleActionGroup) AddAction(action Action) {
+	WrapActionMap(gextras.InternObject(a)).AddAction(action)
+}
+
+func (a simpleActionGroup) LookupAction(actionName string) Action {
+	return WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
+}
+
+func (a simpleActionGroup) RemoveAction(actionName string) {
+	WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }
 
 // SimpleAsyncResult as of GLib 2.46, AsyncResult is deprecated in favor of
@@ -32558,39 +33082,39 @@ func (s simpleActionGroup) Remove(actionName string) {
 //      return g_object_ref (cake);
 //    }
 type SimpleAsyncResult interface {
-	gextras.Objector
 	AsyncResult
 
-	// Complete completes an asynchronous I/O job immediately. Must be called in
-	// the thread where the asynchronous result was to be delivered, as it
-	// invokes the callback directly. If you are in a different thread use
-	// g_simple_async_result_complete_in_idle().
+	// CompleteSimpleAsyncResult completes an asynchronous I/O job immediately.
+	// Must be called in the thread where the asynchronous result was to be
+	// delivered, as it invokes the callback directly. If you are in a different
+	// thread use g_simple_async_result_complete_in_idle().
 	//
 	// Calling this function takes a reference to @simple for as long as is
 	// needed to complete the call.
-	Complete()
-	// CompleteInIdle completes an asynchronous function in an idle handler in
-	// the [thread-default main context][g-main-context-push-thread-default] of
-	// the thread that @simple was initially created in (and re-pushes that
-	// context around the invocation of the callback).
+	CompleteSimpleAsyncResult()
+	// CompleteInIdleSimpleAsyncResult completes an asynchronous function in an
+	// idle handler in the [thread-default main
+	// context][g-main-context-push-thread-default] of the thread that @simple
+	// was initially created in (and re-pushes that context around the
+	// invocation of the callback).
 	//
 	// Calling this function takes a reference to @simple for as long as is
 	// needed to complete the call.
-	CompleteInIdle()
+	CompleteInIdleSimpleAsyncResult()
 	// OpResGboolean gets the operation result boolean from within the
 	// asynchronous result.
 	OpResGboolean() bool
 	// OpResGssize gets a gssize from the asynchronous result.
 	OpResGssize() int
-	// PropagateError propagates an error from within the simple asynchronous
-	// result to a given destination.
+	// PropagateErrorSimpleAsyncResult propagates an error from within the
+	// simple asynchronous result to a given destination.
 	//
 	// If the #GCancellable given to a prior call to
 	// g_simple_async_result_set_check_cancellable() is cancelled then this
 	// function will return true with @dest set appropriately.
-	PropagateError() error
-	// SetCheckCancellable sets a #GCancellable to check before dispatching
-	// results.
+	PropagateErrorSimpleAsyncResult() error
+	// SetCheckCancellableSimpleAsyncResult sets a #GCancellable to check before
+	// dispatching results.
 	//
 	// This function has one very specific purpose: the provided cancellable is
 	// checked at the time of g_simple_async_result_propagate_error() If it is
@@ -32605,38 +33129,34 @@ type SimpleAsyncResult interface {
 	//
 	// The checking described above is done regardless of any call to the
 	// unrelated g_simple_async_result_set_handle_cancellation() function.
-	SetCheckCancellable(checkCancellable Cancellable)
-	// SetFromError sets the result from a #GError.
-	SetFromError(err error)
-	// SetHandleCancellation sets whether to handle cancellation within the
-	// asynchronous operation.
+	SetCheckCancellableSimpleAsyncResult(checkCancellable Cancellable)
+	// SetFromErrorSimpleAsyncResult sets the result from a #GError.
+	SetFromErrorSimpleAsyncResult(err error)
+	// SetHandleCancellationSimpleAsyncResult sets whether to handle
+	// cancellation within the asynchronous operation.
 	//
 	// This function has nothing to do with
 	// g_simple_async_result_set_check_cancellable(). It only refers to the
 	// #GCancellable passed to g_simple_async_result_run_in_thread().
-	SetHandleCancellation(handleCancellation bool)
-	// SetOpResGboolean sets the operation result to a boolean within the
-	// asynchronous result.
-	SetOpResGboolean(opRes bool)
-	// SetOpResGssize sets the operation result within the asynchronous result
-	// to the given @op_res.
-	SetOpResGssize(opRes int)
+	SetHandleCancellationSimpleAsyncResult(handleCancellation bool)
+	// SetOpResGbooleanSimpleAsyncResult sets the operation result to a boolean
+	// within the asynchronous result.
+	SetOpResGbooleanSimpleAsyncResult(opRes bool)
+	// SetOpResGssizeSimpleAsyncResult sets the operation result within the
+	// asynchronous result to the given @op_res.
+	SetOpResGssizeSimpleAsyncResult(opRes int)
 }
 
 // simpleAsyncResult implements the SimpleAsyncResult class.
 type simpleAsyncResult struct {
 	gextras.Objector
-	AsyncResult
 }
-
-var _ SimpleAsyncResult = (*simpleAsyncResult)(nil)
 
 // WrapSimpleAsyncResult wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResult {
 	return simpleAsyncResult{
-		Objector:    obj,
-		AsyncResult: WrapAsyncResult(obj),
+		Objector: obj,
 	}
 }
 
@@ -32646,7 +33166,7 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	return WrapSimpleAsyncResult(obj), nil
 }
 
-func (s simpleAsyncResult) Complete() {
+func (s simpleAsyncResult) CompleteSimpleAsyncResult() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
@@ -32654,7 +33174,7 @@ func (s simpleAsyncResult) Complete() {
 	C.g_simple_async_result_complete(_arg0)
 }
 
-func (s simpleAsyncResult) CompleteInIdle() {
+func (s simpleAsyncResult) CompleteInIdleSimpleAsyncResult() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
@@ -32694,7 +33214,7 @@ func (s simpleAsyncResult) OpResGssize() int {
 	return _gssize
 }
 
-func (s simpleAsyncResult) PropagateError() error {
+func (s simpleAsyncResult) PropagateErrorSimpleAsyncResult() error {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cerr *C.GError             // in
 
@@ -32709,7 +33229,7 @@ func (s simpleAsyncResult) PropagateError() error {
 	return _goerr
 }
 
-func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable) {
+func (s simpleAsyncResult) SetCheckCancellableSimpleAsyncResult(checkCancellable Cancellable) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
 
@@ -32719,18 +33239,18 @@ func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable) {
 	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
 }
 
-func (s simpleAsyncResult) SetFromError(err error) {
+func (s simpleAsyncResult) SetFromErrorSimpleAsyncResult(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GError             // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	_arg1 = (*C.GError)(gerror.New(err))
 	defer C.g_error_free(_arg1)
 
 	C.g_simple_async_result_set_from_error(_arg0, _arg1)
 }
 
-func (s simpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
+func (s simpleAsyncResult) SetHandleCancellationSimpleAsyncResult(handleCancellation bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
@@ -32742,7 +33262,7 @@ func (s simpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
 	C.g_simple_async_result_set_handle_cancellation(_arg0, _arg1)
 }
 
-func (s simpleAsyncResult) SetOpResGboolean(opRes bool) {
+func (s simpleAsyncResult) SetOpResGbooleanSimpleAsyncResult(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
@@ -32754,7 +33274,7 @@ func (s simpleAsyncResult) SetOpResGboolean(opRes bool) {
 	C.g_simple_async_result_set_op_res_gboolean(_arg0, _arg1)
 }
 
-func (s simpleAsyncResult) SetOpResGssize(opRes int) {
+func (s simpleAsyncResult) SetOpResGssizeSimpleAsyncResult(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gssize              // out
 
@@ -32762,6 +33282,14 @@ func (s simpleAsyncResult) SetOpResGssize(opRes int) {
 	_arg1 = (C.gssize)(opRes)
 
 	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)
+}
+
+func (r simpleAsyncResult) SourceObject() gextras.Objector {
+	return WrapAsyncResult(gextras.InternObject(r)).SourceObject()
+}
+
+func (r simpleAsyncResult) LegacyPropagateError() error {
+	return WrapAsyncResult(gextras.InternObject(r)).LegacyPropagateError()
 }
 
 // SimpleIOStream: GSimpleIOStream creates a OStream from an arbitrary Stream
@@ -32773,15 +33301,12 @@ func (s simpleAsyncResult) SetOpResGssize(opRes int) {
 // g_unix_input_stream_new() or g_win32_input_stream_new(), and you want to take
 // advantage of the methods provided by OStream.
 type SimpleIOStream interface {
-	IOStream
 }
 
 // simpleIOStream implements the SimpleIOStream class.
 type simpleIOStream struct {
 	IOStream
 }
-
-var _ SimpleIOStream = (*simpleIOStream)(nil)
 
 // WrapSimpleIOStream wraps a GObject to the right type. It is
 // primarily used internally.
@@ -32822,15 +33347,12 @@ func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) Simpl
 //
 // Calling request or release will result in errors.
 type SimplePermission interface {
-	Permission
 }
 
 // simplePermission implements the SimplePermission class.
 type simplePermission struct {
 	Permission
 }
-
-var _ SimplePermission = (*simplePermission)(nil)
 
 // WrapSimplePermission wraps a GObject to the right type. It is
 // primarily used internally.
@@ -32873,45 +33395,40 @@ func NewSimplePermission(allowed bool) SimplePermission {
 // base class for another proxy resolver implementation, or it can be created
 // and used manually, such as with g_socket_client_set_proxy_resolver().
 type SimpleProXYResolver interface {
-	gextras.Objector
 	ProXYResolver
 
-	// SetDefaultProXY sets the default proxy on @resolver, to be used for any
-	// URIs that don't match ProxyResolver:ignore-hosts or a proxy set via
-	// g_simple_proxy_resolver_set_uri_proxy().
+	// SetDefaultProXYSimpleProXYResolver sets the default proxy on @resolver,
+	// to be used for any URIs that don't match ProxyResolver:ignore-hosts or a
+	// proxy set via g_simple_proxy_resolver_set_uri_proxy().
 	//
 	// If @default_proxy starts with "socks://", ProxyResolver will treat it as
 	// referring to all three of the socks5, socks4a, and socks4 proxy types.
-	SetDefaultProXY(defaultProxy string)
-	// SetIgnoreHosts sets the list of ignored hosts.
+	SetDefaultProXYSimpleProXYResolver(defaultProxy string)
+	// SetIgnoreHostsSimpleProXYResolver sets the list of ignored hosts.
 	//
 	// See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
 	// argument is interpreted.
-	SetIgnoreHosts(ignoreHosts *string)
-	// SetURIProXY adds a URI-scheme-specific proxy to @resolver; URIs whose
-	// scheme matches @uri_scheme (and which don't match
+	SetIgnoreHostsSimpleProXYResolver(ignoreHosts *string)
+	// SetURIProXYSimpleProXYResolver adds a URI-scheme-specific proxy to
+	// @resolver; URIs whose scheme matches @uri_scheme (and which don't match
 	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
 	//
 	// As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
 	// ProxyResolver will treat it as referring to all three of the socks5,
 	// socks4a, and socks4 proxy types.
-	SetURIProXY(uriScheme string, proxy string)
+	SetURIProXYSimpleProXYResolver(uriScheme string, proxy string)
 }
 
 // simpleProXYResolver implements the SimpleProXYResolver class.
 type simpleProXYResolver struct {
 	gextras.Objector
-	ProXYResolver
 }
-
-var _ SimpleProXYResolver = (*simpleProXYResolver)(nil)
 
 // WrapSimpleProXYResolver wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleProXYResolver(obj *externglib.Object) SimpleProXYResolver {
 	return simpleProXYResolver{
-		Objector:      obj,
-		ProXYResolver: WrapProXYResolver(obj),
+		Objector: obj,
 	}
 }
 
@@ -32921,7 +33438,7 @@ func marshalSimpleProXYResolver(p uintptr) (interface{}, error) {
 	return WrapSimpleProXYResolver(obj), nil
 }
 
-func (r simpleProXYResolver) SetDefaultProXY(defaultProxy string) {
+func (r simpleProXYResolver) SetDefaultProXYSimpleProXYResolver(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 
@@ -32932,7 +33449,7 @@ func (r simpleProXYResolver) SetDefaultProXY(defaultProxy string) {
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 }
 
-func (r simpleProXYResolver) SetIgnoreHosts(ignoreHosts *string) {
+func (r simpleProXYResolver) SetIgnoreHostsSimpleProXYResolver(ignoreHosts *string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 **C.gchar               // out
 
@@ -32943,7 +33460,7 @@ func (r simpleProXYResolver) SetIgnoreHosts(ignoreHosts *string) {
 	C.g_simple_proxy_resolver_set_ignore_hosts(_arg0, _arg1)
 }
 
-func (r simpleProXYResolver) SetURIProXY(uriScheme string, proxy string) {
+func (r simpleProXYResolver) SetURIProXYSimpleProXYResolver(uriScheme string, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.gchar                // out
@@ -32955,6 +33472,18 @@ func (r simpleProXYResolver) SetURIProXY(uriScheme string, proxy string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
+}
+
+func (r simpleProXYResolver) IsSupported() bool {
+	return WrapProXYResolver(gextras.InternObject(r)).IsSupported()
+}
+
+func (r simpleProXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
+	return WrapProXYResolver(gextras.InternObject(r)).Lookup(uri, cancellable)
+}
+
+func (r simpleProXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
+	return WrapProXYResolver(gextras.InternObject(r)).LookupFinish(result)
 }
 
 // Socket: a #GSocket is a low-level networking primitive. It is a more or less
@@ -33006,12 +33535,11 @@ func (r simpleProXYResolver) SetURIProXY(uriScheme string, proxy string) {
 // a #GSocket concurrently from multiple threads, you must implement your own
 // locking.
 type Socket interface {
-	gextras.Objector
 	DatagramBased
 	Initable
 
-	// Accept: accept incoming connections on a connection-based socket. This
-	// removes the first outstanding connection request from the listening
+	// AcceptSocket: accept incoming connections on a connection-based socket.
+	// This removes the first outstanding connection request from the listening
 	// socket and creates a #GSocket object for it.
 	//
 	// The @socket must be bound to a local address with g_socket_bind() and
@@ -33020,10 +33548,10 @@ type Socket interface {
 	// If there are no outstanding connections then the operation will block or
 	// return G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled. To be
 	// notified of an incoming connection, wait for the G_IO_IN condition.
-	Accept(cancellable Cancellable) (Socket, error)
-	// Bind: when a socket is created it is attached to an address family, but
-	// it doesn't have an address in this family. g_socket_bind() assigns the
-	// address (sometimes called name) of the socket.
+	AcceptSocket(cancellable Cancellable) (Socket, error)
+	// BindSocket: when a socket is created it is attached to an address family,
+	// but it doesn't have an address in this family. g_socket_bind() assigns
+	// the address (sometimes called name) of the socket.
 	//
 	// It is generally required to bind to a local address before you can
 	// receive connections. (See g_socket_listen() and g_socket_accept() ). In
@@ -33043,12 +33571,12 @@ type Socket interface {
 	// and they will all receive all of the multicast and broadcast packets sent
 	// to that address. (The behavior of unicast UDP packets to an address with
 	// multiple listeners is not defined.)
-	Bind(address SocketAddress, allowReuse bool) error
-	// CheckConnectResult checks and resets the pending connect error for the
-	// socket. This is used to check for errors when g_socket_connect() is used
-	// in non-blocking mode.
-	CheckConnectResult() error
-	// Close closes the socket, shutting down any active connection.
+	BindSocket(address SocketAddress, allowReuse bool) error
+	// CheckConnectResultSocket checks and resets the pending connect error for
+	// the socket. This is used to check for errors when g_socket_connect() is
+	// used in non-blocking mode.
+	CheckConnectResultSocket() error
+	// CloseSocket closes the socket, shutting down any active connection.
 	//
 	// Closing a socket does not wait for all outstanding I/O operations to
 	// finish, so the caller should not rely on them to be guaranteed to
@@ -33075,10 +33603,11 @@ type Socket interface {
 	// can safely call g_socket_close(). (This is what Connection does if you
 	// call g_tcp_connection_set_graceful_disconnect(). But of course, this only
 	// works if the client will close its connection after the server does.)
-	Close() error
-	// ConditionCheck checks on the readiness of @socket to perform operations.
-	// The operations specified in @condition are checked for and masked against
-	// the currently-satisfied conditions on @socket. The result is returned.
+	CloseSocket() error
+	// ConditionCheckSocket checks on the readiness of @socket to perform
+	// operations. The operations specified in @condition are checked for and
+	// masked against the currently-satisfied conditions on @socket. The result
+	// is returned.
 	//
 	// Note that on Windows, it is possible for an operation to return
 	// G_IO_ERROR_WOULD_BLOCK even immediately after g_socket_condition_check()
@@ -33092,8 +33621,8 @@ type Socket interface {
 	// conditions will always be set in the output if they are true.
 	//
 	// This call never blocks.
-	ConditionCheck(condition glib.IOCondition) glib.IOCondition
-	// ConditionTimedWait waits for up to @timeout_us microseconds for
+	ConditionCheckSocket(condition glib.IOCondition) glib.IOCondition
+	// ConditionTimedWaitSocket waits for up to @timeout_us microseconds for
 	// @condition to become true on @socket. If the condition is met, true is
 	// returned.
 	//
@@ -33109,9 +33638,9 @@ type Socket interface {
 	// other GLib APIs, this function actually only has millisecond resolution,
 	// and the behavior is undefined if @timeout_us is not an exact number of
 	// milliseconds.
-	ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error
-	// ConditionWait waits for @condition to become true on @socket. When the
-	// condition is met, true is returned.
+	ConditionTimedWaitSocket(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error
+	// ConditionWaitSocket waits for @condition to become true on @socket. When
+	// the condition is met, true is returned.
 	//
 	// If @cancellable is cancelled before the condition is met, or if the
 	// socket has a timeout set and it is reached before the condition is met,
@@ -33119,7 +33648,7 @@ type Socket interface {
 	// value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
 	//
 	// See also g_socket_condition_timed_wait().
-	ConditionWait(condition glib.IOCondition, cancellable Cancellable) error
+	ConditionWaitSocket(condition glib.IOCondition, cancellable Cancellable) error
 	// ConnectSocket: connect the socket to the specified remote address.
 	//
 	// For connection oriented socket this generally means we attempt to make a
@@ -33137,9 +33666,9 @@ type Socket interface {
 	// G_IO_OUT condition. The result of the connection must then be checked
 	// with g_socket_check_connect_result().
 	ConnectSocket(address SocketAddress, cancellable Cancellable) error
-	// ConnectionFactoryCreateConnection creates a Connection subclass of the
-	// right type for @socket.
-	ConnectionFactoryCreateConnection() SocketConnection
+	// ConnectionFactoryCreateConnectionSocket creates a Connection subclass of
+	// the right type for @socket.
+	ConnectionFactoryCreateConnectionSocket() SocketConnection
 	// AvailableBytes: get the amount of data pending in the OS input buffer,
 	// without blocking.
 	//
@@ -33227,19 +33756,20 @@ type Socket interface {
 	// TTL gets the unicast time-to-live setting on @socket; see
 	// g_socket_set_ttl() for more details.
 	TTL() uint
-	// IsClosed checks whether a socket is closed.
-	IsClosed() bool
-	// IsConnected: check whether the socket is connected. This is only useful
-	// for connection-oriented sockets.
+	// IsClosedSocket checks whether a socket is closed.
+	IsClosedSocket() bool
+	// IsConnectedSocket: check whether the socket is connected. This is only
+	// useful for connection-oriented sockets.
 	//
 	// If using g_socket_shutdown(), this function will return true until the
 	// socket has been shut down for reading and writing. If you do a
 	// non-blocking connect, this function will not return true until after you
 	// call g_socket_check_connect_result().
-	IsConnected() bool
-	// JoinMulticastGroup registers @socket to receive multicast messages sent
-	// to @group. @socket must be a G_SOCKET_TYPE_DATAGRAM socket, and must have
-	// been bound to an appropriate interface and port with g_socket_bind().
+	IsConnectedSocket() bool
+	// JoinMulticastGroupSocket registers @socket to receive multicast messages
+	// sent to @group. @socket must be a G_SOCKET_TYPE_DATAGRAM socket, and must
+	// have been bound to an appropriate interface and port with
+	// g_socket_bind().
 	//
 	// If @iface is nil, the system will automatically pick an interface to bind
 	// to based on @group.
@@ -33250,10 +33780,10 @@ type Socket interface {
 	//
 	// To bind to a given source-specific multicast address, use
 	// g_socket_join_multicast_group_ssm() instead.
-	JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error
-	// JoinMulticastGroupSSM registers @socket to receive multicast messages
-	// sent to @group. @socket must be a G_SOCKET_TYPE_DATAGRAM socket, and must
-	// have been bound to an appropriate interface and port with
+	JoinMulticastGroupSocket(group InetAddress, sourceSpecific bool, iface string) error
+	// JoinMulticastGroupSSMSocket registers @socket to receive multicast
+	// messages sent to @group. @socket must be a G_SOCKET_TYPE_DATAGRAM socket,
+	// and must have been bound to an appropriate interface and port with
 	// g_socket_bind().
 	//
 	// If @iface is nil, the system will automatically pick an interface to bind
@@ -33266,66 +33796,36 @@ type Socket interface {
 	// Note that this function can be called multiple times for the same @group
 	// with different @source_specific in order to receive multicast packets
 	// from more than one source.
-	JoinMulticastGroupSSM(group InetAddress, sourceSpecific InetAddress, iface string) error
-	// LeaveMulticastGroup removes @socket from the multicast group defined by
-	// @group, @iface, and @source_specific (which must all have the same values
-	// they had when you joined the group).
+	JoinMulticastGroupSSMSocket(group InetAddress, sourceSpecific InetAddress, iface string) error
+	// LeaveMulticastGroupSocket removes @socket from the multicast group
+	// defined by @group, @iface, and @source_specific (which must all have the
+	// same values they had when you joined the group).
 	//
 	// @socket remains bound to its address and port, and can still receive
 	// unicast messages after calling this.
 	//
 	// To unbind to a given source-specific multicast address, use
 	// g_socket_leave_multicast_group_ssm() instead.
-	LeaveMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error
-	// LeaveMulticastGroupSSM removes @socket from the multicast group defined
-	// by @group, @iface, and @source_specific (which must all have the same
-	// values they had when you joined the group).
+	LeaveMulticastGroupSocket(group InetAddress, sourceSpecific bool, iface string) error
+	// LeaveMulticastGroupSSMSocket removes @socket from the multicast group
+	// defined by @group, @iface, and @source_specific (which must all have the
+	// same values they had when you joined the group).
 	//
 	// @socket remains bound to its address and port, and can still receive
 	// unicast messages after calling this.
-	LeaveMulticastGroupSSM(group InetAddress, sourceSpecific InetAddress, iface string) error
-	// Listen marks the socket as a server socket, i.e. a socket that is used to
-	// accept incoming requests using g_socket_accept().
+	LeaveMulticastGroupSSMSocket(group InetAddress, sourceSpecific InetAddress, iface string) error
+	// ListenSocket marks the socket as a server socket, i.e. a socket that is
+	// used to accept incoming requests using g_socket_accept().
 	//
 	// Before calling this the socket must be bound to a local address using
 	// g_socket_bind().
 	//
 	// To set the maximum amount of outstanding clients, use
 	// g_socket_set_listen_backlog().
-	Listen() error
-	// Receive: receive data (up to @size bytes) from a socket. This is mainly
-	// used by connection-oriented sockets; it is identical to
-	// g_socket_receive_from() with @address set to nil.
-	//
-	// For G_SOCKET_TYPE_DATAGRAM and G_SOCKET_TYPE_SEQPACKET sockets,
-	// g_socket_receive() will always read either 0 or 1 complete messages from
-	// the socket. If the received message is too large to fit in @buffer, then
-	// the data beyond @size bytes will be discarded, without any explicit
-	// indication that this has occurred.
-	//
-	// For G_SOCKET_TYPE_STREAM sockets, g_socket_receive() can return any
-	// number of bytes, up to @size. If more than @size bytes have been
-	// received, the additional data will be returned in future calls to
-	// g_socket_receive().
-	//
-	// If the socket is in blocking mode the call will block until there is some
-	// data to receive, the connection is closed, or there is an error. If there
-	// is no data available and the socket is in non-blocking mode, a
-	// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data
-	// is available, wait for the G_IO_IN condition.
-	//
-	// On error -1 is returned and @error is set accordingly.
-	Receive(cancellable Cancellable) ([]byte, int, error)
-	// ReceiveFrom: receive data (up to @size bytes) from a socket.
-	//
-	// If @address is non-nil then @address will be set equal to the source
-	// address of the received packet. @address is owned by the caller.
-	//
-	// See g_socket_receive() for additional information.
-	ReceiveFrom(cancellable Cancellable) (SocketAddress, []byte, int, error)
-	// ReceiveMessages: receive multiple data messages from @socket in one go.
-	// This is the most complicated and fully-featured version of this call. For
-	// easier use, see g_socket_receive(), g_socket_receive_from(), and
+	ListenSocket() error
+	// ReceiveMessagesSocket: receive multiple data messages from @socket in one
+	// go. This is the most complicated and fully-featured version of this call.
+	// For easier use, see g_socket_receive(), g_socket_receive_from(), and
 	// g_socket_receive_message().
 	//
 	// @messages must point to an array of Message structs and @num_messages
@@ -33372,13 +33872,9 @@ type Socket interface {
 	// On error -1 is returned and @error is set accordingly. An error will only
 	// be returned if zero messages could be received; otherwise the number of
 	// messages successfully received before the error will be returned.
-	ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) (int, error)
-	// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
-	// except that the choice of blocking or non-blocking behavior is determined
-	// by the @blocking argument rather than by @socket's properties.
-	ReceiveWithBlocking(blocking bool, cancellable Cancellable) ([]byte, int, error)
-	// Send tries to send @size bytes from @buffer on the socket. This is mainly
-	// used by connection-oriented sockets; it is identical to
+	ReceiveMessagesSocket(messages []InputMessage, flags int, cancellable Cancellable) (int, error)
+	// SendSocket tries to send @size bytes from @buffer on the socket. This is
+	// mainly used by connection-oriented sockets; it is identical to
 	// g_socket_send_to() with @address set to nil.
 	//
 	// If the socket is in blocking mode the call will block until there is
@@ -33391,8 +33887,8 @@ type Socket interface {
 	// common due to the way the underlying APIs work.)
 	//
 	// On error -1 is returned and @error is set accordingly.
-	Send(buffer []byte, cancellable Cancellable) (int, error)
-	// SendMessage: send data to @address on @socket. For sending multiple
+	SendSocket(buffer []byte, cancellable Cancellable) (int, error)
+	// SendMessageSocket: send data to @address on @socket. For sending multiple
 	// messages see g_socket_send_messages(); for easier use, see
 	// g_socket_send() and g_socket_send_to().
 	//
@@ -33431,8 +33927,8 @@ type Socket interface {
 	// to use the g_socket_send_message_with_timeout() function.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (int, error)
-	// SendMessageWithTimeout: this behaves exactly the same as
+	SendMessageSocket(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (int, error)
+	// SendMessageWithTimeoutSocket: this behaves exactly the same as
 	// g_socket_send_message(), except that the choice of timeout behavior is
 	// determined by the @timeout_us argument rather than by @socket's
 	// properties.
@@ -33441,10 +33937,10 @@ type Socket interface {
 	// accordingly, or if the socket is currently not writable
 	// G_POLLABLE_RETURN_WOULD_BLOCK is returned. @bytes_written will contain 0
 	// in both cases.
-	SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (uint, PollableReturn, error)
-	// SendMessages: send multiple data messages from @socket in one go. This is
-	// the most complicated and fully-featured version of this call. For easier
-	// use, see g_socket_send(), g_socket_send_to(), and
+	SendMessageWithTimeoutSocket(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (uint, PollableReturn, error)
+	// SendMessagesSocket: send multiple data messages from @socket in one go.
+	// This is the most complicated and fully-featured version of this call. For
+	// easier use, see g_socket_send(), g_socket_send_to(), and
 	// g_socket_send_message().
 	//
 	// @messages must point to an array of Message structs and @num_messages
@@ -33477,30 +33973,31 @@ type Socket interface {
 	// On error -1 is returned and @error is set accordingly. An error will only
 	// be returned if zero messages could be sent; otherwise the number of
 	// messages successfully sent before the error will be returned.
-	SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) (int, error)
-	// SendTo tries to send @size bytes from @buffer to @address. If @address is
-	// nil then the message is sent to the default receiver (set by
+	SendMessagesSocket(messages []OutputMessage, flags int, cancellable Cancellable) (int, error)
+	// SendToSocket tries to send @size bytes from @buffer to @address. If
+	// @address is nil then the message is sent to the default receiver (set by
 	// g_socket_connect()).
 	//
 	// See g_socket_send() for additional information.
-	SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) (int, error)
-	// SendWithBlocking: this behaves exactly the same as g_socket_send(),
+	SendToSocket(address SocketAddress, buffer []byte, cancellable Cancellable) (int, error)
+	// SendWithBlockingSocket: this behaves exactly the same as g_socket_send(),
 	// except that the choice of blocking or non-blocking behavior is determined
 	// by the @blocking argument rather than by @socket's properties.
-	SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) (int, error)
-	// SetBlocking sets the blocking mode of the socket. In blocking mode all
-	// operations (which don’t take an explicit blocking parameter) block until
-	// they succeed or there is an error. In non-blocking mode all functions
-	// return results immediately or with a G_IO_ERROR_WOULD_BLOCK error.
+	SendWithBlockingSocket(buffer []byte, blocking bool, cancellable Cancellable) (int, error)
+	// SetBlockingSocket sets the blocking mode of the socket. In blocking mode
+	// all operations (which don’t take an explicit blocking parameter) block
+	// until they succeed or there is an error. In non-blocking mode all
+	// functions return results immediately or with a G_IO_ERROR_WOULD_BLOCK
+	// error.
 	//
 	// All sockets are created in blocking mode. However, note that the platform
 	// level socket is always non-blocking, and blocking mode is a GSocket level
 	// feature.
-	SetBlocking(blocking bool)
-	// SetBroadcast sets whether @socket should allow sending to broadcast
+	SetBlockingSocket(blocking bool)
+	// SetBroadcastSocket sets whether @socket should allow sending to broadcast
 	// addresses. This is false by default.
-	SetBroadcast(broadcast bool)
-	// SetKeepalive sets or unsets the SO_KEEPALIVE flag on the underlying
+	SetBroadcastSocket(broadcast bool)
+	// SetKeepaliveSocket sets or unsets the SO_KEEPALIVE flag on the underlying
 	// socket. When this flag is set on a socket, the system will attempt to
 	// verify that the remote socket endpoint is still present if a sufficiently
 	// long period of time passes with no data being exchanged. If the system is
@@ -33515,34 +34012,34 @@ type Socket interface {
 	// a server socket if you want to allow clients to remain idle for long
 	// periods of time, but also want to ensure that connections are eventually
 	// garbage-collected if clients crash or become unreachable.
-	SetKeepalive(keepalive bool)
-	// SetListenBacklog sets the maximum number of outstanding connections
+	SetKeepaliveSocket(keepalive bool)
+	// SetListenBacklogSocket sets the maximum number of outstanding connections
 	// allowed when listening on this socket. If more clients than this are
 	// connecting to the socket and the application is not handling them on time
 	// then the new connections will be refused.
 	//
 	// Note that this must be called before g_socket_listen() and has no effect
 	// if called after that.
-	SetListenBacklog(backlog int)
-	// SetMulticastLoopback sets whether outgoing multicast packets will be
-	// received by sockets listening on that multicast address on the same host.
-	// This is true by default.
-	SetMulticastLoopback(loopback bool)
-	// SetMulticastTTL sets the time-to-live for outgoing multicast datagrams on
-	// @socket. By default, this is 1, meaning that multicast packets will not
-	// leave the local network.
-	SetMulticastTTL(ttl uint)
-	// SetOption sets the value of an integer-valued option on @socket, as with
-	// setsockopt(). (If you need to set a non-integer-valued option, you will
-	// need to call setsockopt() directly.)
+	SetListenBacklogSocket(backlog int)
+	// SetMulticastLoopbackSocket sets whether outgoing multicast packets will
+	// be received by sockets listening on that multicast address on the same
+	// host. This is true by default.
+	SetMulticastLoopbackSocket(loopback bool)
+	// SetMulticastTTLSocket sets the time-to-live for outgoing multicast
+	// datagrams on @socket. By default, this is 1, meaning that multicast
+	// packets will not leave the local network.
+	SetMulticastTTLSocket(ttl uint)
+	// SetOptionSocket sets the value of an integer-valued option on @socket, as
+	// with setsockopt(). (If you need to set a non-integer-valued option, you
+	// will need to call setsockopt() directly.)
 	//
 	// The [<gio/gnetworking.h>][gio-gnetworking.h] header pulls in system
 	// headers that will define most of the standard/portable socket options.
 	// For unusual socket protocols or platform-dependent options, you may need
 	// to include additional headers.
-	SetOption(level int, optname int, value int) error
-	// SetTimeout sets the time in seconds after which I/O operations on @socket
-	// will time out if they have not yet completed.
+	SetOptionSocket(level int, optname int, value int) error
+	// SetTimeoutSocket sets the time in seconds after which I/O operations on
+	// @socket will time out if they have not yet completed.
 	//
 	// On a blocking socket, this means that any blocking #GSocket operation
 	// will time out after @timeout seconds of inactivity, returning
@@ -33560,11 +34057,11 @@ type Socket interface {
 	//
 	// Note that if an I/O operation is interrupted by a signal, this may cause
 	// the timeout to be reset.
-	SetTimeout(timeout uint)
-	// SetTTL sets the time-to-live for outgoing unicast packets on @socket. By
-	// default the platform-specific default value is used.
-	SetTTL(ttl uint)
-	// Shutdown: shut down part or all of a full-duplex connection.
+	SetTimeoutSocket(timeout uint)
+	// SetTTLSocket sets the time-to-live for outgoing unicast packets on
+	// @socket. By default the platform-specific default value is used.
+	SetTTLSocket(ttl uint)
+	// ShutdownSocket: shut down part or all of a full-duplex connection.
 	//
 	// If @shutdown_read is true then the receiving side of the connection is
 	// shut down, and further reading is disallowed.
@@ -33578,8 +34075,8 @@ type Socket interface {
 	// is graceful disconnect for TCP connections where you close the sending
 	// side, then wait for the other side to close the connection, thus ensuring
 	// that the other side saw all sent data.
-	Shutdown(shutdownRead bool, shutdownWrite bool) error
-	// SpeaksIPv4 checks if a socket is capable of speaking IPv4.
+	ShutdownSocket(shutdownRead bool, shutdownWrite bool) error
+	// SpeaksIPv4Socket checks if a socket is capable of speaking IPv4.
 	//
 	// IPv4 sockets are capable of speaking IPv4. On some operating systems and
 	// under some combinations of circumstances IPv6 sockets are also capable of
@@ -33587,25 +34084,19 @@ type Socket interface {
 	//
 	// No other types of sockets are currently considered as being capable of
 	// speaking IPv4.
-	SpeaksIPv4() bool
+	SpeaksIPv4Socket() bool
 }
 
 // socket implements the Socket class.
 type socket struct {
 	gextras.Objector
-	DatagramBased
-	Initable
 }
-
-var _ Socket = (*socket)(nil)
 
 // WrapSocket wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocket(obj *externglib.Object) Socket {
 	return socket{
-		Objector:      obj,
-		DatagramBased: WrapDatagramBased(obj),
-		Initable:      WrapInitable(obj),
+		Objector: obj,
 	}
 }
 
@@ -33678,7 +34169,7 @@ func NewSocketFromFd(fd int) (Socket, error) {
 	return _socket, _goerr
 }
 
-func (s socket) Accept(cancellable Cancellable) (Socket, error) {
+func (s socket) AcceptSocket(cancellable Cancellable) (Socket, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GCancellable // out
 	var _cret *C.GSocket      // in
@@ -33698,7 +34189,7 @@ func (s socket) Accept(cancellable Cancellable) (Socket, error) {
 	return _ret, _goerr
 }
 
-func (s socket) Bind(address SocketAddress, allowReuse bool) error {
+func (s socket) BindSocket(address SocketAddress, allowReuse bool) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
 	var _arg2 C.gboolean        // out
@@ -33719,7 +34210,7 @@ func (s socket) Bind(address SocketAddress, allowReuse bool) error {
 	return _goerr
 }
 
-func (s socket) CheckConnectResult() error {
+func (s socket) CheckConnectResultSocket() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
 
@@ -33734,7 +34225,7 @@ func (s socket) CheckConnectResult() error {
 	return _goerr
 }
 
-func (s socket) Close() error {
+func (s socket) CloseSocket() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
 
@@ -33749,7 +34240,7 @@ func (s socket) Close() error {
 	return _goerr
 }
 
-func (s socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+func (s socket) ConditionCheckSocket(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GSocket     // out
 	var _arg1 C.GIOCondition // out
 	var _cret C.GIOCondition // in
@@ -33766,7 +34257,7 @@ func (s socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	return _ioCondition
 }
 
-func (s socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error {
+func (s socket) ConditionTimedWaitSocket(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 C.GIOCondition  // out
 	var _arg2 C.gint64        // out
@@ -33787,7 +34278,7 @@ func (s socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, 
 	return _goerr
 }
 
-func (s socket) ConditionWait(condition glib.IOCondition, cancellable Cancellable) error {
+func (s socket) ConditionWaitSocket(condition glib.IOCondition, cancellable Cancellable) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 C.GIOCondition  // out
 	var _arg2 *C.GCancellable // out
@@ -33825,7 +34316,7 @@ func (s socket) ConnectSocket(address SocketAddress, cancellable Cancellable) er
 	return _goerr
 }
 
-func (s socket) ConnectionFactoryCreateConnection() SocketConnection {
+func (s socket) ConnectionFactoryCreateConnectionSocket() SocketConnection {
 	var _arg0 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
 
@@ -34119,7 +34610,7 @@ func (s socket) TTL() uint {
 	return _guint
 }
 
-func (s socket) IsClosed() bool {
+func (s socket) IsClosedSocket() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
@@ -34136,7 +34627,7 @@ func (s socket) IsClosed() bool {
 	return _ok
 }
 
-func (s socket) IsConnected() bool {
+func (s socket) IsConnectedSocket() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
@@ -34153,7 +34644,7 @@ func (s socket) IsConnected() bool {
 	return _ok
 }
 
-func (s socket) JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error {
+func (s socket) JoinMulticastGroupSocket(group InetAddress, sourceSpecific bool, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 C.gboolean      // out
@@ -34177,7 +34668,7 @@ func (s socket) JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface
 	return _goerr
 }
 
-func (s socket) JoinMulticastGroupSSM(group InetAddress, sourceSpecific InetAddress, iface string) error {
+func (s socket) JoinMulticastGroupSSMSocket(group InetAddress, sourceSpecific InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GInetAddress // out
@@ -34199,7 +34690,7 @@ func (s socket) JoinMulticastGroupSSM(group InetAddress, sourceSpecific InetAddr
 	return _goerr
 }
 
-func (s socket) LeaveMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error {
+func (s socket) LeaveMulticastGroupSocket(group InetAddress, sourceSpecific bool, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 C.gboolean      // out
@@ -34223,7 +34714,7 @@ func (s socket) LeaveMulticastGroup(group InetAddress, sourceSpecific bool, ifac
 	return _goerr
 }
 
-func (s socket) LeaveMulticastGroupSSM(group InetAddress, sourceSpecific InetAddress, iface string) error {
+func (s socket) LeaveMulticastGroupSSMSocket(group InetAddress, sourceSpecific InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GInetAddress // out
@@ -34245,7 +34736,7 @@ func (s socket) LeaveMulticastGroupSSM(group InetAddress, sourceSpecific InetAdd
 	return _goerr
 }
 
-func (s socket) Listen() error {
+func (s socket) ListenSocket() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
 
@@ -34260,70 +34751,7 @@ func (s socket) Listen() error {
 	return _goerr
 }
 
-func (s socket) Receive(cancellable Cancellable) ([]byte, int, error) {
-	var _arg0 *C.GSocket // out
-	var _arg1 C.gchar
-	var _arg2 C.gsize         // in
-	var _arg3 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	_cret = C.g_socket_receive(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
-
-	var _buffer []byte
-	var _gssize int  // out
-	var _goerr error // out
-
-	{
-		src := unsafe.Slice(_arg1, _arg2)
-		_buffer = make([]byte, _arg2)
-		for i := 0; i < int(_arg2); i++ {
-			_buffer[i] = (byte)(src[i])
-		}
-	}
-	_gssize = (int)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _buffer, _gssize, _goerr
-}
-
-func (s socket) ReceiveFrom(cancellable Cancellable) (SocketAddress, []byte, int, error) {
-	var _arg0 *C.GSocket        // out
-	var _arg1 *C.GSocketAddress // in
-	var _arg2 C.gchar
-	var _arg3 C.gsize         // in
-	var _arg4 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	_cret = C.g_socket_receive_from(_arg0, &_arg1, &_arg2, &_arg3, _arg4, &_cerr)
-
-	var _address SocketAddress // out
-	var _buffer []byte
-	var _gssize int  // out
-	var _goerr error // out
-
-	_address = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1))).(SocketAddress)
-	{
-		src := unsafe.Slice(_arg2, _arg3)
-		_buffer = make([]byte, _arg3)
-		for i := 0; i < int(_arg3); i++ {
-			_buffer[i] = (byte)(src[i])
-		}
-	}
-	_gssize = (int)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _address, _buffer, _gssize, _goerr
-}
-
-func (s socket) ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) (int, error) {
+func (s socket) ReceiveMessagesSocket(messages []InputMessage, flags int, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 *C.GInputMessage
 	var _arg2 C.guint
@@ -34349,41 +34777,7 @@ func (s socket) ReceiveMessages(messages []InputMessage, flags int, cancellable 
 	return _gint, _goerr
 }
 
-func (s socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) ([]byte, int, error) {
-	var _arg0 *C.GSocket // out
-	var _arg1 C.gchar
-	var _arg2 C.gsize         // in
-	var _arg3 C.gboolean      // out
-	var _arg4 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	if blocking {
-		_arg3 = C.TRUE
-	}
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	_cret = C.g_socket_receive_with_blocking(_arg0, &_arg1, &_arg2, _arg3, _arg4, &_cerr)
-
-	var _buffer []byte
-	var _gssize int  // out
-	var _goerr error // out
-
-	{
-		src := unsafe.Slice(_arg1, _arg2)
-		_buffer = make([]byte, _arg2)
-		for i := 0; i < int(_arg2); i++ {
-			_buffer[i] = (byte)(src[i])
-		}
-	}
-	_gssize = (int)(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _buffer, _gssize, _goerr
-}
-
-func (s socket) Send(buffer []byte, cancellable Cancellable) (int, error) {
+func (s socket) SendSocket(buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 *C.gchar
 	var _arg2 C.gsize
@@ -34407,7 +34801,7 @@ func (s socket) Send(buffer []byte, cancellable Cancellable) (int, error) {
 	return _gssize, _goerr
 }
 
-func (s socket) SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (int, error) {
+func (s socket) SendMessageSocket(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
 	var _arg2 *C.GOutputVector
@@ -34446,7 +34840,7 @@ func (s socket) SendMessage(address SocketAddress, vectors []OutputVector, messa
 	return _gssize, _goerr
 }
 
-func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (uint, PollableReturn, error) {
+func (s socket) SendMessageWithTimeoutSocket(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (uint, PollableReturn, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
 	var _arg2 *C.GOutputVector
@@ -34490,7 +34884,7 @@ func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVe
 	return _bytesWritten, _pollableReturn, _goerr
 }
 
-func (s socket) SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) (int, error) {
+func (s socket) SendMessagesSocket(messages []OutputMessage, flags int, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 *C.GOutputMessage
 	var _arg2 C.guint
@@ -34516,7 +34910,7 @@ func (s socket) SendMessages(messages []OutputMessage, flags int, cancellable Ca
 	return _gint, _goerr
 }
 
-func (s socket) SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) (int, error) {
+func (s socket) SendToSocket(address SocketAddress, buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
 	var _arg2 *C.gchar
@@ -34542,7 +34936,7 @@ func (s socket) SendTo(address SocketAddress, buffer []byte, cancellable Cancell
 	return _gssize, _goerr
 }
 
-func (s socket) SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
+func (s socket) SendWithBlockingSocket(buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 *C.gchar
 	var _arg2 C.gsize
@@ -34570,7 +34964,7 @@ func (s socket) SendWithBlocking(buffer []byte, blocking bool, cancellable Cance
 	return _gssize, _goerr
 }
 
-func (s socket) SetBlocking(blocking bool) {
+func (s socket) SetBlockingSocket(blocking bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 
@@ -34582,7 +34976,7 @@ func (s socket) SetBlocking(blocking bool) {
 	C.g_socket_set_blocking(_arg0, _arg1)
 }
 
-func (s socket) SetBroadcast(broadcast bool) {
+func (s socket) SetBroadcastSocket(broadcast bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 
@@ -34594,7 +34988,7 @@ func (s socket) SetBroadcast(broadcast bool) {
 	C.g_socket_set_broadcast(_arg0, _arg1)
 }
 
-func (s socket) SetKeepalive(keepalive bool) {
+func (s socket) SetKeepaliveSocket(keepalive bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 
@@ -34606,7 +35000,7 @@ func (s socket) SetKeepalive(keepalive bool) {
 	C.g_socket_set_keepalive(_arg0, _arg1)
 }
 
-func (s socket) SetListenBacklog(backlog int) {
+func (s socket) SetListenBacklogSocket(backlog int) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 
@@ -34616,7 +35010,7 @@ func (s socket) SetListenBacklog(backlog int) {
 	C.g_socket_set_listen_backlog(_arg0, _arg1)
 }
 
-func (s socket) SetMulticastLoopback(loopback bool) {
+func (s socket) SetMulticastLoopbackSocket(loopback bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 
@@ -34628,7 +35022,7 @@ func (s socket) SetMulticastLoopback(loopback bool) {
 	C.g_socket_set_multicast_loopback(_arg0, _arg1)
 }
 
-func (s socket) SetMulticastTTL(ttl uint) {
+func (s socket) SetMulticastTTLSocket(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 
@@ -34638,7 +35032,7 @@ func (s socket) SetMulticastTTL(ttl uint) {
 	C.g_socket_set_multicast_ttl(_arg0, _arg1)
 }
 
-func (s socket) SetOption(level int, optname int, value int) error {
+func (s socket) SetOptionSocket(level int, optname int, value int) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -34659,7 +35053,7 @@ func (s socket) SetOption(level int, optname int, value int) error {
 	return _goerr
 }
 
-func (s socket) SetTimeout(timeout uint) {
+func (s socket) SetTimeoutSocket(timeout uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 
@@ -34669,7 +35063,7 @@ func (s socket) SetTimeout(timeout uint) {
 	C.g_socket_set_timeout(_arg0, _arg1)
 }
 
-func (s socket) SetTTL(ttl uint) {
+func (s socket) SetTTLSocket(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 
@@ -34679,7 +35073,7 @@ func (s socket) SetTTL(ttl uint) {
 	C.g_socket_set_ttl(_arg0, _arg1)
 }
 
-func (s socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
+func (s socket) ShutdownSocket(shutdownRead bool, shutdownWrite bool) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 	var _arg2 C.gboolean // out
@@ -34702,7 +35096,7 @@ func (s socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
 	return _goerr
 }
 
-func (s socket) SpeaksIPv4() bool {
+func (s socket) SpeaksIPv4Socket() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
@@ -34719,11 +35113,30 @@ func (s socket) SpeaksIPv4() bool {
 	return _ok
 }
 
+func (d socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+	return WrapDatagramBased(gextras.InternObject(d)).ConditionCheck(condition)
+}
+
+func (d socket) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
+	return WrapDatagramBased(gextras.InternObject(d)).ConditionWait(condition, timeout, cancellable)
+}
+
+func (d socket) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+	return WrapDatagramBased(gextras.InternObject(d)).ReceiveMessages(messages, flags, timeout, cancellable)
+}
+
+func (d socket) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+	return WrapDatagramBased(gextras.InternObject(d)).SendMessages(messages, flags, timeout, cancellable)
+}
+
+func (i socket) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+}
+
 // SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
 // This is an abstract class; use SocketAddress for internet sockets, or
 // SocketAddress for UNIX domain sockets.
 type SocketAddress interface {
-	gextras.Objector
 	SocketConnectable
 
 	// Family gets the socket family type of @address.
@@ -34736,17 +35149,13 @@ type SocketAddress interface {
 // socketAddress implements the SocketAddress class.
 type socketAddress struct {
 	gextras.Objector
-	SocketConnectable
 }
-
-var _ SocketAddress = (*socketAddress)(nil)
 
 // WrapSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketAddress(obj *externglib.Object) SocketAddress {
 	return socketAddress{
-		Objector:          obj,
-		SocketConnectable: WrapSocketConnectable(obj),
+		Objector: obj,
 	}
 }
 
@@ -34786,6 +35195,18 @@ func (a socketAddress) NativeSize() int {
 	return _gssize
 }
 
+func (c socketAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c socketAddress) ProXYEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+}
+
+func (c socketAddress) String() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).String()
+}
+
 // SocketAddressEnumerator is an enumerator type for Address instances. It is
 // returned by enumeration functions such as g_socket_connectable_enumerate(),
 // which returns a AddressEnumerator to list each Address which could be used to
@@ -34799,11 +35220,10 @@ func (a socketAddress) NativeSize() int {
 // g_socket_address_enumerator_next() has returned nil, further enumeration with
 // that AddressEnumerator is not possible, and it can be unreffed.
 type SocketAddressEnumerator interface {
-	gextras.Objector
 
-	// Next retrieves the next Address from @enumerator. Note that this may
-	// block for some amount of time. (Eg, a Address may need to do a DNS lookup
-	// before it can return an address.) Use
+	// NextSocketAddressEnumerator retrieves the next Address from @enumerator.
+	// Note that this may block for some amount of time. (Eg, a Address may need
+	// to do a DNS lookup before it can return an address.) Use
 	// g_socket_address_enumerator_next_async() if you need to avoid blocking.
 	//
 	// If @enumerator is expected to yield addresses, but for some reason is
@@ -34812,20 +35232,18 @@ type SocketAddressEnumerator interface {
 	// *@error. However, if the first call to g_socket_address_enumerator_next()
 	// succeeds, then any further internal errors (other than @cancellable being
 	// triggered) will be ignored.
-	Next(cancellable Cancellable) (SocketAddress, error)
-	// NextFinish retrieves the result of a completed call to
-	// g_socket_address_enumerator_next_async(). See
+	NextSocketAddressEnumerator(cancellable Cancellable) (SocketAddress, error)
+	// NextFinishSocketAddressEnumerator retrieves the result of a completed
+	// call to g_socket_address_enumerator_next_async(). See
 	// g_socket_address_enumerator_next() for more information about error
 	// handling.
-	NextFinish(result AsyncResult) (SocketAddress, error)
+	NextFinishSocketAddressEnumerator(result AsyncResult) (SocketAddress, error)
 }
 
 // socketAddressEnumerator implements the SocketAddressEnumerator class.
 type socketAddressEnumerator struct {
 	gextras.Objector
 }
-
-var _ SocketAddressEnumerator = (*socketAddressEnumerator)(nil)
 
 // WrapSocketAddressEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
@@ -34841,7 +35259,7 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	return WrapSocketAddressEnumerator(obj), nil
 }
 
-func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, error) {
+func (e socketAddressEnumerator) NextSocketAddressEnumerator(cancellable Cancellable) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
 	var _cret *C.GSocketAddress           // in
@@ -34861,7 +35279,7 @@ func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, e
 	return _socketAddress, _goerr
 }
 
-func (e socketAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, error) {
+func (e socketAddressEnumerator) NextFinishSocketAddressEnumerator(result AsyncResult) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out
 	var _cret *C.GSocketAddress           // in
@@ -34894,10 +35312,9 @@ func (e socketAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, 
 // As Client is a lightweight object, you don't need to cache it. You can just
 // create a new one any time you need one.
 type SocketClient interface {
-	gextras.Objector
 
-	// AddApplicationProXY: enable proxy protocols to be handled by the
-	// application. When the indicated proxy protocol is returned by the
+	// AddApplicationProXYSocketClient: enable proxy protocols to be handled by
+	// the application. When the indicated proxy protocol is returned by the
 	// Resolver, Client will consider this protocol as supported but will not
 	// try to find a #GProxy instance to handle handshaking. The application
 	// must check for this case by calling
@@ -34914,7 +35331,7 @@ type SocketClient interface {
 	// When the proxy is detected as being an application proxy, TLS handshake
 	// will be skipped. This is required to let the application do the proxy
 	// specific handshake.
-	AddApplicationProXY(protocol string)
+	AddApplicationProXYSocketClient(protocol string)
 	// ConnectSocketClient tries to resolve the @connectable and make a network
 	// connection to it.
 	//
@@ -34936,10 +35353,11 @@ type SocketClient interface {
 	// If a local address is specified with g_socket_client_set_local_address()
 	// the socket will be bound to this address before connecting.
 	ConnectSocketClient(connectable SocketConnectable, cancellable Cancellable) (SocketConnection, error)
-	// ConnectFinish finishes an async connect operation. See
+	// ConnectFinishSocketClient finishes an async connect operation. See
 	// g_socket_client_connect_async()
-	ConnectFinish(result AsyncResult) (SocketConnection, error)
-	// ConnectToHost: this is a helper function for g_socket_client_connect().
+	ConnectFinishSocketClient(result AsyncResult) (SocketConnection, error)
+	// ConnectToHostSocketClient: this is a helper function for
+	// g_socket_client_connect().
 	//
 	// Attempts to create a TCP connection to the named host.
 	//
@@ -34968,11 +35386,12 @@ type SocketClient interface {
 	//
 	// In the event of any failure (DNS error, service not found, no hosts
 	// connectable) nil is returned and @error (if non-nil) is set accordingly.
-	ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error)
-	// ConnectToHostFinish finishes an async connect operation. See
+	ConnectToHostSocketClient(hostAndPort string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error)
+	// ConnectToHostFinishSocketClient finishes an async connect operation. See
 	// g_socket_client_connect_to_host_async()
-	ConnectToHostFinish(result AsyncResult) (SocketConnection, error)
-	// ConnectToService attempts to create a TCP connection to a service.
+	ConnectToHostFinishSocketClient(result AsyncResult) (SocketConnection, error)
+	// ConnectToServiceSocketClient attempts to create a TCP connection to a
+	// service.
 	//
 	// This call looks up the SRV record for @service at @domain for the "tcp"
 	// protocol. It then attempts to connect, in turn, to each of the hosts
@@ -34985,11 +35404,12 @@ type SocketClient interface {
 	//
 	// In the event of any failure (DNS error, service not found, no hosts
 	// connectable) nil is returned and @error (if non-nil) is set accordingly.
-	ConnectToService(domain string, service string, cancellable Cancellable) (SocketConnection, error)
-	// ConnectToServiceFinish finishes an async connect operation. See
-	// g_socket_client_connect_to_service_async()
-	ConnectToServiceFinish(result AsyncResult) (SocketConnection, error)
-	// ConnectToURI: this is a helper function for g_socket_client_connect().
+	ConnectToServiceSocketClient(domain string, service string, cancellable Cancellable) (SocketConnection, error)
+	// ConnectToServiceFinishSocketClient finishes an async connect operation.
+	// See g_socket_client_connect_to_service_async()
+	ConnectToServiceFinishSocketClient(result AsyncResult) (SocketConnection, error)
+	// ConnectToURISocketClient: this is a helper function for
+	// g_socket_client_connect().
 	//
 	// Attempts to create a TCP connection with a network URI.
 	//
@@ -35008,10 +35428,10 @@ type SocketClient interface {
 	//
 	// In the event of any failure (DNS error, service not found, no hosts
 	// connectable) nil is returned and @error (if non-nil) is set accordingly.
-	ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error)
-	// ConnectToURIFinish finishes an async connect operation. See
+	ConnectToURISocketClient(uri string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error)
+	// ConnectToURIFinishSocketClient finishes an async connect operation. See
 	// g_socket_client_connect_to_uri_async()
-	ConnectToURIFinish(result AsyncResult) (SocketConnection, error)
+	ConnectToURIFinishSocketClient(result AsyncResult) (SocketConnection, error)
 	// EnableProXY gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
 	EnableProXY() bool
@@ -35045,58 +35465,59 @@ type SocketClient interface {
 	// TLSValidationFlags gets the TLS validation flags used creating TLS
 	// connections via @client.
 	TLSValidationFlags() TLSCertificateFlags
-	// SetEnableProXY sets whether or not @client attempts to make connections
-	// via a proxy server. When enabled (the default), Client will use a
-	// Resolver to determine if a proxy protocol such as SOCKS is needed, and
-	// automatically do the necessary proxy negotiation.
+	// SetEnableProXYSocketClient sets whether or not @client attempts to make
+	// connections via a proxy server. When enabled (the default), Client will
+	// use a Resolver to determine if a proxy protocol such as SOCKS is needed,
+	// and automatically do the necessary proxy negotiation.
 	//
 	// See also g_socket_client_set_proxy_resolver().
-	SetEnableProXY(enable bool)
-	// SetFamily sets the socket family of the socket client. If this is set to
-	// something other than G_SOCKET_FAMILY_INVALID then the sockets created by
-	// this object will be of the specified family.
+	SetEnableProXYSocketClient(enable bool)
+	// SetFamilySocketClient sets the socket family of the socket client. If
+	// this is set to something other than G_SOCKET_FAMILY_INVALID then the
+	// sockets created by this object will be of the specified family.
 	//
 	// This might be useful for instance if you want to force the local
 	// connection to be an ipv4 socket, even though the address might be an ipv6
 	// mapped to ipv4 address.
-	SetFamily(family SocketFamily)
-	// SetLocalAddress sets the local address of the socket client. The sockets
-	// created by this object will bound to the specified address (if not nil)
-	// before connecting.
+	SetFamilySocketClient(family SocketFamily)
+	// SetLocalAddressSocketClient sets the local address of the socket client.
+	// The sockets created by this object will bound to the specified address
+	// (if not nil) before connecting.
 	//
 	// This is useful if you want to ensure that the local side of the
 	// connection is on a specific port, or on a specific interface.
-	SetLocalAddress(address SocketAddress)
-	// SetProtocol sets the protocol of the socket client. The sockets created
-	// by this object will use of the specified protocol.
+	SetLocalAddressSocketClient(address SocketAddress)
+	// SetProtocolSocketClient sets the protocol of the socket client. The
+	// sockets created by this object will use of the specified protocol.
 	//
 	// If @protocol is G_SOCKET_PROTOCOL_DEFAULT that means to use the default
 	// protocol for the socket family and type.
-	SetProtocol(protocol SocketProtocol)
-	// SetProXYResolver overrides the Resolver used by @client. You can call
-	// this if you want to use specific proxies, rather than using the system
-	// default proxy settings.
+	SetProtocolSocketClient(protocol SocketProtocol)
+	// SetProXYResolverSocketClient overrides the Resolver used by @client. You
+	// can call this if you want to use specific proxies, rather than using the
+	// system default proxy settings.
 	//
 	// Note that whether or not the proxy resolver is actually used depends on
 	// the setting of Client:enable-proxy, which is not changed by this function
 	// (but which is true by default)
-	SetProXYResolver(proxyResolver ProXYResolver)
-	// SetSocketType sets the socket type of the socket client. The sockets
-	// created by this object will be of the specified type.
+	SetProXYResolverSocketClient(proxyResolver ProXYResolver)
+	// SetSocketTypeSocketClient sets the socket type of the socket client. The
+	// sockets created by this object will be of the specified type.
 	//
 	// It doesn't make sense to specify a type of G_SOCKET_TYPE_DATAGRAM, as
 	// GSocketClient is used for connection oriented services.
-	SetSocketType(typ SocketType)
-	// SetTimeout sets the I/O timeout for sockets created by @client. @timeout
-	// is a time in seconds, or 0 for no timeout (the default).
+	SetSocketTypeSocketClient(typ SocketType)
+	// SetTimeoutSocketClient sets the I/O timeout for sockets created by
+	// @client. @timeout is a time in seconds, or 0 for no timeout (the
+	// default).
 	//
 	// The timeout value affects the initial connection attempt as well, so
 	// setting this may cause calls to g_socket_client_connect(), etc, to fail
 	// with G_IO_ERROR_TIMED_OUT.
-	SetTimeout(timeout uint)
-	// SetTLS sets whether @client creates TLS (aka SSL) connections. If @tls is
-	// true, @client will wrap its connections in a ClientConnection and perform
-	// a TLS handshake when connecting.
+	SetTimeoutSocketClient(timeout uint)
+	// SetTLSSocketClient sets whether @client creates TLS (aka SSL)
+	// connections. If @tls is true, @client will wrap its connections in a
+	// ClientConnection and perform a TLS handshake when connecting.
 	//
 	// Note that since Client must return a Connection, but ClientConnection is
 	// not a Connection, this actually wraps the resulting ClientConnection in a
@@ -35110,19 +35531,17 @@ type SocketClient interface {
 	// Client::event signal and wait for it to be emitted with
 	// G_SOCKET_CLIENT_TLS_HANDSHAKING, which will give you a chance to see the
 	// ClientConnection before the handshake starts.
-	SetTLS(tls bool)
-	// SetTLSValidationFlags sets the TLS validation flags used when creating
-	// TLS connections via @client. The default value is
+	SetTLSSocketClient(tls bool)
+	// SetTLSValidationFlagsSocketClient sets the TLS validation flags used when
+	// creating TLS connections via @client. The default value is
 	// G_TLS_CERTIFICATE_VALIDATE_ALL.
-	SetTLSValidationFlags(flags TLSCertificateFlags)
+	SetTLSValidationFlagsSocketClient(flags TLSCertificateFlags)
 }
 
 // socketClient implements the SocketClient class.
 type socketClient struct {
 	gextras.Objector
 }
-
-var _ SocketClient = (*socketClient)(nil)
 
 // WrapSocketClient wraps a GObject to the right type. It is
 // primarily used internally.
@@ -35151,7 +35570,7 @@ func NewSocketClient() SocketClient {
 	return _socketClient
 }
 
-func (c socketClient) AddApplicationProXY(protocol string) {
+func (c socketClient) AddApplicationProXYSocketClient(protocol string) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 *C.gchar         // out
 
@@ -35184,7 +35603,7 @@ func (c socketClient) ConnectSocketClient(connectable SocketConnectable, cancell
 	return _socketConnection, _goerr
 }
 
-func (c socketClient) ConnectFinish(result AsyncResult) (SocketConnection, error) {
+func (c socketClient) ConnectFinishSocketClient(result AsyncResult) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
@@ -35204,7 +35623,7 @@ func (c socketClient) ConnectFinish(result AsyncResult) (SocketConnection, error
 	return _socketConnection, _goerr
 }
 
-func (c socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error) {
+func (c socketClient) ConnectToHostSocketClient(hostAndPort string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.guint16            // out
@@ -35229,7 +35648,7 @@ func (c socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, canc
 	return _socketConnection, _goerr
 }
 
-func (c socketClient) ConnectToHostFinish(result AsyncResult) (SocketConnection, error) {
+func (c socketClient) ConnectToHostFinishSocketClient(result AsyncResult) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
@@ -35249,7 +35668,7 @@ func (c socketClient) ConnectToHostFinish(result AsyncResult) (SocketConnection,
 	return _socketConnection, _goerr
 }
 
-func (c socketClient) ConnectToService(domain string, service string, cancellable Cancellable) (SocketConnection, error) {
+func (c socketClient) ConnectToServiceSocketClient(domain string, service string, cancellable Cancellable) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
@@ -35275,7 +35694,7 @@ func (c socketClient) ConnectToService(domain string, service string, cancellabl
 	return _socketConnection, _goerr
 }
 
-func (c socketClient) ConnectToServiceFinish(result AsyncResult) (SocketConnection, error) {
+func (c socketClient) ConnectToServiceFinishSocketClient(result AsyncResult) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
@@ -35295,7 +35714,7 @@ func (c socketClient) ConnectToServiceFinish(result AsyncResult) (SocketConnecti
 	return _socketConnection, _goerr
 }
 
-func (c socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error) {
+func (c socketClient) ConnectToURISocketClient(uri string, defaultPort uint16, cancellable Cancellable) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.guint16            // out
@@ -35320,7 +35739,7 @@ func (c socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable C
 	return _socketConnection, _goerr
 }
 
-func (c socketClient) ConnectToURIFinish(result AsyncResult) (SocketConnection, error) {
+func (c socketClient) ConnectToURIFinishSocketClient(result AsyncResult) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
@@ -35479,7 +35898,7 @@ func (c socketClient) TLSValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-func (c socketClient) SetEnableProXY(enable bool) {
+func (c socketClient) SetEnableProXYSocketClient(enable bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
 
@@ -35491,7 +35910,7 @@ func (c socketClient) SetEnableProXY(enable bool) {
 	C.g_socket_client_set_enable_proxy(_arg0, _arg1)
 }
 
-func (c socketClient) SetFamily(family SocketFamily) {
+func (c socketClient) SetFamilySocketClient(family SocketFamily) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.GSocketFamily  // out
 
@@ -35501,7 +35920,7 @@ func (c socketClient) SetFamily(family SocketFamily) {
 	C.g_socket_client_set_family(_arg0, _arg1)
 }
 
-func (c socketClient) SetLocalAddress(address SocketAddress) {
+func (c socketClient) SetLocalAddressSocketClient(address SocketAddress) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GSocketAddress // out
 
@@ -35511,7 +35930,7 @@ func (c socketClient) SetLocalAddress(address SocketAddress) {
 	C.g_socket_client_set_local_address(_arg0, _arg1)
 }
 
-func (c socketClient) SetProtocol(protocol SocketProtocol) {
+func (c socketClient) SetProtocolSocketClient(protocol SocketProtocol) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 C.GSocketProtocol // out
 
@@ -35521,7 +35940,7 @@ func (c socketClient) SetProtocol(protocol SocketProtocol) {
 	C.g_socket_client_set_protocol(_arg0, _arg1)
 }
 
-func (c socketClient) SetProXYResolver(proxyResolver ProXYResolver) {
+func (c socketClient) SetProXYResolverSocketClient(proxyResolver ProXYResolver) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
 
@@ -35531,7 +35950,7 @@ func (c socketClient) SetProXYResolver(proxyResolver ProXYResolver) {
 	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
 }
 
-func (c socketClient) SetSocketType(typ SocketType) {
+func (c socketClient) SetSocketTypeSocketClient(typ SocketType) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.GSocketType    // out
 
@@ -35541,7 +35960,7 @@ func (c socketClient) SetSocketType(typ SocketType) {
 	C.g_socket_client_set_socket_type(_arg0, _arg1)
 }
 
-func (c socketClient) SetTimeout(timeout uint) {
+func (c socketClient) SetTimeoutSocketClient(timeout uint) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.guint          // out
 
@@ -35551,7 +35970,7 @@ func (c socketClient) SetTimeout(timeout uint) {
 	C.g_socket_client_set_timeout(_arg0, _arg1)
 }
 
-func (c socketClient) SetTLS(tls bool) {
+func (c socketClient) SetTLSSocketClient(tls bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
 
@@ -35563,7 +35982,7 @@ func (c socketClient) SetTLS(tls bool) {
 	C.g_socket_client_set_tls(_arg0, _arg1)
 }
 
-func (c socketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
+func (c socketClient) SetTLSValidationFlagsSocketClient(flags TLSCertificateFlags) {
 	var _arg0 *C.GSocketClient       // out
 	var _arg1 C.GTlsCertificateFlags // out
 
@@ -35589,14 +36008,13 @@ func (c socketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 // To close a Connection, use g_io_stream_close(). Closing both substreams of
 // the OStream separately will not close the underlying #GSocket.
 type SocketConnection interface {
-	IOStream
 
 	// ConnectSocketConnection: connect @connection to the specified remote
 	// address.
 	ConnectSocketConnection(address SocketAddress, cancellable Cancellable) error
-	// ConnectFinish gets the result of a g_socket_connection_connect_async()
-	// call.
-	ConnectFinish(result AsyncResult) error
+	// ConnectFinishSocketConnection gets the result of a
+	// g_socket_connection_connect_async() call.
+	ConnectFinishSocketConnection(result AsyncResult) error
 	// LocalAddress: try to get the local address of a socket connection.
 	LocalAddress() (SocketAddress, error)
 	// RemoteAddress: try to get the remote address of a socket connection.
@@ -35611,17 +36029,16 @@ type SocketConnection interface {
 	// useful if you want to do something unusual on it not supported by the
 	// Connection APIs.
 	Socket() Socket
-	// IsConnected checks if @connection is connected. This is equivalent to
-	// calling g_socket_is_connected() on @connection's underlying #GSocket.
-	IsConnected() bool
+	// IsConnectedSocketConnection checks if @connection is connected. This is
+	// equivalent to calling g_socket_is_connected() on @connection's underlying
+	// #GSocket.
+	IsConnectedSocketConnection() bool
 }
 
 // socketConnection implements the SocketConnection class.
 type socketConnection struct {
 	IOStream
 }
-
-var _ SocketConnection = (*socketConnection)(nil)
 
 // WrapSocketConnection wraps a GObject to the right type. It is
 // primarily used internally.
@@ -35656,7 +36073,7 @@ func (c socketConnection) ConnectSocketConnection(address SocketAddress, cancell
 	return _goerr
 }
 
-func (c socketConnection) ConnectFinish(result AsyncResult) error {
+func (c socketConnection) ConnectFinishSocketConnection(result AsyncResult) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cerr *C.GError            // in
@@ -35724,7 +36141,7 @@ func (c socketConnection) Socket() Socket {
 	return _socket
 }
 
-func (c socketConnection) IsConnected() bool {
+func (c socketConnection) IsConnectedSocketConnection() bool {
 	var _arg0 *C.GSocketConnection // out
 	var _cret C.gboolean           // in
 
@@ -35760,7 +36177,6 @@ func (c socketConnection) IsConnected() bool {
 // registered with the GType typesystem before calling
 // g_socket_receive_message() to read such a message.
 type SocketControlMessage interface {
-	gextras.Objector
 
 	// Level returns the "level" (i.e. the originating protocol) of the control
 	// message. This is often SOL_SOCKET.
@@ -35777,8 +36193,6 @@ type SocketControlMessage interface {
 type socketControlMessage struct {
 	gextras.Objector
 }
-
-var _ SocketControlMessage = (*socketControlMessage)(nil)
 
 // WrapSocketControlMessage wraps a GObject to the right type. It is
 // primarily used internally.
@@ -35852,10 +36266,10 @@ func (m socketControlMessage) Size() uint {
 // If you want to implement a network server, also look at Service and
 // SocketService which are subclasses of Listener that make this even easier.
 type SocketListener interface {
-	gextras.Objector
 
-	// Accept blocks waiting for a client to connect to any of the sockets added
-	// to the listener. Returns a Connection for the socket that was accepted.
+	// AcceptSocketListener blocks waiting for a client to connect to any of the
+	// sockets added to the listener. Returns a Connection for the socket that
+	// was accepted.
 	//
 	// If @source_object is not nil it will be filled out with the source object
 	// specified when the corresponding socket or address was added to the
@@ -35864,12 +36278,13 @@ type SocketListener interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Accept(cancellable Cancellable) (gextras.Objector, SocketConnection, error)
-	// AcceptFinish finishes an async accept operation. See
+	AcceptSocketListener(cancellable Cancellable) (gextras.Objector, SocketConnection, error)
+	// AcceptFinishSocketListener finishes an async accept operation. See
 	// g_socket_listener_accept_async()
-	AcceptFinish(result AsyncResult) (gextras.Objector, SocketConnection, error)
-	// AcceptSocket blocks waiting for a client to connect to any of the sockets
-	// added to the listener. Returns the #GSocket that was accepted.
+	AcceptFinishSocketListener(result AsyncResult) (gextras.Objector, SocketConnection, error)
+	// AcceptSocketSocketListener blocks waiting for a client to connect to any
+	// of the sockets added to the listener. Returns the #GSocket that was
+	// accepted.
 	//
 	// If you want to accept the high-level Connection, not a #GSocket, which is
 	// often the case, then you should use g_socket_listener_accept() instead.
@@ -35881,13 +36296,13 @@ type SocketListener interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	AcceptSocket(cancellable Cancellable) (gextras.Objector, Socket, error)
-	// AcceptSocketFinish finishes an async accept operation. See
+	AcceptSocketSocketListener(cancellable Cancellable) (gextras.Objector, Socket, error)
+	// AcceptSocketFinishSocketListener finishes an async accept operation. See
 	// g_socket_listener_accept_socket_async()
-	AcceptSocketFinish(result AsyncResult) (gextras.Objector, Socket, error)
-	// AddAddress creates a socket of type @type and protocol @protocol, binds
-	// it to @address and adds it to the set of sockets we're accepting sockets
-	// from.
+	AcceptSocketFinishSocketListener(result AsyncResult) (gextras.Objector, Socket, error)
+	// AddAddressSocketListener creates a socket of type @type and protocol
+	// @protocol, binds it to @address and adds it to the set of sockets we're
+	// accepting sockets from.
 	//
 	// Note that adding an IPv6 address, depending on the platform, may or may
 	// not result in a listener that also accepts IPv4 connections. For more
@@ -35907,9 +36322,9 @@ type SocketListener interface {
 	// Call g_socket_listener_close() to stop listening on @address; this will
 	// not be done automatically when you drop your final reference to
 	// @listener, as references may be held internally.
-	AddAddress(address SocketAddress, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (SocketAddress, error)
-	// AddAnyInetPort listens for TCP connections on any available port number
-	// for both IPv6 and IPv4 (if each is available).
+	AddAddressSocketListener(address SocketAddress, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (SocketAddress, error)
+	// AddAnyInetPortSocketListener listens for TCP connections on any available
+	// port number for both IPv6 and IPv4 (if each is available).
 	//
 	// This is useful if you need to have a socket for incoming connections but
 	// don't care about the specific port number.
@@ -35918,10 +36333,10 @@ type SocketListener interface {
 	// identify this particular source, which is useful if you're listening on
 	// multiple addresses and do different things depending on what address is
 	// connected to.
-	AddAnyInetPort(sourceObject gextras.Objector) (uint16, error)
-	// AddInetPort: helper function for g_socket_listener_add_address() that
-	// creates a TCP/IP socket listening on IPv4 and IPv6 (if supported) on the
-	// specified port on all interfaces.
+	AddAnyInetPortSocketListener(sourceObject gextras.Objector) (uint16, error)
+	// AddInetPortSocketListener: helper function for
+	// g_socket_listener_add_address() that creates a TCP/IP socket listening on
+	// IPv4 and IPv6 (if supported) on the specified port on all interfaces.
 	//
 	// @source_object will be passed out in the various calls to accept to
 	// identify this particular source, which is useful if you're listening on
@@ -35931,10 +36346,10 @@ type SocketListener interface {
 	// Call g_socket_listener_close() to stop listening on @port; this will not
 	// be done automatically when you drop your final reference to @listener, as
 	// references may be held internally.
-	AddInetPort(port uint16, sourceObject gextras.Objector) error
-	// AddSocket adds @socket to the set of sockets that we try to accept new
-	// clients from. The socket must be bound to a local address and listened
-	// to.
+	AddInetPortSocketListener(port uint16, sourceObject gextras.Objector) error
+	// AddSocketSocketListener adds @socket to the set of sockets that we try to
+	// accept new clients from. The socket must be bound to a local address and
+	// listened to.
 	//
 	// @source_object will be passed out in the various calls to accept to
 	// identify this particular source, which is useful if you're listening on
@@ -35945,24 +36360,22 @@ type SocketListener interface {
 	// finalized unless the listener held the final reference to the socket.
 	// Before GLib 2.42, the @socket was automatically closed on finalization of
 	// the @listener, even if references to it were held elsewhere.
-	AddSocket(socket Socket, sourceObject gextras.Objector) error
-	// Close closes all the sockets in the listener.
-	Close()
-	// SetBacklog sets the listen backlog on the sockets in the listener. This
-	// must be called before adding any sockets, addresses or ports to the
-	// Listener (for example, by calling g_socket_listener_add_inet_port()) to
-	// be effective.
+	AddSocketSocketListener(socket Socket, sourceObject gextras.Objector) error
+	// CloseSocketListener closes all the sockets in the listener.
+	CloseSocketListener()
+	// SetBacklogSocketListener sets the listen backlog on the sockets in the
+	// listener. This must be called before adding any sockets, addresses or
+	// ports to the Listener (for example, by calling
+	// g_socket_listener_add_inet_port()) to be effective.
 	//
 	// See g_socket_set_listen_backlog() for details
-	SetBacklog(listenBacklog int)
+	SetBacklogSocketListener(listenBacklog int)
 }
 
 // socketListener implements the SocketListener class.
 type socketListener struct {
 	gextras.Objector
 }
-
-var _ SocketListener = (*socketListener)(nil)
 
 // WrapSocketListener wraps a GObject to the right type. It is
 // primarily used internally.
@@ -35993,7 +36406,7 @@ func NewSocketListener() SocketListener {
 	return _socketListener
 }
 
-func (l socketListener) Accept(cancellable Cancellable) (gextras.Objector, SocketConnection, error) {
+func (l socketListener) AcceptSocketListener(cancellable Cancellable) (gextras.Objector, SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GObject           // in
 	var _arg2 *C.GCancellable      // out
@@ -36016,7 +36429,7 @@ func (l socketListener) Accept(cancellable Cancellable) (gextras.Objector, Socke
 	return _sourceObject, _socketConnection, _goerr
 }
 
-func (l socketListener) AcceptFinish(result AsyncResult) (gextras.Objector, SocketConnection, error) {
+func (l socketListener) AcceptFinishSocketListener(result AsyncResult) (gextras.Objector, SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GAsyncResult      // out
 	var _arg2 *C.GObject           // in
@@ -36039,7 +36452,7 @@ func (l socketListener) AcceptFinish(result AsyncResult) (gextras.Objector, Sock
 	return _sourceObject, _socketConnection, _goerr
 }
 
-func (l socketListener) AcceptSocket(cancellable Cancellable) (gextras.Objector, Socket, error) {
+func (l socketListener) AcceptSocketSocketListener(cancellable Cancellable) (gextras.Objector, Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GObject         // in
 	var _arg2 *C.GCancellable    // out
@@ -36062,7 +36475,7 @@ func (l socketListener) AcceptSocket(cancellable Cancellable) (gextras.Objector,
 	return _sourceObject, _socket, _goerr
 }
 
-func (l socketListener) AcceptSocketFinish(result AsyncResult) (gextras.Objector, Socket, error) {
+func (l socketListener) AcceptSocketFinishSocketListener(result AsyncResult) (gextras.Objector, Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 *C.GObject         // in
@@ -36085,7 +36498,7 @@ func (l socketListener) AcceptSocketFinish(result AsyncResult) (gextras.Objector
 	return _sourceObject, _socket, _goerr
 }
 
-func (l socketListener) AddAddress(address SocketAddress, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (SocketAddress, error) {
+func (l socketListener) AddAddressSocketListener(address SocketAddress, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (SocketAddress, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocketAddress  // out
 	var _arg2 C.GSocketType      // out
@@ -36111,7 +36524,7 @@ func (l socketListener) AddAddress(address SocketAddress, typ SocketType, protoc
 	return _effectiveAddress, _goerr
 }
 
-func (l socketListener) AddAnyInetPort(sourceObject gextras.Objector) (uint16, error) {
+func (l socketListener) AddAnyInetPortSocketListener(sourceObject gextras.Objector) (uint16, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GObject         // out
 	var _cret C.guint16          // in
@@ -36131,7 +36544,7 @@ func (l socketListener) AddAnyInetPort(sourceObject gextras.Objector) (uint16, e
 	return _guint16, _goerr
 }
 
-func (l socketListener) AddInetPort(port uint16, sourceObject gextras.Objector) error {
+func (l socketListener) AddInetPortSocketListener(port uint16, sourceObject gextras.Objector) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.guint16          // out
 	var _arg2 *C.GObject         // out
@@ -36150,7 +36563,7 @@ func (l socketListener) AddInetPort(port uint16, sourceObject gextras.Objector) 
 	return _goerr
 }
 
-func (l socketListener) AddSocket(socket Socket, sourceObject gextras.Objector) error {
+func (l socketListener) AddSocketSocketListener(socket Socket, sourceObject gextras.Objector) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocket         // out
 	var _arg2 *C.GObject         // out
@@ -36169,7 +36582,7 @@ func (l socketListener) AddSocket(socket Socket, sourceObject gextras.Objector) 
 	return _goerr
 }
 
-func (l socketListener) Close() {
+func (l socketListener) CloseSocketListener() {
 	var _arg0 *C.GSocketListener // out
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(l.Native()))
@@ -36177,7 +36590,7 @@ func (l socketListener) Close() {
 	C.g_socket_listener_close(_arg0)
 }
 
-func (l socketListener) SetBacklog(listenBacklog int) {
+func (l socketListener) SetBacklogSocketListener(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out
 
@@ -36210,21 +36623,21 @@ func (l socketListener) SetBacklog(listenBacklog int) {
 // stop the service are thread-safe so these can be used from threads that
 // handle incoming clients.
 type SocketService interface {
-	SocketListener
 
-	// IsActive: check whether the service is active or not. An active service
-	// will accept new clients that connect, while a non-active service will let
-	// connecting clients queue up until the service is started.
-	IsActive() bool
-	// Start restarts the service, i.e. start accepting connections from the
-	// added sockets when the mainloop runs. This only needs to be called after
-	// the service has been stopped from g_socket_service_stop().
+	// IsActiveSocketService: check whether the service is active or not. An
+	// active service will accept new clients that connect, while a non-active
+	// service will let connecting clients queue up until the service is
+	// started.
+	IsActiveSocketService() bool
+	// StartSocketService restarts the service, i.e. start accepting connections
+	// from the added sockets when the mainloop runs. This only needs to be
+	// called after the service has been stopped from g_socket_service_stop().
 	//
 	// This call is thread-safe, so it may be called from a thread handling an
 	// incoming client request.
-	Start()
-	// Stop stops the service, i.e. stops accepting connections from the added
-	// sockets when the mainloop runs.
+	StartSocketService()
+	// StopSocketService stops the service, i.e. stops accepting connections
+	// from the added sockets when the mainloop runs.
 	//
 	// This call is thread-safe, so it may be called from a thread handling an
 	// incoming client request.
@@ -36238,15 +36651,13 @@ type SocketService interface {
 	// This must be called before calling g_socket_listener_close() as the
 	// socket service will start accepting connections immediately when a new
 	// socket is added.
-	Stop()
+	StopSocketService()
 }
 
 // socketService implements the SocketService class.
 type socketService struct {
 	SocketListener
 }
-
-var _ SocketService = (*socketService)(nil)
 
 // WrapSocketService wraps a GObject to the right type. It is
 // primarily used internally.
@@ -36281,7 +36692,7 @@ func NewSocketService() SocketService {
 	return _socketService
 }
 
-func (s socketService) IsActive() bool {
+func (s socketService) IsActiveSocketService() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
 
@@ -36298,7 +36709,7 @@ func (s socketService) IsActive() bool {
 	return _ok
 }
 
-func (s socketService) Start() {
+func (s socketService) StartSocketService() {
 	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
@@ -36306,7 +36717,7 @@ func (s socketService) Start() {
 	C.g_socket_service_start(_arg0)
 }
 
-func (s socketService) Stop() {
+func (s socketService) StopSocketService() {
 	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
@@ -36363,27 +36774,26 @@ func (s socketService) Stop() {
 // g_subprocess_get_if_exited() (which are similar to the familiar
 // WIFEXITED-style POSIX macros).
 type Subprocess interface {
-	gextras.Objector
 	Initable
 
-	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
-	// output of the process as UTF-8, and returns it as a regular NUL
+	// CommunicateUTF8Subprocess: like g_subprocess_communicate(), but validates
+	// the output of the process as UTF-8, and returns it as a regular NUL
 	// terminated string.
 	//
 	// On error, @stdout_buf and @stderr_buf will be set to undefined values and
 	// should not be used.
-	CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error)
-	// CommunicateUTF8Finish: complete an invocation of
+	CommunicateUTF8Subprocess(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error)
+	// CommunicateUTF8FinishSubprocess: complete an invocation of
 	// g_subprocess_communicate_utf8_async().
-	CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error)
-	// ForceExit: use an operating-system specific method to attempt an
-	// immediate, forceful termination of the process. There is no mechanism to
-	// determine whether or not the request itself was successful; however, you
-	// can use g_subprocess_wait() to monitor the status of the process after
-	// calling this function.
+	CommunicateUTF8FinishSubprocess(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error)
+	// ForceExitSubprocess: use an operating-system specific method to attempt
+	// an immediate, forceful termination of the process. There is no mechanism
+	// to determine whether or not the request itself was successful; however,
+	// you can use g_subprocess_wait() to monitor the status of the process
+	// after calling this function.
 	//
 	// On Unix, this function sends SIGKILL.
-	ForceExit()
+	ForceExitSubprocess()
 	// ExitStatus: check the exit status of the subprocess, given that it exited
 	// normally. This is the value passed to the exit() system call or the
 	// return value from main.
@@ -36458,15 +36868,15 @@ type Subprocess interface {
 	// It is an error to call this function before g_subprocess_wait() and
 	// unless g_subprocess_get_if_signaled() returned true.
 	TermSig() int
-	// SendSignal sends the UNIX signal @signal_num to the subprocess, if it is
-	// still running.
+	// SendSignalSubprocess sends the UNIX signal @signal_num to the subprocess,
+	// if it is still running.
 	//
 	// This API is race-free. If the subprocess has terminated, it will not be
 	// signalled.
 	//
 	// This API is not available on Windows.
-	SendSignal(signalNum int)
-	// Wait: synchronously wait for the subprocess to terminate.
+	SendSignalSubprocess(signalNum int)
+	// WaitSubprocess: synchronously wait for the subprocess to terminate.
 	//
 	// After the process terminates you can query its exit status with functions
 	// such as g_subprocess_get_if_exited() and g_subprocess_get_exit_status().
@@ -36476,31 +36886,28 @@ type Subprocess interface {
 	//
 	// Cancelling @cancellable doesn't kill the subprocess. Call
 	// g_subprocess_force_exit() if it is desirable.
-	Wait(cancellable Cancellable) error
-	// WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
-	WaitCheck(cancellable Cancellable) error
-	// WaitCheckFinish collects the result of a previous call to
+	WaitSubprocess(cancellable Cancellable) error
+	// WaitCheckSubprocess combines g_subprocess_wait() with
+	// g_spawn_check_exit_status().
+	WaitCheckSubprocess(cancellable Cancellable) error
+	// WaitCheckFinishSubprocess collects the result of a previous call to
 	// g_subprocess_wait_check_async().
-	WaitCheckFinish(result AsyncResult) error
-	// WaitFinish collects the result of a previous call to
+	WaitCheckFinishSubprocess(result AsyncResult) error
+	// WaitFinishSubprocess collects the result of a previous call to
 	// g_subprocess_wait_async().
-	WaitFinish(result AsyncResult) error
+	WaitFinishSubprocess(result AsyncResult) error
 }
 
 // subprocess implements the Subprocess class.
 type subprocess struct {
 	gextras.Objector
-	Initable
 }
-
-var _ Subprocess = (*subprocess)(nil)
 
 // WrapSubprocess wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSubprocess(obj *externglib.Object) Subprocess {
 	return subprocess{
 		Objector: obj,
-		Initable: WrapInitable(obj),
 	}
 }
 
@@ -36541,7 +36948,7 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (Subprocess, error) {
 	return _subprocess, _goerr
 }
 
-func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error) {
+func (s subprocess) CommunicateUTF8Subprocess(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
@@ -36569,7 +36976,7 @@ func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (s
 	return _stdoutBuf, _stderrBuf, _goerr
 }
 
-func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error) {
+func (s subprocess) CommunicateUTF8FinishSubprocess(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -36594,7 +37001,7 @@ func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string,
 	return _stdoutBuf, _stderrBuf, _goerr
 }
 
-func (s subprocess) ForceExit() {
+func (s subprocess) ForceExitSubprocess() {
 	var _arg0 *C.GSubprocess // out
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
@@ -36758,7 +37165,7 @@ func (s subprocess) TermSig() int {
 	return _gint
 }
 
-func (s subprocess) SendSignal(signalNum int) {
+func (s subprocess) SendSignalSubprocess(signalNum int) {
 	var _arg0 *C.GSubprocess // out
 	var _arg1 C.gint         // out
 
@@ -36768,7 +37175,7 @@ func (s subprocess) SendSignal(signalNum int) {
 	C.g_subprocess_send_signal(_arg0, _arg1)
 }
 
-func (s subprocess) Wait(cancellable Cancellable) error {
+func (s subprocess) WaitSubprocess(cancellable Cancellable) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -36785,7 +37192,7 @@ func (s subprocess) Wait(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s subprocess) WaitCheck(cancellable Cancellable) error {
+func (s subprocess) WaitCheckSubprocess(cancellable Cancellable) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -36802,7 +37209,7 @@ func (s subprocess) WaitCheck(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s subprocess) WaitCheckFinish(result AsyncResult) error {
+func (s subprocess) WaitCheckFinishSubprocess(result AsyncResult) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -36819,7 +37226,7 @@ func (s subprocess) WaitCheckFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (s subprocess) WaitFinish(result AsyncResult) error {
+func (s subprocess) WaitFinishSubprocess(result AsyncResult) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -36836,6 +37243,10 @@ func (s subprocess) WaitFinish(result AsyncResult) error {
 	return _goerr
 }
 
+func (i subprocess) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+}
+
 // SubprocessLauncher: this class contains a set of options for launching child
 // processes, such as where its standard input and output will be directed, the
 // argument list, the environment, and more.
@@ -36844,10 +37255,9 @@ func (s subprocess) WaitFinish(result AsyncResult) error {
 // use of this class allows access to more advanced options. It can also be used
 // to launch multiple subprocesses with a similar configuration.
 type SubprocessLauncher interface {
-	gextras.Objector
 
-	// Close closes all the file descriptors previously passed to the object
-	// with g_subprocess_launcher_take_fd(),
+	// CloseSubprocessLauncher closes all the file descriptors previously passed
+	// to the object with g_subprocess_launcher_take_fd(),
 	// g_subprocess_launcher_take_stderr_fd(), etc.
 	//
 	// After calling this method, any subsequent calls to
@@ -36858,21 +37268,21 @@ type SubprocessLauncher interface {
 	// This function is called automatically when the Launcher is disposed, but
 	// is provided separately so that garbage collected language bindings can
 	// call it earlier to guarantee when FDs are closed.
-	Close()
+	CloseSubprocessLauncher()
 	// env returns the value of the environment variable @variable in the
 	// environment of processes launched from this launcher.
 	//
 	// On UNIX, the returned string can be an arbitrary byte string. On Windows,
 	// it will be UTF-8.
 	env(variable string) string
-	// SetCwd sets the current working directory that processes will be launched
-	// with.
+	// SetCwdSubprocessLauncher sets the current working directory that
+	// processes will be launched with.
 	//
 	// By default processes are launched with the current working directory of
 	// the launching process at the time of launch.
-	SetCwd(cwd string)
-	// SetEnviron: replace the entire environment of processes launched from
-	// this launcher with the given 'environ' variable.
+	SetCwdSubprocessLauncher(cwd string)
+	// SetEnvironSubprocessLauncher: replace the entire environment of processes
+	// launched from this launcher with the given 'environ' variable.
 	//
 	// Typically you will build this variable by using g_listenv() to copy the
 	// process 'environ' and using the functions g_environ_setenv(),
@@ -36890,8 +37300,8 @@ type SubprocessLauncher interface {
 	//
 	// On UNIX, all strings in this array can be arbitrary byte strings. On
 	// Windows, they should be in UTF-8.
-	SetEnviron(env []string)
-	// SetFlags sets the flags on the launcher.
+	SetEnvironSubprocessLauncher(env []string)
+	// SetFlagsSubprocessLauncher sets the flags on the launcher.
 	//
 	// The default flags are G_SUBPROCESS_FLAGS_NONE.
 	//
@@ -36902,9 +37312,9 @@ type SubprocessLauncher interface {
 	// You may also not set a flag that conflicts with a previous call to a
 	// function like g_subprocess_launcher_set_stdin_file_path() or
 	// g_subprocess_launcher_take_stdout_fd().
-	SetFlags(flags SubprocessFlags)
-	// SetStderrFilePath sets the file path to use as the stderr for spawned
-	// processes.
+	SetFlagsSubprocessLauncher(flags SubprocessFlags)
+	// SetStderrFilePathSubprocessLauncher sets the file path to use as the
+	// stderr for spawned processes.
 	//
 	// If @path is nil then any previously given path is unset.
 	//
@@ -36918,9 +37328,9 @@ type SubprocessLauncher interface {
 	// the launcher flags contain any flags directing stderr elsewhere.
 	//
 	// This feature is only available on UNIX.
-	SetStderrFilePath(path string)
-	// SetStdinFilePath sets the file path to use as the stdin for spawned
-	// processes.
+	SetStderrFilePathSubprocessLauncher(path string)
+	// SetStdinFilePathSubprocessLauncher sets the file path to use as the stdin
+	// for spawned processes.
 	//
 	// If @path is nil then any previously given path is unset.
 	//
@@ -36930,9 +37340,9 @@ type SubprocessLauncher interface {
 	// launcher flags contain any flags directing stdin elsewhere.
 	//
 	// This feature is only available on UNIX.
-	SetStdinFilePath(path string)
-	// SetStdoutFilePath sets the file path to use as the stdout for spawned
-	// processes.
+	SetStdinFilePathSubprocessLauncher(path string)
+	// SetStdoutFilePathSubprocessLauncher sets the file path to use as the
+	// stdout for spawned processes.
 	//
 	// If @path is nil then any previously given path is unset.
 	//
@@ -36943,19 +37353,20 @@ type SubprocessLauncher interface {
 	// the launcher flags contain any flags directing stdout elsewhere.
 	//
 	// This feature is only available on UNIX.
-	SetStdoutFilePath(path string)
-	// Setenv sets the environment variable @variable in the environment of
-	// processes launched from this launcher.
+	SetStdoutFilePathSubprocessLauncher(path string)
+	// SetenvSubprocessLauncher sets the environment variable @variable in the
+	// environment of processes launched from this launcher.
 	//
 	// On UNIX, both the variable's name and value can be arbitrary byte
 	// strings, except that the variable's name cannot contain '='. On Windows,
 	// they should be in UTF-8.
-	Setenv(variable string, value string, overwrite bool)
-	// Spawnv creates a #GSubprocess given a provided array of arguments.
-	Spawnv(argv []string) (Subprocess, error)
-	// TakeFd: transfer an arbitrary file descriptor from parent process to the
-	// child. This function takes ownership of the @source_fd; it will be closed
-	// in the parent when @self is freed.
+	SetenvSubprocessLauncher(variable string, value string, overwrite bool)
+	// SpawnvSubprocessLauncher creates a #GSubprocess given a provided array of
+	// arguments.
+	SpawnvSubprocessLauncher(argv []string) (Subprocess, error)
+	// TakeFdSubprocessLauncher: transfer an arbitrary file descriptor from
+	// parent process to the child. This function takes ownership of the
+	// @source_fd; it will be closed in the parent when @self is freed.
 	//
 	// By default, all file descriptors from the parent will be closed. This
 	// function allows you to create (for example) a custom `pipe()` or
@@ -36965,9 +37376,9 @@ type SubprocessLauncher interface {
 	// An example use case is GNUPG, which has a command line argument
 	// `--passphrase-fd` providing a file descriptor number where it expects the
 	// passphrase to be written.
-	TakeFd(sourceFd int, targetFd int)
-	// TakeStderrFd sets the file descriptor to use as the stderr for spawned
-	// processes.
+	TakeFdSubprocessLauncher(sourceFd int, targetFd int)
+	// TakeStderrFdSubprocessLauncher sets the file descriptor to use as the
+	// stderr for spawned processes.
 	//
 	// If @fd is -1 then any previously given fd is unset.
 	//
@@ -36982,9 +37393,9 @@ type SubprocessLauncher interface {
 	// the launcher flags contain any flags directing stderr elsewhere.
 	//
 	// This feature is only available on UNIX.
-	TakeStderrFd(fd int)
-	// TakeStdinFd sets the file descriptor to use as the stdin for spawned
-	// processes.
+	TakeStderrFdSubprocessLauncher(fd int)
+	// TakeStdinFdSubprocessLauncher sets the file descriptor to use as the
+	// stdin for spawned processes.
 	//
 	// If @fd is -1 then any previously given fd is unset.
 	//
@@ -37002,9 +37413,9 @@ type SubprocessLauncher interface {
 	// launcher flags contain any flags directing stdin elsewhere.
 	//
 	// This feature is only available on UNIX.
-	TakeStdinFd(fd int)
-	// TakeStdoutFd sets the file descriptor to use as the stdout for spawned
-	// processes.
+	TakeStdinFdSubprocessLauncher(fd int)
+	// TakeStdoutFdSubprocessLauncher sets the file descriptor to use as the
+	// stdout for spawned processes.
 	//
 	// If @fd is -1 then any previously given fd is unset.
 	//
@@ -37021,21 +37432,19 @@ type SubprocessLauncher interface {
 	// the launcher flags contain any flags directing stdout elsewhere.
 	//
 	// This feature is only available on UNIX.
-	TakeStdoutFd(fd int)
-	// Unsetenv removes the environment variable @variable from the environment
-	// of processes launched from this launcher.
+	TakeStdoutFdSubprocessLauncher(fd int)
+	// UnsetenvSubprocessLauncher removes the environment variable @variable
+	// from the environment of processes launched from this launcher.
 	//
 	// On UNIX, the variable's name can be an arbitrary byte string not
 	// containing '='. On Windows, it should be in UTF-8.
-	Unsetenv(variable string)
+	UnsetenvSubprocessLauncher(variable string)
 }
 
 // subprocessLauncher implements the SubprocessLauncher class.
 type subprocessLauncher struct {
 	gextras.Objector
 }
-
-var _ SubprocessLauncher = (*subprocessLauncher)(nil)
 
 // WrapSubprocessLauncher wraps a GObject to the right type. It is
 // primarily used internally.
@@ -37071,7 +37480,7 @@ func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 	return _subprocessLauncher
 }
 
-func (s subprocessLauncher) Close() {
+func (s subprocessLauncher) CloseSubprocessLauncher() {
 	var _arg0 *C.GSubprocessLauncher // out
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
@@ -37097,7 +37506,7 @@ func (s subprocessLauncher) env(variable string) string {
 	return _filename
 }
 
-func (s subprocessLauncher) SetCwd(cwd string) {
+func (s subprocessLauncher) SetCwdSubprocessLauncher(cwd string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -37108,7 +37517,7 @@ func (s subprocessLauncher) SetCwd(cwd string) {
 	C.g_subprocess_launcher_set_cwd(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetEnviron(env []string) {
+func (s subprocessLauncher) SetEnvironSubprocessLauncher(env []string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 **C.gchar
 
@@ -37126,7 +37535,7 @@ func (s subprocessLauncher) SetEnviron(env []string) {
 	C.g_subprocess_launcher_set_environ(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetFlags(flags SubprocessFlags) {
+func (s subprocessLauncher) SetFlagsSubprocessLauncher(flags SubprocessFlags) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.GSubprocessFlags     // out
 
@@ -37136,7 +37545,7 @@ func (s subprocessLauncher) SetFlags(flags SubprocessFlags) {
 	C.g_subprocess_launcher_set_flags(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetStderrFilePath(path string) {
+func (s subprocessLauncher) SetStderrFilePathSubprocessLauncher(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -37147,7 +37556,7 @@ func (s subprocessLauncher) SetStderrFilePath(path string) {
 	C.g_subprocess_launcher_set_stderr_file_path(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetStdinFilePath(path string) {
+func (s subprocessLauncher) SetStdinFilePathSubprocessLauncher(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -37158,7 +37567,7 @@ func (s subprocessLauncher) SetStdinFilePath(path string) {
 	C.g_subprocess_launcher_set_stdin_file_path(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetStdoutFilePath(path string) {
+func (s subprocessLauncher) SetStdoutFilePathSubprocessLauncher(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -37169,7 +37578,7 @@ func (s subprocessLauncher) SetStdoutFilePath(path string) {
 	C.g_subprocess_launcher_set_stdout_file_path(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) Setenv(variable string, value string, overwrite bool) {
+func (s subprocessLauncher) SetenvSubprocessLauncher(variable string, value string, overwrite bool) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out
@@ -37187,7 +37596,7 @@ func (s subprocessLauncher) Setenv(variable string, value string, overwrite bool
 	C.g_subprocess_launcher_setenv(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s subprocessLauncher) Spawnv(argv []string) (Subprocess, error) {
+func (s subprocessLauncher) SpawnvSubprocessLauncher(argv []string) (Subprocess, error) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 **C.gchar
 	var _cret *C.GSubprocess // in
@@ -37215,7 +37624,7 @@ func (s subprocessLauncher) Spawnv(argv []string) (Subprocess, error) {
 	return _subprocess, _goerr
 }
 
-func (s subprocessLauncher) TakeFd(sourceFd int, targetFd int) {
+func (s subprocessLauncher) TakeFdSubprocessLauncher(sourceFd int, targetFd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
@@ -37227,7 +37636,7 @@ func (s subprocessLauncher) TakeFd(sourceFd int, targetFd int) {
 	C.g_subprocess_launcher_take_fd(_arg0, _arg1, _arg2)
 }
 
-func (s subprocessLauncher) TakeStderrFd(fd int) {
+func (s subprocessLauncher) TakeStderrFdSubprocessLauncher(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 
@@ -37237,7 +37646,7 @@ func (s subprocessLauncher) TakeStderrFd(fd int) {
 	C.g_subprocess_launcher_take_stderr_fd(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) TakeStdinFd(fd int) {
+func (s subprocessLauncher) TakeStdinFdSubprocessLauncher(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 
@@ -37247,7 +37656,7 @@ func (s subprocessLauncher) TakeStdinFd(fd int) {
 	C.g_subprocess_launcher_take_stdin_fd(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) TakeStdoutFd(fd int) {
+func (s subprocessLauncher) TakeStdoutFdSubprocessLauncher(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 
@@ -37257,7 +37666,7 @@ func (s subprocessLauncher) TakeStdoutFd(fd int) {
 	C.g_subprocess_launcher_take_stdout_fd(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) Unsetenv(variable string) {
+func (s subprocessLauncher) UnsetenvSubprocessLauncher(variable string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -37419,7 +37828,6 @@ func (s subprocessLauncher) Unsetenv(variable string) {
 // the `_async()` wrapper function (for "short-circuit" results, such as when
 // passing 0 to g_input_stream_read_async()).
 type Task interface {
-	gextras.Objector
 	AsyncResult
 
 	// Cancellable gets @task's #GCancellable
@@ -37446,28 +37854,28 @@ type Task interface {
 	// ReturnOnCancel gets @task's return-on-cancel flag. See
 	// g_task_set_return_on_cancel() for more details.
 	ReturnOnCancel() bool
-	// SourceObject gets the source object from @task. Like
+	// GetSourceObject gets the source object from @task. Like
 	// g_async_result_get_source_object(), but does not ref the object.
-	SourceObject() gextras.Objector
-	// HadError tests if @task resulted in an error.
-	HadError() bool
-	// PropagateBoolean gets the result of @task as a #gboolean.
+	GetSourceObject() gextras.Objector
+	// HadErrorTask tests if @task resulted in an error.
+	HadErrorTask() bool
+	// PropagateBooleanTask gets the result of @task as a #gboolean.
 	//
 	// If the task resulted in an error, or was cancelled, then this will
 	// instead return false and set @error.
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateBoolean() error
-	// PropagateInt gets the result of @task as an integer (#gssize).
+	PropagateBooleanTask() error
+	// PropagateIntTask gets the result of @task as an integer (#gssize).
 	//
 	// If the task resulted in an error, or was cancelled, then this will
 	// instead return -1 and set @error.
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateInt() (int, error)
-	// PropagateValue gets the result of @task as a #GValue, and transfers
+	PropagateIntTask() (int, error)
+	// PropagateValueTask gets the result of @task as a #GValue, and transfers
 	// ownership of that value to the caller. As with g_task_return_value(),
 	// this is a generic low-level method; g_task_propagate_pointer() and the
 	// like will usually be more useful for C code.
@@ -37477,13 +37885,14 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateValue() (*externglib.Value, error)
-	// ReturnBoolean sets @task's result to @result and completes the task (see
-	// g_task_return_pointer() for more discussion of exactly what this means).
-	ReturnBoolean(result bool)
-	// ReturnError sets @task's result to @error (which @task assumes ownership
-	// of) and completes the task (see g_task_return_pointer() for more
-	// discussion of exactly what this means).
+	PropagateValueTask() (externglib.Value, error)
+	// ReturnBooleanTask sets @task's result to @result and completes the task
+	// (see g_task_return_pointer() for more discussion of exactly what this
+	// means).
+	ReturnBooleanTask(result bool)
+	// ReturnErrorTask sets @task's result to @error (which @task assumes
+	// ownership of) and completes the task (see g_task_return_pointer() for
+	// more discussion of exactly what this means).
 	//
 	// Note that since the task takes ownership of @error, and since the task
 	// may be completed before returning from g_task_return_error(), you cannot
@@ -37491,17 +37900,17 @@ type Task interface {
 	// on the error if you need to keep a local copy as well.
 	//
 	// See also g_task_return_new_error().
-	ReturnError(err error)
-	// ReturnErrorIfCancelled checks if @task's #GCancellable has been
+	ReturnErrorTask(err error)
+	// ReturnErrorIfCancelledTask checks if @task's #GCancellable has been
 	// cancelled, and if so, sets @task's error accordingly and completes the
 	// task (see g_task_return_pointer() for more discussion of exactly what
 	// this means).
-	ReturnErrorIfCancelled() bool
-	// ReturnInt sets @task's result to @result and completes the task (see
+	ReturnErrorIfCancelledTask() bool
+	// ReturnIntTask sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
-	ReturnInt(result int)
-	// ReturnValue sets @task's result to @result (by copying it) and completes
-	// the task.
+	ReturnIntTask(result int)
+	// ReturnValueTask sets @task's result to @result (by copying it) and
+	// completes the task.
 	//
 	// If @result is nil then a #GValue of type TYPE_POINTER with a value of nil
 	// will be used for the result.
@@ -37509,8 +37918,8 @@ type Task interface {
 	// This is a very generic low-level method intended primarily for use by
 	// language bindings; for C code, g_task_return_pointer() and the like will
 	// normally be much easier to use.
-	ReturnValue(result **externglib.Value)
-	// SetCheckCancellable sets or clears @task's check-cancellable flag. If
+	ReturnValueTask(result *externglib.Value)
+	// SetCheckCancellableTask sets or clears @task's check-cancellable flag. If
 	// this is true (the default), then g_task_propagate_pointer(), etc, and
 	// g_task_had_error() will check the task's #GCancellable first, and if it
 	// has been cancelled, then they will consider the task to have returned an
@@ -37523,8 +37932,8 @@ type Task interface {
 	//
 	// If you are using g_task_set_return_on_cancel() as well, then you must
 	// leave check-cancellable set true.
-	SetCheckCancellable(checkCancellable bool)
-	// SetName sets @task’s name, used in debugging and profiling. The name
+	SetCheckCancellableTask(checkCancellable bool)
+	// SetNameTask sets @task’s name, used in debugging and profiling. The name
 	// defaults to nil.
 	//
 	// The task name should describe in a human readable way what the task does.
@@ -37533,16 +37942,16 @@ type Task interface {
 	//
 	// This function may only be called before the @task is first used in a
 	// thread other than the one it was constructed in.
-	SetName(name string)
-	// SetPriority sets @task's priority. If you do not call this, it will
+	SetNameTask(name string)
+	// SetPriorityTask sets @task's priority. If you do not call this, it will
 	// default to G_PRIORITY_DEFAULT.
 	//
 	// This will affect the priority of #GSources created with
 	// g_task_attach_source() and the scheduling of tasks run in threads, and
 	// can also be explicitly retrieved later via g_task_get_priority().
-	SetPriority(priority int)
-	// SetReturnOnCancel sets or clears @task's return-on-cancel flag. This is
-	// only meaningful for tasks run via g_task_run_in_thread() or
+	SetPriorityTask(priority int)
+	// SetReturnOnCancelTask sets or clears @task's return-on-cancel flag. This
+	// is only meaningful for tasks run via g_task_run_in_thread() or
 	// g_task_run_in_thread_sync().
 	//
 	// If @return_on_cancel is true, then cancelling @task's #GCancellable will
@@ -37567,23 +37976,19 @@ type Task interface {
 	// g_task_run_in_thread()/g_task_run_in_thread_sync(), then the ThreadFunc
 	// will still be run (for consistency), but the task will also be completed
 	// right away.
-	SetReturnOnCancel(returnOnCancel bool) bool
+	SetReturnOnCancelTask(returnOnCancel bool) bool
 }
 
 // task implements the Task class.
 type task struct {
 	gextras.Objector
-	AsyncResult
 }
-
-var _ Task = (*task)(nil)
 
 // WrapTask wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTask(obj *externglib.Object) Task {
 	return task{
-		Objector:    obj,
-		AsyncResult: WrapAsyncResult(obj),
+		Objector: obj,
 	}
 }
 
@@ -37704,7 +38109,7 @@ func (t task) ReturnOnCancel() bool {
 	return _ok
 }
 
-func (t task) SourceObject() gextras.Objector {
+func (t task) GetSourceObject() gextras.Objector {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
@@ -37719,7 +38124,7 @@ func (t task) SourceObject() gextras.Objector {
 	return _object
 }
 
-func (t task) HadError() bool {
+func (t task) HadErrorTask() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
@@ -37736,7 +38141,7 @@ func (t task) HadError() bool {
 	return _ok
 }
 
-func (t task) PropagateBoolean() error {
+func (t task) PropagateBooleanTask() error {
 	var _arg0 *C.GTask  // out
 	var _cerr *C.GError // in
 
@@ -37751,7 +38156,7 @@ func (t task) PropagateBoolean() error {
 	return _goerr
 }
 
-func (t task) PropagateInt() (int, error) {
+func (t task) PropagateIntTask() (int, error) {
 	var _arg0 *C.GTask  // out
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
@@ -37769,7 +38174,7 @@ func (t task) PropagateInt() (int, error) {
 	return _gssize, _goerr
 }
 
-func (t task) PropagateValue() (*externglib.Value, error) {
+func (t task) PropagateValueTask() (externglib.Value, error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 C.GValue  // in
 	var _cerr *C.GError // in
@@ -37778,16 +38183,16 @@ func (t task) PropagateValue() (*externglib.Value, error) {
 
 	C.g_task_propagate_value(_arg0, &_arg1, &_cerr)
 
-	var _value *externglib.Value // out
-	var _goerr error             // out
+	var _value externglib.Value // out
+	var _goerr error            // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg1))
+	_value = *externglib.ValueFromNative(unsafe.Pointer(&_arg1))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
 }
 
-func (t task) ReturnBoolean(result bool) {
+func (t task) ReturnBooleanTask(result bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 
@@ -37799,17 +38204,17 @@ func (t task) ReturnBoolean(result bool) {
 	C.g_task_return_boolean(_arg0, _arg1)
 }
 
-func (t task) ReturnError(err error) {
+func (t task) ReturnErrorTask(err error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GError // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.g_task_return_error(_arg0, _arg1)
 }
 
-func (t task) ReturnErrorIfCancelled() bool {
+func (t task) ReturnErrorIfCancelledTask() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
@@ -37826,7 +38231,7 @@ func (t task) ReturnErrorIfCancelled() bool {
 	return _ok
 }
 
-func (t task) ReturnInt(result int) {
+func (t task) ReturnIntTask(result int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gssize // out
 
@@ -37836,17 +38241,17 @@ func (t task) ReturnInt(result int) {
 	C.g_task_return_int(_arg0, _arg1)
 }
 
-func (t task) ReturnValue(result **externglib.Value) {
+func (t task) ReturnValueTask(result *externglib.Value) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GValue // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GValue)(result.GValue)
+	_arg1 = (*C.GValue)(unsafe.Pointer(&result.GValue))
 
 	C.g_task_return_value(_arg0, _arg1)
 }
 
-func (t task) SetCheckCancellable(checkCancellable bool) {
+func (t task) SetCheckCancellableTask(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 
@@ -37858,7 +38263,7 @@ func (t task) SetCheckCancellable(checkCancellable bool) {
 	C.g_task_set_check_cancellable(_arg0, _arg1)
 }
 
-func (t task) SetName(name string) {
+func (t task) SetNameTask(name string) {
 	var _arg0 *C.GTask // out
 	var _arg1 *C.gchar // out
 
@@ -37869,7 +38274,7 @@ func (t task) SetName(name string) {
 	C.g_task_set_name(_arg0, _arg1)
 }
 
-func (t task) SetPriority(priority int) {
+func (t task) SetPriorityTask(priority int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
 
@@ -37879,7 +38284,7 @@ func (t task) SetPriority(priority int) {
 	C.g_task_set_priority(_arg0, _arg1)
 }
 
-func (t task) SetReturnOnCancel(returnOnCancel bool) bool {
+func (t task) SetReturnOnCancelTask(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in
@@ -37900,33 +38305,38 @@ func (t task) SetReturnOnCancel(returnOnCancel bool) bool {
 	return _ok
 }
 
+func (r task) SourceObject() gextras.Objector {
+	return WrapAsyncResult(gextras.InternObject(r)).SourceObject()
+}
+
+func (r task) LegacyPropagateError() error {
+	return WrapAsyncResult(gextras.InternObject(r)).LegacyPropagateError()
+}
+
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
 type TCPConnection interface {
-	SocketConnection
 
 	// GracefulDisconnect checks if graceful disconnects are used. See
 	// g_tcp_connection_set_graceful_disconnect().
 	GracefulDisconnect() bool
-	// SetGracefulDisconnect: this enables graceful disconnects on close. A
-	// graceful disconnect means that we signal the receiving end that the
-	// connection is terminated and wait for it to close the connection before
-	// closing the connection.
+	// SetGracefulDisconnectTCPConnection: this enables graceful disconnects on
+	// close. A graceful disconnect means that we signal the receiving end that
+	// the connection is terminated and wait for it to close the connection
+	// before closing the connection.
 	//
 	// A graceful disconnect means that we can be sure that we successfully sent
 	// all the outstanding data to the other end, or get an error reported.
 	// However, it also means we have to wait for all the data to reach the
 	// other side and for it to acknowledge this by closing the socket, which
 	// may take a while. For this reason it is disabled by default.
-	SetGracefulDisconnect(gracefulDisconnect bool)
+	SetGracefulDisconnectTCPConnection(gracefulDisconnect bool)
 }
 
 // tcpConnection implements the TCPConnection class.
 type tcpConnection struct {
 	SocketConnection
 }
-
-var _ TCPConnection = (*tcpConnection)(nil)
 
 // WrapTCPConnection wraps a GObject to the right type. It is
 // primarily used internally.
@@ -37959,7 +38369,7 @@ func (c tcpConnection) GracefulDisconnect() bool {
 	return _ok
 }
 
-func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
+func (c tcpConnection) SetGracefulDisconnectTCPConnection(gracefulDisconnect bool) {
 	var _arg0 *C.GTcpConnection // out
 	var _arg1 C.gboolean        // out
 
@@ -37976,7 +38386,6 @@ func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 // by Client so that it can always return a Connection, even when the connection
 // it has actually created is not directly a Connection.
 type TCPWrapperConnection interface {
-	TCPConnection
 
 	// BaseIOStream gets @conn's base OStream
 	BaseIOStream() IOStream
@@ -37986,8 +38395,6 @@ type TCPWrapperConnection interface {
 type tcpWrapperConnection struct {
 	TCPConnection
 }
-
-var _ TCPWrapperConnection = (*tcpWrapperConnection)(nil)
 
 // WrapTCPWrapperConnection wraps a GObject to the right type. It is
 // primarily used internally.
@@ -38109,48 +38516,45 @@ func (c tcpWrapperConnection) BaseIOStream() IOStream {
 //
 //        CLEANFILES += gschemas.compiled
 type TestDBus interface {
-	gextras.Objector
 
-	// AddServiceDir: add a path where dbus-daemon will look up .service files.
-	// This can't be called after g_test_dbus_up().
-	AddServiceDir(path string)
-	// Down: stop the session bus started by g_test_dbus_up().
+	// AddServiceDirTestDBus: add a path where dbus-daemon will look up .service
+	// files. This can't be called after g_test_dbus_up().
+	AddServiceDirTestDBus(path string)
+	// DownTestDBus: stop the session bus started by g_test_dbus_up().
 	//
 	// This will wait for the singleton returned by g_bus_get() or
 	// g_bus_get_sync() to be destroyed. This is done to ensure that the next
 	// unit test won't get a leaked singleton from this test.
-	Down()
+	DownTestDBus()
 	// BusAddress: get the address on which dbus-daemon is running. If
 	// g_test_dbus_up() has not been called yet, nil is returned. This can be
 	// used with g_dbus_connection_new_for_address().
 	BusAddress() string
 	// Flags: get the flags of the DBus object.
 	Flags() TestDBusFlags
-	// Stop: stop the session bus started by g_test_dbus_up().
+	// StopTestDBus: stop the session bus started by g_test_dbus_up().
 	//
 	// Unlike g_test_dbus_down(), this won't verify the BusConnection singleton
 	// returned by g_bus_get() or g_bus_get_sync() is destroyed. Unit tests
 	// wanting to verify behaviour after the session bus has been stopped can
 	// use this function but should still call g_test_dbus_down() when done.
-	Stop()
-	// Up: start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS. After
-	// this call, it is safe for unit tests to start sending messages on the
-	// session bus.
+	StopTestDBus()
+	// UpTestDBus: start a dbus-daemon instance and set
+	// DBUS_SESSION_BUS_ADDRESS. After this call, it is safe for unit tests to
+	// start sending messages on the session bus.
 	//
 	// If this function is called from setup callback of g_test_add(),
 	// g_test_dbus_down() must be called in its teardown callback.
 	//
 	// If this function is called from unit test's main(), then
 	// g_test_dbus_down() must be called after g_test_run().
-	Up()
+	UpTestDBus()
 }
 
 // testDBus implements the TestDBus class.
 type testDBus struct {
 	gextras.Objector
 }
-
-var _ TestDBus = (*testDBus)(nil)
 
 // WrapTestDBus wraps a GObject to the right type. It is
 // primarily used internally.
@@ -38182,7 +38586,7 @@ func NewTestDBus(flags TestDBusFlags) TestDBus {
 	return _testDBus
 }
 
-func (s testDBus) AddServiceDir(path string) {
+func (s testDBus) AddServiceDirTestDBus(path string) {
 	var _arg0 *C.GTestDBus // out
 	var _arg1 *C.gchar     // out
 
@@ -38193,7 +38597,7 @@ func (s testDBus) AddServiceDir(path string) {
 	C.g_test_dbus_add_service_dir(_arg0, _arg1)
 }
 
-func (s testDBus) Down() {
+func (s testDBus) DownTestDBus() {
 	var _arg0 *C.GTestDBus // out
 
 	_arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
@@ -38231,7 +38635,7 @@ func (s testDBus) Flags() TestDBusFlags {
 	return _testDBusFlags
 }
 
-func (s testDBus) Stop() {
+func (s testDBus) StopTestDBus() {
 	var _arg0 *C.GTestDBus // out
 
 	_arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
@@ -38239,7 +38643,7 @@ func (s testDBus) Stop() {
 	C.g_test_dbus_stop(_arg0)
 }
 
-func (s testDBus) Up() {
+func (s testDBus) UpTestDBus() {
 	var _arg0 *C.GTestDBus // out
 
 	_arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
@@ -38254,37 +38658,34 @@ func (s testDBus) Up() {
 // should be used to resolve the list of names so that fallback icons work
 // nicely with themes that inherit other themes.
 type ThemedIcon interface {
-	gextras.Objector
 	Icon
 
-	// AppendName: append a name to the list of icons from within @icon.
+	// AppendNameThemedIcon: append a name to the list of icons from within
+	// @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
-	AppendName(iconname string)
+	AppendNameThemedIcon(iconname string)
 	// Names gets the names of icons from within @icon.
 	Names() []string
-	// PrependName: prepend a name to the list of icons from within @icon.
+	// PrependNameThemedIcon: prepend a name to the list of icons from within
+	// @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
-	PrependName(iconname string)
+	PrependNameThemedIcon(iconname string)
 }
 
 // themedIcon implements the ThemedIcon class.
 type themedIcon struct {
 	gextras.Objector
-	Icon
 }
-
-var _ ThemedIcon = (*themedIcon)(nil)
 
 // WrapThemedIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapThemedIcon(obj *externglib.Object) ThemedIcon {
 	return themedIcon{
 		Objector: obj,
-		Icon:     WrapIcon(obj),
 	}
 }
 
@@ -38368,7 +38769,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	return _themedIcon
 }
 
-func (i themedIcon) AppendName(iconname string) {
+func (i themedIcon) AppendNameThemedIcon(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
@@ -38406,7 +38807,7 @@ func (i themedIcon) Names() []string {
 	return _utf8s
 }
 
-func (i themedIcon) PrependName(iconname string) {
+func (i themedIcon) PrependNameThemedIcon(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
@@ -38415,6 +38816,18 @@ func (i themedIcon) PrependName(iconname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_themed_icon_prepend_name(_arg0, _arg1)
+}
+
+func (i themedIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i themedIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i themedIcon) String() string {
+	return WrapIcon(gextras.InternObject(i)).String()
 }
 
 // ThreadedSocketService: a SocketService is a simple subclass of Service that
@@ -38431,15 +38844,12 @@ func (i themedIcon) PrependName(iconname string) {
 // As with Service, you may connect to SocketService::run, or subclass and
 // override the default handler.
 type ThreadedSocketService interface {
-	SocketService
 }
 
 // threadedSocketService implements the ThreadedSocketService class.
 type threadedSocketService struct {
 	SocketService
 }
-
-var _ ThreadedSocketService = (*threadedSocketService)(nil)
 
 // WrapThreadedSocketService wraps a GObject to the right type. It is
 // primarily used internally.
@@ -38477,20 +38887,20 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 // a client from a server), or the combination of a certificate and a private
 // key (which is needed when acting as a ServerConnection).
 type TLSCertificate interface {
-	gextras.Objector
 
 	// Issuer gets the Certificate representing @cert's issuer, if known
 	Issuer() TLSCertificate
-	// IsSame: check if two Certificate objects represent the same certificate.
-	// The raw DER byte data of the two certificates are checked for equality.
-	// This has the effect that two certificates may compare equal even if their
-	// Certificate:issuer, Certificate:private-key, or
+	// IsSameTLSCertificate: check if two Certificate objects represent the same
+	// certificate. The raw DER byte data of the two certificates are checked
+	// for equality. This has the effect that two certificates may compare equal
+	// even if their Certificate:issuer, Certificate:private-key, or
 	// Certificate:private-key-pem properties differ.
-	IsSame(certTwo TLSCertificate) bool
-	// Verify: this verifies @cert and returns a set of CertificateFlags
-	// indicating any problems found with it. This can be used to verify a
-	// certificate outside the context of making a connection, or to check a
-	// certificate against a CA that is not part of the system CA database.
+	IsSameTLSCertificate(certTwo TLSCertificate) bool
+	// VerifyTLSCertificate: this verifies @cert and returns a set of
+	// CertificateFlags indicating any problems found with it. This can be used
+	// to verify a certificate outside the context of making a connection, or to
+	// check a certificate against a CA that is not part of the system CA
+	// database.
 	//
 	// If @identity is not nil, @cert's name(s) will be compared against it, and
 	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does
@@ -38504,15 +38914,13 @@ type TLSCertificate interface {
 	//
 	// (All other CertificateFlags values will always be set or unset as
 	// appropriate.)
-	Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
+	VerifyTLSCertificate(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
 }
 
 // tlsCertificate implements the TLSCertificate class.
 type tlsCertificate struct {
 	gextras.Objector
 }
-
-var _ TLSCertificate = (*tlsCertificate)(nil)
 
 // WrapTLSCertificate wraps a GObject to the right type. It is
 // primarily used internally.
@@ -38684,7 +39092,7 @@ func (c tlsCertificate) Issuer() TLSCertificate {
 	return _tlsCertificate
 }
 
-func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
+func (c tlsCertificate) IsSameTLSCertificate(certTwo TLSCertificate) bool {
 	var _arg0 *C.GTlsCertificate // out
 	var _arg1 *C.GTlsCertificate // out
 	var _cret C.gboolean         // in
@@ -38703,7 +39111,7 @@ func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 	return _ok
 }
 
-func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
+func (c tlsCertificate) VerifyTLSCertificate(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out
 	var _arg2 *C.GTlsCertificate     // out
@@ -38729,11 +39137,10 @@ func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertific
 //
 // For DTLS (Datagram TLS) support, see Connection.
 type TLSConnection interface {
-	IOStream
 
-	// EmitAcceptCertificate: used by Connection implementations to emit the
-	// Connection::accept-certificate signal.
-	EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
+	// EmitAcceptCertificateTLSConnection: used by Connection implementations to
+	// emit the Connection::accept-certificate signal.
+	EmitAcceptCertificateTLSConnection(peerCert TLSCertificate, errors TLSCertificateFlags) bool
 	// Certificate gets @conn's certificate, as set by
 	// g_tls_connection_set_certificate().
 	Certificate() TLSCertificate
@@ -38786,7 +39193,7 @@ type TLSConnection interface {
 	// to verify peer certificates. See
 	// g_tls_connection_set_use_system_certdb().
 	UseSystemCertdb() bool
-	// Handshake attempts a TLS handshake on @conn.
+	// HandshakeTLSConnection attempts a TLS handshake on @conn.
 	//
 	// On the client side, it is never necessary to call this method; although
 	// the connection needs to perform a handshake after connecting (or after
@@ -38814,14 +39221,14 @@ type TLSConnection interface {
 	// initial handshake, so calling this function manually is not recommended.
 	//
 	// Connection::accept_certificate may be emitted during the handshake.
-	Handshake(cancellable Cancellable) error
-	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
-	// g_tls_connection_handshake() for more information.
-	HandshakeFinish(result AsyncResult) error
-	// SetAdvertisedProtocols sets the list of application-layer protocols to
-	// advertise that the caller is willing to speak on this connection. The
-	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
-	// negotiate a compatible protocol with the peer; use
+	HandshakeTLSConnection(cancellable Cancellable) error
+	// HandshakeFinishTLSConnection: finish an asynchronous TLS handshake
+	// operation. See g_tls_connection_handshake() for more information.
+	HandshakeFinishTLSConnection(result AsyncResult) error
+	// SetAdvertisedProtocolsTLSConnection sets the list of application-layer
+	// protocols to advertise that the caller is willing to speak on this
+	// connection. The Application-Layer Protocol Negotiation (ALPN) extension
+	// will be used to negotiate a compatible protocol with the peer; use
 	// g_tls_connection_get_negotiated_protocol() to find the negotiated
 	// protocol after the handshake. Specifying nil for the the value of
 	// @protocols will disable ALPN negotiation.
@@ -38829,10 +39236,11 @@ type TLSConnection interface {
 	// See IANA TLS ALPN Protocol IDs
 	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
 	// for a list of registered protocol IDs.
-	SetAdvertisedProtocols(protocols []string)
-	// SetCertificate: this sets the certificate that @conn will present to its
-	// peer during the TLS handshake. For a ServerConnection, it is mandatory to
-	// set this, and that will normally be done at construct time.
+	SetAdvertisedProtocolsTLSConnection(protocols []string)
+	// SetCertificateTLSConnection: this sets the certificate that @conn will
+	// present to its peer during the TLS handshake. For a ServerConnection, it
+	// is mandatory to set this, and that will normally be done at construct
+	// time.
 	//
 	// For a ClientConnection, this is optional. If a handshake fails with
 	// G_TLS_ERROR_CERTIFICATE_REQUIRED, that means that the server requires a
@@ -38845,32 +39253,33 @@ type TLSConnection interface {
 	// without a certificate; in that case, if you don't provide a certificate,
 	// you can tell that the server requested one by the fact that
 	// g_tls_client_connection_get_accepted_cas() will return non-nil.)
-	SetCertificate(certificate TLSCertificate)
-	// SetDatabase sets the certificate database that is used to verify peer
-	// certificates. This is set to the default database by default. See
-	// g_tls_backend_get_default_database(). If set to nil, then peer
+	SetCertificateTLSConnection(certificate TLSCertificate)
+	// SetDatabaseTLSConnection sets the certificate database that is used to
+	// verify peer certificates. This is set to the default database by default.
+	// See g_tls_backend_get_default_database(). If set to nil, then peer
 	// certificate validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA
 	// error (meaning Connection::accept-certificate will always be emitted on
 	// client-side connections, unless that bit is not set in
 	// ClientConnection:validation-flags).
-	SetDatabase(database TLSDatabase)
-	// SetInteraction: set the object that will be used to interact with the
-	// user. It will be used for things like prompting the user for passwords.
+	SetDatabaseTLSConnection(database TLSDatabase)
+	// SetInteractionTLSConnection: set the object that will be used to interact
+	// with the user. It will be used for things like prompting the user for
+	// passwords.
 	//
 	// The @interaction argument will normally be a derived subclass of
 	// Interaction. nil can also be provided if no user interaction should occur
 	// for this connection.
-	SetInteraction(interaction TLSInteraction)
-	// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
-	// longer supported and will have no effect. With TLS 1.3, rehandshaking has
-	// been removed from the TLS protocol, replaced by separate post-handshake
-	// authentication and rekey operations.
-	SetRehandshakeMode(mode TLSRehandshakeMode)
-	// SetRequireCloseNotify sets whether or not @conn expects a proper TLS
-	// close notification before the connection is closed. If this is true (the
-	// default), then @conn will expect to receive a TLS close notification from
-	// its peer before the connection is closed, and will return a
-	// G_TLS_ERROR_EOF error if the connection is closed without proper
+	SetInteractionTLSConnection(interaction TLSInteraction)
+	// SetRehandshakeModeTLSConnection: since GLib 2.64, changing the
+	// rehandshake mode is no longer supported and will have no effect. With TLS
+	// 1.3, rehandshaking has been removed from the TLS protocol, replaced by
+	// separate post-handshake authentication and rekey operations.
+	SetRehandshakeModeTLSConnection(mode TLSRehandshakeMode)
+	// SetRequireCloseNotifyTLSConnection sets whether or not @conn expects a
+	// proper TLS close notification before the connection is closed. If this is
+	// true (the default), then @conn will expect to receive a TLS close
+	// notification from its peer before the connection is closed, and will
+	// return a G_TLS_ERROR_EOF error if the connection is closed without proper
 	// notification (since this may indicate a network error, or
 	// man-in-the-middle attack).
 	//
@@ -38892,23 +39301,21 @@ type TLSConnection interface {
 	// close @conn's Connection:base-io-stream rather than closing @conn itself,
 	// but note that this may only be done when no other operations are pending
 	// on @conn or the base I/O stream.
-	SetRequireCloseNotify(requireCloseNotify bool)
-	// SetUseSystemCertdb sets whether @conn uses the system certificate
-	// database to verify peer certificates. This is true by default. If set to
-	// false, then peer certificate validation will always set the
-	// G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
+	SetRequireCloseNotifyTLSConnection(requireCloseNotify bool)
+	// SetUseSystemCertdbTLSConnection sets whether @conn uses the system
+	// certificate database to verify peer certificates. This is true by
+	// default. If set to false, then peer certificate validation will always
+	// set the G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
 	// Connection::accept-certificate will always be emitted on client-side
 	// connections, unless that bit is not set in
 	// ClientConnection:validation-flags).
-	SetUseSystemCertdb(useSystemCertdb bool)
+	SetUseSystemCertdbTLSConnection(useSystemCertdb bool)
 }
 
 // tlsConnection implements the TLSConnection class.
 type tlsConnection struct {
 	IOStream
 }
-
-var _ TLSConnection = (*tlsConnection)(nil)
 
 // WrapTLSConnection wraps a GObject to the right type. It is
 // primarily used internally.
@@ -38924,7 +39331,7 @@ func marshalTLSConnection(p uintptr) (interface{}, error) {
 	return WrapTLSConnection(obj), nil
 }
 
-func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool {
+func (c tlsConnection) EmitAcceptCertificateTLSConnection(peerCert TLSCertificate, errors TLSCertificateFlags) bool {
 	var _arg0 *C.GTlsConnection      // out
 	var _arg1 *C.GTlsCertificate     // out
 	var _arg2 C.GTlsCertificateFlags // out
@@ -38974,19 +39381,8 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, er
 	var _data []byte
 	var _goerr error // out
 
-	{
-		var i int
-		var z C.guint8
-		for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(_arg2, i)
-		_data = make([]byte, i)
-		for i := range src {
-			_data[i] = (byte)(src[i])
-		}
-	}
+	_data = make([]byte, _arg2.len)
+	copy(_data, unsafe.Slice((*byte)(_arg2.data), _arg2.len))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _data, _goerr
@@ -39116,7 +39512,7 @@ func (c tlsConnection) UseSystemCertdb() bool {
 	return _ok
 }
 
-func (c tlsConnection) Handshake(cancellable Cancellable) error {
+func (c tlsConnection) HandshakeTLSConnection(cancellable Cancellable) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GCancellable   // out
 	var _cerr *C.GError         // in
@@ -39133,7 +39529,7 @@ func (c tlsConnection) Handshake(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (c tlsConnection) HandshakeFinish(result AsyncResult) error {
+func (c tlsConnection) HandshakeFinishTLSConnection(result AsyncResult) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cerr *C.GError         // in
@@ -39150,7 +39546,7 @@ func (c tlsConnection) HandshakeFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (c tlsConnection) SetAdvertisedProtocols(protocols []string) {
+func (c tlsConnection) SetAdvertisedProtocolsTLSConnection(protocols []string) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 **C.gchar
 
@@ -39168,7 +39564,7 @@ func (c tlsConnection) SetAdvertisedProtocols(protocols []string) {
 	C.g_tls_connection_set_advertised_protocols(_arg0, _arg1)
 }
 
-func (c tlsConnection) SetCertificate(certificate TLSCertificate) {
+func (c tlsConnection) SetCertificateTLSConnection(certificate TLSCertificate) {
 	var _arg0 *C.GTlsConnection  // out
 	var _arg1 *C.GTlsCertificate // out
 
@@ -39178,7 +39574,7 @@ func (c tlsConnection) SetCertificate(certificate TLSCertificate) {
 	C.g_tls_connection_set_certificate(_arg0, _arg1)
 }
 
-func (c tlsConnection) SetDatabase(database TLSDatabase) {
+func (c tlsConnection) SetDatabaseTLSConnection(database TLSDatabase) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GTlsDatabase   // out
 
@@ -39188,7 +39584,7 @@ func (c tlsConnection) SetDatabase(database TLSDatabase) {
 	C.g_tls_connection_set_database(_arg0, _arg1)
 }
 
-func (c tlsConnection) SetInteraction(interaction TLSInteraction) {
+func (c tlsConnection) SetInteractionTLSConnection(interaction TLSInteraction) {
 	var _arg0 *C.GTlsConnection  // out
 	var _arg1 *C.GTlsInteraction // out
 
@@ -39198,7 +39594,7 @@ func (c tlsConnection) SetInteraction(interaction TLSInteraction) {
 	C.g_tls_connection_set_interaction(_arg0, _arg1)
 }
 
-func (c tlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
+func (c tlsConnection) SetRehandshakeModeTLSConnection(mode TLSRehandshakeMode) {
 	var _arg0 *C.GTlsConnection     // out
 	var _arg1 C.GTlsRehandshakeMode // out
 
@@ -39208,7 +39604,7 @@ func (c tlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	C.g_tls_connection_set_rehandshake_mode(_arg0, _arg1)
 }
 
-func (c tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
+func (c tlsConnection) SetRequireCloseNotifyTLSConnection(requireCloseNotify bool) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 C.gboolean        // out
 
@@ -39220,7 +39616,7 @@ func (c tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	C.g_tls_connection_set_require_close_notify(_arg0, _arg1)
 }
 
-func (c tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
+func (c tlsConnection) SetUseSystemCertdbTLSConnection(useSystemCertdb bool) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 C.gboolean        // out
 
@@ -39242,18 +39638,18 @@ func (c tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
 // Most common client applications will not directly interact with Database. It
 // is used internally by Connection.
 type TLSDatabase interface {
-	gextras.Objector
 
-	// CreateCertificateHandle: create a handle string for the certificate. The
-	// database will only be able to create a handle for certificates that
-	// originate from the database. In cases where the database cannot create a
-	// handle for a certificate, nil will be returned.
+	// CreateCertificateHandleTLSDatabase: create a handle string for the
+	// certificate. The database will only be able to create a handle for
+	// certificates that originate from the database. In cases where the
+	// database cannot create a handle for a certificate, nil will be returned.
 	//
 	// This handle should be stable across various instances of the application,
 	// and between applications. If a certificate is modified in the database,
 	// then it is not guaranteed that this handle will continue to point to it.
-	CreateCertificateHandle(certificate TLSCertificate) string
-	// LookupCertificateForHandle: look up a certificate by its handle.
+	CreateCertificateHandleTLSDatabase(certificate TLSCertificate) string
+	// LookupCertificateForHandleTLSDatabase: look up a certificate by its
+	// handle.
 	//
 	// The handle should have been created by calling
 	// g_tls_database_create_certificate_handle() on a Database object of the
@@ -39266,16 +39662,16 @@ type TLSDatabase interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificate_for_handle_async() to perform the
 	// lookup operation asynchronously.
-	LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
-	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
-	// certificate by its handle. See
+	LookupCertificateForHandleTLSDatabase(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
+	// LookupCertificateForHandleFinishTLSDatabase: finish an asynchronous
+	// lookup of a certificate by its handle. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
 	//
 	// If the handle is no longer valid, or does not point to a certificate in
 	// this database, then nil will be returned.
-	LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error)
-	// LookupCertificateIssuer: look up the issuer of @certificate in the
-	// database.
+	LookupCertificateForHandleFinishTLSDatabase(result AsyncResult) (TLSCertificate, error)
+	// LookupCertificateIssuerTLSDatabase: look up the issuer of @certificate in
+	// the database.
 	//
 	// The Certificate:issuer property of @certificate is not modified, and the
 	// two certificates are not hooked into a chain.
@@ -39283,13 +39679,13 @@ type TLSDatabase interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificate_issuer_async() to perform the lookup
 	// operation asynchronously.
-	LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
-	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
-	// operation. See g_tls_database_lookup_certificate_issuer() for more
+	LookupCertificateIssuerTLSDatabase(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
+	// LookupCertificateIssuerFinishTLSDatabase: finish an asynchronous lookup
+	// issuer operation. See g_tls_database_lookup_certificate_issuer() for more
 	// information.
-	LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error)
-	// VerifyChain determines the validity of a certificate chain after looking
-	// up and adding any missing certificates to the chain.
+	LookupCertificateIssuerFinishTLSDatabase(result AsyncResult) (TLSCertificate, error)
+	// VerifyChainTLSDatabase determines the validity of a certificate chain
+	// after looking up and adding any missing certificates to the chain.
 	//
 	// @chain is a chain of Certificate objects each pointing to the next
 	// certificate in the chain by its Certificate:issuer property. The chain
@@ -39324,9 +39720,9 @@ type TLSDatabase interface {
 	//
 	// This function can block, use g_tls_database_verify_chain_async() to
 	// perform the verification operation asynchronously.
-	VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error)
-	// VerifyChainFinish: finish an asynchronous verify chain operation. See
-	// g_tls_database_verify_chain() for more information.
+	VerifyChainTLSDatabase(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error)
+	// VerifyChainFinishTLSDatabase: finish an asynchronous verify chain
+	// operation. See g_tls_database_verify_chain() for more information.
 	//
 	// If @chain is found to be valid, then the return value will be 0. If
 	// @chain is found to be invalid, then the return value will indicate the
@@ -39335,15 +39731,13 @@ type TLSDatabase interface {
 	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
 	// will be set accordingly. @error is not set when @chain is successfully
 	// analyzed but found to be invalid.
-	VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error)
+	VerifyChainFinishTLSDatabase(result AsyncResult) (TLSCertificateFlags, error)
 }
 
 // tlsDatabase implements the TLSDatabase class.
 type tlsDatabase struct {
 	gextras.Objector
 }
-
-var _ TLSDatabase = (*tlsDatabase)(nil)
 
 // WrapTLSDatabase wraps a GObject to the right type. It is
 // primarily used internally.
@@ -39359,7 +39753,7 @@ func marshalTLSDatabase(p uintptr) (interface{}, error) {
 	return WrapTLSDatabase(obj), nil
 }
 
-func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string {
+func (s tlsDatabase) CreateCertificateHandleTLSDatabase(certificate TLSCertificate) string {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GTlsCertificate // out
 	var _cret *C.gchar           // in
@@ -39377,7 +39771,7 @@ func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string 
 	return _utf8
 }
 
-func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
+func (s tlsDatabase) LookupCertificateForHandleTLSDatabase(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.gchar                  // out
 	var _arg2 *C.GTlsInteraction        // out
@@ -39404,7 +39798,7 @@ func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSIn
 	return _tlsCertificate, _goerr
 }
 
-func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error) {
+func (s tlsDatabase) LookupCertificateForHandleFinishTLSDatabase(result AsyncResult) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
@@ -39424,7 +39818,7 @@ func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCe
 	return _tlsCertificate, _goerr
 }
 
-func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
+func (s tlsDatabase) LookupCertificateIssuerTLSDatabase(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.GTlsCertificate        // out
 	var _arg2 *C.GTlsInteraction        // out
@@ -39450,7 +39844,7 @@ func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interac
 	return _tlsCertificate, _goerr
 }
 
-func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error) {
+func (s tlsDatabase) LookupCertificateIssuerFinishTLSDatabase(result AsyncResult) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
@@ -39470,7 +39864,7 @@ func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCerti
 	return _tlsCertificate, _goerr
 }
 
-func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error) {
+func (s tlsDatabase) VerifyChainTLSDatabase(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.GTlsCertificate        // out
 	var _arg2 *C.gchar                  // out
@@ -39501,7 +39895,7 @@ func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity 
 	return _tlsCertificateFlags, _goerr
 }
 
-func (s tlsDatabase) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
+func (s tlsDatabase) VerifyChainFinishTLSDatabase(result AsyncResult) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase        // out
 	var _arg1 *C.GAsyncResult        // out
 	var _cret C.GTlsCertificateFlags // in
@@ -39541,11 +39935,10 @@ func (s tlsDatabase) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags,
 // G_TLS_INTERACTION_UNHANDLED. If a derived class implements an async method,
 // it must also implement the corresponding finish method.
 type TLSInteraction interface {
-	gextras.Objector
 
-	// AskPassword: run synchronous interaction to ask the user for a password.
-	// In general, g_tls_interaction_invoke_ask_password() should be used
-	// instead of this function.
+	// AskPasswordTLSInteraction: run synchronous interaction to ask the user
+	// for a password. In general, g_tls_interaction_invoke_ask_password()
+	// should be used instead of this function.
 	//
 	// Derived subclasses usually implement a password prompt, although they may
 	// also choose to provide a password from elsewhere. The @password value
@@ -39557,10 +39950,10 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	AskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error)
-	// AskPasswordFinish: complete an ask password user interaction request.
-	// This should be once the g_tls_interaction_ask_password_async() completion
-	// callback is called.
+	AskPasswordTLSInteraction(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error)
+	// AskPasswordFinishTLSInteraction: complete an ask password user
+	// interaction request. This should be once the
+	// g_tls_interaction_ask_password_async() completion callback is called.
 	//
 	// If G_TLS_INTERACTION_HANDLED is returned, then the Password passed to
 	// g_tls_interaction_ask_password() will have its password filled in.
@@ -39568,12 +39961,12 @@ type TLSInteraction interface {
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
-	AskPasswordFinish(result AsyncResult) (TLSInteractionResult, error)
-	// InvokeAskPassword: invoke the interaction to ask the user for a password.
-	// It invokes this interaction in the main loop, specifically the Context
-	// returned by g_main_context_get_thread_default() when the interaction is
-	// created. This is called by called by Connection or Database to ask the
-	// user for a password.
+	AskPasswordFinishTLSInteraction(result AsyncResult) (TLSInteractionResult, error)
+	// InvokeAskPasswordTLSInteraction: invoke the interaction to ask the user
+	// for a password. It invokes this interaction in the main loop,
+	// specifically the Context returned by g_main_context_get_thread_default()
+	// when the interaction is created. This is called by called by Connection
+	// or Database to ask the user for a password.
 	//
 	// Derived subclasses usually implement a password prompt, although they may
 	// also choose to provide a password from elsewhere. The @password value
@@ -39589,9 +39982,9 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	InvokeAskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error)
-	// InvokeRequestCertificate: invoke the interaction to ask the user to
-	// choose a certificate to use with the connection. It invokes this
+	InvokeAskPasswordTLSInteraction(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error)
+	// InvokeRequestCertificateTLSInteraction: invoke the interaction to ask the
+	// user to choose a certificate to use with the connection. It invokes this
 	// interaction in the main loop, specifically the Context returned by
 	// g_main_context_get_thread_default() when the interaction is created. This
 	// is called by called by Connection when the peer requests a certificate
@@ -39610,9 +40003,9 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error)
-	// RequestCertificate: run synchronous interaction to ask the user to choose
-	// a certificate to use with the connection. In general,
+	InvokeRequestCertificateTLSInteraction(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error)
+	// RequestCertificateTLSInteraction: run synchronous interaction to ask the
+	// user to choose a certificate to use with the connection. In general,
 	// g_tls_interaction_invoke_request_certificate() should be used instead of
 	// this function.
 	//
@@ -39629,9 +40022,9 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error)
-	// RequestCertificateFinish: complete a request certificate user interaction
-	// request. This should be once the
+	RequestCertificateTLSInteraction(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error)
+	// RequestCertificateFinishTLSInteraction: complete a request certificate
+	// user interaction request. This should be once the
 	// g_tls_interaction_request_certificate_async() completion callback is
 	// called.
 	//
@@ -39642,15 +40035,13 @@ type TLSInteraction interface {
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
-	RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error)
+	RequestCertificateFinishTLSInteraction(result AsyncResult) (TLSInteractionResult, error)
 }
 
 // tlsInteraction implements the TLSInteraction class.
 type tlsInteraction struct {
 	gextras.Objector
 }
-
-var _ TLSInteraction = (*tlsInteraction)(nil)
 
 // WrapTLSInteraction wraps a GObject to the right type. It is
 // primarily used internally.
@@ -39666,7 +40057,7 @@ func marshalTLSInteraction(p uintptr) (interface{}, error) {
 	return WrapTLSInteraction(obj), nil
 }
 
-func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
+func (i tlsInteraction) AskPasswordTLSInteraction(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GTlsPassword         // out
 	var _arg2 *C.GCancellable         // out
@@ -39688,7 +40079,7 @@ func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellabl
 	return _tlsInteractionResult, _goerr
 }
 
-func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (TLSInteractionResult, error) {
+func (i tlsInteraction) AskPasswordFinishTLSInteraction(result AsyncResult) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.GTlsInteractionResult // in
@@ -39708,7 +40099,7 @@ func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (TLSInteractionRes
 	return _tlsInteractionResult, _goerr
 }
 
-func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
+func (i tlsInteraction) InvokeAskPasswordTLSInteraction(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GTlsPassword         // out
 	var _arg2 *C.GCancellable         // out
@@ -39730,7 +40121,7 @@ func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Canc
 	return _tlsInteractionResult, _goerr
 }
 
-func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error) {
+func (i tlsInteraction) InvokeRequestCertificateTLSInteraction(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg1 *C.GTlsConnection             // out
 	var _arg2 C.GTlsCertificateRequestFlags // out
@@ -39754,7 +40145,7 @@ func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags
 	return _tlsInteractionResult, _goerr
 }
 
-func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error) {
+func (i tlsInteraction) RequestCertificateTLSInteraction(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg1 *C.GTlsConnection             // out
 	var _arg2 C.GTlsCertificateRequestFlags // out
@@ -39778,7 +40169,7 @@ func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCe
 	return _tlsInteractionResult, _goerr
 }
 
-func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error) {
+func (i tlsInteraction) RequestCertificateFinishTLSInteraction(result AsyncResult) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.GTlsInteractionResult // in
@@ -39800,7 +40191,6 @@ func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (TLSInterac
 
 // TLSPassword holds a password used in TLS.
 type TLSPassword interface {
-	gextras.Objector
 
 	// Description: get a description string about what the password will be
 	// used for.
@@ -39816,31 +40206,29 @@ type TLSPassword interface {
 	// a representation of the password flags returned from
 	// g_tls_password_get_flags().
 	Warning() string
-	// SetDescription: set a description string about what the password will be
-	// used for.
-	SetDescription(description string)
-	// SetFlags: set flags about the password.
-	SetFlags(flags TLSPasswordFlags)
-	// SetValue: set the value for this password. The @value will be copied by
-	// the password object.
+	// SetDescriptionTLSPassword: set a description string about what the
+	// password will be used for.
+	SetDescriptionTLSPassword(description string)
+	// SetFlagsTLSPassword: set flags about the password.
+	SetFlagsTLSPassword(flags TLSPasswordFlags)
+	// SetValueTLSPassword: set the value for this password. The @value will be
+	// copied by the password object.
 	//
 	// Specify the @length, for a non-nul-terminated password. Pass -1 as
 	// @length if using a nul-terminated password, and @length will be
 	// calculated automatically. (Note that the terminating nul is not
 	// considered part of the password in this case.)
-	SetValue(value []byte)
-	// SetWarning: set a user readable translated warning. Usually this warning
-	// is a representation of the password flags returned from
+	SetValueTLSPassword(value []byte)
+	// SetWarningTLSPassword: set a user readable translated warning. Usually
+	// this warning is a representation of the password flags returned from
 	// g_tls_password_get_flags().
-	SetWarning(warning string)
+	SetWarningTLSPassword(warning string)
 }
 
 // tlsPassword implements the TLSPassword class.
 type tlsPassword struct {
 	gextras.Objector
 }
-
-var _ TLSPassword = (*tlsPassword)(nil)
 
 // WrapTLSPassword wraps a GObject to the right type. It is
 // primarily used internally.
@@ -39937,7 +40325,7 @@ func (p tlsPassword) Warning() string {
 	return _utf8
 }
 
-func (p tlsPassword) SetDescription(description string) {
+func (p tlsPassword) SetDescriptionTLSPassword(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
@@ -39948,7 +40336,7 @@ func (p tlsPassword) SetDescription(description string) {
 	C.g_tls_password_set_description(_arg0, _arg1)
 }
 
-func (p tlsPassword) SetFlags(flags TLSPasswordFlags) {
+func (p tlsPassword) SetFlagsTLSPassword(flags TLSPasswordFlags) {
 	var _arg0 *C.GTlsPassword     // out
 	var _arg1 C.GTlsPasswordFlags // out
 
@@ -39958,7 +40346,7 @@ func (p tlsPassword) SetFlags(flags TLSPasswordFlags) {
 	C.g_tls_password_set_flags(_arg0, _arg1)
 }
 
-func (p tlsPassword) SetValue(value []byte) {
+func (p tlsPassword) SetValueTLSPassword(value []byte) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
@@ -39970,7 +40358,7 @@ func (p tlsPassword) SetValue(value []byte) {
 	C.g_tls_password_set_value(_arg0, _arg1, _arg2)
 }
 
-func (p tlsPassword) SetWarning(warning string) {
+func (p tlsPassword) SetWarningTLSPassword(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
@@ -39991,10 +40379,9 @@ func (p tlsPassword) SetWarning(warning string) {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixConnection interface {
-	SocketConnection
 
-	// ReceiveCredentials receives credentials from the sending end of the
-	// connection. The sending end has to call
+	// ReceiveCredentialsUnixConnection receives credentials from the sending
+	// end of the connection. The sending end has to call
 	// g_unix_connection_send_credentials() (or similar) for this to work.
 	//
 	// As well as reading the credentials this also reads (and discards) a
@@ -40009,19 +40396,20 @@ type UnixConnection interface {
 	//
 	// Other ways to exchange credentials with a foreign peer includes the
 	// CredentialsMessage type and g_socket_get_credentials() function.
-	ReceiveCredentials(cancellable Cancellable) (Credentials, error)
-	// ReceiveCredentialsFinish finishes an asynchronous receive credentials
-	// operation started with g_unix_connection_receive_credentials_async().
-	ReceiveCredentialsFinish(result AsyncResult) (Credentials, error)
-	// ReceiveFd receives a file descriptor from the sending end of the
-	// connection. The sending end has to call g_unix_connection_send_fd() for
-	// this to work.
+	ReceiveCredentialsUnixConnection(cancellable Cancellable) (Credentials, error)
+	// ReceiveCredentialsFinishUnixConnection finishes an asynchronous receive
+	// credentials operation started with
+	// g_unix_connection_receive_credentials_async().
+	ReceiveCredentialsFinishUnixConnection(result AsyncResult) (Credentials, error)
+	// ReceiveFdUnixConnection receives a file descriptor from the sending end
+	// of the connection. The sending end has to call
+	// g_unix_connection_send_fd() for this to work.
 	//
 	// As well as reading the fd this also reads a single byte from the stream,
 	// as this is required for fd passing to work on some implementations.
-	ReceiveFd(cancellable Cancellable) (int, error)
-	// SendCredentials passes the credentials of the current user the receiving
-	// side of the connection. The receiving end has to call
+	ReceiveFdUnixConnection(cancellable Cancellable) (int, error)
+	// SendCredentialsUnixConnection passes the credentials of the current user
+	// the receiving side of the connection. The receiving end has to call
 	// g_unix_connection_receive_credentials() (or similar) to accept the
 	// credentials.
 	//
@@ -40037,25 +40425,24 @@ type UnixConnection interface {
 	//
 	// Other ways to exchange credentials with a foreign peer includes the
 	// CredentialsMessage type and g_socket_get_credentials() function.
-	SendCredentials(cancellable Cancellable) error
-	// SendCredentialsFinish finishes an asynchronous send credentials operation
-	// started with g_unix_connection_send_credentials_async().
-	SendCredentialsFinish(result AsyncResult) error
-	// SendFd passes a file descriptor to the receiving side of the connection.
-	// The receiving end has to call g_unix_connection_receive_fd() to accept
-	// the file descriptor.
+	SendCredentialsUnixConnection(cancellable Cancellable) error
+	// SendCredentialsFinishUnixConnection finishes an asynchronous send
+	// credentials operation started with
+	// g_unix_connection_send_credentials_async().
+	SendCredentialsFinishUnixConnection(result AsyncResult) error
+	// SendFdUnixConnection passes a file descriptor to the receiving side of
+	// the connection. The receiving end has to call
+	// g_unix_connection_receive_fd() to accept the file descriptor.
 	//
 	// As well as sending the fd this also writes a single byte to the stream,
 	// as this is required for fd passing to work on some implementations.
-	SendFd(fd int, cancellable Cancellable) error
+	SendFdUnixConnection(fd int, cancellable Cancellable) error
 }
 
 // unixConnection implements the UnixConnection class.
 type unixConnection struct {
 	SocketConnection
 }
-
-var _ UnixConnection = (*unixConnection)(nil)
 
 // WrapUnixConnection wraps a GObject to the right type. It is
 // primarily used internally.
@@ -40071,7 +40458,7 @@ func marshalUnixConnection(p uintptr) (interface{}, error) {
 	return WrapUnixConnection(obj), nil
 }
 
-func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials, error) {
+func (c unixConnection) ReceiveCredentialsUnixConnection(cancellable Cancellable) (Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GCredentials    // in
@@ -40091,7 +40478,7 @@ func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials
 	return _credentials, _goerr
 }
 
-func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (Credentials, error) {
+func (c unixConnection) ReceiveCredentialsFinishUnixConnection(result AsyncResult) (Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GCredentials    // in
@@ -40111,7 +40498,7 @@ func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (Credential
 	return _credentials, _goerr
 }
 
-func (c unixConnection) ReceiveFd(cancellable Cancellable) (int, error) {
+func (c unixConnection) ReceiveFdUnixConnection(cancellable Cancellable) (int, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret C.gint             // in
@@ -40131,7 +40518,7 @@ func (c unixConnection) ReceiveFd(cancellable Cancellable) (int, error) {
 	return _gint, _goerr
 }
 
-func (c unixConnection) SendCredentials(cancellable Cancellable) error {
+func (c unixConnection) SendCredentialsUnixConnection(cancellable Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
@@ -40148,7 +40535,7 @@ func (c unixConnection) SendCredentials(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (c unixConnection) SendCredentialsFinish(result AsyncResult) error {
+func (c unixConnection) SendCredentialsFinishUnixConnection(result AsyncResult) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -40165,7 +40552,7 @@ func (c unixConnection) SendCredentialsFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (c unixConnection) SendFd(fd int, cancellable Cancellable) error {
+func (c unixConnection) SendFdUnixConnection(fd int, cancellable Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 C.gint             // out
 	var _arg2 *C.GCancellable    // out
@@ -40194,7 +40581,6 @@ func (c unixConnection) SendFd(fd int, cancellable Cancellable) error {
 // g_unix_connection_receive_credentials(). To receive credentials of a foreign
 // process connected to a socket, use g_socket_get_credentials().
 type UnixCredentialsMessage interface {
-	SocketControlMessage
 
 	// Credentials gets the credentials stored in @message.
 	Credentials() Credentials
@@ -40204,8 +40590,6 @@ type UnixCredentialsMessage interface {
 type unixCredentialsMessage struct {
 	SocketControlMessage
 }
-
-var _ UnixCredentialsMessage = (*unixCredentialsMessage)(nil)
 
 // WrapUnixCredentialsMessage wraps a GObject to the right type. It is
 // primarily used internally.
@@ -40277,9 +40661,8 @@ func (m unixCredentialsMessage) Credentials() Credentials {
 // Note that `<gio/gunixfdlist.h>` belongs to the UNIX-specific GIO interfaces,
 // thus you have to use the `gio-unix-2.0.pc` pkg-config file when using it.
 type UnixFDList interface {
-	gextras.Objector
 
-	// Append adds a file descriptor to @list.
+	// AppendUnixFDList adds a file descriptor to @list.
 	//
 	// The file descriptor is duplicated using dup(). You keep your copy of the
 	// descriptor and the copy contained in @list will be closed when @list is
@@ -40291,8 +40674,8 @@ type UnixFDList interface {
 	// The index of the file descriptor in the list is returned. If you use this
 	// index with g_unix_fd_list_get() then you will receive back a duplicated
 	// copy of the same file descriptor.
-	Append(fd int) (int, error)
-	// Get gets a file descriptor out of @list.
+	AppendUnixFDList(fd int) (int, error)
+	// GetUnixFDList gets a file descriptor out of @list.
 	//
 	// @index_ specifies the index of the file descriptor to get. It is a
 	// programmer error for @index_ to be out of range; see
@@ -40303,7 +40686,7 @@ type UnixFDList interface {
 	//
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
-	Get(index_ int) (int, error)
+	GetUnixFDList(index_ int) (int, error)
 	// Length gets the length of @list (ie: the number of file descriptors
 	// contained within).
 	Length() int
@@ -40313,8 +40696,6 @@ type UnixFDList interface {
 type unixFDList struct {
 	gextras.Objector
 }
-
-var _ UnixFDList = (*unixFDList)(nil)
 
 // WrapUnixFDList wraps a GObject to the right type. It is
 // primarily used internally.
@@ -40367,7 +40748,7 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 	return _unixFDList
 }
 
-func (l unixFDList) Append(fd int) (int, error) {
+func (l unixFDList) AppendUnixFDList(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -40387,7 +40768,7 @@ func (l unixFDList) Append(fd int) (int, error) {
 	return _gint, _goerr
 }
 
-func (l unixFDList) Get(index_ int) (int, error) {
+func (l unixFDList) GetUnixFDList(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -40435,9 +40816,8 @@ func (l unixFDList) Length() int {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixFDMessage interface {
-	SocketControlMessage
 
-	// AppendFd adds a file descriptor to @message.
+	// AppendFdUnixFDMessage adds a file descriptor to @message.
 	//
 	// The file descriptor is duplicated using dup(). You keep your copy of the
 	// descriptor and the copy contained in @message will be closed when
@@ -40445,7 +40825,7 @@ type UnixFDMessage interface {
 	//
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
-	AppendFd(fd int) error
+	AppendFdUnixFDMessage(fd int) error
 	// FdList gets the FDList contained in @message. This function does not
 	// return a reference to the caller, but the returned list is valid for the
 	// lifetime of @message.
@@ -40456,8 +40836,6 @@ type UnixFDMessage interface {
 type unixFDMessage struct {
 	SocketControlMessage
 }
-
-var _ UnixFDMessage = (*unixFDMessage)(nil)
 
 // WrapUnixFDMessage wraps a GObject to the right type. It is
 // primarily used internally.
@@ -40503,7 +40881,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	return _unixFDMessage
 }
 
-func (m unixFDMessage) AppendFd(fd int) error {
+func (m unixFDMessage) AppendFdUnixFDMessage(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in
@@ -40544,36 +40922,29 @@ func (m unixFDMessage) FdList() UnixFDList {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixInputStream interface {
-	InputStream
 	FileDescriptorBased
 	PollableInputStream
 
 	// CloseFd returns whether the file descriptor of @stream will be closed
 	// when the stream is closed.
 	CloseFd() bool
-	// Fd: return the UNIX file descriptor that the stream reads from.
-	Fd() int
-	// SetCloseFd sets whether the file descriptor of @stream shall be closed
-	// when the stream is closed.
-	SetCloseFd(closeFd bool)
+	// GetFd: return the UNIX file descriptor that the stream reads from.
+	GetFd() int
+	// SetCloseFdUnixInputStream sets whether the file descriptor of @stream
+	// shall be closed when the stream is closed.
+	SetCloseFdUnixInputStream(closeFd bool)
 }
 
 // unixInputStream implements the UnixInputStream class.
 type unixInputStream struct {
 	InputStream
-	FileDescriptorBased
-	PollableInputStream
 }
-
-var _ UnixInputStream = (*unixInputStream)(nil)
 
 // WrapUnixInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixInputStream(obj *externglib.Object) UnixInputStream {
 	return unixInputStream{
-		InputStream:         WrapInputStream(obj),
-		FileDescriptorBased: WrapFileDescriptorBased(obj),
-		PollableInputStream: WrapPollableInputStream(obj),
+		InputStream: WrapInputStream(obj),
 	}
 }
 
@@ -40623,7 +40994,7 @@ func (s unixInputStream) CloseFd() bool {
 	return _ok
 }
 
-func (s unixInputStream) Fd() int {
+func (s unixInputStream) GetFd() int {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gint              // in
 
@@ -40638,7 +41009,7 @@ func (s unixInputStream) Fd() int {
 	return _gint
 }
 
-func (s unixInputStream) SetCloseFd(closeFd bool) {
+func (s unixInputStream) SetCloseFdUnixInputStream(closeFd bool) {
 	var _arg0 *C.GUnixInputStream // out
 	var _arg1 C.gboolean          // out
 
@@ -40650,25 +41021,38 @@ func (s unixInputStream) SetCloseFd(closeFd bool) {
 	C.g_unix_input_stream_set_close_fd(_arg0, _arg1)
 }
 
+func (f unixInputStream) Fd() int {
+	return WrapFileDescriptorBased(gextras.InternObject(f)).Fd()
+}
+
+func (s unixInputStream) CanPoll() bool {
+	return WrapPollableInputStream(gextras.InternObject(s)).CanPoll()
+}
+
+func (s unixInputStream) IsReadable() bool {
+	return WrapPollableInputStream(gextras.InternObject(s)).IsReadable()
+}
+
+func (s unixInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+	return WrapPollableInputStream(gextras.InternObject(s)).ReadNonblocking(buffer, cancellable)
+}
+
 // UnixMountMonitor watches Mounts for changes.
 type UnixMountMonitor interface {
-	gextras.Objector
 
-	// SetRateLimit: this function does nothing.
+	// SetRateLimitUnixMountMonitor: this function does nothing.
 	//
 	// Before 2.44, this was a partially-effective way of controlling the rate
 	// at which events would be reported under some uncommon circumstances.
 	// Since @mount_monitor is a singleton, it also meant that calling this
 	// function would have side effects for other users of the monitor.
-	SetRateLimit(limitMsec int)
+	SetRateLimitUnixMountMonitor(limitMsec int)
 }
 
 // unixMountMonitor implements the UnixMountMonitor class.
 type unixMountMonitor struct {
 	gextras.Objector
 }
-
-var _ UnixMountMonitor = (*unixMountMonitor)(nil)
 
 // WrapUnixMountMonitor wraps a GObject to the right type. It is
 // primarily used internally.
@@ -40699,7 +41083,7 @@ func NewUnixMountMonitor() UnixMountMonitor {
 	return _unixMountMonitor
 }
 
-func (m unixMountMonitor) SetRateLimit(limitMsec int) {
+func (m unixMountMonitor) SetRateLimitUnixMountMonitor(limitMsec int) {
 	var _arg0 *C.GUnixMountMonitor // out
 	var _arg1 C.int                // out
 
@@ -40718,36 +41102,29 @@ func (m unixMountMonitor) SetRateLimit(limitMsec int) {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixOutputStream interface {
-	OutputStream
 	FileDescriptorBased
 	PollableOutputStream
 
 	// CloseFd returns whether the file descriptor of @stream will be closed
 	// when the stream is closed.
 	CloseFd() bool
-	// Fd: return the UNIX file descriptor that the stream writes to.
-	Fd() int
-	// SetCloseFd sets whether the file descriptor of @stream shall be closed
-	// when the stream is closed.
-	SetCloseFd(closeFd bool)
+	// GetFd: return the UNIX file descriptor that the stream writes to.
+	GetFd() int
+	// SetCloseFdUnixOutputStream sets whether the file descriptor of @stream
+	// shall be closed when the stream is closed.
+	SetCloseFdUnixOutputStream(closeFd bool)
 }
 
 // unixOutputStream implements the UnixOutputStream class.
 type unixOutputStream struct {
 	OutputStream
-	FileDescriptorBased
-	PollableOutputStream
 }
-
-var _ UnixOutputStream = (*unixOutputStream)(nil)
 
 // WrapUnixOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixOutputStream(obj *externglib.Object) UnixOutputStream {
 	return unixOutputStream{
-		OutputStream:         WrapOutputStream(obj),
-		FileDescriptorBased:  WrapFileDescriptorBased(obj),
-		PollableOutputStream: WrapPollableOutputStream(obj),
+		OutputStream: WrapOutputStream(obj),
 	}
 }
 
@@ -40797,7 +41174,7 @@ func (s unixOutputStream) CloseFd() bool {
 	return _ok
 }
 
-func (s unixOutputStream) Fd() int {
+func (s unixOutputStream) GetFd() int {
 	var _arg0 *C.GUnixOutputStream // out
 	var _cret C.gint               // in
 
@@ -40812,7 +41189,7 @@ func (s unixOutputStream) Fd() int {
 	return _gint
 }
 
-func (s unixOutputStream) SetCloseFd(closeFd bool) {
+func (s unixOutputStream) SetCloseFdUnixOutputStream(closeFd bool) {
 	var _arg0 *C.GUnixOutputStream // out
 	var _arg1 C.gboolean           // out
 
@@ -40822,6 +41199,26 @@ func (s unixOutputStream) SetCloseFd(closeFd bool) {
 	}
 
 	C.g_unix_output_stream_set_close_fd(_arg0, _arg1)
+}
+
+func (f unixOutputStream) Fd() int {
+	return WrapFileDescriptorBased(gextras.InternObject(f)).Fd()
+}
+
+func (s unixOutputStream) CanPoll() bool {
+	return WrapPollableOutputStream(gextras.InternObject(s)).CanPoll()
+}
+
+func (s unixOutputStream) IsWritable() bool {
+	return WrapPollableOutputStream(gextras.InternObject(s)).IsWritable()
+}
+
+func (s unixOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+	return WrapPollableOutputStream(gextras.InternObject(s)).WriteNonblocking(buffer, cancellable)
+}
+
+func (s unixOutputStream) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error) {
+	return WrapPollableOutputStream(gextras.InternObject(s)).WritevNonblocking(vectors, cancellable)
 }
 
 // UnixSocketAddress: support for UNIX-domain (also known as local) sockets.
@@ -40839,7 +41236,6 @@ func (s unixOutputStream) SetCloseFd(closeFd bool) {
 // using it.
 type UnixSocketAddress interface {
 	SocketAddress
-	SocketConnectable
 
 	// AddressType gets @address's type.
 	AddressType() UnixSocketAddressType
@@ -40861,17 +41257,13 @@ type UnixSocketAddress interface {
 // unixSocketAddress implements the UnixSocketAddress class.
 type unixSocketAddress struct {
 	SocketAddress
-	SocketConnectable
 }
-
-var _ UnixSocketAddress = (*unixSocketAddress)(nil)
 
 // WrapUnixSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
 	return unixSocketAddress{
-		SocketAddress:     WrapSocketAddress(obj),
-		SocketConnectable: WrapSocketConnectable(obj),
+		SocketAddress: WrapSocketAddress(obj),
 	}
 }
 
@@ -41032,9 +41424,20 @@ func (a unixSocketAddress) PathLen() uint {
 	return _gsize
 }
 
+func (c unixSocketAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c unixSocketAddress) ProXYEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+}
+
+func (c unixSocketAddress) String() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).String()
+}
+
 // VFS: entry point for using GIO functionality.
 type VFS interface {
-	gextras.Objector
 
 	// FileForPath gets a #GFile for @path.
 	FileForPath(path string) File
@@ -41046,23 +41449,21 @@ type VFS interface {
 	FileForURI(uri string) File
 	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 	SupportedURISchemes() []string
-	// IsActive checks if the VFS is active.
-	IsActive() bool
-	// ParseName: this operation never fails, but the returned object might not
-	// support any I/O operations if the @parse_name cannot be parsed by the
+	// IsActiveVFS checks if the VFS is active.
+	IsActiveVFS() bool
+	// ParseNameVFS: this operation never fails, but the returned object might
+	// not support any I/O operations if the @parse_name cannot be parsed by the
 	// #GVfs module.
-	ParseName(parseName string) File
-	// UnregisterURIScheme unregisters the URI handler for @scheme previously
+	ParseNameVFS(parseName string) File
+	// UnregisterURISchemeVFS unregisters the URI handler for @scheme previously
 	// registered with g_vfs_register_uri_scheme().
-	UnregisterURIScheme(scheme string) bool
+	UnregisterURISchemeVFS(scheme string) bool
 }
 
 // vfS implements the VFS class.
 type vfS struct {
 	gextras.Objector
 }
-
-var _ VFS = (*vfS)(nil)
 
 // WrapVFS wraps a GObject to the right type. It is
 // primarily used internally.
@@ -41141,7 +41542,7 @@ func (v vfS) SupportedURISchemes() []string {
 	return _utf8s
 }
 
-func (v vfS) IsActive() bool {
+func (v vfS) IsActiveVFS() bool {
 	var _arg0 *C.GVfs    // out
 	var _cret C.gboolean // in
 
@@ -41158,7 +41559,7 @@ func (v vfS) IsActive() bool {
 	return _ok
 }
 
-func (v vfS) ParseName(parseName string) File {
+func (v vfS) ParseNameVFS(parseName string) File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -41176,7 +41577,7 @@ func (v vfS) ParseName(parseName string) File {
 	return _file
 }
 
-func (v vfS) UnregisterURIScheme(scheme string) bool {
+func (v vfS) UnregisterURISchemeVFS(scheme string) bool {
 	var _arg0 *C.GVfs    // out
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
@@ -41207,7 +41608,6 @@ func (v vfS) UnregisterURIScheme(scheme string) bool {
 // In order to receive updates about volumes and mounts monitored through GVFS,
 // a main loop must be running.
 type VolumeMonitor interface {
-	gextras.Objector
 
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 	MountForUUID(uuid string) Mount
@@ -41220,8 +41620,6 @@ type VolumeMonitor interface {
 type volumeMonitor struct {
 	gextras.Objector
 }
-
-var _ VolumeMonitor = (*volumeMonitor)(nil)
 
 // WrapVolumeMonitor wraps a GObject to the right type. It is
 // primarily used internally.
@@ -41275,36 +41673,31 @@ func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
 
 // ZlibCompressor: zlib decompression
 type ZlibCompressor interface {
-	gextras.Objector
 	Converter
 
 	// FileInfo returns the Compressor:file-info property.
 	FileInfo() FileInfo
-	// SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's
-	// Compressor:format property is G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be
-	// used to set the file name and modification time in the GZIP header of the
-	// compressed data.
+	// SetFileInfoZlibCompressor sets @file_info in @compressor. If non-nil, and
+	// @compressor's Compressor:format property is
+	// G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be used to set the file name and
+	// modification time in the GZIP header of the compressed data.
 	//
 	// Note: it is an error to call this function while a compression is in
 	// progress; it may only be called immediately after creation of
 	// @compressor, or after resetting it with g_converter_reset().
-	SetFileInfo(fileInfo FileInfo)
+	SetFileInfoZlibCompressor(fileInfo FileInfo)
 }
 
 // zlibCompressor implements the ZlibCompressor class.
 type zlibCompressor struct {
 	gextras.Objector
-	Converter
 }
-
-var _ ZlibCompressor = (*zlibCompressor)(nil)
 
 // WrapZlibCompressor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapZlibCompressor(obj *externglib.Object) ZlibCompressor {
 	return zlibCompressor{
-		Objector:  obj,
-		Converter: WrapConverter(obj),
+		Objector: obj,
 	}
 }
 
@@ -41347,7 +41740,7 @@ func (c zlibCompressor) FileInfo() FileInfo {
 	return _fileInfo
 }
 
-func (c zlibCompressor) SetFileInfo(fileInfo FileInfo) {
+func (c zlibCompressor) SetFileInfoZlibCompressor(fileInfo FileInfo) {
 	var _arg0 *C.GZlibCompressor // out
 	var _arg1 *C.GFileInfo       // out
 
@@ -41357,9 +41750,16 @@ func (c zlibCompressor) SetFileInfo(fileInfo FileInfo) {
 	C.g_zlib_compressor_set_file_info(_arg0, _arg1)
 }
 
+func (c zlibCompressor) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
+	return WrapConverter(gextras.InternObject(c)).Convert(inbuf, outbuf, flags)
+}
+
+func (c zlibCompressor) Reset() {
+	WrapConverter(gextras.InternObject(c)).Reset()
+}
+
 // ZlibDecompressor: zlib decompression
 type ZlibDecompressor interface {
-	gextras.Objector
 	Converter
 
 	// FileInfo retrieves the Info constructed from the GZIP header data of
@@ -41373,17 +41773,13 @@ type ZlibDecompressor interface {
 // zlibDecompressor implements the ZlibDecompressor class.
 type zlibDecompressor struct {
 	gextras.Objector
-	Converter
 }
-
-var _ ZlibDecompressor = (*zlibDecompressor)(nil)
 
 // WrapZlibDecompressor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapZlibDecompressor(obj *externglib.Object) ZlibDecompressor {
 	return zlibDecompressor{
-		Objector:  obj,
-		Converter: WrapConverter(obj),
+		Objector: obj,
 	}
 }
 
@@ -41424,29 +41820,31 @@ func (d zlibDecompressor) FileInfo() FileInfo {
 	return _fileInfo
 }
 
-// DBusAnnotationInfo: information about an annotation.
-type DBusAnnotationInfo struct {
-	native C.GDBusAnnotationInfo
+func (c zlibDecompressor) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
+	return WrapConverter(gextras.InternObject(c)).Convert(inbuf, outbuf, flags)
 }
+
+func (c zlibDecompressor) Reset() {
+	WrapConverter(gextras.InternObject(c)).Reset()
+}
+
+// DBusAnnotationInfo: information about an annotation.
+type DBusAnnotationInfo C.GDBusAnnotationInfo
 
 // WrapDBusAnnotationInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusAnnotationInfo(ptr unsafe.Pointer) *DBusAnnotationInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusAnnotationInfo)(ptr)
 }
 
 func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusAnnotationInfo(unsafe.Pointer(b)), nil
+	return (*DBusAnnotationInfo)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
@@ -41481,28 +41879,22 @@ func (i *DBusAnnotationInfo) Unref() {
 }
 
 // DBusArgInfo: information about an argument for a method or a signal.
-type DBusArgInfo struct {
-	native C.GDBusArgInfo
-}
+type DBusArgInfo C.GDBusArgInfo
 
 // WrapDBusArgInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusArgInfo(ptr unsafe.Pointer) *DBusArgInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusArgInfo)(ptr)
 }
 
 func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusArgInfo(unsafe.Pointer(b)), nil
+	return (*DBusArgInfo)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusArgInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
@@ -41537,48 +41929,36 @@ func (i *DBusArgInfo) Unref() {
 }
 
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
-type DBusErrorEntry struct {
-	native C.GDBusErrorEntry
-}
+type DBusErrorEntry C.GDBusErrorEntry
 
 // WrapDBusErrorEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusErrorEntry)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusErrorEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // DBusInterfaceInfo: information about a D-Bus interface.
-type DBusInterfaceInfo struct {
-	native C.GDBusInterfaceInfo
-}
+type DBusInterfaceInfo C.GDBusInterfaceInfo
 
 // WrapDBusInterfaceInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusInterfaceInfo)(ptr)
 }
 
 func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusInterfaceInfo(unsafe.Pointer(b)), nil
+	return (*DBusInterfaceInfo)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // CacheBuild builds a lookup-cache to speed up
@@ -41744,48 +42124,36 @@ func (i *DBusInterfaceInfo) Unref() {
 // ensure that you either provide a non-nil @set_property() function or provide
 // an implementation of the `Set` call. If implementing the call, you must
 // return the value of type G_VARIANT_TYPE_UNIT.
-type DBusInterfaceVTable struct {
-	native C.GDBusInterfaceVTable
-}
+type DBusInterfaceVTable C.GDBusInterfaceVTable
 
 // WrapDBusInterfaceVTable wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusInterfaceVTable(ptr unsafe.Pointer) *DBusInterfaceVTable {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusInterfaceVTable)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusInterfaceVTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // DBusMethodInfo: information about a method on an D-Bus interface.
-type DBusMethodInfo struct {
-	native C.GDBusMethodInfo
-}
+type DBusMethodInfo C.GDBusMethodInfo
 
 // WrapDBusMethodInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusMethodInfo)(ptr)
 }
 
 func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusMethodInfo(unsafe.Pointer(b)), nil
+	return (*DBusMethodInfo)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusMethodInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
@@ -41820,23 +42188,17 @@ func (i *DBusMethodInfo) Unref() {
 }
 
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
-type DBusNodeInfo struct {
-	native C.GDBusNodeInfo
-}
+type DBusNodeInfo C.GDBusNodeInfo
 
 // WrapDBusNodeInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusNodeInfo)(ptr)
 }
 
 func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusNodeInfo(unsafe.Pointer(b)), nil
+	return (*DBusNodeInfo)(unsafe.Pointer(b)), nil
 }
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
@@ -41864,7 +42226,7 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 
 // Native returns the underlying C source pointer.
 func (d *DBusNodeInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // LookupInterface looks up information about an interface.
@@ -41920,28 +42282,22 @@ func (i *DBusNodeInfo) Unref() {
 }
 
 // DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
-type DBusPropertyInfo struct {
-	native C.GDBusPropertyInfo
-}
+type DBusPropertyInfo C.GDBusPropertyInfo
 
 // WrapDBusPropertyInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusPropertyInfo(ptr unsafe.Pointer) *DBusPropertyInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusPropertyInfo)(ptr)
 }
 
 func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusPropertyInfo(unsafe.Pointer(b)), nil
+	return (*DBusPropertyInfo)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusPropertyInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
@@ -41976,28 +42332,22 @@ func (i *DBusPropertyInfo) Unref() {
 }
 
 // DBusSignalInfo: information about a signal on a D-Bus interface.
-type DBusSignalInfo struct {
-	native C.GDBusSignalInfo
-}
+type DBusSignalInfo C.GDBusSignalInfo
 
 // WrapDBusSignalInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusSignalInfo(ptr unsafe.Pointer) *DBusSignalInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusSignalInfo)(ptr)
 }
 
 func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusSignalInfo(unsafe.Pointer(b)), nil
+	return (*DBusSignalInfo)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusSignalInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
@@ -42033,64 +42383,46 @@ func (i *DBusSignalInfo) Unref() {
 
 // DBusSubtreeVTable: virtual table for handling subtrees registered with
 // g_dbus_connection_register_subtree().
-type DBusSubtreeVTable struct {
-	native C.GDBusSubtreeVTable
-}
+type DBusSubtreeVTable C.GDBusSubtreeVTable
 
 // WrapDBusSubtreeVTable wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDBusSubtreeVTable(ptr unsafe.Pointer) *DBusSubtreeVTable {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*DBusSubtreeVTable)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (d *DBusSubtreeVTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	return unsafe.Pointer(d)
 }
 
 // FileAttributeInfo: information about a specific attribute.
-type FileAttributeInfo struct {
-	native C.GFileAttributeInfo
-}
+type FileAttributeInfo C.GFileAttributeInfo
 
 // WrapFileAttributeInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapFileAttributeInfo(ptr unsafe.Pointer) *FileAttributeInfo {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*FileAttributeInfo)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (f *FileAttributeInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+	return unsafe.Pointer(f)
 }
 
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
 // attributes. The registry stores Key-Value pair formats as AttributeInfos.
-type FileAttributeInfoList struct {
-	native C.GFileAttributeInfoList
-}
+type FileAttributeInfoList C.GFileAttributeInfoList
 
 // WrapFileAttributeInfoList wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapFileAttributeInfoList(ptr unsafe.Pointer) *FileAttributeInfoList {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*FileAttributeInfoList)(ptr)
 }
 
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileAttributeInfoList(unsafe.Pointer(b)), nil
+	return (*FileAttributeInfoList)(unsafe.Pointer(b)), nil
 }
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
@@ -42111,7 +42443,7 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 
 // Native returns the underlying C source pointer.
 func (f *FileAttributeInfoList) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+	return unsafe.Pointer(f)
 }
 
 // Add adds a new attribute with @name to the @list, setting its @type and
@@ -42199,23 +42531,17 @@ func (l *FileAttributeInfoList) Unref() {
 }
 
 // FileAttributeMatcher determines if a string matches a file attribute.
-type FileAttributeMatcher struct {
-	native C.GFileAttributeMatcher
-}
+type FileAttributeMatcher C.GFileAttributeMatcher
 
 // WrapFileAttributeMatcher wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapFileAttributeMatcher(ptr unsafe.Pointer) *FileAttributeMatcher {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*FileAttributeMatcher)(ptr)
 }
 
 func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileAttributeMatcher(unsafe.Pointer(b)), nil
+	return (*FileAttributeMatcher)(unsafe.Pointer(b)), nil
 }
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
@@ -42240,7 +42566,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 
 // Native returns the underlying C source pointer.
 func (f *FileAttributeMatcher) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+	return unsafe.Pointer(f)
 }
 
 // EnumerateNamespace checks if the matcher will match all of the keys in a
@@ -42408,23 +42734,17 @@ func (m *FileAttributeMatcher) Unref() {
 
 // IOExtension is an opaque data structure and can only be accessed using the
 // following functions.
-type IOExtension struct {
-	native C.GIOExtension
-}
+type IOExtension C.GIOExtension
 
 // WrapIOExtension wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapIOExtension(ptr unsafe.Pointer) *IOExtension {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*IOExtension)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (i *IOExtension) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	return unsafe.Pointer(i)
 }
 
 // Name gets the name under which @extension was registered.
@@ -42480,23 +42800,17 @@ func (e *IOExtension) Type() externglib.Type {
 
 // IOExtensionPoint is an opaque data structure and can only be accessed using
 // the following functions.
-type IOExtensionPoint struct {
-	native C.GIOExtensionPoint
-}
+type IOExtensionPoint C.GIOExtensionPoint
 
 // WrapIOExtensionPoint wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapIOExtensionPoint(ptr unsafe.Pointer) *IOExtensionPoint {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*IOExtensionPoint)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (i *IOExtensionPoint) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	return unsafe.Pointer(i)
 }
 
 // ExtensionByName finds a OExtension for an extension point by name.
@@ -42541,7 +42855,7 @@ func (e *IOExtensionPoint) SetRequiredType(typ externglib.Type) {
 	var _arg1 C.GType              // out
 
 	_arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GType(typ)
+	_arg1 = (C.GType)(typ)
 
 	C.g_io_extension_point_set_required_type(_arg0, _arg1)
 }
@@ -42551,23 +42865,17 @@ func (e *IOExtensionPoint) SetRequiredType(typ externglib.Type) {
 //
 // The scope can be used with g_io_modules_load_all_in_directory_with_scope() or
 // g_io_modules_scan_all_in_directory_with_scope().
-type IOModuleScope struct {
-	native C.GIOModuleScope
-}
+type IOModuleScope C.GIOModuleScope
 
 // WrapIOModuleScope wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapIOModuleScope(ptr unsafe.Pointer) *IOModuleScope {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*IOModuleScope)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (i *IOModuleScope) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	return unsafe.Pointer(i)
 }
 
 // Block: block modules with the given @basename from being loaded when this
@@ -42594,42 +42902,30 @@ func (s *IOModuleScope) Free() {
 }
 
 // IOSchedulerJob: opaque class for defining and scheduling IO jobs.
-type IOSchedulerJob struct {
-	native C.GIOSchedulerJob
-}
+type IOSchedulerJob C.GIOSchedulerJob
 
 // WrapIOSchedulerJob wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapIOSchedulerJob(ptr unsafe.Pointer) *IOSchedulerJob {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*IOSchedulerJob)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (i *IOSchedulerJob) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	return unsafe.Pointer(i)
 }
 
-type IOStreamAdapter struct {
-	native C.GIOStreamAdapter
-}
+type IOStreamAdapter C.GIOStreamAdapter
 
 // WrapIOStreamAdapter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapIOStreamAdapter(ptr unsafe.Pointer) *IOStreamAdapter {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*IOStreamAdapter)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (i *IOStreamAdapter) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	return unsafe.Pointer(i)
 }
 
 // InputMessage: structure used for scatter/gather data input when receiving
@@ -42651,45 +42947,33 @@ func (i *IOStreamAdapter) Native() unsafe.Pointer {
 //
 // Flags relevant to this message will be returned in @flags. For example,
 // `MSG_EOR` or `MSG_TRUNC`.
-type InputMessage struct {
-	native C.GInputMessage
-}
+type InputMessage C.GInputMessage
 
 // WrapInputMessage wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapInputMessage(ptr unsafe.Pointer) *InputMessage {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*InputMessage)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (i *InputMessage) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	return unsafe.Pointer(i)
 }
 
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
-type InputVector struct {
-	native C.GInputVector
-}
+type InputVector C.GInputVector
 
 // WrapInputVector wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapInputVector(ptr unsafe.Pointer) *InputVector {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*InputVector)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (i *InputVector) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	return unsafe.Pointer(i)
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -42699,45 +42983,33 @@ func (i *InputVector) Native() unsafe.Pointer {
 //
 // If @address is nil then the message is sent to the default receiver (as
 // previously set by g_socket_connect()).
-type OutputMessage struct {
-	native C.GOutputMessage
-}
+type OutputMessage C.GOutputMessage
 
 // WrapOutputMessage wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapOutputMessage(ptr unsafe.Pointer) *OutputMessage {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*OutputMessage)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (o *OutputMessage) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	return unsafe.Pointer(o)
 }
 
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
-type OutputVector struct {
-	native C.GOutputVector
-}
+type OutputVector C.GOutputVector
 
 // WrapOutputVector wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*OutputVector)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (o *OutputVector) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	return unsafe.Pointer(o)
 }
 
 // Resource applications and libraries often contain binary or textual data that
@@ -42888,28 +43160,22 @@ func (o *OutputVector) Native() unsafe.Pointer {
 // before the '='. The path after the slash should ideally be absolute, but this
 // is not strictly required. It is possible to overlay the location of a single
 // resource with an individual file.
-type Resource struct {
-	native C.GResource
-}
+type Resource C.GResource
 
 // WrapResource wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapResource(ptr unsafe.Pointer) *Resource {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Resource)(ptr)
 }
 
 func marshalResource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapResource(unsafe.Pointer(b)), nil
+	return (*Resource)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (r *Resource) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	return unsafe.Pointer(r)
 }
 
 // EnumerateChildren returns all the names of children at the specified @path in
@@ -43073,28 +43339,22 @@ func (r *Resource) Unref() {
 // (ie: .gschema.xml files) instead of a gschemas.compiled file. In that case,
 // the plugin loading system must compile the schemas for itself before
 // attempting to create the settings source.
-type SettingsSchema struct {
-	native C.GSettingsSchema
-}
+type SettingsSchema C.GSettingsSchema
 
 // WrapSettingsSchema wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSettingsSchema(ptr unsafe.Pointer) *SettingsSchema {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*SettingsSchema)(ptr)
 }
 
 func marshalSettingsSchema(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsSchema(unsafe.Pointer(b)), nil
+	return (*SettingsSchema)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (s *SettingsSchema) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return unsafe.Pointer(s)
 }
 
 // ID: get the ID of @schema.
@@ -43277,28 +43537,22 @@ func (s *SettingsSchema) Unref() {
 
 // SettingsSchemaKey is an opaque data structure and can only be accessed using
 // the following functions.
-type SettingsSchemaKey struct {
-	native C.GSettingsSchemaKey
-}
+type SettingsSchemaKey C.GSettingsSchemaKey
 
 // WrapSettingsSchemaKey wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSettingsSchemaKey(ptr unsafe.Pointer) *SettingsSchemaKey {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*SettingsSchemaKey)(ptr)
 }
 
 func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsSchemaKey(unsafe.Pointer(b)), nil
+	return (*SettingsSchemaKey)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (s *SettingsSchemaKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return unsafe.Pointer(s)
 }
 
 // DefaultValue gets the default value for @key.
@@ -43514,23 +43768,17 @@ func (k *SettingsSchemaKey) Unref() {
 
 // SettingsSchemaSource: this is an opaque structure type. You may not access it
 // directly.
-type SettingsSchemaSource struct {
-	native C.GSettingsSchemaSource
-}
+type SettingsSchemaSource C.GSettingsSchemaSource
 
 // WrapSettingsSchemaSource wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSettingsSchemaSource(ptr unsafe.Pointer) *SettingsSchemaSource {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*SettingsSchemaSource)(ptr)
 }
 
 func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsSchemaSource(unsafe.Pointer(b)), nil
+	return (*SettingsSchemaSource)(unsafe.Pointer(b)), nil
 }
 
 // NewSettingsSchemaSourceFromDirectory constructs a struct SettingsSchemaSource.
@@ -43564,7 +43812,7 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 
 // Native returns the underlying C source pointer.
 func (s *SettingsSchemaSource) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return unsafe.Pointer(s)
 }
 
 // ListSchemas lists the schemas in a given source.
@@ -43701,23 +43949,17 @@ func (s *SettingsSchemaSource) Unref() {
 // to find the Targets for a given service. However, if you are simply planning
 // to connect to the remote service, you can use Service's Connectable interface
 // and not need to worry about Target at all.
-type SrvTarget struct {
-	native C.GSrvTarget
-}
+type SrvTarget C.GSrvTarget
 
 // WrapSrvTarget wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSrvTarget(ptr unsafe.Pointer) *SrvTarget {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*SrvTarget)(ptr)
 }
 
 func marshalSrvTarget(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSrvTarget(unsafe.Pointer(b)), nil
+	return (*SrvTarget)(unsafe.Pointer(b)), nil
 }
 
 // NewSrvTarget constructs a struct SrvTarget.
@@ -43748,7 +43990,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 
 // Native returns the underlying C source pointer.
 func (s *SrvTarget) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return unsafe.Pointer(s)
 }
 
 // Copy copies @target
@@ -43850,23 +44092,17 @@ func (t *SrvTarget) Weight() uint16 {
 
 // StaticResource is an opaque data structure and can only be accessed using the
 // following functions.
-type StaticResource struct {
-	native C.GStaticResource
-}
+type StaticResource C.GStaticResource
 
 // WrapStaticResource wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapStaticResource(ptr unsafe.Pointer) *StaticResource {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*StaticResource)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (s *StaticResource) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return unsafe.Pointer(s)
 }
 
 // Fini: finalized a GResource initialized by g_static_resource_init().
@@ -43918,54 +44154,42 @@ func (s *StaticResource) Init() {
 
 // UnixMountEntry defines a Unix mount entry (e.g.
 // <filename>/media/cdrom</filename>). This corresponds roughly to a mtab entry.
-type UnixMountEntry struct {
-	native C.GUnixMountEntry
-}
+type UnixMountEntry C.GUnixMountEntry
 
 // WrapUnixMountEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapUnixMountEntry(ptr unsafe.Pointer) *UnixMountEntry {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*UnixMountEntry)(ptr)
 }
 
 func marshalUnixMountEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixMountEntry(unsafe.Pointer(b)), nil
+	return (*UnixMountEntry)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (u *UnixMountEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
+	return unsafe.Pointer(u)
 }
 
 // UnixMountPoint defines a Unix mount point (e.g. <filename>/dev</filename>).
 // This corresponds roughly to a fstab entry.
-type UnixMountPoint struct {
-	native C.GUnixMountPoint
-}
+type UnixMountPoint C.GUnixMountPoint
 
 // WrapUnixMountPoint wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapUnixMountPoint(ptr unsafe.Pointer) *UnixMountPoint {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*UnixMountPoint)(ptr)
 }
 
 func marshalUnixMountPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixMountPoint(unsafe.Pointer(b)), nil
+	return (*UnixMountPoint)(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
 func (u *UnixMountPoint) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
+	return unsafe.Pointer(u)
 }
 
 // Compare compares two unix mount points.

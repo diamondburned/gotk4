@@ -117,23 +117,17 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, err
 // to convert image files into `GdkPixdata` structures suitable for inclusion in
 // C sources. To convert the `GdkPixdata` structures back into a `GdkPixbuf`,
 // use `gdk_pixbuf_from_pixdata()`.
-type Pixdata struct {
-	native C.GdkPixdata
-}
+type Pixdata C.GdkPixdata
 
 // WrapPixdata wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
-	if ptr == nil {
-		return nil
-	}
-
 	return (*Pixdata)(ptr)
 }
 
 // Native returns the underlying C source pointer.
 func (p *Pixdata) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	return unsafe.Pointer(p)
 }
 
 // Deserialize deserializes (reconstruct) a Pixdata structure from a byte

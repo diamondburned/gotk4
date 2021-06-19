@@ -40,7 +40,9 @@ type Array struct {
 
 // IsZeroTerminated returns true if the Array is zero-terminated. It accounts
 // for edge cases of the structure.
-func (a Array) IsZeroTerminated() bool { return a.ZeroTerminated == nil || *a.ZeroTerminated }
+func (a Array) IsZeroTerminated() bool {
+	return a.Name == "" && (a.ZeroTerminated == nil || *a.ZeroTerminated)
+}
 
 type Bitfield struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 bitfield"`

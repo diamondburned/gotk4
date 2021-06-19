@@ -17,6 +17,10 @@ type callableGenerator struct {
 	ReturnWrap string // passed to ConversionValue, ctor only
 	Converts   []string
 
+	conv   *TypeConverter
+	goArgs pen.Joints
+	goRets pen.Joints
+
 	pen *pen.BlockSections
 	ng  *NamespaceGenerator
 }
@@ -35,8 +39,10 @@ func (cg *callableGenerator) reset() {
 	cg.pen.Reset()
 
 	*cg = callableGenerator{
-		ng:  cg.ng,
-		pen: cg.pen,
+		ng:     cg.ng,
+		pen:    cg.pen,
+		goArgs: cg.goArgs,
+		goRets: cg.goRets,
 	}
 }
 
@@ -179,29 +185,22 @@ func (cg *callableGenerator) renderBlock() bool {
 		callableValues = append(callableValues, NewThrowValue("_cerr", "_goerr"))
 	}
 
-	convert := NewTypeConverter(cg.ng, callableValues)
-	convert.UseLogger(cg)
+	cg.conv = NewTypeConverter(cg.ng, callableValues)
+	cg.conv.UseLogger(cg)
 
-	results := convert.ConvertAll()
+	results := cg.conv.ConvertAll()
 	if results == nil {
 		cg.Logln(LogSkip, "no conversion", cFunctionSig(cg.CallableAttrs))
 		return false
 	}
 
-	// cg.fg.applyConvertedFxs(results)
-	for _, result := range results {
-		result.ApplySideEffects(&cg.ng.SideEffects)
-
-		for path := range result.Imports {
-			cg.Logln(LogDebug, cg.CIdentifier, "type", anyTypeCGo(result.AnyType), "imports", path)
-		}
-	}
+	cg.ng.applyConvertedFxs(results)
 
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
 
-	goFnArgs := pen.NewJoints(", ", len(results))
-	goFnRets := pen.NewJoints(", ", len(results))
+	cg.goArgs.Reset(", ")
+	cg.goRets.Reset(", ")
 
 	for i, converted := range results {
 		if converted.Skip {
@@ -212,7 +211,7 @@ func (cg *callableGenerator) renderBlock() bool {
 		case ConvertGoToC: // parameter
 			// Skip the instance parameter if any.
 			if i != 0 || !instanceParam {
-				goFnArgs.Addf("%s %s", converted.InName, converted.InType)
+				cg.goArgs.Addf("%s %s", converted.InName, converted.InType)
 			}
 
 			// Go inputs are declared in the parameters, so no InDeclare.
@@ -226,7 +225,7 @@ func (cg *callableGenerator) renderBlock() bool {
 			// purposes. It is not used internally at all, and so it doesn't
 			// have the underscore.
 			decoOut := strings.TrimPrefix(converted.OutName, "_")
-			goFnRets.Addf("%s %s", decoOut, converted.OutType)
+			cg.goRets.Addf("%s %s", decoOut, converted.OutType)
 
 			goReturns.Add(converted.OutName)
 
@@ -239,7 +238,7 @@ func (cg *callableGenerator) renderBlock() bool {
 	}
 
 	// For C function calling.
-	callParams := strings.Join(AddCCallParam(convert), ", ")
+	callParams := strings.Join(AddCCallParam(cg.conv), ", ")
 
 	if !hasReturn {
 		cg.pen.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, callParams)
@@ -253,7 +252,7 @@ func (cg *callableGenerator) renderBlock() bool {
 	}
 
 	cg.Block = cg.pen.String()
-	cg.Tail = "(" + goFnArgs.Join() + ") " + formatReturnSig(goFnRets)
+	cg.Tail = "(" + cg.goArgs.Join() + ") " + formatReturnSig(cg.goRets)
 
 	cg.pen.Reset()
 	return true
@@ -359,7 +358,7 @@ func anyTypeName(typ gir.AnyType, or string) string {
 // Go getter names.
 func callableRenameGetters(parentName string, callables []callableGenerator) {
 	for i, callable := range callables {
-		newName := renameGetter(callable.Name)
+		newName, _ := renameGetter(callable.Name)
 
 		// Avoid duplicating method names with Objector.
 		// TODO: account for other interfaces as well.
@@ -390,16 +389,16 @@ func findCallable(callables []callableGenerator, goName string) int {
 	return -1
 }
 
-func renameGetter(name string) string {
+func renameGetter(name string) (string, bool) {
 	if name == "ToString" {
-		return "String"
+		return "String", true
 	}
 
 	if strings.HasPrefix(name, "Get") && name != "Get" {
-		return strings.TrimPrefix(name, "Get")
+		return strings.TrimPrefix(name, "Get"), true
 	}
 
-	return name
+	return name, false
 }
 
 // callableGrow grows or shrinks the callables slice to the given length. The

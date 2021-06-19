@@ -13,6 +13,9 @@ var interfaceTmpl = newGoTemplate(`
 	{{ if .Virtuals }}
 	// {{ .InterfaceName }}Overrider contains methods that are overridable. This
 	// interface is a subset of the interface {{ .InterfaceName }}.
+	//
+	// As of right now, interface overriding and subclassing is not supported
+	// yet, so the interface currently has no use.
 	type {{ .InterfaceName }}Overrider interface {
 		{{ range .Virtuals -}}
 		{{ GoDoc .Doc 1 .Name }}
@@ -23,7 +26,7 @@ var interfaceTmpl = newGoTemplate(`
 
 	{{ GoDoc .Doc 0 .InterfaceName }}
 	type {{ .InterfaceName }} interface {
-		{{ range .TypeTree.PublicChildren -}}
+		{{ range .TypeTree.PublicEmbeds -}}
 		{{ . }}
 		{{ end }}
 
@@ -35,17 +38,17 @@ var interfaceTmpl = newGoTemplate(`
 
 	// {{ .StructName }} implements the {{ .InterfaceName }} interface.
 	type {{ .StructName }} struct {
-		{{ range .TypeTree.PublicChildren -}}
+		{{ range .TypeTree.PublicEmbeds -}}
 		{{ . }}
 		{{ end }}
 	}
 
 	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
 
-	// Wrap{{ .InterfaceName }} wraps a GObject to a type that implements interface
-	// {{ .InterfaceName }}. It is primarily used internally.
+	// Wrap{{ .InterfaceName }} wraps a GObject to a type that implements
+	// interface {{ .InterfaceName }}. It is primarily used internally.
 	func Wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
-		return {{ .TypeTree.Wrap "obj" }}
+		return {{ .Wrap "obj" }}
 	}
 
 	{{ if .GLibGetType }}
@@ -78,8 +81,8 @@ type ifaceMethod struct {
 	StructName string
 }
 
-func newIfaceGenerator(ng *NamespaceGenerator) *ifaceGenerator {
-	return &ifaceGenerator{
+func newIfaceGenerator(ng *NamespaceGenerator) ifaceGenerator {
+	return ifaceGenerator{
 		ng: ng,
 	}
 }
@@ -96,10 +99,11 @@ func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 		ig.Logln(LogSkip, "cannot be type-resolved")
 		return false
 	}
+	for _, imp := range ig.TypeTree.Requires {
+		ig.ng.importPubl(imp.ResolvedType)
+	}
 
-	ig.TypeTree.ImportChildren(ig.ng)
 	ig.updateMethods()
-
 	return true
 }
 
@@ -127,6 +131,10 @@ func (ig *ifaceGenerator) updateMethods() {
 
 	callableRenameGetters(ig.InterfaceName, ig.Methods)
 	callableRenameGetters(ig.InterfaceName, ig.Virtuals)
+}
+
+func (ig *ifaceGenerator) Wrap(obj string) string {
+	return ig.TypeTree.WrapInterface(obj)
 }
 
 func (ig *ifaceGenerator) Logln(lvl LogLevel, v ...interface{}) {

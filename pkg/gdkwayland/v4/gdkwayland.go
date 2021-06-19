@@ -35,7 +35,6 @@ func init() {
 // [method@GdkWayland.WaylandDevice.get_wl_keyboard] and the `wl_pointer` with
 // [method@GdkWayland.WaylandDevice.get_wl_pointer].
 type WaylandDevice interface {
-	gdk.Device
 
 	// NodePath returns the `/dev/input/event*` path of this device.
 	//
@@ -51,8 +50,6 @@ type WaylandDevice interface {
 type waylandDevice struct {
 	gdk.Device
 }
-
-var _ WaylandDevice = (*waylandDevice)(nil)
 
 // WrapWaylandDevice wraps a GObject to the right type. It is
 // primarily used internally.
@@ -93,17 +90,18 @@ func (d waylandDevice) NodePath() string {
 // You can find out what Wayland globals are supported by a display with
 // [method@GdkWayland.WaylandDisplay.query_registry].
 type WaylandDisplay interface {
-	gdk.Display
 
 	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
-	// QueryRegistry returns true if the the interface was found in the display
-	// `wl_registry.global` handler.
-	QueryRegistry(global string) bool
-	// SetCursorTheme sets the cursor theme for the given @display.
-	SetCursorTheme(name string, size int)
-	// SetStartupNotificationID sets the startup notification ID for a display.
+	// QueryRegistryWaylandDisplay returns true if the the interface was found
+	// in the display `wl_registry.global` handler.
+	QueryRegistryWaylandDisplay(global string) bool
+	// SetCursorThemeWaylandDisplay sets the cursor theme for the given
+	// @display.
+	SetCursorThemeWaylandDisplay(name string, size int)
+	// SetStartupNotificationIDWaylandDisplay sets the startup notification ID
+	// for a display.
 	//
 	// This is usually taken from the value of the `DESKTOP_STARTUP_ID`
 	// environment variable, but in some cases (such as the application not
@@ -112,15 +110,13 @@ type WaylandDisplay interface {
 	// The startup ID is also what is used to signal that the startup is
 	// complete (for example, when opening a window or when calling
 	// [method@Gdk.Display.notify_startup_complete]).
-	SetStartupNotificationID(startupId string)
+	SetStartupNotificationIDWaylandDisplay(startupId string)
 }
 
 // waylandDisplay implements the WaylandDisplay class.
 type waylandDisplay struct {
 	gdk.Display
 }
-
-var _ WaylandDisplay = (*waylandDisplay)(nil)
 
 // WrapWaylandDisplay wraps a GObject to the right type. It is
 // primarily used internally.
@@ -151,7 +147,7 @@ func (d waylandDisplay) StartupNotificationID() string {
 	return _utf8
 }
 
-func (d waylandDisplay) QueryRegistry(global string) bool {
+func (d waylandDisplay) QueryRegistryWaylandDisplay(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
@@ -171,7 +167,7 @@ func (d waylandDisplay) QueryRegistry(global string) bool {
 	return _ok
 }
 
-func (d waylandDisplay) SetCursorTheme(name string, size int) {
+func (d waylandDisplay) SetCursorThemeWaylandDisplay(name string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -184,7 +180,7 @@ func (d waylandDisplay) SetCursorTheme(name string, size int) {
 	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
 
-func (d waylandDisplay) SetStartupNotificationID(startupId string) {
+func (d waylandDisplay) SetStartupNotificationIDWaylandDisplay(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
@@ -201,15 +197,12 @@ func (d waylandDisplay) SetStartupNotificationID(startupId string) {
 // to the Wayland `wl_output` object with
 // [method@GdkWayland.WaylandMonitor.get_wl_output].
 type WaylandMonitor interface {
-	gdk.Monitor
 }
 
 // waylandMonitor implements the WaylandMonitor class.
 type waylandMonitor struct {
 	gdk.Monitor
 }
-
-var _ WaylandMonitor = (*waylandMonitor)(nil)
 
 // WrapWaylandMonitor wraps a GObject to the right type. It is
 // primarily used internally.
@@ -227,15 +220,12 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 
 // WaylandPopup: the Wayland implementation of `GdkPopup`.
 type WaylandPopup interface {
-	WaylandSurface
 }
 
 // waylandPopup implements the WaylandPopup class.
 type waylandPopup struct {
 	WaylandSurface
 }
-
-var _ WaylandPopup = (*waylandPopup)(nil)
 
 // WrapWaylandPopup wraps a GObject to the right type. It is
 // primarily used internally.
@@ -257,15 +247,12 @@ func marshalWaylandPopup(p uintptr) (interface{}, error) {
 // access to the Wayland `wl_seat` object with
 // [method@GdkWayland.WaylandSeat.get_wl_seat].
 type WaylandSeat interface {
-	gdk.Seat
 }
 
 // waylandSeat implements the WaylandSeat class.
 type waylandSeat struct {
 	gdk.Seat
 }
-
-var _ WaylandSeat = (*waylandSeat)(nil)
 
 // WrapWaylandSeat wraps a GObject to the right type. It is
 // primarily used internally.
@@ -287,15 +274,12 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 // to the Wayland `wl_surface` object with
 // [method@GdkWayland.WaylandSurface.get_wl_surface].
 type WaylandSurface interface {
-	gdk.Surface
 }
 
 // waylandSurface implements the WaylandSurface class.
 type waylandSurface struct {
 	gdk.Surface
 }
-
-var _ WaylandSurface = (*waylandSurface)(nil)
 
 // WrapWaylandSurface wraps a GObject to the right type. It is
 // primarily used internally.
@@ -318,12 +302,12 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 // [method@GdkWayland.WaylandToplevel.export_handle] and
 // [method@GdkWayland.WaylandToplevel.set_transient_for_exported].
 type WaylandToplevel interface {
-	WaylandSurface
 
-	// SetApplicationID sets the application id on a `GdkToplevel`.
-	SetApplicationID(applicationId string)
-	// SetTransientForExported marks @toplevel as transient for the surface to
-	// which the given @parent_handle_str refers.
+	// SetApplicationIDWaylandToplevel sets the application id on a
+	// `GdkToplevel`.
+	SetApplicationIDWaylandToplevel(applicationId string)
+	// SetTransientForExportedWaylandToplevel marks @toplevel as transient for
+	// the surface to which the given @parent_handle_str refers.
 	//
 	// Typically, the handle will originate from a
 	// [method@GdkWayland.WaylandToplevel.export_handle] call in another
@@ -331,8 +315,8 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	SetTransientForExported(parentHandleStr string) bool
-	// UnexportHandle destroys the handle that was obtained with
+	SetTransientForExportedWaylandToplevel(parentHandleStr string) bool
+	// UnexportHandleWaylandToplevel destroys the handle that was obtained with
 	// gdk_wayland_toplevel_export_handle().
 	//
 	// It is an error to call this function on a surface that does not have a
@@ -340,15 +324,13 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	UnexportHandle()
+	UnexportHandleWaylandToplevel()
 }
 
 // waylandToplevel implements the WaylandToplevel class.
 type waylandToplevel struct {
 	WaylandSurface
 }
-
-var _ WaylandToplevel = (*waylandToplevel)(nil)
 
 // WrapWaylandToplevel wraps a GObject to the right type. It is
 // primarily used internally.
@@ -364,7 +346,7 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 	return WrapWaylandToplevel(obj), nil
 }
 
-func (t waylandToplevel) SetApplicationID(applicationId string) {
+func (t waylandToplevel) SetApplicationIDWaylandToplevel(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 
@@ -375,7 +357,7 @@ func (t waylandToplevel) SetApplicationID(applicationId string) {
 	C.gdk_wayland_toplevel_set_application_id(_arg0, _arg1)
 }
 
-func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
+func (t waylandToplevel) SetTransientForExportedWaylandToplevel(parentHandleStr string) bool {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 	var _cret C.gboolean     // in
@@ -395,7 +377,7 @@ func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	return _ok
 }
 
-func (t waylandToplevel) UnexportHandle() {
+func (t waylandToplevel) UnexportHandleWaylandToplevel() {
 	var _arg0 *C.GdkToplevel // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))

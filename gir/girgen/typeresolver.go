@@ -96,22 +96,35 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *ResolvedType {
 		}
 	}
 
-	ptrs := int(countPtrs(typ, nil))
-
-	// Some Go types don't want pointers, so we subtract if needed.
-	if ptrs > 0 {
-		ptrs = ptrs - (1 - strings.Count(goType, "*"))
-	}
-
 	goType = "externglib." + strings.TrimPrefix(goType, "*")
+
 	return &ResolvedType{
 		Builtin:    &goType,
 		ImplImport: implImport,
 		PublImport: publImport,
 		GType:      typ.Name,
 		CType:      ctyp,
-		Ptr:        uint8(ptrs),
+		Ptr:        uint8(dereferenceOffset(int(countPtrs(typ, nil)), goType)),
 	}
+}
+
+// dereferenceOffset subtracts 1 from ptrs if the ctype does not have a pointer.
+// It is better explained with an example:
+//
+// If the C type is *GObject, then this wouldn't subtract anything, but if the C
+// type is a gpointer, then we'd be subtracting 1. This code is similar to the
+// one in TypeResolver.
+func dereferenceOffset(ptrs int, typ string) int {
+	if ptrs == 0 {
+		return ptrs
+	}
+
+	count := strings.Count(typ, "*")
+	if count > 1 {
+		count = 1
+	}
+
+	return ptrs - (1 - count)
 }
 
 // typeFromResult creates a resolved type from the given type result.

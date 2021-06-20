@@ -35,6 +35,8 @@ var filters = []girgen.FilterMatcher{
 	// Requires special header, is optional function.
 	girgen.AbsoluteFilter("Gio.networking_init"),
 
+	// girgen.AbsoluteFilter("Gio.ListStore.splice"),
+
 	girgen.FileFilter("garray.h"),
 	girgen.FileFilter("gasyncqueue.h"),
 	girgen.FileFilter("gatomic.h"),

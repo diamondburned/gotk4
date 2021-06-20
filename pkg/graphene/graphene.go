@@ -174,9 +174,9 @@ func NewBoxAlloc() *Box {
 
 	var _box *Box // out
 
-	_box = WrapBox(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_box, func(v *Box) {
-		C.free(unsafe.Pointer(v.Native()))
+	_box = (*Box)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_box, func(v **Box) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _box
@@ -252,12 +252,26 @@ func (a *Box) Equal(b *Box) bool {
 func (b *Box) Expand(point *Point3D) Box {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _res Box
+	var _arg2 C.graphene_box_t      // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	C.graphene_box_expand(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
+	C.graphene_box_expand(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -269,12 +283,26 @@ func (b *Box) Expand(point *Point3D) Box {
 func (b *Box) ExpandScalar(scalar float32) Box {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 C.float           // out
-	var _res Box
+	var _arg2 C.graphene_box_t  // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.float)(scalar)
+	_arg1 = C.float(scalar)
 
-	C.graphene_box_expand_scalar(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
+	C.graphene_box_expand_scalar(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -284,12 +312,26 @@ func (b *Box) ExpandScalar(scalar float32) Box {
 func (b *Box) ExpandVec3(vec *Vec3) Box {
 	var _arg0 *C.graphene_box_t  // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _res Box
+	var _arg2 C.graphene_box_t   // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(vec.Native()))
 
-	C.graphene_box_expand_vec3(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
+	C.graphene_box_expand_vec3(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -306,24 +348,52 @@ func (b *Box) Free() {
 // BoundingSphere computes the bounding #graphene_sphere_t capable of containing
 // the given #graphene_box_t.
 func (b *Box) BoundingSphere() Sphere {
-	var _arg0 *C.graphene_box_t // out
-	var _sphere Sphere
+	var _arg0 *C.graphene_box_t   // out
+	var _arg1 C.graphene_sphere_t // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_box_get_bounding_sphere(_arg0, (*C.graphene_sphere_t)(unsafe.Pointer(&_sphere)))
+	C.graphene_box_get_bounding_sphere(_arg0, &_arg1)
+
+	var _sphere Sphere // out
+
+	{
+		var refTmpIn *C.graphene_sphere_t
+		var refTmpOut *Sphere
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Sphere)(unsafe.Pointer(refTmpIn))
+
+		_sphere = *refTmpOut
+	}
 
 	return _sphere
 }
 
 // Center retrieves the coordinates of the center of a #graphene_box_t.
 func (b *Box) Center() Point3D {
-	var _arg0 *C.graphene_box_t // out
-	var _center Point3D
+	var _arg0 *C.graphene_box_t    // out
+	var _arg1 C.graphene_point3d_t // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_box_get_center(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_center)))
+	C.graphene_box_get_center(_arg0, &_arg1)
+
+	var _center Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_center = *refTmpOut
+	}
 
 	return _center
 }
@@ -339,7 +409,7 @@ func (b *Box) Depth() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -355,7 +425,7 @@ func (b *Box) Height() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -363,12 +433,26 @@ func (b *Box) Height() float32 {
 // Max retrieves the coordinates of the maximum point of the given
 // #graphene_box_t.
 func (b *Box) Max() Point3D {
-	var _arg0 *C.graphene_box_t // out
-	var _max Point3D
+	var _arg0 *C.graphene_box_t    // out
+	var _arg1 C.graphene_point3d_t // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_box_get_max(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_max)))
+	C.graphene_box_get_max(_arg0, &_arg1)
+
+	var _max Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_max = *refTmpOut
+	}
 
 	return _max
 }
@@ -376,12 +460,26 @@ func (b *Box) Max() Point3D {
 // Min retrieves the coordinates of the minimum point of the given
 // #graphene_box_t.
 func (b *Box) Min() Point3D {
-	var _arg0 *C.graphene_box_t // out
-	var _min Point3D
+	var _arg0 *C.graphene_box_t    // out
+	var _arg1 C.graphene_point3d_t // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_box_get_min(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_min)))
+	C.graphene_box_get_min(_arg0, &_arg1)
+
+	var _min Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_min = *refTmpOut
+	}
 
 	return _min
 }
@@ -390,11 +488,25 @@ func (b *Box) Min() Point3D {
 // given @size vector.
 func (b *Box) Size() Vec3 {
 	var _arg0 *C.graphene_box_t // out
-	var _size Vec3
+	var _arg1 C.graphene_vec3_t // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_box_get_size(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_size)))
+	C.graphene_box_get_size(_arg0, &_arg1)
+
+	var _size Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_size = *refTmpOut
+	}
 
 	return _size
 }
@@ -426,7 +538,7 @@ func (b *Box) Width() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -446,7 +558,7 @@ func (b *Box) Init(min *Point3D, max *Point3D) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = (*Box)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -465,7 +577,7 @@ func (b *Box) InitFromBox(src *Box) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = (*Box)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -488,7 +600,7 @@ func (b *Box) InitFromPoints(points []Point3D) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = (*Box)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -509,7 +621,7 @@ func (b *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = (*Box)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -533,7 +645,7 @@ func (b *Box) InitFromVectors(vectors []Vec3) *Box {
 
 	var _ret *Box // out
 
-	_ret = WrapBox(unsafe.Pointer(_cret))
+	_ret = (*Box)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -545,16 +657,28 @@ func (b *Box) InitFromVectors(vectors []Vec3) *Box {
 func (a *Box) Intersection(b *Box) (Box, bool) {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
-	var _res Box
-	var _cret C._Bool // in
+	var _arg2 C.graphene_box_t  // in
+	var _cret C._Bool           // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	_cret = C.graphene_box_intersection(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
+	_cret = C.graphene_box_intersection(_arg0, _arg1, &_arg2)
 
+	var _res Box // out
 	var _ok bool // out
 
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 	if _cret {
 		_ok = true
 	}
@@ -566,12 +690,26 @@ func (a *Box) Intersection(b *Box) (Box, bool) {
 func (a *Box) Union(b *Box) Box {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
-	var _res Box
+	var _arg2 C.graphene_box_t  // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_box_union(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
+	C.graphene_box_union(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -601,9 +739,9 @@ func NewEulerAlloc() *Euler {
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_euler, func(v *Euler) {
-		C.free(unsafe.Pointer(v.Native()))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_euler, func(v **Euler) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _euler
@@ -657,7 +795,7 @@ func (e *Euler) Alpha() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -676,7 +814,7 @@ func (e *Euler) Beta() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -695,7 +833,7 @@ func (e *Euler) Gamma() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -732,7 +870,7 @@ func (e *Euler) X() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -748,7 +886,7 @@ func (e *Euler) Y() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -764,7 +902,7 @@ func (e *Euler) Z() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -780,15 +918,15 @@ func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 	var _cret *C.graphene_euler_t // in
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(z)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
 
 	_cret = C.graphene_euler_init(_arg0, _arg1, _arg2, _arg3)
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }
@@ -810,7 +948,7 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }
@@ -828,13 +966,13 @@ func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg2 = (C.graphene_euler_order_t)(order)
+	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_matrix(_arg0, _arg1, _arg2)
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }
@@ -852,13 +990,13 @@ func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
-	_arg2 = (C.graphene_euler_order_t)(order)
+	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_quaternion(_arg0, _arg1, _arg2)
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }
@@ -874,16 +1012,16 @@ func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrde
 	var _cret *C.graphene_euler_t      // in
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(z)
-	_arg4 = (C.graphene_euler_order_t)(order)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
+	_arg4 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_radians(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }
@@ -901,13 +1039,13 @@ func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
-	_arg2 = (C.graphene_euler_order_t)(order)
+	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_vec3(_arg0, _arg1, _arg2)
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }
@@ -923,16 +1061,16 @@ func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder)
 	var _cret *C.graphene_euler_t      // in
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(z)
-	_arg4 = (C.graphene_euler_order_t)(order)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
+	_arg4 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_with_order(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _euler *Euler // out
 
-	_euler = WrapEuler(unsafe.Pointer(_cret))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }
@@ -945,12 +1083,26 @@ func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder)
 func (e *Euler) Reorder(order EulerOrder) Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.graphene_euler_order_t // out
-	var _res Euler
+	var _arg2 C.graphene_euler_t       // in
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.graphene_euler_order_t)(order)
+	_arg1 = C.graphene_euler_order_t(order)
 
-	C.graphene_euler_reorder(_arg0, _arg1, (*C.graphene_euler_t)(unsafe.Pointer(&_res)))
+	C.graphene_euler_reorder(_arg0, _arg1, &_arg2)
+
+	var _res Euler // out
+
+	{
+		var refTmpIn *C.graphene_euler_t
+		var refTmpOut *Euler
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Euler)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -973,23 +1125,51 @@ func (e *Euler) Reorder(order EulerOrder) Euler {
 // between Euler-based, quaternion-based, and angle-axis-based rotations.
 func (e *Euler) ToMatrix() Matrix {
 	var _arg0 *C.graphene_euler_t // out
-	var _res Matrix
+	var _arg1 C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
 
-	C.graphene_euler_to_matrix(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_euler_to_matrix(_arg0, &_arg1)
+
+	var _res Matrix // out
+
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *Matrix
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Matrix)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
 
 // ToQuaternion converts a #graphene_euler_t into a #graphene_quaternion_t.
 func (e *Euler) ToQuaternion() Quaternion {
-	var _arg0 *C.graphene_euler_t // out
-	var _res Quaternion
+	var _arg0 *C.graphene_euler_t     // out
+	var _arg1 C.graphene_quaternion_t // in
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
 
-	C.graphene_euler_to_quaternion(_arg0, (*C.graphene_quaternion_t)(unsafe.Pointer(&_res)))
+	C.graphene_euler_to_quaternion(_arg0, &_arg1)
+
+	var _res Quaternion // out
+
+	{
+		var refTmpIn *C.graphene_quaternion_t
+		var refTmpOut *Quaternion
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Quaternion)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -998,11 +1178,25 @@ func (e *Euler) ToQuaternion() Quaternion {
 // #graphene_vec3_t with them.
 func (e *Euler) ToVec3() Vec3 {
 	var _arg0 *C.graphene_euler_t // out
-	var _res Vec3
+	var _arg1 C.graphene_vec3_t   // in
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
 
-	C.graphene_euler_to_vec3(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_euler_to_vec3(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -1032,9 +1226,9 @@ func NewFrustumAlloc() *Frustum {
 
 	var _frustum *Frustum // out
 
-	_frustum = WrapFrustum(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_frustum, func(v *Frustum) {
-		C.free(unsafe.Pointer(v.Native()))
+	_frustum = (*Frustum)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_frustum, func(v **Frustum) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _frustum
@@ -1135,7 +1329,7 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 
 	var _frustum *Frustum // out
 
-	_frustum = WrapFrustum(unsafe.Pointer(_cret))
+	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 
 	return _frustum
 }
@@ -1154,7 +1348,7 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 
 	var _frustum *Frustum // out
 
-	_frustum = WrapFrustum(unsafe.Pointer(_cret))
+	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 
 	return _frustum
 }
@@ -1172,7 +1366,7 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 
 	var _frustum *Frustum // out
 
-	_frustum = WrapFrustum(unsafe.Pointer(_cret))
+	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 
 	return _frustum
 }
@@ -1244,9 +1438,9 @@ func NewMatrixAlloc() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_matrix, func(v *Matrix) {
-		C.free(unsafe.Pointer(v.Native()))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_matrix, func(v **Matrix) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _matrix
@@ -1266,20 +1460,80 @@ func (m *Matrix) Native() unsafe.Pointer {
 // Gems II", edited by Jim Arvo, and available online
 // (http://tog.acm.org/resources/GraphicsGems/gemsii/unmatrix.c).
 func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, shear Vec3, perspective Vec4, ok bool) {
-	var _arg0 *C.graphene_matrix_t // out
-	var _translate Vec3
-	var _scale Vec3
-	var _rotate Quaternion
-	var _shear Vec3
-	var _perspective Vec4
-	var _cret C._Bool // in
+	var _arg0 *C.graphene_matrix_t    // out
+	var _arg1 C.graphene_vec3_t       // in
+	var _arg2 C.graphene_vec3_t       // in
+	var _arg3 C.graphene_quaternion_t // in
+	var _arg4 C.graphene_vec3_t       // in
+	var _arg5 C.graphene_vec4_t       // in
+	var _cret C._Bool                 // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	_cret = C.graphene_matrix_decompose(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_translate)), (*C.graphene_vec3_t)(unsafe.Pointer(&_scale)), (*C.graphene_quaternion_t)(unsafe.Pointer(&_rotate)), (*C.graphene_vec3_t)(unsafe.Pointer(&_shear)), (*C.graphene_vec4_t)(unsafe.Pointer(&_perspective)))
+	_cret = C.graphene_matrix_decompose(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
-	var _ok bool // out
+	var _translate Vec3    // out
+	var _scale Vec3        // out
+	var _rotate Quaternion // out
+	var _shear Vec3        // out
+	var _perspective Vec4  // out
+	var _ok bool           // out
 
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_translate = *refTmpOut
+	}
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_scale = *refTmpOut
+	}
+	{
+		var refTmpIn *C.graphene_quaternion_t
+		var refTmpOut *Quaternion
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Quaternion)(unsafe.Pointer(refTmpIn))
+
+		_rotate = *refTmpOut
+	}
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_shear = *refTmpOut
+	}
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg5
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_perspective = *refTmpOut
+	}
 	if _cret {
 		_ok = true
 	}
@@ -1298,7 +1552,7 @@ func (m *Matrix) Determinant() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -1375,12 +1629,26 @@ func (m *Matrix) Free() {
 func (m *Matrix) Row(index_ uint) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t    // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.uint)(index_)
+	_arg1 = C.uint(index_)
 
-	C.graphene_matrix_get_row(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_get_row(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -1393,14 +1661,14 @@ func (m *Matrix) Value(row uint, col uint) float32 {
 	var _cret C.float              // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.uint)(row)
-	_arg2 = (C.uint)(col)
+	_arg1 = C.uint(row)
+	_arg2 = C.uint(col)
 
 	_cret = C.graphene_matrix_get_value(_arg0, _arg1, _arg2)
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -1416,7 +1684,7 @@ func (m *Matrix) XScale() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -1432,7 +1700,7 @@ func (m *Matrix) XTranslation() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -1448,7 +1716,7 @@ func (m *Matrix) YScale() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -1464,7 +1732,7 @@ func (m *Matrix) YTranslation() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -1480,7 +1748,7 @@ func (m *Matrix) ZScale() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -1496,7 +1764,7 @@ func (m *Matrix) ZTranslation() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -1523,18 +1791,18 @@ func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 f
 	var _cret *C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.double)(xx)
-	_arg2 = (C.double)(yx)
-	_arg3 = (C.double)(xy)
-	_arg4 = (C.double)(yy)
-	_arg5 = (C.double)(x0)
-	_arg6 = (C.double)(y0)
+	_arg1 = C.double(xx)
+	_arg2 = C.double(yx)
+	_arg3 = C.double(xy)
+	_arg4 = C.double(yy)
+	_arg5 = C.double(x0)
+	_arg6 = C.double(y0)
 
 	_cret = C.graphene_matrix_init_from_2d(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1553,7 +1821,7 @@ func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1572,7 +1840,7 @@ func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1597,7 +1865,7 @@ func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1617,18 +1885,18 @@ func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top fl
 	var _cret *C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(left)
-	_arg2 = (C.float)(right)
-	_arg3 = (C.float)(bottom)
-	_arg4 = (C.float)(top)
-	_arg5 = (C.float)(zNear)
-	_arg6 = (C.float)(zFar)
+	_arg1 = C.float(left)
+	_arg2 = C.float(right)
+	_arg3 = C.float(bottom)
+	_arg4 = C.float(top)
+	_arg5 = C.float(zNear)
+	_arg6 = C.float(zFar)
 
 	_cret = C.graphene_matrix_init_frustum(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1644,7 +1912,7 @@ func (m *Matrix) InitIdentity() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1679,7 +1947,7 @@ func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1696,18 +1964,18 @@ func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom floa
 	var _cret *C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(left)
-	_arg2 = (C.float)(right)
-	_arg3 = (C.float)(top)
-	_arg4 = (C.float)(bottom)
-	_arg5 = (C.float)(zNear)
-	_arg6 = (C.float)(zFar)
+	_arg1 = C.float(left)
+	_arg2 = C.float(right)
+	_arg3 = C.float(top)
+	_arg4 = C.float(bottom)
+	_arg5 = C.float(zNear)
+	_arg6 = C.float(zFar)
 
 	_cret = C.graphene_matrix_init_ortho(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1723,16 +1991,16 @@ func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zF
 	var _cret *C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(fovy)
-	_arg2 = (C.float)(aspect)
-	_arg3 = (C.float)(zNear)
-	_arg4 = (C.float)(zFar)
+	_arg1 = C.float(fovy)
+	_arg2 = C.float(aspect)
+	_arg3 = C.float(zNear)
+	_arg4 = C.float(zFar)
 
 	_cret = C.graphene_matrix_init_perspective(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1746,14 +2014,14 @@ func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
 	var _cret *C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(angle)
+	_arg1 = C.float(angle)
 	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
 
 	_cret = C.graphene_matrix_init_rotate(_arg0, _arg1, _arg2)
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1767,15 +2035,15 @@ func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
 	var _cret *C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(z)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
 
 	_cret = C.graphene_matrix_init_scale(_arg0, _arg1, _arg2, _arg3)
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1789,14 +2057,14 @@ func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
 	var _cret *C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(xSkew)
-	_arg2 = (C.float)(ySkew)
+	_arg1 = C.float(xSkew)
+	_arg2 = C.float(ySkew)
 
 	_cret = C.graphene_matrix_init_skew(_arg0, _arg1, _arg2)
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1815,7 +2083,7 @@ func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -1830,13 +2098,27 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 C.double             // out
-	var _res Matrix
+	var _arg3 C.graphene_matrix_t  // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.double)(factor)
+	_arg2 = C.double(factor)
 
-	C.graphene_matrix_interpolate(_arg0, _arg1, _arg2, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Matrix // out
+
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *Matrix
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Matrix)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -1844,15 +2126,27 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 // Inverse inverts the given matrix.
 func (m *Matrix) Inverse() (Matrix, bool) {
 	var _arg0 *C.graphene_matrix_t // out
-	var _res Matrix
-	var _cret C._Bool // in
+	var _arg1 C.graphene_matrix_t  // in
+	var _cret C._Bool              // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	_cret = C.graphene_matrix_inverse(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	_cret = C.graphene_matrix_inverse(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _res Matrix // out
+	var _ok bool    // out
 
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *Matrix
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Matrix)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 	if _cret {
 		_ok = true
 	}
@@ -1942,12 +2236,26 @@ func (m *Matrix) IsSingular() bool {
 func (a *Matrix) Multiply(b *Matrix) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
-	var _res Matrix
+	var _arg2 C.graphene_matrix_t  // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_matrix_multiply(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_multiply(_arg0, _arg1, &_arg2)
+
+	var _res Matrix // out
+
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *Matrix
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Matrix)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -1962,7 +2270,7 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.float)(epsilon)
+	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_matrix_near(_arg0, _arg1, _arg2)
 
@@ -1978,11 +2286,25 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 // Normalize normalizes the given #graphene_matrix_t.
 func (m *Matrix) Normalize() Matrix {
 	var _arg0 *C.graphene_matrix_t // out
-	var _res Matrix
+	var _arg1 C.graphene_matrix_t  // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	C.graphene_matrix_normalize(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_normalize(_arg0, &_arg1)
+
+	var _res Matrix // out
+
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *Matrix
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Matrix)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -1991,12 +2313,26 @@ func (m *Matrix) Normalize() Matrix {
 func (m *Matrix) Perspective(depth float32) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
-	var _res Matrix
+	var _arg2 C.graphene_matrix_t  // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(depth)
+	_arg1 = C.float(depth)
 
-	C.graphene_matrix_perspective(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_perspective(_arg0, _arg1, &_arg2)
+
+	var _res Matrix // out
+
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *Matrix
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Matrix)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2017,12 +2353,26 @@ func (m *Matrix) Print() {
 func (m *Matrix) ProjectPoint(p *Point) Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
-	var _res Point
+	var _arg2 C.graphene_point_t   // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_matrix_project_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_project_point(_arg0, _arg1, &_arg2)
+
+	var _res Point // out
+
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2034,12 +2384,26 @@ func (m *Matrix) ProjectPoint(p *Point) Point {
 func (m *Matrix) ProjectRect(r *Rect) Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _res Quad
+	var _arg2 C.graphene_quad_t    // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_matrix_project_rect(_arg0, _arg1, (*C.graphene_quad_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_project_rect(_arg0, _arg1, &_arg2)
+
+	var _res Quad // out
+
+	{
+		var refTmpIn *C.graphene_quad_t
+		var refTmpOut *Quad
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Quad)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2051,12 +2415,26 @@ func (m *Matrix) ProjectRect(r *Rect) Quad {
 func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _res Rect
+	var _arg2 C.graphene_rect_t    // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_matrix_project_rect_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_project_rect_bounds(_arg0, _arg1, &_arg2)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2072,7 +2450,7 @@ func (m *Matrix) Rotate(angle float32, axis *Vec3) {
 	var _arg2 *C.graphene_vec3_t   // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(angle)
+	_arg1 = C.float(angle)
 	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
 
 	C.graphene_matrix_rotate(_arg0, _arg1, _arg2)
@@ -2114,7 +2492,7 @@ func (m *Matrix) RotateX(angle float32) {
 	var _arg1 C.float              // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(angle)
+	_arg1 = C.float(angle)
 
 	C.graphene_matrix_rotate_x(_arg0, _arg1)
 }
@@ -2128,7 +2506,7 @@ func (m *Matrix) RotateY(angle float32) {
 	var _arg1 C.float              // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(angle)
+	_arg1 = C.float(angle)
 
 	C.graphene_matrix_rotate_y(_arg0, _arg1)
 }
@@ -2142,7 +2520,7 @@ func (m *Matrix) RotateZ(angle float32) {
 	var _arg1 C.float              // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(angle)
+	_arg1 = C.float(angle)
 
 	C.graphene_matrix_rotate_z(_arg0, _arg1)
 }
@@ -2158,9 +2536,9 @@ func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
 	var _arg3 C.float              // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(factorX)
-	_arg2 = (C.float)(factorY)
-	_arg3 = (C.float)(factorZ)
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	_arg3 = C.float(factorZ)
 
 	C.graphene_matrix_scale(_arg0, _arg1, _arg2, _arg3)
 }
@@ -2171,7 +2549,7 @@ func (m *Matrix) SkewXY(factor float32) {
 	var _arg1 C.float              // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
 	C.graphene_matrix_skew_xy(_arg0, _arg1)
 }
@@ -2182,7 +2560,7 @@ func (m *Matrix) SkewXZ(factor float32) {
 	var _arg1 C.float              // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
 	C.graphene_matrix_skew_xz(_arg0, _arg1)
 }
@@ -2193,7 +2571,7 @@ func (m *Matrix) SkewYZ(factor float32) {
 	var _arg1 C.float              // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
 	C.graphene_matrix_skew_yz(_arg0, _arg1)
 }
@@ -2231,12 +2609,12 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 	var _y0 float64 // out
 	var _ok bool    // out
 
-	_xx = (float64)(_arg1)
-	_yx = (float64)(_arg2)
-	_xy = (float64)(_arg3)
-	_yy = (float64)(_arg4)
-	_x0 = (float64)(_arg5)
-	_y0 = (float64)(_arg6)
+	_xx = float64(_arg1)
+	_yx = float64(_arg2)
+	_xy = float64(_arg3)
+	_yy = float64(_arg4)
+	_x0 = float64(_arg5)
+	_y0 = float64(_arg6)
 	if _cret {
 		_ok = true
 	}
@@ -2270,12 +2648,26 @@ func (m *Matrix) ToFloat() [16]float32 {
 func (m *Matrix) TransformBounds(r *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _res Rect
+	var _arg2 C.graphene_rect_t    // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_matrix_transform_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_bounds(_arg0, _arg1, &_arg2)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2288,12 +2680,26 @@ func (m *Matrix) TransformBounds(r *Rect) Rect {
 func (m *Matrix) TransformBox(b *Box) Box {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_box_t    // out
-	var _res Box
+	var _arg2 C.graphene_box_t     // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_matrix_transform_box(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_box(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2308,12 +2714,26 @@ func (m *Matrix) TransformBox(b *Box) Box {
 func (m *Matrix) TransformPoint(p *Point) Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
-	var _res Point
+	var _arg2 C.graphene_point_t   // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_matrix_transform_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_point(_arg0, _arg1, &_arg2)
+
+	var _res Point // out
+
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2329,12 +2749,26 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _res Point3D
+	var _arg2 C.graphene_point3d_t  // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_matrix_transform_point3d(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_point3d(_arg0, _arg1, &_arg2)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2343,12 +2777,26 @@ func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 func (m *Matrix) TransformRay(r *Ray) Ray {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_ray_t    // out
-	var _res Ray
+	var _arg2 C.graphene_ray_t     // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_matrix_transform_ray(_arg0, _arg1, (*C.graphene_ray_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_ray(_arg0, _arg1, &_arg2)
+
+	var _res Ray // out
+
+	{
+		var refTmpIn *C.graphene_ray_t
+		var refTmpOut *Ray
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Ray)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2362,12 +2810,26 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 func (m *Matrix) TransformRect(r *Rect) Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _res Quad
+	var _arg2 C.graphene_quad_t    // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_matrix_transform_rect(_arg0, _arg1, (*C.graphene_quad_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_rect(_arg0, _arg1, &_arg2)
+
+	var _res Quad // out
+
+	{
+		var refTmpIn *C.graphene_quad_t
+		var refTmpOut *Quad
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Quad)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2377,12 +2839,26 @@ func (m *Matrix) TransformRect(r *Rect) Quad {
 func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_sphere_t // out
-	var _res Sphere
+	var _arg2 C.graphene_sphere_t  // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	C.graphene_matrix_transform_sphere(_arg0, _arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_sphere(_arg0, _arg1, &_arg2)
+
+	var _res Sphere // out
+
+	{
+		var refTmpIn *C.graphene_sphere_t
+		var refTmpOut *Sphere
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Sphere)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2397,12 +2873,26 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec3_t   // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t    // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_matrix_transform_vec3(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_vec3(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2413,12 +2903,26 @@ func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec4_t   // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t    // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_matrix_transform_vec4(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_vec4(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2441,11 +2945,25 @@ func (m *Matrix) Translate(pos *Point3D) {
 // Transpose transposes the given matrix.
 func (m *Matrix) Transpose() Matrix {
 	var _arg0 *C.graphene_matrix_t // out
-	var _res Matrix
+	var _arg1 C.graphene_matrix_t  // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	C.graphene_matrix_transpose(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transpose(_arg0, &_arg1)
+
+	var _res Matrix // out
+
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *Matrix
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Matrix)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2456,13 +2974,27 @@ func (p *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_matrix_t  // out
 	var _arg2 *C.graphene_point3d_t // out
-	var _res Point3D
+	var _arg3 C.graphene_point3d_t  // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(modelview.Native()))
 	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	C.graphene_matrix_unproject_point3d(_arg0, _arg1, _arg2, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_unproject_point3d(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2474,13 +3006,27 @@ func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
 	var _arg2 *C.graphene_rect_t   // out
-	var _res Rect
+	var _arg3 C.graphene_rect_t    // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 
-	C.graphene_matrix_untransform_bounds(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_untransform_bounds(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2491,17 +3037,29 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (Point, bool) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
 	var _arg2 *C.graphene_rect_t   // out
-	var _res Point
-	var _cret C._Bool // in
+	var _arg3 C.graphene_point_t   // in
+	var _cret C._Bool              // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 
-	_cret = C.graphene_matrix_untransform_point(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
+	_cret = C.graphene_matrix_untransform_point(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _res Point // out
+	var _ok bool   // out
 
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 	if _cret {
 		_ok = true
 	}
@@ -2534,9 +3092,9 @@ func NewPlaneAlloc() *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_plane, func(v *Plane) {
-		C.free(unsafe.Pointer(v.Native()))
+	_plane = (*Plane)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_plane, func(v **Plane) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _plane
@@ -2560,7 +3118,7 @@ func (p *Plane) Distance(point *Point3D) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -2606,7 +3164,7 @@ func (p *Plane) Constant() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -2615,11 +3173,25 @@ func (p *Plane) Constant() float32 {
 // #graphene_plane_t.
 func (p *Plane) Normal() Vec3 {
 	var _arg0 *C.graphene_plane_t // out
-	var _normal Vec3
+	var _arg1 C.graphene_vec3_t   // in
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_plane_get_normal(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_normal)))
+	C.graphene_plane_get_normal(_arg0, &_arg1)
+
+	var _normal Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_normal = *refTmpOut
+	}
 
 	return _normal
 }
@@ -2634,13 +3206,13 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(normal.Native()))
-	_arg2 = (C.float)(constant)
+	_arg2 = C.float(constant)
 
 	_cret = C.graphene_plane_init(_arg0, _arg1, _arg2)
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(_cret))
 
 	return _plane
 }
@@ -2659,7 +3231,7 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(_cret))
 
 	return _plane
 }
@@ -2680,7 +3252,7 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(_cret))
 
 	return _plane
 }
@@ -2706,7 +3278,7 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(_cret))
 
 	return _plane
 }
@@ -2725,7 +3297,7 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 
 	var _plane *Plane // out
 
-	_plane = WrapPlane(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(_cret))
 
 	return _plane
 }
@@ -2734,11 +3306,25 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 // effectively mirroring the plane across the origin.
 func (p *Plane) Negate() Plane {
 	var _arg0 *C.graphene_plane_t // out
-	var _res Plane
+	var _arg1 C.graphene_plane_t  // in
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_plane_negate(_arg0, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
+	C.graphene_plane_negate(_arg0, &_arg1)
+
+	var _res Plane // out
+
+	{
+		var refTmpIn *C.graphene_plane_t
+		var refTmpOut *Plane
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Plane)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2747,11 +3333,25 @@ func (p *Plane) Negate() Plane {
 // the constant accordingly.
 func (p *Plane) Normalize() Plane {
 	var _arg0 *C.graphene_plane_t // out
-	var _res Plane
+	var _arg1 C.graphene_plane_t  // in
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_plane_normalize(_arg0, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
+	C.graphene_plane_normalize(_arg0, &_arg1)
+
+	var _res Plane // out
+
+	{
+		var refTmpIn *C.graphene_plane_t
+		var refTmpOut *Plane
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Plane)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2767,13 +3367,27 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	var _arg0 *C.graphene_plane_t  // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 *C.graphene_matrix_t // out
-	var _res Plane
+	var _arg3 C.graphene_plane_t   // in
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix.Native()))
 	_arg2 = (*C.graphene_matrix_t)(unsafe.Pointer(normalMatrix.Native()))
 
-	C.graphene_plane_transform(_arg0, _arg1, _arg2, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
+	C.graphene_plane_transform(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Plane // out
+
+	{
+		var refTmpIn *C.graphene_plane_t
+		var refTmpOut *Plane
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Plane)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2800,9 +3414,9 @@ func NewPointAlloc() *Point {
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_point, func(v *Point) {
-		C.free(unsafe.Pointer(v.Native()))
+	_point = (*Point)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_point, func(v **Point) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _point
@@ -2830,9 +3444,9 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var _dY float32     // out
 	var _gfloat float32 // out
 
-	_dX = (float32)(_arg2)
-	_dY = (float32)(_arg3)
-	_gfloat = (float32)(_cret)
+	_dX = float32(_arg2)
+	_dY = float32(_arg3)
+	_gfloat = float32(_cret)
 
 	return _dX, _dY, _gfloat
 }
@@ -2880,14 +3494,14 @@ func (p *Point) Init(x float32, y float32) *Point {
 	var _cret *C.graphene_point_t // in
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
 
 	_cret = C.graphene_point_init(_arg0, _arg1, _arg2)
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = (*Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -2905,7 +3519,7 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = (*Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -2924,7 +3538,7 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = (*Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -2935,13 +3549,27 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
 	var _arg2 C.double            // out
-	var _res Point
+	var _arg3 C.graphene_point_t  // in
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.double)(factor)
+	_arg2 = C.double(factor)
 
-	C.graphene_point_interpolate(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
+	C.graphene_point_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Point // out
+
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -2956,7 +3584,7 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.float)(epsilon)
+	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_point_near(_arg0, _arg1, _arg2)
 
@@ -2973,11 +3601,25 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 // #graphene_vec2_t.
 func (p *Point) ToVec2() Vec2 {
 	var _arg0 *C.graphene_point_t // out
-	var _v Vec2
+	var _arg1 C.graphene_vec2_t   // in
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_point_to_vec2(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_v)))
+	C.graphene_point_to_vec2(_arg0, &_arg1)
+
+	var _v Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_v = *refTmpOut
+	}
 
 	return _v
 }
@@ -3004,9 +3646,9 @@ func NewPoint3DAlloc() *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_point3D, func(v *Point3D) {
-		C.free(unsafe.Pointer(v.Native()))
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_point3D, func(v **Point3D) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _point3D
@@ -3021,12 +3663,26 @@ func (p *Point3D) Native() unsafe.Pointer {
 func (a *Point3D) Cross(b *Point3D) Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _res Point3D
+	var _arg2 C.graphene_point3d_t  // in
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_point3d_cross(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_point3d_cross(_arg0, _arg1, &_arg2)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3035,17 +3691,29 @@ func (a *Point3D) Cross(b *Point3D) Point3D {
 func (a *Point3D) Distance(b *Point3D) (Vec3, float32) {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _delta Vec3
-	var _cret C.float // in
+	var _arg2 C.graphene_vec3_t     // in
+	var _cret C.float               // in
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
 
-	_cret = C.graphene_point3d_distance(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_delta)))
+	_cret = C.graphene_point3d_distance(_arg0, _arg1, &_arg2)
 
+	var _delta Vec3     // out
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_delta = *refTmpOut
+	}
+	_gfloat = float32(_cret)
 
 	return _delta, _gfloat
 }
@@ -3063,7 +3731,7 @@ func (a *Point3D) Dot(b *Point3D) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -3106,15 +3774,15 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 	var _cret *C.graphene_point3d_t // in
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(z)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
 
 	_cret = C.graphene_point3d_init(_arg0, _arg1, _arg2, _arg3)
 
 	var _point3D *Point3D // out
 
-	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 
 	return _point3D
 }
@@ -3133,7 +3801,7 @@ func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 
 	return _point3D
 }
@@ -3152,7 +3820,7 @@ func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = WrapPoint3D(unsafe.Pointer(_cret))
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 
 	return _point3D
 }
@@ -3163,13 +3831,27 @@ func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _arg2 C.double              // out
-	var _res Point3D
+	var _arg3 C.graphene_point3d_t  // in
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.double)(factor)
+	_arg2 = C.double(factor)
 
-	C.graphene_point3d_interpolate(_arg0, _arg1, _arg2, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_point3d_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3186,7 +3868,7 @@ func (p *Point3D) Length() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -3201,7 +3883,7 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.float)(epsilon)
+	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_point3d_near(_arg0, _arg1, _arg2)
 
@@ -3218,11 +3900,25 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 // coordinates of the given #graphene_point3d_t.
 func (p *Point3D) Normalize() Point3D {
 	var _arg0 *C.graphene_point3d_t // out
-	var _res Point3D
+	var _arg1 C.graphene_point3d_t  // in
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_point3d_normalize(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_point3d_normalize(_arg0, &_arg1)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3237,14 +3933,28 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 	var _arg1 *C.graphene_rect_t    // out
 	var _arg2 C.float               // out
 	var _arg3 C.float               // out
-	var _res Point3D
+	var _arg4 C.graphene_point3d_t  // in
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
-	_arg2 = (C.float)(zNear)
-	_arg3 = (C.float)(zFar)
+	_arg2 = C.float(zNear)
+	_arg3 = C.float(zFar)
 
-	C.graphene_point3d_normalize_viewport(_arg0, _arg1, _arg2, _arg3, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_point3d_normalize_viewport(_arg0, _arg1, _arg2, _arg3, &_arg4)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3254,12 +3964,26 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 func (p *Point3D) Scale(factor float32) Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.float               // out
-	var _res Point3D
+	var _arg2 C.graphene_point3d_t  // in
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
-	C.graphene_point3d_scale(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_point3d_scale(_arg0, _arg1, &_arg2)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3268,11 +3992,25 @@ func (p *Point3D) Scale(factor float32) Point3D {
 // #graphene_vec3_t.
 func (p *Point3D) ToVec3() Vec3 {
 	var _arg0 *C.graphene_point3d_t // out
-	var _v Vec3
+	var _arg1 C.graphene_vec3_t     // in
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_point3d_to_vec3(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_v)))
+	C.graphene_point3d_to_vec3(_arg0, &_arg1)
+
+	var _v Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_v = *refTmpOut
+	}
 
 	return _v
 }
@@ -3302,9 +4040,9 @@ func NewQuadAlloc() *Quad {
 
 	var _quad *Quad // out
 
-	_quad = WrapQuad(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_quad, func(v *Quad) {
-		C.free(unsafe.Pointer(v.Native()))
+	_quad = (*Quad)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_quad, func(v **Quad) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _quad
@@ -3318,11 +4056,25 @@ func (q *Quad) Native() unsafe.Pointer {
 // Bounds computes the bounding rectangle of @q and places it into @r.
 func (q *Quad) Bounds() Rect {
 	var _arg0 *C.graphene_quad_t // out
-	var _r Rect
+	var _arg1 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
 
-	C.graphene_quad_bounds(_arg0, (*C.graphene_rect_t)(unsafe.Pointer(&_r)))
+	C.graphene_quad_bounds(_arg0, &_arg1)
+
+	var _r Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_r = *refTmpOut
+	}
 
 	return _r
 }
@@ -3364,13 +4116,13 @@ func (q *Quad) Point(index_ uint) *Point {
 	var _cret *C.graphene_point_t // in
 
 	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (C.uint)(index_)
+	_arg1 = C.uint(index_)
 
 	_cret = C.graphene_quad_get_point(_arg0, _arg1)
 
 	var _point *Point // out
 
-	_point = WrapPoint(unsafe.Pointer(_cret))
+	_point = (*Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -3394,7 +4146,7 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 
 	var _quad *Quad // out
 
-	_quad = WrapQuad(unsafe.Pointer(_cret))
+	_quad = (*Quad)(unsafe.Pointer(_cret))
 
 	return _quad
 }
@@ -3412,7 +4164,7 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 
 	var _quad *Quad // out
 
-	_quad = WrapQuad(unsafe.Pointer(_cret))
+	_quad = (*Quad)(unsafe.Pointer(_cret))
 
 	return _quad
 }
@@ -3431,7 +4183,7 @@ func (q *Quad) InitFromRect(r *Rect) *Quad {
 
 	var _quad *Quad // out
 
-	_quad = WrapQuad(unsafe.Pointer(_cret))
+	_quad = (*Quad)(unsafe.Pointer(_cret))
 
 	return _quad
 }
@@ -3461,9 +4213,9 @@ func NewQuaternionAlloc() *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_quaternion, func(v *Quaternion) {
-		C.free(unsafe.Pointer(v.Native()))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_quaternion, func(v **Quaternion) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _quaternion
@@ -3478,12 +4230,26 @@ func (q *Quaternion) Native() unsafe.Pointer {
 func (a *Quaternion) Add(b *Quaternion) Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
-	var _res Quaternion
+	var _arg2 C.graphene_quaternion_t  // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_quaternion_add(_arg0, _arg1, (*C.graphene_quaternion_t)(unsafe.Pointer(&_res)))
+	C.graphene_quaternion_add(_arg0, _arg1, &_arg2)
+
+	var _res Quaternion // out
+
+	{
+		var refTmpIn *C.graphene_quaternion_t
+		var refTmpOut *Quaternion
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Quaternion)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3501,7 +4267,7 @@ func (a *Quaternion) Dot(b *Quaternion) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -3545,16 +4311,16 @@ func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternio
 	var _cret *C.graphene_quaternion_t // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(z)
-	_arg4 = (C.float)(w)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
+	_arg4 = C.float(w)
 
 	_cret = C.graphene_quaternion_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3568,14 +4334,14 @@ func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 	var _cret *C.graphene_quaternion_t // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (C.float)(angle)
+	_arg1 = C.float(angle)
 	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
 
 	_cret = C.graphene_quaternion_init_from_angle_vec3(_arg0, _arg1, _arg2)
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3592,15 +4358,15 @@ func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Q
 	var _cret *C.graphene_quaternion_t // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (C.float)(degX)
-	_arg2 = (C.float)(degY)
-	_arg3 = (C.float)(degZ)
+	_arg1 = C.float(degX)
+	_arg2 = C.float(degY)
+	_arg3 = C.float(degZ)
 
 	_cret = C.graphene_quaternion_init_from_angles(_arg0, _arg1, _arg2, _arg3)
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3619,7 +4385,7 @@ func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3638,7 +4404,7 @@ func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3657,7 +4423,7 @@ func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3674,15 +4440,15 @@ func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *
 	var _cret *C.graphene_quaternion_t // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (C.float)(radX)
-	_arg2 = (C.float)(radY)
-	_arg3 = (C.float)(radZ)
+	_arg1 = C.float(radX)
+	_arg2 = C.float(radY)
+	_arg3 = C.float(radZ)
 
 	_cret = C.graphene_quaternion_init_from_radians(_arg0, _arg1, _arg2, _arg3)
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3700,7 +4466,7 @@ func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3717,7 +4483,7 @@ func (q *Quaternion) InitIdentity() *Quaternion {
 
 	var _quaternion *Quaternion // out
 
-	_quaternion = WrapQuaternion(unsafe.Pointer(_cret))
+	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 
 	return _quaternion
 }
@@ -3726,11 +4492,25 @@ func (q *Quaternion) InitIdentity() *Quaternion {
 // of @q.
 func (q *Quaternion) Invert() Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
-	var _res Quaternion
+	var _arg1 C.graphene_quaternion_t  // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	C.graphene_quaternion_invert(_arg0, (*C.graphene_quaternion_t)(unsafe.Pointer(&_res)))
+	C.graphene_quaternion_invert(_arg0, &_arg1)
+
+	var _res Quaternion // out
+
+	{
+		var refTmpIn *C.graphene_quaternion_t
+		var refTmpOut *Quaternion
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Quaternion)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3739,12 +4519,26 @@ func (q *Quaternion) Invert() Quaternion {
 func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
-	var _res Quaternion
+	var _arg2 C.graphene_quaternion_t  // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_quaternion_multiply(_arg0, _arg1, (*C.graphene_quaternion_t)(unsafe.Pointer(&_res)))
+	C.graphene_quaternion_multiply(_arg0, _arg1, &_arg2)
+
+	var _res Quaternion // out
+
+	{
+		var refTmpIn *C.graphene_quaternion_t
+		var refTmpOut *Quaternion
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Quaternion)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3752,11 +4546,25 @@ func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
 // Normalize normalizes a #graphene_quaternion_t.
 func (q *Quaternion) Normalize() Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
-	var _res Quaternion
+	var _arg1 C.graphene_quaternion_t  // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	C.graphene_quaternion_normalize(_arg0, (*C.graphene_quaternion_t)(unsafe.Pointer(&_res)))
+	C.graphene_quaternion_normalize(_arg0, &_arg1)
+
+	var _res Quaternion // out
+
+	{
+		var refTmpIn *C.graphene_quaternion_t
+		var refTmpOut *Quaternion
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Quaternion)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3766,12 +4574,26 @@ func (q *Quaternion) Normalize() Quaternion {
 func (q *Quaternion) Scale(factor float32) Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
-	var _res Quaternion
+	var _arg2 C.graphene_quaternion_t  // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
-	C.graphene_quaternion_scale(_arg0, _arg1, (*C.graphene_quaternion_t)(unsafe.Pointer(&_res)))
+	C.graphene_quaternion_scale(_arg0, _arg1, &_arg2)
+
+	var _res Quaternion // out
+
+	{
+		var refTmpIn *C.graphene_quaternion_t
+		var refTmpOut *Quaternion
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Quaternion)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3783,13 +4605,27 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
 	var _arg2 C.float                  // out
-	var _res Quaternion
+	var _arg3 C.graphene_quaternion_t  // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.float)(factor)
+	_arg2 = C.float(factor)
 
-	C.graphene_quaternion_slerp(_arg0, _arg1, _arg2, (*C.graphene_quaternion_t)(unsafe.Pointer(&_res)))
+	C.graphene_quaternion_slerp(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Quaternion // out
+
+	{
+		var refTmpIn *C.graphene_quaternion_t
+		var refTmpOut *Quaternion
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Quaternion)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3798,15 +4634,27 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 func (q *Quaternion) ToAngleVec3() (float32, Vec3) {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // in
-	var _axis Vec3
+	var _arg2 C.graphene_vec3_t        // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	C.graphene_quaternion_to_angle_vec3(_arg0, &_arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_axis)))
+	C.graphene_quaternion_to_angle_vec3(_arg0, &_arg1, &_arg2)
 
 	var _angle float32 // out
+	var _axis Vec3     // out
 
-	_angle = (float32)(_arg1)
+	_angle = float32(_arg1)
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_axis = *refTmpOut
+	}
 
 	return _angle, _axis
 }
@@ -3827,9 +4675,9 @@ func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 	var _degY float32 // out
 	var _degZ float32 // out
 
-	_degX = (float32)(_arg1)
-	_degY = (float32)(_arg2)
-	_degZ = (float32)(_arg3)
+	_degX = float32(_arg1)
+	_degY = float32(_arg2)
+	_degZ = float32(_arg3)
 
 	return _degX, _degY, _degZ
 }
@@ -3838,11 +4686,25 @@ func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 // rotation defined by the #graphene_quaternion_t.
 func (q *Quaternion) ToMatrix() Matrix {
 	var _arg0 *C.graphene_quaternion_t // out
-	var _m Matrix
+	var _arg1 C.graphene_matrix_t      // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	C.graphene_quaternion_to_matrix(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_m)))
+	C.graphene_quaternion_to_matrix(_arg0, &_arg1)
+
+	var _m Matrix // out
+
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *Matrix
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Matrix)(unsafe.Pointer(refTmpIn))
+
+		_m = *refTmpOut
+	}
 
 	return _m
 }
@@ -3863,9 +4725,9 @@ func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 	var _radY float32 // out
 	var _radZ float32 // out
 
-	_radX = (float32)(_arg1)
-	_radY = (float32)(_arg2)
-	_radZ = (float32)(_arg3)
+	_radX = float32(_arg1)
+	_radY = float32(_arg2)
+	_radZ = float32(_arg3)
 
 	return _radX, _radY, _radZ
 }
@@ -3874,11 +4736,25 @@ func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 // #graphene_vec4_t.
 func (q *Quaternion) ToVec4() Vec4 {
 	var _arg0 *C.graphene_quaternion_t // out
-	var _res Vec4
+	var _arg1 C.graphene_vec4_t        // in
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	C.graphene_quaternion_to_vec4(_arg0, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_quaternion_to_vec4(_arg0, &_arg1)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3908,9 +4784,9 @@ func NewRayAlloc() *Ray {
 
 	var _ray *Ray // out
 
-	_ray = WrapRay(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ray, func(v *Ray) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ray = (*Ray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ray, func(v **Ray) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ray
@@ -3955,12 +4831,26 @@ func (r *Ray) Free() {
 func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
 	var _arg0 *C.graphene_ray_t     // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _res Point3D
+	var _arg2 C.graphene_point3d_t  // in
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_ray_get_closest_point_to_point(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_ray_get_closest_point_to_point(_arg0, _arg1, &_arg2)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -3968,11 +4858,25 @@ func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
 // Direction retrieves the direction of the given #graphene_ray_t.
 func (r *Ray) Direction() Vec3 {
 	var _arg0 *C.graphene_ray_t // out
-	var _direction Vec3
+	var _arg1 C.graphene_vec3_t // in
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_ray_get_direction(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_direction)))
+	C.graphene_ray_get_direction(_arg0, &_arg1)
+
+	var _direction Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_direction = *refTmpOut
+	}
 
 	return _direction
 }
@@ -3993,7 +4897,7 @@ func (r *Ray) DistanceToPlane(p *Plane) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -4015,19 +4919,33 @@ func (r *Ray) DistanceToPoint(p *Point3D) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
 
 // Origin retrieves the origin of the given #graphene_ray_t.
 func (r *Ray) Origin() Point3D {
-	var _arg0 *C.graphene_ray_t // out
-	var _origin Point3D
+	var _arg0 *C.graphene_ray_t    // out
+	var _arg1 C.graphene_point3d_t // in
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_ray_get_origin(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_origin)))
+	C.graphene_ray_get_origin(_arg0, &_arg1)
+
+	var _origin Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_origin = *refTmpOut
+	}
 
 	return _origin
 }
@@ -4035,14 +4953,28 @@ func (r *Ray) Origin() Point3D {
 // PositionAt retrieves the coordinates of a point at the distance @t along the
 // given #graphene_ray_t.
 func (r *Ray) PositionAt(t float32) Point3D {
-	var _arg0 *C.graphene_ray_t // out
-	var _arg1 C.float           // out
-	var _position Point3D
+	var _arg0 *C.graphene_ray_t    // out
+	var _arg1 C.float              // out
+	var _arg2 C.graphene_point3d_t // in
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.float)(t)
+	_arg1 = C.float(t)
 
-	C.graphene_ray_get_position_at(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_position)))
+	C.graphene_ray_get_position_at(_arg0, _arg1, &_arg2)
+
+	var _position Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_position = *refTmpOut
+	}
 
 	return _position
 }
@@ -4063,7 +4995,7 @@ func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 
 	var _ray *Ray // out
 
-	_ray = WrapRay(unsafe.Pointer(_cret))
+	_ray = (*Ray)(unsafe.Pointer(_cret))
 
 	return _ray
 }
@@ -4082,7 +5014,7 @@ func (r *Ray) InitFromRay(src *Ray) *Ray {
 
 	var _ray *Ray // out
 
-	_ray = WrapRay(unsafe.Pointer(_cret))
+	_ray = (*Ray)(unsafe.Pointer(_cret))
 
 	return _ray
 }
@@ -4102,7 +5034,7 @@ func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 
 	var _ray *Ray // out
 
-	_ray = WrapRay(unsafe.Pointer(_cret))
+	_ray = (*Ray)(unsafe.Pointer(_cret))
 
 	return _ray
 }
@@ -4123,7 +5055,7 @@ func (r *Ray) IntersectBox(b *Box) (float32, RayIntersectionKind) {
 	var _tOut float32                            // out
 	var _rayIntersectionKind RayIntersectionKind // out
 
-	_tOut = (float32)(_arg2)
+	_tOut = float32(_arg2)
 	_rayIntersectionKind = RayIntersectionKind(_cret)
 
 	return _tOut, _rayIntersectionKind
@@ -4145,7 +5077,7 @@ func (r *Ray) IntersectSphere(s *Sphere) (float32, RayIntersectionKind) {
 	var _tOut float32                            // out
 	var _rayIntersectionKind RayIntersectionKind // out
 
-	_tOut = (float32)(_arg2)
+	_tOut = float32(_arg2)
 	_rayIntersectionKind = RayIntersectionKind(_cret)
 
 	return _tOut, _rayIntersectionKind
@@ -4167,7 +5099,7 @@ func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
 	var _tOut float32                            // out
 	var _rayIntersectionKind RayIntersectionKind // out
 
-	_tOut = (float32)(_arg2)
+	_tOut = float32(_arg2)
 	_rayIntersectionKind = RayIntersectionKind(_cret)
 
 	return _tOut, _rayIntersectionKind
@@ -4338,12 +5270,26 @@ func (a *Rect) Equal(b *Rect) bool {
 func (r *Rect) Expand(p *Point) Rect {
 	var _arg0 *C.graphene_rect_t  // out
 	var _arg1 *C.graphene_point_t // out
-	var _res Rect
+	var _arg2 C.graphene_rect_t   // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_rect_expand(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_expand(_arg0, _arg1, &_arg2)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4368,7 +5314,7 @@ func (r *Rect) Area() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -4377,11 +5323,25 @@ func (r *Rect) Area() float32 {
 // rectangle.
 func (r *Rect) BottomLeft() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _p Point
+	var _arg1 C.graphene_point_t // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_rect_get_bottom_left(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
+	C.graphene_rect_get_bottom_left(_arg0, &_arg1)
+
+	var _p Point // out
+
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_p = *refTmpOut
+	}
 
 	return _p
 }
@@ -4390,11 +5350,25 @@ func (r *Rect) BottomLeft() Point {
 // rectangle.
 func (r *Rect) BottomRight() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _p Point
+	var _arg1 C.graphene_point_t // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_rect_get_bottom_right(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
+	C.graphene_rect_get_bottom_right(_arg0, &_arg1)
+
+	var _p Point // out
+
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_p = *refTmpOut
+	}
 
 	return _p
 }
@@ -4402,11 +5376,25 @@ func (r *Rect) BottomRight() Point {
 // Center retrieves the coordinates of the center of the given rectangle.
 func (r *Rect) Center() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _p Point
+	var _arg1 C.graphene_point_t // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_rect_get_center(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
+	C.graphene_rect_get_center(_arg0, &_arg1)
+
+	var _p Point // out
+
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_p = *refTmpOut
+	}
 
 	return _p
 }
@@ -4422,7 +5410,7 @@ func (r *Rect) Height() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -4431,11 +5419,25 @@ func (r *Rect) Height() float32 {
 // rectangle.
 func (r *Rect) TopLeft() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _p Point
+	var _arg1 C.graphene_point_t // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_rect_get_top_left(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
+	C.graphene_rect_get_top_left(_arg0, &_arg1)
+
+	var _p Point // out
+
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_p = *refTmpOut
+	}
 
 	return _p
 }
@@ -4444,11 +5446,25 @@ func (r *Rect) TopLeft() Point {
 // rectangle.
 func (r *Rect) TopRight() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _p Point
+	var _arg1 C.graphene_point_t // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_rect_get_top_right(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
+	C.graphene_rect_get_top_right(_arg0, &_arg1)
+
+	var _p Point // out
+
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		_p = *refTmpOut
+	}
 
 	return _p
 }
@@ -4480,7 +5496,7 @@ func (r *Rect) Width() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -4496,7 +5512,7 @@ func (r *Rect) X() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -4512,7 +5528,7 @@ func (r *Rect) Y() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -4530,16 +5546,16 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	var _cret *C.graphene_rect_t // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(width)
-	_arg4 = (C.float)(height)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(width)
+	_arg4 = C.float(height)
 
 	_cret = C.graphene_rect_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = (*Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
@@ -4560,7 +5576,7 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = (*Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
@@ -4585,14 +5601,14 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 	var _cret *C.graphene_rect_t // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.float)(dX)
-	_arg2 = (C.float)(dY)
+	_arg1 = C.float(dX)
+	_arg2 = C.float(dY)
 
 	_cret = C.graphene_rect_inset(_arg0, _arg1, _arg2)
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = (*Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
@@ -4614,13 +5630,27 @@ func (r *Rect) InsetR(dX float32, dY float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _res Rect
+	var _arg3 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.float)(dX)
-	_arg2 = (C.float)(dY)
+	_arg1 = C.float(dX)
+	_arg2 = C.float(dY)
 
-	C.graphene_rect_inset_r(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_inset_r(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4631,13 +5661,27 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 C.double           // out
-	var _res Rect
+	var _arg3 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.double)(factor)
+	_arg2 = C.double(factor)
 
-	C.graphene_rect_interpolate(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4653,16 +5697,28 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 func (a *Rect) Intersection(b *Rect) (Rect, bool) {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
-	var _res Rect
-	var _cret C._Bool // in
+	var _arg2 C.graphene_rect_t  // in
+	var _cret C._Bool            // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
-	_cret = C.graphene_rect_intersection(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	_cret = C.graphene_rect_intersection(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _res Rect // out
+	var _ok bool  // out
 
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 	if _cret {
 		_ok = true
 	}
@@ -4684,7 +5740,7 @@ func (r *Rect) Normalize() *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = (*Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
@@ -4695,11 +5751,25 @@ func (r *Rect) Normalize() *Rect {
 // values, and that the origin is in the top-left corner of the rectangle.
 func (r *Rect) NormalizeR() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _res Rect
+	var _arg1 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_rect_normalize_r(_arg0, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_normalize_r(_arg0, &_arg1)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4714,14 +5784,14 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 	var _cret *C.graphene_rect_t // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.float)(dX)
-	_arg2 = (C.float)(dY)
+	_arg1 = C.float(dX)
+	_arg2 = C.float(dY)
 
 	_cret = C.graphene_rect_offset(_arg0, _arg1, _arg2)
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = (*Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
@@ -4733,13 +5803,27 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _res Rect
+	var _arg3 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.float)(dX)
-	_arg2 = (C.float)(dY)
+	_arg1 = C.float(dX)
+	_arg2 = C.float(dY)
 
-	C.graphene_rect_offset_r(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_offset_r(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4754,11 +5838,25 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 // origin, and `ceil` on the size.
 func (r *Rect) Round() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _res Rect
+	var _arg1 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_rect_round(_arg0, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_round(_arg0, &_arg1)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4782,11 +5880,25 @@ func (r *Rect) Round() Rect {
 // corners of the original rectangle outside the rounded one.
 func (r *Rect) RoundExtents() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _res Rect
+	var _arg1 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_rect_round_extents(_arg0, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_round_extents(_arg0, &_arg1)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4804,7 +5916,7 @@ func (r *Rect) RoundToPixel() *Rect {
 
 	var _rect *Rect // out
 
-	_rect = WrapRect(unsafe.Pointer(_cret))
+	_rect = (*Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
@@ -4815,13 +5927,27 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _res Rect
+	var _arg3 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.float)(sH)
-	_arg2 = (C.float)(sV)
+	_arg1 = C.float(sH)
+	_arg2 = C.float(sV)
 
-	C.graphene_rect_scale(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_scale(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4834,12 +5960,26 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 func (a *Rect) Union(b *Rect) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
-	var _res Rect
+	var _arg2 C.graphene_rect_t  // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_rect_union(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_rect_union(_arg0, _arg1, &_arg2)
+
+	var _res Rect // out
+
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *Rect
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4892,9 +6032,9 @@ func NewSizeAlloc() *Size {
 
 	var _size *Size // out
 
-	_size = WrapSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_size, func(v *Size) {
-		C.free(unsafe.Pointer(v.Native()))
+	_size = (*Size)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_size, func(v **Size) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _size
@@ -4942,14 +6082,14 @@ func (s *Size) Init(width float32, height float32) *Size {
 	var _cret *C.graphene_size_t // in
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(width)
-	_arg2 = (C.float)(height)
+	_arg1 = C.float(width)
+	_arg2 = C.float(height)
 
 	_cret = C.graphene_size_init(_arg0, _arg1, _arg2)
 
 	var _size *Size // out
 
-	_size = WrapSize(unsafe.Pointer(_cret))
+	_size = (*Size)(unsafe.Pointer(_cret))
 
 	return _size
 }
@@ -4968,7 +6108,7 @@ func (s *Size) InitFromSize(src *Size) *Size {
 
 	var _size *Size // out
 
-	_size = WrapSize(unsafe.Pointer(_cret))
+	_size = (*Size)(unsafe.Pointer(_cret))
 
 	return _size
 }
@@ -4979,13 +6119,27 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
 	var _arg2 C.double           // out
-	var _res Size
+	var _arg3 C.graphene_size_t  // in
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.double)(factor)
+	_arg2 = C.double(factor)
 
-	C.graphene_size_interpolate(_arg0, _arg1, _arg2, (*C.graphene_size_t)(unsafe.Pointer(&_res)))
+	C.graphene_size_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Size // out
+
+	{
+		var refTmpIn *C.graphene_size_t
+		var refTmpOut *Size
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Size)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -4994,12 +6148,26 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 func (s *Size) Scale(factor float32) Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 C.float            // out
-	var _res Size
+	var _arg2 C.graphene_size_t  // in
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
-	C.graphene_size_scale(_arg0, _arg1, (*C.graphene_size_t)(unsafe.Pointer(&_res)))
+	C.graphene_size_scale(_arg0, _arg1, &_arg2)
+
+	var _res Size // out
+
+	{
+		var refTmpIn *C.graphene_size_t
+		var refTmpOut *Size
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Size)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5026,9 +6194,9 @@ func NewSphereAlloc() *Sphere {
 
 	var _sphere *Sphere // out
 
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_sphere, func(v *Sphere) {
-		C.free(unsafe.Pointer(v.Native()))
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_sphere, func(v **Sphere) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _sphere
@@ -5074,7 +6242,7 @@ func (s *Sphere) Distance(point *Point3D) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -5112,11 +6280,25 @@ func (s *Sphere) Free() {
 // #graphene_sphere_t.
 func (s *Sphere) BoundingBox() Box {
 	var _arg0 *C.graphene_sphere_t // out
-	var _box Box
+	var _arg1 C.graphene_box_t     // in
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	C.graphene_sphere_get_bounding_box(_arg0, (*C.graphene_box_t)(unsafe.Pointer(&_box)))
+	C.graphene_sphere_get_bounding_box(_arg0, &_arg1)
+
+	var _box Box // out
+
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_box = *refTmpOut
+	}
 
 	return _box
 }
@@ -5124,11 +6306,25 @@ func (s *Sphere) BoundingBox() Box {
 // Center retrieves the coordinates of the center of a #graphene_sphere_t.
 func (s *Sphere) Center() Point3D {
 	var _arg0 *C.graphene_sphere_t // out
-	var _center Point3D
+	var _arg1 C.graphene_point3d_t // in
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	C.graphene_sphere_get_center(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_center)))
+	C.graphene_sphere_get_center(_arg0, &_arg1)
+
+	var _center Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_center = *refTmpOut
+	}
 
 	return _center
 }
@@ -5144,7 +6340,7 @@ func (s *Sphere) Radius() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -5159,13 +6355,13 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(center.Native()))
-	_arg2 = (C.float)(radius)
+	_arg2 = C.float(radius)
 
 	_cret = C.graphene_sphere_init(_arg0, _arg1, _arg2)
 
 	var _sphere *Sphere // out
 
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
 
 	return _sphere
 }
@@ -5191,7 +6387,7 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 
 	var _sphere *Sphere // out
 
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
 
 	return _sphere
 }
@@ -5217,7 +6413,7 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 
 	var _sphere *Sphere // out
 
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
 
 	return _sphere
 }
@@ -5245,12 +6441,26 @@ func (s *Sphere) IsEmpty() bool {
 func (s *Sphere) Translate(point *Point3D) Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _res Sphere
+	var _arg2 C.graphene_sphere_t   // in
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	C.graphene_sphere_translate(_arg0, _arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&_res)))
+	C.graphene_sphere_translate(_arg0, _arg1, &_arg2)
+
+	var _res Sphere // out
+
+	{
+		var refTmpIn *C.graphene_sphere_t
+		var refTmpOut *Sphere
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Sphere)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5277,9 +6487,9 @@ func NewTriangleAlloc() *Triangle {
 
 	var _triangle *Triangle // out
 
-	_triangle = WrapTriangle(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_triangle, func(v *Triangle) {
-		C.free(unsafe.Pointer(v.Native()))
+	_triangle = (*Triangle)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_triangle, func(v **Triangle) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _triangle
@@ -5350,7 +6560,7 @@ func (t *Triangle) Area() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -5375,16 +6585,28 @@ func (t *Triangle) Area() float32 {
 func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
-	var _res Vec2
-	var _cret C._Bool // in
+	var _arg2 C.graphene_vec2_t      // in
+	var _cret C._Bool                // in
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	_cret = C.graphene_triangle_get_barycoords(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	_cret = C.graphene_triangle_get_barycoords(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _res Vec2 // out
+	var _ok bool  // out
 
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 	if _cret {
 		_ok = true
 	}
@@ -5395,11 +6617,25 @@ func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
 // BoundingBox computes the bounding box of the given #graphene_triangle_t.
 func (t *Triangle) BoundingBox() Box {
 	var _arg0 *C.graphene_triangle_t // out
-	var _res Box
+	var _arg1 C.graphene_box_t       // in
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	C.graphene_triangle_get_bounding_box(_arg0, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
+	C.graphene_triangle_get_bounding_box(_arg0, &_arg1)
+
+	var _res Box // out
+
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5412,11 +6648,25 @@ func (t *Triangle) BoundingBox() Box {
 // i.e. the intersection of its medians.
 func (t *Triangle) Midpoint() Point3D {
 	var _arg0 *C.graphene_triangle_t // out
-	var _res Point3D
+	var _arg1 C.graphene_point3d_t   // in
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	C.graphene_triangle_get_midpoint(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_triangle_get_midpoint(_arg0, &_arg1)
+
+	var _res Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5424,11 +6674,25 @@ func (t *Triangle) Midpoint() Point3D {
 // Normal computes the normal vector of the given #graphene_triangle_t.
 func (t *Triangle) Normal() Vec3 {
 	var _arg0 *C.graphene_triangle_t // out
-	var _res Vec3
+	var _arg1 C.graphene_vec3_t      // in
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	C.graphene_triangle_get_normal(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_triangle_get_normal(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5437,11 +6701,25 @@ func (t *Triangle) Normal() Vec3 {
 // #graphene_triangle_t.
 func (t *Triangle) Plane() Plane {
 	var _arg0 *C.graphene_triangle_t // out
-	var _res Plane
+	var _arg1 C.graphene_plane_t     // in
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	C.graphene_triangle_get_plane(_arg0, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
+	C.graphene_triangle_get_plane(_arg0, &_arg1)
+
+	var _res Plane // out
+
+	{
+		var refTmpIn *C.graphene_plane_t
+		var refTmpOut *Plane
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Plane)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5450,13 +6728,51 @@ func (t *Triangle) Plane() Plane {
 // returns their coordinates as #graphene_point3d_t.
 func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 	var _arg0 *C.graphene_triangle_t // out
-	var _a Point3D
-	var _b Point3D
-	var _c Point3D
+	var _arg1 C.graphene_point3d_t   // in
+	var _arg2 C.graphene_point3d_t   // in
+	var _arg3 C.graphene_point3d_t   // in
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	C.graphene_triangle_get_points(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_a)), (*C.graphene_point3d_t)(unsafe.Pointer(&_b)), (*C.graphene_point3d_t)(unsafe.Pointer(&_c)))
+	C.graphene_triangle_get_points(_arg0, &_arg1, &_arg2, &_arg3)
+
+	var _a Point3D // out
+	var _b Point3D // out
+	var _c Point3D // out
+
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_a = *refTmpOut
+	}
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_b = *refTmpOut
+	}
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_c = *refTmpOut
+	}
 
 	return _a, _b, _c
 }
@@ -5479,8 +6795,8 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) 
 	var _arg2 *C.graphene_vec2_t     // out
 	var _arg3 *C.graphene_vec2_t     // out
 	var _arg4 *C.graphene_vec2_t     // out
-	var _res Vec2
-	var _cret C._Bool // in
+	var _arg5 C.graphene_vec2_t      // in
+	var _cret C._Bool                // in
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
@@ -5488,10 +6804,22 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) 
 	_arg3 = (*C.graphene_vec2_t)(unsafe.Pointer(uvB.Native()))
 	_arg4 = (*C.graphene_vec2_t)(unsafe.Pointer(uvC.Native()))
 
-	_cret = C.graphene_triangle_get_uv(_arg0, _arg1, _arg2, _arg3, _arg4, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	_cret = C.graphene_triangle_get_uv(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5)
 
-	var _ok bool // out
+	var _res Vec2 // out
+	var _ok bool  // out
 
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg5
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 	if _cret {
 		_ok = true
 	}
@@ -5502,13 +6830,51 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) 
 // Vertices retrieves the three vertices of the given #graphene_triangle_t.
 func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
 	var _arg0 *C.graphene_triangle_t // out
-	var _a Vec3
-	var _b Vec3
-	var _c Vec3
+	var _arg1 C.graphene_vec3_t      // in
+	var _arg2 C.graphene_vec3_t      // in
+	var _arg3 C.graphene_vec3_t      // in
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	C.graphene_triangle_get_vertices(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_a)), (*C.graphene_vec3_t)(unsafe.Pointer(&_b)), (*C.graphene_vec3_t)(unsafe.Pointer(&_c)))
+	C.graphene_triangle_get_vertices(_arg0, &_arg1, &_arg2, &_arg3)
+
+	var _a Vec3 // out
+	var _b Vec3 // out
+	var _c Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_a = *refTmpOut
+	}
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_b = *refTmpOut
+	}
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_c = *refTmpOut
+	}
 
 	return _a, _b, _c
 }
@@ -5532,7 +6898,7 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 
 	var _triangle *Triangle // out
 
-	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+	_triangle = (*Triangle)(unsafe.Pointer(_cret))
 
 	return _triangle
 }
@@ -5555,7 +6921,7 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 
 	var _triangle *Triangle // out
 
-	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+	_triangle = (*Triangle)(unsafe.Pointer(_cret))
 
 	return _triangle
 }
@@ -5578,7 +6944,7 @@ func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 
 	var _triangle *Triangle // out
 
-	_triangle = WrapTriangle(unsafe.Pointer(_cret))
+	_triangle = (*Triangle)(unsafe.Pointer(_cret))
 
 	return _triangle
 }
@@ -5608,9 +6974,9 @@ func NewVec2Alloc() *Vec2 {
 
 	var _vec2 *Vec2 // out
 
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_vec2, func(v *Vec2) {
-		C.free(unsafe.Pointer(v.Native()))
+	_vec2 = (*Vec2)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_vec2, func(v **Vec2) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _vec2
@@ -5626,12 +6992,26 @@ func (v *Vec2) Native() unsafe.Pointer {
 func (a *Vec2) Add(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _res Vec2
+	var _arg2 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec2_add(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_add(_arg0, _arg1, &_arg2)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5642,12 +7022,26 @@ func (a *Vec2) Add(b *Vec2) Vec2 {
 func (a *Vec2) Divide(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _res Vec2
+	var _arg2 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec2_divide(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_divide(_arg0, _arg1, &_arg2)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5665,7 +7059,7 @@ func (a *Vec2) Dot(b *Vec2) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -5710,7 +7104,7 @@ func (v *Vec2) X() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -5726,7 +7120,7 @@ func (v *Vec2) Y() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -5741,14 +7135,14 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
 
 	_cret = C.graphene_vec2_init(_arg0, _arg1, _arg2)
 
 	var _vec2 *Vec2 // out
 
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
+	_vec2 = (*Vec2)(unsafe.Pointer(_cret))
 
 	return _vec2
 }
@@ -5766,7 +7160,7 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 
 	var _vec2 *Vec2 // out
 
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
+	_vec2 = (*Vec2)(unsafe.Pointer(_cret))
 
 	return _vec2
 }
@@ -5784,7 +7178,7 @@ func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 
 	var _vec2 *Vec2 // out
 
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
+	_vec2 = (*Vec2)(unsafe.Pointer(_cret))
 
 	return _vec2
 }
@@ -5794,13 +7188,27 @@ func (v *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
 	var _arg2 C.double           // out
-	var _res Vec2
+	var _arg3 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(v2.Native()))
-	_arg2 = (C.double)(factor)
+	_arg2 = C.double(factor)
 
-	C.graphene_vec2_interpolate(_arg0, _arg1, _arg2, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5816,7 +7224,7 @@ func (v *Vec2) Length() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -5826,12 +7234,26 @@ func (v *Vec2) Length() float32 {
 func (a *Vec2) Max(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _res Vec2
+	var _arg2 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec2_max(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_max(_arg0, _arg1, &_arg2)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5841,12 +7263,26 @@ func (a *Vec2) Max(b *Vec2) Vec2 {
 func (a *Vec2) Min(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _res Vec2
+	var _arg2 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec2_min(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_min(_arg0, _arg1, &_arg2)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5856,12 +7292,26 @@ func (a *Vec2) Min(b *Vec2) Vec2 {
 func (a *Vec2) Multiply(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _res Vec2
+	var _arg2 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec2_multiply(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_multiply(_arg0, _arg1, &_arg2)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5876,7 +7326,7 @@ func (v *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(v2.Native()))
-	_arg2 = (C.float)(epsilon)
+	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_vec2_near(_arg0, _arg1, _arg2)
 
@@ -5892,11 +7342,25 @@ func (v *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 // Negate negates the given #graphene_vec2_t.
 func (v *Vec2) Negate() Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
-	var _res Vec2
+	var _arg1 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec2_negate(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_negate(_arg0, &_arg1)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5904,11 +7368,25 @@ func (v *Vec2) Negate() Vec2 {
 // Normalize computes the normalized vector for the given vector @v.
 func (v *Vec2) Normalize() Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
-	var _res Vec2
+	var _arg1 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec2_normalize(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_normalize(_arg0, &_arg1)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5918,12 +7396,26 @@ func (v *Vec2) Normalize() Vec2 {
 func (v *Vec2) Scale(factor float32) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
-	var _res Vec2
+	var _arg2 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
-	C.graphene_vec2_scale(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_scale(_arg0, _arg1, &_arg2)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5934,12 +7426,26 @@ func (v *Vec2) Scale(factor float32) Vec2 {
 func (a *Vec2) Subtract(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _res Vec2
+	var _arg2 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec2_subtract(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec2_subtract(_arg0, _arg1, &_arg2)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -5986,9 +7492,9 @@ func NewVec3Alloc() *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = WrapVec3(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_vec3, func(v *Vec3) {
-		C.free(unsafe.Pointer(v.Native()))
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_vec3, func(v **Vec3) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _vec3
@@ -6003,12 +7509,26 @@ func (v *Vec3) Native() unsafe.Pointer {
 func (a *Vec3) Add(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec3_add(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_add(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6017,12 +7537,26 @@ func (a *Vec3) Add(b *Vec3) Vec3 {
 func (a *Vec3) Cross(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec3_cross(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_cross(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6033,12 +7567,26 @@ func (a *Vec3) Cross(b *Vec3) Vec3 {
 func (a *Vec3) Divide(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec3_divide(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_divide(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6056,7 +7604,7 @@ func (a *Vec3) Dot(b *Vec3) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6101,7 +7649,7 @@ func (v *Vec3) X() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6110,11 +7658,25 @@ func (v *Vec3) X() float32 {
 // of the given #graphene_vec3_t.
 func (v *Vec3) XY() Vec2 {
 	var _arg0 *C.graphene_vec3_t // out
-	var _res Vec2
+	var _arg1 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec3_get_xy(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_get_xy(_arg0, &_arg1)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6123,11 +7685,25 @@ func (v *Vec3) XY() Vec2 {
 // given #graphene_vec3_t, and the third component set to 0.
 func (v *Vec3) XY0() Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg1 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec3_get_xy0(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_get_xy0(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6136,11 +7712,25 @@ func (v *Vec3) XY0() Vec3 {
 // for the fourth component of the resulting vector.
 func (v *Vec3) XYZ0() Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
-	var _res Vec4
+	var _arg1 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec3_get_xyz0(_arg0, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_get_xyz0(_arg0, &_arg1)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6149,11 +7739,25 @@ func (v *Vec3) XYZ0() Vec4 {
 // for the fourth component of the resulting vector.
 func (v *Vec3) XYZ1() Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
-	var _res Vec4
+	var _arg1 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec3_get_xyz1(_arg0, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_get_xyz1(_arg0, &_arg1)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6163,12 +7767,26 @@ func (v *Vec3) XYZ1() Vec4 {
 func (v *Vec3) Xyzw(w float32) Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.float)(w)
+	_arg1 = C.float(w)
 
-	C.graphene_vec3_get_xyzw(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_get_xyzw(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6184,7 +7802,7 @@ func (v *Vec3) Y() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6200,7 +7818,7 @@ func (v *Vec3) Z() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6216,15 +7834,15 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(z)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
 
 	_cret = C.graphene_vec3_init(_arg0, _arg1, _arg2, _arg3)
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
 
 	return _vec3
 }
@@ -6242,7 +7860,7 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
 
 	return _vec3
 }
@@ -6261,7 +7879,7 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = WrapVec3(unsafe.Pointer(_cret))
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
 
 	return _vec3
 }
@@ -6271,13 +7889,27 @@ func (v *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.double           // out
-	var _res Vec3
+	var _arg3 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v2.Native()))
-	_arg2 = (C.double)(factor)
+	_arg2 = C.double(factor)
 
-	C.graphene_vec3_interpolate(_arg0, _arg1, _arg2, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6293,7 +7925,7 @@ func (v *Vec3) Length() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6303,12 +7935,26 @@ func (v *Vec3) Length() float32 {
 func (a *Vec3) Max(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec3_max(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_max(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6318,12 +7964,26 @@ func (a *Vec3) Max(b *Vec3) Vec3 {
 func (a *Vec3) Min(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec3_min(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_min(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6332,12 +7992,26 @@ func (a *Vec3) Min(b *Vec3) Vec3 {
 func (a *Vec3) Multiply(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec3_multiply(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_multiply(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6352,7 +8026,7 @@ func (v *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v2.Native()))
-	_arg2 = (C.float)(epsilon)
+	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_vec3_near(_arg0, _arg1, _arg2)
 
@@ -6368,11 +8042,25 @@ func (v *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 // Negate negates the given #graphene_vec3_t.
 func (v *Vec3) Negate() Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg1 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec3_negate(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_negate(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6380,11 +8068,25 @@ func (v *Vec3) Negate() Vec3 {
 // Normalize normalizes the given #graphene_vec3_t.
 func (v *Vec3) Normalize() Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg1 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec3_normalize(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_normalize(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6394,12 +8096,26 @@ func (v *Vec3) Normalize() Vec3 {
 func (v *Vec3) Scale(factor float32) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
-	C.graphene_vec3_scale(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_scale(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6410,12 +8126,26 @@ func (v *Vec3) Scale(factor float32) Vec3 {
 func (a *Vec3) Subtract(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec3_subtract(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec3_subtract(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6462,9 +8192,9 @@ func NewVec4Alloc() *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_vec4, func(v *Vec4) {
-		C.free(unsafe.Pointer(v.Native()))
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_vec4, func(v **Vec4) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _vec4
@@ -6479,12 +8209,26 @@ func (v *Vec4) Native() unsafe.Pointer {
 func (a *Vec4) Add(b *Vec4) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec4_add(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_add(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6495,12 +8239,26 @@ func (a *Vec4) Add(b *Vec4) Vec4 {
 func (a *Vec4) Divide(b *Vec4) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec4_divide(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_divide(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6518,7 +8276,7 @@ func (a *Vec4) Dot(b *Vec4) float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6563,7 +8321,7 @@ func (v *Vec4) W() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6579,7 +8337,7 @@ func (v *Vec4) X() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6588,11 +8346,25 @@ func (v *Vec4) X() float32 {
 // given #graphene_vec4_t.
 func (v *Vec4) XY() Vec2 {
 	var _arg0 *C.graphene_vec4_t // out
-	var _res Vec2
+	var _arg1 C.graphene_vec2_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec4_get_xy(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_get_xy(_arg0, &_arg1)
+
+	var _res Vec2 // out
+
+	{
+		var refTmpIn *C.graphene_vec2_t
+		var refTmpOut *Vec2
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6601,11 +8373,25 @@ func (v *Vec4) XY() Vec2 {
 // the given #graphene_vec4_t.
 func (v *Vec4) XYZ() Vec3 {
 	var _arg0 *C.graphene_vec4_t // out
-	var _res Vec3
+	var _arg1 C.graphene_vec3_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec4_get_xyz(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_get_xyz(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	{
+		var refTmpIn *C.graphene_vec3_t
+		var refTmpOut *Vec3
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec3)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6621,7 +8407,7 @@ func (v *Vec4) Y() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6637,7 +8423,7 @@ func (v *Vec4) Z() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6654,16 +8440,16 @@ func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 	var _cret *C.graphene_vec4_t // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.float)(x)
-	_arg2 = (C.float)(y)
-	_arg3 = (C.float)(z)
-	_arg4 = (C.float)(w)
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
+	_arg4 = C.float(w)
 
 	_cret = C.graphene_vec4_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
 
 	return _vec4
 }
@@ -6682,7 +8468,7 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
 
 	return _vec4
 }
@@ -6698,14 +8484,14 @@ func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(src.Native()))
-	_arg2 = (C.float)(z)
-	_arg3 = (C.float)(w)
+	_arg2 = C.float(z)
+	_arg3 = C.float(w)
 
 	_cret = C.graphene_vec4_init_from_vec2(_arg0, _arg1, _arg2, _arg3)
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
 
 	return _vec4
 }
@@ -6720,13 +8506,13 @@ func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(src.Native()))
-	_arg2 = (C.float)(w)
+	_arg2 = C.float(w)
 
 	_cret = C.graphene_vec4_init_from_vec3(_arg0, _arg1, _arg2)
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
 
 	return _vec4
 }
@@ -6745,7 +8531,7 @@ func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 
 	var _vec4 *Vec4 // out
 
-	_vec4 = WrapVec4(unsafe.Pointer(_cret))
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
 
 	return _vec4
 }
@@ -6755,13 +8541,27 @@ func (v *Vec4) Interpolate(v2 *Vec4, factor float64) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
 	var _arg2 C.double           // out
-	var _res Vec4
+	var _arg3 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v2.Native()))
-	_arg2 = (C.double)(factor)
+	_arg2 = C.double(factor)
 
-	C.graphene_vec4_interpolate(_arg0, _arg1, _arg2, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6777,7 +8577,7 @@ func (v *Vec4) Length() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6787,12 +8587,26 @@ func (v *Vec4) Length() float32 {
 func (a *Vec4) Max(b *Vec4) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec4_max(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_max(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6802,12 +8616,26 @@ func (a *Vec4) Max(b *Vec4) Vec4 {
 func (a *Vec4) Min(b *Vec4) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec4_min(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_min(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6816,12 +8644,26 @@ func (a *Vec4) Min(b *Vec4) Vec4 {
 func (a *Vec4) Multiply(b *Vec4) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec4_multiply(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_multiply(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6836,7 +8678,7 @@ func (v *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v2.Native()))
-	_arg2 = (C.float)(epsilon)
+	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_vec4_near(_arg0, _arg1, _arg2)
 
@@ -6852,11 +8694,25 @@ func (v *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 // Negate negates the given #graphene_vec4_t.
 func (v *Vec4) Negate() Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
-	var _res Vec4
+	var _arg1 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec4_negate(_arg0, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_negate(_arg0, &_arg1)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6864,11 +8720,25 @@ func (v *Vec4) Negate() Vec4 {
 // Normalize normalizes the given #graphene_vec4_t.
 func (v *Vec4) Normalize() Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
-	var _res Vec4
+	var _arg1 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec4_normalize(_arg0, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_normalize(_arg0, &_arg1)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6878,12 +8748,26 @@ func (v *Vec4) Normalize() Vec4 {
 func (v *Vec4) Scale(factor float32) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.float            // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
-	C.graphene_vec4_scale(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_scale(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }
@@ -6894,12 +8778,26 @@ func (v *Vec4) Scale(factor float32) Vec4 {
 func (a *Vec4) Subtract(b *Vec4) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t  // in
 
 	_arg0 = (*C.graphene_vec4_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec4_subtract(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_vec4_subtract(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	{
+		var refTmpIn *C.graphene_vec4_t
+		var refTmpOut *Vec4
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Vec4)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }

@@ -442,6 +442,121 @@ func (conv *TypeConverter) convertParam(at int) *ValueConverted {
 	return nil
 }
 
+const convertRefTmp = "refTmp"
+
+// TODO: realistically, the difference between the expected poiner and what C
+// wants is only 1. We can work around this.
+//
+// TODO: ideally, we should treat all foreign pointers as arrays, because they
+// usually are. It would also allow the caller to allocate a sized array, as
+// they could read the comments.
+
+// convertRef generates weird code that references and dereferences values as
+// needed, then call the conversion routine on it again. This shold only be used
+// in type conversions, not array conversions.
+//
+// WARNING: the caller MUST call this AFTER value.resolveType!
+func (conv *TypeConverter) convertRef(value *ValueConverted, wantC, wantGo int) bool {
+	// ensure we're working with types only.
+	if value.AnyType.Type == nil {
+		return false
+	}
+
+	value.p.Descend()
+	defer value.p.Ascend()
+
+	// Make a copy of value so we can directly plug it back in.
+	refValue := *value
+
+	var (
+		// positive needs dereferencing, negative needs referencing
+		inDiff  int
+		outDiff int
+	)
+
+	// Account for pointer types.
+	if isGPointer(value.resolved.CType) {
+		if wantC > 0 {
+			wantC--
+		} else {
+			wantGo++
+		}
+	}
+
+	// Prefer the implementation Go type instead of the public type.
+	goType := value.resolved.ImplType(value.needsNamespace)
+
+	// Change the pointer types into what the converter wants.
+	switch value.Direction {
+	case ConvertCToGo:
+		refValue.InType, inDiff = forceGoPtr(refValue.InType, wantC)
+		refValue.OutType, outDiff = forceGoPtr(goType, wantGo)
+	case ConvertGoToC:
+		refValue.InType, inDiff = forceGoPtr(goType, wantGo)
+		refValue.OutType, outDiff = forceGoPtr(refValue.OutType, wantC)
+	}
+
+	refValue.InName = convertRefTmp + "In"
+	refValue.OutName = convertRefTmp + "Out"
+
+	refValue.p.Linef("var %s %s", refValue.InName, refValue.InType)
+	refValue.p.Linef("var %s %s", refValue.OutName, refValue.OutType)
+	refValue.p.EmptyLine()
+
+	if inDiff > 0 {
+		// Dereferencing can be a one-liner.
+		refValue.p.Linef("%s = %s%s", refValue.InName, strings.Repeat("*", inDiff), value.InName)
+	} else {
+		// Use the original input value as name for the first variable to be
+		// referenced.
+		current := value.InName
+		for i := 0; i < -inDiff; i++ {
+			refValue.p.Linef("in%d := &%s", i, current)
+			current = fmt.Sprintf("in%d", i)
+		}
+		// Copy the temporary variable into the refValue input.
+		refValue.p.Linef("%s = %s", refValue.InName, current)
+	}
+
+	refValue.p.EmptyLine()
+
+	var ok bool
+	switch value.Direction {
+	case ConvertCToGo:
+		ok = conv.cgoTypeConverter(&refValue)
+	case ConvertGoToC:
+		ok = conv.gocTypeConverter(&refValue)
+	}
+	if !ok {
+		return false
+	}
+
+	refValue.p.EmptyLine()
+
+	// outDiff is the opposite for some reason, so negate it before using.
+	if outDiff = -outDiff; outDiff > 0 {
+		// Dereferencing can be a one-liner.
+		refValue.p.Linef("%s = %s%s", value.OutName, strings.Repeat("*", outDiff), refValue.OutName)
+	} else {
+		// Use the new output value as name for the first variable to be
+		// referenced.
+		current := refValue.OutName
+		for i := 0; i < -outDiff; i++ {
+			refValue.p.Linef("out%d := &%s", i, current)
+			current = fmt.Sprintf("out%d", i)
+		}
+		// Copy the temporary variable into the original output.
+		refValue.p.Linef("%s = %s", value.OutName, current)
+	}
+
+	return true
+}
+
+func forceGoPtr(goType string, want int) (string, int) {
+	current := strings.Count(goType, "*")
+	return strings.Repeat("*", want) + strings.ReplaceAll(goType, "*", ""), current - want
+}
+
 func (conv *TypeConverter) log(lvl LogLevel, v ...interface{}) {
 	if conv.logger == nil {
 		conv.ng.Logln(lvl, v...)
@@ -460,7 +575,7 @@ func (conv *TypeConverter) log(lvl LogLevel, v ...interface{}) {
 // Usually, these are the same, but they're sometimes different depending on the
 // edge case.
 type ValueConverted struct {
-	*ConversionValue // original
+	ConversionValue // original
 
 	InCall    string // use for calls
 	InType    string
@@ -483,7 +598,7 @@ type ValueConverted struct {
 
 func newValueConverted(value *ConversionValue) ValueConverted {
 	return ValueConverted{
-		ConversionValue: value,
+		ConversionValue: *value,
 		InCall:          value.InName,
 		OutCall:         value.OutName,
 
@@ -643,6 +758,33 @@ func (value *ValueConverted) ptrsz() string {
 	return "unsafe.Sizeof(uint(0))"
 }
 
+// isPtr checks pointer coherency for C types and Go types. It's mostly used to
+// guarantee that conversion routines get what they expect.
+func (value *ValueConverted) isPtr(wantC int) bool {
+	// See this same piece of code in convertRef for more information.
+	if isGPointer(value.resolved.CType) && wantC > 0 {
+		wantC--
+	}
+
+	switch value.Direction {
+	case ConvertCToGo:
+		return strings.Count(value.InType, "*") == wantC
+	case ConvertGoToC:
+		return strings.Count(value.OutType, "*") == wantC
+	default:
+		return false
+	}
+
+	// Rationale for not verifying Go pointer offset is that the pointer offset
+	// is already determined in the type resolver routine, so repeating that
+	// information is redundant.
+	//
+	// Edit: this rationale does NOT work because the type resolver only has the
+	// wanted Go pointer information up to the point of creating a new
+	// ResolvedType, and there's no way we can get it back. This routine may not
+	// need to verify the Go pointer, but the conversiron routine will.
+}
+
 // ref wraps the given name and references or dereferences the name to be the
 // wanted pointer.
 func ref(v string, is, want uint8) string {
@@ -652,6 +794,13 @@ func ref(v string, is, want uint8) string {
 type reffer struct {
 	is   uint8
 	want uint8
+}
+
+func (r reffer) difference() uint8 {
+	if r.is > r.want {
+		return r.is - r.want
+	}
+	return r.want - r.is
 }
 
 // fwd creates the pointer prefix to invoke the call.

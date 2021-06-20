@@ -34,6 +34,7 @@ var (
 		"Directfb", "DirectFB",
 		"Ipv4", "IPv4",
 		"Ipv6", "IPv6",
+		"ProXY", "Proxy",
 	)
 	pascalRegex *regexp.Regexp
 )

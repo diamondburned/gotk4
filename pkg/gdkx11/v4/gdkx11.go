@@ -49,7 +49,7 @@ func X11DeviceGetID(device X11DeviceXI2) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -61,7 +61,7 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceId int) X11
 	var _cret *C.GdkDevice              // in
 
 	_arg1 = (*C.GdkX11DeviceManagerXI2)(unsafe.Pointer(deviceManager.Native()))
-	_arg2 = (C.int)(deviceId)
+	_arg2 = C.int(deviceId)
 
 	_cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)
 
@@ -87,8 +87,18 @@ func X11FreeCompoundText(ctext *byte) {
 func X11FreeTextList(list *string) {
 	var _arg1 **C.char // out
 
-	_arg1 = (**C.char)(C.CString(list))
-	defer C.free(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn string
+		var refTmpOut *C.char
+
+		refTmpIn = list
+
+		refTmpOut = (*C.char)(C.CString(refTmpIn))
+		defer C.free(unsafe.Pointer(refTmpOut))
+
+		out0 := &refTmpOut
+		_arg1 = out0
+	}
 
 	C.gdk_x11_free_text_list(_arg1)
 }
@@ -104,7 +114,7 @@ func X11GetServerTime(surface X11Surface) uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -125,6 +135,7 @@ func X11SetSmClientID(smClientId string) {
 }
 
 type X11AppLaunchContext interface {
+	gdk.AppLaunchContext
 }
 
 // x11AppLaunchContext implements the X11AppLaunchContext class.
@@ -147,6 +158,7 @@ func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
 }
 
 type X11DeviceManagerXI2 interface {
+	gextras.Objector
 }
 
 // x11DeviceManagerXI2 implements the X11DeviceManagerXI2 class.
@@ -169,6 +181,7 @@ func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
 }
 
 type X11DeviceXI2 interface {
+	gdk.Device
 }
 
 // x11DeviceXI2 implements the X11DeviceXI2 class.
@@ -191,6 +204,7 @@ func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
 }
 
 type X11Display interface {
+	gdk.Display
 
 	// ErrorTrapPopX11Display pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Will XSync() if necessary and will
@@ -318,7 +332,7 @@ func (d x11Display) ErrorTrapPopX11Display() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -368,8 +382,8 @@ func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 	var _minor int // out
 	var _ok bool   // out
 
-	_major = (int)(_arg1)
-	_minor = (int)(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -432,7 +446,7 @@ func (d x11Display) UserTime() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -453,7 +467,7 @@ func (d x11Display) SetCursorThemeX11Display(theme string, size int) {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(theme))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(size)
+	_arg2 = C.int(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
@@ -474,7 +488,7 @@ func (d x11Display) SetSurfaceScaleX11Display(scale int) {
 	var _arg1 C.int         // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.int)(scale)
+	_arg1 = C.int(scale)
 
 	C.gdk_x11_display_set_surface_scale(_arg0, _arg1)
 }
@@ -500,12 +514,12 @@ func (d x11Display) StringToCompoundTextX11Display(str string) (encoding string,
 	var _gint int // out
 
 	_encoding = C.GoString(_arg2)
-	_format = (int)(_arg3)
+	_format = int(_arg3)
 	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
 	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _encoding, _format, _ctext, _gint
 }
@@ -522,17 +536,28 @@ func (d x11Display) TextPropertyToTextListX11Display(encoding string, format int
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(encoding))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(format)
+	_arg2 = C.int(format)
 	_arg3 = (*C.guchar)(unsafe.Pointer(text))
-	_arg4 = (C.int)(length)
-	_arg5 = (***C.char)(C.CString(list))
-	defer C.free(unsafe.Pointer(_arg5))
+	_arg4 = C.int(length)
+	{
+		var refTmpIn string
+		var refTmpOut *C.char
+
+		refTmpIn = list
+
+		refTmpOut = (*C.char)(C.CString(refTmpIn))
+		defer C.free(unsafe.Pointer(refTmpOut))
+
+		out0 := &refTmpOut
+		out1 := &out0
+		_arg5 = out1
+	}
 
 	_cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -566,7 +591,7 @@ func (d x11Display) UTF8ToCompoundTextX11Display(str string) (string, int, []byt
 	var _ok bool // out
 
 	_encoding = C.GoString(_arg2)
-	_format = (int)(_arg3)
+	_format = int(_arg3)
 	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
 	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
@@ -579,6 +604,7 @@ func (d x11Display) UTF8ToCompoundTextX11Display(str string) (string, int, []byt
 }
 
 type X11Drag interface {
+	gdk.Drag
 }
 
 // x11Drag implements the X11Drag class.
@@ -601,6 +627,7 @@ func marshalX11Drag(p uintptr) (interface{}, error) {
 }
 
 type X11Monitor interface {
+	gdk.Monitor
 
 	// Workarea retrieves the size and position of the “work area” on a monitor
 	// within the display coordinate space. The returned geometry is in
@@ -629,17 +656,32 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 }
 
 func (m x11Monitor) Workarea() gdk.Rectangle {
-	var _arg0 *C.GdkMonitor // out
-	var _workarea gdk.Rectangle
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_x11_monitor_get_workarea(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_workarea)))
+	C.gdk_x11_monitor_get_workarea(_arg0, &_arg1)
+
+	var _workarea gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_workarea = *refTmpOut
+	}
 
 	return _workarea
 }
 
 type X11Screen interface {
+	gextras.Objector
 
 	// CurrentDesktop returns the current workspace for @screen when running
 	// under a window manager that supports multiple workspaces, as described in
@@ -700,7 +742,7 @@ func (s x11Screen) CurrentDesktop() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -715,7 +757,7 @@ func (s x11Screen) NumberOfDesktops() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -730,7 +772,7 @@ func (s x11Screen) ScreenNumber() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -771,6 +813,7 @@ func (s x11Screen) SupportsNetWmHintX11Screen(propertyName string) bool {
 }
 
 type X11Surface interface {
+	gdk.Surface
 
 	// Desktop gets the number of the workspace @surface is on.
 	Desktop() uint32
@@ -865,7 +908,7 @@ func (s x11Surface) Desktop() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -898,7 +941,7 @@ func (s x11Surface) MoveToDesktopX11Surface(desktop uint32) {
 	var _arg1 C.guint32     // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint32)(desktop)
+	_arg1 = C.guint32(desktop)
 
 	C.gdk_x11_surface_move_to_desktop(_arg0, _arg1)
 }
@@ -977,7 +1020,7 @@ func (s x11Surface) SetUserTimeX11Surface(timestamp uint32) {
 	var _arg1 C.guint32     // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint32)(timestamp)
+	_arg1 = C.guint32(timestamp)
 
 	C.gdk_x11_surface_set_user_time(_arg0, _arg1)
 }

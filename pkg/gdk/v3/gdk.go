@@ -1785,9 +1785,9 @@ func CairoCreate(window Window) *cairo.Context {
 
 	var _context *cairo.Context // out
 
-	_context = cairo.WrapContext(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_context, func(v *cairo.Context) {
-		C.free(unsafe.Pointer(v.Native()))
+	_context = (*cairo.Context)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_context, func(v **cairo.Context) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _context
@@ -1822,13 +1822,13 @@ func CairoDrawFromGL(cr *cairo.Context, window Window, source int, sourceType in
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg3 = (C.int)(source)
-	_arg4 = (C.int)(sourceType)
-	_arg5 = (C.int)(bufferScale)
-	_arg6 = (C.int)(x)
-	_arg7 = (C.int)(y)
-	_arg8 = (C.int)(width)
-	_arg9 = (C.int)(height)
+	_arg3 = C.int(source)
+	_arg4 = C.int(sourceType)
+	_arg5 = C.int(bufferScale)
+	_arg6 = C.int(x)
+	_arg7 = C.int(y)
+	_arg8 = C.int(width)
+	_arg9 = C.int(height)
 
 	C.gdk_cairo_draw_from_gl(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
@@ -1837,16 +1837,28 @@ func CairoDrawFromGL(cr *cairo.Context, window Window, source int, sourceType in
 // cairo_clip_extents(). It rounds the clip extents to integer coordinates and
 // returns a boolean indicating if a clip area exists.
 func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
-	var _arg1 *C.cairo_t // out
-	var _rect Rectangle
-	var _cret C.gboolean // in
+	var _arg1 *C.cairo_t     // out
+	var _arg2 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, &_arg2)
 
-	var _ok bool // out
+	var _rect Rectangle // out
+	var _ok bool        // out
 
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1908,9 +1920,9 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_region, func(v **cairo.Region) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _region
@@ -1939,8 +1951,8 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	_arg3 = (C.gdouble)(pixbufX)
-	_arg4 = (C.gdouble)(pixbufY)
+	_arg3 = C.gdouble(pixbufX)
+	_arg4 = C.gdouble(pixbufY)
 
 	C.gdk_cairo_set_source_pixbuf(_arg1, _arg2, _arg3, _arg4)
 }
@@ -1972,8 +1984,8 @@ func CairoSetSourceWindow(cr *cairo.Context, window Window, x float64, y float64
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg3 = (C.gdouble)(x)
-	_arg4 = (C.gdouble)(y)
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
 
 	C.gdk_cairo_set_source_window(_arg1, _arg2, _arg3, _arg4)
 }
@@ -1987,16 +1999,16 @@ func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbuf, scale int, forWindow 
 	var _cret *C.cairo_surface_t // in
 
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	_arg2 = (C.int)(scale)
+	_arg2 = C.int(scale)
 	_arg3 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
 	_cret = C.gdk_cairo_surface_create_from_pixbuf(_arg1, _arg2, _arg3)
 
 	var _surface *cairo.Surface // out
 
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v.Native()))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_surface, func(v **cairo.Surface) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _surface
@@ -2025,7 +2037,7 @@ func DragAbort(context DragContext, time_ uint32) {
 	var _arg2 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.guint32)(time_)
+	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_abort(_arg1, _arg2)
 }
@@ -2041,7 +2053,7 @@ func DragDrop(context DragContext, time_ uint32) {
 	var _arg2 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.guint32)(time_)
+	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_drop(_arg1, _arg2)
 }
@@ -2104,8 +2116,8 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
 	_arg3 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg4 = (C.gint)(xRoot)
-	_arg5 = (C.gint)(yRoot)
+	_arg4 = C.gint(xRoot)
+	_arg5 = C.gint(yRoot)
 
 	C.gdk_drag_find_window_for_screen(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7)
 
@@ -2129,7 +2141,17 @@ func DragGetSelection(context DragContext) *Atom {
 
 	var _atom *Atom // out
 
-	_atom = WrapAtom(unsafe.Pointer(_cret))
+	{
+		var refTmpIn *C.GdkAtom
+		var refTmpOut *Atom
+
+		in0 := &_cret
+		refTmpIn = in0
+
+		refTmpOut = (*Atom)(unsafe.Pointer(refTmpIn))
+
+		_atom = refTmpOut
+	}
 
 	return _atom
 }
@@ -2154,12 +2176,12 @@ func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, x
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(destWindow.Native()))
-	_arg3 = (C.GdkDragProtocol)(protocol)
-	_arg4 = (C.gint)(xRoot)
-	_arg5 = (C.gint)(yRoot)
-	_arg6 = (C.GdkDragAction)(suggestedAction)
-	_arg7 = (C.GdkDragAction)(possibleActions)
-	_arg8 = (C.guint32)(time_)
+	_arg3 = C.GdkDragProtocol(protocol)
+	_arg4 = C.gint(xRoot)
+	_arg5 = C.gint(yRoot)
+	_arg6 = C.GdkDragAction(suggestedAction)
+	_arg7 = C.GdkDragAction(possibleActions)
+	_arg8 = C.guint32(time_)
 
 	_cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
@@ -2182,8 +2204,8 @@ func DragStatus(context DragContext, action DragAction, time_ uint32) {
 	var _arg3 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.GdkDragAction)(action)
-	_arg3 = (C.guint32)(time_)
+	_arg2 = C.GdkDragAction(action)
+	_arg3 = C.guint32(time_)
 
 	C.gdk_drag_status(_arg1, _arg2, _arg3)
 }
@@ -2200,7 +2222,7 @@ func DropFinish(context DragContext, success bool, time_ uint32) {
 	if success {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (C.guint32)(time_)
+	_arg3 = C.guint32(time_)
 
 	C.gdk_drop_finish(_arg1, _arg2, _arg3)
 }
@@ -2218,7 +2240,7 @@ func DropReply(context DragContext, accepted bool, time_ uint32) {
 	if accepted {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (C.guint32)(time_)
+	_arg3 = C.guint32(time_)
 
 	C.gdk_drop_reply(_arg1, _arg2, _arg3)
 }
@@ -2238,7 +2260,7 @@ func ErrorTrapPop() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2392,7 +2414,7 @@ func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (C.guint32)(time_)
+	_arg3 = C.guint32(time_)
 
 	_cret = C.gdk_keyboard_grab(_arg1, _arg2, _arg3)
 
@@ -2408,7 +2430,7 @@ func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 func KeyboardUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
 
-	_arg1 = (C.guint32)(time_)
+	_arg1 = C.guint32(time_)
 
 	C.gdk_keyboard_ungrab(_arg1)
 }
@@ -2420,15 +2442,15 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var _arg2 C.guint // in
 	var _arg3 C.guint // in
 
-	_arg1 = (C.guint)(symbol)
+	_arg1 = C.guint(symbol)
 
 	C.gdk_keyval_convert_case(_arg1, &_arg2, &_arg3)
 
 	var _lower uint // out
 	var _upper uint // out
 
-	_lower = (uint)(_arg2)
-	_upper = (uint)(_arg3)
+	_lower = uint(_arg2)
+	_upper = uint(_arg3)
 
 	return _lower, _upper
 }
@@ -2448,7 +2470,7 @@ func KeyvalFromName(keyvalName string) uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2458,7 +2480,7 @@ func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.guint)(keyval)
+	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_is_lower(_arg1)
 
@@ -2476,7 +2498,7 @@ func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.guint)(keyval)
+	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_is_upper(_arg1)
 
@@ -2497,7 +2519,7 @@ func KeyvalName(keyval uint) string {
 	var _arg1 C.guint  // out
 	var _cret *C.gchar // in
 
-	_arg1 = (C.guint)(keyval)
+	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_name(_arg1)
 
@@ -2513,13 +2535,13 @@ func KeyvalToLower(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
-	_arg1 = (C.guint)(keyval)
+	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_lower(_arg1)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2530,13 +2552,13 @@ func KeyvalToUnicode(keyval uint) uint32 {
 	var _arg1 C.guint   // out
 	var _cret C.guint32 // in
 
-	_arg1 = (C.guint)(keyval)
+	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_unicode(_arg1)
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -2546,13 +2568,13 @@ func KeyvalToUpper(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
-	_arg1 = (C.guint)(keyval)
+	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_upper(_arg1)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2612,7 +2634,7 @@ func OffscreenWindowGetSurface(window Window) *cairo.Surface {
 
 	var _surface *cairo.Surface // out
 
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
 
 	return _surface
 }
@@ -2730,10 +2752,10 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	var _cret *C.GdkPixbuf       // in
 
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	_arg2 = (C.gint)(srcX)
-	_arg3 = (C.gint)(srcY)
-	_arg4 = (C.gint)(width)
-	_arg5 = (C.gint)(height)
+	_arg2 = C.gint(srcX)
+	_arg3 = C.gint(srcY)
+	_arg4 = C.gint(width)
+	_arg5 = C.gint(height)
 
 	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -2779,10 +2801,10 @@ func PixbufGetFromWindow(window Window, srcX int, srcY int, width int, height in
 	var _cret *C.GdkPixbuf // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.gint)(srcX)
-	_arg3 = (C.gint)(srcY)
-	_arg4 = (C.gint)(width)
-	_arg5 = (C.gint)(height)
+	_arg2 = C.gint(srcX)
+	_arg3 = C.gint(srcY)
+	_arg4 = C.gint(width)
+	_arg5 = C.gint(height)
 
 	_cret = C.gdk_pixbuf_get_from_window(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -2826,10 +2848,10 @@ func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (C.GdkEventMask)(eventMask)
+	_arg3 = C.GdkEventMask(eventMask)
 	_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
 	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-	_arg6 = (C.guint32)(time_)
+	_arg6 = C.guint32(time_)
 
 	_cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -2864,7 +2886,7 @@ func PointerIsGrabbed() bool {
 func PointerUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
 
-	_arg1 = (C.guint32)(time_)
+	_arg1 = C.guint32(time_)
 
 	C.gdk_pointer_ungrab(_arg1)
 }
@@ -2881,7 +2903,16 @@ func PropertyDelete(window Window, property *Atom) {
 	var _arg2 C.GdkAtom    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = property
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg2 = *refTmpOut
+	}
 
 	C.gdk_property_delete(_arg1, _arg2)
 }
@@ -2904,26 +2935,56 @@ func PropertyGet(window Window, property *Atom, typ *Atom, offset uint32, length
 	var _arg4 C.gulong     // out
 	var _arg5 C.gulong     // out
 	var _arg6 C.gint       // out
-	var _actualPropertyType Atom
-	var _arg8 C.gint // in
+	var _arg7 C.GdkAtom    // in
+	var _arg8 C.gint       // in
 	var _arg10 *C.guchar
 	var _arg9 C.gint     // in
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(typ.Native()))
-	_arg4 = (C.gulong)(offset)
-	_arg5 = (C.gulong)(length)
-	_arg6 = (C.gint)(pdelete)
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
 
-	_cret = C.gdk_property_get(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, (*C.GdkAtom)(unsafe.Pointer(&_actualPropertyType)), &_arg8, &_arg9, &_arg10)
+		refTmpIn = property
 
-	var _actualFormat int // out
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg2 = *refTmpOut
+	}
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = typ
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg3 = *refTmpOut
+	}
+	_arg4 = C.gulong(offset)
+	_arg5 = C.gulong(length)
+	_arg6 = C.gint(pdelete)
+
+	_cret = C.gdk_property_get(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_arg10)
+
+	var _actualPropertyType Atom // out
+	var _actualFormat int        // out
 	var _data []byte
 	var _ok bool // out
 
-	_actualFormat = (int)(_arg8)
+	{
+		var refTmpIn *C.GdkAtom
+		var refTmpOut *Atom
+
+		in0 := &_arg7
+		refTmpIn = in0
+
+		refTmpOut = (*Atom)(unsafe.Pointer(refTmpIn))
+
+		_actualPropertyType = *refTmpOut
+	}
+	_actualFormat = int(_arg8)
 	_data = unsafe.Slice((*byte)(unsafe.Pointer(_arg10)), _arg9)
 	runtime.SetFinalizer(&_data, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
@@ -2986,9 +3047,27 @@ func SelectionConvert(requestor Window, selection *Atom, target *Atom, time_ uin
 	var _arg4 C.guint32    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	_arg4 = (C.guint32)(time_)
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = selection
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg2 = *refTmpOut
+	}
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = target
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg3 = *refTmpOut
+	}
+	_arg4 = C.guint32(time_)
 
 	C.gdk_selection_convert(_arg1, _arg2, _arg3, _arg4)
 }
@@ -2998,7 +3077,16 @@ func SelectionOwnerGet(selection *Atom) Window {
 	var _arg1 C.GdkAtom    // out
 	var _cret *C.GdkWindow // in
 
-	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = selection
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg1 = *refTmpOut
+	}
 
 	_cret = C.gdk_selection_owner_get(_arg1)
 
@@ -3020,7 +3108,16 @@ func SelectionOwnerGetForDisplay(display Display, selection *Atom) Window {
 	var _cret *C.GdkWindow  // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = selection
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg2 = *refTmpOut
+	}
 
 	_cret = C.gdk_selection_owner_get_for_display(_arg1, _arg2)
 
@@ -3040,8 +3137,17 @@ func SelectionOwnerSet(owner Window, selection *Atom, time_ uint32, sendEvent bo
 	var _cret C.gboolean   // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(owner.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg3 = (C.guint32)(time_)
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = selection
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg2 = *refTmpOut
+	}
+	_arg3 = C.guint32(time_)
 	if sendEvent {
 		_arg4 = C.TRUE
 	}
@@ -3069,8 +3175,17 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection *Atom,
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(owner.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg4 = (C.guint32)(time_)
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = selection
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg3 = *refTmpOut
+	}
+	_arg4 = C.guint32(time_)
 	if sendEvent {
 		_arg5 = C.TRUE
 	}
@@ -3095,10 +3210,37 @@ func SelectionSendNotify(requestor Window, selection *Atom, target *Atom, proper
 	var _arg5 C.guint32    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	_arg4 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	_arg5 = (C.guint32)(time_)
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = selection
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg2 = *refTmpOut
+	}
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = target
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg3 = *refTmpOut
+	}
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = property
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg4 = *refTmpOut
+	}
+	_arg5 = C.guint32(time_)
 
 	C.gdk_selection_send_notify(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -3114,10 +3256,37 @@ func SelectionSendNotifyForDisplay(display Display, requestor Window, selection 
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	_arg4 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	_arg5 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	_arg6 = (C.guint32)(time_)
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = selection
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg3 = *refTmpOut
+	}
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = target
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg4 = *refTmpOut
+	}
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = property
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg5 = *refTmpOut
+	}
+	_arg6 = C.guint32(time_)
 
 	C.gdk_selection_send_notify_for_display(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -3161,7 +3330,7 @@ func SetAllowedBackends(backends string) {
 func SetDoubleClickTime(msec uint) {
 	var _arg1 C.guint // out
 
-	_arg1 = (C.guint)(msec)
+	_arg1 = C.guint(msec)
 
 	C.gdk_set_double_click_time(_arg1)
 }
@@ -3196,7 +3365,7 @@ func SetShowEvents(showEvents bool) {
 
 // SettingGet obtains a desktop-wide setting, such as the double-click time, for
 // the default screen. See gdk_screen_get_setting().
-func SettingGet(name string, value *externglib.Value) bool {
+func SettingGet(name string, value externglib.Value) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.GValue  // out
 	var _cret C.gboolean // in
@@ -3222,8 +3391,8 @@ func SynthesizeWindowState(window Window, unsetFlags WindowState, setFlags Windo
 	var _arg3 C.GdkWindowState // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.GdkWindowState)(unsetFlags)
-	_arg3 = (C.GdkWindowState)(setFlags)
+	_arg2 = C.GdkWindowState(unsetFlags)
+	_arg3 = C.GdkWindowState(setFlags)
 
 	C.gdk_synthesize_window_state(_arg1, _arg2, _arg3)
 }
@@ -3262,11 +3431,11 @@ func TestSimulateButton(window Window, x int, y int, button uint, modifiers Modi
 	var _cret C.gboolean        // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.gint)(x)
-	_arg3 = (C.gint)(y)
-	_arg4 = (C.guint)(button)
-	_arg5 = (C.GdkModifierType)(modifiers)
-	_arg6 = (C.GdkEventType)(buttonPressrelease)
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
+	_arg4 = C.guint(button)
+	_arg5 = C.GdkModifierType(modifiers)
+	_arg6 = C.GdkEventType(buttonPressrelease)
 
 	_cret = C.gdk_test_simulate_button(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -3303,11 +3472,11 @@ func TestSimulateKey(window Window, x int, y int, keyval uint, modifiers Modifie
 	var _cret C.gboolean        // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.gint)(x)
-	_arg3 = (C.gint)(y)
-	_arg4 = (C.guint)(keyval)
-	_arg5 = (C.GdkModifierType)(modifiers)
-	_arg6 = (C.GdkEventType)(keyPressrelease)
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
+	_arg4 = C.guint(keyval)
+	_arg5 = C.GdkModifierType(modifiers)
+	_arg6 = C.GdkEventType(keyPressrelease)
 
 	_cret = C.gdk_test_simulate_key(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -3332,8 +3501,17 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding *Atom, format in
 	var _cret C.gint // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(encoding.Native()))
-	_arg3 = (C.gint)(format)
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = encoding
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg2 = *refTmpOut
+	}
+	_arg3 = C.gint(format)
 	_arg5 = C.gint(len(text))
 	_arg4 = (*C.guchar)(unsafe.Pointer(&text[0]))
 
@@ -3356,7 +3534,7 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding *Atom, format in
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _list, _gint
 }
@@ -3387,13 +3565,13 @@ func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out
 	var _cret C.guint   // in
 
-	_arg1 = (C.guint32)(wc)
+	_arg1 = C.guint32(wc)
 
 	_cret = C.gdk_unicode_to_keyval(_arg1)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -3436,6 +3614,7 @@ func UTF8ToStringTarget(str string) string {
 // gdk_device_pad_get_group_n_modes(), and the current mode for a given group
 // will be notified through the EventPadGroupMode event.
 type DevicePad interface {
+	Device
 
 	// FeatureGroup returns the group the given @feature and @idx belong to, or
 	// -1 if feature/index do not exist in @pad.
@@ -3452,6 +3631,7 @@ type DevicePad interface {
 
 // devicePad implements the DevicePad interface.
 type devicePad struct {
+	Device
 }
 
 var _ DevicePad = (*devicePad)(nil)
@@ -3477,14 +3657,14 @@ func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 	var _cret C.gint                // in
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.GdkDevicePadFeature)(feature)
-	_arg2 = (C.gint)(featureIdx)
+	_arg1 = C.GdkDevicePadFeature(feature)
+	_arg2 = C.gint(featureIdx)
 
 	_cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3495,13 +3675,13 @@ func (p devicePad) GroupNModes(groupIdx int) int {
 	var _cret C.gint          // in
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.gint)(groupIdx)
+	_arg1 = C.gint(groupIdx)
 
 	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3512,13 +3692,13 @@ func (p devicePad) NFeatures(feature DevicePadFeature) int {
 	var _cret C.gint                // in
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.GdkDevicePadFeature)(feature)
+	_arg1 = C.GdkDevicePadFeature(feature)
 
 	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3533,7 +3713,7 @@ func (p devicePad) NGroups() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3557,6 +3737,7 @@ func (p devicePad) NGroups() int {
 //
 //    g_object_unref (context);
 type AppLaunchContext interface {
+	gio.AppLaunchContext
 
 	// SetDesktopAppLaunchContext sets the workspace on which applications will
 	// be launched when using this context when running under a window manager
@@ -3644,7 +3825,7 @@ func (c appLaunchContext) SetDesktopAppLaunchContext(desktop int) {
 	var _arg1 C.gint                 // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.gint)(desktop)
+	_arg1 = C.gint(desktop)
 
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
 }
@@ -3695,13 +3876,14 @@ func (c appLaunchContext) SetTimestampAppLaunchContext(timestamp uint32) {
 	var _arg1 C.guint32              // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint32)(timestamp)
+	_arg1 = C.guint32(timestamp)
 
 	C.gdk_app_launch_context_set_timestamp(_arg0, _arg1)
 }
 
 // Cursor: a Cursor represents a cursor. Its contents are private.
 type Cursor interface {
+	gextras.Objector
 
 	// CursorType returns the cursor type for this cursor.
 	CursorType() CursorType
@@ -3754,7 +3936,7 @@ func NewCursor(cursorType CursorType) Cursor {
 	var _arg1 C.GdkCursorType // out
 	var _cret *C.GdkCursor    // in
 
-	_arg1 = (C.GdkCursorType)(cursorType)
+	_arg1 = C.GdkCursorType(cursorType)
 
 	_cret = C.gdk_cursor_new(_arg1)
 
@@ -3772,7 +3954,7 @@ func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
 	var _cret *C.GdkCursor    // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (C.GdkCursorType)(cursorType)
+	_arg2 = C.GdkCursorType(cursorType)
 
 	_cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
 
@@ -3847,8 +4029,8 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	_arg3 = (C.gint)(x)
-	_arg4 = (C.gint)(y)
+	_arg3 = C.gint(x)
+	_arg4 = C.gint(y)
 
 	_cret = C.gdk_cursor_new_from_pixbuf(_arg1, _arg2, _arg3, _arg4)
 
@@ -3879,8 +4061,8 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	_arg3 = (C.gdouble)(x)
-	_arg4 = (C.gdouble)(y)
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
 
 	_cret = C.gdk_cursor_new_from_surface(_arg1, _arg2, _arg3, _arg4)
 
@@ -3950,11 +4132,11 @@ func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 	var _yHot float64           // out
 	var _surface *cairo.Surface // out
 
-	_xHot = (float64)(_arg1)
-	_yHot = (float64)(_arg2)
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v.Native()))
+	_xHot = float64(_arg1)
+	_yHot = float64(_arg2)
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_surface, func(v **cairo.Surface) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _xHot, _yHot, _surface
@@ -3989,6 +4171,7 @@ func (c cursor) UnrefCursor() {
 // See the DeviceManager documentation for more information about the various
 // kinds of master and slave devices, and their relationships.
 type Device interface {
+	gextras.Objector
 
 	// AssociatedDevice returns the associated device to @device, if @device is
 	// of type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or
@@ -4194,7 +4377,7 @@ func (d device) AxisUse(index_ uint) AxisUse {
 	var _cret C.GdkAxisUse // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint)(index_)
+	_arg1 = C.guint(index_)
 
 	_cret = C.gdk_device_get_axis_use(_arg0, _arg1)
 
@@ -4260,7 +4443,7 @@ func (d device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint)(index_)
+	_arg1 = C.guint(index_)
 
 	_cret = C.gdk_device_get_key(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -4268,7 +4451,7 @@ func (d device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _modifiers ModifierType // out
 	var _ok bool                // out
 
-	_keyval = (uint)(_arg2)
+	_keyval = uint(_arg2)
 	_modifiers = ModifierType(_arg3)
 	if _cret != 0 {
 		_ok = true
@@ -4317,7 +4500,7 @@ func (d device) NAxes() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4332,7 +4515,7 @@ func (d device) NKeys() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4367,8 +4550,8 @@ func (d device) Position() (screen Screen, x int, y int) {
 	var _y int         // out
 
 	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
-	_x = (int)(_arg2)
-	_y = (int)(_arg3)
+	_x = int(_arg2)
+	_y = int(_arg3)
 
 	return _screen, _x, _y
 }
@@ -4388,8 +4571,8 @@ func (d device) PositionDouble() (screen Screen, x float64, y float64) {
 	var _y float64     // out
 
 	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
-	_x = (float64)(_arg2)
-	_y = (float64)(_arg3)
+	_x = float64(_arg2)
+	_y = float64(_arg3)
 
 	return _screen, _x, _y
 }
@@ -4468,8 +4651,8 @@ func (d device) WindowAtPosition() (winX int, winY int, window Window) {
 	var _winY int      // out
 	var _window Window // out
 
-	_winX = (int)(_arg1)
-	_winY = (int)(_arg2)
+	_winX = int(_arg1)
+	_winY = int(_arg2)
 	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _winX, _winY, _window
@@ -4489,8 +4672,8 @@ func (d device) WindowAtPositionDouble() (winX float64, winY float64, window Win
 	var _winY float64  // out
 	var _window Window // out
 
-	_winX = (float64)(_arg1)
-	_winY = (float64)(_arg2)
+	_winX = float64(_arg1)
+	_winY = float64(_arg2)
 	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _winX, _winY, _window
@@ -4508,13 +4691,13 @@ func (d device) GrabDevice(window Window, grabOwnership GrabOwnership, ownerEven
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.GdkGrabOwnership)(grabOwnership)
+	_arg2 = C.GdkGrabOwnership(grabOwnership)
 	if ownerEvents {
 		_arg3 = C.TRUE
 	}
-	_arg4 = (C.GdkEventMask)(eventMask)
+	_arg4 = C.GdkEventMask(eventMask)
 	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-	_arg6 = (C.guint32)(time_)
+	_arg6 = C.guint32(time_)
 
 	_cret = C.gdk_device_grab(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -4531,8 +4714,8 @@ func (d device) SetAxisUseDevice(index_ uint, use AxisUse) {
 	var _arg2 C.GdkAxisUse // out
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint)(index_)
-	_arg2 = (C.GdkAxisUse)(use)
+	_arg1 = C.guint(index_)
+	_arg2 = C.GdkAxisUse(use)
 
 	C.gdk_device_set_axis_use(_arg0, _arg1, _arg2)
 }
@@ -4544,9 +4727,9 @@ func (d device) SetKeyDevice(index_ uint, keyval uint, modifiers ModifierType) {
 	var _arg3 C.GdkModifierType // out
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint)(index_)
-	_arg2 = (C.guint)(keyval)
-	_arg3 = (C.GdkModifierType)(modifiers)
+	_arg1 = C.guint(index_)
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
 
 	C.gdk_device_set_key(_arg0, _arg1, _arg2, _arg3)
 }
@@ -4557,7 +4740,7 @@ func (d device) SetModeDevice(mode InputMode) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.GdkInputMode)(mode)
+	_arg1 = C.GdkInputMode(mode)
 
 	_cret = C.gdk_device_set_mode(_arg0, _arg1)
 
@@ -4575,7 +4758,7 @@ func (d device) UngrabDevice(time_ uint32) {
 	var _arg1 C.guint32    // out
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint32)(time_)
+	_arg1 = C.guint32(time_)
 
 	C.gdk_device_ungrab(_arg0, _arg1)
 }
@@ -4588,8 +4771,8 @@ func (d device) WarpDevice(screen Screen, x int, y int) {
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg2 = (C.gint)(x)
-	_arg3 = (C.gint)(y)
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
 	C.gdk_device_warp(_arg0, _arg1, _arg2, _arg3)
 }
@@ -4699,6 +4882,7 @@ func (d device) WarpDevice(screen Screen, x int, y int) {
 // In GTK+ 3.20, a new Seat object has been introduced that supersedes
 // DeviceManager and should be preferred in newly written code.
 type DeviceManager interface {
+	gextras.Objector
 
 	// ClientPointer returns the client pointer, that is, the master pointer
 	// that acts as the core pointer for this application. In X11, window
@@ -4763,6 +4947,7 @@ func (d deviceManager) Display() Display {
 }
 
 type DeviceTool interface {
+	gextras.Objector
 
 	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
 	// When non-zero, the identificator is unique for the given tool model,
@@ -4810,7 +4995,7 @@ func (t deviceTool) HardwareID() uint64 {
 
 	var _guint64 uint64 // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -4825,7 +5010,7 @@ func (t deviceTool) Serial() uint64 {
 
 	var _guint64 uint64 // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -4862,6 +5047,7 @@ func (t deviceTool) ToolType() DeviceToolType {
 // DeviceManager object. Every display has a device manager, which you can
 // obtain using gdk_display_get_device_manager().
 type Display interface {
+	gextras.Objector
 
 	// BeepDisplay emits a short beep on @display
 	BeepDisplay()
@@ -5109,7 +5295,7 @@ func (d display) DefaultCursorSize() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -5186,8 +5372,8 @@ func (d display) MaximalCursorSize() (width uint, height uint) {
 	var _width uint  // out
 	var _height uint // out
 
-	_width = (uint)(_arg1)
-	_height = (uint)(_arg2)
+	_width = uint(_arg1)
+	_height = uint(_arg2)
 
 	return _width, _height
 }
@@ -5198,7 +5384,7 @@ func (d display) Monitor(monitorNum int) Monitor {
 	var _cret *C.GdkMonitor // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.int)(monitorNum)
+	_arg1 = C.int(monitorNum)
 
 	_cret = C.gdk_display_get_monitor(_arg0, _arg1)
 
@@ -5216,8 +5402,8 @@ func (d display) MonitorAtPoint(x int, y int) Monitor {
 	var _cret *C.GdkMonitor // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
 	_cret = C.gdk_display_get_monitor_at_point(_arg0, _arg1, _arg2)
 
@@ -5255,7 +5441,7 @@ func (d display) NMonitors() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -5270,7 +5456,7 @@ func (d display) NScreens() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -5307,8 +5493,8 @@ func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
 	var _mask ModifierType // out
 
 	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
-	_x = (int)(_arg2)
-	_y = (int)(_arg3)
+	_x = int(_arg2)
+	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
 
 	return _screen, _x, _y, _mask
@@ -5335,7 +5521,7 @@ func (d display) Screen(screenNum int) Screen {
 	var _cret *C.GdkScreen  // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.gint)(screenNum)
+	_arg1 = C.gint(screenNum)
 
 	_cret = C.gdk_display_get_screen(_arg0, _arg1)
 
@@ -5360,8 +5546,8 @@ func (d display) WindowAtPointer() (winX int, winY int, window Window) {
 	var _winY int      // out
 	var _window Window // out
 
-	_winX = (int)(_arg1)
-	_winY = (int)(_arg2)
+	_winX = int(_arg1)
+	_winY = int(_arg2)
 	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _winX, _winY, _window
@@ -5406,7 +5592,7 @@ func (d display) KeyboardUngrabDisplay(time_ uint32) {
 	var _arg1 C.guint32     // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint32)(time_)
+	_arg1 = C.guint32(time_)
 
 	C.gdk_display_keyboard_ungrab(_arg0, _arg1)
 }
@@ -5444,7 +5630,7 @@ func (d display) PointerUngrabDisplay(time_ uint32) {
 	var _arg1 C.guint32     // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint32)(time_)
+	_arg1 = C.guint32(time_)
 
 	C.gdk_display_pointer_ungrab(_arg0, _arg1)
 }
@@ -5455,7 +5641,16 @@ func (d display) RequestSelectionNotificationDisplay(selection *Atom) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = selection
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg1 = *refTmpOut
+	}
 
 	_cret = C.gdk_display_request_selection_notification(_arg0, _arg1)
 
@@ -5473,7 +5668,7 @@ func (d display) SetDoubleClickDistanceDisplay(distance uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint)(distance)
+	_arg1 = C.guint(distance)
 
 	C.gdk_display_set_double_click_distance(_arg0, _arg1)
 }
@@ -5483,7 +5678,7 @@ func (d display) SetDoubleClickTimeDisplay(msec uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.guint)(msec)
+	_arg1 = C.guint(msec)
 
 	C.gdk_display_set_double_click_time(_arg0, _arg1)
 }
@@ -5497,7 +5692,7 @@ func (d display) StoreClipboardDisplay(clipboardWindow Window, time_ uint32, tar
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(clipboardWindow.Native()))
-	_arg2 = (C.guint32)(time_)
+	_arg2 = C.guint32(time_)
 	_arg4 = C.gint(len(targets))
 	_arg3 = (*C.GdkAtom)(unsafe.Pointer(&targets[0]))
 
@@ -5639,8 +5834,8 @@ func (d display) WarpPointerDisplay(screen Screen, x int, y int) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg2 = (C.gint)(x)
-	_arg3 = (C.gint)(y)
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
 	C.gdk_display_warp_pointer(_arg0, _arg1, _arg2, _arg3)
 }
@@ -5681,6 +5876,7 @@ func (d display) WarpPointerDisplay(screen Screen, x int, y int) {
 //    #endif
 //      g_error ("Unsupported GDK backend");
 type DisplayManager interface {
+	gextras.Objector
 
 	// DefaultDisplay gets the default Display.
 	DefaultDisplay() Display
@@ -5753,6 +5949,7 @@ func (m displayManager) SetDefaultDisplayDisplayManager(display Display) {
 }
 
 type DragContext interface {
+	gextras.Objector
 
 	// Actions determines the bitmask of actions proposed by the source if
 	// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
@@ -5947,7 +6144,7 @@ func (c dragContext) ManageDndDragContext(ipcWindow Window, actions DragAction) 
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(ipcWindow.Native()))
-	_arg2 = (C.GdkDragAction)(actions)
+	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
 
@@ -5976,8 +6173,8 @@ func (c dragContext) SetHotspotDragContext(hotX int, hotY int) {
 	var _arg2 C.gint            // out
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.gint)(hotX)
-	_arg2 = (C.gint)(hotY)
+	_arg1 = C.gint(hotX)
+	_arg2 = C.gint(hotY)
 
 	C.gdk_drag_context_set_hotspot(_arg0, _arg1, _arg2)
 }
@@ -5993,6 +6190,7 @@ func (c dragContext) SetHotspotDragContext(hotX int, hotY int) {
 //
 // DrawingContext is available since GDK 3.22
 type DrawingContext interface {
+	gextras.Objector
 
 	// CairoContext retrieves a Cairo context to be used to draw on the Window
 	// that created the DrawingContext.
@@ -6038,7 +6236,7 @@ func (c drawingContext) CairoContext() *cairo.Context {
 
 	var _ret *cairo.Context // out
 
-	_ret = cairo.WrapContext(unsafe.Pointer(_cret))
+	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -6053,9 +6251,9 @@ func (c drawingContext) Clip() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_region, func(v **cairo.Region) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _region
@@ -6123,6 +6321,7 @@ func (c drawingContext) IsValidDrawingContext() bool {
 // gdk_frame_clock_get_frame_time() and the value inside the FrameClock::update
 // signal of the clock, they will stay exactly synchronized.
 type FrameClock interface {
+	gextras.Objector
 
 	// BeginUpdatingFrameClock starts updates for an animation. Until a matching
 	// call to gdk_frame_clock_end_updating() is made, the frame clock will
@@ -6218,7 +6417,7 @@ func (f frameClock) CurrentTimings() *FrameTimings {
 
 	var _frameTimings *FrameTimings // out
 
-	_frameTimings = WrapFrameTimings(unsafe.Pointer(_cret))
+	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
 
 	return _frameTimings
 }
@@ -6233,7 +6432,7 @@ func (f frameClock) FrameCounter() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -6248,7 +6447,7 @@ func (f frameClock) FrameTime() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -6263,7 +6462,7 @@ func (f frameClock) HistoryStart() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -6275,15 +6474,15 @@ func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, pr
 	var _arg3 C.gint64         // in
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.gint64)(baseTime)
+	_arg1 = C.gint64(baseTime)
 
 	C.gdk_frame_clock_get_refresh_info(_arg0, _arg1, &_arg2, &_arg3)
 
 	var _refreshIntervalReturn int64  // out
 	var _presentationTimeReturn int64 // out
 
-	_refreshIntervalReturn = (int64)(_arg2)
-	_presentationTimeReturn = (int64)(_arg3)
+	_refreshIntervalReturn = int64(_arg2)
+	_presentationTimeReturn = int64(_arg3)
 
 	return _refreshIntervalReturn, _presentationTimeReturn
 }
@@ -6294,13 +6493,13 @@ func (f frameClock) Timings(frameCounter int64) *FrameTimings {
 	var _cret *C.GdkFrameTimings // in
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.gint64)(frameCounter)
+	_arg1 = C.gint64(frameCounter)
 
 	_cret = C.gdk_frame_clock_get_timings(_arg0, _arg1)
 
 	var _frameTimings *FrameTimings // out
 
-	_frameTimings = WrapFrameTimings(unsafe.Pointer(_cret))
+	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
 
 	return _frameTimings
 }
@@ -6310,7 +6509,7 @@ func (f frameClock) RequestPhaseFrameClock(phase FrameClockPhase) {
 	var _arg1 C.GdkFrameClockPhase // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GdkFrameClockPhase)(phase)
+	_arg1 = C.GdkFrameClockPhase(phase)
 
 	C.gdk_frame_clock_request_phase(_arg0, _arg1)
 }
@@ -6362,6 +6561,7 @@ func (f frameClock) RequestPhaseFrameClock(phase FrameClockPhase) {
 // gdk_gl_context_get_current(); you can also unset any GLContext that is
 // currently set by calling gdk_gl_context_clear_current().
 type GLContext interface {
+	gextras.Objector
 
 	// DebugEnabled retrieves the value set using
 	// gdk_gl_context_set_debug_enabled().
@@ -6529,8 +6729,8 @@ func (c glContext) RequiredVersion() (major int, minor int) {
 	var _major int // out
 	var _minor int // out
 
-	_major = (int)(_arg1)
-	_minor = (int)(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 
 	return _major, _minor
 }
@@ -6579,8 +6779,8 @@ func (c glContext) Version() (major int, minor int) {
 	var _major int // out
 	var _minor int // out
 
-	_major = (int)(_arg1)
-	_minor = (int)(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 
 	return _major, _minor
 }
@@ -6670,8 +6870,8 @@ func (c glContext) SetRequiredVersionGLContext(major int, minor int) {
 	var _arg2 C.int           // out
 
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(major)
-	_arg2 = (C.int)(minor)
+	_arg1 = C.int(major)
+	_arg2 = C.int(minor)
 
 	C.gdk_gl_context_set_required_version(_arg0, _arg1, _arg2)
 }
@@ -6681,7 +6881,7 @@ func (c glContext) SetUseESGLContext(useEs int) {
 	var _arg1 C.int           // out
 
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(useEs)
+	_arg1 = C.int(useEs)
 
 	C.gdk_gl_context_set_use_es(_arg0, _arg1)
 }
@@ -6693,6 +6893,7 @@ func (c glContext) SetUseESGLContext(useEs int) {
 // up the keycode/group/level triplet in the keymap and see what keyval it
 // corresponds to.
 type Keymap interface {
+	gextras.Objector
 
 	// CapsLockState returns whether the Caps Lock modifer is locked.
 	CapsLockState() bool
@@ -6832,7 +7033,7 @@ func (k keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bo
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	_arg1 = (C.guint)(hardwareKeycode)
+	_arg1 = C.guint(hardwareKeycode)
 
 	_cret = C.gdk_keymap_get_entries_for_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -6863,7 +7064,7 @@ func (k keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	_arg1 = (C.guint)(keyval)
+	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keymap_get_entries_for_keyval(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -6887,7 +7088,7 @@ func (k keymap) ModifierMask(intent ModifierIntent) ModifierType {
 	var _cret C.GdkModifierType   // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	_arg1 = (C.GdkModifierIntent)(intent)
+	_arg1 = C.GdkModifierIntent(intent)
 
 	_cret = C.gdk_keymap_get_modifier_mask(_arg0, _arg1)
 
@@ -6908,7 +7109,7 @@ func (k keymap) ModifierState() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -6976,7 +7177,7 @@ func (k keymap) LookupKeyKeymap(key *KeymapKey) uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -6993,9 +7194,9 @@ func (k keymap) TranslateKeyboardStateKeymap(hardwareKeycode uint, state Modifie
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	_arg1 = (C.guint)(hardwareKeycode)
-	_arg2 = (C.GdkModifierType)(state)
-	_arg3 = (C.gint)(group)
+	_arg1 = C.guint(hardwareKeycode)
+	_arg2 = C.GdkModifierType(state)
+	_arg3 = C.gint(group)
 
 	_cret = C.gdk_keymap_translate_keyboard_state(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
 
@@ -7005,9 +7206,9 @@ func (k keymap) TranslateKeyboardStateKeymap(hardwareKeycode uint, state Modifie
 	var _consumedModifiers ModifierType // out
 	var _ok bool                        // out
 
-	_keyval = (uint)(_arg4)
-	_effectiveGroup = (int)(_arg5)
-	_level = (int)(_arg6)
+	_keyval = uint(_arg4)
+	_effectiveGroup = int(_arg5)
+	_level = int(_arg6)
 	_consumedModifiers = ModifierType(_arg7)
 	if _cret != 0 {
 		_ok = true
@@ -7025,6 +7226,7 @@ func (k keymap) TranslateKeyboardStateKeymap(hardwareKeycode uint, state Modifie
 // GdkMonitor was introduced in GTK+ 3.22 and supersedes earlier APIs in
 // GdkScreen to obtain monitor-related information.
 type Monitor interface {
+	gextras.Objector
 
 	// Display gets the display that this monitor belongs to.
 	Display() Display
@@ -7114,12 +7316,26 @@ func (m monitor) Display() Display {
 }
 
 func (m monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor // out
-	var _geometry Rectangle
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_geometry(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_geometry)))
+	C.gdk_monitor_get_geometry(_arg0, &_arg1)
+
+	var _geometry Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_geometry = *refTmpOut
+	}
 
 	return _geometry
 }
@@ -7134,7 +7350,7 @@ func (m monitor) HeightMm() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7179,7 +7395,7 @@ func (m monitor) RefreshRate() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7194,7 +7410,7 @@ func (m monitor) ScaleFactor() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7224,18 +7440,32 @@ func (m monitor) WidthMm() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 func (m monitor) Workarea() Rectangle {
-	var _arg0 *C.GdkMonitor // out
-	var _workarea Rectangle
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_workarea(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_workarea)))
+	C.gdk_monitor_get_workarea(_arg0, &_arg1)
+
+	var _workarea Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_workarea = *refTmpOut
+	}
 
 	return _workarea
 }
@@ -7268,6 +7498,7 @@ func (m monitor) IsPrimaryMonitor() bool {
 // (gdk_screen_get_system_visual()), the dimensions of the physical monitors
 // (gdk_screen_get_monitor_geometry()), etc.
 type Screen interface {
+	gextras.Objector
 
 	// ActiveWindow returns the screen’s currently active window.
 	//
@@ -7385,7 +7616,7 @@ type Screen interface {
 	// the Screen @screen.
 	//
 	// FIXME needs a list of valid settings here, or a link to more information.
-	Setting(name string, value *externglib.Value) bool
+	Setting(name string, value externglib.Value) bool
 	// SystemVisual: get the system’s default visual for @screen. This is the
 	// visual for the root window of the display. The return value should not be
 	// freed.
@@ -7481,7 +7712,7 @@ func (s screen) FontOptions() *cairo.FontOptions {
 
 	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = cairo.WrapFontOptions(unsafe.Pointer(_cret))
+	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
 
 	return _fontOptions
 }
@@ -7496,7 +7727,7 @@ func (s screen) Height() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7511,7 +7742,7 @@ func (s screen) HeightMm() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7523,14 +7754,14 @@ func (s screen) MonitorAtPoint(x int, y int) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(x)
-	_arg2 = (C.gint)(y)
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
 	_cret = C.gdk_screen_get_monitor_at_point(_arg0, _arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7547,20 +7778,34 @@ func (s screen) MonitorAtWindow(window Window) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 func (s screen) MonitorGeometry(monitorNum int) Rectangle {
-	var _arg0 *C.GdkScreen // out
-	var _arg1 C.gint       // out
-	var _dest Rectangle
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(monitorNum)
+	_arg1 = C.gint(monitorNum)
 
-	C.gdk_screen_get_monitor_geometry(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	C.gdk_screen_get_monitor_geometry(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 
 	return _dest
 }
@@ -7571,13 +7816,13 @@ func (s screen) MonitorHeightMm(monitorNum int) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(monitorNum)
+	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_height_mm(_arg0, _arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7588,7 +7833,7 @@ func (s screen) MonitorPlugName(monitorNum int) string {
 	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(monitorNum)
+	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_plug_name(_arg0, _arg1)
 
@@ -7606,13 +7851,13 @@ func (s screen) MonitorScaleFactor(monitorNum int) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(monitorNum)
+	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_scale_factor(_arg0, _arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7623,26 +7868,40 @@ func (s screen) MonitorWidthMm(monitorNum int) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(monitorNum)
+	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_width_mm(_arg0, _arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 func (s screen) MonitorWorkarea(monitorNum int) Rectangle {
-	var _arg0 *C.GdkScreen // out
-	var _arg1 C.gint       // out
-	var _dest Rectangle
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(monitorNum)
+	_arg1 = C.gint(monitorNum)
 
-	C.gdk_screen_get_monitor_workarea(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	C.gdk_screen_get_monitor_workarea(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 
 	return _dest
 }
@@ -7657,7 +7916,7 @@ func (s screen) NMonitors() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7672,7 +7931,7 @@ func (s screen) Number() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7687,7 +7946,7 @@ func (s screen) PrimaryMonitor() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7702,7 +7961,7 @@ func (s screen) Resolution() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -7737,7 +7996,7 @@ func (s screen) RootWindow() Window {
 	return _window
 }
 
-func (s screen) Setting(name string, value *externglib.Value) bool {
+func (s screen) Setting(name string, value externglib.Value) bool {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GValue    // out
@@ -7784,7 +8043,7 @@ func (s screen) Width() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7799,7 +8058,7 @@ func (s screen) WidthMm() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7852,7 +8111,7 @@ func (s screen) SetResolutionScreen(dpi float64) {
 	var _arg1 C.gdouble    // out
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gdouble)(dpi)
+	_arg1 = C.gdouble(dpi)
 
 	C.gdk_screen_set_resolution(_arg0, _arg1)
 }
@@ -7860,6 +8119,7 @@ func (s screen) SetResolutionScreen(dpi float64) {
 // Seat: the Seat object represents a collection of input devices that belong to
 // a user.
 type Seat interface {
+	gextras.Objector
 
 	// Capabilities returns the capabilities this Seat currently has.
 	Capabilities() SeatCapabilities
@@ -7962,6 +8222,7 @@ func (s seat) UngrabSeat() {
 
 // Visual: a Visual contains information about a particular visual.
 type Visual interface {
+	gextras.Objector
 
 	// BitsPerRGB returns the number of significant bits per red, green and blue
 	// value.
@@ -8037,7 +8298,7 @@ func (v visual) BitsPerRGB() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -8056,9 +8317,9 @@ func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 	var _shift int     // out
 	var _precision int // out
 
-	_mask = (uint32)(_arg1)
-	_shift = (int)(_arg2)
-	_precision = (int)(_arg3)
+	_mask = uint32(_arg1)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -8088,7 +8349,7 @@ func (v visual) ColormapSize() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -8103,7 +8364,7 @@ func (v visual) Depth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -8122,9 +8383,9 @@ func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	var _shift int     // out
 	var _precision int // out
 
-	_mask = (uint32)(_arg1)
-	_shift = (int)(_arg2)
-	_precision = (int)(_arg3)
+	_mask = uint32(_arg1)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -8143,9 +8404,9 @@ func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 	var _shift int     // out
 	var _precision int // out
 
-	_mask = (uint32)(_arg1)
-	_shift = (int)(_arg2)
-	_precision = (int)(_arg3)
+	_mask = uint32(_arg1)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -8181,6 +8442,7 @@ func (v visual) VisualType() VisualType {
 }
 
 type Window interface {
+	gextras.Objector
 
 	// BeepWindow emits a short beep associated to @window in the appropriate
 	// display, if supported. Otherwise, emits a short beep on the display just
@@ -9362,7 +9624,7 @@ func NewWindow(parent Window, attributes *WindowAttr, attributesMask WindowAttri
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.GdkWindowAttr)(unsafe.Pointer(attributes.Native()))
-	_arg3 = (C.gint)(attributesMask)
+	_arg3 = C.gint(attributesMask)
 
 	_cret = C.gdk_window_new(_arg1, _arg2, _arg3)
 
@@ -9406,10 +9668,10 @@ func (w window) BeginMoveDragWindow(button int, rootX int, rootY int, timestamp 
 	var _arg4 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gint)(button)
-	_arg2 = (C.gint)(rootX)
-	_arg3 = (C.gint)(rootY)
-	_arg4 = (C.guint32)(timestamp)
+	_arg1 = C.gint(button)
+	_arg2 = C.gint(rootX)
+	_arg3 = C.gint(rootY)
+	_arg4 = C.guint32(timestamp)
 
 	C.gdk_window_begin_move_drag(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -9424,10 +9686,10 @@ func (w window) BeginMoveDragForDeviceWindow(device Device, button int, rootX in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg2 = (C.gint)(button)
-	_arg3 = (C.gint)(rootX)
-	_arg4 = (C.gint)(rootY)
-	_arg5 = (C.guint32)(timestamp)
+	_arg2 = C.gint(button)
+	_arg3 = C.gint(rootX)
+	_arg4 = C.gint(rootY)
+	_arg5 = C.guint32(timestamp)
 
 	C.gdk_window_begin_move_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -9461,11 +9723,11 @@ func (w window) BeginResizeDragWindow(edge WindowEdge, button int, rootX int, ro
 	var _arg5 C.guint32       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkWindowEdge)(edge)
-	_arg2 = (C.gint)(button)
-	_arg3 = (C.gint)(rootX)
-	_arg4 = (C.gint)(rootY)
-	_arg5 = (C.guint32)(timestamp)
+	_arg1 = C.GdkWindowEdge(edge)
+	_arg2 = C.gint(button)
+	_arg3 = C.gint(rootX)
+	_arg4 = C.gint(rootY)
+	_arg5 = C.guint32(timestamp)
 
 	C.gdk_window_begin_resize_drag(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -9480,12 +9742,12 @@ func (w window) BeginResizeDragForDeviceWindow(edge WindowEdge, device Device, b
 	var _arg6 C.guint32       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkWindowEdge)(edge)
+	_arg1 = C.GdkWindowEdge(edge)
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg3 = (C.gint)(button)
-	_arg4 = (C.gint)(rootX)
-	_arg5 = (C.gint)(rootY)
-	_arg6 = (C.guint32)(timestamp)
+	_arg3 = C.gint(button)
+	_arg4 = C.gint(rootX)
+	_arg5 = C.gint(rootY)
+	_arg6 = C.guint32(timestamp)
 
 	C.gdk_window_begin_resize_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -9506,16 +9768,16 @@ func (w window) CoordsFromParentWindow(parentX float64, parentY float64) (x floa
 	var _arg4 C.gdouble    // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gdouble)(parentX)
-	_arg2 = (C.gdouble)(parentY)
+	_arg1 = C.gdouble(parentX)
+	_arg2 = C.gdouble(parentY)
 
 	C.gdk_window_coords_from_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _x float64 // out
 	var _y float64 // out
 
-	_x = (float64)(_arg3)
-	_y = (float64)(_arg4)
+	_x = float64(_arg3)
+	_y = float64(_arg4)
 
 	return _x, _y
 }
@@ -9528,16 +9790,16 @@ func (w window) CoordsToParentWindow(x float64, y float64) (parentX float64, par
 	var _arg4 C.gdouble    // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gdouble)(x)
-	_arg2 = (C.gdouble)(y)
+	_arg1 = C.gdouble(x)
+	_arg2 = C.gdouble(y)
 
 	C.gdk_window_coords_to_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _parentX float64 // out
 	var _parentY float64 // out
 
-	_parentX = (float64)(_arg3)
-	_parentY = (float64)(_arg4)
+	_parentX = float64(_arg3)
+	_parentY = float64(_arg4)
 
 	return _parentX, _parentY
 }
@@ -9569,18 +9831,18 @@ func (w window) CreateSimilarImageSurfaceWindow(format cairo.Format, width int, 
 	var _cret *C.cairo_surface_t // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.cairo_format_t)(format)
-	_arg2 = (C.int)(width)
-	_arg3 = (C.int)(height)
-	_arg4 = (C.int)(scale)
+	_arg1 = C.cairo_format_t(format)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	_arg4 = C.int(scale)
 
 	_cret = C.gdk_window_create_similar_image_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _surface *cairo.Surface // out
 
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v.Native()))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_surface, func(v **cairo.Surface) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _surface
@@ -9594,17 +9856,17 @@ func (w window) CreateSimilarSurfaceWindow(content cairo.Content, width int, hei
 	var _cret *C.cairo_surface_t // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.cairo_content_t)(content)
-	_arg2 = (C.int)(width)
-	_arg3 = (C.int)(height)
+	_arg1 = C.cairo_content_t(content)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
 
 	_cret = C.gdk_window_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
 
 	var _surface *cairo.Surface // out
 
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v.Native()))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_surface, func(v **cairo.Surface) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _surface
@@ -9690,7 +9952,7 @@ func (w window) FocusWindow(timestamp uint32) {
 	var _arg1 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.guint32)(timestamp)
+	_arg1 = C.guint32(timestamp)
 
 	C.gdk_window_focus(_arg0, _arg1)
 }
@@ -9724,7 +9986,7 @@ func (w window) FullscreenOnMonitorWindow(monitor int) {
 	var _arg1 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gint)(monitor)
+	_arg1 = C.gint(monitor)
 
 	C.gdk_window_fullscreen_on_monitor(_arg0, _arg1)
 }
@@ -9764,7 +10026,7 @@ func (w window) BackgroundPattern() *cairo.Pattern {
 
 	var _pattern *cairo.Pattern // out
 
-	_pattern = cairo.WrapPattern(unsafe.Pointer(_cret))
+	_pattern = (*cairo.Pattern)(unsafe.Pointer(_cret))
 
 	return _pattern
 }
@@ -9779,9 +10041,9 @@ func (w window) ClipRegion() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_region, func(v **cairo.Region) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _region
@@ -9891,8 +10153,8 @@ func (w window) DevicePosition(device Device) (x int, y int, mask ModifierType, 
 	var _mask ModifierType // out
 	var _ret Window        // out
 
-	_x = (int)(_arg2)
-	_y = (int)(_arg3)
+	_x = int(_arg2)
+	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
 	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
@@ -9917,8 +10179,8 @@ func (w window) DevicePositionDouble(device Device) (x float64, y float64, mask 
 	var _mask ModifierType // out
 	var _ret Window        // out
 
-	_x = (float64)(_arg2)
-	_y = (float64)(_arg3)
+	_x = float64(_arg2)
+	_y = float64(_arg3)
 	_mask = ModifierType(_arg4)
 	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
@@ -10053,12 +10315,26 @@ func (w window) FrameClock() FrameClock {
 }
 
 func (w window) FrameExtents() Rectangle {
-	var _arg0 *C.GdkWindow // out
-	var _rect Rectangle
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	C.gdk_window_get_frame_extents(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	C.gdk_window_get_frame_extents(_arg0, &_arg1)
+
+	var _rect Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 
 	return _rect
 }
@@ -10094,10 +10370,10 @@ func (w window) Geometry() (x int, y int, width int, height int) {
 	var _width int  // out
 	var _height int // out
 
-	_x = (int)(_arg1)
-	_y = (int)(_arg2)
-	_width = (int)(_arg3)
-	_height = (int)(_arg4)
+	_x = int(_arg1)
+	_y = int(_arg2)
+	_width = int(_arg3)
+	_height = int(_arg4)
 
 	return _x, _y, _width, _height
 }
@@ -10127,7 +10403,7 @@ func (w window) Height() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -10163,9 +10439,9 @@ func (w window) Origin() (x int, y int, gint int) {
 	var _y int    // out
 	var _gint int // out
 
-	_x = (int)(_arg1)
-	_y = (int)(_arg2)
-	_gint = (int)(_cret)
+	_x = int(_arg1)
+	_y = int(_arg2)
+	_gint = int(_cret)
 
 	return _x, _y, _gint
 }
@@ -10218,8 +10494,8 @@ func (w window) Pointer() (x int, y int, mask ModifierType, ret Window) {
 	var _mask ModifierType // out
 	var _ret Window        // out
 
-	_x = (int)(_arg1)
-	_y = (int)(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 	_mask = ModifierType(_arg3)
 	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
@@ -10238,8 +10514,8 @@ func (w window) Position() (x int, y int) {
 	var _x int // out
 	var _y int // out
 
-	_x = (int)(_arg1)
-	_y = (int)(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -10252,16 +10528,16 @@ func (w window) RootCoords(x int, y int) (rootX int, rootY int) {
 	var _arg4 C.gint       // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gint)(x)
-	_arg2 = (C.gint)(y)
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
 	C.gdk_window_get_root_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _rootX int // out
 	var _rootY int // out
 
-	_rootX = (int)(_arg3)
-	_rootY = (int)(_arg4)
+	_rootX = int(_arg3)
+	_rootY = int(_arg4)
 
 	return _rootX, _rootY
 }
@@ -10278,8 +10554,8 @@ func (w window) RootOrigin() (x int, y int) {
 	var _x int // out
 	var _y int // out
 
-	_x = (int)(_arg1)
-	_y = (int)(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -10294,7 +10570,7 @@ func (w window) ScaleFactor() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -10320,7 +10596,7 @@ func (w window) SourceEvents(source InputSource) EventMask {
 	var _cret C.GdkEventMask   // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkInputSource)(source)
+	_arg1 = C.GdkInputSource(source)
 
 	_cret = C.gdk_window_get_source_events(_arg0, _arg1)
 
@@ -10403,9 +10679,9 @@ func (w window) UpdateArea() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_region, func(v **cairo.Region) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _region
@@ -10421,9 +10697,9 @@ func (w window) VisibleRegion() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_region, func(v **cairo.Region) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _region
@@ -10454,7 +10730,7 @@ func (w window) Width() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -10515,8 +10791,8 @@ func (w window) InputShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
-	_arg2 = (C.gint)(offsetX)
-	_arg3 = (C.gint)(offsetY)
+	_arg2 = C.gint(offsetX)
+	_arg3 = C.gint(offsetY)
 
 	C.gdk_window_input_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
 }
@@ -10682,8 +10958,8 @@ func (w window) MoveWindow(x int, y int) {
 	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gint)(x)
-	_arg2 = (C.gint)(y)
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
 	C.gdk_window_move(_arg0, _arg1, _arg2)
 }
@@ -10696,8 +10972,8 @@ func (w window) MoveRegionWindow(region *cairo.Region, dx int, dy int) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
-	_arg2 = (C.gint)(dx)
-	_arg3 = (C.gint)(dy)
+	_arg2 = C.gint(dx)
+	_arg3 = C.gint(dy)
 
 	C.gdk_window_move_region(_arg0, _arg1, _arg2, _arg3)
 }
@@ -10710,10 +10986,10 @@ func (w window) MoveResizeWindow(x int, y int, width int, height int) {
 	var _arg4 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gint)(x)
-	_arg2 = (C.gint)(y)
-	_arg3 = (C.gint)(width)
-	_arg4 = (C.gint)(height)
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
 
 	C.gdk_window_move_resize(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -10729,11 +11005,11 @@ func (w window) MoveToRectWindow(rect *Rectangle, rectAnchor Gravity, windowAnch
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
-	_arg2 = (C.GdkGravity)(rectAnchor)
-	_arg3 = (C.GdkGravity)(windowAnchor)
-	_arg4 = (C.GdkAnchorHints)(anchorHints)
-	_arg5 = (C.gint)(rectAnchorDx)
-	_arg6 = (C.gint)(rectAnchorDy)
+	_arg2 = C.GdkGravity(rectAnchor)
+	_arg3 = C.GdkGravity(windowAnchor)
+	_arg4 = C.GdkAnchorHints(anchorHints)
+	_arg5 = C.gint(rectAnchorDx)
+	_arg6 = C.gint(rectAnchorDy)
 
 	C.gdk_window_move_to_rect(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -10774,8 +11050,8 @@ func (w window) ReparentWindow(newParent Window, x int, y int) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(newParent.Native()))
-	_arg2 = (C.gint)(x)
-	_arg3 = (C.gint)(y)
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
 	C.gdk_window_reparent(_arg0, _arg1, _arg2, _arg3)
 }
@@ -10786,8 +11062,8 @@ func (w window) ResizeWindow(width int, height int) {
 	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gint)(width)
-	_arg2 = (C.gint)(height)
+	_arg1 = C.gint(width)
+	_arg2 = C.gint(height)
 
 	C.gdk_window_resize(_arg0, _arg1, _arg2)
 }
@@ -10812,8 +11088,8 @@ func (w window) ScrollWindow(dx int, dy int) {
 	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gint)(dx)
-	_arg2 = (C.gint)(dy)
+	_arg1 = C.gint(dx)
+	_arg2 = C.gint(dy)
 
 	C.gdk_window_scroll(_arg0, _arg1, _arg2)
 }
@@ -10903,7 +11179,7 @@ func (w window) SetDecorationsWindow(decorations WMDecoration) {
 	var _arg1 C.GdkWMDecoration // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkWMDecoration)(decorations)
+	_arg1 = C.GdkWMDecoration(decorations)
 
 	C.gdk_window_set_decorations(_arg0, _arg1)
 }
@@ -10927,7 +11203,7 @@ func (w window) SetDeviceEventsWindow(device Device, eventMask EventMask) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg2 = (C.GdkEventMask)(eventMask)
+	_arg2 = C.GdkEventMask(eventMask)
 
 	C.gdk_window_set_device_events(_arg0, _arg1, _arg2)
 }
@@ -10949,7 +11225,7 @@ func (w window) SetEventsWindow(eventMask EventMask) {
 	var _arg1 C.GdkEventMask // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkEventMask)(eventMask)
+	_arg1 = C.GdkEventMask(eventMask)
 
 	C.gdk_window_set_events(_arg0, _arg1)
 }
@@ -10971,7 +11247,7 @@ func (w window) SetFullscreenModeWindow(mode FullscreenMode) {
 	var _arg1 C.GdkFullscreenMode // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkFullscreenMode)(mode)
+	_arg1 = C.GdkFullscreenMode(mode)
 
 	C.gdk_window_set_fullscreen_mode(_arg0, _arg1)
 }
@@ -10981,7 +11257,7 @@ func (w window) SetFunctionsWindow(functions WMFunction) {
 	var _arg1 C.GdkWMFunction // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkWMFunction)(functions)
+	_arg1 = C.GdkWMFunction(functions)
 
 	C.gdk_window_set_functions(_arg0, _arg1)
 }
@@ -10993,7 +11269,7 @@ func (w window) SetGeometryHintsWindow(geometry *Geometry, geomMask WindowHints)
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkGeometry)(unsafe.Pointer(geometry.Native()))
-	_arg2 = (C.GdkWindowHints)(geomMask)
+	_arg2 = C.GdkWindowHints(geomMask)
 
 	C.gdk_window_set_geometry_hints(_arg0, _arg1, _arg2)
 }
@@ -11060,7 +11336,7 @@ func (w window) SetOpacityWindow(opacity float64) {
 	var _arg1 C.gdouble    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gdouble)(opacity)
+	_arg1 = C.gdouble(opacity)
 
 	C.gdk_window_set_opacity(_arg0, _arg1)
 }
@@ -11118,10 +11394,10 @@ func (w window) SetShadowWidthWindow(left int, right int, top int, bottom int) {
 	var _arg4 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.gint)(left)
-	_arg2 = (C.gint)(right)
-	_arg3 = (C.gint)(top)
-	_arg4 = (C.gint)(bottom)
+	_arg1 = C.gint(left)
+	_arg2 = C.gint(right)
+	_arg3 = C.gint(top)
+	_arg4 = C.gint(bottom)
 
 	C.gdk_window_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -11156,8 +11432,8 @@ func (w window) SetSourceEventsWindow(source InputSource, eventMask EventMask) {
 	var _arg2 C.GdkEventMask   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkInputSource)(source)
-	_arg2 = (C.GdkEventMask)(eventMask)
+	_arg1 = C.GdkInputSource(source)
+	_arg2 = C.GdkEventMask(eventMask)
 
 	C.gdk_window_set_source_events(_arg0, _arg1, _arg2)
 }
@@ -11232,7 +11508,7 @@ func (w window) SetTypeHintWindow(hint WindowTypeHint) {
 	var _arg1 C.GdkWindowTypeHint // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GdkWindowTypeHint)(hint)
+	_arg1 = C.GdkWindowTypeHint(hint)
 
 	C.gdk_window_set_type_hint(_arg0, _arg1)
 }
@@ -11267,8 +11543,8 @@ func (w window) ShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX int,
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
-	_arg2 = (C.gint)(offsetX)
-	_arg3 = (C.gint)(offsetY)
+	_arg2 = C.gint(offsetX)
+	_arg3 = C.gint(offsetY)
 
 	C.gdk_window_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
 }
@@ -11365,7 +11641,16 @@ func (a *Atom) Name() string {
 	var _arg0 C.GdkAtom // out
 	var _cret *C.gchar  // in
 
-	_arg0 = (C.GdkAtom)(unsafe.Pointer(a.Native()))
+	{
+		var refTmpIn *Atom
+		var refTmpOut *C.GdkAtom
+
+		refTmpIn = a
+
+		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
+
+		_arg0 = *refTmpOut
+	}
 
 	_cret = C.gdk_atom_name(_arg0)
 
@@ -11410,9 +11695,9 @@ func (c *Color) Copy() *Color {
 
 	var _ret *Color // out
 
-	_ret = WrapColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Color) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ret = (*Color)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Color) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -11458,7 +11743,7 @@ func (c *Color) Hash() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -11957,7 +12242,7 @@ func (t *FrameTimings) FrameCounter() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -11975,7 +12260,7 @@ func (t *FrameTimings) FrameTime() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -11999,7 +12284,7 @@ func (t *FrameTimings) PredictedPresentationTime() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -12016,7 +12301,7 @@ func (t *FrameTimings) PresentationTime() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -12034,7 +12319,7 @@ func (t *FrameTimings) RefreshInterval() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -12050,9 +12335,9 @@ func (t *FrameTimings) Ref() *FrameTimings {
 
 	var _frameTimings *FrameTimings // out
 
-	_frameTimings = WrapFrameTimings(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
-		C.free(unsafe.Pointer(v.Native()))
+	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_frameTimings, func(v **FrameTimings) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _frameTimings
@@ -12194,9 +12479,9 @@ func (r *RGBA) Copy() *RGBA {
 
 	var _rgbA *RGBA // out
 
-	_rgbA = WrapRGBA(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
-		C.free(unsafe.Pointer(v.Native()))
+	_rgbA = (*RGBA)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_rgbA, func(v **RGBA) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _rgbA
@@ -12208,8 +12493,8 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = *(*C.gconstpointer)(unsafe.Pointer(p.Native()))
-	_arg1 = *(*C.gconstpointer)(unsafe.Pointer(p2.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(p.Native()))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(p2.Native()))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 
@@ -12236,13 +12521,13 @@ func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = *(*C.gconstpointer)(unsafe.Pointer(p.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gdk_rgba_hash(_arg0)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -12356,16 +12641,28 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _dest Rectangle
-	var _cret C.gboolean // in
+	var _arg2 C.GdkRectangle  // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
-	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _dest Rectangle // out
+	var _ok bool        // out
 
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -12382,12 +12679,26 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _dest Rectangle
+	var _arg2 C.GdkRectangle  // in
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
-	C.gdk_rectangle_union(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 
 	return _dest
 }

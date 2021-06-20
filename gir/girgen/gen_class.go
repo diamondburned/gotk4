@@ -226,7 +226,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	// priority, and then generate our methods down below. This way, we can also
 	// avoid method collisions.
 	for _, method := range class.Methods {
-		if !cg.cgen.Use(method.CallableAttrs) {
+		if cg.ng.mustIgnoreMethod(cg.Class.Name, &method) || !cg.cgen.Use(method.CallableAttrs) {
 			continue
 		}
 		cg.Methods = append(cg.Methods, newClassCallable(cg.cgen))

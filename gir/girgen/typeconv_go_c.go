@@ -2,6 +2,7 @@ package girgen
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Go to C type conversions.
@@ -23,7 +24,19 @@ func (conv *TypeConverter) gocArrayConverter(value *ValueConverted) bool {
 		return value.Optional
 	}
 
-	array := value.AnyType.Array
+	array := *value.AnyType.Array
+
+	// Ensure that the array type matches the inner type. Some functions violate
+	// this, e.g. g_spawn_command_line_sync().
+	if array.Type.CType == "" {
+		// Copy the inner type so we don't accidentally change a reference.
+		typ := *array.Type
+		// Dereference the inner type by 1.
+		typ.CType = strings.Replace(array.CType, "*", "", 1)
+
+		array.AnyType.Type = &typ
+		value.AnyType.Array = &array
+	}
 
 	if array.CType == "void*" {
 		// CGo treats void* arrays a bit weirdly: the function's input parameter
@@ -262,6 +275,10 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 
 	switch {
 	case value.resolved.IsBuiltin("string"):
+		if !value.isPtr(1) {
+			return conv.convertRef(value, 1, 0)
+		}
+
 		value.p.Linef("%s = (%s)(C.CString(%s))", value.OutName, value.OutType, value.InName)
 		// If we're not giving ownership this mallocated string, then we
 		// can free it once done.
@@ -269,9 +286,14 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 			value.addImport("unsafe")
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 		}
+
 		return true
 
 	case value.resolved.IsBuiltin("bool"):
+		if !value.isPtr(0) {
+			return conv.convertRef(value, 0, 0)
+		}
+
 		switch cleanCType(value.resolved.CType, true) {
 		case "gboolean":
 			// Manually use C.TRUE.
@@ -282,9 +304,14 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 		default:
 			value.p.Linef("if %s { %s = %s(1) }", value.InName, value.OutName, value.OutType)
 		}
+
 		return true
 
 	case value.resolved.IsBuiltin("error"):
+		if !value.isPtr(1) {
+			return conv.convertRef(value, 1, 0)
+		}
+
 		value.addImportInternal("gerror")
 		value.addImport("unsafe")
 
@@ -295,16 +322,16 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 		return true
 
 	case value.resolved.IsPrimitive():
-		if value.resolved.Ptr == 0 {
-			// Cast by value if no pointer.
-			value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
-		} else {
-			// Otherwise, use unsafe casting and cast the pointer itself.
+		// Don't use the convertRef routine, because we might want to preserve
+		// the pointer in case the API is weird.
+		if value.resolved.Ptr > 0 {
 			value.addImport("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(%s))",
 				value.OutName, value.OutType, value.InName,
 			)
+		} else {
+			value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
 		}
 		return true
 	}
@@ -333,6 +360,10 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 		return true
 
 	case "GObject.Value":
+		if !value.isPtr(1) {
+			return conv.convertRef(value, 1, 1)
+		}
+
 		value.needsGLibObject()
 		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
 		value.p.Linef(
@@ -340,14 +371,11 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 			value.OutName, value.OutType, value.InName)
 		return true
 
-	case "GObject.Object":
-		value.addImport("unsafe")
-		value.p.Linef(
-			"%s = (%s)(unsafe.Pointer(%s.Native()))",
-			value.OutName, value.OutType, value.InName)
-		return true
+	case "GObject.Object", "GObject.InitiallyUnowned":
+		if !value.isPtr(1) {
+			return conv.convertRef(value, 1, 1)
+		}
 
-	case "GObject.InitiallyUnowned":
 		value.addImport("unsafe")
 		value.p.Linef(
 			"%s = (%s)(unsafe.Pointer(%s.Native()))",
@@ -363,32 +391,31 @@ func (conv *TypeConverter) gocTypeConverter(value *ValueConverted) bool {
 
 	switch {
 	case result.Enum != nil, result.Bitfield != nil:
-		if value.resolved.Ptr == 0 {
-			value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
-			return true
-		}
-		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.OutName, value.OutType, value.InName)
-		return true
-
-	case result.Record != nil:
-		// Handle records similarly to classes but with an edge case to account
-		// for the current pointer count, since Native takes in and returns a
-		// reference. Go methods automatically take the reference of a value, so
-		// we only need to dereference the result.
-		outType := value.OutType
-		outPref := ""
-		if value.resolved.Ptr == 0 {
-			outType = "*" + outType
-			outPref = "*"
+		if !value.isPtr(0) {
+			return conv.convertRef(value, 0, 0)
 		}
 
-		value.p.Linef(
-			"%s = %s(%s)(unsafe.Pointer(%s.Native()))",
-			value.OutName, outPref, outType, value.InName,
-		)
+		value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
 		return true
 
 	case result.Class != nil, result.Interface != nil:
+		if !value.isPtr(1) {
+			return conv.convertRef(value, 1, 0)
+		}
+
+		value.addImport("unsafe")
+		value.p.Linef(
+			"%s = (%s)(unsafe.Pointer(%s.Native()))",
+			value.OutName, value.OutType, value.InName,
+		)
+		return true
+
+	case result.Record != nil:
+		if !value.isPtr(1) {
+			return conv.convertRef(value, 1, 1)
+		}
+
+		value.addImport("unsafe")
 		value.p.Linef(
 			"%s = (%s)(unsafe.Pointer(%s.Native()))",
 			value.OutName, value.OutType, value.InName,

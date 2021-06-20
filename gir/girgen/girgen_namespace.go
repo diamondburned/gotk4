@@ -225,6 +225,23 @@ func (ng *NamespaceGenerator) callbackHeaders() []string {
 	return headers
 }
 
+func (ng *NamespaceGenerator) mustIgnoreMethod(parent string, method *gir.Method) bool {
+	girName := parent + "." + method.Name
+	cType := method.CIdentifier
+	if cType == "" {
+		// If the method is missing a C identifier for some dumb reason, we
+		// should ensure that it will never be matched incorrectly.
+		cType = "\x00"
+	}
+
+	ignore := ng.mustIgnore(&girName, &cType)
+
+	method.CIdentifier = cType
+	method.Name = strings.SplitN(girName, ".", 2)[1]
+
+	return ignore
+}
+
 // mustIgnore checks the generator's filters to see if the given girType in this
 // namespace should be ignored.
 func (ng *NamespaceGenerator) mustIgnore(girName, cType *string) (ignore bool) {

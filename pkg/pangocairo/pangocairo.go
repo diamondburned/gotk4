@@ -39,7 +39,7 @@ func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
 
 	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = cairo.WrapFontOptions(unsafe.Pointer(_cret))
+	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
 
 	return _fontOptions
 }
@@ -56,7 +56,7 @@ func ContextGetResolution(context pango.Context) float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -86,7 +86,7 @@ func ContextSetResolution(context pango.Context, dpi float64) {
 	var _arg2 C.double        // out
 
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.double)(dpi)
+	_arg2 = C.double(dpi)
 
 	C.pango_cairo_context_set_resolution(_arg1, _arg2)
 }
@@ -157,10 +157,10 @@ func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, 
 	var _arg5 C.double   // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
-	_arg4 = (C.double)(width)
-	_arg5 = (C.double)(height)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
 
 	C.pango_cairo_error_underline_path(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -211,10 +211,10 @@ func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, 
 	var _arg5 C.double   // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
-	_arg4 = (C.double)(width)
-	_arg5 = (C.double)(height)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
 
 	C.pango_cairo_show_error_underline(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -306,6 +306,7 @@ func UpdateLayout(cr *cairo.Context, layout pango.Layout) {
 // The actual type of the font will depend on the particular font technology
 // Cairo was compiled to use.
 type Font interface {
+	pango.Font
 
 	// ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font
 	// can be referenced and kept using cairo_scaled_font_reference().
@@ -314,6 +315,7 @@ type Font interface {
 
 // font implements the Font interface.
 type font struct {
+	pango.Font
 }
 
 var _ Font = (*font)(nil)
@@ -342,7 +344,7 @@ func (f font) ScaledFont() *cairo.ScaledFont {
 
 	var _scaledFont *cairo.ScaledFont // out
 
-	_scaledFont = cairo.WrapScaledFont(unsafe.Pointer(_cret))
+	_scaledFont = (*cairo.ScaledFont)(unsafe.Pointer(_cret))
 
 	return _scaledFont
 }
@@ -353,6 +355,7 @@ func (f font) ScaledFont() *cairo.ScaledFont {
 // The actual type of the font map will depend on the particular font technology
 // Cairo was compiled to use.
 type FontMap interface {
+	pango.FontMap
 
 	// FontType gets the type of Cairo font backend that @fontmap uses.
 	FontType() cairo.FontType
@@ -385,6 +388,7 @@ type FontMap interface {
 
 // fontMap implements the FontMap interface.
 type fontMap struct {
+	pango.FontMap
 }
 
 var _ FontMap = (*fontMap)(nil)
@@ -428,7 +432,7 @@ func (f fontMap) Resolution() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -446,7 +450,7 @@ func (f fontMap) SetResolution(dpi float64) {
 	var _arg1 C.double             // out
 
 	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.double)(dpi)
+	_arg1 = C.double(dpi)
 
 	C.pango_cairo_font_map_set_resolution(_arg0, _arg1)
 }

@@ -35,6 +35,7 @@ func init() {
 // [method@GdkWayland.WaylandDevice.get_wl_keyboard] and the `wl_pointer` with
 // [method@GdkWayland.WaylandDevice.get_wl_pointer].
 type WaylandDevice interface {
+	gdk.Device
 
 	// NodePath returns the `/dev/input/event*` path of this device.
 	//
@@ -90,6 +91,7 @@ func (d waylandDevice) NodePath() string {
 // You can find out what Wayland globals are supported by a display with
 // [method@GdkWayland.WaylandDisplay.query_registry].
 type WaylandDisplay interface {
+	gdk.Display
 
 	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
@@ -175,7 +177,7 @@ func (d waylandDisplay) SetCursorThemeWaylandDisplay(name string, size int) {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(size)
+	_arg2 = C.int(size)
 
 	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
@@ -197,6 +199,7 @@ func (d waylandDisplay) SetStartupNotificationIDWaylandDisplay(startupId string)
 // to the Wayland `wl_output` object with
 // [method@GdkWayland.WaylandMonitor.get_wl_output].
 type WaylandMonitor interface {
+	gdk.Monitor
 }
 
 // waylandMonitor implements the WaylandMonitor class.
@@ -220,6 +223,7 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 
 // WaylandPopup: the Wayland implementation of `GdkPopup`.
 type WaylandPopup interface {
+	WaylandSurface
 }
 
 // waylandPopup implements the WaylandPopup class.
@@ -247,6 +251,7 @@ func marshalWaylandPopup(p uintptr) (interface{}, error) {
 // access to the Wayland `wl_seat` object with
 // [method@GdkWayland.WaylandSeat.get_wl_seat].
 type WaylandSeat interface {
+	gdk.Seat
 }
 
 // waylandSeat implements the WaylandSeat class.
@@ -274,6 +279,7 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 // to the Wayland `wl_surface` object with
 // [method@GdkWayland.WaylandSurface.get_wl_surface].
 type WaylandSurface interface {
+	gdk.Surface
 }
 
 // waylandSurface implements the WaylandSurface class.
@@ -302,6 +308,7 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 // [method@GdkWayland.WaylandToplevel.export_handle] and
 // [method@GdkWayland.WaylandToplevel.set_transient_for_exported].
 type WaylandToplevel interface {
+	WaylandSurface
 
 	// SetApplicationIDWaylandToplevel sets the application id on a
 	// `GdkToplevel`.

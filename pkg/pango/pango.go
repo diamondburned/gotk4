@@ -945,9 +945,9 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -958,15 +958,15 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.guint16)(alpha)
+	_arg1 = C.guint16(alpha)
 
 	_cret = C.pango_attr_background_alpha_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -979,17 +979,17 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg3 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.guint16)(red)
-	_arg2 = (C.guint16)(green)
-	_arg3 = (C.guint16)(blue)
+	_arg1 = C.guint16(red)
+	_arg2 = C.guint16(green)
+	_arg3 = C.guint16(blue)
 
 	_cret = C.pango_attr_background_new(_arg1, _arg2, _arg3)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1012,9 +1012,9 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1032,9 +1032,9 @@ func NewAttrFamily(family string) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1045,15 +1045,15 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.guint16)(alpha)
+	_arg1 = C.guint16(alpha)
 
 	_cret = C.pango_attr_foreground_alpha_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1066,17 +1066,17 @@ func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg3 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.guint16)(red)
-	_arg2 = (C.guint16)(green)
-	_arg3 = (C.guint16)(blue)
+	_arg1 = C.guint16(red)
+	_arg2 = C.guint16(green)
+	_arg3 = C.guint16(blue)
 
 	_cret = C.pango_attr_foreground_new(_arg1, _arg2, _arg3)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1087,15 +1087,15 @@ func NewAttrGravityHint(hint GravityHint) *Attribute {
 	var _arg1 C.PangoGravityHint // out
 	var _cret *C.PangoAttribute  // in
 
-	_arg1 = (C.PangoGravityHint)(hint)
+	_arg1 = C.PangoGravityHint(hint)
 
 	_cret = C.pango_attr_gravity_hint_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1106,15 +1106,15 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 	var _arg1 C.PangoGravity    // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.PangoGravity)(gravity)
+	_arg1 = C.PangoGravity(gravity)
 
 	_cret = C.pango_attr_gravity_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1136,9 +1136,9 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1149,15 +1149,15 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.int)(letterSpacing)
+	_arg1 = C.int(letterSpacing)
 
 	_cret = C.pango_attr_letter_spacing_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1173,17 +1173,17 @@ func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg3 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.guint16)(red)
-	_arg2 = (C.guint16)(green)
-	_arg3 = (C.guint16)(blue)
+	_arg1 = C.guint16(red)
+	_arg2 = C.guint16(green)
+	_arg3 = C.guint16(blue)
 
 	_cret = C.pango_attr_overline_color_new(_arg1, _arg2, _arg3)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1194,15 +1194,15 @@ func NewAttrOverline(overline Overline) *Attribute {
 	var _arg1 C.PangoOverline   // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.PangoOverline)(overline)
+	_arg1 = C.PangoOverline(overline)
 
 	_cret = C.pango_attr_overline_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1213,15 +1213,15 @@ func NewAttrRise(rise int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.int)(rise)
+	_arg1 = C.int(rise)
 
 	_cret = C.pango_attr_rise_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1235,15 +1235,15 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 	var _arg1 C.double          // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.double)(scaleFactor)
+	_arg1 = C.double(scaleFactor)
 
 	_cret = C.pango_attr_scale_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1255,15 +1255,15 @@ func NewAttrShow(flags ShowFlags) *Attribute {
 	var _arg1 C.PangoShowFlags  // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.PangoShowFlags)(flags)
+	_arg1 = C.PangoShowFlags(flags)
 
 	_cret = C.pango_attr_show_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1274,15 +1274,15 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 	var _arg1 C.PangoStretch    // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.PangoStretch)(stretch)
+	_arg1 = C.PangoStretch(stretch)
 
 	_cret = C.pango_attr_stretch_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1298,17 +1298,17 @@ func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute
 	var _arg3 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.guint16)(red)
-	_arg2 = (C.guint16)(green)
-	_arg3 = (C.guint16)(blue)
+	_arg1 = C.guint16(red)
+	_arg2 = C.guint16(green)
+	_arg3 = C.guint16(blue)
 
 	_cret = C.pango_attr_strikethrough_color_new(_arg1, _arg2, _arg3)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1327,9 +1327,9 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1340,15 +1340,15 @@ func NewAttrStyle(style Style) *Attribute {
 	var _arg1 C.PangoStyle      // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.PangoStyle)(style)
+	_arg1 = C.PangoStyle(style)
 
 	_cret = C.pango_attr_style_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1364,17 +1364,17 @@ func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg3 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.guint16)(red)
-	_arg2 = (C.guint16)(green)
-	_arg3 = (C.guint16)(blue)
+	_arg1 = C.guint16(red)
+	_arg2 = C.guint16(green)
+	_arg3 = C.guint16(blue)
 
 	_cret = C.pango_attr_underline_color_new(_arg1, _arg2, _arg3)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1385,15 +1385,15 @@ func NewAttrUnderline(underline Underline) *Attribute {
 	var _arg1 C.PangoUnderline  // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.PangoUnderline)(underline)
+	_arg1 = C.PangoUnderline(underline)
 
 	_cret = C.pango_attr_underline_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1404,15 +1404,15 @@ func NewAttrVariant(variant Variant) *Attribute {
 	var _arg1 C.PangoVariant    // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.PangoVariant)(variant)
+	_arg1 = C.PangoVariant(variant)
 
 	_cret = C.pango_attr_variant_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1423,15 +1423,15 @@ func NewAttrWeight(weight Weight) *Attribute {
 	var _arg1 C.PangoWeight     // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (C.PangoWeight)(weight)
+	_arg1 = C.PangoWeight(weight)
 
 	_cret = C.pango_attr_weight_new(_arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -1473,7 +1473,7 @@ func FindBaseDir(text string, length int) Direction {
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint)(length)
+	_arg2 = C.gint(length)
 
 	_cret = C.pango_find_base_dir(_arg1, _arg2)
 
@@ -1503,15 +1503,15 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint)(length)
+	_arg2 = C.gint(length)
 
 	C.pango_find_paragraph_boundary(_arg1, _arg2, &_arg3, &_arg4)
 
 	var _paragraphDelimiterIndex int // out
 	var _nextParagraphStart int      // out
 
-	_paragraphDelimiterIndex = (int)(_arg3)
-	_nextParagraphStart = (int)(_arg4)
+	_paragraphDelimiterIndex = int(_arg3)
+	_nextParagraphStart = int(_arg4)
 
 	return _paragraphDelimiterIndex, _nextParagraphStart
 }
@@ -1533,8 +1533,8 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(length)
-	_arg3 = (C.int)(level)
+	_arg2 = C.int(length)
+	_arg3 = C.int(level)
 	_arg4 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 	_arg6 = C.int(len(logAttrs))
 	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
@@ -1553,7 +1553,7 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg2 *C.gunichar // out
 	var _cret C.gboolean  // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
 
 	_cret = C.pango_get_mirror_char(_arg1, _arg2)
@@ -1576,7 +1576,7 @@ func IsZeroWidth(ch uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 
 	_cret = C.pango_is_zero_width(_arg1)
 
@@ -1607,14 +1607,24 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(length)
-	_arg3 = (*C.PangoDirection)(unsafe.Pointer(pbaseDir))
+	_arg2 = C.int(length)
+	{
+		var refTmpIn Direction
+		var refTmpOut C.PangoDirection
+
+		refTmpIn = *pbaseDir
+
+		refTmpOut = C.PangoDirection(refTmpIn)
+
+		out0 := &refTmpOut
+		_arg3 = out0
+	}
 
 	_cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
 
 	var _guint8 *byte // out
 
-	_guint8 = (*byte)(_cret)
+	_guint8 = (*byte)(unsafe.Pointer(_cret))
 
 	return _guint8
 }
@@ -1627,22 +1637,27 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 // use g_markup_parse_context_free() to do so.
 func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
 	var _arg1 *C.GMarkupParseContext // out
-	var _attrList *AttrList
-	var _arg3 *C.char    // in
-	var _arg4 C.gunichar // in
-	var _cerr *C.GError  // in
+	var _arg2 *C.PangoAttrList       // in
+	var _arg3 *C.char                // in
+	var _arg4 C.gunichar             // in
+	var _cerr *C.GError              // in
 
 	_arg1 = (*C.GMarkupParseContext)(unsafe.Pointer(context.Native()))
 
-	C.pango_markup_parser_finish(_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg3, &_arg4, &_cerr)
+	C.pango_markup_parser_finish(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
-	var _text string      // out
-	var _accelChar uint32 // out
-	var _goerr error      // out
+	var _attrList *AttrList // out
+	var _text string        // out
+	var _accelChar uint32   // out
+	var _goerr error        // out
 
+	_attrList = (*AttrList)(unsafe.Pointer(_arg2))
+	runtime.SetFinalizer(&_attrList, func(v **AttrList) {
+		C.free(unsafe.Pointer(v))
+	})
 	_text = C.GoString(_arg3)
 	defer C.free(unsafe.Pointer(_arg3))
-	_accelChar = (uint32)(_arg4)
+	_accelChar = uint32(_arg4)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _attrList, _text, _accelChar, _goerr
@@ -1674,13 +1689,13 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var _arg1 C.gunichar             // out
 	var _cret *C.GMarkupParseContext // in
 
-	_arg1 = (C.gunichar)(accelMarker)
+	_arg1 = C.gunichar(accelMarker)
 
 	_cret = C.pango_markup_parser_new(_arg1)
 
 	var _markupParseContext *glib.MarkupParseContext // out
 
-	_markupParseContext = glib.WrapMarkupParseContext(unsafe.Pointer(_cret))
+	_markupParseContext = (*glib.MarkupParseContext)(unsafe.Pointer(_cret))
 
 	return _markupParseContext
 }
@@ -1714,7 +1729,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _possibleValues string // out
 	var _ok bool               // out
 
-	_value = (int)(_arg3)
+	_value = int(_arg3)
 	_possibleValues = C.GoString(_arg5)
 	defer C.free(unsafe.Pointer(_arg5))
 	if _cret != 0 {
@@ -1743,28 +1758,33 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 // If any error happens, none of the output arguments are touched except for
 // @error.
 func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
-	var _arg1 *C.char    // out
-	var _arg2 C.int      // out
-	var _arg3 C.gunichar // out
-	var _attrList *AttrList
-	var _arg5 *C.char    // in
-	var _arg6 C.gunichar // in
-	var _cerr *C.GError  // in
+	var _arg1 *C.char          // out
+	var _arg2 C.int            // out
+	var _arg3 C.gunichar       // out
+	var _arg4 *C.PangoAttrList // in
+	var _arg5 *C.char          // in
+	var _arg6 C.gunichar       // in
+	var _cerr *C.GError        // in
 
 	_arg1 = (*C.char)(C.CString(markupText))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(length)
-	_arg3 = (C.gunichar)(accelMarker)
+	_arg2 = C.int(length)
+	_arg3 = C.gunichar(accelMarker)
 
-	C.pango_parse_markup(_arg1, _arg2, _arg3, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg5, &_arg6, &_cerr)
+	C.pango_parse_markup(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_cerr)
 
-	var _text string      // out
-	var _accelChar uint32 // out
-	var _goerr error      // out
+	var _attrList *AttrList // out
+	var _text string        // out
+	var _accelChar uint32   // out
+	var _goerr error        // out
 
+	_attrList = (*AttrList)(unsafe.Pointer(_arg4))
+	runtime.SetFinalizer(&_attrList, func(v **AttrList) {
+		C.free(unsafe.Pointer(v))
+	})
 	_text = C.GoString(_arg5)
 	defer C.free(unsafe.Pointer(_arg5))
-	_accelChar = (uint32)(_arg6)
+	_accelChar = uint32(_arg6)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _attrList, _text, _accelChar, _goerr
@@ -1950,7 +1970,7 @@ func UnicharDirection(ch uint32) Direction {
 	var _arg1 C.gunichar       // out
 	var _cret C.PangoDirection // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 
 	_cret = C.pango_unichar_direction(_arg1)
 
@@ -1969,13 +1989,13 @@ func UnitsFromDouble(d float64) int {
 	var _arg1 C.double // out
 	var _cret C.int    // in
 
-	_arg1 = (C.double)(d)
+	_arg1 = C.double(d)
 
 	_cret = C.pango_units_from_double(_arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1987,13 +2007,13 @@ func UnitsToDouble(i int) float64 {
 	var _arg1 C.int    // out
 	var _cret C.double // in
 
-	_arg1 = (C.int)(i)
+	_arg1 = C.int(i)
 
 	_cret = C.pango_units_to_double(_arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -2010,7 +2030,7 @@ func Version() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2037,9 +2057,9 @@ func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) strin
 	var _arg3 C.int   // out
 	var _cret *C.char // in
 
-	_arg1 = (C.int)(requiredMajor)
-	_arg2 = (C.int)(requiredMinor)
-	_arg3 = (C.int)(requiredMicro)
+	_arg1 = C.int(requiredMajor)
+	_arg2 = C.int(requiredMinor)
+	_arg3 = C.int(requiredMicro)
 
 	_cret = C.pango_version_check(_arg1, _arg2, _arg3)
 
@@ -2075,6 +2095,7 @@ func VersionString() string {
 //
 // To obtain a `PangoContext`, use [method@Pango.FontMap.create_context].
 type Context interface {
+	gextras.Objector
 
 	// ChangedContext forces a change in the context, which will cause any
 	// `PangoLayout` using this context to re-layout.
@@ -2295,7 +2316,7 @@ func (c context) FontDescription() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 
 	return _fontDescription
 }
@@ -2355,9 +2376,9 @@ func (c context) Language() *Language {
 
 	var _language *Language // out
 
-	_language = WrapLanguage(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_language, func(v *Language) {
-		C.free(unsafe.Pointer(v.Native()))
+	_language = (*Language)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_language, func(v **Language) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _language
@@ -2373,7 +2394,7 @@ func (c context) Matrix() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -2392,9 +2413,9 @@ func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = WrapFontMetrics(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontMetrics, func(v **FontMetrics) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontMetrics
@@ -2427,7 +2448,7 @@ func (c context) Serial() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2496,7 +2517,7 @@ func (c context) SetBaseDirContext(direction Direction) {
 	var _arg1 C.PangoDirection // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.PangoDirection)(direction)
+	_arg1 = C.PangoDirection(direction)
 
 	C.pango_context_set_base_dir(_arg0, _arg1)
 }
@@ -2506,7 +2527,7 @@ func (c context) SetBaseGravityContext(gravity Gravity) {
 	var _arg1 C.PangoGravity  // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.PangoGravity)(gravity)
+	_arg1 = C.PangoGravity(gravity)
 
 	C.pango_context_set_base_gravity(_arg0, _arg1)
 }
@@ -2536,7 +2557,7 @@ func (c context) SetGravityHintContext(hint GravityHint) {
 	var _arg1 C.PangoGravityHint // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.PangoGravityHint)(hint)
+	_arg1 = C.PangoGravityHint(hint)
 
 	C.pango_context_set_gravity_hint(_arg0, _arg1)
 }
@@ -2581,6 +2602,7 @@ func (c context) SetRoundGlyphPositionsContext(roundPositions bool) {
 // character. The Coverage is a data structure that is used to represent that
 // information. It is an opaque structure with no public fields.
 type Coverage interface {
+	gextras.Objector
 
 	// CopyCoverage: copy an existing `PangoCoverage`.
 	CopyCoverage() Coverage
@@ -2658,7 +2680,7 @@ func (c coverage) GetCoverage(index_ int) CoverageLevel {
 	var _cret C.PangoCoverageLevel // in
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 
 	_cret = C.pango_coverage_get(_arg0, _arg1)
 
@@ -2700,8 +2722,8 @@ func (c coverage) SetCoverage(index_ int, level CoverageLevel) {
 	var _arg2 C.PangoCoverageLevel // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(index_)
-	_arg2 = (C.PangoCoverageLevel)(level)
+	_arg1 = C.int(index_)
+	_arg2 = C.PangoCoverageLevel(level)
 
 	C.pango_coverage_set(_arg0, _arg1, _arg2)
 }
@@ -2736,6 +2758,7 @@ func (c coverage) UnrefCoverage() {
 // Font: a `PangoFont` is used to represent a font in a
 // rendering-system-independent manner.
 type Font interface {
+	gextras.Objector
 
 	// DescribeFont returns a description of the font, with font size set in
 	// points.
@@ -2807,9 +2830,9 @@ func (f font) DescribeFont() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontDescription, func(v **FontDescription) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -2825,9 +2848,9 @@ func (f font) DescribeWithAbsoluteSizeFont() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontDescription, func(v **FontDescription) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -2892,9 +2915,9 @@ func (f font) Metrics(language *Language) *FontMetrics {
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = WrapFontMetrics(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontMetrics, func(v **FontMetrics) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontMetrics
@@ -2906,7 +2929,7 @@ func (f font) HasCharFont(wc uint32) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.gunichar)(wc)
+	_arg1 = C.gunichar(wc)
 
 	_cret = C.pango_font_has_char(_arg0, _arg1)
 
@@ -2922,6 +2945,7 @@ func (f font) HasCharFont(wc uint32) bool {
 // FontFace: a `PangoFontFace` is used to represent a group of fonts with the
 // same family, slant, weight, and width, but varying sizes.
 type FontFace interface {
+	gextras.Objector
 
 	// DescribeFontFace returns the family, style, variant, weight and stretch
 	// of a `PangoFontFace`. The size field of the resulting font description
@@ -2975,9 +2999,9 @@ func (f fontFace) DescribeFontFace() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontDescription, func(v **FontDescription) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -3055,6 +3079,7 @@ func (f fontFace) ListSizesFontFace() []int {
 // The font faces in a family share a common design, but differ in slant,
 // weight, width or other aspects.
 type FontFamily interface {
+	gextras.Objector
 
 	// Face gets the `PangoFontFace` of @family with the given name.
 	Face(name string) FontFace
@@ -3203,6 +3228,7 @@ func (f fontFamily) ListFacesFontFamily() []FontFace {
 // This is a virtual object with implementations being specific to particular
 // rendering systems.
 type FontMap interface {
+	gextras.Objector
 
 	// ChangedFontMap forces a change in the context, which will cause any
 	// `PangoContext` using this fontmap to change.
@@ -3316,7 +3342,7 @@ func (f fontMap) Serial() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -3392,6 +3418,7 @@ func (f fontMap) LoadFontsetFontMap(context Context, desc *FontDescription, lang
 // for a particular Unicode character, and for finding a composite set of
 // metrics for the entire fontset.
 type Fontset interface {
+	gextras.Objector
 
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
@@ -3425,7 +3452,7 @@ func (f fontset) Font(wc uint) Font {
 	var _cret *C.PangoFont    // in
 
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.guint)(wc)
+	_arg1 = C.guint(wc)
 
 	_cret = C.pango_fontset_get_font(_arg0, _arg1)
 
@@ -3446,9 +3473,9 @@ func (f fontset) Metrics() *FontMetrics {
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = WrapFontMetrics(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontMetrics, func(v **FontMetrics) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontMetrics
@@ -3460,6 +3487,7 @@ func (f fontset) Metrics() *FontMetrics {
 // When creating a `PangoFontsetSimple`, you have to provide the array of fonts
 // that make up the fontset.
 type FontsetSimple interface {
+	Fontset
 
 	// AppendFontsetSimple adds a font to the fontset.
 	AppendFontsetSimple(font Font)
@@ -3522,7 +3550,7 @@ func (f fontsetSimple) SizeFontsetSimple() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3551,6 +3579,7 @@ func (f fontsetSimple) SizeFontsetSimple() int {
 // It is possible, as well, to ignore the 2-D setup, and simply treat the
 // results of a `PangoLayout` as a list of lines.
 type Layout interface {
+	gextras.Objector
 
 	// ContextChangedLayout forces recomputation of any state in the
 	// `PangoLayout` that might depend on the layout's context.
@@ -4012,7 +4041,7 @@ func (l layout) Attributes() *AttrList {
 
 	var _attrList *AttrList // out
 
-	_attrList = WrapAttrList(unsafe.Pointer(_cret))
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
 
 	return _attrList
 }
@@ -4044,7 +4073,7 @@ func (l layout) Baseline() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4059,7 +4088,7 @@ func (l layout) CharacterCount() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4080,15 +4109,41 @@ func (l layout) Context() Context {
 }
 
 func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
-	var _arg0 *C.PangoLayout // out
-	var _arg1 C.int          // out
-	var _strongPos Rectangle
-	var _weakPos Rectangle
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _arg2 C.PangoRectangle // in
+	var _arg3 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 
-	C.pango_layout_get_cursor_pos(_arg0, _arg1, (*C.PangoRectangle)(unsafe.Pointer(&_strongPos)), (*C.PangoRectangle)(unsafe.Pointer(&_weakPos)))
+	C.pango_layout_get_cursor_pos(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _strongPos Rectangle // out
+	var _weakPos Rectangle   // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_strongPos = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_weakPos = *refTmpOut
+	}
 
 	return _strongPos, _weakPos
 }
@@ -4099,7 +4154,7 @@ func (l layout) Direction(index int) Direction {
 	var _cret C.PangoDirection // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(index)
+	_arg1 = C.int(index)
 
 	_cret = C.pango_layout_get_direction(_arg0, _arg1)
 
@@ -4126,13 +4181,39 @@ func (l layout) Ellipsize() EllipsizeMode {
 }
 
 func (l layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoLayout // out
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoRectangle // in
+	var _arg2 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	C.pango_layout_get_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_layout_get_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -4147,7 +4228,7 @@ func (l layout) FontDescription() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 
 	return _fontDescription
 }
@@ -4162,7 +4243,7 @@ func (l layout) Height() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4177,7 +4258,7 @@ func (l layout) Indent() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4192,9 +4273,9 @@ func (l layout) Iter() *LayoutIter {
 
 	var _layoutIter *LayoutIter // out
 
-	_layoutIter = WrapLayoutIter(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
-		C.free(unsafe.Pointer(v.Native()))
+	_layoutIter = (*LayoutIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_layoutIter, func(v **LayoutIter) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _layoutIter
@@ -4227,7 +4308,7 @@ func (l layout) LineCount() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4242,7 +4323,7 @@ func (l layout) LineSpacing() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -4267,13 +4348,39 @@ func (l layout) LogAttrs() []LogAttr {
 }
 
 func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoLayout // out
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoRectangle // in
+	var _arg2 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	C.pango_layout_get_pixel_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_layout_get_pixel_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -4290,8 +4397,8 @@ func (l layout) PixelSize() (width int, height int) {
 	var _width int  // out
 	var _height int // out
 
-	_width = (int)(_arg1)
-	_height = (int)(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -4306,7 +4413,7 @@ func (l layout) Serial() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -4340,8 +4447,8 @@ func (l layout) Size() (width int, height int) {
 	var _width int  // out
 	var _height int // out
 
-	_width = (int)(_arg1)
-	_height = (int)(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -4356,7 +4463,7 @@ func (l layout) Spacing() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4371,9 +4478,9 @@ func (l layout) Tabs() *TabArray {
 
 	var _tabArray *TabArray // out
 
-	_tabArray = WrapTabArray(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.free(unsafe.Pointer(v.Native()))
+	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_tabArray, func(v **TabArray) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _tabArray
@@ -4404,7 +4511,7 @@ func (l layout) UnknownGlyphsCount() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4419,7 +4526,7 @@ func (l layout) Width() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4447,7 +4554,7 @@ func (l layout) IndexToLineXLayout(index_ int, trailing bool) (line int, xPos in
 	var _arg4 C.int          // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 	if trailing {
 		_arg2 = C.TRUE
 	}
@@ -4457,21 +4564,35 @@ func (l layout) IndexToLineXLayout(index_ int, trailing bool) (line int, xPos in
 	var _line int // out
 	var _xPos int // out
 
-	_line = (int)(_arg3)
-	_xPos = (int)(_arg4)
+	_line = int(_arg3)
+	_xPos = int(_arg4)
 
 	return _line, _xPos
 }
 
 func (l layout) IndexToPosLayout(index_ int) Rectangle {
-	var _arg0 *C.PangoLayout // out
-	var _arg1 C.int          // out
-	var _pos Rectangle
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _arg2 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 
-	C.pango_layout_index_to_pos(_arg0, _arg1, (*C.PangoRectangle)(unsafe.Pointer(&_pos)))
+	C.pango_layout_index_to_pos(_arg0, _arg1, &_arg2)
+
+	var _pos Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_pos = *refTmpOut
+	}
 
 	return _pos
 }
@@ -4523,17 +4644,17 @@ func (l layout) MoveCursorVisuallyLayout(strong bool, oldIndex int, oldTrailing 
 	if strong {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (C.int)(oldIndex)
-	_arg3 = (C.int)(oldTrailing)
-	_arg4 = (C.int)(direction)
+	_arg2 = C.int(oldIndex)
+	_arg3 = C.int(oldTrailing)
+	_arg4 = C.int(direction)
 
 	C.pango_layout_move_cursor_visually(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
 
 	var _newIndex int    // out
 	var _newTrailing int // out
 
-	_newIndex = (int)(_arg5)
-	_newTrailing = (int)(_arg6)
+	_newIndex = int(_arg5)
+	_newTrailing = int(_arg6)
 
 	return _newIndex, _newTrailing
 }
@@ -4543,7 +4664,7 @@ func (l layout) SetAlignmentLayout(alignment Alignment) {
 	var _arg1 C.PangoAlignment // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.PangoAlignment)(alignment)
+	_arg1 = C.PangoAlignment(alignment)
 
 	C.pango_layout_set_alignment(_arg0, _arg1)
 }
@@ -4575,7 +4696,7 @@ func (l layout) SetEllipsizeLayout(ellipsize EllipsizeMode) {
 	var _arg1 C.PangoEllipsizeMode // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.PangoEllipsizeMode)(ellipsize)
+	_arg1 = C.PangoEllipsizeMode(ellipsize)
 
 	C.pango_layout_set_ellipsize(_arg0, _arg1)
 }
@@ -4595,7 +4716,7 @@ func (l layout) SetHeightLayout(height int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(height)
+	_arg1 = C.int(height)
 
 	C.pango_layout_set_height(_arg0, _arg1)
 }
@@ -4605,7 +4726,7 @@ func (l layout) SetIndentLayout(indent int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(indent)
+	_arg1 = C.int(indent)
 
 	C.pango_layout_set_indent(_arg0, _arg1)
 }
@@ -4627,7 +4748,7 @@ func (l layout) SetLineSpacingLayout(factor float32) {
 	var _arg1 C.float        // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.float)(factor)
+	_arg1 = C.float(factor)
 
 	C.pango_layout_set_line_spacing(_arg0, _arg1)
 }
@@ -4640,7 +4761,7 @@ func (l layout) SetMarkupLayout(markup string, length int) {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(length)
+	_arg2 = C.int(length)
 
 	C.pango_layout_set_markup(_arg0, _arg1, _arg2)
 }
@@ -4655,14 +4776,14 @@ func (l layout) SetMarkupWithAccelLayout(markup string, length int, accelMarker 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(length)
-	_arg3 = (C.gunichar)(accelMarker)
+	_arg2 = C.int(length)
+	_arg3 = C.gunichar(accelMarker)
 
 	C.pango_layout_set_markup_with_accel(_arg0, _arg1, _arg2, _arg3, &_arg4)
 
 	var _accelChar uint32 // out
 
-	_accelChar = (uint32)(_arg4)
+	_accelChar = uint32(_arg4)
 
 	return _accelChar
 }
@@ -4684,7 +4805,7 @@ func (l layout) SetSpacingLayout(spacing int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(spacing)
+	_arg1 = C.int(spacing)
 
 	C.pango_layout_set_spacing(_arg0, _arg1)
 }
@@ -4707,7 +4828,7 @@ func (l layout) SetTextLayout(text string, length int) {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(length)
+	_arg2 = C.int(length)
 
 	C.pango_layout_set_text(_arg0, _arg1, _arg2)
 }
@@ -4717,7 +4838,7 @@ func (l layout) SetWidthLayout(width int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(width)
+	_arg1 = C.int(width)
 
 	C.pango_layout_set_width(_arg0, _arg1)
 }
@@ -4727,7 +4848,7 @@ func (l layout) SetWrapLayout(wrap WrapMode) {
 	var _arg1 C.PangoWrapMode // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.PangoWrapMode)(wrap)
+	_arg1 = C.PangoWrapMode(wrap)
 
 	C.pango_layout_set_wrap(_arg0, _arg1)
 }
@@ -4741,8 +4862,8 @@ func (l layout) XYToIndexLayout(x int, y int) (index_ int, trailing int, ok bool
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
 	_cret = C.pango_layout_xy_to_index(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
@@ -4750,8 +4871,8 @@ func (l layout) XYToIndexLayout(x int, y int) (index_ int, trailing int, ok bool
 	var _trailing int // out
 	var _ok bool      // out
 
-	_index_ = (int)(_arg3)
-	_trailing = (int)(_arg4)
+	_index_ = int(_arg3)
+	_trailing = int(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -4766,6 +4887,7 @@ func (l layout) XYToIndexLayout(x int, y int) (index_ int, trailing int, ok bool
 // and @draw_rectangle, renderers for particular font backends and destinations
 // can be created.
 type Renderer interface {
+	gextras.Objector
 
 	// ActivateRenderer does initial setup before rendering operations on
 	// @renderer.
@@ -4907,10 +5029,10 @@ func (r renderer) DrawErrorUnderlineRenderer(x int, y int, width int, height int
 	var _arg4 C.int            // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
-	_arg3 = (C.int)(width)
-	_arg4 = (C.int)(height)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	_arg3 = C.int(width)
+	_arg4 = C.int(height)
 
 	C.pango_renderer_draw_error_underline(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -4926,8 +5048,8 @@ func (r renderer) DrawGlyphItemRenderer(text string, glyphItem *GlyphItem, x int
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem.Native()))
-	_arg3 = (C.int)(x)
-	_arg4 = (C.int)(y)
+	_arg3 = C.int(x)
+	_arg4 = C.int(y)
 
 	C.pango_renderer_draw_glyph_item(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -4942,8 +5064,8 @@ func (r renderer) DrawGlyphsRenderer(font Font, glyphs *GlyphString, x int, y in
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg2 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
-	_arg3 = (C.int)(x)
-	_arg4 = (C.int)(y)
+	_arg3 = C.int(x)
+	_arg4 = C.int(y)
 
 	C.pango_renderer_draw_glyphs(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -4956,8 +5078,8 @@ func (r renderer) DrawLayoutRenderer(layout Layout, x int, y int) {
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg2 = (C.int)(x)
-	_arg3 = (C.int)(y)
+	_arg2 = C.int(x)
+	_arg3 = C.int(y)
 
 	C.pango_renderer_draw_layout(_arg0, _arg1, _arg2, _arg3)
 }
@@ -4971,11 +5093,11 @@ func (r renderer) DrawRectangleRenderer(part RenderPart, x int, y int, width int
 	var _arg5 C.int             // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.PangoRenderPart)(part)
-	_arg2 = (C.int)(x)
-	_arg3 = (C.int)(y)
-	_arg4 = (C.int)(width)
-	_arg5 = (C.int)(height)
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.int(x)
+	_arg3 = C.int(y)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
 
 	C.pango_renderer_draw_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -4991,13 +5113,13 @@ func (r renderer) DrawTrapezoidRenderer(part RenderPart, y1 float64, x11 float64
 	var _arg7 C.double          // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.PangoRenderPart)(part)
-	_arg2 = (C.double)(y1)
-	_arg3 = (C.double)(x11)
-	_arg4 = (C.double)(x21)
-	_arg5 = (C.double)(y2)
-	_arg6 = (C.double)(x12)
-	_arg7 = (C.double)(x22)
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.double(y1)
+	_arg3 = C.double(x11)
+	_arg4 = C.double(x21)
+	_arg5 = C.double(y2)
+	_arg6 = C.double(x12)
+	_arg7 = C.double(x22)
 
 	C.pango_renderer_draw_trapezoid(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
@@ -5008,13 +5130,13 @@ func (r renderer) Alpha(part RenderPart) uint16 {
 	var _cret C.guint16         // in
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.PangoRenderPart)(part)
+	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_alpha(_arg0, _arg1)
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -5025,13 +5147,13 @@ func (r renderer) Color(part RenderPart) *Color {
 	var _cret *C.PangoColor     // in
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.PangoRenderPart)(part)
+	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_color(_arg0, _arg1)
 
 	var _color *Color // out
 
-	_color = WrapColor(unsafe.Pointer(_cret))
+	_color = (*Color)(unsafe.Pointer(_cret))
 
 	return _color
 }
@@ -5061,7 +5183,7 @@ func (r renderer) Matrix() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -5071,7 +5193,7 @@ func (r renderer) PartChangedRenderer(part RenderPart) {
 	var _arg1 C.PangoRenderPart // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.PangoRenderPart)(part)
+	_arg1 = C.PangoRenderPart(part)
 
 	C.pango_renderer_part_changed(_arg0, _arg1)
 }
@@ -5082,8 +5204,8 @@ func (r renderer) SetAlphaRenderer(part RenderPart, alpha uint16) {
 	var _arg2 C.guint16         // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.PangoRenderPart)(part)
-	_arg2 = (C.guint16)(alpha)
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.guint16(alpha)
 
 	C.pango_renderer_set_alpha(_arg0, _arg1, _arg2)
 }
@@ -5094,7 +5216,7 @@ func (r renderer) SetColorRenderer(part RenderPart, color *Color) {
 	var _arg2 *C.PangoColor     // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.PangoRenderPart)(part)
+	_arg1 = C.PangoRenderPart(part)
 	_arg2 = (*C.PangoColor)(unsafe.Pointer(color.Native()))
 
 	C.pango_renderer_set_color(_arg0, _arg1, _arg2)
@@ -5222,9 +5344,9 @@ func (i *AttrIterator) Copy() *AttrIterator {
 
 	var _attrIterator *AttrIterator // out
 
-	_attrIterator = WrapAttrIterator(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrIterator, func(v *AttrIterator) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attrIterator = (*AttrIterator)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attrIterator, func(v **AttrIterator) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attrIterator
@@ -5248,13 +5370,13 @@ func (i *AttrIterator) Get(typ AttrType) *Attribute {
 	var _cret *C.PangoAttribute    // in
 
 	_arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.PangoAttrType)(typ)
+	_arg1 = C.PangoAttrType(typ)
 
 	_cret = C.pango_attr_iterator_get(_arg0, _arg1)
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
 
 	return _attribute
 }
@@ -5293,8 +5415,8 @@ func (i *AttrIterator) Range() (start int, end int) {
 	var _start int // out
 	var _end int   // out
 
-	_start = (int)(_arg1)
-	_end = (int)(_arg2)
+	_start = int(_arg1)
+	_end = int(_arg2)
 
 	return _start, _end
 }
@@ -5346,9 +5468,9 @@ func NewAttrList() *AttrList {
 
 	var _attrList *AttrList // out
 
-	_attrList = WrapAttrList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attrList, func(v **AttrList) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attrList
@@ -5389,9 +5511,9 @@ func (l *AttrList) Copy() *AttrList {
 
 	var _attrList *AttrList // out
 
-	_attrList = WrapAttrList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attrList, func(v **AttrList) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attrList
@@ -5431,9 +5553,9 @@ func (l *AttrList) Iterator() *AttrIterator {
 
 	var _attrIterator *AttrIterator // out
 
-	_attrIterator = WrapAttrIterator(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrIterator, func(v *AttrIterator) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attrIterator = (*AttrIterator)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attrIterator, func(v **AttrIterator) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attrIterator
@@ -5476,9 +5598,9 @@ func (l *AttrList) Ref() *AttrList {
 
 	var _attrList *AttrList // out
 
-	_attrList = WrapAttrList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attrList, func(v **AttrList) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attrList
@@ -5502,8 +5624,8 @@ func (l *AttrList) Splice(other *AttrList, pos int, len int) {
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(other.Native()))
-	_arg2 = (C.gint)(pos)
-	_arg3 = (C.gint)(len)
+	_arg2 = C.gint(pos)
+	_arg3 = C.gint(len)
 
 	C.pango_attr_list_splice(_arg0, _arg1, _arg2, _arg3)
 }
@@ -5539,9 +5661,9 @@ func (l *AttrList) Update(pos int, remove int, add int) {
 	var _arg3 C.int            // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(pos)
-	_arg2 = (C.int)(remove)
-	_arg3 = (C.int)(add)
+	_arg1 = C.int(pos)
+	_arg2 = C.int(remove)
+	_arg3 = C.int(add)
 
 	C.pango_attr_list_update(_arg0, _arg1, _arg2, _arg3)
 }
@@ -5628,9 +5750,9 @@ func (a *Attribute) Copy() *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = WrapAttribute(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attribute, func(v **Attribute) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _attribute
@@ -5701,9 +5823,9 @@ func (s *Color) Copy() *Color {
 
 	var _color *Color // out
 
-	_color = WrapColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_color, func(v *Color) {
-		C.free(unsafe.Pointer(v.Native()))
+	_color = (*Color)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_color, func(v **Color) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _color
@@ -5774,7 +5896,7 @@ func (c *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _alpha uint16 // out
 	var _ok bool      // out
 
-	_alpha = (uint16)(_arg1)
+	_alpha = uint16(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -5829,9 +5951,9 @@ func NewFontDescription() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontDescription, func(v **FontDescription) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -5885,9 +6007,9 @@ func (d *FontDescription) Copy() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontDescription, func(v **FontDescription) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -5910,9 +6032,9 @@ func (d *FontDescription) CopyStatic() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontDescription, func(v **FontDescription) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -6017,7 +6139,7 @@ func (d *FontDescription) Size() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6148,7 +6270,7 @@ func (d *FontDescription) Hash() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -6205,7 +6327,7 @@ func (d *FontDescription) SetAbsoluteSize(size float64) {
 	var _arg1 C.double                // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.double)(size)
+	_arg1 = C.double(size)
 
 	C.pango_font_description_set_absolute_size(_arg0, _arg1)
 }
@@ -6259,7 +6381,7 @@ func (d *FontDescription) SetGravity(gravity Gravity) {
 	var _arg1 C.PangoGravity          // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.PangoGravity)(gravity)
+	_arg1 = C.PangoGravity(gravity)
 
 	C.pango_font_description_set_gravity(_arg0, _arg1)
 }
@@ -6273,7 +6395,7 @@ func (d *FontDescription) SetSize(size int) {
 	var _arg1 C.gint                  // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.gint)(size)
+	_arg1 = C.gint(size)
 
 	C.pango_font_description_set_size(_arg0, _arg1)
 }
@@ -6287,7 +6409,7 @@ func (d *FontDescription) SetStretch(stretch Stretch) {
 	var _arg1 C.PangoStretch          // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.PangoStretch)(stretch)
+	_arg1 = C.PangoStretch(stretch)
 
 	C.pango_font_description_set_stretch(_arg0, _arg1)
 }
@@ -6306,7 +6428,7 @@ func (d *FontDescription) SetStyle(style Style) {
 	var _arg1 C.PangoStyle            // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.PangoStyle)(style)
+	_arg1 = C.PangoStyle(style)
 
 	C.pango_font_description_set_style(_arg0, _arg1)
 }
@@ -6320,7 +6442,7 @@ func (d *FontDescription) SetVariant(variant Variant) {
 	var _arg1 C.PangoVariant          // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.PangoVariant)(variant)
+	_arg1 = C.PangoVariant(variant)
 
 	C.pango_font_description_set_variant(_arg0, _arg1)
 }
@@ -6379,7 +6501,7 @@ func (d *FontDescription) SetWeight(weight Weight) {
 	var _arg1 C.PangoWeight           // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.PangoWeight)(weight)
+	_arg1 = C.PangoWeight(weight)
 
 	C.pango_font_description_set_weight(_arg0, _arg1)
 }
@@ -6435,7 +6557,7 @@ func (d *FontDescription) UnsetFields(toUnset FontMask) {
 	var _arg1 C.PangoFontMask         // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.PangoFontMask)(toUnset)
+	_arg1 = C.PangoFontMask(toUnset)
 
 	C.pango_font_description_unset_fields(_arg0, _arg1)
 }
@@ -6481,7 +6603,7 @@ func (m *FontMetrics) ApproximateCharWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6503,7 +6625,7 @@ func (m *FontMetrics) ApproximateDigitWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6523,7 +6645,7 @@ func (m *FontMetrics) Ascent() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6544,7 +6666,7 @@ func (m *FontMetrics) Descent() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6564,7 +6686,7 @@ func (m *FontMetrics) Height() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6583,7 +6705,7 @@ func (m *FontMetrics) StrikethroughPosition() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6600,7 +6722,7 @@ func (m *FontMetrics) StrikethroughThickness() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6620,7 +6742,7 @@ func (m *FontMetrics) UnderlinePosition() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6636,7 +6758,7 @@ func (m *FontMetrics) UnderlineThickness() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6652,9 +6774,9 @@ func (m *FontMetrics) Ref() *FontMetrics {
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = WrapFontMetrics(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontMetrics, func(v **FontMetrics) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontMetrics
@@ -6735,9 +6857,9 @@ func (o *GlyphItem) Copy() *GlyphItem {
 
 	var _glyphItem *GlyphItem // out
 
-	_glyphItem = WrapGlyphItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.free(unsafe.Pointer(v.Native()))
+	_glyphItem = (*GlyphItem)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_glyphItem, func(v **GlyphItem) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphItem
@@ -6771,15 +6893,15 @@ func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(splitIndex)
+	_arg2 = C.int(splitIndex)
 
 	_cret = C.pango_glyph_item_split(_arg0, _arg1, _arg2)
 
 	var _glyphItem *GlyphItem // out
 
-	_glyphItem = WrapGlyphItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.free(unsafe.Pointer(v.Native()))
+	_glyphItem = (*GlyphItem)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_glyphItem, func(v **GlyphItem) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphItem
@@ -6846,9 +6968,9 @@ func (o *GlyphItemIter) Copy() *GlyphItemIter {
 
 	var _glyphItemIter *GlyphItemIter // out
 
-	_glyphItemIter = WrapGlyphItemIter(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphItemIter, func(v *GlyphItemIter) {
-		C.free(unsafe.Pointer(v.Native()))
+	_glyphItemIter = (*GlyphItemIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_glyphItemIter, func(v **GlyphItemIter) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphItemIter
@@ -6980,9 +7102,9 @@ func NewGlyphString() *GlyphString {
 
 	var _glyphString *GlyphString // out
 
-	_glyphString = WrapGlyphString(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.free(unsafe.Pointer(v.Native()))
+	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_glyphString, func(v **GlyphString) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphString
@@ -7004,9 +7126,9 @@ func (s *GlyphString) Copy() *GlyphString {
 
 	var _glyphString *GlyphString // out
 
-	_glyphString = WrapGlyphString(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.free(unsafe.Pointer(v.Native()))
+	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_glyphString, func(v **GlyphString) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphString
@@ -7023,13 +7145,39 @@ func (s *GlyphString) Copy() *GlyphString {
 func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
+	var _arg2 C.PangoRectangle    // in
+	var _arg3 C.PangoRectangle    // in
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
-	C.pango_glyph_string_extents(_arg0, _arg1, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -7044,15 +7192,41 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
 	var _arg3 *C.PangoFont        // out
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
+	var _arg4 C.PangoRectangle    // in
+	var _arg5 C.PangoRectangle    // in
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(start)
-	_arg2 = (C.int)(end)
+	_arg1 = C.int(start)
+	_arg2 = C.int(end)
 	_arg3 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
-	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg5
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -7082,7 +7256,7 @@ func (g *GlyphString) Width() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7093,7 +7267,7 @@ func (s *GlyphString) SetSize(newLen int) {
 	var _arg1 C.gint              // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(newLen)
+	_arg1 = C.gint(newLen)
 
 	C.pango_glyph_string_set_size(_arg0, _arg1)
 }
@@ -7141,9 +7315,9 @@ func NewItem() *Item {
 
 	var _item *Item // out
 
-	_item = WrapItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_item, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
+	_item = (*Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_item, func(v **Item) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _item
@@ -7185,9 +7359,9 @@ func (i *Item) Copy() *Item {
 
 	var _ret *Item // out
 
-	_ret = WrapItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ret = (*Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Item) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -7219,16 +7393,16 @@ func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _cret *C.PangoItem // in
 
 	_arg0 = (*C.PangoItem)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.int)(splitIndex)
-	_arg2 = (C.int)(splitOffset)
+	_arg1 = C.int(splitIndex)
+	_arg2 = C.int(splitOffset)
 
 	_cret = C.pango_item_split(_arg0, _arg1, _arg2)
 
 	var _item *Item // out
 
-	_item = WrapItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_item, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
+	_item = (*Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_item, func(v **Item) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _item
@@ -7304,7 +7478,7 @@ func (l *Language) IncludesScript(script Script) bool {
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.PangoScript)(script)
+	_arg1 = C.PangoScript(script)
 
 	_cret = C.pango_language_includes_script(_arg0, _arg1)
 
@@ -7412,9 +7586,9 @@ func (i *LayoutIter) Copy() *LayoutIter {
 
 	var _layoutIter *LayoutIter // out
 
-	_layoutIter = WrapLayoutIter(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
-		C.free(unsafe.Pointer(v.Native()))
+	_layoutIter = (*LayoutIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_layoutIter, func(v **LayoutIter) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _layoutIter
@@ -7441,7 +7615,7 @@ func (i *LayoutIter) Baseline() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7452,11 +7626,25 @@ func (i *LayoutIter) Baseline() int {
 // level of clusters.
 func (i *LayoutIter) CharExtents() Rectangle {
 	var _arg0 *C.PangoLayoutIter // out
-	var _logicalRect Rectangle
+	var _arg1 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	C.pango_layout_iter_get_char_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_layout_iter_get_char_extents(_arg0, &_arg1)
+
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _logicalRect
 }
@@ -7465,12 +7653,38 @@ func (i *LayoutIter) CharExtents() Rectangle {
 // (origin is the top left of the entire layout).
 func (i *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	C.pango_layout_iter_get_cluster_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_layout_iter_get_cluster_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -7489,7 +7703,7 @@ func (i *LayoutIter) Index() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7514,12 +7728,38 @@ func (i *LayoutIter) Layout() Layout {
 // @ink_rect or @logical_rect can be nil if you aren't interested in them.
 func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	C.pango_layout_iter_get_layout_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_layout_iter_get_layout_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -7532,12 +7772,38 @@ func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) 
 // [method@Pango.LayoutLine.get_extents].
 func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	C.pango_layout_iter_get_line_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_layout_iter_get_line_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -7563,8 +7829,8 @@ func (i *LayoutIter) LineYrange() (y0 int, y1 int) {
 	var _y0 int // out
 	var _y1 int // out
 
-	_y0 = (int)(_arg1)
-	_y1 = (int)(_arg2)
+	_y0 = int(_arg1)
+	_y1 = int(_arg2)
 
 	return _y0, _y1
 }
@@ -7573,12 +7839,38 @@ func (i *LayoutIter) LineYrange() (y0 int, y1 int) {
 // is the top left of the entire layout).
 func (i *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _inkRect Rectangle
-	var _logicalRect Rectangle
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	C.pango_layout_iter_get_run_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
+	C.pango_layout_iter_get_run_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -7724,9 +8016,9 @@ func (m *Matrix) Copy() *Matrix {
 
 	var _ret *Matrix // out
 
-	_ret = WrapMatrix(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Matrix) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ret = (*Matrix)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Matrix) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -7757,7 +8049,7 @@ func (m *Matrix) FontScaleFactor() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -7782,8 +8074,8 @@ func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _xscale float64 // out
 	var _yscale float64 // out
 
-	_xscale = (float64)(_arg1)
-	_yscale = (float64)(_arg2)
+	_xscale = float64(_arg1)
+	_yscale = float64(_arg2)
 
 	return _xscale, _yscale
 }
@@ -7796,7 +8088,7 @@ func (m *Matrix) Rotate(degrees float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.double)(degrees)
+	_arg1 = C.double(degrees)
 
 	C.pango_matrix_rotate(_arg0, _arg1)
 }
@@ -7810,8 +8102,8 @@ func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg2 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.double)(scaleX)
-	_arg2 = (C.double)(scaleY)
+	_arg1 = C.double(scaleX)
+	_arg2 = C.double(scaleY)
 
 	C.pango_matrix_scale(_arg0, _arg1, _arg2)
 }
@@ -7825,8 +8117,8 @@ func (m *Matrix) Translate(tx float64, ty float64) {
 	var _arg2 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.double)(tx)
-	_arg2 = (C.double)(ty)
+	_arg1 = C.double(tx)
+	_arg2 = C.double(ty)
 
 	C.pango_matrix_translate(_arg0, _arg1, _arg2)
 }
@@ -7872,15 +8164,15 @@ func NewScriptIter(text string, length int) *ScriptIter {
 
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(length)
+	_arg2 = C.int(length)
 
 	_cret = C.pango_script_iter_new(_arg1, _arg2)
 
 	var _scriptIter *ScriptIter // out
 
-	_scriptIter = WrapScriptIter(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_scriptIter, func(v *ScriptIter) {
-		C.free(unsafe.Pointer(v.Native()))
+	_scriptIter = (*ScriptIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_scriptIter, func(v **ScriptIter) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _scriptIter
@@ -7972,7 +8264,7 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var _arg2 C.gboolean       // out
 	var _cret *C.PangoTabArray // in
 
-	_arg1 = (C.gint)(initialSize)
+	_arg1 = C.gint(initialSize)
 	if positionsInPixels {
 		_arg2 = C.TRUE
 	}
@@ -7981,9 +8273,9 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 
 	var _tabArray *TabArray // out
 
-	_tabArray = WrapTabArray(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.free(unsafe.Pointer(v.Native()))
+	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_tabArray, func(v **TabArray) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _tabArray
@@ -8005,9 +8297,9 @@ func (s *TabArray) Copy() *TabArray {
 
 	var _tabArray *TabArray // out
 
-	_tabArray = WrapTabArray(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.free(unsafe.Pointer(v.Native()))
+	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_tabArray, func(v **TabArray) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _tabArray
@@ -8052,7 +8344,7 @@ func (t *TabArray) Size() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -8065,7 +8357,7 @@ func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg3 C.gint           // in
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gint)(tabIndex)
+	_arg1 = C.gint(tabIndex)
 
 	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -8073,7 +8365,7 @@ func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _location int       // out
 
 	_alignment = TabAlign(_arg2)
-	_location = (int)(_arg3)
+	_location = int(_arg3)
 
 	return _alignment, _location
 }
@@ -8087,7 +8379,7 @@ func (t *TabArray) Resize(newSize int) {
 	var _arg1 C.gint           // out
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gint)(newSize)
+	_arg1 = C.gint(newSize)
 
 	C.pango_tab_array_resize(_arg0, _arg1)
 }
@@ -8102,9 +8394,9 @@ func (t *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
 	var _arg3 C.gint           // out
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gint)(tabIndex)
-	_arg2 = (C.PangoTabAlign)(alignment)
-	_arg3 = (C.gint)(location)
+	_arg1 = C.gint(tabIndex)
+	_arg2 = C.PangoTabAlign(alignment)
+	_arg3 = C.gint(location)
 
 	C.pango_tab_array_set_tab(_arg0, _arg1, _arg2, _arg3)
 }

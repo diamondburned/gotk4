@@ -2031,7 +2031,7 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(line)
+	_arg3 = C.int(line)
 	_arg4 = (*C.char)(C.CString(prettyFunction))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(C.CString(expression))
@@ -2087,14 +2087,14 @@ func BitNthLsf(mask uint32, nthBit int) int {
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
 
-	_arg1 = (C.gulong)(mask)
-	_arg2 = (C.gint)(nthBit)
+	_arg1 = C.gulong(mask)
+	_arg2 = C.gint(nthBit)
 
 	_cret = C.g_bit_nth_lsf(_arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2108,14 +2108,14 @@ func BitNthMsf(mask uint32, nthBit int) int {
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
 
-	_arg1 = (C.gulong)(mask)
-	_arg2 = (C.gint)(nthBit)
+	_arg1 = C.gulong(mask)
+	_arg2 = C.gint(nthBit)
 
 	_cret = C.g_bit_nth_msf(_arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2126,13 +2126,13 @@ func BitStorage(number uint32) uint {
 	var _arg1 C.gulong // out
 	var _cret C.guint  // in
 
-	_arg1 = (C.gulong)(number)
+	_arg1 = C.gulong(number)
 
 	_cret = C.g_bit_storage(_arg1)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2247,9 +2247,9 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	var _arg3 C.guint  // out
 	var _cret *C.gchar // in
 
-	_arg1 = (C.guint)(requiredMajor)
-	_arg2 = (C.guint)(requiredMinor)
-	_arg3 = (C.guint)(requiredMicro)
+	_arg1 = C.guint(requiredMajor)
+	_arg2 = C.guint(requiredMinor)
+	_arg3 = C.guint(requiredMicro)
 
 	_cret = C.glib_check_version(_arg1, _arg2, _arg3)
 
@@ -2271,7 +2271,7 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 	var _arg3 C.gsize
 	var _cret *C.gchar // in
 
-	_arg1 = (C.GChecksumType)(checksumType)
+	_arg1 = C.GChecksumType(checksumType)
 	_arg3 = C.gsize(len(data))
 	_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
 
@@ -2294,10 +2294,10 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 	var _arg3 C.gssize        // out
 	var _cret *C.gchar        // in
 
-	_arg1 = (C.GChecksumType)(checksumType)
+	_arg1 = C.GChecksumType(checksumType)
 	_arg2 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gssize)(length)
+	_arg3 = C.gssize(length)
 
 	_cret = C.g_compute_checksum_for_string(_arg1, _arg2, _arg3)
 
@@ -2321,7 +2321,7 @@ func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string
 	var _arg5 C.gsize
 	var _cret *C.gchar // in
 
-	_arg1 = (C.GChecksumType)(digestType)
+	_arg1 = C.GChecksumType(digestType)
 	_arg3 = C.gsize(len(key))
 	_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
 	_arg5 = C.gsize(len(data))
@@ -2348,12 +2348,12 @@ func ComputeHMACForString(digestType ChecksumType, key []byte, str string, lengt
 	var _arg5 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (C.GChecksumType)(digestType)
+	_arg1 = C.GChecksumType(digestType)
 	_arg3 = C.gsize(len(key))
 	_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
 	_arg4 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (C.gssize)(length)
+	_arg5 = C.gssize(length)
 
 	_cret = C.g_compute_hmac_for_string(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -2379,7 +2379,7 @@ func Dcgettext(domain string, msgid string, category int) string {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(msgid))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gint)(category)
+	_arg3 = C.gint(category)
 
 	_cret = C.g_dcgettext(_arg1, _arg2, _arg3)
 
@@ -2458,7 +2458,7 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(msgidPlural))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.gulong)(n)
+	_arg4 = C.gulong(n)
 
 	_cret = C.g_dngettext(_arg1, _arg2, _arg3, _arg4)
 
@@ -2490,7 +2490,7 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(msgctxtid))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gsize)(msgidoffset)
+	_arg3 = C.gsize(msgidoffset)
 
 	_cret = C.g_dpgettext(_arg1, _arg2, _arg3)
 
@@ -2657,7 +2657,7 @@ func FileErrorFromErrno(errNo int) FileError {
 	var _arg1 C.gint       // out
 	var _cret C.GFileError // in
 
-	_arg1 = (C.gint)(errNo)
+	_arg1 = C.gint(errNo)
 
 	_cret = C.g_file_error_from_errno(_arg1)
 
@@ -2732,7 +2732,7 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 
 	_nameUsed = C.GoString(_arg2)
 	defer C.free(unsafe.Pointer(_arg2))
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _nameUsed, _gint, _goerr
@@ -2852,8 +2852,8 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = C.gssize(len(contents))
 	_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
-	_arg4 = (C.GFileSetContentsFlags)(flags)
-	_arg5 = (C.int)(mode)
+	_arg4 = C.GFileSetContentsFlags(flags)
+	_arg5 = C.int(mode)
 
 	C.g_file_set_contents_full(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -2909,7 +2909,7 @@ func TestFile(filename string, test FileTest) bool {
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GFileTest)(test)
+	_arg2 = C.GFileTest(test)
 
 	_cret = C.g_file_test(_arg1, _arg2)
 
@@ -3033,7 +3033,7 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 
 	_arg1 = (*C.gchar)(C.CString(utf8String))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_filename_from_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -3042,8 +3042,8 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 	var _filename string   // out
 	var _goerr error       // out
 
-	_bytesRead = (uint)(_arg3)
-	_bytesWritten = (uint)(_arg4)
+	_bytesRead = uint(_arg3)
+	_bytesWritten = uint(_arg4)
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -3097,7 +3097,7 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 
 	_arg1 = (*C.gchar)(C.CString(opsysstring))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_filename_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -3106,8 +3106,8 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 	var _utf8 string       // out
 	var _goerr error       // out
 
-	_bytesRead = (uint)(_arg3)
-	_bytesWritten = (uint)(_arg4)
+	_bytesRead = uint(_arg3)
+	_bytesWritten = uint(_arg4)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -3163,7 +3163,7 @@ func FormatSize(size uint64) string {
 	var _arg1 C.guint64 // out
 	var _cret *C.gchar  // in
 
-	_arg1 = (C.guint64)(size)
+	_arg1 = C.guint64(size)
 
 	_cret = C.g_format_size(_arg1)
 
@@ -3187,7 +3187,7 @@ func FormatSizeForDisplay(size int64) string {
 	var _arg1 C.goffset // out
 	var _cret *C.gchar  // in
 
-	_arg1 = (C.goffset)(size)
+	_arg1 = C.goffset(size)
 
 	_cret = C.g_format_size_for_display(_arg1)
 
@@ -3208,8 +3208,8 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	var _arg2 C.GFormatSizeFlags // out
 	var _cret *C.gchar           // in
 
-	_arg1 = (C.guint64)(size)
-	_arg2 = (C.GFormatSizeFlags)(flags)
+	_arg1 = C.guint64(size)
+	_arg2 = C.GFormatSizeFlags(flags)
 
 	_cret = C.g_format_size_full(_arg1, _arg2)
 
@@ -3629,7 +3629,7 @@ func GetMonotonicTime() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -3709,7 +3709,7 @@ func GetRealTime() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -3977,7 +3977,7 @@ func GetUserSpecialDir(directory UserDirectory) string {
 	var _arg1 C.GUserDirectory // out
 	var _cret *C.gchar         // in
 
-	_arg1 = (C.GUserDirectory)(directory)
+	_arg1 = C.GUserDirectory(directory)
 
 	_cret = C.g_get_user_special_dir(_arg1)
 
@@ -4234,8 +4234,8 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 	var _utf8 string       // out
 	var _goerr error       // out
 
-	_bytesRead = (uint)(_arg3)
-	_bytesWritten = (uint)(_arg4)
+	_bytesRead = uint(_arg3)
+	_bytesWritten = uint(_arg4)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -4253,7 +4253,7 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint)(handlerId)
+	_arg2 = C.guint(handlerId)
 
 	C.g_log_remove_handler(_arg1, _arg2)
 }
@@ -4278,7 +4278,7 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 C.GLogLevelFlags // out
 	var _cret C.GLogLevelFlags // in
 
-	_arg1 = (C.GLogLevelFlags)(fatalMask)
+	_arg1 = C.GLogLevelFlags(fatalMask)
 
 	_cret = C.g_log_set_always_fatal(_arg1)
 
@@ -4309,7 +4309,7 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GLogLevelFlags)(fatalMask)
+	_arg2 = C.GLogLevelFlags(fatalMask)
 
 	_cret = C.g_log_set_fatal_mask(_arg1, _arg2)
 
@@ -4334,7 +4334,7 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 	var _arg2 *C.GLogField
 	var _arg3 C.gsize
 
-	_arg1 = (C.GLogLevelFlags)(logLevel)
+	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
 
@@ -4365,7 +4365,7 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GLogLevelFlags)(logLevel)
+	_arg2 = C.GLogLevelFlags(logLevel)
 	_arg3 = (*C.GVariant)(unsafe.Pointer(fields.Native()))
 
 	C.g_log_variant(_arg1, _arg2, _arg3)
@@ -4417,7 +4417,7 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	var _arg2 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg1 = (C.GLogLevelFlags)(logLevel)
+	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg2 = (*C.char)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -4448,7 +4448,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 	var _arg4 C.gboolean // out
 	var _cret *C.gchar   // in
 
-	_arg1 = (C.GLogLevelFlags)(logLevel)
+	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
 	if useColor {
@@ -4477,7 +4477,7 @@ func LogWriterIsJournald(outputFd int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gint)(outputFd)
+	_arg1 = C.gint(outputFd)
 
 	_cret = C.g_log_writer_is_journald(_arg1)
 
@@ -4497,7 +4497,7 @@ func LogWriterSupportsColor(outputFd int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gint)(outputFd)
+	_arg1 = C.gint(outputFd)
 
 	_cret = C.g_log_writer_supports_color(_arg1)
 
@@ -4574,7 +4574,7 @@ func MainDepth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4599,7 +4599,7 @@ func MarkupEscapeText(text string, length int) string {
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(length)
+	_arg2 = C.gssize(length)
 
 	_cret = C.g_markup_escape_text(_arg1, _arg2)
 
@@ -4620,13 +4620,13 @@ func MkdirWithParents(pathname string, mode int) int {
 
 	_arg1 = (*C.gchar)(C.CString(pathname))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint)(mode)
+	_arg2 = C.gint(mode)
 
 	_cret = C.g_mkdir_with_parents(_arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4656,7 +4656,7 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -4790,7 +4790,7 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, _string string, stringR
 	var _cret C.gboolean      // in
 
 	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
-	_arg2 = (C.guint)(stringLength)
+	_arg2 = C.guint(stringLength)
 	_arg3 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(stringReversed))
@@ -4876,14 +4876,14 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 	var _cret C.gint     // in
 
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(fds.Native()))
-	_arg2 = (C.guint)(nfds)
-	_arg3 = (C.gint)(timeout)
+	_arg2 = C.guint(nfds)
+	_arg3 = C.gint(timeout)
 
 	_cret = C.g_poll(_arg1, _arg2, _arg3)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4897,7 +4897,7 @@ func RandomDouble() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -4909,14 +4909,14 @@ func RandomDoubleRange(begin float64, end float64) float64 {
 	var _arg2 C.gdouble // out
 	var _cret C.gdouble // in
 
-	_arg1 = (C.gdouble)(begin)
-	_arg2 = (C.gdouble)(end)
+	_arg1 = C.gdouble(begin)
+	_arg2 = C.gdouble(end)
 
 	_cret = C.g_random_double_range(_arg1, _arg2)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -4930,7 +4930,7 @@ func RandomInt() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -4942,14 +4942,14 @@ func RandomIntRange(begin int32, end int32) int32 {
 	var _arg2 C.gint32 // out
 	var _cret C.gint32 // in
 
-	_arg1 = (C.gint32)(begin)
-	_arg2 = (C.gint32)(end)
+	_arg1 = C.gint32(begin)
+	_arg2 = C.gint32(end)
 
 	_cret = C.g_random_int_range(_arg1, _arg2)
 
 	var _gint32 int32 // out
 
-	_gint32 = (int32)(_cret)
+	_gint32 = int32(_cret)
 
 	return _gint32
 }
@@ -4959,7 +4959,7 @@ func RandomIntRange(begin int32, end int32) int32 {
 func RandomSetSeed(seed uint32) {
 	var _arg1 C.guint32 // out
 
-	_arg1 = (C.guint32)(seed)
+	_arg1 = C.guint32(seed)
 
 	C.g_random_set_seed(_arg1)
 }
@@ -5162,13 +5162,13 @@ func SpacedPrimesClosest(num uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
-	_arg1 = (C.guint)(num)
+	_arg1 = C.guint(num)
 
 	_cret = C.g_spaced_primes_closest(_arg1)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -5212,7 +5212,7 @@ func SpawnCheckExitStatus(exitStatus int) error {
 	var _arg1 C.gint    // out
 	var _cerr *C.GError // in
 
-	_arg1 = (C.gint)(exitStatus)
+	_arg1 = C.gint(exitStatus)
 
 	C.g_spawn_check_exit_status(_arg1, &_cerr)
 
@@ -5295,7 +5295,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 		src := unsafe.Slice(_arg2, i)
 		_standardOutput = make([]byte, i)
 		for i := range src {
-			_standardOutput[i] = (byte)(src[i])
+			_standardOutput[i] = byte(src[i])
 		}
 	}
 	{
@@ -5308,10 +5308,10 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 		src := unsafe.Slice(_arg3, i)
 		_standardError = make([]byte, i)
 		for i := range src {
-			_standardError[i] = (byte)(src[i])
+			_standardError[i] = byte(src[i])
 		}
 	}
-	_exitStatus = (int)(_arg4)
+	_exitStatus = int(_arg4)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _standardOutput, _standardError, _exitStatus, _goerr
@@ -5349,9 +5349,9 @@ func StrvGetType() externglib.Type {
 	return _gType
 }
 
-// Ucs4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
+// UCS4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func Ucs4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
+func UCS4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gunichar  // out
 	var _arg2 C.glong      // out
 	var _arg3 C.glong      // in
@@ -5360,7 +5360,7 @@ func Ucs4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, g
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.gunichar)(unsafe.Pointer(str))
-	_arg2 = (C.glong)(len)
+	_arg2 = C.glong(len)
 
 	_cret = C.g_ucs4_to_utf16(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -5369,17 +5369,17 @@ func Ucs4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, g
 	var _guint16 *uint16    // out
 	var _goerr error        // out
 
-	_itemsRead = (int32)(_arg3)
-	_itemsWritten = (int32)(_arg4)
-	_guint16 = (*uint16)(_cret)
+	_itemsRead = int32(_arg3)
+	_itemsWritten = int32(_arg4)
+	_guint16 = (*uint16)(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _guint16, _goerr
 }
 
-// Ucs4ToUTF8: convert a string from a 32-bit fixed width representation as
+// UCS4ToUTF8: convert a string from a 32-bit fixed width representation as
 // UCS-4. to UTF-8. The result will be terminated with a 0 byte.
-func Ucs4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
+func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.glong     // out
 	var _arg3 C.glong     // in
@@ -5388,7 +5388,7 @@ func Ucs4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, ut
 	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gunichar)(unsafe.Pointer(str))
-	_arg2 = (C.glong)(len)
+	_arg2 = C.glong(len)
 
 	_cret = C.g_ucs4_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -5397,8 +5397,8 @@ func Ucs4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, ut
 	var _utf8 string        // out
 	var _goerr error        // out
 
-	_itemsRead = (int32)(_arg3)
-	_itemsWritten = (int32)(_arg4)
+	_itemsRead = int32(_arg3)
+	_itemsWritten = int32(_arg4)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -5416,7 +5416,7 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 	var _arg1 C.gunichar          // out
 	var _cret C.GUnicodeBreakType // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_break_type(_arg1)
 
@@ -5433,13 +5433,13 @@ func UnicharCombiningClass(uc uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
 
-	_arg1 = (C.gunichar)(uc)
+	_arg1 = C.gunichar(uc)
 
 	_cret = C.g_unichar_combining_class(_arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -5463,15 +5463,15 @@ func UnicharCompose(a uint32, b uint32) (uint32, bool) {
 	var _arg3 C.gunichar // in
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(a)
-	_arg2 = (C.gunichar)(b)
+	_arg1 = C.gunichar(a)
+	_arg2 = C.gunichar(b)
 
 	_cret = C.g_unichar_compose(_arg1, _arg2, &_arg3)
 
 	var _ch uint32 // out
 	var _ok bool   // out
 
-	_ch = (uint32)(_arg3)
+	_ch = uint32(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -5501,7 +5501,7 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 	var _arg3 C.gunichar // in
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 
 	_cret = C.g_unichar_decompose(_arg1, &_arg2, &_arg3)
 
@@ -5509,8 +5509,8 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 	var _b uint32 // out
 	var _ok bool  // out
 
-	_a = (uint32)(_arg2)
-	_b = (uint32)(_arg3)
+	_a = uint32(_arg2)
+	_b = uint32(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -5524,13 +5524,13 @@ func UnicharDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_digit_value(_arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -5556,19 +5556,19 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint
 	var _arg4 C.gsize    // out
 	var _cret C.gsize    // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 	if compat {
 		_arg2 = C.TRUE
 	}
-	_arg4 = (C.gsize)(resultLen)
+	_arg4 = C.gsize(resultLen)
 
 	_cret = C.g_unichar_fully_decompose(_arg1, _arg2, &_arg3, _arg4)
 
 	var _result uint32 // out
 	var _gsize uint    // out
 
-	_result = (uint32)(_arg3)
-	_gsize = (uint)(_cret)
+	_result = uint32(_arg3)
+	_gsize = uint(_cret)
 
 	return _result, _gsize
 }
@@ -5587,7 +5587,7 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg2 *C.gunichar // out
 	var _cret C.gboolean  // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
 
 	_cret = C.g_unichar_get_mirror_char(_arg1, _arg2)
@@ -5611,7 +5611,7 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 	var _arg1 C.gunichar       // out
 	var _cret C.GUnicodeScript // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 
 	_cret = C.g_unichar_get_script(_arg1)
 
@@ -5628,7 +5628,7 @@ func UnicharIsalnum(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isalnum(_arg1)
 
@@ -5647,7 +5647,7 @@ func UnicharIsalpha(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isalpha(_arg1)
 
@@ -5666,7 +5666,7 @@ func UnicharIscntrl(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_iscntrl(_arg1)
 
@@ -5685,7 +5685,7 @@ func UnicharIsdefined(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isdefined(_arg1)
 
@@ -5705,7 +5705,7 @@ func UnicharIsdigit(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isdigit(_arg1)
 
@@ -5726,7 +5726,7 @@ func UnicharIsgraph(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isgraph(_arg1)
 
@@ -5745,7 +5745,7 @@ func UnicharIslower(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_islower(_arg1)
 
@@ -5769,7 +5769,7 @@ func UnicharIsmark(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_ismark(_arg1)
 
@@ -5789,7 +5789,7 @@ func UnicharIsprint(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isprint(_arg1)
 
@@ -5808,7 +5808,7 @@ func UnicharIspunct(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_ispunct(_arg1)
 
@@ -5831,7 +5831,7 @@ func UnicharIsspace(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isspace(_arg1)
 
@@ -5853,7 +5853,7 @@ func UnicharIstitle(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_istitle(_arg1)
 
@@ -5871,7 +5871,7 @@ func UnicharIsupper(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isupper(_arg1)
 
@@ -5890,7 +5890,7 @@ func UnicharIswide(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_iswide(_arg1)
 
@@ -5916,7 +5916,7 @@ func UnicharIswideCjk(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_iswide_cjk(_arg1)
 
@@ -5934,7 +5934,7 @@ func UnicharIsxdigit(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isxdigit(_arg1)
 
@@ -5960,7 +5960,7 @@ func UnicharIszerowidth(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_iszerowidth(_arg1)
 
@@ -5978,13 +5978,13 @@ func UnicharToLower(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_tolower(_arg1)
 
 	var _gunichar uint32 // out
 
-	_gunichar = (uint32)(_cret)
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -5994,13 +5994,13 @@ func UnicharToTitle(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_totitle(_arg1)
 
 	var _gunichar uint32 // out
 
-	_gunichar = (uint32)(_cret)
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -6010,13 +6010,13 @@ func UnicharToUpper(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_toupper(_arg1)
 
 	var _gunichar uint32 // out
 
-	_gunichar = (uint32)(_cret)
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -6026,7 +6026,7 @@ func UnicharType(c uint32) UnicodeType {
 	var _arg1 C.gunichar     // out
 	var _cret C.GUnicodeType // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_type(_arg1)
 
@@ -6044,7 +6044,7 @@ func UnicharValidate(ch uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 
 	_cret = C.g_unichar_validate(_arg1)
 
@@ -6063,13 +6063,13 @@ func UnicharXDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
 
-	_arg1 = (C.gunichar)(c)
+	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_xdigit_value(_arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6081,14 +6081,14 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 	var _arg2 *C.gsize    // out
 	var _cret *C.gunichar // in
 
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 	_arg2 = (*C.gsize)(unsafe.Pointer(resultLen))
 
 	_cret = C.g_unicode_canonical_decomposition(_arg1, _arg2)
 
 	var _gunichar *uint32 // out
 
-	_gunichar = (*uint32)(_cret)
+	_gunichar = (*uint32)(unsafe.Pointer(_cret))
 
 	return _gunichar
 }
@@ -6101,7 +6101,7 @@ func UnicodeCanonicalOrdering(_string *uint32, len uint) {
 	var _arg2 C.gsize     // out
 
 	_arg1 = (*C.gunichar)(unsafe.Pointer(_string))
-	_arg2 = (C.gsize)(len)
+	_arg2 = C.gsize(len)
 
 	C.g_unicode_canonical_ordering(_arg1, _arg2)
 }
@@ -6118,7 +6118,7 @@ func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 	var _arg1 C.guint32        // out
 	var _cret C.GUnicodeScript // in
 
-	_arg1 = (C.guint32)(iso15924)
+	_arg1 = C.guint32(iso15924)
 
 	_cret = C.g_unicode_script_from_iso15924(_arg1)
 
@@ -6141,13 +6141,13 @@ func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 	var _arg1 C.GUnicodeScript // out
 	var _cret C.guint32        // in
 
-	_arg1 = (C.GUnicodeScript)(script)
+	_arg1 = C.GUnicodeScript(script)
 
 	_cret = C.g_unicode_script_to_iso15924(_arg1)
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -6185,14 +6185,14 @@ func Unsetenv(variable string) {
 func Usleep(microseconds uint32) {
 	var _arg1 C.gulong // out
 
-	_arg1 = (C.gulong)(microseconds)
+	_arg1 = C.gulong(microseconds)
 
 	C.g_usleep(_arg1)
 }
 
-// UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
+// UTF16ToUCS4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
-func UTF16ToUcs4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
+func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
 	var _arg3 C.glong      // in
@@ -6201,7 +6201,7 @@ func UTF16ToUcs4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, g
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.gunichar2)(unsafe.Pointer(str))
-	_arg2 = (C.glong)(len)
+	_arg2 = C.glong(len)
 
 	_cret = C.g_utf16_to_ucs4(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -6210,9 +6210,9 @@ func UTF16ToUcs4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, g
 	var _gunichar *uint32   // out
 	var _goerr error        // out
 
-	_itemsRead = (int32)(_arg3)
-	_itemsWritten = (int32)(_arg4)
-	_gunichar = (*uint32)(_cret)
+	_itemsRead = int32(_arg3)
+	_itemsWritten = int32(_arg4)
+	_gunichar = (*uint32)(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _gunichar, _goerr
@@ -6238,7 +6238,7 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, u
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.gunichar2)(unsafe.Pointer(str))
-	_arg2 = (C.glong)(len)
+	_arg2 = C.glong(len)
 
 	_cret = C.g_utf16_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -6247,8 +6247,8 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, u
 	var _utf8 string        // out
 	var _goerr error        // out
 
-	_itemsRead = (int32)(_arg3)
-	_itemsWritten = (int32)(_arg4)
+	_itemsRead = int32(_arg3)
+	_itemsWritten = int32(_arg4)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -6273,7 +6273,7 @@ func UTF8Casefold(str string, len int) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_casefold(_arg1, _arg2)
 
@@ -6304,7 +6304,7 @@ func UTF8Collate(str1 string, str2 string) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6323,7 +6323,7 @@ func UTF8CollateKey(str string, len int) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_collate_key(_arg1, _arg2)
 
@@ -6354,7 +6354,7 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_collate_key_for_filename(_arg1, _arg2)
 
@@ -6438,7 +6438,7 @@ func UTF8GetChar(p string) uint32 {
 
 	var _gunichar uint32 // out
 
-	_gunichar = (uint32)(_cret)
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -6457,13 +6457,13 @@ func UTF8GetCharValidated(p string, maxLen int) uint32 {
 
 	_arg1 = (*C.gchar)(C.CString(p))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(maxLen)
+	_arg2 = C.gssize(maxLen)
 
 	_cret = C.g_utf8_get_char_validated(_arg1, _arg2)
 
 	var _gunichar uint32 // out
 
-	_gunichar = (uint32)(_cret)
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -6484,7 +6484,7 @@ func UTF8MakeValid(str string, len int) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_make_valid(_arg1, _arg2)
 
@@ -6522,8 +6522,8 @@ func UTF8Normalize(str string, len int, mode NormalizeMode) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
-	_arg3 = (C.GNormalizeMode)(mode)
+	_arg2 = C.gssize(len)
+	_arg3 = C.GNormalizeMode(mode)
 
 	_cret = C.g_utf8_normalize(_arg1, _arg2, _arg3)
 
@@ -6555,7 +6555,7 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.glong)(offset)
+	_arg2 = C.glong(offset)
 
 	_cret = C.g_utf8_offset_to_pointer(_arg1, _arg2)
 
@@ -6585,7 +6585,7 @@ func UTF8PointerToOffset(str string, pos string) int32 {
 
 	var _glong int32 // out
 
-	_glong = (int32)(_cret)
+	_glong = int32(_cret)
 
 	return _glong
 }
@@ -6623,8 +6623,8 @@ func UTF8Strchr(p string, len int, c uint32) string {
 
 	_arg1 = (*C.gchar)(C.CString(p))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
-	_arg3 = (C.gunichar)(c)
+	_arg2 = C.gssize(len)
+	_arg3 = C.gunichar(c)
 
 	_cret = C.g_utf8_strchr(_arg1, _arg2, _arg3)
 
@@ -6645,7 +6645,7 @@ func UTF8Strdown(str string, len int) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_strdown(_arg1, _arg2)
 
@@ -6667,13 +6667,13 @@ func UTF8Strlen(p string, max int) int32 {
 
 	_arg1 = (*C.gchar)(C.CString(p))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(max)
+	_arg2 = C.gssize(max)
 
 	_cret = C.g_utf8_strlen(_arg1, _arg2)
 
 	var _glong int32 // out
 
-	_glong = (int32)(_cret)
+	_glong = int32(_cret)
 
 	return _glong
 }
@@ -6695,7 +6695,7 @@ func UTF8Strncpy(dest string, src string, n uint) string {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(src))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gsize)(n)
+	_arg3 = C.gsize(n)
 
 	_cret = C.g_utf8_strncpy(_arg1, _arg2, _arg3)
 
@@ -6717,8 +6717,8 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 
 	_arg1 = (*C.gchar)(C.CString(p))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
-	_arg3 = (C.gunichar)(c)
+	_arg2 = C.gssize(len)
+	_arg3 = C.gunichar(c)
 
 	_cret = C.g_utf8_strrchr(_arg1, _arg2, _arg3)
 
@@ -6747,7 +6747,7 @@ func UTF8Strreverse(str string, len int) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_strreverse(_arg1, _arg2)
 
@@ -6770,7 +6770,7 @@ func UTF8Strup(str string, len int) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(len)
+	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_strup(_arg1, _arg2)
 
@@ -6792,8 +6792,8 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.glong)(startPos)
-	_arg3 = (C.glong)(endPos)
+	_arg2 = C.glong(startPos)
+	_arg3 = C.glong(endPos)
 
 	_cret = C.g_utf8_substring(_arg1, _arg2, _arg3)
 
@@ -6805,10 +6805,10 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 	return _utf8
 }
 
-// UTF8ToUcs4: convert a string from UTF-8 to a 32-bit fixed width
+// UTF8ToUCS4: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4. A trailing 0 character will be added to the string
 // after the converted text.
-func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
+func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
 	var _arg3 C.glong     // in
@@ -6818,7 +6818,7 @@ func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.glong)(len)
+	_arg2 = C.glong(len)
 
 	_cret = C.g_utf8_to_ucs4(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -6827,19 +6827,19 @@ func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 	var _gunichar *uint32   // out
 	var _goerr error        // out
 
-	_itemsRead = (int32)(_arg3)
-	_itemsWritten = (int32)(_arg4)
-	_gunichar = (*uint32)(_cret)
+	_itemsRead = int32(_arg3)
+	_itemsWritten = int32(_arg4)
+	_gunichar = (*uint32)(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _gunichar, _goerr
 }
 
-// UTF8ToUcs4Fast: convert a string from UTF-8 to a 32-bit fixed width
+// UTF8ToUCS4Fast: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4, assuming valid UTF-8 input. This function is roughly
 // twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
 // trailing 0 character will be added to the string after the converted text.
-func UTF8ToUcs4Fast(str string, len int32) (int32, *uint32) {
+func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
 	var _arg3 C.glong     // in
@@ -6847,15 +6847,15 @@ func UTF8ToUcs4Fast(str string, len int32) (int32, *uint32) {
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.glong)(len)
+	_arg2 = C.glong(len)
 
 	_cret = C.g_utf8_to_ucs4_fast(_arg1, _arg2, &_arg3)
 
 	var _itemsWritten int32 // out
 	var _gunichar *uint32   // out
 
-	_itemsWritten = (int32)(_arg3)
-	_gunichar = (*uint32)(_cret)
+	_itemsWritten = int32(_arg3)
+	_gunichar = (*uint32)(unsafe.Pointer(_cret))
 
 	return _itemsWritten, _gunichar
 }
@@ -6872,7 +6872,7 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.glong)(len)
+	_arg2 = C.glong(len)
 
 	_cret = C.g_utf8_to_utf16(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -6881,9 +6881,9 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 	var _guint16 *uint16    // out
 	var _goerr error        // out
 
-	_itemsRead = (int32)(_arg3)
-	_itemsWritten = (int32)(_arg4)
-	_guint16 = (*uint16)(_cret)
+	_itemsRead = int32(_arg3)
+	_itemsWritten = int32(_arg4)
+	_guint16 = (*uint16)(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _guint16, _goerr
@@ -7101,7 +7101,7 @@ func (b *BookmarkFile) Added(uri string) (int32, error) {
 	var _glong int32 // out
 	var _goerr error // out
 
-	_glong = (int32)(_cret)
+	_glong = int32(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glong, _goerr
@@ -7143,8 +7143,8 @@ func (b *BookmarkFile) AppInfo(uri string, name string) (string, uint, int32, er
 
 	_exec = C.GoString(_arg3)
 	defer C.free(unsafe.Pointer(_arg3))
-	_count = (uint)(_arg4)
-	_stamp = (int32)(_arg5)
+	_count = uint(_arg4)
+	_stamp = int32(_arg5)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _exec, _count, _stamp, _goerr
@@ -7277,7 +7277,7 @@ func (b *BookmarkFile) Modified(uri string) (int32, error) {
 	var _glong int32 // out
 	var _goerr error // out
 
-	_glong = (int32)(_cret)
+	_glong = int32(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glong, _goerr
@@ -7294,7 +7294,7 @@ func (b *BookmarkFile) Size() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7346,7 +7346,7 @@ func (b *BookmarkFile) Visited(uri string) (int32, error) {
 	var _glong int32 // out
 	var _goerr error // out
 
-	_glong = (int32)(_cret)
+	_glong = int32(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glong, _goerr
@@ -7607,7 +7607,7 @@ func (b *BookmarkFile) SetAdded(uri string, added int32) {
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.time_t)(added)
+	_arg2 = C.time_t(added)
 
 	C.g_bookmark_file_set_added(_arg0, _arg1, _arg2)
 }
@@ -7652,8 +7652,8 @@ func (b *BookmarkFile) SetAppInfo(uri string, name string, exec string, count in
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(exec))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.gint)(count)
-	_arg5 = (C.time_t)(stamp)
+	_arg4 = C.gint(count)
+	_arg5 = C.time_t(stamp)
 
 	C.g_bookmark_file_set_app_info(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -7783,7 +7783,7 @@ func (b *BookmarkFile) SetModified(uri string, modified int32) {
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.time_t)(modified)
+	_arg2 = C.time_t(modified)
 
 	C.g_bookmark_file_set_modified(_arg0, _arg1, _arg2)
 }
@@ -7825,7 +7825,7 @@ func (b *BookmarkFile) SetVisited(uri string, visited int32) {
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.time_t)(visited)
+	_arg2 = C.time_t(visited)
 
 	C.g_bookmark_file_set_visited(_arg0, _arg1, _arg2)
 }
@@ -7871,15 +7871,15 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 	var _arg1 C.GChecksumType // out
 	var _cret *C.GChecksum    // in
 
-	_arg1 = (C.GChecksumType)(checksumType)
+	_arg1 = C.GChecksumType(checksumType)
 
 	_cret = C.g_checksum_new(_arg1)
 
 	var _checksum *Checksum // out
 
-	_checksum = WrapChecksum(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_checksum, func(v *Checksum) {
-		C.free(unsafe.Pointer(v.Native()))
+	_checksum = (*Checksum)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_checksum, func(v **Checksum) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _checksum
@@ -7903,9 +7903,9 @@ func (c *Checksum) Copy() *Checksum {
 
 	var _ret *Checksum // out
 
-	_ret = WrapChecksum(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Checksum) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ret = (*Checksum)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Checksum) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -8229,9 +8229,9 @@ func NewKeyFile() *KeyFile {
 
 	var _keyFile *KeyFile // out
 
-	_keyFile = WrapKeyFile(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_keyFile, func(v *KeyFile) {
-		C.free(unsafe.Pointer(v.Native()))
+	_keyFile = (*KeyFile)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_keyFile, func(v **KeyFile) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _keyFile
@@ -8327,7 +8327,7 @@ func (k *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _gdouble float64 // out
 	var _goerr error     // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gdouble, _goerr
@@ -8347,7 +8347,7 @@ func (k *KeyFile) Groups() (uint, []string) {
 	var _length uint // out
 	var _utf8s []string
 
-	_length = (uint)(_arg1)
+	_length = uint(_arg1)
 	{
 		var i int
 		var z *C.gchar
@@ -8387,7 +8387,7 @@ func (k *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _gint64 int64 // out
 	var _goerr error  // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint64, _goerr
@@ -8418,7 +8418,7 @@ func (k *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -8445,7 +8445,7 @@ func (k *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _utf8s []string
 	var _goerr error // out
 
-	_length = (uint)(_arg2)
+	_length = uint(_arg2)
 	{
 		var i int
 		var z *C.gchar
@@ -8608,7 +8608,7 @@ func (k *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _guint64 uint64 // out
 	var _goerr error    // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint64, _goerr
@@ -8678,8 +8678,8 @@ func (k *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) err
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 	_arg1 = (*C.gchar)(C.CString(data))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gsize)(length)
-	_arg3 = (C.GKeyFileFlags)(flags)
+	_arg2 = C.gsize(length)
+	_arg3 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_data(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -8704,7 +8704,7 @@ func (k *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (string, err
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 	_arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (C.GKeyFileFlags)(flags)
+	_arg3 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_data_dirs(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 
@@ -8747,7 +8747,7 @@ func (k *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFl
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-	_arg4 = (C.GKeyFileFlags)(flags)
+	_arg4 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_dirs(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
 
@@ -8778,7 +8778,7 @@ func (k *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 	_arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GKeyFileFlags)(flags)
+	_arg2 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_file(_arg0, _arg1, _arg2, &_cerr)
 
@@ -8965,7 +8965,7 @@ func (k *KeyFile) SetDouble(groupName string, key string, value float64) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gdouble)(value)
+	_arg3 = C.gdouble(value)
 
 	C.g_key_file_set_double(_arg0, _arg1, _arg2, _arg3)
 }
@@ -9003,7 +9003,7 @@ func (k *KeyFile) SetInt64(groupName string, key string, value int64) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gint64)(value)
+	_arg3 = C.gint64(value)
 
 	C.g_key_file_set_int64(_arg0, _arg1, _arg2, _arg3)
 }
@@ -9021,7 +9021,7 @@ func (k *KeyFile) SetInteger(groupName string, key string, value int) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gint)(value)
+	_arg3 = C.gint(value)
 
 	C.g_key_file_set_integer(_arg0, _arg1, _arg2, _arg3)
 }
@@ -9054,7 +9054,7 @@ func (k *KeyFile) SetListSeparator(separator byte) {
 	var _arg1 C.gchar     // out
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
-	_arg1 = (C.gchar)(separator)
+	_arg1 = C.gchar(separator)
 
 	C.g_key_file_set_list_separator(_arg0, _arg1)
 }
@@ -9176,7 +9176,7 @@ func (k *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.guint64)(value)
+	_arg3 = C.guint64(value)
 
 	C.g_key_file_set_uint64(_arg0, _arg1, _arg2, _arg3)
 }
@@ -9221,7 +9221,7 @@ func (k *KeyFile) ToData() (uint, string, error) {
 	var _utf8 string // out
 	var _goerr error // out
 
-	_length = (uint)(_arg1)
+	_length = uint(_arg1)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -9282,9 +9282,9 @@ func NewMainContext() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = WrapMainContext(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.free(unsafe.Pointer(v.Native()))
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_mainContext, func(v **MainContext) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _mainContext
@@ -9331,7 +9331,7 @@ func (c *MainContext) AddPoll(fd *PollFD, priority int) {
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd.Native()))
-	_arg2 = (C.gint)(priority)
+	_arg2 = C.gint(priority)
 
 	C.g_main_context_add_poll(_arg0, _arg1, _arg2)
 }
@@ -9351,7 +9351,7 @@ func (c *MainContext) Check(maxPriority int, fds []PollFD) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.gint)(maxPriority)
+	_arg1 = C.gint(maxPriority)
 	_arg3 = C.gint(len(fds))
 	_arg2 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
 
@@ -9475,7 +9475,7 @@ func (c *MainContext) Prepare() (int, bool) {
 	var _priority int // out
 	var _ok bool      // out
 
-	_priority = (int)(_arg1)
+	_priority = int(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -9534,9 +9534,9 @@ func (c *MainContext) Ref() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = WrapMainContext(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.free(unsafe.Pointer(v.Native()))
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_mainContext, func(v **MainContext) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _mainContext
@@ -9629,9 +9629,9 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 
 	var _mainLoop *MainLoop // out
 
-	_mainLoop = WrapMainLoop(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
-		C.free(unsafe.Pointer(v.Native()))
+	_mainLoop = (*MainLoop)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_mainLoop, func(v **MainLoop) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _mainLoop
@@ -9653,7 +9653,7 @@ func (l *MainLoop) Context() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = WrapMainContext(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
 
 	return _mainContext
 }
@@ -9701,9 +9701,9 @@ func (l *MainLoop) Ref() *MainLoop {
 
 	var _mainLoop *MainLoop // out
 
-	_mainLoop = WrapMainLoop(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
-		C.free(unsafe.Pointer(v.Native()))
+	_mainLoop = (*MainLoop)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_mainLoop, func(v **MainLoop) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _mainLoop
@@ -9764,9 +9764,9 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _mappedFile *MappedFile // out
 	var _goerr error            // out
 
-	_mappedFile = WrapMappedFile(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.free(unsafe.Pointer(v.Native()))
+	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_mappedFile, func(v **MappedFile) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -9780,7 +9780,7 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	var _cret *C.GMappedFile // in
 	var _cerr *C.GError      // in
 
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 	if writable {
 		_arg2 = C.TRUE
 	}
@@ -9790,9 +9790,9 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	var _mappedFile *MappedFile // out
 	var _goerr error            // out
 
-	_mappedFile = WrapMappedFile(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.free(unsafe.Pointer(v.Native()))
+	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_mappedFile, func(v **MappedFile) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -9847,7 +9847,7 @@ func (f *MappedFile) Length() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -9864,9 +9864,9 @@ func (f *MappedFile) Ref() *MappedFile {
 
 	var _mappedFile *MappedFile // out
 
-	_mappedFile = WrapMappedFile(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.free(unsafe.Pointer(v.Native()))
+	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_mappedFile, func(v **MappedFile) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _mappedFile
@@ -9976,8 +9976,8 @@ func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _lineNumber int // out
 	var _charNumber int // out
 
-	_lineNumber = (int)(_arg1)
-	_charNumber = (int)(_arg2)
+	_lineNumber = int(_arg1)
+	_charNumber = int(_arg2)
 
 	return _lineNumber, _charNumber
 }
@@ -10000,7 +10000,7 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(textLen)
+	_arg2 = C.gssize(textLen)
 
 	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, &_cerr)
 
@@ -10022,9 +10022,9 @@ func (c *MarkupParseContext) Ref() *MarkupParseContext {
 
 	var _markupParseContext *MarkupParseContext // out
 
-	_markupParseContext = WrapMarkupParseContext(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_markupParseContext, func(v *MarkupParseContext) {
-		C.free(unsafe.Pointer(v.Native()))
+	_markupParseContext = (*MarkupParseContext)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_markupParseContext, func(v **MarkupParseContext) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _markupParseContext
@@ -10118,7 +10118,7 @@ func (m *MatchInfo) Fetch(matchNum int) string {
 	var _cret *C.gchar      // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(matchNum)
+	_arg1 = C.gint(matchNum)
 
 	_cret = C.g_match_info_fetch(_arg0, _arg1)
 
@@ -10223,8 +10223,8 @@ func (m *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok boo
 	var _endPos int   // out
 	var _ok bool      // out
 
-	_startPos = (int)(_arg2)
-	_endPos = (int)(_arg3)
+	_startPos = int(_arg2)
+	_endPos = int(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -10252,7 +10252,7 @@ func (m *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(matchNum)
+	_arg1 = C.gint(matchNum)
 
 	_cret = C.g_match_info_fetch_pos(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -10260,8 +10260,8 @@ func (m *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
 	var _endPos int   // out
 	var _ok bool      // out
 
-	_startPos = (int)(_arg2)
-	_endPos = (int)(_arg3)
+	_startPos = int(_arg2)
+	_endPos = int(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -10297,7 +10297,7 @@ func (m *MatchInfo) MatchCount() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -10315,9 +10315,9 @@ func (m *MatchInfo) Regex() *Regex {
 
 	var _regex *Regex // out
 
-	_regex = WrapRegex(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_regex, func(v *Regex) {
-		C.free(unsafe.Pointer(v.Native()))
+	_regex = (*Regex)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_regex, func(v **Regex) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _regex
@@ -10438,9 +10438,9 @@ func (m *MatchInfo) Ref() *MatchInfo {
 
 	var _matchInfo *MatchInfo // out
 
-	_matchInfo = WrapMatchInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_matchInfo, func(v **MatchInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _matchInfo
@@ -10487,7 +10487,7 @@ func (n *Node) ChildPosition(child *Node) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -10506,7 +10506,7 @@ func (n *Node) Depth() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -10558,7 +10558,7 @@ func (r *Node) MaxHeight() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -10574,7 +10574,7 @@ func (n *Node) NChildren() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -10586,13 +10586,13 @@ func (r *Node) NNodes(flags TraverseFlags) uint {
 	var _cret C.guint          // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.GTraverseFlags)(flags)
+	_arg1 = C.GTraverseFlags(flags)
 
 	_cret = C.g_node_n_nodes(_arg0, _arg1)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -10768,7 +10768,7 @@ func (c *OptionContext) MainGroup() *OptionGroup {
 
 	var _optionGroup *OptionGroup // out
 
-	_optionGroup = WrapOptionGroup(unsafe.Pointer(_cret))
+	_optionGroup = (*OptionGroup)(unsafe.Pointer(_cret))
 
 	return _optionGroup
 }
@@ -11015,9 +11015,9 @@ func (g *OptionGroup) Ref() *OptionGroup {
 
 	var _optionGroup *OptionGroup // out
 
-	_optionGroup = WrapOptionGroup(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_optionGroup, func(v *OptionGroup) {
-		C.free(unsafe.Pointer(v.Native()))
+	_optionGroup = (*OptionGroup)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_optionGroup, func(v **OptionGroup) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _optionGroup
@@ -11139,7 +11139,7 @@ func (r *Rand) Double() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -11153,14 +11153,14 @@ func (r *Rand) DoubleRange(begin float64, end float64) float64 {
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.gdouble)(begin)
-	_arg2 = (C.gdouble)(end)
+	_arg1 = C.gdouble(begin)
+	_arg2 = C.gdouble(end)
 
 	_cret = C.g_rand_double_range(_arg0, _arg1, _arg2)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -11186,7 +11186,7 @@ func (r *Rand) Int() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -11200,14 +11200,14 @@ func (r *Rand) IntRange(begin int32, end int32) int32 {
 	var _cret C.gint32 // in
 
 	_arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.gint32)(begin)
-	_arg2 = (C.gint32)(end)
+	_arg1 = C.gint32(begin)
+	_arg2 = C.gint32(end)
 
 	_cret = C.g_rand_int_range(_arg0, _arg1, _arg2)
 
 	var _gint32 int32 // out
 
-	_gint32 = (int32)(_cret)
+	_gint32 = int32(_cret)
 
 	return _gint32
 }
@@ -11218,7 +11218,7 @@ func (r *Rand) SetSeed(seed uint32) {
 	var _arg1 C.guint32 // out
 
 	_arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.guint32)(seed)
+	_arg1 = C.guint32(seed)
 
 	C.g_rand_set_seed(_arg0, _arg1)
 }
@@ -11234,7 +11234,7 @@ func (r *Rand) SetSeedArray(seed *uint32, seedLength uint) {
 
 	_arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.guint32)(unsafe.Pointer(seed))
-	_arg2 = (C.guint)(seedLength)
+	_arg2 = C.guint(seedLength)
 
 	C.g_rand_set_seed_array(_arg0, _arg1, _arg2)
 }
@@ -11320,17 +11320,17 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 
 	_arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GRegexCompileFlags)(compileOptions)
-	_arg3 = (C.GRegexMatchFlags)(matchOptions)
+	_arg2 = C.GRegexCompileFlags(compileOptions)
+	_arg3 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_new(_arg1, _arg2, _arg3, &_cerr)
 
 	var _regex *Regex // out
 	var _goerr error  // out
 
-	_regex = WrapRegex(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_regex, func(v *Regex) {
-		C.free(unsafe.Pointer(v.Native()))
+	_regex = (*Regex)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_regex, func(v **Regex) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -11353,7 +11353,7 @@ func (r *Regex) CaptureCount() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -11424,7 +11424,7 @@ func (r *Regex) MaxBackref() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -11442,7 +11442,7 @@ func (r *Regex) MaxLookbehind() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -11478,7 +11478,7 @@ func (r *Regex) StringNumber(name string) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -11525,18 +11525,23 @@ func (r *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchInfo,
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
-	var _matchInfo *MatchInfo
-	var _cret C.gboolean // in
+	var _arg3 *C.GMatchInfo      // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GRegexMatchFlags)(matchOptions)
+	_arg2 = C.GRegexMatchFlags(matchOptions)
 
-	_cret = C.g_regex_match(_arg0, _arg1, _arg2, (**C.GMatchInfo)(unsafe.Pointer(&_matchInfo)))
+	_cret = C.g_regex_match(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _matchInfo *MatchInfo // out
+	var _ok bool              // out
 
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_matchInfo, func(v **MatchInfo) {
+		C.free(unsafe.Pointer(v))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -11561,18 +11566,23 @@ func (r *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*MatchIn
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
-	var _matchInfo *MatchInfo
-	var _cret C.gboolean // in
+	var _arg3 *C.GMatchInfo      // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GRegexMatchFlags)(matchOptions)
+	_arg2 = C.GRegexMatchFlags(matchOptions)
 
-	_cret = C.g_regex_match_all(_arg0, _arg1, _arg2, (**C.GMatchInfo)(unsafe.Pointer(&_matchInfo)))
+	_cret = C.g_regex_match_all(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _matchInfo *MatchInfo // out
+	var _ok bool              // out
 
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_matchInfo, func(v **MatchInfo) {
+		C.free(unsafe.Pointer(v))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -11620,19 +11630,24 @@ func (r *Regex) MatchAllFull(_string []byte, startPosition int, matchOptions Reg
 	var _arg2 C.gssize
 	var _arg3 C.gint             // out
 	var _arg4 C.GRegexMatchFlags // out
-	var _matchInfo *MatchInfo
-	var _cerr *C.GError // in
+	var _arg5 *C.GMatchInfo      // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 	_arg2 = C.gssize(len(_string))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&_string[0]))
-	_arg3 = (C.gint)(startPosition)
-	_arg4 = (C.GRegexMatchFlags)(matchOptions)
+	_arg3 = C.gint(startPosition)
+	_arg4 = C.GRegexMatchFlags(matchOptions)
 
-	C.g_regex_match_all_full(_arg0, _arg1, _arg2, _arg3, _arg4, (**C.GMatchInfo)(unsafe.Pointer(&_matchInfo)), &_cerr)
+	C.g_regex_match_all_full(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
 
-	var _goerr error // out
+	var _matchInfo *MatchInfo // out
+	var _goerr error          // out
 
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg5))
+	runtime.SetFinalizer(&_matchInfo, func(v **MatchInfo) {
+		C.free(unsafe.Pointer(v))
+	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _matchInfo, _goerr
@@ -11692,19 +11707,24 @@ func (r *Regex) MatchFull(_string []byte, startPosition int, matchOptions RegexM
 	var _arg2 C.gssize
 	var _arg3 C.gint             // out
 	var _arg4 C.GRegexMatchFlags // out
-	var _matchInfo *MatchInfo
-	var _cerr *C.GError // in
+	var _arg5 *C.GMatchInfo      // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 	_arg2 = C.gssize(len(_string))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&_string[0]))
-	_arg3 = (C.gint)(startPosition)
-	_arg4 = (C.GRegexMatchFlags)(matchOptions)
+	_arg3 = C.gint(startPosition)
+	_arg4 = C.GRegexMatchFlags(matchOptions)
 
-	C.g_regex_match_full(_arg0, _arg1, _arg2, _arg3, _arg4, (**C.GMatchInfo)(unsafe.Pointer(&_matchInfo)), &_cerr)
+	C.g_regex_match_full(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
 
-	var _goerr error // out
+	var _matchInfo *MatchInfo // out
+	var _goerr error          // out
 
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg5))
+	runtime.SetFinalizer(&_matchInfo, func(v **MatchInfo) {
+		C.free(unsafe.Pointer(v))
+	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _matchInfo, _goerr
@@ -11721,9 +11741,9 @@ func (r *Regex) Ref() *Regex {
 
 	var _ret *Regex // out
 
-	_ret = WrapRegex(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Regex) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ret = (*Regex)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Regex) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -11765,10 +11785,10 @@ func (r *Regex) Replace(_string []byte, startPosition int, replacement string, m
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 	_arg2 = C.gssize(len(_string))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&_string[0]))
-	_arg3 = (C.gint)(startPosition)
+	_arg3 = C.gint(startPosition)
 	_arg4 = (*C.gchar)(C.CString(replacement))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (C.GRegexMatchFlags)(matchOptions)
+	_arg5 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_replace(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -11802,10 +11822,10 @@ func (r *Regex) ReplaceLiteral(_string []byte, startPosition int, replacement st
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 	_arg2 = C.gssize(len(_string))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&_string[0]))
-	_arg3 = (C.gint)(startPosition)
+	_arg3 = C.gint(startPosition)
 	_arg4 = (*C.gchar)(C.CString(replacement))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (C.GRegexMatchFlags)(matchOptions)
+	_arg5 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_replace_literal(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -11844,7 +11864,7 @@ func (r *Regex) Split(_string string, matchOptions RegexMatchFlags) []string {
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GRegexMatchFlags)(matchOptions)
+	_arg2 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_split(_arg0, _arg1, _arg2)
 
@@ -11901,9 +11921,9 @@ func (r *Regex) SplitFull(_string []byte, startPosition int, matchOptions RegexM
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 	_arg2 = C.gssize(len(_string))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&_string[0]))
-	_arg3 = (C.gint)(startPosition)
-	_arg4 = (C.GRegexMatchFlags)(matchOptions)
-	_arg5 = (C.gint)(maxTokens)
+	_arg3 = C.gint(startPosition)
+	_arg4 = C.GRegexMatchFlags(matchOptions)
+	_arg5 = C.gint(maxTokens)
 
 	_cret = C.g_regex_split_full(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -11991,7 +12011,7 @@ func (s *Sequence) BeginIter() *SequenceIter {
 
 	var _sequenceIter *SequenceIter // out
 
-	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+	_sequenceIter = (*SequenceIter)(unsafe.Pointer(_cret))
 
 	return _sequenceIter
 }
@@ -12007,7 +12027,7 @@ func (s *Sequence) EndIter() *SequenceIter {
 
 	var _sequenceIter *SequenceIter // out
 
-	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+	_sequenceIter = (*SequenceIter)(unsafe.Pointer(_cret))
 
 	return _sequenceIter
 }
@@ -12020,13 +12040,13 @@ func (s *Sequence) IterAtPos(pos int) *SequenceIter {
 	var _cret *C.GSequenceIter // in
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(pos)
+	_arg1 = C.gint(pos)
 
 	_cret = C.g_sequence_get_iter_at_pos(_arg0, _arg1)
 
 	var _sequenceIter *SequenceIter // out
 
-	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+	_sequenceIter = (*SequenceIter)(unsafe.Pointer(_cret))
 
 	return _sequenceIter
 }
@@ -12044,7 +12064,7 @@ func (s *Sequence) Length() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -12102,7 +12122,7 @@ func (a *SequenceIter) Compare(b *SequenceIter) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -12118,7 +12138,7 @@ func (i *SequenceIter) Position() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -12134,7 +12154,7 @@ func (i *SequenceIter) Sequence() *Sequence {
 
 	var _sequence *Sequence // out
 
-	_sequence = WrapSequence(unsafe.Pointer(_cret))
+	_sequence = (*Sequence)(unsafe.Pointer(_cret))
 
 	return _sequence
 }
@@ -12185,13 +12205,13 @@ func (i *SequenceIter) Move(delta int) *SequenceIter {
 	var _cret *C.GSequenceIter // in
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.gint)(delta)
+	_arg1 = C.gint(delta)
 
 	_cret = C.g_sequence_iter_move(_arg0, _arg1)
 
 	var _sequenceIter *SequenceIter // out
 
-	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+	_sequenceIter = (*SequenceIter)(unsafe.Pointer(_cret))
 
 	return _sequenceIter
 }
@@ -12208,7 +12228,7 @@ func (i *SequenceIter) Next() *SequenceIter {
 
 	var _sequenceIter *SequenceIter // out
 
-	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+	_sequenceIter = (*SequenceIter)(unsafe.Pointer(_cret))
 
 	return _sequenceIter
 }
@@ -12225,7 +12245,7 @@ func (i *SequenceIter) Prev() *SequenceIter {
 
 	var _sequenceIter *SequenceIter // out
 
-	_sequenceIter = WrapSequenceIter(unsafe.Pointer(_cret))
+	_sequenceIter = (*SequenceIter)(unsafe.Pointer(_cret))
 
 	return _sequenceIter
 }
@@ -12257,7 +12277,7 @@ func (t *TimeVal) Add(microseconds int32) {
 	var _arg1 C.glong     // out
 
 	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.glong)(microseconds)
+	_arg1 = C.glong(microseconds)
 
 	C.g_time_val_add(_arg0, _arg1)
 }
@@ -12335,9 +12355,9 @@ func NewTimeZone(identifier string) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.free(unsafe.Pointer(v.Native()))
+	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_timeZone, func(v **TimeZone) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _timeZone
@@ -12355,9 +12375,9 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.free(unsafe.Pointer(v.Native()))
+	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_timeZone, func(v **TimeZone) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _timeZone
@@ -12371,9 +12391,9 @@ func NewTimeZoneLocal() *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.free(unsafe.Pointer(v.Native()))
+	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_timeZone, func(v **TimeZone) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _timeZone
@@ -12384,15 +12404,15 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 	var _arg1 C.gint32     // out
 	var _cret *C.GTimeZone // in
 
-	_arg1 = (C.gint32)(seconds)
+	_arg1 = C.gint32(seconds)
 
 	_cret = C.g_time_zone_new_offset(_arg1)
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.free(unsafe.Pointer(v.Native()))
+	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_timeZone, func(v **TimeZone) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _timeZone
@@ -12406,9 +12426,9 @@ func NewTimeZoneUtc() *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.free(unsafe.Pointer(v.Native()))
+	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_timeZone, func(v **TimeZone) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _timeZone
@@ -12440,14 +12460,14 @@ func (t *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GTimeType)(typ)
+	_arg1 = C.GTimeType(typ)
 	_arg2 = (*C.gint64)(unsafe.Pointer(time_))
 
 	_cret = C.g_time_zone_adjust_time(_arg0, _arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -12475,14 +12495,14 @@ func (t *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GTimeType)(typ)
-	_arg2 = (C.gint64)(time_)
+	_arg1 = C.GTimeType(typ)
+	_arg2 = C.gint64(time_)
 
 	_cret = C.g_time_zone_find_interval(_arg0, _arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -12498,7 +12518,7 @@ func (t *TimeZone) Abbreviation(interval int) string {
 	var _cret *C.gchar     // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gint)(interval)
+	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_abbreviation(_arg0, _arg1)
 
@@ -12544,13 +12564,13 @@ func (t *TimeZone) Offset(interval int) int32 {
 	var _cret C.gint32     // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gint)(interval)
+	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_offset(_arg0, _arg1)
 
 	var _gint32 int32 // out
 
-	_gint32 = (int32)(_cret)
+	_gint32 = int32(_cret)
 
 	return _gint32
 }
@@ -12563,7 +12583,7 @@ func (t *TimeZone) IsDst(interval int) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gint)(interval)
+	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_is_dst(_arg0, _arg1)
 
@@ -12587,9 +12607,9 @@ func (t *TimeZone) Ref() *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.free(unsafe.Pointer(v.Native()))
+	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_timeZone, func(v **TimeZone) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _timeZone
@@ -12654,7 +12674,7 @@ func (t *Timer) Elapsed(microseconds *uint32) float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -12759,7 +12779,7 @@ func (t *Tree) Height() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -12775,7 +12795,7 @@ func (t *Tree) Nnodes() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -12792,7 +12812,7 @@ func (t *Tree) NodeFirst() *TreeNode {
 
 	var _treeNode *TreeNode // out
 
-	_treeNode = WrapTreeNode(unsafe.Pointer(_cret))
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
 
 	return _treeNode
 }
@@ -12809,7 +12829,7 @@ func (t *Tree) NodeLast() *TreeNode {
 
 	var _treeNode *TreeNode // out
 
-	_treeNode = WrapTreeNode(unsafe.Pointer(_cret))
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
 
 	return _treeNode
 }
@@ -12827,9 +12847,9 @@ func (t *Tree) Ref() *Tree {
 
 	var _ret *Tree // out
 
-	_ret = WrapTree(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Tree) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ret = (*Tree)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Tree) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -12874,7 +12894,7 @@ func (n *TreeNode) Next() *TreeNode {
 
 	var _treeNode *TreeNode // out
 
-	_treeNode = WrapTreeNode(unsafe.Pointer(_cret))
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
 
 	return _treeNode
 }
@@ -12891,7 +12911,7 @@ func (n *TreeNode) Previous() *TreeNode {
 
 	var _treeNode *TreeNode // out
 
-	_treeNode = WrapTreeNode(unsafe.Pointer(_cret))
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
 
 	return _treeNode
 }
@@ -13144,7 +13164,7 @@ func (u *URI) Port() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -13236,16 +13256,16 @@ func (b *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	_arg0 = (*C.GUri)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uriRef))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GUriFlags)(flags)
+	_arg2 = C.GUriFlags(flags)
 
 	_cret = C.g_uri_parse_relative(_arg0, _arg1, _arg2, &_cerr)
 
 	var _uri *URI    // out
 	var _goerr error // out
 
-	_uri = WrapURI(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(unsafe.Pointer(v.Native()))
+	_uri = (*URI)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_uri, func(v **URI) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -13287,7 +13307,7 @@ func (u *URI) ToStringPartial(flags URIHideFlags) string {
 	var _cret *C.char         // in
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
-	_arg1 = (C.GUriHideFlags)(flags)
+	_arg1 = C.GUriHideFlags(flags)
 
 	_cret = C.g_uri_to_string_partial(_arg0, _arg1)
 
@@ -13363,10 +13383,10 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(params))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(length)
+	_arg2 = C.gssize(length)
 	_arg3 = (*C.gchar)(C.CString(separators))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.GUriParamsFlags)(flags)
+	_arg4 = C.GUriParamsFlags(flags)
 
 	C.g_uri_params_iter_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -13655,7 +13675,7 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13673,7 +13693,7 @@ func NewVariantBoolean(value bool) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13683,13 +13703,13 @@ func NewVariantByte(value byte) *Variant {
 	var _arg1 C.guint8    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.guint8)(value)
+	_arg1 = C.guint8(value)
 
 	_cret = C.g_variant_new_byte(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13705,7 +13725,7 @@ func NewVariantBytestring(_string []byte) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13731,7 +13751,7 @@ func NewVariantBytestringArray(strv []string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13749,7 +13769,7 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13759,13 +13779,13 @@ func NewVariantDouble(value float64) *Variant {
 	var _arg1 C.gdouble   // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.gdouble)(value)
+	_arg1 = C.gdouble(value)
 
 	_cret = C.g_variant_new_double(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13775,13 +13795,13 @@ func NewVariantHandle(value int32) *Variant {
 	var _arg1 C.gint32    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.gint32)(value)
+	_arg1 = C.gint32(value)
 
 	_cret = C.g_variant_new_handle(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13791,13 +13811,13 @@ func NewVariantInt16(value int16) *Variant {
 	var _arg1 C.gint16    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.gint16)(value)
+	_arg1 = C.gint16(value)
 
 	_cret = C.g_variant_new_int16(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13807,13 +13827,13 @@ func NewVariantInt32(value int32) *Variant {
 	var _arg1 C.gint32    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.gint32)(value)
+	_arg1 = C.gint32(value)
 
 	_cret = C.g_variant_new_int32(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13823,13 +13843,13 @@ func NewVariantInt64(value int64) *Variant {
 	var _arg1 C.gint64    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.gint64)(value)
+	_arg1 = C.gint64(value)
 
 	_cret = C.g_variant_new_int64(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13847,7 +13867,7 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13864,7 +13884,7 @@ func NewVariantObjectPath(objectPath string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13890,7 +13910,7 @@ func NewVariantObjv(strv []string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13907,7 +13927,7 @@ func NewVariantSignature(signature string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13924,7 +13944,7 @@ func NewVariantString(_string string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13950,7 +13970,7 @@ func NewVariantStrv(strv []string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13968,7 +13988,7 @@ func NewVariantTuple(children []*Variant) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13978,13 +13998,13 @@ func NewVariantUint16(value uint16) *Variant {
 	var _arg1 C.guint16   // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.guint16)(value)
+	_arg1 = C.guint16(value)
 
 	_cret = C.g_variant_new_uint16(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -13994,13 +14014,13 @@ func NewVariantUint32(value uint32) *Variant {
 	var _arg1 C.guint32   // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.guint32)(value)
+	_arg1 = C.guint32(value)
 
 	_cret = C.g_variant_new_uint32(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -14010,13 +14030,13 @@ func NewVariantUint64(value uint64) *Variant {
 	var _arg1 C.guint64   // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (C.guint64)(value)
+	_arg1 = C.guint64(value)
 
 	_cret = C.g_variant_new_uint64(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -14032,7 +14052,7 @@ func NewVariantVariant(value *Variant) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -14062,9 +14082,9 @@ func (v *Variant) Byteswap() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -14154,7 +14174,7 @@ func (o *Variant) Compare(two *Variant) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -14177,7 +14197,7 @@ func (v *Variant) DupString() (uint, string) {
 	var _length uint // out
 	var _utf8 string // out
 
-	_length = (uint)(_arg1)
+	_length = uint(_arg1)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 
@@ -14242,7 +14262,7 @@ func (v *Variant) Byte() byte {
 
 	var _guint8 byte // out
 
-	_guint8 = (byte)(_cret)
+	_guint8 = byte(_cret)
 
 	return _guint8
 }
@@ -14285,7 +14305,7 @@ func (v *Variant) Bytestring() []byte {
 		src := unsafe.Slice(_cret, i)
 		_guint8s = make([]byte, i)
 		for i := range src {
-			_guint8s[i] = (byte)(src[i])
+			_guint8s[i] = byte(src[i])
 		}
 	}
 
@@ -14320,15 +14340,15 @@ func (v *Variant) ChildValue(index_ uint) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
-	_arg1 = (C.gsize)(index_)
+	_arg1 = C.gsize(index_)
 
 	_cret = C.g_variant_get_child_value(_arg0, _arg1)
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -14348,7 +14368,7 @@ func (v *Variant) Double() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -14371,7 +14391,7 @@ func (v *Variant) Handle() int32 {
 
 	var _gint32 int32 // out
 
-	_gint32 = (int32)(_cret)
+	_gint32 = int32(_cret)
 
 	return _gint32
 }
@@ -14390,7 +14410,7 @@ func (v *Variant) Int16() int16 {
 
 	var _gint16 int16 // out
 
-	_gint16 = (int16)(_cret)
+	_gint16 = int16(_cret)
 
 	return _gint16
 }
@@ -14409,7 +14429,7 @@ func (v *Variant) Int32() int32 {
 
 	var _gint32 int32 // out
 
-	_gint32 = (int32)(_cret)
+	_gint32 = int32(_cret)
 
 	return _gint32
 }
@@ -14428,7 +14448,7 @@ func (v *Variant) Int64() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -14445,9 +14465,9 @@ func (v *Variant) Maybe() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -14486,9 +14506,9 @@ func (v *Variant) NormalForm() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -14514,7 +14534,7 @@ func (v *Variant) Size() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -14548,7 +14568,7 @@ func (v *Variant) String() (uint, string) {
 	var _length uint // out
 	var _utf8 string // out
 
-	_length = (uint)(_arg1)
+	_length = uint(_arg1)
 	_utf8 = C.GoString(_cret)
 
 	return _length, _utf8
@@ -14567,7 +14587,7 @@ func (v *Variant) Type() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -14604,7 +14624,7 @@ func (v *Variant) Uint16() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -14623,7 +14643,7 @@ func (v *Variant) Uint32() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -14642,7 +14662,7 @@ func (v *Variant) Uint64() uint64 {
 
 	var _guint64 uint64 // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -14659,9 +14679,9 @@ func (v *Variant) Variant() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -14686,7 +14706,7 @@ func (v *Variant) Hash() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -14820,9 +14840,9 @@ func (d *Variant) LookupValue(key string, expectedType *VariantType) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -14848,7 +14868,7 @@ func (v *Variant) NChildren() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -14889,9 +14909,9 @@ func (v *Variant) Ref() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -14927,9 +14947,9 @@ func (v *Variant) RefSink() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -14974,9 +14994,9 @@ func (v *Variant) TakeRef() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -15024,9 +15044,9 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 
 	var _variantBuilder *VariantBuilder // out
 
-	_variantBuilder = WrapVariantBuilder(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantBuilder, func(v *VariantBuilder) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantBuilder = (*VariantBuilder)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantBuilder, func(v **VariantBuilder) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantBuilder
@@ -15095,7 +15115,7 @@ func (b *VariantBuilder) End() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -15159,9 +15179,9 @@ func (b *VariantBuilder) Ref() *VariantBuilder {
 
 	var _variantBuilder *VariantBuilder // out
 
-	_variantBuilder = WrapVariantBuilder(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantBuilder, func(v *VariantBuilder) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantBuilder = (*VariantBuilder)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantBuilder, func(v **VariantBuilder) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantBuilder
@@ -15263,9 +15283,9 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 
 	var _variantDict *VariantDict // out
 
-	_variantDict = WrapVariantDict(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantDict, func(v *VariantDict) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantDict = (*VariantDict)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantDict, func(v **VariantDict) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantDict
@@ -15334,7 +15354,7 @@ func (d *VariantDict) End() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -15380,9 +15400,9 @@ func (d *VariantDict) LookupValue(key string, expectedType *VariantType) *Varian
 
 	var _variant *Variant // out
 
-	_variant = WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -15401,9 +15421,9 @@ func (d *VariantDict) Ref() *VariantDict {
 
 	var _variantDict *VariantDict // out
 
-	_variantDict = WrapVariantDict(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantDict, func(v *VariantDict) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantDict = (*VariantDict)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantDict, func(v **VariantDict) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantDict
@@ -15602,9 +15622,9 @@ func NewVariantType(typeString string) *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -15621,9 +15641,9 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -15642,9 +15662,9 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -15661,9 +15681,9 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -15682,9 +15702,9 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -15707,9 +15727,9 @@ func (t *VariantType) Copy() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -15747,7 +15767,7 @@ func (t *VariantType) Element() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -15802,7 +15822,7 @@ func (t *VariantType) First() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -15834,7 +15854,7 @@ func (t *VariantType) StringLength() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -15853,7 +15873,7 @@ func (t *VariantType) Hash() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -16078,7 +16098,7 @@ func (t *VariantType) Key() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -16100,7 +16120,7 @@ func (t *VariantType) NItems() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -16125,7 +16145,7 @@ func (t *VariantType) Next() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -16143,7 +16163,7 @@ func (t *VariantType) Value() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }

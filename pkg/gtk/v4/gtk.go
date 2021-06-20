@@ -3385,8 +3385,8 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 	var _arg2 C.GdkModifierType // out
 	var _cret *C.char           // in
 
-	_arg1 = (C.guint)(acceleratorKey)
-	_arg2 = (C.GdkModifierType)(acceleratorMods)
+	_arg1 = C.guint(acceleratorKey)
+	_arg2 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_get_label(_arg1, _arg2)
 
@@ -3416,9 +3416,9 @@ func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, ke
 	var _cret *C.char           // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (C.guint)(acceleratorKey)
-	_arg3 = (C.guint)(keycode)
-	_arg4 = (C.GdkModifierType)(acceleratorMods)
+	_arg2 = C.guint(acceleratorKey)
+	_arg3 = C.guint(keycode)
+	_arg4 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_get_label_with_keycode(_arg1, _arg2, _arg3, _arg4)
 
@@ -3443,8 +3443,8 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	var _arg2 C.GdkModifierType // out
 	var _cret *C.char           // in
 
-	_arg1 = (C.guint)(acceleratorKey)
-	_arg2 = (C.GdkModifierType)(acceleratorMods)
+	_arg1 = C.guint(acceleratorKey)
+	_arg2 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_name(_arg1, _arg2)
 
@@ -3470,9 +3470,9 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 	var _cret *C.char           // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (C.guint)(acceleratorKey)
-	_arg3 = (C.guint)(keycode)
-	_arg4 = (C.GdkModifierType)(acceleratorMods)
+	_arg2 = C.guint(acceleratorKey)
+	_arg3 = C.guint(keycode)
+	_arg4 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_name_with_keycode(_arg1, _arg2, _arg3, _arg4)
 
@@ -3511,7 +3511,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	var _acceleratorMods gdk.ModifierType // out
 	var _ok bool                          // out
 
-	_acceleratorKey = (uint)(_arg2)
+	_acceleratorKey = uint(_arg2)
 	_acceleratorMods = gdk.ModifierType(_arg3)
 	if _cret != 0 {
 		_ok = true
@@ -3553,7 +3553,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint,
 	var _acceleratorMods gdk.ModifierType // out
 	var _ok bool                          // out
 
-	_acceleratorKey = (uint)(_arg3)
+	_acceleratorKey = uint(_arg3)
 	{
 		var i int
 		var z C.guint
@@ -3564,7 +3564,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint,
 		src := unsafe.Slice(_arg4, i)
 		_acceleratorCodes = make([]uint, i)
 		for i := range src {
-			_acceleratorCodes[i] = (uint)(src[i])
+			_acceleratorCodes[i] = uint(src[i])
 		}
 	}
 	_acceleratorMods = gdk.ModifierType(_arg5)
@@ -3586,8 +3586,8 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg2 C.GdkModifierType // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (C.guint)(keyval)
-	_arg2 = (C.GdkModifierType)(modifiers)
+	_arg1 = C.guint(keyval)
+	_arg2 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_accelerator_valid(_arg1, _arg2)
 
@@ -3626,9 +3626,9 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	var _arg3 C.guint // out
 	var _cret *C.char // in
 
-	_arg1 = (C.guint)(requiredMajor)
-	_arg2 = (C.guint)(requiredMinor)
-	_arg3 = (C.guint)(requiredMicro)
+	_arg1 = C.guint(requiredMajor)
+	_arg2 = C.guint(requiredMinor)
+	_arg3 = C.guint(requiredMicro)
 
 	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 
@@ -3663,7 +3663,7 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 	var _arg2 C.guint
 	var _cret C.int // in
 
-	_arg1 = (C.int)(extraSpace)
+	_arg1 = C.int(extraSpace)
 	_arg2 = C.guint(len(sizes))
 	_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(&sizes[0]))
 
@@ -3671,7 +3671,7 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3686,7 +3686,7 @@ func GetBinaryAge() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -3721,7 +3721,7 @@ func GetDefaultLanguage() *pango.Language {
 
 	var _language *pango.Language // out
 
-	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
+	_language = (*pango.Language)(unsafe.Pointer(_cret))
 
 	return _language
 }
@@ -3736,7 +3736,7 @@ func GetInterfaceAge() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -3786,7 +3786,7 @@ func GetMajorVersion() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -3806,7 +3806,7 @@ func GetMicroVersion() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -3826,7 +3826,7 @@ func GetMinorVersion() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -3843,9 +3843,9 @@ func HSVToRGB(h float32, s float32, v float32) (r float32, g float32, b float32)
 	var _arg5 C.float // in
 	var _arg6 C.float // in
 
-	_arg1 = (C.float)(h)
-	_arg2 = (C.float)(s)
-	_arg3 = (C.float)(v)
+	_arg1 = C.float(h)
+	_arg2 = C.float(s)
+	_arg3 = C.float(v)
 
 	C.gtk_hsv_to_rgb(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 
@@ -3853,9 +3853,9 @@ func HSVToRGB(h float32, s float32, v float32) (r float32, g float32, b float32)
 	var _g float32 // out
 	var _b float32 // out
 
-	_r = (float32)(_arg4)
-	_g = (float32)(_arg5)
-	_b = (float32)(_arg6)
+	_r = float32(_arg4)
+	_g = float32(_arg5)
+	_b = float32(_arg6)
 
 	return _r, _g, _b
 }
@@ -3954,10 +3954,10 @@ func RenderActivity(context StyleContext, cr *cairo.Context, x float64, y float6
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
-	_arg5 = (C.double)(width)
-	_arg6 = (C.double)(height)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
 	C.gtk_render_activity(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -3977,10 +3977,10 @@ func RenderArrow(context StyleContext, cr *cairo.Context, angle float64, x float
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(angle)
-	_arg4 = (C.double)(x)
-	_arg5 = (C.double)(y)
-	_arg6 = (C.double)(size)
+	_arg3 = C.double(angle)
+	_arg4 = C.double(x)
+	_arg5 = C.double(y)
+	_arg6 = C.double(size)
 
 	C.gtk_render_arrow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4001,10 +4001,10 @@ func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y floa
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
-	_arg5 = (C.double)(width)
-	_arg6 = (C.double)(height)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
 	C.gtk_render_background(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4028,10 +4028,10 @@ func RenderCheck(context StyleContext, cr *cairo.Context, x float64, y float64, 
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
-	_arg5 = (C.double)(width)
-	_arg6 = (C.double)(height)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
 	C.gtk_render_check(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4053,10 +4053,10 @@ func RenderExpander(context StyleContext, cr *cairo.Context, x float64, y float6
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
-	_arg5 = (C.double)(width)
-	_arg6 = (C.double)(height)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
 	C.gtk_render_expander(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4077,10 +4077,10 @@ func RenderFocus(context StyleContext, cr *cairo.Context, x float64, y float64, 
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
-	_arg5 = (C.double)(width)
-	_arg6 = (C.double)(height)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
 	C.gtk_render_focus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4102,10 +4102,10 @@ func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, 
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
-	_arg5 = (C.double)(width)
-	_arg6 = (C.double)(height)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
 	C.gtk_render_frame(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4126,10 +4126,10 @@ func RenderHandle(context StyleContext, cr *cairo.Context, x float64, y float64,
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
-	_arg5 = (C.double)(width)
-	_arg6 = (C.double)(height)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
 	C.gtk_render_handle(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4150,8 +4150,8 @@ func RenderIcon(context StyleContext, cr *cairo.Context, texture gdk.Texture, x 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
-	_arg4 = (C.double)(x)
-	_arg5 = (C.double)(y)
+	_arg4 = C.double(x)
+	_arg5 = C.double(y)
 
 	C.gtk_render_icon(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -4166,8 +4166,8 @@ func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64,
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
 	_arg5 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_render_layout(_arg1, _arg2, _arg3, _arg4, _arg5)
@@ -4184,10 +4184,10 @@ func RenderLine(context StyleContext, cr *cairo.Context, x0 float64, y0 float64,
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x0)
-	_arg4 = (C.double)(y0)
-	_arg5 = (C.double)(x1)
-	_arg6 = (C.double)(y1)
+	_arg3 = C.double(x0)
+	_arg4 = C.double(y0)
+	_arg5 = C.double(x1)
+	_arg6 = C.double(y1)
 
 	C.gtk_render_line(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4209,10 +4209,10 @@ func RenderOption(context StyleContext, cr *cairo.Context, x float64, y float64,
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (C.double)(x)
-	_arg4 = (C.double)(y)
-	_arg5 = (C.double)(width)
-	_arg6 = (C.double)(height)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
 	C.gtk_render_option(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -4229,9 +4229,9 @@ func RGBToHSV(r float32, g float32, b float32) (h float32, s float32, v float32)
 	var _arg5 C.float // in
 	var _arg6 C.float // in
 
-	_arg1 = (C.float)(r)
-	_arg2 = (C.float)(g)
-	_arg3 = (C.float)(b)
+	_arg1 = C.float(r)
+	_arg2 = C.float(g)
+	_arg3 = C.float(b)
 
 	C.gtk_rgb_to_hsv(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 
@@ -4239,9 +4239,9 @@ func RGBToHSV(r float32, g float32, b float32) (h float32, s float32, v float32)
 	var _s float32 // out
 	var _v float32 // out
 
-	_h = (float32)(_arg4)
-	_s = (float32)(_arg5)
-	_v = (float32)(_arg6)
+	_h = float32(_arg4)
+	_s = float32(_arg5)
+	_v = float32(_arg6)
 
 	return _h, _s, _v
 }
@@ -4250,7 +4250,7 @@ func RGBToHSV(r float32, g float32, b float32) (h float32, s float32, v float32)
 func SetDebugFlags(flags DebugFlags) {
 	var _arg1 C.GtkDebugFlags // out
 
-	_arg1 = (C.GtkDebugFlags)(flags)
+	_arg1 = C.GtkDebugFlags(flags)
 
 	C.gtk_set_debug_flags(_arg1)
 }
@@ -4265,7 +4265,7 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.guint32)(timestamp)
+	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri(_arg1, _arg2, _arg3)
 }
@@ -4303,14 +4303,14 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(line)
+	_arg3 = C.int(line)
 	_arg4 = (*C.char)(C.CString(fn))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(C.CString(expr))
 	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg7 = (C.GtkAccessibleRole)(expectedRole)
-	_arg8 = (C.GtkAccessibleRole)(actualRole)
+	_arg7 = C.GtkAccessibleRole(expectedRole)
+	_arg8 = C.GtkAccessibleRole(actualRole)
 
 	C.gtk_test_accessible_assertion_message_role(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
@@ -4322,7 +4322,7 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 	var _cret C.gboolean              // in
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg2 = (C.GtkAccessibleProperty)(property)
+	_arg2 = C.GtkAccessibleProperty(property)
 
 	_cret = C.gtk_test_accessible_has_property(_arg1, _arg2)
 
@@ -4342,7 +4342,7 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 	var _cret C.gboolean              // in
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg2 = (C.GtkAccessibleRelation)(relation)
+	_arg2 = C.GtkAccessibleRelation(relation)
 
 	_cret = C.gtk_test_accessible_has_relation(_arg1, _arg2)
 
@@ -4363,7 +4363,7 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 	var _cret C.gboolean          // in
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg2 = (C.GtkAccessibleRole)(role)
+	_arg2 = C.GtkAccessibleRole(role)
 
 	_cret = C.gtk_test_accessible_has_role(_arg1, _arg2)
 
@@ -4383,7 +4383,7 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 	var _cret C.gboolean           // in
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg2 = (C.GtkAccessibleState)(state)
+	_arg2 = C.GtkAccessibleState(state)
 
 	_cret = C.gtk_test_accessible_has_state(_arg1, _arg2)
 
@@ -4443,22 +4443,25 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value *externglib.Value) (TreeModel, *TreePath, bool) {
+func TreeGetRowDragData(value externglib.Value) (TreeModel, *TreePath, bool) {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GtkTreeModel // in
-	var _path *TreePath
-	var _cret C.gboolean // in
+	var _arg3 *C.GtkTreePath  // in
+	var _cret C.gboolean      // in
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
-	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)))
+	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
 
 	var _treeModel TreeModel // out
-
-	var _ok bool // out
+	var _path *TreePath      // out
+	var _ok bool             // out
 
 	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeModel)
-
+	_path = (*TreePath)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -4468,7 +4471,7 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModel, *TreePath, bool) {
 
 // ValueDupExpression retrieves the `GtkExpression` stored inside the given
 // `value`, and acquires a reference to it.
-func ValueDupExpression(value *externglib.Value) Expression {
+func ValueDupExpression(value externglib.Value) Expression {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
 
@@ -4485,7 +4488,7 @@ func ValueDupExpression(value *externglib.Value) Expression {
 
 // ValueGetExpression retrieves the `GtkExpression` stored inside the given
 // `value`.
-func ValueGetExpression(value *externglib.Value) Expression {
+func ValueGetExpression(value externglib.Value) Expression {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
 
@@ -4503,7 +4506,7 @@ func ValueGetExpression(value *externglib.Value) Expression {
 // ValueSetExpression stores the given `GtkExpression` inside `value`.
 //
 // The `GValue` will acquire a reference to the `expression`.
-func ValueSetExpression(value *externglib.Value, expression Expression) {
+func ValueSetExpression(value externglib.Value, expression Expression) {
 	var _arg1 *C.GValue        // out
 	var _arg2 *C.GtkExpression // out
 
@@ -4516,7 +4519,7 @@ func ValueSetExpression(value *externglib.Value, expression Expression) {
 // ValueTakeExpression stores the given `GtkExpression` inside `value`.
 //
 // This function transfers the ownership of the `expression` to the `GValue`.
-func ValueTakeExpression(value *externglib.Value, expression Expression) {
+func ValueTakeExpression(value externglib.Value, expression Expression) {
 	var _arg1 *C.GValue        // out
 	var _arg2 *C.GtkExpression // out
 
@@ -4544,6 +4547,7 @@ func ValueTakeExpression(value *externglib.Value, expression Expression) {
 // `GtkWidget` visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will
 // also change to reflect the [property@Gtk.Widget:visible] property.
 type Accessible interface {
+	gextras.Objector
 
 	// AccessibleRole retrieves the `GtkAccessibleRole` for the given
 	// `GtkAccessible`.
@@ -4581,6 +4585,7 @@ type Accessible interface {
 
 // accessible implements the Accessible interface.
 type accessible struct {
+	gextras.Objector
 }
 
 var _ Accessible = (*accessible)(nil)
@@ -4619,7 +4624,7 @@ func (s accessible) ResetProperty(property AccessibleProperty) {
 	var _arg1 C.GtkAccessibleProperty // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkAccessibleProperty)(property)
+	_arg1 = C.GtkAccessibleProperty(property)
 
 	C.gtk_accessible_reset_property(_arg0, _arg1)
 }
@@ -4629,7 +4634,7 @@ func (s accessible) ResetRelation(relation AccessibleRelation) {
 	var _arg1 C.GtkAccessibleRelation // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkAccessibleRelation)(relation)
+	_arg1 = C.GtkAccessibleRelation(relation)
 
 	C.gtk_accessible_reset_relation(_arg0, _arg1)
 }
@@ -4639,7 +4644,7 @@ func (s accessible) ResetState(state AccessibleState) {
 	var _arg1 C.GtkAccessibleState // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkAccessibleState)(state)
+	_arg1 = C.GtkAccessibleState(state)
 
 	C.gtk_accessible_reset_state(_arg0, _arg1)
 }
@@ -4658,7 +4663,7 @@ func (s accessible) UpdatePropertyValue(properties []AccessibleProperty, values 
 	{
 		out := unsafe.Slice(_arg2, len(properties))
 		for i := range properties {
-			out[i] = (C.GtkAccessibleProperty)(properties[i])
+			out[i] = C.GtkAccessibleProperty(properties[i])
 		}
 	}
 	_arg1 = C.int(len(values))
@@ -4667,7 +4672,17 @@ func (s accessible) UpdatePropertyValue(properties []AccessibleProperty, values 
 	{
 		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			out[i] = (C.GValue)(unsafe.Pointer(&values[i].GValue))
+			{
+				var refTmpIn *externglib.Value
+				var refTmpOut *C.GValue
+
+				in0 := &values[i]
+				refTmpIn = in0
+
+				refTmpOut = (*C.GValue)(unsafe.Pointer(&refTmpIn.GValue))
+
+				out[i] = *refTmpOut
+			}
 		}
 	}
 
@@ -4688,7 +4703,7 @@ func (s accessible) UpdateRelationValue(relations []AccessibleRelation, values [
 	{
 		out := unsafe.Slice(_arg2, len(relations))
 		for i := range relations {
-			out[i] = (C.GtkAccessibleRelation)(relations[i])
+			out[i] = C.GtkAccessibleRelation(relations[i])
 		}
 	}
 	_arg1 = C.int(len(values))
@@ -4697,7 +4712,17 @@ func (s accessible) UpdateRelationValue(relations []AccessibleRelation, values [
 	{
 		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			out[i] = (C.GValue)(unsafe.Pointer(&values[i].GValue))
+			{
+				var refTmpIn *externglib.Value
+				var refTmpOut *C.GValue
+
+				in0 := &values[i]
+				refTmpIn = in0
+
+				refTmpOut = (*C.GValue)(unsafe.Pointer(&refTmpIn.GValue))
+
+				out[i] = *refTmpOut
+			}
 		}
 	}
 
@@ -4718,7 +4743,7 @@ func (s accessible) UpdateStateValue(states []AccessibleState, values []externgl
 	{
 		out := unsafe.Slice(_arg2, len(states))
 		for i := range states {
-			out[i] = (C.GtkAccessibleState)(states[i])
+			out[i] = C.GtkAccessibleState(states[i])
 		}
 	}
 	_arg1 = C.int(len(values))
@@ -4727,7 +4752,17 @@ func (s accessible) UpdateStateValue(states []AccessibleState, values []externgl
 	{
 		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			out[i] = (C.GValue)(unsafe.Pointer(&values[i].GValue))
+			{
+				var refTmpIn *externglib.Value
+				var refTmpOut *C.GValue
+
+				in0 := &values[i]
+				refTmpIn = in0
+
+				refTmpOut = (*C.GValue)(unsafe.Pointer(&refTmpIn.GValue))
+
+				out[i] = *refTmpOut
+			}
 		}
 	}
 
@@ -4793,6 +4828,7 @@ type ActionableOverrider interface {
 // `GtkApplication`, but other action groups that are added with
 // [method@Gtk.Widget.insert_action_group] will be consulted as well.
 type Actionable interface {
+	Widget
 
 	// ActionName gets the action name for @actionable.
 	ActionName() string
@@ -4841,6 +4877,7 @@ type Actionable interface {
 
 // actionable implements the Actionable interface.
 type actionable struct {
+	Widget
 }
 
 var _ Actionable = (*actionable)(nil)
@@ -4884,7 +4921,7 @@ func (a actionable) ActionTargetValue() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -4940,6 +4977,7 @@ func (a actionable) SetDetailedActionName(detailedActionName string) {
 // To obtain the application that has been selected in a `GtkAppChooser`, use
 // [method@Gtk.AppChooser.get_app_info].
 type AppChooser interface {
+	Widget
 
 	// AppInfo returns the currently selected application.
 	AppInfo() gio.AppInfo
@@ -4952,6 +4990,7 @@ type AppChooser interface {
 
 // appChooser implements the AppChooser interface.
 type appChooser struct {
+	Widget
 }
 
 var _ AppChooser = (*appChooser)(nil)
@@ -5026,7 +5065,7 @@ type BuildableOverrider interface {
 
 	ParserFinished(builder Builder)
 
-	SetBuildableProperty(builder Builder, name string, value *externglib.Value)
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
 
 	SetID(id string)
 }
@@ -5045,6 +5084,7 @@ type BuildableOverrider interface {
 // An object only needs to implement this interface if it needs to extend the
 // `GtkBuilder` XML format or run any extra routines at deserialization time.
 type Buildable interface {
+	gextras.Objector
 
 	// BuildableID gets the ID of the @buildable object.
 	//
@@ -5055,6 +5095,7 @@ type Buildable interface {
 
 // buildable implements the Buildable interface.
 type buildable struct {
+	gextras.Objector
 }
 
 var _ Buildable = (*buildable)(nil)
@@ -5114,10 +5155,12 @@ type BuilderScopeOverrider interface {
 // By default, GTK will use its own implementation of `GtkBuilderScope` for the
 // C language which can be created via [ctor@Gtk.BuilderCScope.new].
 type BuilderScope interface {
+	gextras.Objector
 }
 
 // builderScope implements the BuilderScope interface.
 type builderScope struct {
+	gextras.Objector
 }
 
 var _ BuilderScope = (*builderScope)(nil)
@@ -5167,6 +5210,7 @@ type CellEditableOverrider interface {
 // edit the contents of a TreeView cell. It provides a way to specify how
 // temporary widgets should be configured for editing, get the new value, etc.
 type CellEditable interface {
+	Widget
 
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
@@ -5189,6 +5233,7 @@ type CellEditable interface {
 
 // cellEditable implements the CellEditable interface.
 type cellEditable struct {
+	Widget
 }
 
 var _ CellEditable = (*cellEditable)(nil)
@@ -5364,6 +5409,7 @@ type CellLayoutOverrider interface {
 // alternative cell areas, you can do so by moving the problematic calls out of
 // init() and into a constructor() for your class.
 type CellLayout interface {
+	gextras.Objector
 
 	// AddAttribute adds an attribute mapping to the list in @cell_layout.
 	//
@@ -5403,6 +5449,7 @@ type CellLayout interface {
 
 // cellLayout implements the CellLayout interface.
 type cellLayout struct {
+	gextras.Objector
 }
 
 var _ CellLayout = (*cellLayout)(nil)
@@ -5431,7 +5478,7 @@ func (c cellLayout) AddAttribute(cell CellRenderer, attribute string, column int
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg2 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(column)
+	_arg3 = C.int(column)
 
 	C.gtk_cell_layout_add_attribute(_arg0, _arg1, _arg2, _arg3)
 }
@@ -5504,7 +5551,7 @@ func (c cellLayout) Reorder(cell CellRenderer, position int) {
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg2 = (C.int)(position)
+	_arg2 = C.int(position)
 
 	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
 }
@@ -5550,6 +5597,7 @@ type ColorChooserOverrider interface {
 // [class@Gtk.ColorChooserWidget], [class@Gtk.ColorChooserDialog] and
 // [class@Gtk.ColorButton].
 type ColorChooser interface {
+	gextras.Objector
 
 	// AddPalette adds a palette to the color chooser.
 	//
@@ -5581,6 +5629,7 @@ type ColorChooser interface {
 
 // colorChooser implements the ColorChooser interface.
 type colorChooser struct {
+	gextras.Objector
 }
 
 var _ ColorChooser = (*colorChooser)(nil)
@@ -5607,8 +5656,8 @@ func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, col
 	var _arg3 C.int
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = (C.int)(colorsPerLine)
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.int(colorsPerLine)
 	_arg3 = C.int(len(colors))
 	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(&colors[0]))
 
@@ -5617,11 +5666,25 @@ func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, col
 
 func (c colorChooser) RGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
-	var _color gdk.RGBA
+	var _arg1 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
-	C.gtk_color_chooser_get_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	C.gtk_color_chooser_get_rgba(_arg0, &_arg1)
+
+	var _color gdk.RGBA // out
+
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 
 	return _color
 }
@@ -5670,10 +5733,12 @@ func (c colorChooser) SetUseAlpha(useAlpha bool) {
 //
 // Besides `GtkWidget`, it is also implemented by `GtkConstraintGuide`.
 type ConstraintTarget interface {
+	gextras.Objector
 }
 
 // constraintTarget implements the ConstraintTarget interface.
 type constraintTarget struct {
+	gextras.Objector
 }
 
 var _ ConstraintTarget = (*constraintTarget)(nil)
@@ -5838,6 +5903,7 @@ type EditableOverrider interface {
 // and [signal@Gtk.Editable::delete-text] signals, you will need to connect to
 // them on the delegate obtained via [method@Gtk.Editable.get_delegate].
 type Editable interface {
+	Widget
 
 	// DeleteSelection deletes the currently selected text of the editable.
 	//
@@ -5959,6 +6025,7 @@ type Editable interface {
 
 // editable implements the Editable interface.
 type editable struct {
+	Widget
 }
 
 var _ Editable = (*editable)(nil)
@@ -5991,8 +6058,8 @@ func (e editable) DeleteText(startPos int, endPos int) {
 	var _arg2 C.int          // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.int)(startPos)
-	_arg2 = (C.int)(endPos)
+	_arg1 = C.int(startPos)
+	_arg2 = C.int(endPos)
 
 	C.gtk_editable_delete_text(_arg0, _arg1, _arg2)
 }
@@ -6015,7 +6082,7 @@ func (e editable) Alignment() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -6027,8 +6094,8 @@ func (e editable) Chars(startPos int, endPos int) string {
 	var _cret *C.char        // in
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.int)(startPos)
-	_arg2 = (C.int)(endPos)
+	_arg1 = C.int(startPos)
+	_arg2 = C.int(endPos)
 
 	_cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
 
@@ -6099,7 +6166,7 @@ func (e editable) MaxWidthChars() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6114,7 +6181,7 @@ func (e editable) Position() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6133,8 +6200,8 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _endPos int   // out
 	var _ok bool      // out
 
-	_startPos = (int)(_arg1)
-	_endPos = (int)(_arg2)
+	_startPos = int(_arg1)
+	_endPos = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -6167,7 +6234,7 @@ func (e editable) WidthChars() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6186,8 +6253,8 @@ func (e editable) SelectRegion(startPos int, endPos int) {
 	var _arg2 C.int          // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.int)(startPos)
-	_arg2 = (C.int)(endPos)
+	_arg1 = C.int(startPos)
+	_arg2 = C.int(endPos)
 
 	C.gtk_editable_select_region(_arg0, _arg1, _arg2)
 }
@@ -6197,7 +6264,7 @@ func (e editable) SetAlignment(xalign float32) {
 	var _arg1 C.float        // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.float)(xalign)
+	_arg1 = C.float(xalign)
 
 	C.gtk_editable_set_alignment(_arg0, _arg1)
 }
@@ -6231,7 +6298,7 @@ func (e editable) SetMaxWidthChars(nChars int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.int)(nChars)
+	_arg1 = C.int(nChars)
 
 	C.gtk_editable_set_max_width_chars(_arg0, _arg1)
 }
@@ -6241,7 +6308,7 @@ func (e editable) SetPosition(position int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 
 	C.gtk_editable_set_position(_arg0, _arg1)
 }
@@ -6262,7 +6329,7 @@ func (e editable) SetWidthChars(nChars int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.int)(nChars)
+	_arg1 = C.int(nChars)
 
 	C.gtk_editable_set_width_chars(_arg0, _arg1)
 }
@@ -6309,6 +6376,7 @@ func (e editable) SetWidthChars(nChars int) {
 // rendered as a check button with the given label; if a choice has options, it
 // will be rendered as a combo box.
 type FileChooser interface {
+	gextras.Objector
 
 	// AddChoice adds a 'choice' to the file chooser.
 	//
@@ -6480,6 +6548,7 @@ type FileChooser interface {
 
 // fileChooser implements the FileChooser interface.
 type fileChooser struct {
+	gextras.Objector
 }
 
 var _ FileChooser = (*fileChooser)(nil)
@@ -6775,7 +6844,7 @@ func (c fileChooser) SetAction(action FileChooserAction) {
 	var _arg1 C.GtkFileChooserAction // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GtkFileChooserAction)(action)
+	_arg1 = C.GtkFileChooserAction(action)
 
 	C.gtk_file_chooser_set_action(_arg0, _arg1)
 }
@@ -6927,6 +6996,7 @@ type FontChooserOverrider interface {
 // [class@Gtk.FontChooserWidget], [class@Gtk.FontChooserDialog] and
 // [class@Gtk.FontButton].
 type FontChooser interface {
+	gextras.Objector
 
 	// Font gets the currently-selected font name.
 	//
@@ -7016,6 +7086,7 @@ type FontChooser interface {
 
 // fontChooser implements the FontChooser interface.
 type fontChooser struct {
+	gextras.Objector
 }
 
 var _ FontChooser = (*fontChooser)(nil)
@@ -7060,9 +7131,9 @@ func (f fontChooser) FontDesc() *pango.FontDescription {
 
 	var _fontDescription *pango.FontDescription // out
 
-	_fontDescription = pango.WrapFontDescription(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontDescription, func(v *pango.FontDescription) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fontDescription, func(v **pango.FontDescription) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -7139,7 +7210,7 @@ func (f fontChooser) FontSize() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7255,7 +7326,7 @@ func (f fontChooser) SetLevel(level FontChooserLevel) {
 	var _arg1 C.GtkFontChooserLevel // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GtkFontChooserLevel)(level)
+	_arg1 = C.GtkFontChooserLevel(level)
 
 	C.gtk_font_chooser_set_level(_arg0, _arg1)
 }
@@ -7299,6 +7370,7 @@ func (f fontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 // [class@Gsk.Renderer] for rendering on that surface. To get the renderer, use
 // [method@Gtk.Native.get_renderer].
 type Native interface {
+	Widget
 
 	// Renderer returns the renderer that is used for this `GtkNative`.
 	Renderer() gsk.Renderer
@@ -7321,6 +7393,7 @@ type Native interface {
 
 // native implements the Native interface.
 type native struct {
+	Widget
 }
 
 var _ Native = (*native)(nil)
@@ -7381,8 +7454,8 @@ func (s native) SurfaceTransform() (x float64, y float64) {
 	var _x float64 // out
 	var _y float64 // out
 
-	_x = (float64)(_arg1)
-	_y = (float64)(_arg2)
+	_x = float64(_arg1)
+	_y = float64(_arg2)
 
 	return _x, _y
 }
@@ -7409,6 +7482,7 @@ func (s native) Unrealize() {
 // `GtkOrientable` is more flexible in that it allows the orientation to be
 // changed at runtime, allowing the widgets to “flip”.
 type Orientable interface {
+	gextras.Objector
 
 	// Orientation retrieves the orientation of the @orientable.
 	Orientation() Orientation
@@ -7418,6 +7492,7 @@ type Orientable interface {
 
 // orientable implements the Orientable interface.
 type orientable struct {
+	gextras.Objector
 }
 
 var _ Orientable = (*orientable)(nil)
@@ -7456,7 +7531,7 @@ func (o orientable) SetOrientation(orientation Orientation) {
 	var _arg1 C.GtkOrientation // out
 
 	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_orientable_set_orientation(_arg0, _arg1)
 }
@@ -7497,6 +7572,7 @@ type PrintOperationPreviewOverrider interface {
 // A `GtkPrintOperationPreview` object is passed to the
 // [signal@Gtk.PrintOperation::preview] signal by [class@Gtk.PrintOperation].
 type PrintOperationPreview interface {
+	gextras.Objector
 
 	// EndPreview ends a preview.
 	//
@@ -7520,6 +7596,7 @@ type PrintOperationPreview interface {
 
 // printOperationPreview implements the PrintOperationPreview interface.
 type printOperationPreview struct {
+	gextras.Objector
 }
 
 var _ PrintOperationPreview = (*printOperationPreview)(nil)
@@ -7552,7 +7629,7 @@ func (p printOperationPreview) IsSelected(pageNr int) bool {
 	var _cret C.gboolean                  // in
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.int)(pageNr)
+	_arg1 = C.int(pageNr)
 
 	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
 
@@ -7570,7 +7647,7 @@ func (p printOperationPreview) RenderPage(pageNr int) {
 	var _arg1 C.int                       // out
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.int)(pageNr)
+	_arg1 = C.int(pageNr)
 
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)
 }
@@ -7623,7 +7700,6 @@ var _ Root = (*root)(nil)
 func WrapRoot(obj *externglib.Object) Root {
 	return root{
 		Native: WrapNative(obj),
-		Widget: WrapWidget(obj),
 	}
 }
 
@@ -7719,6 +7795,7 @@ type ScrollableOverrider interface {
 // [signal@Gtk.Adjustment::value-changed] signal, the scrollable widget should
 // scroll its contents.
 type Scrollable interface {
+	gextras.Objector
 
 	// Border returns the size of a non-scrolling border around the outside of
 	// the scrollable.
@@ -7753,6 +7830,7 @@ type Scrollable interface {
 
 // scrollable implements the Scrollable interface.
 type scrollable struct {
+	gextras.Objector
 }
 
 var _ Scrollable = (*scrollable)(nil)
@@ -7773,15 +7851,27 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 
 func (s scrollable) Border() (Border, bool) {
 	var _arg0 *C.GtkScrollable // out
-	var _border Border
-	var _cret C.gboolean // in
+	var _arg1 C.GtkBorder      // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
-	_cret = C.gtk_scrollable_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
+	_cret = C.gtk_scrollable_get_border(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _border Border // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_border = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -7864,7 +7954,7 @@ func (s scrollable) SetHScrollPolicy(policy ScrollablePolicy) {
 	var _arg1 C.GtkScrollablePolicy // out
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkScrollablePolicy)(policy)
+	_arg1 = C.GtkScrollablePolicy(policy)
 
 	C.gtk_scrollable_set_hscroll_policy(_arg0, _arg1)
 }
@@ -7884,7 +7974,7 @@ func (s scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	var _arg1 C.GtkScrollablePolicy // out
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkScrollablePolicy)(policy)
+	_arg1 = C.GtkScrollablePolicy(policy)
 
 	C.gtk_scrollable_set_vscroll_policy(_arg0, _arg1)
 }
@@ -7985,6 +8075,7 @@ type SelectionModelOverrider interface {
 // when an item was selected is to listen to the signals that indicate
 // selection.
 type SelectionModel interface {
+	gio.ListModel
 
 	// Selection gets the set containing all currently selected items in the
 	// model.
@@ -8052,6 +8143,7 @@ type SelectionModel interface {
 
 // selectionModel implements the SelectionModel interface.
 type selectionModel struct {
+	gio.ListModel
 }
 
 var _ SelectionModel = (*selectionModel)(nil)
@@ -8080,9 +8172,9 @@ func (m selectionModel) Selection() *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = WrapBitset(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.free(unsafe.Pointer(v.Native()))
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_bitset, func(v **Bitset) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _bitset
@@ -8095,16 +8187,16 @@ func (m selectionModel) SelectionInRange(position uint, nItems uint) *Bitset {
 	var _cret *C.GtkBitset         // in
 
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.guint)(nItems)
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
 
 	_cret = C.gtk_selection_model_get_selection_in_range(_arg0, _arg1, _arg2)
 
 	var _bitset *Bitset // out
 
-	_bitset = WrapBitset(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.free(unsafe.Pointer(v.Native()))
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_bitset, func(v **Bitset) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _bitset
@@ -8116,7 +8208,7 @@ func (m selectionModel) IsSelected(position uint) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	_cret = C.gtk_selection_model_is_selected(_arg0, _arg1)
 
@@ -8153,7 +8245,7 @@ func (m selectionModel) SelectItem(position uint, unselectRest bool) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 	if unselectRest {
 		_arg2 = C.TRUE
 	}
@@ -8177,8 +8269,8 @@ func (m selectionModel) SelectRange(position uint, nItems uint, unselectRest boo
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.guint)(nItems)
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
 	if unselectRest {
 		_arg3 = C.TRUE
 	}
@@ -8200,8 +8292,8 @@ func (m selectionModel) SelectionChanged(position uint, nItems uint) {
 	var _arg2 C.guint              // out
 
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.guint)(nItems)
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
 
 	C.gtk_selection_model_selection_changed(_arg0, _arg1, _arg2)
 }
@@ -8250,7 +8342,7 @@ func (m selectionModel) UnselectItem(position uint) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	_cret = C.gtk_selection_model_unselect_item(_arg0, _arg1)
 
@@ -8270,8 +8362,8 @@ func (m selectionModel) UnselectRange(position uint, nItems uint) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.guint)(nItems)
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
 
 	_cret = C.gtk_selection_model_unselect_range(_arg0, _arg1, _arg2)
 
@@ -8308,10 +8400,12 @@ type ShortcutManagerOverrider interface {
 // Every widget that implements `GtkShortcutManager` will be used as a
 // GTK_SHORTCUT_SCOPE_MANAGED.
 type ShortcutManager interface {
+	gextras.Objector
 }
 
 // shortcutManager implements the ShortcutManager interface.
 type shortcutManager struct {
+	gextras.Objector
 }
 
 var _ ShortcutManager = (*shortcutManager)(nil)
@@ -8340,10 +8434,12 @@ func marshalShortcutManager(p uintptr) (interface{}, error) {
 // GTK uses the `GtkStyleProvider` implementation for CSS in
 // [iface@Gtk.CssProvider].
 type StyleProvider interface {
+	gextras.Objector
 }
 
 // styleProvider implements the StyleProvider interface.
 type styleProvider struct {
+	gextras.Objector
 }
 
 var _ StyleProvider = (*styleProvider)(nil)
@@ -8374,17 +8470,18 @@ type TreeDragDestOverrider interface {
 	// returned. Also, false may be returned if the new row is not created for
 	// some model-specific reason. Should robustly handle a @dest no longer
 	// found in the model!
-	DragDataReceived(dest *TreePath, value *externglib.Value) bool
+	DragDataReceived(dest *TreePath, value externglib.Value) bool
 	// RowDropPossible determines whether a drop is possible before the given
 	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
 	// in @value at that location. @dest_path does not have to exist; the return
 	// value will almost certainly be false if the parent of @dest_path doesn’t
 	// exist, though.
-	RowDropPossible(destPath *TreePath, value *externglib.Value) bool
+	RowDropPossible(destPath *TreePath, value externglib.Value) bool
 }
 
 // TreeDragDest: interface for Drag-and-Drop destinations in `GtkTreeView`.
 type TreeDragDest interface {
+	gextras.Objector
 
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// @dest, deriving the contents of the row from @value. If @dest is outside
@@ -8392,17 +8489,18 @@ type TreeDragDest interface {
 	// returned. Also, false may be returned if the new row is not created for
 	// some model-specific reason. Should robustly handle a @dest no longer
 	// found in the model!
-	DragDataReceived(dest *TreePath, value *externglib.Value) bool
+	DragDataReceived(dest *TreePath, value externglib.Value) bool
 	// RowDropPossible determines whether a drop is possible before the given
 	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
 	// in @value at that location. @dest_path does not have to exist; the return
 	// value will almost certainly be false if the parent of @dest_path doesn’t
 	// exist, though.
-	RowDropPossible(destPath *TreePath, value *externglib.Value) bool
+	RowDropPossible(destPath *TreePath, value externglib.Value) bool
 }
 
 // treeDragDest implements the TreeDragDest interface.
 type treeDragDest struct {
+	gextras.Objector
 }
 
 var _ TreeDragDest = (*treeDragDest)(nil)
@@ -8421,7 +8519,7 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 	return WrapTreeDragDest(obj), nil
 }
 
-func (d treeDragDest) DragDataReceived(dest *TreePath, value *externglib.Value) bool {
+func (d treeDragDest) DragDataReceived(dest *TreePath, value externglib.Value) bool {
 	var _arg0 *C.GtkTreeDragDest // out
 	var _arg1 *C.GtkTreePath     // out
 	var _arg2 *C.GValue          // out
@@ -8442,7 +8540,7 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, value *externglib.Value) 
 	return _ok
 }
 
-func (d treeDragDest) RowDropPossible(destPath *TreePath, value *externglib.Value) bool {
+func (d treeDragDest) RowDropPossible(destPath *TreePath, value externglib.Value) bool {
 	var _arg0 *C.GtkTreeDragDest // out
 	var _arg1 *C.GtkTreePath     // out
 	var _arg2 *C.GValue          // out
@@ -8487,6 +8585,7 @@ type TreeDragSourceOverrider interface {
 
 // TreeDragSource: interface for Drag-and-Drop destinations in `GtkTreeView`.
 type TreeDragSource interface {
+	gextras.Objector
 
 	// DragDataDelete asks the TreeDragSource to delete the row at @path,
 	// because it was moved somewhere else via drag-and-drop. Returns false if
@@ -8506,6 +8605,7 @@ type TreeDragSource interface {
 
 // treeDragSource implements the TreeDragSource interface.
 type treeDragSource struct {
+	gextras.Objector
 }
 
 var _ TreeDragSource = (*treeDragSource)(nil)
@@ -8858,6 +8958,7 @@ type TreeModelOverrider interface {
 // however, signals must be emitted at all times (however the root level is
 // always referenced when any view is attached).
 type TreeModel interface {
+	gextras.Objector
 
 	// NewFilter creates a new TreeModel, with @child_model as the child_model
 	// and @root as the virtual root.
@@ -8991,6 +9092,7 @@ type TreeModel interface {
 
 // treeModel implements the TreeModel interface.
 type treeModel struct {
+	gextras.Objector
 }
 
 var _ TreeModel = (*treeModel)(nil)
@@ -9032,7 +9134,7 @@ func (t treeModel) ColumnType(index_ int) externglib.Type {
 	var _cret C.GType         // in
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 
 	_cret = C.gtk_tree_model_get_column_type(_arg0, _arg1)
 
@@ -9060,17 +9162,29 @@ func (t treeModel) Flags() TreeModelFlags {
 
 func (t treeModel) Iter(path *TreePath) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreePath // out
-	var _cret C.gboolean     // in
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreePath  // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
-	_cret = C.gtk_tree_model_get_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	_cret = C.gtk_tree_model_get_iter(_arg0, &_arg1, _arg2)
 
-	var _ok bool // out
+	var _iter TreeIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -9080,15 +9194,27 @@ func (t treeModel) Iter(path *TreePath) (TreeIter, bool) {
 
 func (t treeModel) IterFirst() (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
-	var _iter TreeIter
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTreeIter   // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
 
-	_cret = C.gtk_tree_model_get_iter_first(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_model_get_iter_first(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _iter TreeIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -9098,18 +9224,30 @@ func (t treeModel) IterFirst() (TreeIter, bool) {
 
 func (t treeModel) IterFromString(pathString string) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
-	var _iter TreeIter
-	var _arg2 *C.char    // out
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.char         // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.char)(C.CString(pathString))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	_cret = C.gtk_tree_model_get_iter_from_string(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	_cret = C.gtk_tree_model_get_iter_from_string(_arg0, &_arg1, _arg2)
 
-	var _ok bool // out
+	var _iter TreeIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -9127,7 +9265,7 @@ func (t treeModel) NColumns() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -9144,9 +9282,9 @@ func (t treeModel) Path(iter *TreeIter) *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -9178,30 +9316,52 @@ func (t treeModel) Value(iter *TreeIter, column int) externglib.Value {
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (C.int)(column)
+	_arg2 = C.int(column)
 
 	C.gtk_tree_model_get_value(_arg0, _arg1, _arg2, &_arg3)
 
 	var _value externglib.Value // out
 
-	_value = *externglib.ValueFromNative(unsafe.Pointer(&_arg3))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_value = *refTmpOut
+	}
 
 	return _value
 }
 
 func (t treeModel) IterChildren(parent *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _cret C.gboolean     // in
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
 
-	_cret = C.gtk_tree_model_iter_children(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	_cret = C.gtk_tree_model_iter_children(_arg0, &_arg1, _arg2)
 
-	var _ok bool // out
+	var _iter TreeIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -9240,7 +9400,7 @@ func (t treeModel) IterNChildren(iter *TreeIter) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -9266,19 +9426,31 @@ func (t treeModel) IterNext(iter *TreeIter) bool {
 
 func (t treeModel) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 C.int          // out
-	var _cret C.gboolean     // in
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.int           // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
-	_arg3 = (C.int)(n)
+	_arg3 = C.int(n)
 
-	_cret = C.gtk_tree_model_iter_nth_child(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	_cret = C.gtk_tree_model_iter_nth_child(_arg0, &_arg1, _arg2, _arg3)
 
-	var _ok bool // out
+	var _iter TreeIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -9288,17 +9460,29 @@ func (t treeModel) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
 
 func (t treeModel) IterParent(child *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _cret C.gboolean     // in
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(child.Native()))
 
-	_cret = C.gtk_tree_model_iter_parent(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	_cret = C.gtk_tree_model_iter_parent(_arg0, &_arg1, _arg2)
 
-	var _ok bool // out
+	var _iter TreeIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -9443,6 +9627,7 @@ type TreeSortableOverrider interface {
 // sorting. The TreeView uses the methods provided by this interface to sort the
 // model.
 type TreeSortable interface {
+	TreeModel
 
 	// SortColumnID fills in @sort_column_id and @order with the current sort
 	// column and the order. It returns true unless the @sort_column_id is
@@ -9470,6 +9655,7 @@ type TreeSortable interface {
 
 // treeSortable implements the TreeSortable interface.
 type treeSortable struct {
+	TreeModel
 }
 
 var _ TreeSortable = (*treeSortable)(nil)
@@ -9502,7 +9688,7 @@ func (s treeSortable) SortColumnID() (int, SortType, bool) {
 	var _order SortType   // out
 	var _ok bool          // out
 
-	_sortColumnId = (int)(_arg1)
+	_sortColumnId = int(_arg1)
 	_order = SortType(_arg2)
 	if _cret != 0 {
 		_ok = true
@@ -9534,8 +9720,8 @@ func (s treeSortable) SetSortColumnID(sortColumnId int, order SortType) {
 	var _arg2 C.GtkSortType      // out
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(sortColumnId)
-	_arg2 = (C.GtkSortType)(order)
+	_arg1 = C.int(sortColumnId)
+	_arg2 = C.GtkSortType(order)
 
 	C.gtk_tree_sortable_set_sort_column_id(_arg0, _arg1, _arg2)
 }
@@ -9555,6 +9741,7 @@ func (s treeSortable) SortColumnChanged() {
 // responsible for updating the accessible state in response to state changes in
 // `GtkAccessible`.
 type ATContext interface {
+	gextras.Objector
 
 	// Accessible retrieves the `GtkAccessible` using this context.
 	Accessible() Accessible
@@ -9592,7 +9779,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, di
 	var _arg3 *C.GdkDisplay       // out
 	var _cret *C.GtkATContext     // in
 
-	_arg1 = (C.GtkAccessibleRole)(accessibleRole)
+	_arg1 = C.GtkAccessibleRole(accessibleRole)
 	_arg2 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
@@ -10220,7 +10407,7 @@ func (a aboutDialog) SetLicenseTypeAboutDialog(licenseType License) {
 	var _arg1 C.GtkLicense      // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.GtkLicense)(licenseType)
+	_arg1 = C.GtkLicense(licenseType)
 
 	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
 }
@@ -10579,6 +10766,7 @@ func (b actionBar) BuildableID() string {
 
 // ActivateAction: a `GtkShortcutAction` that calls gtk_widget_activate().
 type ActivateAction interface {
+	ShortcutAction
 }
 
 // activateAction implements the ActivateAction class.
@@ -10612,6 +10800,7 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 // The `GtkAdjustment` object does not update the value itself. Instead it is
 // left up to the owner of the `GtkAdjustment` to control the value.
 type Adjustment interface {
+	gextras.Objector
 
 	// ClampPageAdjustment updates the value property to ensure that the range
 	// between @lower and @upper is in the current page.
@@ -10726,12 +10915,12 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 	var _arg6 C.double         // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg1 = (C.double)(value)
-	_arg2 = (C.double)(lower)
-	_arg3 = (C.double)(upper)
-	_arg4 = (C.double)(stepIncrement)
-	_arg5 = (C.double)(pageIncrement)
-	_arg6 = (C.double)(pageSize)
+	_arg1 = C.double(value)
+	_arg2 = C.double(lower)
+	_arg3 = C.double(upper)
+	_arg4 = C.double(stepIncrement)
+	_arg5 = C.double(pageIncrement)
+	_arg6 = C.double(pageSize)
 
 	_cret = C.gtk_adjustment_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -10748,8 +10937,8 @@ func (a adjustment) ClampPageAdjustment(lower float64, upper float64) {
 	var _arg2 C.double         // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.double)(lower)
-	_arg2 = (C.double)(upper)
+	_arg1 = C.double(lower)
+	_arg2 = C.double(upper)
 
 	C.gtk_adjustment_clamp_page(_arg0, _arg1, _arg2)
 }
@@ -10764,12 +10953,12 @@ func (a adjustment) ConfigureAdjustment(value float64, lower float64, upper floa
 	var _arg6 C.double         // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.double)(value)
-	_arg2 = (C.double)(lower)
-	_arg3 = (C.double)(upper)
-	_arg4 = (C.double)(stepIncrement)
-	_arg5 = (C.double)(pageIncrement)
-	_arg6 = (C.double)(pageSize)
+	_arg1 = C.double(value)
+	_arg2 = C.double(lower)
+	_arg3 = C.double(upper)
+	_arg4 = C.double(stepIncrement)
+	_arg5 = C.double(pageIncrement)
+	_arg6 = C.double(pageSize)
 
 	C.gtk_adjustment_configure(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -10784,7 +10973,7 @@ func (a adjustment) Lower() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -10799,7 +10988,7 @@ func (a adjustment) MinimumIncrement() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -10814,7 +11003,7 @@ func (a adjustment) PageIncrement() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -10829,7 +11018,7 @@ func (a adjustment) PageSize() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -10844,7 +11033,7 @@ func (a adjustment) StepIncrement() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -10859,7 +11048,7 @@ func (a adjustment) Upper() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -10874,7 +11063,7 @@ func (a adjustment) Value() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -10884,7 +11073,7 @@ func (a adjustment) SetLowerAdjustment(lower float64) {
 	var _arg1 C.double         // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.double)(lower)
+	_arg1 = C.double(lower)
 
 	C.gtk_adjustment_set_lower(_arg0, _arg1)
 }
@@ -10894,7 +11083,7 @@ func (a adjustment) SetPageIncrementAdjustment(pageIncrement float64) {
 	var _arg1 C.double         // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.double)(pageIncrement)
+	_arg1 = C.double(pageIncrement)
 
 	C.gtk_adjustment_set_page_increment(_arg0, _arg1)
 }
@@ -10904,7 +11093,7 @@ func (a adjustment) SetPageSizeAdjustment(pageSize float64) {
 	var _arg1 C.double         // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.double)(pageSize)
+	_arg1 = C.double(pageSize)
 
 	C.gtk_adjustment_set_page_size(_arg0, _arg1)
 }
@@ -10914,7 +11103,7 @@ func (a adjustment) SetStepIncrementAdjustment(stepIncrement float64) {
 	var _arg1 C.double         // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.double)(stepIncrement)
+	_arg1 = C.double(stepIncrement)
 
 	C.gtk_adjustment_set_step_increment(_arg0, _arg1)
 }
@@ -10924,7 +11113,7 @@ func (a adjustment) SetUpperAdjustment(upper float64) {
 	var _arg1 C.double         // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.double)(upper)
+	_arg1 = C.double(upper)
 
 	C.gtk_adjustment_set_upper(_arg0, _arg1)
 }
@@ -10934,7 +11123,7 @@ func (a adjustment) SetValueAdjustment(value float64) {
 	var _arg1 C.double         // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.double)(value)
+	_arg1 = C.double(value)
 
 	C.gtk_adjustment_set_value(_arg0, _arg1)
 }
@@ -10945,6 +11134,7 @@ func (a adjustment) SetValueAdjustment(value float64) {
 //
 // This can be cascaded to combine more than two triggers.
 type AlternativeTrigger interface {
+	ShortcutTrigger
 
 	// First gets the first of the two alternative triggers that may trigger
 	// @self.
@@ -11443,7 +11633,7 @@ func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppCho
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (C.GtkDialogFlags)(flags)
+	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
@@ -11466,7 +11656,7 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (C.GtkDialogFlags)(flags)
+	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -12161,7 +12351,7 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) Applicatio
 
 	_arg1 = (*C.char)(C.CString(applicationId))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GApplicationFlags)(flags)
+	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.gtk_application_new(_arg1, _arg2)
 
@@ -12298,7 +12488,7 @@ func (a application) WindowByID(id uint) Window {
 	var _cret *C.GtkWindow      // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.guint)(id)
+	_arg1 = C.guint(id)
 
 	_cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
 
@@ -12318,7 +12508,7 @@ func (a application) InhibitApplication(window Window, flags ApplicationInhibitF
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.GtkApplicationInhibitFlags)(flags)
+	_arg2 = C.GtkApplicationInhibitFlags(flags)
 	_arg3 = (*C.char)(C.CString(reason))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -12326,7 +12516,7 @@ func (a application) InhibitApplication(window Window, flags ApplicationInhibitF
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -12405,7 +12595,7 @@ func (a application) UninhibitApplication(cookie uint) {
 	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.guint)(cookie)
+	_arg1 = C.guint(cookie)
 
 	C.gtk_application_uninhibit(_arg0, _arg1)
 }
@@ -12558,7 +12748,7 @@ func (w applicationWindow) ID() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -12733,9 +12923,9 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 	var _arg4 C.gboolean   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (C.float)(xalign)
-	_arg2 = (C.float)(yalign)
-	_arg3 = (C.float)(ratio)
+	_arg1 = C.float(xalign)
+	_arg2 = C.float(yalign)
+	_arg3 = C.float(ratio)
 	if obeyChild {
 		_arg4 = C.TRUE
 	}
@@ -12791,7 +12981,7 @@ func (s aspectFrame) Ratio() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -12806,7 +12996,7 @@ func (s aspectFrame) Xalign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -12821,7 +13011,7 @@ func (s aspectFrame) Yalign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -12853,7 +13043,7 @@ func (s aspectFrame) SetRatioAspectFrame(ratio float32) {
 	var _arg1 C.float           // out
 
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(ratio)
+	_arg1 = C.float(ratio)
 
 	C.gtk_aspect_frame_set_ratio(_arg0, _arg1)
 }
@@ -12863,7 +13053,7 @@ func (s aspectFrame) SetXalignAspectFrame(xalign float32) {
 	var _arg1 C.float           // out
 
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(xalign)
+	_arg1 = C.float(xalign)
 
 	C.gtk_aspect_frame_set_xalign(_arg0, _arg1)
 }
@@ -12873,7 +13063,7 @@ func (s aspectFrame) SetYalignAspectFrame(yalign float32) {
 	var _arg1 C.float           // out
 
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(yalign)
+	_arg1 = C.float(yalign)
 
 	C.gtk_aspect_frame_set_yalign(_arg0, _arg1)
 }
@@ -13093,7 +13283,7 @@ func (a assistant) AppendPageAssistant(page Widget) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -13116,7 +13306,7 @@ func (a assistant) CurrentPage() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -13131,7 +13321,7 @@ func (a assistant) NPages() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -13142,7 +13332,7 @@ func (a assistant) NthPage(pageNum int) Widget {
 	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.int)(pageNum)
+	_arg1 = C.int(pageNum)
 
 	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
 
@@ -13246,13 +13436,13 @@ func (a assistant) InsertPageAssistant(page Widget, position int) int {
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
-	_arg2 = (C.int)(position)
+	_arg2 = C.int(position)
 
 	_cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -13277,7 +13467,7 @@ func (a assistant) PrependPageAssistant(page Widget) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -13305,7 +13495,7 @@ func (a assistant) RemovePageAssistant(pageNum int) {
 	var _arg1 C.int           // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.int)(pageNum)
+	_arg1 = C.int(pageNum)
 
 	C.gtk_assistant_remove_page(_arg0, _arg1)
 }
@@ -13315,7 +13505,7 @@ func (a assistant) SetCurrentPageAssistant(pageNum int) {
 	var _arg1 C.int           // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.int)(pageNum)
+	_arg1 = C.int(pageNum)
 
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
 }
@@ -13354,7 +13544,7 @@ func (a assistant) SetPageTypeAssistant(page Widget, typ AssistantPageType) {
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
-	_arg2 = (C.GtkAssistantPageType)(typ)
+	_arg2 = C.GtkAssistantPageType(typ)
 
 	C.gtk_assistant_set_page_type(_arg0, _arg1, _arg2)
 }
@@ -13434,6 +13624,7 @@ func (s assistant) SetFocus(focus Widget) {
 // AssistantPage: `GtkAssistantPage` is an auxiliary object used by
 // `GtkAssistant.
 type AssistantPage interface {
+	gextras.Objector
 
 	// Child returns the child to which @page belongs.
 	Child() Widget
@@ -13481,6 +13672,7 @@ func (p assistantPage) Child() Widget {
 // [property@Gtk.Widget:halign], and [property@Gtk.Widget:valign] properties of
 // each child to determine where they should be positioned.
 type BinLayout interface {
+	LayoutManager
 }
 
 // binLayout implements the BinLayout class.
@@ -13630,7 +13822,7 @@ func (s bookmarkList) IOPriority() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -13668,7 +13860,7 @@ func (s bookmarkList) SetIOPriorityBookmarkList(ioPriority int) {
 	var _arg1 C.int              // out
 
 	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(ioPriority)
+	_arg1 = C.int(ioPriority)
 
 	C.gtk_bookmark_list_set_io_priority(_arg0, _arg1)
 }
@@ -13676,6 +13868,7 @@ func (s bookmarkList) SetIOPriorityBookmarkList(ioPriority int) {
 // BoolFilter: `GtkBoolFilter` evaluates a boolean `GtkExpression` to determine
 // whether to include items.
 type BoolFilter interface {
+	Filter
 
 	// Expression gets the expression that the filter uses to evaluate if an
 	// item should be filtered.
@@ -13884,8 +14077,8 @@ func NewBox(orientation Orientation, spacing int) Box {
 	var _arg2 C.int            // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = (C.int)(spacing)
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.int(spacing)
 
 	_cret = C.gtk_box_new(_arg1, _arg2)
 
@@ -13948,7 +14141,7 @@ func (b box) Spacing() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -14002,7 +14195,7 @@ func (b box) SetBaselinePositionBox(position BaselinePosition) {
 	var _arg1 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.GtkBaselinePosition)(position)
+	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_box_set_baseline_position(_arg0, _arg1)
 }
@@ -14024,7 +14217,7 @@ func (b box) SetSpacingBox(spacing int) {
 	var _arg1 C.int     // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.int)(spacing)
+	_arg1 = C.int(spacing)
 
 	C.gtk_box_set_spacing(_arg0, _arg1)
 }
@@ -14133,7 +14326,7 @@ func NewBoxLayout(orientation Orientation) BoxLayout {
 	var _arg1 C.GtkOrientation    // out
 	var _cret *C.GtkLayoutManager // in
 
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_box_layout_new(_arg1)
 
@@ -14186,7 +14379,7 @@ func (b boxLayout) Spacing() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -14196,7 +14389,7 @@ func (b boxLayout) SetBaselinePositionBoxLayout(position BaselinePosition) {
 	var _arg1 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.GtkBaselinePosition)(position)
+	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_box_layout_set_baseline_position(_arg0, _arg1)
 }
@@ -14218,7 +14411,7 @@ func (b boxLayout) SetSpacingBoxLayout(spacing uint) {
 	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(spacing)
+	_arg1 = C.guint(spacing)
 
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)
 }
@@ -14393,6 +14586,7 @@ func (o boxLayout) SetOrientation(orientation Orientation) {
 // GtkWidget documentation
 // (class.Widget.html#building-composite-widgets-from-template-xml) for details.
 type Builder interface {
+	gextras.Objector
 
 	// AddFromFileBuilder parses a file containing a UI definition and merges it
 	// with the current contents of @builder.
@@ -14627,7 +14821,7 @@ func NewBuilderFromString(_string string, length int) Builder {
 
 	_arg1 = (*C.char)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(length)
+	_arg2 = C.gssize(length)
 
 	_cret = C.gtk_builder_new_from_string(_arg1, _arg2)
 
@@ -14683,7 +14877,7 @@ func (b builder) AddFromStringBuilder(buffer string, length int) error {
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(length)
+	_arg2 = C.gssize(length)
 
 	C.gtk_builder_add_from_string(_arg0, _arg1, _arg2, &_cerr)
 
@@ -14708,7 +14902,7 @@ func (b builder) AddObjectsFromFileBuilder(filename string, objectIds []string) 
 	{
 		out := unsafe.Slice(_arg2, len(objectIds))
 		for i := range objectIds {
-			out[i] = (*C.gchar)(C.CString(objectIds[i]))
+			out[i] = (*C.char)(C.CString(objectIds[i]))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -14736,7 +14930,7 @@ func (b builder) AddObjectsFromResourceBuilder(resourcePath string, objectIds []
 	{
 		out := unsafe.Slice(_arg2, len(objectIds))
 		for i := range objectIds {
-			out[i] = (*C.gchar)(C.CString(objectIds[i]))
+			out[i] = (*C.char)(C.CString(objectIds[i]))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -14760,13 +14954,13 @@ func (b builder) AddObjectsFromStringBuilder(buffer string, length int, objectId
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(length)
+	_arg2 = C.gssize(length)
 	_arg3 = (**C.char)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice(_arg3, len(objectIds))
 		for i := range objectIds {
-			out[i] = (*C.gchar)(C.CString(objectIds[i]))
+			out[i] = (*C.char)(C.CString(objectIds[i]))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -14806,7 +15000,7 @@ func (b builder) ExtendWithTemplateBuilder(object gextras.Objector, templateType
 	_arg2 = (C.GType)(templateType)
 	_arg3 = (*C.char)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.gssize)(length)
+	_arg4 = C.gssize(length)
 
 	C.gtk_builder_extend_with_template(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -14946,7 +15140,17 @@ func (b builder) ValueFromStringTypeBuilder(typ externglib.Type, _string string)
 	var _value externglib.Value // out
 	var _goerr error            // out
 
-	_value = *externglib.ValueFromNative(unsafe.Pointer(&_arg3))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_value = *refTmpOut
+	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
@@ -15019,6 +15223,7 @@ func NewBuilderCScope() BuilderCScope {
 // name="item">GtkListItem</lookup> </lookup> </binding> </object> </property>
 // </template> </interface> “`
 type BuilderListItemFactory interface {
+	ListItemFactory
 
 	// Resource: if the data references a resource, gets the path of that
 	// resource.
@@ -15459,6 +15664,7 @@ func (b button) BuildableID() string {
 
 // CClosureExpression: a variant of `GtkClosureExpression` using a C closure.
 type CClosureExpression interface {
+	Expression
 }
 
 // cClosureExpression implements the CClosureExpression class.
@@ -15603,7 +15809,7 @@ func (c calendar) DayIsMarked(day uint) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(day)
+	_arg1 = C.guint(day)
 
 	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
 
@@ -15672,7 +15878,7 @@ func (c calendar) MarkDayCalendar(day uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(day)
+	_arg1 = C.guint(day)
 
 	C.gtk_calendar_mark_day(_arg0, _arg1)
 }
@@ -15718,7 +15924,7 @@ func (c calendar) UnmarkDayCalendar(day uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(day)
+	_arg1 = C.guint(day)
 
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
 }
@@ -15757,6 +15963,7 @@ func (b calendar) BuildableID() string {
 
 // CallbackAction: a `GtkShortcutAction` that invokes a callback.
 type CallbackAction interface {
+	ShortcutAction
 }
 
 // callbackAction implements the CallbackAction class.
@@ -15940,9 +16147,9 @@ type CellArea interface {
 	AttributeGetColumnCellArea(renderer CellRenderer, attribute string) int
 	// CellGetPropertyCellArea gets the value of a cell property for @renderer
 	// in @area.
-	CellGetPropertyCellArea(renderer CellRenderer, propertyName string, value *externglib.Value)
+	CellGetPropertyCellArea(renderer CellRenderer, propertyName string, value externglib.Value)
 	// CellSetPropertyCellArea sets a cell property for @renderer in @area.
-	CellSetPropertyCellArea(renderer CellRenderer, propertyName string, value *externglib.Value)
+	CellSetPropertyCellArea(renderer CellRenderer, propertyName string, value externglib.Value)
 	// CopyContextCellArea: this is sometimes needed for cases where rows need
 	// to share alignments in one orientation but may be separately grouped in
 	// the opposing orientation.
@@ -16122,7 +16329,7 @@ func (a cellArea) ActivateCellArea(context CellAreaContext, widget Widget, cellA
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg4 = (C.GtkCellRendererState)(flags)
+	_arg4 = C.GtkCellRendererState(flags)
 	if editOnly {
 		_arg5 = C.TRUE
 	}
@@ -16152,7 +16359,7 @@ func (a cellArea) ActivateCellCellArea(widget Widget, renderer CellRenderer, eve
 	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg3 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg5 = (C.GtkCellRendererState)(flags)
+	_arg5 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_area_activate_cell(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -16217,7 +16424,7 @@ func (a cellArea) AttributeConnectCellArea(renderer CellRenderer, attribute stri
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg2 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(column)
+	_arg3 = C.int(column)
 
 	C.gtk_cell_area_attribute_connect(_arg0, _arg1, _arg2, _arg3)
 }
@@ -16250,12 +16457,12 @@ func (a cellArea) AttributeGetColumnCellArea(renderer CellRenderer, attribute st
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
-func (a cellArea) CellGetPropertyCellArea(renderer CellRenderer, propertyName string, value *externglib.Value) {
+func (a cellArea) CellGetPropertyCellArea(renderer CellRenderer, propertyName string, value externglib.Value) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.char            // out
@@ -16270,7 +16477,7 @@ func (a cellArea) CellGetPropertyCellArea(renderer CellRenderer, propertyName st
 	C.gtk_cell_area_cell_get_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (a cellArea) CellSetPropertyCellArea(renderer CellRenderer, propertyName string, value *externglib.Value) {
+func (a cellArea) CellSetPropertyCellArea(renderer CellRenderer, propertyName string, value externglib.Value) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.char            // out
@@ -16331,13 +16538,13 @@ func (a cellArea) EventCellArea(context CellAreaContext, widget Widget, event gd
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg5 = (C.GtkCellRendererState)(flags)
+	_arg5 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_area_event(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -16348,7 +16555,7 @@ func (a cellArea) FocusCellArea(direction DirectionType) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.GtkDirectionType)(direction)
+	_arg1 = C.GtkDirectionType(direction)
 
 	_cret = C.gtk_cell_area_focus(_arg0, _arg1)
 
@@ -16367,7 +16574,7 @@ func (a cellArea) CellAllocation(context CellAreaContext, widget Widget, rendere
 	var _arg2 *C.GtkWidget          // out
 	var _arg3 *C.GtkCellRenderer    // out
 	var _arg4 *C.GdkRectangle       // out
-	var _allocation gdk.Rectangle
+	var _arg5 C.GdkRectangle        // in
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
@@ -16375,7 +16582,21 @@ func (a cellArea) CellAllocation(context CellAreaContext, widget Widget, rendere
 	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 
-	C.gtk_cell_area_get_cell_allocation(_arg0, _arg1, _arg2, _arg3, _arg4, (*C.GdkRectangle)(unsafe.Pointer(&_allocation)))
+	C.gtk_cell_area_get_cell_allocation(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5)
+
+	var _allocation gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg5
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_allocation = *refTmpOut
+	}
 
 	return _allocation
 }
@@ -16387,20 +16608,32 @@ func (a cellArea) CellAtPosition(context CellAreaContext, widget Widget, cellAre
 	var _arg3 *C.GdkRectangle       // out
 	var _arg4 C.int                 // out
 	var _arg5 C.int                 // out
-	var _allocArea gdk.Rectangle
-	var _cret *C.GtkCellRenderer // in
+	var _arg6 C.GdkRectangle        // in
+	var _cret *C.GtkCellRenderer    // in
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg4 = (C.int)(x)
-	_arg5 = (C.int)(y)
+	_arg4 = C.int(x)
+	_arg5 = C.int(y)
 
-	_cret = C.gtk_cell_area_get_cell_at_position(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, (*C.GdkRectangle)(unsafe.Pointer(&_allocArea)))
+	_cret = C.gtk_cell_area_get_cell_at_position(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
 
+	var _allocArea gdk.Rectangle   // out
 	var _cellRenderer CellRenderer // out
 
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg6
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_allocArea = *refTmpOut
+	}
 	_cellRenderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRenderer)
 
 	return _allocArea, _cellRenderer
@@ -16499,8 +16732,8 @@ func (a cellArea) PreferredHeight(context CellAreaContext, widget Widget) (minim
 	var _minimumHeight int // out
 	var _naturalHeight int // out
 
-	_minimumHeight = (int)(_arg3)
-	_naturalHeight = (int)(_arg4)
+	_minimumHeight = int(_arg3)
+	_naturalHeight = int(_arg4)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -16516,15 +16749,15 @@ func (a cellArea) PreferredHeightForWidth(context CellAreaContext, widget Widget
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (C.int)(width)
+	_arg3 = C.int(width)
 
 	C.gtk_cell_area_get_preferred_height_for_width(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
 	var _minimumHeight int // out
 	var _naturalHeight int // out
 
-	_minimumHeight = (int)(_arg4)
-	_naturalHeight = (int)(_arg5)
+	_minimumHeight = int(_arg4)
+	_naturalHeight = int(_arg5)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -16545,8 +16778,8 @@ func (a cellArea) PreferredWidth(context CellAreaContext, widget Widget) (minimu
 	var _minimumWidth int // out
 	var _naturalWidth int // out
 
-	_minimumWidth = (int)(_arg3)
-	_naturalWidth = (int)(_arg4)
+	_minimumWidth = int(_arg3)
+	_naturalWidth = int(_arg4)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -16562,15 +16795,15 @@ func (a cellArea) PreferredWidthForHeight(context CellAreaContext, widget Widget
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (C.int)(height)
+	_arg3 = C.int(height)
 
 	C.gtk_cell_area_get_preferred_width_for_height(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
 	var _minimumWidth int // out
 	var _naturalWidth int // out
 
-	_minimumWidth = (int)(_arg4)
-	_naturalWidth = (int)(_arg5)
+	_minimumWidth = int(_arg4)
+	_naturalWidth = int(_arg5)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -16613,13 +16846,27 @@ func (a cellArea) InnerCellAreaCellArea(widget Widget, cellArea *gdk.Rectangle) 
 	var _arg0 *C.GtkCellArea  // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GdkRectangle // out
-	var _innerArea gdk.Rectangle
+	var _arg3 C.GdkRectangle  // in
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 
-	C.gtk_cell_area_inner_cell_area(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_innerArea)))
+	C.gtk_cell_area_inner_cell_area(_arg0, _arg1, _arg2, &_arg3)
+
+	var _innerArea gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_innerArea = *refTmpOut
+	}
 
 	return _innerArea
 }
@@ -16695,17 +16942,17 @@ func (a cellArea) RequestRendererCellArea(renderer CellRenderer, orientation Ori
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg2 = (C.GtkOrientation)(orientation)
+	_arg2 = C.GtkOrientation(orientation)
 	_arg3 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg4 = (C.int)(forSize)
+	_arg4 = C.int(forSize)
 
 	C.gtk_cell_area_request_renderer(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
 
 	var _minimumSize int // out
 	var _naturalSize int // out
 
-	_minimumSize = (int)(_arg5)
-	_naturalSize = (int)(_arg6)
+	_minimumSize = int(_arg5)
+	_naturalSize = int(_arg6)
 
 	return _minimumSize, _naturalSize
 }
@@ -16736,7 +16983,7 @@ func (a cellArea) SnapshotCellArea(context CellAreaContext, widget Widget, snaps
 	_arg3 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
 	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg6 = (C.GtkCellRendererState)(flags)
+	_arg6 = C.GtkCellRendererState(flags)
 	if paintFocus {
 		_arg7 = C.TRUE
 	}
@@ -16870,7 +17117,7 @@ func (b cellAreaBox) Spacing() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -16924,7 +17171,7 @@ func (b cellAreaBox) SetSpacingCellAreaBox(spacing int) {
 	var _arg1 C.int             // out
 
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.int)(spacing)
+	_arg1 = C.int(spacing)
 
 	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)
 }
@@ -16983,6 +17230,7 @@ func (o cellAreaBox) SetOrientation(orientation Orientation) {
 // the same row when calling other CellArea APIs such as gtk_cell_area_render()
 // and gtk_cell_area_event().
 type CellAreaContext interface {
+	gextras.Objector
 
 	// AllocateCellAreaContext allocates a width and/or a height for all rows
 	// which are to be rendered with @context.
@@ -17100,8 +17348,8 @@ func (c cellAreaContext) AllocateCellAreaContext(width int, height int) {
 	var _arg2 C.int                 // out
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(width)
-	_arg2 = (C.int)(height)
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
 	C.gtk_cell_area_context_allocate(_arg0, _arg1, _arg2)
 }
@@ -17118,8 +17366,8 @@ func (c cellAreaContext) Allocation() (width int, height int) {
 	var _width int  // out
 	var _height int // out
 
-	_width = (int)(_arg1)
-	_height = (int)(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -17151,8 +17399,8 @@ func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int
 	var _minimumHeight int // out
 	var _naturalHeight int // out
 
-	_minimumHeight = (int)(_arg1)
-	_naturalHeight = (int)(_arg2)
+	_minimumHeight = int(_arg1)
+	_naturalHeight = int(_arg2)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -17164,15 +17412,15 @@ func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, 
 	var _arg3 C.int                 // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(width)
+	_arg1 = C.int(width)
 
 	C.gtk_cell_area_context_get_preferred_height_for_width(_arg0, _arg1, &_arg2, &_arg3)
 
 	var _minimumHeight int // out
 	var _naturalHeight int // out
 
-	_minimumHeight = (int)(_arg2)
-	_naturalHeight = (int)(_arg3)
+	_minimumHeight = int(_arg2)
+	_naturalHeight = int(_arg3)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -17189,8 +17437,8 @@ func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 	var _minimumWidth int // out
 	var _naturalWidth int // out
 
-	_minimumWidth = (int)(_arg1)
-	_naturalWidth = (int)(_arg2)
+	_minimumWidth = int(_arg1)
+	_naturalWidth = int(_arg2)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -17202,15 +17450,15 @@ func (c cellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, 
 	var _arg3 C.int                 // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(height)
+	_arg1 = C.int(height)
 
 	C.gtk_cell_area_context_get_preferred_width_for_height(_arg0, _arg1, &_arg2, &_arg3)
 
 	var _minimumWidth int // out
 	var _naturalWidth int // out
 
-	_minimumWidth = (int)(_arg2)
-	_naturalWidth = (int)(_arg3)
+	_minimumWidth = int(_arg2)
+	_naturalWidth = int(_arg3)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -17221,8 +17469,8 @@ func (c cellAreaContext) PushPreferredHeightCellAreaContext(minimumHeight int, n
 	var _arg2 C.int                 // out
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(minimumHeight)
-	_arg2 = (C.int)(naturalHeight)
+	_arg1 = C.int(minimumHeight)
+	_arg2 = C.int(naturalHeight)
 
 	C.gtk_cell_area_context_push_preferred_height(_arg0, _arg1, _arg2)
 }
@@ -17233,8 +17481,8 @@ func (c cellAreaContext) PushPreferredWidthCellAreaContext(minimumWidth int, nat
 	var _arg2 C.int                 // out
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(minimumWidth)
-	_arg2 = (C.int)(naturalWidth)
+	_arg1 = C.int(minimumWidth)
+	_arg2 = C.int(naturalWidth)
 
 	C.gtk_cell_area_context_push_preferred_width(_arg0, _arg1, _arg2)
 }
@@ -17282,6 +17530,7 @@ func (c cellAreaContext) ResetCellAreaContext() {
 // “set” properties reflect whether a property has been set or not. You should
 // not set them independently.
 type CellRenderer interface {
+	gextras.Objector
 
 	// ActivateCellRenderer passes an activate event to the cell renderer for
 	// possible processing. Some cell renderers may use events; for example,
@@ -17404,7 +17653,7 @@ func (c cellRenderer) ActivateCellRenderer(event gdk.Event, widget Widget, path 
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
 	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg6 = (C.GtkCellRendererState)(flags)
+	_arg6 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_renderer_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -17422,14 +17671,28 @@ func (c cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cellAr
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkCellRendererState // out
 	var _arg3 *C.GdkRectangle        // out
-	var _alignedArea gdk.Rectangle
+	var _arg4 C.GdkRectangle         // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.GtkCellRendererState)(flags)
+	_arg2 = C.GtkCellRendererState(flags)
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 
-	C.gtk_cell_renderer_get_aligned_area(_arg0, _arg1, _arg2, _arg3, (*C.GdkRectangle)(unsafe.Pointer(&_alignedArea)))
+	C.gtk_cell_renderer_get_aligned_area(_arg0, _arg1, _arg2, _arg3, &_arg4)
+
+	var _alignedArea gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_alignedArea = *refTmpOut
+	}
 
 	return _alignedArea
 }
@@ -17446,8 +17709,8 @@ func (c cellRenderer) Alignment() (xalign float32, yalign float32) {
 	var _xalign float32 // out
 	var _yalign float32 // out
 
-	_xalign = (float32)(_arg1)
-	_yalign = (float32)(_arg2)
+	_xalign = float32(_arg1)
+	_yalign = float32(_arg2)
 
 	return _xalign, _yalign
 }
@@ -17464,8 +17727,8 @@ func (c cellRenderer) FixedSize() (width int, height int) {
 	var _width int  // out
 	var _height int // out
 
-	_width = (int)(_arg1)
-	_height = (int)(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -17516,8 +17779,8 @@ func (c cellRenderer) Padding() (xpad int, ypad int) {
 	var _xpad int // out
 	var _ypad int // out
 
-	_xpad = (int)(_arg1)
-	_ypad = (int)(_arg2)
+	_xpad = int(_arg1)
+	_ypad = int(_arg2)
 
 	return _xpad, _ypad
 }
@@ -17536,8 +17799,8 @@ func (c cellRenderer) PreferredHeight(widget Widget) (minimumSize int, naturalSi
 	var _minimumSize int // out
 	var _naturalSize int // out
 
-	_minimumSize = (int)(_arg2)
-	_naturalSize = (int)(_arg3)
+	_minimumSize = int(_arg2)
+	_naturalSize = int(_arg3)
 
 	return _minimumSize, _naturalSize
 }
@@ -17551,15 +17814,15 @@ func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (minimum
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.int)(width)
+	_arg2 = C.int(width)
 
 	C.gtk_cell_renderer_get_preferred_height_for_width(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _minimumHeight int // out
 	var _naturalHeight int // out
 
-	_minimumHeight = (int)(_arg3)
-	_naturalHeight = (int)(_arg4)
+	_minimumHeight = int(_arg3)
+	_naturalHeight = int(_arg4)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -17567,13 +17830,39 @@ func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (minimum
 func (c cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, naturalSize Requisition) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
-	var _minimumSize Requisition
-	var _naturalSize Requisition
+	var _arg2 C.GtkRequisition   // in
+	var _arg3 C.GtkRequisition   // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, (*C.GtkRequisition)(unsafe.Pointer(&_minimumSize)), (*C.GtkRequisition)(unsafe.Pointer(&_naturalSize)))
+	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _minimumSize Requisition // out
+	var _naturalSize Requisition // out
+
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_minimumSize = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_naturalSize = *refTmpOut
+	}
 
 	return _minimumSize, _naturalSize
 }
@@ -17592,8 +17881,8 @@ func (c cellRenderer) PreferredWidth(widget Widget) (minimumSize int, naturalSiz
 	var _minimumSize int // out
 	var _naturalSize int // out
 
-	_minimumSize = (int)(_arg2)
-	_naturalSize = (int)(_arg3)
+	_minimumSize = int(_arg2)
+	_naturalSize = int(_arg3)
 
 	return _minimumSize, _naturalSize
 }
@@ -17607,15 +17896,15 @@ func (c cellRenderer) PreferredWidthForHeight(widget Widget, height int) (minimu
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.int)(height)
+	_arg2 = C.int(height)
 
 	C.gtk_cell_renderer_get_preferred_width_for_height(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _minimumWidth int // out
 	var _naturalWidth int // out
 
-	_minimumWidth = (int)(_arg3)
-	_naturalWidth = (int)(_arg4)
+	_minimumWidth = int(_arg3)
+	_naturalWidth = int(_arg4)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -17660,7 +17949,7 @@ func (c cellRenderer) State(widget Widget, cellState CellRendererState) StateFla
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.GtkCellRendererState)(cellState)
+	_arg2 = C.GtkCellRendererState(cellState)
 
 	_cret = C.gtk_cell_renderer_get_state(_arg0, _arg1, _arg2)
 
@@ -17711,8 +18000,8 @@ func (c cellRenderer) SetAlignmentCellRenderer(xalign float32, yalign float32) {
 	var _arg2 C.float            // out
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.float)(xalign)
-	_arg2 = (C.float)(yalign)
+	_arg1 = C.float(xalign)
+	_arg2 = C.float(yalign)
 
 	C.gtk_cell_renderer_set_alignment(_arg0, _arg1, _arg2)
 }
@@ -17723,8 +18012,8 @@ func (c cellRenderer) SetFixedSizeCellRenderer(width int, height int) {
 	var _arg2 C.int              // out
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(width)
-	_arg2 = (C.int)(height)
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
 	C.gtk_cell_renderer_set_fixed_size(_arg0, _arg1, _arg2)
 }
@@ -17759,8 +18048,8 @@ func (c cellRenderer) SetPaddingCellRenderer(xpad int, ypad int) {
 	var _arg2 C.int              // out
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(xpad)
-	_arg2 = (C.int)(ypad)
+	_arg1 = C.int(xpad)
+	_arg2 = C.int(ypad)
 
 	C.gtk_cell_renderer_set_padding(_arg0, _arg1, _arg2)
 }
@@ -17802,7 +18091,7 @@ func (c cellRenderer) SnapshotCellRenderer(snapshot Snapshot, widget Widget, bac
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg5 = (C.GtkCellRendererState)(flags)
+	_arg5 = C.GtkCellRendererState(flags)
 
 	C.gtk_cell_renderer_snapshot(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -17824,7 +18113,7 @@ func (c cellRenderer) StartEditingCellRenderer(event gdk.Event, widget Widget, p
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
 	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg6 = (C.GtkCellRendererState)(flags)
+	_arg6 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_renderer_start_editing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -17853,6 +18142,7 @@ func (c cellRenderer) StopEditingCellRenderer(canceled bool) {
 // like `Control + a`). If the cell renderer is editable, the accelerator can be
 // changed by simply typing the new combination.
 type CellRendererAccel interface {
+	CellRendererText
 }
 
 // cellRendererAccel implements the CellRendererAccel class.
@@ -17900,6 +18190,7 @@ func NewCellRendererAccel() CellRendererAccel {
 // CellRendererCombo:text-column property. Further properties of the combo box
 // can be set in a handler for the CellRenderer::editing-started signal.
 type CellRendererCombo interface {
+	CellRendererText
 }
 
 // cellRendererCombo implements the CellRendererCombo class.
@@ -17953,6 +18244,7 @@ func NewCellRendererCombo() CellRendererCombo {
 // the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf, it
 // renders that one.
 type CellRendererPixbuf interface {
+	CellRenderer
 }
 
 // cellRendererPixbuf implements the CellRendererPixbuf class.
@@ -18057,6 +18349,7 @@ func (o cellRendererProgress) SetOrientation(orientation Orientation) {
 //
 // The CellRendererSpin cell renderer was added in GTK 2.10.
 type CellRendererSpin interface {
+	CellRendererText
 }
 
 // cellRendererSpin implements the CellRendererSpin class.
@@ -18103,6 +18396,7 @@ func NewCellRendererSpin() CellRendererSpin {
 // to bind them to columns in your tree model using e.g.
 // gtk_tree_view_column_add_attribute().
 type CellRendererSpinner interface {
+	CellRenderer
 }
 
 // cellRendererSpinner implements the CellRendererSpinner class.
@@ -18147,6 +18441,7 @@ func NewCellRendererSpinner() CellRendererSpinner {
 // If the CellRenderer:mode is GTK_CELL_RENDERER_MODE_EDITABLE, the
 // CellRendererText allows to edit its text using an entry.
 type CellRendererText interface {
+	CellRenderer
 
 	// SetFixedHeightFromFontCellRendererText sets the height of a renderer to
 	// explicitly be determined by the “font” and “y_pad” property set on it.
@@ -18201,7 +18496,7 @@ func (r cellRendererText) SetFixedHeightFromFontCellRendererText(numberOfRows in
 	var _arg1 C.int                  // out
 
 	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.int)(numberOfRows)
+	_arg1 = C.int(numberOfRows)
 
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)
 }
@@ -18212,6 +18507,7 @@ func (r cellRendererText) SetFixedHeightFromFontCellRendererText(numberOfRows in
 // a radio or a checkbutton, depending on the CellRendererToggle:radio property.
 // When activated, it emits the CellRendererToggle::toggled signal.
 type CellRendererToggle interface {
+	CellRenderer
 
 	// Activatable returns whether the cell renderer is activatable. See
 	// gtk_cell_renderer_toggle_set_activatable().
@@ -18539,9 +18835,9 @@ func (c cellView) DisplayedRow() *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -18875,7 +19171,7 @@ func (s centerBox) SetBaselinePositionCenterBox(position BaselinePosition) {
 	var _arg1 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkBaselinePosition)(position)
+	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_center_box_set_baseline_position(_arg0, _arg1)
 }
@@ -18959,6 +19255,7 @@ func (o centerBox) SetOrientation(orientation Orientation) {
 //
 // The center widget is centered regarding the full width of the layout's.
 type CenterLayout interface {
+	LayoutManager
 
 	// BaselinePosition returns the baseline position of the layout.
 	BaselinePosition() BaselinePosition
@@ -19100,7 +19397,7 @@ func (s centerLayout) SetBaselinePositionCenterLayout(baselinePosition BaselineP
 	var _arg1 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkBaselinePosition)(baselinePosition)
+	_arg1 = C.GtkBaselinePosition(baselinePosition)
 
 	C.gtk_center_layout_set_baseline_position(_arg0, _arg1)
 }
@@ -19130,7 +19427,7 @@ func (s centerLayout) SetOrientationCenterLayout(orientation Orientation) {
 	var _arg1 C.GtkOrientation   // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_center_layout_set_orientation(_arg0, _arg1)
 }
@@ -19492,6 +19789,7 @@ func (b checkButton) BuildableID() string {
 // ClosureExpression: an expression using a custom `GClosure` to compute the
 // value from its parameters.
 type ClosureExpression interface {
+	Expression
 }
 
 // closureExpression implements the ClosureExpression class.
@@ -20287,7 +20585,7 @@ func (s columnView) InsertColumnColumnView(position uint, column ColumnViewColum
 	var _arg2 *C.GtkColumnViewColumn // out
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 	_arg2 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
 
 	C.gtk_column_view_insert_column(_arg0, _arg1, _arg2)
@@ -20380,7 +20678,7 @@ func (s columnView) SortByColumnColumnView(column ColumnViewColumn, direction So
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
-	_arg2 = (C.GtkSortType)(direction)
+	_arg2 = C.GtkSortType(direction)
 
 	C.gtk_column_view_sort_by_column(_arg0, _arg1, _arg2)
 }
@@ -20467,6 +20765,7 @@ func (s columnView) SetVScrollPolicy(policy ScrollablePolicy) {
 // [method@Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
 // clicking on the column header.
 type ColumnViewColumn interface {
+	gextras.Objector
 
 	// ColumnView gets the column view that's currently displaying this column.
 	//
@@ -20634,7 +20933,7 @@ func (s columnViewColumn) FixedWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -20745,7 +21044,7 @@ func (s columnViewColumn) SetFixedWidthColumnViewColumn(fixedWidth int) {
 	var _arg1 C.int                  // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(fixedWidth)
+	_arg1 = C.int(fixedWidth)
 
 	C.gtk_column_view_column_set_fixed_width(_arg0, _arg1)
 }
@@ -21059,7 +21358,7 @@ func (c comboBox) Active() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -21081,15 +21380,27 @@ func (c comboBox) ActiveID() string {
 
 func (c comboBox) ActiveIter() (TreeIter, bool) {
 	var _arg0 *C.GtkComboBox // out
-	var _iter TreeIter
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTreeIter  // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	_cret = C.gtk_combo_box_get_active_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_combo_box_get_active_iter(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _iter TreeIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -21137,7 +21448,7 @@ func (c comboBox) EntryTextColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -21169,7 +21480,7 @@ func (c comboBox) IDColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -21237,7 +21548,7 @@ func (c comboBox) SetActiveComboBox(index_ int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 
 	C.gtk_combo_box_set_active(_arg0, _arg1)
 }
@@ -21277,7 +21588,7 @@ func (c comboBox) SetButtonSensitivityComboBox(sensitivity SensitivityType) {
 	var _arg1 C.GtkSensitivityType // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GtkSensitivityType)(sensitivity)
+	_arg1 = C.GtkSensitivityType(sensitivity)
 
 	C.gtk_combo_box_set_button_sensitivity(_arg0, _arg1)
 }
@@ -21297,7 +21608,7 @@ func (c comboBox) SetEntryTextColumnComboBox(textColumn int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(textColumn)
+	_arg1 = C.int(textColumn)
 
 	C.gtk_combo_box_set_entry_text_column(_arg0, _arg1)
 }
@@ -21307,7 +21618,7 @@ func (c comboBox) SetIDColumnComboBox(idColumn int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(idColumn)
+	_arg1 = C.int(idColumn)
 
 	C.gtk_combo_box_set_id_column(_arg0, _arg1)
 }
@@ -21603,7 +21914,7 @@ func (c comboBoxText) InsertComboBoxText(position int, id string, text string) {
 	var _arg3 *C.char            // out
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 	_arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(C.CString(text))
@@ -21618,7 +21929,7 @@ func (c comboBoxText) InsertTextComboBoxText(position int, text string) {
 	var _arg2 *C.char            // out
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -21655,7 +21966,7 @@ func (c comboBoxText) RemoveComboBoxText(position int) {
 	var _arg1 C.int              // out
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 
 	C.gtk_combo_box_text_remove(_arg0, _arg1)
 }
@@ -21742,9 +22053,10 @@ func (c comboBoxText) Reorder(cell CellRenderer, position int) {
 
 // ConstantExpression: a constant value in a `GtkExpression`.
 type ConstantExpression interface {
+	Expression
 
 	// Value gets the value that a constant expression evaluates to.
-	Value() *externglib.Value
+	Value() externglib.Value
 }
 
 // constantExpression implements the ConstantExpression class.
@@ -21768,7 +22080,7 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 
 // NewConstantExpressionForValue creates an expression that always evaluates to
 // the given `value`.
-func NewConstantExpressionForValue(value *externglib.Value) ConstantExpression {
+func NewConstantExpressionForValue(value externglib.Value) ConstantExpression {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
 
@@ -21783,7 +22095,7 @@ func NewConstantExpressionForValue(value *externglib.Value) ConstantExpression {
 	return _constantExpression
 }
 
-func (e constantExpression) Value() *externglib.Value {
+func (e constantExpression) Value() externglib.Value {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GValue        // in
 
@@ -21791,7 +22103,7 @@ func (e constantExpression) Value() *externglib.Value {
 
 	_cret = C.gtk_constant_expression_get_value(_arg0)
 
-	var _value *externglib.Value // out
+	var _value externglib.Value // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
@@ -21812,6 +22124,7 @@ func (e constantExpression) Value() *externglib.Value {
 // The source and target, as well as their attributes, of a `GtkConstraint`
 // instance are immutable after creation.
 type Constraint interface {
+	gextras.Objector
 
 	// Constant retrieves the constant factor added to the source attributes'
 	// value.
@@ -21886,13 +22199,13 @@ func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute,
 	var _cret *C.GtkConstraint         // in
 
 	_arg1 = (C.gpointer)(unsafe.Pointer(target.Native()))
-	_arg2 = (C.GtkConstraintAttribute)(targetAttribute)
-	_arg3 = (C.GtkConstraintRelation)(relation)
+	_arg2 = C.GtkConstraintAttribute(targetAttribute)
+	_arg3 = C.GtkConstraintRelation(relation)
 	_arg4 = (C.gpointer)(unsafe.Pointer(source.Native()))
-	_arg5 = (C.GtkConstraintAttribute)(sourceAttribute)
-	_arg6 = (C.double)(multiplier)
-	_arg7 = (C.double)(constant)
-	_arg8 = (C.int)(strength)
+	_arg5 = C.GtkConstraintAttribute(sourceAttribute)
+	_arg6 = C.double(multiplier)
+	_arg7 = C.double(constant)
+	_arg8 = C.int(strength)
 
 	_cret = C.gtk_constraint_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
@@ -21914,10 +22227,10 @@ func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAt
 	var _cret *C.GtkConstraint         // in
 
 	_arg1 = (C.gpointer)(unsafe.Pointer(target.Native()))
-	_arg2 = (C.GtkConstraintAttribute)(targetAttribute)
-	_arg3 = (C.GtkConstraintRelation)(relation)
-	_arg4 = (C.double)(constant)
-	_arg5 = (C.int)(strength)
+	_arg2 = C.GtkConstraintAttribute(targetAttribute)
+	_arg3 = C.GtkConstraintRelation(relation)
+	_arg4 = C.double(constant)
+	_arg5 = C.int(strength)
 
 	_cret = C.gtk_constraint_new_constant(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -21938,7 +22251,7 @@ func (c constraint) Constant() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -21953,7 +22266,7 @@ func (c constraint) Multiplier() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -22013,7 +22326,7 @@ func (c constraint) Strength() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -22252,8 +22565,8 @@ func (g constraintGuide) SetMaxSizeConstraintGuide(width int, height int) {
 	var _arg2 C.int                 // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(width)
-	_arg2 = (C.int)(height)
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
 	C.gtk_constraint_guide_set_max_size(_arg0, _arg1, _arg2)
 }
@@ -22264,8 +22577,8 @@ func (g constraintGuide) SetMinSizeConstraintGuide(width int, height int) {
 	var _arg2 C.int                 // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(width)
-	_arg2 = (C.int)(height)
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
 	C.gtk_constraint_guide_set_min_size(_arg0, _arg1, _arg2)
 }
@@ -22287,8 +22600,8 @@ func (g constraintGuide) SetNatSizeConstraintGuide(width int, height int) {
 	var _arg2 C.int                 // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(width)
-	_arg2 = (C.int)(height)
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
 	C.gtk_constraint_guide_set_nat_size(_arg0, _arg1, _arg2)
 }
@@ -22298,7 +22611,7 @@ func (g constraintGuide) SetStrengthConstraintGuide(strength ConstraintStrength)
 	var _arg1 C.GtkConstraintStrength // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.GtkConstraintStrength)(strength)
+	_arg1 = C.GtkConstraintStrength(strength)
 
 	C.gtk_constraint_guide_set_strength(_arg0, _arg1)
 }
@@ -22621,6 +22934,7 @@ func (b constraintLayout) BuildableID() string {
 // ConstraintLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkConstraintLayout`.
 type ConstraintLayoutChild interface {
+	LayoutChild
 }
 
 // constraintLayoutChild implements the ConstraintLayoutChild class.
@@ -22815,6 +23129,7 @@ func (p cssProvider) String() string {
 // CustomFilter: `GtkCustomFilter` determines whether to include items with a
 // callback.
 type CustomFilter interface {
+	Filter
 }
 
 // customFilter implements the CustomFilter class.
@@ -22842,6 +23157,7 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 // functions for size negotiation, as a convenience API to ease the porting
 // towards the corresponding `GtkLayoutManager virtual functions.
 type CustomLayout interface {
+	LayoutManager
 }
 
 // customLayout implements the CustomLayout class.
@@ -22866,6 +23182,7 @@ func marshalCustomLayout(p uintptr) (interface{}, error) {
 // CustomSorter: `GtkCustomSorter` is a `GtkSorter` implementation that sorts
 // via a callback function.
 type CustomSorter interface {
+	Sorter
 }
 
 // customSorter implements the CustomSorter class.
@@ -23082,7 +23399,7 @@ func (d dialog) AddActionWidgetDialog(child Widget, responseId int) {
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (C.int)(responseId)
+	_arg2 = C.int(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
 }
@@ -23096,7 +23413,7 @@ func (d dialog) AddButtonDialog(buttonText string, responseId int) Widget {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(responseId)
+	_arg2 = C.int(responseId)
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
 
@@ -23149,7 +23466,7 @@ func (d dialog) ResponseForWidget(widget Widget) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -23160,7 +23477,7 @@ func (d dialog) WidgetForResponse(responseId int) Widget {
 	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.int)(responseId)
+	_arg1 = C.int(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
 
@@ -23176,7 +23493,7 @@ func (d dialog) ResponseDialog(responseId int) {
 	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.int)(responseId)
+	_arg1 = C.int(responseId)
 
 	C.gtk_dialog_response(_arg0, _arg1)
 }
@@ -23186,7 +23503,7 @@ func (d dialog) SetDefaultResponseDialog(responseId int) {
 	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.int)(responseId)
+	_arg1 = C.int(responseId)
 
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
 }
@@ -23197,7 +23514,7 @@ func (d dialog) SetResponseSensitiveDialog(responseId int, setting bool) {
 	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.int)(responseId)
+	_arg1 = C.int(responseId)
 	if setting {
 		_arg2 = C.TRUE
 	}
@@ -23448,7 +23765,7 @@ func (s directoryList) IOPriority() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -23513,7 +23830,7 @@ func (s directoryList) SetIOPriorityDirectoryList(ioPriority int) {
 	var _arg1 C.int               // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(ioPriority)
+	_arg1 = C.int(ioPriority)
 
 	C.gtk_directory_list_set_io_priority(_arg0, _arg1)
 }
@@ -23714,6 +24031,7 @@ func (s dragIcon) SetFocus(focus Widget) {
 // [signal@Gtk.DragSource::drag-end] signal and delete the data after it has
 // been transferred.
 type DragSource interface {
+	GestureSingle
 
 	// DragCancelDragSource cancels a currently ongoing drag operation.
 	DragCancelDragSource()
@@ -23847,7 +24165,7 @@ func (s dragSource) SetActionsDragSource(actions gdk.DragAction) {
 	var _arg1 C.GdkDragAction  // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GdkDragAction)(actions)
+	_arg1 = C.GdkDragAction(actions)
 
 	C.gtk_drag_source_set_actions(_arg0, _arg1)
 }
@@ -23870,8 +24188,8 @@ func (s dragSource) SetIconDragSource(paintable gdk.Paintable, hotX int, hotY in
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-	_arg2 = (C.int)(hotX)
-	_arg3 = (C.int)(hotY)
+	_arg2 = C.int(hotX)
+	_arg3 = C.int(hotY)
 
 	C.gtk_drag_source_set_icon(_arg0, _arg1, _arg2, _arg3)
 }
@@ -24016,7 +24334,7 @@ func (s drawingArea) ContentHeight() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -24031,7 +24349,7 @@ func (s drawingArea) ContentWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -24041,7 +24359,7 @@ func (s drawingArea) SetContentHeightDrawingArea(height int) {
 	var _arg1 C.int             // out
 
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(height)
+	_arg1 = C.int(height)
 
 	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
 }
@@ -24051,7 +24369,7 @@ func (s drawingArea) SetContentWidthDrawingArea(width int) {
 	var _arg1 C.int             // out
 
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(width)
+	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
 }
@@ -24097,6 +24415,7 @@ func (b drawingArea) BuildableID() string {
 // This controller is not able to accept drops, use [class@Gtk.DropTarget] for
 // that purpose.
 type DropControllerMotion interface {
+	EventController
 
 	// ContainsPointerDropControllerMotion returns if a Drag-and-Drop operation
 	// is within the widget @self or one of its children.
@@ -24422,7 +24741,7 @@ func (s dropDown) Selected() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -24499,7 +24818,7 @@ func (s dropDown) SetSelectedDropDown(position uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	C.gtk_drop_down_set_selected(_arg0, _arg1)
 }
@@ -24598,6 +24917,7 @@ func (b dropDown) BuildableID() string {
 // state during a Drag-and-Drop operation (e.g. switching tabs), you can use
 // [class@Gtk.DropControllerMotion].
 type DropTarget interface {
+	EventController
 
 	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
@@ -24612,7 +24932,7 @@ type DropTarget interface {
 	// Preload gets whether data should be preloaded on hover.
 	Preload() bool
 	// Value gets the current drop data, as a `GValue`.
-	Value() *externglib.Value
+	Value() externglib.Value
 	// RejectDropTarget rejects the ongoing drop operation.
 	//
 	// If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:drop]
@@ -24658,7 +24978,7 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 	var _cret *C.GtkDropTarget // in
 
 	_arg1 = (C.GType)(typ)
-	_arg2 = (C.GdkDragAction)(actions)
+	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gtk_drop_target_new(_arg1, _arg2)
 
@@ -24709,9 +25029,9 @@ func (s dropTarget) Formats() *gdk.ContentFormats {
 
 	var _contentFormats *gdk.ContentFormats // out
 
-	_contentFormats = gdk.WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
+	_contentFormats = (*gdk.ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_contentFormats, func(v **gdk.ContentFormats) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _contentFormats
@@ -24734,7 +25054,7 @@ func (s dropTarget) Preload() bool {
 	return _ok
 }
 
-func (s dropTarget) Value() *externglib.Value {
+func (s dropTarget) Value() externglib.Value {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GValue        // in
 
@@ -24742,7 +25062,7 @@ func (s dropTarget) Value() *externglib.Value {
 
 	_cret = C.gtk_drop_target_get_value(_arg0)
 
-	var _value *externglib.Value // out
+	var _value externglib.Value // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
@@ -24762,7 +25082,7 @@ func (s dropTarget) SetActionsDropTarget(actions gdk.DragAction) {
 	var _arg1 C.GdkDragAction  // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GdkDragAction)(actions)
+	_arg1 = C.GdkDragAction(actions)
 
 	C.gtk_drop_target_set_actions(_arg0, _arg1)
 }
@@ -24832,6 +25152,7 @@ func (s dropTarget) SetPreloadDropTarget(preload bool) {
 // drop target, and will receive the GTK_STATE_FLAG_DROP_ACTIVE state, which can
 // be used by themes to style the widget as a drop target.
 type DropTargetAsync interface {
+	EventController
 
 	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
@@ -24879,7 +25200,7 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) Dro
 	var _cret *C.GtkDropTargetAsync // in
 
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
-	_arg2 = (C.GdkDragAction)(actions)
+	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gtk_drop_target_async_new(_arg1, _arg2)
 
@@ -24915,9 +25236,9 @@ func (s dropTargetAsync) Formats() *gdk.ContentFormats {
 
 	var _contentFormats *gdk.ContentFormats // out
 
-	_contentFormats = gdk.WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
+	_contentFormats = (*gdk.ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_contentFormats, func(v **gdk.ContentFormats) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _contentFormats
@@ -24938,7 +25259,7 @@ func (s dropTargetAsync) SetActionsDropTargetAsync(actions gdk.DragAction) {
 	var _arg1 C.GdkDragAction       // out
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GdkDragAction)(actions)
+	_arg1 = C.GdkDragAction(actions)
 
 	C.gtk_drop_target_async_set_actions(_arg0, _arg1)
 }
@@ -25734,7 +26055,7 @@ func (e entry) GetAlignment() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -25749,7 +26070,7 @@ func (e entry) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	_attrList = pango.WrapAttrList(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
 
 	return _attrList
 }
@@ -25794,7 +26115,7 @@ func (e entry) CurrentIconDragSource() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -25837,7 +26158,7 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_activatable(_arg0, _arg1)
 
@@ -25853,12 +26174,26 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
-	var _iconArea gdk.Rectangle
+	var _arg2 C.GdkRectangle         // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
-	C.gtk_entry_get_icon_area(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_iconArea)))
+	C.gtk_entry_get_icon_area(_arg0, _arg1, &_arg2)
+
+	var _iconArea gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_iconArea = *refTmpOut
+	}
 
 	return _iconArea
 }
@@ -25870,14 +26205,14 @@ func (e entry) IconAtPos(x int, y int) int {
 	var _cret C.int       // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
 	_cret = C.gtk_entry_get_icon_at_pos(_arg0, _arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -25888,7 +26223,7 @@ func (e entry) IconGIcon(iconPos EntryIconPosition) gio.Icon {
 	var _cret *C.GIcon               // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
 
@@ -25905,7 +26240,7 @@ func (e entry) IconName(iconPos EntryIconPosition) string {
 	var _cret *C.char                // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_name(_arg0, _arg1)
 
@@ -25922,7 +26257,7 @@ func (e entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintable {
 	var _cret *C.GdkPaintable        // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_paintable(_arg0, _arg1)
 
@@ -25939,7 +26274,7 @@ func (e entry) IconSensitive(iconPos EntryIconPosition) bool {
 	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_sensitive(_arg0, _arg1)
 
@@ -25958,7 +26293,7 @@ func (e entry) IconStorageType(iconPos EntryIconPosition) ImageType {
 	var _cret C.GtkImageType         // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_storage_type(_arg0, _arg1)
 
@@ -25975,7 +26310,7 @@ func (e entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
 	var _cret *C.char                // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_tooltip_markup(_arg0, _arg1)
 
@@ -25993,7 +26328,7 @@ func (e entry) IconTooltipText(iconPos EntryIconPosition) string {
 	var _cret *C.char                // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_tooltip_text(_arg0, _arg1)
 
@@ -26045,7 +26380,7 @@ func (e entry) InvisibleChar() uint32 {
 
 	var _gunichar uint32 // out
 
-	_gunichar = (uint32)(_cret)
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -26060,7 +26395,7 @@ func (e entry) MaxLength() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -26107,7 +26442,7 @@ func (e entry) ProgressFraction() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -26122,7 +26457,7 @@ func (e entry) ProgressPulseStep() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -26137,7 +26472,7 @@ func (e entry) Tabs() *pango.TabArray {
 
 	var _tabArray *pango.TabArray // out
 
-	_tabArray = pango.WrapTabArray(unsafe.Pointer(_cret))
+	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
 
 	return _tabArray
 }
@@ -26152,7 +26487,7 @@ func (e entry) TextLength() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -26224,7 +26559,7 @@ func (e entry) SetAlignmentEntry(xalign float32) {
 	var _arg1 C.float     // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.float)(xalign)
+	_arg1 = C.float(xalign)
 
 	C.gtk_entry_set_alignment(_arg0, _arg1)
 }
@@ -26287,7 +26622,7 @@ func (e entry) SetIconActivatableEntry(iconPos EntryIconPosition, activatable bo
 	var _arg2 C.gboolean             // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if activatable {
 		_arg2 = C.TRUE
 	}
@@ -26302,9 +26637,9 @@ func (e entry) SetIconDragSourceEntry(iconPos EntryIconPosition, provider gdk.Co
 	var _arg3 C.GdkDragAction        // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
-	_arg3 = (C.GdkDragAction)(actions)
+	_arg3 = C.GdkDragAction(actions)
 
 	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
@@ -26315,7 +26650,7 @@ func (e entry) SetIconFromGIconEntry(iconPos EntryIconPosition, icon gio.Icon) {
 	var _arg2 *C.GIcon               // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
@@ -26327,7 +26662,7 @@ func (e entry) SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName stri
 	var _arg2 *C.char                // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -26340,7 +26675,7 @@ func (e entry) SetIconFromPaintableEntry(iconPos EntryIconPosition, paintable gd
 	var _arg2 *C.GdkPaintable        // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	C.gtk_entry_set_icon_from_paintable(_arg0, _arg1, _arg2)
@@ -26352,7 +26687,7 @@ func (e entry) SetIconSensitiveEntry(iconPos EntryIconPosition, sensitive bool) 
 	var _arg2 C.gboolean             // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if sensitive {
 		_arg2 = C.TRUE
 	}
@@ -26366,7 +26701,7 @@ func (e entry) SetIconTooltipMarkupEntry(iconPos EntryIconPosition, tooltip stri
 	var _arg2 *C.char                // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.char)(C.CString(tooltip))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -26379,7 +26714,7 @@ func (e entry) SetIconTooltipTextEntry(iconPos EntryIconPosition, tooltip string
 	var _arg2 *C.char                // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkEntryIconPosition)(iconPos)
+	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.char)(C.CString(tooltip))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -26391,7 +26726,7 @@ func (e entry) SetInputHintsEntry(hints InputHints) {
 	var _arg1 C.GtkInputHints // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkInputHints)(hints)
+	_arg1 = C.GtkInputHints(hints)
 
 	C.gtk_entry_set_input_hints(_arg0, _arg1)
 }
@@ -26401,7 +26736,7 @@ func (e entry) SetInputPurposeEntry(purpose InputPurpose) {
 	var _arg1 C.GtkInputPurpose // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.GtkInputPurpose)(purpose)
+	_arg1 = C.GtkInputPurpose(purpose)
 
 	C.gtk_entry_set_input_purpose(_arg0, _arg1)
 }
@@ -26411,7 +26746,7 @@ func (e entry) SetInvisibleCharEntry(ch uint32) {
 	var _arg1 C.gunichar  // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 
 	C.gtk_entry_set_invisible_char(_arg0, _arg1)
 }
@@ -26421,7 +26756,7 @@ func (e entry) SetMaxLengthEntry(max int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.int)(max)
+	_arg1 = C.int(max)
 
 	C.gtk_entry_set_max_length(_arg0, _arg1)
 }
@@ -26454,7 +26789,7 @@ func (e entry) SetProgressFractionEntry(fraction float64) {
 	var _arg1 C.double    // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.double)(fraction)
+	_arg1 = C.double(fraction)
 
 	C.gtk_entry_set_progress_fraction(_arg0, _arg1)
 }
@@ -26464,7 +26799,7 @@ func (e entry) SetProgressPulseStepEntry(fraction float64) {
 	var _arg1 C.double    // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (C.double)(fraction)
+	_arg1 = C.double(fraction)
 
 	C.gtk_entry_set_progress_pulse_step(_arg0, _arg1)
 }
@@ -26643,6 +26978,7 @@ func (e entry) SetWidthChars(nChars int) {
 // the case of important passwords. Or a derived class could integrate with an
 // application’s concept of undo/redo.
 type EntryBuffer interface {
+	gextras.Objector
 
 	// DeleteTextEntryBuffer deletes a sequence of characters from the buffer.
 	//
@@ -26726,7 +27062,7 @@ func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 
 	_arg1 = (*C.char)(C.CString(initialChars))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(nInitialChars)
+	_arg2 = C.int(nInitialChars)
 
 	_cret = C.gtk_entry_buffer_new(_arg1, _arg2)
 
@@ -26744,14 +27080,14 @@ func (b entryBuffer) DeleteTextEntryBuffer(position uint, nChars int) uint {
 	var _cret C.guint           // in
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.int)(nChars)
+	_arg1 = C.guint(position)
+	_arg2 = C.int(nChars)
 
 	_cret = C.gtk_entry_buffer_delete_text(_arg0, _arg1, _arg2)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -26762,8 +27098,8 @@ func (b entryBuffer) EmitDeletedTextEntryBuffer(position uint, nChars uint) {
 	var _arg2 C.guint           // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.guint)(nChars)
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nChars)
 
 	C.gtk_entry_buffer_emit_deleted_text(_arg0, _arg1, _arg2)
 }
@@ -26775,10 +27111,10 @@ func (b entryBuffer) EmitInsertedTextEntryBuffer(position uint, chars string, nC
 	var _arg3 C.guint           // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 	_arg2 = (*C.char)(C.CString(chars))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.guint)(nChars)
+	_arg3 = C.guint(nChars)
 
 	C.gtk_entry_buffer_emit_inserted_text(_arg0, _arg1, _arg2, _arg3)
 }
@@ -26793,7 +27129,7 @@ func (b entryBuffer) Bytes() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -26808,7 +27144,7 @@ func (b entryBuffer) Length() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -26823,7 +27159,7 @@ func (b entryBuffer) MaxLength() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -26851,16 +27187,16 @@ func (b entryBuffer) InsertTextEntryBuffer(position uint, chars string, nChars i
 	var _cret C.guint           // in
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 	_arg2 = (*C.char)(C.CString(chars))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(nChars)
+	_arg3 = C.int(nChars)
 
 	_cret = C.gtk_entry_buffer_insert_text(_arg0, _arg1, _arg2, _arg3)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -26870,7 +27206,7 @@ func (b entryBuffer) SetMaxLengthEntryBuffer(maxLength int) {
 	var _arg1 C.int             // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.int)(maxLength)
+	_arg1 = C.int(maxLength)
 
 	C.gtk_entry_buffer_set_max_length(_arg0, _arg1)
 }
@@ -26883,7 +27219,7 @@ func (b entryBuffer) SetTextEntryBuffer(chars string, nChars int) {
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(chars))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(nChars)
+	_arg2 = C.int(nChars)
 
 	C.gtk_entry_buffer_set_text(_arg0, _arg1, _arg2)
 }
@@ -27168,7 +27504,7 @@ func (c entryCompletion) MinimumKeyLength() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -27249,7 +27585,7 @@ func (c entryCompletion) TextColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -27291,7 +27627,7 @@ func (c entryCompletion) SetMinimumKeyLengthEntryCompletion(length int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(length)
+	_arg1 = C.int(length)
 
 	C.gtk_entry_completion_set_minimum_key_length(_arg0, _arg1)
 }
@@ -27347,7 +27683,7 @@ func (c entryCompletion) SetTextColumnEntryCompletion(column int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_entry_completion_set_text_column(_arg0, _arg1)
 }
@@ -27398,6 +27734,7 @@ func (c entryCompletion) Reorder(cell CellRenderer, position int) {
 // the basic concepts, such as the capture and bubble phases of even
 // propagation.
 type EventController interface {
+	gextras.Objector
 
 	// CurrentEvent returns the event that is currently being handled by the
 	// controller, and nil at other times.
@@ -27514,7 +27851,7 @@ func (c eventController) CurrentEventTime() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -27603,7 +27940,7 @@ func (c eventController) SetPropagationLimitEventController(limit PropagationLim
 	var _arg1 C.GtkPropagationLimit // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GtkPropagationLimit)(limit)
+	_arg1 = C.GtkPropagationLimit(limit)
 
 	C.gtk_event_controller_set_propagation_limit(_arg0, _arg1)
 }
@@ -27613,7 +27950,7 @@ func (c eventController) SetPropagationPhaseEventController(phase PropagationPha
 	var _arg1 C.GtkPropagationPhase // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GtkPropagationPhase)(phase)
+	_arg1 = C.GtkPropagationPhase(phase)
 
 	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
 }
@@ -27628,6 +27965,7 @@ func (c eventController) SetPropagationPhaseEventController(phase PropagationPha
 // updated to reflect focus changes inside the widget hierarchy that is rooted
 // at the controllers widget.
 type EventControllerFocus interface {
+	EventController
 
 	// ContainsFocusEventControllerFocus returns true if focus is within @self
 	// or one of its children.
@@ -27707,6 +28045,7 @@ func (s eventControllerFocus) IsFocusEventControllerFocus() bool {
 // EventControllerKey: `GtkEventControllerKey` is an event controller that
 // provides access to key events.
 type EventControllerKey interface {
+	EventController
 
 	// ForwardEventControllerKey forwards the current event of this @controller
 	// to a @widget.
@@ -27789,7 +28128,7 @@ func (c eventControllerKey) Group() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -27825,6 +28164,7 @@ func (c eventControllerKey) SetImContextEventControllerKey(imContext IMContext) 
 // It should only be used as a last resort if none of the other event
 // controllers or gestures do the job.
 type EventControllerLegacy interface {
+	EventController
 }
 
 // eventControllerLegacy implements the EventControllerLegacy class.
@@ -27869,6 +28209,7 @@ func NewEventControllerLegacy() EventControllerLegacy {
 // updated to reflect changes in the pointer position as it moves over the
 // widget.
 type EventControllerMotion interface {
+	EventController
 
 	// ContainsPointerEventControllerMotion returns if a pointer is within @self
 	// or one of its children.
@@ -27981,6 +28322,7 @@ func (s eventControllerMotion) IsPointerEventControllerMotion() bool {
 // scrolling with two X/Y velocity arguments that are consistent with the motion
 // that was received.
 type EventControllerScroll interface {
+	EventController
 
 	// Flags gets the flags conditioning the scroll controller behavior.
 	Flags() EventControllerScrollFlags
@@ -28014,7 +28356,7 @@ func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerS
 	var _arg1 C.GtkEventControllerScrollFlags // out
 	var _cret *C.GtkEventController           // in
 
-	_arg1 = (C.GtkEventControllerScrollFlags)(flags)
+	_arg1 = C.GtkEventControllerScrollFlags(flags)
 
 	_cret = C.gtk_event_controller_scroll_new(_arg1)
 
@@ -28045,7 +28387,7 @@ func (s eventControllerScroll) SetFlagsEventControllerScroll(flags EventControll
 	var _arg1 C.GtkEventControllerScrollFlags // out
 
 	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkEventControllerScrollFlags)(flags)
+	_arg1 = C.GtkEventControllerScrollFlags(flags)
 
 	C.gtk_event_controller_scroll_set_flags(_arg0, _arg1)
 }
@@ -29056,7 +29398,7 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg3 = (C.GtkFileChooserAction)(action)
+	_arg3 = C.GtkFileChooserAction(action)
 	_arg4 = (*C.char)(C.CString(acceptLabel))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(C.CString(cancelLabel))
@@ -29264,7 +29606,7 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	var _arg1 C.GtkFileChooserAction // out
 	var _cret *C.GtkWidget           // in
 
-	_arg1 = (C.GtkFileChooserAction)(action)
+	_arg1 = C.GtkFileChooserAction(action)
 
 	_cret = C.gtk_file_chooser_widget_new(_arg1)
 
@@ -29625,7 +29967,7 @@ func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -29653,6 +29995,7 @@ func (b fileFilter) BuildableID() string {
 // However, in particular for large lists or complex search methods, it is also
 // possible to subclass Filter and provide one's own filter.
 type Filter interface {
+	gextras.Objector
 
 	// ChangedFilter emits the Filter::changed signal to notify all users of the
 	// filter that the filter changed. Users of the filter should then check
@@ -29700,7 +30043,7 @@ func (s filter) ChangedFilter(change FilterChange) {
 	var _arg1 C.GtkFilterChange // out
 
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkFilterChange)(change)
+	_arg1 = C.GtkFilterChange(change)
 
 	C.gtk_filter_changed(_arg0, _arg1)
 }
@@ -29897,7 +30240,7 @@ func (s filterListModel) Pending() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -30042,8 +30385,8 @@ func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	var _x float64 // out
 	var _y float64 // out
 
-	_x = (float64)(_arg2)
-	_y = (float64)(_arg3)
+	_x = float64(_arg2)
+	_y = float64(_arg3)
 
 	return _x, _y
 }
@@ -30060,7 +30403,7 @@ func (f fixed) ChildTransform(widget Widget) *gsk.Transform {
 
 	var _transform *gsk.Transform // out
 
-	_transform = gsk.WrapTransform(unsafe.Pointer(_cret))
+	_transform = (*gsk.Transform)(unsafe.Pointer(_cret))
 
 	return _transform
 }
@@ -30073,8 +30416,8 @@ func (f fixed) MoveFixed(widget Widget, x float64, y float64) {
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
 
 	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
 }
@@ -30087,8 +30430,8 @@ func (f fixed) PutFixed(widget Widget, x float64, y float64) {
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
 
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
 }
@@ -30177,6 +30520,7 @@ func (b fixed) BuildableID() string {
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
 type FixedLayout interface {
+	LayoutManager
 }
 
 // fixedLayout implements the FixedLayout class.
@@ -30214,6 +30558,7 @@ func NewFixedLayout() FixedLayout {
 // FixedLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkFixedLayout`.
 type FixedLayoutChild interface {
+	LayoutChild
 
 	// Transform retrieves the transformation of the child.
 	Transform() *gsk.Transform
@@ -30251,7 +30596,7 @@ func (c fixedLayoutChild) Transform() *gsk.Transform {
 
 	var _transform *gsk.Transform // out
 
-	_transform = gsk.WrapTransform(unsafe.Pointer(_cret))
+	_transform = (*gsk.Transform)(unsafe.Pointer(_cret))
 
 	return _transform
 }
@@ -30338,7 +30683,7 @@ func (s flattenListModel) ModelForItem(position uint) gio.ListModel {
 	var _cret *C.GListModel          // in
 
 	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	_cret = C.gtk_flatten_list_model_get_model_for_item(_arg0, _arg1)
 
@@ -30556,7 +30901,7 @@ func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
 	var _cret *C.GtkFlowBoxChild // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.int)(idx)
+	_arg1 = C.int(idx)
 
 	_cret = C.gtk_flow_box_get_child_at_index(_arg0, _arg1)
 
@@ -30574,8 +30919,8 @@ func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
 	var _cret *C.GtkFlowBoxChild // in
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
 	_cret = C.gtk_flow_box_get_child_at_pos(_arg0, _arg1, _arg2)
 
@@ -30596,7 +30941,7 @@ func (b flowBox) ColumnSpacing() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -30628,7 +30973,7 @@ func (b flowBox) MaxChildrenPerLine() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -30643,7 +30988,7 @@ func (b flowBox) MinChildrenPerLine() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -30658,7 +31003,7 @@ func (b flowBox) RowSpacing() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -30685,7 +31030,7 @@ func (b flowBox) InsertFlowBox(widget Widget, position int) {
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.int)(position)
+	_arg2 = C.int(position)
 
 	C.gtk_flow_box_insert(_arg0, _arg1, _arg2)
 }
@@ -30751,7 +31096,7 @@ func (b flowBox) SetColumnSpacingFlowBox(spacing uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(spacing)
+	_arg1 = C.guint(spacing)
 
 	C.gtk_flow_box_set_column_spacing(_arg0, _arg1)
 }
@@ -30783,7 +31128,7 @@ func (b flowBox) SetMaxChildrenPerLineFlowBox(nChildren uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(nChildren)
+	_arg1 = C.guint(nChildren)
 
 	C.gtk_flow_box_set_max_children_per_line(_arg0, _arg1)
 }
@@ -30793,7 +31138,7 @@ func (b flowBox) SetMinChildrenPerLineFlowBox(nChildren uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(nChildren)
+	_arg1 = C.guint(nChildren)
 
 	C.gtk_flow_box_set_min_children_per_line(_arg0, _arg1)
 }
@@ -30803,7 +31148,7 @@ func (b flowBox) SetRowSpacingFlowBox(spacing uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(spacing)
+	_arg1 = C.guint(spacing)
 
 	C.gtk_flow_box_set_row_spacing(_arg0, _arg1)
 }
@@ -30813,7 +31158,7 @@ func (b flowBox) SetSelectionModeFlowBox(mode SelectionMode) {
 	var _arg1 C.GtkSelectionMode // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.GtkSelectionMode)(mode)
+	_arg1 = C.GtkSelectionMode(mode)
 
 	C.gtk_flow_box_set_selection_mode(_arg0, _arg1)
 }
@@ -30988,7 +31333,7 @@ func (c flowBoxChild) Index() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -31851,7 +32196,7 @@ func (f frame) LabelAlign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -31897,7 +32242,7 @@ func (f frame) SetLabelAlignFrame(xalign float32) {
 	var _arg1 C.float     // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.float)(xalign)
+	_arg1 = C.float(xalign)
 
 	C.gtk_frame_set_label_align(_arg0, _arg1)
 }
@@ -32261,8 +32606,8 @@ func (a glArea) RequiredVersion() (major int, minor int) {
 	var _major int // out
 	var _minor int // out
 
-	_major = (int)(_arg1)
-	_minor = (int)(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 
 	return _major, _minor
 }
@@ -32353,8 +32698,8 @@ func (a glArea) SetRequiredVersionGLArea(major int, minor int) {
 	var _arg2 C.int        // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.int)(major)
-	_arg2 = (C.int)(minor)
+	_arg1 = C.int(major)
+	_arg2 = C.int(minor)
 
 	C.gtk_gl_area_set_required_version(_arg0, _arg1, _arg2)
 }
@@ -32491,6 +32836,7 @@ func (b glArea) BuildableID() string {
 // - If the gesture has GTK_PHASE_NONE, ensuring events of type
 // GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the `GtkGesture`
 type Gesture interface {
+	EventController
 
 	// BoundingBox: if there are touch sequences being currently handled by
 	// @gesture, returns true and fills in @rect with the bounding box
@@ -32624,16 +32970,28 @@ func marshalGesture(p uintptr) (interface{}, error) {
 }
 
 func (g gesture) BoundingBox() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkGesture // out
-	var _rect gdk.Rectangle
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkGesture  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
-	_cret = C.gtk_gesture_get_bounding_box(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_gesture_get_bounding_box(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _rect gdk.Rectangle // out
+	var _ok bool            // out
 
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -32655,8 +33013,8 @@ func (g gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = (float64)(_arg1)
-	_y = (float64)(_arg2)
+	_x = float64(_arg1)
+	_y = float64(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -32706,7 +33064,7 @@ func (g gesture) LastUpdatedSequence() *gdk.EventSequence {
 
 	var _eventSequence *gdk.EventSequence // out
 
-	_eventSequence = gdk.WrapEventSequence(unsafe.Pointer(_cret))
+	_eventSequence = (*gdk.EventSequence)(unsafe.Pointer(_cret))
 
 	return _eventSequence
 }
@@ -32727,8 +33085,8 @@ func (g gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bo
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = (float64)(_arg2)
-	_y = (float64)(_arg3)
+	_x = float64(_arg2)
+	_y = float64(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -32843,7 +33201,7 @@ func (g gesture) SetSequenceStateGesture(sequence *gdk.EventSequence, state Even
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence.Native()))
-	_arg2 = (C.GtkEventSequenceState)(state)
+	_arg2 = C.GtkEventSequenceState(state)
 
 	_cret = C.gtk_gesture_set_sequence_state(_arg0, _arg1, _arg2)
 
@@ -32862,7 +33220,7 @@ func (g gesture) SetStateGesture(state EventSequenceState) bool {
 	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.GtkEventSequenceState)(state)
+	_arg1 = C.GtkEventSequenceState(state)
 
 	_cret = C.gtk_gesture_set_state(_arg0, _arg1)
 
@@ -32891,6 +33249,7 @@ func (g gesture) UngroupGesture() {
 // [signal@Gtk.GestureClick::stopped] is emitted, and the click counter is
 // reset.
 type GestureClick interface {
+	GestureSingle
 }
 
 // gestureClick implements the GestureClick class.
@@ -32934,6 +33293,7 @@ func NewGestureClick() GestureClick {
 // can be extracted through [method@Gtk.GestureDrag.get_offset] and
 // [method@Gtk.GestureDrag.get_start_point].
 type GestureDrag interface {
+	GestureSingle
 
 	// Offset gets the offset from the start point.
 	//
@@ -32994,8 +33354,8 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = (float64)(_arg1)
-	_y = (float64)(_arg2)
+	_x = float64(_arg1)
+	_y = float64(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -33017,8 +33377,8 @@ func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = (float64)(_arg1)
-	_y = (float64)(_arg2)
+	_x = float64(_arg1)
+	_y = float64(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -33041,6 +33401,7 @@ func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 // determined by the [property@Gtk.Settings:gtk-long-press-time] setting. It can
 // be modified by the [property@Gtk.GestureLongPress:delay-factor] property.
 type GestureLongPress interface {
+	GestureSingle
 
 	// DelayFactor returns the delay factor.
 	DelayFactor() float64
@@ -33094,7 +33455,7 @@ func (g gestureLongPress) DelayFactor() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -33104,7 +33465,7 @@ func (g gestureLongPress) SetDelayFactorGestureLongPress(delayFactor float64) {
 	var _arg1 C.double               // out
 
 	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.double)(delayFactor)
+	_arg1 = C.double(delayFactor)
 
 	C.gtk_gesture_long_press_set_delay_factor(_arg0, _arg1)
 }
@@ -33123,6 +33484,7 @@ func (g gestureLongPress) SetDelayFactorGestureLongPress(delayFactor float64) {
 // [signal@Gtk.GesturePan::pan] signal will be emitted as input events are
 // received, containing the offset in the given axis.
 type GesturePan interface {
+	GestureDrag
 
 	// Orientation returns the orientation of the pan gestures that this
 	// @gesture expects.
@@ -33157,7 +33519,7 @@ func NewGesturePan(orientation Orientation) GesturePan {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkGesture    // in
 
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_gesture_pan_new(_arg1)
 
@@ -33188,7 +33550,7 @@ func (g gesturePan) SetOrientationGesturePan(orientation Orientation) {
 	var _arg1 C.GtkOrientation // out
 
 	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_gesture_pan_set_orientation(_arg0, _arg1)
 }
@@ -33198,6 +33560,7 @@ func (g gesturePan) SetOrientationGesturePan(orientation Orientation) {
 // Whenever the angle between both handled sequences changes, the
 // [signal@Gtk.GestureRotate::angle-changed] signal is emitted.
 type GestureRotate interface {
+	Gesture
 
 	// AngleDelta gets the angle delta in radians.
 	//
@@ -33250,7 +33613,7 @@ func (g gestureRotate) AngleDelta() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -33270,6 +33633,7 @@ func (g gestureRotate) AngleDelta() float64 {
 // being currently pressed can be known through
 // [method@Gtk.GestureSingle.get_current_button].
 type GestureSingle interface {
+	Gesture
 
 	// Button returns the button number @gesture listens for.
 	//
@@ -33337,7 +33701,7 @@ func (g gestureSingle) Button() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -33352,7 +33716,7 @@ func (g gestureSingle) CurrentButton() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -33367,9 +33731,9 @@ func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
 
 	var _eventSequence *gdk.EventSequence // out
 
-	_eventSequence = gdk.WrapEventSequence(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_eventSequence, func(v *gdk.EventSequence) {
-		C.free(unsafe.Pointer(v.Native()))
+	_eventSequence = (*gdk.EventSequence)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_eventSequence, func(v **gdk.EventSequence) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _eventSequence
@@ -33414,7 +33778,7 @@ func (g gestureSingle) SetButtonGestureSingle(button uint) {
 	var _arg1 C.guint             // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.guint)(button)
+	_arg1 = C.guint(button)
 
 	C.gtk_gesture_single_set_button(_arg0, _arg1)
 }
@@ -33447,6 +33811,7 @@ func (g gestureSingle) SetTouchOnlyGestureSingle(touchOnly bool) {
 //
 // The provided signals just relay the basic information of the stylus events.
 type GestureStylus interface {
+	GestureSingle
 
 	// Axis returns the current value for the requested @axis.
 	//
@@ -33518,14 +33883,14 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.GdkAxisUse)(axis)
+	_arg1 = C.GdkAxisUse(axis)
 
 	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
 
 	var _value float64 // out
 	var _ok bool       // out
 
-	_value = (float64)(_arg2)
+	_value = float64(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -33584,6 +33949,7 @@ func (g gestureStylus) DeviceTool() gdk.DeviceTool {
 //
 // All velocities are reported in pixels/sec units.
 type GestureSwipe interface {
+	GestureSingle
 
 	// Velocity gets the current velocity.
 	//
@@ -33639,8 +34005,8 @@ func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool)
 	var _velocityY float64 // out
 	var _ok bool           // out
 
-	_velocityX = (float64)(_arg1)
-	_velocityY = (float64)(_arg2)
+	_velocityX = float64(_arg1)
+	_velocityY = float64(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -33655,6 +34021,7 @@ func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool)
 // [signal@Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
 // factor.
 type GestureZoom interface {
+	Gesture
 
 	// ScaleDelta gets the scale delta.
 	//
@@ -33707,7 +34074,7 @@ func (g gestureZoom) ScaleDelta() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -33910,10 +34277,10 @@ func (g grid) AttachGrid(child Widget, column int, row int, width int, height in
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (C.int)(column)
-	_arg3 = (C.int)(row)
-	_arg4 = (C.int)(width)
-	_arg5 = (C.int)(height)
+	_arg2 = C.int(column)
+	_arg3 = C.int(row)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
 
 	C.gtk_grid_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -33929,9 +34296,9 @@ func (g grid) AttachNextToGrid(child Widget, sibling Widget, side PositionType, 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
-	_arg3 = (C.GtkPositionType)(side)
-	_arg4 = (C.int)(width)
-	_arg5 = (C.int)(height)
+	_arg3 = C.GtkPositionType(side)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
 
 	C.gtk_grid_attach_next_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -33946,7 +34313,7 @@ func (g grid) BaselineRow() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -33958,8 +34325,8 @@ func (g grid) ChildAt(column int, row int) Widget {
 	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(column)
-	_arg2 = (C.int)(row)
+	_arg1 = C.int(column)
+	_arg2 = C.int(row)
 
 	_cret = C.gtk_grid_get_child_at(_arg0, _arg1, _arg2)
 
@@ -33997,7 +34364,7 @@ func (g grid) ColumnSpacing() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34008,7 +34375,7 @@ func (g grid) RowBaselinePosition(row int) BaselinePosition {
 	var _cret C.GtkBaselinePosition // in
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(row)
+	_arg1 = C.int(row)
 
 	_cret = C.gtk_grid_get_row_baseline_position(_arg0, _arg1)
 
@@ -34046,7 +34413,7 @@ func (g grid) RowSpacing() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34056,7 +34423,7 @@ func (g grid) InsertColumnGrid(position int) {
 	var _arg1 C.int      // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 
 	C.gtk_grid_insert_column(_arg0, _arg1)
 }
@@ -34068,7 +34435,7 @@ func (g grid) InsertNextToGrid(sibling Widget, side PositionType) {
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
-	_arg2 = (C.GtkPositionType)(side)
+	_arg2 = C.GtkPositionType(side)
 
 	C.gtk_grid_insert_next_to(_arg0, _arg1, _arg2)
 }
@@ -34078,7 +34445,7 @@ func (g grid) InsertRowGrid(position int) {
 	var _arg1 C.int      // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 
 	C.gtk_grid_insert_row(_arg0, _arg1)
 }
@@ -34101,10 +34468,10 @@ func (g grid) QueryChildGrid(child Widget) (column int, row int, width int, heig
 	var _width int  // out
 	var _height int // out
 
-	_column = (int)(_arg2)
-	_row = (int)(_arg3)
-	_width = (int)(_arg4)
-	_height = (int)(_arg5)
+	_column = int(_arg2)
+	_row = int(_arg3)
+	_width = int(_arg4)
+	_height = int(_arg5)
 
 	return _column, _row, _width, _height
 }
@@ -34124,7 +34491,7 @@ func (g grid) RemoveColumnGrid(position int) {
 	var _arg1 C.int      // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 
 	C.gtk_grid_remove_column(_arg0, _arg1)
 }
@@ -34134,7 +34501,7 @@ func (g grid) RemoveRowGrid(position int) {
 	var _arg1 C.int      // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 
 	C.gtk_grid_remove_row(_arg0, _arg1)
 }
@@ -34144,7 +34511,7 @@ func (g grid) SetBaselineRowGrid(row int) {
 	var _arg1 C.int      // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(row)
+	_arg1 = C.int(row)
 
 	C.gtk_grid_set_baseline_row(_arg0, _arg1)
 }
@@ -34166,7 +34533,7 @@ func (g grid) SetColumnSpacingGrid(spacing uint) {
 	var _arg1 C.guint    // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.guint)(spacing)
+	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_set_column_spacing(_arg0, _arg1)
 }
@@ -34177,8 +34544,8 @@ func (g grid) SetRowBaselinePositionGrid(row int, pos BaselinePosition) {
 	var _arg2 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(row)
-	_arg2 = (C.GtkBaselinePosition)(pos)
+	_arg1 = C.int(row)
+	_arg2 = C.GtkBaselinePosition(pos)
 
 	C.gtk_grid_set_row_baseline_position(_arg0, _arg1, _arg2)
 }
@@ -34200,7 +34567,7 @@ func (g grid) SetRowSpacingGrid(spacing uint) {
 	var _arg1 C.guint    // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.guint)(spacing)
+	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_set_row_spacing(_arg0, _arg1)
 }
@@ -34260,6 +34627,7 @@ func (o grid) SetOrientation(orientation Orientation) {
 // attached to the same row or column; however, if you only ever need a single
 // row or column, you should consider using `GtkBoxLayout`.
 type GridLayout interface {
+	LayoutManager
 
 	// BaselineRow retrieves the row set with
 	// gtk_grid_layout_set_baseline_row().
@@ -34349,7 +34717,7 @@ func (g gridLayout) BaselineRow() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -34381,7 +34749,7 @@ func (g gridLayout) ColumnSpacing() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34392,7 +34760,7 @@ func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
 	var _cret C.GtkBaselinePosition // in
 
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(row)
+	_arg1 = C.int(row)
 
 	_cret = C.gtk_grid_layout_get_row_baseline_position(_arg0, _arg1)
 
@@ -34430,7 +34798,7 @@ func (g gridLayout) RowSpacing() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34440,7 +34808,7 @@ func (g gridLayout) SetBaselineRowGridLayout(row int) {
 	var _arg1 C.int            // out
 
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(row)
+	_arg1 = C.int(row)
 
 	C.gtk_grid_layout_set_baseline_row(_arg0, _arg1)
 }
@@ -34462,7 +34830,7 @@ func (g gridLayout) SetColumnSpacingGridLayout(spacing uint) {
 	var _arg1 C.guint          // out
 
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.guint)(spacing)
+	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_layout_set_column_spacing(_arg0, _arg1)
 }
@@ -34473,8 +34841,8 @@ func (g gridLayout) SetRowBaselinePositionGridLayout(row int, pos BaselinePositi
 	var _arg2 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.int)(row)
-	_arg2 = (C.GtkBaselinePosition)(pos)
+	_arg1 = C.int(row)
+	_arg2 = C.GtkBaselinePosition(pos)
 
 	C.gtk_grid_layout_set_row_baseline_position(_arg0, _arg1, _arg2)
 }
@@ -34496,13 +34864,14 @@ func (g gridLayout) SetRowSpacingGridLayout(spacing uint) {
 	var _arg1 C.guint          // out
 
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	_arg1 = (C.guint)(spacing)
+	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_layout_set_row_spacing(_arg0, _arg1)
 }
 
 // GridLayoutChild: `GtkLayoutChild` subclass for children in a `GtkGridLayout`.
 type GridLayoutChild interface {
+	LayoutChild
 
 	// Column retrieves the column number to which @child attaches its left
 	// side.
@@ -34553,7 +34922,7 @@ func (c gridLayoutChild) Column() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -34568,7 +34937,7 @@ func (c gridLayoutChild) ColumnSpan() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -34583,7 +34952,7 @@ func (c gridLayoutChild) Row() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -34598,7 +34967,7 @@ func (c gridLayoutChild) RowSpan() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -34608,7 +34977,7 @@ func (c gridLayoutChild) SetColumnGridLayoutChild(column int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_grid_layout_child_set_column(_arg0, _arg1)
 }
@@ -34618,7 +34987,7 @@ func (c gridLayoutChild) SetColumnSpanGridLayoutChild(span int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(span)
+	_arg1 = C.int(span)
 
 	C.gtk_grid_layout_child_set_column_span(_arg0, _arg1)
 }
@@ -34628,7 +34997,7 @@ func (c gridLayoutChild) SetRowGridLayoutChild(row int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(row)
+	_arg1 = C.int(row)
 
 	C.gtk_grid_layout_child_set_row(_arg0, _arg1)
 }
@@ -34638,7 +35007,7 @@ func (c gridLayoutChild) SetRowSpanGridLayoutChild(span int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(span)
+	_arg1 = C.int(span)
 
 	C.gtk_grid_layout_child_set_row_span(_arg0, _arg1)
 }
@@ -34801,7 +35170,7 @@ func (s gridView) MaxColumns() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34816,7 +35185,7 @@ func (s gridView) MinColumns() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34880,7 +35249,7 @@ func (s gridView) SetMaxColumnsGridView(maxColumns uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(maxColumns)
+	_arg1 = C.guint(maxColumns)
 
 	C.gtk_grid_view_set_max_columns(_arg0, _arg1)
 }
@@ -34890,7 +35259,7 @@ func (s gridView) SetMinColumnsGridView(minColumns uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(minColumns)
+	_arg1 = C.guint(minColumns)
 
 	C.gtk_grid_view_set_min_columns(_arg0, _arg1)
 }
@@ -35318,6 +35687,7 @@ func (b headerBar) BuildableID() string {
 // loadable modules. An input method module is a small shared library which
 // provides a `GIOExtension` for the extension point named "gtk-im-module".
 type IMContext interface {
+	gextras.Objector
 
 	// DeleteSurroundingIMContext asks the widget that the input context is
 	// attached to delete characters around the cursor position by emitting the
@@ -35459,8 +35829,8 @@ func (c imContext) DeleteSurroundingIMContext(offset int, nChars int) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(offset)
-	_arg2 = (C.int)(nChars)
+	_arg1 = C.int(offset)
+	_arg2 = C.int(nChars)
 
 	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
 
@@ -35490,10 +35860,10 @@ func (c imContext) FilterKeyIMContext(press bool, surface gdk.Surface, device gd
 	}
 	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 	_arg3 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg4 = (C.guint32)(time)
-	_arg5 = (C.guint)(keycode)
-	_arg6 = (C.GdkModifierType)(state)
-	_arg7 = (C.int)(group)
+	_arg4 = C.guint32(time)
+	_arg5 = C.guint(keycode)
+	_arg6 = C.GdkModifierType(state)
+	_arg7 = C.int(group)
 
 	_cret = C.gtk_im_context_filter_key(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -35542,23 +35912,26 @@ func (c imContext) FocusOutIMContext() {
 }
 
 func (c imContext) PreeditString() (string, *pango.AttrList, int) {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.char         // in
-	var _attrs *pango.AttrList
-	var _arg3 C.int // in
+	var _arg0 *C.GtkIMContext  // out
+	var _arg1 *C.char          // in
+	var _arg2 *C.PangoAttrList // in
+	var _arg3 C.int            // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrs)), &_arg3)
+	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var _str string // out
-
-	var _cursorPos int // out
+	var _str string            // out
+	var _attrs *pango.AttrList // out
+	var _cursorPos int         // out
 
 	_str = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
-
-	_cursorPos = (int)(_arg3)
+	_attrs = (*pango.AttrList)(unsafe.Pointer(_arg2))
+	runtime.SetFinalizer(&_attrs, func(v **pango.AttrList) {
+		C.free(unsafe.Pointer(v))
+	})
+	_cursorPos = int(_arg3)
 
 	return _str, _attrs, _cursorPos
 }
@@ -35579,7 +35952,7 @@ func (c imContext) Surrounding() (string, int, bool) {
 
 	_text = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
-	_cursorIndex = (int)(_arg2)
+	_cursorIndex = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -35605,8 +35978,8 @@ func (c imContext) SurroundingWithSelection() (text string, cursorIndex int, anc
 
 	_text = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
-	_cursorIndex = (int)(_arg2)
-	_anchorIndex = (int)(_arg3)
+	_cursorIndex = int(_arg2)
+	_anchorIndex = int(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -35651,8 +36024,8 @@ func (c imContext) SetSurroundingIMContext(text string, len int, cursorIndex int
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(len)
-	_arg3 = (C.int)(cursorIndex)
+	_arg2 = C.int(len)
+	_arg3 = C.int(cursorIndex)
 
 	C.gtk_im_context_set_surrounding(_arg0, _arg1, _arg2, _arg3)
 }
@@ -35667,9 +36040,9 @@ func (c imContext) SetSurroundingWithSelectionIMContext(text string, len int, cu
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(len)
-	_arg3 = (C.int)(cursorIndex)
-	_arg4 = (C.int)(anchorIndex)
+	_arg2 = C.int(len)
+	_arg3 = C.int(cursorIndex)
+	_arg4 = C.int(anchorIndex)
 
 	C.gtk_im_context_set_surrounding_with_selection(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -35711,6 +36084,7 @@ func (c imContext) SetUsePreeditIMContext(usePreedit bool) {
 //
 // yields U+0123 LATIN SMALL LETTER G WITH CEDILLA, i.e. ģ.
 type IMContextSimple interface {
+	IMContext
 
 	// AddComposeFileIMContextSimple adds an additional table from the X11
 	// compose file.
@@ -35767,6 +36141,7 @@ func (c imContextSimple) AddComposeFileIMContextSimple(composeFile string) {
 // implement their `im-module` property for switching between different input
 // methods.
 type IMMulticontext interface {
+	IMContext
 
 	// ContextID gets the id of the currently active delegate of the @context.
 	ContextID() string
@@ -35895,8 +36270,8 @@ func NewIconPaintableForFile(file gio.File, size int, scale int) IconPaintable {
 	var _cret *C.GtkIconPaintable // in
 
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg2 = (C.int)(size)
-	_arg3 = (C.int)(scale)
+	_arg2 = C.int(size)
+	_arg3 = C.int(scale)
 
 	_cret = C.gtk_icon_paintable_new_for_file(_arg1, _arg2, _arg3)
 
@@ -35980,6 +36355,7 @@ func (s iconPaintable) IsSymbolicIconPaintable() bool {
 // // icon name 48, // icon size 1, // scale 0, // flags); paintable =
 // GDK_PAINTABLE (icon); // Use the paintable g_object_unref (icon); “`
 type IconTheme interface {
+	gextras.Objector
 
 	// AddResourcePathIconTheme adds a resource path that will be looked at when
 	// looking for icons, similar to search paths.
@@ -36204,7 +36580,7 @@ func (s iconTheme) IconSizes(iconName string) []int {
 		src := unsafe.Slice(_cret, i)
 		_gints = make([]int, i)
 		for i := range src {
-			_gints[i] = (int)(src[i])
+			_gints[i] = int(src[i])
 		}
 	}
 
@@ -36333,10 +36709,10 @@ func (s iconTheme) LookupByGIconIconTheme(icon gio.Icon, size int, scale int, di
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = (C.int)(size)
-	_arg3 = (C.int)(scale)
-	_arg4 = (C.GtkTextDirection)(direction)
-	_arg5 = (C.GtkIconLookupFlags)(flags)
+	_arg2 = C.int(size)
+	_arg3 = C.int(scale)
+	_arg4 = C.GtkTextDirection(direction)
+	_arg5 = C.GtkIconLookupFlags(flags)
 
 	_cret = C.gtk_icon_theme_lookup_by_gicon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -36369,10 +36745,10 @@ func (s iconTheme) LookupIconIconTheme(iconName string, fallbacks []string, size
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-	_arg3 = (C.int)(size)
-	_arg4 = (C.int)(scale)
-	_arg5 = (C.GtkTextDirection)(direction)
-	_arg6 = (C.GtkIconLookupFlags)(flags)
+	_arg3 = C.int(size)
+	_arg4 = C.int(scale)
+	_arg5 = C.GtkTextDirection(direction)
+	_arg6 = C.GtkIconLookupFlags(flags)
 
 	_cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -36388,8 +36764,18 @@ func (s iconTheme) SetResourcePathIconTheme(path *string) {
 	var _arg1 **C.char        // out
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
-	_arg1 = (**C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn string
+		var refTmpOut *C.char
+
+		refTmpIn = path
+
+		refTmpOut = (*C.char)(C.CString(refTmpIn))
+		defer C.free(unsafe.Pointer(refTmpOut))
+
+		out0 := &refTmpOut
+		_arg1 = out0
+	}
 
 	C.gtk_icon_theme_set_resource_path(_arg0, _arg1)
 }
@@ -36404,7 +36790,7 @@ func (s iconTheme) SetSearchPathIconTheme(path []string) {
 	{
 		out := unsafe.Slice(_arg1, len(path))
 		for i := range path {
-			out[i] = (*C.gchar)(C.CString(path[i]))
+			out[i] = (*C.char)(C.CString(path[i]))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -36764,7 +37150,7 @@ func (i iconView) EnableModelDragDestIconView(formats *gdk.ContentFormats, actio
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
-	_arg2 = (C.GdkDragAction)(actions)
+	_arg2 = C.GdkDragAction(actions)
 
 	C.gtk_icon_view_enable_model_drag_dest(_arg0, _arg1, _arg2)
 }
@@ -36776,9 +37162,9 @@ func (i iconView) EnableModelDragSourceIconView(startButtonMask gdk.ModifierType
 	var _arg3 C.GdkDragAction      // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.GdkModifierType)(startButtonMask)
+	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg2 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
-	_arg3 = (C.GdkDragAction)(actions)
+	_arg3 = C.GdkDragAction(actions)
 
 	C.gtk_icon_view_enable_model_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
@@ -36804,17 +37190,29 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (gdk.Rectangle, bo
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 *C.GtkTreePath     // out
 	var _arg2 *C.GtkCellRenderer // out
-	var _rect gdk.Rectangle
-	var _cret C.gboolean // in
+	var _arg3 C.GdkRectangle     // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
-	_cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _rect gdk.Rectangle // out
+	var _ok bool            // out
 
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -36832,7 +37230,7 @@ func (i iconView) ColumnSpacing() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -36847,24 +37245,29 @@ func (i iconView) Columns() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 func (i iconView) Cursor() (*TreePath, CellRenderer, bool) {
-	var _arg0 *C.GtkIconView // out
-	var _path *TreePath
+	var _arg0 *C.GtkIconView     // out
+	var _arg1 *C.GtkTreePath     // in
 	var _arg2 *C.GtkCellRenderer // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	_cret = C.gtk_icon_view_get_cursor(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
+	_cret = C.gtk_icon_view_get_cursor(_arg0, &_arg1, &_arg2)
 
+	var _path *TreePath    // out
 	var _cell CellRenderer // out
 	var _ok bool           // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg1))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(CellRenderer)
 	if _cret != 0 {
 		_ok = true
@@ -36874,22 +37277,27 @@ func (i iconView) Cursor() (*TreePath, CellRenderer, bool) {
 }
 
 func (i iconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool) {
-	var _arg0 *C.GtkIconView // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-	var _path *TreePath
+	var _arg0 *C.GtkIconView            // out
+	var _arg1 C.int                     // out
+	var _arg2 C.int                     // out
+	var _arg3 *C.GtkTreePath            // in
 	var _arg4 C.GtkIconViewDropPosition // in
 	var _cret C.gboolean                // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(dragX)
-	_arg2 = (C.int)(dragY)
+	_arg1 = C.int(dragX)
+	_arg2 = C.int(dragY)
 
-	_cret = C.gtk_icon_view_get_dest_item_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4)
+	_cret = C.gtk_icon_view_get_dest_item_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
+	var _path *TreePath           // out
 	var _pos IconViewDropPosition // out
 	var _ok bool                  // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_pos = IconViewDropPosition(_arg4)
 	if _cret != 0 {
 		_ok = true
@@ -36899,38 +37307,48 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPo
 }
 
 func (i iconView) DragDestItem() (*TreePath, IconViewDropPosition) {
-	var _arg0 *C.GtkIconView // out
-	var _path *TreePath
+	var _arg0 *C.GtkIconView            // out
+	var _arg1 *C.GtkTreePath            // in
 	var _arg2 C.GtkIconViewDropPosition // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	C.gtk_icon_view_get_drag_dest_item(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
+	C.gtk_icon_view_get_drag_dest_item(_arg0, &_arg1, &_arg2)
 
+	var _path *TreePath           // out
 	var _pos IconViewDropPosition // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg1))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_pos = IconViewDropPosition(_arg2)
 
 	return _path, _pos
 }
 
 func (i iconView) ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool) {
-	var _arg0 *C.GtkIconView // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-	var _path *TreePath
+	var _arg0 *C.GtkIconView     // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
+	var _arg3 *C.GtkTreePath     // in
 	var _arg4 *C.GtkCellRenderer // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
-	_cret = C.gtk_icon_view_get_item_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4)
+	_cret = C.gtk_icon_view_get_item_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
+	var _path *TreePath    // out
 	var _cell CellRenderer // out
 	var _ok bool           // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(CellRenderer)
 	if _cret != 0 {
 		_ok = true
@@ -36951,7 +37369,7 @@ func (i iconView) ItemColumn(path *TreePath) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -36981,7 +37399,7 @@ func (i iconView) ItemPadding() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -36998,7 +37416,7 @@ func (i iconView) ItemRow(path *TreePath) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37013,7 +37431,7 @@ func (i iconView) ItemWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37028,7 +37446,7 @@ func (i iconView) Margin() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37043,7 +37461,7 @@ func (i iconView) MarkupColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37070,16 +37488,16 @@ func (i iconView) PathAtPos(x int, y int) *TreePath {
 	var _cret *C.GtkTreePath // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
 	_cret = C.gtk_icon_view_get_path_at_pos(_arg0, _arg1, _arg2)
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -37095,7 +37513,7 @@ func (i iconView) PixbufColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37127,7 +37545,7 @@ func (i iconView) RowSpacing() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37157,7 +37575,7 @@ func (i iconView) Spacing() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37172,7 +37590,7 @@ func (i iconView) TextColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37187,7 +37605,7 @@ func (i iconView) TooltipColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37198,25 +37616,40 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *Tr
 	var _arg2 C.int           // out
 	var _arg3 C.gboolean      // out
 	var _arg4 *C.GtkTreeModel // in
-	var _path *TreePath
-	var _iter TreeIter
-	var _cret C.gboolean // in
+	var _arg5 *C.GtkTreePath  // in
+	var _arg6 C.GtkTreeIter   // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 	if keyboardTip {
 		_arg3 = C.TRUE
 	}
 
-	_cret = C.gtk_icon_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, (**C.GtkTreePath)(unsafe.Pointer(&_path)), (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_icon_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 
 	var _model TreeModel // out
-
-	var _ok bool // out
+	var _path *TreePath  // out
+	var _iter TreeIter   // out
+	var _ok bool         // out
 
 	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeModel)
+	_path = (*TreePath)(unsafe.Pointer(_arg5))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
 
+		in0 := &_arg6
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -37226,16 +37659,26 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *Tr
 
 func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool) {
 	var _arg0 *C.GtkIconView // out
-	var _startPath *TreePath
-	var _endPath *TreePath
-	var _cret C.gboolean // in
+	var _arg1 *C.GtkTreePath // in
+	var _arg2 *C.GtkTreePath // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	_cret = C.gtk_icon_view_get_visible_range(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_startPath)), (**C.GtkTreePath)(unsafe.Pointer(&_endPath)))
+	_cret = C.gtk_icon_view_get_visible_range(_arg0, &_arg1, &_arg2)
 
-	var _ok bool // out
+	var _startPath *TreePath // out
+	var _endPath *TreePath   // out
+	var _ok bool             // out
 
+	_startPath = (*TreePath)(unsafe.Pointer(_arg1))
+	runtime.SetFinalizer(&_startPath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
+	_endPath = (*TreePath)(unsafe.Pointer(_arg2))
+	runtime.SetFinalizer(&_endPath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -37284,8 +37727,8 @@ func (i iconView) ScrollToPathIconView(path *TreePath, useAlign bool, rowAlign f
 	if useAlign {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (C.float)(rowAlign)
-	_arg4 = (C.float)(colAlign)
+	_arg3 = C.float(rowAlign)
+	_arg4 = C.float(colAlign)
 
 	C.gtk_icon_view_scroll_to_path(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -37325,7 +37768,7 @@ func (i iconView) SetColumnSpacingIconView(columnSpacing int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(columnSpacing)
+	_arg1 = C.int(columnSpacing)
 
 	C.gtk_icon_view_set_column_spacing(_arg0, _arg1)
 }
@@ -37335,7 +37778,7 @@ func (i iconView) SetColumnsIconView(columns int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(columns)
+	_arg1 = C.int(columns)
 
 	C.gtk_icon_view_set_columns(_arg0, _arg1)
 }
@@ -37363,7 +37806,7 @@ func (i iconView) SetDragDestItemIconView(path *TreePath, pos IconViewDropPositi
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-	_arg2 = (C.GtkIconViewDropPosition)(pos)
+	_arg2 = C.GtkIconViewDropPosition(pos)
 
 	C.gtk_icon_view_set_drag_dest_item(_arg0, _arg1, _arg2)
 }
@@ -37373,7 +37816,7 @@ func (i iconView) SetItemOrientationIconView(orientation Orientation) {
 	var _arg1 C.GtkOrientation // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_icon_view_set_item_orientation(_arg0, _arg1)
 }
@@ -37383,7 +37826,7 @@ func (i iconView) SetItemPaddingIconView(itemPadding int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(itemPadding)
+	_arg1 = C.int(itemPadding)
 
 	C.gtk_icon_view_set_item_padding(_arg0, _arg1)
 }
@@ -37393,7 +37836,7 @@ func (i iconView) SetItemWidthIconView(itemWidth int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(itemWidth)
+	_arg1 = C.int(itemWidth)
 
 	C.gtk_icon_view_set_item_width(_arg0, _arg1)
 }
@@ -37403,7 +37846,7 @@ func (i iconView) SetMarginIconView(margin int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(margin)
+	_arg1 = C.int(margin)
 
 	C.gtk_icon_view_set_margin(_arg0, _arg1)
 }
@@ -37413,7 +37856,7 @@ func (i iconView) SetMarkupColumnIconView(column int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_icon_view_set_markup_column(_arg0, _arg1)
 }
@@ -37433,7 +37876,7 @@ func (i iconView) SetPixbufColumnIconView(column int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_icon_view_set_pixbuf_column(_arg0, _arg1)
 }
@@ -37455,7 +37898,7 @@ func (i iconView) SetRowSpacingIconView(rowSpacing int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(rowSpacing)
+	_arg1 = C.int(rowSpacing)
 
 	C.gtk_icon_view_set_row_spacing(_arg0, _arg1)
 }
@@ -37465,7 +37908,7 @@ func (i iconView) SetSelectionModeIconView(mode SelectionMode) {
 	var _arg1 C.GtkSelectionMode // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.GtkSelectionMode)(mode)
+	_arg1 = C.GtkSelectionMode(mode)
 
 	C.gtk_icon_view_set_selection_mode(_arg0, _arg1)
 }
@@ -37475,7 +37918,7 @@ func (i iconView) SetSpacingIconView(spacing int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(spacing)
+	_arg1 = C.int(spacing)
 
 	C.gtk_icon_view_set_spacing(_arg0, _arg1)
 }
@@ -37485,7 +37928,7 @@ func (i iconView) SetTextColumnIconView(column int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_icon_view_set_text_column(_arg0, _arg1)
 }
@@ -37509,7 +37952,7 @@ func (i iconView) SetTooltipColumnIconView(column int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_icon_view_set_tooltip_column(_arg0, _arg1)
 }
@@ -38027,7 +38470,7 @@ func (i image) PixelSize() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -38115,7 +38558,7 @@ func (i image) SetIconSizeImage(iconSize IconSize) {
 	var _arg1 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.GtkIconSize)(iconSize)
+	_arg1 = C.GtkIconSize(iconSize)
 
 	C.gtk_image_set_icon_size(_arg0, _arg1)
 }
@@ -38125,7 +38568,7 @@ func (i image) SetPixelSizeImage(pixelSize int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(pixelSize)
+	_arg1 = C.int(pixelSize)
 
 	C.gtk_image_set_pixel_size(_arg0, _arg1)
 }
@@ -38331,7 +38774,7 @@ func (i infoBar) AddActionWidgetInfoBar(child Widget, responseId int) {
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (C.int)(responseId)
+	_arg2 = C.int(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
 }
@@ -38345,7 +38788,7 @@ func (i infoBar) AddButtonInfoBar(buttonText string, responseId int) Button {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(responseId)
+	_arg2 = C.int(responseId)
 
 	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
 
@@ -38440,7 +38883,7 @@ func (i infoBar) ResponseInfoBar(responseId int) {
 	var _arg1 C.int         // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(responseId)
+	_arg1 = C.int(responseId)
 
 	C.gtk_info_bar_response(_arg0, _arg1)
 }
@@ -38450,7 +38893,7 @@ func (i infoBar) SetDefaultResponseInfoBar(responseId int) {
 	var _arg1 C.int         // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(responseId)
+	_arg1 = C.int(responseId)
 
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
 }
@@ -38460,7 +38903,7 @@ func (i infoBar) SetMessageTypeInfoBar(messageType MessageType) {
 	var _arg1 C.GtkMessageType // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.GtkMessageType)(messageType)
+	_arg1 = C.GtkMessageType(messageType)
 
 	C.gtk_info_bar_set_message_type(_arg0, _arg1)
 }
@@ -38471,7 +38914,7 @@ func (i infoBar) SetResponseSensitiveInfoBar(responseId int, setting bool) {
 	var _arg2 C.gboolean    // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(responseId)
+	_arg1 = C.int(responseId)
 	if setting {
 		_arg2 = C.TRUE
 	}
@@ -38538,6 +38981,7 @@ func (b infoBar) BuildableID() string {
 // KeyvalTrigger: a `GtkShortcutTrigger` that triggers when a specific keyval
 // and modifiers are pressed.
 type KeyvalTrigger interface {
+	ShortcutTrigger
 
 	// Keyval gets the keyval that must be pressed to succeed triggering @self.
 	Keyval() uint
@@ -38572,8 +39016,8 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger {
 	var _arg2 C.GdkModifierType     // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg1 = (C.guint)(keyval)
-	_arg2 = (C.GdkModifierType)(modifiers)
+	_arg1 = C.guint(keyval)
+	_arg2 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_keyval_trigger_new(_arg1, _arg2)
 
@@ -38594,7 +39038,7 @@ func (s keyvalTrigger) Keyval() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -39133,7 +39577,7 @@ func (s label) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	_attrList = pango.WrapAttrList(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
 
 	return _attrList
 }
@@ -39240,8 +39684,8 @@ func (s label) LayoutOffsets() (x int, y int) {
 	var _x int // out
 	var _y int // out
 
-	_x = (int)(_arg1)
-	_y = (int)(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -39256,7 +39700,7 @@ func (s label) Lines() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -39271,7 +39715,7 @@ func (s label) MaxWidthChars() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -39286,7 +39730,7 @@ func (s label) MnemonicKeyval() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -39337,8 +39781,8 @@ func (s label) SelectionBounds() (start int, end int, ok bool) {
 	var _end int   // out
 	var _ok bool   // out
 
-	_start = (int)(_arg1)
-	_end = (int)(_arg2)
+	_start = int(_arg1)
+	_end = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -39422,7 +39866,7 @@ func (s label) WidthChars() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -39469,7 +39913,7 @@ func (s label) Xalign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -39484,7 +39928,7 @@ func (s label) Yalign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -39495,8 +39939,8 @@ func (s label) SelectRegionLabel(startOffset int, endOffset int) {
 	var _arg2 C.int       // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(startOffset)
-	_arg2 = (C.int)(endOffset)
+	_arg1 = C.int(startOffset)
+	_arg2 = C.int(endOffset)
 
 	C.gtk_label_select_region(_arg0, _arg1, _arg2)
 }
@@ -39516,7 +39960,7 @@ func (s label) SetEllipsizeLabel(mode pango.EllipsizeMode) {
 	var _arg1 C.PangoEllipsizeMode // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.PangoEllipsizeMode)(mode)
+	_arg1 = C.PangoEllipsizeMode(mode)
 
 	C.gtk_label_set_ellipsize(_arg0, _arg1)
 }
@@ -39536,7 +39980,7 @@ func (s label) SetJustifyLabel(jtype Justification) {
 	var _arg1 C.GtkJustification // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkJustification)(jtype)
+	_arg1 = C.GtkJustification(jtype)
 
 	C.gtk_label_set_justify(_arg0, _arg1)
 }
@@ -39557,7 +40001,7 @@ func (s label) SetLinesLabel(lines int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(lines)
+	_arg1 = C.int(lines)
 
 	C.gtk_label_set_lines(_arg0, _arg1)
 }
@@ -39589,7 +40033,7 @@ func (s label) SetMaxWidthCharsLabel(nChars int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(nChars)
+	_arg1 = C.int(nChars)
 
 	C.gtk_label_set_max_width_chars(_arg0, _arg1)
 }
@@ -39679,7 +40123,7 @@ func (s label) SetWidthCharsLabel(nChars int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(nChars)
+	_arg1 = C.int(nChars)
 
 	C.gtk_label_set_width_chars(_arg0, _arg1)
 }
@@ -39701,7 +40145,7 @@ func (s label) SetWrapModeLabel(wrapMode pango.WrapMode) {
 	var _arg1 C.PangoWrapMode // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.PangoWrapMode)(wrapMode)
+	_arg1 = C.PangoWrapMode(wrapMode)
 
 	C.gtk_label_set_wrap_mode(_arg0, _arg1)
 }
@@ -39711,7 +40155,7 @@ func (s label) SetXalignLabel(xalign float32) {
 	var _arg1 C.float     // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(xalign)
+	_arg1 = C.float(xalign)
 
 	C.gtk_label_set_xalign(_arg0, _arg1)
 }
@@ -39721,7 +40165,7 @@ func (s label) SetYalignLabel(yalign float32) {
 	var _arg1 C.float     // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(yalign)
+	_arg1 = C.float(yalign)
 
 	C.gtk_label_set_yalign(_arg0, _arg1)
 }
@@ -39768,6 +40212,7 @@ func (b label) BuildableID() string {
 // A `GtkLayoutChild` instance is only ever valid while a widget is part of a
 // layout.
 type LayoutChild interface {
+	gextras.Objector
 
 	// ChildWidget retrieves the `GtkWidget` associated to the given
 	// @layout_child.
@@ -39867,6 +40312,7 @@ func (l layoutChild) LayoutManager() LayoutManager {
 // [method@Gtk.LayoutManager.layout_changed] every time a property is updated,
 // in order to queue a new size measuring and allocation.
 type LayoutManager interface {
+	gextras.Objector
 
 	// AllocateLayoutManager assigns the given @width, @height, and @baseline to
 	// a @widget, and computes the position and sizes of the children of the
@@ -39927,9 +40373,9 @@ func (m layoutManager) AllocateLayoutManager(widget Widget, width int, height in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.int)(width)
-	_arg3 = (C.int)(height)
-	_arg4 = (C.int)(baseline)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	_arg4 = C.int(baseline)
 
 	C.gtk_layout_manager_allocate(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -40001,8 +40447,8 @@ func (m layoutManager) MeasureLayoutManager(widget Widget, orientation Orientati
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.GtkOrientation)(orientation)
-	_arg3 = (C.int)(forSize)
+	_arg2 = C.GtkOrientation(orientation)
+	_arg3 = C.int(forSize)
 
 	C.gtk_layout_manager_measure(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
 
@@ -40011,10 +40457,10 @@ func (m layoutManager) MeasureLayoutManager(widget Widget, orientation Orientati
 	var _minimumBaseline int // out
 	var _naturalBaseline int // out
 
-	_minimum = (int)(_arg4)
-	_natural = (int)(_arg5)
-	_minimumBaseline = (int)(_arg6)
-	_naturalBaseline = (int)(_arg7)
+	_minimum = int(_arg4)
+	_natural = int(_arg5)
+	_minimumBaseline = int(_arg6)
+	_naturalBaseline = int(_arg7)
 
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
 }
@@ -40199,8 +40645,8 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	var _arg2 C.double     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (C.double)(minValue)
-	_arg2 = (C.double)(maxValue)
+	_arg1 = C.double(minValue)
+	_arg2 = C.double(maxValue)
 
 	_cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
 
@@ -40219,7 +40665,7 @@ func (s levelBar) AddOffsetValueLevelBar(name string, value float64) {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.double)(value)
+	_arg2 = C.double(value)
 
 	C.gtk_level_bar_add_offset_value(_arg0, _arg1, _arg2)
 }
@@ -40251,7 +40697,7 @@ func (s levelBar) MaxValue() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -40266,7 +40712,7 @@ func (s levelBar) MinValue() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -40301,7 +40747,7 @@ func (s levelBar) OffsetValue(name string) (float64, bool) {
 	var _value float64 // out
 	var _ok bool       // out
 
-	_value = (float64)(_arg2)
+	_value = float64(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -40319,7 +40765,7 @@ func (s levelBar) Value() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -40352,7 +40798,7 @@ func (s levelBar) SetMaxValueLevelBar(value float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(value)
+	_arg1 = C.double(value)
 
 	C.gtk_level_bar_set_max_value(_arg0, _arg1)
 }
@@ -40362,7 +40808,7 @@ func (s levelBar) SetMinValueLevelBar(value float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(value)
+	_arg1 = C.double(value)
 
 	C.gtk_level_bar_set_min_value(_arg0, _arg1)
 }
@@ -40372,7 +40818,7 @@ func (s levelBar) SetModeLevelBar(mode LevelBarMode) {
 	var _arg1 C.GtkLevelBarMode // out
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkLevelBarMode)(mode)
+	_arg1 = C.GtkLevelBarMode(mode)
 
 	C.gtk_level_bar_set_mode(_arg0, _arg1)
 }
@@ -40382,7 +40828,7 @@ func (s levelBar) SetValueLevelBar(value float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(value)
+	_arg1 = C.double(value)
 
 	C.gtk_level_bar_set_value(_arg0, _arg1)
 }
@@ -40999,7 +41445,7 @@ func (b listBox) RowAtIndex(index_ int) ListBoxRow {
 	var _cret *C.GtkListBoxRow // in
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 
 	_cret = C.gtk_list_box_get_row_at_index(_arg0, _arg1)
 
@@ -41016,7 +41462,7 @@ func (b listBox) RowAtY(y int) ListBoxRow {
 	var _cret *C.GtkListBoxRow // in
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.int)(y)
+	_arg1 = C.int(y)
 
 	_cret = C.gtk_list_box_get_row_at_y(_arg0, _arg1)
 
@@ -41081,7 +41527,7 @@ func (b listBox) InsertListBox(child Widget, position int) {
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (C.int)(position)
+	_arg2 = C.int(position)
 
 	C.gtk_list_box_insert(_arg0, _arg1, _arg2)
 }
@@ -41185,7 +41631,7 @@ func (b listBox) SetSelectionModeListBox(mode SelectionMode) {
 	var _arg1 C.GtkSelectionMode // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.GtkSelectionMode)(mode)
+	_arg1 = C.GtkSelectionMode(mode)
 
 	C.gtk_list_box_set_selection_mode(_arg0, _arg1)
 }
@@ -41402,7 +41848,7 @@ func (r listBoxRow) Index() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -41553,6 +41999,7 @@ func (b listBoxRow) BuildableID() string {
 // 2. The bound stage where the listitem references an item from the list. The
 // [property@Gtk.ListItem:item] property is not nil.
 type ListItem interface {
+	gextras.Objector
 
 	// Activatable checks if a list item has been set to be activatable via
 	// gtk_list_item_set_activatable().
@@ -41683,7 +42130,7 @@ func (s listItem) Position() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -41806,6 +42253,7 @@ func (s listItem) SetSelectableListItem(selectable bool) {
 // [method@Gtk.ListView.set_factory]. Reusing factories across different views
 // is allowed, but very uncommon.
 type ListItemFactory interface {
+	gextras.Objector
 }
 
 // listItemFactory implements the ListItemFactory class.
@@ -41935,7 +42383,7 @@ type ListStore interface {
 	// SetValueListStore sets the data in the cell specified by @iter and
 	// @column. The type of @value must be convertible to the type of the
 	// column.
-	SetValueListStore(iter *TreeIter, column int, value *externglib.Value)
+	SetValueListStore(iter *TreeIter, column int, value externglib.Value)
 	// SetValuesvListStore: a variant of gtk_list_store_set_valist() which takes
 	// the columns and values as two arrays, instead of varargs. This function
 	// is mainly intended for language-bindings and in case the number of
@@ -41993,11 +42441,25 @@ func NewListStoreV(types []externglib.Type) ListStore {
 
 func (l listStore) AppendListStore() TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _iter TreeIter
+	var _arg1 C.GtkTreeIter   // in
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	C.gtk_list_store_append(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	C.gtk_list_store_append(_arg0, &_arg1)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -42012,54 +42474,96 @@ func (l listStore) ClearListStore() {
 
 func (l listStore) InsertListStore(position int) TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _iter TreeIter
-	var _arg2 C.int // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 C.int           // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
-	_arg2 = (C.int)(position)
+	_arg2 = C.int(position)
 
-	C.gtk_list_store_insert(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_list_store_insert(_arg0, &_arg1, _arg2)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
 
 func (l listStore) InsertAfterListStore(sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
-	C.gtk_list_store_insert_after(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_list_store_insert_after(_arg0, &_arg1, _arg2)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
 
 func (l listStore) InsertBeforeListStore(sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
-	C.gtk_list_store_insert_before(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_list_store_insert_before(_arg0, &_arg1, _arg2)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
 
 func (l listStore) InsertWithValuesvListStore(position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _iter TreeIter
-	var _arg2 C.int // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 C.int           // out
 	var _arg3 *C.int
 	var _arg5 C.int
 	var _arg4 *C.GValue
 	var _arg5 C.int
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
-	_arg2 = (C.int)(position)
+	_arg2 = C.int(position)
 	_arg5 = C.int(len(columns))
 	_arg3 = (*C.int)(unsafe.Pointer(&columns[0]))
 	_arg5 = C.int(len(values))
@@ -42068,11 +42572,35 @@ func (l listStore) InsertWithValuesvListStore(position int, columns []int, value
 	{
 		out := unsafe.Slice(_arg4, len(values))
 		for i := range values {
-			out[i] = (C.GValue)(unsafe.Pointer(&values[i].GValue))
+			{
+				var refTmpIn *externglib.Value
+				var refTmpOut *C.GValue
+
+				in0 := &values[i]
+				refTmpIn = in0
+
+				refTmpOut = (*C.GValue)(unsafe.Pointer(&refTmpIn.GValue))
+
+				out[i] = *refTmpOut
+			}
 		}
 	}
 
-	C.gtk_list_store_insert_with_valuesv(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3, _arg4, _arg5)
+	C.gtk_list_store_insert_with_valuesv(_arg0, &_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -42122,11 +42650,25 @@ func (s listStore) MoveBeforeListStore(iter *TreeIter, position *TreeIter) {
 
 func (l listStore) PrependListStore() TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _iter TreeIter
+	var _arg1 C.GtkTreeIter   // in
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	C.gtk_list_store_prepend(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	C.gtk_list_store_prepend(_arg0, &_arg1)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -42183,7 +42725,7 @@ func (l listStore) SetColumnTypesListStore(types []externglib.Type) {
 	C.gtk_list_store_set_column_types(_arg0, _arg1, _arg2)
 }
 
-func (l listStore) SetValueListStore(iter *TreeIter, column int, value *externglib.Value) {
+func (l listStore) SetValueListStore(iter *TreeIter, column int, value externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.int           // out
@@ -42191,7 +42733,7 @@ func (l listStore) SetValueListStore(iter *TreeIter, column int, value *externgl
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (C.int)(column)
+	_arg2 = C.int(column)
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_list_store_set_value(_arg0, _arg1, _arg2, _arg3)
@@ -42215,7 +42757,17 @@ func (l listStore) SetValuesvListStore(iter *TreeIter, columns []int, values []e
 	{
 		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			out[i] = (C.GValue)(unsafe.Pointer(&values[i].GValue))
+			{
+				var refTmpIn *externglib.Value
+				var refTmpOut *C.GValue
+
+				in0 := &values[i]
+				refTmpIn = in0
+
+				refTmpOut = (*C.GValue)(unsafe.Pointer(&refTmpIn.GValue))
+
+				out[i] = *refTmpOut
+			}
 		}
 	}
 
@@ -42238,11 +42790,11 @@ func (b listStore) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
 
-func (d listStore) DragDataReceived(dest *TreePath, value *externglib.Value) bool {
+func (d listStore) DragDataReceived(dest *TreePath, value externglib.Value) bool {
 	return WrapTreeDragDest(gextras.InternObject(d)).DragDataReceived(dest, value)
 }
 
-func (d listStore) RowDropPossible(destPath *TreePath, value *externglib.Value) bool {
+func (d listStore) RowDropPossible(destPath *TreePath, value externglib.Value) bool {
 	return WrapTreeDragDest(gextras.InternObject(d)).RowDropPossible(destPath, value)
 }
 
@@ -43591,7 +44143,7 @@ func (s mediaStream) Duration() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -43689,7 +44241,7 @@ func (s mediaStream) Timestamp() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -43704,7 +44256,7 @@ func (s mediaStream) Volume() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -43827,7 +44379,7 @@ func (s mediaStream) PreparedMediaStream(hasAudio bool, hasVideo bool, seekable 
 	if seekable {
 		_arg3 = C.TRUE
 	}
-	_arg4 = (C.gint64)(duration)
+	_arg4 = C.gint64(duration)
 
 	C.gtk_media_stream_prepared(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -43847,7 +44399,7 @@ func (s mediaStream) SeekMediaStream(timestamp int64) {
 	var _arg1 C.gint64          // out
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint64)(timestamp)
+	_arg1 = C.gint64(timestamp)
 
 	C.gtk_media_stream_seek(_arg0, _arg1)
 }
@@ -43909,7 +44461,7 @@ func (s mediaStream) SetVolumeMediaStream(volume float64) {
 	var _arg1 C.double          // out
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(volume)
+	_arg1 = C.double(volume)
 
 	C.gtk_media_stream_set_volume(_arg0, _arg1)
 }
@@ -43937,7 +44489,7 @@ func (s mediaStream) UpdateMediaStream(timestamp int64) {
 	var _arg1 C.gint64          // out
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint64)(timestamp)
+	_arg1 = C.gint64(timestamp)
 
 	C.gtk_media_stream_update(_arg0, _arg1)
 }
@@ -44230,7 +44782,7 @@ func (m menuButton) SetDirectionMenuButton(direction ArrowType) {
 	var _arg1 C.GtkArrowType   // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.GtkArrowType)(direction)
+	_arg1 = C.GtkArrowType(direction)
 
 	C.gtk_menu_button_set_direction(_arg0, _arg1)
 }
@@ -44498,6 +45050,7 @@ func (s messageDialog) SetFocus(focus Widget) {
 // MnemonicAction: a `GtkShortcutAction` that calls
 // gtk_widget_mnemonic_activate().
 type MnemonicAction interface {
+	ShortcutAction
 }
 
 // mnemonicAction implements the MnemonicAction class.
@@ -44525,6 +45078,7 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 // Mnemonics require a *mnemonic modifier* (typically <kbd>Alt</kbd>) to be
 // pressed together with the mnemonic key.
 type MnemonicTrigger interface {
+	ShortcutTrigger
 
 	// Keyval gets the keyval that must be pressed to succeed triggering @self.
 	Keyval() uint
@@ -44558,7 +45112,7 @@ func NewMnemonicTrigger(keyval uint) MnemonicTrigger {
 	var _arg1 C.guint               // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg1 = (C.guint)(keyval)
+	_arg1 = C.guint(keyval)
 
 	_cret = C.gtk_mnemonic_trigger_new(_arg1)
 
@@ -44579,7 +45133,7 @@ func (s mnemonicTrigger) Keyval() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -44598,6 +45152,7 @@ func (s mnemonicTrigger) Keyval() uint {
 // When necessary, `GtkMountOperation` shows dialogs to let the user enter
 // passwords, ask questions or show processes blocking unmount.
 type MountOperation interface {
+	gio.MountOperation
 
 	// Display gets the display on which windows of the `GtkMountOperation` will
 	// be shown.
@@ -44768,7 +45323,7 @@ func (s multiFilter) RemoveMultiFilter(position uint) {
 	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)
 }
@@ -44967,7 +45522,7 @@ func (s multiSorter) RemoveMultiSorter(position uint) {
 	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)
 }
@@ -44978,6 +45533,7 @@ func (b multiSorter) BuildableID() string {
 
 // NamedAction: a `GtkShortcutAction` that activates an action by name.
 type NamedAction interface {
+	ShortcutAction
 
 	// ActionName returns the name of the action that will be activated.
 	ActionName() string
@@ -45056,6 +45612,7 @@ func (s namedAction) ActionName() string {
 // widgets, and GTK does not keep them alive. It is your responsibility to keep
 // a reference until you are done with the object.
 type NativeDialog interface {
+	gextras.Objector
 
 	// DestroyNativeDialog destroys a dialog.
 	//
@@ -45256,6 +45813,7 @@ func (s nativeDialog) ShowNativeDialog() {
 
 // NeverTrigger: a `GtkShortcutTrigger` that never triggers.
 type NeverTrigger interface {
+	ShortcutTrigger
 }
 
 // neverTrigger implements the NeverTrigger class.
@@ -45697,7 +46255,7 @@ func (n notebook) AppendPageNotebook(child Widget, tabLabel Widget) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -45718,7 +46276,7 @@ func (n notebook) AppendPageMenuNotebook(child Widget, tabLabel Widget, menuLabe
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -45739,7 +46297,7 @@ func (n notebook) ActionWidget(packType PackType) Widget {
 	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (C.GtkPackType)(packType)
+	_arg1 = C.GtkPackType(packType)
 
 	_cret = C.gtk_notebook_get_action_widget(_arg0, _arg1)
 
@@ -45760,7 +46318,7 @@ func (n notebook) CurrentPage() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -45824,7 +46382,7 @@ func (n notebook) NPages() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -45835,7 +46393,7 @@ func (n notebook) NthPage(pageNum int) Widget {
 	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (C.int)(pageNum)
+	_arg1 = C.int(pageNum)
 
 	_cret = C.gtk_notebook_get_nth_page(_arg0, _arg1)
 
@@ -46026,13 +46584,13 @@ func (n notebook) InsertPageNotebook(child Widget, tabLabel Widget, position int
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
-	_arg3 = (C.int)(position)
+	_arg3 = C.int(position)
 
 	_cret = C.gtk_notebook_insert_page(_arg0, _arg1, _arg2, _arg3)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -46049,13 +46607,13 @@ func (n notebook) InsertPageMenuNotebook(child Widget, tabLabel Widget, menuLabe
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 	_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
-	_arg4 = (C.int)(position)
+	_arg4 = C.int(position)
 
 	_cret = C.gtk_notebook_insert_page_menu(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -46080,7 +46638,7 @@ func (n notebook) PageNumNotebook(child Widget) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -46115,7 +46673,7 @@ func (n notebook) PrependPageNotebook(child Widget, tabLabel Widget) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -46136,7 +46694,7 @@ func (n notebook) PrependPageMenuNotebook(child Widget, tabLabel Widget, menuLab
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -46154,7 +46712,7 @@ func (n notebook) RemovePageNotebook(pageNum int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (C.int)(pageNum)
+	_arg1 = C.int(pageNum)
 
 	C.gtk_notebook_remove_page(_arg0, _arg1)
 }
@@ -46166,7 +46724,7 @@ func (n notebook) ReorderChildNotebook(child Widget, position int) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (C.int)(position)
+	_arg2 = C.int(position)
 
 	C.gtk_notebook_reorder_child(_arg0, _arg1, _arg2)
 }
@@ -46178,7 +46736,7 @@ func (n notebook) SetActionWidgetNotebook(widget Widget, packType PackType) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.GtkPackType)(packType)
+	_arg2 = C.GtkPackType(packType)
 
 	C.gtk_notebook_set_action_widget(_arg0, _arg1, _arg2)
 }
@@ -46188,7 +46746,7 @@ func (n notebook) SetCurrentPageNotebook(pageNum int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (C.int)(pageNum)
+	_arg1 = C.int(pageNum)
 
 	C.gtk_notebook_set_current_page(_arg0, _arg1)
 }
@@ -46309,7 +46867,7 @@ func (n notebook) SetTabPosNotebook(pos PositionType) {
 	var _arg1 C.GtkPositionType // out
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (C.GtkPositionType)(pos)
+	_arg1 = C.GtkPositionType(pos)
 
 	C.gtk_notebook_set_tab_pos(_arg0, _arg1)
 }
@@ -46362,6 +46920,7 @@ func (b notebook) BuildableID() string {
 
 // NotebookPage: `GtkNotebookPage` is an auxiliary object used by `GtkNotebook`.
 type NotebookPage interface {
+	gextras.Objector
 
 	// Child returns the notebook child to which @page belongs.
 	Child() Widget
@@ -46403,6 +46962,7 @@ func (p notebookPage) Child() Widget {
 
 // NothingAction: a `GtkShortcutAction` that does nothing.
 type NothingAction interface {
+	ShortcutAction
 }
 
 // nothingAction implements the NothingAction class.
@@ -46429,6 +46989,7 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 // To obtain the numbers to compare, this sorter evaluates a
 // [class@Gtk.Expression].
 type NumericSorter interface {
+	Sorter
 
 	// Expression gets the expression that is evaluated to obtain numbers from
 	// items.
@@ -46532,13 +47093,14 @@ func (s numericSorter) SetSortOrderNumericSorter(sortOrder SortType) {
 	var _arg1 C.GtkSortType       // out
 
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkSortType)(sortOrder)
+	_arg1 = C.GtkSortType(sortOrder)
 
 	C.gtk_numeric_sorter_set_sort_order(_arg0, _arg1)
 }
 
 // ObjectExpression: a `GObject` value in a `GtkExpression`.
 type ObjectExpression interface {
+	Expression
 
 	// Object gets the object that the expression evaluates to.
 	Object() gextras.Objector
@@ -46853,6 +47415,7 @@ func (b overlay) BuildableID() string {
 // `GtkOverlay`. It only listed here so that its layout properties get
 // documented.
 type OverlayLayout interface {
+	LayoutManager
 }
 
 // overlayLayout implements the OverlayLayout class.
@@ -46890,6 +47453,7 @@ func NewOverlayLayout() OverlayLayout {
 // OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkOverlayLayout`.
 type OverlayLayoutChild interface {
+	LayoutChild
 
 	// ClipOverlay retrieves whether the child is clipped.
 	ClipOverlay() bool
@@ -47019,6 +47583,7 @@ func (c overlayLayoutChild) SetMeasureOverlayLayoutChild(measure bool) {
 // type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
 // required that those are made stateful and accepting this `GVariantType`.
 type PadController interface {
+	EventController
 
 	// SetActionPadController adds an individual action to @controller.
 	//
@@ -47097,9 +47662,9 @@ func (c padController) SetActionPadController(typ PadActionType, index int, mode
 	var _arg5 *C.char             // out
 
 	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GtkPadActionType)(typ)
-	_arg2 = (C.int)(index)
-	_arg3 = (C.int)(mode)
+	_arg1 = C.GtkPadActionType(typ)
+	_arg2 = C.int(index)
+	_arg3 = C.int(mode)
 	_arg4 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(C.CString(actionName))
@@ -47161,6 +47726,7 @@ func (c padController) SetActionEntriesPadController(entries []PadActionEntry) {
 //
 // } “`
 type PageSetup interface {
+	gextras.Objector
 
 	// CopyPageSetup copies a `GtkPageSetup`.
 	CopyPageSetup() PageSetup
@@ -47352,13 +47918,13 @@ func (s pageSetup) BottomMargin(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_page_setup_get_bottom_margin(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -47369,13 +47935,13 @@ func (s pageSetup) LeftMargin(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_page_setup_get_left_margin(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -47401,13 +47967,13 @@ func (s pageSetup) PageHeight(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_page_setup_get_page_height(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -47418,13 +47984,13 @@ func (s pageSetup) PageWidth(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_page_setup_get_page_width(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -47435,13 +48001,13 @@ func (s pageSetup) PaperHeight(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_page_setup_get_paper_height(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -47456,7 +48022,7 @@ func (s pageSetup) PaperSize() *PaperSize {
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 
 	return _paperSize
 }
@@ -47467,13 +48033,13 @@ func (s pageSetup) PaperWidth(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_page_setup_get_paper_width(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -47484,13 +48050,13 @@ func (s pageSetup) RightMargin(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_page_setup_get_right_margin(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -47501,13 +48067,13 @@ func (s pageSetup) TopMargin(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_page_setup_get_top_margin(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -47556,8 +48122,8 @@ func (s pageSetup) SetBottomMarginPageSetup(margin float64, unit Unit) {
 	var _arg2 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(margin)
-	_arg2 = (C.GtkUnit)(unit)
+	_arg1 = C.double(margin)
+	_arg2 = C.GtkUnit(unit)
 
 	C.gtk_page_setup_set_bottom_margin(_arg0, _arg1, _arg2)
 }
@@ -47568,8 +48134,8 @@ func (s pageSetup) SetLeftMarginPageSetup(margin float64, unit Unit) {
 	var _arg2 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(margin)
-	_arg2 = (C.GtkUnit)(unit)
+	_arg1 = C.double(margin)
+	_arg2 = C.GtkUnit(unit)
 
 	C.gtk_page_setup_set_left_margin(_arg0, _arg1, _arg2)
 }
@@ -47579,7 +48145,7 @@ func (s pageSetup) SetOrientationPageSetup(orientation PageOrientation) {
 	var _arg1 C.GtkPageOrientation // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPageOrientation)(orientation)
+	_arg1 = C.GtkPageOrientation(orientation)
 
 	C.gtk_page_setup_set_orientation(_arg0, _arg1)
 }
@@ -47610,8 +48176,8 @@ func (s pageSetup) SetRightMarginPageSetup(margin float64, unit Unit) {
 	var _arg2 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(margin)
-	_arg2 = (C.GtkUnit)(unit)
+	_arg1 = C.double(margin)
+	_arg2 = C.GtkUnit(unit)
 
 	C.gtk_page_setup_set_right_margin(_arg0, _arg1, _arg2)
 }
@@ -47622,8 +48188,8 @@ func (s pageSetup) SetTopMarginPageSetup(margin float64, unit Unit) {
 	var _arg2 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(margin)
-	_arg2 = (C.GtkUnit)(unit)
+	_arg1 = C.double(margin)
+	_arg2 = C.GtkUnit(unit)
 
 	C.gtk_page_setup_set_top_margin(_arg0, _arg1, _arg2)
 }
@@ -47656,7 +48222,7 @@ func (s pageSetup) ToGVariantPageSetup() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -47973,7 +48539,7 @@ func NewPaned(orientation Orientation) Paned {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_paned_new(_arg1)
 
@@ -48009,7 +48575,7 @@ func (p paned) Position() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -48129,7 +48695,7 @@ func (p paned) SetPositionPaned(position int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.int)(position)
+	_arg1 = C.int(position)
 
 	C.gtk_paned_set_position(_arg0, _arg1)
 }
@@ -49234,23 +49800,35 @@ func (p popover) Offset() (xOffset int, yOffset int) {
 	var _xOffset int // out
 	var _yOffset int // out
 
-	_xOffset = (int)(_arg1)
-	_yOffset = (int)(_arg2)
+	_xOffset = int(_arg1)
+	_yOffset = int(_arg2)
 
 	return _xOffset, _yOffset
 }
 
 func (p popover) PointingTo() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover // out
-	var _rect gdk.Rectangle
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkPopover  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	_cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _rect gdk.Rectangle // out
+	var _ok bool            // out
 
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -49371,8 +49949,8 @@ func (p popover) SetOffsetPopover(xOffset int, yOffset int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.int)(xOffset)
-	_arg2 = (C.int)(yOffset)
+	_arg1 = C.int(xOffset)
+	_arg2 = C.int(yOffset)
 
 	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
 }
@@ -49392,7 +49970,7 @@ func (p popover) SetPositionPopover(position PositionType) {
 	var _arg1 C.GtkPositionType // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.GtkPositionType)(position)
+	_arg1 = C.GtkPositionType(position)
 
 	C.gtk_popover_set_position(_arg0, _arg1)
 }
@@ -49622,7 +50200,7 @@ func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) Po
 	var _cret *C.GtkWidget          // in
 
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (C.GtkPopoverMenuFlags)(flags)
+	_arg2 = C.GtkPopoverMenuFlags(flags)
 
 	_cret = C.gtk_popover_menu_new_from_model_full(_arg1, _arg2)
 
@@ -49991,6 +50569,7 @@ func (b popoverMenuBar) BuildableID() string {
 //
 // } “`
 type PrintContext interface {
+	gextras.Objector
 
 	// CreatePangoContextPrintContext creates a new `PangoContext` that can be
 	// used with the `GtkPrintContext`.
@@ -50087,7 +50666,7 @@ func (c printContext) CairoContext() *cairo.Context {
 
 	var _ret *cairo.Context // out
 
-	_ret = cairo.WrapContext(unsafe.Pointer(_cret))
+	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -50102,7 +50681,7 @@ func (c printContext) DPIX() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -50117,7 +50696,7 @@ func (c printContext) DPIY() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -50140,10 +50719,10 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 	var _right float64  // out
 	var _ok bool        // out
 
-	_top = (float64)(_arg1)
-	_bottom = (float64)(_arg2)
-	_left = (float64)(_arg3)
-	_right = (float64)(_arg4)
+	_top = float64(_arg1)
+	_bottom = float64(_arg2)
+	_left = float64(_arg3)
+	_right = float64(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -50161,7 +50740,7 @@ func (c printContext) Height() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -50206,7 +50785,7 @@ func (c printContext) Width() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -50219,8 +50798,8 @@ func (c printContext) SetCairoContextPrintContext(cr *cairo.Context, dpiX float6
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (C.double)(dpiX)
-	_arg3 = (C.double)(dpiY)
+	_arg2 = C.double(dpiX)
+	_arg3 = C.double(dpiY)
 
 	C.gtk_print_context_set_cairo_context(_arg0, _arg1, _arg2, _arg3)
 }
@@ -50236,6 +50815,7 @@ func (c printContext) SetCairoContextPrintContext(cr *cairo.Context, dpiX float6
 // printing of manually generated PostScript, via
 // [method@Gtk.PrintJob.set_source_file].
 type PrintJob interface {
+	gextras.Objector
 
 	// Collate gets whether this job is printed collated.
 	Collate() bool
@@ -50390,7 +50970,7 @@ func (j printJob) NUp() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -50420,7 +51000,7 @@ func (j printJob) NumCopies() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -50514,7 +51094,7 @@ func (j printJob) Scale() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -50561,7 +51141,7 @@ func (j printJob) Surface() (*cairo.Surface, error) {
 	var _surface *cairo.Surface // out
 	var _goerr error            // out
 
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _surface, _goerr
@@ -50616,7 +51196,7 @@ func (j printJob) SetNUpPrintJob(nUp uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = (C.guint)(nUp)
+	_arg1 = C.guint(nUp)
 
 	C.gtk_print_job_set_n_up(_arg0, _arg1)
 }
@@ -50626,7 +51206,7 @@ func (j printJob) SetNUpLayoutPrintJob(layout NumberUpLayout) {
 	var _arg1 C.GtkNumberUpLayout // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = (C.GtkNumberUpLayout)(layout)
+	_arg1 = C.GtkNumberUpLayout(layout)
 
 	C.gtk_print_job_set_n_up_layout(_arg0, _arg1)
 }
@@ -50636,7 +51216,7 @@ func (j printJob) SetNumCopiesPrintJob(numCopies int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = (C.int)(numCopies)
+	_arg1 = C.int(numCopies)
 
 	C.gtk_print_job_set_num_copies(_arg0, _arg1)
 }
@@ -50652,7 +51232,17 @@ func (j printJob) SetPageRangesPrintJob(ranges []PageRange) {
 	{
 		out := unsafe.Slice(_arg1, len(ranges))
 		for i := range ranges {
-			out[i] = *(*C.GtkPageRange)(unsafe.Pointer(ranges[i].Native()))
+			{
+				var refTmpIn *PageRange
+				var refTmpOut *C.GtkPageRange
+
+				in0 := &ranges[i]
+				refTmpIn = in0
+
+				refTmpOut = (*C.GtkPageRange)(unsafe.Pointer(refTmpIn.Native()))
+
+				out[i] = *refTmpOut
+			}
 		}
 	}
 
@@ -50664,7 +51254,7 @@ func (j printJob) SetPageSetPrintJob(pageSet PageSet) {
 	var _arg1 C.GtkPageSet   // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = (C.GtkPageSet)(pageSet)
+	_arg1 = C.GtkPageSet(pageSet)
 
 	C.gtk_print_job_set_page_set(_arg0, _arg1)
 }
@@ -50674,7 +51264,7 @@ func (j printJob) SetPagesPrintJob(pages PrintPages) {
 	var _arg1 C.GtkPrintPages // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = (C.GtkPrintPages)(pages)
+	_arg1 = C.GtkPrintPages(pages)
 
 	C.gtk_print_job_set_pages(_arg0, _arg1)
 }
@@ -50708,7 +51298,7 @@ func (j printJob) SetScalePrintJob(scale float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = (C.double)(scale)
+	_arg1 = C.double(scale)
 
 	C.gtk_print_job_set_scale(_arg0, _arg1)
 }
@@ -50719,7 +51309,7 @@ func (j printJob) SetSourceFdPrintJob(fd int) error {
 	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	_arg1 = (C.int)(fd)
+	_arg1 = C.int(fd)
 
 	C.gtk_print_job_set_source_fd(_arg0, _arg1, &_cerr)
 
@@ -51161,7 +51751,7 @@ func (o printOperation) NPagesToPrint() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -51253,7 +51843,7 @@ func (o printOperation) RunPrintOperation(action PrintOperationAction, parent Wi
 	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.GtkPrintOperationAction)(action)
+	_arg1 = C.GtkPrintOperationAction(action)
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_print_operation_run(_arg0, _arg1, _arg2, &_cerr)
@@ -51284,7 +51874,7 @@ func (o printOperation) SetCurrentPagePrintOperation(currentPage int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.int)(currentPage)
+	_arg1 = C.int(currentPage)
 
 	C.gtk_print_operation_set_current_page(_arg0, _arg1)
 }
@@ -51369,7 +51959,7 @@ func (o printOperation) SetNPagesPrintOperation(nPages int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.int)(nPages)
+	_arg1 = C.int(nPages)
 
 	C.gtk_print_operation_set_n_pages(_arg0, _arg1)
 }
@@ -51425,7 +52015,7 @@ func (o printOperation) SetUnitPrintOperation(unit Unit) {
 	var _arg1 C.GtkUnit            // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	C.gtk_print_operation_set_unit(_arg0, _arg1)
 }
@@ -51467,6 +52057,7 @@ func (p printOperation) RenderPage(pageNr int) {
 // The predefined keys try to use shared values as much as possible so that
 // moving such a document between systems still works.
 type PrintSettings interface {
+	gextras.Objector
 
 	// CopyPrintSettings copies a `GtkPrintSettings` object.
 	CopyPrintSettings() PrintSettings
@@ -51881,7 +52472,7 @@ func (s printSettings) Double(key string) float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -51895,13 +52486,13 @@ func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.double)(def)
+	_arg2 = C.double(def)
 
 	_cret = C.gtk_print_settings_get_double_with_default(_arg0, _arg1, _arg2)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -51949,7 +52540,7 @@ func (s printSettings) Int(key string) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -51963,13 +52554,13 @@ func (s printSettings) IntWithDefault(key string, def int) int {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(def)
+	_arg2 = C.int(def)
 
 	_cret = C.gtk_print_settings_get_int_with_default(_arg0, _arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -51983,13 +52574,13 @@ func (s printSettings) Length(key string, unit Unit) float64 {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GtkUnit)(unit)
+	_arg2 = C.GtkUnit(unit)
 
 	_cret = C.gtk_print_settings_get_length(_arg0, _arg1, _arg2)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -52019,7 +52610,7 @@ func (s printSettings) NCopies() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -52034,7 +52625,7 @@ func (s printSettings) NumberUp() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -52105,13 +52696,13 @@ func (s printSettings) PaperHeight(unit Unit) float64 {
 	var _cret C.double            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_print_settings_get_paper_height(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -52126,9 +52717,9 @@ func (s printSettings) PaperSize() *PaperSize {
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_paperSize, func(v **PaperSize) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _paperSize
@@ -52140,13 +52731,13 @@ func (s printSettings) PaperWidth(unit Unit) float64 {
 	var _cret C.double            // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_print_settings_get_paper_width(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -52191,7 +52782,7 @@ func (s printSettings) PrinterLpi() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -52221,7 +52812,7 @@ func (s printSettings) Resolution() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -52236,7 +52827,7 @@ func (s printSettings) ResolutionX() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -52251,7 +52842,7 @@ func (s printSettings) ResolutionY() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -52283,7 +52874,7 @@ func (s printSettings) Scale() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -52434,7 +53025,7 @@ func (s printSettings) SetDoublePrintSettings(key string, value float64) {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.double)(value)
+	_arg2 = C.double(value)
 
 	C.gtk_print_settings_set_double(_arg0, _arg1, _arg2)
 }
@@ -52444,7 +53035,7 @@ func (s printSettings) SetDuplexPrintSettings(duplex PrintDuplex) {
 	var _arg1 C.GtkPrintDuplex    // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPrintDuplex)(duplex)
+	_arg1 = C.GtkPrintDuplex(duplex)
 
 	C.gtk_print_settings_set_duplex(_arg0, _arg1)
 }
@@ -52468,7 +53059,7 @@ func (s printSettings) SetIntPrintSettings(key string, value int) {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(value)
+	_arg2 = C.int(value)
 
 	C.gtk_print_settings_set_int(_arg0, _arg1, _arg2)
 }
@@ -52482,8 +53073,8 @@ func (s printSettings) SetLengthPrintSettings(key string, value float64, unit Un
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.double)(value)
-	_arg3 = (C.GtkUnit)(unit)
+	_arg2 = C.double(value)
+	_arg3 = C.GtkUnit(unit)
 
 	C.gtk_print_settings_set_length(_arg0, _arg1, _arg2, _arg3)
 }
@@ -52504,7 +53095,7 @@ func (s printSettings) SetNCopiesPrintSettings(numCopies int) {
 	var _arg1 C.int               // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(numCopies)
+	_arg1 = C.int(numCopies)
 
 	C.gtk_print_settings_set_n_copies(_arg0, _arg1)
 }
@@ -52514,7 +53105,7 @@ func (s printSettings) SetNumberUpPrintSettings(numberUp int) {
 	var _arg1 C.int               // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(numberUp)
+	_arg1 = C.int(numberUp)
 
 	C.gtk_print_settings_set_number_up(_arg0, _arg1)
 }
@@ -52524,7 +53115,7 @@ func (s printSettings) SetNumberUpLayoutPrintSettings(numberUpLayout NumberUpLay
 	var _arg1 C.GtkNumberUpLayout // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkNumberUpLayout)(numberUpLayout)
+	_arg1 = C.GtkNumberUpLayout(numberUpLayout)
 
 	C.gtk_print_settings_set_number_up_layout(_arg0, _arg1)
 }
@@ -52534,7 +53125,7 @@ func (s printSettings) SetOrientationPrintSettings(orientation PageOrientation) 
 	var _arg1 C.GtkPageOrientation // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPageOrientation)(orientation)
+	_arg1 = C.GtkPageOrientation(orientation)
 
 	C.gtk_print_settings_set_orientation(_arg0, _arg1)
 }
@@ -52567,7 +53158,7 @@ func (s printSettings) SetPageSetPrintSettings(pageSet PageSet) {
 	var _arg1 C.GtkPageSet        // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPageSet)(pageSet)
+	_arg1 = C.GtkPageSet(pageSet)
 
 	C.gtk_print_settings_set_page_set(_arg0, _arg1)
 }
@@ -52578,8 +53169,8 @@ func (s printSettings) SetPaperHeightPrintSettings(height float64, unit Unit) {
 	var _arg2 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(height)
-	_arg2 = (C.GtkUnit)(unit)
+	_arg1 = C.double(height)
+	_arg2 = C.GtkUnit(unit)
 
 	C.gtk_print_settings_set_paper_height(_arg0, _arg1, _arg2)
 }
@@ -52600,8 +53191,8 @@ func (s printSettings) SetPaperWidthPrintSettings(width float64, unit Unit) {
 	var _arg2 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(width)
-	_arg2 = (C.GtkUnit)(unit)
+	_arg1 = C.double(width)
+	_arg2 = C.GtkUnit(unit)
 
 	C.gtk_print_settings_set_paper_width(_arg0, _arg1, _arg2)
 }
@@ -52611,7 +53202,7 @@ func (s printSettings) SetPrintPagesPrintSettings(pages PrintPages) {
 	var _arg1 C.GtkPrintPages     // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPrintPages)(pages)
+	_arg1 = C.GtkPrintPages(pages)
 
 	C.gtk_print_settings_set_print_pages(_arg0, _arg1)
 }
@@ -52632,7 +53223,7 @@ func (s printSettings) SetPrinterLpiPrintSettings(lpi float64) {
 	var _arg1 C.double            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(lpi)
+	_arg1 = C.double(lpi)
 
 	C.gtk_print_settings_set_printer_lpi(_arg0, _arg1)
 }
@@ -52642,7 +53233,7 @@ func (s printSettings) SetQualityPrintSettings(quality PrintQuality) {
 	var _arg1 C.GtkPrintQuality   // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPrintQuality)(quality)
+	_arg1 = C.GtkPrintQuality(quality)
 
 	C.gtk_print_settings_set_quality(_arg0, _arg1)
 }
@@ -52652,7 +53243,7 @@ func (s printSettings) SetResolutionPrintSettings(resolution int) {
 	var _arg1 C.int               // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(resolution)
+	_arg1 = C.int(resolution)
 
 	C.gtk_print_settings_set_resolution(_arg0, _arg1)
 }
@@ -52663,8 +53254,8 @@ func (s printSettings) SetResolutionXYPrintSettings(resolutionX int, resolutionY
 	var _arg2 C.int               // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(resolutionX)
-	_arg2 = (C.int)(resolutionY)
+	_arg1 = C.int(resolutionX)
+	_arg2 = C.int(resolutionY)
 
 	C.gtk_print_settings_set_resolution_xy(_arg0, _arg1, _arg2)
 }
@@ -52686,7 +53277,7 @@ func (s printSettings) SetScalePrintSettings(scale float64) {
 	var _arg1 C.double            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(scale)
+	_arg1 = C.double(scale)
 
 	C.gtk_print_settings_set_scale(_arg0, _arg1)
 }
@@ -52731,7 +53322,7 @@ func (s printSettings) ToGVariantPrintSettings() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -52922,7 +53513,7 @@ func (d printUnixDialog) CurrentPage() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -53060,7 +53651,7 @@ func (d printUnixDialog) SetCurrentPagePrintUnixDialog(currentPage int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.int)(currentPage)
+	_arg1 = C.int(currentPage)
 
 	C.gtk_print_unix_dialog_set_current_page(_arg0, _arg1)
 }
@@ -53094,7 +53685,7 @@ func (d printUnixDialog) SetManualCapabilitiesPrintUnixDialog(capabilities Print
 	var _arg1 C.GtkPrintCapabilities // out
 
 	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.GtkPrintCapabilities)(capabilities)
+	_arg1 = C.GtkPrintCapabilities(capabilities)
 
 	C.gtk_print_unix_dialog_set_manual_capabilities(_arg0, _arg1)
 }
@@ -53205,6 +53796,7 @@ func (s printUnixDialog) SetFocus(focus Widget) {
 // importantly, a `GtkPrinter` object can be used to create a
 // [class@Gtk.PrintJob] object, which lets you print to the printer.
 type Printer interface {
+	gextras.Objector
 
 	// AcceptsPDFPrinter returns whether the printer accepts input in PDF
 	// format.
@@ -53372,7 +53964,7 @@ func (a printer) ComparePrinter(b Printer) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -53387,7 +53979,7 @@ func (p printer) Backend() *PrintBackend {
 
 	var _printBackend *PrintBackend // out
 
-	_printBackend = WrapPrintBackend(unsafe.Pointer(_cret))
+	_printBackend = (*PrintBackend)(unsafe.Pointer(_cret))
 
 	return _printBackend
 }
@@ -53455,10 +54047,10 @@ func (p printer) HardMargins() (top float64, bottom float64, left float64, right
 	var _right float64  // out
 	var _ok bool        // out
 
-	_top = (float64)(_arg1)
-	_bottom = (float64)(_arg2)
-	_left = (float64)(_arg3)
-	_right = (float64)(_arg4)
+	_top = float64(_arg1)
+	_bottom = float64(_arg2)
+	_left = float64(_arg3)
+	_right = float64(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -53486,10 +54078,10 @@ func (p printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bot
 	var _right float64  // out
 	var _ok bool        // out
 
-	_top = (float64)(_arg2)
-	_bottom = (float64)(_arg3)
-	_left = (float64)(_arg4)
-	_right = (float64)(_arg5)
+	_top = float64(_arg2)
+	_bottom = float64(_arg3)
+	_left = float64(_arg4)
+	_right = float64(_arg5)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -53522,7 +54114,7 @@ func (p printer) JobCount() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -53865,7 +54457,7 @@ func (p progressBar) Fraction() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -53897,7 +54489,7 @@ func (p progressBar) PulseStep() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -53947,7 +54539,7 @@ func (p progressBar) SetEllipsizeProgressBar(mode pango.EllipsizeMode) {
 	var _arg1 C.PangoEllipsizeMode // out
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.PangoEllipsizeMode)(mode)
+	_arg1 = C.PangoEllipsizeMode(mode)
 
 	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
 }
@@ -53957,7 +54549,7 @@ func (p progressBar) SetFractionProgressBar(fraction float64) {
 	var _arg1 C.double          // out
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.double)(fraction)
+	_arg1 = C.double(fraction)
 
 	C.gtk_progress_bar_set_fraction(_arg0, _arg1)
 }
@@ -53979,7 +54571,7 @@ func (p progressBar) SetPulseStepProgressBar(fraction float64) {
 	var _arg1 C.double          // out
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.double)(fraction)
+	_arg1 = C.double(fraction)
 
 	C.gtk_progress_bar_set_pulse_step(_arg0, _arg1)
 }
@@ -54049,6 +54641,7 @@ func (o progressBar) SetOrientation(orientation Orientation) {
 
 // PropertyExpression: a `GObject` property value in a `GtkExpression`.
 type PropertyExpression interface {
+	Expression
 
 	// GetExpression gets the expression specifying the object of a property
 	// expression.
@@ -54296,7 +54889,7 @@ func (r _range) FillLevel() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -54336,12 +54929,26 @@ func (r _range) Inverted() bool {
 }
 
 func (r _range) RangeRect() gdk.Rectangle {
-	var _arg0 *C.GtkRange // out
-	var _rangeRect gdk.Rectangle
+	var _arg0 *C.GtkRange    // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	C.gtk_range_get_range_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rangeRect)))
+	C.gtk_range_get_range_rect(_arg0, &_arg1)
+
+	var _rangeRect gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rangeRect = *refTmpOut
+	}
 
 	return _rangeRect
 }
@@ -54373,7 +54980,7 @@ func (r _range) RoundDigits() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -54407,8 +55014,8 @@ func (r _range) SliderRange() (sliderStart int, sliderEnd int) {
 	var _sliderStart int // out
 	var _sliderEnd int   // out
 
-	_sliderStart = (int)(_arg1)
-	_sliderEnd = (int)(_arg2)
+	_sliderStart = int(_arg1)
+	_sliderEnd = int(_arg2)
 
 	return _sliderStart, _sliderEnd
 }
@@ -54440,7 +55047,7 @@ func (r _range) Value() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -54460,7 +55067,7 @@ func (r _range) SetFillLevelRange(fillLevel float64) {
 	var _arg1 C.double    // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.double)(fillLevel)
+	_arg1 = C.double(fillLevel)
 
 	C.gtk_range_set_fill_level(_arg0, _arg1)
 }
@@ -54483,8 +55090,8 @@ func (r _range) SetIncrementsRange(step float64, page float64) {
 	var _arg2 C.double    // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.double)(step)
-	_arg2 = (C.double)(page)
+	_arg1 = C.double(step)
+	_arg2 = C.double(page)
 
 	C.gtk_range_set_increments(_arg0, _arg1, _arg2)
 }
@@ -54507,8 +55114,8 @@ func (r _range) SetRangeRange(min float64, max float64) {
 	var _arg2 C.double    // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.double)(min)
-	_arg2 = (C.double)(max)
+	_arg1 = C.double(min)
+	_arg2 = C.double(max)
 
 	C.gtk_range_set_range(_arg0, _arg1, _arg2)
 }
@@ -54530,7 +55137,7 @@ func (r _range) SetRoundDigitsRange(roundDigits int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.int)(roundDigits)
+	_arg1 = C.int(roundDigits)
 
 	C.gtk_range_set_round_digits(_arg0, _arg1)
 }
@@ -54564,7 +55171,7 @@ func (r _range) SetValueRange(value float64) {
 	var _arg1 C.double    // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.double)(value)
+	_arg1 = C.double(value)
 
 	C.gtk_range_set_value(_arg0, _arg1)
 }
@@ -54650,6 +55257,7 @@ func (o _range) SetOrientation(orientation Orientation) {
 // Note that the maximum age of the recently used files list is controllable
 // through the [property@Gtk.Settings:gtk-recent-files-max-age] property.
 type RecentManager interface {
+	gextras.Objector
 
 	// AddFullRecentManager adds a new resource, pointed by @uri, into the
 	// recently used resources list, using the metadata specified inside the
@@ -54817,9 +55425,9 @@ func (m recentManager) LookupItemRecentManager(uri string) (*RecentInfo, error) 
 	var _recentInfo *RecentInfo // out
 	var _goerr error            // out
 
-	_recentInfo = WrapRecentInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_recentInfo, func(v **RecentInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -54859,7 +55467,7 @@ func (m recentManager) PurgeItemsRecentManager() (int, error) {
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -55038,7 +55646,7 @@ func (r revealer) TransitionDuration() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -55085,7 +55693,7 @@ func (r revealer) SetTransitionDurationRevealer(duration uint) {
 	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.guint)(duration)
+	_arg1 = C.guint(duration)
 
 	C.gtk_revealer_set_transition_duration(_arg0, _arg1)
 }
@@ -55095,7 +55703,7 @@ func (r revealer) SetTransitionTypeRevealer(transition RevealerTransitionType) {
 	var _arg1 C.GtkRevealerTransitionType // out
 
 	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.GtkRevealerTransitionType)(transition)
+	_arg1 = C.GtkRevealerTransitionType(transition)
 
 	C.gtk_revealer_set_transition_type(_arg0, _arg1)
 }
@@ -55291,7 +55899,7 @@ func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_scale_new(_arg1, _arg2)
@@ -55320,10 +55928,10 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 	var _arg4 C.double         // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = (C.double)(min)
-	_arg3 = (C.double)(max)
-	_arg4 = (C.double)(step)
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.double(min)
+	_arg3 = C.double(max)
+	_arg4 = C.double(step)
 
 	_cret = C.gtk_scale_new_with_range(_arg1, _arg2, _arg3, _arg4)
 
@@ -55341,8 +55949,8 @@ func (s scale) AddMarkScale(value float64, position PositionType, markup string)
 	var _arg3 *C.char           // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(value)
-	_arg2 = (C.GtkPositionType)(position)
+	_arg1 = C.double(value)
+	_arg2 = C.GtkPositionType(position)
 	_arg3 = (*C.char)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -55367,7 +55975,7 @@ func (s scale) Digits() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -55433,8 +56041,8 @@ func (s scale) LayoutOffsets() (x int, y int) {
 	var _x int // out
 	var _y int // out
 
-	_x = (int)(_arg1)
-	_y = (int)(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -55459,7 +56067,7 @@ func (s scale) SetDigitsScale(digits int) {
 	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(digits)
+	_arg1 = C.int(digits)
 
 	C.gtk_scale_set_digits(_arg0, _arg1)
 }
@@ -55493,7 +56101,7 @@ func (s scale) SetValuePosScale(pos PositionType) {
 	var _arg1 C.GtkPositionType // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPositionType)(pos)
+	_arg1 = C.GtkPositionType(pos)
 
 	C.gtk_scale_set_value_pos(_arg0, _arg1)
 }
@@ -55613,9 +56221,9 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) Scal
 	var _arg4 **C.char
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (C.double)(min)
-	_arg2 = (C.double)(max)
-	_arg3 = (C.double)(step)
+	_arg1 = C.double(min)
+	_arg2 = C.double(max)
+	_arg3 = C.double(step)
 	_arg4 = (**C.char)(C.malloc(C.ulong(len(icons)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
@@ -55705,7 +56313,7 @@ func (b scaleButton) Value() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -55743,7 +56351,7 @@ func (b scaleButton) SetValueScaleButton(value float64) {
 	var _arg1 C.double          // out
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.double)(value)
+	_arg1 = C.double(value)
 
 	C.gtk_scale_button_set_value(_arg0, _arg1)
 }
@@ -55862,7 +56470,7 @@ func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
@@ -56285,7 +56893,7 @@ func (s scrolledWindow) MaxContentHeight() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -56300,7 +56908,7 @@ func (s scrolledWindow) MaxContentWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -56315,7 +56923,7 @@ func (s scrolledWindow) MinContentHeight() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -56330,7 +56938,7 @@ func (s scrolledWindow) MinContentWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -56498,7 +57106,7 @@ func (s scrolledWindow) SetMaxContentHeightScrolledWindow(height int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(height)
+	_arg1 = C.int(height)
 
 	C.gtk_scrolled_window_set_max_content_height(_arg0, _arg1)
 }
@@ -56508,7 +57116,7 @@ func (s scrolledWindow) SetMaxContentWidthScrolledWindow(width int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(width)
+	_arg1 = C.int(width)
 
 	C.gtk_scrolled_window_set_max_content_width(_arg0, _arg1)
 }
@@ -56518,7 +57126,7 @@ func (s scrolledWindow) SetMinContentHeightScrolledWindow(height int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(height)
+	_arg1 = C.int(height)
 
 	C.gtk_scrolled_window_set_min_content_height(_arg0, _arg1)
 }
@@ -56528,7 +57136,7 @@ func (s scrolledWindow) SetMinContentWidthScrolledWindow(width int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(width)
+	_arg1 = C.int(width)
 
 	C.gtk_scrolled_window_set_min_content_width(_arg0, _arg1)
 }
@@ -56550,7 +57158,7 @@ func (s scrolledWindow) SetPlacementScrolledWindow(windowPlacement CornerType) {
 	var _arg1 C.GtkCornerType      // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkCornerType)(windowPlacement)
+	_arg1 = C.GtkCornerType(windowPlacement)
 
 	C.gtk_scrolled_window_set_placement(_arg0, _arg1)
 }
@@ -56561,8 +57169,8 @@ func (s scrolledWindow) SetPolicyScrolledWindow(hscrollbarPolicy PolicyType, vsc
 	var _arg2 C.GtkPolicyType      // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPolicyType)(hscrollbarPolicy)
-	_arg2 = (C.GtkPolicyType)(vscrollbarPolicy)
+	_arg1 = C.GtkPolicyType(hscrollbarPolicy)
+	_arg2 = C.GtkPolicyType(vscrollbarPolicy)
 
 	C.gtk_scrolled_window_set_policy(_arg0, _arg1, _arg2)
 }
@@ -57274,7 +57882,7 @@ func NewSeparator(orientation Orientation) Separator {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_separator_new(_arg1)
 
@@ -57407,6 +58015,7 @@ func (s settings) ResetPropertySettings(name string) {
 // with shortcuts, either by providing informational strings for display
 // purposes or by allowing shortcuts to be configured.
 type Shortcut interface {
+	gextras.Objector
 
 	// Action gets the action that is activated by this shortcut.
 	Action() ShortcutAction
@@ -57487,7 +58096,7 @@ func (s shortcut) Arguments() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -57565,6 +58174,7 @@ func (s shortcut) SetTriggerShortcut(trigger ShortcutTrigger) {
 //      gtk_widget_activate_action()
 //    - [class@Gtk.NothingAction]: a shortcut action that does nothing
 type ShortcutAction interface {
+	gextras.Objector
 
 	// ActivateShortcutAction activates the action on the @widget with the given
 	// @args.
@@ -57636,7 +58246,7 @@ func (s shortcutAction) ActivateShortcutAction(flags ShortcutActionFlags, widget
 	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkShortcutActionFlags)(flags)
+	_arg1 = C.GtkShortcutActionFlags(flags)
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
 
@@ -57857,7 +58467,7 @@ func (s shortcutController) SetMnemonicsModifiersShortcutController(modifiers gd
 	var _arg1 C.GdkModifierType        // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GdkModifierType)(modifiers)
+	_arg1 = C.GdkModifierType(modifiers)
 
 	C.gtk_shortcut_controller_set_mnemonics_modifiers(_arg0, _arg1)
 }
@@ -57867,7 +58477,7 @@ func (s shortcutController) SetScopeShortcutController(scope ShortcutScope) {
 	var _arg1 C.GtkShortcutScope       // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkShortcutScope)(scope)
+	_arg1 = C.GtkShortcutScope(scope)
 
 	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
 }
@@ -58030,6 +58640,7 @@ func (b shortcutLabel) BuildableID() string {
 // properties during construction. If you want to change a trigger, you have to
 // replace it with a new one.
 type ShortcutTrigger interface {
+	gextras.Objector
 
 	// CompareShortcutTrigger: the types of @trigger1 and @trigger2 are
 	// #gconstpointer only to allow use of this function as a Func.
@@ -58136,7 +58747,7 @@ func (t shortcutTrigger) CompareShortcutTrigger(trigger2 ShortcutTrigger) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -58170,7 +58781,7 @@ func (t shortcutTrigger) HashShortcutTrigger() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -58572,6 +59183,7 @@ func (s shortcutsWindow) SetFocus(focus Widget) {
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
 type SignalAction interface {
+	ShortcutAction
 
 	// SignalName returns the name of the signal that will be emitted.
 	SignalName() string
@@ -58673,6 +59285,7 @@ func (s signalAction) SignalName() string {
 // [signal@Gtk.SignalListItemFactory::setup] signal and removed again during
 // [signal@Gtk.SignalListItemFactory::teardown].
 type SignalListItemFactory interface {
+	ListItemFactory
 }
 
 // signalListItemFactory implements the SignalListItemFactory class.
@@ -58856,7 +59469,7 @@ func (s singleSelection) Selected() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -58915,7 +59528,7 @@ func (s singleSelection) SetSelectedSingleSelection(position uint) {
 	var _arg1 C.guint               // out
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	C.gtk_single_selection_set_selected(_arg0, _arg1)
 }
@@ -59073,7 +59686,7 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in
 
-	_arg1 = (C.GtkSizeGroupMode)(mode)
+	_arg1 = C.GtkSizeGroupMode(mode)
 
 	_cret = C.gtk_size_group_new(_arg1)
 
@@ -59124,7 +59737,7 @@ func (s sizeGroup) SetModeSizeGroup(mode SizeGroupMode) {
 	var _arg1 C.GtkSizeGroupMode // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkSizeGroupMode)(mode)
+	_arg1 = C.GtkSizeGroupMode(mode)
 
 	C.gtk_size_group_set_mode(_arg0, _arg1)
 }
@@ -59194,8 +59807,8 @@ func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListMod
 	var _cret *C.GtkSliceListModel // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (C.guint)(offset)
-	_arg3 = (C.guint)(size)
+	_arg2 = C.guint(offset)
+	_arg3 = C.guint(size)
 
 	_cret = C.gtk_slice_list_model_new(_arg1, _arg2, _arg3)
 
@@ -59231,7 +59844,7 @@ func (s sliceListModel) Offset() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -59246,7 +59859,7 @@ func (s sliceListModel) Size() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -59266,7 +59879,7 @@ func (s sliceListModel) SetOffsetSliceListModel(offset uint) {
 	var _arg1 C.guint              // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(offset)
+	_arg1 = C.guint(offset)
 
 	C.gtk_slice_list_model_set_offset(_arg0, _arg1)
 }
@@ -59276,7 +59889,7 @@ func (s sliceListModel) SetSizeSliceListModel(size uint) {
 	var _arg1 C.guint              // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(size)
+	_arg1 = C.guint(size)
 
 	C.gtk_slice_list_model_set_size(_arg0, _arg1)
 }
@@ -59294,6 +59907,7 @@ func (s sliceListModel) SetSizeSliceListModel(size uint) {
 // GtkWidgetClass.snapshot() vfunc. If you need to create your own
 // `GtkSnapshot`, use [ctor@Gtk.Snapshot.new].
 type Snapshot interface {
+	gdk.Snapshot
 
 	// AppendBorderSnapshot appends a stroked border rectangle inside the given
 	// @outline.
@@ -59538,9 +60152,9 @@ func (s snapshot) AppendCairoSnapshot(bounds *graphene.Rect) *cairo.Context {
 
 	var _context *cairo.Context // out
 
-	_context = cairo.WrapContext(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_context, func(v *cairo.Context) {
-		C.free(unsafe.Pointer(v.Native()))
+	_context = (*cairo.Context)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_context, func(v **cairo.Context) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _context
@@ -59569,7 +60183,7 @@ func (s snapshot) AppendConicGradientSnapshot(bounds *graphene.Rect, center *gra
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center.Native()))
-	_arg3 = (C.float)(rotation)
+	_arg3 = C.float(rotation)
 	_arg5 = C.gsize(len(stops))
 	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 
@@ -59588,10 +60202,10 @@ func (s snapshot) AppendInsetShadowSnapshot(outline *gsk.RoundedRect, color *gdk
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline.Native()))
 	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
-	_arg3 = (C.float)(dx)
-	_arg4 = (C.float)(dy)
-	_arg5 = (C.float)(spread)
-	_arg6 = (C.float)(blurRadius)
+	_arg3 = C.float(dx)
+	_arg4 = C.float(dy)
+	_arg5 = C.float(spread)
+	_arg6 = C.float(blurRadius)
 
 	C.gtk_snapshot_append_inset_shadow(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -59648,10 +60262,10 @@ func (s snapshot) AppendOutsetShadowSnapshot(outline *gsk.RoundedRect, color *gd
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline.Native()))
 	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
-	_arg3 = (C.float)(dx)
-	_arg4 = (C.float)(dy)
-	_arg5 = (C.float)(spread)
-	_arg6 = (C.float)(blurRadius)
+	_arg3 = C.float(dx)
+	_arg4 = C.float(dy)
+	_arg5 = C.float(spread)
+	_arg6 = C.float(blurRadius)
 
 	C.gtk_snapshot_append_outset_shadow(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -59670,10 +60284,10 @@ func (s snapshot) AppendRadialGradientSnapshot(bounds *graphene.Rect, center *gr
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center.Native()))
-	_arg3 = (C.float)(hradius)
-	_arg4 = (C.float)(vradius)
-	_arg5 = (C.float)(start)
-	_arg6 = (C.float)(end)
+	_arg3 = C.float(hradius)
+	_arg4 = C.float(vradius)
+	_arg5 = C.float(start)
+	_arg6 = C.float(end)
 	_arg8 = C.gsize(len(stops))
 	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 
@@ -59712,10 +60326,10 @@ func (s snapshot) AppendRepeatingRadialGradientSnapshot(bounds *graphene.Rect, c
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center.Native()))
-	_arg3 = (C.float)(hradius)
-	_arg4 = (C.float)(vradius)
-	_arg5 = (C.float)(start)
-	_arg6 = (C.float)(end)
+	_arg3 = C.float(hradius)
+	_arg4 = C.float(vradius)
+	_arg5 = C.float(start)
+	_arg6 = C.float(end)
 	_arg8 = C.gsize(len(stops))
 	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 
@@ -59747,7 +60361,7 @@ func (s snapshot) PerspectiveSnapshot(depth float32) {
 	var _arg1 C.float        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(depth)
+	_arg1 = C.float(depth)
 
 	C.gtk_snapshot_perspective(_arg0, _arg1)
 }
@@ -59765,7 +60379,7 @@ func (s snapshot) PushBlendSnapshot(blendMode gsk.BlendMode) {
 	var _arg1 C.GskBlendMode // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GskBlendMode)(blendMode)
+	_arg1 = C.GskBlendMode(blendMode)
 
 	C.gtk_snapshot_push_blend(_arg0, _arg1)
 }
@@ -59775,7 +60389,7 @@ func (s snapshot) PushBlurSnapshot(radius float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(radius)
+	_arg1 = C.double(radius)
 
 	C.gtk_snapshot_push_blur(_arg0, _arg1)
 }
@@ -59807,7 +60421,7 @@ func (s snapshot) PushCrossFadeSnapshot(progress float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(progress)
+	_arg1 = C.double(progress)
 
 	C.gtk_snapshot_push_cross_fade(_arg0, _arg1)
 }
@@ -59817,7 +60431,7 @@ func (s snapshot) PushOpacitySnapshot(opacity float64) {
 	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(opacity)
+	_arg1 = C.double(opacity)
 
 	C.gtk_snapshot_push_opacity(_arg0, _arg1)
 }
@@ -59851,7 +60465,7 @@ func (s snapshot) PushShadowSnapshot(shadow *gsk.Shadow, nShadows uint) {
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskShadow)(unsafe.Pointer(shadow.Native()))
-	_arg2 = (C.gsize)(nShadows)
+	_arg2 = C.gsize(nShadows)
 
 	C.gtk_snapshot_push_shadow(_arg0, _arg1, _arg2)
 }
@@ -59866,10 +60480,10 @@ func (s snapshot) RenderBackgroundSnapshot(context StyleContext, x float64, y fl
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
-	_arg4 = (C.double)(width)
-	_arg5 = (C.double)(height)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
 
 	C.gtk_snapshot_render_background(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -59884,10 +60498,10 @@ func (s snapshot) RenderFocusSnapshot(context StyleContext, x float64, y float64
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
-	_arg4 = (C.double)(width)
-	_arg5 = (C.double)(height)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
 
 	C.gtk_snapshot_render_focus(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -59902,10 +60516,10 @@ func (s snapshot) RenderFrameSnapshot(context StyleContext, x float64, y float64
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
-	_arg4 = (C.double)(width)
-	_arg5 = (C.double)(height)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
 
 	C.gtk_snapshot_render_frame(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -59921,11 +60535,11 @@ func (s snapshot) RenderInsertionCursorSnapshot(context StyleContext, x float64,
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
 	_arg4 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg5 = (C.int)(index)
-	_arg6 = (C.PangoDirection)(direction)
+	_arg5 = C.int(index)
+	_arg6 = C.PangoDirection(direction)
 
 	C.gtk_snapshot_render_insertion_cursor(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -59939,8 +60553,8 @@ func (s snapshot) RenderLayoutSnapshot(context StyleContext, x float64, y float6
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (C.double)(x)
-	_arg3 = (C.double)(y)
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
 	_arg4 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_snapshot_render_layout(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -59959,7 +60573,7 @@ func (s snapshot) RotateSnapshot(angle float32) {
 	var _arg1 C.float        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(angle)
+	_arg1 = C.float(angle)
 
 	C.gtk_snapshot_rotate(_arg0, _arg1)
 }
@@ -59970,7 +60584,7 @@ func (s snapshot) Rotate3DSnapshot(angle float32, axis *graphene.Vec3) {
 	var _arg2 *C.graphene_vec3_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(angle)
+	_arg1 = C.float(angle)
 	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
 
 	C.gtk_snapshot_rotate_3d(_arg0, _arg1, _arg2)
@@ -59990,8 +60604,8 @@ func (s snapshot) ScaleSnapshot(factorX float32, factorY float32) {
 	var _arg2 C.float        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(factorX)
-	_arg2 = (C.float)(factorY)
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
 
 	C.gtk_snapshot_scale(_arg0, _arg1, _arg2)
 }
@@ -60003,9 +60617,9 @@ func (s snapshot) Scale3DSnapshot(factorX float32, factorY float32, factorZ floa
 	var _arg3 C.float        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.float)(factorX)
-	_arg2 = (C.float)(factorY)
-	_arg3 = (C.float)(factorZ)
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	_arg3 = C.float(factorZ)
 
 	C.gtk_snapshot_scale_3d(_arg0, _arg1, _arg2, _arg3)
 }
@@ -60225,7 +60839,7 @@ func (s sortListModel) Pending() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -60297,6 +60911,7 @@ func (s sortListModel) SetSorterSortListModel(sorter Sorter) {
 // Of course, in particular for large lists, it is also possible to subclass
 // `GtkSorter` and provide one's own sorter.
 type Sorter interface {
+	gextras.Objector
 
 	// ChangedSorter emits the [signal@Gtk.Sorter::changed] signal to notify all
 	// users of the sorter that it has changed.
@@ -60355,7 +60970,7 @@ func (s sorter) ChangedSorter(change SorterChange) {
 	var _arg1 C.GtkSorterChange // out
 
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkSorterChange)(change)
+	_arg1 = C.GtkSorterChange(change)
 
 	C.gtk_sorter_changed(_arg0, _arg1)
 }
@@ -60597,8 +61212,8 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinBu
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-	_arg2 = (C.double)(climbRate)
-	_arg3 = (C.guint)(digits)
+	_arg2 = C.double(climbRate)
+	_arg3 = C.guint(digits)
 
 	_cret = C.gtk_spin_button_new(_arg1, _arg2, _arg3)
 
@@ -60627,9 +61242,9 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 	var _arg3 C.double     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (C.double)(min)
-	_arg2 = (C.double)(max)
-	_arg3 = (C.double)(step)
+	_arg1 = C.double(min)
+	_arg2 = C.double(max)
+	_arg3 = C.double(step)
 
 	_cret = C.gtk_spin_button_new_with_range(_arg1, _arg2, _arg3)
 
@@ -60648,8 +61263,8 @@ func (s spinButton) ConfigureSpinButton(adjustment Adjustment, climbRate float64
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-	_arg2 = (C.double)(climbRate)
-	_arg3 = (C.guint)(digits)
+	_arg2 = C.double(climbRate)
+	_arg3 = C.guint(digits)
 
 	C.gtk_spin_button_configure(_arg0, _arg1, _arg2, _arg3)
 }
@@ -60679,7 +61294,7 @@ func (s spinButton) ClimbRate() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -60694,7 +61309,7 @@ func (s spinButton) Digits() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -60711,8 +61326,8 @@ func (s spinButton) Increments() (step float64, page float64) {
 	var _step float64 // out
 	var _page float64 // out
 
-	_step = (float64)(_arg1)
-	_page = (float64)(_arg2)
+	_step = float64(_arg1)
+	_page = float64(_arg2)
 
 	return _step, _page
 }
@@ -60746,8 +61361,8 @@ func (s spinButton) Range() (min float64, max float64) {
 	var _min float64 // out
 	var _max float64 // out
 
-	_min = (float64)(_arg1)
-	_max = (float64)(_arg2)
+	_min = float64(_arg1)
+	_max = float64(_arg2)
 
 	return _min, _max
 }
@@ -60794,7 +61409,7 @@ func (s spinButton) Value() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -60809,7 +61424,7 @@ func (s spinButton) ValueAsInt() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -60846,7 +61461,7 @@ func (s spinButton) SetClimbRateSpinButton(climbRate float64) {
 	var _arg1 C.double         // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(climbRate)
+	_arg1 = C.double(climbRate)
 
 	C.gtk_spin_button_set_climb_rate(_arg0, _arg1)
 }
@@ -60856,7 +61471,7 @@ func (s spinButton) SetDigitsSpinButton(digits uint) {
 	var _arg1 C.guint          // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(digits)
+	_arg1 = C.guint(digits)
 
 	C.gtk_spin_button_set_digits(_arg0, _arg1)
 }
@@ -60867,8 +61482,8 @@ func (s spinButton) SetIncrementsSpinButton(step float64, page float64) {
 	var _arg2 C.double         // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(step)
-	_arg2 = (C.double)(page)
+	_arg1 = C.double(step)
+	_arg2 = C.double(page)
 
 	C.gtk_spin_button_set_increments(_arg0, _arg1, _arg2)
 }
@@ -60891,8 +61506,8 @@ func (s spinButton) SetRangeSpinButton(min float64, max float64) {
 	var _arg2 C.double         // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(min)
-	_arg2 = (C.double)(max)
+	_arg1 = C.double(min)
+	_arg2 = C.double(max)
 
 	C.gtk_spin_button_set_range(_arg0, _arg1, _arg2)
 }
@@ -60914,7 +61529,7 @@ func (s spinButton) SetUpdatePolicySpinButton(policy SpinButtonUpdatePolicy) {
 	var _arg1 C.GtkSpinButtonUpdatePolicy // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkSpinButtonUpdatePolicy)(policy)
+	_arg1 = C.GtkSpinButtonUpdatePolicy(policy)
 
 	C.gtk_spin_button_set_update_policy(_arg0, _arg1)
 }
@@ -60924,7 +61539,7 @@ func (s spinButton) SetValueSpinButton(value float64) {
 	var _arg1 C.double         // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(value)
+	_arg1 = C.double(value)
 
 	C.gtk_spin_button_set_value(_arg0, _arg1)
 }
@@ -60947,8 +61562,8 @@ func (s spinButton) SpinSpinButton(direction SpinType, increment float64) {
 	var _arg2 C.double         // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkSpinType)(direction)
-	_arg2 = (C.double)(increment)
+	_arg1 = C.GtkSpinType(direction)
+	_arg2 = C.double(increment)
 
 	C.gtk_spin_button_spin(_arg0, _arg1, _arg2)
 }
@@ -61576,7 +62191,7 @@ func (s stack) TransitionDuration() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -61699,7 +62314,7 @@ func (s stack) SetTransitionDurationStack(duration uint) {
 	var _arg1 C.guint     // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(duration)
+	_arg1 = C.guint(duration)
 
 	C.gtk_stack_set_transition_duration(_arg0, _arg1)
 }
@@ -61709,7 +62324,7 @@ func (s stack) SetTransitionTypeStack(transition StackTransitionType) {
 	var _arg1 C.GtkStackTransitionType // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkStackTransitionType)(transition)
+	_arg1 = C.GtkStackTransitionType(transition)
 
 	C.gtk_stack_set_transition_type(_arg0, _arg1)
 }
@@ -61744,7 +62359,7 @@ func (s stack) SetVisibleChildFullStack(name string, transition StackTransitionT
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GtkStackTransitionType)(transition)
+	_arg2 = C.GtkStackTransitionType(transition)
 
 	C.gtk_stack_set_visible_child_full(_arg0, _arg1, _arg2)
 }
@@ -62407,7 +63022,7 @@ func (s statusbar) ContextID(contextDescription string) uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -62417,7 +63032,7 @@ func (s statusbar) PopStatusbar(contextId uint) {
 	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(contextId)
+	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_pop(_arg0, _arg1)
 }
@@ -62429,7 +63044,7 @@ func (s statusbar) PushStatusbar(contextId uint, text string) uint {
 	var _cret C.guint         // in
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(contextId)
+	_arg1 = C.guint(contextId)
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -62437,7 +63052,7 @@ func (s statusbar) PushStatusbar(contextId uint, text string) uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -62448,8 +63063,8 @@ func (s statusbar) RemoveStatusbar(contextId uint, messageId uint) {
 	var _arg2 C.guint         // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(contextId)
-	_arg2 = (C.guint)(messageId)
+	_arg1 = C.guint(contextId)
+	_arg2 = C.guint(messageId)
 
 	C.gtk_statusbar_remove(_arg0, _arg1, _arg2)
 }
@@ -62459,7 +63074,7 @@ func (s statusbar) RemoveAllStatusbar(contextId uint) {
 	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(contextId)
+	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_remove_all(_arg0, _arg1)
 }
@@ -62510,6 +63125,7 @@ func (b statusbar) BuildableID() string {
 // It is also possible to make case-insensitive comparisons, with
 // [method@Gtk.StringFilter.set_ignore_case].
 type StringFilter interface {
+	Filter
 
 	// Expression gets the expression that the string filter uses to obtain
 	// strings from items.
@@ -62661,7 +63277,7 @@ func (s stringFilter) SetMatchModeStringFilter(mode StringFilterMatchMode) {
 	var _arg1 C.GtkStringFilterMatchMode // out
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkStringFilterMatchMode)(mode)
+	_arg1 = C.GtkStringFilterMatchMode(mode)
 
 	C.gtk_string_filter_set_match_mode(_arg0, _arg1)
 }
@@ -62686,6 +63302,7 @@ func (s stringFilter) SetSearchStringFilter(search string) {
 // To obtain the strings to compare, this sorter evaluates a
 // [class@Gtk.Expression].
 type StringSorter interface {
+	Sorter
 
 	// Expression gets the expression that is evaluated to obtain strings from
 	// items.
@@ -62835,6 +63452,7 @@ func (s stringSorter) SetIgnoreCaseStringSorter(ignoreCase bool) {
 // still take precedence over your changes, as it uses the
 // GTK_STYLE_PROVIDER_PRIORITY_USER priority.
 type StyleContext interface {
+	gextras.Objector
 
 	// AddClassStyleContext adds a style class to @context, so later uses of the
 	// style context will make use of this new class for styling.
@@ -62966,29 +63584,57 @@ func (c styleContext) AddProviderStyleContext(provider StyleProvider, priority u
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
-	_arg2 = (C.guint)(priority)
+	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
 }
 
 func (c styleContext) Border() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _border Border
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_style_context_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
+	C.gtk_style_context_get_border(_arg0, &_arg1)
+
+	var _border Border // out
+
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_border = *refTmpOut
+	}
 
 	return _border
 }
 
 func (c styleContext) Color() gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
-	var _color gdk.RGBA
+	var _arg1 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_style_context_get_color(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	C.gtk_style_context_get_color(_arg0, &_arg1)
+
+	var _color gdk.RGBA // out
+
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 
 	return _color
 }
@@ -63010,22 +63656,50 @@ func (c styleContext) Display() gdk.Display {
 
 func (c styleContext) Margin() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _margin Border
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_style_context_get_margin(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_margin)))
+	C.gtk_style_context_get_margin(_arg0, &_arg1)
+
+	var _margin Border // out
+
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_margin = *refTmpOut
+	}
 
 	return _margin
 }
 
 func (c styleContext) Padding() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _padding Border
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_style_context_get_padding(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_padding)))
+	C.gtk_style_context_get_padding(_arg0, &_arg1)
+
+	var _padding Border // out
+
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_padding = *refTmpOut
+	}
 
 	return _padding
 }
@@ -63040,7 +63714,7 @@ func (c styleContext) Scale() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -63083,17 +63757,29 @@ func (c styleContext) HasClassStyleContext(className string) bool {
 func (c styleContext) LookupColorStyleContext(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
-	var _color gdk.RGBA
-	var _cret C.gboolean // in
+	var _arg2 C.GdkRGBA          // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _color gdk.RGBA // out
+	var _ok bool        // out
 
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -63153,7 +63839,7 @@ func (c styleContext) SetScaleStyleContext(scale int) {
 	var _arg1 C.int              // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(scale)
+	_arg1 = C.int(scale)
 
 	C.gtk_style_context_set_scale(_arg0, _arg1)
 }
@@ -63163,7 +63849,7 @@ func (c styleContext) SetStateStyleContext(flags StateFlags) {
 	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GtkStateFlags)(flags)
+	_arg1 = C.GtkStateFlags(flags)
 
 	C.gtk_style_context_set_state(_arg0, _arg1)
 }
@@ -63174,7 +63860,7 @@ func (c styleContext) String(flags StyleContextPrintFlags) string {
 	var _cret *C.char                     // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GtkStyleContextPrintFlags)(flags)
+	_arg1 = C.GtkStyleContextPrintFlags(flags)
 
 	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
 
@@ -63646,7 +64332,7 @@ func (s text) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	_attrList = pango.WrapAttrList(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
 
 	return _attrList
 }
@@ -63738,7 +64424,7 @@ func (s text) InvisibleChar() uint32 {
 
 	var _gunichar uint32 // out
 
-	_gunichar = (uint32)(_cret)
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -63753,7 +64439,7 @@ func (s text) MaxLength() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -63817,7 +64503,7 @@ func (s text) Tabs() *pango.TabArray {
 
 	var _tabArray *pango.TabArray // out
 
-	_tabArray = pango.WrapTabArray(unsafe.Pointer(_cret))
+	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
 
 	return _tabArray
 }
@@ -63832,7 +64518,7 @@ func (s text) TextLength() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -63947,7 +64633,7 @@ func (s text) SetInputHintsText(hints InputHints) {
 	var _arg1 C.GtkInputHints // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkInputHints)(hints)
+	_arg1 = C.GtkInputHints(hints)
 
 	C.gtk_text_set_input_hints(_arg0, _arg1)
 }
@@ -63957,7 +64643,7 @@ func (s text) SetInputPurposeText(purpose InputPurpose) {
 	var _arg1 C.GtkInputPurpose // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkInputPurpose)(purpose)
+	_arg1 = C.GtkInputPurpose(purpose)
 
 	C.gtk_text_set_input_purpose(_arg0, _arg1)
 }
@@ -63967,7 +64653,7 @@ func (s text) SetInvisibleCharText(ch uint32) {
 	var _arg1 C.gunichar // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gunichar)(ch)
+	_arg1 = C.gunichar(ch)
 
 	C.gtk_text_set_invisible_char(_arg0, _arg1)
 }
@@ -63977,7 +64663,7 @@ func (s text) SetMaxLengthText(length int) {
 	var _arg1 C.int      // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.int)(length)
+	_arg1 = C.int(length)
 
 	C.gtk_text_set_max_length(_arg0, _arg1)
 }
@@ -64185,6 +64871,7 @@ func (e text) SetWidthChars(nChars int) {
 // (section-text-widget.html), which gives an overview of all the objects and
 // data types related to the text widget and how they work together.
 type TextBuffer interface {
+	gextras.Objector
 
 	// AddMarkTextBuffer adds the mark at position @where.
 	//
@@ -64965,12 +65652,38 @@ func (b textBuffer) EndUserActionTextBuffer() {
 
 func (b textBuffer) Bounds() (start TextIter, end TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
-	var _start TextIter
-	var _end TextIter
+	var _arg1 C.GtkTextIter    // in
+	var _arg2 C.GtkTextIter    // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	C.gtk_text_buffer_get_bounds(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_start)), (*C.GtkTextIter)(unsafe.Pointer(&_end)))
+	C.gtk_text_buffer_get_bounds(_arg0, &_arg1, &_arg2)
+
+	var _start TextIter // out
+	var _end TextIter   // out
+
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_start = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_end = *refTmpOut
+	}
 
 	return _start, _end
 }
@@ -65019,7 +65732,7 @@ func (b textBuffer) CharCount() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -65043,11 +65756,25 @@ func (b textBuffer) EnableUndo() bool {
 
 func (b textBuffer) EndIter() TextIter {
 	var _arg0 *C.GtkTextBuffer // out
-	var _iter TextIter
+	var _arg1 C.GtkTextIter    // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	C.gtk_text_buffer_get_end_iter(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)))
+	C.gtk_text_buffer_get_end_iter(_arg0, &_arg1)
+
+	var _iter TextIter // out
+
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -65085,31 +65812,57 @@ func (b textBuffer) GetInsert() TextMark {
 }
 
 func (b textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter {
-	var _arg0 *C.GtkTextBuffer // out
-	var _iter TextIter
+	var _arg0 *C.GtkTextBuffer      // out
+	var _arg1 C.GtkTextIter         // in
 	var _arg2 *C.GtkTextChildAnchor // out
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
-	C.gtk_text_buffer_get_iter_at_child_anchor(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_text_buffer_get_iter_at_child_anchor(_arg0, &_arg1, _arg2)
+
+	var _iter TextIter // out
+
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
 
 func (b textBuffer) IterAtLine(lineNumber int) (TextIter, bool) {
 	var _arg0 *C.GtkTextBuffer // out
-	var _iter TextIter
-	var _arg2 C.int      // out
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTextIter    // in
+	var _arg2 C.int            // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.int)(lineNumber)
+	_arg2 = C.int(lineNumber)
 
-	_cret = C.gtk_text_buffer_get_iter_at_line(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2)
+	_cret = C.gtk_text_buffer_get_iter_at_line(_arg0, &_arg1, _arg2)
 
-	var _ok bool // out
+	var _iter TextIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -65119,19 +65872,31 @@ func (b textBuffer) IterAtLine(lineNumber int) (TextIter, bool) {
 
 func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (TextIter, bool) {
 	var _arg0 *C.GtkTextBuffer // out
-	var _iter TextIter
-	var _arg2 C.int      // out
-	var _arg3 C.int      // out
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTextIter    // in
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.int)(lineNumber)
-	_arg3 = (C.int)(byteIndex)
+	_arg2 = C.int(lineNumber)
+	_arg3 = C.int(byteIndex)
 
-	_cret = C.gtk_text_buffer_get_iter_at_line_index(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	_cret = C.gtk_text_buffer_get_iter_at_line_index(_arg0, &_arg1, _arg2, _arg3)
 
-	var _ok bool // out
+	var _iter TextIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -65141,19 +65906,31 @@ func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (TextIter, bo
 
 func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (TextIter, bool) {
 	var _arg0 *C.GtkTextBuffer // out
-	var _iter TextIter
-	var _arg2 C.int      // out
-	var _arg3 C.int      // out
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTextIter    // in
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.int)(lineNumber)
-	_arg3 = (C.int)(charOffset)
+	_arg2 = C.int(lineNumber)
+	_arg3 = C.int(charOffset)
 
-	_cret = C.gtk_text_buffer_get_iter_at_line_offset(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	_cret = C.gtk_text_buffer_get_iter_at_line_offset(_arg0, &_arg1, _arg2, _arg3)
 
-	var _ok bool // out
+	var _iter TextIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -65163,26 +65940,54 @@ func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (TextIter, 
 
 func (b textBuffer) IterAtMark(mark TextMark) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
-	var _iter TextIter
-	var _arg2 *C.GtkTextMark // out
+	var _arg1 C.GtkTextIter    // in
+	var _arg2 *C.GtkTextMark   // out
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg2 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
-	C.gtk_text_buffer_get_iter_at_mark(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_text_buffer_get_iter_at_mark(_arg0, &_arg1, _arg2)
+
+	var _iter TextIter // out
+
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
 
 func (b textBuffer) IterAtOffset(charOffset int) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
-	var _iter TextIter
-	var _arg2 C.int // out
+	var _arg1 C.GtkTextIter    // in
+	var _arg2 C.int            // out
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg2 = (C.int)(charOffset)
+	_arg2 = C.int(charOffset)
 
-	C.gtk_text_buffer_get_iter_at_offset(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_text_buffer_get_iter_at_offset(_arg0, &_arg1, _arg2)
+
+	var _iter TextIter // out
+
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -65197,7 +66002,7 @@ func (b textBuffer) LineCount() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -65230,7 +66035,7 @@ func (b textBuffer) MaxUndoLevels() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -65269,16 +66074,40 @@ func (b textBuffer) SelectionBound() TextMark {
 
 func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 	var _arg0 *C.GtkTextBuffer // out
-	var _start TextIter
-	var _end TextIter
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTextIter    // in
+	var _arg2 C.GtkTextIter    // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	_cret = C.gtk_text_buffer_get_selection_bounds(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_start)), (*C.GtkTextIter)(unsafe.Pointer(&_end)))
+	_cret = C.gtk_text_buffer_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
-	var _ok bool // out
+	var _start TextIter // out
+	var _end TextIter   // out
+	var _ok bool        // out
 
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_start = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_end = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -65327,11 +66156,25 @@ func (b textBuffer) Slice(start *TextIter, end *TextIter, includeHiddenChars boo
 
 func (b textBuffer) StartIter() TextIter {
 	var _arg0 *C.GtkTextBuffer // out
-	var _iter TextIter
+	var _arg1 C.GtkTextIter    // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	C.gtk_text_buffer_get_start_iter(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)))
+	C.gtk_text_buffer_get_start_iter(_arg0, &_arg1)
+
+	var _iter TextIter // out
+
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -65385,7 +66228,7 @@ func (b textBuffer) InsertTextBuffer(iter *TextIter, text string, len int) {
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(len)
+	_arg3 = C.int(len)
 
 	C.gtk_text_buffer_insert(_arg0, _arg1, _arg2, _arg3)
 }
@@ -65398,7 +66241,7 @@ func (b textBuffer) InsertAtCursorTextBuffer(text string, len int) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(len)
+	_arg2 = C.int(len)
 
 	C.gtk_text_buffer_insert_at_cursor(_arg0, _arg1, _arg2)
 }
@@ -65427,7 +66270,7 @@ func (b textBuffer) InsertInteractiveTextBuffer(iter *TextIter, text string, len
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(len)
+	_arg3 = C.int(len)
 	if defaultEditable {
 		_arg4 = C.TRUE
 	}
@@ -65453,7 +66296,7 @@ func (b textBuffer) InsertInteractiveAtCursorTextBuffer(text string, len int, de
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(len)
+	_arg2 = C.int(len)
 	if defaultEditable {
 		_arg3 = C.TRUE
 	}
@@ -65479,7 +66322,7 @@ func (b textBuffer) InsertMarkupTextBuffer(iter *TextIter, markup string, len in
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	_arg2 = (*C.char)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(len)
+	_arg3 = C.int(len)
 
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
 }
@@ -65676,7 +66519,7 @@ func (b textBuffer) SetMaxUndoLevelsTextBuffer(maxUndoLevels uint) {
 	var _arg1 C.guint          // out
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (C.guint)(maxUndoLevels)
+	_arg1 = C.guint(maxUndoLevels)
 
 	C.gtk_text_buffer_set_max_undo_levels(_arg0, _arg1)
 }
@@ -65701,7 +66544,7 @@ func (b textBuffer) SetTextTextBuffer(text string, len int) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.int)(len)
+	_arg2 = C.int(len)
 
 	C.gtk_text_buffer_set_text(_arg0, _arg1, _arg2)
 }
@@ -65719,6 +66562,7 @@ func (b textBuffer) UndoTextBuffer() {
 //
 // The anchor can have multiple widgets anchored, to allow for multiple views.
 type TextChildAnchor interface {
+	gextras.Objector
 
 	// Deleted determines whether a child anchor has been deleted from the
 	// buffer.
@@ -65816,6 +66660,7 @@ func (a textChildAnchor) Deleted() bool {
 // Marks are typically created using the [method@Gtk.TextBuffer.create_mark]
 // function.
 type TextMark interface {
+	gextras.Objector
 
 	// Buffer gets the buffer this mark is located inside.
 	//
@@ -66000,6 +66845,7 @@ func (m textMark) SetVisibleTextMark(setting bool) {
 //
 // They are maintained by GTK and you should not set them independently.
 type TextTag interface {
+	gextras.Objector
 
 	// ChangedTextTag emits the [signal@Gtk.TextTagTable::tag-changed] signal on
 	// the `GtkTextTagTable` where the tag is included.
@@ -66083,7 +66929,7 @@ func (t textTag) Priority() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -66093,7 +66939,7 @@ func (t textTag) SetPriorityTextTag(priority int) {
 	var _arg1 C.int         // out
 
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(priority)
+	_arg1 = C.int(priority)
 
 	C.gtk_text_tag_set_priority(_arg0, _arg1)
 }
@@ -66198,7 +67044,7 @@ func (t textTagTable) Size() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -66766,8 +67612,8 @@ func (t textView) AddOverlayTextView(child Widget, xpos int, ypos int) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (C.int)(xpos)
-	_arg3 = (C.int)(ypos)
+	_arg2 = C.int(xpos)
+	_arg3 = C.int(ypos)
 
 	C.gtk_text_view_add_overlay(_arg0, _arg1, _arg2, _arg3)
 }
@@ -66819,17 +67665,17 @@ func (t textView) BufferToWindowCoordsTextView(win TextWindowType, bufferX int, 
 	var _arg5 C.int               // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkTextWindowType)(win)
-	_arg2 = (C.int)(bufferX)
-	_arg3 = (C.int)(bufferY)
+	_arg1 = C.GtkTextWindowType(win)
+	_arg2 = C.int(bufferX)
+	_arg3 = C.int(bufferY)
 
 	C.gtk_text_view_buffer_to_window_coords(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
 	var _windowX int // out
 	var _windowY int // out
 
-	_windowX = (int)(_arg4)
-	_windowY = (int)(_arg5)
+	_windowX = int(_arg4)
+	_windowY = int(_arg5)
 
 	return _windowX, _windowY
 }
@@ -66899,7 +67745,7 @@ func (t textView) BottomMargin() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -66922,13 +67768,39 @@ func (t textView) Buffer() TextBuffer {
 func (t textView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
-	var _strong gdk.Rectangle
-	var _weak gdk.Rectangle
+	var _arg2 C.GdkRectangle // in
+	var _arg3 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 
-	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_strong)), (*C.GdkRectangle)(unsafe.Pointer(&_weak)))
+	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _strong gdk.Rectangle // out
+	var _weak gdk.Rectangle   // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_strong = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_weak = *refTmpOut
+	}
 
 	return _strong, _weak
 }
@@ -66988,7 +67860,7 @@ func (t textView) Gutter(win TextWindowType) Widget {
 	var _cret *C.GtkWidget        // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkTextWindowType)(win)
+	_arg1 = C.GtkTextWindowType(win)
 
 	_cret = C.gtk_text_view_get_gutter(_arg0, _arg1)
 
@@ -67009,7 +67881,7 @@ func (t textView) Indent() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -67046,19 +67918,31 @@ func (t textView) InputPurpose() InputPurpose {
 
 func (t textView) IterAtLocation(x int, y int) (TextIter, bool) {
 	var _arg0 *C.GtkTextView // out
-	var _iter TextIter
-	var _arg2 C.int      // out
-	var _arg3 C.int      // out
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTextIter  // in
+	var _arg2 C.int          // out
+	var _arg3 C.int          // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg2 = (C.int)(x)
-	_arg3 = (C.int)(y)
+	_arg2 = C.int(x)
+	_arg3 = C.int(y)
 
-	_cret = C.gtk_text_view_get_iter_at_location(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	_cret = C.gtk_text_view_get_iter_at_location(_arg0, &_arg1, _arg2, _arg3)
 
-	var _ok bool // out
+	var _iter TextIter // out
+	var _ok bool       // out
 
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -67068,22 +67952,34 @@ func (t textView) IterAtLocation(x int, y int) (TextIter, bool) {
 
 func (t textView) IterAtPosition(x int, y int) (TextIter, int, bool) {
 	var _arg0 *C.GtkTextView // out
-	var _iter TextIter
-	var _arg2 C.int      // in
-	var _arg3 C.int      // out
-	var _arg4 C.int      // out
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTextIter  // in
+	var _arg2 C.int          // in
+	var _arg3 C.int          // out
+	var _arg4 C.int          // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg3 = (C.int)(x)
-	_arg4 = (C.int)(y)
+	_arg3 = C.int(x)
+	_arg4 = C.int(y)
 
-	_cret = C.gtk_text_view_get_iter_at_position(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), &_arg2, _arg3, _arg4)
+	_cret = C.gtk_text_view_get_iter_at_position(_arg0, &_arg1, &_arg2, _arg3, _arg4)
 
-	var _trailing int // out
-	var _ok bool      // out
+	var _iter TextIter // out
+	var _trailing int  // out
+	var _ok bool       // out
 
-	_trailing = (int)(_arg2)
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
+	_trailing = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -67094,12 +67990,26 @@ func (t textView) IterAtPosition(x int, y int) (TextIter, int, bool) {
 func (t textView) IterLocation(iter *TextIter) gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
-	var _location gdk.Rectangle
+	var _arg2 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 
-	C.gtk_text_view_get_iter_location(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_location)))
+	C.gtk_text_view_get_iter_location(_arg0, _arg1, &_arg2)
+
+	var _location gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_location = *refTmpOut
+	}
 
 	return _location
 }
@@ -67129,25 +68039,37 @@ func (t textView) LeftMargin() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 func (t textView) LineAtY(y int) (TextIter, int) {
 	var _arg0 *C.GtkTextView // out
-	var _targetIter TextIter
-	var _arg2 C.int // out
-	var _arg3 C.int // in
+	var _arg1 C.GtkTextIter  // in
+	var _arg2 C.int          // out
+	var _arg3 C.int          // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg2 = (C.int)(y)
+	_arg2 = C.int(y)
 
-	C.gtk_text_view_get_line_at_y(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_targetIter)), _arg2, &_arg3)
+	C.gtk_text_view_get_line_at_y(_arg0, &_arg1, _arg2, &_arg3)
 
-	var _lineTop int // out
+	var _targetIter TextIter // out
+	var _lineTop int         // out
 
-	_lineTop = (int)(_arg3)
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_targetIter = *refTmpOut
+	}
+	_lineTop = int(_arg3)
 
 	return _targetIter, _lineTop
 }
@@ -67166,8 +68088,8 @@ func (t textView) LineYrange(iter *TextIter) (y int, height int) {
 	var _y int      // out
 	var _height int // out
 
-	_y = (int)(_arg2)
-	_height = (int)(_arg3)
+	_y = int(_arg2)
+	_height = int(_arg3)
 
 	return _y, _height
 }
@@ -67216,7 +68138,7 @@ func (t textView) PixelsAboveLines() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -67231,7 +68153,7 @@ func (t textView) PixelsBelowLines() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -67246,7 +68168,7 @@ func (t textView) PixelsInsideWrap() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -67261,7 +68183,7 @@ func (t textView) RightMargin() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -67276,9 +68198,9 @@ func (t textView) Tabs() *pango.TabArray {
 
 	var _tabArray *pango.TabArray // out
 
-	_tabArray = pango.WrapTabArray(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_tabArray, func(v *pango.TabArray) {
-		C.free(unsafe.Pointer(v.Native()))
+	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_tabArray, func(v **pango.TabArray) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _tabArray
@@ -67294,18 +68216,32 @@ func (t textView) TopMargin() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 func (t textView) VisibleRect() gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
-	var _visibleRect gdk.Rectangle
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 
-	C.gtk_text_view_get_visible_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_visibleRect)))
+	C.gtk_text_view_get_visible_rect(_arg0, &_arg1)
+
+	var _visibleRect gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_visibleRect = *refTmpOut
+	}
 
 	return _visibleRect
 }
@@ -67371,8 +68307,8 @@ func (t textView) MoveOverlayTextView(child Widget, xpos int, ypos int) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (C.int)(xpos)
-	_arg3 = (C.int)(ypos)
+	_arg2 = C.int(xpos)
+	_arg3 = C.int(ypos)
 
 	C.gtk_text_view_move_overlay(_arg0, _arg1, _arg2, _arg3)
 }
@@ -67385,7 +68321,7 @@ func (t textView) MoveVisuallyTextView(iter *TextIter, count int) bool {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (C.int)(count)
+	_arg2 = C.int(count)
 
 	_cret = C.gtk_text_view_move_visually(_arg0, _arg1, _arg2)
 
@@ -67462,12 +68398,12 @@ func (t textView) ScrollToIterTextView(iter *TextIter, withinMargin float64, use
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (C.double)(withinMargin)
+	_arg2 = C.double(withinMargin)
 	if useAlign {
 		_arg3 = C.TRUE
 	}
-	_arg4 = (C.double)(xalign)
-	_arg5 = (C.double)(yalign)
+	_arg4 = C.double(xalign)
+	_arg5 = C.double(yalign)
 
 	_cret = C.gtk_text_view_scroll_to_iter(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -67490,12 +68426,12 @@ func (t textView) ScrollToMarkTextView(mark TextMark, withinMargin float64, useA
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
-	_arg2 = (C.double)(withinMargin)
+	_arg2 = C.double(withinMargin)
 	if useAlign {
 		_arg3 = C.TRUE
 	}
-	_arg4 = (C.double)(xalign)
-	_arg5 = (C.double)(yalign)
+	_arg4 = C.double(xalign)
+	_arg5 = C.double(yalign)
 
 	C.gtk_text_view_scroll_to_mark(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -67517,7 +68453,7 @@ func (t textView) SetBottomMarginTextView(bottomMargin int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(bottomMargin)
+	_arg1 = C.int(bottomMargin)
 
 	C.gtk_text_view_set_bottom_margin(_arg0, _arg1)
 }
@@ -67572,7 +68508,7 @@ func (t textView) SetGutterTextView(win TextWindowType, widget Widget) {
 	var _arg2 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkTextWindowType)(win)
+	_arg1 = C.GtkTextWindowType(win)
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_text_view_set_gutter(_arg0, _arg1, _arg2)
@@ -67583,7 +68519,7 @@ func (t textView) SetIndentTextView(indent int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(indent)
+	_arg1 = C.int(indent)
 
 	C.gtk_text_view_set_indent(_arg0, _arg1)
 }
@@ -67593,7 +68529,7 @@ func (t textView) SetInputHintsTextView(hints InputHints) {
 	var _arg1 C.GtkInputHints // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkInputHints)(hints)
+	_arg1 = C.GtkInputHints(hints)
 
 	C.gtk_text_view_set_input_hints(_arg0, _arg1)
 }
@@ -67603,7 +68539,7 @@ func (t textView) SetInputPurposeTextView(purpose InputPurpose) {
 	var _arg1 C.GtkInputPurpose // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkInputPurpose)(purpose)
+	_arg1 = C.GtkInputPurpose(purpose)
 
 	C.gtk_text_view_set_input_purpose(_arg0, _arg1)
 }
@@ -67613,7 +68549,7 @@ func (t textView) SetJustificationTextView(justification Justification) {
 	var _arg1 C.GtkJustification // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkJustification)(justification)
+	_arg1 = C.GtkJustification(justification)
 
 	C.gtk_text_view_set_justification(_arg0, _arg1)
 }
@@ -67623,7 +68559,7 @@ func (t textView) SetLeftMarginTextView(leftMargin int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(leftMargin)
+	_arg1 = C.int(leftMargin)
 
 	C.gtk_text_view_set_left_margin(_arg0, _arg1)
 }
@@ -67657,7 +68593,7 @@ func (t textView) SetPixelsAboveLinesTextView(pixelsAboveLines int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(pixelsAboveLines)
+	_arg1 = C.int(pixelsAboveLines)
 
 	C.gtk_text_view_set_pixels_above_lines(_arg0, _arg1)
 }
@@ -67667,7 +68603,7 @@ func (t textView) SetPixelsBelowLinesTextView(pixelsBelowLines int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(pixelsBelowLines)
+	_arg1 = C.int(pixelsBelowLines)
 
 	C.gtk_text_view_set_pixels_below_lines(_arg0, _arg1)
 }
@@ -67677,7 +68613,7 @@ func (t textView) SetPixelsInsideWrapTextView(pixelsInsideWrap int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(pixelsInsideWrap)
+	_arg1 = C.int(pixelsInsideWrap)
 
 	C.gtk_text_view_set_pixels_inside_wrap(_arg0, _arg1)
 }
@@ -67687,7 +68623,7 @@ func (t textView) SetRightMarginTextView(rightMargin int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(rightMargin)
+	_arg1 = C.int(rightMargin)
 
 	C.gtk_text_view_set_right_margin(_arg0, _arg1)
 }
@@ -67707,7 +68643,7 @@ func (t textView) SetTopMarginTextView(topMargin int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(topMargin)
+	_arg1 = C.int(topMargin)
 
 	C.gtk_text_view_set_top_margin(_arg0, _arg1)
 }
@@ -67717,7 +68653,7 @@ func (t textView) SetWrapModeTextView(wrapMode WrapMode) {
 	var _arg1 C.GtkWrapMode  // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkWrapMode)(wrapMode)
+	_arg1 = C.GtkWrapMode(wrapMode)
 
 	C.gtk_text_view_set_wrap_mode(_arg0, _arg1)
 }
@@ -67750,17 +68686,17 @@ func (t textView) WindowToBufferCoordsTextView(win TextWindowType, windowX int, 
 	var _arg5 C.int               // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkTextWindowType)(win)
-	_arg2 = (C.int)(windowX)
-	_arg3 = (C.int)(windowY)
+	_arg1 = C.GtkTextWindowType(win)
+	_arg2 = C.int(windowX)
+	_arg3 = C.int(windowY)
 
 	C.gtk_text_view_window_to_buffer_coords(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
 	var _bufferX int // out
 	var _bufferY int // out
 
-	_bufferX = (int)(_arg4)
-	_bufferY = (int)(_arg5)
+	_bufferX = int(_arg4)
+	_bufferY = int(_arg5)
 
 	return _bufferX, _bufferY
 }
@@ -68126,6 +69062,7 @@ func (b toggleButton) BuildableID() string {
 // - Return true from your ::query-tooltip handler. This causes the tooltip to
 // be show. If you return false, it will not be shown.
 type Tooltip interface {
+	gextras.Objector
 
 	// SetCustomTooltip replaces the widget packed into the tooltip with
 	// @custom_widget. @custom_widget does not get destroyed when the tooltip
@@ -68544,7 +69481,7 @@ func (s treeListModel) ChildRow(position uint) TreeListRow {
 	var _cret *C.GtkTreeListRow   // in
 
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_model_get_child_row(_arg0, _arg1)
 
@@ -68593,7 +69530,7 @@ func (s treeListModel) Row(position uint) TreeListRow {
 	var _cret *C.GtkTreeListRow   // in
 
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_model_get_row(_arg0, _arg1)
 
@@ -68629,6 +69566,7 @@ func (s treeListModel) SetAutoexpandTreeListModel(autoexpand bool) {
 // an icon to expand or collapse a row or [class@Gtk.TreeListRowSorter] that
 // makes it possible to sort trees properly.
 type TreeListRow interface {
+	gextras.Objector
 
 	// ChildRow: if @self is not expanded or @position is greater than the
 	// number of children, nil is returned.
@@ -68712,7 +69650,7 @@ func (s treeListRow) ChildRow(position uint) TreeListRow {
 	var _cret *C.GtkTreeListRow // in
 
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_row_get_child_row(_arg0, _arg1)
 
@@ -68748,7 +69686,7 @@ func (s treeListRow) Depth() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -68810,7 +69748,7 @@ func (s treeListRow) Position() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -68856,6 +69794,7 @@ func (s treeListRow) SetExpandedTreeListRow(expanded bool) {
 // gtk_single_selection_new (sort_model); gtk_column_view_set_model (view,
 // G_LIST_MODEL (selection)); “`
 type TreeListRowSorter interface {
+	Sorter
 
 	// GetSorter returns the sorter used by @self.
 	GetSorter() Sorter
@@ -69070,17 +70009,29 @@ func (f treeModelFilter) ClearCacheTreeModelFilter() {
 
 func (f treeModelFilter) ConvertChildIterToIterTreeModelFilter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelFilter // out
-	var _filterIter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _cret C.gboolean     // in
+	var _arg1 C.GtkTreeIter         // in
+	var _arg2 *C.GtkTreeIter        // out
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter.Native()))
 
-	_cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_filterIter)), _arg2)
+	_cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
 
-	var _ok bool // out
+	var _filterIter TreeIter // out
+	var _ok bool             // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_filterIter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -69100,9 +70051,9 @@ func (f treeModelFilter) ConvertChildPathToPathTreeModelFilter(childPath *TreePa
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -69110,13 +70061,27 @@ func (f treeModelFilter) ConvertChildPathToPathTreeModelFilter(childPath *TreePa
 
 func (f treeModelFilter) ConvertIterToChildIterTreeModelFilter(filterIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelFilter // out
-	var _childIter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter         // in
+	var _arg2 *C.GtkTreeIter        // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(filterIter.Native()))
 
-	C.gtk_tree_model_filter_convert_iter_to_child_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_childIter)), _arg2)
+	C.gtk_tree_model_filter_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
+
+	var _childIter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_childIter = *refTmpOut
+	}
 
 	return _childIter
 }
@@ -69133,9 +70098,9 @@ func (f treeModelFilter) ConvertPathToChildPathTreeModelFilter(filterPath *TreeP
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -69169,7 +70134,7 @@ func (f treeModelFilter) SetVisibleColumnTreeModelFilter(column int) {
 	var _arg1 C.int                 // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_tree_model_filter_set_visible_column(_arg0, _arg1)
 }
@@ -69430,17 +70395,29 @@ func (t treeModelSort) ClearCacheTreeModelSort() {
 
 func (t treeModelSort) ConvertChildIterToIterTreeModelSort(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelSort // out
-	var _sortIter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _cret C.gboolean     // in
+	var _arg1 C.GtkTreeIter       // in
+	var _arg2 *C.GtkTreeIter      // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter.Native()))
 
-	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_sortIter)), _arg2)
+	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
 
-	var _ok bool // out
+	var _sortIter TreeIter // out
+	var _ok bool           // out
 
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_sortIter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -69460,9 +70437,9 @@ func (t treeModelSort) ConvertChildPathToPathTreeModelSort(childPath *TreePath) 
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -69470,13 +70447,27 @@ func (t treeModelSort) ConvertChildPathToPathTreeModelSort(childPath *TreePath) 
 
 func (t treeModelSort) ConvertIterToChildIterTreeModelSort(sortedIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelSort // out
-	var _childIter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter       // in
+	var _arg2 *C.GtkTreeIter      // out
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sortedIter.Native()))
 
-	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_childIter)), _arg2)
+	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
+
+	var _childIter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_childIter = *refTmpOut
+	}
 
 	return _childIter
 }
@@ -69493,9 +70484,9 @@ func (t treeModelSort) ConvertPathToChildPathTreeModelSort(sortedPath *TreePath)
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -69691,6 +70682,7 @@ func (s treeModelSort) SortColumnChanged() {
 // happened (mostly as a result of programmers calling select_row on an already
 // selected row).
 type TreeSelection interface {
+	gextras.Objector
 
 	// CountSelectedRowsTreeSelection returns the number of rows that have been
 	// selected in @tree.
@@ -69768,7 +70760,7 @@ func (s treeSelection) CountSelectedRowsTreeSelection() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -69791,19 +70783,29 @@ func (s treeSelection) Mode() SelectionMode {
 func (s treeSelection) Selected() (TreeModel, TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
-	var _iter TreeIter
-	var _cret C.gboolean // in
+	var _arg2 C.GtkTreeIter       // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, &_arg2)
 
 	var _model TreeModel // out
-
-	var _ok bool // out
+	var _iter TreeIter   // out
+	var _ok bool         // out
 
 	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(TreeModel)
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
 
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -69909,7 +70911,7 @@ func (s treeSelection) SetModeTreeSelection(typ SelectionMode) {
 	var _arg1 C.GtkSelectionMode  // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkSelectionMode)(typ)
+	_arg1 = C.GtkSelectionMode(typ)
 
 	C.gtk_tree_selection_set_mode(_arg0, _arg1)
 }
@@ -70068,7 +71070,7 @@ type TreeStore interface {
 	// SetValueTreeStore sets the data in the cell specified by @iter and
 	// @column. The type of @value must be convertible to the type of the
 	// column.
-	SetValueTreeStore(iter *TreeIter, column int, value *externglib.Value)
+	SetValueTreeStore(iter *TreeIter, column int, value externglib.Value)
 	// SetValuesvTreeStore: a variant of gtk_tree_store_set_valist() which takes
 	// the columns and values as two arrays, instead of varargs. This function
 	// is mainly intended for language bindings or in case the number of columns
@@ -70126,13 +71128,27 @@ func NewTreeStoreV(types []externglib.Type) TreeStore {
 
 func (t treeStore) AppendTreeStore(parent *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
 
-	C.gtk_tree_store_append(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_tree_store_append(_arg0, &_arg1, _arg2)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -70147,54 +71163,96 @@ func (t treeStore) ClearTreeStore() {
 
 func (t treeStore) InsertTreeStore(parent *TreeIter, position int) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 C.int          // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.int           // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
-	_arg3 = (C.int)(position)
+	_arg3 = C.int(position)
 
-	C.gtk_tree_store_insert(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	C.gtk_tree_store_insert(_arg0, &_arg1, _arg2, _arg3)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
 
 func (t treeStore) InsertAfterTreeStore(parent *TreeIter, sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
 	_arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
-	C.gtk_tree_store_insert_after(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	C.gtk_tree_store_insert_after(_arg0, &_arg1, _arg2, _arg3)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
 
 func (t treeStore) InsertBeforeTreeStore(parent *TreeIter, sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
 	_arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
-	C.gtk_tree_store_insert_before(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	C.gtk_tree_store_insert_before(_arg0, &_arg1, _arg2, _arg3)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
 
 func (t treeStore) InsertWithValuesvTreeStore(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 C.int          // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.int           // out
 	var _arg4 *C.int
 	var _arg6 C.int
 	var _arg5 *C.GValue
@@ -70202,7 +71260,7 @@ func (t treeStore) InsertWithValuesvTreeStore(parent *TreeIter, position int, co
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
-	_arg3 = (C.int)(position)
+	_arg3 = C.int(position)
 	_arg6 = C.int(len(columns))
 	_arg4 = (*C.int)(unsafe.Pointer(&columns[0]))
 	_arg6 = C.int(len(values))
@@ -70211,11 +71269,35 @@ func (t treeStore) InsertWithValuesvTreeStore(parent *TreeIter, position int, co
 	{
 		out := unsafe.Slice(_arg5, len(values))
 		for i := range values {
-			out[i] = (C.GValue)(unsafe.Pointer(&values[i].GValue))
+			{
+				var refTmpIn *externglib.Value
+				var refTmpOut *C.GValue
+
+				in0 := &values[i]
+				refTmpIn = in0
+
+				refTmpOut = (*C.GValue)(unsafe.Pointer(&refTmpIn.GValue))
+
+				out[i] = *refTmpOut
+			}
 		}
 	}
 
-	C.gtk_tree_store_insert_with_valuesv(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3, _arg4, _arg5, _arg6)
+	C.gtk_tree_store_insert_with_valuesv(_arg0, &_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -70253,7 +71335,7 @@ func (t treeStore) IterDepthTreeStore(iter *TreeIter) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -70303,13 +71385,27 @@ func (t treeStore) MoveBeforeTreeStore(iter *TreeIter, position *TreeIter) {
 
 func (t treeStore) PrependTreeStore(parent *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
 
-	C.gtk_tree_store_prepend(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_tree_store_prepend(_arg0, &_arg1, _arg2)
+
+	var _iter TreeIter // out
+
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 
 	return _iter
 }
@@ -70352,7 +71448,7 @@ func (t treeStore) SetColumnTypesTreeStore(types []externglib.Type) {
 	C.gtk_tree_store_set_column_types(_arg0, _arg1, _arg2)
 }
 
-func (t treeStore) SetValueTreeStore(iter *TreeIter, column int, value *externglib.Value) {
+func (t treeStore) SetValueTreeStore(iter *TreeIter, column int, value externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.int           // out
@@ -70360,7 +71456,7 @@ func (t treeStore) SetValueTreeStore(iter *TreeIter, column int, value *externgl
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (C.int)(column)
+	_arg2 = C.int(column)
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_tree_store_set_value(_arg0, _arg1, _arg2, _arg3)
@@ -70384,7 +71480,17 @@ func (t treeStore) SetValuesvTreeStore(iter *TreeIter, columns []int, values []e
 	{
 		out := unsafe.Slice(_arg3, len(values))
 		for i := range values {
-			out[i] = (C.GValue)(unsafe.Pointer(&values[i].GValue))
+			{
+				var refTmpIn *externglib.Value
+				var refTmpOut *C.GValue
+
+				in0 := &values[i]
+				refTmpIn = in0
+
+				refTmpOut = (*C.GValue)(unsafe.Pointer(&refTmpIn.GValue))
+
+				out[i] = *refTmpOut
+			}
 		}
 	}
 
@@ -70407,11 +71513,11 @@ func (b treeStore) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
 
-func (d treeStore) DragDataReceived(dest *TreePath, value *externglib.Value) bool {
+func (d treeStore) DragDataReceived(dest *TreePath, value externglib.Value) bool {
 	return WrapTreeDragDest(gextras.InternObject(d)).DragDataReceived(dest, value)
 }
 
-func (d treeStore) RowDropPossible(destPath *TreePath, value *externglib.Value) bool {
+func (d treeStore) RowDropPossible(destPath *TreePath, value externglib.Value) bool {
 	return WrapTreeDragDest(gextras.InternObject(d)).RowDropPossible(destPath, value)
 }
 
@@ -71082,7 +72188,7 @@ func (t treeView) AppendColumnTreeView(column TreeViewColumn) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -71130,16 +72236,16 @@ func (t treeView) ConvertBinWindowToTreeCoordsTreeView(bx int, by int) (tx int, 
 	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(bx)
-	_arg2 = (C.int)(by)
+	_arg1 = C.int(bx)
+	_arg2 = C.int(by)
 
 	C.gtk_tree_view_convert_bin_window_to_tree_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _tx int // out
 	var _ty int // out
 
-	_tx = (int)(_arg3)
-	_ty = (int)(_arg4)
+	_tx = int(_arg3)
+	_ty = int(_arg4)
 
 	return _tx, _ty
 }
@@ -71152,16 +72258,16 @@ func (t treeView) ConvertBinWindowToWidgetCoordsTreeView(bx int, by int) (wx int
 	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(bx)
-	_arg2 = (C.int)(by)
+	_arg1 = C.int(bx)
+	_arg2 = C.int(by)
 
 	C.gtk_tree_view_convert_bin_window_to_widget_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _wx int // out
 	var _wy int // out
 
-	_wx = (int)(_arg3)
-	_wy = (int)(_arg4)
+	_wx = int(_arg3)
+	_wy = int(_arg4)
 
 	return _wx, _wy
 }
@@ -71174,16 +72280,16 @@ func (t treeView) ConvertTreeToBinWindowCoordsTreeView(tx int, ty int) (bx int, 
 	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(tx)
-	_arg2 = (C.int)(ty)
+	_arg1 = C.int(tx)
+	_arg2 = C.int(ty)
 
 	C.gtk_tree_view_convert_tree_to_bin_window_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _bx int // out
 	var _by int // out
 
-	_bx = (int)(_arg3)
-	_by = (int)(_arg4)
+	_bx = int(_arg3)
+	_by = int(_arg4)
 
 	return _bx, _by
 }
@@ -71196,16 +72302,16 @@ func (t treeView) ConvertTreeToWidgetCoordsTreeView(tx int, ty int) (wx int, wy 
 	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(tx)
-	_arg2 = (C.int)(ty)
+	_arg1 = C.int(tx)
+	_arg2 = C.int(ty)
 
 	C.gtk_tree_view_convert_tree_to_widget_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _wx int // out
 	var _wy int // out
 
-	_wx = (int)(_arg3)
-	_wy = (int)(_arg4)
+	_wx = int(_arg3)
+	_wy = int(_arg4)
 
 	return _wx, _wy
 }
@@ -71218,16 +72324,16 @@ func (t treeView) ConvertWidgetToBinWindowCoordsTreeView(wx int, wy int) (bx int
 	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(wx)
-	_arg2 = (C.int)(wy)
+	_arg1 = C.int(wx)
+	_arg2 = C.int(wy)
 
 	C.gtk_tree_view_convert_widget_to_bin_window_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _bx int // out
 	var _by int // out
 
-	_bx = (int)(_arg3)
-	_by = (int)(_arg4)
+	_bx = int(_arg3)
+	_by = int(_arg4)
 
 	return _bx, _by
 }
@@ -71240,16 +72346,16 @@ func (t treeView) ConvertWidgetToTreeCoordsTreeView(wx int, wy int) (tx int, ty 
 	var _arg4 C.int          // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(wx)
-	_arg2 = (C.int)(wy)
+	_arg1 = C.int(wx)
+	_arg2 = C.int(wy)
 
 	C.gtk_tree_view_convert_widget_to_tree_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _tx int // out
 	var _ty int // out
 
-	_tx = (int)(_arg3)
-	_ty = (int)(_arg4)
+	_tx = int(_arg3)
+	_ty = int(_arg4)
 
 	return _tx, _ty
 }
@@ -71278,7 +72384,7 @@ func (t treeView) EnableModelDragDestTreeView(formats *gdk.ContentFormats, actio
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
-	_arg2 = (C.GdkDragAction)(actions)
+	_arg2 = C.GdkDragAction(actions)
 
 	C.gtk_tree_view_enable_model_drag_dest(_arg0, _arg1, _arg2)
 }
@@ -71290,9 +72396,9 @@ func (t treeView) EnableModelDragSourceTreeView(startButtonMask gdk.ModifierType
 	var _arg3 C.GdkDragAction      // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GdkModifierType)(startButtonMask)
+	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg2 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
-	_arg3 = (C.GdkDragAction)(actions)
+	_arg3 = C.GdkDragAction(actions)
 
 	C.gtk_tree_view_enable_model_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
@@ -71359,13 +72465,27 @@ func (t treeView) BackgroundArea(path *TreePath, column TreeViewColumn) gdk.Rect
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreePath       // out
 	var _arg2 *C.GtkTreeViewColumn // out
-	var _rect gdk.Rectangle
+	var _arg3 C.GdkRectangle       // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	_arg2 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
 
-	C.gtk_tree_view_get_background_area(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	C.gtk_tree_view_get_background_area(_arg0, _arg1, _arg2, &_arg3)
+
+	var _rect gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 
 	return _rect
 }
@@ -71374,13 +72494,27 @@ func (t treeView) CellArea(path *TreePath, column TreeViewColumn) gdk.Rectangle 
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreePath       // out
 	var _arg2 *C.GtkTreeViewColumn // out
-	var _rect gdk.Rectangle
+	var _arg3 C.GdkRectangle       // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	_arg2 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
 
-	C.gtk_tree_view_get_cell_area(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	C.gtk_tree_view_get_cell_area(_arg0, _arg1, _arg2, &_arg3)
+
+	var _rect gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 
 	return _rect
 }
@@ -71391,7 +72525,7 @@ func (t treeView) Column(n int) TreeViewColumn {
 	var _cret *C.GtkTreeViewColumn // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(n)
+	_arg1 = C.int(n)
 
 	_cret = C.gtk_tree_view_get_column(_arg0, _arg1)
 
@@ -71403,38 +72537,48 @@ func (t treeView) Column(n int) TreeViewColumn {
 }
 
 func (t treeView) Cursor() (*TreePath, TreeViewColumn) {
-	var _arg0 *C.GtkTreeView // out
-	var _path *TreePath
+	var _arg0 *C.GtkTreeView       // out
+	var _arg1 *C.GtkTreePath       // in
 	var _arg2 *C.GtkTreeViewColumn // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 
-	C.gtk_tree_view_get_cursor(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
+	C.gtk_tree_view_get_cursor(_arg0, &_arg1, &_arg2)
 
+	var _path *TreePath             // out
 	var _focusColumn TreeViewColumn // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg1))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_focusColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeViewColumn)
 
 	return _path, _focusColumn
 }
 
 func (t treeView) DestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPosition, bool) {
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-	var _path *TreePath
+	var _arg0 *C.GtkTreeView            // out
+	var _arg1 C.int                     // out
+	var _arg2 C.int                     // out
+	var _arg3 *C.GtkTreePath            // in
 	var _arg4 C.GtkTreeViewDropPosition // in
 	var _cret C.gboolean                // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(dragX)
-	_arg2 = (C.int)(dragY)
+	_arg1 = C.int(dragX)
+	_arg2 = C.int(dragY)
 
-	_cret = C.gtk_tree_view_get_dest_row_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4)
+	_cret = C.gtk_tree_view_get_dest_row_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
+	var _path *TreePath           // out
 	var _pos TreeViewDropPosition // out
 	var _ok bool                  // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_pos = TreeViewDropPosition(_arg4)
 	if _cret != 0 {
 		_ok = true
@@ -71444,16 +72588,21 @@ func (t treeView) DestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPos
 }
 
 func (t treeView) DragDestRow() (*TreePath, TreeViewDropPosition) {
-	var _arg0 *C.GtkTreeView // out
-	var _path *TreePath
+	var _arg0 *C.GtkTreeView            // out
+	var _arg1 *C.GtkTreePath            // in
 	var _arg2 C.GtkTreeViewDropPosition // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 
-	C.gtk_tree_view_get_drag_dest_row(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
+	C.gtk_tree_view_get_drag_dest_row(_arg0, &_arg1, &_arg2)
 
+	var _path *TreePath           // out
 	var _pos TreeViewDropPosition // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg1))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_pos = TreeViewDropPosition(_arg2)
 
 	return _path, _pos
@@ -71618,7 +72767,7 @@ func (t treeView) LevelIndentation() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -71648,35 +72797,40 @@ func (t treeView) NColumns() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool) {
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-	var _path *TreePath
+	var _arg0 *C.GtkTreeView       // out
+	var _arg1 C.int                // out
+	var _arg2 C.int                // out
+	var _arg3 *C.GtkTreePath       // in
 	var _arg4 *C.GtkTreeViewColumn // in
 	var _arg5 C.int                // in
 	var _arg6 C.int                // in
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
-	_cret = C.gtk_tree_view_get_path_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4, &_arg5, &_arg6)
+	_cret = C.gtk_tree_view_get_path_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
+	var _path *TreePath        // out
 	var _column TreeViewColumn // out
 	var _cellX int             // out
 	var _cellY int             // out
 	var _ok bool               // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeViewColumn)
-	_cellX = (int)(_arg5)
-	_cellY = (int)(_arg6)
+	_cellX = int(_arg5)
+	_cellY = int(_arg6)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -71728,7 +72882,7 @@ func (t treeView) SearchColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -71790,7 +72944,7 @@ func (t treeView) TooltipColumn() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -71801,25 +72955,40 @@ func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *Tr
 	var _arg2 C.int           // out
 	var _arg3 C.gboolean      // out
 	var _arg4 *C.GtkTreeModel // in
-	var _path *TreePath
-	var _iter TreeIter
-	var _cret C.gboolean // in
+	var _arg5 *C.GtkTreePath  // in
+	var _arg6 C.GtkTreeIter   // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 	if keyboardTip {
 		_arg3 = C.TRUE
 	}
 
-	_cret = C.gtk_tree_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, (**C.GtkTreePath)(unsafe.Pointer(&_path)), (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 
 	var _model TreeModel // out
-
-	var _ok bool // out
+	var _path *TreePath  // out
+	var _iter TreeIter   // out
+	var _ok bool         // out
 
 	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeModel)
+	_path = (*TreePath)(unsafe.Pointer(_arg5))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
 
+		in0 := &_arg6
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -71829,16 +72998,26 @@ func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *Tr
 
 func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool) {
 	var _arg0 *C.GtkTreeView // out
-	var _startPath *TreePath
-	var _endPath *TreePath
-	var _cret C.gboolean // in
+	var _arg1 *C.GtkTreePath // in
+	var _arg2 *C.GtkTreePath // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 
-	_cret = C.gtk_tree_view_get_visible_range(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_startPath)), (**C.GtkTreePath)(unsafe.Pointer(&_endPath)))
+	_cret = C.gtk_tree_view_get_visible_range(_arg0, &_arg1, &_arg2)
 
-	var _ok bool // out
+	var _startPath *TreePath // out
+	var _endPath *TreePath   // out
+	var _ok bool             // out
 
+	_startPath = (*TreePath)(unsafe.Pointer(_arg1))
+	runtime.SetFinalizer(&_startPath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
+	_endPath = (*TreePath)(unsafe.Pointer(_arg2))
+	runtime.SetFinalizer(&_endPath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -71848,11 +73027,25 @@ func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 
 func (t treeView) VisibleRect() gdk.Rectangle {
 	var _arg0 *C.GtkTreeView // out
-	var _visibleRect gdk.Rectangle
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 
-	C.gtk_tree_view_get_visible_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_visibleRect)))
+	C.gtk_tree_view_get_visible_rect(_arg0, &_arg1)
+
+	var _visibleRect gdk.Rectangle // out
+
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_visibleRect = *refTmpOut
+	}
 
 	return _visibleRect
 }
@@ -71865,41 +73058,46 @@ func (t treeView) InsertColumnTreeView(column TreeViewColumn, position int) int 
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
-	_arg2 = (C.int)(position)
+	_arg2 = C.int(position)
 
 	_cret = C.gtk_tree_view_insert_column(_arg0, _arg1, _arg2)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 func (t treeView) IsBlankAtPosTreeView(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool) {
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-	var _path *TreePath
+	var _arg0 *C.GtkTreeView       // out
+	var _arg1 C.int                // out
+	var _arg2 C.int                // out
+	var _arg3 *C.GtkTreePath       // in
 	var _arg4 *C.GtkTreeViewColumn // in
 	var _arg5 C.int                // in
 	var _arg6 C.int                // in
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(x)
-	_arg2 = (C.int)(y)
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
-	_cret = C.gtk_tree_view_is_blank_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4, &_arg5, &_arg6)
+	_cret = C.gtk_tree_view_is_blank_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
+	var _path *TreePath        // out
 	var _column TreeViewColumn // out
 	var _cellX int             // out
 	var _cellY int             // out
 	var _ok bool               // out
 
+	_path = (*TreePath)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_path, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
+	})
 	_column = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeViewColumn)
-	_cellX = (int)(_arg5)
-	_cellY = (int)(_arg6)
+	_cellX = int(_arg5)
+	_cellY = int(_arg6)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -71948,7 +73146,7 @@ func (t treeView) RemoveColumnTreeView(column TreeViewColumn) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -71998,8 +73196,8 @@ func (t treeView) ScrollToCellTreeView(path *TreePath, column TreeViewColumn, us
 	if useAlign {
 		_arg3 = C.TRUE
 	}
-	_arg4 = (C.float)(rowAlign)
-	_arg5 = (C.float)(colAlign)
+	_arg4 = C.float(rowAlign)
+	_arg5 = C.float(colAlign)
 
 	C.gtk_tree_view_scroll_to_cell(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -72010,8 +73208,8 @@ func (t treeView) ScrollToPointTreeView(treeX int, treeY int) {
 	var _arg2 C.int          // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(treeX)
-	_arg2 = (C.int)(treeY)
+	_arg1 = C.int(treeX)
+	_arg2 = C.int(treeY)
 
 	C.gtk_tree_view_scroll_to_point(_arg0, _arg1, _arg2)
 }
@@ -72069,7 +73267,7 @@ func (t treeView) SetDragDestRowTreeView(path *TreePath, pos TreeViewDropPositio
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-	_arg2 = (C.GtkTreeViewDropPosition)(pos)
+	_arg2 = C.GtkTreeViewDropPosition(pos)
 
 	C.gtk_tree_view_set_drag_dest_row(_arg0, _arg1, _arg2)
 }
@@ -72125,7 +73323,7 @@ func (t treeView) SetGridLinesTreeView(gridLines TreeViewGridLines) {
 	var _arg1 C.GtkTreeViewGridLines // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkTreeViewGridLines)(gridLines)
+	_arg1 = C.GtkTreeViewGridLines(gridLines)
 
 	C.gtk_tree_view_set_grid_lines(_arg0, _arg1)
 }
@@ -72183,7 +73381,7 @@ func (t treeView) SetLevelIndentationTreeView(indentation int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(indentation)
+	_arg1 = C.int(indentation)
 
 	C.gtk_tree_view_set_level_indentation(_arg0, _arg1)
 }
@@ -72227,7 +73425,7 @@ func (t treeView) SetSearchColumnTreeView(column int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_tree_view_set_search_column(_arg0, _arg1)
 }
@@ -72275,7 +73473,7 @@ func (t treeView) SetTooltipColumnTreeView(column int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(column)
+	_arg1 = C.int(column)
 
 	C.gtk_tree_view_set_tooltip_column(_arg0, _arg1)
 }
@@ -72636,7 +73834,7 @@ func (t treeViewColumn) AddAttributeTreeViewColumn(cellRenderer CellRenderer, at
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
 	_arg2 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.int)(column)
+	_arg3 = C.int(column)
 
 	C.gtk_tree_view_column_add_attribute(_arg0, _arg1, _arg2, _arg3)
 }
@@ -72657,8 +73855,8 @@ func (t treeViewColumn) CellGetPositionTreeViewColumn(cellRenderer CellRenderer)
 	var _width int   // out
 	var _ok bool     // out
 
-	_xOffset = (int)(_arg2)
-	_width = (int)(_arg3)
+	_xOffset = int(_arg2)
+	_width = int(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -72682,10 +73880,10 @@ func (t treeViewColumn) CellGetSizeTreeViewColumn() (xOffset int, yOffset int, w
 	var _width int   // out
 	var _height int  // out
 
-	_xOffset = (int)(_arg1)
-	_yOffset = (int)(_arg2)
-	_width = (int)(_arg3)
-	_height = (int)(_arg4)
+	_xOffset = int(_arg1)
+	_yOffset = int(_arg2)
+	_width = int(_arg3)
+	_height = int(_arg4)
 
 	return _xOffset, _yOffset, _width, _height
 }
@@ -72773,7 +73971,7 @@ func (t treeViewColumn) Alignment() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = (float32)(_cret)
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -72837,7 +74035,7 @@ func (t treeViewColumn) FixedWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -72852,7 +74050,7 @@ func (t treeViewColumn) MaxWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -72867,7 +74065,7 @@ func (t treeViewColumn) MinWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -72931,7 +74129,7 @@ func (t treeViewColumn) SortColumnID() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -72978,7 +74176,7 @@ func (t treeViewColumn) Spacing() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -73055,7 +74253,7 @@ func (t treeViewColumn) Width() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -73070,7 +74268,7 @@ func (t treeViewColumn) XOffset() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -73116,7 +74314,7 @@ func (t treeViewColumn) SetAlignmentTreeViewColumn(xalign float32) {
 	var _arg1 C.float              // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.float)(xalign)
+	_arg1 = C.float(xalign)
 
 	C.gtk_tree_view_column_set_alignment(_arg0, _arg1)
 }
@@ -73150,7 +74348,7 @@ func (t treeViewColumn) SetFixedWidthTreeViewColumn(fixedWidth int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(fixedWidth)
+	_arg1 = C.int(fixedWidth)
 
 	C.gtk_tree_view_column_set_fixed_width(_arg0, _arg1)
 }
@@ -73160,7 +74358,7 @@ func (t treeViewColumn) SetMaxWidthTreeViewColumn(maxWidth int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(maxWidth)
+	_arg1 = C.int(maxWidth)
 
 	C.gtk_tree_view_column_set_max_width(_arg0, _arg1)
 }
@@ -73170,7 +74368,7 @@ func (t treeViewColumn) SetMinWidthTreeViewColumn(minWidth int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(minWidth)
+	_arg1 = C.int(minWidth)
 
 	C.gtk_tree_view_column_set_min_width(_arg0, _arg1)
 }
@@ -73204,7 +74402,7 @@ func (t treeViewColumn) SetSizingTreeViewColumn(typ TreeViewColumnSizing) {
 	var _arg1 C.GtkTreeViewColumnSizing // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkTreeViewColumnSizing)(typ)
+	_arg1 = C.GtkTreeViewColumnSizing(typ)
 
 	C.gtk_tree_view_column_set_sizing(_arg0, _arg1)
 }
@@ -73214,7 +74412,7 @@ func (t treeViewColumn) SetSortColumnIDTreeViewColumn(sortColumnId int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(sortColumnId)
+	_arg1 = C.int(sortColumnId)
 
 	C.gtk_tree_view_column_set_sort_column_id(_arg0, _arg1)
 }
@@ -73236,7 +74434,7 @@ func (t treeViewColumn) SetSortOrderTreeViewColumn(order SortType) {
 	var _arg1 C.GtkSortType        // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.GtkSortType)(order)
+	_arg1 = C.GtkSortType(order)
 
 	C.gtk_tree_view_column_set_sort_order(_arg0, _arg1)
 }
@@ -73246,7 +74444,7 @@ func (t treeViewColumn) SetSpacingTreeViewColumn(spacing int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.int)(spacing)
+	_arg1 = C.int(spacing)
 
 	C.gtk_tree_view_column_set_spacing(_arg0, _arg1)
 }
@@ -75482,9 +76680,9 @@ func (w widget) AllocateWidget(width int, height int, baseline int, transform *g
 	var _arg4 *C.GskTransform // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.int)(width)
-	_arg2 = (C.int)(height)
-	_arg3 = (C.int)(baseline)
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	_arg3 = C.int(baseline)
 	_arg4 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))
 
 	C.gtk_widget_allocate(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -75496,7 +76694,7 @@ func (w widget) ChildFocusWidget(direction DirectionType) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkDirectionType)(direction)
+	_arg1 = C.GtkDirectionType(direction)
 
 	_cret = C.gtk_widget_child_focus(_arg0, _arg1)
 
@@ -75510,18 +76708,30 @@ func (w widget) ChildFocusWidget(direction DirectionType) bool {
 }
 
 func (w widget) ComputeBoundsWidget(target Widget) (graphene.Rect, bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-	var _outBounds graphene.Rect
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.graphene_rect_t // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
 
-	_cret = C.gtk_widget_compute_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_outBounds)))
+	_cret = C.gtk_widget_compute_bounds(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _outBounds graphene.Rect // out
+	var _ok bool                 // out
 
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *graphene.Rect
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*graphene.Rect)(unsafe.Pointer(refTmpIn))
+
+		_outBounds = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -75535,7 +76745,7 @@ func (w widget) ComputeExpandWidget(orientation Orientation) bool {
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_widget_compute_expand(_arg0, _arg1)
 
@@ -75552,17 +76762,29 @@ func (w widget) ComputePointWidget(target Widget, point *graphene.Point) (graphe
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 *C.graphene_point_t // out
-	var _outPoint graphene.Point
-	var _cret C.gboolean // in
+	var _arg3 C.graphene_point_t  // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
 
-	_cret = C.gtk_widget_compute_point(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_outPoint)))
+	_cret = C.gtk_widget_compute_point(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _outPoint graphene.Point // out
+	var _ok bool                 // out
 
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *graphene.Point
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*graphene.Point)(unsafe.Pointer(refTmpIn))
+
+		_outPoint = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -75571,18 +76793,30 @@ func (w widget) ComputePointWidget(target Widget, point *graphene.Point) (graphe
 }
 
 func (w widget) ComputeTransformWidget(target Widget) (graphene.Matrix, bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-	var _outTransform graphene.Matrix
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkWidget        // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 C.graphene_matrix_t // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
 
-	_cret = C.gtk_widget_compute_transform(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_outTransform)))
+	_cret = C.gtk_widget_compute_transform(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _outTransform graphene.Matrix // out
+	var _ok bool                      // out
 
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *graphene.Matrix
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*graphene.Matrix)(unsafe.Pointer(refTmpIn))
+
+		_outTransform = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -75597,8 +76831,8 @@ func (w widget) ContainsWidget(x float64, y float64) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.double)(x)
-	_arg2 = (C.double)(y)
+	_arg1 = C.double(x)
+	_arg2 = C.double(y)
 
 	_cret = C.gtk_widget_contains(_arg0, _arg1, _arg2)
 
@@ -75653,10 +76887,10 @@ func (w widget) DragCheckThresholdWidget(startX int, startY int, currentX int, c
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.int)(startX)
-	_arg2 = (C.int)(startY)
-	_arg3 = (C.int)(currentX)
-	_arg4 = (C.int)(currentY)
+	_arg1 = C.int(startX)
+	_arg2 = C.int(startY)
+	_arg3 = C.int(currentX)
+	_arg4 = C.int(currentY)
 
 	_cret = C.gtk_drag_check_threshold(_arg0, _arg1, _arg2, _arg3, _arg4)
 
@@ -75687,7 +76921,7 @@ func (w widget) AllocatedBaseline() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -75702,7 +76936,7 @@ func (w widget) AllocatedHeight() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -75717,7 +76951,7 @@ func (w widget) AllocatedWidth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -75982,7 +77216,7 @@ func (w widget) FontOptions() *cairo.FontOptions {
 
 	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = cairo.WrapFontOptions(unsafe.Pointer(_cret))
+	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
 
 	return _fontOptions
 }
@@ -76044,7 +77278,7 @@ func (w widget) Height() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -76140,7 +77374,7 @@ func (w widget) MarginBottom() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -76155,7 +77389,7 @@ func (w widget) MarginEnd() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -76170,7 +77404,7 @@ func (w widget) MarginStart() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -76185,7 +77419,7 @@ func (w widget) MarginTop() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -76245,7 +77479,7 @@ func (w widget) Opacity() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -76296,13 +77530,39 @@ func (w widget) Parent() Widget {
 }
 
 func (w widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
-	var _arg0 *C.GtkWidget // out
-	var _minimumSize Requisition
-	var _naturalSize Requisition
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+	var _arg2 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
-	C.gtk_widget_get_preferred_size(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_minimumSize)), (*C.GtkRequisition)(unsafe.Pointer(&_naturalSize)))
+	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
+
+	var _minimumSize Requisition // out
+	var _naturalSize Requisition // out
+
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_minimumSize = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_naturalSize = *refTmpOut
+	}
 
 	return _minimumSize, _naturalSize
 }
@@ -76411,7 +77671,7 @@ func (w widget) ScaleFactor() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -76454,13 +77714,13 @@ func (w widget) Size(orientation Orientation) int {
 	var _cret C.int            // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_widget_get_size(_arg0, _arg1)
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -76477,8 +77737,8 @@ func (w widget) SizeRequest() (width int, height int) {
 	var _width int  // out
 	var _height int // out
 
-	_width = (int)(_arg1)
-	_height = (int)(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -76639,7 +77899,7 @@ func (w widget) Width() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -76895,7 +78155,7 @@ func (w widget) KeynavFailedWidget(direction DirectionType) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkDirectionType)(direction)
+	_arg1 = C.GtkDirectionType(direction)
 
 	_cret = C.gtk_widget_keynav_failed(_arg0, _arg1)
 
@@ -76926,8 +78186,8 @@ func (w widget) MeasureWidget(orientation Orientation, forSize int) (minimum int
 	var _arg6 C.int            // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = (C.int)(forSize)
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.int(forSize)
 
 	C.gtk_widget_measure(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
@@ -76936,10 +78196,10 @@ func (w widget) MeasureWidget(orientation Orientation, forSize int) (minimum int
 	var _minimumBaseline int // out
 	var _naturalBaseline int // out
 
-	_minimum = (int)(_arg3)
-	_natural = (int)(_arg4)
-	_minimumBaseline = (int)(_arg5)
-	_naturalBaseline = (int)(_arg6)
+	_minimum = int(_arg3)
+	_natural = int(_arg4)
+	_minimumBaseline = int(_arg5)
+	_naturalBaseline = int(_arg6)
 
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
 }
@@ -77003,9 +78263,9 @@ func (w widget) PickWidget(x float64, y float64, flags PickFlags) Widget {
 	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.double)(x)
-	_arg2 = (C.double)(y)
-	_arg3 = (C.GtkPickFlags)(flags)
+	_arg1 = C.double(x)
+	_arg2 = C.double(y)
+	_arg3 = C.GtkPickFlags(flags)
 
 	_cret = C.gtk_widget_pick(_arg0, _arg1, _arg2, _arg3)
 
@@ -77084,7 +78344,7 @@ func (w widget) RemoveTickCallbackWidget(id uint) {
 	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.guint)(id)
+	_arg1 = C.guint(id)
 
 	C.gtk_widget_remove_tick_callback(_arg0, _arg1)
 }
@@ -77169,7 +78429,7 @@ func (w widget) SetDirectionWidget(dir TextDirection) {
 	var _arg1 C.GtkTextDirection // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkTextDirection)(dir)
+	_arg1 = C.GtkTextDirection(dir)
 
 	C.gtk_widget_set_direction(_arg0, _arg1)
 }
@@ -77233,7 +78493,7 @@ func (w widget) SetHalignWidget(align Align) {
 	var _arg1 C.GtkAlign   // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkAlign)(align)
+	_arg1 = C.GtkAlign(align)
 
 	C.gtk_widget_set_halign(_arg0, _arg1)
 }
@@ -77289,7 +78549,7 @@ func (w widget) SetMarginBottomWidget(margin int) {
 	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.int)(margin)
+	_arg1 = C.int(margin)
 
 	C.gtk_widget_set_margin_bottom(_arg0, _arg1)
 }
@@ -77299,7 +78559,7 @@ func (w widget) SetMarginEndWidget(margin int) {
 	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.int)(margin)
+	_arg1 = C.int(margin)
 
 	C.gtk_widget_set_margin_end(_arg0, _arg1)
 }
@@ -77309,7 +78569,7 @@ func (w widget) SetMarginStartWidget(margin int) {
 	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.int)(margin)
+	_arg1 = C.int(margin)
 
 	C.gtk_widget_set_margin_start(_arg0, _arg1)
 }
@@ -77319,7 +78579,7 @@ func (w widget) SetMarginTopWidget(margin int) {
 	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.int)(margin)
+	_arg1 = C.int(margin)
 
 	C.gtk_widget_set_margin_top(_arg0, _arg1)
 }
@@ -77340,7 +78600,7 @@ func (w widget) SetOpacityWidget(opacity float64) {
 	var _arg1 C.double     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.double)(opacity)
+	_arg1 = C.double(opacity)
 
 	C.gtk_widget_set_opacity(_arg0, _arg1)
 }
@@ -77350,7 +78610,7 @@ func (w widget) SetOverflowWidget(overflow Overflow) {
 	var _arg1 C.GtkOverflow // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkOverflow)(overflow)
+	_arg1 = C.GtkOverflow(overflow)
 
 	C.gtk_widget_set_overflow(_arg0, _arg1)
 }
@@ -77395,8 +78655,8 @@ func (w widget) SetSizeRequestWidget(width int, height int) {
 	var _arg2 C.int        // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.int)(width)
-	_arg2 = (C.int)(height)
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
 	C.gtk_widget_set_size_request(_arg0, _arg1, _arg2)
 }
@@ -77407,7 +78667,7 @@ func (w widget) SetStateFlagsWidget(flags StateFlags, clear bool) {
 	var _arg2 C.gboolean      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkStateFlags)(flags)
+	_arg1 = C.GtkStateFlags(flags)
 	if clear {
 		_arg2 = C.TRUE
 	}
@@ -77442,7 +78702,7 @@ func (w widget) SetValignWidget(align Align) {
 	var _arg1 C.GtkAlign   // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkAlign)(align)
+	_arg1 = C.GtkAlign(align)
 
 	C.gtk_widget_set_valign(_arg0, _arg1)
 }
@@ -77531,8 +78791,8 @@ func (s widget) TranslateCoordinatesWidget(destWidget Widget, srcX float64, srcY
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(destWidget.Native()))
-	_arg2 = (C.double)(srcX)
-	_arg3 = (C.double)(srcY)
+	_arg2 = C.double(srcX)
+	_arg3 = C.double(srcY)
 
 	_cret = C.gtk_widget_translate_coordinates(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
@@ -77540,8 +78800,8 @@ func (s widget) TranslateCoordinatesWidget(destWidget Widget, srcX float64, srcY
 	var _destY float64 // out
 	var _ok bool       // out
 
-	_destX = (float64)(_arg4)
-	_destY = (float64)(_arg5)
+	_destX = float64(_arg4)
+	_destY = float64(_arg5)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -77586,7 +78846,7 @@ func (w widget) UnsetStateFlagsWidget(flags StateFlags) {
 	var _arg1 C.GtkStateFlags // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GtkStateFlags)(flags)
+	_arg1 = C.GtkStateFlags(flags)
 
 	C.gtk_widget_unset_state_flags(_arg0, _arg1)
 }
@@ -78279,8 +79539,8 @@ func (w window) DefaultSize() (width int, height int) {
 	var _width int  // out
 	var _height int // out
 
-	_width = (int)(_arg1)
-	_height = (int)(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -78623,7 +79883,7 @@ func (w window) PresentWithTimeWindow(timestamp uint32) {
 	var _arg1 C.guint32    // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.guint32)(timestamp)
+	_arg1 = C.guint32(timestamp)
 
 	C.gtk_window_present_with_time(_arg0, _arg1)
 }
@@ -78666,8 +79926,8 @@ func (w window) SetDefaultSizeWindow(width int, height int) {
 	var _arg2 C.int        // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.int)(width)
-	_arg2 = (C.int)(height)
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
 	C.gtk_window_set_default_size(_arg0, _arg1, _arg2)
 }
@@ -79037,7 +80297,7 @@ func NewWindowControls(side PackType) WindowControls {
 	var _arg1 C.GtkPackType // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (C.GtkPackType)(side)
+	_arg1 = C.GtkPackType(side)
 
 	_cret = C.gtk_window_controls_new(_arg1)
 
@@ -79111,7 +80371,7 @@ func (s windowControls) SetSideWindowControls(side PackType) {
 	var _arg1 C.GtkPackType        // out
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkPackType)(side)
+	_arg1 = C.GtkPackType(side)
 
 	C.gtk_window_controls_set_side(_arg0, _arg1)
 }
@@ -79165,6 +80425,7 @@ func (b windowControls) BuildableID() string {
 // window group and drop their references on the window group; when all window
 // have been removed, the window group will be freed.
 type WindowGroup interface {
+	gextras.Objector
 
 	// AddWindowWindowGroup adds a window to a `GtkWindowGroup`.
 	AddWindowWindowGroup(window Window)
@@ -79375,9 +80636,9 @@ func NewBitsetEmpty() *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = WrapBitset(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.free(unsafe.Pointer(v.Native()))
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_bitset, func(v **Bitset) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _bitset
@@ -79389,16 +80650,16 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 	var _arg2 C.guint      // out
 	var _cret *C.GtkBitset // in
 
-	_arg1 = (C.guint)(start)
-	_arg2 = (C.guint)(nItems)
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(nItems)
 
 	_cret = C.gtk_bitset_new_range(_arg1, _arg2)
 
 	var _bitset *Bitset // out
 
-	_bitset = WrapBitset(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.free(unsafe.Pointer(v.Native()))
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_bitset, func(v **Bitset) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _bitset
@@ -79416,7 +80677,7 @@ func (s *Bitset) Add(value uint) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(value)
+	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_add(_arg0, _arg1)
 
@@ -79437,8 +80698,8 @@ func (s *Bitset) AddRange(start uint, nItems uint) {
 	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(start)
-	_arg2 = (C.guint)(nItems)
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(nItems)
 
 	C.gtk_bitset_add_range(_arg0, _arg1, _arg2)
 }
@@ -79451,8 +80712,8 @@ func (s *Bitset) AddRangeClosed(first uint, last uint) {
 	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(first)
-	_arg2 = (C.guint)(last)
+	_arg1 = C.guint(first)
+	_arg2 = C.guint(last)
 
 	C.gtk_bitset_add_range_closed(_arg0, _arg1, _arg2)
 }
@@ -79468,10 +80729,10 @@ func (s *Bitset) AddRectangle(start uint, width uint, height uint, stride uint) 
 	var _arg4 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(start)
-	_arg2 = (C.guint)(width)
-	_arg3 = (C.guint)(height)
-	_arg4 = (C.guint)(stride)
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(width)
+	_arg3 = C.guint(height)
+	_arg4 = C.guint(stride)
 
 	C.gtk_bitset_add_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -79483,7 +80744,7 @@ func (s *Bitset) Contains(value uint) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(value)
+	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_contains(_arg0, _arg1)
 
@@ -79507,9 +80768,9 @@ func (s *Bitset) Copy() *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = WrapBitset(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.free(unsafe.Pointer(v.Native()))
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_bitset, func(v **Bitset) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _bitset
@@ -79566,7 +80827,7 @@ func (s *Bitset) Maximum() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -79584,7 +80845,7 @@ func (s *Bitset) Minimum() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -79598,13 +80859,13 @@ func (s *Bitset) Nth(nth uint) uint {
 	var _cret C.guint      // in
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(nth)
+	_arg1 = C.guint(nth)
 
 	_cret = C.gtk_bitset_get_nth(_arg0, _arg1)
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -79626,7 +80887,7 @@ func (s *Bitset) Size() uint64 {
 
 	var _guint64 uint64 // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -79644,14 +80905,14 @@ func (s *Bitset) SizeInRange(first uint, last uint) uint64 {
 	var _cret C.guint64    // in
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(first)
-	_arg2 = (C.guint)(last)
+	_arg1 = C.guint(first)
+	_arg2 = C.guint(last)
 
 	_cret = C.gtk_bitset_get_size_in_range(_arg0, _arg1, _arg2)
 
 	var _guint64 uint64 // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -79701,7 +80962,7 @@ func (s *Bitset) Ref() *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = WrapBitset(unsafe.Pointer(_cret))
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
 
 	return _bitset
 }
@@ -79713,7 +80974,7 @@ func (s *Bitset) Remove(value uint) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(value)
+	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_remove(_arg0, _arg1)
 
@@ -79743,8 +81004,8 @@ func (s *Bitset) RemoveRange(start uint, nItems uint) {
 	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(start)
-	_arg2 = (C.guint)(nItems)
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(nItems)
 
 	C.gtk_bitset_remove_range(_arg0, _arg1, _arg2)
 }
@@ -79757,8 +81018,8 @@ func (s *Bitset) RemoveRangeClosed(first uint, last uint) {
 	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(first)
-	_arg2 = (C.guint)(last)
+	_arg1 = C.guint(first)
+	_arg2 = C.guint(last)
 
 	C.gtk_bitset_remove_range_closed(_arg0, _arg1, _arg2)
 }
@@ -79774,10 +81035,10 @@ func (s *Bitset) RemoveRectangle(start uint, width uint, height uint, stride uin
 	var _arg4 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(start)
-	_arg2 = (C.guint)(width)
-	_arg3 = (C.guint)(height)
-	_arg4 = (C.guint)(stride)
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(width)
+	_arg3 = C.guint(height)
+	_arg4 = C.guint(stride)
 
 	C.gtk_bitset_remove_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -79790,7 +81051,7 @@ func (s *Bitset) ShiftLeft(amount uint) {
 	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(amount)
+	_arg1 = C.guint(amount)
 
 	C.gtk_bitset_shift_left(_arg0, _arg1)
 }
@@ -79803,7 +81064,7 @@ func (s *Bitset) ShiftRight(amount uint) {
 	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(amount)
+	_arg1 = C.guint(amount)
 
 	C.gtk_bitset_shift_right(_arg0, _arg1)
 }
@@ -79825,9 +81086,9 @@ func (s *Bitset) Splice(position uint, removed uint, added uint) {
 	var _arg3 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.guint)(removed)
-	_arg3 = (C.guint)(added)
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(removed)
+	_arg3 = C.guint(added)
 
 	C.gtk_bitset_splice(_arg0, _arg1, _arg2, _arg3)
 }
@@ -79909,7 +81170,7 @@ func (i *BitsetIter) Value() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -79948,7 +81209,7 @@ func (i *BitsetIter) Next() (uint, bool) {
 	var _value uint // out
 	var _ok bool    // out
 
-	_value = (uint)(_arg1)
+	_value = uint(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -79972,7 +81233,7 @@ func (i *BitsetIter) Previous() (uint, bool) {
 	var _value uint // out
 	var _ok bool    // out
 
-	_value = (uint)(_arg1)
+	_value = uint(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -80004,9 +81265,9 @@ func NewBorder() *Border {
 
 	var _border *Border // out
 
-	_border = WrapBorder(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_border, func(v *Border) {
-		C.free(unsafe.Pointer(v.Native()))
+	_border = (*Border)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_border, func(v **Border) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _border
@@ -80028,9 +81289,9 @@ func (b *Border) Copy() *Border {
 
 	var _border *Border // out
 
-	_border = WrapBorder(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_border, func(v *Border) {
-		C.free(unsafe.Pointer(v.Native()))
+	_border = (*Border)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_border, func(v **Border) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _border
@@ -80095,8 +81356,8 @@ func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 	var _lineNumber int // out
 	var _charNumber int // out
 
-	_lineNumber = (int)(_arg1)
-	_charNumber = (int)(_arg2)
+	_lineNumber = int(_arg1)
+	_charNumber = int(_arg2)
 
 	return _lineNumber, _charNumber
 }
@@ -80157,9 +81418,9 @@ func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSect
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.free(unsafe.Pointer(v.Native()))
+	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_cssSection, func(v **CSSSection) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _cssSection
@@ -80181,7 +81442,7 @@ func (s *CSSSection) EndLocation() *CSSLocation {
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = WrapCSSLocation(unsafe.Pointer(_cret))
+	_cssLocation = (*CSSLocation)(unsafe.Pointer(_cret))
 
 	return _cssLocation
 }
@@ -80223,7 +81484,7 @@ func (s *CSSSection) Parent() *CSSSection {
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
 
 	return _cssSection
 }
@@ -80240,7 +81501,7 @@ func (s *CSSSection) StartLocation() *CSSLocation {
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = WrapCSSLocation(unsafe.Pointer(_cret))
+	_cssLocation = (*CSSLocation)(unsafe.Pointer(_cret))
 
 	return _cssLocation
 }
@@ -80256,9 +81517,9 @@ func (s *CSSSection) Ref() *CSSSection {
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.free(unsafe.Pointer(v.Native()))
+	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_cssSection, func(v **CSSSection) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _cssSection
@@ -80332,7 +81593,7 @@ func (e *ExpressionWatch) Native() unsafe.Pointer {
 //
 // This is equivalent to calling [method@Gtk.Expression.evaluate] with the
 // expression and this pointer originally used to create `watch`.
-func (w *ExpressionWatch) Evaluate(value *externglib.Value) bool {
+func (w *ExpressionWatch) Evaluate(value externglib.Value) bool {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _arg1 *C.GValue             // out
 	var _cret C.gboolean            // in
@@ -80362,9 +81623,9 @@ func (w *ExpressionWatch) Ref() *ExpressionWatch {
 
 	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = WrapExpressionWatch(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
-		C.free(unsafe.Pointer(v.Native()))
+	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_expressionWatch, func(v **ExpressionWatch) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _expressionWatch
@@ -80457,9 +81718,9 @@ func NewPaperSize(name string) *PaperSize {
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_paperSize, func(v **PaperSize) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _paperSize
@@ -80478,17 +81739,17 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.double)(width)
-	_arg4 = (C.double)(height)
-	_arg5 = (C.GtkUnit)(unit)
+	_arg3 = C.double(width)
+	_arg4 = C.double(height)
+	_arg5 = C.GtkUnit(unit)
 
 	_cret = C.gtk_paper_size_new_custom(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_paperSize, func(v **PaperSize) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _paperSize
@@ -80505,9 +81766,9 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_paperSize, func(v **PaperSize) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _paperSize
@@ -80522,16 +81783,16 @@ func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSi
 
 	_arg1 = (*C.char)(C.CString(ippName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.double)(width)
-	_arg3 = (C.double)(height)
+	_arg2 = C.double(width)
+	_arg3 = C.double(height)
 
 	_cret = C.gtk_paper_size_new_from_ipp(_arg1, _arg2, _arg3)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_paperSize, func(v **PaperSize) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _paperSize
@@ -80553,9 +81814,9 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	var _paperSize *PaperSize // out
 	var _goerr error          // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_paperSize, func(v **PaperSize) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -80574,16 +81835,16 @@ func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, h
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(ppdDisplayName))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.double)(width)
-	_arg4 = (C.double)(height)
+	_arg3 = C.double(width)
+	_arg4 = C.double(height)
 
 	_cret = C.gtk_paper_size_new_from_ppd(_arg1, _arg2, _arg3, _arg4)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_paperSize, func(v **PaperSize) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _paperSize
@@ -80605,9 +81866,9 @@ func (o *PaperSize) Copy() *PaperSize {
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_paperSize, func(v **PaperSize) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _paperSize
@@ -80629,13 +81890,13 @@ func (s *PaperSize) DefaultBottomMargin(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_paper_size_get_default_bottom_margin(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -80647,13 +81908,13 @@ func (s *PaperSize) DefaultLeftMargin(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_paper_size_get_default_left_margin(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -80665,13 +81926,13 @@ func (s *PaperSize) DefaultRightMargin(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_paper_size_get_default_right_margin(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -80683,13 +81944,13 @@ func (s *PaperSize) DefaultTopMargin(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_paper_size_get_default_top_margin(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -80717,13 +81978,13 @@ func (s *PaperSize) Height(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_paper_size_get_height(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -80767,13 +82028,13 @@ func (s *PaperSize) Width(unit Unit) float64 {
 	var _cret C.double        // in
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GtkUnit)(unit)
+	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_paper_size_get_width(_arg0, _arg1)
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -80842,9 +82103,9 @@ func (s *PaperSize) SetSize(width float64, height float64, unit Unit) {
 	var _arg3 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.double)(width)
-	_arg2 = (C.double)(height)
-	_arg3 = (C.GtkUnit)(unit)
+	_arg1 = C.double(width)
+	_arg2 = C.double(height)
+	_arg3 = C.GtkUnit(unit)
 
 	C.gtk_paper_size_set_size(_arg0, _arg1, _arg2, _arg3)
 }
@@ -80860,7 +82121,7 @@ func (p *PaperSize) ToGVariant() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -80980,7 +82241,7 @@ func (i *RecentInfo) Age() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -81242,9 +82503,9 @@ func (i *RecentInfo) Ref() *RecentInfo {
 
 	var _recentInfo *RecentInfo // out
 
-	_recentInfo = WrapRecentInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_recentInfo, func(v **RecentInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _recentInfo
@@ -81302,9 +82563,9 @@ func NewRequisition() *Requisition {
 
 	var _requisition *Requisition // out
 
-	_requisition = WrapRequisition(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_requisition, func(v *Requisition) {
-		C.free(unsafe.Pointer(v.Native()))
+	_requisition = (*Requisition)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_requisition, func(v **Requisition) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _requisition
@@ -81326,9 +82587,9 @@ func (r *Requisition) Copy() *Requisition {
 
 	var _ret *Requisition // out
 
-	_ret = WrapRequisition(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Requisition) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ret = (*Requisition)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Requisition) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -81419,7 +82680,7 @@ func (i *TextIter) BackwardChars(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_backward_chars(_arg0, _arg1)
 
@@ -81460,7 +82721,7 @@ func (i *TextIter) BackwardCursorPositions(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_backward_cursor_positions(_arg0, _arg1)
 
@@ -81513,7 +82774,7 @@ func (i *TextIter) BackwardLines(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_backward_lines(_arg0, _arg1)
 
@@ -81534,21 +82795,45 @@ func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *Text
 	var _arg0 *C.GtkTextIter       // out
 	var _arg1 *C.char              // out
 	var _arg2 C.GtkTextSearchFlags // out
-	var _matchStart TextIter
-	var _matchEnd TextIter
-	var _arg5 *C.GtkTextIter // out
-	var _cret C.gboolean     // in
+	var _arg3 C.GtkTextIter        // in
+	var _arg4 C.GtkTextIter        // in
+	var _arg5 *C.GtkTextIter       // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GtkTextSearchFlags)(flags)
+	_arg2 = C.GtkTextSearchFlags(flags)
 	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit.Native()))
 
-	_cret = C.gtk_text_iter_backward_search(_arg0, _arg1, _arg2, (*C.GtkTextIter)(unsafe.Pointer(&_matchStart)), (*C.GtkTextIter)(unsafe.Pointer(&_matchEnd)), _arg5)
+	_cret = C.gtk_text_iter_backward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
 
-	var _ok bool // out
+	var _matchStart TextIter // out
+	var _matchEnd TextIter   // out
+	var _ok bool             // out
 
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_matchStart = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_matchEnd = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -81590,7 +82875,7 @@ func (i *TextIter) BackwardSentenceStarts(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_backward_sentence_starts(_arg0, _arg1)
 
@@ -81658,7 +82943,7 @@ func (i *TextIter) BackwardVisibleCursorPositions(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_backward_visible_cursor_positions(_arg0, _arg1)
 
@@ -81711,7 +82996,7 @@ func (i *TextIter) BackwardVisibleLines(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_backward_visible_lines(_arg0, _arg1)
 
@@ -81756,7 +83041,7 @@ func (i *TextIter) BackwardVisibleWordStarts(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_backward_visible_word_starts(_arg0, _arg1)
 
@@ -81801,7 +83086,7 @@ func (i *TextIter) BackwardWordStarts(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_backward_word_starts(_arg0, _arg1)
 
@@ -81859,7 +83144,7 @@ func (l *TextIter) Compare(rhs *TextIter) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -81880,9 +83165,9 @@ func (i *TextIter) Copy() *TextIter {
 
 	var _textIter *TextIter // out
 
-	_textIter = WrapTextIter(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_textIter, func(v *TextIter) {
-		C.free(unsafe.Pointer(v.Native()))
+	_textIter = (*TextIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_textIter, func(v **TextIter) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _textIter
@@ -82082,7 +83367,7 @@ func (i *TextIter) ForwardChars(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_forward_chars(_arg0, _arg1)
 
@@ -82135,7 +83420,7 @@ func (i *TextIter) ForwardCursorPositions(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_forward_cursor_positions(_arg0, _arg1)
 
@@ -82185,7 +83470,7 @@ func (i *TextIter) ForwardLines(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_forward_lines(_arg0, _arg1)
 
@@ -82211,21 +83496,45 @@ func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextI
 	var _arg0 *C.GtkTextIter       // out
 	var _arg1 *C.char              // out
 	var _arg2 C.GtkTextSearchFlags // out
-	var _matchStart TextIter
-	var _matchEnd TextIter
-	var _arg5 *C.GtkTextIter // out
-	var _cret C.gboolean     // in
+	var _arg3 C.GtkTextIter        // in
+	var _arg4 C.GtkTextIter        // in
+	var _arg5 *C.GtkTextIter       // out
+	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GtkTextSearchFlags)(flags)
+	_arg2 = C.GtkTextSearchFlags(flags)
 	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit.Native()))
 
-	_cret = C.gtk_text_iter_forward_search(_arg0, _arg1, _arg2, (*C.GtkTextIter)(unsafe.Pointer(&_matchStart)), (*C.GtkTextIter)(unsafe.Pointer(&_matchEnd)), _arg5)
+	_cret = C.gtk_text_iter_forward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
 
-	var _ok bool // out
+	var _matchStart TextIter // out
+	var _matchEnd TextIter   // out
+	var _ok bool             // out
 
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_matchStart = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_matchEnd = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -82265,7 +83574,7 @@ func (i *TextIter) ForwardSentenceEnds(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_forward_sentence_ends(_arg0, _arg1)
 
@@ -82373,7 +83682,7 @@ func (i *TextIter) ForwardVisibleCursorPositions(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_forward_visible_cursor_positions(_arg0, _arg1)
 
@@ -82423,7 +83732,7 @@ func (i *TextIter) ForwardVisibleLines(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_forward_visible_lines(_arg0, _arg1)
 
@@ -82468,7 +83777,7 @@ func (i *TextIter) ForwardVisibleWordEnds(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_forward_visible_word_ends(_arg0, _arg1)
 
@@ -82512,7 +83821,7 @@ func (i *TextIter) ForwardWordEnds(count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(count)
+	_arg1 = C.int(count)
 
 	_cret = C.gtk_text_iter_forward_word_ends(_arg0, _arg1)
 
@@ -82566,7 +83875,7 @@ func (i *TextIter) BytesInLine() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -82589,7 +83898,7 @@ func (i *TextIter) Char() uint32 {
 
 	var _gunichar uint32 // out
 
-	_gunichar = (uint32)(_cret)
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -82606,7 +83915,7 @@ func (i *TextIter) CharsInLine() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -82644,9 +83953,9 @@ func (i *TextIter) Language() *pango.Language {
 
 	var _language *pango.Language // out
 
-	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_language, func(v *pango.Language) {
-		C.free(unsafe.Pointer(v.Native()))
+	_language = (*pango.Language)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_language, func(v **pango.Language) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _language
@@ -82666,7 +83975,7 @@ func (i *TextIter) Line() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -82686,7 +83995,7 @@ func (i *TextIter) LineIndex() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -82705,7 +84014,7 @@ func (i *TextIter) LineOffset() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -82725,7 +84034,7 @@ func (i *TextIter) Offset() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -82811,7 +84120,7 @@ func (i *TextIter) VisibleLineIndex() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -82829,7 +84138,7 @@ func (i *TextIter) VisibleLineOffset() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -83064,7 +84373,7 @@ func (i *TextIter) SetLine(lineNumber int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(lineNumber)
+	_arg1 = C.int(lineNumber)
 
 	C.gtk_text_iter_set_line(_arg0, _arg1)
 }
@@ -83077,7 +84386,7 @@ func (i *TextIter) SetLineIndex(byteOnLine int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(byteOnLine)
+	_arg1 = C.int(byteOnLine)
 
 	C.gtk_text_iter_set_line_index(_arg0, _arg1)
 }
@@ -83094,7 +84403,7 @@ func (i *TextIter) SetLineOffset(charOnLine int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(charOnLine)
+	_arg1 = C.int(charOnLine)
 
 	C.gtk_text_iter_set_line_offset(_arg0, _arg1)
 }
@@ -83108,7 +84417,7 @@ func (i *TextIter) SetOffset(charOffset int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(charOffset)
+	_arg1 = C.int(charOffset)
 
 	C.gtk_text_iter_set_offset(_arg0, _arg1)
 }
@@ -83121,7 +84430,7 @@ func (i *TextIter) SetVisibleLineIndex(byteOnLine int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(byteOnLine)
+	_arg1 = C.int(byteOnLine)
 
 	C.gtk_text_iter_set_visible_line_index(_arg0, _arg1)
 }
@@ -83134,7 +84443,7 @@ func (i *TextIter) SetVisibleLineOffset(charOnLine int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(charOnLine)
+	_arg1 = C.int(charOnLine)
 
 	C.gtk_text_iter_set_visible_line_offset(_arg0, _arg1)
 }
@@ -83292,9 +84601,9 @@ func (i *TreeIter) Copy() *TreeIter {
 
 	var _treeIter *TreeIter // out
 
-	_treeIter = WrapTreeIter(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treeIter, func(v *TreeIter) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treeIter = (*TreeIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treeIter, func(v **TreeIter) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treeIter
@@ -83333,9 +84642,9 @@ func NewTreePath() *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -83349,9 +84658,9 @@ func NewTreePathFirst() *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -83370,9 +84679,9 @@ func NewTreePathFromIndicesv(indices []int) *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -83390,9 +84699,9 @@ func NewTreePathFromString(path string) *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -83411,7 +84720,7 @@ func (p *TreePath) AppendIndex(index_ int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTreePath)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 
 	C.gtk_tree_path_append_index(_arg0, _arg1)
 }
@@ -83432,7 +84741,7 @@ func (a *TreePath) Compare(b *TreePath) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -83448,9 +84757,9 @@ func (p *TreePath) Copy() *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -83485,7 +84794,7 @@ func (p *TreePath) Depth() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -83547,7 +84856,7 @@ func (p *TreePath) PrependIndex(index_ int) {
 	var _arg1 C.int          // out
 
 	_arg0 = (*C.GtkTreePath)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.int)(index_)
+	_arg1 = C.int(index_)
 
 	C.gtk_tree_path_prepend_index(_arg0, _arg1)
 }
@@ -83639,16 +84948,16 @@ func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference {
 
 	var _treeRowReference *TreeRowReference // out
 
-	_treeRowReference = WrapTreeRowReference(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treeRowReference = (*TreeRowReference)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treeRowReference, func(v **TreeRowReference) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treeRowReference
 }
 
-// NewTreeRowReferenceProXY constructs a struct TreeRowReference.
-func NewTreeRowReferenceProXY(proxy gextras.Objector, model TreeModel, path *TreePath) *TreeRowReference {
+// NewTreeRowReferenceProxy constructs a struct TreeRowReference.
+func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModel, path *TreePath) *TreeRowReference {
 	var _arg1 *C.GObject             // out
 	var _arg2 *C.GtkTreeModel        // out
 	var _arg3 *C.GtkTreePath         // out
@@ -83662,9 +84971,9 @@ func NewTreeRowReferenceProXY(proxy gextras.Objector, model TreeModel, path *Tre
 
 	var _treeRowReference *TreeRowReference // out
 
-	_treeRowReference = WrapTreeRowReference(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treeRowReference = (*TreeRowReference)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treeRowReference, func(v **TreeRowReference) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treeRowReference
@@ -83686,9 +84995,9 @@ func (r *TreeRowReference) Copy() *TreeRowReference {
 
 	var _treeRowReference *TreeRowReference // out
 
-	_treeRowReference = WrapTreeRowReference(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treeRowReference = (*TreeRowReference)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treeRowReference, func(v **TreeRowReference) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treeRowReference
@@ -83731,9 +85040,9 @@ func (r *TreeRowReference) Path() *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath

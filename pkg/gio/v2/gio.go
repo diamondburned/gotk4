@@ -85,7 +85,7 @@ func init() {
 		{T: externglib.Type(C.g_dbus_message_flags_get_type()), F: marshalDBusMessageFlags},
 		{T: externglib.Type(C.g_dbus_object_manager_client_flags_get_type()), F: marshalDBusObjectManagerClientFlags},
 		{T: externglib.Type(C.g_dbus_property_info_flags_get_type()), F: marshalDBusPropertyInfoFlags},
-		{T: externglib.Type(C.g_dbus_proxy_flags_get_type()), F: marshalDBusProXYFlags},
+		{T: externglib.Type(C.g_dbus_proxy_flags_get_type()), F: marshalDBusProxyFlags},
 		{T: externglib.Type(C.g_dbus_send_message_flags_get_type()), F: marshalDBusSendMessageFlags},
 		{T: externglib.Type(C.g_dbus_server_flags_get_type()), F: marshalDBusServerFlags},
 		{T: externglib.Type(C.g_dbus_signal_flags_get_type()), F: marshalDBusSignalFlags},
@@ -138,8 +138,8 @@ func init() {
 		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitor},
 		{T: externglib.Type(C.g_pollable_input_stream_get_type()), F: marshalPollableInputStream},
 		{T: externglib.Type(C.g_pollable_output_stream_get_type()), F: marshalPollableOutputStream},
-		{T: externglib.Type(C.g_proxy_get_type()), F: marshalProXY},
-		{T: externglib.Type(C.g_proxy_resolver_get_type()), F: marshalProXYResolver},
+		{T: externglib.Type(C.g_proxy_get_type()), F: marshalProxy},
+		{T: externglib.Type(C.g_proxy_resolver_get_type()), F: marshalProxyResolver},
 		{T: externglib.Type(C.g_remote_action_group_get_type()), F: marshalRemoteActionGroup},
 		{T: externglib.Type(C.g_seekable_get_type()), F: marshalSeekable},
 		{T: externglib.Type(C.g_socket_connectable_get_type()), F: marshalSocketConnectable},
@@ -169,9 +169,9 @@ func init() {
 		{T: externglib.Type(C.g_dbus_method_invocation_get_type()), F: marshalDBusMethodInvocation},
 		{T: externglib.Type(C.g_dbus_object_manager_client_get_type()), F: marshalDBusObjectManagerClient},
 		{T: externglib.Type(C.g_dbus_object_manager_server_get_type()), F: marshalDBusObjectManagerServer},
-		{T: externglib.Type(C.g_dbus_object_proxy_get_type()), F: marshalDBusObjectProXY},
+		{T: externglib.Type(C.g_dbus_object_proxy_get_type()), F: marshalDBusObjectProxy},
 		{T: externglib.Type(C.g_dbus_object_skeleton_get_type()), F: marshalDBusObjectSkeleton},
-		{T: externglib.Type(C.g_dbus_proxy_get_type()), F: marshalDBusProXY},
+		{T: externglib.Type(C.g_dbus_proxy_get_type()), F: marshalDBusProxy},
 		{T: externglib.Type(C.g_dbus_server_get_type()), F: marshalDBusServer},
 		{T: externglib.Type(C.g_data_input_stream_get_type()), F: marshalDataInputStream},
 		{T: externglib.Type(C.g_data_output_stream_get_type()), F: marshalDataOutputStream},
@@ -210,8 +210,8 @@ func init() {
 		{T: externglib.Type(C.g_output_stream_get_type()), F: marshalOutputStream},
 		{T: externglib.Type(C.g_permission_get_type()), F: marshalPermission},
 		{T: externglib.Type(C.g_property_action_get_type()), F: marshalPropertyAction},
-		{T: externglib.Type(C.g_proxy_address_get_type()), F: marshalProXYAddress},
-		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProXYAddressEnumerator},
+		{T: externglib.Type(C.g_proxy_address_get_type()), F: marshalProxyAddress},
+		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumerator},
 		{T: externglib.Type(C.g_resolver_get_type()), F: marshalResolver},
 		{T: externglib.Type(C.g_settings_get_type()), F: marshalSettings},
 		{T: externglib.Type(C.g_simple_action_get_type()), F: marshalSimpleAction},
@@ -219,7 +219,7 @@ func init() {
 		{T: externglib.Type(C.g_simple_async_result_get_type()), F: marshalSimpleAsyncResult},
 		{T: externglib.Type(C.g_simple_io_stream_get_type()), F: marshalSimpleIOStream},
 		{T: externglib.Type(C.g_simple_permission_get_type()), F: marshalSimplePermission},
-		{T: externglib.Type(C.g_simple_proxy_resolver_get_type()), F: marshalSimpleProXYResolver},
+		{T: externglib.Type(C.g_simple_proxy_resolver_get_type()), F: marshalSimpleProxyResolver},
 		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocket},
 		{T: externglib.Type(C.g_socket_address_get_type()), F: marshalSocketAddress},
 		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumerator},
@@ -886,15 +886,15 @@ const (
 	IOErrorEnumNetworkUnreachable IOErrorEnum = 38
 	// IOErrorEnumConnectionRefused: connection refused. Since 2.26
 	IOErrorEnumConnectionRefused IOErrorEnum = 39
-	// IOErrorEnumProXYFailed: connection to proxy server failed. Since 2.26
-	IOErrorEnumProXYFailed IOErrorEnum = 40
-	// IOErrorEnumProXYAuthFailed: proxy authentication failed. Since 2.26
-	IOErrorEnumProXYAuthFailed IOErrorEnum = 41
-	// IOErrorEnumProXYNeedAuth: proxy server needs authentication. Since 2.26
-	IOErrorEnumProXYNeedAuth IOErrorEnum = 42
-	// IOErrorEnumProXYNotAllowed: proxy connection is not allowed by ruleset.
+	// IOErrorEnumProxyFailed: connection to proxy server failed. Since 2.26
+	IOErrorEnumProxyFailed IOErrorEnum = 40
+	// IOErrorEnumProxyAuthFailed: proxy authentication failed. Since 2.26
+	IOErrorEnumProxyAuthFailed IOErrorEnum = 41
+	// IOErrorEnumProxyNeedAuth: proxy server needs authentication. Since 2.26
+	IOErrorEnumProxyNeedAuth IOErrorEnum = 42
+	// IOErrorEnumProxyNotAllowed: proxy connection is not allowed by ruleset.
 	// Since 2.26
-	IOErrorEnumProXYNotAllowed IOErrorEnum = 43
+	IOErrorEnumProxyNotAllowed IOErrorEnum = 43
 	// IOErrorEnumBrokenPipe: broken pipe. Since 2.36
 	IOErrorEnumBrokenPipe IOErrorEnum = 44
 	// IOErrorEnumConnectionClosed: connection closed by peer. Note that this is
@@ -1170,12 +1170,12 @@ const (
 	SocketClientEventConnecting SocketClientEvent = 2
 	// SocketClientEventConnected: the client has connected to a remote host.
 	SocketClientEventConnected SocketClientEvent = 3
-	// SocketClientEventProXYNegotiating: the client is negotiating with a proxy
+	// SocketClientEventProxyNegotiating: the client is negotiating with a proxy
 	// to connect to the destination server.
-	SocketClientEventProXYNegotiating SocketClientEvent = 4
-	// SocketClientEventProXYNegotiated: the client has negotiated with the
+	SocketClientEventProxyNegotiating SocketClientEvent = 4
+	// SocketClientEventProxyNegotiated: the client has negotiated with the
 	// proxy server.
-	SocketClientEventProXYNegotiated SocketClientEvent = 5
+	SocketClientEventProxyNegotiated SocketClientEvent = 5
 	// SocketClientEventTLSHandshaking: the client is performing a TLS
 	// handshake.
 	SocketClientEventTLSHandshaking SocketClientEvent = 6
@@ -1790,24 +1790,24 @@ func marshalDBusPropertyInfoFlags(p uintptr) (interface{}, error) {
 	return DBusPropertyInfoFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DBusProXYFlags flags used when constructing an instance of a BusProxy derived
+// DBusProxyFlags flags used when constructing an instance of a BusProxy derived
 // class.
-type DBusProXYFlags int
+type DBusProxyFlags int
 
 const (
-	// DBusProXYFlagsNone: no flags set.
-	DBusProXYFlagsNone DBusProXYFlags = 0
-	// DBusProXYFlagsDoNotLoadProperties: don't load properties.
-	DBusProXYFlagsDoNotLoadProperties DBusProXYFlags = 1
-	// DBusProXYFlagsDoNotConnectSignals: don't connect to signals on the remote
+	// DBusProxyFlagsNone: no flags set.
+	DBusProxyFlagsNone DBusProxyFlags = 0
+	// DBusProxyFlagsDoNotLoadProperties: don't load properties.
+	DBusProxyFlagsDoNotLoadProperties DBusProxyFlags = 1
+	// DBusProxyFlagsDoNotConnectSignals: don't connect to signals on the remote
 	// object.
-	DBusProXYFlagsDoNotConnectSignals DBusProXYFlags = 2
-	// DBusProXYFlagsDoNotAutoStart: if the proxy is for a well-known name, do
+	DBusProxyFlagsDoNotConnectSignals DBusProxyFlags = 2
+	// DBusProxyFlagsDoNotAutoStart: if the proxy is for a well-known name, do
 	// not ask the bus to launch an owner during proxy initialization or a
 	// method call. This flag is only meaningful in proxies for well-known
 	// names.
-	DBusProXYFlagsDoNotAutoStart DBusProXYFlags = 4
-	// DBusProXYFlagsGetInvalidatedProperties: if set, the property value for
+	DBusProxyFlagsDoNotAutoStart DBusProxyFlags = 4
+	// DBusProxyFlagsGetInvalidatedProperties: if set, the property value for
 	// any __invalidated property__ will be (asynchronously) retrieved upon
 	// receiving the `PropertiesChanged`
 	// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
@@ -1815,17 +1815,17 @@ const (
 	// BusProxy::g-properties-changed signal. When the value is received the
 	// BusProxy::g-properties-changed signal is emitted for the property along
 	// with the retrieved value. Since 2.32.
-	DBusProXYFlagsGetInvalidatedProperties DBusProXYFlags = 8
-	// DBusProXYFlagsDoNotAutoStartAtConstruction: if the proxy is for a
+	DBusProxyFlagsGetInvalidatedProperties DBusProxyFlags = 8
+	// DBusProxyFlagsDoNotAutoStartAtConstruction: if the proxy is for a
 	// well-known name, do not ask the bus to launch an owner during proxy
 	// initialization, but allow it to be autostarted by a method call. This
 	// flag is only meaningful in proxies for well-known names, and only if
 	// G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is not also specified.
-	DBusProXYFlagsDoNotAutoStartAtConstruction DBusProXYFlags = 16
+	DBusProxyFlagsDoNotAutoStartAtConstruction DBusProxyFlags = 16
 )
 
-func marshalDBusProXYFlags(p uintptr) (interface{}, error) {
-	return DBusProXYFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalDBusProxyFlags(p uintptr) (interface{}, error) {
+	return DBusProxyFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // DBusSendMessageFlags flags used when sending BusMessages on a BusConnection.
@@ -2394,7 +2394,7 @@ func BusGetSync(busType BusType, cancellable Cancellable) (DBusConnection, error
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (C.GBusType)(busType)
+	_arg1 = C.GBusType(busType)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_bus_get_sync(_arg1, _arg2, &_cerr)
@@ -2418,7 +2418,7 @@ func BusGetSync(busType BusType, cancellable Cancellable) (DBusConnection, error
 func BusUnownName(ownerId uint) {
 	var _arg1 C.guint // out
 
-	_arg1 = (C.guint)(ownerId)
+	_arg1 = C.guint(ownerId)
 
 	C.g_bus_unown_name(_arg1)
 }
@@ -2434,7 +2434,7 @@ func BusUnownName(ownerId uint) {
 func BusUnwatchName(watcherId uint) {
 	var _arg1 C.guint // out
 
-	_arg1 = (C.guint)(watcherId)
+	_arg1 = C.guint(watcherId)
 
 	C.g_bus_unwatch_name(_arg1)
 }
@@ -2829,7 +2829,7 @@ func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string,
 	var _cret *C.gchar        // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (C.GBusType)(busType)
+	_arg1 = C.GBusType(busType)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, &_cerr)
@@ -2999,7 +2999,7 @@ func DBusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
+func DBusGValueToGVariant(gvalue externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
@@ -3011,9 +3011,9 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -3040,7 +3040,17 @@ func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 
 	var _outGvalue externglib.Value // out
 
-	_outGvalue = *externglib.ValueFromNative(unsafe.Pointer(&_arg2))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_outGvalue = *refTmpOut
+	}
 
 	return _outGvalue
 }
@@ -3215,7 +3225,7 @@ func DBusUnescapeObjectPath(s string) []byte {
 		src := unsafe.Slice(_cret, i)
 		_guint8s = make([]byte, i)
 		for i := range src {
-			_guint8s[i] = (byte)(src[i])
+			_guint8s[i] = byte(src[i])
 		}
 	}
 
@@ -3233,7 +3243,7 @@ func IOErrorFromErrno(errNo int) IOErrorEnum {
 	var _arg1 C.gint         // out
 	var _cret C.GIOErrorEnum // in
 
-	_arg1 = (C.gint)(errNo)
+	_arg1 = C.gint(errNo)
 
 	_cret = C.g_io_error_from_errno(_arg1)
 
@@ -3324,7 +3334,7 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -3362,7 +3372,7 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -3406,7 +3416,7 @@ func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, c
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	_bytesWritten = (uint)(_arg5)
+	_bytesWritten = uint(_arg5)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
@@ -3425,7 +3435,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resources_enumerate_children(_arg1, _arg2, &_cerr)
 
@@ -3464,7 +3474,7 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -3472,8 +3482,8 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 	var _flags uint32 // out
 	var _goerr error  // out
 
-	_size = (uint)(_arg3)
-	_flags = (uint32)(_arg4)
+	_size = uint(_arg3)
+	_flags = uint32(_arg4)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _size, _flags, _goerr
@@ -3492,7 +3502,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resources_open_stream(_arg1, _arg2, &_cerr)
 
@@ -3617,10 +3627,10 @@ func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 	var _timeRead uint64                // out
 	var _unixMountEntry *UnixMountEntry // out
 
-	_timeRead = (uint64)(_arg2)
-	_unixMountEntry = WrapUnixMountEntry(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
-		C.free(unsafe.Pointer(v.Native()))
+	_timeRead = uint64(_arg2)
+	_unixMountEntry = (*UnixMountEntry)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_unixMountEntry, func(v **UnixMountEntry) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _timeRead, _unixMountEntry
@@ -3639,7 +3649,7 @@ func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3655,9 +3665,9 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 
 	var _unixMountEntry *UnixMountEntry // out
 
-	_unixMountEntry = WrapUnixMountEntry(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
-		C.free(unsafe.Pointer(v.Native()))
+	_unixMountEntry = (*UnixMountEntry)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_unixMountEntry, func(v **UnixMountEntry) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _unixMountEntry
@@ -3681,10 +3691,10 @@ func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
 	var _timeRead uint64                // out
 	var _unixMountEntry *UnixMountEntry // out
 
-	_timeRead = (uint64)(_arg2)
-	_unixMountEntry = WrapUnixMountEntry(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
-		C.free(unsafe.Pointer(v.Native()))
+	_timeRead = uint64(_arg2)
+	_unixMountEntry = (*UnixMountEntry)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_unixMountEntry, func(v **UnixMountEntry) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _timeRead, _unixMountEntry
@@ -3921,7 +3931,7 @@ func UnixMountPointsChangedSince(time uint64) bool {
 	var _arg1 C.guint64  // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.guint64)(time)
+	_arg1 = C.guint64(time)
 
 	_cret = C.g_unix_mount_points_changed_since(_arg1)
 
@@ -3940,7 +3950,7 @@ func UnixMountsChangedSince(time uint64) bool {
 	var _arg1 C.guint64  // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.guint64)(time)
+	_arg1 = C.guint64(time)
 
 	_cret = C.g_unix_mounts_changed_since(_arg1)
 
@@ -4063,6 +4073,7 @@ type ActionOverrider interface {
 // Probably the only useful thing to do with a #GAction is to put it inside of a
 // ActionGroup.
 type Action interface {
+	gextras.Objector
 
 	// Activate activates the action.
 	//
@@ -4143,6 +4154,7 @@ type Action interface {
 
 // action implements the Action interface.
 type action struct {
+	gextras.Objector
 }
 
 var _ Action = (*action)(nil)
@@ -4223,7 +4235,7 @@ func (a action) ParameterType() *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -4238,9 +4250,9 @@ func (a action) State() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -4256,9 +4268,9 @@ func (a action) StateHint() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -4274,7 +4286,7 @@ func (a action) StateType() *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -4490,6 +4502,7 @@ type ActionGroupOverrider interface {
 // The other virtual functions should not be implemented - their "wrappers" are
 // actually implemented with calls to g_action_group_query_action().
 type ActionGroup interface {
+	gextras.Objector
 
 	// ActionAdded emits the Group::action-added signal on @action_group.
 	//
@@ -4656,6 +4669,7 @@ type ActionGroup interface {
 
 // actionGroup implements the ActionGroup interface.
 type actionGroup struct {
+	gextras.Objector
 }
 
 var _ ActionGroup = (*actionGroup)(nil)
@@ -4783,7 +4797,7 @@ func (a actionGroup) ActionParameterType(actionName string) *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -4801,9 +4815,9 @@ func (a actionGroup) ActionState(actionName string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -4822,9 +4836,9 @@ func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -4843,7 +4857,7 @@ func (a actionGroup) ActionStateType(actionName string) *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -4900,26 +4914,44 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gboolean      // in
-	var _parameterType *glib.VariantType
-	var _stateType *glib.VariantType
-	var _stateHint *glib.Variant
-	var _state *glib.Variant
-	var _cret C.gboolean // in
+	var _arg3 *C.GVariantType // in
+	var _arg4 *C.GVariantType // in
+	var _arg5 *C.GVariant     // in
+	var _arg6 *C.GVariant     // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, (**C.GVariantType)(unsafe.Pointer(&_parameterType)), (**C.GVariantType)(unsafe.Pointer(&_stateType)), (**C.GVariant)(unsafe.Pointer(&_stateHint)), (**C.GVariant)(unsafe.Pointer(&_state)))
+	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
-	var _enabled bool // out
-
-	var _ok bool // out
+	var _enabled bool                    // out
+	var _parameterType *glib.VariantType // out
+	var _stateType *glib.VariantType     // out
+	var _stateHint *glib.Variant         // out
+	var _state *glib.Variant             // out
+	var _ok bool                         // out
 
 	if _arg2 != 0 {
 		_enabled = true
 	}
-
+	_parameterType = (*glib.VariantType)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(&_parameterType, func(v **glib.VariantType) {
+		C.free(unsafe.Pointer(v))
+	})
+	_stateType = (*glib.VariantType)(unsafe.Pointer(_arg4))
+	runtime.SetFinalizer(&_stateType, func(v **glib.VariantType) {
+		C.free(unsafe.Pointer(v))
+	})
+	_stateHint = (*glib.Variant)(unsafe.Pointer(_arg5))
+	runtime.SetFinalizer(&_stateHint, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
+	})
+	_state = (*glib.Variant)(unsafe.Pointer(_arg6))
+	runtime.SetFinalizer(&_state, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -4959,6 +4991,7 @@ type ActionMapOverrider interface {
 // various action groups to unique, prefixed names (e.g. by prepending "app." or
 // "win."). This is the motivation for the 'Map' part of the interface name.
 type ActionMap interface {
+	gextras.Objector
 
 	// AddAction adds an action to the @action_map.
 	//
@@ -4980,6 +5013,7 @@ type ActionMap interface {
 
 // actionMap implements the ActionMap interface.
 type actionMap struct {
+	gextras.Objector
 }
 
 var _ ActionMap = (*actionMap)(nil)
@@ -5165,6 +5199,7 @@ type AppInfoOverrider interface {
 // format of a particular URIs. Different launcher applications (e.g. file
 // managers) may have different ideas of what a given URI means.
 type AppInfo interface {
+	gextras.Objector
 
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
@@ -5247,6 +5282,7 @@ type AppInfo interface {
 
 // appInfo implements the AppInfo interface.
 type appInfo struct {
+	gextras.Objector
 }
 
 var _ AppInfo = (*appInfo)(nil)
@@ -5749,6 +5785,7 @@ type AsyncInitableOverrider interface {
 //      iface->init_finish = foo_init_finish;
 //    }
 type AsyncInitable interface {
+	gextras.Objector
 
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
@@ -5760,6 +5797,7 @@ type AsyncInitable interface {
 
 // asyncInitable implements the AsyncInitable interface.
 type asyncInitable struct {
+	gextras.Objector
 }
 
 var _ AsyncInitable = (*asyncInitable)(nil)
@@ -5906,6 +5944,7 @@ type AsyncResultOverrider interface {
 // recommended to choose priorities between G_PRIORITY_LOW and G_PRIORITY_HIGH,
 // with G_PRIORITY_DEFAULT as a default.
 type AsyncResult interface {
+	gextras.Objector
 
 	// SourceObject gets the source object from a Result.
 	SourceObject() gextras.Objector
@@ -5922,6 +5961,7 @@ type AsyncResult interface {
 
 // asyncResult implements the AsyncResult interface.
 type asyncResult struct {
+	gextras.Objector
 }
 
 var _ AsyncResult = (*asyncResult)(nil)
@@ -6070,6 +6110,7 @@ type ConverterOverrider interface {
 // Some example conversions are: character set conversion, compression,
 // decompression and regular expression replace.
 type Converter interface {
+	gextras.Objector
 
 	// Convert: this is the main operation used when converting data. It is to
 	// be called multiple times in a loop, and each time it will do some work,
@@ -6161,6 +6202,7 @@ type Converter interface {
 
 // converter implements the Converter interface.
 type converter struct {
+	gextras.Objector
 }
 
 var _ Converter = (*converter)(nil)
@@ -6196,7 +6238,7 @@ func (c converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (b
 	_arg1 = (*C.void)(unsafe.Pointer(&inbuf[0]))
 	_arg4 = C.gsize(len(outbuf))
 	_arg3 = (*C.void)(unsafe.Pointer(&outbuf[0]))
-	_arg5 = (C.GConverterFlags)(flags)
+	_arg5 = C.GConverterFlags(flags)
 
 	_cret = C.g_converter_convert(_arg0, unsafe.Pointer(_arg1), _arg2, unsafe.Pointer(_arg3), _arg4, _arg5, &_arg6, &_arg7, &_cerr)
 
@@ -6205,8 +6247,8 @@ func (c converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (b
 	var _converterResult ConverterResult // out
 	var _goerr error                     // out
 
-	_bytesRead = (uint)(_arg6)
-	_bytesWritten = (uint)(_arg7)
+	_bytesRead = uint(_arg6)
+	_bytesWritten = uint(_arg7)
 	_converterResult = ConverterResult(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -6242,6 +6284,7 @@ type DBusInterfaceOverrider interface {
 // both on the service side (see BusInterfaceSkeleton) and client side (see
 // BusProxy).
 type DBusInterface interface {
+	gextras.Objector
 
 	// DupObject gets the BusObject that @interface_ belongs to, if any.
 	DupObject() DBusObject
@@ -6256,6 +6299,7 @@ type DBusInterface interface {
 
 // dBusInterface implements the DBusInterface interface.
 type dBusInterface struct {
+	gextras.Objector
 }
 
 var _ DBusInterface = (*dBusInterface)(nil)
@@ -6299,7 +6343,7 @@ func (i dBusInterface) Info() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 
 	return _dBusInterfaceInfo
 }
@@ -6335,6 +6379,7 @@ type DBusObjectOverrider interface {
 // service side (see BusObjectSkeleton) and the client side (see
 // BusObjectProxy). It is essentially just a container of interfaces.
 type DBusObject interface {
+	gextras.Objector
 
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
@@ -6345,6 +6390,7 @@ type DBusObject interface {
 
 // dBusObject implements the DBusObject interface.
 type dBusObject struct {
+	gextras.Objector
 }
 
 var _ DBusObject = (*dBusObject)(nil)
@@ -6428,6 +6474,7 @@ type DBusObjectManagerOverrider interface {
 // See BusObjectManagerClient for the client-side implementation and
 // BusObjectManagerServer for the service-side implementation.
 type DBusObjectManager interface {
+	gextras.Objector
 
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
@@ -6440,6 +6487,7 @@ type DBusObjectManager interface {
 
 // dBusObjectManager implements the DBusObjectManager interface.
 type dBusObjectManager struct {
+	gextras.Objector
 }
 
 var _ DBusObjectManager = (*dBusObjectManager)(nil)
@@ -6709,6 +6757,7 @@ type DatagramBasedOverrider interface {
 // Based concurrently from multiple threads, you must implement your own
 // locking.
 type DatagramBased interface {
+	gextras.Objector
 
 	// ConditionCheck checks on the readiness of @datagram_based to perform
 	// operations. The operations specified in @condition are checked for and
@@ -6856,6 +6905,7 @@ type DatagramBased interface {
 
 // datagramBased implements the DatagramBased interface.
 type datagramBased struct {
+	gextras.Objector
 }
 
 var _ DatagramBased = (*datagramBased)(nil)
@@ -6880,7 +6930,7 @@ func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOConditi
 	var _cret C.GIOCondition    // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.GIOCondition)(condition)
+	_arg1 = C.GIOCondition(condition)
 
 	_cret = C.g_datagram_based_condition_check(_arg0, _arg1)
 
@@ -6899,8 +6949,8 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
-	_arg1 = (C.GIOCondition)(condition)
-	_arg2 = (C.gint64)(timeout)
+	_arg1 = C.GIOCondition(condition)
+	_arg2 = C.gint64(timeout)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -6925,8 +6975,8 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
-	_arg3 = (C.gint)(flags)
-	_arg4 = (C.gint64)(timeout)
+	_arg3 = C.gint(flags)
+	_arg4 = C.gint64(timeout)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
@@ -6934,7 +6984,7 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -6953,8 +7003,8 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
-	_arg3 = (C.gint)(flags)
-	_arg4 = (C.gint64)(timeout)
+	_arg3 = C.gint(flags)
+	_arg4 = C.gint64(timeout)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
@@ -6962,7 +7012,7 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -6988,6 +7038,7 @@ type DesktopAppInfoLookupOverrider interface {
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
 // using the following functions.
 type DesktopAppInfoLookup interface {
+	gextras.Objector
 
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
@@ -7002,6 +7053,7 @@ type DesktopAppInfoLookup interface {
 
 // desktopAppInfoLookup implements the DesktopAppInfoLookup interface.
 type desktopAppInfoLookup struct {
+	gextras.Objector
 }
 
 var _ DesktopAppInfoLookup = (*desktopAppInfoLookup)(nil)
@@ -7132,6 +7184,7 @@ type DriveOverrider interface {
 // For porting from GnomeVFS note that there is no equivalent of #GDrive in that
 // API.
 type Drive interface {
+	gextras.Objector
 
 	// CanEject checks if a drive can be ejected.
 	CanEject() bool
@@ -7190,6 +7243,7 @@ type Drive interface {
 
 // drive implements the Drive interface.
 type drive struct {
+	gextras.Objector
 }
 
 var _ Drive = (*drive)(nil)
@@ -7617,7 +7671,6 @@ var _ DTLSClientConnection = (*dtlsClientConnection)(nil)
 // interface DTLSClientConnection. It is primarily used internally.
 func WrapDTLSClientConnection(obj *externglib.Object) DTLSClientConnection {
 	return dtlsClientConnection{
-		DatagramBased:  WrapDatagramBased(obj),
 		DTLSConnection: WrapDTLSConnection(obj),
 	}
 }
@@ -7673,7 +7726,7 @@ func (c dtlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	var _arg1 C.GTlsCertificateFlags   // out
 
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GTlsCertificateFlags)(flags)
+	_arg1 = C.GTlsCertificateFlags(flags)
 
 	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
 }
@@ -7775,6 +7828,7 @@ type DTLSConnectionOverrider interface {
 // wish. If they do not, and g_socket_close() is called on the base socket, the
 // Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
 type DTLSConnection interface {
+	DatagramBased
 
 	// Close: close the DTLS connection. This is equivalent to calling
 	// g_dtls_connection_shutdown() to shut down both sides of the connection.
@@ -7974,6 +8028,7 @@ type DTLSConnection interface {
 
 // dtlsConnection implements the DTLSConnection interface.
 type dtlsConnection struct {
+	DatagramBased
 }
 
 var _ DTLSConnection = (*dtlsConnection)(nil)
@@ -8034,7 +8089,7 @@ func (c dtlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TL
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(peerCert.Native()))
-	_arg2 = (C.GTlsCertificateFlags)(errors)
+	_arg2 = C.GTlsCertificateFlags(errors)
 
 	_cret = C.g_dtls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
 
@@ -8069,7 +8124,7 @@ func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, e
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GTlsChannelBindingType)(typ)
+	_arg1 = C.GTlsChannelBindingType(typ)
 
 	C.g_dtls_connection_get_channel_binding_data(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -8277,7 +8332,7 @@ func (c dtlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	var _arg1 C.GTlsRehandshakeMode // out
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GTlsRehandshakeMode)(mode)
+	_arg1 = C.GTlsRehandshakeMode(mode)
 
 	C.g_dtls_connection_set_rehandshake_mode(_arg0, _arg1)
 }
@@ -8353,7 +8408,6 @@ var _ DTLSServerConnection = (*dtlsServerConnection)(nil)
 // interface DTLSServerConnection. It is primarily used internally.
 func WrapDTLSServerConnection(obj *externglib.Object) DTLSServerConnection {
 	return dtlsServerConnection{
-		DatagramBased:  WrapDatagramBased(obj),
 		DTLSConnection: WrapDTLSConnection(obj),
 	}
 }
@@ -9028,6 +9082,7 @@ type FileOverrider interface {
 // (http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) for HTTP Etag
 // headers, which are a very similar concept.
 type File interface {
+	gextras.Objector
 
 	// AppendTo gets an output stream for appending data to the file. If the
 	// file doesn't already exist it is created.
@@ -9804,6 +9859,7 @@ type File interface {
 
 // file implements the File interface.
 type file struct {
+	gextras.Objector
 }
 
 var _ File = (*file)(nil)
@@ -9830,7 +9886,7 @@ func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutp
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GFileCreateFlags)(flags)
+	_arg1 = C.GFileCreateFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_append_to(_arg0, _arg1, _arg2, &_cerr)
@@ -9872,7 +9928,7 @@ func (f file) BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancell
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GFileCopyFlags)(flags)
+	_arg1 = C.GFileCopyFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_build_attribute_list_for_copy(_arg0, _arg1, _arg2, &_cerr)
@@ -9896,7 +9952,7 @@ func (s file) CopyAttributes(destination File, flags FileCopyFlags, cancellable 
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
-	_arg2 = (C.GFileCopyFlags)(flags)
+	_arg2 = C.GFileCopyFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_copy_attributes(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -9933,7 +9989,7 @@ func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (FileOutput
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GFileCreateFlags)(flags)
+	_arg1 = C.GFileCreateFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_create(_arg0, _arg1, _arg2, &_cerr)
@@ -9975,7 +10031,7 @@ func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (F
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GFileCreateFlags)(flags)
+	_arg1 = C.GFileCreateFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_create_readwrite(_arg0, _arg1, _arg2, &_cerr)
@@ -10103,7 +10159,7 @@ func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, can
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GFileQueryInfoFlags)(flags)
+	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_enumerate_children(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -10416,7 +10472,7 @@ func (f file) Hash() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -10611,9 +10667,9 @@ func (f file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numD
 	var _numFiles uint64  // out
 	var _goerr error      // out
 
-	_diskUsage = (uint64)(_arg2)
-	_numDirs = (uint64)(_arg3)
-	_numFiles = (uint64)(_arg4)
+	_diskUsage = uint64(_arg2)
+	_numDirs = uint64(_arg3)
+	_numFiles = uint64(_arg4)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _diskUsage, _numDirs, _numFiles, _goerr
@@ -10627,7 +10683,7 @@ func (f file) Monitor(flags FileMonitorFlags, cancellable Cancellable) (FileMoni
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GFileMonitorFlags)(flags)
+	_arg1 = C.GFileMonitorFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_monitor(_arg0, _arg1, _arg2, &_cerr)
@@ -10649,7 +10705,7 @@ func (f file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) 
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GFileMonitorFlags)(flags)
+	_arg1 = C.GFileMonitorFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_monitor_directory(_arg0, _arg1, _arg2, &_cerr)
@@ -10671,7 +10727,7 @@ func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (File
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GFileMonitorFlags)(flags)
+	_arg1 = C.GFileMonitorFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_monitor_file(_arg0, _arg1, _arg2, &_cerr)
@@ -10860,7 +10916,7 @@ func (f file) QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable) F
 	var _cret C.GFileType           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
-	_arg1 = (C.GFileQueryInfoFlags)(flags)
+	_arg1 = C.GFileQueryInfoFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_query_file_type(_arg0, _arg1, _arg2)
@@ -10926,7 +10982,7 @@ func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GFileQueryInfoFlags)(flags)
+	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_query_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -10974,9 +11030,9 @@ func (f file) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeIn
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 	var _goerr error                                  // out
 
-	_fileAttributeInfoList = WrapFileAttributeInfoList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fileAttributeInfoList, func(v **FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -10997,9 +11053,9 @@ func (f file) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeIn
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 	var _goerr error                                  // out
 
-	_fileAttributeInfoList = WrapFileAttributeInfoList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fileAttributeInfoList, func(v **FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -11061,7 +11117,7 @@ func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cance
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (C.GFileCreateFlags)(flags)
+	_arg3 = C.GFileCreateFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_replace(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -11094,7 +11150,7 @@ func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, fla
 	if makeBackup {
 		_arg4 = C.TRUE
 	}
-	_arg5 = (C.GFileCreateFlags)(flags)
+	_arg5 = C.GFileCreateFlags(flags)
 	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_replace_contents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, _arg7, &_cerr)
@@ -11165,7 +11221,7 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (C.GFileCreateFlags)(flags)
+	_arg3 = C.GFileCreateFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_replace_readwrite(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -11230,7 +11286,7 @@ func (f file) SetAttributeByteString(attribute string, value string, flags FileQ
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(value))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_set_attribute_byte_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -11253,8 +11309,8 @@ func (f file) SetAttributeInt32(attribute string, value int32, flags FileQueryIn
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint32)(value)
-	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg2 = C.gint32(value)
+	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_set_attribute_int32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -11277,8 +11333,8 @@ func (f file) SetAttributeInt64(attribute string, value int64, flags FileQueryIn
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint64)(value)
-	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg2 = C.gint64(value)
+	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_set_attribute_int64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -11303,7 +11359,7 @@ func (f file) SetAttributeString(attribute string, value string, flags FileQuery
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(value))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_set_attribute_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -11326,8 +11382,8 @@ func (f file) SetAttributeUint32(attribute string, value uint32, flags FileQuery
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint32)(value)
-	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg2 = C.guint32(value)
+	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_set_attribute_uint32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -11350,8 +11406,8 @@ func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQuery
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint64)(value)
-	_arg3 = (C.GFileQueryInfoFlags)(flags)
+	_arg2 = C.guint64(value)
+	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_set_attribute_uint64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -11392,7 +11448,7 @@ func (f file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, can
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
-	_arg2 = (C.GFileQueryInfoFlags)(flags)
+	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_set_attributes_from_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -11583,6 +11639,7 @@ type FileDescriptorBasedOverrider interface {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type FileDescriptorBased interface {
+	gextras.Objector
 
 	// Fd gets the underlying file descriptor.
 	Fd() int
@@ -11590,6 +11647,7 @@ type FileDescriptorBased interface {
 
 // fileDescriptorBased implements the FileDescriptorBased interface.
 type fileDescriptorBased struct {
+	gextras.Objector
 }
 
 var _ FileDescriptorBased = (*fileDescriptorBased)(nil)
@@ -11618,7 +11676,7 @@ func (f fileDescriptorBased) Fd() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -11668,6 +11726,7 @@ type IconOverrider interface {
 // gives a result that is understood by g_icon_deserialize(), yielding one of
 // the built-in icon types.
 type Icon interface {
+	gextras.Objector
 
 	// Equal checks if two icons are equal.
 	Equal(icon2 Icon) bool
@@ -11698,6 +11757,7 @@ type Icon interface {
 
 // icon implements the Icon interface.
 type icon struct {
+	gextras.Objector
 }
 
 var _ Icon = (*icon)(nil)
@@ -11745,9 +11805,9 @@ func (i icon) Serialize() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -11839,6 +11899,7 @@ type InitableOverrider interface {
 // construction and automatically initialize them, throwing an exception on
 // failure.
 type Initable interface {
+	gextras.Objector
 
 	// Init initializes the object implementing the interface.
 	//
@@ -11883,6 +11944,7 @@ type Initable interface {
 
 // initable implements the Initable interface.
 type initable struct {
+	gextras.Objector
 }
 
 var _ Initable = (*initable)(nil)
@@ -11987,6 +12049,7 @@ type ListModelOverrider interface {
 // [thread-default main context][g-main-context-push-thread-default] in effect
 // at the time that the model was created.
 type ListModel interface {
+	gextras.Objector
 
 	// ItemType gets the type of the items in @list. All items returned from
 	// g_list_model_get_type() are of that type or a subtype, or are an
@@ -12030,6 +12093,7 @@ type ListModel interface {
 
 // listModel implements the ListModel interface.
 type listModel struct {
+	gextras.Objector
 }
 
 var _ ListModel = (*listModel)(nil)
@@ -12073,7 +12137,7 @@ func (l listModel) NItems() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -12084,7 +12148,7 @@ func (l listModel) Object(position uint) gextras.Objector {
 	var _cret *C.GObject    // in
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	_cret = C.g_list_model_get_object(_arg0, _arg1)
 
@@ -12102,9 +12166,9 @@ func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
 	var _arg3 C.guint       // out
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.guint)(removed)
-	_arg3 = (C.guint)(added)
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(removed)
+	_arg3 = C.guint(added)
 
 	C.g_list_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }
@@ -12126,6 +12190,7 @@ type LoadableIconOverrider interface {
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon interface {
+	Icon
 
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
@@ -12137,6 +12202,7 @@ type LoadableIcon interface {
 
 // loadableIcon implements the LoadableIcon interface.
 type loadableIcon struct {
+	Icon
 }
 
 var _ LoadableIcon = (*loadableIcon)(nil)
@@ -12164,7 +12230,7 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStre
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.int)(size)
+	_arg1 = C.int(size)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_loadable_icon_load(_arg0, _arg1, &_arg2, _arg3, &_cerr)
@@ -12257,10 +12323,12 @@ type MemoryMonitorOverrider interface {
 // Don't forget to disconnect the Monitor::low-memory-warning signal, and unref
 // the Monitor itself when exiting.
 type MemoryMonitor interface {
+	Initable
 }
 
 // memoryMonitor implements the MemoryMonitor interface.
 type memoryMonitor struct {
+	Initable
 }
 
 var _ MemoryMonitor = (*memoryMonitor)(nil)
@@ -12376,6 +12444,7 @@ type MountOverrider interface {
 // present when g_mount_unmount_with_operation_finish() is called, then it will
 // be filled with any error information.
 type Mount interface {
+	gextras.Objector
 
 	// CanEject checks if @mount can be ejected.
 	CanEject() bool
@@ -12477,6 +12546,7 @@ type Mount interface {
 
 // mount implements the Mount interface.
 type mount struct {
+	gextras.Objector
 }
 
 var _ Mount = (*mount)(nil)
@@ -12889,6 +12959,7 @@ type NetworkMonitorOverrider interface {
 //
 // There is also an implementation for use inside Flatpak sandboxes.
 type NetworkMonitor interface {
+	Initable
 
 	// CanReach attempts to determine whether or not the host pointed to by
 	// @connectable can be reached, without actually trying to connect to it.
@@ -12941,6 +13012,7 @@ type NetworkMonitor interface {
 
 // networkMonitor implements the NetworkMonitor interface.
 type networkMonitor struct {
+	Initable
 }
 
 var _ NetworkMonitor = (*networkMonitor)(nil)
@@ -13084,6 +13156,7 @@ type PollableInputStreamOverrider interface {
 // readiness to read. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
 type PollableInputStream interface {
+	InputStream
 
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement InputStream but have only certain instances of that class be
@@ -13117,6 +13190,7 @@ type PollableInputStream interface {
 
 // pollableInputStream implements the PollableInputStream interface.
 type pollableInputStream struct {
+	InputStream
 }
 
 var _ PollableInputStream = (*pollableInputStream)(nil)
@@ -13187,7 +13261,7 @@ func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancella
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -13255,6 +13329,7 @@ type PollableOutputStreamOverrider interface {
 // readiness to write. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
 type PollableOutputStream interface {
+	OutputStream
 
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement OutputStream but have only certain instances of that class be
@@ -13310,6 +13385,7 @@ type PollableOutputStream interface {
 
 // pollableOutputStream implements the PollableOutputStream interface.
 type pollableOutputStream struct {
+	OutputStream
 }
 
 var _ PollableOutputStream = (*pollableOutputStream)(nil)
@@ -13380,7 +13456,7 @@ func (s pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancel
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -13406,24 +13482,24 @@ func (s pollableOutputStream) WritevNonblocking(vectors []OutputVector, cancella
 	var _pollableReturn PollableReturn // out
 	var _goerr error                   // out
 
-	_bytesWritten = (uint)(_arg3)
+	_bytesWritten = uint(_arg3)
 	_pollableReturn = PollableReturn(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _pollableReturn, _goerr
 }
 
-// ProXYOverrider contains methods that are overridable. This
-// interface is a subset of the interface ProXY.
+// ProxyOverrider contains methods that are overridable. This
+// interface is a subset of the interface Proxy.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ProXYOverrider interface {
-	// ConnectProXY: given @connection to communicate with a proxy (eg, a
+type ProxyOverrider interface {
+	// ConnectProxy: given @connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to @proxy_address, and if required, wraps
 	// the OStream to handle proxy payload.
-	ConnectProXY(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable) (IOStream, error)
+	ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (IOStream, error)
 	// ConnectFinish: see g_proxy_connect().
 	ConnectFinish(result AsyncResult) (IOStream, error)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
@@ -13436,18 +13512,19 @@ type ProXYOverrider interface {
 	SupportsHostname() bool
 }
 
-// ProXY: a #GProxy handles connecting to a remote host via a given type of
+// Proxy: a #GProxy handles connecting to a remote host via a given type of
 // proxy server. It is implemented by the 'gio-proxy' extension point. The
 // extensions are named after their proxy protocol name. As an example, a SOCKS5
 // proxy implementation can be retrieved with the name 'socks5' using the
 // function g_io_extension_point_get_extension_by_name().
-type ProXY interface {
+type Proxy interface {
+	gextras.Objector
 
-	// ConnectProXY: given @connection to communicate with a proxy (eg, a
+	// ConnectProxy: given @connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to @proxy_address, and if required, wraps
 	// the OStream to handle proxy payload.
-	ConnectProXY(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable) (IOStream, error)
+	ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (IOStream, error)
 	// ConnectFinish: see g_proxy_connect().
 	ConnectFinish(result AsyncResult) (IOStream, error)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
@@ -13460,27 +13537,28 @@ type ProXY interface {
 	SupportsHostname() bool
 }
 
-// proXY implements the ProXY interface.
-type proXY struct {
+// proxy implements the Proxy interface.
+type proxy struct {
+	gextras.Objector
 }
 
-var _ ProXY = (*proXY)(nil)
+var _ Proxy = (*proxy)(nil)
 
-// WrapProXY wraps a GObject to a type that implements
-// interface ProXY. It is primarily used internally.
-func WrapProXY(obj *externglib.Object) ProXY {
-	return proXY{
+// WrapProxy wraps a GObject to a type that implements
+// interface Proxy. It is primarily used internally.
+func WrapProxy(obj *externglib.Object) Proxy {
+	return proxy{
 		Objector: obj,
 	}
 }
 
-func marshalProXY(p uintptr) (interface{}, error) {
+func marshalProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProXY(obj), nil
+	return WrapProxy(obj), nil
 }
 
-func (p proXY) ConnectProXY(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable) (IOStream, error) {
+func (p proxy) ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (IOStream, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg1 *C.GIOStream     // out
 	var _arg2 *C.GProxyAddress // out
@@ -13504,7 +13582,7 @@ func (p proXY) ConnectProXY(connection IOStream, proxyAddress ProXYAddress, canc
 	return _ioStream, _goerr
 }
 
-func (p proXY) ConnectFinish(result AsyncResult) (IOStream, error) {
+func (p proxy) ConnectFinish(result AsyncResult) (IOStream, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GIOStream    // in
@@ -13524,7 +13602,7 @@ func (p proXY) ConnectFinish(result AsyncResult) (IOStream, error) {
 	return _ioStream, _goerr
 }
 
-func (p proXY) SupportsHostname() bool {
+func (p proxy) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
 	var _cret C.gboolean // in
 
@@ -13541,12 +13619,12 @@ func (p proXY) SupportsHostname() bool {
 	return _ok
 }
 
-// ProXYResolverOverrider contains methods that are overridable. This
-// interface is a subset of the interface ProXYResolver.
+// ProxyResolverOverrider contains methods that are overridable. This
+// interface is a subset of the interface ProxyResolver.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ProXYResolverOverrider interface {
+type ProxyResolverOverrider interface {
 	// IsSupported checks if @resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
 	// resolver that returns true for this method.)
@@ -13570,14 +13648,15 @@ type ProXYResolverOverrider interface {
 	LookupFinish(result AsyncResult) ([]string, error)
 }
 
-// ProXYResolver provides synchronous and asynchronous network proxy resolution.
+// ProxyResolver provides synchronous and asynchronous network proxy resolution.
 // Resolver is used within Client through the method
 // g_socket_connectable_proxy_enumerate().
 //
 // Implementations of Resolver based on libproxy and GNOME settings can be found
 // in glib-networking. GIO comes with an implementation for use inside Flatpak
 // portals.
-type ProXYResolver interface {
+type ProxyResolver interface {
+	gextras.Objector
 
 	// IsSupported checks if @resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
@@ -13602,27 +13681,28 @@ type ProXYResolver interface {
 	LookupFinish(result AsyncResult) ([]string, error)
 }
 
-// proXYResolver implements the ProXYResolver interface.
-type proXYResolver struct {
+// proxyResolver implements the ProxyResolver interface.
+type proxyResolver struct {
+	gextras.Objector
 }
 
-var _ ProXYResolver = (*proXYResolver)(nil)
+var _ ProxyResolver = (*proxyResolver)(nil)
 
-// WrapProXYResolver wraps a GObject to a type that implements
-// interface ProXYResolver. It is primarily used internally.
-func WrapProXYResolver(obj *externglib.Object) ProXYResolver {
-	return proXYResolver{
+// WrapProxyResolver wraps a GObject to a type that implements
+// interface ProxyResolver. It is primarily used internally.
+func WrapProxyResolver(obj *externglib.Object) ProxyResolver {
+	return proxyResolver{
 		Objector: obj,
 	}
 }
 
-func marshalProXYResolver(p uintptr) (interface{}, error) {
+func marshalProxyResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProXYResolver(obj), nil
+	return WrapProxyResolver(obj), nil
 }
 
-func (r proXYResolver) IsSupported() bool {
+func (r proxyResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
 
@@ -13639,7 +13719,7 @@ func (r proXYResolver) IsSupported() bool {
 	return _ok
 }
 
-func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
+func (r proxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GCancellable   // out
@@ -13675,7 +13755,7 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 	return _utf8s, _goerr
 }
 
-func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
+func (r proxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret **C.gchar
@@ -13754,6 +13834,7 @@ type RemoteActionGroupOverrider interface {
 // calls if available. This provides a mechanism by which to receive platform
 // data for action invocations that arrive by way of D-Bus.
 type RemoteActionGroup interface {
+	ActionGroup
 
 	// ActivateActionFull activates the remote action.
 	//
@@ -13779,6 +13860,7 @@ type RemoteActionGroup interface {
 
 // remoteActionGroup implements the RemoteActionGroup interface.
 type remoteActionGroup struct {
+	ActionGroup
 }
 
 var _ RemoteActionGroup = (*remoteActionGroup)(nil)
@@ -13881,6 +13963,7 @@ type SeekableOverrider interface {
 // a normal file. Seeking past the end and writing data will usually cause the
 // stream to resize by introducing zero bytes.
 type Seekable interface {
+	gextras.Objector
 
 	// CanSeek tests if the stream supports the Iface.
 	CanSeek() bool
@@ -13919,6 +14002,7 @@ type Seekable interface {
 
 // seekable implements the Seekable interface.
 type seekable struct {
+	gextras.Objector
 }
 
 var _ Seekable = (*seekable)(nil)
@@ -13979,8 +14063,8 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.goffset)(offset)
-	_arg2 = (C.GSeekType)(typ)
+	_arg1 = C.goffset(offset)
+	_arg2 = C.GSeekType(typ)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_seekable_seek(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -14002,7 +14086,7 @@ func (s seekable) Tell() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -14014,7 +14098,7 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.goffset)(offset)
+	_arg1 = C.goffset(offset)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_seekable_truncate(_arg0, _arg1, _arg2, &_cerr)
@@ -14034,14 +14118,14 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 type SocketConnectableOverrider interface {
 	// Enumerate creates a AddressEnumerator for @connectable.
 	Enumerate() SocketAddressEnumerator
-	// ProXYEnumerate creates a AddressEnumerator for @connectable that will
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
 	//
 	// If @connectable does not implement
 	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
 	// g_socket_connectable_enumerate().
-	ProXYEnumerate() SocketAddressEnumerator
+	ProxyEnumerate() SocketAddressEnumerator
 	// String: format a Connectable as a string. This is a human-readable format
 	// for use in debugging output, and is not a stable serialization format. It
 	// is not suitable for use in user interfaces as it exposes too much
@@ -14107,17 +14191,18 @@ type SocketConnectableOverrider interface {
 //        }
 //    }
 type SocketConnectable interface {
+	gextras.Objector
 
 	// Enumerate creates a AddressEnumerator for @connectable.
 	Enumerate() SocketAddressEnumerator
-	// ProXYEnumerate creates a AddressEnumerator for @connectable that will
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
 	//
 	// If @connectable does not implement
 	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
 	// g_socket_connectable_enumerate().
-	ProXYEnumerate() SocketAddressEnumerator
+	ProxyEnumerate() SocketAddressEnumerator
 	// String: format a Connectable as a string. This is a human-readable format
 	// for use in debugging output, and is not a stable serialization format. It
 	// is not suitable for use in user interfaces as it exposes too much
@@ -14130,6 +14215,7 @@ type SocketConnectable interface {
 
 // socketConnectable implements the SocketConnectable interface.
 type socketConnectable struct {
+	gextras.Objector
 }
 
 var _ SocketConnectable = (*socketConnectable)(nil)
@@ -14163,7 +14249,7 @@ func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 	return _socketAddressEnumerator
 }
 
-func (c socketConnectable) ProXYEnumerate() SocketAddressEnumerator {
+func (c socketConnectable) ProxyEnumerate() SocketAddressEnumerator {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
@@ -14212,6 +14298,7 @@ type TLSBackendOverrider interface {
 
 // TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
 type TLSBackend interface {
+	gextras.Objector
 
 	// CertificateType gets the #GType of @backend's Certificate implementation.
 	CertificateType() externglib.Type
@@ -14253,6 +14340,7 @@ type TLSBackend interface {
 
 // tlsBackend implements the TLSBackend interface.
 type tlsBackend struct {
+	gextras.Objector
 }
 
 var _ TLSBackend = (*tlsBackend)(nil)
@@ -14459,6 +14547,7 @@ type TLSClientConnectionOverrider interface {
 // TLSClientConnection is the client-side subclass of Connection, representing a
 // client-side TLS connection.
 type TLSClientConnection interface {
+	TLSConnection
 
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption. This is not normally needed,
@@ -14518,6 +14607,7 @@ type TLSClientConnection interface {
 
 // tlsClientConnection implements the TLSClientConnection interface.
 type tlsClientConnection struct {
+	TLSConnection
 }
 
 var _ TLSClientConnection = (*tlsClientConnection)(nil)
@@ -14620,7 +14710,7 @@ func (c tlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	var _arg1 C.GTlsCertificateFlags  // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GTlsCertificateFlags)(flags)
+	_arg1 = C.GTlsCertificateFlags(flags)
 
 	C.g_tls_client_connection_set_validation_flags(_arg0, _arg1)
 }
@@ -14629,10 +14719,12 @@ func (c tlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.
 type TLSFileDatabase interface {
+	TLSDatabase
 }
 
 // tlsFileDatabase implements the TLSFileDatabase interface.
 type tlsFileDatabase struct {
+	TLSDatabase
 }
 
 var _ TLSFileDatabase = (*tlsFileDatabase)(nil)
@@ -14654,10 +14746,12 @@ func marshalTLSFileDatabase(p uintptr) (interface{}, error) {
 // TLSServerConnection is the server-side subclass of Connection, representing a
 // server-side TLS connection.
 type TLSServerConnection interface {
+	TLSConnection
 }
 
 // tlsServerConnection implements the TLSServerConnection interface.
 type tlsServerConnection struct {
+	TLSConnection
 }
 
 var _ TLSServerConnection = (*tlsServerConnection)(nil)
@@ -14784,6 +14878,7 @@ type VolumeOverrider interface {
 //
 //    Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
 type Volume interface {
+	gextras.Objector
 
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
@@ -14851,6 +14946,7 @@ type Volume interface {
 
 // volume implements the Volume interface.
 type volume struct {
+	gextras.Objector
 }
 
 var _ Volume = (*volume)(nil)
@@ -15156,6 +15252,7 @@ func (v volume) ShouldAutomount() bool {
 // installed applications often come in groups (like during system updates) and
 // rescanning the list on every change is pointless and expensive.
 type AppInfoMonitor interface {
+	gextras.Objector
 }
 
 // appInfoMonitor implements the AppInfoMonitor class.
@@ -15181,6 +15278,7 @@ func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 // is used to handle for instance startup notification and launching the new
 // application on the same screen as the launching window.
 type AppLaunchContext interface {
+	gextras.Objector
 
 	// Environment gets the complete environment variable list to be passed to
 	// the child process when @context is used to launch an application. This is
@@ -15912,7 +16010,7 @@ func NewApplication(applicationId string, flags ApplicationFlags) Application {
 
 	_arg1 = (*C.gchar)(C.CString(applicationId))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GApplicationFlags)(flags)
+	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.g_application_new(_arg1, _arg2)
 
@@ -15943,9 +16041,9 @@ func (a application) AddMainOptionApplication(longName string, shortName byte, f
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(longName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.char)(shortName)
-	_arg3 = (C.GOptionFlags)(flags)
-	_arg4 = (C.GOptionArg)(arg)
+	_arg2 = C.char(shortName)
+	_arg3 = C.GOptionFlags(flags)
+	_arg4 = C.GOptionArg(arg)
 	_arg5 = (*C.char)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.char)(C.CString(argDescription))
@@ -16061,7 +16159,7 @@ func (a application) InactivityTimeout() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -16216,7 +16314,7 @@ func (a application) RunApplication(argv []string) int {
 	{
 		out := unsafe.Slice(_arg2, len(argv))
 		for i := range argv {
-			out[i] = (*C.gchar)(C.CString(argv[i]))
+			out[i] = (*C.char)(C.CString(argv[i]))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -16225,7 +16323,7 @@ func (a application) RunApplication(argv []string) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -16277,7 +16375,7 @@ func (a application) SetFlagsApplication(flags ApplicationFlags) {
 	var _arg1 C.GApplicationFlags // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.GApplicationFlags)(flags)
+	_arg1 = C.GApplicationFlags(flags)
 
 	C.g_application_set_flags(_arg0, _arg1)
 }
@@ -16287,7 +16385,7 @@ func (a application) SetInactivityTimeoutApplication(inactivityTimeout uint) {
 	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (C.guint)(inactivityTimeout)
+	_arg1 = C.guint(inactivityTimeout)
 
 	C.g_application_set_inactivity_timeout(_arg0, _arg1)
 }
@@ -16508,6 +16606,7 @@ func (a application) RemoveAction(actionName string) {
 // The complete example can be found here: gapplication-example-cmdline3.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c)
 type ApplicationCommandLine interface {
+	gextras.Objector
 
 	// CreateFileForArgApplicationCommandLine creates a #GFile corresponding to
 	// a filename that was given as part of the invocation of @cmdline.
@@ -16701,7 +16800,7 @@ func (c applicationCommandLine) ExitStatus() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -16733,7 +16832,7 @@ func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
 
 	var _variantDict *glib.VariantDict // out
 
-	_variantDict = glib.WrapVariantDict(unsafe.Pointer(_cret))
+	_variantDict = (*glib.VariantDict)(unsafe.Pointer(_cret))
 
 	return _variantDict
 }
@@ -16748,9 +16847,9 @@ func (c applicationCommandLine) PlatformData() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -16794,7 +16893,7 @@ func (c applicationCommandLine) SetExitStatusApplicationCommandLine(exitStatus i
 	var _arg1 C.int                      // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.int)(exitStatus)
+	_arg1 = C.int(exitStatus)
 
 	C.g_application_command_line_set_exit_status(_arg0, _arg1)
 }
@@ -16915,7 +17014,7 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 	var _cret *C.GInputStream // in
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
-	_arg2 = (C.gsize)(size)
+	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_input_stream_new_sized(_arg1, _arg2)
 
@@ -16934,7 +17033,7 @@ func (s bufferedInputStream) FillBufferedInputStream(count int, cancellable Canc
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gssize)(count)
+	_arg1 = C.gssize(count)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_buffered_input_stream_fill(_arg0, _arg1, _arg2, &_cerr)
@@ -16942,7 +17041,7 @@ func (s bufferedInputStream) FillBufferedInputStream(count int, cancellable Canc
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -16962,7 +17061,7 @@ func (s bufferedInputStream) FillFinishBufferedInputStream(result AsyncResult) (
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -16978,7 +17077,7 @@ func (s bufferedInputStream) Available() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -16993,7 +17092,7 @@ func (s bufferedInputStream) BufferSize() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -17008,13 +17107,13 @@ func (s bufferedInputStream) PeekBufferedInputStream(buffer []byte, offset uint)
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	_arg3 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	_arg2 = (C.gsize)(offset)
+	_arg2 = C.gsize(offset)
 
 	_cret = C.g_buffered_input_stream_peek(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3)
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -17033,7 +17132,7 @@ func (s bufferedInputStream) ReadByteBufferedInputStream(cancellable Cancellable
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -17044,7 +17143,7 @@ func (s bufferedInputStream) SetBufferSizeBufferedInputStream(size uint) {
 	var _arg1 C.gsize                 // out
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gsize)(size)
+	_arg1 = C.gsize(size)
 
 	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)
 }
@@ -17145,7 +17244,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 	var _cret *C.GOutputStream // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-	_arg2 = (C.gsize)(size)
+	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
 
@@ -17183,7 +17282,7 @@ func (s bufferedOutputStream) BufferSize() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -17205,7 +17304,7 @@ func (s bufferedOutputStream) SetBufferSizeBufferedOutputStream(size uint) {
 	var _arg1 C.gsize                  // out
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gsize)(size)
+	_arg1 = C.gsize(size)
 
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)
 }
@@ -17279,6 +17378,7 @@ func (i bytesIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 // throughout GIO to allow for cancellation of synchronous and asynchronous
 // operations.
 type Cancellable interface {
+	gextras.Objector
 
 	// CancelCancellable: will set @cancellable to cancelled, and will emit the
 	// #GCancellable::cancelled signal. (However, see the warning about race
@@ -17437,7 +17537,7 @@ func (c cancellable) DisconnectCancellable(handlerId uint32) {
 	var _arg1 C.gulong        // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.gulong)(handlerId)
+	_arg1 = C.gulong(handlerId)
 
 	C.g_cancellable_disconnect(_arg0, _arg1)
 }
@@ -17452,7 +17552,7 @@ func (c cancellable) Fd() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -17606,7 +17706,7 @@ func (c charsetConverter) NumFallbacks() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -17841,6 +17941,7 @@ func (s converterOutputStream) WritevNonblocking(vectors []OutputVector, cancell
 // On Solaris (including OpenSolaris and its derivatives), the native credential
 // type is a `ucred_t`. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
 type Credentials interface {
+	gextras.Objector
 
 	// UnixPid tries to get the UNIX process identifier from @credentials. This
 	// method is only available on UNIX platforms.
@@ -17921,7 +18022,7 @@ func (c credentials) UnixPid() (int, error) {
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -17939,7 +18040,7 @@ func (c credentials) UnixUser() (uint, error) {
 	var _guint uint  // out
 	var _goerr error // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
@@ -17968,7 +18069,7 @@ func (c credentials) SetUnixUserCredentials(uid uint) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.uid_t)(uid)
+	_arg1 = C.uid_t(uid)
 
 	C.g_credentials_set_unix_user(_arg0, _arg1, &_cerr)
 
@@ -18120,6 +18221,7 @@ func (r dBusActionGroup) ChangeActionStateFull(actionName string, value *glib.Va
 //      return authorized;
 //    }
 type DBusAuthObserver interface {
+	gextras.Objector
 
 	// AllowMechanismDBusAuthObserver emits the BusAuthObserver::allow-mechanism
 	// signal on @observer.
@@ -18615,7 +18717,7 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 
 	_arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GDBusConnectionFlags)(flags)
+	_arg2 = C.GDBusConnectionFlags(flags)
 	_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
@@ -18656,7 +18758,7 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.gchar)(C.CString(guid))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.GDBusConnectionFlags)(flags)
+	_arg3 = C.GDBusConnectionFlags(flags)
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
@@ -18685,9 +18787,9 @@ func (c dBusConnection) CallFinishDBusConnection(res AsyncResult) (*glib.Variant
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -18719,8 +18821,8 @@ func (c dBusConnection) CallSyncDBusConnection(busName string, objectPath string
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
 	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType.Native()))
-	_arg7 = (C.GDBusCallFlags)(flags)
-	_arg8 = (C.gint)(timeoutMsec)
+	_arg7 = C.GDBusCallFlags(flags)
+	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_connection_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, &_cerr)
@@ -18728,9 +18830,9 @@ func (c dBusConnection) CallSyncDBusConnection(busName string, objectPath string
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -18754,9 +18856,9 @@ func (c dBusConnection) CallWithUnixFdListFinishDBusConnection(res AsyncResult) 
 	var _goerr error           // out
 
 	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1))).(UnixFDList)
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -18790,8 +18892,8 @@ func (c dBusConnection) CallWithUnixFdListSyncDBusConnection(busName string, obj
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
 	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType.Native()))
-	_arg7 = (C.GDBusCallFlags)(flags)
-	_arg8 = (C.gint)(timeoutMsec)
+	_arg7 = C.GDBusCallFlags(flags)
+	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 	_arg11 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
@@ -18802,9 +18904,9 @@ func (c dBusConnection) CallWithUnixFdListSyncDBusConnection(busName string, obj
 	var _goerr error           // out
 
 	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg10))).(UnixFDList)
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -18891,7 +18993,7 @@ func (c dBusConnection) ExportActionGroupDBusConnection(objectPath string, actio
 	var _guint uint  // out
 	var _goerr error // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
@@ -18914,7 +19016,7 @@ func (c dBusConnection) ExportMenuModelDBusConnection(objectPath string, menu Me
 	var _guint uint  // out
 	var _goerr error // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
@@ -19026,7 +19128,7 @@ func (c dBusConnection) LastSerial() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -19098,7 +19200,7 @@ func (c dBusConnection) RemoveFilterDBusConnection(filterId uint) {
 	var _arg1 C.guint            // out
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(filterId)
+	_arg1 = C.guint(filterId)
 
 	C.g_dbus_connection_remove_filter(_arg0, _arg1)
 }
@@ -19112,14 +19214,14 @@ func (c dBusConnection) SendMessageDBusConnection(message DBusMessage, flags DBu
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
-	_arg2 = (C.GDBusSendMessageFlags)(flags)
+	_arg2 = C.GDBusSendMessageFlags(flags)
 
 	C.g_dbus_connection_send_message(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 
 	var _outSerial uint32 // out
 	var _goerr error      // out
 
-	_outSerial = (uint32)(_arg3)
+	_outSerial = uint32(_arg3)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outSerial, _goerr
@@ -19157,8 +19259,8 @@ func (c dBusConnection) SendMessageWithReplySyncDBusConnection(message DBusMessa
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
-	_arg2 = (C.GDBusSendMessageFlags)(flags)
-	_arg3 = (C.gint)(timeoutMsec)
+	_arg2 = C.GDBusSendMessageFlags(flags)
+	_arg3 = C.gint(timeoutMsec)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_connection_send_message_with_reply_sync(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5, &_cerr)
@@ -19167,7 +19269,7 @@ func (c dBusConnection) SendMessageWithReplySyncDBusConnection(message DBusMessa
 	var _dBusMessage DBusMessage // out
 	var _goerr error             // out
 
-	_outSerial = (uint32)(_arg4)
+	_outSerial = uint32(_arg4)
 	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -19191,7 +19293,7 @@ func (c dBusConnection) SignalUnsubscribeDBusConnection(subscriptionId uint) {
 	var _arg1 C.guint            // out
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(subscriptionId)
+	_arg1 = C.guint(subscriptionId)
 
 	C.g_dbus_connection_signal_unsubscribe(_arg0, _arg1)
 }
@@ -19209,7 +19311,7 @@ func (c dBusConnection) UnexportActionGroupDBusConnection(exportId uint) {
 	var _arg1 C.guint            // out
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(exportId)
+	_arg1 = C.guint(exportId)
 
 	C.g_dbus_connection_unexport_action_group(_arg0, _arg1)
 }
@@ -19219,7 +19321,7 @@ func (c dBusConnection) UnexportMenuModelDBusConnection(exportId uint) {
 	var _arg1 C.guint            // out
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(exportId)
+	_arg1 = C.guint(exportId)
 
 	C.g_dbus_connection_unexport_menu_model(_arg0, _arg1)
 }
@@ -19230,7 +19332,7 @@ func (c dBusConnection) UnregisterObjectDBusConnection(registrationId uint) bool
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(registrationId)
+	_arg1 = C.guint(registrationId)
 
 	_cret = C.g_dbus_connection_unregister_object(_arg0, _arg1)
 
@@ -19249,7 +19351,7 @@ func (c dBusConnection) UnregisterSubtreeDBusConnection(registrationId uint) boo
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(registrationId)
+	_arg1 = C.guint(registrationId)
 
 	_cret = C.g_dbus_connection_unregister_subtree(_arg0, _arg1)
 
@@ -19416,7 +19518,7 @@ func (i dBusInterfaceSkeleton) GetInfo() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 
 	return _dBusInterfaceInfo
 }
@@ -19446,9 +19548,9 @@ func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -19478,7 +19580,7 @@ func (i dBusInterfaceSkeleton) SetFlagsDBusInterfaceSkeleton(flags DBusInterface
 	var _arg1 C.GDBusInterfaceSkeletonFlags // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.GDBusInterfaceSkeletonFlags)(flags)
+	_arg1 = C.GDBusInterfaceSkeletonFlags(flags)
 
 	C.g_dbus_interface_skeleton_set_flags(_arg0, _arg1)
 }
@@ -19517,6 +19619,7 @@ func (i dBusInterfaceSkeleton) SetObject(object DBusObject) {
 // menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
 type DBusMenuModel interface {
+	MenuModel
 }
 
 // dBusMenuModel implements the DBusMenuModel class.
@@ -19541,6 +19644,7 @@ func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 // DBusMessage: a type for representing D-Bus messages that can be sent or
 // received on a BusConnection.
 type DBusMessage interface {
+	gextras.Objector
 
 	// CopyDBusMessage copies @message. The copy is a deep copy and the returned
 	// BusMessage is completely identical except that it is guaranteed to not be
@@ -19765,7 +19869,7 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (DBus
 
 	_arg2 = C.gsize(len(blob))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&blob[0]))
-	_arg3 = (C.GDBusCapabilityFlags)(capabilities)
+	_arg3 = C.GDBusCapabilityFlags(capabilities)
 
 	_cret = C.g_dbus_message_new_from_blob(_arg1, _arg2, _arg3, &_cerr)
 
@@ -19870,7 +19974,7 @@ func (m dBusMessage) Body() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -19941,13 +20045,13 @@ func (m dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	var _cret *C.GVariant               // in
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.GDBusMessageHeaderField)(headerField)
+	_arg1 = C.GDBusMessageHeaderField(headerField)
 
 	_cret = C.g_dbus_message_get_header(_arg0, _arg1)
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -19972,7 +20076,7 @@ func (m dBusMessage) HeaderFields() []byte {
 		src := unsafe.Slice(_cret, i)
 		_guint8s = make([]byte, i)
 		for i := range src {
-			_guint8s[i] = (byte)(src[i])
+			_guint8s[i] = byte(src[i])
 		}
 	}
 
@@ -20051,7 +20155,7 @@ func (m dBusMessage) NumUnixFds() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -20081,7 +20185,7 @@ func (m dBusMessage) ReplySerial() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -20111,7 +20215,7 @@ func (m dBusMessage) Serial() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -20196,7 +20300,7 @@ func (m dBusMessage) PrintDBusMessage(indent uint) string {
 	var _cret *C.gchar        // in
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint)(indent)
+	_arg1 = C.guint(indent)
 
 	_cret = C.g_dbus_message_print(_arg0, _arg1)
 
@@ -20223,7 +20327,7 @@ func (m dBusMessage) SetByteOrderDBusMessage(byteOrder DBusMessageByteOrder) {
 	var _arg1 C.GDBusMessageByteOrder // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.GDBusMessageByteOrder)(byteOrder)
+	_arg1 = C.GDBusMessageByteOrder(byteOrder)
 
 	C.g_dbus_message_set_byte_order(_arg0, _arg1)
 }
@@ -20255,7 +20359,7 @@ func (m dBusMessage) SetFlagsDBusMessage(flags DBusMessageFlags) {
 	var _arg1 C.GDBusMessageFlags // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.GDBusMessageFlags)(flags)
+	_arg1 = C.GDBusMessageFlags(flags)
 
 	C.g_dbus_message_set_flags(_arg0, _arg1)
 }
@@ -20266,7 +20370,7 @@ func (m dBusMessage) SetHeaderDBusMessage(headerField DBusMessageHeaderField, va
 	var _arg2 *C.GVariant               // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.GDBusMessageHeaderField)(headerField)
+	_arg1 = C.GDBusMessageHeaderField(headerField)
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	C.g_dbus_message_set_header(_arg0, _arg1, _arg2)
@@ -20299,7 +20403,7 @@ func (m dBusMessage) SetMessageTypeDBusMessage(typ DBusMessageType) {
 	var _arg1 C.GDBusMessageType // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.GDBusMessageType)(typ)
+	_arg1 = C.GDBusMessageType(typ)
 
 	C.g_dbus_message_set_message_type(_arg0, _arg1)
 }
@@ -20309,7 +20413,7 @@ func (m dBusMessage) SetNumUnixFdsDBusMessage(value uint32) {
 	var _arg1 C.guint32       // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint32)(value)
+	_arg1 = C.guint32(value)
 
 	C.g_dbus_message_set_num_unix_fds(_arg0, _arg1)
 }
@@ -20330,7 +20434,7 @@ func (m dBusMessage) SetReplySerialDBusMessage(value uint32) {
 	var _arg1 C.guint32       // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint32)(value)
+	_arg1 = C.guint32(value)
 
 	C.g_dbus_message_set_reply_serial(_arg0, _arg1)
 }
@@ -20351,7 +20455,7 @@ func (m dBusMessage) SetSerialDBusMessage(serial uint32) {
 	var _arg1 C.guint32       // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.guint32)(serial)
+	_arg1 = C.guint32(serial)
 
 	C.g_dbus_message_set_serial(_arg0, _arg1)
 }
@@ -20400,6 +20504,7 @@ func (m dBusMessage) ToGerrorDBusMessage() error {
 // argument to the handle_method_call() function in a BusInterfaceVTable that
 // was passed to g_dbus_connection_register_object().
 type DBusMethodInvocation interface {
+	gextras.Objector
 
 	// Connection gets the BusConnection the method was invoked on.
 	Connection() DBusConnection
@@ -20576,7 +20681,7 @@ func (i dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 
 	var _dBusMethodInfo *DBusMethodInfo // out
 
-	_dBusMethodInfo = WrapDBusMethodInfo(unsafe.Pointer(_cret))
+	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
 
 	return _dBusMethodInfo
 }
@@ -20621,7 +20726,7 @@ func (i dBusMethodInvocation) Parameters() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 
 	return _variant
 }
@@ -20636,7 +20741,7 @@ func (i dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
-	_dBusPropertyInfo = WrapDBusPropertyInfo(unsafe.Pointer(_cret))
+	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
 
 	return _dBusPropertyInfo
 }
@@ -21123,39 +21228,39 @@ func (m dBusObjectManagerServer) ObjectPath() string {
 	return WrapDBusObjectManager(gextras.InternObject(m)).ObjectPath()
 }
 
-// DBusObjectProXY: a BusObjectProxy is an object used to represent a remote
+// DBusObjectProxy: a BusObjectProxy is an object used to represent a remote
 // object with one or more D-Bus interfaces. Normally, you don't instantiate a
 // BusObjectProxy yourself - typically BusObjectManagerClient is used to obtain
 // it.
-type DBusObjectProXY interface {
+type DBusObjectProxy interface {
 	DBusObject
 
 	// Connection gets the connection that @proxy is for.
 	Connection() DBusConnection
 }
 
-// dBusObjectProXY implements the DBusObjectProXY class.
-type dBusObjectProXY struct {
+// dBusObjectProxy implements the DBusObjectProxy class.
+type dBusObjectProxy struct {
 	gextras.Objector
 }
 
-// WrapDBusObjectProXY wraps a GObject to the right type. It is
+// WrapDBusObjectProxy wraps a GObject to the right type. It is
 // primarily used internally.
-func WrapDBusObjectProXY(obj *externglib.Object) DBusObjectProXY {
-	return dBusObjectProXY{
+func WrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxy {
+	return dBusObjectProxy{
 		Objector: obj,
 	}
 }
 
-func marshalDBusObjectProXY(p uintptr) (interface{}, error) {
+func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusObjectProXY(obj), nil
+	return WrapDBusObjectProxy(obj), nil
 }
 
-// NewDBusObjectProXY creates a new BusObjectProxy for the given connection and
+// NewDBusObjectProxy creates a new BusObjectProxy for the given connection and
 // object path.
-func NewDBusObjectProXY(connection DBusConnection, objectPath string) DBusObjectProXY {
+func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObjectProxy {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
 	var _cret *C.GDBusObjectProxy // in
@@ -21166,14 +21271,14 @@ func NewDBusObjectProXY(connection DBusConnection, objectPath string) DBusObject
 
 	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
 
-	var _dBusObjectProxy DBusObjectProXY // out
+	var _dBusObjectProxy DBusObjectProxy // out
 
-	_dBusObjectProxy = WrapDBusObjectProXY(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectProxy = WrapDBusObjectProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectProxy
 }
 
-func (p dBusObjectProXY) Connection() DBusConnection {
+func (p dBusObjectProxy) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectProxy // out
 	var _cret *C.GDBusConnection  // in
 
@@ -21188,11 +21293,11 @@ func (p dBusObjectProXY) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (o dBusObjectProXY) Interface(interfaceName string) DBusInterface {
+func (o dBusObjectProxy) Interface(interfaceName string) DBusInterface {
 	return WrapDBusObject(gextras.InternObject(o)).Interface(interfaceName)
 }
 
-func (o dBusObjectProXY) ObjectPath() string {
+func (o dBusObjectProxy) ObjectPath() string {
 	return WrapDBusObject(gextras.InternObject(o)).ObjectPath()
 }
 
@@ -21322,7 +21427,7 @@ func (o dBusObjectSkeleton) ObjectPath() string {
 	return WrapDBusObject(gextras.InternObject(o)).ObjectPath()
 }
 
-// DBusProXY is a base class used for proxies to access a D-Bus interface on a
+// DBusProxy is a base class used for proxies to access a D-Bus interface on a
 // remote object. A BusProxy can be constructed for both well-known and unique
 // names.
 //
@@ -21358,15 +21463,15 @@ func (o dBusObjectSkeleton) ObjectPath() string {
 // An example using a proxy for a well-known name can be found in
 // gdbus-example-watch-proxy.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
-type DBusProXY interface {
+type DBusProxy interface {
 	AsyncInitable
 	DBusInterface
 	Initable
 
-	// CallFinishDBusProXY finishes an operation started with
+	// CallFinishDBusProxy finishes an operation started with
 	// g_dbus_proxy_call().
-	CallFinishDBusProXY(res AsyncResult) (*glib.Variant, error)
-	// CallSyncDBusProXY: synchronously invokes the @method_name method on
+	CallFinishDBusProxy(res AsyncResult) (*glib.Variant, error)
+	// CallSyncDBusProxy: synchronously invokes the @method_name method on
 	// @proxy.
 	//
 	// If @method_name contains any dots, then @name is split into interface and
@@ -21398,15 +21503,15 @@ type DBusProXY interface {
 	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
 	// @method_name is referenced by it, then the return value is checked
 	// against the return type.
-	CallSyncDBusProXY(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
-	// CallWithUnixFdListFinishDBusProXY finishes an operation started with
+	CallSyncDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
+	// CallWithUnixFdListFinishDBusProxy finishes an operation started with
 	// g_dbus_proxy_call_with_unix_fd_list().
-	CallWithUnixFdListFinishDBusProXY(res AsyncResult) (UnixFDList, *glib.Variant, error)
-	// CallWithUnixFdListSyncDBusProXY: like g_dbus_proxy_call_sync() but also
+	CallWithUnixFdListFinishDBusProxy(res AsyncResult) (UnixFDList, *glib.Variant, error)
+	// CallWithUnixFdListSyncDBusProxy: like g_dbus_proxy_call_sync() but also
 	// takes and returns FDList objects.
 	//
 	// This method is only available on UNIX.
-	CallWithUnixFdListSyncDBusProXY(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
+	CallWithUnixFdListSyncDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
 	// CachedProperty looks up the value for a property from the cache. This
 	// call does no blocking IO.
 	//
@@ -21425,7 +21530,7 @@ type DBusProXY interface {
 	// See the BusProxy:g-default-timeout property for more details.
 	DefaultTimeout() int
 	// Flags gets the flags that @proxy was constructed with.
-	Flags() DBusProXYFlags
+	Flags() DBusProxyFlags
 	// InterfaceInfo returns the BusInterfaceInfo, if any, specifying the
 	// interface that @proxy conforms to. See the BusProxy:g-interface-info
 	// property for more details.
@@ -21441,7 +21546,7 @@ type DBusProXY interface {
 	NameOwner() string
 	// ObjectPath gets the object path @proxy is for.
 	ObjectPath() string
-	// SetCachedPropertyDBusProXY: if @value is not nil, sets the cached value
+	// SetCachedPropertyDBusProxy: if @value is not nil, sets the cached value
 	// for the property with name @property_name to the value in @value.
 	//
 	// If @value is nil, then the cached value is removed from the property
@@ -21472,40 +21577,40 @@ type DBusProXY interface {
 	// more efficient to only transmit the delta using e.g. signals
 	// `ChatroomParticipantJoined(String name)` and
 	// `ChatroomParticipantParted(String name)`.
-	SetCachedPropertyDBusProXY(propertyName string, value *glib.Variant)
-	// SetDefaultTimeoutDBusProXY sets the timeout to use if -1 (specifying
+	SetCachedPropertyDBusProxy(propertyName string, value *glib.Variant)
+	// SetDefaultTimeoutDBusProxy sets the timeout to use if -1 (specifying
 	// default timeout) is passed as @timeout_msec in the g_dbus_proxy_call()
 	// and g_dbus_proxy_call_sync() functions.
 	//
 	// See the BusProxy:g-default-timeout property for more details.
-	SetDefaultTimeoutDBusProXY(timeoutMsec int)
-	// SetInterfaceInfoDBusProXY: ensure that interactions with @proxy conform
+	SetDefaultTimeoutDBusProxy(timeoutMsec int)
+	// SetInterfaceInfoDBusProxy: ensure that interactions with @proxy conform
 	// to the given interface. See the BusProxy:g-interface-info property for
 	// more details.
-	SetInterfaceInfoDBusProXY(info *DBusInterfaceInfo)
+	SetInterfaceInfoDBusProxy(info *DBusInterfaceInfo)
 }
 
-// dBusProXY implements the DBusProXY class.
-type dBusProXY struct {
+// dBusProxy implements the DBusProxy class.
+type dBusProxy struct {
 	gextras.Objector
 }
 
-// WrapDBusProXY wraps a GObject to the right type. It is
+// WrapDBusProxy wraps a GObject to the right type. It is
 // primarily used internally.
-func WrapDBusProXY(obj *externglib.Object) DBusProXY {
-	return dBusProXY{
+func WrapDBusProxy(obj *externglib.Object) DBusProxy {
+	return dBusProxy{
 		Objector: obj,
 	}
 }
 
-func marshalDBusProXY(p uintptr) (interface{}, error) {
+func marshalDBusProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusProXY(obj), nil
+	return WrapDBusProxy(obj), nil
 }
 
-// NewDBusProXYFinish finishes creating a BusProxy.
-func NewDBusProXYFinish(res AsyncResult) (DBusProXY, error) {
+// NewDBusProxyFinish finishes creating a BusProxy.
+func NewDBusProxyFinish(res AsyncResult) (DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
 	var _cerr *C.GError       // in
@@ -21514,17 +21619,17 @@ func NewDBusProXYFinish(res AsyncResult) (DBusProXY, error) {
 
 	_cret = C.g_dbus_proxy_new_finish(_arg1, &_cerr)
 
-	var _dBusProxy DBusProXY // out
+	var _dBusProxy DBusProxy // out
 	var _goerr error         // out
 
-	_dBusProxy = WrapDBusProXY(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusProxy = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
 }
 
-// NewDBusProXYForBusFinish finishes creating a BusProxy.
-func NewDBusProXYForBusFinish(res AsyncResult) (DBusProXY, error) {
+// NewDBusProxyForBusFinish finishes creating a BusProxy.
+func NewDBusProxyForBusFinish(res AsyncResult) (DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
 	var _cerr *C.GError       // in
@@ -21533,20 +21638,20 @@ func NewDBusProXYForBusFinish(res AsyncResult) (DBusProXY, error) {
 
 	_cret = C.g_dbus_proxy_new_for_bus_finish(_arg1, &_cerr)
 
-	var _dBusProxy DBusProXY // out
+	var _dBusProxy DBusProxy // out
 	var _goerr error         // out
 
-	_dBusProxy = WrapDBusProXY(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusProxy = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
 }
 
-// NewDBusProXYForBusSync: like g_dbus_proxy_new_sync() but takes a Type instead
+// NewDBusProxyForBusSync: like g_dbus_proxy_new_sync() but takes a Type instead
 // of a BusConnection.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
-func NewDBusProXYForBusSync(busType BusType, flags DBusProXYFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) (DBusProXY, error) {
+func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) (DBusProxy, error) {
 	var _arg1 C.GBusType            // out
 	var _arg2 C.GDBusProxyFlags     // out
 	var _arg3 *C.GDBusInterfaceInfo // out
@@ -21557,8 +21662,8 @@ func NewDBusProXYForBusSync(busType BusType, flags DBusProXYFlags, info *DBusInt
 	var _cret *C.GDBusProxy         // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (C.GBusType)(busType)
-	_arg2 = (C.GDBusProxyFlags)(flags)
+	_arg1 = C.GBusType(busType)
+	_arg2 = C.GDBusProxyFlags(flags)
 	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info.Native()))
 	_arg4 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg4))
@@ -21570,16 +21675,16 @@ func NewDBusProXYForBusSync(busType BusType, flags DBusProXYFlags, info *DBusInt
 
 	_cret = C.g_dbus_proxy_new_for_bus_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
 
-	var _dBusProxy DBusProXY // out
+	var _dBusProxy DBusProxy // out
 	var _goerr error         // out
 
-	_dBusProxy = WrapDBusProXY(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusProxy = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
 }
 
-// NewDBusProXYSync creates a proxy for accessing @interface_name on the remote
+// NewDBusProxySync creates a proxy for accessing @interface_name on the remote
 // object at @object_path owned by @name at @connection and synchronously loads
 // D-Bus properties unless the G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is
 // used.
@@ -21601,7 +21706,7 @@ func NewDBusProXYForBusSync(busType BusType, flags DBusProXYFlags, info *DBusInt
 // g_dbus_proxy_new_finish() for the asynchronous version.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
-func NewDBusProXYSync(connection DBusConnection, flags DBusProXYFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) (DBusProXY, error) {
+func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) (DBusProxy, error) {
 	var _arg1 *C.GDBusConnection    // out
 	var _arg2 C.GDBusProxyFlags     // out
 	var _arg3 *C.GDBusInterfaceInfo // out
@@ -21613,7 +21718,7 @@ func NewDBusProXYSync(connection DBusConnection, flags DBusProXYFlags, info *DBu
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg2 = (C.GDBusProxyFlags)(flags)
+	_arg2 = C.GDBusProxyFlags(flags)
 	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info.Native()))
 	_arg4 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg4))
@@ -21625,16 +21730,16 @@ func NewDBusProXYSync(connection DBusConnection, flags DBusProXYFlags, info *DBu
 
 	_cret = C.g_dbus_proxy_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
 
-	var _dBusProxy DBusProXY // out
+	var _dBusProxy DBusProxy // out
 	var _goerr error         // out
 
-	_dBusProxy = WrapDBusProXY(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusProxy = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
 }
 
-func (p dBusProXY) CallFinishDBusProXY(res AsyncResult) (*glib.Variant, error) {
+func (p dBusProxy) CallFinishDBusProxy(res AsyncResult) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GVariant     // in
@@ -21648,16 +21753,16 @@ func (p dBusProXY) CallFinishDBusProXY(res AsyncResult) (*glib.Variant, error) {
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _variant, _goerr
 }
 
-func (p dBusProXY) CallSyncDBusProXY(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
+func (p dBusProxy) CallSyncDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -21671,8 +21776,8 @@ func (p dBusProXY) CallSyncDBusProXY(methodName string, parameters *glib.Variant
 	_arg1 = (*C.gchar)(C.CString(methodName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
-	_arg3 = (C.GDBusCallFlags)(flags)
-	_arg4 = (C.gint)(timeoutMsec)
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_proxy_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
@@ -21680,16 +21785,16 @@ func (p dBusProXY) CallSyncDBusProXY(methodName string, parameters *glib.Variant
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _variant, _goerr
 }
 
-func (p dBusProXY) CallWithUnixFdListFinishDBusProXY(res AsyncResult) (UnixFDList, *glib.Variant, error) {
+func (p dBusProxy) CallWithUnixFdListFinishDBusProxy(res AsyncResult) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GUnixFDList  // in
 	var _arg2 *C.GAsyncResult // out
@@ -21706,16 +21811,16 @@ func (p dBusProXY) CallWithUnixFdListFinishDBusProXY(res AsyncResult) (UnixFDLis
 	var _goerr error           // out
 
 	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1))).(UnixFDList)
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outFdList, _variant, _goerr
 }
 
-func (p dBusProXY) CallWithUnixFdListSyncDBusProXY(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
+func (p dBusProxy) CallWithUnixFdListSyncDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -21731,8 +21836,8 @@ func (p dBusProXY) CallWithUnixFdListSyncDBusProXY(methodName string, parameters
 	_arg1 = (*C.gchar)(C.CString(methodName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
-	_arg3 = (C.GDBusCallFlags)(flags)
-	_arg4 = (C.gint)(timeoutMsec)
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
 	_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
@@ -21743,16 +21848,16 @@ func (p dBusProXY) CallWithUnixFdListSyncDBusProXY(methodName string, parameters
 	var _goerr error           // out
 
 	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6))).(UnixFDList)
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outFdList, _variant, _goerr
 }
 
-func (p dBusProXY) CachedProperty(propertyName string) *glib.Variant {
+func (p dBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GVariant   // in
@@ -21765,15 +21870,15 @@ func (p dBusProXY) CachedProperty(propertyName string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
 }
 
-func (p dBusProXY) CachedPropertyNames() []string {
+func (p dBusProxy) CachedPropertyNames() []string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret **C.gchar
 
@@ -21801,7 +21906,7 @@ func (p dBusProXY) CachedPropertyNames() []string {
 	return _utf8s
 }
 
-func (p dBusProXY) Connection() DBusConnection {
+func (p dBusProxy) Connection() DBusConnection {
 	var _arg0 *C.GDBusProxy      // out
 	var _cret *C.GDBusConnection // in
 
@@ -21816,7 +21921,7 @@ func (p dBusProXY) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (p dBusProXY) DefaultTimeout() int {
+func (p dBusProxy) DefaultTimeout() int {
 	var _arg0 *C.GDBusProxy // out
 	var _cret C.gint        // in
 
@@ -21826,12 +21931,12 @@ func (p dBusProXY) DefaultTimeout() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
-func (p dBusProXY) Flags() DBusProXYFlags {
+func (p dBusProxy) Flags() DBusProxyFlags {
 	var _arg0 *C.GDBusProxy     // out
 	var _cret C.GDBusProxyFlags // in
 
@@ -21839,14 +21944,14 @@ func (p dBusProXY) Flags() DBusProXYFlags {
 
 	_cret = C.g_dbus_proxy_get_flags(_arg0)
 
-	var _dBusProxyFlags DBusProXYFlags // out
+	var _dBusProxyFlags DBusProxyFlags // out
 
-	_dBusProxyFlags = DBusProXYFlags(_cret)
+	_dBusProxyFlags = DBusProxyFlags(_cret)
 
 	return _dBusProxyFlags
 }
 
-func (p dBusProXY) InterfaceInfo() *DBusInterfaceInfo {
+func (p dBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusProxy         // out
 	var _cret *C.GDBusInterfaceInfo // in
 
@@ -21856,12 +21961,12 @@ func (p dBusProXY) InterfaceInfo() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 
 	return _dBusInterfaceInfo
 }
 
-func (p dBusProXY) InterfaceName() string {
+func (p dBusProxy) InterfaceName() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
@@ -21876,7 +21981,7 @@ func (p dBusProXY) InterfaceName() string {
 	return _utf8
 }
 
-func (p dBusProXY) Name() string {
+func (p dBusProxy) Name() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
@@ -21891,7 +21996,7 @@ func (p dBusProXY) Name() string {
 	return _utf8
 }
 
-func (p dBusProXY) NameOwner() string {
+func (p dBusProxy) NameOwner() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
@@ -21907,7 +22012,7 @@ func (p dBusProXY) NameOwner() string {
 	return _utf8
 }
 
-func (p dBusProXY) ObjectPath() string {
+func (p dBusProxy) ObjectPath() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
@@ -21922,7 +22027,7 @@ func (p dBusProXY) ObjectPath() string {
 	return _utf8
 }
 
-func (p dBusProXY) SetCachedPropertyDBusProXY(propertyName string, value *glib.Variant) {
+func (p dBusProxy) SetCachedPropertyDBusProxy(propertyName string, value *glib.Variant) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GVariant   // out
@@ -21935,17 +22040,17 @@ func (p dBusProXY) SetCachedPropertyDBusProXY(propertyName string, value *glib.V
 	C.g_dbus_proxy_set_cached_property(_arg0, _arg1, _arg2)
 }
 
-func (p dBusProXY) SetDefaultTimeoutDBusProXY(timeoutMsec int) {
+func (p dBusProxy) SetDefaultTimeoutDBusProxy(timeoutMsec int) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 C.gint        // out
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.gint)(timeoutMsec)
+	_arg1 = C.gint(timeoutMsec)
 
 	C.g_dbus_proxy_set_default_timeout(_arg0, _arg1)
 }
 
-func (p dBusProXY) SetInterfaceInfoDBusProXY(info *DBusInterfaceInfo) {
+func (p dBusProxy) SetInterfaceInfoDBusProxy(info *DBusInterfaceInfo) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.GDBusInterfaceInfo // out
 
@@ -21955,27 +22060,27 @@ func (p dBusProXY) SetInterfaceInfoDBusProXY(info *DBusInterfaceInfo) {
 	C.g_dbus_proxy_set_interface_info(_arg0, _arg1)
 }
 
-func (i dBusProXY) InitFinish(res AsyncResult) error {
+func (i dBusProxy) InitFinish(res AsyncResult) error {
 	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
 }
 
-func (i dBusProXY) NewFinish(res AsyncResult) (gextras.Objector, error) {
+func (i dBusProxy) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
 }
 
-func (i dBusProXY) DupObject() DBusObject {
+func (i dBusProxy) DupObject() DBusObject {
 	return WrapDBusInterface(gextras.InternObject(i)).DupObject()
 }
 
-func (i dBusProXY) Info() *DBusInterfaceInfo {
+func (i dBusProxy) Info() *DBusInterfaceInfo {
 	return WrapDBusInterface(gextras.InternObject(i)).Info()
 }
 
-func (i dBusProXY) SetObject(object DBusObject) {
+func (i dBusProxy) SetObject(object DBusObject) {
 	WrapDBusInterface(gextras.InternObject(i)).SetObject(object)
 }
 
-func (i dBusProXY) Init(cancellable Cancellable) error {
+func (i dBusProxy) Init(cancellable Cancellable) error {
 	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
@@ -22067,7 +22172,7 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 
 	_arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GDBusServerFlags)(flags)
+	_arg2 = C.GDBusServerFlags(flags)
 	_arg3 = (*C.gchar)(C.CString(guid))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
@@ -22382,7 +22487,7 @@ func (s dataInputStream) ReadByteDataInputStream(cancellable Cancellable) (byte,
 	var _guint8 byte // out
 	var _goerr error // out
 
-	_guint8 = (byte)(_cret)
+	_guint8 = byte(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint8, _goerr
@@ -22402,7 +22507,7 @@ func (s dataInputStream) ReadInt16DataInputStream(cancellable Cancellable) (int1
 	var _gint16 int16 // out
 	var _goerr error  // out
 
-	_gint16 = (int16)(_cret)
+	_gint16 = int16(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint16, _goerr
@@ -22422,7 +22527,7 @@ func (s dataInputStream) ReadInt32DataInputStream(cancellable Cancellable) (int3
 	var _gint32 int32 // out
 	var _goerr error  // out
 
-	_gint32 = (int32)(_cret)
+	_gint32 = int32(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint32, _goerr
@@ -22442,7 +22547,7 @@ func (s dataInputStream) ReadInt64DataInputStream(cancellable Cancellable) (int6
 	var _gint64 int64 // out
 	var _goerr error  // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint64, _goerr
@@ -22464,7 +22569,7 @@ func (s dataInputStream) ReadLineDataInputStream(cancellable Cancellable) (uint,
 	var _guint8s []byte
 	var _goerr error // out
 
-	_length = (uint)(_arg1)
+	_length = uint(_arg1)
 	{
 		var i int
 		var z C.char
@@ -22475,7 +22580,7 @@ func (s dataInputStream) ReadLineDataInputStream(cancellable Cancellable) (uint,
 		src := unsafe.Slice(_cret, i)
 		_guint8s = make([]byte, i)
 		for i := range src {
-			_guint8s[i] = (byte)(src[i])
+			_guint8s[i] = byte(src[i])
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22499,7 +22604,7 @@ func (s dataInputStream) ReadLineFinishDataInputStream(result AsyncResult) (uint
 	var _guint8s []byte
 	var _goerr error // out
 
-	_length = (uint)(_arg2)
+	_length = uint(_arg2)
 	{
 		var i int
 		var z C.char
@@ -22510,7 +22615,7 @@ func (s dataInputStream) ReadLineFinishDataInputStream(result AsyncResult) (uint
 		src := unsafe.Slice(_cret, i)
 		_guint8s = make([]byte, i)
 		for i := range src {
-			_guint8s[i] = (byte)(src[i])
+			_guint8s[i] = byte(src[i])
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22534,7 +22639,7 @@ func (s dataInputStream) ReadLineFinishUTF8DataInputStream(result AsyncResult) (
 	var _utf8 string // out
 	var _goerr error // out
 
-	_length = (uint)(_arg2)
+	_length = uint(_arg2)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22558,7 +22663,7 @@ func (s dataInputStream) ReadLineUTF8DataInputStream(cancellable Cancellable) (u
 	var _utf8 string // out
 	var _goerr error // out
 
-	_length = (uint)(_arg1)
+	_length = uint(_arg1)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22580,7 +22685,7 @@ func (s dataInputStream) ReadUint16DataInputStream(cancellable Cancellable) (uin
 	var _guint16 uint16 // out
 	var _goerr error    // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint16, _goerr
@@ -22600,7 +22705,7 @@ func (s dataInputStream) ReadUint32DataInputStream(cancellable Cancellable) (uin
 	var _guint32 uint32 // out
 	var _goerr error    // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint32, _goerr
@@ -22620,7 +22725,7 @@ func (s dataInputStream) ReadUint64DataInputStream(cancellable Cancellable) (uin
 	var _guint64 uint64 // out
 	var _goerr error    // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint64, _goerr
@@ -22645,7 +22750,7 @@ func (s dataInputStream) ReadUntilDataInputStream(stopChars string, cancellable 
 	var _utf8 string // out
 	var _goerr error // out
 
-	_length = (uint)(_arg2)
+	_length = uint(_arg2)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22669,7 +22774,7 @@ func (s dataInputStream) ReadUntilFinishDataInputStream(result AsyncResult) (uin
 	var _utf8 string // out
 	var _goerr error // out
 
-	_length = (uint)(_arg2)
+	_length = uint(_arg2)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22689,7 +22794,7 @@ func (s dataInputStream) ReadUptoDataInputStream(stopChars string, stopCharsLen 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(stopCharsLen)
+	_arg2 = C.gssize(stopCharsLen)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_data_input_stream_read_upto(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
@@ -22698,7 +22803,7 @@ func (s dataInputStream) ReadUptoDataInputStream(stopChars string, stopCharsLen 
 	var _utf8 string // out
 	var _goerr error // out
 
-	_length = (uint)(_arg3)
+	_length = uint(_arg3)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22722,7 +22827,7 @@ func (s dataInputStream) ReadUptoFinishDataInputStream(result AsyncResult) (uint
 	var _utf8 string // out
 	var _goerr error // out
 
-	_length = (uint)(_arg2)
+	_length = uint(_arg2)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22735,7 +22840,7 @@ func (s dataInputStream) SetByteOrderDataInputStream(order DataStreamByteOrder) 
 	var _arg1 C.GDataStreamByteOrder // out
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GDataStreamByteOrder)(order)
+	_arg1 = C.GDataStreamByteOrder(order)
 
 	C.g_data_input_stream_set_byte_order(_arg0, _arg1)
 }
@@ -22745,7 +22850,7 @@ func (s dataInputStream) SetNewlineTypeDataInputStream(typ DataStreamNewlineType
 	var _arg1 C.GDataStreamNewlineType // out
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GDataStreamNewlineType)(typ)
+	_arg1 = C.GDataStreamNewlineType(typ)
 
 	C.g_data_input_stream_set_newline_type(_arg0, _arg1)
 }
@@ -22861,7 +22966,7 @@ func (s dataOutputStream) PutByteDataOutputStream(data byte, cancellable Cancell
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guchar)(data)
+	_arg1 = C.guchar(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_data_output_stream_put_byte(_arg0, _arg1, _arg2, &_cerr)
@@ -22880,7 +22985,7 @@ func (s dataOutputStream) PutInt16DataOutputStream(data int16, cancellable Cance
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint16)(data)
+	_arg1 = C.gint16(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_data_output_stream_put_int16(_arg0, _arg1, _arg2, &_cerr)
@@ -22899,7 +23004,7 @@ func (s dataOutputStream) PutInt32DataOutputStream(data int32, cancellable Cance
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint32)(data)
+	_arg1 = C.gint32(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_data_output_stream_put_int32(_arg0, _arg1, _arg2, &_cerr)
@@ -22918,7 +23023,7 @@ func (s dataOutputStream) PutInt64DataOutputStream(data int64, cancellable Cance
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint64)(data)
+	_arg1 = C.gint64(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_data_output_stream_put_int64(_arg0, _arg1, _arg2, &_cerr)
@@ -22957,7 +23062,7 @@ func (s dataOutputStream) PutUint16DataOutputStream(data uint16, cancellable Can
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint16)(data)
+	_arg1 = C.guint16(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_data_output_stream_put_uint16(_arg0, _arg1, _arg2, &_cerr)
@@ -22976,7 +23081,7 @@ func (s dataOutputStream) PutUint32DataOutputStream(data uint32, cancellable Can
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint32)(data)
+	_arg1 = C.guint32(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_data_output_stream_put_uint32(_arg0, _arg1, _arg2, &_cerr)
@@ -22995,7 +23100,7 @@ func (s dataOutputStream) PutUint64DataOutputStream(data uint64, cancellable Can
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint64)(data)
+	_arg1 = C.guint64(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_data_output_stream_put_uint64(_arg0, _arg1, _arg2, &_cerr)
@@ -23012,7 +23117,7 @@ func (s dataOutputStream) SetByteOrderDataOutputStream(order DataStreamByteOrder
 	var _arg1 C.GDataStreamByteOrder // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GDataStreamByteOrder)(order)
+	_arg1 = C.GDataStreamByteOrder(order)
 
 	C.g_data_output_stream_set_byte_order(_arg0, _arg1)
 }
@@ -23625,7 +23730,7 @@ func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 	var _cret *C.GEmblem      // in
 
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = (C.GEmblemOrigin)(origin)
+	_arg2 = C.GEmblemOrigin(origin)
 
 	_cret = C.g_emblem_new_with_origin(_arg1, _arg2)
 
@@ -23802,6 +23907,7 @@ func (i emblemedIcon) String() string {
 // further actions may be performed on it, and it should be freed with
 // g_object_unref().
 type FileEnumerator interface {
+	gextras.Objector
 
 	// CloseFileEnumerator releases all resources used by this enumerator,
 	// making the enumerator return G_IO_ERROR_CLOSED on all calls.
@@ -24312,6 +24418,7 @@ func (i fileIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 //
 // AttributeMatcher allows for searching through a Info for attributes.
 type FileInfo interface {
+	gextras.Objector
 
 	// ClearStatusFileInfo clears the status information from @info.
 	ClearStatusFileInfo()
@@ -24628,7 +24735,7 @@ func (i fileInfo) AttributeInt32(attribute string) int32 {
 
 	var _gint32 int32 // out
 
-	_gint32 = (int32)(_cret)
+	_gint32 = int32(_cret)
 
 	return _gint32
 }
@@ -24646,7 +24753,7 @@ func (i fileInfo) AttributeInt64(attribute string) int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -24766,7 +24873,7 @@ func (i fileInfo) AttributeUint32(attribute string) uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -24784,7 +24891,7 @@ func (i fileInfo) AttributeUint64(attribute string) uint64 {
 
 	var _guint64 uint64 // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -24932,11 +25039,25 @@ func (i fileInfo) IsSymlink() bool {
 
 func (i fileInfo) ModificationTime() glib.TimeVal {
 	var _arg0 *C.GFileInfo // out
-	var _result glib.TimeVal
+	var _arg1 C.GTimeVal   // in
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 
-	C.g_file_info_get_modification_time(_arg0, (*C.GTimeVal)(unsafe.Pointer(&_result)))
+	C.g_file_info_get_modification_time(_arg0, &_arg1)
+
+	var _result glib.TimeVal // out
+
+	{
+		var refTmpIn *C.GTimeVal
+		var refTmpOut *glib.TimeVal
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*glib.TimeVal)(unsafe.Pointer(refTmpIn))
+
+		_result = *refTmpOut
+	}
 
 	return _result
 }
@@ -24966,7 +25087,7 @@ func (i fileInfo) Size() int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -24981,7 +25102,7 @@ func (i fileInfo) SortOrder() int32 {
 
 	var _gint32 int32 // out
 
-	_gint32 = (int32)(_cret)
+	_gint32 = int32(_cret)
 
 	return _gint32
 }
@@ -25135,7 +25256,7 @@ func (i fileInfo) SetAttributeInt32FileInfo(attribute string, attrValue int32) {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint32)(attrValue)
+	_arg2 = C.gint32(attrValue)
 
 	C.g_file_info_set_attribute_int32(_arg0, _arg1, _arg2)
 }
@@ -25148,7 +25269,7 @@ func (i fileInfo) SetAttributeInt64FileInfo(attribute string, attrValue int64) {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint64)(attrValue)
+	_arg2 = C.gint64(attrValue)
 
 	C.g_file_info_set_attribute_int64(_arg0, _arg1, _arg2)
 }
@@ -25185,7 +25306,7 @@ func (i fileInfo) SetAttributeStatusFileInfo(attribute string, status FileAttrib
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GFileAttributeStatus)(status)
+	_arg2 = C.GFileAttributeStatus(status)
 
 	_cret = C.g_file_info_set_attribute_status(_arg0, _arg1, _arg2)
 
@@ -25225,7 +25346,7 @@ func (i fileInfo) SetAttributeStringvFileInfo(attribute string, attrValue []stri
 	{
 		out := unsafe.Slice(_arg2, len(attrValue))
 		for i := range attrValue {
-			out[i] = (*C.gchar)(C.CString(attrValue[i]))
+			out[i] = (*C.char)(C.CString(attrValue[i]))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -25241,7 +25362,7 @@ func (i fileInfo) SetAttributeUint32FileInfo(attribute string, attrValue uint32)
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint32)(attrValue)
+	_arg2 = C.guint32(attrValue)
 
 	C.g_file_info_set_attribute_uint32(_arg0, _arg1, _arg2)
 }
@@ -25254,7 +25375,7 @@ func (i fileInfo) SetAttributeUint64FileInfo(attribute string, attrValue uint64)
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint64)(attrValue)
+	_arg2 = C.guint64(attrValue)
 
 	C.g_file_info_set_attribute_uint64(_arg0, _arg1, _arg2)
 }
@@ -25297,7 +25418,7 @@ func (i fileInfo) SetFileTypeFileInfo(typ FileType) {
 	var _arg1 C.GFileType  // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.GFileType)(typ)
+	_arg1 = C.GFileType(typ)
 
 	C.g_file_info_set_file_type(_arg0, _arg1)
 }
@@ -25362,7 +25483,7 @@ func (i fileInfo) SetSizeFileInfo(size int64) {
 	var _arg1 C.goffset    // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.goffset)(size)
+	_arg1 = C.goffset(size)
 
 	C.g_file_info_set_size(_arg0, _arg1)
 }
@@ -25372,7 +25493,7 @@ func (i fileInfo) SetSortOrderFileInfo(sortOrder int32) {
 	var _arg1 C.gint32     // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (C.gint32)(sortOrder)
+	_arg1 = C.gint32(sortOrder)
 
 	C.g_file_info_set_sort_order(_arg0, _arg1)
 }
@@ -25525,6 +25646,7 @@ func (s fileInputStream) Truncate(offset int64, cancellable Cancellable) error {
 // context is blocked, this may cause notifications to be blocked even if the
 // thread-default context is still running).
 type FileMonitor interface {
+	gextras.Objector
 
 	// CancelFileMonitor cancels a file monitor.
 	CancelFileMonitor() bool
@@ -25587,7 +25709,7 @@ func (m fileMonitor) EmitEventFileMonitor(child File, otherFile File, eventType 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GFile)(unsafe.Pointer(otherFile.Native()))
-	_arg3 = (C.GFileMonitorEvent)(eventType)
+	_arg3 = C.GFileMonitorEvent(eventType)
 
 	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
 }
@@ -25614,7 +25736,7 @@ func (m fileMonitor) SetRateLimitFileMonitor(limitMsecs int) {
 	var _arg1 C.gint          // out
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(limitMsecs)
+	_arg1 = C.gint(limitMsecs)
 
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)
 }
@@ -25764,6 +25886,7 @@ func (s fileOutputStream) Truncate(offset int64, cancellable Cancellable) error 
 // string by looking in the file system for clues. Can return a list of possible
 // completion strings for widget implementations.
 type FilenameCompleter interface {
+	gextras.Objector
 
 	// CompletionSuffix obtains a completion for @initial_text from @completer.
 	CompletionSuffix(initialText string) string
@@ -25873,6 +25996,7 @@ func (c filenameCompleter) SetDirsOnlyFilenameCompleter(dirsOnly bool) {
 // filtering operations are character set conversion, compression and byte order
 // flipping.
 type FilterInputStream interface {
+	InputStream
 
 	// BaseStream gets the base stream for the filter stream.
 	BaseStream() InputStream
@@ -25952,6 +26076,7 @@ func (s filterInputStream) SetCloseBaseStreamFilterInputStream(closeBase bool) {
 // filtering operations are character set conversion, compression and byte order
 // flipping.
 type FilterOutputStream interface {
+	OutputStream
 
 	// BaseStream gets the base stream for the filter stream.
 	BaseStream() OutputStream
@@ -26071,6 +26196,7 @@ func (s filterOutputStream) SetCloseBaseStreamFilterOutputStream(closeBase bool)
 // state the wrapper stream leaves the base stream in (though they are
 // guaranteed not to crash).
 type IOStream interface {
+	gextras.Objector
 
 	// ClearPendingIOStream clears the pending flag on @stream.
 	ClearPendingIOStream()
@@ -26274,6 +26400,7 @@ func (s ioStream) SetPendingIOStream() error {
 // To actually connect to a remote host, you will need a SocketAddress (which
 // includes a Address as well as a port number).
 type InetAddress interface {
+	gextras.Objector
 
 	// EqualInetAddress checks if two Address instances are equal, e.g. the same
 	// address.
@@ -26338,7 +26465,7 @@ func NewInetAddressAny(family SocketFamily) InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
 
-	_arg1 = (C.GSocketFamily)(family)
+	_arg1 = C.GSocketFamily(family)
 
 	_cret = C.g_inet_address_new_any(_arg1)
 
@@ -26373,7 +26500,7 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
 
-	_arg1 = (C.GSocketFamily)(family)
+	_arg1 = C.GSocketFamily(family)
 
 	_cret = C.g_inet_address_new_loopback(_arg1)
 
@@ -26598,7 +26725,7 @@ func (a inetAddress) NativeSize() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -26669,7 +26796,7 @@ func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) 
 	var _cerr *C.GError           // in
 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(addr.Native()))
-	_arg2 = (C.guint)(length)
+	_arg2 = C.guint(length)
 
 	_cret = C.g_inet_address_mask_new(_arg1, _arg2, &_cerr)
 
@@ -26764,7 +26891,7 @@ func (m inetAddressMask) Length() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -26851,7 +26978,7 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 	var _cret *C.GSocketAddress // in
 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (C.guint16)(port)
+	_arg2 = C.guint16(port)
 
 	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
 
@@ -26874,7 +27001,7 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 
 	_arg1 = (*C.char)(C.CString(address))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint)(port)
+	_arg2 = C.guint(port)
 
 	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
 
@@ -26910,7 +27037,7 @@ func (a inetSocketAddress) Flowinfo() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -26925,7 +27052,7 @@ func (a inetSocketAddress) Port() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -26940,7 +27067,7 @@ func (a inetSocketAddress) ScopeID() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = (uint32)(_cret)
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -26949,8 +27076,8 @@ func (c inetSocketAddress) Enumerate() SocketAddressEnumerator {
 	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
 }
 
-func (c inetSocketAddress) ProXYEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+func (c inetSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
 }
 
 func (c inetSocketAddress) String() string {
@@ -26969,6 +27096,7 @@ func (c inetSocketAddress) String() string {
 //
 // All of these functions have async variants too.
 type InputStream interface {
+	gextras.Objector
 
 	// ClearPendingInputStream clears the pending flag on @stream.
 	ClearPendingInputStream()
@@ -27149,7 +27277,7 @@ func (s inputStream) ReadAllFinishInputStream(result AsyncResult) (uint, error) 
 	var _bytesRead uint // out
 	var _goerr error    // out
 
-	_bytesRead = (uint)(_arg2)
+	_bytesRead = uint(_arg2)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesRead, _goerr
@@ -27169,7 +27297,7 @@ func (s inputStream) ReadFinishInputStream(result AsyncResult) (int, error) {
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -27198,7 +27326,7 @@ func (s inputStream) SkipInputStream(count uint, cancellable Cancellable) (int, 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gsize)(count)
+	_arg1 = C.gsize(count)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_input_stream_skip(_arg0, _arg1, _arg2, &_cerr)
@@ -27206,7 +27334,7 @@ func (s inputStream) SkipInputStream(count uint, cancellable Cancellable) (int, 
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -27226,7 +27354,7 @@ func (s inputStream) SkipFinishInputStream(result AsyncResult) (int, error) {
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -27348,7 +27476,7 @@ func (s listStore) FindListStore(item gextras.Objector) (uint, bool) {
 	var _position uint // out
 	var _ok bool       // out
 
-	_position = (uint)(_arg2)
+	_position = uint(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -27362,7 +27490,7 @@ func (s listStore) InsertListStore(position uint, item gextras.Objector) {
 	var _arg2 C.gpointer    // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 	_arg2 = (C.gpointer)(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_insert(_arg0, _arg1, _arg2)
@@ -27373,7 +27501,7 @@ func (s listStore) RemoveListStore(position uint) {
 	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
+	_arg1 = C.guint(position)
 
 	C.g_list_store_remove(_arg0, _arg1)
 }
@@ -27394,15 +27522,15 @@ func (s listStore) SpliceListStore(position uint, nRemovals uint, additions []ge
 	var _arg4 C.guint
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(position)
-	_arg2 = (C.guint)(nRemovals)
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nRemovals)
 	_arg4 = C.guint(len(additions))
-	_arg3 = (*C.gpointer)(C.malloc(C.ulong(len(additions)) * C.ulong(C.sizeof_GObject)))
+	_arg3 = (*C.gpointer)(C.malloc(C.ulong(len(additions)) * C.ulong(C.sizeof_gpointer)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice(_arg3, len(additions))
 		for i := range additions {
-			out[i] = (C.GObject)(unsafe.Pointer(additions[i].Native()))
+			out[i] = (C.gpointer)(unsafe.Pointer(additions[i].Native()))
 		}
 	}
 
@@ -27570,7 +27698,7 @@ func (o memoryOutputStream) DataSize() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -27585,7 +27713,7 @@ func (o memoryOutputStream) Size() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -27634,6 +27762,7 @@ func (s memoryOutputStream) Truncate(offset int64, cancellable Cancellable) erro
 // g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
 // submenu, use g_menu_insert_submenu().
 type Menu interface {
+	MenuModel
 
 	// AppendMenu: convenience function for appending a normal menu item to the
 	// end of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a
@@ -27818,7 +27947,7 @@ func (m menu) InsertMenu(position int, label string, detailedAction string) {
 	var _arg3 *C.gchar // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(position)
+	_arg1 = C.gint(position)
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(detailedAction))
@@ -27833,7 +27962,7 @@ func (m menu) InsertItemMenu(position int, item MenuItem) {
 	var _arg2 *C.GMenuItem // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(position)
+	_arg1 = C.gint(position)
 	_arg2 = (*C.GMenuItem)(unsafe.Pointer(item.Native()))
 
 	C.g_menu_insert_item(_arg0, _arg1, _arg2)
@@ -27846,7 +27975,7 @@ func (m menu) InsertSectionMenu(position int, label string, section MenuModel) {
 	var _arg3 *C.GMenuModel // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(position)
+	_arg1 = C.gint(position)
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
@@ -27861,7 +27990,7 @@ func (m menu) InsertSubmenuMenu(position int, label string, submenu MenuModel) {
 	var _arg3 *C.GMenuModel // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(position)
+	_arg1 = C.gint(position)
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
@@ -27924,7 +28053,7 @@ func (m menu) RemoveMenu(position int) {
 	var _arg1 C.gint   // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(position)
+	_arg1 = C.gint(position)
 
 	C.g_menu_remove(_arg0, _arg1)
 }
@@ -27940,6 +28069,7 @@ func (m menu) RemoveAllMenu() {
 // MenuAttributeIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuAttributeIter interface {
+	gextras.Objector
 
 	// Name gets the name of the attribute at the current iterator position, as
 	// a string.
@@ -28013,19 +28143,22 @@ func (i menuAttributeIter) Name() string {
 func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _arg1 *C.gchar              // in
-	var _value *glib.Variant
-	var _cret C.gboolean // in
+	var _arg2 *C.GVariant           // in
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
 
-	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, (**C.GVariant)(unsafe.Pointer(&_value)))
+	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, &_arg2)
 
-	var _outName string // out
-
-	var _ok bool // out
+	var _outName string      // out
+	var _value *glib.Variant // out
+	var _ok bool             // out
 
 	_outName = C.GoString(_arg1)
-
+	_value = (*glib.Variant)(unsafe.Pointer(_arg2))
+	runtime.SetFinalizer(&_value, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -28043,9 +28176,9 @@ func (i menuAttributeIter) Value() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -28071,6 +28204,7 @@ func (i menuAttributeIter) NextMenuAttributeIter() bool {
 // MenuItem is an opaque structure type. You must access it using the functions
 // below.
 type MenuItem interface {
+	gextras.Objector
 
 	// AttributeValue queries the named @attribute on @menu_item.
 	//
@@ -28253,7 +28387,7 @@ func NewMenuItemFromModel(model MenuModel, itemIndex int) MenuItem {
 	var _cret *C.GMenuItem  // in
 
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (C.gint)(itemIndex)
+	_arg2 = C.gint(itemIndex)
 
 	_cret = C.g_menu_item_new_from_model(_arg1, _arg2)
 
@@ -28376,9 +28510,9 @@ func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantTyp
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -28496,6 +28630,7 @@ func (m menuItem) SetSubmenuMenuItem(submenu MenuModel) {
 // MenuLinkIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuLinkIter interface {
+	gextras.Objector
 
 	// Name gets the name of the link at the current iterator position.
 	//
@@ -28731,6 +28866,7 @@ func (i menuLinkIter) NextMenuLinkIter() bool {
 // rendered as "selected" when the state of the action is equal to the target
 // value of the menu item.
 type MenuModel interface {
+	gextras.Objector
 
 	// ItemAttributeValue queries the item at position @item_index in @model for
 	// the attribute specified by @attribute.
@@ -28813,7 +28949,7 @@ func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedT
 	var _cret *C.GVariant     // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(itemIndex)
+	_arg1 = C.gint(itemIndex)
 	_arg2 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
@@ -28822,9 +28958,9 @@ func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedT
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -28837,7 +28973,7 @@ func (m menuModel) ItemLink(itemIndex int, link string) MenuModel {
 	var _cret *C.GMenuModel // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(itemIndex)
+	_arg1 = C.gint(itemIndex)
 	_arg2 = (*C.gchar)(C.CString(link))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -28860,7 +28996,7 @@ func (m menuModel) NItems() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -28889,9 +29025,9 @@ func (m menuModel) ItemsChangedMenuModel(position int, removed int, added int) {
 	var _arg3 C.gint        // out
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(position)
-	_arg2 = (C.gint)(removed)
-	_arg3 = (C.gint)(added)
+	_arg1 = C.gint(position)
+	_arg2 = C.gint(removed)
+	_arg3 = C.gint(added)
 
 	C.g_menu_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }
@@ -28902,7 +29038,7 @@ func (m menuModel) IterateItemAttributesMenuModel(itemIndex int) MenuAttributeIt
 	var _cret *C.GMenuAttributeIter // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(itemIndex)
+	_arg1 = C.gint(itemIndex)
 
 	_cret = C.g_menu_model_iterate_item_attributes(_arg0, _arg1)
 
@@ -28919,7 +29055,7 @@ func (m menuModel) IterateItemLinksMenuModel(itemIndex int) MenuLinkIter {
 	var _cret *C.GMenuLinkIter // in
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(itemIndex)
+	_arg1 = C.gint(itemIndex)
 
 	_cret = C.g_menu_model_iterate_item_links(_arg0, _arg1)
 
@@ -28951,6 +29087,7 @@ func (m menuModel) IterateItemLinksMenuModel(itemIndex int) MenuLinkIter {
 // with Windows. VeraCrypt (https://www.veracrypt.fr/) is a maintained fork of
 // TrueCrypt with various improvements and auditing fixes.
 type MountOperation interface {
+	gextras.Objector
 
 	// Anonymous: check to see whether the mount operation is being used for an
 	// anonymous user.
@@ -29059,7 +29196,7 @@ func (o mountOperation) Choice() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -29153,7 +29290,7 @@ func (o mountOperation) Pim() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -29178,7 +29315,7 @@ func (o mountOperation) ReplyMountOperation(result MountOperationResult) {
 	var _arg1 C.GMountOperationResult // out
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.GMountOperationResult)(result)
+	_arg1 = C.GMountOperationResult(result)
 
 	C.g_mount_operation_reply(_arg0, _arg1)
 }
@@ -29200,7 +29337,7 @@ func (o mountOperation) SetChoiceMountOperation(choice int) {
 	var _arg1 C.int              // out
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.int)(choice)
+	_arg1 = C.int(choice)
 
 	C.g_mount_operation_set_choice(_arg0, _arg1)
 }
@@ -29256,7 +29393,7 @@ func (o mountOperation) SetPasswordSaveMountOperation(save PasswordSave) {
 	var _arg1 C.GPasswordSave    // out
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.GPasswordSave)(save)
+	_arg1 = C.GPasswordSave(save)
 
 	C.g_mount_operation_set_password_save(_arg0, _arg1)
 }
@@ -29266,7 +29403,7 @@ func (o mountOperation) SetPimMountOperation(pim uint) {
 	var _arg1 C.guint            // out
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	_arg1 = (C.guint)(pim)
+	_arg1 = C.guint(pim)
 
 	C.g_mount_operation_set_pim(_arg0, _arg1)
 }
@@ -29310,8 +29447,8 @@ func (c nativeSocketAddress) Enumerate() SocketAddressEnumerator {
 	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
 }
 
-func (c nativeSocketAddress) ProXYEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+func (c nativeSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
 }
 
 func (c nativeSocketAddress) String() string {
@@ -29319,6 +29456,7 @@ func (c nativeSocketAddress) String() string {
 }
 
 type NativeVolumeMonitor interface {
+	VolumeMonitor
 }
 
 // nativeVolumeMonitor implements the NativeVolumeMonitor class.
@@ -29393,7 +29531,7 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 
 	_arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint16)(port)
+	_arg2 = C.guint16(port)
 
 	_cret = C.g_network_address_new(_arg1, _arg2)
 
@@ -29419,7 +29557,7 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 	var _arg1 C.guint16             // out
 	var _cret *C.GSocketConnectable // in
 
-	_arg1 = (C.guint16)(port)
+	_arg1 = C.guint16(port)
 
 	_cret = C.g_network_address_new_loopback(_arg1)
 
@@ -29455,7 +29593,7 @@ func (a networkAddress) Port() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -29479,8 +29617,8 @@ func (c networkAddress) Enumerate() SocketAddressEnumerator {
 	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
 }
 
-func (c networkAddress) ProXYEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+func (c networkAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
 }
 
 func (c networkAddress) String() string {
@@ -29631,8 +29769,8 @@ func (c networkService) Enumerate() SocketAddressEnumerator {
 	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
 }
 
-func (c networkService) ProXYEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+func (c networkService) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
 }
 
 func (c networkService) String() string {
@@ -29660,6 +29798,7 @@ func (c networkService) String() string {
 //
 // A notification can be sent with g_application_send_notification().
 type Notification interface {
+	gextras.Objector
 
 	// AddButtonNotification adds a button to @notification that activates the
 	// action in @detailed_action when clicked. That action must be an
@@ -29834,7 +29973,7 @@ func (n notification) SetPriorityNotification(priority NotificationPriority) {
 	var _arg1 C.GNotificationPriority // out
 
 	_arg0 = (*C.GNotification)(unsafe.Pointer(n.Native()))
-	_arg1 = (C.GNotificationPriority)(priority)
+	_arg1 = C.GNotificationPriority(priority)
 
 	C.g_notification_set_priority(_arg0, _arg1)
 }
@@ -29874,6 +30013,7 @@ func (n notification) SetUrgentNotification(urgent bool) {
 //
 // All of these functions have async variants too.
 type OutputStream interface {
+	gextras.Objector
 
 	// ClearPendingOutputStream clears the pending flag on @stream.
 	ClearPendingOutputStream()
@@ -30224,7 +30364,7 @@ func (s outputStream) SpliceOutputStream(source InputStream, flags OutputStreamS
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(source.Native()))
-	_arg2 = (C.GOutputStreamSpliceFlags)(flags)
+	_arg2 = C.GOutputStreamSpliceFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_output_stream_splice(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -30232,7 +30372,7 @@ func (s outputStream) SpliceOutputStream(source InputStream, flags OutputStreamS
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -30252,7 +30392,7 @@ func (s outputStream) SpliceFinishOutputStream(result AsyncResult) (int, error) 
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -30276,7 +30416,7 @@ func (s outputStream) WriteOutputStream(buffer []byte, cancellable Cancellable) 
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -30300,7 +30440,7 @@ func (s outputStream) WriteAllOutputStream(buffer []byte, cancellable Cancellabl
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	_bytesWritten = (uint)(_arg3)
+	_bytesWritten = uint(_arg3)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
@@ -30320,7 +30460,7 @@ func (s outputStream) WriteAllFinishOutputStream(result AsyncResult) (uint, erro
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	_bytesWritten = (uint)(_arg2)
+	_bytesWritten = uint(_arg2)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
@@ -30340,7 +30480,7 @@ func (s outputStream) WriteBytesFinishOutputStream(result AsyncResult) (int, err
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -30360,7 +30500,7 @@ func (s outputStream) WriteFinishOutputStream(result AsyncResult) (int, error) {
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -30384,7 +30524,7 @@ func (s outputStream) WritevOutputStream(vectors []OutputVector, cancellable Can
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	_bytesWritten = (uint)(_arg3)
+	_bytesWritten = uint(_arg3)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
@@ -30408,7 +30548,7 @@ func (s outputStream) WritevAllOutputStream(vectors []OutputVector, cancellable 
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	_bytesWritten = (uint)(_arg3)
+	_bytesWritten = uint(_arg3)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
@@ -30428,7 +30568,7 @@ func (s outputStream) WritevAllFinishOutputStream(result AsyncResult) (uint, err
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	_bytesWritten = (uint)(_arg2)
+	_bytesWritten = uint(_arg2)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
@@ -30448,7 +30588,7 @@ func (s outputStream) WritevFinishOutputStream(result AsyncResult) (uint, error)
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	_bytesWritten = (uint)(_arg2)
+	_bytesWritten = uint(_arg2)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
@@ -30468,6 +30608,7 @@ func (s outputStream) WritevFinishOutputStream(result AsyncResult) (uint, error)
 // decide if it is appropriate to show a "Click here to unlock" button in a
 // dialog and to provide the mechanism to invoke when that button is clicked.
 type Permission interface {
+	gextras.Objector
 
 	// AcquirePermission attempts to acquire the permission represented by
 	// @permission.
@@ -30825,8 +30966,8 @@ func (a propertyAction) StateType() *glib.VariantType {
 	return WrapAction(gextras.InternObject(a)).StateType()
 }
 
-// ProXYAddress: support for proxied SocketAddress.
-type ProXYAddress interface {
+// ProxyAddress: support for proxied SocketAddress.
+type ProxyAddress interface {
 	InetSocketAddress
 
 	// DestinationHostname gets @proxy's destination hostname; that is, the name
@@ -30850,32 +30991,32 @@ type ProXYAddress interface {
 	Username() string
 }
 
-// proXYAddress implements the ProXYAddress class.
-type proXYAddress struct {
+// proxyAddress implements the ProxyAddress class.
+type proxyAddress struct {
 	InetSocketAddress
 }
 
-// WrapProXYAddress wraps a GObject to the right type. It is
+// WrapProxyAddress wraps a GObject to the right type. It is
 // primarily used internally.
-func WrapProXYAddress(obj *externglib.Object) ProXYAddress {
-	return proXYAddress{
+func WrapProxyAddress(obj *externglib.Object) ProxyAddress {
+	return proxyAddress{
 		InetSocketAddress: WrapInetSocketAddress(obj),
 	}
 }
 
-func marshalProXYAddress(p uintptr) (interface{}, error) {
+func marshalProxyAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProXYAddress(obj), nil
+	return WrapProxyAddress(obj), nil
 }
 
-// NewProXYAddress creates a new Address for @inetaddr with @protocol that
+// NewProxyAddress creates a new Address for @inetaddr with @protocol that
 // should tunnel through @dest_hostname and @dest_port.
 //
 // (Note that this method doesn't set the Address:uri or
 // Address:destination-protocol fields; use g_object_new() directly if you want
 // to set those.)
-func NewProXYAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProXYAddress {
+func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
 	var _arg3 *C.gchar          // out
@@ -30886,12 +31027,12 @@ func NewProXYAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 	var _cret *C.GSocketAddress // in
 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(inetaddr.Native()))
-	_arg2 = (C.guint16)(port)
+	_arg2 = C.guint16(port)
 	_arg3 = (*C.gchar)(C.CString(protocol))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(destHostname))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (C.guint16)(destPort)
+	_arg5 = C.guint16(destPort)
 	_arg6 = (*C.gchar)(C.CString(username))
 	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (*C.gchar)(C.CString(password))
@@ -30899,14 +31040,14 @@ func NewProXYAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 
 	_cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
-	var _proxyAddress ProXYAddress // out
+	var _proxyAddress ProxyAddress // out
 
-	_proxyAddress = WrapProXYAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_proxyAddress = WrapProxyAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _proxyAddress
 }
 
-func (p proXYAddress) DestinationHostname() string {
+func (p proxyAddress) DestinationHostname() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -30921,7 +31062,7 @@ func (p proXYAddress) DestinationHostname() string {
 	return _utf8
 }
 
-func (p proXYAddress) DestinationPort() uint16 {
+func (p proxyAddress) DestinationPort() uint16 {
 	var _arg0 *C.GProxyAddress // out
 	var _cret C.guint16        // in
 
@@ -30931,12 +31072,12 @@ func (p proXYAddress) DestinationPort() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
 
-func (p proXYAddress) DestinationProtocol() string {
+func (p proxyAddress) DestinationProtocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -30951,7 +31092,7 @@ func (p proXYAddress) DestinationProtocol() string {
 	return _utf8
 }
 
-func (p proXYAddress) Password() string {
+func (p proxyAddress) Password() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -30966,7 +31107,7 @@ func (p proXYAddress) Password() string {
 	return _utf8
 }
 
-func (p proXYAddress) Protocol() string {
+func (p proxyAddress) Protocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -30981,7 +31122,7 @@ func (p proXYAddress) Protocol() string {
 	return _utf8
 }
 
-func (p proXYAddress) URI() string {
+func (p proxyAddress) URI() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -30996,7 +31137,7 @@ func (p proXYAddress) URI() string {
 	return _utf8
 }
 
-func (p proXYAddress) Username() string {
+func (p proxyAddress) Username() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -31011,19 +31152,19 @@ func (p proXYAddress) Username() string {
 	return _utf8
 }
 
-func (c proXYAddress) Enumerate() SocketAddressEnumerator {
+func (c proxyAddress) Enumerate() SocketAddressEnumerator {
 	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
 }
 
-func (c proXYAddress) ProXYEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+func (c proxyAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
 }
 
-func (c proXYAddress) String() string {
+func (c proxyAddress) String() string {
 	return WrapSocketConnectable(gextras.InternObject(c)).String()
 }
 
-// ProXYAddressEnumerator is a wrapper around AddressEnumerator which takes the
+// ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
 // Address instances returned by the AddressEnumerator and wraps them in Address
 // instances, using the given AddressEnumerator:proxy-resolver.
 //
@@ -31031,26 +31172,27 @@ func (c proXYAddress) String() string {
 // g_socket_connectable_enumerate()) as appropriate when a proxy is configured;
 // there should be no need to manually wrap a AddressEnumerator instance with
 // one.
-type ProXYAddressEnumerator interface {
-}
-
-// proXYAddressEnumerator implements the ProXYAddressEnumerator class.
-type proXYAddressEnumerator struct {
+type ProxyAddressEnumerator interface {
 	SocketAddressEnumerator
 }
 
-// WrapProXYAddressEnumerator wraps a GObject to the right type. It is
+// proxyAddressEnumerator implements the ProxyAddressEnumerator class.
+type proxyAddressEnumerator struct {
+	SocketAddressEnumerator
+}
+
+// WrapProxyAddressEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
-func WrapProXYAddressEnumerator(obj *externglib.Object) ProXYAddressEnumerator {
-	return proXYAddressEnumerator{
+func WrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumerator {
+	return proxyAddressEnumerator{
 		SocketAddressEnumerator: WrapSocketAddressEnumerator(obj),
 	}
 }
 
-func marshalProXYAddressEnumerator(p uintptr) (interface{}, error) {
+func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProXYAddressEnumerator(obj), nil
+	return WrapProxyAddressEnumerator(obj), nil
 }
 
 // Resolver provides cancellable synchronous and asynchronous DNS resolution,
@@ -31062,6 +31204,7 @@ func marshalProXYAddressEnumerator(p uintptr) (interface{}, error) {
 // also implement Connectable, making it easy to connect to a remote
 // host/service.
 type Resolver interface {
+	gextras.Objector
 
 	// LookupByAddressResolver: synchronously reverse-resolves @address to
 	// determine its associated hostname.
@@ -31438,6 +31581,7 @@ func (r resolver) SetDefaultResolver() {
 // rules. It should not be committed to version control or included in
 // `EXTRA_DIST`.
 type Settings interface {
+	gextras.Objector
 
 	// ApplySettings applies any changes that have been made to the settings.
 	// This function does nothing unless @settings is in 'delay-apply' mode; see
@@ -31862,7 +32006,7 @@ func (s settings) BindSettings(key string, object gextras.Objector, property str
 	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
 	_arg3 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.GSettingsBindFlags)(flags)
+	_arg4 = C.GSettingsBindFlags(flags)
 
 	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -31964,9 +32108,9 @@ func (s settings) DefaultValue(key string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -31985,7 +32129,7 @@ func (s settings) Double(key string) float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = (float64)(_cret)
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -32003,7 +32147,7 @@ func (s settings) Enum(key string) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -32021,7 +32165,7 @@ func (s settings) Flags(key string) uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -32056,7 +32200,7 @@ func (s settings) Int(key string) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -32074,7 +32218,7 @@ func (s settings) Int64(key string) int64 {
 
 	var _gint64 int64 // out
 
-	_gint64 = (int64)(_cret)
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -32092,9 +32236,9 @@ func (s settings) Range(key string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -32163,7 +32307,7 @@ func (s settings) Uint(key string) uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -32181,7 +32325,7 @@ func (s settings) Uint64(key string) uint64 {
 
 	var _guint64 uint64 // out
 
-	_guint64 = (uint64)(_cret)
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -32199,9 +32343,9 @@ func (s settings) UserValue(key string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -32220,9 +32364,9 @@ func (s settings) Value(key string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -32378,7 +32522,7 @@ func (s settings) SetDoubleSettings(key string, value float64) bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gdouble)(value)
+	_arg2 = C.gdouble(value)
 
 	_cret = C.g_settings_set_double(_arg0, _arg1, _arg2)
 
@@ -32400,7 +32544,7 @@ func (s settings) SetEnumSettings(key string, value int) bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint)(value)
+	_arg2 = C.gint(value)
 
 	_cret = C.g_settings_set_enum(_arg0, _arg1, _arg2)
 
@@ -32422,7 +32566,7 @@ func (s settings) SetFlagsSettings(key string, value uint) bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint)(value)
+	_arg2 = C.guint(value)
 
 	_cret = C.g_settings_set_flags(_arg0, _arg1, _arg2)
 
@@ -32444,7 +32588,7 @@ func (s settings) SetIntSettings(key string, value int) bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint)(value)
+	_arg2 = C.gint(value)
 
 	_cret = C.g_settings_set_int(_arg0, _arg1, _arg2)
 
@@ -32466,7 +32610,7 @@ func (s settings) SetInt64Settings(key string, value int64) bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gint64)(value)
+	_arg2 = C.gint64(value)
 
 	_cret = C.g_settings_set_int64(_arg0, _arg1, _arg2)
 
@@ -32541,7 +32685,7 @@ func (s settings) SetUintSettings(key string, value uint) bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint)(value)
+	_arg2 = C.guint(value)
 
 	_cret = C.g_settings_set_uint(_arg0, _arg1, _arg2)
 
@@ -32563,7 +32707,7 @@ func (s settings) SetUint64Settings(key string, value uint64) bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint64)(value)
+	_arg2 = C.guint64(value)
 
 	_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
 
@@ -33209,7 +33353,7 @@ func (s simpleAsyncResult) OpResGssize() int {
 
 	var _gssize int // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 
 	return _gssize
 }
@@ -33279,7 +33423,7 @@ func (s simpleAsyncResult) SetOpResGssizeSimpleAsyncResult(opRes int) {
 	var _arg1 C.gssize              // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gssize)(opRes)
+	_arg1 = C.gssize(opRes)
 
 	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)
 }
@@ -33301,6 +33445,7 @@ func (r simpleAsyncResult) LegacyPropagateError() error {
 // g_unix_input_stream_new() or g_win32_input_stream_new(), and you want to take
 // advantage of the methods provided by OStream.
 type SimpleIOStream interface {
+	IOStream
 }
 
 // simpleIOStream implements the SimpleIOStream class.
@@ -33347,6 +33492,7 @@ func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) Simpl
 //
 // Calling request or release will result in errors.
 type SimplePermission interface {
+	Permission
 }
 
 // simplePermission implements the SimplePermission class.
@@ -33387,58 +33533,58 @@ func NewSimplePermission(allowed bool) SimplePermission {
 	return _simplePermission
 }
 
-// SimpleProXYResolver is a simple Resolver implementation that handles a single
+// SimpleProxyResolver is a simple Resolver implementation that handles a single
 // default proxy, multiple URI-scheme-specific proxies, and a list of hosts that
 // proxies should not be used for.
 //
 // ProxyResolver is never the default proxy resolver, but it can be used as the
 // base class for another proxy resolver implementation, or it can be created
 // and used manually, such as with g_socket_client_set_proxy_resolver().
-type SimpleProXYResolver interface {
-	ProXYResolver
+type SimpleProxyResolver interface {
+	ProxyResolver
 
-	// SetDefaultProXYSimpleProXYResolver sets the default proxy on @resolver,
+	// SetDefaultProxySimpleProxyResolver sets the default proxy on @resolver,
 	// to be used for any URIs that don't match ProxyResolver:ignore-hosts or a
 	// proxy set via g_simple_proxy_resolver_set_uri_proxy().
 	//
 	// If @default_proxy starts with "socks://", ProxyResolver will treat it as
 	// referring to all three of the socks5, socks4a, and socks4 proxy types.
-	SetDefaultProXYSimpleProXYResolver(defaultProxy string)
-	// SetIgnoreHostsSimpleProXYResolver sets the list of ignored hosts.
+	SetDefaultProxySimpleProxyResolver(defaultProxy string)
+	// SetIgnoreHostsSimpleProxyResolver sets the list of ignored hosts.
 	//
 	// See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
 	// argument is interpreted.
-	SetIgnoreHostsSimpleProXYResolver(ignoreHosts *string)
-	// SetURIProXYSimpleProXYResolver adds a URI-scheme-specific proxy to
+	SetIgnoreHostsSimpleProxyResolver(ignoreHosts *string)
+	// SetURIProxySimpleProxyResolver adds a URI-scheme-specific proxy to
 	// @resolver; URIs whose scheme matches @uri_scheme (and which don't match
 	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
 	//
 	// As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
 	// ProxyResolver will treat it as referring to all three of the socks5,
 	// socks4a, and socks4 proxy types.
-	SetURIProXYSimpleProXYResolver(uriScheme string, proxy string)
+	SetURIProxySimpleProxyResolver(uriScheme string, proxy string)
 }
 
-// simpleProXYResolver implements the SimpleProXYResolver class.
-type simpleProXYResolver struct {
+// simpleProxyResolver implements the SimpleProxyResolver class.
+type simpleProxyResolver struct {
 	gextras.Objector
 }
 
-// WrapSimpleProXYResolver wraps a GObject to the right type. It is
+// WrapSimpleProxyResolver wraps a GObject to the right type. It is
 // primarily used internally.
-func WrapSimpleProXYResolver(obj *externglib.Object) SimpleProXYResolver {
-	return simpleProXYResolver{
+func WrapSimpleProxyResolver(obj *externglib.Object) SimpleProxyResolver {
+	return simpleProxyResolver{
 		Objector: obj,
 	}
 }
 
-func marshalSimpleProXYResolver(p uintptr) (interface{}, error) {
+func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSimpleProXYResolver(obj), nil
+	return WrapSimpleProxyResolver(obj), nil
 }
 
-func (r simpleProXYResolver) SetDefaultProXYSimpleProXYResolver(defaultProxy string) {
+func (r simpleProxyResolver) SetDefaultProxySimpleProxyResolver(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 
@@ -33449,18 +33595,28 @@ func (r simpleProXYResolver) SetDefaultProXYSimpleProXYResolver(defaultProxy str
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 }
 
-func (r simpleProXYResolver) SetIgnoreHostsSimpleProXYResolver(ignoreHosts *string) {
+func (r simpleProxyResolver) SetIgnoreHostsSimpleProxyResolver(ignoreHosts *string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 **C.gchar               // out
 
 	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
-	_arg1 = (**C.gchar)(C.CString(ignoreHosts))
-	defer C.free(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn string
+		var refTmpOut *C.gchar
+
+		refTmpIn = ignoreHosts
+
+		refTmpOut = (*C.gchar)(C.CString(refTmpIn))
+		defer C.free(unsafe.Pointer(refTmpOut))
+
+		out0 := &refTmpOut
+		_arg1 = out0
+	}
 
 	C.g_simple_proxy_resolver_set_ignore_hosts(_arg0, _arg1)
 }
 
-func (r simpleProXYResolver) SetURIProXYSimpleProXYResolver(uriScheme string, proxy string) {
+func (r simpleProxyResolver) SetURIProxySimpleProxyResolver(uriScheme string, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.gchar                // out
@@ -33474,16 +33630,16 @@ func (r simpleProXYResolver) SetURIProXYSimpleProXYResolver(uriScheme string, pr
 	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
 }
 
-func (r simpleProXYResolver) IsSupported() bool {
-	return WrapProXYResolver(gextras.InternObject(r)).IsSupported()
+func (r simpleProxyResolver) IsSupported() bool {
+	return WrapProxyResolver(gextras.InternObject(r)).IsSupported()
 }
 
-func (r simpleProXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
-	return WrapProXYResolver(gextras.InternObject(r)).Lookup(uri, cancellable)
+func (r simpleProxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
+	return WrapProxyResolver(gextras.InternObject(r)).Lookup(uri, cancellable)
 }
 
-func (r simpleProXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
-	return WrapProXYResolver(gextras.InternObject(r)).LookupFinish(result)
+func (r simpleProxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
+	return WrapProxyResolver(gextras.InternObject(r)).LookupFinish(result)
 }
 
 // Socket: a #GSocket is a low-level networking primitive. It is a more or less
@@ -34124,9 +34280,9 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (So
 	var _cret *C.GSocket        // in
 	var _cerr *C.GError         // in
 
-	_arg1 = (C.GSocketFamily)(family)
-	_arg2 = (C.GSocketType)(typ)
-	_arg3 = (C.GSocketProtocol)(protocol)
+	_arg1 = C.GSocketFamily(family)
+	_arg2 = C.GSocketType(typ)
+	_arg3 = C.GSocketProtocol(protocol)
 
 	_cret = C.g_socket_new(_arg1, _arg2, _arg3, &_cerr)
 
@@ -34156,7 +34312,7 @@ func NewSocketFromFd(fd int) (Socket, error) {
 	var _cret *C.GSocket // in
 	var _cerr *C.GError  // in
 
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 
 	_cret = C.g_socket_new_from_fd(_arg1, &_cerr)
 
@@ -34246,7 +34402,7 @@ func (s socket) ConditionCheckSocket(condition glib.IOCondition) glib.IOConditio
 	var _cret C.GIOCondition // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GIOCondition)(condition)
+	_arg1 = C.GIOCondition(condition)
 
 	_cret = C.g_socket_condition_check(_arg0, _arg1)
 
@@ -34265,8 +34421,8 @@ func (s socket) ConditionTimedWaitSocket(condition glib.IOCondition, timeoutUs i
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GIOCondition)(condition)
-	_arg2 = (C.gint64)(timeoutUs)
+	_arg1 = C.GIOCondition(condition)
+	_arg2 = C.gint64(timeoutUs)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_socket_condition_timed_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -34285,7 +34441,7 @@ func (s socket) ConditionWaitSocket(condition glib.IOCondition, cancellable Canc
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GIOCondition)(condition)
+	_arg1 = C.GIOCondition(condition)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_socket_condition_wait(_arg0, _arg1, _arg2, &_cerr)
@@ -34341,7 +34497,7 @@ func (s socket) AvailableBytes() int {
 
 	var _gssize int // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 
 	return _gssize
 }
@@ -34423,7 +34579,7 @@ func (s socket) Fd() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -34455,7 +34611,7 @@ func (s socket) ListenBacklog() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -34505,7 +34661,7 @@ func (s socket) MulticastTTL() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34518,15 +34674,15 @@ func (s socket) Option(level int, optname int) (int, error) {
 	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(level)
-	_arg2 = (C.gint)(optname)
+	_arg1 = C.gint(level)
+	_arg2 = C.gint(optname)
 
 	C.g_socket_get_option(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 
 	var _value int   // out
 	var _goerr error // out
 
-	_value = (int)(_arg3)
+	_value = int(_arg3)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
@@ -34590,7 +34746,7 @@ func (s socket) Timeout() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34605,7 +34761,7 @@ func (s socket) TTL() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -34763,7 +34919,7 @@ func (s socket) ReceiveMessagesSocket(messages []InputMessage, flags int, cancel
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
-	_arg3 = (C.gint)(flags)
+	_arg3 = C.gint(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -34771,7 +34927,7 @@ func (s socket) ReceiveMessagesSocket(messages []InputMessage, flags int, cancel
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -34795,7 +34951,7 @@ func (s socket) SendSocket(buffer []byte, cancellable Cancellable) (int, error) 
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -34826,7 +34982,7 @@ func (s socket) SendMessageSocket(address SocketAddress, vectors []OutputVector,
 			out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(messages[i].Native()))
 		}
 	}
-	_arg6 = (C.gint)(flags)
+	_arg6 = C.gint(flags)
 	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_send_message(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
@@ -34834,7 +34990,7 @@ func (s socket) SendMessageSocket(address SocketAddress, vectors []OutputVector,
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -34867,8 +35023,8 @@ func (s socket) SendMessageWithTimeoutSocket(address SocketAddress, vectors []Ou
 			out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(messages[i].Native()))
 		}
 	}
-	_arg6 = (C.gint)(flags)
-	_arg7 = (C.gint64)(timeoutUs)
+	_arg6 = C.gint(flags)
+	_arg7 = C.gint64(timeoutUs)
 	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_send_message_with_timeout(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_arg8, _arg9, &_cerr)
@@ -34877,7 +35033,7 @@ func (s socket) SendMessageWithTimeoutSocket(address SocketAddress, vectors []Ou
 	var _pollableReturn PollableReturn // out
 	var _goerr error                   // out
 
-	_bytesWritten = (uint)(_arg8)
+	_bytesWritten = uint(_arg8)
 	_pollableReturn = PollableReturn(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -34896,7 +35052,7 @@ func (s socket) SendMessagesSocket(messages []OutputMessage, flags int, cancella
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
-	_arg3 = (C.gint)(flags)
+	_arg3 = C.gint(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -34904,7 +35060,7 @@ func (s socket) SendMessagesSocket(messages []OutputMessage, flags int, cancella
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -34930,7 +35086,7 @@ func (s socket) SendToSocket(address SocketAddress, buffer []byte, cancellable C
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -34958,7 +35114,7 @@ func (s socket) SendWithBlockingSocket(buffer []byte, blocking bool, cancellable
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -35005,7 +35161,7 @@ func (s socket) SetListenBacklogSocket(backlog int) {
 	var _arg1 C.gint     // out
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(backlog)
+	_arg1 = C.gint(backlog)
 
 	C.g_socket_set_listen_backlog(_arg0, _arg1)
 }
@@ -35027,7 +35183,7 @@ func (s socket) SetMulticastTTLSocket(ttl uint) {
 	var _arg1 C.guint    // out
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(ttl)
+	_arg1 = C.guint(ttl)
 
 	C.g_socket_set_multicast_ttl(_arg0, _arg1)
 }
@@ -35040,9 +35196,9 @@ func (s socket) SetOptionSocket(level int, optname int, value int) error {
 	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(level)
-	_arg2 = (C.gint)(optname)
-	_arg3 = (C.gint)(value)
+	_arg1 = C.gint(level)
+	_arg2 = C.gint(optname)
+	_arg3 = C.gint(value)
 
 	C.g_socket_set_option(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -35058,7 +35214,7 @@ func (s socket) SetTimeoutSocket(timeout uint) {
 	var _arg1 C.guint    // out
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(timeout)
+	_arg1 = C.guint(timeout)
 
 	C.g_socket_set_timeout(_arg0, _arg1)
 }
@@ -35068,7 +35224,7 @@ func (s socket) SetTTLSocket(ttl uint) {
 	var _arg1 C.guint    // out
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.guint)(ttl)
+	_arg1 = C.guint(ttl)
 
 	C.g_socket_set_ttl(_arg0, _arg1)
 }
@@ -35190,7 +35346,7 @@ func (a socketAddress) NativeSize() int {
 
 	var _gssize int // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 
 	return _gssize
 }
@@ -35199,8 +35355,8 @@ func (c socketAddress) Enumerate() SocketAddressEnumerator {
 	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
 }
 
-func (c socketAddress) ProXYEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+func (c socketAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
 }
 
 func (c socketAddress) String() string {
@@ -35220,6 +35376,7 @@ func (c socketAddress) String() string {
 // g_socket_address_enumerator_next() has returned nil, further enumeration with
 // that AddressEnumerator is not possible, and it can be unreffed.
 type SocketAddressEnumerator interface {
+	gextras.Objector
 
 	// NextSocketAddressEnumerator retrieves the next Address from @enumerator.
 	// Note that this may block for some amount of time. (Eg, a Address may need
@@ -35312,8 +35469,9 @@ func (e socketAddressEnumerator) NextFinishSocketAddressEnumerator(result AsyncR
 // As Client is a lightweight object, you don't need to cache it. You can just
 // create a new one any time you need one.
 type SocketClient interface {
+	gextras.Objector
 
-	// AddApplicationProXYSocketClient: enable proxy protocols to be handled by
+	// AddApplicationProxySocketClient: enable proxy protocols to be handled by
 	// the application. When the indicated proxy protocol is returned by the
 	// Resolver, Client will consider this protocol as supported but will not
 	// try to find a #GProxy instance to handle handshaking. The application
@@ -35331,7 +35489,7 @@ type SocketClient interface {
 	// When the proxy is detected as being an application proxy, TLS handshake
 	// will be skipped. This is required to let the application do the proxy
 	// specific handshake.
-	AddApplicationProXYSocketClient(protocol string)
+	AddApplicationProxySocketClient(protocol string)
 	// ConnectSocketClient tries to resolve the @connectable and make a network
 	// connection to it.
 	//
@@ -35432,9 +35590,9 @@ type SocketClient interface {
 	// ConnectToURIFinishSocketClient finishes an async connect operation. See
 	// g_socket_client_connect_to_uri_async()
 	ConnectToURIFinishSocketClient(result AsyncResult) (SocketConnection, error)
-	// EnableProXY gets the proxy enable state; see
+	// EnableProxy gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
-	EnableProXY() bool
+	EnableProxy() bool
 	// Family gets the socket family of the socket client.
 	//
 	// See g_socket_client_set_family() for details.
@@ -35447,10 +35605,10 @@ type SocketClient interface {
 	//
 	// See g_socket_client_set_protocol() for details.
 	Protocol() SocketProtocol
-	// ProXYResolver gets the Resolver being used by @client. Normally, this
+	// ProxyResolver gets the Resolver being used by @client. Normally, this
 	// will be the resolver returned by g_proxy_resolver_get_default(), but you
 	// can override it with g_socket_client_set_proxy_resolver().
-	ProXYResolver() ProXYResolver
+	ProxyResolver() ProxyResolver
 	// SocketType gets the socket type of the socket client.
 	//
 	// See g_socket_client_set_socket_type() for details.
@@ -35465,13 +35623,13 @@ type SocketClient interface {
 	// TLSValidationFlags gets the TLS validation flags used creating TLS
 	// connections via @client.
 	TLSValidationFlags() TLSCertificateFlags
-	// SetEnableProXYSocketClient sets whether or not @client attempts to make
+	// SetEnableProxySocketClient sets whether or not @client attempts to make
 	// connections via a proxy server. When enabled (the default), Client will
 	// use a Resolver to determine if a proxy protocol such as SOCKS is needed,
 	// and automatically do the necessary proxy negotiation.
 	//
 	// See also g_socket_client_set_proxy_resolver().
-	SetEnableProXYSocketClient(enable bool)
+	SetEnableProxySocketClient(enable bool)
 	// SetFamilySocketClient sets the socket family of the socket client. If
 	// this is set to something other than G_SOCKET_FAMILY_INVALID then the
 	// sockets created by this object will be of the specified family.
@@ -35493,14 +35651,14 @@ type SocketClient interface {
 	// If @protocol is G_SOCKET_PROTOCOL_DEFAULT that means to use the default
 	// protocol for the socket family and type.
 	SetProtocolSocketClient(protocol SocketProtocol)
-	// SetProXYResolverSocketClient overrides the Resolver used by @client. You
+	// SetProxyResolverSocketClient overrides the Resolver used by @client. You
 	// can call this if you want to use specific proxies, rather than using the
 	// system default proxy settings.
 	//
 	// Note that whether or not the proxy resolver is actually used depends on
 	// the setting of Client:enable-proxy, which is not changed by this function
 	// (but which is true by default)
-	SetProXYResolverSocketClient(proxyResolver ProXYResolver)
+	SetProxyResolverSocketClient(proxyResolver ProxyResolver)
 	// SetSocketTypeSocketClient sets the socket type of the socket client. The
 	// sockets created by this object will be of the specified type.
 	//
@@ -35570,7 +35728,7 @@ func NewSocketClient() SocketClient {
 	return _socketClient
 }
 
-func (c socketClient) AddApplicationProXYSocketClient(protocol string) {
+func (c socketClient) AddApplicationProxySocketClient(protocol string) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 *C.gchar         // out
 
@@ -35634,7 +35792,7 @@ func (c socketClient) ConnectToHostSocketClient(hostAndPort string, defaultPort 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(hostAndPort))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint16)(defaultPort)
+	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect_to_host(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -35725,7 +35883,7 @@ func (c socketClient) ConnectToURISocketClient(uri string, defaultPort uint16, c
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint16)(defaultPort)
+	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -35759,7 +35917,7 @@ func (c socketClient) ConnectToURIFinishSocketClient(result AsyncResult) (Socket
 	return _socketConnection, _goerr
 }
 
-func (c socketClient) EnableProXY() bool {
+func (c socketClient) EnableProxy() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
 
@@ -35821,7 +35979,7 @@ func (c socketClient) Protocol() SocketProtocol {
 	return _socketProtocol
 }
 
-func (c socketClient) ProXYResolver() ProXYResolver {
+func (c socketClient) ProxyResolver() ProxyResolver {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
 
@@ -35829,9 +35987,9 @@ func (c socketClient) ProXYResolver() ProXYResolver {
 
 	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
 
-	var _proxyResolver ProXYResolver // out
+	var _proxyResolver ProxyResolver // out
 
-	_proxyResolver = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ProXYResolver)
+	_proxyResolver = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ProxyResolver)
 
 	return _proxyResolver
 }
@@ -35861,7 +36019,7 @@ func (c socketClient) Timeout() uint {
 
 	var _guint uint // out
 
-	_guint = (uint)(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -35898,7 +36056,7 @@ func (c socketClient) TLSValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-func (c socketClient) SetEnableProXYSocketClient(enable bool) {
+func (c socketClient) SetEnableProxySocketClient(enable bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
 
@@ -35915,7 +36073,7 @@ func (c socketClient) SetFamilySocketClient(family SocketFamily) {
 	var _arg1 C.GSocketFamily  // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GSocketFamily)(family)
+	_arg1 = C.GSocketFamily(family)
 
 	C.g_socket_client_set_family(_arg0, _arg1)
 }
@@ -35935,12 +36093,12 @@ func (c socketClient) SetProtocolSocketClient(protocol SocketProtocol) {
 	var _arg1 C.GSocketProtocol // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GSocketProtocol)(protocol)
+	_arg1 = C.GSocketProtocol(protocol)
 
 	C.g_socket_client_set_protocol(_arg0, _arg1)
 }
 
-func (c socketClient) SetProXYResolverSocketClient(proxyResolver ProXYResolver) {
+func (c socketClient) SetProxyResolverSocketClient(proxyResolver ProxyResolver) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
 
@@ -35955,7 +36113,7 @@ func (c socketClient) SetSocketTypeSocketClient(typ SocketType) {
 	var _arg1 C.GSocketType    // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GSocketType)(typ)
+	_arg1 = C.GSocketType(typ)
 
 	C.g_socket_client_set_socket_type(_arg0, _arg1)
 }
@@ -35965,7 +36123,7 @@ func (c socketClient) SetTimeoutSocketClient(timeout uint) {
 	var _arg1 C.guint          // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.guint)(timeout)
+	_arg1 = C.guint(timeout)
 
 	C.g_socket_client_set_timeout(_arg0, _arg1)
 }
@@ -35987,7 +36145,7 @@ func (c socketClient) SetTLSValidationFlagsSocketClient(flags TLSCertificateFlag
 	var _arg1 C.GTlsCertificateFlags // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GTlsCertificateFlags)(flags)
+	_arg1 = C.GTlsCertificateFlags(flags)
 
 	C.g_socket_client_set_tls_validation_flags(_arg0, _arg1)
 }
@@ -36008,6 +36166,7 @@ func (c socketClient) SetTLSValidationFlagsSocketClient(flags TLSCertificateFlag
 // To close a Connection, use g_io_stream_close(). Closing both substreams of
 // the OStream separately will not close the underlying #GSocket.
 type SocketConnection interface {
+	IOStream
 
 	// ConnectSocketConnection: connect @connection to the specified remote
 	// address.
@@ -36177,6 +36336,7 @@ func (c socketConnection) IsConnectedSocketConnection() bool {
 // registered with the GType typesystem before calling
 // g_socket_receive_message() to read such a message.
 type SocketControlMessage interface {
+	gextras.Objector
 
 	// Level returns the "level" (i.e. the originating protocol) of the control
 	// message. This is often SOL_SOCKET.
@@ -36218,7 +36378,7 @@ func (m socketControlMessage) Level() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -36233,7 +36393,7 @@ func (m socketControlMessage) MsgType() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -36248,7 +36408,7 @@ func (m socketControlMessage) Size() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -36266,6 +36426,7 @@ func (m socketControlMessage) Size() uint {
 // If you want to implement a network server, also look at Service and
 // SocketService which are subclasses of Listener that make this even easier.
 type SocketListener interface {
+	gextras.Objector
 
 	// AcceptSocketListener blocks waiting for a client to connect to any of the
 	// sockets added to the listener. Returns a Connection for the socket that
@@ -36509,8 +36670,8 @@ func (l socketListener) AddAddressSocketListener(address SocketAddress, typ Sock
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (C.GSocketType)(typ)
-	_arg3 = (C.GSocketProtocol)(protocol)
+	_arg2 = C.GSocketType(typ)
+	_arg3 = C.GSocketProtocol(protocol)
 	_arg4 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 
 	C.g_socket_listener_add_address(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
@@ -36538,7 +36699,7 @@ func (l socketListener) AddAnyInetPortSocketListener(sourceObject gextras.Object
 	var _guint16 uint16 // out
 	var _goerr error    // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint16, _goerr
@@ -36551,7 +36712,7 @@ func (l socketListener) AddInetPortSocketListener(port uint16, sourceObject gext
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.guint16)(port)
+	_arg1 = C.guint16(port)
 	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 
 	C.g_socket_listener_add_inet_port(_arg0, _arg1, _arg2, &_cerr)
@@ -36595,7 +36756,7 @@ func (l socketListener) SetBacklogSocketListener(listenBacklog int) {
 	var _arg1 C.int              // out
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.int)(listenBacklog)
+	_arg1 = C.int(listenBacklog)
 
 	C.g_socket_listener_set_backlog(_arg0, _arg1)
 }
@@ -36623,6 +36784,7 @@ func (l socketListener) SetBacklogSocketListener(listenBacklog int) {
 // stop the service are thread-safe so these can be used from threads that
 // handle incoming clients.
 type SocketService interface {
+	SocketListener
 
 	// IsActiveSocketService: check whether the service is active or not. An
 	// active service will accept new clients that connect, while a non-active
@@ -36935,7 +37097,7 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (Subprocess, error) {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-	_arg2 = (C.GSubprocessFlags)(flags)
+	_arg2 = C.GSubprocessFlags(flags)
 
 	_cret = C.g_subprocess_newv(_arg1, _arg2, &_cerr)
 
@@ -37019,7 +37181,7 @@ func (s subprocess) ExitStatus() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37083,7 +37245,7 @@ func (s subprocess) Status() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37160,7 +37322,7 @@ func (s subprocess) TermSig() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -37170,7 +37332,7 @@ func (s subprocess) SendSignalSubprocess(signalNum int) {
 	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(signalNum)
+	_arg1 = C.gint(signalNum)
 
 	C.g_subprocess_send_signal(_arg0, _arg1)
 }
@@ -37255,6 +37417,7 @@ func (i subprocess) Init(cancellable Cancellable) error {
 // use of this class allows access to more advanced options. It can also be used
 // to launch multiple subprocesses with a similar configuration.
 type SubprocessLauncher interface {
+	gextras.Objector
 
 	// CloseSubprocessLauncher closes all the file descriptors previously passed
 	// to the object with g_subprocess_launcher_take_fd(),
@@ -37469,7 +37632,7 @@ func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 	var _arg1 C.GSubprocessFlags     // out
 	var _cret *C.GSubprocessLauncher // in
 
-	_arg1 = (C.GSubprocessFlags)(flags)
+	_arg1 = C.GSubprocessFlags(flags)
 
 	_cret = C.g_subprocess_launcher_new(_arg1)
 
@@ -37540,7 +37703,7 @@ func (s subprocessLauncher) SetFlagsSubprocessLauncher(flags SubprocessFlags) {
 	var _arg1 C.GSubprocessFlags     // out
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GSubprocessFlags)(flags)
+	_arg1 = C.GSubprocessFlags(flags)
 
 	C.g_subprocess_launcher_set_flags(_arg0, _arg1)
 }
@@ -37630,8 +37793,8 @@ func (s subprocessLauncher) TakeFdSubprocessLauncher(sourceFd int, targetFd int)
 	var _arg2 C.gint                 // out
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(sourceFd)
-	_arg2 = (C.gint)(targetFd)
+	_arg1 = C.gint(sourceFd)
+	_arg2 = C.gint(targetFd)
 
 	C.g_subprocess_launcher_take_fd(_arg0, _arg1, _arg2)
 }
@@ -37641,7 +37804,7 @@ func (s subprocessLauncher) TakeStderrFdSubprocessLauncher(fd int) {
 	var _arg1 C.gint                 // out
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 
 	C.g_subprocess_launcher_take_stderr_fd(_arg0, _arg1)
 }
@@ -37651,7 +37814,7 @@ func (s subprocessLauncher) TakeStdinFdSubprocessLauncher(fd int) {
 	var _arg1 C.gint                 // out
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 
 	C.g_subprocess_launcher_take_stdin_fd(_arg0, _arg1)
 }
@@ -37661,7 +37824,7 @@ func (s subprocessLauncher) TakeStdoutFdSubprocessLauncher(fd int) {
 	var _arg1 C.gint                 // out
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 
 	C.g_subprocess_launcher_take_stdout_fd(_arg0, _arg1)
 }
@@ -37918,7 +38081,7 @@ type Task interface {
 	// This is a very generic low-level method intended primarily for use by
 	// language bindings; for C code, g_task_return_pointer() and the like will
 	// normally be much easier to use.
-	ReturnValueTask(result *externglib.Value)
+	ReturnValueTask(result externglib.Value)
 	// SetCheckCancellableTask sets or clears @task's check-cancellable flag. If
 	// this is true (the default), then g_task_propagate_pointer(), etc, and
 	// g_task_had_error() will check the task's #GCancellable first, and if it
@@ -38057,7 +38220,7 @@ func (t task) Context() *glib.MainContext {
 
 	var _mainContext *glib.MainContext // out
 
-	_mainContext = glib.WrapMainContext(unsafe.Pointer(_cret))
+	_mainContext = (*glib.MainContext)(unsafe.Pointer(_cret))
 
 	return _mainContext
 }
@@ -38087,7 +38250,7 @@ func (t task) Priority() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -38168,7 +38331,7 @@ func (t task) PropagateIntTask() (int, error) {
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = (int)(_cret)
+	_gssize = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
@@ -38186,7 +38349,17 @@ func (t task) PropagateValueTask() (externglib.Value, error) {
 	var _value externglib.Value // out
 	var _goerr error            // out
 
-	_value = *externglib.ValueFromNative(unsafe.Pointer(&_arg1))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_value = *refTmpOut
+	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
@@ -38236,12 +38409,12 @@ func (t task) ReturnIntTask(result int) {
 	var _arg1 C.gssize // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gssize)(result)
+	_arg1 = C.gssize(result)
 
 	C.g_task_return_int(_arg0, _arg1)
 }
 
-func (t task) ReturnValueTask(result *externglib.Value) {
+func (t task) ReturnValueTask(result externglib.Value) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GValue // out
 
@@ -38279,7 +38452,7 @@ func (t task) SetPriorityTask(priority int) {
 	var _arg1 C.gint   // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gint)(priority)
+	_arg1 = C.gint(priority)
 
 	C.g_task_set_priority(_arg0, _arg1)
 }
@@ -38316,6 +38489,7 @@ func (r task) LegacyPropagateError() error {
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
 type TCPConnection interface {
+	SocketConnection
 
 	// GracefulDisconnect checks if graceful disconnects are used. See
 	// g_tcp_connection_set_graceful_disconnect().
@@ -38386,6 +38560,7 @@ func (c tcpConnection) SetGracefulDisconnectTCPConnection(gracefulDisconnect boo
 // by Client so that it can always return a Connection, even when the connection
 // it has actually created is not directly a Connection.
 type TCPWrapperConnection interface {
+	TCPConnection
 
 	// BaseIOStream gets @conn's base OStream
 	BaseIOStream() IOStream
@@ -38516,6 +38691,7 @@ func (c tcpWrapperConnection) BaseIOStream() IOStream {
 //
 //        CLEANFILES += gschemas.compiled
 type TestDBus interface {
+	gextras.Objector
 
 	// AddServiceDirTestDBus: add a path where dbus-daemon will look up .service
 	// files. This can't be called after g_test_dbus_up().
@@ -38575,7 +38751,7 @@ func NewTestDBus(flags TestDBusFlags) TestDBus {
 	var _arg1 C.GTestDBusFlags // out
 	var _cret *C.GTestDBus     // in
 
-	_arg1 = (C.GTestDBusFlags)(flags)
+	_arg1 = C.GTestDBusFlags(flags)
 
 	_cret = C.g_test_dbus_new(_arg1)
 
@@ -38844,6 +39020,7 @@ func (i themedIcon) String() string {
 // As with Service, you may connect to SocketService::run, or subclass and
 // override the default handler.
 type ThreadedSocketService interface {
+	SocketService
 }
 
 // threadedSocketService implements the ThreadedSocketService class.
@@ -38871,7 +39048,7 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in
 
-	_arg1 = (C.int)(maxThreads)
+	_arg1 = C.int(maxThreads)
 
 	_cret = C.g_threaded_socket_service_new(_arg1)
 
@@ -38887,6 +39064,7 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 // a client from a server), or the combination of a certificate and a private
 // key (which is needed when acting as a ServerConnection).
 type TLSCertificate interface {
+	gextras.Objector
 
 	// Issuer gets the Certificate representing @cert's issuer, if known
 	Issuer() TLSCertificate
@@ -39020,7 +39198,7 @@ func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 
 	_arg1 = (*C.gchar)(C.CString(data))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gssize)(length)
+	_arg2 = C.gssize(length)
 
 	_cret = C.g_tls_certificate_new_from_pem(_arg1, _arg2, &_cerr)
 
@@ -39137,6 +39315,7 @@ func (c tlsCertificate) VerifyTLSCertificate(identity SocketConnectable, trusted
 //
 // For DTLS (Datagram TLS) support, see Connection.
 type TLSConnection interface {
+	IOStream
 
 	// EmitAcceptCertificateTLSConnection: used by Connection implementations to
 	// emit the Connection::accept-certificate signal.
@@ -39339,7 +39518,7 @@ func (c tlsConnection) EmitAcceptCertificateTLSConnection(peerCert TLSCertificat
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(peerCert.Native()))
-	_arg2 = (C.GTlsCertificateFlags)(errors)
+	_arg2 = C.GTlsCertificateFlags(errors)
 
 	_cret = C.g_tls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
 
@@ -39374,7 +39553,7 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, er
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GTlsChannelBindingType)(typ)
+	_arg1 = C.GTlsChannelBindingType(typ)
 
 	C.g_tls_connection_get_channel_binding_data(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -39599,7 +39778,7 @@ func (c tlsConnection) SetRehandshakeModeTLSConnection(mode TLSRehandshakeMode) 
 	var _arg1 C.GTlsRehandshakeMode // out
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.GTlsRehandshakeMode)(mode)
+	_arg1 = C.GTlsRehandshakeMode(mode)
 
 	C.g_tls_connection_set_rehandshake_mode(_arg0, _arg1)
 }
@@ -39638,6 +39817,7 @@ func (c tlsConnection) SetUseSystemCertdbTLSConnection(useSystemCertdb bool) {
 // Most common client applications will not directly interact with Database. It
 // is used internally by Connection.
 type TLSDatabase interface {
+	gextras.Objector
 
 	// CreateCertificateHandleTLSDatabase: create a handle string for the
 	// certificate. The database will only be able to create a handle for
@@ -39784,7 +39964,7 @@ func (s tlsDatabase) LookupCertificateForHandleTLSDatabase(handle string, intera
 	_arg1 = (*C.gchar)(C.CString(handle))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg3 = (C.GTlsDatabaseLookupFlags)(flags)
+	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -39830,7 +40010,7 @@ func (s tlsDatabase) LookupCertificateIssuerTLSDatabase(certificate TLSCertifica
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg3 = (C.GTlsDatabaseLookupFlags)(flags)
+	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_issuer(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -39881,7 +40061,7 @@ func (s tlsDatabase) VerifyChainTLSDatabase(chain TLSCertificate, purpose string
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 	_arg4 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg5 = (C.GTlsDatabaseVerifyFlags)(flags)
+	_arg5 = C.GTlsDatabaseVerifyFlags(flags)
 	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_database_verify_chain(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_cerr)
@@ -39935,6 +40115,7 @@ func (s tlsDatabase) VerifyChainFinishTLSDatabase(result AsyncResult) (TLSCertif
 // G_TLS_INTERACTION_UNHANDLED. If a derived class implements an async method,
 // it must also implement the corresponding finish method.
 type TLSInteraction interface {
+	gextras.Objector
 
 	// AskPasswordTLSInteraction: run synchronous interaction to ask the user
 	// for a password. In general, g_tls_interaction_invoke_ask_password()
@@ -40131,7 +40312,7 @@ func (i tlsInteraction) InvokeRequestCertificateTLSInteraction(connection TLSCon
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
-	_arg2 = (C.GTlsCertificateRequestFlags)(flags)
+	_arg2 = C.GTlsCertificateRequestFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_interaction_invoke_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -40155,7 +40336,7 @@ func (i tlsInteraction) RequestCertificateTLSInteraction(connection TLSConnectio
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
-	_arg2 = (C.GTlsCertificateRequestFlags)(flags)
+	_arg2 = C.GTlsCertificateRequestFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_interaction_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -40191,6 +40372,7 @@ func (i tlsInteraction) RequestCertificateFinishTLSInteraction(result AsyncResul
 
 // TLSPassword holds a password used in TLS.
 type TLSPassword interface {
+	gextras.Objector
 
 	// Description: get a description string about what the password will be
 	// used for.
@@ -40250,7 +40432,7 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 	var _arg2 *C.gchar            // out
 	var _cret *C.GTlsPassword     // in
 
-	_arg1 = (C.GTlsPasswordFlags)(flags)
+	_arg1 = C.GTlsPasswordFlags(flags)
 	_arg2 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -40305,7 +40487,7 @@ func (p tlsPassword) Value(length *uint) *byte {
 
 	var _guint8 *byte // out
 
-	_guint8 = (*byte)(_cret)
+	_guint8 = (*byte)(unsafe.Pointer(_cret))
 
 	return _guint8
 }
@@ -40341,7 +40523,7 @@ func (p tlsPassword) SetFlagsTLSPassword(flags TLSPasswordFlags) {
 	var _arg1 C.GTlsPasswordFlags // out
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.GTlsPasswordFlags)(flags)
+	_arg1 = C.GTlsPasswordFlags(flags)
 
 	C.g_tls_password_set_flags(_arg0, _arg1)
 }
@@ -40379,6 +40561,7 @@ func (p tlsPassword) SetWarningTLSPassword(warning string) {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixConnection interface {
+	SocketConnection
 
 	// ReceiveCredentialsUnixConnection receives credentials from the sending
 	// end of the connection. The sending end has to call
@@ -40512,7 +40695,7 @@ func (c unixConnection) ReceiveFdUnixConnection(cancellable Cancellable) (int, e
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -40559,7 +40742,7 @@ func (c unixConnection) SendFdUnixConnection(fd int, cancellable Cancellable) er
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_unix_connection_send_fd(_arg0, _arg1, _arg2, &_cerr)
@@ -40581,6 +40764,7 @@ func (c unixConnection) SendFdUnixConnection(fd int, cancellable Cancellable) er
 // g_unix_connection_receive_credentials(). To receive credentials of a foreign
 // process connected to a socket, use g_socket_get_credentials().
 type UnixCredentialsMessage interface {
+	SocketControlMessage
 
 	// Credentials gets the credentials stored in @message.
 	Credentials() Credentials
@@ -40661,6 +40845,7 @@ func (m unixCredentialsMessage) Credentials() Credentials {
 // Note that `<gio/gunixfdlist.h>` belongs to the UNIX-specific GIO interfaces,
 // thus you have to use the `gio-unix-2.0.pc` pkg-config file when using it.
 type UnixFDList interface {
+	gextras.Objector
 
 	// AppendUnixFDList adds a file descriptor to @list.
 	//
@@ -40755,14 +40940,14 @@ func (l unixFDList) AppendUnixFDList(fd int) (int, error) {
 	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 
 	_cret = C.g_unix_fd_list_append(_arg0, _arg1, &_cerr)
 
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -40775,14 +40960,14 @@ func (l unixFDList) GetUnixFDList(index_ int) (int, error) {
 	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
-	_arg1 = (C.gint)(index_)
+	_arg1 = C.gint(index_)
 
 	_cret = C.g_unix_fd_list_get(_arg0, _arg1, &_cerr)
 
 	var _gint int    // out
 	var _goerr error // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
@@ -40798,7 +40983,7 @@ func (l unixFDList) Length() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -40816,6 +41001,7 @@ func (l unixFDList) Length() int {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixFDMessage interface {
+	SocketControlMessage
 
 	// AppendFdUnixFDMessage adds a file descriptor to @message.
 	//
@@ -40887,7 +41073,7 @@ func (m unixFDMessage) AppendFdUnixFDMessage(fd int) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 
 	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
 
@@ -40963,7 +41149,7 @@ func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
 	var _arg2 C.gboolean      // out
 	var _cret *C.GInputStream // in
 
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 	if closeFd {
 		_arg2 = C.TRUE
 	}
@@ -41004,7 +41190,7 @@ func (s unixInputStream) GetFd() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -41039,6 +41225,7 @@ func (s unixInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable)
 
 // UnixMountMonitor watches Mounts for changes.
 type UnixMountMonitor interface {
+	gextras.Objector
 
 	// SetRateLimitUnixMountMonitor: this function does nothing.
 	//
@@ -41088,7 +41275,7 @@ func (m unixMountMonitor) SetRateLimitUnixMountMonitor(limitMsec int) {
 	var _arg1 C.int                // out
 
 	_arg0 = (*C.GUnixMountMonitor)(unsafe.Pointer(m.Native()))
-	_arg1 = (C.int)(limitMsec)
+	_arg1 = C.int(limitMsec)
 
 	C.g_unix_mount_monitor_set_rate_limit(_arg0, _arg1)
 }
@@ -41143,7 +41330,7 @@ func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 	var _arg2 C.gboolean       // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (C.gint)(fd)
+	_arg1 = C.gint(fd)
 	if closeFd {
 		_arg2 = C.TRUE
 	}
@@ -41184,7 +41371,7 @@ func (s unixOutputStream) GetFd() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -41351,7 +41538,7 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSo
 
 	_arg2 = C.gint(len(path))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
-	_arg3 = (C.GUnixSocketAddressType)(typ)
+	_arg3 = C.GUnixSocketAddressType(typ)
 
 	_cret = C.g_unix_socket_address_new_with_type(_arg1, _arg2, _arg3)
 
@@ -41419,7 +41606,7 @@ func (a unixSocketAddress) PathLen() uint {
 
 	var _gsize uint // out
 
-	_gsize = (uint)(_cret)
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -41428,8 +41615,8 @@ func (c unixSocketAddress) Enumerate() SocketAddressEnumerator {
 	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
 }
 
-func (c unixSocketAddress) ProXYEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProXYEnumerate()
+func (c unixSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
 }
 
 func (c unixSocketAddress) String() string {
@@ -41438,6 +41625,7 @@ func (c unixSocketAddress) String() string {
 
 // VFS: entry point for using GIO functionality.
 type VFS interface {
+	gextras.Objector
 
 	// FileForPath gets a #GFile for @path.
 	FileForPath(path string) File
@@ -41608,6 +41796,7 @@ func (v vfS) UnregisterURISchemeVFS(scheme string) bool {
 // In order to receive updates about volumes and mounts monitored through GVFS,
 // a main loop must be running.
 type VolumeMonitor interface {
+	gextras.Objector
 
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 	MountForUUID(uuid string) Mount
@@ -41713,8 +41902,8 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 	var _arg2 C.int                   // out
 	var _cret *C.GZlibCompressor      // in
 
-	_arg1 = (C.GZlibCompressorFormat)(format)
-	_arg2 = (C.int)(level)
+	_arg1 = C.GZlibCompressorFormat(format)
+	_arg2 = C.int(level)
 
 	_cret = C.g_zlib_compressor_new(_arg1, _arg2)
 
@@ -41794,7 +41983,7 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _cret *C.GZlibDecompressor    // in
 
-	_arg1 = (C.GZlibCompressorFormat)(format)
+	_arg1 = C.GZlibCompressorFormat(format)
 
 	_cret = C.g_zlib_decompressor_new(_arg1)
 
@@ -41859,9 +42048,9 @@ func (i *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
 
 	var _dBusAnnotationInfo *DBusAnnotationInfo // out
 
-	_dBusAnnotationInfo = WrapDBusAnnotationInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusAnnotationInfo, func(v *DBusAnnotationInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_dBusAnnotationInfo = (*DBusAnnotationInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_dBusAnnotationInfo, func(v **DBusAnnotationInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _dBusAnnotationInfo
@@ -41909,9 +42098,9 @@ func (i *DBusArgInfo) Ref() *DBusArgInfo {
 
 	var _dBusArgInfo *DBusArgInfo // out
 
-	_dBusArgInfo = WrapDBusArgInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusArgInfo, func(v *DBusArgInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_dBusArgInfo = (*DBusArgInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_dBusArgInfo, func(v **DBusArgInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _dBusArgInfo
@@ -42006,7 +42195,7 @@ func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 
 	var _dBusMethodInfo *DBusMethodInfo // out
 
-	_dBusMethodInfo = WrapDBusMethodInfo(unsafe.Pointer(_cret))
+	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
 
 	return _dBusMethodInfo
 }
@@ -42028,7 +42217,7 @@ func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
-	_dBusPropertyInfo = WrapDBusPropertyInfo(unsafe.Pointer(_cret))
+	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
 
 	return _dBusPropertyInfo
 }
@@ -42050,7 +42239,7 @@ func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 
 	var _dBusSignalInfo *DBusSignalInfo // out
 
-	_dBusSignalInfo = WrapDBusSignalInfo(unsafe.Pointer(_cret))
+	_dBusSignalInfo = (*DBusSignalInfo)(unsafe.Pointer(_cret))
 
 	return _dBusSignalInfo
 }
@@ -42067,9 +42256,9 @@ func (i *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_dBusInterfaceInfo, func(v **DBusInterfaceInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _dBusInterfaceInfo
@@ -42168,9 +42357,9 @@ func (i *DBusMethodInfo) Ref() *DBusMethodInfo {
 
 	var _dBusMethodInfo *DBusMethodInfo // out
 
-	_dBusMethodInfo = WrapDBusMethodInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_dBusMethodInfo, func(v **DBusMethodInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _dBusMethodInfo
@@ -42215,9 +42404,9 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	var _dBusNodeInfo *DBusNodeInfo // out
 	var _goerr error                // out
 
-	_dBusNodeInfo = WrapDBusNodeInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_dBusNodeInfo = (*DBusNodeInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_dBusNodeInfo, func(v **DBusNodeInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -42245,7 +42434,7 @@ func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 
 	return _dBusInterfaceInfo
 }
@@ -42262,9 +42451,9 @@ func (i *DBusNodeInfo) Ref() *DBusNodeInfo {
 
 	var _dBusNodeInfo *DBusNodeInfo // out
 
-	_dBusNodeInfo = WrapDBusNodeInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_dBusNodeInfo = (*DBusNodeInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_dBusNodeInfo, func(v **DBusNodeInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _dBusNodeInfo
@@ -42312,9 +42501,9 @@ func (i *DBusPropertyInfo) Ref() *DBusPropertyInfo {
 
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
-	_dBusPropertyInfo = WrapDBusPropertyInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_dBusPropertyInfo, func(v **DBusPropertyInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _dBusPropertyInfo
@@ -42362,9 +42551,9 @@ func (i *DBusSignalInfo) Ref() *DBusSignalInfo {
 
 	var _dBusSignalInfo *DBusSignalInfo // out
 
-	_dBusSignalInfo = WrapDBusSignalInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusSignalInfo, func(v *DBusSignalInfo) {
-		C.free(unsafe.Pointer(v.Native()))
+	_dBusSignalInfo = (*DBusSignalInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_dBusSignalInfo, func(v **DBusSignalInfo) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _dBusSignalInfo
@@ -42433,9 +42622,9 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = WrapFileAttributeInfoList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fileAttributeInfoList, func(v **FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fileAttributeInfoList
@@ -42457,8 +42646,8 @@ func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags Fi
 	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GFileAttributeType)(typ)
-	_arg3 = (C.GFileAttributeInfoFlags)(flags)
+	_arg2 = C.GFileAttributeType(typ)
+	_arg3 = C.GFileAttributeInfoFlags(flags)
 
 	C.g_file_attribute_info_list_add(_arg0, _arg1, _arg2, _arg3)
 }
@@ -42474,9 +42663,9 @@ func (l *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = WrapFileAttributeInfoList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fileAttributeInfoList, func(v **FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fileAttributeInfoList
@@ -42496,7 +42685,7 @@ func (l *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 
 	var _fileAttributeInfo *FileAttributeInfo // out
 
-	_fileAttributeInfo = WrapFileAttributeInfo(unsafe.Pointer(_cret))
+	_fileAttributeInfo = (*FileAttributeInfo)(unsafe.Pointer(_cret))
 
 	return _fileAttributeInfo
 }
@@ -42512,9 +42701,9 @@ func (l *FileAttributeInfoList) Ref() *FileAttributeInfoList {
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = WrapFileAttributeInfoList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fileAttributeInfoList, func(v **FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fileAttributeInfoList
@@ -42556,9 +42745,9 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fileAttributeMatcher, func(v **FileAttributeMatcher) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fileAttributeMatcher
@@ -42667,9 +42856,9 @@ func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fileAttributeMatcher, func(v **FileAttributeMatcher) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fileAttributeMatcher
@@ -42694,9 +42883,9 @@ func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAtt
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.free(unsafe.Pointer(v.Native()))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_fileAttributeMatcher, func(v **FileAttributeMatcher) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fileAttributeMatcher
@@ -42777,7 +42966,7 @@ func (e *IOExtension) Priority() int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -42827,7 +43016,7 @@ func (e *IOExtensionPoint) ExtensionByName(name string) *IOExtension {
 
 	var _ioExtension *IOExtension // out
 
-	_ioExtension = WrapIOExtension(unsafe.Pointer(_cret))
+	_ioExtension = (*IOExtension)(unsafe.Pointer(_cret))
 
 	return _ioExtension
 }
@@ -43196,7 +43385,7 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, &_cerr)
 
@@ -43237,7 +43426,7 @@ func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uin
 	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	C.g_resource_get_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -43245,8 +43434,8 @@ func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uin
 	var _flags uint32 // out
 	var _goerr error  // out
 
-	_size = (uint)(_arg3)
-	_flags = (uint32)(_arg4)
+	_size = uint(_arg3)
+	_flags = uint32(_arg4)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _size, _flags, _goerr
@@ -43266,7 +43455,7 @@ func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (Inp
 	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resource_open_stream(_arg0, _arg1, _arg2, &_cerr)
 
@@ -43291,9 +43480,9 @@ func (r *Resource) Ref() *Resource {
 
 	var _ret *Resource // out
 
-	_ret = WrapResource(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Resource) {
-		C.free(unsafe.Pointer(v.Native()))
+	_ret = (*Resource)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Resource) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -43390,9 +43579,9 @@ func (s *SettingsSchema) Key(name string) *SettingsSchemaKey {
 
 	var _settingsSchemaKey *SettingsSchemaKey // out
 
-	_settingsSchemaKey = WrapSettingsSchemaKey(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_settingsSchemaKey, func(v *SettingsSchemaKey) {
-		C.free(unsafe.Pointer(v.Native()))
+	_settingsSchemaKey = (*SettingsSchemaKey)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_settingsSchemaKey, func(v **SettingsSchemaKey) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _settingsSchemaKey
@@ -43518,9 +43707,9 @@ func (s *SettingsSchema) Ref() *SettingsSchema {
 
 	var _settingsSchema *SettingsSchema // out
 
-	_settingsSchema = WrapSettingsSchema(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
-		C.free(unsafe.Pointer(v.Native()))
+	_settingsSchema = (*SettingsSchema)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_settingsSchema, func(v **SettingsSchema) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _settingsSchema
@@ -43569,9 +43758,9 @@ func (k *SettingsSchemaKey) DefaultValue() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -43664,9 +43853,9 @@ func (k *SettingsSchemaKey) Range() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variant
@@ -43709,7 +43898,7 @@ func (k *SettingsSchemaKey) ValueType() *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -43749,9 +43938,9 @@ func (k *SettingsSchemaKey) Ref() *SettingsSchemaKey {
 
 	var _settingsSchemaKey *SettingsSchemaKey // out
 
-	_settingsSchemaKey = WrapSettingsSchemaKey(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_settingsSchemaKey, func(v *SettingsSchemaKey) {
-		C.free(unsafe.Pointer(v.Native()))
+	_settingsSchemaKey = (*SettingsSchemaKey)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_settingsSchemaKey, func(v **SettingsSchemaKey) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _settingsSchemaKey
@@ -43801,9 +43990,9 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var _settingsSchemaSource *SettingsSchemaSource // out
 	var _goerr error                                // out
 
-	_settingsSchemaSource = WrapSettingsSchemaSource(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
-		C.free(unsafe.Pointer(v.Native()))
+	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_settingsSchemaSource, func(v **SettingsSchemaSource) {
+		C.free(unsafe.Pointer(v))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -43901,9 +44090,9 @@ func (s *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Settings
 
 	var _settingsSchema *SettingsSchema // out
 
-	_settingsSchema = WrapSettingsSchema(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
-		C.free(unsafe.Pointer(v.Native()))
+	_settingsSchema = (*SettingsSchema)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_settingsSchema, func(v **SettingsSchema) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _settingsSchema
@@ -43920,9 +44109,9 @@ func (s *SettingsSchemaSource) Ref() *SettingsSchemaSource {
 
 	var _settingsSchemaSource *SettingsSchemaSource // out
 
-	_settingsSchemaSource = WrapSettingsSchemaSource(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
-		C.free(unsafe.Pointer(v.Native()))
+	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_settingsSchemaSource, func(v **SettingsSchemaSource) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _settingsSchemaSource
@@ -43972,17 +44161,17 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 
 	_arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.guint16)(port)
-	_arg3 = (C.guint16)(priority)
-	_arg4 = (C.guint16)(weight)
+	_arg2 = C.guint16(port)
+	_arg3 = C.guint16(priority)
+	_arg4 = C.guint16(weight)
 
 	_cret = C.g_srv_target_new(_arg1, _arg2, _arg3, _arg4)
 
 	var _srvTarget *SrvTarget // out
 
-	_srvTarget = WrapSrvTarget(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.free(unsafe.Pointer(v.Native()))
+	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_srvTarget, func(v **SrvTarget) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _srvTarget
@@ -44004,9 +44193,9 @@ func (t *SrvTarget) Copy() *SrvTarget {
 
 	var _srvTarget *SrvTarget // out
 
-	_srvTarget = WrapSrvTarget(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.free(unsafe.Pointer(v.Native()))
+	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_srvTarget, func(v **SrvTarget) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _srvTarget
@@ -44051,7 +44240,7 @@ func (t *SrvTarget) Port() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -44068,7 +44257,7 @@ func (t *SrvTarget) Priority() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -44085,7 +44274,7 @@ func (t *SrvTarget) Weight() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = (uint16)(_cret)
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -44134,7 +44323,7 @@ func (s *StaticResource) Resource() *Resource {
 
 	var _resource *Resource // out
 
-	_resource = WrapResource(unsafe.Pointer(_cret))
+	_resource = (*Resource)(unsafe.Pointer(_cret))
 
 	return _resource
 }
@@ -44205,7 +44394,7 @@ func (m *UnixMountPoint) Compare(mount2 *UnixMountPoint) int {
 
 	var _gint int // out
 
-	_gint = (int)(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -44221,9 +44410,9 @@ func (m *UnixMountPoint) Copy() *UnixMountPoint {
 
 	var _unixMountPoint *UnixMountPoint // out
 
-	_unixMountPoint = WrapUnixMountPoint(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
-		C.free(unsafe.Pointer(v.Native()))
+	_unixMountPoint = (*UnixMountPoint)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_unixMountPoint, func(v **UnixMountPoint) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _unixMountPoint

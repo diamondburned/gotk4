@@ -116,14 +116,6 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 		tree.omitAmbiguous(true)
 
 	case tree.ResolvedType.Extern.Result.Interface != nil:
-		// All interfaces are derived from GObjects, so we override the list if
-		// it's empty.
-		if len(tree.ResolvedType.Extern.Result.Interface.Prerequisites) == 0 {
-			return tree.resolveParents(
-				externGLibType("*Object", gir.Type{}, "GObject*"),
-			)
-		}
-
 		for _, prereq := range tree.ResolvedType.Extern.Result.Interface.Prerequisites {
 			// Like class parents, interface prerequisites are important.
 			if !tree.resolveName(prereq.Name) {
@@ -131,6 +123,14 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 					"can't resolve prerequisite", prereq.Name,
 					"for interface", tree.ResolvedType.Extern.Result.Interface.Name,
 				)
+				return false
+			}
+		}
+
+		if len(tree.Requires) == 0 {
+			// All interfaces are derived from GObjects, so we override the list
+			// if it's empty.
+			if !tree.resolveParents(externGLibType("*Object", gir.Type{}, "GObject*")) {
 				return false
 			}
 		}
@@ -155,7 +155,7 @@ func (tree *TypeTree) omitAmbiguous(actually bool) {
 
 	// No ambiguity if there's less than 2 parents.
 	if !actually || len(tree.Requires) < 2 {
-		copy(tree.Embeds, tree.Requires)
+		tree.Embeds = append(tree.Embeds, tree.Requires...)
 		return
 	}
 
@@ -278,7 +278,12 @@ func (tree *TypeTree) wrap(obj string, class bool) string {
 	p.Write(tree.ResolvedType.ImplType(false)).Char('{')
 	p.EmptyLine()
 
-	for _, typ := range tree.Requires {
+	iter := tree.Embeds
+	if class {
+		iter = tree.Requires // get the Parent from Requires
+	}
+
+	for _, typ := range iter {
 		if typ.ResolvedType.Builtin != nil {
 			// If these cases hit, then the type is an Objector (as deefined by
 			// gextras.Objector), so obj satisfies it.

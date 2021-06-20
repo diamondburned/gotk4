@@ -57,6 +57,16 @@ func init() {
 	cTypePrefixEraser = strings.NewReplacer(replacers...)
 }
 
+var gpointerTypes = map[string]struct{}{
+	"gpointer":      {},
+	"gconstpointer": {},
+}
+
+func isGPointer(ctype string) bool {
+	_, is := gpointerTypes[ctype]
+	return is
+}
+
 // movePtr moves the same number of pointers from the given orig string into
 // another string.
 func movePtr(orig, into string) string {

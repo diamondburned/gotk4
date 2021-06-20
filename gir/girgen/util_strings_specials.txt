@@ -59,7 +59,7 @@ Iso8601
 [A-Z]fs
 Sha(\d+)?
 Utf(\d+)?
-Usc(\d+)?
+Ucs(\d+)?
 [XY][^aiueo]
 [XYZxyz]{2,3}
 (|S|R)[XYZxyz]{3}

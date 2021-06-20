@@ -438,7 +438,7 @@ func (conv *TypeConverter) convertParam(at int) *ValueConverted {
 		}
 	}
 
-	conv.log(LogUnusuality, "C->Go conversion arg not found at", at)
+	conv.log(LogUnusuality, "conversion arg not found at", at)
 	return nil
 }
 
@@ -450,6 +450,10 @@ const convertRefTmp = "refTmp"
 // TODO: ideally, we should treat all foreign pointers as arrays, because they
 // usually are. It would also allow the caller to allocate a sized array, as
 // they could read the comments.
+//
+// TODO: there's a way to guess the pointer offset without switch-casing on
+// every type. We can do this with IsPrimitive and IsClass fairly easily. We
+// will have to account for Go type edge cases, however.
 
 // convertRef generates weird code that references and dereferences values as
 // needed, then call the conversion routine on it again. This shold only be used
@@ -626,10 +630,6 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 		return false
 	}
 
-	if value.Direction == ConvertCToGo && strings.Contains(anyTypeC(value.AnyType), "PangoContext") {
-		conv.log(LogDebug, "anyType:", anyTypeC(value.AnyType))
-	}
-
 	// ResolveType already checks this, but we can early bail.
 	if !value.AnyType.Type.IsIntrospectable() {
 		return false
@@ -646,6 +646,7 @@ func (value *ValueConverted) resolveType(conv *TypeConverter) bool {
 	// Proritize hard-coded types over ignored types.
 	value.resolved = conv.ng.ResolveType(typ)
 	if value.resolved == nil {
+		conv.log(LogDebug, value.logPrefix(), "can't resolve", anyTypeCGo(value.AnyType), typ.Name)
 		return false
 	}
 
@@ -756,6 +757,17 @@ func (value *ValueConverted) ptrsz() string {
 	value.addImport("unsafe")
 	// Size of a pointer is the same as uint.
 	return "unsafe.Sizeof(uint(0))"
+}
+
+func (value *ValueConverted) logPrefix() string {
+	switch value.Direction {
+	case ConvertCToGo:
+		return "C->Go"
+	case ConvertGoToC:
+		return "Go->C"
+	default:
+		return ""
+	}
 }
 
 // isPtr checks pointer coherency for C types and Go types. It's mostly used to

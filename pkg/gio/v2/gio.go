@@ -3963,89 +3963,6 @@ func UnixMountsChangedSince(time uint64) bool {
 	return _ok
 }
 
-// ActionOverrider contains methods that are overridable. This
-// interface is a subset of the interface Action.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ActionOverrider interface {
-	// Activate activates the action.
-	//
-	// @parameter must be the correct type of parameter for the action (ie: the
-	// parameter type given at construction time). If the parameter type was nil
-	// then @parameter must also be nil.
-	//
-	// If the @parameter GVariant is floating, it is consumed.
-	Activate(parameter *glib.Variant)
-	// ChangeState: request for the state of @action to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_get_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_get_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	ChangeState(value *glib.Variant)
-	// Enabled checks if @action is currently enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	Enabled() bool
-	// Name queries the name of @action.
-	Name() string
-	// ParameterType queries the type of the parameter that must be given when
-	// activating @action.
-	//
-	// When activating the action using g_action_activate(), the #GVariant given
-	// to that function must be of the type returned by this function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	ParameterType() *glib.VariantType
-	// State queries the current state of @action.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_get_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	State() *glib.Variant
-	// StateHint requests a hint about the valid range of values for the state
-	// of @action.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	StateHint() *glib.Variant
-	// StateType queries the type of the state of @action.
-	//
-	// If the action is stateful (e.g. created with
-	// g_simple_action_new_stateful()) then this function returns the Type of
-	// the state. This is the type of the initial value given as the state. All
-	// calls to g_action_change_state() must give a #GVariant of this type and
-	// g_action_get_state() will return a #GVariant of the same type.
-	//
-	// If the action is not stateful (e.g. created with g_simple_action_new())
-	// then this function will return nil. In that case, g_action_get_state()
-	// will return nil and you must not call g_action_change_state().
-	StateType() *glib.VariantType
-}
-
 // Action represents a single named action.
 //
 // The main interface to an action is that it can be activated with
@@ -4289,175 +4206,6 @@ func (a action) StateType() *glib.VariantType {
 	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
-}
-
-// ActionGroupOverrider contains methods that are overridable. This
-// interface is a subset of the interface ActionGroup.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ActionGroupOverrider interface {
-	// ActionAdded emits the Group::action-added signal on @action_group.
-	//
-	// This function should only be called by Group implementations.
-	ActionAdded(actionName string)
-	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
-	// @action_group.
-	//
-	// This function should only be called by Group implementations.
-	ActionEnabledChanged(actionName string, enabled bool)
-	// ActionRemoved emits the Group::action-removed signal on @action_group.
-	//
-	// This function should only be called by Group implementations.
-	ActionRemoved(actionName string)
-	// ActionStateChanged emits the Group::action-state-changed signal on
-	// @action_group.
-	//
-	// This function should only be called by Group implementations.
-	ActionStateChanged(actionName string, state *glib.Variant)
-	// ActivateAction: activate the named action within @action_group.
-	//
-	// If the action is expecting a parameter, then the correct type of
-	// parameter must be given as @parameter. If the action is expecting no
-	// parameters then @parameter must be nil. See
-	// g_action_group_get_action_parameter_type().
-	//
-	// If the Group implementation supports asynchronous remote activation over
-	// D-Bus, this call may return before the relevant D-Bus traffic has been
-	// sent, or any replies have been received. In order to block on such
-	// asynchronous activation calls, g_dbus_connection_flush() should be called
-	// prior to the code, which depends on the result of the action activation.
-	// Without flushing the D-Bus connection, there is no guarantee that the
-	// action would have been activated.
-	//
-	// The following code which runs in a remote app instance, shows an example
-	// of a "quit" action being activated on the primary app instance over
-	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
-	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
-	// the primary instance.
-	//
-	//    // call "quit" action on primary instance
-	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-	//
-	//    // make sure the action is activated now
-	//    g_dbus_connection_flush (...);
-	//
-	//    g_debug ("application has been terminated. exiting.");
-	//
-	//    exit (0);
-	ActivateAction(actionName string, parameter *glib.Variant)
-	// ChangeActionState: request for the state of the named action within
-	// @action_group to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_group_get_action_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_group_get_action_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	ChangeActionState(actionName string, value *glib.Variant)
-	// ActionEnabled checks if the named action within @action_group is
-	// currently enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	ActionEnabled(actionName string) bool
-	// ActionParameterType queries the type of the parameter that must be given
-	// when activating the named action within @action_group.
-	//
-	// When activating the action using g_action_group_activate_action(), the
-	// #GVariant given to that function must be of the type returned by this
-	// function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	//
-	// The parameter type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different parameter type.
-	ActionParameterType(actionName string) *glib.VariantType
-	// ActionState queries the current state of the named action within
-	// @action_group.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_group_get_action_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	ActionState(actionName string) *glib.Variant
-	// ActionStateHint requests a hint about the valid range of values for the
-	// state of the named action within @action_group.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	ActionStateHint(actionName string) *glib.Variant
-	// ActionStateType queries the type of the state of the named action within
-	// @action_group.
-	//
-	// If the action is stateful then this function returns the Type of the
-	// state. All calls to g_action_group_change_action_state() must give a
-	// #GVariant of this type and g_action_group_get_action_state() will return
-	// a #GVariant of the same type.
-	//
-	// If the action is not stateful then this function will return nil. In that
-	// case, g_action_group_get_action_state() will return nil and you must not
-	// call g_action_group_change_action_state().
-	//
-	// The state type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different state type.
-	ActionStateType(actionName string) *glib.VariantType
-	// HasAction checks if the named action exists within @action_group.
-	HasAction(actionName string) bool
-	// ListActions lists the actions contained within @action_group.
-	//
-	// The caller is responsible for freeing the list with g_strfreev() when it
-	// is no longer required.
-	ListActions() []string
-	// QueryAction queries all aspects of the named action within an
-	// @action_group.
-	//
-	// This function acquires the information available from
-	// g_action_group_has_action(), g_action_group_get_action_enabled(),
-	// g_action_group_get_action_parameter_type(),
-	// g_action_group_get_action_state_type(),
-	// g_action_group_get_action_state_hint() and
-	// g_action_group_get_action_state() with a single function call.
-	//
-	// This provides two main benefits.
-	//
-	// The first is the improvement in efficiency that comes with not having to
-	// perform repeated lookups of the action in order to discover different
-	// things about it. The second is that implementing Group can now be done by
-	// only overriding this one virtual function.
-	//
-	// The interface provides a default implementation of this function that
-	// calls the individual functions, as required, to fetch the information.
-	// The interface also provides default implementations of those functions
-	// that call this function. All implementations, therefore, must override
-	// either this function or all of the others.
-	//
-	// If the action exists, true is returned and any of the requested fields
-	// (as indicated by having a non-nil reference passed in) are filled. If the
-	// action doesn't exist, false is returned and the fields may or may not
-	// have been modified.
-	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
 // ActionGroup represents a group of actions. Actions can be used to expose
@@ -4959,30 +4707,6 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 	return _enabled, _parameterType, _stateType, _stateHint, _state, _ok
 }
 
-// ActionMapOverrider contains methods that are overridable. This
-// interface is a subset of the interface ActionMap.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ActionMapOverrider interface {
-	// AddAction adds an action to the @action_map.
-	//
-	// If the action map already contains an action with the same name as
-	// @action then the old action is dropped from the action map.
-	//
-	// The action map takes its own reference on @action.
-	AddAction(action Action)
-	// LookupAction looks up the action with the name @action_name in
-	// @action_map.
-	//
-	// If no such action exists, returns nil.
-	LookupAction(actionName string) Action
-	// RemoveAction removes the named action from the action map.
-	//
-	// If no action of this name is in the map then nothing happens.
-	RemoveAction(actionName string)
-}
-
 // ActionMap: the GActionMap interface is implemented by Group implementations
 // that operate by containing a number of named #GAction instances, such as
 // ActionGroup.
@@ -5069,91 +4793,6 @@ func (a actionMap) RemoveAction(actionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_map_remove_action(_arg0, _arg1)
-}
-
-// AppInfoOverrider contains methods that are overridable. This
-// interface is a subset of the interface AppInfo.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type AppInfoOverrider interface {
-	// AddSupportsType adds a content type to the application information to
-	// indicate the application is capable of opening files with the given
-	// content type.
-	AddSupportsType(contentType string) error
-	// CanDelete obtains the information whether the Info can be deleted. See
-	// g_app_info_delete().
-	CanDelete() bool
-	// CanRemoveSupportsType checks if a supported content type can be removed
-	// from an application.
-	CanRemoveSupportsType() bool
-	// DoDelete tries to delete a Info.
-	//
-	// On some platforms, there may be a difference between user-defined Infos
-	// which can be deleted, and system-wide ones which cannot. See
-	// g_app_info_can_delete().
-	DoDelete() bool
-	// Dup creates a duplicate of a Info.
-	Dup() AppInfo
-	// Equal checks if two Infos are equal.
-	//
-	// Note that the check *may not* compare each individual field, and only
-	// does an identity check. In case detecting changes in the contents is
-	// needed, program code must additionally compare relevant fields.
-	Equal(appinfo2 AppInfo) bool
-	// Commandline gets the commandline with which the application will be
-	// started.
-	Commandline() string
-	// Description gets a human-readable description of an installed
-	// application.
-	Description() string
-	// DisplayName gets the display name of the application. The display name is
-	// often more descriptive to the user than the name itself.
-	DisplayName() string
-	// Executable gets the executable's name for the installed application.
-	Executable() string
-	// Icon gets the icon for the application.
-	Icon() Icon
-	// ID gets the ID of an application. An id is a string that identifies the
-	// application. The exact format of the id is platform dependent. For
-	// instance, on Unix this is the desktop file id from the xdg menu
-	// specification.
-	//
-	// Note that the returned ID may be nil, depending on how the @appinfo has
-	// been constructed.
-	ID() string
-	// Name gets the installed name of the application.
-	Name() string
-	// SupportedTypes retrieves the list of content types that @app_info claims
-	// to support. If this information is not provided by the environment, this
-	// function will return nil. This function does not take in consideration
-	// associations added with g_app_info_add_supports_type(), but only those
-	// exported directly by the application.
-	SupportedTypes() []string
-	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-	LaunchUrisFinish(result AsyncResult) error
-	// RemoveSupportsType removes a supported type from an application, if
-	// possible.
-	RemoveSupportsType(contentType string) error
-	// SetAsDefaultForExtension sets the application as the default handler for
-	// the given file extension.
-	SetAsDefaultForExtension(extension string) error
-	// SetAsDefaultForType sets the application as the default handler for a
-	// given type.
-	SetAsDefaultForType(contentType string) error
-	// SetAsLastUsedForType sets the application as the last used application
-	// for a given type. This will make the application appear as first in the
-	// list returned by g_app_info_get_recommended_for_type(), regardless of the
-	// default application for that content type.
-	SetAsLastUsedForType(contentType string) error
-	// ShouldShow checks if the application info should be shown in menus that
-	// list available applications.
-	ShouldShow() bool
-	// SupportsFiles checks if the application accepts files as arguments.
-	SupportsFiles() bool
-	// SupportsUris checks if the application supports reading files and
-	// directories from URIs.
-	SupportsUris() bool
 }
 
 // AppInfo: Info and LaunchContext are used for describing and launching
@@ -5676,17 +5315,6 @@ func (a appInfo) SupportsUris() bool {
 	return _ok
 }
 
-// AsyncInitableOverrider contains methods that are overridable. This
-// interface is a subset of the interface AsyncInitable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type AsyncInitableOverrider interface {
-	// InitFinish finishes asynchronous initialization and returns the result.
-	// See g_async_initable_init_async().
-	InitFinish(res AsyncResult) error
-}
-
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
 // same in all ways except that initialization is asynchronous. For more details
 // see the descriptions on #GInitable.
@@ -5853,16 +5481,6 @@ func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	return _object, _goerr
 }
 
-// AsyncResultOverrider contains methods that are overridable. This
-// interface is a subset of the interface AsyncResult.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type AsyncResultOverrider interface {
-	// SourceObject gets the source object from a Result.
-	SourceObject() gextras.Objector
-}
-
 // AsyncResult provides a base class for implementing asynchronous function
 // results.
 //
@@ -6008,100 +5626,6 @@ func (r asyncResult) LegacyPropagateError() error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// ConverterOverrider contains methods that are overridable. This
-// interface is a subset of the interface Converter.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ConverterOverrider interface {
-	// Convert: this is the main operation used when converting data. It is to
-	// be called multiple times in a loop, and each time it will do some work,
-	// i.e. producing some output (in @outbuf) or consuming some input (from
-	// @inbuf) or both. If its not possible to do any work an error is returned.
-	//
-	// Note that a single call may not consume all input (or any input at all).
-	// Also a call may produce output even if given no input, due to state
-	// stored in the converter producing output.
-	//
-	// If any data was either produced or consumed, and then an error happens,
-	// then only the successful conversion is reported and the error is returned
-	// on the next call.
-	//
-	// A full conversion loop involves calling this method repeatedly, each time
-	// giving it new input and space output space. When there is no more input
-	// data after the data in @inbuf, the flag G_CONVERTER_INPUT_AT_END must be
-	// set. The loop will be (unless some error happens) returning
-	// G_CONVERTER_CONVERTED each time until all data is consumed and all output
-	// is produced, then G_CONVERTER_FINISHED is returned instead. Note, that
-	// G_CONVERTER_FINISHED may be returned even if G_CONVERTER_INPUT_AT_END is
-	// not set, for instance in a decompression converter where the end of data
-	// is detectable from the data (and there might even be other data after the
-	// end of the compressed data).
-	//
-	// When some data has successfully been converted @bytes_read and is set to
-	// the number of bytes read from @inbuf, and @bytes_written is set to
-	// indicate how many bytes was written to @outbuf. If there are more data to
-	// output or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified)
-	// then G_CONVERTER_CONVERTED is returned, and if no more data is to be
-	// output then G_CONVERTER_FINISHED is returned.
-	//
-	// On error G_CONVERTER_ERROR is returned and @error is set accordingly.
-	// Some errors need special handling:
-	//
-	// G_IO_ERROR_NO_SPACE is returned if there is not enough space to write the
-	// resulting converted data, the application should call the function again
-	// with a larger @outbuf to continue.
-	//
-	// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to
-	// fully determine what the conversion should produce, and the
-	// G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with
-	// an incomplete multibyte sequence when converting text, or when a regexp
-	// matches up to the end of the input (and may match further input). It may
-	// also happen when @inbuf_size is zero and there is no more data to
-	// produce.
-	//
-	// When this happens the application should read more input and then call
-	// the function again. If further input shows that there is no more data
-	// call the function again with the same data but with the
-	// G_CONVERTER_INPUT_AT_END flag set. This may cause the conversion to
-	// finish as e.g. in the regexp match case (or, to fail again with
-	// G_IO_ERROR_PARTIAL_INPUT in e.g. a charset conversion where the input is
-	// actually partial).
-	//
-	// After g_converter_convert() has returned G_CONVERTER_FINISHED the
-	// converter object is in an invalid state where its not allowed to call
-	// g_converter_convert() anymore. At this time you can only free the object
-	// or call g_converter_reset() to reset it to the initial state.
-	//
-	// If the flag G_CONVERTER_FLUSH is set then conversion is modified to try
-	// to write out all internal state to the output. The application has to
-	// call the function multiple times with the flag set, and when the
-	// available input has been consumed and all internal state has been
-	// produced then G_CONVERTER_FLUSHED (or G_CONVERTER_FINISHED if really at
-	// the end) is returned instead of G_CONVERTER_CONVERTED. This is somewhat
-	// similar to what happens at the end of the input stream, but done in the
-	// middle of the data.
-	//
-	// This has different meanings for different conversions. For instance in a
-	// compression converter it would mean that we flush all the compression
-	// state into output such that if you uncompress the compressed data you get
-	// back all the input data. Doing this may make the final file larger due to
-	// padding though. Another example is a regexp conversion, where if you at
-	// the end of the flushed data have a match, but there is also a potential
-	// longer match. In the non-flushed case we would ask for more input, but
-	// when flushing we treat this as the end of input and do the match.
-	//
-	// Flushing is not always possible (like if a charset converter flushes at a
-	// partial multibyte sequence). Converters are supposed to try to produce as
-	// much output as possible and then return an error (typically
-	// G_IO_ERROR_PARTIAL_INPUT).
-	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
-	// Reset resets all internal state in the converter, making it behave as if
-	// it was just created. If the converter has any internal state that would
-	// produce output then that output is lost.
-	Reset()
 }
 
 // Converter is implemented by objects that convert binary data in various ways.
@@ -6263,23 +5787,6 @@ func (c converter) Reset() {
 	C.g_converter_reset(_arg0)
 }
 
-// DBusInterfaceOverrider contains methods that are overridable. This
-// interface is a subset of the interface DBusInterface.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DBusInterfaceOverrider interface {
-	// DupObject gets the BusObject that @interface_ belongs to, if any.
-	DupObject() DBusObject
-	// Info gets D-Bus introspection information for the D-Bus interface
-	// implemented by @interface_.
-	Info() *DBusInterfaceInfo
-	// SetObject sets the BusObject for @interface_ to @object.
-	//
-	// Note that @interface_ will hold a weak reference to @object.
-	SetObject(object DBusObject)
-}
-
 // DBusInterface: the BusInterface type is the base type for D-Bus interfaces
 // both on the service side (see BusInterfaceSkeleton) and client side (see
 // BusProxy).
@@ -6358,23 +5865,6 @@ func (i dBusInterface) SetObject(object DBusObject) {
 	C.g_dbus_interface_set_object(_arg0, _arg1)
 }
 
-// DBusObjectOverrider contains methods that are overridable. This
-// interface is a subset of the interface DBusObject.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DBusObjectOverrider interface {
-	// Interface gets the D-Bus interface with name @interface_name associated
-	// with @object, if any.
-	Interface(interfaceName string) DBusInterface
-	// ObjectPath gets the object path for @object.
-	ObjectPath() string
-
-	InterfaceAdded(interface_ DBusInterface)
-
-	InterfaceRemoved(interface_ DBusInterface)
-}
-
 // DBusObject: the BusObject type is the base type for D-Bus objects on both the
 // service side (see BusObjectSkeleton) and the client side (see
 // BusObjectProxy). It is essentially just a container of interfaces.
@@ -6440,29 +5930,6 @@ func (o dBusObject) ObjectPath() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// DBusObjectManagerOverrider contains methods that are overridable. This
-// interface is a subset of the interface DBusObjectManager.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DBusObjectManagerOverrider interface {
-	// Interface gets the interface proxy for @interface_name at @object_path,
-	// if any.
-	Interface(objectPath string, interfaceName string) DBusInterface
-	// Object gets the BusObjectProxy at @object_path, if any.
-	Object(objectPath string) DBusObject
-	// ObjectPath gets the object path that @manager is for.
-	ObjectPath() string
-
-	InterfaceAdded(object DBusObject, interface_ DBusInterface)
-
-	InterfaceRemoved(object DBusObject, interface_ DBusInterface)
-
-	ObjectAdded(object DBusObject)
-
-	ObjectRemoved(object DBusObject)
 }
 
 // DBusObjectManager: the BusObjectManager type is the base type for service-
@@ -6558,156 +6025,6 @@ func (m dBusObjectManager) ObjectPath() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// DatagramBasedOverrider contains methods that are overridable. This
-// interface is a subset of the interface DatagramBased.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DatagramBasedOverrider interface {
-	// ConditionCheck checks on the readiness of @datagram_based to perform
-	// operations. The operations specified in @condition are checked for and
-	// masked against the currently-satisfied conditions on @datagram_based. The
-	// result is returned.
-	//
-	// G_IO_IN will be set in the return value if data is available to read with
-	// g_datagram_based_receive_messages(), or if the connection is closed
-	// remotely (EOS); and if the datagram_based has not been closed locally
-	// using some implementation-specific method (such as g_socket_close() or
-	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
-	//
-	// If the connection is shut down or closed (by calling g_socket_close() or
-	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
-	// example), all calls to this function will return G_IO_ERROR_CLOSED.
-	//
-	// G_IO_OUT will be set if it is expected that at least one byte can be sent
-	// using g_datagram_based_send_messages() without blocking. It will not be
-	// set if the datagram_based has been closed locally.
-	//
-	// G_IO_HUP will be set if the connection has been closed locally.
-	//
-	// G_IO_ERR will be set if there was an asynchronous error in transmitting
-	// data previously enqueued using g_datagram_based_send_messages().
-	//
-	// Note that on Windows, it is possible for an operation to return
-	// G_IO_ERROR_WOULD_BLOCK even immediately after
-	// g_datagram_based_condition_check() has claimed that the Based is ready
-	// for writing. Rather than calling g_datagram_based_condition_check() and
-	// then writing to the Based if it succeeds, it is generally better to
-	// simply try writing right away, and try again later if the initial attempt
-	// returns G_IO_ERROR_WOULD_BLOCK.
-	//
-	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
-	// conditions will always be set in the output if they are true. Apart from
-	// these flags, the output is guaranteed to be masked by @condition.
-	//
-	// This call never blocks.
-	ConditionCheck(condition glib.IOCondition) glib.IOCondition
-	// ConditionWait waits for up to @timeout microseconds for condition to
-	// become true on @datagram_based. If the condition is met, true is
-	// returned.
-	//
-	// If @cancellable is cancelled before the condition is met, or if @timeout
-	// is reached before the condition is met, then false is returned and @error
-	// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error
-	// ReceiveMessages: receive one or more data messages from @datagram_based
-	// in one go.
-	//
-	// @messages must point to an array of Message structs and @num_messages
-	// must be the length of this array. Each Message contains a pointer to an
-	// array of Vector structs describing the buffers that the data received in
-	// each message will be written to.
-	//
-	// @flags modify how all messages are received. The commonly available
-	// arguments for this are available in the MsgFlags enum, but the values
-	// there are the same as the system values, and the flags are passed in
-	// as-is, so you can pass in system-specific flags too. These flags affect
-	// the overall receive operation. Flags affecting individual messages are
-	// returned in Message.flags.
-	//
-	// The other members of Message are treated as described in its
-	// documentation.
-	//
-	// If @timeout is negative the call will block until @num_messages have been
-	// received, the connection is closed remotely (EOS), @cancellable is
-	// cancelled, or an error occurs.
-	//
-	// If @timeout is 0 the call will return up to @num_messages without
-	// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
-	// operating system to be received.
-	//
-	// If @timeout is positive the call will block on the same conditions as if
-	// @timeout were negative. If the timeout is reached before any messages are
-	// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
-	// number of messages received before timing out. (Note: This is effectively
-	// the behaviour of `MSG_WAITFORONE` with recvmmsg().)
-	//
-	// To be notified when messages are available, wait for the G_IO_IN
-	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
-	// from g_datagram_based_receive_messages() even if you were previously
-	// notified of a G_IO_IN condition.
-	//
-	// If the remote peer closes the connection, any messages queued in the
-	// underlying receive buffer will be returned, and subsequent calls to
-	// g_datagram_based_receive_messages() will return 0 (with no error set).
-	//
-	// If the connection is shut down or closed (by calling g_socket_close() or
-	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
-	// example), all calls to this function will return G_IO_ERROR_CLOSED.
-	//
-	// On error -1 is returned and @error is set accordingly. An error will only
-	// be returned if zero messages could be received; otherwise the number of
-	// messages successfully received before the error will be returned. If
-	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
-	// other error.
-	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
-	// SendMessages: send one or more data messages from @datagram_based in one
-	// go.
-	//
-	// @messages must point to an array of Message structs and @num_messages
-	// must be the length of this array. Each Message contains an address to
-	// send the data to, and a pointer to an array of Vector structs to describe
-	// the buffers that the data to be sent for each message will be gathered
-	// from.
-	//
-	// @flags modify how the message is sent. The commonly available arguments
-	// for this are available in the MsgFlags enum, but the values there are the
-	// same as the system values, and the flags are passed in as-is, so you can
-	// pass in system-specific flags too.
-	//
-	// The other members of Message are treated as described in its
-	// documentation.
-	//
-	// If @timeout is negative the call will block until @num_messages have been
-	// sent, @cancellable is cancelled, or an error occurs.
-	//
-	// If @timeout is 0 the call will send up to @num_messages without blocking,
-	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
-	// messages.
-	//
-	// If @timeout is positive the call will block on the same conditions as if
-	// @timeout were negative. If the timeout is reached before any messages are
-	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
-	// number of messages sent before timing out.
-	//
-	// To be notified when messages can be sent, wait for the G_IO_OUT
-	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
-	// from g_datagram_based_send_messages() even if you were previously
-	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-	// common due to the way the underlying APIs work.)
-	//
-	// If the connection is shut down or closed (by calling g_socket_close() or
-	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
-	// example), all calls to this function will return G_IO_ERROR_CLOSED.
-	//
-	// On error -1 is returned and @error is set accordingly. An error will only
-	// be returned if zero messages could be sent; otherwise the number of
-	// messages successfully sent before the error will be returned. If
-	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
-	// other error.
-	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
 }
 
 // DatagramBased: a Based is a networking interface for representing
@@ -7018,23 +6335,6 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	return _gint, _goerr
 }
 
-// DesktopAppInfoLookupOverrider contains methods that are overridable. This
-// interface is a subset of the interface DesktopAppInfoLookup.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DesktopAppInfoLookupOverrider interface {
-	// DefaultForURIScheme gets the default application for launching
-	// applications using this URI scheme for a particular AppInfoLookup
-	// implementation.
-	//
-	// The AppInfoLookup interface and this function is used to implement
-	// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There
-	// is no reason for applications to use it directly. Applications should use
-	// g_app_info_get_default_for_uri_scheme().
-	DefaultForURIScheme(uriScheme string) AppInfo
-}
-
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
 // using the following functions.
 type DesktopAppInfoLookup interface {
@@ -7088,75 +6388,6 @@ func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
 	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AppInfo)
 
 	return _appInfo
-}
-
-// DriveOverrider contains methods that are overridable. This
-// interface is a subset of the interface Drive.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DriveOverrider interface {
-	// CanEject checks if a drive can be ejected.
-	CanEject() bool
-	// CanPollForMedia checks if a drive can be polled for media changes.
-	CanPollForMedia() bool
-	// CanStart checks if a drive can be started.
-	CanStart() bool
-	// CanStartDegraded checks if a drive can be started degraded.
-	CanStartDegraded() bool
-	// CanStop checks if a drive can be stopped.
-	CanStop() bool
-
-	Changed()
-
-	Disconnected()
-
-	EjectButton()
-	// EjectFinish finishes ejecting a drive.
-	EjectFinish(result AsyncResult) error
-	// EjectWithOperationFinish finishes ejecting a drive. If any errors
-	// occurred during the operation, @error will be set to contain the errors
-	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) error
-	// EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
-	// g_drive_get_identifier() to obtain the identifiers themselves.
-	EnumerateIdentifiers() []string
-	// Icon gets the icon for @drive.
-	Icon() Icon
-	// Identifier gets the identifier of the given kind for @drive. The only
-	// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
-	Identifier(kind string) string
-	// Name gets the name of @drive.
-	Name() string
-	// SortKey gets the sort key for @drive, if any.
-	SortKey() string
-	// StartStopType gets a hint about how a drive can be started/stopped.
-	StartStopType() DriveStartStopType
-	// SymbolicIcon gets the icon for @drive.
-	SymbolicIcon() Icon
-	// HasMedia checks if the @drive has media. Note that the OS may not be
-	// polling the drive for media changes; see
-	// g_drive_is_media_check_automatic() for more details.
-	HasMedia() bool
-	// HasVolumes: check if @drive has any mountable volumes.
-	HasVolumes() bool
-	// IsMediaCheckAutomatic checks if @drive is capable of automatically
-	// detecting media changes.
-	IsMediaCheckAutomatic() bool
-	// IsMediaRemovable checks if the @drive supports removable media.
-	IsMediaRemovable() bool
-	// IsRemovable checks if the #GDrive and/or its media is considered
-	// removable by the user. See g_drive_is_media_removable().
-	IsRemovable() bool
-	// PollForMediaFinish finishes an operation started with
-	// g_drive_poll_for_media() on a drive.
-	PollForMediaFinish(result AsyncResult) error
-	// StartFinish finishes starting a drive.
-	StartFinish(result AsyncResult) error
-
-	StopButton()
-	// StopFinish finishes stopping a drive.
-	StopFinish(result AsyncResult) error
 }
 
 // Drive: #GDrive - this represent a piece of hardware connected to the machine.
@@ -7729,85 +6960,6 @@ func (c dtlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	_arg1 = C.GTlsCertificateFlags(flags)
 
 	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
-}
-
-// DTLSConnectionOverrider contains methods that are overridable. This
-// interface is a subset of the interface DTLSConnection.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DTLSConnectionOverrider interface {
-	AcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
-
-	BindingData(typ TLSChannelBindingType, data []byte) error
-	// NegotiatedProtocol gets the name of the application-layer protocol
-	// negotiated during the handshake.
-	//
-	// If the peer did not use the ALPN extension, or did not advertise a
-	// protocol that matched one of @conn's protocols, or the TLS backend does
-	// not support ALPN, then this will be nil. See
-	// g_dtls_connection_set_advertised_protocols().
-	NegotiatedProtocol() string
-	// Handshake attempts a TLS handshake on @conn.
-	//
-	// On the client side, it is never necessary to call this method; although
-	// the connection needs to perform a handshake after connecting, Connection
-	// will handle this for you automatically when you try to send or receive
-	// data on the connection. You can call g_dtls_connection_handshake()
-	// manually if you want to know whether the initial handshake succeeded or
-	// failed (as opposed to just immediately trying to use @conn to read or
-	// write, in which case, if it fails, it may not be possible to tell if it
-	// failed before or after completing the handshake), but beware that servers
-	// may reject client authentication after the handshake has completed, so a
-	// successful handshake does not indicate the connection will be usable.
-	//
-	// Likewise, on the server side, although a handshake is necessary at the
-	// beginning of the communication, you do not need to call this function
-	// explicitly unless you want clearer error reporting.
-	//
-	// Previously, calling g_dtls_connection_handshake() after the initial
-	// handshake would trigger a rehandshake; however, this usage was deprecated
-	// in GLib 2.60 because rehandshaking was removed from the TLS protocol in
-	// TLS 1.3. Since GLib 2.64, calling this function after the initial
-	// handshake will no longer do anything.
-	//
-	// Connection::accept_certificate may be emitted during the handshake.
-	Handshake(cancellable Cancellable) error
-	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
-	// g_dtls_connection_handshake() for more information.
-	HandshakeFinish(result AsyncResult) error
-	// SetAdvertisedProtocols sets the list of application-layer protocols to
-	// advertise that the caller is willing to speak on this connection. The
-	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
-	// negotiate a compatible protocol with the peer; use
-	// g_dtls_connection_get_negotiated_protocol() to find the negotiated
-	// protocol after the handshake. Specifying nil for the the value of
-	// @protocols will disable ALPN negotiation.
-	//
-	// See IANA TLS ALPN Protocol IDs
-	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
-	// for a list of registered protocol IDs.
-	SetAdvertisedProtocols(protocols []string)
-	// Shutdown: shut down part or all of a DTLS connection.
-	//
-	// If @shutdown_read is true then the receiving side of the connection is
-	// shut down, and further reading is disallowed. Subsequent calls to
-	// g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
-	//
-	// If @shutdown_write is true then the sending side of the connection is
-	// shut down, and further writing is disallowed. Subsequent calls to
-	// g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
-	//
-	// It is allowed for both @shutdown_read and @shutdown_write to be TRUE —
-	// this is equivalent to calling g_dtls_connection_close().
-	//
-	// If @cancellable is cancelled, the Connection may be left partially-closed
-	// and any pending untransmitted data may be lost. Call
-	// g_dtls_connection_shutdown() again to complete closing the Connection.
-	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) error
-	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
-	// g_dtls_connection_shutdown() for more information.
-	ShutdownFinish(result AsyncResult) error
 }
 
 // DTLSConnection is the base DTLS connection class type, which wraps a Based
@@ -8416,592 +7568,6 @@ func marshalDTLSServerConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDTLSServerConnection(obj), nil
-}
-
-// FileOverrider contains methods that are overridable. This
-// interface is a subset of the interface File.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type FileOverrider interface {
-	// AppendTo gets an output stream for appending data to the file. If the
-	// file doesn't already exist it is created.
-	//
-	// By default files created are generally readable by everyone, but if you
-	// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
-	// the current user, to the level that is supported on the target
-	// filesystem.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// Some file systems don't allow all file names, and may return an
-	// G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
-	// G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
-	// too, and depend on what kind of filesystem the file is on.
-	AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
-	// AppendToFinish finishes an asynchronous file append operation started
-	// with g_file_append_to_async().
-	AppendToFinish(res AsyncResult) (FileOutputStream, error)
-	// CopyFinish finishes copying the file started with g_file_copy_async().
-	CopyFinish(res AsyncResult) error
-	// Create creates a new file and returns an output stream for writing to it.
-	// The file must not already exist.
-	//
-	// By default files created are generally readable by everyone, but if you
-	// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
-	// the current user, to the level that is supported on the target
-	// filesystem.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If a file or directory with this name already exists the
-	// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
-	// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
-	// if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
-	// Other errors are possible too, and depend on what kind of filesystem the
-	// file is on.
-	Create(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
-	// CreateFinish finishes an asynchronous file create operation started with
-	// g_file_create_async().
-	CreateFinish(res AsyncResult) (FileOutputStream, error)
-	// CreateReadwrite creates a new file and returns a stream for reading and
-	// writing to it. The file must not already exist.
-	//
-	// By default files created are generally readable by everyone, but if you
-	// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
-	// the current user, to the level that is supported on the target
-	// filesystem.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If a file or directory with this name already exists, the
-	// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
-	// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
-	// if the name is too long, G_IO_ERROR_FILENAME_TOO_LONG will be returned.
-	// Other errors are possible too, and depend on what kind of filesystem the
-	// file is on.
-	//
-	// Note that in many non-local file cases read and write streams are not
-	// supported, so make sure you really need to do read and write streaming,
-	// rather than just opening for reading or writing.
-	CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error)
-	// CreateReadwriteFinish finishes an asynchronous file create operation
-	// started with g_file_create_readwrite_async().
-	CreateReadwriteFinish(res AsyncResult) (FileIOStream, error)
-	// DeleteFile deletes a file. If the @file is a directory, it will only be
-	// deleted if it is empty. This has the same semantics as g_unlink().
-	//
-	// If @file doesn’t exist, G_IO_ERROR_NOT_FOUND will be returned. This
-	// allows for deletion to be implemented avoiding time-of-check to
-	// time-of-use races
-	// (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
-	//
-	//    g_autoptr(GError) local_error = NULL;
-	//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
-	//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-	//      {
-	//        // deletion failed for some reason other than the file not existing:
-	//        // so report the error
-	//        g_warning ("Failed to delete s: s",
-	//                   g_file_peek_path (my_file), local_error->message);
-	//      }
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	DeleteFile(cancellable Cancellable) error
-	// DeleteFileFinish finishes deleting a file started with
-	// g_file_delete_async().
-	DeleteFileFinish(result AsyncResult) error
-	// Dup duplicates a #GFile handle. This operation does not duplicate the
-	// actual file or directory represented by the #GFile; see g_file_copy() if
-	// attempting to copy a file.
-	//
-	// g_file_dup() is useful when a second handle is needed to the same
-	// underlying file, for use in a separate thread (#GFile is not
-	// thread-safe). For use within the same thread, use g_object_ref() to
-	// increment the existing object’s reference count.
-	//
-	// This call does no blocking I/O.
-	Dup() File
-	// EjectMountableFinish finishes an asynchronous eject operation started by
-	// g_file_eject_mountable().
-	EjectMountableFinish(result AsyncResult) error
-	// EjectMountableWithOperationFinish finishes an asynchronous eject
-	// operation started by g_file_eject_mountable_with_operation().
-	EjectMountableWithOperationFinish(result AsyncResult) error
-	// EnumerateChildren gets the requested information about the files in a
-	// directory. The result is a Enumerator object that will give out Info
-	// objects for all the files in the directory.
-	//
-	// The @attributes value is a string that specifies the file attributes that
-	// should be gathered. It is not an error if it's not possible to read a
-	// particular requested attribute from a file - it just won't be set.
-	// @attributes should be a comma-separated list of attributes or attribute
-	// wildcards. The wildcard "*" means all attributes, and a wildcard like
-	// "standard::*" means all attributes in the standard namespace. An example
-	// attribute query be "standard::*,owner::user". The standard attributes are
-	// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY
-	// error will be returned. Other errors are possible too.
-	EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileEnumerator, error)
-	// EnumerateChildrenFinish finishes an async enumerate children operation.
-	// See g_file_enumerate_children_async().
-	EnumerateChildrenFinish(res AsyncResult) (FileEnumerator, error)
-	// Equal checks if the two given #GFiles refer to the same file.
-	//
-	// Note that two #GFiles that differ can still refer to the same file on the
-	// filesystem due to various forms of filename aliasing.
-	//
-	// This call does no blocking I/O.
-	Equal(file2 File) bool
-	// FindEnclosingMount gets a #GMount for the #GFile.
-	//
-	// #GMount is returned only for user interesting locations, see Monitor. If
-	// the Iface for @file does not have a #mount, @error will be set to
-	// G_IO_ERROR_NOT_FOUND and nil #will be returned.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	FindEnclosingMount(cancellable Cancellable) (Mount, error)
-	// FindEnclosingMountFinish finishes an asynchronous find mount request. See
-	// g_file_find_enclosing_mount_async().
-	FindEnclosingMountFinish(res AsyncResult) (Mount, error)
-	// Basename gets the base name (the last component of the path) for a given
-	// #GFile.
-	//
-	// If called for the top level of a system (such as the filesystem root or a
-	// uri like sftp://host/) it will return a single directory separator (and
-	// on Windows, possibly a drive letter).
-	//
-	// The base name is a byte string (not UTF-8). It has no defined encoding or
-	// rules other than it may not contain zero bytes. If you want to use
-	// filenames in a user interface you should use the display name that you
-	// can get by requesting the G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
-	// attribute with g_file_query_info().
-	//
-	// This call does no blocking I/O.
-	Basename() string
-	// ChildForDisplayName gets the child of @file for a given @display_name
-	// (i.e. a UTF-8 version of the name). If this function fails, it returns
-	// nil and @error will be set. This is very useful when constructing a
-	// #GFile for a new file and the user entered the filename in the user
-	// interface, for instance when you select a directory and type a filename
-	// in the file selector.
-	//
-	// This call does no blocking I/O.
-	ChildForDisplayName(displayName string) (File, error)
-	// Parent gets the parent directory for the @file. If the @file represents
-	// the root directory of the file system, then nil will be returned.
-	//
-	// This call does no blocking I/O.
-	Parent() File
-	// ParseName gets the parse name of the @file. A parse name is a UTF-8
-	// string that describes the file such that one can get the #GFile back
-	// using g_file_parse_name().
-	//
-	// This is generally used to show the #GFile as a nice full-pathname kind of
-	// string in a user interface, like in a location entry.
-	//
-	// For local files with names that can safely be converted to UTF-8 the
-	// pathname is used, otherwise the IRI is used (a form of URI that allows
-	// UTF-8 characters unescaped).
-	//
-	// This call does no blocking I/O.
-	ParseName() string
-	// Path gets the local pathname for #GFile, if one exists. If non-nil, this
-	// is guaranteed to be an absolute, canonical path. It might contain
-	// symlinks.
-	//
-	// This call does no blocking I/O.
-	Path() string
-	// RelativePath gets the path for @descendant relative to @parent.
-	//
-	// This call does no blocking I/O.
-	RelativePath(descendant File) string
-	// URI gets the URI for the @file.
-	//
-	// This call does no blocking I/O.
-	URI() string
-	// URIScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme
-	// as:
-	//
-	//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-	//
-	// Common schemes include "file", "http", "ftp", etc.
-	//
-	// The scheme can be different from the one used to construct the #GFile, in
-	// that it might be replaced with one that is logically equivalent to the
-	// #GFile.
-	//
-	// This call does no blocking I/O.
-	URIScheme() string
-	// HasURIScheme checks to see if a #GFile has a given URI scheme.
-	//
-	// This call does no blocking I/O.
-	HasURIScheme(uriScheme string) bool
-	// Hash creates a hash value for a #GFile.
-	//
-	// This call does no blocking I/O.
-	Hash() uint
-	// IsNative checks to see if a file is native to the platform.
-	//
-	// A native file is one expressed in the platform-native filename format,
-	// e.g. "C:\Windows" or "/usr/bin/". This does not mean the file is local,
-	// as it might be on a locally mounted remote filesystem.
-	//
-	// On some systems non-native files may be available using the native
-	// filesystem via a userspace filesystem (FUSE), in these cases this call
-	// will return false, but g_file_get_path() will still return a native path.
-	//
-	// This call does no blocking I/O.
-	IsNative() bool
-	// MakeDirectory creates a directory. Note that this will only create a
-	// child directory of the immediate parent directory of the path or URI
-	// given by the #GFile. To recursively create directories, see
-	// g_file_make_directory_with_parents(). This function will fail if the
-	// parent directory does not exist, setting @error to G_IO_ERROR_NOT_FOUND.
-	// If the file system doesn't support creating directories, this function
-	// will fail, setting @error to G_IO_ERROR_NOT_SUPPORTED.
-	//
-	// For a local #GFile the newly created directory will have the default
-	// (current) ownership and permissions of the current process.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	MakeDirectory(cancellable Cancellable) error
-	// MakeDirectoryFinish finishes an asynchronous directory creation, started
-	// with g_file_make_directory_async().
-	MakeDirectoryFinish(result AsyncResult) error
-	// MakeSymbolicLink creates a symbolic link named @file which contains the
-	// string @symlink_value.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	MakeSymbolicLink(symlinkValue string, cancellable Cancellable) error
-	// MeasureDiskUsageFinish collects the results from an earlier call to
-	// g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for
-	// more information.
-	MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error)
-	// MonitorDir obtains a directory monitor for the given file. This may fail
-	// if directory monitoring is not supported.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// It does not make sense for @flags to contain
-	// G_FILE_MONITOR_WATCH_HARD_LINKS, since hard links can not be made to
-	// directories. It is not possible to monitor all the files in a directory
-	// for changes made via hard links; if you want to do this then you must
-	// register individual watches with g_file_monitor().
-	MonitorDir(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error)
-	// MonitorFile obtains a file monitor for the given file. If no file
-	// notification mechanism exists, then regular polling of the file is used.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If @flags contains G_FILE_MONITOR_WATCH_HARD_LINKS then the monitor will
-	// also attempt to report changes made to the file via another filename (ie,
-	// a hard link). Without this flag, you can only rely on changes made
-	// through the filename contained in @file to be reported. Using this flag
-	// may result in an increase in resource usage, and may not have any effect
-	// depending on the Monitor backend and/or filesystem type.
-	MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error)
-	// MountEnclosingVolumeFinish finishes a mount operation started by
-	// g_file_mount_enclosing_volume().
-	MountEnclosingVolumeFinish(result AsyncResult) error
-	// MountMountableFinish finishes a mount operation. See
-	// g_file_mount_mountable() for details.
-	//
-	// Finish an asynchronous mount operation that was started with
-	// g_file_mount_mountable().
-	MountMountableFinish(result AsyncResult) (File, error)
-	// OpenReadwrite opens an existing file for reading and writing. The result
-	// is a IOStream that can be used to read and write the contents of the
-	// file.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
-	// will be returned. Other errors are possible too, and depend on what kind
-	// of filesystem the file is on. Note that in many non-local file cases read
-	// and write streams are not supported, so make sure you really need to do
-	// read and write streaming, rather than just opening for reading or
-	// writing.
-	OpenReadwrite(cancellable Cancellable) (FileIOStream, error)
-	// OpenReadwriteFinish finishes an asynchronous file read operation started
-	// with g_file_open_readwrite_async().
-	OpenReadwriteFinish(res AsyncResult) (FileIOStream, error)
-	// PollMountableFinish finishes a poll operation. See
-	// g_file_poll_mountable() for details.
-	//
-	// Finish an asynchronous poll operation that was polled with
-	// g_file_poll_mountable().
-	PollMountableFinish(result AsyncResult) error
-	// PrefixMatches checks whether @file has the prefix specified by @prefix.
-	//
-	// In other words, if the names of initial elements of @file's pathname
-	// match @prefix. Only full pathname elements are matched, so a path like
-	// /foo is not considered a prefix of /foobar, only of /foo/bar.
-	//
-	// A #GFile is not a prefix of itself. If you want to check for equality,
-	// use g_file_equal().
-	//
-	// This call does no I/O, as it works purely on names. As such it can
-	// sometimes return false even if @file is inside a @prefix (from a
-	// filesystem point of view), because the prefix of @file is an alias of
-	// @prefix.
-	PrefixMatches(file File) bool
-	// QueryFilesystemInfo: similar to g_file_query_info(), but obtains
-	// information about the filesystem the @file is on, rather than the file
-	// itself. For instance the amount of space available and the type of the
-	// filesystem.
-	//
-	// The @attributes value is a string that specifies the attributes that
-	// should be gathered. It is not an error if it's not possible to read a
-	// particular requested attribute from a file - it just won't be set.
-	// @attributes should be a comma-separated list of attributes or attribute
-	// wildcards. The wildcard "*" means all attributes, and a wildcard like
-	// "filesystem::*" means all attributes in the filesystem namespace. The
-	// standard namespace for filesystem attributes is "filesystem". Common
-	// attributes of interest are FILE_ATTRIBUTE_FILESYSTEM_SIZE (the total size
-	// of the filesystem in bytes), FILE_ATTRIBUTE_FILESYSTEM_FREE (number of
-	// bytes available), and FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the
-	// filesystem).
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. Other errors are possible too, and depend on what kind of
-	// filesystem the file is on.
-	QueryFilesystemInfo(attributes string, cancellable Cancellable) (FileInfo, error)
-	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
-	// See g_file_query_filesystem_info_async().
-	QueryFilesystemInfoFinish(res AsyncResult) (FileInfo, error)
-	// QueryInfo gets the requested information about specified @file. The
-	// result is a Info object that contains key-value attributes (such as the
-	// type or size of the file).
-	//
-	// The @attributes value is a string that specifies the file attributes that
-	// should be gathered. It is not an error if it's not possible to read a
-	// particular requested attribute from a file - it just won't be set.
-	// @attributes should be a comma-separated list of attributes or attribute
-	// wildcards. The wildcard "*" means all attributes, and a wildcard like
-	// "standard::*" means all attributes in the standard namespace. An example
-	// attribute query be "standard::*,owner::user". The standard attributes are
-	// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// For symlinks, normally the information about the target of the symlink is
-	// returned, rather than information about the symlink itself. However if
-	// you pass FILE_QUERY_INFO_NOFOLLOW_SYMLINKS in @flags the information
-	// about the symlink itself will be returned. Also, for symlinks that point
-	// to non-existing files the information about the symlink itself will be
-	// returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. Other errors are possible too, and depend on what kind of
-	// filesystem the file is on.
-	QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileInfo, error)
-	// QueryInfoFinish finishes an asynchronous file info query. See
-	// g_file_query_info_async().
-	QueryInfoFinish(res AsyncResult) (FileInfo, error)
-	// QuerySettableAttributes: obtain the list of settable attributes for the
-	// file.
-	//
-	// Returns the type and full attribute name of all the attributes that can
-	// be set on this file. This doesn't mean setting it will always succeed
-	// though, you might get an access failure, or some specific file may not
-	// support a specific attribute.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	QuerySettableAttributes(cancellable Cancellable) (*FileAttributeInfoList, error)
-	// QueryWritableNamespaces: obtain the list of attribute namespaces where
-	// new attributes can be created by a user. An example of this is extended
-	// attributes (in the "xattr" namespace).
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeInfoList, error)
-	// ReadFinish finishes an asynchronous file read operation started with
-	// g_file_read_async().
-	ReadFinish(res AsyncResult) (FileInputStream, error)
-	// ReadFn opens a file for reading. The result is a InputStream that can be
-	// used to read the contents of the file.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
-	// will be returned. Other errors are possible too, and depend on what kind
-	// of filesystem the file is on.
-	ReadFn(cancellable Cancellable) (FileInputStream, error)
-	// Replace returns an output stream for overwriting the file, possibly
-	// creating a backup copy of the file first. If the file doesn't exist, it
-	// will be created.
-	//
-	// This will try to replace the file in the safest way possible so that any
-	// errors during the writing will not affect an already existing copy of the
-	// file. For instance, for local files it may write to a temporary file and
-	// then atomically rename over the destination when the stream is closed.
-	//
-	// By default files created are generally readable by everyone, but if you
-	// pass FILE_CREATE_PRIVATE in @flags the file will be made readable only to
-	// the current user, to the level that is supported on the target
-	// filesystem.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If you pass in a non-nil @etag value and @file already exists, then this
-	// value is compared to the current entity tag of the file, and if they
-	// differ an G_IO_ERROR_WRONG_ETAG error is returned. This generally means
-	// that the file has been changed since you last read it. You can get the
-	// new etag from g_file_output_stream_get_etag() after you've finished
-	// writing and closed the OutputStream. When you load a new file you can use
-	// g_file_input_stream_query_info() to get the etag of the file.
-	//
-	// If @make_backup is true, this function will attempt to make a backup of
-	// the current file before overwriting it. If this fails a
-	// G_IO_ERROR_CANT_CREATE_BACKUP error will be returned. If you want to
-	// replace anyway, try again with @make_backup set to false.
-	//
-	// If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
-	// returned, and if the file is some other form of non-regular file then a
-	// G_IO_ERROR_NOT_REGULAR_FILE error will be returned. Some file systems
-	// don't allow all file names, and may return an G_IO_ERROR_INVALID_FILENAME
-	// error, and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be
-	// returned. Other errors are possible too, and depend on what kind of
-	// filesystem the file is on.
-	Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
-	// ReplaceFinish finishes an asynchronous file replace operation started
-	// with g_file_replace_async().
-	ReplaceFinish(res AsyncResult) (FileOutputStream, error)
-	// ReplaceReadwrite returns an output stream for overwriting the file in
-	// readwrite mode, possibly creating a backup copy of the file first. If the
-	// file doesn't exist, it will be created.
-	//
-	// For details about the behaviour, see g_file_replace() which does the same
-	// thing but returns an output stream only.
-	//
-	// Note that in many non-local file cases read and write streams are not
-	// supported, so make sure you really need to do read and write streaming,
-	// rather than just opening for reading or writing.
-	ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error)
-	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
-	// started with g_file_replace_readwrite_async().
-	ReplaceReadwriteFinish(res AsyncResult) (FileIOStream, error)
-	// ResolveRelativePath resolves a relative path for @file to an absolute
-	// path.
-	//
-	// This call does no blocking I/O.
-	ResolveRelativePath(relativePath string) File
-	// SetAttributesFinish finishes setting an attribute started in
-	// g_file_set_attributes_async().
-	SetAttributesFinish(result AsyncResult) (FileInfo, error)
-	// SetAttributesFromInfo tries to set all attributes in the Info on the
-	// target values, not stopping on the first error.
-	//
-	// If there is any error during this operation then @error will be set to
-	// the first error. Error on particular fields are flagged by setting the
-	// "status" field in the attribute value to
-	// G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING, which means you can also detect
-	// further errors.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) error
-	// SetDisplayName renames @file to the specified display name.
-	//
-	// The display name is converted from UTF-8 to the correct encoding for the
-	// target filesystem if possible and the @file is renamed to this.
-	//
-	// If you want to implement a rename operation in the user interface the
-	// edit name (FILE_ATTRIBUTE_STANDARD_EDIT_NAME) should be used as the
-	// initial value in the rename widget, and then the result after editing
-	// should be passed to g_file_set_display_name().
-	//
-	// On success the resulting converted filename is returned.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetDisplayName(displayName string, cancellable Cancellable) (File, error)
-	// SetDisplayNameFinish finishes setting a display name started with
-	// g_file_set_display_name_async().
-	SetDisplayNameFinish(res AsyncResult) (File, error)
-	// StartMountableFinish finishes a start operation. See
-	// g_file_start_mountable() for details.
-	//
-	// Finish an asynchronous start operation that was started with
-	// g_file_start_mountable().
-	StartMountableFinish(result AsyncResult) error
-	// StopMountableFinish finishes a stop operation, see
-	// g_file_stop_mountable() for details.
-	//
-	// Finish an asynchronous stop operation that was started with
-	// g_file_stop_mountable().
-	StopMountableFinish(result AsyncResult) error
-	// Trash sends @file to the "Trashcan", if possible. This is similar to
-	// deleting it, but the user can recover it before emptying the trashcan.
-	// Not all file systems support trashing, so this call can return the
-	// G_IO_ERROR_NOT_SUPPORTED error. Since GLib 2.66, the `x-gvfs-notrash`
-	// unix mount option can be used to disable g_file_trash() support for
-	// certain mounts, the G_IO_ERROR_NOT_SUPPORTED error will be returned in
-	// that case.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Trash(cancellable Cancellable) error
-	// TrashFinish finishes an asynchronous file trashing operation, started
-	// with g_file_trash_async().
-	TrashFinish(result AsyncResult) error
-	// UnmountMountableFinish finishes an unmount operation, see
-	// g_file_unmount_mountable() for details.
-	//
-	// Finish an asynchronous unmount operation that was started with
-	// g_file_unmount_mountable().
-	UnmountMountableFinish(result AsyncResult) error
-	// UnmountMountableWithOperationFinish finishes an unmount operation, see
-	// g_file_unmount_mountable_with_operation() for details.
-	//
-	// Finish an asynchronous unmount operation that was started with
-	// g_file_unmount_mountable_with_operation().
-	UnmountMountableWithOperationFinish(result AsyncResult) error
 }
 
 // File is a high level abstraction for manipulating files on a virtual file
@@ -11622,16 +10188,6 @@ func (f file) UnmountMountableWithOperationFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// FileDescriptorBasedOverrider contains methods that are overridable. This
-// interface is a subset of the interface FileDescriptorBased.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type FileDescriptorBasedOverrider interface {
-	// Fd gets the underlying file descriptor.
-	Fd() int
-}
-
 // FileDescriptorBased is implemented by streams (implementations of Stream or
 // Stream) that are based on file descriptors.
 //
@@ -11679,25 +10235,6 @@ func (f fileDescriptorBased) Fd() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// IconOverrider contains methods that are overridable. This
-// interface is a subset of the interface Icon.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type IconOverrider interface {
-	// Equal checks if two icons are equal.
-	Equal(icon2 Icon) bool
-	// Hash gets a hash for an icon.
-	Hash() uint
-	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
-	// be retrieved back by calling g_icon_deserialize() on the returned value.
-	// As serialization will avoid using raw icon data when possible, it only
-	// makes sense to transfer the #GVariant between processes on the same
-	// machine, (as opposed to over the network), and within the same file
-	// system namespace.
-	Serialize() *glib.Variant
 }
 
 // Icon is a very minimal interface for icons. It provides functions for
@@ -11829,53 +10366,6 @@ func (i icon) String() string {
 	return _utf8
 }
 
-// InitableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Initable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type InitableOverrider interface {
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	Init(cancellable Cancellable) error
-}
-
 // Initable is implemented by objects that can fail during initialization. If an
 // object implements this interface then it must be initialized as the first
 // thing after construction, either via g_initable_init() or
@@ -11978,32 +10468,6 @@ func (i initable) Init(cancellable Cancellable) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// ListModelOverrider contains methods that are overridable. This
-// interface is a subset of the interface ListModel.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ListModelOverrider interface {
-	// Item: get the item at @position. If @position is greater than the number
-	// of items in @list, nil is returned.
-	//
-	// nil is never returned for an index that is smaller than the length of the
-	// list. See g_list_model_get_n_items().
-	Item(position uint) gextras.Objector
-	// ItemType gets the type of the items in @list. All items returned from
-	// g_list_model_get_type() are of that type or a subtype, or are an
-	// implementation of that interface.
-	//
-	// The item type of a Model can not change during the life of the model.
-	ItemType() externglib.Type
-	// NItems gets the number of items in @list.
-	//
-	// Depending on the model implementation, calling this function may be less
-	// efficient than iterating the list with increasing values for @position
-	// until g_list_model_get_item() returns nil.
-	NItems() uint
 }
 
 // ListModel is an interface that represents a mutable list of #GObjects. Its
@@ -12173,20 +10637,6 @@ func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
 	C.g_list_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }
 
-// LoadableIconOverrider contains methods that are overridable. This
-// interface is a subset of the interface LoadableIcon.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type LoadableIconOverrider interface {
-	// Load loads a loadable icon. For the asynchronous version of this
-	// function, see g_loadable_icon_load_async().
-	Load(size int, cancellable Cancellable) (string, InputStream, error)
-	// LoadFinish finishes an asynchronous icon load started in
-	// g_loadable_icon_load_async().
-	LoadFinish(res AsyncResult) (string, InputStream, error)
-}
-
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon interface {
@@ -12271,15 +10721,6 @@ func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 	return _typ, _inputStream, _goerr
 }
 
-// MemoryMonitorOverrider contains methods that are overridable. This
-// interface is a subset of the interface MemoryMonitor.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type MemoryMonitorOverrider interface {
-	LowMemoryWarning(level MemoryMonitorWarningLevel)
-}
-
 // MemoryMonitor: Monitor will monitor system memory and suggest to the
 // application when to free memory so as to leave more room for other
 // applications. It is implemented on Linux using the Low Memory Monitor
@@ -12345,84 +10786,6 @@ func marshalMemoryMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMemoryMonitor(obj), nil
-}
-
-// MountOverrider contains methods that are overridable. This
-// interface is a subset of the interface Mount.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type MountOverrider interface {
-	// CanEject checks if @mount can be ejected.
-	CanEject() bool
-	// CanUnmount checks if @mount can be unmounted.
-	CanUnmount() bool
-
-	Changed()
-	// EjectFinish finishes ejecting a mount. If any errors occurred during the
-	// operation, @error will be set to contain the errors and false will be
-	// returned.
-	EjectFinish(result AsyncResult) error
-	// EjectWithOperationFinish finishes ejecting a mount. If any errors
-	// occurred during the operation, @error will be set to contain the errors
-	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) error
-	// DefaultLocation gets the default location of @mount. The default location
-	// of the given @mount is a path that reflects the main entry point for the
-	// user (e.g. the home directory, or the root of the volume).
-	DefaultLocation() File
-	// Drive gets the drive for the @mount.
-	//
-	// This is a convenience method for getting the #GVolume and then using that
-	// object to get the #GDrive.
-	Drive() Drive
-	// Icon gets the icon for @mount.
-	Icon() Icon
-	// Name gets the name of @mount.
-	Name() string
-	// Root gets the root directory on @mount.
-	Root() File
-	// SortKey gets the sort key for @mount, if any.
-	SortKey() string
-	// SymbolicIcon gets the symbolic icon for @mount.
-	SymbolicIcon() Icon
-	// UUID gets the UUID for the @mount. The reference is typically based on
-	// the file system UUID for the mount in question and should be considered
-	// an opaque string. Returns nil if there is no UUID available.
-	UUID() string
-	// Volume gets the volume for the @mount.
-	Volume() Volume
-	// GuessContentTypeFinish finishes guessing content types of @mount. If any
-	// errors occurred during the operation, @error will be set to contain the
-	// errors and false will be returned. In particular, you may get an
-	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
-	GuessContentTypeFinish(result AsyncResult) ([]string, error)
-	// GuessContentTypeSync tries to guess the type of content stored on @mount.
-	// Returns one or more textual identifiers of well-known content types
-	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
-	// camera memory cards. See the shared-mime-info
-	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-	// specification for more on x-content types.
-	//
-	// This is a synchronous operation and as such may block doing IO; see
-	// g_mount_guess_content_type() for the asynchronous version.
-	GuessContentTypeSync(forceRescan bool, cancellable Cancellable) ([]string, error)
-
-	PreUnmount()
-	// RemountFinish finishes remounting a mount. If any errors occurred during
-	// the operation, @error will be set to contain the errors and false will be
-	// returned.
-	RemountFinish(result AsyncResult) error
-	// UnmountFinish finishes unmounting a mount. If any errors occurred during
-	// the operation, @error will be set to contain the errors and false will be
-	// returned.
-	UnmountFinish(result AsyncResult) error
-	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
-	// occurred during the operation, @error will be set to contain the errors
-	// and false will be returned.
-	UnmountWithOperationFinish(result AsyncResult) error
-
-	Unmounted()
 }
 
 // Mount: the #GMount interface represents user-visible mounts. Note, when
@@ -12924,35 +11287,6 @@ func (m mount) Unshadow() {
 	C.g_mount_unshadow(_arg0)
 }
 
-// NetworkMonitorOverrider contains methods that are overridable. This
-// interface is a subset of the interface NetworkMonitor.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type NetworkMonitorOverrider interface {
-	// CanReach attempts to determine whether or not the host pointed to by
-	// @connectable can be reached, without actually trying to connect to it.
-	//
-	// This may return true even when Monitor:network-available is false, if,
-	// for example, @monitor can determine that @connectable refers to a host on
-	// a local network.
-	//
-	// If @monitor believes that an attempt to connect to @connectable will
-	// succeed, it will return true. Otherwise, it will return false and set
-	// @error to an appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
-	//
-	// Note that although this does not attempt to connect to @connectable, it
-	// may still block for a brief period of time (eg, trying to do multicast
-	// DNS on the local network), so if you do not want to block, you should use
-	// g_network_monitor_can_reach_async().
-	CanReach(connectable SocketConnectable, cancellable Cancellable) error
-	// CanReachFinish finishes an async network connectivity test. See
-	// g_network_monitor_can_reach_async().
-	CanReachFinish(result AsyncResult) error
-
-	NetworkChanged(networkAvailable bool)
-}
-
 // NetworkMonitor provides an easy-to-use cross-platform API for monitoring
 // network connectivity. On Linux, the available implementations are based on
 // the kernel's netlink interface and on NetworkManager.
@@ -13116,42 +11450,6 @@ func (m networkMonitor) NetworkMetered() bool {
 	return _ok
 }
 
-// PollableInputStreamOverrider contains methods that are overridable. This
-// interface is a subset of the interface PollableInputStream.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type PollableInputStreamOverrider interface {
-	// CanPoll checks if @stream is actually pollable. Some classes may
-	// implement InputStream but have only certain instances of that class be
-	// pollable. If this method returns false, then the behavior of other
-	// InputStream methods is undefined.
-	//
-	// For any given stream, the value returned by this method is constant; a
-	// stream cannot switch from pollable to non-pollable or vice versa.
-	CanPoll() bool
-	// IsReadable checks if @stream can be read.
-	//
-	// Note that some stream types may not be able to implement this 100%
-	// reliably, and it is possible that a call to g_input_stream_read() after
-	// this returns true would still block. To guarantee non-blocking behavior,
-	// you should always use g_pollable_input_stream_read_nonblocking(), which
-	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
-	IsReadable() bool
-	// ReadNonblocking attempts to read up to @count bytes from @stream into
-	// @buffer, as with g_input_stream_read(). If @stream is not currently
-	// readable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
-	// can use g_pollable_input_stream_create_source() to create a #GSource that
-	// will be triggered when @stream is readable.
-	//
-	// Note that since this method never blocks, you cannot actually use
-	// @cancellable to cancel it. However, it will return an error if
-	// @cancellable has already been cancelled when you call, which may happen
-	// if you call this method after a source triggers due to having been
-	// cancelled.
-	ReadNonblocking(buffer []byte) (int, error)
-}
-
 // PollableInputStream is implemented by Streams that can be polled for
 // readiness to read. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
@@ -13265,64 +11563,6 @@ func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancella
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
-}
-
-// PollableOutputStreamOverrider contains methods that are overridable. This
-// interface is a subset of the interface PollableOutputStream.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type PollableOutputStreamOverrider interface {
-	// CanPoll checks if @stream is actually pollable. Some classes may
-	// implement OutputStream but have only certain instances of that class be
-	// pollable. If this method returns false, then the behavior of other
-	// OutputStream methods is undefined.
-	//
-	// For any given stream, the value returned by this method is constant; a
-	// stream cannot switch from pollable to non-pollable or vice versa.
-	CanPoll() bool
-	// IsWritable checks if @stream can be written.
-	//
-	// Note that some stream types may not be able to implement this 100%
-	// reliably, and it is possible that a call to g_output_stream_write() after
-	// this returns true would still block. To guarantee non-blocking behavior,
-	// you should always use g_pollable_output_stream_write_nonblocking(), which
-	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
-	IsWritable() bool
-	// WriteNonblocking attempts to write up to @count bytes from @buffer to
-	// @stream, as with g_output_stream_write(). If @stream is not currently
-	// writable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
-	// can use g_pollable_output_stream_create_source() to create a #GSource
-	// that will be triggered when @stream is writable.
-	//
-	// Note that since this method never blocks, you cannot actually use
-	// @cancellable to cancel it. However, it will return an error if
-	// @cancellable has already been cancelled when you call, which may happen
-	// if you call this method after a source triggers due to having been
-	// cancelled.
-	//
-	// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
-	// transports like D/TLS require that you re-send the same @buffer and
-	// @count in the next write call.
-	WriteNonblocking(buffer []byte) (int, error)
-	// WritevNonblocking attempts to write the bytes contained in the @n_vectors
-	// @vectors to @stream, as with g_output_stream_writev(). If @stream is not
-	// currently writable, this will immediately return
-	// %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
-	// g_pollable_output_stream_create_source() to create a #GSource that will
-	// be triggered when @stream is writable. @error will *not* be set in that
-	// case.
-	//
-	// Note that since this method never blocks, you cannot actually use
-	// @cancellable to cancel it. However, it will return an error if
-	// @cancellable has already been cancelled when you call, which may happen
-	// if you call this method after a source triggers due to having been
-	// cancelled.
-	//
-	// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some
-	// underlying transports like D/TLS require that you re-send the same
-	// @vectors and @n_vectors in the next write call.
-	WritevNonblocking(vectors []OutputVector) (uint, PollableReturn, error)
 }
 
 // PollableOutputStream is implemented by Streams that can be polled for
@@ -13489,29 +11729,6 @@ func (s pollableOutputStream) WritevNonblocking(vectors []OutputVector, cancella
 	return _bytesWritten, _pollableReturn, _goerr
 }
 
-// ProxyOverrider contains methods that are overridable. This
-// interface is a subset of the interface Proxy.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ProxyOverrider interface {
-	// ConnectProxy: given @connection to communicate with a proxy (eg, a
-	// Connection that is connected to the proxy server), this does the
-	// necessary handshake to connect to @proxy_address, and if required, wraps
-	// the OStream to handle proxy payload.
-	ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (IOStream, error)
-	// ConnectFinish: see g_proxy_connect().
-	ConnectFinish(result AsyncResult) (IOStream, error)
-	// SupportsHostname: some proxy protocols expect to be passed a hostname,
-	// which they will resolve to an IP address themselves. Others, like SOCKS4,
-	// do not allow this. This function will return false if @proxy is
-	// implementing such a protocol. When false is returned, the caller should
-	// resolve the destination hostname first, and then pass a Address
-	// containing the stringified IP address to g_proxy_connect() or
-	// g_proxy_connect_async().
-	SupportsHostname() bool
-}
-
 // Proxy: a #GProxy handles connecting to a remote host via a given type of
 // proxy server. It is implemented by the 'gio-proxy' extension point. The
 // extensions are named after their proxy protocol name. As an example, a SOCKS5
@@ -13617,35 +11834,6 @@ func (p proxy) SupportsHostname() bool {
 	}
 
 	return _ok
-}
-
-// ProxyResolverOverrider contains methods that are overridable. This
-// interface is a subset of the interface ProxyResolver.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ProxyResolverOverrider interface {
-	// IsSupported checks if @resolver can be used on this system. (This is used
-	// internally; g_proxy_resolver_get_default() will only return a proxy
-	// resolver that returns true for this method.)
-	IsSupported() bool
-	// Lookup looks into the system proxy configuration to determine what proxy,
-	// if any, to use to connect to @uri. The returned proxy URIs are of the
-	// form `<protocol>://[user[:password]@]host:port` or `direct://`, where
-	// <protocol> could be http, rtsp, socks or other proxying protocol.
-	//
-	// If you don't know what network protocol is being used on the socket, you
-	// should use `none` as the URI protocol. In this case, the resolver might
-	// still return a generic proxy type (such as SOCKS), but would not return
-	// protocol-specific proxy types (such as http).
-	//
-	// `direct://` is used when no proxy is needed. Direct connection should not
-	// be attempted unless it is part of the returned array of proxies.
-	Lookup(uri string, cancellable Cancellable) ([]string, error)
-	// LookupFinish: call this function to obtain the array of proxy URIs when
-	// g_proxy_resolver_lookup_async() is complete. See
-	// g_proxy_resolver_lookup() for more details.
-	LookupFinish(result AsyncResult) ([]string, error)
 }
 
 // ProxyResolver provides synchronous and asynchronous network proxy resolution.
@@ -13788,34 +11976,6 @@ func (r proxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
 	return _utf8s, _goerr
 }
 
-// RemoteActionGroupOverrider contains methods that are overridable. This
-// interface is a subset of the interface RemoteActionGroup.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type RemoteActionGroupOverrider interface {
-	// ActivateActionFull activates the remote action.
-	//
-	// This is the same as g_action_group_activate_action() except that it
-	// allows for provision of "platform data" to be sent along with the
-	// activation request. This typically contains details such as the user
-	// interaction timestamp or startup notification information.
-	//
-	// @platform_data must be non-nil and must have the type
-	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
-	// ChangeActionStateFull changes the state of a remote action.
-	//
-	// This is the same as g_action_group_change_action_state() except that it
-	// allows for provision of "platform data" to be sent along with the state
-	// change request. This typically contains details such as the user
-	// interaction timestamp or startup notification information.
-	//
-	// @platform_data must be non-nil and must have the type
-	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
-}
-
 // RemoteActionGroup: the GRemoteActionGroup interface is implemented by Group
 // instances that either transmit action invocations to other processes or
 // receive action invocations in the local process from other processes.
@@ -13907,47 +12067,6 @@ func (r remoteActionGroup) ChangeActionStateFull(actionName string, value *glib.
 	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
 
 	C.g_remote_action_group_change_action_state_full(_arg0, _arg1, _arg2, _arg3)
-}
-
-// SeekableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Seekable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type SeekableOverrider interface {
-	// CanSeek tests if the stream supports the Iface.
-	CanSeek() bool
-	// CanTruncate tests if the length of the stream can be adjusted with
-	// g_seekable_truncate().
-	CanTruncate() bool
-	// Seek seeks in the stream by the given @offset, modified by @type.
-	//
-	// Attempting to seek past the end of the stream will have different results
-	// depending on if the stream is fixed-sized or resizable. If the stream is
-	// resizable then seeking past the end and then writing will result in zeros
-	// filling the empty space. Seeking past the end of a resizable stream and
-	// reading will result in EOF. Seeking past the end of a fixed-sized stream
-	// will fail.
-	//
-	// Any operation that would result in a negative offset will fail.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
-	// Tell tells the current position within the stream.
-	Tell() int64
-	// TruncateFn sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	TruncateFn(offset int64, cancellable Cancellable) error
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that
@@ -14110,32 +12229,6 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	return _goerr
 }
 
-// SocketConnectableOverrider contains methods that are overridable. This
-// interface is a subset of the interface SocketConnectable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type SocketConnectableOverrider interface {
-	// Enumerate creates a AddressEnumerator for @connectable.
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	ProxyEnumerate() SocketAddressEnumerator
-	// String: format a Connectable as a string. This is a human-readable format
-	// for use in debugging output, and is not a stable serialization format. It
-	// is not suitable for use in user interfaces as it exposes too much
-	// information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	String() string
-}
-
 // SocketConnectable objects that describe one or more potential socket
 // endpoints implement Connectable. Callers can then use
 // g_socket_connectable_enumerate() to get a AddressEnumerator to try out each
@@ -14278,22 +12371,6 @@ func (c socketConnectable) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// TLSBackendOverrider contains methods that are overridable. This
-// interface is a subset of the interface TLSBackend.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TLSBackendOverrider interface {
-	// DefaultDatabase gets the default Database used to verify TLS connections.
-	DefaultDatabase() TLSDatabase
-	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
-	// available even if TLS support is available, and vice-versa.
-	SupportsDTLS() bool
-	// SupportsTLS checks if TLS is supported; if this returns false for the
-	// default Backend, it means no "real" TLS backend is available.
-	SupportsTLS() bool
 }
 
 // TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
@@ -14506,42 +12583,6 @@ func (b tlsBackend) SupportsTLS() bool {
 	}
 
 	return _ok
-}
-
-// TLSClientConnectionOverrider contains methods that are overridable. This
-// interface is a subset of the interface TLSClientConnection.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TLSClientConnectionOverrider interface {
-	// CopySessionState: possibly copies session state from one connection to
-	// another, for use in TLS session resumption. This is not normally needed,
-	// but may be used when the same session needs to be used between different
-	// endpoints, as is required by some protocols, such as FTP over TLS.
-	// @source should have already completed a handshake and, since TLS 1.3, it
-	// should have been used to read data at least once. @conn should not have
-	// completed a handshake.
-	//
-	// It is not possible to know whether a call to this function will actually
-	// do anything. Because session resumption is normally used only for
-	// performance benefit, the TLS backend might not implement this function.
-	// Even if implemented, it may not actually succeed in allowing @conn to
-	// resume @source's TLS session, because the server may not have sent a
-	// session resumption token to @source, or it may refuse to accept the token
-	// from @conn. There is no way to know whether a call to this function is
-	// actually successful.
-	//
-	// Using this function is not required to benefit from session resumption.
-	// If the TLS backend supports session resumption, the session will be
-	// resumed automatically if it is possible to do so without weakening the
-	// privacy guarantees normally provided by TLS, without need to call this
-	// function. For example, with TLS 1.3, a session ticket will be
-	// automatically copied from any ClientConnection that has previously
-	// received session tickets from the server, provided a ticket is available
-	// that has not previously been used for session resumption, since session
-	// ticket reuse would be a privacy weakness. Using this function causes the
-	// ticket to be copied without regard for privacy considerations.
-	CopySessionState(source TLSClientConnection)
 }
 
 // TLSClientConnection is the client-side subclass of Connection, representing a
@@ -14768,80 +12809,6 @@ func marshalTLSServerConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTLSServerConnection(obj), nil
-}
-
-// VolumeOverrider contains methods that are overridable. This
-// interface is a subset of the interface Volume.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type VolumeOverrider interface {
-	// CanEject checks if a volume can be ejected.
-	CanEject() bool
-	// CanMount checks if a volume can be mounted.
-	CanMount() bool
-
-	Changed()
-	// EjectFinish finishes ejecting a volume. If any errors occurred during the
-	// operation, @error will be set to contain the errors and false will be
-	// returned.
-	EjectFinish(result AsyncResult) error
-	// EjectWithOperationFinish finishes ejecting a volume. If any errors
-	// occurred during the operation, @error will be set to contain the errors
-	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) error
-	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
-	// that @volume has. Use g_volume_get_identifier() to obtain the identifiers
-	// themselves.
-	EnumerateIdentifiers() []string
-	// ActivationRoot gets the activation root for a #GVolume if it is known
-	// ahead of mount time. Returns nil otherwise. If not nil and if @volume is
-	// mounted, then the result of g_mount_get_root() on the #GMount object
-	// obtained from g_volume_get_mount() will always either be equal or a
-	// prefix of what this function returns. In other words, in code
-	//
-	//    (g_file_has_prefix (volume_activation_root, mount_root) ||
-	//     g_file_equal (volume_activation_root, mount_root))
-	//
-	// will always be true.
-	//
-	// Activation roots are typically used in Monitor implementations to find
-	// the underlying mount to shadow, see g_mount_is_shadowed() for more
-	// details.
-	ActivationRoot() File
-	// Drive gets the drive for the @volume.
-	Drive() Drive
-	// Icon gets the icon for @volume.
-	Icon() Icon
-	// Identifier gets the identifier of the given kind for @volume. See the
-	// [introduction][volume-identifier] for more information about volume
-	// identifiers.
-	Identifier(kind string) string
-	// Mount gets the mount for the @volume.
-	Mount() Mount
-	// Name gets the name of @volume.
-	Name() string
-	// SortKey gets the sort key for @volume, if any.
-	SortKey() string
-	// SymbolicIcon gets the symbolic icon for @volume.
-	SymbolicIcon() Icon
-	// UUID gets the UUID for the @volume. The reference is typically based on
-	// the file system UUID for the volume in question and should be considered
-	// an opaque string. Returns nil if there is no UUID available.
-	UUID() string
-	// MountFinish finishes mounting a volume. If any errors occurred during the
-	// operation, @error will be set to contain the errors and false will be
-	// returned.
-	//
-	// If the mount operation succeeded, g_volume_get_mount() on @volume is
-	// guaranteed to return the mount right after calling this function; there's
-	// no need to listen for the 'mount-added' signal on Monitor.
-	MountFinish(result AsyncResult) error
-
-	Removed()
-	// ShouldAutomount returns whether the volume should be automatically
-	// mounted.
-	ShouldAutomount() bool
 }
 
 // Volume: the #GVolume interface represents user-visible objects that can be
@@ -17354,6 +15321,14 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 	return WrapBytesIcon(obj), nil
 }
 
+func (i bytesIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+}
+
+func (i bytesIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
+}
+
 func (i bytesIcon) Equal(icon2 Icon) bool {
 	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
 }
@@ -17364,14 +15339,6 @@ func (i bytesIcon) Serialize() *glib.Variant {
 
 func (i bytesIcon) String() string {
 	return WrapIcon(gextras.InternObject(i)).String()
-}
-
-func (i bytesIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
-	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
-}
-
-func (i bytesIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
-	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
 }
 
 // Cancellable: GCancellable is a thread-safe operation cancellation stack used
@@ -18122,6 +16089,14 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 	return WrapDBusActionGroup(obj), nil
 }
 
+func (r dBusActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
+	WrapRemoteActionGroup(gextras.InternObject(r)).ActivateActionFull(actionName, parameter, platformData)
+}
+
+func (r dBusActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
+	WrapRemoteActionGroup(gextras.InternObject(r)).ChangeActionStateFull(actionName, value, platformData)
+}
+
 func (a dBusActionGroup) ActionAdded(actionName string) {
 	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
 }
@@ -18176,14 +16151,6 @@ func (a dBusActionGroup) ListActions() []string {
 
 func (a dBusActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
 	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (r dBusActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
-	WrapRemoteActionGroup(gextras.InternObject(r)).ActivateActionFull(actionName, parameter, platformData)
-}
-
-func (r dBusActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
-	WrapRemoteActionGroup(gextras.InternObject(r)).ChangeActionStateFull(actionName, value, platformData)
 }
 
 // DBusAuthObserver: the BusAuthObserver type provides a mechanism for
@@ -24374,6 +22341,14 @@ func (i fileIcon) File() File {
 	return _file
 }
 
+func (i fileIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+}
+
+func (i fileIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
+}
+
 func (i fileIcon) Equal(icon2 Icon) bool {
 	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
 }
@@ -24384,14 +22359,6 @@ func (i fileIcon) Serialize() *glib.Variant {
 
 func (i fileIcon) String() string {
 	return WrapIcon(gextras.InternObject(i)).String()
-}
-
-func (i fileIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
-	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
-}
-
-func (i fileIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
-	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
 }
 
 // FileInfo: functionality for manipulating basic metadata for files. Info
@@ -33550,11 +31517,6 @@ type SimpleProxyResolver interface {
 	// If @default_proxy starts with "socks://", ProxyResolver will treat it as
 	// referring to all three of the socks5, socks4a, and socks4 proxy types.
 	SetDefaultProxySimpleProxyResolver(defaultProxy string)
-	// SetIgnoreHostsSimpleProxyResolver sets the list of ignored hosts.
-	//
-	// See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
-	// argument is interpreted.
-	SetIgnoreHostsSimpleProxyResolver(ignoreHosts *string)
 	// SetURIProxySimpleProxyResolver adds a URI-scheme-specific proxy to
 	// @resolver; URIs whose scheme matches @uri_scheme (and which don't match
 	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
@@ -33593,27 +31555,6 @@ func (r simpleProxyResolver) SetDefaultProxySimpleProxyResolver(defaultProxy str
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
-}
-
-func (r simpleProxyResolver) SetIgnoreHostsSimpleProxyResolver(ignoreHosts *string) {
-	var _arg0 *C.GSimpleProxyResolver // out
-	var _arg1 **C.gchar               // out
-
-	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
-	{
-		var refTmpIn string
-		var refTmpOut *C.gchar
-
-		refTmpIn = ignoreHosts
-
-		refTmpOut = (*C.gchar)(C.CString(refTmpIn))
-		defer C.free(unsafe.Pointer(refTmpOut))
-
-		out0 := &refTmpOut
-		_arg1 = out0
-	}
-
-	C.g_simple_proxy_resolver_set_ignore_hosts(_arg0, _arg1)
 }
 
 func (r simpleProxyResolver) SetURIProxySimpleProxyResolver(uriScheme string, proxy string) {

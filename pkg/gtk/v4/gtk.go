@@ -4769,51 +4769,6 @@ func (s accessible) UpdateStateValue(states []AccessibleState, values []externgl
 	C.gtk_accessible_update_state_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-// ActionableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Actionable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ActionableOverrider interface {
-	// ActionName gets the action name for @actionable.
-	ActionName() string
-	// ActionTargetValue gets the current target value of @actionable.
-	ActionTargetValue() *glib.Variant
-	// SetActionName specifies the name of the action with which this widget
-	// should be associated.
-	//
-	// If @action_name is nil then the widget will be unassociated from any
-	// previous action.
-	//
-	// Usually this function is used when the widget is located (or will be
-	// located) within the hierarchy of a `GtkApplicationWindow`.
-	//
-	// Names are of the form “win.save” or “app.quit” for actions on the
-	// containing `GtkApplicationWindow` or its associated `GtkApplication`,
-	// respectively. This is the same form used for actions in the `GMenu`
-	// associated with the window.
-	SetActionName(actionName string)
-	// SetActionTargetValue sets the target value of an actionable widget.
-	//
-	// If @target_value is nil then the target value is unset.
-	//
-	// The target value has two purposes. First, it is used as the parameter to
-	// activation of the action associated with the `GtkActionable` widget.
-	// Second, it is used to determine if the widget should be rendered as
-	// “active” — the widget is active if the state is equal to the given
-	// target.
-	//
-	// Consider the example of associating a set of buttons with a `GAction`
-	// with string state in a typical “radio button” situation. Each button will
-	// be associated with the same action, but with a different target value for
-	// that action. Clicking on a particular button will activate the action
-	// with the target of that button, which will typically cause the action’s
-	// state to change to that value. Since the action’s state is now equal to
-	// the target value of the button, the button will now be rendered as active
-	// (and the other buttons, with different targets, rendered inactive).
-	SetActionTargetValue(targetValue *glib.Variant)
-}
-
 // Actionable: the `GtkActionable` interface provides a convenient way of
 // asscociating widgets with actions.
 //
@@ -5048,28 +5003,6 @@ func (s appChooser) Refresh() {
 	C.gtk_app_chooser_refresh(_arg0)
 }
 
-// BuildableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Buildable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type BuildableOverrider interface {
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	AddChild(builder Builder, child gextras.Objector, typ string)
-
-	ID() string
-	// InternalChild retrieves the internal child called @childname of the
-	// @buildable object.
-	InternalChild(builder Builder, childname string) gextras.Objector
-
-	ParserFinished(builder Builder)
-
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
-
-	SetID(id string)
-}
-
 // Buildable: `GtkBuildable` allows objects to extend and customize their
 // deserialization from ui files.
 //
@@ -5129,17 +5062,6 @@ func (b buildable) BuildableID() string {
 	return _utf8
 }
 
-// BuilderScopeOverrider contains methods that are overridable. This
-// interface is a subset of the interface BuilderScope.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type BuilderScopeOverrider interface {
-	TypeFromFunction(builder Builder, functionName string) externglib.Type
-
-	TypeFromName(builder Builder, typeName string) externglib.Type
-}
-
 // BuilderScope: `GtkBuilderScope` is an interface to provide language binding
 // support to `GtkBuilder`.
 //
@@ -5177,31 +5099,6 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBuilderScope(obj), nil
-}
-
-// CellEditableOverrider contains methods that are overridable. This
-// interface is a subset of the interface CellEditable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type CellEditableOverrider interface {
-	// EditingDone emits the CellEditable::editing-done signal.
-	EditingDone()
-	// RemoveWidget emits the CellEditable::remove-widget signal.
-	RemoveWidget()
-	// StartEditing begins editing on a @cell_editable.
-	//
-	// The CellRenderer for the cell creates and returns a CellEditable from
-	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
-	//
-	// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
-	// for editing a cell, e.g. making the Esc key emit
-	// CellEditable::editing-done.
-	//
-	// Note that the @cell_editable is created on-demand for the current edit;
-	// its lifetime is temporary and does not persist across other edits and/or
-	// cells.
-	StartEditing(event gdk.Event)
 }
 
 // CellEditable: interface for widgets that can be used for editing cells
@@ -5276,48 +5173,6 @@ func (c cellEditable) StartEditing(event gdk.Event) {
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gtk_cell_editable_start_editing(_arg0, _arg1)
-}
-
-// CellLayoutOverrider contains methods that are overridable. This
-// interface is a subset of the interface CellLayout.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type CellLayoutOverrider interface {
-	// AddAttribute adds an attribute mapping to the list in @cell_layout.
-	//
-	// The @column is the column of the model to get a value from, and the
-	// @attribute is the parameter on @cell to be set from the value. So for
-	// example if column 2 of the model contains strings, you could have the
-	// “text” attribute of a CellRendererText get its values from column 2.
-	AddAttribute(cell CellRenderer, attribute string, column int)
-	// Clear unsets all the mappings on all renderers on @cell_layout and
-	// removes all renderers from @cell_layout.
-	Clear()
-	// ClearAttributes clears all existing attributes previously set with
-	// gtk_cell_layout_set_attributes().
-	ClearAttributes(cell CellRenderer)
-	// Area returns the underlying CellArea which might be @cell_layout if
-	// called on a CellArea or might be nil if no CellArea is used by
-	// @cell_layout.
-	Area() CellArea
-	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
-	// then the @cell is allocated no more space than it needs. Any unused space
-	// is divided evenly between cells for which @expand is true.
-	//
-	// Note that reusing the same cell renderer is not supported.
-	PackEnd(cell CellRenderer, expand bool)
-	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
-	// is false, then the @cell is allocated no more space than it needs. Any
-	// unused space is divided evenly between cells for which @expand is true.
-	//
-	// Note that reusing the same cell renderer is not supported.
-	PackStart(cell CellRenderer, expand bool)
-	// Reorder re-inserts @cell at @position.
-	//
-	// Note that @cell has already to be packed into @cell_layout for this to
-	// function properly.
-	Reorder(cell CellRenderer, position int)
 }
 
 // CellLayout: an interface for packing cells
@@ -5556,37 +5411,6 @@ func (c cellLayout) Reorder(cell CellRenderer, position int) {
 	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
 }
 
-// ColorChooserOverrider contains methods that are overridable. This
-// interface is a subset of the interface ColorChooser.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ColorChooserOverrider interface {
-	// AddPalette adds a palette to the color chooser.
-	//
-	// If @orientation is horizontal, the colors are grouped in rows, with
-	// @colors_per_line colors in each row. If @horizontal is false, the colors
-	// are grouped in columns instead.
-	//
-	// The default color palette of [class@Gtk.ColorChooserWidget] has 45
-	// colors, organized in columns of 5 colors (this includes some grays).
-	//
-	// The layout of the color chooser widget works best when the palettes have
-	// 9-10 columns.
-	//
-	// Calling this function for the first time has the side effect of removing
-	// the default color palette from the color chooser.
-	//
-	// If @colors is nil, removes all previously added palettes.
-	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
-
-	ColorActivated(color *gdk.RGBA)
-	// RGBA gets the currently-selected color.
-	RGBA() gdk.RGBA
-	// SetRGBA sets the color.
-	SetRGBA(color *gdk.RGBA)
-}
-
 // ColorChooser: `GtkColorChooser` is an interface that is implemented by
 // widgets for choosing colors.
 //
@@ -5755,59 +5579,6 @@ func marshalConstraintTarget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapConstraintTarget(obj), nil
-}
-
-// EditableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Editable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type EditableOverrider interface {
-	Changed()
-	// DeleteText deletes a sequence of characters.
-	//
-	// The characters that are deleted are those characters at positions from
-	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
-	// then the characters deleted are those from @start_pos to the end of the
-	// text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	DeleteText(startPos int, endPos int)
-	// DoDeleteText deletes a sequence of characters.
-	//
-	// The characters that are deleted are those characters at positions from
-	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
-	// then the characters deleted are those from @start_pos to the end of the
-	// text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	DoDeleteText(startPos int, endPos int)
-	// Delegate gets the `GtkEditable` that @editable is delegating its
-	// implementation to.
-	//
-	// Typically, the delegate is a [class@Gtk.Text] widget.
-	Delegate() Editable
-	// SelectionBounds retrieves the selection bound of the editable.
-	//
-	// @start_pos will be filled with the start of the selection and @end_pos
-	// with end. If no text was selected both will be identical and false will
-	// be returned.
-	//
-	// Note that positions are specified in characters, not bytes.
-	SelectionBounds() (startPos int, endPos int, ok bool)
-	// Text retrieves the contents of @editable.
-	//
-	// The returned string is owned by GTK and must not be modified or freed.
-	Text() string
-	// SetSelectionBounds selects a region of text.
-	//
-	// The characters that are selected are those characters at positions from
-	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
-	// then the characters selected are those characters from @start_pos to the
-	// end of the text.
-	//
-	// Note that positions are specified in characters, not bytes.
-	SetSelectionBounds(startPos int, endPos int)
 }
 
 // Editable: `GtkEditable` is an interface for text editing widgets.
@@ -6942,53 +6713,6 @@ func (c fileChooser) SetSelectMultiple(selectMultiple bool) {
 	C.gtk_file_chooser_set_select_multiple(_arg0, _arg1)
 }
 
-// FontChooserOverrider contains methods that are overridable. This
-// interface is a subset of the interface FontChooser.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type FontChooserOverrider interface {
-	FontActivated(fontname string)
-	// FontFace gets the `PangoFontFace` representing the selected font group
-	// details (i.e. family, slant, weight, width, etc).
-	//
-	// If the selected font is not installed, returns nil.
-	FontFace() pango.FontFace
-	// FontFamily gets the `PangoFontFamily` representing the selected font
-	// family.
-	//
-	// Font families are a collection of font faces.
-	//
-	// If the selected font is not installed, returns nil.
-	FontFamily() pango.FontFamily
-	// FontMap gets the custom font map of this font chooser widget, or nil if
-	// it does not have one.
-	FontMap() pango.FontMap
-	// FontSize: the selected font size.
-	FontSize() int
-	// SetFontMap sets a custom font map to use for this font chooser widget.
-	//
-	// A custom font map can be used to present application-specific fonts
-	// instead of or in addition to the normal system fonts.
-	//
-	// “`c FcConfig *config; PangoFontMap *fontmap;
-	//
-	// config = FcInitLoadConfigAndFonts (); FcConfigAppFontAddFile (config,
-	// my_app_font_file);
-	//
-	// fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
-	// pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
-	//
-	// gtk_font_chooser_set_font_map (font_chooser, fontmap); “`
-	//
-	// Note that other GTK widgets will only be able to use the
-	// application-specific font if it is present in the font map they use:
-	//
-	// “`c context = gtk_widget_get_pango_context (label);
-	// pango_context_set_font_map (context, fontmap); “`
-	SetFontMap(fontmap pango.FontMap)
-}
-
 // FontChooser: `GtkFontChooser` is an interface that can be implemented by
 // widgets for choosing fonts.
 //
@@ -7536,36 +7260,6 @@ func (o orientable) SetOrientation(orientation Orientation) {
 	C.gtk_orientable_set_orientation(_arg0, _arg1)
 }
 
-// PrintOperationPreviewOverrider contains methods that are overridable. This
-// interface is a subset of the interface PrintOperationPreview.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type PrintOperationPreviewOverrider interface {
-	// EndPreview ends a preview.
-	//
-	// This function must be called to finish a custom print preview.
-	EndPreview()
-
-	GotPageSize(context PrintContext, pageSetup PageSetup)
-	// IsSelected returns whether the given page is included in the set of pages
-	// that have been selected for printing.
-	IsSelected(pageNr int) bool
-
-	Ready(context PrintContext)
-	// RenderPage renders a page to the preview.
-	//
-	// This is using the print context that was passed to the
-	// [signal@Gtk.PrintOperation::preview] handler together with @preview.
-	//
-	// A custom print preview should use this function to render the currently
-	// selected page.
-	//
-	// Note that this function requires a suitable cairo context to be
-	// associated with the print context.
-	RenderPage(pageNr int)
-}
-
 // PrintOperationPreview: `GtkPrintOperationPreview` is the interface that is
 // used to implement print preview.
 //
@@ -7747,21 +7441,6 @@ func (s root) SetFocus(focus Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
 
 	C.gtk_root_set_focus(_arg0, _arg1)
-}
-
-// ScrollableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Scrollable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ScrollableOverrider interface {
-	// Border returns the size of a non-scrolling border around the outside of
-	// the scrollable.
-	//
-	// An example for this would be treeview headers. GTK can use this
-	// information to display overlaid graphics, like the overshoot indication,
-	// at the right position.
-	Border() (Border, bool)
 }
 
 // Scrollable: `GtkScrollable` is an interface for widgets with native scrolling
@@ -7977,62 +7656,6 @@ func (s scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	_arg1 = C.GtkScrollablePolicy(policy)
 
 	C.gtk_scrollable_set_vscroll_policy(_arg0, _arg1)
-}
-
-// SelectionModelOverrider contains methods that are overridable. This
-// interface is a subset of the interface SelectionModel.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type SelectionModelOverrider interface {
-	// SelectionInRange gets the set of selected items in a range.
-	//
-	// This function is an optimization for
-	// [method@Gtk.SelectionModel.get_selection] when you are only interested in
-	// part of the model's selected state. A common use case is in response to
-	// the [signal@Gtk.SelectionModel::selection-changed] signal.
-	SelectionInRange(position uint, nItems uint) *Bitset
-	// IsSelected checks if the given item is selected.
-	IsSelected(position uint) bool
-	// SelectAll requests to select all items in the model.
-	SelectAll() bool
-	// SelectItem requests to select an item in the model.
-	SelectItem(position uint, unselectRest bool) bool
-	// SelectRange requests to select a range of items in the model.
-	SelectRange(position uint, nItems uint, unselectRest bool) bool
-	// SetSelection: make selection changes.
-	//
-	// This is the most advanced selection updating method that allows the most
-	// fine-grained control over selection changes. If you can, you should try
-	// the simpler versions, as implementations are more likely to implement
-	// support for those.
-	//
-	// Requests that the selection state of all positions set in @mask be
-	// updated to the respective value in the @selected bitmask.
-	//
-	// In pseudocode, it would look something like this:
-	//
-	// “`c for (i = 0; i < n_items; i++) { // don't change values not in the
-	// mask if (!gtk_bitset_contains (mask, i)) continue;
-	//
-	//      if (gtk_bitset_contains (selected, i))
-	//        select_item (i);
-	//      else
-	//        unselect_item (i);
-	//    }
-	//
-	// gtk_selection_model_selection_changed (model, first_changed_item,
-	// n_changed_items); “`
-	//
-	// @mask and @selected must not be modified. They may refer to the same
-	// bitset, which would mean that every item in the set should be selected.
-	SetSelection(selected *Bitset, mask *Bitset) bool
-	// UnselectAll requests to unselect all items in the model.
-	UnselectAll() bool
-	// UnselectItem requests to unselect an item in the model.
-	UnselectItem(position uint) bool
-	// UnselectRange requests to unselect a range of items in the model.
-	UnselectRange(position uint, nItems uint) bool
 }
 
 // SelectionModel: `GtkSelectionModel` is an interface that add support for
@@ -8376,17 +7999,6 @@ func (m selectionModel) UnselectRange(position uint, nItems uint) bool {
 	return _ok
 }
 
-// ShortcutManagerOverrider contains methods that are overridable. This
-// interface is a subset of the interface ShortcutManager.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ShortcutManagerOverrider interface {
-	AddController(controller ShortcutController)
-
-	RemoveController(controller ShortcutController)
-}
-
 // ShortcutManager: the `GtkShortcutManager` interface is used to implement
 // shortcut scopes.
 //
@@ -8456,27 +8068,6 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapStyleProvider(obj), nil
-}
-
-// TreeDragDestOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeDragDest.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TreeDragDestOverrider interface {
-	// DragDataReceived asks the TreeDragDest to insert a row before the path
-	// @dest, deriving the contents of the row from @value. If @dest is outside
-	// the tree so that inserting before it is impossible, false will be
-	// returned. Also, false may be returned if the new row is not created for
-	// some model-specific reason. Should robustly handle a @dest no longer
-	// found in the model!
-	DragDataReceived(dest *TreePath, value externglib.Value) bool
-	// RowDropPossible determines whether a drop is possible before the given
-	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
-	// in @value at that location. @dest_path does not have to exist; the return
-	// value will almost certainly be false if the parent of @dest_path doesn’t
-	// exist, though.
-	RowDropPossible(destPath *TreePath, value externglib.Value) bool
 }
 
 // TreeDragDest: interface for Drag-and-Drop destinations in `GtkTreeView`.
@@ -8559,28 +8150,6 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, value externglib.Value
 	}
 
 	return _ok
-}
-
-// TreeDragSourceOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeDragSource.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TreeDragSourceOverrider interface {
-	// DragDataDelete asks the TreeDragSource to delete the row at @path,
-	// because it was moved somewhere else via drag-and-drop. Returns false if
-	// the deletion fails because @path no longer exists, or for some
-	// model-specific reason. Should robustly handle a @path no longer found in
-	// the model!
-	DragDataDelete(path *TreePath) bool
-	// DragDataGet asks the TreeDragSource to return a ContentProvider
-	// representing the row at @path. Should robustly handle a @path no longer
-	// found in the model!
-	DragDataGet(path *TreePath) gdk.ContentProvider
-	// RowDraggable asks the TreeDragSource whether a particular row can be used
-	// as the source of a DND operation. If the source doesn’t implement this
-	// interface, the row is assumed draggable.
-	RowDraggable(path *TreePath) bool
 }
 
 // TreeDragSource: interface for Drag-and-Drop destinations in `GtkTreeView`.
@@ -8677,123 +8246,6 @@ func (d treeDragSource) RowDraggable(path *TreePath) bool {
 	}
 
 	return _ok
-}
-
-// TreeModelOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeModel.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TreeModelOverrider interface {
-	// ColumnType returns the type of the column.
-	ColumnType(index_ int) externglib.Type
-	// Flags returns a set of flags supported by this interface.
-	//
-	// The flags are a bitwise combination of TreeModelFlags. The flags
-	// supported should not change during the lifetime of the @tree_model.
-	Flags() TreeModelFlags
-	// Iter sets @iter to a valid iterator pointing to @path. If @path does not
-	// exist, @iter is set to an invalid iterator and false is returned.
-	Iter(path *TreePath) (TreeIter, bool)
-	// NColumns returns the number of columns supported by @tree_model.
-	NColumns() int
-	// Path returns a newly-created TreePath-struct referenced by @iter.
-	//
-	// This path should be freed with gtk_tree_path_free().
-	Path(iter *TreeIter) *TreePath
-	// Value initializes and sets @value to that at @column.
-	//
-	// When done with @value, g_value_unset() needs to be called to free any
-	// allocated memory.
-	Value(iter *TreeIter, column int) externglib.Value
-	// IterChildren sets @iter to point to the first child of @parent.
-	//
-	// If @parent has no children, false is returned and @iter is set to be
-	// invalid. @parent will remain a valid node after this function has been
-	// called.
-	//
-	// If @parent is nil returns the first node, equivalent to
-	// `gtk_tree_model_get_iter_first (tree_model, iter);`
-	IterChildren(parent *TreeIter) (TreeIter, bool)
-	// IterHasChild returns true if @iter has children, false otherwise.
-	IterHasChild(iter *TreeIter) bool
-	// IterNChildren returns the number of children that @iter has.
-	//
-	// As a special case, if @iter is nil, then the number of toplevel nodes is
-	// returned.
-	IterNChildren(iter *TreeIter) int
-	// IterNext sets @iter to point to the node following it at the current
-	// level.
-	//
-	// If there is no next @iter, false is returned and @iter is set to be
-	// invalid.
-	IterNext(iter *TreeIter) bool
-	// IterNthChild sets @iter to be the child of @parent, using the given
-	// index.
-	//
-	// The first index is 0. If @n is too big, or @parent has no children, @iter
-	// is set to an invalid iterator and false is returned. @parent will remain
-	// a valid node after this function has been called. As a special case, if
-	// @parent is nil, then the @n-th root node is set.
-	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
-	// IterParent sets @iter to be the parent of @child.
-	//
-	// If @child is at the toplevel, and doesn’t have a parent, then @iter is
-	// set to an invalid iterator and false is returned. @child will remain a
-	// valid node after this function has been called.
-	//
-	// @iter will be initialized before the lookup is performed, so @child and
-	// @iter cannot point to the same memory location.
-	IterParent(child *TreeIter) (TreeIter, bool)
-	// IterPrevious sets @iter to point to the previous node at the current
-	// level.
-	//
-	// If there is no previous @iter, false is returned and @iter is set to be
-	// invalid.
-	IterPrevious(iter *TreeIter) bool
-	// RefNode lets the tree ref the node.
-	//
-	// This is an optional method for models to implement. To be more specific,
-	// models may ignore this call as it exists primarily for performance
-	// reasons.
-	//
-	// This function is primarily meant as a way for views to let caching models
-	// know when nodes are being displayed (and hence, whether or not to cache
-	// that node). Being displayed means a node is in an expanded branch,
-	// regardless of whether the node is currently visible in the viewport. For
-	// example, a file-system based model would not want to keep the entire
-	// file-hierarchy in memory, just the sections that are currently being
-	// displayed by every current view.
-	//
-	// A model should be expected to be able to get an iter independent of its
-	// reffed state.
-	RefNode(iter *TreeIter)
-	// RowChanged emits the TreeModel::row-changed signal on @tree_model.
-	RowChanged(path *TreePath, iter *TreeIter)
-	// RowDeleted emits the TreeModel::row-deleted signal on @tree_model.
-	//
-	// This should be called by models after a row has been removed. The
-	// location pointed to by @path should be the location that the row
-	// previously was at. It may not be a valid location anymore.
-	//
-	// Nodes that are deleted are not unreffed, this means that any outstanding
-	// references on the deleted node should not be released.
-	RowDeleted(path *TreePath)
-	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
-	// @tree_model. This should be called by models after the child state of a
-	// node changes.
-	RowHasChildToggled(path *TreePath, iter *TreeIter)
-	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
-	RowInserted(path *TreePath, iter *TreeIter)
-	// UnrefNode lets the tree unref the node.
-	//
-	// This is an optional method for models to implement. To be more specific,
-	// models may ignore this call as it exists primarily for performance
-	// reasons. For more information on what this means, see
-	// gtk_tree_model_ref_node().
-	//
-	// Please note that nodes that are deleted are not unreffed.
-	UnrefNode(iter *TreeIter)
 }
 
 // TreeModel: the tree interface used by GtkTreeView
@@ -9589,36 +9041,6 @@ func (t treeModel) UnrefNode(iter *TreeIter) {
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	C.gtk_tree_model_unref_node(_arg0, _arg1)
-}
-
-// TreeSortableOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeSortable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TreeSortableOverrider interface {
-	// SortColumnID fills in @sort_column_id and @order with the current sort
-	// column and the order. It returns true unless the @sort_column_id is
-	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
-	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
-	SortColumnID() (int, SortType, bool)
-	// HasDefaultSortFunc returns true if the model has a default sort function.
-	// This is used primarily by GtkTreeViewColumns in order to determine if a
-	// model can go back to the default state, or not.
-	HasDefaultSortFunc() bool
-	// SetSortColumnID sets the current sort column to be @sort_column_id. The
-	// @sortable will resort itself to reflect this change, after emitting a
-	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
-	// regular column id, or one of the following special values:
-	//
-	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
-	// will be used, if it is set
-	//
-	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
-	SetSortColumnID(sortColumnId int, order SortType)
-	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
-	SortColumnChanged()
 }
 
 // TreeSortable: the interface for sortable models used by GtkTreeView
@@ -10511,6 +9933,38 @@ func (a aboutDialog) SetWrapLicenseAboutDialog(wrapLicense bool) {
 	C.gtk_about_dialog_set_wrap_license(_arg0, _arg1)
 }
 
+func (s aboutDialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s aboutDialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s aboutDialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s aboutDialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s aboutDialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s aboutDialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s aboutDialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s aboutDialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s aboutDialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -10541,38 +9995,6 @@ func (s aboutDialog) UpdateStateValue(states []AccessibleState, values []externg
 
 func (b aboutDialog) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s aboutDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s aboutDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s aboutDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s aboutDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s aboutDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s aboutDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s aboutDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s aboutDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // ActionBar: `GtkActionBar` is designed to present contextual actions.
@@ -11265,6 +10687,22 @@ func NewAnyFilter() AnyFilter {
 	return _anyFilter
 }
 
+func (l anyFilter) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l anyFilter) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l anyFilter) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l anyFilter) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 func (b anyFilter) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
@@ -11532,6 +10970,18 @@ func (s appChooserButton) SetShowDialogItemAppChooserButton(setting bool) {
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
 }
 
+func (s appChooserButton) AppInfo() gio.AppInfo {
+	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
+}
+
+func (s appChooserButton) ContentType() string {
+	return WrapAppChooser(gextras.InternObject(s)).ContentType()
+}
+
+func (s appChooserButton) Refresh() {
+	WrapAppChooser(gextras.InternObject(s)).Refresh()
+}
+
 func (s appChooserButton) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -11558,18 +11008,6 @@ func (s appChooserButton) UpdateRelationValue(relations []AccessibleRelation, va
 
 func (s appChooserButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (s appChooserButton) AppInfo() gio.AppInfo {
-	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
-}
-
-func (s appChooserButton) ContentType() string {
-	return WrapAppChooser(gextras.InternObject(s)).ContentType()
-}
-
-func (s appChooserButton) Refresh() {
-	WrapAppChooser(gextras.InternObject(s)).Refresh()
 }
 
 func (b appChooserButton) BuildableID() string {
@@ -11710,6 +11148,38 @@ func (s appChooserDialog) SetHeadingAppChooserDialog(heading string) {
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
 }
 
+func (s appChooserDialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s appChooserDialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s appChooserDialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s appChooserDialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s appChooserDialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s appChooserDialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s appChooserDialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s appChooserDialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s appChooserDialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -11738,6 +11208,10 @@ func (s appChooserDialog) UpdateStateValue(states []AccessibleState, values []ex
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
 }
 
+func (b appChooserDialog) BuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+}
+
 func (s appChooserDialog) AppInfo() gio.AppInfo {
 	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
 }
@@ -11750,40 +11224,36 @@ func (s appChooserDialog) Refresh() {
 	WrapAppChooser(gextras.InternObject(s)).Refresh()
 }
 
+func (s appChooserDialog) AccessibleRole() AccessibleRole {
+	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+}
+
+func (s appChooserDialog) ResetProperty(property AccessibleProperty) {
+	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+}
+
+func (s appChooserDialog) ResetRelation(relation AccessibleRelation) {
+	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+}
+
+func (s appChooserDialog) ResetState(state AccessibleState) {
+	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+}
+
+func (s appChooserDialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
+}
+
+func (s appChooserDialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
+}
+
+func (s appChooserDialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
+}
+
 func (b appChooserDialog) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s appChooserDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s appChooserDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s appChooserDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s appChooserDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s appChooserDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s appChooserDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s appChooserDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s appChooserDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // AppChooserWidget: `GtkAppChooserWidget` is a widget for selecting
@@ -12059,6 +11529,18 @@ func (s appChooserWidget) SetShowRecommendedAppChooserWidget(setting bool) {
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
 }
 
+func (s appChooserWidget) AppInfo() gio.AppInfo {
+	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
+}
+
+func (s appChooserWidget) ContentType() string {
+	return WrapAppChooser(gextras.InternObject(s)).ContentType()
+}
+
+func (s appChooserWidget) Refresh() {
+	WrapAppChooser(gextras.InternObject(s)).Refresh()
+}
+
 func (s appChooserWidget) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -12085,18 +11567,6 @@ func (s appChooserWidget) UpdateRelationValue(relations []AccessibleRelation, va
 
 func (s appChooserWidget) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (s appChooserWidget) AppInfo() gio.AppInfo {
-	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
-}
-
-func (s appChooserWidget) ContentType() string {
-	return WrapAppChooser(gextras.InternObject(s)).ContentType()
-}
-
-func (s appChooserWidget) Refresh() {
-	WrapAppChooser(gextras.InternObject(s)).Refresh()
 }
 
 func (b appChooserWidget) BuildableID() string {
@@ -12600,6 +12070,74 @@ func (a application) UninhibitApplication(cookie uint) {
 	C.gtk_application_uninhibit(_arg0, _arg1)
 }
 
+func (a application) ActionAdded(actionName string) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
+}
+
+func (a application) ActionEnabledChanged(actionName string, enabled bool) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
+}
+
+func (a application) ActionRemoved(actionName string) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
+}
+
+func (a application) ActionStateChanged(actionName string, state *glib.Variant) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
+}
+
+func (a application) ActivateAction(actionName string, parameter *glib.Variant) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
+}
+
+func (a application) ChangeActionState(actionName string, value *glib.Variant) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
+}
+
+func (a application) ActionEnabled(actionName string) bool {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
+}
+
+func (a application) ActionParameterType(actionName string) *glib.VariantType {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
+}
+
+func (a application) ActionState(actionName string) *glib.Variant {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
+}
+
+func (a application) ActionStateHint(actionName string) *glib.Variant {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
+}
+
+func (a application) ActionStateType(actionName string) *glib.VariantType {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
+}
+
+func (a application) HasAction(actionName string) bool {
+	return gio.WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
+}
+
+func (a application) ListActions() []string {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ListActions()
+}
+
+func (a application) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+}
+
+func (a application) AddAction(action Action) {
+	gio.WrapActionMap(gextras.InternObject(a)).AddAction(action)
+}
+
+func (a application) LookupAction(actionName string) Action {
+	return gio.WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
+}
+
+func (a application) RemoveAction(actionName string) {
+	gio.WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
+}
+
 // ApplicationWindow: `GtkApplicationWindow` is a `GtkWindow` subclass that
 // integrates with `GtkApplication`.
 //
@@ -12792,6 +12330,38 @@ func (w applicationWindow) SetShowMenubarApplicationWindow(showMenubar bool) {
 	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
 }
 
+func (s applicationWindow) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s applicationWindow) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s applicationWindow) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s applicationWindow) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s applicationWindow) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s applicationWindow) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s applicationWindow) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s applicationWindow) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s applicationWindow) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -12824,36 +12394,72 @@ func (b applicationWindow) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
 
-func (s applicationWindow) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (a applicationWindow) ActionAdded(actionName string) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
 }
 
-func (s applicationWindow) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (a applicationWindow) ActionEnabledChanged(actionName string, enabled bool) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
 }
 
-func (s applicationWindow) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+func (a applicationWindow) ActionRemoved(actionName string) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
 }
 
-func (s applicationWindow) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
+func (a applicationWindow) ActionStateChanged(actionName string, state *glib.Variant) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
 }
 
-func (s applicationWindow) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
+func (a applicationWindow) ActivateAction(actionName string, parameter *glib.Variant) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
 }
 
-func (s applicationWindow) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (a applicationWindow) ChangeActionState(actionName string, value *glib.Variant) {
+	gio.WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
 }
 
-func (s applicationWindow) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (a applicationWindow) ActionEnabled(actionName string) bool {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
 }
 
-func (s applicationWindow) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (a applicationWindow) ActionParameterType(actionName string) *glib.VariantType {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
+}
+
+func (a applicationWindow) ActionState(actionName string) *glib.Variant {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
+}
+
+func (a applicationWindow) ActionStateHint(actionName string) *glib.Variant {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
+}
+
+func (a applicationWindow) ActionStateType(actionName string) *glib.VariantType {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
+}
+
+func (a applicationWindow) HasAction(actionName string) bool {
+	return gio.WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
+}
+
+func (a applicationWindow) ListActions() []string {
+	return gio.WrapActionGroup(gextras.InternObject(a)).ListActions()
+}
+
+func (a applicationWindow) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+}
+
+func (a applicationWindow) AddAction(action Action) {
+	gio.WrapActionMap(gextras.InternObject(a)).AddAction(action)
+}
+
+func (a applicationWindow) LookupAction(actionName string) Action {
+	return gio.WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
+}
+
+func (a applicationWindow) RemoveAction(actionName string) {
+	gio.WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }
 
 // AspectFrame: `GtkAspectFrame` preserves the aspect ratio of its child.
@@ -13557,6 +13163,38 @@ func (a assistant) UpdateButtonsStateAssistant() {
 	C.gtk_assistant_update_buttons_state(_arg0)
 }
 
+func (s assistant) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s assistant) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s assistant) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s assistant) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s assistant) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s assistant) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s assistant) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s assistant) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s assistant) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -13587,38 +13225,6 @@ func (s assistant) UpdateStateValue(states []AccessibleState, values []externgli
 
 func (b assistant) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s assistant) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s assistant) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s assistant) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s assistant) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s assistant) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s assistant) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s assistant) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s assistant) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // AssistantPage: `GtkAssistantPage` is an auxiliary object used by
@@ -13863,6 +13469,22 @@ func (s bookmarkList) SetIOPriorityBookmarkList(ioPriority int) {
 	_arg1 = C.int(ioPriority)
 
 	C.gtk_bookmark_list_set_io_priority(_arg0, _arg1)
+}
+
+func (l bookmarkList) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l bookmarkList) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l bookmarkList) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l bookmarkList) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 // BoolFilter: `GtkBoolFilter` evaluates a boolean `GtkExpression` to determine
@@ -15610,6 +15232,26 @@ func (b button) SetUseUnderlineButton(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 }
 
+func (a button) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a button) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a button) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a button) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a button) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+}
+
 func (s button) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -15636,26 +15278,6 @@ func (s button) UpdateRelationValue(relations []AccessibleRelation, values []ext
 
 func (s button) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (a button) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a button) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a button) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a button) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a button) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b button) BuildableID() string {
@@ -19734,6 +19356,26 @@ func (s checkButton) SetUseUnderlineCheckButton(setting bool) {
 	C.gtk_check_button_set_use_underline(_arg0, _arg1)
 }
 
+func (a checkButton) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a checkButton) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a checkButton) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a checkButton) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a checkButton) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+}
+
 func (s checkButton) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -19760,26 +19402,6 @@ func (s checkButton) UpdateRelationValue(relations []AccessibleRelation, values 
 
 func (s checkButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (a checkButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a checkButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a checkButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a checkButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a checkButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b checkButton) BuildableID() string {
@@ -20055,6 +19677,38 @@ func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	return _colorChooserDialog
 }
 
+func (s colorChooserDialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s colorChooserDialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s colorChooserDialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s colorChooserDialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s colorChooserDialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s colorChooserDialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s colorChooserDialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s colorChooserDialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s colorChooserDialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -20105,38 +19759,6 @@ func (c colorChooserDialog) SetRGBA(color *gdk.RGBA) {
 
 func (c colorChooserDialog) SetUseAlpha(useAlpha bool) {
 	WrapColorChooser(gextras.InternObject(c)).SetUseAlpha(useAlpha)
-}
-
-func (s colorChooserDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s colorChooserDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s colorChooserDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s colorChooserDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s colorChooserDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s colorChooserDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s colorChooserDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s colorChooserDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // ColorChooserWidget: the `GtkColorChooserWidget` widget lets the user select a
@@ -21645,6 +21267,18 @@ func (c comboBox) SetPopupFixedWidthComboBox(fixed bool) {
 	C.gtk_combo_box_set_popup_fixed_width(_arg0, _arg1)
 }
 
+func (c comboBox) EditingDone() {
+	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+}
+
+func (c comboBox) RemoveWidget() {
+	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
+func (c comboBox) StartEditing(event gdk.Event) {
+	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
+}
+
 func (s comboBox) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -21675,18 +21309,6 @@ func (s comboBox) UpdateStateValue(states []AccessibleState, values []externglib
 
 func (b comboBox) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c comboBox) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c comboBox) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
-}
-
-func (c comboBox) StartEditing(event gdk.Event) {
-	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
 }
 
 func (c comboBox) AddAttribute(cell CellRenderer, attribute string, column int) {
@@ -21979,6 +21601,18 @@ func (c comboBoxText) RemoveAllComboBoxText() {
 	C.gtk_combo_box_text_remove_all(_arg0)
 }
 
+func (c comboBoxText) EditingDone() {
+	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+}
+
+func (c comboBoxText) RemoveWidget() {
+	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
+func (c comboBoxText) StartEditing(event gdk.Event) {
+	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
+}
+
 func (s comboBoxText) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -22009,18 +21643,6 @@ func (s comboBoxText) UpdateStateValue(states []AccessibleState, values []extern
 
 func (b comboBoxText) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c comboBoxText) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c comboBoxText) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
-}
-
-func (c comboBoxText) StartEditing(event gdk.Event) {
-	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
 }
 
 func (c comboBoxText) AddAttribute(cell CellRenderer, attribute string, column int) {
@@ -23522,6 +23144,38 @@ func (d dialog) SetResponseSensitiveDialog(responseId int, setting bool) {
 	C.gtk_dialog_set_response_sensitive(_arg0, _arg1, _arg2)
 }
 
+func (s dialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s dialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s dialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s dialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s dialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s dialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s dialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s dialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s dialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -23552,38 +23206,6 @@ func (s dialog) UpdateStateValue(states []AccessibleState, values []externglib.V
 
 func (b dialog) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s dialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s dialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s dialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s dialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s dialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s dialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s dialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s dialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // DirectoryList: `GtkDirectoryList` is a list model that wraps
@@ -23847,6 +23469,22 @@ func (s directoryList) SetMonitoredDirectoryList(monitored bool) {
 	C.gtk_directory_list_set_monitored(_arg0, _arg1)
 }
 
+func (l directoryList) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l directoryList) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l directoryList) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l directoryList) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 // DragIcon: `GtkDragIcon` is a `GtkRoot` implementation for drag icons.
 //
 // A drag icon moves with the pointer during a Drag-and-Drop operation and is
@@ -23911,6 +23549,38 @@ func (s dragIcon) SetChildDragIcon(child Widget) {
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }
 
+func (s dragIcon) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s dragIcon) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s dragIcon) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s dragIcon) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s dragIcon) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s dragIcon) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s dragIcon) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s dragIcon) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s dragIcon) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -23941,38 +23611,6 @@ func (s dragIcon) UpdateStateValue(states []AccessibleState, values []externglib
 
 func (b dragIcon) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s dragIcon) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s dragIcon) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s dragIcon) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s dragIcon) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s dragIcon) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s dragIcon) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s dragIcon) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s dragIcon) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // DragSource: `GtkDragSource` is an event controller to initiate Drag-And-Drop
@@ -25385,38 +25023,6 @@ func (s editableLabel) StopEditingEditableLabel(commit bool) {
 	C.gtk_editable_label_stop_editing(_arg0, _arg1)
 }
 
-func (s editableLabel) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s editableLabel) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s editableLabel) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s editableLabel) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s editableLabel) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s editableLabel) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s editableLabel) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b editableLabel) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
 func (e editableLabel) DeleteSelection() {
 	WrapEditable(gextras.InternObject(e)).DeleteSelection()
 }
@@ -25505,6 +25111,38 @@ func (e editableLabel) SetWidthChars(nChars int) {
 	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
 }
 
+func (s editableLabel) AccessibleRole() AccessibleRole {
+	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+}
+
+func (s editableLabel) ResetProperty(property AccessibleProperty) {
+	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+}
+
+func (s editableLabel) ResetRelation(relation AccessibleRelation) {
+	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+}
+
+func (s editableLabel) ResetState(state AccessibleState) {
+	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+}
+
+func (s editableLabel) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
+}
+
+func (s editableLabel) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
+}
+
+func (s editableLabel) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
+}
+
+func (b editableLabel) BuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+}
+
 // EmojiChooser: the `GtkEmojiChooser` is used by text widgets such as
 // `GtkEntry` or `GtkTextView` to let users insert Emoji characters.
 //
@@ -25562,6 +25200,26 @@ func NewEmojiChooser() EmojiChooser {
 	return _emojiChooser
 }
 
+func (s emojiChooser) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s emojiChooser) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s emojiChooser) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s emojiChooser) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s emojiChooser) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s emojiChooser) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -25592,26 +25250,6 @@ func (s emojiChooser) UpdateStateValue(states []AccessibleState, values []extern
 
 func (b emojiChooser) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s emojiChooser) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s emojiChooser) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s emojiChooser) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s emojiChooser) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s emojiChooser) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
 }
 
 // Entry: `GtkEntry` is a single line text entry widget.
@@ -26834,6 +26472,18 @@ func (e entry) UnsetInvisibleCharEntry() {
 	C.gtk_entry_unset_invisible_char(_arg0)
 }
 
+func (c entry) EditingDone() {
+	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+}
+
+func (c entry) RemoveWidget() {
+	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
+func (c entry) StartEditing(event gdk.Event) {
+	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
+}
+
 func (s entry) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -26864,18 +26514,6 @@ func (s entry) UpdateStateValue(states []AccessibleState, values []externglib.Va
 
 func (b entry) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c entry) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c entry) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
-}
-
-func (c entry) StartEditing(event gdk.Event) {
-	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
 }
 
 func (e entry) DeleteSelection() {
@@ -26964,6 +26602,38 @@ func (e entry) SetText(text string) {
 
 func (e entry) SetWidthChars(nChars int) {
 	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
+}
+
+func (s entry) AccessibleRole() AccessibleRole {
+	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+}
+
+func (s entry) ResetProperty(property AccessibleProperty) {
+	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+}
+
+func (s entry) ResetRelation(relation AccessibleRelation) {
+	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+}
+
+func (s entry) ResetState(state AccessibleState) {
+	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+}
+
+func (s entry) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
+}
+
+func (s entry) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
+}
+
+func (s entry) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
+}
+
+func (b entry) BuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
 
 // EntryBuffer: a `GtkEntryBuffer` hold the text displayed in a `GtkText`
@@ -28438,6 +28108,22 @@ func NewEveryFilter() EveryFilter {
 	return _everyFilter
 }
 
+func (l everyFilter) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l everyFilter) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l everyFilter) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l everyFilter) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 func (b everyFilter) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
@@ -29032,6 +28718,38 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	return WrapFileChooserDialog(obj), nil
 }
 
+func (s fileChooserDialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s fileChooserDialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s fileChooserDialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s fileChooserDialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s fileChooserDialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s fileChooserDialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s fileChooserDialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s fileChooserDialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s fileChooserDialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -29162,38 +28880,6 @@ func (c fileChooserDialog) SetFilter(filter FileFilter) {
 
 func (c fileChooserDialog) SetSelectMultiple(selectMultiple bool) {
 	WrapFileChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
-}
-
-func (s fileChooserDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s fileChooserDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s fileChooserDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s fileChooserDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s fileChooserDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s fileChooserDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s fileChooserDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s fileChooserDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // FileChooserNative: `GtkFileChooserNative` is an abstraction of a dialog
@@ -30277,6 +29963,22 @@ func (s filterListModel) SetModelFilterListModel(model gio.ListModel) {
 	C.gtk_filter_list_model_set_model(_arg0, _arg1)
 }
 
+func (l filterListModel) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l filterListModel) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l filterListModel) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l filterListModel) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 // Fixed: `GtkFixed` places its child widgets at fixed positions and with fixed
 // sizes.
 //
@@ -30702,6 +30404,22 @@ func (s flattenListModel) SetModelFlattenListModel(model gio.ListModel) {
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_flatten_list_model_set_model(_arg0, _arg1)
+}
+
+func (l flattenListModel) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l flattenListModel) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l flattenListModel) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l flattenListModel) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 // FlowBox: a `GtkFlowBox` puts child widgets in reflowing grid.
@@ -31760,6 +31478,38 @@ func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 	return _fontChooserDialog
 }
 
+func (s fontChooserDialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s fontChooserDialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s fontChooserDialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s fontChooserDialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s fontChooserDialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s fontChooserDialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s fontChooserDialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s fontChooserDialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s fontChooserDialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -31862,38 +31612,6 @@ func (f fontChooserDialog) SetPreviewText(text string) {
 
 func (f fontChooserDialog) SetShowPreviewEntry(showPreviewEntry bool) {
 	WrapFontChooser(gextras.InternObject(f)).SetShowPreviewEntry(showPreviewEntry)
-}
-
-func (s fontChooserDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s fontChooserDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s fontChooserDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s fontChooserDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s fontChooserDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s fontChooserDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s fontChooserDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s fontChooserDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // FontChooserWidget: the `GtkFontChooserWidget` widget lets the user select a
@@ -36327,6 +36045,42 @@ func (s iconPaintable) IsSymbolicIconPaintable() bool {
 	}
 
 	return _ok
+}
+
+func (p iconPaintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
+	return gdk.WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
+}
+
+func (p iconPaintable) CurrentImage() Paintable {
+	return gdk.WrapPaintable(gextras.InternObject(p)).CurrentImage()
+}
+
+func (p iconPaintable) Flags() PaintableFlags {
+	return gdk.WrapPaintable(gextras.InternObject(p)).Flags()
+}
+
+func (p iconPaintable) IntrinsicAspectRatio() float64 {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
+}
+
+func (p iconPaintable) IntrinsicHeight() int {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
+}
+
+func (p iconPaintable) IntrinsicWidth() int {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
+}
+
+func (p iconPaintable) InvalidateContents() {
+	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateContents()
+}
+
+func (p iconPaintable) InvalidateSize() {
+	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateSize()
+}
+
+func (p iconPaintable) Snapshot(snapshot Snapshot, width float64, height float64) {
+	gdk.WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
 }
 
 // IconTheme: `GtkIconTheme` provides a facility for loading themed icons.
@@ -41034,6 +40788,26 @@ func (l linkButton) SetVisitedLinkButton(visited bool) {
 	C.gtk_link_button_set_visited(_arg0, _arg1)
 }
 
+func (a linkButton) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a linkButton) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a linkButton) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a linkButton) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a linkButton) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+}
+
 func (s linkButton) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -41060,26 +40834,6 @@ func (s linkButton) UpdateRelationValue(relations []AccessibleRelation, values [
 
 func (s linkButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (a linkButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a linkButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a linkButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a linkButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a linkButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b linkButton) BuildableID() string {
@@ -41931,6 +41685,26 @@ func (r listBoxRow) SetSelectableListBoxRow(selectable bool) {
 	C.gtk_list_box_row_set_selectable(_arg0, _arg1)
 }
 
+func (a listBoxRow) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a listBoxRow) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a listBoxRow) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a listBoxRow) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a listBoxRow) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+}
+
 func (s listBoxRow) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -41957,26 +41731,6 @@ func (s listBoxRow) UpdateRelationValue(relations []AccessibleRelation, values [
 
 func (s listBoxRow) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (a listBoxRow) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a listBoxRow) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a listBoxRow) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a listBoxRow) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a listBoxRow) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b listBoxRow) BuildableID() string {
@@ -42810,6 +42564,22 @@ func (d listStore) RowDraggable(path *TreePath) bool {
 	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
 }
 
+func (s listStore) SortColumnID() (int, SortType, bool) {
+	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
+}
+
+func (s listStore) HasDefaultSortFunc() bool {
+	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
+}
+
+func (s listStore) SetSortColumnID(sortColumnId int, order SortType) {
+	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
+}
+
+func (s listStore) SortColumnChanged() {
+	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
+}
+
 func (c listStore) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(c)).NewFilter(root)
 }
@@ -42904,22 +42674,6 @@ func (t listStore) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOr
 
 func (t listStore) UnrefNode(iter *TreeIter) {
 	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
-}
-
-func (s listStore) SortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
-}
-
-func (s listStore) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s listStore) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s listStore) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
 }
 
 // ListView: `GtkListView` presents a large dynamic list of items.
@@ -43399,6 +43153,26 @@ func (b lockButton) SetPermissionLockButton(permission gio.Permission) {
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }
 
+func (a lockButton) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a lockButton) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a lockButton) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a lockButton) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a lockButton) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+}
+
 func (s lockButton) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -43425,26 +43199,6 @@ func (s lockButton) UpdateRelationValue(relations []AccessibleRelation, values [
 
 func (s lockButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (a lockButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a lockButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a lockButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a lockButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a lockButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b lockButton) BuildableID() string {
@@ -43545,6 +43299,22 @@ func (s mapListModel) SetModelMapListModel(model gio.ListModel) {
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_map_list_model_set_model(_arg0, _arg1)
+}
+
+func (l mapListModel) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l mapListModel) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l mapListModel) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l mapListModel) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 // MediaControls: `GtkMediaControls` is a widget to show controls for a video.
@@ -43884,6 +43654,42 @@ func (s mediaFile) SetResourceMediaFile(resourcePath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_media_file_set_resource(_arg0, _arg1)
+}
+
+func (p mediaFile) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
+	return gdk.WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
+}
+
+func (p mediaFile) CurrentImage() Paintable {
+	return gdk.WrapPaintable(gextras.InternObject(p)).CurrentImage()
+}
+
+func (p mediaFile) Flags() PaintableFlags {
+	return gdk.WrapPaintable(gextras.InternObject(p)).Flags()
+}
+
+func (p mediaFile) IntrinsicAspectRatio() float64 {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
+}
+
+func (p mediaFile) IntrinsicHeight() int {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
+}
+
+func (p mediaFile) IntrinsicWidth() int {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
+}
+
+func (p mediaFile) InvalidateContents() {
+	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateContents()
+}
+
+func (p mediaFile) InvalidateSize() {
+	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateSize()
+}
+
+func (p mediaFile) Snapshot(snapshot Snapshot, width float64, height float64) {
+	gdk.WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
 }
 
 // MediaStream: `GtkMediaStream` is the integration point for media playback
@@ -44494,6 +44300,42 @@ func (s mediaStream) UpdateMediaStream(timestamp int64) {
 	C.gtk_media_stream_update(_arg0, _arg1)
 }
 
+func (p mediaStream) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
+	return gdk.WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
+}
+
+func (p mediaStream) CurrentImage() Paintable {
+	return gdk.WrapPaintable(gextras.InternObject(p)).CurrentImage()
+}
+
+func (p mediaStream) Flags() PaintableFlags {
+	return gdk.WrapPaintable(gextras.InternObject(p)).Flags()
+}
+
+func (p mediaStream) IntrinsicAspectRatio() float64 {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
+}
+
+func (p mediaStream) IntrinsicHeight() int {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
+}
+
+func (p mediaStream) IntrinsicWidth() int {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
+}
+
+func (p mediaStream) InvalidateContents() {
+	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateContents()
+}
+
+func (p mediaStream) InvalidateSize() {
+	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateSize()
+}
+
+func (p mediaStream) Snapshot(snapshot Snapshot, width float64, height float64) {
+	gdk.WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
+}
+
 // MenuButton: the `GtkMenuButton` widget is used to display a popup when
 // clicked.
 //
@@ -44983,6 +44825,38 @@ func (m messageDialog) SetMarkupMessageDialog(str string) {
 	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 }
 
+func (s messageDialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s messageDialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s messageDialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s messageDialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s messageDialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s messageDialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s messageDialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s messageDialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s messageDialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -45013,38 +44887,6 @@ func (s messageDialog) UpdateStateValue(states []AccessibleState, values []exter
 
 func (b messageDialog) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s messageDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s messageDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s messageDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s messageDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s messageDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s messageDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s messageDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s messageDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // MnemonicAction: a `GtkShortcutAction` that calls
@@ -45328,6 +45170,22 @@ func (s multiFilter) RemoveMultiFilter(position uint) {
 	C.gtk_multi_filter_remove(_arg0, _arg1)
 }
 
+func (l multiFilter) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l multiFilter) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l multiFilter) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l multiFilter) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 func (b multiFilter) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
@@ -45449,6 +45307,22 @@ func (m multiSelection) UnselectRange(position uint, nItems uint) bool {
 	return WrapSelectionModel(gextras.InternObject(m)).UnselectRange(position, nItems)
 }
 
+func (l multiSelection) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l multiSelection) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l multiSelection) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l multiSelection) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 // MultiSorter: `GtkMultiSorter` combines multiple sorters by trying them in
 // turn.
 //
@@ -45525,6 +45399,22 @@ func (s multiSorter) RemoveMultiSorter(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)
+}
+
+func (l multiSorter) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l multiSorter) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l multiSorter) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l multiSorter) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 func (b multiSorter) BuildableID() string {
@@ -45953,6 +45843,22 @@ func (m noSelection) UnselectItem(position uint) bool {
 
 func (m noSelection) UnselectRange(position uint, nItems uint) bool {
 	return WrapSelectionModel(gextras.InternObject(m)).UnselectRange(position, nItems)
+}
+
+func (l noSelection) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l noSelection) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l noSelection) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l noSelection) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 // Notebook: `GtkNotebook` is a container whose children are pages switched
@@ -48351,6 +48257,38 @@ func (d pageSetupUnixDialog) SetPrintSettingsPageSetupUnixDialog(printSettings P
 	C.gtk_page_setup_unix_dialog_set_print_settings(_arg0, _arg1)
 }
 
+func (s pageSetupUnixDialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s pageSetupUnixDialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s pageSetupUnixDialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s pageSetupUnixDialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s pageSetupUnixDialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s pageSetupUnixDialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s pageSetupUnixDialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s pageSetupUnixDialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s pageSetupUnixDialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -48381,38 +48319,6 @@ func (s pageSetupUnixDialog) UpdateStateValue(states []AccessibleState, values [
 
 func (b pageSetupUnixDialog) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s pageSetupUnixDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s pageSetupUnixDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s pageSetupUnixDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s pageSetupUnixDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s pageSetupUnixDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s pageSetupUnixDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s pageSetupUnixDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s pageSetupUnixDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // Paned: `GtkPaned` has two panes, arranged either horizontally or vertically.
@@ -48945,38 +48851,6 @@ func (e passwordEntry) SetShowPeekIconPasswordEntry(showPeekIcon bool) {
 	C.gtk_password_entry_set_show_peek_icon(_arg0, _arg1)
 }
 
-func (s passwordEntry) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s passwordEntry) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s passwordEntry) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s passwordEntry) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s passwordEntry) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s passwordEntry) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s passwordEntry) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b passwordEntry) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
 func (e passwordEntry) DeleteSelection() {
 	WrapEditable(gextras.InternObject(e)).DeleteSelection()
 }
@@ -49063,6 +48937,38 @@ func (e passwordEntry) SetText(text string) {
 
 func (e passwordEntry) SetWidthChars(nChars int) {
 	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
+}
+
+func (s passwordEntry) AccessibleRole() AccessibleRole {
+	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+}
+
+func (s passwordEntry) ResetProperty(property AccessibleProperty) {
+	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+}
+
+func (s passwordEntry) ResetRelation(relation AccessibleRelation) {
+	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+}
+
+func (s passwordEntry) ResetState(state AccessibleState) {
+	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+}
+
+func (s passwordEntry) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
+}
+
+func (s passwordEntry) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
+}
+
+func (s passwordEntry) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
+}
+
+func (b passwordEntry) BuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
 
 // Picture: the `GtkPicture` widget displays a `GdkPaintable`.
@@ -49975,6 +49881,26 @@ func (p popover) SetPositionPopover(position PositionType) {
 	C.gtk_popover_set_position(_arg0, _arg1)
 }
 
+func (s popover) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s popover) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s popover) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s popover) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s popover) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s popover) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -50005,26 +49931,6 @@ func (s popover) UpdateStateValue(states []AccessibleState, values []externglib.
 
 func (b popover) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s popover) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s popover) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s popover) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s popover) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s popover) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
 }
 
 // PopoverMenu: `GtkPopoverMenu` is a subclass of `GtkPopover` that implements
@@ -50277,6 +50183,26 @@ func (p popoverMenu) SetMenuModelPopoverMenu(model gio.MenuModel) {
 	C.gtk_popover_menu_set_menu_model(_arg0, _arg1)
 }
 
+func (s popoverMenu) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s popoverMenu) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s popoverMenu) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s popoverMenu) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s popoverMenu) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s popoverMenu) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -50307,26 +50233,6 @@ func (s popoverMenu) UpdateStateValue(states []AccessibleState, values []externg
 
 func (b popoverMenu) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s popoverMenu) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s popoverMenu) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s popoverMenu) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s popoverMenu) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s popoverMenu) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
 }
 
 // PopoverMenuBar: `GtkPopoverMenuBar` presents a horizontal bar of items that
@@ -53722,6 +53628,38 @@ func (d printUnixDialog) SetSupportSelectionPrintUnixDialog(supportSelection boo
 	C.gtk_print_unix_dialog_set_support_selection(_arg0, _arg1)
 }
 
+func (s printUnixDialog) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s printUnixDialog) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s printUnixDialog) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s printUnixDialog) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s printUnixDialog) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s printUnixDialog) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s printUnixDialog) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s printUnixDialog) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s printUnixDialog) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -53752,38 +53690,6 @@ func (s printUnixDialog) UpdateStateValue(states []AccessibleState, values []ext
 
 func (b printUnixDialog) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s printUnixDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s printUnixDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s printUnixDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s printUnixDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s printUnixDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s printUnixDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s printUnixDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s printUnixDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // Printer: a `GtkPrinter` object represents a printer.
@@ -57640,38 +57546,6 @@ func (e searchEntry) SetKeyCaptureWidgetSearchEntry(widget Widget) {
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
 }
 
-func (s searchEntry) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s searchEntry) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s searchEntry) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s searchEntry) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s searchEntry) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s searchEntry) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s searchEntry) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b searchEntry) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
 func (e searchEntry) DeleteSelection() {
 	WrapEditable(gextras.InternObject(e)).DeleteSelection()
 }
@@ -57760,6 +57634,38 @@ func (e searchEntry) SetWidthChars(nChars int) {
 	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
 }
 
+func (s searchEntry) AccessibleRole() AccessibleRole {
+	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+}
+
+func (s searchEntry) ResetProperty(property AccessibleProperty) {
+	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+}
+
+func (s searchEntry) ResetRelation(relation AccessibleRelation) {
+	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+}
+
+func (s searchEntry) ResetState(state AccessibleState) {
+	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+}
+
+func (s searchEntry) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
+}
+
+func (s searchEntry) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
+}
+
+func (s searchEntry) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
+}
+
+func (b searchEntry) BuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+}
+
 // SelectionFilterModel: `GtkSelectionFilterModel` is a list model that presents
 // the selection from a `GtkSelectionModel`.
 type SelectionFilterModel interface {
@@ -57834,6 +57740,22 @@ func (s selectionFilterModel) SetModelSelectionFilterModel(model SelectionModel)
 	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
+}
+
+func (l selectionFilterModel) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l selectionFilterModel) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l selectionFilterModel) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l selectionFilterModel) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 // Separator: `GtkSeparator` is a horizontal or vertical separator widget.
@@ -58482,6 +58404,22 @@ func (s shortcutController) SetScopeShortcutController(scope ShortcutScope) {
 	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
 }
 
+func (l shortcutController) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l shortcutController) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l shortcutController) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l shortcutController) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 func (b shortcutController) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
@@ -59114,6 +59052,38 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 	return WrapShortcutsWindow(obj), nil
 }
 
+func (s shortcutsWindow) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s shortcutsWindow) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s shortcutsWindow) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s shortcutsWindow) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s shortcutsWindow) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s shortcutsWindow) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s shortcutsWindow) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s shortcutsWindow) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s shortcutsWindow) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -59144,38 +59114,6 @@ func (s shortcutsWindow) UpdateStateValue(states []AccessibleState, values []ext
 
 func (b shortcutsWindow) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s shortcutsWindow) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s shortcutsWindow) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s shortcutsWindow) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s shortcutsWindow) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s shortcutsWindow) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s shortcutsWindow) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s shortcutsWindow) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s shortcutsWindow) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // SignalAction: a `GtkShortcut`Action that emits a signal.
@@ -59577,6 +59515,22 @@ func (m singleSelection) UnselectRange(position uint, nItems uint) bool {
 	return WrapSelectionModel(gextras.InternObject(m)).UnselectRange(position, nItems)
 }
 
+func (l singleSelection) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l singleSelection) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l singleSelection) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l singleSelection) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 // SizeGroup: `GtkSizeGroup` groups widgets together so they all request the
 // same size.
 //
@@ -59892,6 +59846,22 @@ func (s sliceListModel) SetSizeSliceListModel(size uint) {
 	_arg1 = C.guint(size)
 
 	C.gtk_slice_list_model_set_size(_arg0, _arg1)
+}
+
+func (l sliceListModel) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l sliceListModel) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l sliceListModel) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l sliceListModel) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 // Snapshot: `GtkSnapshot` assists in creating `GskRenderNodes` for widgets.
@@ -60891,6 +60861,22 @@ func (s sortListModel) SetSorterSortListModel(sorter Sorter) {
 	C.gtk_sort_list_model_set_sorter(_arg0, _arg1)
 }
 
+func (l sortListModel) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l sortListModel) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l sortListModel) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l sortListModel) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
+}
+
 // Sorter: `GtkSorter` is an object to describe sorting criteria.
 //
 // Its primary user is [class@Gtk.SortListModel]
@@ -61576,6 +61562,18 @@ func (s spinButton) UpdateSpinButton() {
 	C.gtk_spin_button_update(_arg0)
 }
 
+func (c spinButton) EditingDone() {
+	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+}
+
+func (c spinButton) RemoveWidget() {
+	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
+func (c spinButton) StartEditing(event gdk.Event) {
+	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
+}
+
 func (s spinButton) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -61606,18 +61604,6 @@ func (s spinButton) UpdateStateValue(states []AccessibleState, values []externgl
 
 func (b spinButton) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c spinButton) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c spinButton) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
-}
-
-func (c spinButton) StartEditing(event gdk.Event) {
-	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
 }
 
 func (e spinButton) DeleteSelection() {
@@ -61706,6 +61692,38 @@ func (e spinButton) SetText(text string) {
 
 func (e spinButton) SetWidthChars(nChars int) {
 	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
+}
+
+func (s spinButton) AccessibleRole() AccessibleRole {
+	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+}
+
+func (s spinButton) ResetProperty(property AccessibleProperty) {
+	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+}
+
+func (s spinButton) ResetRelation(relation AccessibleRelation) {
+	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+}
+
+func (s spinButton) ResetState(state AccessibleState) {
+	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+}
+
+func (s spinButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
+}
+
+func (s spinButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
+}
+
+func (s spinButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
+}
+
+func (b spinButton) BuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
 
 func (o spinButton) Orientation() Orientation {
@@ -64004,6 +64022,26 @@ func (s _switch) SetStateSwitch(state bool) {
 	C.gtk_switch_set_state(_arg0, _arg1)
 }
 
+func (a _switch) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a _switch) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a _switch) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a _switch) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a _switch) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+}
+
 func (s _switch) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -64030,26 +64068,6 @@ func (s _switch) UpdateRelationValue(relations []AccessibleRelation, values []ex
 
 func (s _switch) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (a _switch) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a _switch) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a _switch) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a _switch) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a _switch) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b _switch) BuildableID() string {
@@ -64745,38 +64763,6 @@ func (s text) UnsetInvisibleCharText() {
 	C.gtk_text_unset_invisible_char(_arg0)
 }
 
-func (s text) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s text) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s text) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s text) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s text) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s text) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s text) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b text) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
 func (e text) DeleteSelection() {
 	WrapEditable(gextras.InternObject(e)).DeleteSelection()
 }
@@ -64863,6 +64849,38 @@ func (e text) SetText(text string) {
 
 func (e text) SetWidthChars(nChars int) {
 	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
+}
+
+func (s text) AccessibleRole() AccessibleRole {
+	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+}
+
+func (s text) ResetProperty(property AccessibleProperty) {
+	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+}
+
+func (s text) ResetRelation(relation AccessibleRelation) {
+	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+}
+
+func (s text) ResetState(state AccessibleState) {
+	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+}
+
+func (s text) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
+}
+
+func (s text) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
+}
+
+func (s text) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
+}
+
+func (b text) BuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
 
 // TextBuffer stores text and attributes for display in a `GtkTextView`.
@@ -68985,6 +69003,26 @@ func (t toggleButton) ToggledToggleButton() {
 	C.gtk_toggle_button_toggled(_arg0)
 }
 
+func (a toggleButton) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a toggleButton) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a toggleButton) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a toggleButton) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a toggleButton) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+}
+
 func (s toggleButton) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -69011,26 +69049,6 @@ func (s toggleButton) UpdateRelationValue(relations []AccessibleRelation, values
 
 func (s toggleButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
 	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (a toggleButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a toggleButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a toggleButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a toggleButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a toggleButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b toggleButton) BuildableID() string {
@@ -69551,6 +69569,22 @@ func (s treeListModel) SetAutoexpandTreeListModel(autoexpand bool) {
 	}
 
 	C.gtk_tree_list_model_set_autoexpand(_arg0, _arg1)
+}
+
+func (l treeListModel) ItemType() externglib.Type {
+	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
+}
+
+func (l treeListModel) NItems() uint {
+	return gio.WrapListModel(gextras.InternObject(l)).NItems()
+}
+
+func (l treeListModel) Object(position uint) gextras.Objector {
+	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
+}
+
+func (l treeListModel) ItemsChanged(position uint, removed uint, added uint) {
+	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 // TreeListRow: `GtkTreeListRow` is used by `GtkTreeListModel` to represent
@@ -70546,6 +70580,22 @@ func (d treeModelSort) RowDraggable(path *TreePath) bool {
 	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
 }
 
+func (s treeModelSort) SortColumnID() (int, SortType, bool) {
+	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
+}
+
+func (s treeModelSort) HasDefaultSortFunc() bool {
+	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
+}
+
+func (s treeModelSort) SetSortColumnID(sortColumnId int, order SortType) {
+	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
+}
+
+func (s treeModelSort) SortColumnChanged() {
+	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
+}
+
 func (c treeModelSort) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(c)).NewFilter(root)
 }
@@ -70640,22 +70690,6 @@ func (t treeModelSort) RowsReorderedWithLength(path *TreePath, iter *TreeIter, n
 
 func (t treeModelSort) UnrefNode(iter *TreeIter) {
 	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
-}
-
-func (s treeModelSort) SortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
-}
-
-func (s treeModelSort) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s treeModelSort) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s treeModelSort) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
 }
 
 // TreeSelection: the selection object for GtkTreeView
@@ -71533,6 +71567,22 @@ func (d treeStore) RowDraggable(path *TreePath) bool {
 	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
 }
 
+func (s treeStore) SortColumnID() (int, SortType, bool) {
+	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
+}
+
+func (s treeStore) HasDefaultSortFunc() bool {
+	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
+}
+
+func (s treeStore) SetSortColumnID(sortColumnId int, order SortType) {
+	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
+}
+
+func (s treeStore) SortColumnChanged() {
+	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
+}
+
 func (c treeStore) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(c)).NewFilter(root)
 }
@@ -71627,22 +71677,6 @@ func (t treeStore) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOr
 
 func (t treeStore) UnrefNode(iter *TreeIter) {
 	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
-}
-
-func (s treeStore) SortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
-}
-
-func (s treeStore) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s treeStore) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s treeStore) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
 }
 
 // TreeView: a widget for displaying both trees and lists
@@ -78972,6 +79006,42 @@ func (s widgetPaintable) SetWidgetWidgetPaintable(widget Widget) {
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
 }
 
+func (p widgetPaintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
+	return gdk.WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
+}
+
+func (p widgetPaintable) CurrentImage() Paintable {
+	return gdk.WrapPaintable(gextras.InternObject(p)).CurrentImage()
+}
+
+func (p widgetPaintable) Flags() PaintableFlags {
+	return gdk.WrapPaintable(gextras.InternObject(p)).Flags()
+}
+
+func (p widgetPaintable) IntrinsicAspectRatio() float64 {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
+}
+
+func (p widgetPaintable) IntrinsicHeight() int {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
+}
+
+func (p widgetPaintable) IntrinsicWidth() int {
+	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
+}
+
+func (p widgetPaintable) InvalidateContents() {
+	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateContents()
+}
+
+func (p widgetPaintable) InvalidateSize() {
+	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateSize()
+}
+
+func (p widgetPaintable) Snapshot(snapshot Snapshot, width float64, height float64) {
+	gdk.WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
+}
+
 // Window: a `GtkWindow` is a toplevel window which can contain other widgets.
 //
 // !An example GtkWindow (window.png)
@@ -80135,6 +80205,38 @@ func (w window) UnminimizeWindow() {
 	C.gtk_window_unminimize(_arg0)
 }
 
+func (s window) Display() gdk.Display {
+	return WrapRoot(gextras.InternObject(s)).Display()
+}
+
+func (s window) Focus() Widget {
+	return WrapRoot(gextras.InternObject(s)).Focus()
+}
+
+func (s window) SetFocus(focus Widget) {
+	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+}
+
+func (s window) Renderer() gsk.Renderer {
+	return WrapNative(gextras.InternObject(s)).Renderer()
+}
+
+func (s window) Surface() gdk.Surface {
+	return WrapNative(gextras.InternObject(s)).Surface()
+}
+
+func (s window) SurfaceTransform() (x float64, y float64) {
+	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+}
+
+func (s window) Realize() {
+	WrapNative(gextras.InternObject(s)).Realize()
+}
+
+func (s window) Unrealize() {
+	WrapNative(gextras.InternObject(s)).Unrealize()
+}
+
 func (s window) AccessibleRole() AccessibleRole {
 	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
 }
@@ -80165,38 +80267,6 @@ func (s window) UpdateStateValue(states []AccessibleState, values []externglib.V
 
 func (b window) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s window) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
-}
-
-func (s window) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s window) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s window) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s window) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s window) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
-}
-
-func (s window) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
-}
-
-func (s window) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
 }
 
 // WindowControls: `GtkWindowControls` shows window frame controls.

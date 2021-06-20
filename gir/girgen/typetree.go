@@ -34,7 +34,7 @@ func (ng *NamespaceGenerator) TypeTree() TypeTree {
 	return TypeTree{res: ng, Level: -1}
 }
 
-func (tree *TypeTree) reset() {
+func (tree *TypeTree) Reset() {
 	// Zero out the fields to prevent dangling pointers.
 	for i := range tree.Requires {
 		tree.Requires[i] = TypeTree{}
@@ -51,7 +51,7 @@ func (tree *TypeTree) reset() {
 func (tree *TypeTree) Resolve(toplevel string) bool {
 	resolved := ResolveTypeName(tree.res, toplevel)
 	if resolved == nil {
-		tree.reset()
+		tree.Reset()
 		return false
 	}
 
@@ -61,7 +61,7 @@ func (tree *TypeTree) Resolve(toplevel string) bool {
 // ResolveFromType is like Resolve, but the caller directly supplies the
 // resolved top-level type.
 func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
-	tree.reset()
+	tree.Reset()
 	tree.ResolvedType = toplevel
 
 	if tree.Level == 0 {
@@ -252,6 +252,19 @@ func (tree *TypeTree) PublicEmbeds() []string {
 	}
 
 	return names
+}
+
+// WalkPublInterfaces walks the tree for all embedded interfaces.
+func (tree *TypeTree) WalkPublInterfaces(f func(*ResolvedType)) {
+	for _, impl := range tree.Embeds {
+		if impl.IsInterface() {
+			f(impl.ResolvedType)
+		}
+
+		if len(impl.Embeds) > 0 {
+			impl.WalkPublInterfaces(f)
+		}
+	}
 }
 
 // WrapClass creates a wrapper that uses public fields to create code that wraps

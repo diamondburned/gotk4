@@ -134,13 +134,11 @@ func newClassGenerator(ng *NamespaceGenerator) classGenerator {
 		ng:   ng,
 		cgen: &cgen,
 		igen: &igen,
+		Tree: ng.TypeTree(),
 	}
 }
 
 func (cg *classGenerator) Use(class gir.Class) bool {
-	cg.Tree = cg.ng.TypeTree()
-	cg.Tree.Level = 2
-
 	if class.Parent == "" {
 		// TODO: check what happens if a class has no parent. It should have a
 		// GObject parent, usually.
@@ -186,20 +184,27 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.cgen.ReturnWrap = ""
 
 	// The first requirement type is always the parent class type.
-	for _, impl := range cg.Tree.Requires[1:] {
-		iface := impl.ResolvedType.Extern.Result.Interface
-		if iface == nil {
-			cg.Logln(LogUnusuality,
-				"implemented type", impl.ResolvedType.PublicType(true), "not interface")
-			continue
-		}
+	cg.Tree.WalkPublInterfaces(func(typ *ResolvedType) {
+		// This fucking sucks. I fucking hate this. Because the GNOME people
+		// wants to maximize misery and make your life a fucking pain, the
+		// methods inside this interface aren't namespaced properly, so we have
+		// no choice but to override the global namespace.
+		//
+		// Ideally, once the file generator is restored, the type resolver
+		// should be decoupled from the namespace generator as a whole, and
+		// instead, the namespace should be overrideable by having TypeResolver
+		// returning the namespace we wants and ifaceGenerator (and everything
+		// else) to use TypeResolver for resolving and generating methods.
+		current := cg.ng.current
+		cg.ng.current = typ.Extern.Result.NamespaceFindResult
 
-		if !cg.igen.Use(*iface) {
-			continue
-		}
+		cg.igen.UseMethods(*typ.Extern.Result.Interface)
 
-		needsNamespace := impl.ResolvedType.NeedsNamespace(cg.ng.current)
-		wrapper := impl.ResolvedType.WrapName(needsNamespace)
+		// Restore the old namespace.
+		cg.ng.current = current
+
+		needsNamespace := typ.NeedsNamespace(cg.ng.current)
+		wrapper := typ.WrapName(needsNamespace)
 
 		for _, method := range cg.igen.Methods {
 			// Parse the parameter values out of the function in a pretty hacky
@@ -215,7 +220,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 				CallParams:    strings.Join(params, ", "),
 			})
 		}
-	}
+	})
 
 	if len(cg.InheritedMethods) > 0 {
 		cg.ng.addImportInternal("gextras")

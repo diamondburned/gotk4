@@ -1587,77 +1587,6 @@ func (d dragSurface) Present(width int, height int) bool {
 	return _ok
 }
 
-// PaintableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Paintable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type PaintableOverrider interface {
-	// CurrentImage gets an immutable paintable for the current contents
-	// displayed by @paintable.
-	//
-	// This is useful when you want to retain the current state of an animation,
-	// for example to take a screenshot of a running animation.
-	//
-	// If the @paintable is already immutable, it will return itself.
-	CurrentImage() Paintable
-	// Flags: get flags for the paintable.
-	//
-	// This is oftentimes useful for optimizations.
-	//
-	// See [flags@Gdk.PaintableFlags] for the flags and what they mean.
-	Flags() PaintableFlags
-	// IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
-	// like to be displayed at.
-	//
-	// The aspect ratio is the width divided by the height, so a value of 0.5
-	// means that the @paintable prefers to be displayed twice as high as it is
-	// wide. Consumers of this interface can use this to preserve aspect ratio
-	// when displaying the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// Usually when a @paintable returns nonzero values from
-	// [method@Gdk.Paintable.get_intrinsic_width] and
-	// [method@Gdk.Paintable.get_intrinsic_height] the aspect ratio should
-	// conform to those values, though that is not required.
-	//
-	// If the @paintable does not have a preferred aspect ratio, it returns 0.
-	// Negative values are never returned.
-	IntrinsicAspectRatio() float64
-	// IntrinsicHeight gets the preferred height the @paintable would like to be
-	// displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// If the @paintable does not have a preferred height, it returns 0.
-	// Negative values are never returned.
-	IntrinsicHeight() int
-	// IntrinsicWidth gets the preferred width the @paintable would like to be
-	// displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// If the @paintable does not have a preferred width, it returns 0. Negative
-	// values are never returned.
-	IntrinsicWidth() int
-	// Snapshot snapshots the given paintable with the given @width and @height.
-	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
-	Snapshot(snapshot Snapshot, width float64, height float64)
-}
-
 // Paintable: `GdkPaintable` is a simple interface used by GTK to represent
 // content that can be painted.
 //
@@ -3212,6 +3141,14 @@ func (d contentDeserializer) ReturnSuccessContentDeserializer() {
 	C.gdk_content_deserializer_return_success(_arg0)
 }
 
+func (r contentDeserializer) SourceObject() gextras.Objector {
+	return gio.WrapAsyncResult(gextras.InternObject(r)).SourceObject()
+}
+
+func (r contentDeserializer) LegacyPropagateError() error {
+	return gio.WrapAsyncResult(gextras.InternObject(r)).LegacyPropagateError()
+}
+
 // ContentProvider: a `GdkContentProvider` is used to provide content for the
 // clipboard or for drag-and-drop operations in a number of formats.
 //
@@ -3571,6 +3508,14 @@ func (s contentSerializer) ReturnSuccessContentSerializer() {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	C.gdk_content_serializer_return_success(_arg0)
+}
+
+func (r contentSerializer) SourceObject() gextras.Objector {
+	return gio.WrapAsyncResult(gextras.InternObject(r)).SourceObject()
+}
+
+func (r contentSerializer) LegacyPropagateError() error {
+	return gio.WrapAsyncResult(gextras.InternObject(r)).LegacyPropagateError()
 }
 
 // CrossingEvent: an event caused by a pointing device moving between surfaces.
@@ -8380,6 +8325,10 @@ func marshalVulkanContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapVulkanContext(obj), nil
+}
+
+func (i vulkanContext) Init(cancellable Cancellable) error {
+	return gio.WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
 // ContentFormats: the `GdkContentFormats` structure is used to advertise and

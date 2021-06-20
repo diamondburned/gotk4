@@ -47,8 +47,13 @@ func (cg *callableGenerator) reset() {
 }
 
 func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
-	// Skip this one. Hope the caller reaches the Shadows method, eventually.
-	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" || !cattrs.IsIntrospectable() {
+	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" {
+		// Skip this one. Hope the caller reaches the Shadows method,
+		// eventually.
+		cg.reset()
+		return false
+	}
+	if cattrs.CIdentifier == "" || !cattrs.IsIntrospectable() {
 		cg.reset()
 		return false
 	}

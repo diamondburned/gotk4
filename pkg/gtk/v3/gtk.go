@@ -184,15 +184,12 @@ func init() {
 		{T: externglib.Type(C.gtk_application_get_type()), F: marshalApplication},
 		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindow},
 		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrow},
-		{T: externglib.Type(C.gtk_arrow_accessible_get_type()), F: marshalArrowAccessible},
 		{T: externglib.Type(C.gtk_aspect_frame_get_type()), F: marshalAspectFrame},
 		{T: externglib.Type(C.gtk_assistant_get_type()), F: marshalAssistant},
 		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBin},
-		{T: externglib.Type(C.gtk_boolean_cell_accessible_get_type()), F: marshalBooleanCellAccessible},
 		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBox},
 		{T: externglib.Type(C.gtk_builder_get_type()), F: marshalBuilder},
 		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButton},
-		{T: externglib.Type(C.gtk_button_accessible_get_type()), F: marshalButtonAccessible},
 		{T: externglib.Type(C.gtk_button_box_get_type()), F: marshalButtonBox},
 		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendar},
 		{T: externglib.Type(C.gtk_cell_area_get_type()), F: marshalCellArea},
@@ -210,7 +207,6 @@ func init() {
 		{T: externglib.Type(C.gtk_cell_view_get_type()), F: marshalCellView},
 		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButton},
 		{T: externglib.Type(C.gtk_check_menu_item_get_type()), F: marshalCheckMenuItem},
-		{T: externglib.Type(C.gtk_check_menu_item_accessible_get_type()), F: marshalCheckMenuItemAccessible},
 		{T: externglib.Type(C.gtk_clipboard_get_type()), F: marshalClipboard},
 		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButton},
 		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialog},
@@ -218,16 +214,12 @@ func init() {
 		{T: externglib.Type(C.gtk_color_selection_get_type()), F: marshalColorSelection},
 		{T: externglib.Type(C.gtk_color_selection_dialog_get_type()), F: marshalColorSelectionDialog},
 		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBox},
-		{T: externglib.Type(C.gtk_combo_box_accessible_get_type()), F: marshalComboBoxAccessible},
 		{T: externglib.Type(C.gtk_combo_box_text_get_type()), F: marshalComboBoxText},
 		{T: externglib.Type(C.gtk_container_get_type()), F: marshalContainer},
-		{T: externglib.Type(C.gtk_container_accessible_get_type()), F: marshalContainerAccessible},
-		{T: externglib.Type(C.gtk_container_cell_accessible_get_type()), F: marshalContainerCellAccessible},
 		{T: externglib.Type(C.gtk_css_provider_get_type()), F: marshalCSSProvider},
 		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialog},
 		{T: externglib.Type(C.gtk_drawing_area_get_type()), F: marshalDrawingArea},
 		{T: externglib.Type(C.gtk_entry_get_type()), F: marshalEntry},
-		{T: externglib.Type(C.gtk_entry_accessible_get_type()), F: marshalEntryAccessible},
 		{T: externglib.Type(C.gtk_entry_buffer_get_type()), F: marshalEntryBuffer},
 		{T: externglib.Type(C.gtk_entry_completion_get_type()), F: marshalEntryCompletion},
 		{T: externglib.Type(C.gtk_event_box_get_type()), F: marshalEventBox},
@@ -236,7 +228,6 @@ func init() {
 		{T: externglib.Type(C.gtk_event_controller_motion_get_type()), F: marshalEventControllerMotion},
 		{T: externglib.Type(C.gtk_event_controller_scroll_get_type()), F: marshalEventControllerScroll},
 		{T: externglib.Type(C.gtk_expander_get_type()), F: marshalExpander},
-		{T: externglib.Type(C.gtk_expander_accessible_get_type()), F: marshalExpanderAccessible},
 		{T: externglib.Type(C.gtk_file_chooser_button_get_type()), F: marshalFileChooserButton},
 		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialog},
 		{T: externglib.Type(C.gtk_file_chooser_native_get_type()), F: marshalFileChooserNative},
@@ -244,16 +235,13 @@ func init() {
 		{T: externglib.Type(C.gtk_file_filter_get_type()), F: marshalFileFilter},
 		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixed},
 		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBox},
-		{T: externglib.Type(C.gtk_flow_box_accessible_get_type()), F: marshalFlowBoxAccessible},
 		{T: externglib.Type(C.gtk_flow_box_child_get_type()), F: marshalFlowBoxChild},
-		{T: externglib.Type(C.gtk_flow_box_child_accessible_get_type()), F: marshalFlowBoxChildAccessible},
 		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButton},
 		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialog},
 		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidget},
 		{T: externglib.Type(C.gtk_font_selection_get_type()), F: marshalFontSelection},
 		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialog},
 		{T: externglib.Type(C.gtk_frame_get_type()), F: marshalFrame},
-		{T: externglib.Type(C.gtk_frame_accessible_get_type()), F: marshalFrameAccessible},
 		{T: externglib.Type(C.gtk_gl_area_get_type()), F: marshalGLArea},
 		{T: externglib.Type(C.gtk_gesture_get_type()), F: marshalGesture},
 		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDrag},
@@ -275,7 +263,6 @@ func init() {
 		{T: externglib.Type(C.gtk_hseparator_get_type()), F: marshalHSeparator},
 		{T: externglib.Type(C.gtk_handle_box_get_type()), F: marshalHandleBox},
 		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBar},
-		{T: externglib.Type(C.gtk_header_bar_accessible_get_type()), F: marshalHeaderBarAccessible},
 		{T: externglib.Type(C.gtk_im_context_get_type()), F: marshalIMContext},
 		{T: externglib.Type(C.gtk_im_context_simple_get_type()), F: marshalIMContextSimple},
 		{T: externglib.Type(C.gtk_im_multicontext_get_type()), F: marshalIMMulticontext},
@@ -283,36 +270,23 @@ func init() {
 		{T: externglib.Type(C.gtk_icon_info_get_type()), F: marshalIconInfo},
 		{T: externglib.Type(C.gtk_icon_theme_get_type()), F: marshalIconTheme},
 		{T: externglib.Type(C.gtk_icon_view_get_type()), F: marshalIconView},
-		{T: externglib.Type(C.gtk_icon_view_accessible_get_type()), F: marshalIconViewAccessible},
 		{T: externglib.Type(C.gtk_image_get_type()), F: marshalImage},
-		{T: externglib.Type(C.gtk_image_accessible_get_type()), F: marshalImageAccessible},
-		{T: externglib.Type(C.gtk_image_cell_accessible_get_type()), F: marshalImageCellAccessible},
 		{T: externglib.Type(C.gtk_image_menu_item_get_type()), F: marshalImageMenuItem},
 		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBar},
 		{T: externglib.Type(C.gtk_invisible_get_type()), F: marshalInvisible},
 		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabel},
-		{T: externglib.Type(C.gtk_label_accessible_get_type()), F: marshalLabelAccessible},
 		{T: externglib.Type(C.gtk_layout_get_type()), F: marshalLayout},
 		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBar},
-		{T: externglib.Type(C.gtk_level_bar_accessible_get_type()), F: marshalLevelBarAccessible},
 		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButton},
-		{T: externglib.Type(C.gtk_link_button_accessible_get_type()), F: marshalLinkButtonAccessible},
 		{T: externglib.Type(C.gtk_list_box_get_type()), F: marshalListBox},
-		{T: externglib.Type(C.gtk_list_box_accessible_get_type()), F: marshalListBoxAccessible},
 		{T: externglib.Type(C.gtk_list_box_row_get_type()), F: marshalListBoxRow},
-		{T: externglib.Type(C.gtk_list_box_row_accessible_get_type()), F: marshalListBoxRowAccessible},
 		{T: externglib.Type(C.gtk_list_store_get_type()), F: marshalListStore},
 		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButton},
-		{T: externglib.Type(C.gtk_lock_button_accessible_get_type()), F: marshalLockButtonAccessible},
 		{T: externglib.Type(C.gtk_menu_get_type()), F: marshalMenu},
-		{T: externglib.Type(C.gtk_menu_accessible_get_type()), F: marshalMenuAccessible},
 		{T: externglib.Type(C.gtk_menu_bar_get_type()), F: marshalMenuBar},
 		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButton},
-		{T: externglib.Type(C.gtk_menu_button_accessible_get_type()), F: marshalMenuButtonAccessible},
 		{T: externglib.Type(C.gtk_menu_item_get_type()), F: marshalMenuItem},
-		{T: externglib.Type(C.gtk_menu_item_accessible_get_type()), F: marshalMenuItemAccessible},
 		{T: externglib.Type(C.gtk_menu_shell_get_type()), F: marshalMenuShell},
-		{T: externglib.Type(C.gtk_menu_shell_accessible_get_type()), F: marshalMenuShellAccessible},
 		{T: externglib.Type(C.gtk_menu_tool_button_get_type()), F: marshalMenuToolButton},
 		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialog},
 		{T: externglib.Type(C.gtk_misc_get_type()), F: marshalMisc},
@@ -320,33 +294,25 @@ func init() {
 		{T: externglib.Type(C.gtk_mount_operation_get_type()), F: marshalMountOperation},
 		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialog},
 		{T: externglib.Type(C.gtk_notebook_get_type()), F: marshalNotebook},
-		{T: externglib.Type(C.gtk_notebook_accessible_get_type()), F: marshalNotebookAccessible},
 		{T: externglib.Type(C.gtk_numerable_icon_get_type()), F: marshalNumerableIcon},
 		{T: externglib.Type(C.gtk_offscreen_window_get_type()), F: marshalOffscreenWindow},
 		{T: externglib.Type(C.gtk_overlay_get_type()), F: marshalOverlay},
 		{T: externglib.Type(C.gtk_pad_controller_get_type()), F: marshalPadController},
 		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetup},
 		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaned},
-		{T: externglib.Type(C.gtk_paned_accessible_get_type()), F: marshalPanedAccessible},
 		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebar},
 		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPlug},
-		{T: externglib.Type(C.gtk_plug_accessible_get_type()), F: marshalPlugAccessible},
 		{T: externglib.Type(C.gtk_popover_get_type()), F: marshalPopover},
-		{T: externglib.Type(C.gtk_popover_accessible_get_type()), F: marshalPopoverAccessible},
 		{T: externglib.Type(C.gtk_popover_menu_get_type()), F: marshalPopoverMenu},
 		{T: externglib.Type(C.gtk_print_context_get_type()), F: marshalPrintContext},
 		{T: externglib.Type(C.gtk_print_operation_get_type()), F: marshalPrintOperation},
 		{T: externglib.Type(C.gtk_print_settings_get_type()), F: marshalPrintSettings},
 		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBar},
-		{T: externglib.Type(C.gtk_progress_bar_accessible_get_type()), F: marshalProgressBarAccessible},
 		{T: externglib.Type(C.gtk_radio_action_get_type()), F: marshalRadioAction},
 		{T: externglib.Type(C.gtk_radio_button_get_type()), F: marshalRadioButton},
-		{T: externglib.Type(C.gtk_radio_button_accessible_get_type()), F: marshalRadioButtonAccessible},
 		{T: externglib.Type(C.gtk_radio_menu_item_get_type()), F: marshalRadioMenuItem},
-		{T: externglib.Type(C.gtk_radio_menu_item_accessible_get_type()), F: marshalRadioMenuItemAccessible},
 		{T: externglib.Type(C.gtk_radio_tool_button_get_type()), F: marshalRadioToolButton},
 		{T: externglib.Type(C.gtk_range_get_type()), F: marshalRange},
-		{T: externglib.Type(C.gtk_range_accessible_get_type()), F: marshalRangeAccessible},
 		{T: externglib.Type(C.gtk_rc_style_get_type()), F: marshalRCStyle},
 		{T: externglib.Type(C.gtk_recent_action_get_type()), F: marshalRecentAction},
 		{T: externglib.Type(C.gtk_recent_chooser_dialog_get_type()), F: marshalRecentChooserDialog},
@@ -354,15 +320,11 @@ func init() {
 		{T: externglib.Type(C.gtk_recent_chooser_widget_get_type()), F: marshalRecentChooserWidget},
 		{T: externglib.Type(C.gtk_recent_filter_get_type()), F: marshalRecentFilter},
 		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManager},
-		{T: externglib.Type(C.gtk_renderer_cell_accessible_get_type()), F: marshalRendererCellAccessible},
 		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealer},
 		{T: externglib.Type(C.gtk_scale_get_type()), F: marshalScale},
-		{T: externglib.Type(C.gtk_scale_accessible_get_type()), F: marshalScaleAccessible},
 		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButton},
-		{T: externglib.Type(C.gtk_scale_button_accessible_get_type()), F: marshalScaleButtonAccessible},
 		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbar},
 		{T: externglib.Type(C.gtk_scrolled_window_get_type()), F: marshalScrolledWindow},
-		{T: externglib.Type(C.gtk_scrolled_window_accessible_get_type()), F: marshalScrolledWindowAccessible},
 		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBar},
 		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalSearchEntry},
 		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparator},
@@ -376,37 +338,28 @@ func init() {
 		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindow},
 		{T: externglib.Type(C.gtk_size_group_get_type()), F: marshalSizeGroup},
 		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocket},
-		{T: externglib.Type(C.gtk_socket_accessible_get_type()), F: marshalSocketAccessible},
 		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButton},
-		{T: externglib.Type(C.gtk_spin_button_accessible_get_type()), F: marshalSpinButtonAccessible},
 		{T: externglib.Type(C.gtk_spinner_get_type()), F: marshalSpinner},
-		{T: externglib.Type(C.gtk_spinner_accessible_get_type()), F: marshalSpinnerAccessible},
 		{T: externglib.Type(C.gtk_stack_get_type()), F: marshalStack},
-		{T: externglib.Type(C.gtk_stack_accessible_get_type()), F: marshalStackAccessible},
 		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebar},
 		{T: externglib.Type(C.gtk_stack_switcher_get_type()), F: marshalStackSwitcher},
 		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIcon},
 		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbar},
-		{T: externglib.Type(C.gtk_statusbar_accessible_get_type()), F: marshalStatusbarAccessible},
 		{T: externglib.Type(C.gtk_style_get_type()), F: marshalStyle},
 		{T: externglib.Type(C.gtk_style_context_get_type()), F: marshalStyleContext},
 		{T: externglib.Type(C.gtk_style_properties_get_type()), F: marshalStyleProperties},
 		{T: externglib.Type(C.gtk_switch_get_type()), F: marshalSwitch},
-		{T: externglib.Type(C.gtk_switch_accessible_get_type()), F: marshalSwitchAccessible},
 		{T: externglib.Type(C.gtk_table_get_type()), F: marshalTable},
 		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItem},
 		{T: externglib.Type(C.gtk_text_buffer_get_type()), F: marshalTextBuffer},
-		{T: externglib.Type(C.gtk_text_cell_accessible_get_type()), F: marshalTextCellAccessible},
 		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchor},
 		{T: externglib.Type(C.gtk_text_mark_get_type()), F: marshalTextMark},
 		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTag},
 		{T: externglib.Type(C.gtk_text_tag_table_get_type()), F: marshalTextTagTable},
 		{T: externglib.Type(C.gtk_text_view_get_type()), F: marshalTextView},
-		{T: externglib.Type(C.gtk_text_view_accessible_get_type()), F: marshalTextViewAccessible},
 		{T: externglib.Type(C.gtk_theming_engine_get_type()), F: marshalThemingEngine},
 		{T: externglib.Type(C.gtk_toggle_action_get_type()), F: marshalToggleAction},
 		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButton},
-		{T: externglib.Type(C.gtk_toggle_button_accessible_get_type()), F: marshalToggleButtonAccessible},
 		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButton},
 		{T: externglib.Type(C.gtk_tool_button_get_type()), F: marshalToolButton},
 		{T: externglib.Type(C.gtk_tool_item_get_type()), F: marshalToolItem},
@@ -419,7 +372,6 @@ func init() {
 		{T: externglib.Type(C.gtk_tree_selection_get_type()), F: marshalTreeSelection},
 		{T: externglib.Type(C.gtk_tree_store_get_type()), F: marshalTreeStore},
 		{T: externglib.Type(C.gtk_tree_view_get_type()), F: marshalTreeView},
-		{T: externglib.Type(C.gtk_tree_view_accessible_get_type()), F: marshalTreeViewAccessible},
 		{T: externglib.Type(C.gtk_tree_view_column_get_type()), F: marshalTreeViewColumn},
 		{T: externglib.Type(C.gtk_ui_manager_get_type()), F: marshalUIManager},
 		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBox},
@@ -432,7 +384,6 @@ func init() {
 		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButton},
 		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidget},
 		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindow},
-		{T: externglib.Type(C.gtk_window_accessible_get_type()), F: marshalWindowAccessible},
 		{T: externglib.Type(C.gtk_window_group_get_type()), F: marshalWindowGroup},
 		{T: externglib.Type(C.gtk_border_get_type()), F: marshalBorder},
 		{T: externglib.Type(C.gtk_css_section_get_type()), F: marshalCSSSection},
@@ -6760,52 +6711,6 @@ func True() bool {
 	return _ok
 }
 
-// ActionableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Actionable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ActionableOverrider interface {
-	// ActionName gets the action name for @actionable.
-	//
-	// See gtk_actionable_set_action_name() for more information.
-	ActionName() string
-	// ActionTargetValue gets the current target value of @actionable.
-	//
-	// See gtk_actionable_set_action_target_value() for more information.
-	ActionTargetValue() *glib.Variant
-	// SetActionName specifies the name of the action with which this widget
-	// should be associated. If @action_name is nil then the widget will be
-	// unassociated from any previous action.
-	//
-	// Usually this function is used when the widget is located (or will be
-	// located) within the hierarchy of a ApplicationWindow.
-	//
-	// Names are of the form “win.save” or “app.quit” for actions on the
-	// containing ApplicationWindow or its associated Application, respectively.
-	// This is the same form used for actions in the #GMenu associated with the
-	// window.
-	SetActionName(actionName string)
-	// SetActionTargetValue sets the target value of an actionable widget.
-	//
-	// If @target_value is nil then the target value is unset.
-	//
-	// The target value has two purposes. First, it is used as the parameter to
-	// activation of the action associated with the Actionable widget. Second,
-	// it is used to determine if the widget should be rendered as “active” —
-	// the widget is active if the state is equal to the given target.
-	//
-	// Consider the example of associating a set of buttons with a #GAction with
-	// string state in a typical “radio button” situation. Each button will be
-	// associated with the same action, but with a different target value for
-	// that action. Clicking on a particular button will activate the action
-	// with the target of that button, which will typically cause the action’s
-	// state to change to that value. Since the action’s state is now equal to
-	// the target value of the button, the button will now be rendered as active
-	// (and the other buttons, with different targets, rendered inactive).
-	SetActionTargetValue(targetValue *glib.Variant)
-}
-
 // Actionable: this interface provides a convenient way of associating widgets
 // with actions on a ApplicationWindow or Application.
 //
@@ -6953,21 +6858,6 @@ func (a actionable) SetDetailedActionName(detailedActionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_actionable_set_detailed_action_name(_arg0, _arg1)
-}
-
-// ActivatableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Activatable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ActivatableOverrider interface {
-	// SyncActionProperties: this is called to update the activatable
-	// completely, this is called internally when the Activatable:related-action
-	// property is set or unset and by the implementing class when
-	// Activatable:use-action-appearance changes.
-	SyncActionProperties(action Action)
-
-	Update(action Action, propertyName string)
 }
 
 // Activatable: activatable widgets can be connected to a Action and reflects
@@ -7431,40 +7321,6 @@ func (s appChooser) Refresh() {
 	C.gtk_app_chooser_refresh(_arg0)
 }
 
-// BuildableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Buildable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type BuildableOverrider interface {
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	AddChild(builder Builder, child gextras.Objector, typ string)
-	// ConstructChild constructs a child of @buildable with the name @name.
-	//
-	// Builder calls this function if a “constructor” has been specified in the
-	// UI definition.
-	ConstructChild(builder Builder, name string) gextras.Objector
-	// InternalChild: get the internal child called @childname of the @buildable
-	// object.
-	InternalChild(builder Builder, childname string) gextras.Objector
-	// Name gets the name of the @buildable object.
-	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
-	// used to construct the @buildable.
-	Name() string
-	// ParserFinished: called when the builder finishes the parsing of a
-	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
-	// once for each time gtk_builder_add_from_file() or
-	// gtk_builder_add_from_string() is called on a builder.
-	ParserFinished(builder Builder)
-	// SetBuildableProperty sets the property name @name to @value on the
-	// @buildable object.
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
-	// SetName sets the name of the @buildable object.
-	SetName(name string)
-}
-
 // Buildable: gtkBuildable allows objects to extend and customize their
 // deserialization from [GtkBuilder UI descriptions][BUILDER-UI]. The interface
 // includes methods for setting names and properties of objects, parsing custom
@@ -7633,29 +7489,6 @@ func (b buildable) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_buildable_set_name(_arg0, _arg1)
-}
-
-// CellAccessibleParentOverrider contains methods that are overridable. This
-// interface is a subset of the interface CellAccessibleParent.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type CellAccessibleParentOverrider interface {
-	Activate(cell CellAccessible)
-
-	Edit(cell CellAccessible)
-
-	ExpandCollapse(cell CellAccessible)
-
-	CellArea(cell CellAccessible) gdk.Rectangle
-
-	CellPosition(cell CellAccessible) (row int, column int)
-
-	ChildIndex(cell CellAccessible) int
-
-	RendererState(cell CellAccessible) CellRendererState
-
-	GrabFocus(cell CellAccessible) bool
 }
 
 type CellAccessibleParent interface {
@@ -7829,18 +7662,6 @@ func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {
 	return _ok
 }
 
-// CellEditableOverrider contains methods that are overridable. This
-// interface is a subset of the interface CellEditable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type CellEditableOverrider interface {
-	// EditingDone emits the CellEditable::editing-done signal.
-	EditingDone()
-	// RemoveWidget emits the CellEditable::remove-widget signal.
-	RemoveWidget()
-}
-
 // CellEditable: the CellEditable interface must be implemented for widgets to
 // be usable to edit the contents of a TreeView cell. It provides a way to
 // specify how temporary widgets should be configured for editing, get the new
@@ -7889,48 +7710,6 @@ func (c cellEditable) RemoveWidget() {
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
 
 	C.gtk_cell_editable_remove_widget(_arg0)
-}
-
-// CellLayoutOverrider contains methods that are overridable. This
-// interface is a subset of the interface CellLayout.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type CellLayoutOverrider interface {
-	// AddAttribute adds an attribute mapping to the list in @cell_layout.
-	//
-	// The @column is the column of the model to get a value from, and the
-	// @attribute is the parameter on @cell to be set from the value. So for
-	// example if column 2 of the model contains strings, you could have the
-	// “text” attribute of a CellRendererText get its values from column 2.
-	AddAttribute(cell CellRenderer, attribute string, column int)
-	// Clear unsets all the mappings on all renderers on @cell_layout and
-	// removes all renderers from @cell_layout.
-	Clear()
-	// ClearAttributes clears all existing attributes previously set with
-	// gtk_cell_layout_set_attributes().
-	ClearAttributes(cell CellRenderer)
-	// Area returns the underlying CellArea which might be @cell_layout if
-	// called on a CellArea or might be nil if no CellArea is used by
-	// @cell_layout.
-	Area() CellArea
-	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
-	// then the @cell is allocated no more space than it needs. Any unused space
-	// is divided evenly between cells for which @expand is true.
-	//
-	// Note that reusing the same cell renderer is not supported.
-	PackEnd(cell CellRenderer, expand bool)
-	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
-	// is false, then the @cell is allocated no more space than it needs. Any
-	// unused space is divided evenly between cells for which @expand is true.
-	//
-	// Note that reusing the same cell renderer is not supported.
-	PackStart(cell CellRenderer, expand bool)
-	// Reorder re-inserts @cell at @position.
-	//
-	// Note that @cell has already to be packed into @cell_layout for this to
-	// function properly.
-	Reorder(cell CellRenderer, position int)
 }
 
 // CellLayout is an interface to be implemented by all objects which want to
@@ -8167,37 +7946,6 @@ func (c cellLayout) Reorder(cell CellRenderer, position int) {
 	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
 }
 
-// ColorChooserOverrider contains methods that are overridable. This
-// interface is a subset of the interface ColorChooser.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ColorChooserOverrider interface {
-	// AddPalette adds a palette to the color chooser. If @orientation is
-	// horizontal, the colors are grouped in rows, with @colors_per_line colors
-	// in each row. If @horizontal is false, the colors are grouped in columns
-	// instead.
-	//
-	// The default color palette of ColorChooserWidget has 27 colors, organized
-	// in columns of 3 colors. The default gray palette has 9 grays in a single
-	// row.
-	//
-	// The layout of the color chooser widget works best when the palettes have
-	// 9-10 columns.
-	//
-	// Calling this function for the first time has the side effect of removing
-	// the default color and gray palettes from the color chooser.
-	//
-	// If @colors is nil, removes all previously added palettes.
-	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
-
-	ColorActivated(color *gdk.RGBA)
-	// RGBA gets the currently-selected color.
-	RGBA() gdk.RGBA
-	// SetRGBA sets the color.
-	SetRGBA(color *gdk.RGBA)
-}
-
 // ColorChooser is an interface that is implemented by widgets for choosing
 // colors. Depending on the situation, colors may be allowed to have alpha
 // (translucency).
@@ -8334,62 +8082,6 @@ func (c colorChooser) SetUseAlpha(useAlpha bool) {
 	}
 
 	C.gtk_color_chooser_set_use_alpha(_arg0, _arg1)
-}
-
-// EditableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Editable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type EditableOverrider interface {
-	Changed()
-	// DeleteText deletes a sequence of characters. The characters that are
-	// deleted are those characters at positions from @start_pos up to, but not
-	// including @end_pos. If @end_pos is negative, then the characters deleted
-	// are those from @start_pos to the end of the text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	DeleteText(startPos int, endPos int)
-	// DoDeleteText deletes a sequence of characters. The characters that are
-	// deleted are those characters at positions from @start_pos up to, but not
-	// including @end_pos. If @end_pos is negative, then the characters deleted
-	// are those from @start_pos to the end of the text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	DoDeleteText(startPos int, endPos int)
-	// Chars retrieves a sequence of characters. The characters that are
-	// retrieved are those characters at positions from @start_pos up to, but
-	// not including @end_pos. If @end_pos is negative, then the characters
-	// retrieved are those characters from @start_pos to the end of the text.
-	//
-	// Note that positions are specified in characters, not bytes.
-	Chars(startPos int, endPos int) string
-	// Position retrieves the current position of the cursor relative to the
-	// start of the content of the editable.
-	//
-	// Note that this position is in characters, not in bytes.
-	Position() int
-	// SelectionBounds retrieves the selection bound of the editable. start_pos
-	// will be filled with the start of the selection and @end_pos with end. If
-	// no text was selected both will be identical and false will be returned.
-	//
-	// Note that positions are specified in characters, not bytes.
-	SelectionBounds() (startPos int, endPos int, ok bool)
-	// SetPosition sets the cursor position in the editable to the given value.
-	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
-	SetPosition(position int)
-	// SetSelectionBounds selects a region of text. The characters that are
-	// selected are those characters at positions from @start_pos up to, but not
-	// including @end_pos. If @end_pos is negative, then the characters selected
-	// are those characters from @start_pos to the end of the text.
-	//
-	// Note that positions are specified in characters, not bytes.
-	SetSelectionBounds(startPos int, endPos int)
 }
 
 // Editable: the Editable interface is an interface which should be implemented
@@ -9993,51 +9685,6 @@ func (c fileChooser) UnselectURI(uri string) {
 	C.gtk_file_chooser_unselect_uri(_arg0, _arg1)
 }
 
-// FontChooserOverrider contains methods that are overridable. This
-// interface is a subset of the interface FontChooser.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type FontChooserOverrider interface {
-	FontActivated(fontname string)
-	// FontFace gets the FontFace representing the selected font group details
-	// (i.e. family, slant, weight, width, etc).
-	//
-	// If the selected font is not installed, returns nil.
-	FontFace() pango.FontFace
-	// FontFamily gets the FontFamily representing the selected font family.
-	// Font families are a collection of font faces.
-	//
-	// If the selected font is not installed, returns nil.
-	FontFamily() pango.FontFamily
-	// FontMap gets the custom font map of this font chooser widget, or nil if
-	// it does not have one.
-	FontMap() pango.FontMap
-	// FontSize: the selected font size.
-	FontSize() int
-	// SetFontMap sets a custom font map to use for this font chooser widget. A
-	// custom font map can be used to present application-specific fonts instead
-	// of or in addition to the normal system fonts.
-	//
-	//    FcConfig *config;
-	//    PangoFontMap *fontmap;
-	//
-	//    config = FcInitLoadConfigAndFonts ();
-	//    FcConfigAppFontAddFile (config, my_app_font_file);
-	//
-	//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
-	//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
-	//
-	//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
-	//
-	// Note that other GTK+ widgets will only be able to use the
-	// application-specific font if it is present in the font map they use:
-	//
-	//    context = gtk_widget_get_pango_context (label);
-	//    pango_context_set_font_map (context, fontmap);
-	SetFontMap(fontmap pango.FontMap)
-}
-
 // FontChooser is an interface that can be implemented by widgets displaying the
 // list of fonts. In GTK+, the main objects that implement this interface are
 // FontChooserWidget, FontChooserDialog and FontButton. The GtkFontChooser
@@ -10460,34 +10107,6 @@ func (o orientable) SetOrientation(orientation Orientation) {
 	C.gtk_orientable_set_orientation(_arg0, _arg1)
 }
 
-// PrintOperationPreviewOverrider contains methods that are overridable. This
-// interface is a subset of the interface PrintOperationPreview.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type PrintOperationPreviewOverrider interface {
-	// EndPreview ends a preview.
-	//
-	// This function must be called to finish a custom print preview.
-	EndPreview()
-
-	GotPageSize(context PrintContext, pageSetup PageSetup)
-	// IsSelected returns whether the given page is included in the set of pages
-	// that have been selected for printing.
-	IsSelected(pageNr int) bool
-
-	Ready(context PrintContext)
-	// RenderPage renders a page to the preview, using the print context that
-	// was passed to the PrintOperation::preview handler together with @preview.
-	//
-	// A custom iprint preview should use this function in its ::expose handler
-	// to render the currently selected page.
-	//
-	// Note that this function requires a suitable cairo context to be
-	// associated with the print context.
-	RenderPage(pageNr int)
-}
-
 type PrintOperationPreview interface {
 	gextras.Objector
 
@@ -10565,40 +10184,6 @@ func (p printOperationPreview) RenderPage(pageNr int) {
 	_arg1 = C.gint(pageNr)
 
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)
-}
-
-// RecentChooserOverrider contains methods that are overridable. This
-// interface is a subset of the interface RecentChooser.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type RecentChooserOverrider interface {
-	// AddFilter adds @filter to the list of RecentFilter objects held by
-	// @chooser.
-	//
-	// If no previous filter objects were defined, this function will call
-	// gtk_recent_chooser_set_filter().
-	AddFilter(filter RecentFilter)
-	// CurrentURI gets the URI currently selected by @chooser.
-	CurrentURI() string
-
-	ItemActivated()
-	// RemoveFilter removes @filter from the list of RecentFilter objects held
-	// by @chooser.
-	RemoveFilter(filter RecentFilter)
-	// SelectAll selects all the items inside @chooser, if the @chooser supports
-	// multiple selection.
-	SelectAll()
-	// SelectURI selects @uri inside @chooser.
-	SelectURI(uri string) error
-
-	SelectionChanged()
-	// SetCurrentURI sets @uri as the current URI for @chooser.
-	SetCurrentURI(uri string) error
-	// UnselectAll unselects all the items inside @chooser.
-	UnselectAll()
-	// UnselectURI unselects @uri inside @chooser.
-	UnselectURI(uri string)
 }
 
 // RecentChooser is an interface that can be implemented by widgets displaying
@@ -11077,19 +10662,6 @@ func (c recentChooser) UnselectURI(uri string) {
 	C.gtk_recent_chooser_unselect_uri(_arg0, _arg1)
 }
 
-// ScrollableOverrider contains methods that are overridable. This
-// interface is a subset of the interface Scrollable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ScrollableOverrider interface {
-	// Border returns the size of a non-scrolling border around the outside of
-	// the scrollable. An example for this would be treeview headers. GTK+ can
-	// use this information to display overlayed graphics, like the overshoot
-	// indication, at the right position.
-	Border() (Border, bool)
-}
-
 // Scrollable is an interface that is implemented by widgets with native
 // scrolling ability.
 //
@@ -11296,20 +10868,6 @@ func (s scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	C.gtk_scrollable_set_vscroll_policy(_arg0, _arg1)
 }
 
-// StyleProviderOverrider contains methods that are overridable. This
-// interface is a subset of the interface StyleProvider.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type StyleProviderOverrider interface {
-	// IconFactory returns the IconFactory defined to be in use for @path, or
-	// nil if none is defined.
-	IconFactory(path *WidgetPath) IconFactory
-	// Style returns the style settings affecting a widget defined by @path, or
-	// nil if @provider doesn’t contemplate styling @path.
-	Style(path *WidgetPath) StyleProperties
-}
-
 // StyleProvider: gtkStyleProvider is an interface used to provide style
 // information to a StyleContext. See gtk_style_context_add_provider() and
 // gtk_style_context_add_provider_for_screen().
@@ -11377,52 +10935,6 @@ func (p styleProvider) Style(path *WidgetPath) StyleProperties {
 	_styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StyleProperties)
 
 	return _styleProperties
-}
-
-// ToolShellOverrider contains methods that are overridable. This
-// interface is a subset of the interface ToolShell.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ToolShellOverrider interface {
-	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_get_ellipsize_mode() instead.
-	EllipsizeMode() pango.EllipsizeMode
-
-	IconSize() IconSize
-	// Orientation retrieves the current orientation for the tool shell. Tool
-	// items must not call this function directly, but rely on
-	// gtk_tool_item_get_orientation() instead.
-	Orientation() Orientation
-	// ReliefStyle returns the relief style of buttons on @shell. Tool items
-	// must not call this function directly, but rely on
-	// gtk_tool_item_get_relief_style() instead.
-	ReliefStyle() ReliefStyle
-	// Style retrieves whether the tool shell has text, icons, or both. Tool
-	// items must not call this function directly, but rely on
-	// gtk_tool_item_get_toolbar_style() instead.
-	Style() ToolbarStyle
-	// TextAlignment retrieves the current text alignment for the tool shell.
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_get_text_alignment() instead.
-	TextAlignment() float32
-	// TextOrientation retrieves the current text orientation for the tool
-	// shell. Tool items must not call this function directly, but rely on
-	// gtk_tool_item_get_text_orientation() instead.
-	TextOrientation() Orientation
-	// TextSizeGroup retrieves the current text size group for the tool shell.
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_get_text_size_group() instead.
-	TextSizeGroup() SizeGroup
-	// RebuildMenu: calling this function signals the tool shell that the
-	// overflow menu item for tool items have changed. If there is an overflow
-	// menu and if it is visible when this function it called, the menu will be
-	// rebuilt.
-	//
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
-	RebuildMenu()
 }
 
 // ToolShell: the ToolShell interface allows container widgets to provide
@@ -11621,27 +11133,6 @@ func (s toolShell) RebuildMenu() {
 	C.gtk_tool_shell_rebuild_menu(_arg0)
 }
 
-// TreeDragDestOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeDragDest.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TreeDragDestOverrider interface {
-	// DragDataReceived asks the TreeDragDest to insert a row before the path
-	// @dest, deriving the contents of the row from @selection_data. If @dest is
-	// outside the tree so that inserting before it is impossible, false will be
-	// returned. Also, false may be returned if the new row is not created for
-	// some model-specific reason. Should robustly handle a @dest no longer
-	// found in the model!
-	DragDataReceived(dest *TreePath, selectionData *SelectionData) bool
-	// RowDropPossible determines whether a drop is possible before the given
-	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
-	// in @selection_data at that location. @dest_path does not have to exist;
-	// the return value will almost certainly be false if the parent of
-	// @dest_path doesn’t exist, though.
-	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
-}
-
 type TreeDragDest interface {
 	gextras.Objector
 
@@ -11721,29 +11212,6 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *Selecti
 	}
 
 	return _ok
-}
-
-// TreeDragSourceOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeDragSource.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TreeDragSourceOverrider interface {
-	// DragDataDelete asks the TreeDragSource to delete the row at @path,
-	// because it was moved somewhere else via drag-and-drop. Returns false if
-	// the deletion fails because @path no longer exists, or for some
-	// model-specific reason. Should robustly handle a @path no longer found in
-	// the model!
-	DragDataDelete(path *TreePath) bool
-	// DragDataGet asks the TreeDragSource to fill in @selection_data with a
-	// representation of the row at @path. @selection_data->target gives the
-	// required type of the data. Should robustly handle a @path no longer found
-	// in the model!
-	DragDataGet(path *TreePath, selectionData *SelectionData) bool
-	// RowDraggable asks the TreeDragSource whether a particular row can be used
-	// as the source of a DND operation. If the source doesn’t implement this
-	// interface, the row is assumed draggable.
-	RowDraggable(path *TreePath) bool
 }
 
 type TreeDragSource interface {
@@ -11844,123 +11312,6 @@ func (d treeDragSource) RowDraggable(path *TreePath) bool {
 	}
 
 	return _ok
-}
-
-// TreeModelOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeModel.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TreeModelOverrider interface {
-	// ColumnType returns the type of the column.
-	ColumnType(index_ int) externglib.Type
-	// Flags returns a set of flags supported by this interface.
-	//
-	// The flags are a bitwise combination of TreeModelFlags. The flags
-	// supported should not change during the lifetime of the @tree_model.
-	Flags() TreeModelFlags
-	// Iter sets @iter to a valid iterator pointing to @path. If @path does not
-	// exist, @iter is set to an invalid iterator and false is returned.
-	Iter(path *TreePath) (TreeIter, bool)
-	// NColumns returns the number of columns supported by @tree_model.
-	NColumns() int
-	// Path returns a newly-created TreePath-struct referenced by @iter.
-	//
-	// This path should be freed with gtk_tree_path_free().
-	Path(iter *TreeIter) *TreePath
-	// Value initializes and sets @value to that at @column.
-	//
-	// When done with @value, g_value_unset() needs to be called to free any
-	// allocated memory.
-	Value(iter *TreeIter, column int) externglib.Value
-	// IterChildren sets @iter to point to the first child of @parent.
-	//
-	// If @parent has no children, false is returned and @iter is set to be
-	// invalid. @parent will remain a valid node after this function has been
-	// called.
-	//
-	// If @parent is nil returns the first node, equivalent to
-	// `gtk_tree_model_get_iter_first (tree_model, iter);`
-	IterChildren(parent *TreeIter) (TreeIter, bool)
-	// IterHasChild returns true if @iter has children, false otherwise.
-	IterHasChild(iter *TreeIter) bool
-	// IterNChildren returns the number of children that @iter has.
-	//
-	// As a special case, if @iter is nil, then the number of toplevel nodes is
-	// returned.
-	IterNChildren(iter *TreeIter) int
-	// IterNext sets @iter to point to the node following it at the current
-	// level.
-	//
-	// If there is no next @iter, false is returned and @iter is set to be
-	// invalid.
-	IterNext(iter *TreeIter) bool
-	// IterNthChild sets @iter to be the child of @parent, using the given
-	// index.
-	//
-	// The first index is 0. If @n is too big, or @parent has no children, @iter
-	// is set to an invalid iterator and false is returned. @parent will remain
-	// a valid node after this function has been called. As a special case, if
-	// @parent is nil, then the @n-th root node is set.
-	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
-	// IterParent sets @iter to be the parent of @child.
-	//
-	// If @child is at the toplevel, and doesn’t have a parent, then @iter is
-	// set to an invalid iterator and false is returned. @child will remain a
-	// valid node after this function has been called.
-	//
-	// @iter will be initialized before the lookup is performed, so @child and
-	// @iter cannot point to the same memory location.
-	IterParent(child *TreeIter) (TreeIter, bool)
-	// IterPrevious sets @iter to point to the previous node at the current
-	// level.
-	//
-	// If there is no previous @iter, false is returned and @iter is set to be
-	// invalid.
-	IterPrevious(iter *TreeIter) bool
-	// RefNode lets the tree ref the node.
-	//
-	// This is an optional method for models to implement. To be more specific,
-	// models may ignore this call as it exists primarily for performance
-	// reasons.
-	//
-	// This function is primarily meant as a way for views to let caching models
-	// know when nodes are being displayed (and hence, whether or not to cache
-	// that node). Being displayed means a node is in an expanded branch,
-	// regardless of whether the node is currently visible in the viewport. For
-	// example, a file-system based model would not want to keep the entire
-	// file-hierarchy in memory, just the sections that are currently being
-	// displayed by every current view.
-	//
-	// A model should be expected to be able to get an iter independent of its
-	// reffed state.
-	RefNode(iter *TreeIter)
-	// RowChanged emits the TreeModel::row-changed signal on @tree_model.
-	RowChanged(path *TreePath, iter *TreeIter)
-	// RowDeleted emits the TreeModel::row-deleted signal on @tree_model.
-	//
-	// This should be called by models after a row has been removed. The
-	// location pointed to by @path should be the location that the row
-	// previously was at. It may not be a valid location anymore.
-	//
-	// Nodes that are deleted are not unreffed, this means that any outstanding
-	// references on the deleted node should not be released.
-	RowDeleted(path *TreePath)
-	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
-	// @tree_model. This should be called by models after the child state of a
-	// node changes.
-	RowHasChildToggled(path *TreePath, iter *TreeIter)
-	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
-	RowInserted(path *TreePath, iter *TreeIter)
-	// UnrefNode lets the tree unref the node.
-	//
-	// This is an optional method for models to implement. To be more specific,
-	// models may ignore this call as it exists primarily for performance
-	// reasons. For more information on what this means, see
-	// gtk_tree_model_ref_node().
-	//
-	// Please note that nodes that are deleted are not unreffed.
-	UnrefNode(iter *TreeIter)
 }
 
 // TreeModel: the TreeModel interface defines a generic tree interface for use
@@ -12742,36 +12093,6 @@ func (t treeModel) UnrefNode(iter *TreeIter) {
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	C.gtk_tree_model_unref_node(_arg0, _arg1)
-}
-
-// TreeSortableOverrider contains methods that are overridable. This
-// interface is a subset of the interface TreeSortable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type TreeSortableOverrider interface {
-	// SortColumnID fills in @sort_column_id and @order with the current sort
-	// column and the order. It returns true unless the @sort_column_id is
-	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
-	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
-	SortColumnID() (int, SortType, bool)
-	// HasDefaultSortFunc returns true if the model has a default sort function.
-	// This is used primarily by GtkTreeViewColumns in order to determine if a
-	// model can go back to the default state, or not.
-	HasDefaultSortFunc() bool
-	// SetSortColumnID sets the current sort column to be @sort_column_id. The
-	// @sortable will resort itself to reflect this change, after emitting a
-	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
-	// regular column id, or one of the following special values:
-	//
-	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
-	// will be used, if it is set
-	//
-	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
-	SetSortColumnID(sortColumnId int, order SortType)
-	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
-	SortColumnChanged()
 }
 
 // TreeSortable is an interface to be implemented by tree models which support
@@ -15957,6 +15278,98 @@ func (s appChooserButton) SetShowDialogItemAppChooserButton(setting bool) {
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
 }
 
+func (b appChooserButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b appChooserButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b appChooserButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b appChooserButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b appChooserButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b appChooserButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b appChooserButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (c appChooserButton) EditingDone() {
+	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+}
+
+func (c appChooserButton) RemoveWidget() {
+	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
+func (b appChooserButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b appChooserButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b appChooserButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b appChooserButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b appChooserButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b appChooserButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b appChooserButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (c appChooserButton) AddAttribute(cell CellRenderer, attribute string, column int) {
+	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
+}
+
+func (c appChooserButton) Clear() {
+	WrapCellLayout(gextras.InternObject(c)).Clear()
+}
+
+func (c appChooserButton) ClearAttributes(cell CellRenderer) {
+	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
+}
+
+func (c appChooserButton) Area() CellArea {
+	return WrapCellLayout(gextras.InternObject(c)).Area()
+}
+
+func (c appChooserButton) PackEnd(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
+}
+
+func (c appChooserButton) PackStart(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
+}
+
+func (c appChooserButton) Reorder(cell CellRenderer, position int) {
+	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
+}
+
 func (s appChooserButton) AppInfo() gio.AppInfo {
 	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
 }
@@ -15995,42 +15408,6 @@ func (b appChooserButton) SetBuildableProperty(builder Builder, name string, val
 
 func (b appChooserButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c appChooserButton) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c appChooserButton) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
-}
-
-func (c appChooserButton) AddAttribute(cell CellRenderer, attribute string, column int) {
-	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
-}
-
-func (c appChooserButton) Clear() {
-	WrapCellLayout(gextras.InternObject(c)).Clear()
-}
-
-func (c appChooserButton) ClearAttributes(cell CellRenderer) {
-	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
-}
-
-func (c appChooserButton) Area() CellArea {
-	return WrapCellLayout(gextras.InternObject(c)).Area()
-}
-
-func (c appChooserButton) PackEnd(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
-}
-
-func (c appChooserButton) PackStart(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
-}
-
-func (c appChooserButton) Reorder(cell CellRenderer, position int) {
-	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
 }
 
 // AppChooserDialog shows a AppChooserWidget inside a Dialog.
@@ -16156,6 +15533,34 @@ func (s appChooserDialog) SetHeadingAppChooserDialog(heading string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
+}
+
+func (b appChooserDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b appChooserDialog) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b appChooserDialog) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b appChooserDialog) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b appChooserDialog) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b appChooserDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b appChooserDialog) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (s appChooserDialog) AppInfo() gio.AppInfo {
@@ -16467,6 +15872,42 @@ func (s appChooserWidget) SetShowRecommendedAppChooserWidget(setting bool) {
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
 }
 
+func (b appChooserWidget) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b appChooserWidget) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b appChooserWidget) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b appChooserWidget) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b appChooserWidget) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b appChooserWidget) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b appChooserWidget) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (o appChooserWidget) Orientation() Orientation {
+	return WrapOrientable(gextras.InternObject(o)).Orientation()
+}
+
+func (o appChooserWidget) SetOrientation(orientation Orientation) {
+	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+}
+
 func (s appChooserWidget) AppInfo() gio.AppInfo {
 	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
 }
@@ -16505,14 +15946,6 @@ func (b appChooserWidget) SetBuildableProperty(builder Builder, name string, val
 
 func (b appChooserWidget) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o appChooserWidget) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o appChooserWidget) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
 // Application is a class that handles many important aspects of a GTK+
@@ -17185,6 +16618,34 @@ func (a application) UninhibitApplication(cookie uint) {
 	C.gtk_application_uninhibit(_arg0, _arg1)
 }
 
+func (b application) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b application) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b application) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b application) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b application) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b application) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b application) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a application) ActionAdded(actionName string) {
 	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
 }
@@ -17239,6 +16700,18 @@ func (a application) ListActions() []string {
 
 func (a application) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
 	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+}
+
+func (a application) AddAction(action Action) {
+	gio.WrapActionMap(gextras.InternObject(a)).AddAction(action)
+}
+
+func (a application) LookupAction(actionName string) Action {
+	return gio.WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
+}
+
+func (a application) RemoveAction(actionName string) {
+	gio.WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }
 
 // ApplicationWindow is a Window subclass that offers some extra functionality
@@ -17463,6 +16936,34 @@ func (w applicationWindow) SetShowMenubarApplicationWindow(showMenubar bool) {
 	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
 }
 
+func (b applicationWindow) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b applicationWindow) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b applicationWindow) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b applicationWindow) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b applicationWindow) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b applicationWindow) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b applicationWindow) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a applicationWindow) ActionAdded(actionName string) {
 	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
 }
@@ -17519,32 +17020,16 @@ func (a applicationWindow) QueryAction(actionName string) (enabled bool, paramet
 	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
 }
 
-func (b applicationWindow) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (a applicationWindow) AddAction(action Action) {
+	gio.WrapActionMap(gextras.InternObject(a)).AddAction(action)
 }
 
-func (b applicationWindow) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (a applicationWindow) LookupAction(actionName string) Action {
+	return gio.WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
 }
 
-func (b applicationWindow) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b applicationWindow) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b applicationWindow) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b applicationWindow) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b applicationWindow) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a applicationWindow) RemoveAction(actionName string) {
+	gio.WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }
 
 // Arrow: gtkArrow should be used to draw simple arrows that need to point in
@@ -17648,29 +17133,6 @@ func (b arrow) SetBuildableProperty(builder Builder, name string, value externgl
 
 func (b arrow) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type ArrowAccessible interface {
-	WidgetAccessible
-}
-
-// arrowAccessible implements the ArrowAccessible class.
-type arrowAccessible struct {
-	WidgetAccessible
-}
-
-// WrapArrowAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapArrowAccessible(obj *externglib.Object) ArrowAccessible {
-	return arrowAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalArrowAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapArrowAccessible(obj), nil
 }
 
 // AspectFrame: the AspectFrame is useful when you want pack a widget so that it
@@ -18400,29 +17862,6 @@ func (b bin) SetBuildableProperty(builder Builder, name string, value externglib
 
 func (b bin) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type BooleanCellAccessible interface {
-	RendererCellAccessible
-}
-
-// booleanCellAccessible implements the BooleanCellAccessible class.
-type booleanCellAccessible struct {
-	RendererCellAccessible
-}
-
-// WrapBooleanCellAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapBooleanCellAccessible(obj *externglib.Object) BooleanCellAccessible {
-	return booleanCellAccessible{
-		RendererCellAccessible: WrapRendererCellAccessible(obj),
-	}
-}
-
-func marshalBooleanCellAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBooleanCellAccessible(obj), nil
 }
 
 // Box: the GtkBox widget arranges child widgets into a single row or column,
@@ -20063,6 +19502,34 @@ func (b button) SetUseUnderlineButton(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 }
 
+func (b button) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b button) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b button) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b button) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b button) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b button) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b button) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a button) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -20081,30 +19548,6 @@ func (a button) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a button) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a button) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a button) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a button) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a button) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a button) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a button) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b button) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -20135,27 +19578,28 @@ func (b button) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type ButtonAccessible interface {
-	ContainerAccessible
+func (a button) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// buttonAccessible implements the ButtonAccessible class.
-type buttonAccessible struct {
-	ContainerAccessible
+func (a button) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapButtonAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapButtonAccessible(obj *externglib.Object) ButtonAccessible {
-	return buttonAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
+func (a button) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalButtonAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapButtonAccessible(obj), nil
+func (a button) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a button) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a button) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 type ButtonBox interface {
@@ -23675,6 +23119,34 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 	return _checkButton
 }
 
+func (b checkButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b checkButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b checkButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b checkButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b checkButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b checkButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b checkButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a checkButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -23693,30 +23165,6 @@ func (a checkButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a checkButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a checkButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a checkButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a checkButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a checkButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a checkButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a checkButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b checkButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -23745,6 +23193,30 @@ func (b checkButton) SetBuildableProperty(builder Builder, name string, value ex
 
 func (b checkButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a checkButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a checkButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a checkButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a checkButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a checkButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a checkButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // CheckMenuItem: a CheckMenuItem is a menu item that maintains the state of a
@@ -23955,6 +23427,34 @@ func (c checkMenuItem) ToggledCheckMenuItem() {
 	C.gtk_check_menu_item_toggled(_arg0)
 }
 
+func (b checkMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b checkMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b checkMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b checkMenuItem) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b checkMenuItem) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b checkMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b checkMenuItem) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a checkMenuItem) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -23973,30 +23473,6 @@ func (a checkMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a checkMenuItem) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a checkMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a checkMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a checkMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a checkMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a checkMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a checkMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b checkMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -24027,27 +23503,28 @@ func (b checkMenuItem) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type CheckMenuItemAccessible interface {
-	MenuItemAccessible
+func (a checkMenuItem) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// checkMenuItemAccessible implements the CheckMenuItemAccessible class.
-type checkMenuItemAccessible struct {
-	MenuItemAccessible
+func (a checkMenuItem) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapCheckMenuItemAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapCheckMenuItemAccessible(obj *externglib.Object) CheckMenuItemAccessible {
-	return checkMenuItemAccessible{
-		MenuItemAccessible: WrapMenuItemAccessible(obj),
-	}
+func (a checkMenuItem) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalCheckMenuItemAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCheckMenuItemAccessible(obj), nil
+func (a checkMenuItem) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a checkMenuItem) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a checkMenuItem) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // Clipboard: the Clipboard object represents a clipboard of data shared between
@@ -24735,6 +24212,34 @@ func (b colorButton) SetUseAlphaColorButton(useAlpha bool) {
 	C.gtk_color_button_set_use_alpha(_arg0, _arg1)
 }
 
+func (b colorButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b colorButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b colorButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b colorButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b colorButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b colorButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b colorButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a colorButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -24753,30 +24258,6 @@ func (a colorButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a colorButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a colorButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a colorButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a colorButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a colorButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a colorButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a colorButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b colorButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -24805,6 +24286,30 @@ func (b colorButton) SetBuildableProperty(builder Builder, name string, value ex
 
 func (b colorButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a colorButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a colorButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a colorButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a colorButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a colorButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a colorButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (c colorButton) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
@@ -25005,6 +24510,14 @@ func (b colorChooserWidget) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
+func (o colorChooserWidget) Orientation() Orientation {
+	return WrapOrientable(gextras.InternObject(o)).Orientation()
+}
+
+func (o colorChooserWidget) SetOrientation(orientation Orientation) {
+	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+}
+
 func (c colorChooserWidget) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
 	WrapColorChooser(gextras.InternObject(c)).AddPalette(orientation, colorsPerLine, colors)
 }
@@ -25023,14 +24536,6 @@ func (c colorChooserWidget) SetRGBA(color *gdk.RGBA) {
 
 func (c colorChooserWidget) SetUseAlpha(useAlpha bool) {
 	WrapColorChooser(gextras.InternObject(c)).SetUseAlpha(useAlpha)
-}
-
-func (o colorChooserWidget) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o colorChooserWidget) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
 type ColorSelection interface {
@@ -26276,6 +25781,34 @@ func (c comboBox) RemoveWidget() {
 	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
 }
 
+func (b comboBox) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b comboBox) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b comboBox) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b comboBox) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b comboBox) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b comboBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b comboBox) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (c comboBox) AddAttribute(cell CellRenderer, attribute string, column int) {
 	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
 }
@@ -26302,29 +25835,6 @@ func (c comboBox) PackStart(cell CellRenderer, expand bool) {
 
 func (c comboBox) Reorder(cell CellRenderer, position int) {
 	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
-}
-
-type ComboBoxAccessible interface {
-	ContainerAccessible
-}
-
-// comboBoxAccessible implements the ComboBoxAccessible class.
-type comboBoxAccessible struct {
-	ContainerAccessible
-}
-
-// WrapComboBoxAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapComboBoxAccessible(obj *externglib.Object) ComboBoxAccessible {
-	return comboBoxAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalComboBoxAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapComboBoxAccessible(obj), nil
 }
 
 // ComboBoxText: a GtkComboBoxText is a simple variant of ComboBox that hides
@@ -26620,6 +26130,34 @@ func (c comboBoxText) EditingDone() {
 
 func (c comboBoxText) RemoveWidget() {
 	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
+func (b comboBoxText) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b comboBoxText) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b comboBoxText) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b comboBoxText) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b comboBoxText) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b comboBoxText) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b comboBoxText) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (c comboBoxText) AddAttribute(cell CellRenderer, attribute string, column int) {
@@ -27278,88 +26816,6 @@ func (b container) SetBuildableProperty(builder Builder, name string, value exte
 
 func (b container) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type ContainerAccessible interface {
-	WidgetAccessible
-}
-
-// containerAccessible implements the ContainerAccessible class.
-type containerAccessible struct {
-	WidgetAccessible
-}
-
-// WrapContainerAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapContainerAccessible(obj *externglib.Object) ContainerAccessible {
-	return containerAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalContainerAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapContainerAccessible(obj), nil
-}
-
-type ContainerCellAccessible interface {
-	CellAccessible
-
-	AddChildContainerCellAccessible(child CellAccessible)
-
-	RemoveChildContainerCellAccessible(child CellAccessible)
-}
-
-// containerCellAccessible implements the ContainerCellAccessible class.
-type containerCellAccessible struct {
-	CellAccessible
-}
-
-// WrapContainerCellAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapContainerCellAccessible(obj *externglib.Object) ContainerCellAccessible {
-	return containerCellAccessible{
-		CellAccessible: WrapCellAccessible(obj),
-	}
-}
-
-func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapContainerCellAccessible(obj), nil
-}
-
-func NewContainerCellAccessible() ContainerCellAccessible {
-	var _cret *C.GtkContainerCellAccessible // in
-
-	_cret = C.gtk_container_cell_accessible_new()
-
-	var _containerCellAccessible ContainerCellAccessible // out
-
-	_containerCellAccessible = WrapContainerCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _containerCellAccessible
-}
-
-func (c containerCellAccessible) AddChildContainerCellAccessible(child CellAccessible) {
-	var _arg0 *C.GtkContainerCellAccessible // out
-	var _arg1 *C.GtkCellAccessible          // out
-
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
-
-	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
-}
-
-func (c containerCellAccessible) RemoveChildContainerCellAccessible(child CellAccessible) {
-	var _arg0 *C.GtkContainerCellAccessible // out
-	var _arg1 *C.GtkCellAccessible          // out
-
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
-
-	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
 }
 
 // CSSProvider: gtkCssProvider is an object implementing the StyleProvider
@@ -29656,6 +29112,14 @@ func (e entry) UnsetInvisibleCharEntry() {
 	C.gtk_entry_unset_invisible_char(_arg0)
 }
 
+func (c entry) EditingDone() {
+	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+}
+
+func (c entry) RemoveWidget() {
+	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
 func (b entry) AddChild(builder Builder, child gextras.Objector, typ string) {
 	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
@@ -29682,14 +29146,6 @@ func (b entry) SetBuildableProperty(builder Builder, name string, value externgl
 
 func (b entry) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c entry) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c entry) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
 }
 
 func (e entry) CopyClipboard() {
@@ -29738,29 +29194,6 @@ func (e entry) SetEditable(isEditable bool) {
 
 func (e entry) SetPosition(position int) {
 	WrapEditable(gextras.InternObject(e)).SetPosition(position)
-}
-
-type EntryAccessible interface {
-	WidgetAccessible
-}
-
-// entryAccessible implements the EntryAccessible class.
-type entryAccessible struct {
-	WidgetAccessible
-}
-
-// WrapEntryAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapEntryAccessible(obj *externglib.Object) EntryAccessible {
-	return entryAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalEntryAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEntryAccessible(obj), nil
 }
 
 // EntryBuffer: the EntryBuffer class contains the actual text displayed in a
@@ -31505,29 +30938,6 @@ func (b expander) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type ExpanderAccessible interface {
-	ContainerAccessible
-}
-
-// expanderAccessible implements the ExpanderAccessible class.
-type expanderAccessible struct {
-	ContainerAccessible
-}
-
-// WrapExpanderAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapExpanderAccessible(obj *externglib.Object) ExpanderAccessible {
-	return expanderAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalExpanderAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapExpanderAccessible(obj), nil
-}
-
 // FileChooserButton: the FileChooserButton is a widget that lets the user
 // select a file. It implements the FileChooser interface. Visually, it is a
 // file name with a button to bring up a FileChooserDialog. The user can then
@@ -31753,6 +31163,14 @@ func (b fileChooserButton) SetBuildableProperty(builder Builder, name string, va
 
 func (b fileChooserButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (o fileChooserButton) Orientation() Orientation {
+	return WrapOrientable(gextras.InternObject(o)).Orientation()
+}
+
+func (o fileChooserButton) SetOrientation(orientation Orientation) {
+	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
 func (c fileChooserButton) AddChoice(id string, label string, options []string, optionLabels []string) {
@@ -31981,14 +31399,6 @@ func (c fileChooserButton) UnselectFilename(filename string) {
 
 func (c fileChooserButton) UnselectURI(uri string) {
 	WrapFileChooser(gextras.InternObject(c)).UnselectURI(uri)
-}
-
-func (o fileChooserButton) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o fileChooserButton) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or
@@ -33001,6 +32411,14 @@ func (b fileChooserWidget) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
+func (o fileChooserWidget) Orientation() Orientation {
+	return WrapOrientable(gextras.InternObject(o)).Orientation()
+}
+
+func (o fileChooserWidget) SetOrientation(orientation Orientation) {
+	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+}
+
 func (c fileChooserWidget) AddChoice(id string, label string, options []string, optionLabels []string) {
 	WrapFileChooser(gextras.InternObject(c)).AddChoice(id, label, options, optionLabels)
 }
@@ -33227,14 +32645,6 @@ func (c fileChooserWidget) UnselectFilename(filename string) {
 
 func (c fileChooserWidget) UnselectURI(uri string) {
 	WrapFileChooser(gextras.InternObject(c)).UnselectURI(uri)
-}
-
-func (o fileChooserWidget) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o fileChooserWidget) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
 // FileFilter: a GtkFileFilter can be used to restrict the files being shown in
@@ -34142,29 +33552,6 @@ func (o flowBox) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
-type FlowBoxAccessible interface {
-	ContainerAccessible
-}
-
-// flowBoxAccessible implements the FlowBoxAccessible class.
-type flowBoxAccessible struct {
-	ContainerAccessible
-}
-
-// WrapFlowBoxAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapFlowBoxAccessible(obj *externglib.Object) FlowBoxAccessible {
-	return flowBoxAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalFlowBoxAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFlowBoxAccessible(obj), nil
-}
-
 type FlowBoxChild interface {
 	Bin
 
@@ -34290,29 +33677,6 @@ func (b flowBoxChild) SetBuildableProperty(builder Builder, name string, value e
 
 func (b flowBoxChild) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type FlowBoxChildAccessible interface {
-	ContainerAccessible
-}
-
-// flowBoxChildAccessible implements the FlowBoxChildAccessible class.
-type flowBoxChildAccessible struct {
-	ContainerAccessible
-}
-
-// WrapFlowBoxChildAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapFlowBoxChildAccessible(obj *externglib.Object) FlowBoxChildAccessible {
-	return flowBoxChildAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalFlowBoxChildAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFlowBoxChildAccessible(obj), nil
 }
 
 // FontButton: the FontButton is a button which displays the currently selected
@@ -34590,6 +33954,34 @@ func (f fontButton) SetUseSizeFontButton(useSize bool) {
 	C.gtk_font_button_set_use_size(_arg0, _arg1)
 }
 
+func (b fontButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b fontButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b fontButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b fontButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b fontButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b fontButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b fontButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a fontButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -34608,30 +34000,6 @@ func (a fontButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a fontButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a fontButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a fontButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a fontButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a fontButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a fontButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a fontButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b fontButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -34660,6 +34028,30 @@ func (b fontButton) SetBuildableProperty(builder Builder, name string, value ext
 
 func (b fontButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a fontButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a fontButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a fontButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a fontButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a fontButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a fontButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (f fontButton) Font() string {
@@ -34967,6 +34359,14 @@ func (b fontChooserWidget) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
+func (o fontChooserWidget) Orientation() Orientation {
+	return WrapOrientable(gextras.InternObject(o)).Orientation()
+}
+
+func (o fontChooserWidget) SetOrientation(orientation Orientation) {
+	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+}
+
 func (f fontChooserWidget) Font() string {
 	return WrapFontChooser(gextras.InternObject(f)).Font()
 }
@@ -35037,14 +34437,6 @@ func (f fontChooserWidget) SetPreviewText(text string) {
 
 func (f fontChooserWidget) SetShowPreviewEntry(showPreviewEntry bool) {
 	WrapFontChooser(gextras.InternObject(f)).SetShowPreviewEntry(showPreviewEntry)
-}
-
-func (o fontChooserWidget) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o fontChooserWidget) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
 type FontSelection interface {
@@ -35784,29 +35176,6 @@ func (b frame) SetBuildableProperty(builder Builder, name string, value externgl
 
 func (b frame) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type FrameAccessible interface {
-	ContainerAccessible
-}
-
-// frameAccessible implements the FrameAccessible class.
-type frameAccessible struct {
-	ContainerAccessible
-}
-
-// WrapFrameAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapFrameAccessible(obj *externglib.Object) FrameAccessible {
-	return frameAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalFrameAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFrameAccessible(obj), nil
 }
 
 // GLArea is a widget that allows drawing with OpenGL.
@@ -39210,29 +38579,6 @@ func (b headerBar) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type HeaderBarAccessible interface {
-	ContainerAccessible
-}
-
-// headerBarAccessible implements the HeaderBarAccessible class.
-type headerBarAccessible struct {
-	ContainerAccessible
-}
-
-// WrapHeaderBarAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapHeaderBarAccessible(obj *externglib.Object) HeaderBarAccessible {
-	return headerBarAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalHeaderBarAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapHeaderBarAccessible(obj), nil
-}
-
 // IMContext defines the interface for GTK+ input methods. An input method is
 // used by GTK+ text input widgets like Entry to map from key events to Unicode
 // character strings.
@@ -42338,29 +41684,6 @@ func (s iconView) SetVScrollPolicy(policy ScrollablePolicy) {
 	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
 }
 
-type IconViewAccessible interface {
-	ContainerAccessible
-}
-
-// iconViewAccessible implements the IconViewAccessible class.
-type iconViewAccessible struct {
-	ContainerAccessible
-}
-
-// WrapIconViewAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapIconViewAccessible(obj *externglib.Object) IconViewAccessible {
-	return iconViewAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalIconViewAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapIconViewAccessible(obj), nil
-}
-
 // Image: the Image widget displays an image. Various kinds of object can be
 // displayed as an image; most typically, you would load a Pixbuf ("pixel
 // buffer") from a file, and then display that. There’s a convenience function
@@ -43011,52 +42334,6 @@ func (b image) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type ImageAccessible interface {
-	WidgetAccessible
-}
-
-// imageAccessible implements the ImageAccessible class.
-type imageAccessible struct {
-	WidgetAccessible
-}
-
-// WrapImageAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapImageAccessible(obj *externglib.Object) ImageAccessible {
-	return imageAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalImageAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapImageAccessible(obj), nil
-}
-
-type ImageCellAccessible interface {
-	RendererCellAccessible
-}
-
-// imageCellAccessible implements the ImageCellAccessible class.
-type imageCellAccessible struct {
-	RendererCellAccessible
-}
-
-// WrapImageCellAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapImageCellAccessible(obj *externglib.Object) ImageCellAccessible {
-	return imageCellAccessible{
-		RendererCellAccessible: WrapRendererCellAccessible(obj),
-	}
-}
-
-func marshalImageCellAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapImageCellAccessible(obj), nil
-}
-
 // ImageMenuItem: a GtkImageMenuItem is a menu item which has an icon next to
 // the text label.
 //
@@ -43306,6 +42583,34 @@ func (i imageMenuItem) SetUseStockImageMenuItem(useStock bool) {
 	C.gtk_image_menu_item_set_use_stock(_arg0, _arg1)
 }
 
+func (b imageMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b imageMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b imageMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b imageMenuItem) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b imageMenuItem) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b imageMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b imageMenuItem) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a imageMenuItem) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -43324,30 +42629,6 @@ func (a imageMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a imageMenuItem) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a imageMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a imageMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a imageMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a imageMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a imageMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a imageMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b imageMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -43376,6 +42657,30 @@ func (b imageMenuItem) SetBuildableProperty(builder Builder, name string, value 
 
 func (b imageMenuItem) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a imageMenuItem) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a imageMenuItem) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a imageMenuItem) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a imageMenuItem) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a imageMenuItem) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a imageMenuItem) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // InfoBar is a widget that can be used to show messages to the user without
@@ -44856,29 +44161,6 @@ func (b label) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type LabelAccessible interface {
-	WidgetAccessible
-}
-
-// labelAccessible implements the LabelAccessible class.
-type labelAccessible struct {
-	WidgetAccessible
-}
-
-// WrapLabelAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapLabelAccessible(obj *externglib.Object) LabelAccessible {
-	return labelAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalLabelAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapLabelAccessible(obj), nil
-}
-
 // Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t do
 // anything except paint a blank background by default. It’s different in that
 // it supports scrolling natively due to implementing Scrollable, and can
@@ -45501,29 +44783,6 @@ func (o levelBar) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
-type LevelBarAccessible interface {
-	WidgetAccessible
-}
-
-// levelBarAccessible implements the LevelBarAccessible class.
-type levelBarAccessible struct {
-	WidgetAccessible
-}
-
-// WrapLevelBarAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapLevelBarAccessible(obj *externglib.Object) LevelBarAccessible {
-	return levelBarAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalLevelBarAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapLevelBarAccessible(obj), nil
-}
-
 // LinkButton: a GtkLinkButton is a Button with a hyperlink, similar to the one
 // used by web browsers, which triggers an action when clicked. It is useful to
 // show quick links to resources.
@@ -45674,6 +44933,34 @@ func (l linkButton) SetVisitedLinkButton(visited bool) {
 	C.gtk_link_button_set_visited(_arg0, _arg1)
 }
 
+func (b linkButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b linkButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b linkButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b linkButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b linkButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b linkButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b linkButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a linkButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -45692,30 +44979,6 @@ func (a linkButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a linkButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a linkButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a linkButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a linkButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a linkButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a linkButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a linkButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b linkButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -45746,27 +45009,28 @@ func (b linkButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type LinkButtonAccessible interface {
-	ButtonAccessible
+func (a linkButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// linkButtonAccessible implements the LinkButtonAccessible class.
-type linkButtonAccessible struct {
-	ButtonAccessible
+func (a linkButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapLinkButtonAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapLinkButtonAccessible(obj *externglib.Object) LinkButtonAccessible {
-	return linkButtonAccessible{
-		ButtonAccessible: WrapButtonAccessible(obj),
-	}
+func (a linkButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalLinkButtonAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapLinkButtonAccessible(obj), nil
+func (a linkButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a linkButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a linkButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
@@ -46189,29 +45453,6 @@ func (b listBox) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type ListBoxAccessible interface {
-	ContainerAccessible
-}
-
-// listBoxAccessible implements the ListBoxAccessible class.
-type listBoxAccessible struct {
-	ContainerAccessible
-}
-
-// WrapListBoxAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapListBoxAccessible(obj *externglib.Object) ListBoxAccessible {
-	return listBoxAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalListBoxAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapListBoxAccessible(obj), nil
-}
-
 type ListBoxRow interface {
 	Bin
 	Actionable
@@ -46415,6 +45656,34 @@ func (r listBoxRow) SetSelectableListBoxRow(selectable bool) {
 	C.gtk_list_box_row_set_selectable(_arg0, _arg1)
 }
 
+func (b listBoxRow) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b listBoxRow) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b listBoxRow) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b listBoxRow) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b listBoxRow) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b listBoxRow) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b listBoxRow) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a listBoxRow) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -46461,29 +45730,6 @@ func (b listBoxRow) SetBuildableProperty(builder Builder, name string, value ext
 
 func (b listBoxRow) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type ListBoxRowAccessible interface {
-	ContainerAccessible
-}
-
-// listBoxRowAccessible implements the ListBoxRowAccessible class.
-type listBoxRowAccessible struct {
-	ContainerAccessible
-}
-
-// WrapListBoxRowAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapListBoxRowAccessible(obj *externglib.Object) ListBoxRowAccessible {
-	return listBoxRowAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalListBoxRowAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapListBoxRowAccessible(obj), nil
 }
 
 // ListStore: the ListStore object is a list model for use with a TreeView
@@ -47042,6 +46288,22 @@ func (d listStore) RowDraggable(path *TreePath) bool {
 	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
 }
 
+func (s listStore) SortColumnID() (int, SortType, bool) {
+	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
+}
+
+func (s listStore) HasDefaultSortFunc() bool {
+	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
+}
+
+func (s listStore) SetSortColumnID(sortColumnId int, order SortType) {
+	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
+}
+
+func (s listStore) SortColumnChanged() {
+	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
+}
+
 func (c listStore) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(c)).NewFilter(root)
 }
@@ -47136,22 +46398,6 @@ func (t listStore) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOr
 
 func (t listStore) UnrefNode(iter *TreeIter) {
 	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
-}
-
-func (s listStore) SortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
-}
-
-func (s listStore) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s listStore) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s listStore) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
 }
 
 // LockButton: gtkLockButton is a widget that can be used in control panels or
@@ -47254,6 +46500,34 @@ func (b lockButton) SetPermissionLockButton(permission gio.Permission) {
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }
 
+func (b lockButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b lockButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b lockButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b lockButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b lockButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b lockButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b lockButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a lockButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -47272,30 +46546,6 @@ func (a lockButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a lockButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a lockButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a lockButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a lockButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a lockButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a lockButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a lockButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b lockButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -47326,27 +46576,28 @@ func (b lockButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type LockButtonAccessible interface {
-	ButtonAccessible
+func (a lockButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// lockButtonAccessible implements the LockButtonAccessible class.
-type lockButtonAccessible struct {
-	ButtonAccessible
+func (a lockButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapLockButtonAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapLockButtonAccessible(obj *externglib.Object) LockButtonAccessible {
-	return lockButtonAccessible{
-		ButtonAccessible: WrapButtonAccessible(obj),
-	}
+func (a lockButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalLockButtonAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapLockButtonAccessible(obj), nil
+func (a lockButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a lockButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a lockButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // Menu: a Menu is a MenuShell that implements a drop down menu consisting of a
@@ -47834,29 +47085,6 @@ func (b menu) SetBuildableProperty(builder Builder, name string, value externgli
 
 func (b menu) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type MenuAccessible interface {
-	MenuShellAccessible
-}
-
-// menuAccessible implements the MenuAccessible class.
-type menuAccessible struct {
-	MenuShellAccessible
-}
-
-// WrapMenuAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapMenuAccessible(obj *externglib.Object) MenuAccessible {
-	return menuAccessible{
-		MenuShellAccessible: WrapMenuShellAccessible(obj),
-	}
-}
-
-func marshalMenuAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenuAccessible(obj), nil
 }
 
 // MenuBar: the MenuBar is a subclass of MenuShell which contains one or more
@@ -48354,6 +47582,34 @@ func (m menuButton) SetUsePopoverMenuButton(usePopover bool) {
 	C.gtk_menu_button_set_use_popover(_arg0, _arg1)
 }
 
+func (b menuButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b menuButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b menuButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b menuButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b menuButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b menuButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b menuButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a menuButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -48372,30 +47628,6 @@ func (a menuButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a menuButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a menuButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a menuButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a menuButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a menuButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a menuButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a menuButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b menuButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -48426,27 +47658,28 @@ func (b menuButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type MenuButtonAccessible interface {
-	ToggleButtonAccessible
+func (a menuButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// menuButtonAccessible implements the MenuButtonAccessible class.
-type menuButtonAccessible struct {
-	ToggleButtonAccessible
+func (a menuButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapMenuButtonAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapMenuButtonAccessible(obj *externglib.Object) MenuButtonAccessible {
-	return menuButtonAccessible{
-		ToggleButtonAccessible: WrapToggleButtonAccessible(obj),
-	}
+func (a menuButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalMenuButtonAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenuButtonAccessible(obj), nil
+func (a menuButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a menuButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a menuButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // MenuItem: the MenuItem widget and the derived widgets are the only valid
@@ -48810,6 +48043,34 @@ func (m menuItem) ToggleSizeAllocateMenuItem(allocation int) {
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
 }
 
+func (b menuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b menuItem) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b menuItem) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b menuItem) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b menuItem) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b menuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b menuItem) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a menuItem) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -48828,30 +48089,6 @@ func (a menuItem) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a menuItem) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a menuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a menuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a menuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a menuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a menuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a menuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b menuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -48882,27 +48119,28 @@ func (b menuItem) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type MenuItemAccessible interface {
-	ContainerAccessible
+func (a menuItem) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// menuItemAccessible implements the MenuItemAccessible class.
-type menuItemAccessible struct {
-	ContainerAccessible
+func (a menuItem) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapMenuItemAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapMenuItemAccessible(obj *externglib.Object) MenuItemAccessible {
-	return menuItemAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
+func (a menuItem) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalMenuItemAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenuItemAccessible(obj), nil
+func (a menuItem) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a menuItem) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a menuItem) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // MenuShell: a MenuShell is the abstract base class used to derive the Menu and
@@ -49241,29 +48479,6 @@ func (b menuShell) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type MenuShellAccessible interface {
-	ContainerAccessible
-}
-
-// menuShellAccessible implements the MenuShellAccessible class.
-type menuShellAccessible struct {
-	ContainerAccessible
-}
-
-// WrapMenuShellAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapMenuShellAccessible(obj *externglib.Object) MenuShellAccessible {
-	return menuShellAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalMenuShellAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenuShellAccessible(obj), nil
-}
-
 // MenuToolButton: a MenuToolButton is a ToolItem that contains a button and a
 // small additional button with an arrow. When clicked, the arrow button pops up
 // a dropdown menu.
@@ -49410,24 +48625,32 @@ func (b menuToolButton) SetMenuMenuToolButton(menu Widget) {
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
 }
 
-func (a menuToolButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (b menuToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
 
-func (a menuToolButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (b menuToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
-func (a menuToolButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (b menuToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
 
-func (a menuToolButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+func (b menuToolButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
 }
 
-func (a menuToolButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+func (b menuToolButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b menuToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b menuToolButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (a menuToolButton) DoSetRelatedAction(action Action) {
@@ -49452,6 +48675,26 @@ func (a menuToolButton) SetUseActionAppearance(useAppearance bool) {
 
 func (a menuToolButton) SyncActionProperties(action Action) {
 	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+}
+
+func (a menuToolButton) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a menuToolButton) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a menuToolButton) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a menuToolButton) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a menuToolButton) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b menuToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -49877,6 +49120,34 @@ func NewModelButton() ModelButton {
 	return _modelButton
 }
 
+func (b modelButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b modelButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b modelButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b modelButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b modelButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b modelButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b modelButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a modelButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -49895,30 +49166,6 @@ func (a modelButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a modelButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a modelButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a modelButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a modelButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a modelButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a modelButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a modelButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b modelButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -49947,6 +49194,30 @@ func (b modelButton) SetBuildableProperty(builder Builder, name string, value ex
 
 func (b modelButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a modelButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a modelButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a modelButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a modelButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a modelButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a modelButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // MountOperation: this should not be accessed directly. Use the accessor
@@ -51288,29 +50559,6 @@ func (b notebook) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type NotebookAccessible interface {
-	ContainerAccessible
-}
-
-// notebookAccessible implements the NotebookAccessible class.
-type notebookAccessible struct {
-	ContainerAccessible
-}
-
-// WrapNotebookAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapNotebookAccessible(obj *externglib.Object) NotebookAccessible {
-	return notebookAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalNotebookAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNotebookAccessible(obj), nil
-}
-
 // NumerableIcon: gtkNumerableIcon is a subclass of Icon that can show a number
 // or short string as an emblem. The number can be overlayed on top of another
 // emblem, if desired.
@@ -51528,6 +50776,18 @@ func (s numerableIcon) SetStyleContextNumerableIcon(style StyleContext) {
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(style.Native()))
 
 	C.gtk_numerable_icon_set_style_context(_arg0, _arg1)
+}
+
+func (i numerableIcon) Equal(icon2 Icon) bool {
+	return gio.WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i numerableIcon) Serialize() *glib.Variant {
+	return gio.WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i numerableIcon) String() string {
+	return gio.WrapIcon(gextras.InternObject(i)).String()
 }
 
 // OffscreenWindow: gtkOffscreenWindow is strictly intended to be used for
@@ -52804,29 +52064,6 @@ func (o paned) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
-type PanedAccessible interface {
-	ContainerAccessible
-}
-
-// panedAccessible implements the PanedAccessible class.
-type panedAccessible struct {
-	ContainerAccessible
-}
-
-// WrapPanedAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPanedAccessible(obj *externglib.Object) PanedAccessible {
-	return panedAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalPanedAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPanedAccessible(obj), nil
-}
-
 // PlacesSidebar is a widget that displays a list of frequently-used places in
 // the file system: the user’s home directory, the user’s bookmarks, and volumes
 // and drives. This widget is used as a sidebar in FileChooser and may be used
@@ -53502,47 +52739,6 @@ func (b plug) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type PlugAccessible interface {
-	WindowAccessible
-
-	ID() string
-}
-
-// plugAccessible implements the PlugAccessible class.
-type plugAccessible struct {
-	WindowAccessible
-}
-
-// WrapPlugAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPlugAccessible(obj *externglib.Object) PlugAccessible {
-	return plugAccessible{
-		WindowAccessible: WrapWindowAccessible(obj),
-	}
-}
-
-func marshalPlugAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPlugAccessible(obj), nil
-}
-
-func (p plugAccessible) ID() string {
-	var _arg0 *C.GtkPlugAccessible // out
-	var _cret *C.gchar             // in
-
-	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
-
-	_cret = C.gtk_plug_accessible_get_id(_arg0)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
 // Popover: gtkPopover is a bubble-like context window, primarily meant to
 // provide context-dependent information or options. Popovers are attached to a
 // widget, passed at construction time on gtk_popover_new(), or updated
@@ -54007,29 +53203,6 @@ func (b popover) SetBuildableProperty(builder Builder, name string, value extern
 
 func (b popover) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type PopoverAccessible interface {
-	ContainerAccessible
-}
-
-// popoverAccessible implements the PopoverAccessible class.
-type popoverAccessible struct {
-	ContainerAccessible
-}
-
-// WrapPopoverAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPopoverAccessible(obj *externglib.Object) PopoverAccessible {
-	return popoverAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalPopoverAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPopoverAccessible(obj), nil
 }
 
 // PopoverMenu: gtkPopoverMenu is a subclass of Popover that treats its children
@@ -56797,29 +55970,6 @@ func (o progressBar) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
-type ProgressBarAccessible interface {
-	WidgetAccessible
-}
-
-// progressBarAccessible implements the ProgressBarAccessible class.
-type progressBarAccessible struct {
-	WidgetAccessible
-}
-
-// WrapProgressBarAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapProgressBarAccessible(obj *externglib.Object) ProgressBarAccessible {
-	return progressBarAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalProgressBarAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProgressBarAccessible(obj), nil
-}
-
 // RadioAction: a RadioAction is similar to RadioMenuItem. A number of radio
 // actions can be linked together so that only one may be active at any one
 // time.
@@ -57137,6 +56287,34 @@ func (r radioButton) JoinGroupRadioButton(groupSource RadioButton) {
 	C.gtk_radio_button_join_group(_arg0, _arg1)
 }
 
+func (b radioButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b radioButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b radioButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b radioButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b radioButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b radioButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b radioButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a radioButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -57155,30 +56333,6 @@ func (a radioButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a radioButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a radioButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a radioButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a radioButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a radioButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a radioButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a radioButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b radioButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -57209,27 +56363,28 @@ func (b radioButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type RadioButtonAccessible interface {
-	ToggleButtonAccessible
+func (a radioButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// radioButtonAccessible implements the RadioButtonAccessible class.
-type radioButtonAccessible struct {
-	ToggleButtonAccessible
+func (a radioButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapRadioButtonAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapRadioButtonAccessible(obj *externglib.Object) RadioButtonAccessible {
-	return radioButtonAccessible{
-		ToggleButtonAccessible: WrapToggleButtonAccessible(obj),
-	}
+func (a radioButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalRadioButtonAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRadioButtonAccessible(obj), nil
+func (a radioButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a radioButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a radioButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // RadioMenuItem: a radio menu item is a check menu item that belongs to a
@@ -57367,6 +56522,34 @@ func (r radioMenuItem) JoinGroupRadioMenuItem(groupSource RadioMenuItem) {
 	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
 }
 
+func (b radioMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b radioMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b radioMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b radioMenuItem) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b radioMenuItem) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b radioMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b radioMenuItem) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a radioMenuItem) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -57385,30 +56568,6 @@ func (a radioMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a radioMenuItem) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a radioMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a radioMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a radioMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a radioMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a radioMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a radioMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b radioMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -57439,27 +56598,28 @@ func (b radioMenuItem) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type RadioMenuItemAccessible interface {
-	CheckMenuItemAccessible
+func (a radioMenuItem) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// radioMenuItemAccessible implements the RadioMenuItemAccessible class.
-type radioMenuItemAccessible struct {
-	CheckMenuItemAccessible
+func (a radioMenuItem) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapRadioMenuItemAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapRadioMenuItemAccessible(obj *externglib.Object) RadioMenuItemAccessible {
-	return radioMenuItemAccessible{
-		CheckMenuItemAccessible: WrapCheckMenuItemAccessible(obj),
-	}
+func (a radioMenuItem) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalRadioMenuItemAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRadioMenuItemAccessible(obj), nil
+func (a radioMenuItem) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a radioMenuItem) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a radioMenuItem) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // RadioToolButton: a RadioToolButton is a ToolItem that contains a radio
@@ -57535,24 +56695,32 @@ func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string
 	return _radioToolButton
 }
 
-func (a radioToolButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (b radioToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
 
-func (a radioToolButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (b radioToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
-func (a radioToolButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (b radioToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
 
-func (a radioToolButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+func (b radioToolButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
 }
 
-func (a radioToolButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+func (b radioToolButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b radioToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b radioToolButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (a radioToolButton) DoSetRelatedAction(action Action) {
@@ -57577,6 +56745,26 @@ func (a radioToolButton) SetUseActionAppearance(useAppearance bool) {
 
 func (a radioToolButton) SyncActionProperties(action Action) {
 	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+}
+
+func (a radioToolButton) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a radioToolButton) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a radioToolButton) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a radioToolButton) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a radioToolButton) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b radioToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -58179,29 +57367,6 @@ func (o _range) Orientation() Orientation {
 
 func (o _range) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-type RangeAccessible interface {
-	WidgetAccessible
-}
-
-// rangeAccessible implements the RangeAccessible class.
-type rangeAccessible struct {
-	WidgetAccessible
-}
-
-// WrapRangeAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapRangeAccessible(obj *externglib.Object) RangeAccessible {
-	return rangeAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalRangeAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRangeAccessible(obj), nil
 }
 
 // RCStyle: the RcStyle-struct is used to represent a set of information about
@@ -58852,30 +58017,6 @@ func (m recentChooserMenu) SetShowNumbersRecentChooserMenu(showNumbers bool) {
 	C.gtk_recent_chooser_menu_set_show_numbers(_arg0, _arg1)
 }
 
-func (a recentChooserMenu) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a recentChooserMenu) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a recentChooserMenu) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a recentChooserMenu) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a recentChooserMenu) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a recentChooserMenu) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
 func (b recentChooserMenu) AddChild(builder Builder, child gextras.Objector, typ string) {
 	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
@@ -58902,6 +58043,30 @@ func (b recentChooserMenu) SetBuildableProperty(builder Builder, name string, va
 
 func (b recentChooserMenu) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a recentChooserMenu) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a recentChooserMenu) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a recentChooserMenu) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a recentChooserMenu) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a recentChooserMenu) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a recentChooserMenu) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (c recentChooserMenu) AddFilter(filter RecentFilter) {
@@ -59779,44 +58944,6 @@ func (m recentManager) RemoveItemRecentManager(uri string) error {
 	return _goerr
 }
 
-type RendererCellAccessible interface {
-	CellAccessible
-}
-
-// rendererCellAccessible implements the RendererCellAccessible class.
-type rendererCellAccessible struct {
-	CellAccessible
-}
-
-// WrapRendererCellAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapRendererCellAccessible(obj *externglib.Object) RendererCellAccessible {
-	return rendererCellAccessible{
-		CellAccessible: WrapCellAccessible(obj),
-	}
-}
-
-func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRendererCellAccessible(obj), nil
-}
-
-func NewRendererCellAccessible(renderer CellRenderer) RendererCellAccessible {
-	var _arg1 *C.GtkCellRenderer // out
-	var _cret *C.AtkObject       // in
-
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
-
-	_cret = C.gtk_renderer_cell_accessible_new(_arg1)
-
-	var _rendererCellAccessible RendererCellAccessible // out
-
-	_rendererCellAccessible = WrapRendererCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _rendererCellAccessible
-}
-
 // Revealer: the GtkRevealer widget is a container which animates the transition
 // of its child from invisible to visible.
 //
@@ -60415,29 +59542,6 @@ func (o scale) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
-type ScaleAccessible interface {
-	RangeAccessible
-}
-
-// scaleAccessible implements the ScaleAccessible class.
-type scaleAccessible struct {
-	RangeAccessible
-}
-
-// WrapScaleAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapScaleAccessible(obj *externglib.Object) ScaleAccessible {
-	return scaleAccessible{
-		RangeAccessible: WrapRangeAccessible(obj),
-	}
-}
-
-func marshalScaleAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapScaleAccessible(obj), nil
-}
-
 // ScaleButton provides a button which pops up a scale widget. This kind of
 // widget is commonly used for volume controls in multimedia applications, and
 // GTK+ provides a VolumeButton subclass that is tailored for this use case.
@@ -60642,6 +59746,34 @@ func (b scaleButton) SetValueScaleButton(value float64) {
 	C.gtk_scale_button_set_value(_arg0, _arg1)
 }
 
+func (b scaleButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b scaleButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b scaleButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b scaleButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b scaleButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b scaleButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b scaleButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a scaleButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -60660,30 +59792,6 @@ func (a scaleButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a scaleButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a scaleButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a scaleButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a scaleButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a scaleButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a scaleButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a scaleButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b scaleButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -60714,35 +59822,36 @@ func (b scaleButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
+func (a scaleButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a scaleButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a scaleButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a scaleButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a scaleButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a scaleButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+}
+
 func (o scaleButton) Orientation() Orientation {
 	return WrapOrientable(gextras.InternObject(o)).Orientation()
 }
 
 func (o scaleButton) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-type ScaleButtonAccessible interface {
-	ButtonAccessible
-}
-
-// scaleButtonAccessible implements the ScaleButtonAccessible class.
-type scaleButtonAccessible struct {
-	ButtonAccessible
-}
-
-// WrapScaleButtonAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapScaleButtonAccessible(obj *externglib.Object) ScaleButtonAccessible {
-	return scaleButtonAccessible{
-		ButtonAccessible: WrapButtonAccessible(obj),
-	}
-}
-
-func marshalScaleButtonAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapScaleButtonAccessible(obj), nil
 }
 
 // Scrollbar: the Scrollbar widget is a horizontal or vertical scrollbar,
@@ -61591,29 +60700,6 @@ func (b scrolledWindow) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type ScrolledWindowAccessible interface {
-	ContainerAccessible
-}
-
-// scrolledWindowAccessible implements the ScrolledWindowAccessible class.
-type scrolledWindowAccessible struct {
-	ContainerAccessible
-}
-
-// WrapScrolledWindowAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapScrolledWindowAccessible(obj *externglib.Object) ScrolledWindowAccessible {
-	return scrolledWindowAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalScrolledWindowAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapScrolledWindowAccessible(obj), nil
-}
-
 // SearchBar is a container made to have a search entry (possibly with
 // additional connex widgets, such as drop-down menus, or buttons) built-in. The
 // search bar would appear when a search is started through typing on the
@@ -61847,6 +60933,14 @@ func NewSearchEntry() SearchEntry {
 	return _searchEntry
 }
 
+func (c searchEntry) EditingDone() {
+	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+}
+
+func (c searchEntry) RemoveWidget() {
+	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
 func (b searchEntry) AddChild(builder Builder, child gextras.Objector, typ string) {
 	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
@@ -61873,14 +60967,6 @@ func (b searchEntry) SetBuildableProperty(builder Builder, name string, value ex
 
 func (b searchEntry) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c searchEntry) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c searchEntry) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
 }
 
 func (e searchEntry) CopyClipboard() {
@@ -62061,6 +61147,34 @@ func NewSeparatorMenuItem() SeparatorMenuItem {
 	return _separatorMenuItem
 }
 
+func (b separatorMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b separatorMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b separatorMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b separatorMenuItem) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b separatorMenuItem) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b separatorMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b separatorMenuItem) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a separatorMenuItem) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -62079,30 +61193,6 @@ func (a separatorMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a separatorMenuItem) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a separatorMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a separatorMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a separatorMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a separatorMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a separatorMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a separatorMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b separatorMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -62131,6 +61221,30 @@ func (b separatorMenuItem) SetBuildableProperty(builder Builder, name string, va
 
 func (b separatorMenuItem) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a separatorMenuItem) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a separatorMenuItem) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a separatorMenuItem) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a separatorMenuItem) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a separatorMenuItem) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a separatorMenuItem) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // SeparatorToolItem: a SeparatorToolItem is a ToolItem that separates groups of
@@ -62221,30 +61335,6 @@ func (i separatorToolItem) SetDrawSeparatorToolItem(draw bool) {
 	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
 }
 
-func (a separatorToolItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a separatorToolItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a separatorToolItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a separatorToolItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a separatorToolItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a separatorToolItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
 func (b separatorToolItem) AddChild(builder Builder, child gextras.Objector, typ string) {
 	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
@@ -62271,6 +61361,30 @@ func (b separatorToolItem) SetBuildableProperty(builder Builder, name string, va
 
 func (b separatorToolItem) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a separatorToolItem) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a separatorToolItem) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a separatorToolItem) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a separatorToolItem) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a separatorToolItem) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a separatorToolItem) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // Settings gtkSettings provide a mechanism to share global settings between
@@ -63198,42 +62312,6 @@ func (b socket) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type SocketAccessible interface {
-	ContainerAccessible
-
-	EmbedSocketAccessible(path string)
-}
-
-// socketAccessible implements the SocketAccessible class.
-type socketAccessible struct {
-	ContainerAccessible
-}
-
-// WrapSocketAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapSocketAccessible(obj *externglib.Object) SocketAccessible {
-	return socketAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalSocketAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSocketAccessible(obj), nil
-}
-
-func (s socketAccessible) EmbedSocketAccessible(path string) {
-	var _arg0 *C.GtkSocketAccessible // out
-	var _arg1 *C.gchar               // out
-
-	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_socket_accessible_embed(_arg0, _arg1)
-}
-
 // SpinButton: a SpinButton is an ideal way to allow the user to set the value
 // of some attribute. Rather than having to directly type a number into a Entry,
 // GtkSpinButton allows the user to click on one of two arrows to increment or
@@ -63716,6 +62794,14 @@ func (s spinButton) UpdateSpinButton() {
 	C.gtk_spin_button_update(_arg0)
 }
 
+func (c spinButton) EditingDone() {
+	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+}
+
+func (c spinButton) RemoveWidget() {
+	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+}
+
 func (b spinButton) AddChild(builder Builder, child gextras.Objector, typ string) {
 	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
@@ -63742,14 +62828,6 @@ func (b spinButton) SetBuildableProperty(builder Builder, name string, value ext
 
 func (b spinButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c spinButton) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c spinButton) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
 }
 
 func (e spinButton) CopyClipboard() {
@@ -63806,29 +62884,6 @@ func (o spinButton) Orientation() Orientation {
 
 func (o spinButton) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-type SpinButtonAccessible interface {
-	EntryAccessible
-}
-
-// spinButtonAccessible implements the SpinButtonAccessible class.
-type spinButtonAccessible struct {
-	EntryAccessible
-}
-
-// WrapSpinButtonAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapSpinButtonAccessible(obj *externglib.Object) SpinButtonAccessible {
-	return spinButtonAccessible{
-		EntryAccessible: WrapEntryAccessible(obj),
-	}
-}
-
-func marshalSpinButtonAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSpinButtonAccessible(obj), nil
 }
 
 // Spinner: a GtkSpinner widget displays an icon-size spinning animation. It is
@@ -63926,29 +62981,6 @@ func (b spinner) SetBuildableProperty(builder Builder, name string, value extern
 
 func (b spinner) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type SpinnerAccessible interface {
-	WidgetAccessible
-}
-
-// spinnerAccessible implements the SpinnerAccessible class.
-type spinnerAccessible struct {
-	WidgetAccessible
-}
-
-// WrapSpinnerAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapSpinnerAccessible(obj *externglib.Object) SpinnerAccessible {
-	return spinnerAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
-}
-
-func marshalSpinnerAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSpinnerAccessible(obj), nil
 }
 
 // Stack: the GtkStack widget is a container which only shows one of its
@@ -64418,29 +63450,6 @@ func (b stack) SetBuildableProperty(builder Builder, name string, value externgl
 
 func (b stack) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type StackAccessible interface {
-	ContainerAccessible
-}
-
-// stackAccessible implements the StackAccessible class.
-type stackAccessible struct {
-	ContainerAccessible
-}
-
-// WrapStackAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapStackAccessible(obj *externglib.Object) StackAccessible {
-	return stackAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalStackAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStackAccessible(obj), nil
 }
 
 // StackSidebar: a GtkStackSidebar enables you to quickly and easily provide a
@@ -65564,29 +64573,6 @@ func (o statusbar) Orientation() Orientation {
 
 func (o statusbar) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-type StatusbarAccessible interface {
-	ContainerAccessible
-}
-
-// statusbarAccessible implements the StatusbarAccessible class.
-type statusbarAccessible struct {
-	ContainerAccessible
-}
-
-// WrapStatusbarAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapStatusbarAccessible(obj *externglib.Object) StatusbarAccessible {
-	return statusbarAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalStatusbarAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStatusbarAccessible(obj), nil
 }
 
 // Style: a Style object encapsulates the information that provides the look and
@@ -67232,30 +66218,6 @@ func (a _switch) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
-func (a _switch) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a _switch) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a _switch) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a _switch) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a _switch) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a _switch) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
 func (b _switch) AddChild(builder Builder, child gextras.Objector, typ string) {
 	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
@@ -67284,27 +66246,28 @@ func (b _switch) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type SwitchAccessible interface {
-	WidgetAccessible
+func (a _switch) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// switchAccessible implements the SwitchAccessible class.
-type switchAccessible struct {
-	WidgetAccessible
+func (a _switch) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapSwitchAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapSwitchAccessible(obj *externglib.Object) SwitchAccessible {
-	return switchAccessible{
-		WidgetAccessible: WrapWidgetAccessible(obj),
-	}
+func (a _switch) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalSwitchAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSwitchAccessible(obj), nil
+func (a _switch) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a _switch) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a _switch) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // Table: the Table functions allow the programmer to arrange widgets in rows
@@ -67729,6 +66692,34 @@ func NewTearoffMenuItem() TearoffMenuItem {
 	return _tearoffMenuItem
 }
 
+func (b tearoffMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b tearoffMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b tearoffMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b tearoffMenuItem) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b tearoffMenuItem) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b tearoffMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b tearoffMenuItem) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a tearoffMenuItem) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -67747,30 +66738,6 @@ func (a tearoffMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a tearoffMenuItem) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a tearoffMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a tearoffMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a tearoffMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a tearoffMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a tearoffMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a tearoffMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b tearoffMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -67799,6 +66766,30 @@ func (b tearoffMenuItem) SetBuildableProperty(builder Builder, name string, valu
 
 func (b tearoffMenuItem) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a tearoffMenuItem) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a tearoffMenuItem) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a tearoffMenuItem) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a tearoffMenuItem) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a tearoffMenuItem) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a tearoffMenuItem) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // TextBuffer: you may wish to begin by reading the [text widget conceptual
@@ -69481,29 +68472,6 @@ func (b textBuffer) UnregisterSerializeFormatTextBuffer(format *gdk.Atom) {
 	}
 
 	C.gtk_text_buffer_unregister_serialize_format(_arg0, _arg1)
-}
-
-type TextCellAccessible interface {
-	RendererCellAccessible
-}
-
-// textCellAccessible implements the TextCellAccessible class.
-type textCellAccessible struct {
-	RendererCellAccessible
-}
-
-// WrapTextCellAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapTextCellAccessible(obj *externglib.Object) TextCellAccessible {
-	return textCellAccessible{
-		RendererCellAccessible: WrapRendererCellAccessible(obj),
-	}
-}
-
-func marshalTextCellAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTextCellAccessible(obj), nil
 }
 
 // TextChildAnchor: a TextChildAnchor is a spot in the buffer where child
@@ -71727,29 +70695,6 @@ func (s textView) SetVScrollPolicy(policy ScrollablePolicy) {
 	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
 }
 
-type TextViewAccessible interface {
-	ContainerAccessible
-}
-
-// textViewAccessible implements the TextViewAccessible class.
-type textViewAccessible struct {
-	ContainerAccessible
-}
-
-// WrapTextViewAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapTextViewAccessible(obj *externglib.Object) TextViewAccessible {
-	return textViewAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalTextViewAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTextViewAccessible(obj), nil
-}
-
 // ThemingEngine was the object used for rendering themed content in GTK+
 // widgets. It used to allow overriding GTK+'s default implementation of
 // rendering functions by allowing engines to be loaded as modules.
@@ -72670,6 +71615,34 @@ func (t toggleButton) ToggledToggleButton() {
 	C.gtk_toggle_button_toggled(_arg0)
 }
 
+func (b toggleButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b toggleButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toggleButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b toggleButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b toggleButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b toggleButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b toggleButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a toggleButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -72688,30 +71661,6 @@ func (a toggleButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a toggleButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a toggleButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a toggleButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a toggleButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a toggleButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a toggleButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a toggleButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b toggleButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -72742,27 +71691,28 @@ func (b toggleButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-type ToggleButtonAccessible interface {
-	ButtonAccessible
+func (a toggleButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
 }
 
-// toggleButtonAccessible implements the ToggleButtonAccessible class.
-type toggleButtonAccessible struct {
-	ButtonAccessible
+func (a toggleButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
 }
 
-// WrapToggleButtonAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapToggleButtonAccessible(obj *externglib.Object) ToggleButtonAccessible {
-	return toggleButtonAccessible{
-		ButtonAccessible: WrapButtonAccessible(obj),
-	}
+func (a toggleButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
 }
 
-func marshalToggleButtonAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapToggleButtonAccessible(obj), nil
+func (a toggleButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a toggleButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a toggleButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // ToggleToolButton: a ToggleToolButton is a ToolItem that contains a toggle
@@ -72868,24 +71818,32 @@ func (b toggleToolButton) SetActiveToggleToolButton(isActive bool) {
 	C.gtk_toggle_tool_button_set_active(_arg0, _arg1)
 }
 
-func (a toggleToolButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (b toggleToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
 
-func (a toggleToolButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (b toggleToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
-func (a toggleToolButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (b toggleToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
 
-func (a toggleToolButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+func (b toggleToolButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
 }
 
-func (a toggleToolButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+func (b toggleToolButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b toggleToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b toggleToolButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (a toggleToolButton) DoSetRelatedAction(action Action) {
@@ -72910,6 +71868,26 @@ func (a toggleToolButton) SetUseActionAppearance(useAppearance bool) {
 
 func (a toggleToolButton) SyncActionProperties(action Action) {
 	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+}
+
+func (a toggleToolButton) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a toggleToolButton) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a toggleToolButton) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a toggleToolButton) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a toggleToolButton) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b toggleToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -73244,24 +72222,32 @@ func (b toolButton) SetUseUnderlineToolButton(useUnderline bool) {
 	C.gtk_tool_button_set_use_underline(_arg0, _arg1)
 }
 
-func (a toolButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (b toolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
 
-func (a toolButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (b toolButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
-func (a toolButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (b toolButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
 
-func (a toolButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+func (b toolButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
 }
 
-func (a toolButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
+func (b toolButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b toolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b toolButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (a toolButton) DoSetRelatedAction(action Action) {
@@ -73286,6 +72272,26 @@ func (a toolButton) SetUseActionAppearance(useAppearance bool) {
 
 func (a toolButton) SyncActionProperties(action Action) {
 	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+}
+
+func (a toolButton) ActionName() string {
+	return WrapActionable(gextras.InternObject(a)).ActionName()
+}
+
+func (a toolButton) ActionTargetValue() *glib.Variant {
+	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+}
+
+func (a toolButton) SetActionName(actionName string) {
+	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+}
+
+func (a toolButton) SetActionTargetValue(targetValue *glib.Variant) {
+	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
+}
+
+func (a toolButton) SetDetailedActionName(detailedActionName string) {
+	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
 }
 
 func (b toolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -73867,30 +72873,6 @@ func (t toolItem) ToolbarReconfiguredToolItem() {
 	C.gtk_tool_item_toolbar_reconfigured(_arg0)
 }
 
-func (a toolItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a toolItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a toolItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a toolItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a toolItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a toolItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
 func (b toolItem) AddChild(builder Builder, child gextras.Objector, typ string) {
 	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
 }
@@ -73917,6 +72899,30 @@ func (b toolItem) SetBuildableProperty(builder Builder, name string, value exter
 
 func (b toolItem) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a toolItem) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a toolItem) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a toolItem) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a toolItem) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a toolItem) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a toolItem) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 // ToolItemGroup: a ToolItemGroup is used together with ToolPalette to add
@@ -74294,6 +73300,34 @@ func (s toolItemGroup) TextSizeGroup() SizeGroup {
 
 func (s toolItemGroup) RebuildMenu() {
 	WrapToolShell(gextras.InternObject(s)).RebuildMenu()
+}
+
+func (b toolItemGroup) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b toolItemGroup) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toolItemGroup) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b toolItemGroup) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b toolItemGroup) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b toolItemGroup) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b toolItemGroup) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 // ToolPalette: a ToolPalette allows you to add ToolItems to a palette-like
@@ -75186,6 +74220,34 @@ func (s toolbar) RebuildMenu() {
 	WrapToolShell(gextras.InternObject(s)).RebuildMenu()
 }
 
+func (b toolbar) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b toolbar) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toolbar) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b toolbar) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b toolbar) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b toolbar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b toolbar) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 // Tooltip: basic tooltips can be realized simply by using
 // gtk_widget_set_tooltip_text() or gtk_widget_set_tooltip_markup() without any
 // explicit tooltip object.
@@ -76045,6 +75107,22 @@ func (d treeModelSort) RowDraggable(path *TreePath) bool {
 	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
 }
 
+func (s treeModelSort) SortColumnID() (int, SortType, bool) {
+	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
+}
+
+func (s treeModelSort) HasDefaultSortFunc() bool {
+	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
+}
+
+func (s treeModelSort) SetSortColumnID(sortColumnId int, order SortType) {
+	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
+}
+
+func (s treeModelSort) SortColumnChanged() {
+	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
+}
+
 func (c treeModelSort) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(c)).NewFilter(root)
 }
@@ -76139,22 +75217,6 @@ func (t treeModelSort) RowsReorderedWithLength(path *TreePath, iter *TreeIter, n
 
 func (t treeModelSort) UnrefNode(iter *TreeIter) {
 	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
-}
-
-func (s treeModelSort) SortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
-}
-
-func (s treeModelSort) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s treeModelSort) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s treeModelSort) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
 }
 
 // TreeSelection: the TreeSelection object is a helper object to manage the
@@ -77053,6 +76115,22 @@ func (d treeStore) RowDraggable(path *TreePath) bool {
 	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
 }
 
+func (s treeStore) SortColumnID() (int, SortType, bool) {
+	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
+}
+
+func (s treeStore) HasDefaultSortFunc() bool {
+	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
+}
+
+func (s treeStore) SetSortColumnID(sortColumnId int, order SortType) {
+	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
+}
+
+func (s treeStore) SortColumnChanged() {
+	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
+}
+
 func (c treeStore) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(c)).NewFilter(root)
 }
@@ -77147,22 +76225,6 @@ func (t treeStore) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOr
 
 func (t treeStore) UnrefNode(iter *TreeIter) {
 	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
-}
-
-func (s treeStore) SortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
-}
-
-func (s treeStore) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s treeStore) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s treeStore) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
 }
 
 // TreeView: widget that displays any object that implements the TreeModel
@@ -79166,62 +78228,6 @@ func (s treeView) SetVAdjustment(vadjustment Adjustment) {
 
 func (s treeView) SetVScrollPolicy(policy ScrollablePolicy) {
 	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
-}
-
-type TreeViewAccessible interface {
-	ContainerAccessible
-	CellAccessibleParent
-}
-
-// treeViewAccessible implements the TreeViewAccessible class.
-type treeViewAccessible struct {
-	ContainerAccessible
-}
-
-// WrapTreeViewAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapTreeViewAccessible(obj *externglib.Object) TreeViewAccessible {
-	return treeViewAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalTreeViewAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTreeViewAccessible(obj), nil
-}
-
-func (p treeViewAccessible) Activate(cell CellAccessible) {
-	WrapCellAccessibleParent(gextras.InternObject(p)).Activate(cell)
-}
-
-func (p treeViewAccessible) Edit(cell CellAccessible) {
-	WrapCellAccessibleParent(gextras.InternObject(p)).Edit(cell)
-}
-
-func (p treeViewAccessible) ExpandCollapse(cell CellAccessible) {
-	WrapCellAccessibleParent(gextras.InternObject(p)).ExpandCollapse(cell)
-}
-
-func (p treeViewAccessible) CellArea(cell CellAccessible) gdk.Rectangle {
-	return WrapCellAccessibleParent(gextras.InternObject(p)).CellArea(cell)
-}
-
-func (p treeViewAccessible) CellPosition(cell CellAccessible) (row int, column int) {
-	return WrapCellAccessibleParent(gextras.InternObject(p)).CellPosition(cell)
-}
-
-func (p treeViewAccessible) ChildIndex(cell CellAccessible) int {
-	return WrapCellAccessibleParent(gextras.InternObject(p)).ChildIndex(cell)
-}
-
-func (p treeViewAccessible) RendererState(cell CellAccessible) CellRendererState {
-	return WrapCellAccessibleParent(gextras.InternObject(p)).RendererState(cell)
-}
-
-func (p treeViewAccessible) GrabFocus(cell CellAccessible) bool {
-	return WrapCellAccessibleParent(gextras.InternObject(p)).GrabFocus(cell)
 }
 
 // TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a
@@ -81603,6 +80609,34 @@ func NewVolumeButton() VolumeButton {
 	return _volumeButton
 }
 
+func (b volumeButton) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b volumeButton) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b volumeButton) InternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
+}
+
+func (b volumeButton) Name() string {
+	return WrapBuildable(gextras.InternObject(b)).Name()
+}
+
+func (b volumeButton) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b volumeButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b volumeButton) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
 func (a volumeButton) ActionName() string {
 	return WrapActionable(gextras.InternObject(a)).ActionName()
 }
@@ -81621,30 +80655,6 @@ func (a volumeButton) SetActionTargetValue(targetValue *glib.Variant) {
 
 func (a volumeButton) SetDetailedActionName(detailedActionName string) {
 	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (a volumeButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a volumeButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a volumeButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a volumeButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a volumeButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a volumeButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (b volumeButton) AddChild(builder Builder, child gextras.Objector, typ string) {
@@ -81673,6 +80683,30 @@ func (b volumeButton) SetBuildableProperty(builder Builder, name string, value e
 
 func (b volumeButton) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (a volumeButton) DoSetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
+}
+
+func (a volumeButton) RelatedAction() Action {
+	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
+}
+
+func (a volumeButton) UseActionAppearance() bool {
+	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
+}
+
+func (a volumeButton) SetRelatedAction(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
+}
+
+func (a volumeButton) SetUseActionAppearance(useAppearance bool) {
+	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
+}
+
+func (a volumeButton) SyncActionProperties(action Action) {
+	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
 }
 
 func (o volumeButton) Orientation() Orientation {
@@ -89371,29 +88405,6 @@ func (b window) SetBuildableProperty(builder Builder, name string, value externg
 
 func (b window) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type WindowAccessible interface {
-	ContainerAccessible
-}
-
-// windowAccessible implements the WindowAccessible class.
-type windowAccessible struct {
-	ContainerAccessible
-}
-
-// WrapWindowAccessible wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapWindowAccessible(obj *externglib.Object) WindowAccessible {
-	return windowAccessible{
-		ContainerAccessible: WrapContainerAccessible(obj),
-	}
-}
-
-func marshalWindowAccessible(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWindowAccessible(obj), nil
 }
 
 // WindowGroup: a WindowGroup restricts the effect of grabs to windows in the

@@ -83,14 +83,12 @@ type ifaceMethod struct {
 
 func newIfaceGenerator(ng *NamespaceGenerator) ifaceGenerator {
 	return ifaceGenerator{
-		ng: ng,
+		ng:       ng,
+		TypeTree: ng.TypeTree(),
 	}
 }
 
 func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
-	ig.TypeTree = ig.ng.TypeTree()
-	ig.TypeTree.Level = 2
-
 	ig.Interface = iface
 	ig.InterfaceName = PascalToGo(iface.Name)
 	ig.StructName = UnexportPascal(ig.InterfaceName)
@@ -105,6 +103,16 @@ func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 
 	ig.updateMethods()
 	return true
+}
+
+func (ig *ifaceGenerator) UseMethods(iface gir.Interface) {
+	ig.TypeTree.Reset()
+
+	ig.Interface = iface
+	ig.InterfaceName = PascalToGo(iface.Name)
+	ig.StructName = UnexportPascal(ig.InterfaceName)
+
+	ig.updateMethods()
 }
 
 func (ig *ifaceGenerator) updateMethods() {

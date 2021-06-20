@@ -34,8 +34,12 @@ var filters = []girgen.FilterMatcher{
 	girgen.TypeRenamer("GLib.file_test", "test_file"),
 	// Requires special header, is optional function.
 	girgen.AbsoluteFilter("Gio.networking_init"),
-
-	// girgen.AbsoluteFilter("Gio.ListStore.splice"),
+	// Not an array type but expects an array.
+	girgen.AbsoluteFilter("Gio.SimpleProxyResolver.set_ignore_hosts"),
+	// These are not found.
+	girgen.AbsoluteFilter("GdkPixbuf.PixbufNonAnim"),
+	girgen.AbsoluteFilter("GdkPixbuf.PixbufModulePattern"),
+	girgen.AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
 
 	girgen.FileFilter("garray.h"),
 	girgen.FileFilter("gasyncqueue.h"),

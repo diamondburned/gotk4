@@ -1,4 +1,4 @@
-package girgen
+package generators
 
 import (
 	"fmt"
@@ -131,12 +131,6 @@ func mustIgnoreAny(ng *NamespaceGenerator, any gir.AnyType) bool {
 	default:
 		return true
 	}
-}
-
-// recordIsOpaque returns true if the record has no fields in the GIR schema.
-// These records must always be referenced using a pointer.
-func recordIsOpaque(rec gir.Record) bool {
-	return len(rec.Fields) == 0 || rec.GLibGetType == "intern"
 }
 
 func (rg *recordGenerator) Use(rec gir.Record) bool {

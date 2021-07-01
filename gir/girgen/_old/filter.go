@@ -10,24 +10,18 @@ import (
 
 // TODO: refactor to add method accuracy
 
+// Preprocessor describes something that can preprocess anything in the given
+// list of repositories. This is useful for renaming functions, classes or
+// anything else.
+type Preprocessor interface {
+	Preprocess(repos gir.Repositories)
+}
+
 // FilterMatcher describes a filter for a GIR type.
 type FilterMatcher interface {
 	// Filter matches for the girType within the given namespace from the
 	// namespace generator. The GIR type will never have a namespace prefix.
-	Filter(*NamespaceGenerator, *FilterTypeName) (keep bool)
-}
-
-// FilterTypeName is the pair of names for type filtering. The filter can
-// override the fields to rename the types.
-type FilterTypeName struct {
-	GIRType string // GIRType
-	CType   string
-}
-
-// Name returns the GIR type without the namespace.
-func (names FilterTypeName) Name() string {
-	_, name := gir.SplitGIRType(names.GIRType)
-	return name
+	Filter(*NamespaceGenerator, gir, c string) (keep bool)
 }
 
 type absoluteFilter struct {

@@ -3,6 +3,7 @@ package gir
 import (
 	"fmt"
 	"path"
+	"strconv"
 	"strings"
 	"sync"
 	"unicode"
@@ -70,19 +71,25 @@ func VersionedNamespace(namespace *Namespace) string {
 
 // VersionedName returns the name appended with the version suffix.
 func VersionedName(name, version string) string {
-	return name + "-" + MajorVersion(version)
+	return name + MajorVersion(version)
 }
 
 // ParseVersionName parses the given fullName to return the original name and
 // the version separately. If no versions are available, then the empty string
 // is returned.
 func ParseVersionName(fullName string) (name, majorVersion string) {
-	parts := strings.SplitN(fullName, "-", 2)
-	if len(parts) != 2 {
-		return parts[0], ""
+	verIx := strings.IndexFunc(fullName, unicode.IsDigit)
+	if verIx == -1 {
+		return fullName, ""
 	}
 
-	return parts[0], parts[1]
+	// Verify the number is valid.
+	_, err := strconv.Atoi(fullName[verIx:])
+	if err != nil {
+		panic("verIx points to invalid int")
+	}
+
+	return fullName[:verIx], fullName[verIx:]
 }
 
 // Repositories contains a list of known repositories.
@@ -249,121 +256,131 @@ func (repos Repositories) FindNamespace(name string) *NamespaceFindResult {
 type TypeFindResult struct {
 	*NamespaceFindResult
 
-	// Only one of these fields are not nil. They should also be read-only.
-	Alias     *Alias
-	Class     *Class
-	Interface *Interface
-	Record    *Record
-	Enum      *Enum
-	Function  *Function
-	Union     *Union
-	Bitfield  *Bitfield
-	Callback  *Callback
+	// Types:
+	//   *Alias
+	//   *Class
+	//   *Interface
+	//   *Record
+	//   *Enum
+	//   *Function
+	//   *Union
+	//   *Bitfield
+	//   *Callback
+	Type interface{}
 
 	// TODO: Constant, Annotations, Boxed
 	// TODO: Methods
 }
 
-// Info gets the name and C type of the resulting type. The name returned is in
-// camel case.
-//
-// TODO: split Info into Name() and CType().
-func (res *TypeFindResult) Info() (name, ctype string) {
-	return res.Name(false), res.CType()
-}
-
 // CType returns the resulting type's C type identifier.
 func (res *TypeFindResult) CType() string {
-	switch {
-	case res.Alias != nil:
-		return res.Alias.CType
-	case res.Class != nil:
-		return res.Class.GLibTypeName
-	case res.Interface != nil:
-		return res.Interface.CType
-	case res.Record != nil:
-		return res.Record.CType
-	case res.Enum != nil:
-		return res.Enum.CType
-	case res.Function != nil:
-		return res.Function.CIdentifier
-	case res.Union != nil:
-		return res.Union.CType
-	case res.Bitfield != nil:
-		return res.Bitfield.CType
-	case res.Callback != nil:
-		return res.Callback.CIdentifier
+	return *res.cTypePtr()
+}
+
+// SetCType sets the type's name. Note that this will change the type inside the
+// repositories as well.
+func (res *TypeFindResult) SetCType(ctype string) {
+	*res.cTypePtr() = ctype
+}
+
+func (res *TypeFindResult) cTypePtr() *string {
+	switch v := res.Type.(type) {
+	case *Alias:
+		return &v.CType
+	case *Class:
+		return &v.CType
+	case *Interface:
+		return &v.CType
+	case *Record:
+		return &v.CType
+	case *Enum:
+		return &v.CType
+	case *Function:
+		return &v.CIdentifier
+	case *Union:
+		return &v.CType
+	case *Bitfield:
+		return &v.CType
+	case *Callback:
+		return &v.CIdentifier
 	}
 
 	panic("TypeFindResult has all fields nil")
 }
 
-// Name returns the resulting type's GIR name, with or without the namespace.
-func (res *TypeFindResult) Name(needsNamespace bool) string {
-	var typ string
-	switch {
-	case res.Alias != nil:
-		typ = res.Alias.Name
-	case res.Class != nil:
-		typ = res.Class.Name
-	case res.Interface != nil:
-		typ = res.Interface.Name
-	case res.Record != nil:
-		typ = res.Record.Name
-	case res.Enum != nil:
-		typ = res.Enum.Name
-	case res.Function != nil:
-		typ = res.Function.Name
-	case res.Union != nil:
-		typ = res.Union.Name
-	case res.Bitfield != nil:
-		typ = res.Bitfield.Name
-	case res.Callback != nil:
-		typ = res.Callback.Name
+func (res *TypeFindResult) namePtr() *string {
+	var typ *string
+	switch v := res.Type.(type) {
+	case *Alias:
+		typ = &v.Name
+	case *Class:
+		typ = &v.Name
+	case *Interface:
+		typ = &v.Name
+	case *Record:
+		typ = &v.Name
+	case *Enum:
+		typ = &v.Name
+	case *Function:
+		typ = &v.Name
+	case *Union:
+		typ = &v.Name
+	case *Bitfield:
+		typ = &v.Name
+	case *Callback:
+		typ = &v.Name
 	}
 
-	if typ == "" {
+	if typ == nil {
 		panic("TypeFindResult has all fields nil")
-	}
-
-	if needsNamespace {
-		typ = res.Namespace.Name + "." + typ
 	}
 
 	return typ
 }
 
+// Name returns the copy of the type's name.
+func (res *TypeFindResult) Name() string {
+	return *res.namePtr()
+}
+
+// SetName sets the type's name. Note that this will change the type inside the
+// repositories as well.
+func (res *TypeFindResult) SetName(name string) {
+	*res.namePtr() = name
+}
+
+// NamespacedType returns the copy of the type's name with the namespace
+// prepended to it.
+func (res *TypeFindResult) NamespacedType() string {
+	return res.Namespace.Name + "." + res.Name()
+}
+
+// VersionedNamespaceType is like NamespacedType, but the returned type has the
+// namespace and its version.
+func (res *TypeFindResult) VersionedNamespaceType() string {
+	return VersionedNamespace(res.Namespace) + "." + res.Name()
+}
+
 // IsIntrospectable returns true if the type inside the result is
 // introspectable.
 func (res *TypeFindResult) IsIntrospectable() bool {
-	switch {
-	case res.Alias != nil:
-		return res.Alias.IsIntrospectable()
-	case res.Class != nil:
-		return res.Class.IsIntrospectable()
-	case res.Interface != nil:
-		return res.Interface.IsIntrospectable()
-	case res.Record != nil:
-		return res.Record.IsIntrospectable()
-	case res.Enum != nil:
-		return res.Enum.IsIntrospectable()
-	case res.Function != nil:
-		return res.Function.IsIntrospectable()
-	case res.Union != nil:
-		return res.Union.IsIntrospectable()
-	case res.Bitfield != nil:
-		return res.Bitfield.IsIntrospectable()
-	case res.Callback != nil:
-		return res.Callback.IsIntrospectable()
+	if res.Type == nil {
+		panic("TypeFindResult has all fields nil")
 	}
 
-	panic("TypeFindResult has all fields nil")
+	type isIntrospectabler interface {
+		IsIntrospectable() bool
+	}
+
+	return res.Type.(isIntrospectabler).IsIntrospectable()
 }
 
 // FindInclude returns the namespace that the given namespace includes. It
 // resolves imports recursively. This function is primarily used to ensure that
 // proper versions are imported.
-func (repos Repositories) FindInclude(res *NamespaceFindResult, includes string) *NamespaceFindResult {
+func (repos Repositories) FindInclude(
+	res *NamespaceFindResult, includes string) *NamespaceFindResult {
+
 	foundIncludes := make([]*NamespaceFindResult, 0, len(res.Repository.Includes))
 
 	for _, incl := range res.Repository.Includes {
@@ -430,15 +447,19 @@ func (repos Repositories) FindType(nsp *NamespaceFindResult, typ string) *TypeFi
 	namespace = VersionedNamespace(nsp.Namespace)
 
 gotNamespace:
-	fullType := namespace + "." + typName
+	return repos.FindFullType(namespace + "." + typName)
+}
 
+// FindFullType finds a type from the given fullType string. The fullType string
+// MUST have the namespace version, suck as Gdk-2.Item.
+func (repos Repositories) FindFullType(fullType string) *TypeFindResult {
 	v, ok := typeResultCache.Load(fullType)
 	if ok {
 		return v.(*TypeFindResult)
 	}
 
 	v, _, _ = typeResultFlight.Do(fullType, func() (interface{}, error) {
-		result := repos.findType(fullType)
+		result := repos.FindFullType(fullType)
 		if result != nil {
 			typeResultCache.Store(fullType, result)
 		}
@@ -449,7 +470,7 @@ gotNamespace:
 	return v.(*TypeFindResult)
 }
 
-func (repos Repositories) findType(fullType string) *TypeFindResult {
+func (repos Repositories) findFullType(fullType string) *TypeFindResult {
 	vNamespace, typ := SplitGIRType(fullType)
 
 	r := TypeFindResult{NamespaceFindResult: repos.FindNamespace(vNamespace)}
@@ -462,84 +483,64 @@ func (repos Repositories) findType(fullType string) *TypeFindResult {
 		return nil
 	}
 
-	switch v := v.(type) {
-	case *Alias:
-		r.Alias = v
-	case *Class:
-		r.Class = v
-	case *Interface:
-		r.Interface = v
-	case *Record:
-		r.Record = v
-	case *Enum:
-		r.Enum = v
-	case *Function:
-		r.Function = v
-	case *Union:
-		r.Union = v
-	case *Bitfield:
-		r.Bitfield = v
-	case *Callback:
-		r.Callback = v
-	}
-
+	r.Type = v
 	return &r
 }
 
 // SearchNamespace searches the namespace for the given type name. The returned
 // interface may be any of the types in TypeFindResult.
 func SearchNamespace(namespace *Namespace, f func(typ, ctyp string) bool) interface{} {
-	for _, alias := range namespace.Aliases {
+	for i, alias := range namespace.Aliases {
 		if f(alias.Name, alias.CType) {
-			return &alias
+			return &namespace.Aliases[i]
 		}
 	}
 
-	for _, class := range namespace.Classes {
+	for i, class := range namespace.Classes {
 		if f(class.Name, class.GLibTypeName) {
-			return &class
+			return &namespace.Classes[i]
 		}
 	}
 
-	for _, enum := range namespace.Enums {
+	for i, enum := range namespace.Enums {
 		if f(enum.Name, enum.CType) {
-			return &enum
+			return &namespace.Enums[i]
 		}
 	}
 
-	for _, record := range namespace.Records {
+	for i, record := range namespace.Records {
 		if f(record.Name, record.CType) {
-			return &record
+			return &namespace.Records[i]
 		}
 	}
 
-	for _, function := range namespace.Functions {
+	for i, function := range namespace.Functions {
 		if f(function.Name, function.CIdentifier) {
-			return &function
+			return &namespace.Functions[i]
 		}
 	}
 
-	for _, union := range namespace.Unions {
+	for i, union := range namespace.Unions {
 		if f(union.Name, union.CType) {
-			return &union
+			return &namespace.Unions[i]
 		}
 	}
 
-	for _, bitfield := range namespace.Bitfields {
+	for i, bitfield := range namespace.Bitfields {
 		if f(bitfield.Name, bitfield.CType) {
-			return &bitfield
+			return &namespace.Bitfields[i]
 		}
 	}
 
-	for _, callback := range namespace.Callbacks {
+	for i, callback := range namespace.Callbacks {
 		if f(callback.Name, callback.CIdentifier) {
-			return &callback
+			return &namespace.Callbacks[i]
 		}
 	}
 
-	for _, iface := range namespace.Interfaces {
+	for i, iface := range namespace.Interfaces {
 		if f(iface.Name, iface.CType) {
-			return &iface
+			return &namespace.Interfaces[i]
 		}
 	}
 

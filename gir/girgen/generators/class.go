@@ -5,9 +5,15 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
+	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
+	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
-var classTmpl = newGoTemplate(`
+var classTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc .Doc 0 .InterfaceName }}
 	type {{ .InterfaceName }} interface {
 		{{ range .Implements -}}
@@ -56,29 +62,22 @@ var classTmpl = newGoTemplate(`
 	{{ end }}
 `)
 
-func (ng *NamespaceGenerator) generateClasses() {
-	clgen := newClassGenerator(ng)
-
-	for _, class := range ng.current.Namespace.Classes {
-		if !class.IsIntrospectable() {
-			continue
-		}
-		if ng.mustIgnore(&class.Name, &class.CType) {
-			continue
-		}
-		if !clgen.Use(class) {
-			continue
-		}
-
-		// Need for the object wrapper.
-		ng.needsExternGLib()
-
-		if class.GLibGetType != "" && !ng.mustIgnoreC(class.GLibGetType) {
-			ng.addMarshaler(class.GLibGetType, clgen.InterfaceName)
-		}
-
-		ng.pen.WriteTmpl(classTmpl, &clgen)
+func GenerateClass(gen FileGeneratorWriter, class *gir.Class) bool {
+	classGen := NewClassGenerator(gen)
+	if !classGen.Use(class) {
+		return false
 	}
+
+	if class.GLibGetType != "" && !types.FilterCType(gen, class.GLibGetType) {
+		gen.Header().AddMarshaler(class.GLibGetType, classGen.InterfaceName)
+	}
+
+	// Need for the object wrapper.
+	gen.Header().NeedsExternGLib()
+
+	file.ApplyHeader(gen, &classGen)
+	gen.Pen().WriteTmpl(classTmpl, &classGen)
+	return true
 }
 
 type classCallable struct {
@@ -99,7 +98,7 @@ type classInheritedMethod struct {
 	CallParams string
 }
 
-func newClassCallable(cgen *callableGenerator) classCallable {
+func newClassCallable(cgen *callable.Generator) classCallable {
 	return classCallable{
 		Doc:   cgen.Doc,
 		Recv:  cgen.Recv(),
@@ -109,8 +108,8 @@ func newClassCallable(cgen *callableGenerator) classCallable {
 	}
 }
 
-type classGenerator struct {
-	gir.Class
+type ClassGenerator struct {
+	*gir.Class
 	StructName      string
 	InterfaceName   string
 	ParentInterface string
@@ -120,49 +119,73 @@ type classGenerator struct {
 	Methods          []classCallable
 	InheritedMethods []classInheritedMethod
 
-	Tree TypeTree // starts from current resolved type
+	Tree types.Tree // starts from current resolved type
 
-	ng   *NamespaceGenerator
-	cgen *callableGenerator
-	igen *ifaceGenerator
+	header file.Header
+	gen    FileGenerator
+	igen   InterfaceGenerator
+	cgen   callable.Generator
 }
 
-func newClassGenerator(ng *NamespaceGenerator) classGenerator {
-	cgen := newCallableGenerator(ng)
-	igen := newIfaceGenerator(ng)
-	return classGenerator{
-		ng:   ng,
-		cgen: &cgen,
-		igen: &igen,
-		Tree: ng.TypeTree(),
+// NewClassGenerator creates a new class generator.
+func NewClassGenerator(gen FileGenerator) ClassGenerator {
+	classGenerator := ClassGenerator{
+		gen:  gen,
+		igen: NewInterfaceGenerator(gen),
+		Tree: types.NewTree(gen),
+	}
+	classGenerator.cgen = callable.NewGenerator(headeredFileGenerator{
+		FileGenerator: gen,
+		Headerer:      &classGenerator,
+	})
+
+	return classGenerator
+}
+
+func (cg *ClassGenerator) Logln(lvl logger.Level, v ...interface{}) {
+	p := fmt.Sprintf("class %s (C.%s):", cg.InterfaceName, cg.CType)
+	cg.gen.Logln(lvl, logger.Prefix(v, p))
+}
+
+// Reset resets the callback generator.
+func (g *ClassGenerator) Reset() {
+	g.igen.Reset()
+	g.cgen.Reset()
+
+	*g = ClassGenerator{
+		gen:  g.gen,
+		igen: g.igen,
+		cgen: g.cgen,
 	}
 }
 
-func (cg *classGenerator) Use(class gir.Class) bool {
-	if class.Parent == "" {
-		// TODO: check what happens if a class has no parent. It should have a
-		// GObject parent, usually.
-		cg.Logln(LogSkip, "class", class.Name, "because it has no parents")
+// Header returns the callback generator's current header.
+func (g *ClassGenerator) Header() *file.Header {
+	return &g.header
+}
+
+func (cg *ClassGenerator) Use(class *gir.Class) bool {
+	if !class.IsIntrospectable() || types.Filter(cg.gen, class.Name, class.CType) {
 		return false
 	}
 
 	if !cg.Tree.Resolve(class.Name) {
-		cg.Logln(LogSkip, "class", class.Name, "because unknown parent type", class.Parent)
+		cg.Logln(logger.Debug, "class", class.Name, "because unknown parent type", class.Parent)
 		return false
 	}
 
 	cg.Class = class
-	cg.InterfaceName = PascalToGo(class.Name)
-	cg.StructName = UnexportPascal(cg.InterfaceName)
+	cg.InterfaceName = strcases.PascalToGo(class.Name)
+	cg.StructName = strcases.UnexportPascal(cg.InterfaceName)
 
 	cg.Implements = cg.Tree.PublicEmbeds()
-	cg.ParentInterface = GoPublicType(cg.ng, cg.Tree.Requires[0].ResolvedType)
+	cg.ParentInterface = types.GoPublicType(cg.gen, cg.Tree.Requires[0].Resolved)
 
 	// Add imports for the parent class in the struct.
-	cg.ng.importResolvedType(cg.Tree.Requires[0].PublImport)
+	cg.header.ImportResolvedType(cg.Tree.Requires[0].PublImport)
 	// Add imports for the embedded interfaces.
 	for _, imp := range cg.Tree.Embeds {
-		cg.ng.importResolvedType(imp.PublImport)
+		cg.header.ImportResolvedType(imp.PublImport)
 	}
 
 	cg.Methods = classCallableGrow(cg.Methods, len(class.Methods))
@@ -173,18 +196,20 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.cgen.ReturnWrap = "Wrap" + cg.InterfaceName
 
 	for _, ctor := range class.Constructors {
-		ctor = bodgeClassCtor(class, ctor)
-		if !cg.cgen.Use(ctor.CallableAttrs) {
+		// Bodge this so the constructors and stuff are named properly. This
+		// copies things safely, so class is not modified.
+		ctor := bodgeClassCtor(class, ctor)
+		if !cg.cgen.Use(&ctor.CallableAttrs) {
 			continue
 		}
-		cg.Constructors = append(cg.Constructors, newClassCallable(cg.cgen))
+		cg.Constructors = append(cg.Constructors, newClassCallable(&cg.cgen))
 	}
 
 	// Reset the ReturnWrap for methods.
 	cg.cgen.ReturnWrap = ""
 
 	// The first requirement type is always the parent class type.
-	cg.Tree.WalkPublInterfaces(func(typ *ResolvedType) {
+	cg.Tree.WalkPublInterfaces(func(typ *types.Resolved) {
 		// This fucking sucks. I fucking hate this. Because the GNOME people
 		// wants to maximize misery and make your life a fucking pain, the
 		// methods inside this interface aren't namespaced properly, so we have
@@ -195,9 +220,12 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		// instead, the namespace should be overrideable by having TypeResolver
 		// returning the namespace we wants and ifaceGenerator (and everything
 		// else) to use TypeResolver for resolving and generating methods.
-		current := cg.ng.current
+		current := cg.gen.Namespace()
 		cg.ng.current = typ.Extern.Result.NamespaceFindResult
 
+		// We have to separate the interface that is used to find the type and
+		// the interface that is used for NeedsNamespace.
+		types.OverrideNamespace(cg.gen)
 		cg.igen.UseMethods(*typ.Extern.Result.Interface)
 
 		// Restore the old namespace.
@@ -258,7 +286,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	return true
 }
 
-func (cg *classGenerator) hasField(goName string) bool {
+func (cg *ClassGenerator) hasField(goName string) bool {
 	if isObjectorMethod(goName) || cg.ParentInterface == goName {
 		return true
 	}
@@ -286,7 +314,7 @@ func (cg *classGenerator) hasField(goName string) bool {
 //
 // We have to do this to work around some cases where widget constructors would
 // return the widget class instead of the actual class.
-func bodgeClassCtor(class gir.Class, ctor gir.Constructor) gir.Constructor {
+func bodgeClassCtor(class *gir.Class, ctor gir.Constructor) gir.Constructor {
 	if ctor.ReturnValue == nil || ctor.ReturnValue.Type == nil {
 		return ctor
 	}
@@ -296,7 +324,7 @@ func bodgeClassCtor(class gir.Class, ctor gir.Constructor) gir.Constructor {
 
 	// Note: this has caused me quite a lot of trouble. It's probably wrong as
 	// well. The whole point is to work around the C API's weird class typing.
-	retTyp.CType = moveCPtr(class.CType, retTyp.CType)
+	retTyp.CType = types.MoveCPtr(class.CType, retTyp.CType)
 
 	retTyp.Name = class.Name
 	retTyp.Introspectable = class.Introspectable
@@ -314,14 +342,6 @@ func bodgeClassCtor(class gir.Class, ctor gir.Constructor) gir.Constructor {
 	ctor.Name = "new_" + class.Name + ctor.Name
 
 	return ctor
-}
-
-func (cg *classGenerator) Logln(lvl LogLevel, v ...interface{}) {
-	v = append(v, nil)
-	copy(v[1:], v)
-	v[0] = fmt.Sprintf("class %s (C.%s):", cg.InterfaceName, cg.CType)
-
-	cg.ng.Logln(lvl, v...)
 }
 
 func classCallableGrow(callables []classCallable, n int) []classCallable {

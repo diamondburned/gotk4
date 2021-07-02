@@ -1,43 +1,44 @@
 package generators
 
-import "github.com/diamondburned/gotk4/gir"
+import (
+	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
+)
 
-var aliasTmpl = newGoTemplate(`
+var aliasTmpl = gotmpl.NewGoTemplate(`
 	{{ $name := (PascalToGo .Name) }}
 	{{ GoDoc .Doc 0 $name }}
 	type {{ $name }} = {{ .GoType }}
 `)
 
 type aliasData struct {
-	gir.Alias
+	*gir.Alias
 	GoType string
 }
 
-func (ng *NamespaceGenerator) generateAliases() {
-	for _, alias := range ng.current.Namespace.Aliases {
-		if !alias.IsIntrospectable() {
-			continue
-		}
-		if ng.mustIgnore(&alias.Name, &alias.CType) {
-			continue
-		}
-
-		resolved := ng.ResolveType(alias.Type)
-		if resolved == nil {
-			continue
-		}
-
-		needsNamespace := resolved.NeedsNamespace(ng.Namespace())
-
-		goType := resolved.PublicType(needsNamespace)
-		if goType == "" {
-			ng.Logln(LogSkip, "alias", alias.Name, "is opaque type")
-			continue
-		}
-
-		ng.pen.WriteTmpl(aliasTmpl, aliasData{
-			Alias:  alias,
-			GoType: goType,
-		})
+// GenerateAlias generates an alias declaration into the given file generator.
+// If the generation fails or is ignored, then false is returned.
+func GenerateAlias(gen FileGenerator, alias *gir.Alias) bool {
+	if !alias.IsIntrospectable() || types.Filter(gen, alias.Name, alias.CType) {
+		return false
 	}
+
+	resolved := types.Resolve(gen, alias.Type)
+	if resolved == nil {
+		return false
+	}
+
+	goType := resolved.PublicType(resolved.NeedsNamespace(gen.Namespace()))
+	if goType == "" {
+		// Use the C type directly if we can't find the Go equivalent.
+		goType = "C." + alias.Type.CType
+	}
+
+	gen.Pen().WriteTmpl(aliasTmpl, aliasData{
+		Alias:  alias,
+		GoType: goType,
+	})
+
+	return true
 }

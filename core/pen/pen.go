@@ -12,16 +12,26 @@ type Pen struct {
 	PenWriter
 }
 
+// PenWriter describes an interface that a pen can write to.
 type PenWriter interface {
 	io.Writer
 	io.ByteWriter
 	io.StringWriter
 }
 
+type noopWriter struct{}
+
+func (noopWriter) Write(b []byte) (int, error)       { return len(b), nil }
+func (noopWriter) WriteByte(b byte) error            { return nil }
+func (noopWriter) WriteString(s string) (int, error) { return len(s), nil }
+
 // NewPen creates a new Pen that preallocates 1KB.
 func NewPen(w PenWriter) *Pen {
 	return &Pen{w}
 }
+
+// NoopPen is a pen that does nothing.
+var NoopPen = NewPen(noopWriter{})
 
 // Words writes a list of words into a single line.
 func (p *Pen) Words(words ...string) {

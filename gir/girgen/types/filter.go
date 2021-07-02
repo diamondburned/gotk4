@@ -59,18 +59,24 @@ func (ren typeRenamer) Preprocess(repos gir.Repositories) {
 type FilterMatcher interface {
 	// Filter matches for the girType within the given namespace from the
 	// namespace generator. The GIR type will never have a namespace prefix.
-	Filter(gen Generator, gir, c string) (omit bool)
+	Filter(gen FileGenerator, gir, c string) (omit bool)
 }
 
 // Filter returns true if the given GIR and/or C type should be omitted from the
 // given generator.
-func Filter(gen Generator, gir, c string) (omit bool) {
+func Filter(gen FileGenerator, gir, c string) (omit bool) {
 	for _, filter := range gen.Filters() {
 		if filter.Filter(gen, gir, c) {
 			return true
 		}
 	}
 	return false
+}
+
+// FilterCType filters only the C type or identifier. It is useful for filtering
+// C functions and such.
+func FilterCType(gen FileGenerator, c string) (omit bool) {
+	return Filter(gen, "\x00", c)
 }
 
 type absoluteFilter struct {
@@ -88,7 +94,7 @@ func AbsoluteFilter(abs string) FilterMatcher {
 	return absoluteFilter{parts[0], parts[1]}
 }
 
-func (abs absoluteFilter) Filter(gen Generator, gir, c string) (omit bool) {
+func (abs absoluteFilter) Filter(gen FileGenerator, gir, c string) (omit bool) {
 	if abs.namespace == "C" {
 		return c == abs.matcher
 	}
@@ -130,7 +136,7 @@ func wholeMatchRegex(regex string) string {
 }
 
 // Filter implements FilterMatcher.
-func (rf *regexFilter) Filter(gen Generator, gir, c string) (omit bool) {
+func (rf *regexFilter) Filter(gen FileGenerator, gir, c string) (omit bool) {
 	switch rf.namespace {
 	case "C":
 		return rf.matcher.MatchString(c)
@@ -157,7 +163,7 @@ func FileFilter(regex string) FilterMatcher {
 	return fileFilter{regexp.MustCompile(regex)}
 }
 
-func (ff fileFilter) Filter(gen Generator, girT, cT string) (omit bool) {
+func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
 	res := Find(gen, girT)
 	if res == nil {
 		return false

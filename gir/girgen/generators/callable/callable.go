@@ -6,12 +6,22 @@ import (
 
 	"github.com/diamondburned/gotk4/core/pen"
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
+	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
+// FileGenerator describes the interface of a file generator.
+type FileGenerator interface {
+	types.FileGenerator
+	file.Headerer
+}
+
+// Generator is a generator instance that generates a GIR callable.
 type Generator struct {
-	gir.CallableAttrs
+	*gir.CallableAttrs
 	Name  string
 	Tail  string
 	Block string
@@ -23,98 +33,73 @@ type Generator struct {
 	goArgs pen.Joints
 	goRets pen.Joints
 
-	gen types.Generator
+	gen FileGenerator
 	pen *pen.BlockSections
 }
 
-func newCallableGenerator(gen types.Generator) Generator {
+// NewGenerator creates a new callable generator from the given generator.
+func NewGenerator(gen FileGenerator) Generator {
 	// Arbitrary sizes, whatever.
 	pen := pen.NewBlockSections(1024, 4096, 256, 1024, 4096, 128)
 
 	return Generator{
-		ng:  ng,
+		gen: gen,
 		pen: pen,
 	}
 }
 
-func (cg *Generator) reset() {
-	cg.pen.Reset()
+// Reset resets the state of the generator while reusing the backing pen.
+func (g *Generator) Reset() {
+	if g.CallableAttrs == nil {
+		return
+	}
 
-	*cg = Generator{
-		ng:     cg.ng,
-		pen:    cg.pen,
-		goArgs: cg.goArgs,
-		goRets: cg.goRets,
+	g.pen.Reset()
+
+	*g = Generator{
+		gen:    g.gen,
+		pen:    g.pen,
+		goArgs: g.goArgs,
+		goRets: g.goRets,
 	}
 }
 
-func (cg *Generator) Use(cattrs gir.CallableAttrs) bool {
+func (g *Generator) Use(cattrs *gir.CallableAttrs) bool {
+	g.Reset()
+
 	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" {
 		// Skip this one. Hope the caller reaches the Shadows method,
 		// eventually.
-		cg.reset()
+		g.Reset()
 		return false
 	}
 	if cattrs.CIdentifier == "" || !cattrs.IsIntrospectable() {
-		cg.reset()
+		g.Reset()
 		return false
 	}
 
-	cg.Name = SnakeToGo(true, cattrs.Name)
-	cg.CallableAttrs = cattrs
+	g.Name = strcases.SnakeToGo(true, cattrs.Name)
+	g.CallableAttrs = cattrs
 
-	if !cg.renderBlock() {
-		cg.reset()
+	if !g.renderBlock() {
+		g.Reset()
 		return false
 	}
 
 	return true
 }
 
-// cFunctionSig renders the given GIR function in its C function signature
-// string for debugging.
-func cFunctionSig(fn gir.CallableAttrs) string {
-	b := strings.Builder{}
-	b.Grow(256)
-
-	if fn.ReturnValue != nil {
-		b.WriteString(resolveAnyCType(fn.ReturnValue.AnyType))
-		b.WriteByte(' ')
-	}
-
-	b.WriteString(fn.CIdentifier)
-	b.WriteByte('(')
-
-	if fn.Parameters != nil && len(fn.Parameters.Parameters) > 0 {
-		if fn.Parameters.InstanceParameter != nil {
-			b.WriteString(resolveAnyCType(fn.Parameters.InstanceParameter.AnyType))
-		}
-
-		for i, param := range fn.Parameters.Parameters {
-			if i != 0 || fn.Parameters.InstanceParameter != nil {
-				b.WriteString(", ")
-			}
-
-			b.WriteString(resolveAnyCType(param.AnyType))
-		}
-	}
-
-	b.WriteByte(')')
-
-	return b.String()
-}
-
 // Recv returns the receiver variable name. This method should only be called
 // for methods.
-func (cg *Generator) Recv() string {
-	if cg.Parameters != nil && cg.Parameters.InstanceParameter != nil {
-		return FirstLetter(cg.Parameters.InstanceParameter.Name)
+func (g *Generator) Recv() string {
+	if g.Parameters != nil && g.Parameters.InstanceParameter != nil {
+		return strcases.FirstLetter(g.Parameters.InstanceParameter.Name)
 	}
 
 	return "v"
 }
 
-func (cg *Generator) renderBlock() bool {
+func (g *Generator) renderBlock() bool {
 	const (
 		secInputDecl = iota
 		secInputConv
@@ -126,88 +111,94 @@ func (cg *Generator) renderBlock() bool {
 
 	var (
 		instanceParam  bool
-		callableValues []ConversionValue
+		callableValues []typeconv.ConversionValue
 	)
 
-	if cg.Parameters != nil {
-		callableValues = make([]ConversionValue, 0, len(cg.Parameters.Parameters)+2)
+	if g.Parameters != nil {
+		callableValues = make([]typeconv.ConversionValue, 0, len(g.Parameters.Parameters)+2)
 
-		if cg.Parameters.InstanceParameter != nil {
+		if g.Parameters.InstanceParameter != nil {
 			instanceParam = true
 
-			callableValues = append(callableValues, NewConversionValue(
-				FirstLetter(cg.Parameters.InstanceParameter.Name), "_arg0", -1, ConvertGoToC,
-				cg.Parameters.InstanceParameter.ParameterAttrs,
+			callableValues = append(callableValues, typeconv.NewValue(
+				strcases.FirstLetter(g.Parameters.InstanceParameter.Name),
+				"_arg0",
+				-1,
+				typeconv.ConvertGoToC,
+				g.Parameters.InstanceParameter.ParameterAttrs,
 			))
 		}
 
-		for i, param := range cg.Parameters.Parameters {
+		for i, param := range g.Parameters.Parameters {
 			if param.Direction == "" {
 				param.Direction = "in"
 			}
 
 			var in string
 			var out string
-			var dir ConversionDirection
+			var dir typeconv.ConversionDirection
 
 			switch param.Direction {
 			case "in":
-				in = SnakeToGo(false, param.Name)
+				in = strcases.SnakeToGo(false, param.Name)
 				out = fmt.Sprintf("_arg%d", i+1)
-				dir = ConvertGoToC
+				dir = typeconv.ConvertGoToC
 			case "out":
 				in = fmt.Sprintf("_arg%d", i+1)
-				out = "_" + SnakeToGo(false, param.Name)
-				dir = ConvertCToGo
+				out = "_" + strcases.SnakeToGo(false, param.Name)
+				dir = typeconv.ConvertCToGo
 			default:
 				return false
 			}
 
-			value := NewConversionValue(in, out, i, dir, param.ParameterAttrs)
+			value := typeconv.NewValue(in, out, i, dir, param.ParameterAttrs)
 			callableValues = append(callableValues, value)
 		}
 	}
 
 	var hasReturn bool
-	if !returnIsVoid(cg.ReturnValue) {
-		returnName := returnName(cg.CallableAttrs)
+	if !types.ReturnIsVoid(g.ReturnValue) {
+		returnName := ReturnName(g.CallableAttrs)
 
 		// If the last return is a bool and the function can throw an error,
 		// then the boolean is probably to indicate that things are OK. We can
 		// skip generating this boolean.
-		if !cg.Throws || returnName != "ok" {
+		if !g.Throws || returnName != "ok" {
 			hasReturn = true
 			returnName = "_" + returnName
 
-			value := NewConversionValueReturn("_cret", returnName, ConvertCToGo, *cg.ReturnValue)
-			if cg.ReturnWrap != "" {
-				value.WrapObject = cg.ReturnWrap
+			value := typeconv.NewReturnValue(
+				"_cret", returnName, typeconv.ConvertCToGo, *g.ReturnValue,
+			)
+			if g.ReturnWrap != "" {
+				value.WrapObject = g.ReturnWrap
 			}
 
 			callableValues = append(callableValues, value)
 		}
 	}
 
-	if cg.Throws {
-		callableValues = append(callableValues, NewThrowValue("_cerr", "_goerr"))
+	if g.Throws {
+		callableValues = append(callableValues, typeconv.NewThrowValue("_cerr", "_goerr"))
 	}
 
-	cg.conv = NewTypeConverter(cg.ng, callableValues)
-	cg.conv.UseLogger(cg)
+	g.conv = typeconv.NewConverter(g.gen, callableValues)
+	g.conv.UseLogger(cg)
 
-	results := cg.conv.ConvertAll()
+	results := g.conv.ConvertAll()
 	if results == nil {
-		cg.Logln(LogSkip, "no conversion", cFunctionSig(cg.CallableAttrs))
+		g.Logln(logger.Debug, "no conversion", CFunctionHeader(g.CallableAttrs))
 		return false
 	}
 
-	cg.ng.applyConvertedFxs(results)
+	// Apply imports and such.
+	file.ApplyHeader(g.gen, g.conv)
 
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
 
-	cg.goArgs.Reset(", ")
-	cg.goRets.Reset(", ")
+	g.goArgs.Reset(", ")
+	g.goRets.Reset(", ")
 
 	for i, converted := range results {
 		if converted.Skip {
@@ -215,62 +206,58 @@ func (cg *Generator) renderBlock() bool {
 		}
 
 		switch converted.Direction {
-		case ConvertGoToC: // parameter
+		case typeconv.ConvertGoToC: // parameter
 			// Skip the instance parameter if any.
 			if i != 0 || !instanceParam {
-				cg.goArgs.Addf("%s %s", converted.InName, converted.InType)
+				g.goArgs.Addf("%s %s", converted.InName, converted.InType)
 			}
 
 			// Go inputs are declared in the parameters, so no InDeclare.
 			// C outputs have to be declared (input means C function input).
-			cg.pen.Line(secInputDecl, converted.OutDeclare)
+			g.pen.Line(secInputDecl, converted.OutDeclare)
 			// Conversions follow right after declaring all outputs.
-			cg.pen.Line(secInputConv, converted.Conversion)
+			g.pen.Line(secInputConv, converted.Conversion)
 
-		case ConvertCToGo: // return
+		case typeconv.ConvertCToGo: // return
 			// decoOut is the name that's used solely for documentation
 			// purposes. It is not used internally at all, and so it doesn't
 			// have the underscore.
 			decoOut := strings.TrimPrefix(converted.OutName, "_")
-			cg.goRets.Addf("%s %s", decoOut, converted.OutType)
+			g.goRets.Addf("%s %s", decoOut, converted.OutType)
 
 			goReturns.Add(converted.OutName)
 
-			cg.pen.Line(secInputDecl, converted.InDeclare)
+			g.pen.Line(secInputDecl, converted.InDeclare)
 			// Go outputs should be redeclared.
-			cg.pen.Line(secOutputDecl, converted.OutDeclare)
+			g.pen.Line(secOutputDecl, converted.OutDeclare)
 			// Conversions follow right after declaring all outputs.
-			cg.pen.Line(secOutputConv, converted.Conversion)
+			g.pen.Line(secOutputConv, converted.Conversion)
 		}
 	}
 
 	// For C function calling.
-	callParams := strings.Join(AddCCallParam(cg.conv), ", ")
+	callParams := strings.Join(typeconv.AddCCallParam(g.conv), ", ")
 
 	if !hasReturn {
-		cg.pen.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, callParams)
+		g.pen.Linef(secFnCall, "C.%s(%s)", g.CIdentifier, callParams)
 	} else {
-		cg.pen.Linef(secFnCall, "_cret = C.%s(%s)", cg.CIdentifier, callParams)
-		cg.pen.EmptyLine(secFnCall)
+		g.pen.Linef(secFnCall, "_cret = C.%s(%s)", g.CIdentifier, callParams)
+		g.pen.EmptyLine(secFnCall)
 	}
 
 	if goReturns.Len() > 0 {
-		cg.pen.Line(secReturn, "return "+goReturns.Join())
+		g.pen.Line(secReturn, "return "+goReturns.Join())
 	}
 
-	cg.Block = cg.pen.String()
-	cg.Tail = "(" + cg.goArgs.Join() + ") " + formatReturnSig(cg.goRets)
+	g.Block = g.pen.String()
+	g.Tail = "(" + g.goArgs.Join() + ") " + formatReturnSig(g.goRets)
 
-	cg.pen.Reset()
+	g.pen.Reset()
 	return true
 }
 
-func (cg *Generator) Logln(lvl LogLevel, v ...interface{}) {
-	v = append(v, nil)
-	copy(v[1:], v)
-	v[0] = fmt.Sprintf("callable %s (C.%s):", cg.Name, cg.CIdentifier)
-
-	cg.ng.Logln(lvl, v...)
+func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
+	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callable %s (C.%s)", g.Name, g.CIdentifier)))
 }
 
 func formatReturnSig(joints pen.Joints) string {
@@ -314,13 +301,12 @@ func extractTypeFromPair(namePair string) string {
 	return namePair[strings.IndexByte(namePair, ' ')+1:]
 }
 
-func returnName(attrs gir.CallableAttrs) string {
+func ReturnName(attrs *gir.CallableAttrs) string {
 	if attrs.ReturnValue == nil {
 		return ""
 	}
 
-	name := anyTypeName(attrs.ReturnValue.AnyType, "ret")
-
+	name := AnyTypeName(attrs.ReturnValue.AnyType, "ret")
 	if attrs.Parameters == nil {
 		return name
 	}
@@ -340,17 +326,19 @@ func returnName(attrs gir.CallableAttrs) string {
 	return name
 }
 
-func anyTypeName(typ gir.AnyType, or string) string {
+// AnyTypeName returns the name from the given AnyType, or the given string if
+// the type does not have a name.
+func AnyTypeName(typ gir.AnyType, or string) string {
 	switch {
 	case typ.Type != nil:
 		if typ.Type.Name == "gboolean" {
 			return "ok"
 		}
 		parts := strings.Split(typ.Type.Name, ".")
-		return UnexportPascal(parts[len(parts)-1])
+		return strcases.UnexportPascal(parts[len(parts)-1])
 
 	case typ.Array != nil:
-		name := anyTypeName(typ.Array.AnyType, or)
+		name := AnyTypeName(typ.Array.AnyType, or)
 		if !strings.HasSuffix(name, "s") {
 			return name + "s"
 		}
@@ -361,20 +349,40 @@ func anyTypeName(typ gir.AnyType, or string) string {
 	}
 }
 
-// callableRenameGetters renames the given list of callables to have idiomatic
-// Go getter names.
-func callableRenameGetters(parentName string, callables []Generator) {
+// Find finds a callable with the given Go name. The index within the slice is
+// returned, or if nothing is found, then -1 is returned.
+func Find(callables []Generator, goName string) int {
 	for i, callable := range callables {
-		newName, _ := renameGetter(callable.Name)
+		if callable.Name == goName {
+			return i
+		}
+	}
+	return -1
+}
+
+// Grow grows or shrinks the callables slice to the given length. The returned
+// slice will have a length of 0.
+func Grow(callables []Generator, n int) []Generator {
+	if cap(callables) <= n {
+		return callables[:0]
+	}
+	return make([]Generator, 0, n*2)
+}
+
+// RenameGetters renames the given list of callables to have idiomatic Go getter
+// names.
+func RenameGetters(parentName string, callables []Generator) {
+	for i, callable := range callables {
+		newName, _ := RenameGetter(callable.Name)
 
 		// Avoid duplicating method names with Objector.
 		// TODO: account for other interfaces as well.
-		objectorMethod := parentName != "" && isObjectorMethod(newName)
+		objectorMethod := parentName != "" && types.IsObjectorMethod(newName)
 		if objectorMethod {
 			newName += parentName
 		}
 
-		if findCallable(callables, newName) > -1 {
+		if Find(callables, newName) > -1 {
 			if !objectorMethod {
 				continue
 			}
@@ -387,16 +395,8 @@ func callableRenameGetters(parentName string, callables []Generator) {
 	}
 }
 
-func findCallable(callables []Generator, goName string) int {
-	for i, callable := range callables {
-		if callable.Name == goName {
-			return i
-		}
-	}
-	return -1
-}
-
-func renameGetter(name string) (string, bool) {
+// RenameGetter renames a getter. True is returned if the name is changed.
+func RenameGetter(name string) (string, bool) {
 	if name == "ToString" {
 		return "String", true
 	}
@@ -406,13 +406,4 @@ func renameGetter(name string) (string, bool) {
 	}
 
 	return name, false
-}
-
-// callableGrow grows or shrinks the callables slice to the given length. The
-// returned slice will have a length of 0.
-func callableGrow(callables []Generator, n int) []Generator {
-	if cap(callables) <= n {
-		return callables[:0]
-	}
-	return make([]Generator, 0, n*2)
 }

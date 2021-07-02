@@ -128,7 +128,7 @@ func dereferenceOffset(ptrs int, typ string) int {
 }
 
 // typeFromResult creates a resolved type from the given type result.
-func typeFromResult(gen Generator, typ gir.Type, result *gir.TypeFindResult) *Resolved {
+func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult) *Resolved {
 	if typ.CType == "" {
 		// Try to fill this back with the right CType. This might be wrong in
 		// some cases, but it should work in cases where CType isn't there.
@@ -260,7 +260,7 @@ func (typ *Resolved) HasImport() bool {
 
 // HasPointer returns true if the type being resolved has a pointer. This is
 // useful for array passing from Go memory to C memory.
-func (typ *Resolved) HasPointer(gen Generator) bool {
+func (typ *Resolved) HasPointer(gen FileGenerator) bool {
 	if typ == nil {
 		// Probably unknown.
 		return true
@@ -310,12 +310,12 @@ func (typ *Resolved) HasPointer(gen Generator) bool {
 }
 
 // GoImplType is a convenient function around ResolvedType.ImplType.
-func GoImplType(gen Generator, resolved *Resolved) string {
+func GoImplType(gen FileGenerator, resolved *Resolved) string {
 	return resolved.ImplType(resolved.NeedsNamespace(gen.Namespace()))
 }
 
 // GoPublicType is a convenient function around ResolvedType.ImplType.
-func GoPublicType(gen Generator, resolved *Resolved) string {
+func GoPublicType(gen FileGenerator, resolved *Resolved) string {
 	return resolved.PublicType(resolved.NeedsNamespace(gen.Namespace()))
 }
 
@@ -426,13 +426,13 @@ var UnsupportedCTypes = []string{
 
 // ResolveName resolves the given GIR type name. The resolved type will
 // always have no pointer.
-func ResolveName(gen Generator, girType string) *Resolved {
+func ResolveName(gen FileGenerator, girType string) *Resolved {
 	return Resolve(gen, gir.Type{Name: girType})
 }
 
 // Resolve resolves the given type from the GIR type field. It returns nil if
 // the type is not known. It does not recursively traverse the type.
-func Resolve(gen Generator, typ gir.Type) *Resolved {
+func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	if typ.Name == "" || !typ.IsIntrospectable() {
 		return nil
 	}
@@ -516,7 +516,7 @@ func Resolve(gen Generator, typ gir.Type) *Resolved {
 
 	case *gir.Callback:
 		panic("TODO resolve.go/Callback")
-		// cbgen := newCallbackGenerator(ng)
+		// cbgen := newCallbackFileGenerator(ng)
 		// if !cbgen.Use(*result.Callback) {
 		// 	return nil
 		// }

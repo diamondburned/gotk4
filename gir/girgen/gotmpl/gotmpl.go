@@ -3,15 +3,15 @@
 package gotmpl
 
 import (
-	"html/template"
 	"path/filepath"
 	"runtime"
+	"text/template"
 
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 )
 
-func newGoTemplate(block string) *template.Template {
+func NewGoTemplate(block string) *template.Template {
 	_, file, _, _ := runtime.Caller(1)
 	base := filepath.Base(file)
 

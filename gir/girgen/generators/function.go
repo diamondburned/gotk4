@@ -1,8 +1,6 @@
 package generators
 
 import (
-	"fmt"
-
 	"github.com/diamondburned/gotk4/gir"
 )
 
@@ -46,27 +44,5 @@ func (ng *NamespaceGenerator) generateFuncs() {
 		}
 
 		ng.pen.WriteTmpl(functionTmpl, &fg)
-	}
-}
-
-// resolveAnyCType resolves an AnyType and returns the C type signature.
-func resolveAnyCType(any gir.AnyType) string {
-	switch {
-	case any.Array != nil:
-		pre := resolveAnyCType(any.Array.AnyType)
-
-		if any.Array.FixedSize == 0 {
-			return pre + "[]"
-		}
-		return pre + fmt.Sprintf("[%d]", any.Array.FixedSize)
-
-	case any.Type != nil:
-		return any.Type.CType
-
-	case any.VarArgs != nil:
-		return "..."
-
-	default:
-		return ""
 	}
 }

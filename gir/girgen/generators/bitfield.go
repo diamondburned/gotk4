@@ -4,13 +4,14 @@ import (
 	"strconv"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
-var bitfieldTmpl = newGoTemplate(`
-	{{ $type := (PascalToGo .Name) }}
-
-	{{ GoDoc .Doc 0 $type }}
-	type {{ $type }} int
+var bitfieldTmpl = gotmpl.NewGoTemplate(`
+	{{ GoDoc .Doc 0 .GoName }}
+	type {{ .GoName }} int
 
 	const (
 		{{ range .Members -}}
@@ -18,20 +19,22 @@ var bitfieldTmpl = newGoTemplate(`
 		{{- if .Doc -}}
 		{{ GoDoc .Doc 1 $name }}
 		{{ end -}}
-		{{ $name }} {{ $type }} = {{ .Value }}
+		{{ $name }} {{ .GoName }} = {{ .Value }}
 		{{ end -}}
 	)
 
 	{{ if .GLibGetType }}
-	func marshal{{ $type }}(p uintptr) (interface{}, error) {
-		return {{ $type }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
+		return {{ .GoName }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 	}
 	{{ end }}
 `)
 
 type bitfieldGenerator struct {
-	gir.Bitfield
-	Ng *NamespaceGenerator
+	*gir.Bitfield
+	GoName string
+
+	gen FileGenerator
 }
 
 func (eg *bitfieldGenerator) Bits(v string) string {
@@ -44,25 +47,28 @@ func (eg *bitfieldGenerator) Bits(v string) string {
 }
 
 func (eg *bitfieldGenerator) FormatMember(memberName string) string {
-	return PascalToGo(eg.Name) + SnakeToGo(true, memberName)
+	return strcases.PascalToGo(eg.Name) + strcases.SnakeToGo(true, memberName)
 }
 
-func (ng *NamespaceGenerator) generateBitfields() {
-	for _, bitfield := range ng.current.Namespace.Bitfields {
-		if !bitfield.IsIntrospectable() {
-			continue
-		}
-		if ng.mustIgnore(&bitfield.Name, &bitfield.CType) {
-			continue
-		}
-
-		if bitfield.GLibGetType != "" && !ng.mustIgnoreC(bitfield.GLibGetType) {
-			ng.addMarshaler(bitfield.GLibGetType, PascalToGo(bitfield.Name))
-		}
-
-		ng.pen.WriteTmpl(bitfieldTmpl, &bitfieldGenerator{
-			Bitfield: bitfield,
-			Ng:       ng,
-		})
+// GenerateBitfield generates a bitfield type declaration as well as the
+// constants and the type marshaler into the given file generator. If the
+// generation fails or is ignored, then false is returned.
+func GenerateBitfield(gen FileGenerator, bitfield *gir.Bitfield) bool {
+	if !bitfield.IsIntrospectable() || types.Filter(gen, bitfield.Name, bitfield.CType) {
+		return false
 	}
+
+	goName := strcases.PascalToGo(bitfield.Name)
+
+	if bitfield.GLibGetType != "" && !types.FilterCType(gen, bitfield.GLibGetType) {
+		gen.Header().AddMarshaler(bitfield.GLibGetType, goName)
+	}
+
+	gen.Pen().WriteTmpl(bitfieldTmpl, &bitfieldGenerator{
+		Bitfield: bitfield,
+		GoName:   goName,
+		gen:      gen,
+	})
+
+	return true
 }

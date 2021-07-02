@@ -9,8 +9,8 @@ import (
 // See Generator.ModPath for mroe information.
 type ModulePathFunc func(*gir.Namespace) string
 
-// Generator defines a generator instance.
-type Generator interface {
+// FileGenerator defines a generator instance.
+type FileGenerator interface {
 	logger.LineLogger
 	// Filters returns the list of matchers that the current generator has.
 	Filters() []FilterMatcher
@@ -25,7 +25,7 @@ type Generator interface {
 }
 
 type wrappedGenerator struct {
-	Generator
+	FileGenerator
 	n *gir.NamespaceFindResult
 }
 
@@ -33,11 +33,11 @@ func (w wrappedGenerator) Namespace() *gir.NamespaceFindResult { return w.n }
 
 // OverrideNamespace returns a new generator that overrides a generator's
 // current namespace.
-func OverrideNamespace(gen Generator, nsp *gir.NamespaceFindResult) Generator {
+func OverrideNamespace(gen FileGenerator, nsp *gir.NamespaceFindResult) FileGenerator {
 	return wrappedGenerator{gen, nsp}
 }
 
 // Find finds the given GIR type from the given generator.
-func Find(gen Generator, girType string) *gir.TypeFindResult {
+func Find(gen FileGenerator, girType string) *gir.TypeFindResult {
 	return gen.Repositories().FindType(gen.Namespace(), girType)
 }

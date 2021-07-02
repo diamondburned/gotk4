@@ -117,8 +117,8 @@ type Constructor struct {
 type Doc struct {
 	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 doc"`
 	Filename string   `xml:"filename,attr"`
-	Line     int      `xml:"line,attr"`
 	String   string   `xml:",innerxml"`
+	Line     int      `xml:"line,attr"`
 }
 
 type DocElements struct {
@@ -145,10 +145,10 @@ type Enum struct {
 type Field struct {
 	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 field"`
 	Name     string   `xml:"name,attr"`
+	Bits     int      `xml:"bits,attr"`
 	Private  bool     `xml:"private,attr"`
 	Writable bool     `xml:"writable,attr"`
 	Readable bool     `xml:"readable,attr"`
-	Bits     int      `xml:"bits,attr"`
 	AnyType
 	Doc *Doc
 }
@@ -266,10 +266,10 @@ type Parameter struct {
 type ParameterAttrs struct {
 	Name            string `xml:"name,attr"`
 	Direction       string `xml:"direction,attr"`
-	CallerAllocates bool   `xml:"caller-allocates,attr"`
+	Scope           string `xml:"scope,attr"`
 	Closure         *int   `xml:"closure,attr"`
 	Destroy         *int   `xml:"destroy,attr"`
-	Scope           string `xml:"scope,attr"`
+	CallerAllocates bool   `xml:"caller-allocates,attr"`
 	Skip            bool   `xml:"skip,attr"`
 	Nullable        bool   `xml:"nullable,attr"`
 	Optional        bool   `xml:"optional,attr"`
@@ -296,12 +296,12 @@ type Record struct {
 	XMLName              xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 record"`
 	Name                 string   `xml:"name,attr"`
 	CType                string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	Disguised            bool     `xml:"disguised,attr"`
 	GLibTypeName         string   `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
 	GLibGetType          string   `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
 	CSymbolPrefix        string   `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefix,attr"`
-	Foreign              bool     `xml:"foreign,attr"`
 	GLibIsGTypeStructFor string   `xml:"http://www.gtk.org/introspection/glib/1.0 is-gtype-struct-for,attr"`
+	Disguised            bool     `xml:"disguised,attr"`
+	Foreign              bool     `xml:"foreign,attr"`
 
 	Fields       []Field       `xml:"http://www.gtk.org/introspection/core/1.0 field"`
 	Functions    []Function    `xml:"http://www.gtk.org/introspection/core/1.0 function"`
@@ -316,13 +316,13 @@ type Record struct {
 
 type ReturnValue struct {
 	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
-	Introspectable bool     `xml:"introspectable,attr"`
-	Nullable       bool     `xml:"nullable,attr"`
 	Scope          string   `xml:"scope,attr"`
-	Skip           bool     `xml:"skip,attr"`
-	AllowNone      bool     `xml:"allow-none,attr"`
 	Closure        *int     `xml:"closure,attr"`
 	Destroy        *int     `xml:"destroy,attr"`
+	Introspectable bool     `xml:"introspectable,attr"`
+	Nullable       bool     `xml:"nullable,attr"`
+	Skip           bool     `xml:"skip,attr"`
+	AllowNone      bool     `xml:"allow-none,attr"`
 	TransferOwnership
 	DocElements
 	AnyType

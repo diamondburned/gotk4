@@ -4,6 +4,11 @@ import (
 	"fmt"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
+	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
+	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
 // TODO: unexported type implementation
@@ -64,113 +69,131 @@ var interfaceTmpl = newGoTemplate(`
 	{{ end }}
 `)
 
-type ifaceGenerator struct {
-	gir.Interface
-	InterfaceName string
-	StructName    string
-
-	TypeTree TypeTree
-	Virtuals []callableGenerator // for overrider
-	Methods  []callableGenerator // for big interface
-
-	ng *NamespaceGenerator
-}
-
-type ifaceMethod struct {
-	*callableGenerator
-	StructName string
-}
-
-func newIfaceGenerator(ng *NamespaceGenerator) ifaceGenerator {
-	return ifaceGenerator{
-		ng:       ng,
-		TypeTree: ng.TypeTree(),
-	}
-}
-
-func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
-	ig.Interface = iface
-	ig.InterfaceName = PascalToGo(iface.Name)
-	ig.StructName = UnexportPascal(ig.InterfaceName)
-
-	if !ig.TypeTree.Resolve(iface.Name) {
-		ig.Logln(LogSkip, "cannot be type-resolved")
+// GenerateInterface generates a public interface declaration, optionally
+// another one for overriding, and the private struct that implements the
+// interface specifically for wrapping opaque C interfaces.
+func GenerateInterface(gen FileGeneratorWriter, iface *gir.Interface) bool {
+	igen := NewInterfaceGenerator(gen)
+	if !igen.Use(iface) {
 		return false
 	}
-	for _, imp := range ig.TypeTree.Requires {
-		ig.ng.importPubl(imp.ResolvedType)
+
+	if iface.GLibGetType != "" && !types.FilterCType(gen, iface.GLibGetType) {
+		gen.Header().AddMarshaler(iface.GLibGetType, igen.InterfaceName)
 	}
 
-	ig.updateMethods()
+	file.ApplyHeader(gen, &igen)
+	gen.Pen().WriteTmpl(interfaceTmpl, &igen)
 	return true
 }
 
-func (ig *ifaceGenerator) UseMethods(iface gir.Interface) {
-	ig.TypeTree.Reset()
+type InterfaceGenerator struct {
+	*gir.Interface
+	InterfaceName string
+	StructName    string
 
-	ig.Interface = iface
-	ig.InterfaceName = PascalToGo(iface.Name)
-	ig.StructName = UnexportPascal(ig.InterfaceName)
+	TypeTree types.Tree
+	Virtuals []callable.Generator // for overrider
+	Methods  []callable.Generator // for big interface
 
-	ig.updateMethods()
+	header file.Header
+	gen    FileGenerator
 }
 
-func (ig *ifaceGenerator) updateMethods() {
-	ig.Methods = callableGrow(ig.Methods, len(ig.Interface.Methods))
-	ig.Virtuals = callableGrow(ig.Virtuals, len(ig.Interface.VirtualMethods))
+// NewInterfaceGenerator creates a new interface generator instance.
+func NewInterfaceGenerator(gen FileGenerator) InterfaceGenerator {
+	return InterfaceGenerator{
+		gen:      gen,
+		TypeTree: types.NewTree(gen),
+	}
+}
 
-	for _, vmethod := range ig.Interface.VirtualMethods {
-		cbgen := newCallableGenerator(ig.ng)
-		if !cbgen.Use(vmethod.CallableAttrs) {
-			continue
-		}
+func (g *InterfaceGenerator) Logln(lvl logger.Level, v ...interface{}) {
+	p := logger.Prefix(v, fmt.Sprintf("interface %s (C.%s):", g.InterfaceName, g.CType))
+	g.gen.Logln(lvl, p)
+}
 
-		ig.Virtuals = append(ig.Virtuals, cbgen)
+// Reset resets the callback generator.
+func (g *InterfaceGenerator) Reset() {
+	*g = InterfaceGenerator{
+		gen: g.gen,
+	}
+}
+
+// Header returns the callback generator's current header.
+func (g *InterfaceGenerator) Header() *file.Header {
+	return &g.header
+}
+
+func (g *InterfaceGenerator) Use(iface *gir.Interface) bool {
+	g.Reset()
+
+	if !iface.IsIntrospectable() || types.Filter(g.gen, iface.Name, iface.CType) {
+		return false
 	}
 
-	for _, method := range ig.Interface.Methods {
-		cbgen := newCallableGenerator(ig.ng)
-		if !cbgen.Use(method.CallableAttrs) {
-			continue
-		}
+	g.Interface = iface
+	g.InterfaceName = strcases.PascalToGo(iface.Name)
+	g.StructName = strcases.UnexportPascal(g.InterfaceName)
 
-		ig.Methods = append(ig.Methods, cbgen)
+	if !g.TypeTree.Resolve(iface.Name) {
+		g.Logln(logger.Debug, "cannot be type-resolved")
+		return false
 	}
 
-	callableRenameGetters(ig.InterfaceName, ig.Methods)
-	callableRenameGetters(ig.InterfaceName, ig.Virtuals)
-}
-
-func (ig *ifaceGenerator) Wrap(obj string) string {
-	return ig.TypeTree.WrapInterface(obj)
-}
-
-func (ig *ifaceGenerator) Logln(lvl LogLevel, v ...interface{}) {
-	v = append(v, nil)
-	copy(v[1:], v)
-	v[0] = fmt.Sprintf("interface %s (C.%s):", ig.InterfaceName, ig.CType)
-
-	ig.ng.Logln(lvl, v...)
-}
-
-func (ng *NamespaceGenerator) generateIfaces() {
-	ig := newIfaceGenerator(ng)
-
-	for _, iface := range ng.current.Namespace.Interfaces {
-		if !iface.IsIntrospectable() {
-			continue
-		}
-		if ng.mustIgnore(&iface.Name, &iface.CType) {
-			continue
-		}
-		if !ig.Use(iface) {
-			continue
-		}
-
-		if iface.GLibGetType != "" && !ng.mustIgnoreC(iface.GLibGetType) {
-			ng.addMarshaler(iface.GLibGetType, ig.InterfaceName)
-		}
-
-		ng.pen.WriteTmpl(interfaceTmpl, &ig)
+	for _, imp := range g.TypeTree.Requires {
+		// Import everything for the embedded types inside the interface.
+		g.header.ImportPubl(imp.Resolved)
 	}
+
+	g.updateMethods()
+	return true
+}
+
+// UseMethods sets only the VirtualMethods and Methods fields. It skips the type
+// resolving steps.
+func (g *InterfaceGenerator) UseMethods(iface *gir.Interface) {
+	g.TypeTree.Reset()
+
+	g.Interface = iface
+	g.InterfaceName = strcases.PascalToGo(iface.Name)
+	g.StructName = strcases.UnexportPascal(g.InterfaceName)
+
+	g.updateMethods()
+}
+
+func (g *InterfaceGenerator) updateMethods() {
+	g.Methods = callable.Grow(g.Methods, len(g.Interface.Methods))
+	g.Virtuals = callable.Grow(g.Virtuals, len(g.Interface.VirtualMethods))
+
+	for i := range g.Interface.VirtualMethods {
+		gen := callable.NewGenerator(headeredFileGenerator{
+			FileGenerator: g.gen,
+			Headerer:      g,
+		})
+		if !gen.Use(&g.Interface.VirtualMethods[i].CallableAttrs) {
+			continue
+		}
+		g.Virtuals = append(g.Virtuals, gen)
+	}
+
+	for i := range g.Interface.Methods {
+		gen := callable.NewGenerator(headeredFileGenerator{
+			FileGenerator: g.gen,
+			Headerer:      g,
+		})
+		if !gen.Use(&g.Interface.Methods[i].CallableAttrs) {
+			continue
+		}
+		g.Methods = append(g.Methods, gen)
+	}
+
+	callable.RenameGetters(g.InterfaceName, g.Methods)
+	callable.RenameGetters(g.InterfaceName, g.Virtuals)
+}
+
+// Wrap returns a wrapper block that wraps around the given *glib.Object
+// variable name.
+func (g *InterfaceGenerator) Wrap(obj string) string {
+	return g.TypeTree.WrapInterface(obj)
 }

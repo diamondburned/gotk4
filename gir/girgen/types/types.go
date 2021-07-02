@@ -10,7 +10,7 @@ import (
 // GoAnyType generates the Go type signature for the AnyType union. An empty
 // string returned is an invalid type. If pub is true, then the returned string
 // will use public interface types for classes instead of implementation types.
-func GoAnyType(gen Generator, any gir.AnyType, pub bool) (string, bool) {
+func GoAnyType(gen FileGenerator, any gir.AnyType, pub bool) (string, bool) {
 	switch {
 	case any.Array != nil:
 		return goArrayType(gen, *any.Array, pub)
@@ -23,7 +23,7 @@ func GoAnyType(gen Generator, any gir.AnyType, pub bool) (string, bool) {
 }
 
 // goArrayType generates the Go type signature for the given array.
-func goArrayType(gen Generator, array gir.Array, pub bool) (string, bool) {
+func goArrayType(gen FileGenerator, array gir.Array, pub bool) (string, bool) {
 	arrayPrefix := "[]"
 	if array.FixedSize > 0 {
 		arrayPrefix = fmt.Sprintf("[%d]", array.FixedSize)
@@ -41,7 +41,7 @@ func goArrayType(gen Generator, array gir.Array, pub bool) (string, bool) {
 
 // GoType is a convenient function that wraps around ResolveType and returns the
 // Go type.
-func GoType(gen Generator, typ gir.Type, pub bool) (string, bool) {
+func GoType(gen FileGenerator, typ gir.Type, pub bool) (string, bool) {
 	resolved := Resolve(gen, typ)
 	if resolved == nil {
 		return "", false
@@ -103,7 +103,7 @@ var objectorMethods = map[string]struct{}{
 	"Native":            {},
 }
 
-func isObjectorMethod(goName string) bool {
+func IsObjectorMethod(goName string) bool {
 	_, is := objectorMethods[goName]
 	return is
 }

@@ -7,21 +7,40 @@ import (
 
 	"github.com/diamondburned/gotk4/core/pen"
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
+	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
+	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
+	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
-// callbackPrefix is the prefix to prepend to a C callback that bridges Cgo.
-const callbackPrefix = "gotk4_"
-
-var callbackTmpl = newGoTemplate(`
+var callbackTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc .Doc 0 .Name }}
 	type {{ .GoName }} func{{ .GoTail }}
 
 	//export gotk4_{{ .GoName }}
-	func gotk4_{{ .GoName }}{{ .CGoTail }} {{ .Block }}
+	func {{ .Prefix }}_{{ .GoName }}{{ .CGoTail }} {{ .Block }}
 `)
 
-type callbackGenerator struct {
-	gir.Callback
+// GenerateCallback generates a callback type declaration and handler into the
+// given file generator.
+func GenerateCallback(gen FileGeneratorWriter, callback *gir.Callback) bool {
+	generator := NewCallbackGenerator(gen)
+	if !generator.Use(callback) {
+		return false
+	}
+
+	file.ApplyHeader(gen, &generator)
+	gen.Pen().WriteTmpl(callbackTmpl, &generator)
+	return true
+}
+
+// CallbackGenerator generates a callback in Go.
+type CallbackGenerator struct {
+	*gir.Callback
+	Prefix  string
 	GoName  string
 	GoTail  string
 	CGoTail string
@@ -30,22 +49,50 @@ type callbackGenerator struct {
 	Closure *int
 	Destroy *int
 
-	pen *pen.BlockSections
-	ng  *NamespaceGenerator
+	pen    *pen.BlockSections
+	gen    FileGenerator
+	header file.Header
 }
 
-func newCallbackGenerator(ng *NamespaceGenerator) callbackGenerator {
-	return callbackGenerator{
-		ng:  ng,
-		pen: pen.NewBlockSections(256, 1024, 4096, 128, 1024, 4096, 128),
+// NewCallbackGenerator creates a new CallbackGenerator instance.
+func NewCallbackGenerator(gen FileGenerator) CallbackGenerator {
+	return CallbackGenerator{
+		Prefix: file.CallbackPrefix,
+		pen:    pen.NewBlockSections(256, 1024, 4096, 128, 1024, 4096, 128),
+		gen:    gen,
 	}
 }
 
+func (g *CallbackGenerator) Logln(lvl logger.Level, v ...interface{}) {
+	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callback %s (C.%s):", g.Name, g.CIdentifier)))
+}
+
+// Reset resets the callback generator.
+func (g *CallbackGenerator) Reset() {
+	g.pen.Reset()
+
+	*g = CallbackGenerator{
+		pen: g.pen,
+		gen: g.gen,
+	}
+}
+
+// Header returns the callback generator's current header.
+func (g *CallbackGenerator) Header() *file.Header {
+	return &g.header
+}
+
 // Use sets the callback generator to the given GIR callback.
-func (cg *callbackGenerator) Use(cb gir.Callback) bool {
+func (g *CallbackGenerator) Use(cb *gir.Callback) bool {
+	g.Reset()
+
 	// We can't use the callback if it has no closure parameters.
 	if cb.Parameters == nil || len(cb.Parameters.Parameters) == 0 {
-		cg.Logln(LogSkip, "no closure parameter")
+		g.Logln(logger.Debug, "has no parameters at all")
+		return false
+	}
+
+	if !cb.IsIntrospectable() || types.Filter(g.gen, cb.Name, cb.CIdentifier) {
 		return false
 	}
 
@@ -53,25 +100,23 @@ func (cg *callbackGenerator) Use(cb gir.Callback) bool {
 	// separately and mostly manually. There are also no good ways to detect
 	// this.
 	if strings.HasSuffix(cb.Name, "DestroyNotify") {
-		cg.Logln(LogSkip, "is DestroyNotify")
+		g.Logln(logger.Debug, "skipping DestroyNotify-ish callback")
 		return false
 	}
 
-	cg.GoName = PascalToGo(cb.Name)
-	cg.Callback = cb
+	g.GoName = strcases.PascalToGo(cb.Name)
+	g.Callback = cb
 
-	cg.Closure = findClosure(cb.Parameters.Parameters)
-	if cg.Closure == nil {
-		cg.Logln(LogSkip, "is missing closure arg")
+	if g.Closure = findClosure(cb.Parameters.Parameters); g.Closure == nil {
+		g.Logln(logger.Debug, "skipping since no closure argument")
 		return false
 	}
 
-	cg.CGoTail = cg.cgoTail()
-	if cg.CGoTail == "" {
+	if g.CGoTail = g.cgoTail(); g.CGoTail == "" {
 		return false
 	}
 
-	if !cg.renderBlock() {
+	if !g.renderBlock() {
 		return false
 	}
 
@@ -92,37 +137,37 @@ func callbackArg(i int) string {
 	return "arg" + strconv.Itoa(i)
 }
 
-func (cg *callbackGenerator) cgoTail() string {
-	cgotail := pen.NewJoints(", ", len(cg.Parameters.Parameters))
+func (g *CallbackGenerator) cgoTail() string {
+	cgotail := pen.NewJoints(", ", len(g.Parameters.Parameters))
 
-	for i, param := range cg.Parameters.Parameters {
-		ctype := anyTypeC(param.AnyType)
+	for i, param := range g.Parameters.Parameters {
+		ctype := types.AnyTypeC(param.AnyType)
 		if ctype == "" {
-			cg.Logln(LogSkip, "anyTypeC parameter is empty")
+			g.Logln(logger.Debug, "anyTypeC parameter is empty")
 			return "" // probably var_args
 		}
 
-		cgotype := anyTypeCGo(param.AnyType)
+		cgotype := types.AnyTypeCGo(param.AnyType)
 		cgotail.Addf("%s %s", callbackArg(i), cgotype)
 	}
 
 	callTail := "(" + cgotail.Join() + ")"
 
-	if !returnIsVoid(cg.ReturnValue) {
-		ctype := anyTypeC(cg.ReturnValue.AnyType)
+	if !types.ReturnIsVoid(g.ReturnValue) {
+		ctype := types.AnyTypeC(g.ReturnValue.AnyType)
 		if ctype == "" {
-			cg.Logln(LogSkip, "anyTypeC return is empty")
+			g.Logln(logger.Debug, "anyTypeC return is empty")
 			return ""
 		}
 
-		callTail += " " + anyTypeCGo(cg.ReturnValue.AnyType)
+		callTail += " " + types.AnyTypeCGo(g.ReturnValue.AnyType)
 	}
 
 	return callTail
 }
 
-func (cg *callbackGenerator) renderBlock() bool {
-	defer cg.pen.Reset()
+func (g *CallbackGenerator) renderBlock() bool {
+	defer g.pen.Reset()
 
 	const (
 		secPrefix = iota
@@ -134,17 +179,17 @@ func (cg *callbackGenerator) renderBlock() bool {
 		secReturn
 	)
 
-	cg.pen.Linef(secPrefix, "v := box.Get(uintptr(%s))", callbackArg(*cg.Closure))
-	cg.pen.Linef(secPrefix, "if v == nil {")
-	cg.pen.Linef(secPrefix, "  panic(`callback not found`)")
-	cg.pen.Linef(secPrefix, "}")
-	cg.pen.EmptyLine(secPrefix)
+	g.pen.Linef(secPrefix, "v := box.Get(uintptr(%s))", callbackArg(*g.Closure))
+	g.pen.Linef(secPrefix, "if v == nil {")
+	g.pen.Linef(secPrefix, "  panic(`callback not found`)")
+	g.pen.Linef(secPrefix, "}")
+	g.pen.EmptyLine(secPrefix)
 
-	cg.pen.Linef(secFnCall, "fn := v.(%s)", cg.GoName)
+	g.pen.Linef(secFnCall, "fn := v.(%s)", g.GoName)
 
-	callbackValues := make([]ConversionValue, 0, len(cg.Parameters.Parameters)+2)
+	callbackValues := make([]typeconv.ConversionValue, 0, len(g.Parameters.Parameters)+2)
 
-	for i, param := range cg.Parameters.Parameters {
+	for i, param := range g.Parameters.Parameters {
 		if param.Skip {
 			continue
 		}
@@ -155,45 +200,45 @@ func (cg *callbackGenerator) renderBlock() bool {
 
 		var in string
 		var out string
-		var dir ConversionDirection
+		var dir typeconv.ConversionDirection
 
 		switch param.Direction {
 		case "in":
 			in = callbackArg(i)
-			out = SnakeToGo(false, param.Name)
-			dir = ConvertCToGo
+			out = strcases.SnakeToGo(false, param.Name)
+			dir = typeconv.ConvertCToGo
 		case "out":
-			in = SnakeToGo(false, param.Name)
+			in = strcases.SnakeToGo(false, param.Name)
 			out = callbackArg(i)
-			dir = ConvertGoToC
+			dir = typeconv.ConvertGoToC
 		default:
 			// TODO: inout
 			return false
 		}
 
-		value := NewConversionValue(in, out, i, dir, param.ParameterAttrs)
+		value := typeconv.NewValue(in, out, i, dir, param.ParameterAttrs)
 		callbackValues = append(callbackValues, value)
 	}
 
 	var hasReturn bool
-	if !returnIsVoid(cg.ReturnValue) {
+	if !types.ReturnIsVoid(g.ReturnValue) {
 		hasReturn = true
-		returnName := returnName(cg.CallableAttrs)
+		returnName := callable.ReturnName(&g.CallableAttrs)
 
-		value := NewConversionValueReturn(returnName, "cret", ConvertGoToC, *cg.ReturnValue)
+		value := typeconv.NewReturnValue(returnName, "cret", typeconv.ConvertGoToC, *g.ReturnValue)
 		callbackValues = append(callbackValues, value)
 	}
 
-	convert := NewTypeConverter(cg.ng, callbackValues)
-	convert.UseLogger(cg)
+	convert := typeconv.NewConverter(g.gen, callbackValues)
+	convert.UseLogger(g)
 
 	results := convert.ConvertAll()
 	if results == nil {
-		cg.Logln(LogSkip, "has no conversion", cFunctionSig(cg.CallableAttrs))
+		g.Logln(logger.Debug, "has no conversion")
 		return false
 	}
 
-	cg.ng.applyConvertedFxs(results)
+	file.ApplyHeader(g, convert)
 
 	goCallArgs := pen.NewJoints(", ", len(results))
 	goCallRets := pen.NewJoints(", ", len(results))
@@ -207,68 +252,42 @@ func (cg *callbackGenerator) renderBlock() bool {
 		}
 
 		switch result.Direction {
-		case ConvertCToGo:
+		case typeconv.ConvertCToGo:
 			goCallArgs.Add(result.OutCall)
 			goTypeArgs.Addf("%s %s", result.OutName, result.OutType)
 
-			cg.pen.Line(secInputPre, result.OutDeclare)
-			cg.pen.Line(secInputConv, result.Conversion)
+			g.pen.Line(secInputPre, result.OutDeclare)
+			g.pen.Line(secInputConv, result.Conversion)
 
-		case ConvertGoToC:
+		case typeconv.ConvertGoToC:
 			goCallRets.Add(result.InCall)
 			goTypeArgs.Addf("%s %s", result.InName, result.InType)
 
-			cg.pen.Line(secOutputPre, result.OutDeclare)
-			cg.pen.Line(secOutputConv, result.Conversion)
+			g.pen.Line(secOutputPre, result.OutDeclare)
+			g.pen.Line(secOutputConv, result.Conversion)
 		}
 	}
 
 	if goCallRets.Len() == 0 {
-		cg.pen.Linef(secFnCall, "fn(%s)", goCallArgs.Join())
+		g.pen.Linef(secFnCall, "fn(%s)", goCallArgs.Join())
 	} else {
-		cg.pen.Linef(secFnCall, "%s := fn(%s)", goCallRets.Join(), goCallArgs.Join())
+		g.pen.Linef(secFnCall, "%s := fn(%s)", goCallRets.Join(), goCallArgs.Join())
 	}
 
 	if hasReturn {
-		cg.pen.Linef(secReturn, "return cret")
+		g.pen.Linef(secReturn, "return cret")
 	}
 
-	cg.Block = cg.pen.String()
+	g.Block = g.pen.String()
 
-	cg.GoTail = "(" + goTypeArgs.Join() + ")"
+	g.GoTail = "(" + goTypeArgs.Join() + ")"
 	if goTypeRets.Len() > 0 {
-		cg.GoTail += " (" + goTypeRets.Join() + ")"
+		g.GoTail += " (" + goTypeRets.Join() + ")"
 	}
 
 	// Only add the import now, since we know that the callback will be
 	// generated.
-	cg.ng.addImportInternal("box")
+	g.header.ImportCore("box")
 
 	return true
-}
-
-func (cg *callbackGenerator) Logln(lvl LogLevel, v ...interface{}) {
-	v = append(v, nil)
-	copy(v[1:], v)
-	v[0] = fmt.Sprintf("callback %s (C.%s):", cg.Name, cg.CIdentifier)
-
-	cg.ng.Logln(lvl, v...)
-}
-
-func (ng *NamespaceGenerator) generateCallbacks() {
-	cg := newCallbackGenerator(ng)
-
-	for _, callback := range ng.current.Namespace.Callbacks {
-		if !callback.IsIntrospectable() {
-			continue
-		}
-		if ng.mustIgnore(&callback.Name, &callback.CIdentifier) {
-			continue
-		}
-		if !cg.Use(callback) {
-			continue
-		}
-
-		cg.ng.pen.WriteTmpl(callbackTmpl, &cg)
-	}
 }

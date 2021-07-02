@@ -7,34 +7,34 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 )
 
-// TypeTree is a structure for a type that is resolved to the lowest level of
+// Tree is a structure for a type that is resolved to the lowest level of
 // inheritance.
-type TypeTree struct {
+type Tree struct {
 	*Resolved
-	gen Generator
+	gen FileGenerator
 
 	// Requires contains the direct dependencies of the current type. It may
 	// contain interfaces that are also in other interfaces, which will not
 	// build.
-	Requires []TypeTree
+	Requires []Tree
 	// Embeds contains the filtered dependencies, that is, ones that will not
 	// collide when built.
-	Embeds []TypeTree
+	Embeds []Tree
 
 	// Level sets the maximum recursion level to go. It only applies if set
 	// to something more than -1.
 	Level int
 }
 
-// NewTypeTree creates a new empty type tree for resolving.
-func NewTypeTree(gen Generator) TypeTree {
-	return TypeTree{gen: gen, Level: -1}
+// NewTree creates a new empty type tree for resolving.
+func NewTree(gen FileGenerator) Tree {
+	return Tree{gen: gen, Level: -1}
 }
 
-func (tree *TypeTree) Reset() {
+func (tree *Tree) Reset() {
 	// Zero out the fields to prevent dangling pointers.
 	for i := range tree.Requires {
-		tree.Requires[i] = TypeTree{}
+		tree.Requires[i] = Tree{}
 	}
 
 	tree.Resolved = nil
@@ -42,10 +42,10 @@ func (tree *TypeTree) Reset() {
 	tree.Requires = tree.Requires[:0]
 }
 
-// Resolve resolves the given toplevel type into the TypeTree, overriding the
+// Resolve resolves the given toplevel type into the Tree, overriding the
 // Resolved and Requires fields. True is returned if the tree is successfully
 // resolved.
-func (tree *TypeTree) Resolve(toplevel string) bool {
+func (tree *Tree) Resolve(toplevel string) bool {
 	resolved := ResolveName(tree.gen, toplevel)
 	if resolved == nil {
 		tree.Reset()
@@ -57,7 +57,7 @@ func (tree *TypeTree) Resolve(toplevel string) bool {
 
 // ResolveFromType is like Resolve, but the caller directly supplies the
 // resolved top-level type.
-func (tree *TypeTree) ResolveFromType(toplevel *Resolved) bool {
+func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 	tree.Reset()
 	tree.Resolved = toplevel
 
@@ -136,12 +136,12 @@ func (tree *TypeTree) ResolveFromType(toplevel *Resolved) bool {
 }
 
 // omitAmbiguous omits current-level ambiguous types.
-func (tree *TypeTree) omitAmbiguous(actually bool) {
+func (tree *Tree) omitAmbiguous(actually bool) {
 	// Try and reuse the backing array, but regrow it ourselves if there's not
 	// enough space.
 	tree.Embeds = tree.Embeds[:0]
 	if cap(tree.Embeds) < len(tree.Requires) {
-		tree.Embeds = make([]TypeTree, 0, len(tree.Requires))
+		tree.Embeds = make([]Tree, 0, len(tree.Requires))
 	}
 
 	// No ambiguity if there's less than 2 parents.
@@ -173,11 +173,11 @@ addLoop:
 
 // requiresHasGType scans over the list of resolved types and returns true if
 // any of the resolved types implements the given resolved type.
-func requiresHasGType(requires []TypeTree, typ *Resolved) bool {
+func requiresHasGType(requires []Tree, typ *Resolved) bool {
 	return requiresHasGTyperec(requires, typ.PublicType(true))
 }
 
-func requiresHasGTyperec(requires []TypeTree, publType string) bool {
+func requiresHasGTyperec(requires []Tree, publType string) bool {
 	for _, req := range requires {
 		if req.Resolved.PublicType(true) == publType {
 			return true
@@ -189,16 +189,16 @@ func requiresHasGTyperec(requires []TypeTree, publType string) bool {
 	return false
 }
 
-func (tree *TypeTree) parentLevel() int {
+func (tree *Tree) parentLevel() int {
 	if tree.Level <= 0 {
 		return tree.Level
 	}
 	return tree.Level - 1
 }
 
-// resolveName resolves and adds the resolved type into the TypeTree.
-func (tree *TypeTree) resolveName(name string) bool {
-	parent := TypeTree{
+// resolveName resolves and adds the resolved type into the Tree.
+func (tree *Tree) resolveName(name string) bool {
+	parent := Tree{
 		gen:   tree.gen,
 		Level: tree.parentLevel(),
 	}
@@ -212,10 +212,10 @@ func (tree *TypeTree) resolveName(name string) bool {
 }
 
 // resolveParents manually adds the given parents and resolve them to be added
-// into the TypeTree.
-func (tree *TypeTree) resolveParents(parents ...*Resolved) bool {
+// into the Tree.
+func (tree *Tree) resolveParents(parents ...*Resolved) bool {
 	for _, parent := range parents {
-		parentTree := TypeTree{
+		parentTree := Tree{
 			gen:   tree.gen,
 			Level: tree.parentLevel(),
 		}
@@ -234,7 +234,7 @@ func (tree *TypeTree) resolveParents(parents ...*Resolved) bool {
 
 // PublicEmbeds returns the list of the toplevel type's children as Go exported
 // type names. The namespaces are appropriately prepended if needed.
-func (tree *TypeTree) PublicEmbeds() []string {
+func (tree *Tree) PublicEmbeds() []string {
 	names := make([]string, len(tree.Embeds))
 
 	for i, req := range tree.Embeds {
@@ -246,7 +246,7 @@ func (tree *TypeTree) PublicEmbeds() []string {
 }
 
 // WalkPublInterfaces walks the tree for all embedded interfaces.
-func (tree *TypeTree) WalkPublInterfaces(f func(*Resolved)) {
+func (tree *Tree) WalkPublInterfaces(f func(*Resolved)) {
 	for _, impl := range tree.Embeds {
 		if impl.IsInterface() {
 			f(impl.Resolved)
@@ -268,16 +268,16 @@ func (tree *TypeTree) WalkPublInterfaces(f func(*Resolved)) {
 //
 //    func WrapTypeName(obj *externglib.Object) TypeName
 //
-func (tree *TypeTree) WrapClass(obj string) string {
+func (tree *Tree) WrapClass(obj string) string {
 	return tree.wrap(obj, true)
 }
 
 // WrapInterface creates a wrappper for an interface instead.
-func (tree *TypeTree) WrapInterface(obj string) string {
+func (tree *Tree) WrapInterface(obj string) string {
 	return tree.wrap(obj, false)
 }
 
-func (tree *TypeTree) wrap(obj string, class bool) string {
+func (tree *Tree) wrap(obj string, class bool) string {
 	p := pen.NewPiece()
 	p.Write(tree.Resolved.ImplType(false)).Char('{')
 	p.EmptyLine()

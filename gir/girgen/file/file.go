@@ -13,15 +13,34 @@ import (
 // CoreImportPath is the path to the core import path.
 const CoreImportPath = "github.com/diamondburned/gotk4/core"
 
+// Headerer is an interface of something that returns its internal header.
+type Headerer interface {
+	Header() *Header
+}
+
+// ApplyHeader applies the given src headers to dst.
+func ApplyHeader(dst Headerer, src ...Headerer) {
+	dstHeader := dst.Header()
+	for _, src := range src {
+		src.Header().ApplyHeader(dstHeader)
+	}
+}
+
 // Header describes the side effects of the conversion, such as importing new
 // things or modifying the CGo preamble. A zero-value instance is a valid
 // instance.
 type Header struct {
+	Marshalers     []string
 	Imports        map[string]string
 	CIncludes      map[string]struct{}
 	Packages       map[string]struct{} // for pkg-config
 	Callbacks      map[string]struct{}
 	CallbackDelete bool
+}
+
+// Reset resets the file header to a zero state.
+func (h *Header) Reset() {
+	*h = Header{}
 }
 
 // ImportCore adds a core import.
@@ -80,6 +99,18 @@ func (h *Header) ImportResolvedType(imports types.ResolvedImport) {
 	if imports.Path != "" {
 		h.ImportAlias(imports.Path, imports.Package)
 	}
+}
+
+// AddMarshaler adds the type marshaler into the init header. It also adds
+// imports.
+func (h *Header) AddMarshaler(glibGetType, goName string) {
+	h.Marshalers = append(h.Marshalers, fmt.Sprintf(
+		`{T: externglib.Type(C.%s()), F: marshal%s},`, glibGetType, goName,
+	))
+	// Need this for g_value functions inside marshal.
+	h.NeedsGLibObject()
+	// Need this for the pointer cast.
+	h.Import("unsafe")
 }
 
 func (h *Header) AddCallback(callback *gir.Callback) {

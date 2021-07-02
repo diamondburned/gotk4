@@ -25,7 +25,7 @@ const (
 
 // ConversionValueIndex describes an overloaded index type that reserves its
 // negative values for special values.
-type ConversionValueIndex int
+type ConversionValueIndex int8
 
 const (
 	_ ConversionValueIndex = -iota // 0
@@ -73,9 +73,8 @@ type ConversionValue struct {
 	ParameterIndex ConversionValueIndex
 }
 
-// NewConversionValue creates a new ConversionValue from the given parameter
-// attributes.
-func NewConversionValue(
+// NewValue creates a new ConversionValue from the given parameter attributes.
+func NewValue(
 	in, out string, i int, dir ConversionDirection, param gir.ParameterAttrs) ConversionValue {
 
 	value := ConversionValue{
@@ -92,11 +91,8 @@ func NewConversionValue(
 	return value
 }
 
-// NewConversionValueReturn creates a new ConversionValue from the given return
-// attribute.
-func NewConversionValueReturn(
-	in, out string, dir ConversionDirection, ret gir.ReturnValue) ConversionValue {
-
+// NewReturnValue creates a new ConversionValue from the given return attribute.
+func NewReturnValue(in, out string, dir ConversionDirection, ret gir.ReturnValue) ConversionValue {
 	return ConversionValue{
 		InName:         in,
 		OutName:        out,
@@ -117,9 +113,9 @@ func NewConversionValueReturn(
 	}
 }
 
-// NewConversionValueField creates a new ConversionValue from the given C struct
-// field. The struct is assumed to have a native field.
-func NewConversionValueField(recv, out string, field gir.Field) ConversionValue {
+// NewFieldValue creates a new ConversionValue from the given C struct field.
+// The struct is assumed to have a native field.
+func NewFieldValue(recv, out string, field gir.Field) ConversionValue {
 	return ConversionValue{
 		InName:         fmt.Sprintf("%s.%s", recv, strcases.CGoField(field.Name)),
 		OutName:        out,
@@ -193,14 +189,14 @@ func (prop *ConversionValue) isTransferring() bool {
 
 type Converter struct {
 	results []ValueConverted
-	gen     types.Generator
+	gen     types.FileGenerator
 	logger  logger.LineLogger
 	header  file.Header
 }
 
 // NewConverter creates a new type converter from the given file generator.
 // The converter will add no side effects to the given file generator.
-func NewConverter(gen types.Generator, values []ConversionValue) *Converter {
+func NewConverter(gen types.FileGenerator, values []ConversionValue) *Converter {
 	conv := Converter{
 		gen:     gen,
 		results: make([]ValueConverted, len(values)),
@@ -313,8 +309,8 @@ func (conv *Converter) UseLogger(logger logger.LineLogger) {
 
 // Header returns the header of all converted values. This method should only be
 // used once ConvertAll or Convert has been called.
-func (conv *Converter) Header() file.Header {
-	return conv.header
+func (conv *Converter) Header() *file.Header {
+	return &conv.header
 }
 
 // ConvertAll converts all values.
@@ -667,7 +663,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	// Proritize hard-coded types over ignored types.
 	value.resolved = types.Resolve(conv.gen, typ)
 	if value.resolved == nil {
-		conv.Logln(logger.Debug, value.logPrefix(), "can't resolve", types.AnyTypeCGo(value.AnyType), typ.Name)
+		conv.Logln(logger.Debug, "can't resolve", types.AnyTypeCGo(value.AnyType), typ.Name)
 		return false
 	}
 

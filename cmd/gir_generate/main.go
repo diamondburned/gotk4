@@ -93,8 +93,14 @@ func main() {
 	}
 
 	// Do a clean-up of the target directory.
-	if err := os.RemoveAll(output); err != nil {
-		log.Println("non-fatal: failed to rm -rf output dir:", err)
+	oldFiles, _ := os.ReadDir(output)
+	for _, oldFile := range oldFiles {
+		if oldFile.IsDir() {
+			fullPath := filepath.Join(output, oldFile.Name())
+			if err := os.RemoveAll(fullPath); err != nil {
+				log.Printf("non-fatal: failed to rm -rf %s/: %v", oldFile, err)
+			}
+		}
 	}
 
 	sema := semaphore.NewWeighted(parallel)

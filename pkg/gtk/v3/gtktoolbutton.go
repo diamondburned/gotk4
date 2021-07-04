@@ -26,7 +26,7 @@ func init() {
 	})
 }
 
-// ToolButton ToolButtons are ToolItems containing buttons.
+// ToolButton are ToolItems containing buttons.
 //
 // Use gtk_tool_button_new() to create a new ToolButton.
 //

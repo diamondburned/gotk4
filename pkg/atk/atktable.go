@@ -22,14 +22,14 @@ func init() {
 	})
 }
 
-// Table: Table should be implemented by components which present elements
-// ordered via rows and columns. It may also be used to present tree-structured
-// information if the nodes of the trees can be said to contain multiple
-// "columns". Individual elements of an Table are typically referred to as
-// "cells". Those cells should implement the interface TableCell, but #Atk
-// doesn't require them to be direct children of the current Table. They can be
-// grand-children, grand-grand-children etc. Table provides the API needed to
-// get a individual cell based on the row and column numbers.
+// Table should be implemented by components which present elements ordered via
+// rows and columns. It may also be used to present tree-structured information
+// if the nodes of the trees can be said to contain multiple "columns".
+// Individual elements of an Table are typically referred to as "cells". Those
+// cells should implement the interface TableCell, but #Atk doesn't require them
+// to be direct children of the current Table. They can be grand-children,
+// grand-grand-children etc. Table provides the API needed to get a individual
+// cell based on the row and column numbers.
 //
 // Children of Table are frequently "lightweight" objects, that is, they may not
 // have backing widgets in the host UI toolkit. They are therefore often

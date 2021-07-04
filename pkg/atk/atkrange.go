@@ -21,8 +21,8 @@ func init() {
 	})
 }
 
-// Range: Range are used on Value, in order to represent the full range of a
-// given component (for example an slider or a range control), or to define each
+// Range are used on Value, in order to represent the full range of a given
+// component (for example an slider or a range control), or to define each
 // individual subrange this full range is splitted if available. See Value
 // documentation for further details.
 type Range C.AtkRange

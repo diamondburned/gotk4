@@ -36,8 +36,8 @@ func init() {
 	})
 }
 
-// Drive: #GDrive - this represent a piece of hardware connected to the machine.
-// It's generally only created for removable hardware or hardware with removable
+// Drive - this represent a piece of hardware connected to the machine. It's
+// generally only created for removable hardware or hardware with removable
 // media.
 //
 // #GDrive is a container class for #GVolume objects that stem from the same

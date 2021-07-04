@@ -27,10 +27,9 @@ func init() {
 	})
 }
 
-// ToolItem ToolItems are widgets that can appear on a toolbar. To create a
-// toolbar item that contain something else than a button, use
-// gtk_tool_item_new(). Use gtk_container_add() to add a child widget to the
-// tool item.
+// ToolItem are widgets that can appear on a toolbar. To create a toolbar item
+// that contain something else than a button, use gtk_tool_item_new(). Use
+// gtk_container_add() to add a child widget to the tool item.
 //
 // For toolbar items that contain buttons, see the ToolButton, ToggleToolButton
 // and RadioToolButton classes.

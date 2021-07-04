@@ -31,9 +31,9 @@ func init() {
 	})
 }
 
-// MemoryMonitor: Monitor will monitor system memory and suggest to the
-// application when to free memory so as to leave more room for other
-// applications. It is implemented on Linux using the Low Memory Monitor
+// MemoryMonitor will monitor system memory and suggest to the application when
+// to free memory so as to leave more room for other applications. It is
+// implemented on Linux using the Low Memory Monitor
 // (https://gitlab.freedesktop.org/hadess/low-memory-monitor/) (API
 // documentation (https://hadess.pages.freedesktop.org/low-memory-monitor/)).
 //

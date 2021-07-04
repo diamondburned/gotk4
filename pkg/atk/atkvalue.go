@@ -52,12 +52,12 @@ func marshalValueType(p uintptr) (interface{}, error) {
 	return ValueType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Value: Value should be implemented for components which either display a
-// value from a bounded range, or which allow the user to specify a value from a
-// bounded range, or both. For instance, most sliders and range controls, as
-// well as dials, should have Object representations which implement Value on
-// the component's behalf. KValues may be read-only, in which case attempts to
-// alter the value return would fail.
+// Value should be implemented for components which either display a value from
+// a bounded range, or which allow the user to specify a value from a bounded
+// range, or both. For instance, most sliders and range controls, as well as
+// dials, should have Object representations which implement Value on the
+// component's behalf. KValues may be read-only, in which case attempts to alter
+// the value return would fail.
 //
 // <refsect1 id="current-value-text"> <title>On the subject of current value
 // text</title> <para> In addition to providing the current value, implementors

@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// Image: Image should be implemented by Object subtypes on behalf of components
-// which display image/pixmap information onscreen, and which provide
-// information (other than just widget borders, etc.) via that image content.
-// For instance, icons, buttons with icons, toolbar elements, and image viewing
-// panes typically should implement Image.
+// Image should be implemented by Object subtypes on behalf of components which
+// display image/pixmap information onscreen, and which provide information
+// (other than just widget borders, etc.) via that image content. For instance,
+// icons, buttons with icons, toolbar elements, and image viewing panes
+// typically should implement Image.
 //
 // Image primarily provides two types of information: coordinate information
 // (useful for screen review mode of screenreaders, and for use by onscreen

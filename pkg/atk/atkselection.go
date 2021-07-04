@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// Selection: Selection should be implemented by UI components with children
-// which are exposed by #atk_object_ref_child and #atk_object_get_n_children, if
-// the use of the parent UI component ordinarily involves selection of one or
-// more of the objects corresponding to those Object children - for example,
-// selectable lists.
+// Selection should be implemented by UI components with children which are
+// exposed by #atk_object_ref_child and #atk_object_get_n_children, if the use
+// of the parent UI component ordinarily involves selection of one or more of
+// the objects corresponding to those Object children - for example, selectable
+// lists.
 //
 // Note that other types of "selection" (for instance text selection) are
 // accomplished a other ATK interfaces - Selection is limited to the

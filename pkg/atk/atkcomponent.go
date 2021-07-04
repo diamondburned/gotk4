@@ -57,9 +57,9 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Component: Component should be implemented by most if not all UI elements
-// with an actual on-screen presence, i.e. components which can be said to have
-// a screen-coordinate bounding box. Virtually all widgets will need to have
+// Component should be implemented by most if not all UI elements with an actual
+// on-screen presence, i.e. components which can be said to have a
+// screen-coordinate bounding box. Virtually all widgets will need to have
 // Component implementations provided for their corresponding Object class. In
 // short, only UI elements which are *not* GUI elements will omit this ATK
 // interface.

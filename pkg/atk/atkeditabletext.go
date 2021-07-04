@@ -22,9 +22,9 @@ func init() {
 	})
 }
 
-// EditableText: EditableText should be implemented by UI components which
-// contain text which the user can edit, via the Object corresponding to that
-// component (see Object).
+// EditableText should be implemented by UI components which contain text which
+// the user can edit, via the Object corresponding to that component (see
+// Object).
 //
 // EditableText is a subclass of Text, and as such, an object which implements
 // EditableText is by definition an Text implementor as well.

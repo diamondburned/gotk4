@@ -39,13 +39,13 @@ const (
 	BuilderErrorUnhandledTag BuilderError = 1
 	// MissingAttribute: an attribute that is required by Builder was missing.
 	BuilderErrorMissingAttribute BuilderError = 2
-	// InvalidAttribute: Builder found an attribute that it doesn’t understand.
+	// InvalidAttribute found an attribute that it doesn’t understand.
 	BuilderErrorInvalidAttribute BuilderError = 3
-	// InvalidTag: Builder found a tag that it doesn’t understand.
+	// InvalidTag found a tag that it doesn’t understand.
 	BuilderErrorInvalidTag BuilderError = 4
 	// MissingPropertyValue: a required property value was missing.
 	BuilderErrorMissingPropertyValue BuilderError = 5
-	// InvalidValue: Builder couldn’t parse some attribute value.
+	// InvalidValue couldn’t parse some attribute value.
 	BuilderErrorInvalidValue BuilderError = 6
 	// VersionMismatch: the input file requires a newer version of GTK+.
 	BuilderErrorVersionMismatch BuilderError = 7

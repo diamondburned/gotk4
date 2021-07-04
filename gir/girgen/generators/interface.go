@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
@@ -103,6 +104,8 @@ type InterfaceGenerator struct {
 	header file.Header
 	gen    FileGenerator
 }
+
+var _ = cmt.EnsureInfoFields((*InterfaceGenerator)(nil))
 
 // NewInterfaceGenerator creates a new interface generator instance.
 func NewInterfaceGenerator(gen FileGenerator) InterfaceGenerator {

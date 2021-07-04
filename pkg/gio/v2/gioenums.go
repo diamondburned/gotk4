@@ -1359,9 +1359,8 @@ func marshalApplicationFlags(p uintptr) (interface{}, error) {
 	return ApplicationFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AskPasswordFlags PasswordFlags are used to request specific information from
-// the user, or to notify the user of their choices in an authentication
-// situation.
+// AskPasswordFlags are used to request specific information from the user, or
+// to notify the user of their choices in an authentication situation.
 type AskPasswordFlags int
 
 const (

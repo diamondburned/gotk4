@@ -34,8 +34,8 @@ func init() {
 	})
 }
 
-// AppInfo: Info and LaunchContext are used for describing and launching
-// applications installed on the system.
+// AppInfo and LaunchContext are used for describing and launching applications
+// installed on the system.
 //
 // As of GLib 2.20, URIs will always be converted to POSIX paths (using
 // g_file_get_path()) when using g_app_info_launch() even if the application

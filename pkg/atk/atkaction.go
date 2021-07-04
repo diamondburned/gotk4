@@ -22,9 +22,9 @@ func init() {
 	})
 }
 
-// Action: Action should be implemented by instances of Object classes with
-// which the user can interact directly, i.e. buttons, checkboxes, scrollbars,
-// e.g. components which are not "passive" providers of UI information.
+// Action should be implemented by instances of Object classes with which the
+// user can interact directly, i.e. buttons, checkboxes, scrollbars, e.g.
+// components which are not "passive" providers of UI information.
 //
 // Exceptions: when the user interaction is already covered by another
 // appropriate interface such as EditableText (insert/delete text, etc.) or

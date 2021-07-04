@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"go/doc"
 	"html"
+	"log"
 	"reflect"
 	"regexp"
 	"strings"
@@ -40,6 +41,19 @@ type InfoFields struct {
 	Elements *gir.InfoElements
 }
 
+func getField(value reflect.Value, field string) interface{} {
+	v := value.FieldByName(field)
+	if v == (reflect.Value{}) {
+		return nil
+	}
+	if v.CanAddr() {
+		return v.Addr().Interface()
+	}
+	cpy := reflect.New(v.Type())
+	cpy.Elem().Set(v)
+	return cpy.Interface()
+}
+
 // GetInfoFields gets the InfoFields from the given value.
 func GetInfoFields(v interface{}) InfoFields {
 	value := reflect.Indirect(reflect.ValueOf(v))
@@ -47,27 +61,37 @@ func GetInfoFields(v interface{}) InfoFields {
 		return InfoFields{}
 	}
 
-	// getField gets the pointer to the field name.
-	getField := func(name string) interface{} {
-		v := value.FieldByName(name)
-		if v == (reflect.Value{}) {
-			return nil
-		}
-		if v.CanAddr() {
-			return v.Addr().Interface()
-		}
-		cpy := reflect.New(v.Type())
-		cpy.Elem().Set(v)
-		return cpy.Interface()
-	}
-
 	var inf InfoFields
 
-	inf.Name, _ = getField("Name").(*string)
-	inf.Attrs, _ = getField("InfoAttrs").(*gir.InfoAttrs)
-	inf.Elements, _ = getField("InfoElements").(*gir.InfoElements)
+	inf.Name, _ = getField(value, "Name").(*string)
+	inf.Attrs, _ = getField(value, "InfoAttrs").(*gir.InfoAttrs)
+	inf.Elements, _ = getField(value, "InfoElements").(*gir.InfoElements)
 
 	return inf
+}
+
+// EnsureInfoFields ensures that the given type contains all fields inside
+// InfoFields.
+func EnsureInfoFields(v interface{}) struct{} {
+	typ := reflect.TypeOf(v)
+	if typ.Kind() == reflect.Ptr {
+		typ = typ.Elem()
+	}
+
+	mustField := func(name string, fieldTyp reflect.Type) {
+		field, ok := typ.FieldByName(name)
+		if !ok {
+			log.Panicf("type %v missing field %s", typ, name)
+		}
+		if field.Type != fieldTyp {
+			log.Panicf("type %v field %s got type %v, expected %v", typ, name, field.Type, fieldTyp)
+		}
+	}
+
+	mustField("Name", reflect.TypeOf(""))
+	mustField("InfoAttrs", reflect.TypeOf(gir.InfoAttrs{}))
+	mustField("InfoElements", reflect.TypeOf(gir.InfoElements{}))
+	return struct{}{}
 }
 
 // Option defines possible options for GoDoc.
@@ -83,6 +107,10 @@ func OverrideSelfName(self string) Option { return overrideSelfName(self) }
 
 func (overrideSelfName) opts() {}
 
+func isLower(s string) bool {
+	return strings.IndexFunc(s, unicode.IsUpper) == -1
+}
+
 // GoDoc renders a Go documentation string from the given struct. The struct
 // should contain at least the field Name, InfoAttrs and InfoElements.
 func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
@@ -90,7 +118,7 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 
 	var self string
 	if inf.Name != nil {
-		if strings.Contains(*inf.Name, "_") {
+		if strings.Contains(*inf.Name, "_") && isLower(*inf.Name) {
 			self = strcases.SnakeToGo(true, *inf.Name)
 		} else {
 			self = strcases.PascalToGo(*inf.Name)
@@ -154,7 +182,7 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 
 	if self != "" {
 		switch {
-		case strings.HasPrefix(cmt, "#") && nthWordSimplePresent(cmt, 1):
+		case strings.HasPrefix(cmt, "#") && nthWord(cmt, 1) != "":
 			// Trim the first word away and replace it with the Go name.
 			cmt = self + " " + strings.SplitN(cmt, " ", 2)[1]
 		case nthWordSimplePresent(cmt, 0):

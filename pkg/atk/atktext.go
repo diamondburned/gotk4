@@ -198,10 +198,10 @@ func marshalTextGranularity(p uintptr) (interface{}, error) {
 	return TextGranularity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Text: Text should be implemented by Objects on behalf of widgets that have
-// text content which is either attributed or otherwise non-trivial. Objects
-// whose text content is simple, unattributed, and very brief may expose that
-// content via #atk_object_get_name instead; however if the text is editable,
+// Text should be implemented by Objects on behalf of widgets that have text
+// content which is either attributed or otherwise non-trivial. Objects whose
+// text content is simple, unattributed, and very brief may expose that content
+// via #atk_object_get_name instead; however if the text is editable,
 // multi-line, typically longer than three or four words, attributed,
 // selectable, or if the object already uses the 'name' ATK property for other
 // information, the Text interface should be used to expose the text content. In

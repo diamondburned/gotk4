@@ -66,7 +66,7 @@ func NewCallbackGenerator(gen FileGenerator) CallbackGenerator {
 }
 
 func (g *CallbackGenerator) Logln(lvl logger.Level, v ...interface{}) {
-	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callback %s (C.%s):", g.Name, g.CIdentifier)))
+	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callback %s (C.%s):", g.Name, g.CIdentifier))...)
 }
 
 // Reset resets the callback generator.
@@ -87,6 +87,7 @@ func (g *CallbackGenerator) Header() *file.Header {
 // Use sets the callback generator to the given GIR callback.
 func (g *CallbackGenerator) Use(cb *gir.Callback) bool {
 	g.Reset()
+	g.Callback = cb
 
 	// We can't use the callback if it has no closure parameters.
 	if cb.Parameters == nil || len(cb.Parameters.Parameters) == 0 {
@@ -107,7 +108,6 @@ func (g *CallbackGenerator) Use(cb *gir.Callback) bool {
 	}
 
 	g.GoName = strcases.PascalToGo(cb.Name)
-	g.Callback = cb
 
 	if g.Closure = findClosure(cb.Parameters.Parameters); g.Closure == nil {
 		g.Logln(logger.Debug, "skipping since no closure argument")

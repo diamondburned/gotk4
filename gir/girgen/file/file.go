@@ -3,6 +3,7 @@ package file
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/diamondburned/gotk4/core/pen"
 	"github.com/diamondburned/gotk4/gir"
@@ -164,6 +165,7 @@ func CallbackCHeader(cb *gir.Callback) string {
 	return fmt.Sprintf("%s %s(%s);", cReturn, CallbackPrefix+goName, ctail.Join())
 }
 
+// AddCallbackHeader adds a callback header raw.
 func (h *Header) AddCallbackHeader(header string) {
 	if h.stop {
 		return
@@ -174,6 +176,17 @@ func (h *Header) AddCallbackHeader(header string) {
 	}
 
 	h.Callbacks[header] = struct{}{}
+}
+
+// SortedCallbackHeaders returns the sorted C callback headers.
+func (h *Header) SortedCallbackHeaders() []string {
+	headers := make([]string, 0, len(h.Callbacks))
+	for callback := range h.Callbacks {
+		headers = append(headers, callback)
+	}
+
+	sort.Strings(headers)
+	return headers
 }
 
 // AddPackage adds a pkg-config package.
@@ -200,6 +213,17 @@ func (h *Header) IncludeC(include string) {
 	}
 
 	h.CIncludes[include] = struct{}{}
+}
+
+// SortedCIncludes returns the list of C includes sorted.
+func (h *Header) SortedCIncludes() []string {
+	includes := make([]string, 0, len(h.CIncludes))
+	for incl := range h.CIncludes {
+		includes = append(includes, incl)
+	}
+
+	sort.Strings(includes)
+	return includes
 }
 
 // needsCbool adds the C stdbool.h include.

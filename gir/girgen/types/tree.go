@@ -36,6 +36,9 @@ func (tree *Tree) Reset() {
 	for i := range tree.Requires {
 		tree.Requires[i] = Tree{}
 	}
+	for i := range tree.Embeds {
+		tree.Embeds[i] = Tree{}
+	}
 
 	tree.Resolved = nil
 	tree.Embeds = tree.Embeds[:0]

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"go/doc"
 	"html"
-	"log"
 	"reflect"
 	"regexp"
 	"strings"
@@ -48,17 +47,18 @@ func GetInfoFields(v interface{}) InfoFields {
 		return InfoFields{}
 	}
 
-	if !strings.HasSuffix(value.Type().PkgPath(), "/gir") {
-		log.Panicf("given type %s is not from package gir", value.Type())
-	}
-
 	// getField gets the pointer to the field name.
 	getField := func(name string) interface{} {
 		v := value.FieldByName(name)
 		if v == (reflect.Value{}) {
 			return nil
 		}
-		return v.Addr().Interface()
+		if v.CanAddr() {
+			return v.Addr().Interface()
+		}
+		cpy := reflect.New(v.Type())
+		cpy.Elem().Set(v)
+		return cpy.Interface()
 	}
 
 	var inf InfoFields
@@ -70,9 +70,22 @@ func GetInfoFields(v interface{}) InfoFields {
 	return inf
 }
 
+// Option defines possible options for GoDoc.
+type Option interface{ opts() }
+
+type (
+	overrideSelfName string
+)
+
+// OverrideSelfName overrides the Go type name that's implicitly converted
+// automatically by GoDoc.
+func OverrideSelfName(self string) Option { return overrideSelfName(self) }
+
+func (overrideSelfName) opts() {}
+
 // GoDoc renders a Go documentation string from the given struct. The struct
 // should contain at least the field Name, InfoAttrs and InfoElements.
-func GoDoc(v interface{}, indentLvl int) string {
+func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 	inf := GetInfoFields(v)
 
 	var self string
@@ -94,6 +107,13 @@ func GoDoc(v interface{}, indentLvl int) string {
 			doc.WriteString("\n\n")
 		}
 		fmt.Fprintf(&doc, "Deprecated: since version %s.", inf.Attrs.DeprecatedVersion)
+	}
+
+	for _, opt := range opts {
+		switch opt := opt.(type) {
+		case overrideSelfName:
+			self = string(opt)
+		}
 	}
 
 	return CommentReflowLinesIndent(indentLvl, self, doc.String())

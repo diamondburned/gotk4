@@ -195,9 +195,9 @@ type Converter struct {
 
 	// CurrentNamespace is the current namespace that this converter is
 	// generating for.
-	CurrentNamespace *gir.NamespaceFindResult
+	currentNamespace *gir.NamespaceFindResult
 	// SourceNamespace is the namespace that the values are from.
-	SourceNamespace *gir.NamespaceFindResult
+	sourceNamespace *gir.NamespaceFindResult
 }
 
 // NewConverter creates a new type converter from the given file generator.
@@ -206,8 +206,8 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 	conv := Converter{
 		fgen:             fgen,
 		results:          make([]ValueConverted, len(values)),
-		SourceNamespace:  fgen.Namespace(),
-		CurrentNamespace: fgen.Namespace(),
+		sourceNamespace:  fgen.Namespace(),
+		currentNamespace: fgen.Namespace(),
 	}
 
 	// paramAt gets the parameter at the given index.
@@ -306,6 +306,22 @@ func AddCCallParam(converter *Converter) []string {
 	}
 
 	return params
+}
+
+// SetSourceNamespace sets the converter's source namespace, which is the
+// namespace that all the values originate from.
+func (conv *Converter) SetSourceNamespace(ns *gir.NamespaceFindResult) {
+	if conv != nil {
+		conv.sourceNamespace = ns
+	}
+}
+
+// SetSCurrentNamespace sets the converter's current namespace, which is the
+// namespace that the converter is generating for.
+func (conv *Converter) SetCurrentNamespace(ns *gir.NamespaceFindResult) {
+	if conv != nil {
+		conv.currentNamespace = ns
+	}
 }
 
 // UseLogger sets the logger to be used instead of the given NamespaceGenrator.
@@ -645,7 +661,7 @@ func (value *ValueConverted) finalize() {
 }
 
 func (value *ValueConverted) logln(conv *Converter, lvl logger.Level, v ...interface{}) {
-	conv.Logln(lvl, logger.Prefix(v, value.logPrefix()))
+	conv.Logln(lvl, logger.Prefix(v, value.logPrefix())...)
 }
 
 // resolveType resolves the value type to the resolved field. If inputC is true,
@@ -669,7 +685,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	typ := *value.AnyType.Type
 
 	// Proritize hard-coded types over ignored types.
-	value.resolved = types.Resolve(types.OverrideNamespace(conv.fgen, conv.SourceNamespace), typ)
+	value.resolved = types.Resolve(types.OverrideNamespace(conv.fgen, conv.sourceNamespace), typ)
 	if value.resolved == nil {
 		conv.Logln(logger.Debug, "can't resolve", types.AnyTypeCGo(value.AnyType), typ.Name)
 		return false
@@ -689,7 +705,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		value.resolved.Ptr--
 	}
 
-	value.needsNamespace = value.resolved.NeedsNamespace(conv.CurrentNamespace)
+	value.needsNamespace = value.resolved.NeedsNamespace(conv.currentNamespace)
 
 	cgoType := value.resolved.CGoType()
 	goType := value.resolved.PublicType(value.needsNamespace)

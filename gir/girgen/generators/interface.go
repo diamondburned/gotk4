@@ -119,8 +119,11 @@ func (g *InterfaceGenerator) Logln(lvl logger.Level, v ...interface{}) {
 
 // Reset resets the callback generator.
 func (g *InterfaceGenerator) Reset() {
+	g.TypeTree.Reset()
+
 	*g = InterfaceGenerator{
-		gen: g.gen,
+		gen:      g.gen,
+		TypeTree: g.TypeTree,
 	}
 }
 
@@ -131,12 +134,12 @@ func (g *InterfaceGenerator) Header() *file.Header {
 
 func (g *InterfaceGenerator) Use(iface *gir.Interface) bool {
 	g.Reset()
+	g.Interface = iface
 
 	if !iface.IsIntrospectable() || types.Filter(g.gen, iface.Name, iface.CType) {
 		return false
 	}
 
-	g.Interface = iface
 	g.InterfaceName = strcases.PascalToGo(iface.Name)
 	g.StructName = strcases.UnexportPascal(g.InterfaceName)
 	g.source = g.gen.Namespace()

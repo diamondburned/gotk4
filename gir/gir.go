@@ -2,6 +2,7 @@ package gir
 
 import (
 	"fmt"
+	"log"
 	"path"
 	"strconv"
 	"strings"
@@ -71,25 +72,31 @@ func VersionedNamespace(namespace *Namespace) string {
 
 // VersionedName returns the name appended with the version suffix.
 func VersionedName(name, version string) string {
-	return name + MajorVersion(version)
+	return name + "-" + MajorVersion(version)
 }
 
-// ParseVersionName parses the given fullName to return the original name and
-// the version separately. If no versions are available, then the empty string
-// is returned.
-func ParseVersionName(fullName string) (name, majorVersion string) {
-	verIx := strings.IndexFunc(fullName, unicode.IsDigit)
-	if verIx == -1 {
-		return fullName, ""
+// ParseVersionName parses the given full namespace to return the original name
+// and the version separately. If no versions are available, then the empty
+// string is returned.
+func ParseVersionName(fullNamespace string) (name, majorVersion string) {
+	parts := strings.SplitN(fullNamespace, "-", 2)
+	if len(parts) == 0 {
+		return "", ""
 	}
+	if len(parts) == 1 {
+		return parts[0], ""
+	}
+
+	// Trim the minor versions off.
+	version := MajorVersion(parts[1])
 
 	// Verify the number is valid.
-	_, err := strconv.Atoi(fullName[verIx:])
+	_, err := strconv.Atoi(version)
 	if err != nil {
-		panic("verIx points to invalid int")
+		log.Panicf("version %q is invalid int", version)
 	}
 
-	return fullName[:verIx], fullName[verIx:]
+	return parts[0], version
 }
 
 // Repositories contains a list of known repositories.
@@ -459,7 +466,7 @@ func (repos Repositories) FindFullType(fullType string) *TypeFindResult {
 	}
 
 	v, _, _ = typeResultFlight.Do(fullType, func() (interface{}, error) {
-		result := repos.FindFullType(fullType)
+		result := repos.findFullType(fullType)
 		if result != nil {
 			typeResultCache.Store(fullType, result)
 		}

@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: pangocairo pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
+//
 // #include <glib-object.h>
 // #include <pango/pangocairo.h>
 import "C"
@@ -273,6 +274,20 @@ func ShowLayout(cr *cairo.Context, layout pango.Layout) {
 	C.pango_cairo_show_layout(_arg1, _arg2)
 }
 
+// ShowLayoutLine draws a `PangoLayoutLine` in the specified cairo context.
+//
+// The origin of the glyphs (the left edge of the line) will be drawn at the
+// current point of the cairo context.
+func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
+	var _arg1 *C.cairo_t         // out
+	var _arg2 *C.PangoLayoutLine // out
+
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
+
+	C.pango_cairo_show_layout_line(_arg1, _arg2)
+}
+
 // UpdateContext updates a `PangoContext` previously created for use with Cairo
 // to match the current transformation and target surface of a Cairo context.
 //
@@ -357,26 +372,23 @@ func (f font) ScaledFont() *cairo.ScaledFont {
 type FontMap interface {
 	pango.FontMap
 
-	// FontType gets the type of Cairo font backend that @fontmap uses.
+	// FontType sets the resolution for the fontmap.
+	//
+	// This is a scale factor between points specified in a
+	// `PangoFontDescription` and Cairo units. The default value is 96, meaning
+	// that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
 	FontType() cairo.FontType
-	// Resolution gets the resolution for the fontmap.
+	// Resolution sets the resolution for the fontmap.
 	//
-	// See [method@PangoCairo.FontMap.set_resolution].
+	// This is a scale factor between points specified in a
+	// `PangoFontDescription` and Cairo units. The default value is 96, meaning
+	// that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
 	Resolution() float64
-	// SetDefault sets a default `PangoCairoFontMap` to use with Cairo.
+	// SetDefault sets the resolution for the fontmap.
 	//
-	// This can be used to change the Cairo font backend that the default
-	// fontmap uses for example. The old default font map is unreffed and the
-	// new font map referenced.
-	//
-	// Note that since Pango 1.32.6, the default fontmap is per-thread. This
-	// function only changes the default fontmap for the current thread. Default
-	// fontmaps of existing threads are not changed. Default fontmaps of any new
-	// threads will still be created using [type_func@PangoCairo.FontMap.new].
-	//
-	// A value of nil for @fontmap will cause the current default font map to be
-	// released and a new default font map to be created on demand, using
-	// [type_func@PangoCairo.FontMap.new].
+	// This is a scale factor between points specified in a
+	// `PangoFontDescription` and Cairo units. The default value is 96, meaning
+	// that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
 	SetDefault()
 	// SetResolution sets the resolution for the fontmap.
 	//

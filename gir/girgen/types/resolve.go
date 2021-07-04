@@ -4,6 +4,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
@@ -164,10 +165,16 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 	}
 }
 
-// func TypeFromResult(ns *gir.NamespaceFindResult, res gir.TypeFindResult) *ResolvedType {
-// 	name, ctype := res.Info()
-// 	return typeFromResult(ng.gen, gir.Type{Name: name, CType: ctype}, &res)
-// }
+// TypeFromResult is meant to be used by an external package to generate a
+// Resolved from existing type information.
+func TypeFromResult(gen FileGenerator, res gir.TypeFindResult) *Resolved {
+	typ := gir.Type{
+		Name:  res.Name(),
+		CType: res.CType(),
+	}
+
+	return typeFromResult(gen, typ, &res)
+}
 
 // IsExternGLib checks that the ResolvedType is exactly the gotk3/glib type with
 // the given name. Pointers are not compared.
@@ -450,6 +457,31 @@ var BuiltinHandledTypes = []FilterMatcher{
 	AbsoluteFilter("C.intern"),
 }
 
+var (
+	selfResolved  = map[string]struct{}{}
+	selfResolveMu sync.Mutex
+)
+
+// isSelfResolving returns true if the given resolved type is  currently being
+// checked using CanGenerate. This is to prevent cases where the checker calls
+// Resolve on itself, causing an infinite recursion. This map assures that types
+// that are being checked, when checking itself, will skip further checking and
+// assume a yes.
+func isSelfResolving(resolved *Resolved) bool {
+	publType := resolved.PublicType(true)
+
+	selfResolveMu.Lock()
+	defer selfResolveMu.Unlock()
+
+	_, ok := selfResolved[publType]
+	if ok {
+		return true
+	}
+
+	selfResolved[publType] = struct{}{}
+	return false
+}
+
 // Resolve resolves the given type from the GIR type field. It returns nil if
 // the type is not known. It does not recursively traverse the type.
 func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
@@ -528,26 +560,10 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	// then generate methods and functions afterwards.
 
 	resolved := typeFromResult(gen, typ, result)
-	if !gen.CanGenerate(resolved) {
+
+	if !isSelfResolving(resolved) && !gen.CanGenerate(resolved) {
 		return nil
 	}
 
 	return resolved
-
-	// switch /* v := */ result.Type.(type) {
-	// case *gir.Record:
-	// 	panic("TODO: resolve.go/Record")
-	// 	// if !canRecord(ng, *result.Record, nil) {
-	// 	// 	return nil
-	// 	// }
-
-	// case *gir.Callback:
-	// 	panic("TODO resolve.go/Callback")
-	// 	// cbgen := newCallbackFileGenerator(ng)
-	// 	// if !cbgen.Use(*result.Callback) {
-	// 	// 	return nil
-	// 	// }
-	// 	// source = v.SourcePosition
-	// }
-
 }

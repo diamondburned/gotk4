@@ -51,10 +51,6 @@ func NewGenerator(gen FileGenerator) Generator {
 
 // Reset resets the state of the generator while reusing the backing pen.
 func (g *Generator) Reset() {
-	if g.CallableAttrs == nil {
-		return
-	}
-
 	g.hdr.Reset()
 	g.pen.Reset()
 	g.GoArgs.Reset(", ")
@@ -89,11 +85,9 @@ func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.Namespace
 	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" {
 		// Skip this one. Hope the caller reaches the Shadows method,
 		// eventually.
-		g.Reset()
 		return false
 	}
 	if cattrs.CIdentifier == "" || !cattrs.IsIntrospectable() {
-		g.Reset()
 		return false
 	}
 
@@ -102,7 +96,6 @@ func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.Namespace
 	g.src = n
 
 	if !g.renderBlock() {
-		g.Reset()
 		return false
 	}
 
@@ -204,7 +197,7 @@ func (g *Generator) renderBlock() bool {
 
 	g.Conv = typeconv.NewConverter(g.gen, callableValues)
 	g.Conv.UseLogger(g)
-	g.Conv.SourceNamespace = g.src
+	g.Conv.SetSourceNamespace(g.src)
 
 	results := g.Conv.ConvertAll()
 	if results == nil {
@@ -275,7 +268,7 @@ func (g *Generator) renderBlock() bool {
 }
 
 func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
-	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callable %s (C.%s)", g.Name, g.CIdentifier)))
+	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callable %s (C.%s)", g.Name, g.CIdentifier))...)
 }
 
 func formatReturnSig(joints pen.Joints) string {

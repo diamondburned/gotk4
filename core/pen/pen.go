@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strings"
 	"text/template"
 )
 
@@ -34,14 +35,30 @@ func NewPen(w PenWriter) *Pen {
 var NoopPen = NewPen(noopWriter{})
 
 // Words writes a list of words into a single line.
-func (p *Pen) Words(words ...string) {
+func (p *Pen) Words(words ...interface{}) {
 	for i, word := range words {
 		if i != 0 {
 			p.WriteByte(' ')
 		}
-		p.WriteString(word)
+
+		switch word := word.(type) {
+		case string:
+			p.WriteString(word)
+		case []string:
+			p.WriteString(strings.Join(word, " "))
+		default:
+			log.Panicf("unknown type %T given", word)
+		}
 	}
+
 	p.EmptyLine()
+}
+
+// Lines writes multiple lines.
+func (p *Pen) Lines(lines []string) {
+	for _, line := range lines {
+		p.Line(line)
+	}
 }
 
 // Line writes a single line.

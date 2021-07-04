@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 )
 
@@ -36,7 +37,10 @@ type typeRenamer struct {
 // name must not. The GIR type is absolutely matched, similarly to
 // AbsoluteFilter.
 func TypeRenamer(girType, newName string) Preprocessor {
-	_, version := gir.ParseVersionName(girType)
+	namespace, girType := gir.SplitGIRType(girType)
+
+	// Verify that the namespace is present.
+	_, version := gir.ParseVersionName(namespace)
 	if version == "" {
 		log.Panicf("girType %q missing version", girType)
 	}
@@ -184,32 +188,22 @@ func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
 		return false
 	}
 
-	var source *gir.SourcePosition
-
-	switch v := res.Type.(type) {
-	case *gir.Alias:
-		source = v.SourcePosition
-	case *gir.Class:
-		source = v.SourcePosition
-	case *gir.Interface:
-		source = v.SourcePosition
-	case *gir.Record:
-		source = v.SourcePosition
-	case *gir.Enum:
-		source = v.SourcePosition
-	case *gir.Function:
-		source = v.SourcePosition
-	case *gir.Union:
-		source = v.SourcePosition
-	case *gir.Bitfield:
-		source = v.SourcePosition
-	case *gir.Callback:
-		source = v.SourcePosition
-	}
-
-	if source == nil {
+	info := cmt.GetInfoFields(res.Type)
+	if info.Elements == nil {
 		return false
 	}
 
-	return !ff.match.MatchString(source.Filename)
+	if info.Elements.SourcePosition != nil {
+		if ff.match.MatchString(info.Elements.SourcePosition.Filename) {
+			return true
+		}
+	}
+
+	if info.Elements.Doc != nil {
+		if ff.match.MatchString(info.Elements.Doc.Filename) {
+			return true
+		}
+	}
+
+	return false
 }

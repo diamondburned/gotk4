@@ -122,7 +122,7 @@ func NewRecordGenerator(gen FileGenerator) RecordGenerator {
 }
 
 // canRecord returns true if this record is allowed.
-func canRecord(gen FileGenerator, rec *gir.Record) bool {
+func canRecord(gen FileGenerator, rec *gir.Record, l logger.LineLogger) bool {
 	if !rec.IsIntrospectable() || types.Filter(gen, rec.Name, rec.CType) {
 		return false
 	}
@@ -144,7 +144,7 @@ func canRecord(gen FileGenerator, rec *gir.Record) bool {
 		// Check the type against the ignored list, since ignores are usually
 		// important, and CGo might still try to resolve an ignored type.
 		if mustIgnoreAny(gen, field.AnyType) {
-			gen.Logln(logger.Debug, "ignored because field", field.Name)
+			l.Logln(logger.Debug, "ignored because field", field.Name)
 			return false
 		}
 	}
@@ -170,12 +170,13 @@ func (rg *RecordGenerator) Header() *file.Header {
 }
 
 func (rg *RecordGenerator) Use(rec *gir.Record) bool {
-	if !canRecord(rg.gen, rec) {
+	rg.hdr.Reset()
+	rg.Record = rec
+
+	if !canRecord(rg.gen, rec, rg) {
 		return false
 	}
 
-	rg.hdr.Reset()
-	rg.Record = rec
 	rg.GoName = strcases.PascalToGo(rec.Name)
 	rg.Methods = rg.methods()
 	rg.Getters = rg.getters()
@@ -271,5 +272,5 @@ func (rg *RecordGenerator) getters() []recordGetter {
 
 func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {
 	p := fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.CType)
-	rg.gen.Logln(lvl, logger.Prefix(v, p))
+	rg.gen.Logln(lvl, logger.Prefix(v, p)...)
 }

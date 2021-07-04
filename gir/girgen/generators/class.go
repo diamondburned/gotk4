@@ -14,14 +14,14 @@ import (
 )
 
 var classTmpl = gotmpl.NewGoTemplate(`
-	{{ GoDoc .Doc 0 .InterfaceName }}
+	{{ GoDoc . 0 }}
 	type {{ .InterfaceName }} interface {
 		{{ range .Implements -}}
 		{{ . }}
 		{{ end }}
 
 		{{ range .Methods }}
-		{{ GoDoc .Doc 1 .Name }}
+		{{ GoDoc . 1 }}
 		{{ .Name }}{{ .Tail -}}
 		{{ end }}
 	}
@@ -46,7 +46,7 @@ var classTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	{{ range .Constructors }}
-	{{ GoDoc .Doc 0 .Name }}
+	{{ GoDoc . 0 }}
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 
@@ -62,21 +62,24 @@ var classTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 `)
 
+// GenerateClass generates the given class into files.
 func GenerateClass(gen FileGeneratorWriter, class *gir.Class) bool {
 	classGen := NewClassGenerator(gen)
 	if !classGen.Use(class) {
 		return false
 	}
 
+	writer := FileWriterFromType(gen, class)
+
 	if class.GLibGetType != "" && !types.FilterCType(gen, class.GLibGetType) {
-		gen.Header().AddMarshaler(class.GLibGetType, classGen.InterfaceName)
+		writer.Header().AddMarshaler(class.GLibGetType, classGen.InterfaceName)
 	}
 
 	// Need for the object wrapper.
-	gen.Header().NeedsExternGLib()
+	writer.Header().NeedsExternGLib()
 
-	file.ApplyHeader(gen, &classGen)
-	gen.Pen().WriteTmpl(classTmpl, &classGen)
+	file.ApplyHeader(writer, &classGen)
+	writer.Pen().WriteTmpl(classTmpl, &classGen)
 	return true
 }
 
@@ -220,30 +223,24 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 		// instead, the namespace should be overrideable by having TypeResolver
 		// returning the namespace we wants and ifaceGenerator (and everything
 		// else) to use TypeResolver for resolving and generating methods.
-		current := cg.gen.Namespace()
-		cg.ng.current = typ.Extern.Result.NamespaceFindResult
 
-		// We have to separate the interface that is used to find the type and
-		// the interface that is used for NeedsNamespace.
-		types.OverrideNamespace(cg.gen)
-		cg.igen.UseMethods(*typ.Extern.Result.Interface)
+		cg.igen.UseMethods(typ.Extern.Type.(*gir.Interface), typ.Extern.NamespaceFindResult)
+		file.ApplyHeader(cg, &cg.igen)
 
-		// Restore the old namespace.
-		cg.ng.current = current
-
-		needsNamespace := typ.NeedsNamespace(cg.ng.current)
+		needsNamespace := typ.NeedsNamespace(cg.gen.Namespace())
 		wrapper := typ.WrapName(needsNamespace)
 
 		for _, method := range cg.igen.Methods {
 			// Parse the parameter values out of the function in a pretty hacky
 			// way by extracting the types out.
-			params := append([]string(nil), method.goArgs.Joints()...)
+			params := append([]string(nil), method.GoArgs.Joints()...)
 			for i, word := range params {
 				params[i] = strings.SplitN(word, " ", 2)[0]
 			}
+
 			cg.InheritedMethods = append(cg.InheritedMethods, classInheritedMethod{
 				classCallable: newClassCallable(&method),
-				Return:        method.goRets.Len() > 0,
+				Return:        method.GoRets.Len() > 0,
 				Wrapper:       wrapper,
 				CallParams:    strings.Join(params, ", "),
 			})
@@ -251,7 +248,7 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 	})
 
 	if len(cg.InheritedMethods) > 0 {
-		cg.ng.addImportInternal("gextras")
+		cg.header.ImportCore("gextras")
 	}
 
 	// Only generate the methods after we've generated the inherited methods,
@@ -259,15 +256,19 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 	// priority, and then generate our methods down below. This way, we can also
 	// avoid method collisions.
 	for _, method := range class.Methods {
-		if cg.ng.mustIgnoreMethod(cg.Class.Name, &method) || !cg.cgen.Use(method.CallableAttrs) {
+		if types.FilterMethod(cg.gen, cg.Class.Name, &method) {
 			continue
 		}
-		cg.Methods = append(cg.Methods, newClassCallable(cg.cgen))
+		if !cg.cgen.Use(&method.CallableAttrs) {
+			continue
+		}
+		file.ApplyHeader(cg, &cg.cgen)
+		cg.Methods = append(cg.Methods, newClassCallable(&cg.cgen))
 	}
 
 	// Rename all methods to have idiomatic and non-colliding names, if possible.
 	for i, method := range cg.Methods {
-		newName, isGetter := renameGetter(method.Name)
+		newName, isGetter := callable.RenameGetter(method.Name)
 		isDuplicate := cg.hasField(newName)
 
 		// Avoid duplicating field names with inherited interfaces, including
@@ -287,7 +288,7 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 }
 
 func (cg *ClassGenerator) hasField(goName string) bool {
-	if isObjectorMethod(goName) || cg.ParentInterface == goName {
+	if types.IsObjectorMethod(goName) || cg.ParentInterface == goName {
 		return true
 	}
 	for _, impl := range cg.Implements {

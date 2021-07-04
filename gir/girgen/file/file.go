@@ -36,11 +36,18 @@ type Header struct {
 	Packages       map[string]struct{} // for pkg-config
 	Callbacks      map[string]struct{}
 	CallbackDelete bool
+
+	stop bool
 }
+
+// NoopHeader is a header instance where its methods do nothing. This instance
+// is useful for functions that both validate and generate, but generation is
+// not wanted.
+var NoopHeader = &Header{stop: true}
 
 // Reset resets the file header to a zero state.
 func (h *Header) Reset() {
-	*h = Header{}
+	*h = Header{stop: h.stop}
 }
 
 // ImportCore adds a core import.
@@ -53,6 +60,10 @@ func (h *Header) Import(path string) {
 }
 
 func (h *Header) ImportAlias(path, alias string) {
+	if h.stop {
+		return
+	}
+
 	if h.Imports == nil {
 		h.Imports = map[string]string{}
 	}
@@ -66,6 +77,10 @@ func (h *Header) NeedsExternGLib() {
 }
 
 func (h *Header) ImportPubl(resolved *types.Resolved) {
+	if h.stop {
+		return
+	}
+
 	if resolved == nil {
 		return
 	}
@@ -81,6 +96,10 @@ func (h *Header) ImportPubl(resolved *types.Resolved) {
 }
 
 func (h *Header) ImportImpl(resolved *types.Resolved) {
+	if h.stop {
+		return
+	}
+
 	if resolved == nil {
 		return
 	}
@@ -104,6 +123,10 @@ func (h *Header) ImportResolvedType(imports types.ResolvedImport) {
 // AddMarshaler adds the type marshaler into the init header. It also adds
 // imports.
 func (h *Header) AddMarshaler(glibGetType, goName string) {
+	if h.stop {
+		return
+	}
+
 	h.Marshalers = append(h.Marshalers, fmt.Sprintf(
 		`{T: externglib.Type(C.%s()), F: marshal%s},`, glibGetType, goName,
 	))
@@ -142,6 +165,10 @@ func CallbackCHeader(cb *gir.Callback) string {
 }
 
 func (h *Header) AddCallbackHeader(header string) {
+	if h.stop {
+		return
+	}
+
 	if h.Callbacks == nil {
 		h.Callbacks = map[string]struct{}{}
 	}
@@ -151,6 +178,10 @@ func (h *Header) AddCallbackHeader(header string) {
 
 // AddPackage adds a pkg-config package.
 func (h *Header) AddPackage(pkg string) {
+	if h.stop {
+		return
+	}
+
 	if h.Packages == nil {
 		h.Packages = map[string]struct{}{}
 	}
@@ -160,6 +191,10 @@ func (h *Header) AddPackage(pkg string) {
 
 // IncludeC adds a C header file into the cgo preamble.
 func (h *Header) IncludeC(include string) {
+	if h.stop {
+		return
+	}
+
 	if h.CIncludes == nil {
 		h.CIncludes = map[string]struct{}{}
 	}
@@ -183,6 +218,10 @@ func (h *Header) NeedsGLibObject() {
 // ApplyHeader applies the side effects of the conversion. The caller is
 // responsible for calling this.
 func (h *Header) ApplyHeader(dst *Header) {
+	if h.stop || dst.stop {
+		return
+	}
+
 	if h.CallbackDelete {
 		dst.CallbackDelete = true
 	}

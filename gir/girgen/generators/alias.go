@@ -8,7 +8,7 @@ import (
 
 var aliasTmpl = gotmpl.NewGoTemplate(`
 	{{ $name := (PascalToGo .Name) }}
-	{{ GoDoc .Doc 0 $name }}
+	{{ GoDoc . 0 }}
 	type {{ $name }} = {{ .GoType }}
 `)
 
@@ -19,7 +19,7 @@ type aliasData struct {
 
 // GenerateAlias generates an alias declaration into the given file generator.
 // If the generation fails or is ignored, then false is returned.
-func GenerateAlias(gen FileGenerator, alias *gir.Alias) bool {
+func GenerateAlias(gen FileGeneratorWriter, alias *gir.Alias) bool {
 	if !alias.IsIntrospectable() || types.Filter(gen, alias.Name, alias.CType) {
 		return false
 	}
@@ -35,7 +35,9 @@ func GenerateAlias(gen FileGenerator, alias *gir.Alias) bool {
 		goType = "C." + alias.Type.CType
 	}
 
-	gen.Pen().WriteTmpl(aliasTmpl, aliasData{
+	writer := FileWriterFromType(gen, alias)
+	writer.Header().ImportPubl(resolved)
+	writer.Pen().WriteTmpl(aliasTmpl, aliasData{
 		Alias:  alias,
 		GoType: goType,
 	})

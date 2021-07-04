@@ -171,7 +171,7 @@ type Include struct {
 
 type InfoAttrs struct {
 	Introspectable    *bool  `xml:"introspectable,attr"` // default true
-	Deprecated        string `xml:"deprecated,attr"`
+	Deprecated        bool   `xml:"deprecated,attr"`
 	DeprecatedVersion string `xml:"deprecated-version,attr"`
 	Version           string `xml:"version,attr"`
 	Stability         string `xml:"stability,attr"`

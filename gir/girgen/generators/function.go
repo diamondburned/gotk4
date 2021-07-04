@@ -2,47 +2,30 @@ package generators
 
 import (
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
+	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
-var functionTmpl = newGoTemplate(`
-	{{ GoDoc .Doc 0 .Name }}
+var functionTmpl = gotmpl.NewGoTemplate(`
+	{{ GoDoc . 0 }}
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
 `)
 
-type functionGenerator struct {
-	callableGenerator
-}
-
-func newFunctionGenerator(ng *NamespaceGenerator) functionGenerator {
-	return functionGenerator{
-		callableGenerator: newCallableGenerator(ng),
+// GenerateFunction generates the function call for the given GIR function.
+func GenerateFunction(gen FileGeneratorWriter, fn *gir.Function) bool {
+	if !fn.IsIntrospectable() || types.Filter(gen, fn.Name, fn.CIdentifier) {
+		return false
 	}
-}
 
-// GoName returns the current function's Go name.
-func (fg *functionGenerator) GoName() string {
-	return SnakeToGo(true, fg.Name)
-}
-
-// Use sets the function generator to the given GIR function.
-func (fg *functionGenerator) Use(fn gir.Function) bool {
-	return fg.callableGenerator.Use(fn.CallableAttrs)
-}
-
-func (ng *NamespaceGenerator) generateFuncs() {
-	fg := newFunctionGenerator(ng)
-
-	for _, function := range ng.current.Namespace.Functions {
-		if !function.IsIntrospectable() {
-			continue
-		}
-		if ng.mustIgnore(&function.Name, &function.CIdentifier) {
-			continue
-		}
-		if !fg.Use(function) {
-			continue
-		}
-
-		ng.pen.WriteTmpl(functionTmpl, &fg)
+	callableGen := callable.NewGenerator(gen)
+	if !callableGen.Use(&fn.CallableAttrs) {
+		return false
 	}
+
+	writer := FileWriterFromType(gen, fn)
+	writer.Pen().WriteTmpl(functionTmpl, &callableGen)
+	file.ApplyHeader(writer, &callableGen)
+	return true
 }

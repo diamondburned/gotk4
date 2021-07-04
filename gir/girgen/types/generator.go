@@ -12,6 +12,9 @@ type ModulePathFunc func(*gir.Namespace) string
 // FileGenerator defines a generator instance.
 type FileGenerator interface {
 	logger.LineLogger
+	// CanGenerate checks if a type is going to be generated or not. It is used
+	// primarily during type resolving.
+	CanGenerate(*Resolved) bool
 	// Filters returns the list of matchers that the current generator has.
 	Filters() []FilterMatcher
 	// ModPath crafts an import path from the given GIR namespace. The import

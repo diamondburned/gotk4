@@ -2,56 +2,58 @@ package generators
 
 import (
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
-var enumTmpl = newGoTemplate(`
-	{{ $type := (PascalToGo .Name) }}
-
-	{{ GoDoc .Doc 0 $type }}
-	type {{ $type }} int
+var enumTmpl = gotmpl.NewGoTemplate(`
+	{{ GoDoc . 0 }}
+	type {{ .GoName }} int
 
 	const (
 		{{ range .Members -}}
 		{{- $name := ($.FormatMember .Name) -}}
 		{{- if .Doc -}}
-		{{ GoDoc .Doc 1 $name }}
+		{{ GoDoc . 1 }}
 		{{ end -}}
-		{{ $name }} {{ $type }} = {{ .Value }}
+		{{ $name }} {{ $.GoName }} = {{ .Value }}
 		{{ end -}}
 	)
 
 	{{ if .GLibGetType }}
-	func marshal{{ $type }}(p uintptr) (interface{}, error) {
-		return {{ $type }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
+		return {{ .GoName }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 	}
 	{{ end }}
 `)
 
-type enumGenerator struct {
-	gir.Enum
-	Ng *NamespaceGenerator
+type enumData struct {
+	*gir.Enum
+	GoName string
 }
 
-func (eg *enumGenerator) FormatMember(memberName string) string {
-	return PascalToGo(eg.Name) + SnakeToGo(true, memberName)
+func (eg *enumData) FormatMember(memberName string) string {
+	return strcases.PascalToGo(eg.Name) + strcases.SnakeToGo(true, memberName)
 }
 
-func (ng *NamespaceGenerator) generateEnums() {
-	for _, enum := range ng.current.Namespace.Enums {
-		if !enum.IsIntrospectable() {
-			continue
-		}
-		if ng.mustIgnore(&enum.Name, &enum.CType) {
-			continue
-		}
-
-		if enum.GLibGetType != "" && !ng.mustIgnoreC(enum.GLibGetType) {
-			ng.addMarshaler(enum.GLibGetType, PascalToGo(enum.Name))
-		}
-
-		ng.pen.WriteTmpl(enumTmpl, &enumGenerator{
-			Enum: enum,
-			Ng:   ng,
-		})
+// GenerateEnum generates an enum type declaration as well as the constants and
+// the type marshaler.
+func GenerateEnum(gen FileGeneratorWriter, enum *gir.Enum) bool {
+	if !enum.IsIntrospectable() || types.Filter(gen, enum.Name, enum.CType) {
+		return false
 	}
+
+	goName := strcases.PascalToGo(enum.Name)
+	writer := FileWriterFromType(gen, enum)
+
+	if enum.GLibGetType != "" && !types.FilterCType(gen, enum.GLibGetType) {
+		writer.Header().AddMarshaler(enum.GLibGetType, goName)
+	}
+
+	writer.Pen().WriteTmpl(enumTmpl, &enumData{
+		Enum:   enum,
+		GoName: goName,
+	})
+	return true
 }

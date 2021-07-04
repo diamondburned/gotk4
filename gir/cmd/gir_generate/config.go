@@ -6,6 +6,8 @@ import . "github.com/diamondburned/gotk4/gir/girgen/types"
 // pkg/.
 var pkgExceptions = []string{
 	"core",
+	"go.mod",
+	"go.sum",
 	"LICENSE",
 }
 

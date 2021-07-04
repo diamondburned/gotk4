@@ -40,17 +40,16 @@ func init() {
 type Shortcut interface {
 	gextras.Objector
 
-	// Action:
 	Action() ShortcutAction
-	// Arguments:
+
 	Arguments() *glib.Variant
-	// Trigger:
+
 	Trigger() ShortcutTrigger
-	// SetActionShortcut:
+
 	SetActionShortcut(action ShortcutAction)
-	// SetArgumentsShortcut:
+
 	SetArgumentsShortcut(args *glib.Variant)
-	// SetTriggerShortcut:
+
 	SetTriggerShortcut(trigger ShortcutTrigger)
 }
 
@@ -73,7 +72,6 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 	return WrapShortcut(obj), nil
 }
 
-// NewShortcut:
 func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutAction  // out

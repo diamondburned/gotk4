@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -42,6 +43,37 @@ func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
 	return TreeViewColumnSizing(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TreeCellDataFunc: a function to set the properties of a cell instead of just
+// using the straight mapping between the cell and the model.
+//
+// This function is useful for customizing the cell renderer. For example, a
+// function might get an* integer from the @tree_model, and render it to the
+// “text” attribute of “cell” by converting it to its written equivalent.
+//
+// See also: gtk_tree_view_column_set_cell_data_func()
+type TreeCellDataFunc func(treeColumn TreeViewColumn, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
+
+//export gotk4_TreeCellDataFunc
+func _TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
+	v := box.Get(uintptr(arg4))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var treeColumn TreeViewColumn // out
+	var cell CellRenderer         // out
+	var treeModel TreeModel       // out
+	var iter *TreeIter            // out
+
+	treeColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TreeViewColumn)
+	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(CellRenderer)
+	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2))).(TreeModel)
+	iter = (*TreeIter)(unsafe.Pointer(arg3))
+
+	fn := v.(TreeCellDataFunc)
+	fn(treeColumn, cell, treeModel, iter)
+}
+
 // TreeViewColumn: a visible column in a GtkTreeView widget
 //
 // The GtkTreeViewColumn object represents a visible column in a TreeView
@@ -57,101 +89,100 @@ type TreeViewColumn interface {
 	Buildable
 	CellLayout
 
-	// AddAttributeTreeViewColumn:
 	AddAttributeTreeViewColumn(cellRenderer CellRenderer, attribute string, column int)
-	// CellGetPositionTreeViewColumn:
+
 	CellGetPositionTreeViewColumn(cellRenderer CellRenderer) (xOffset int, width int, ok bool)
-	// CellGetSizeTreeViewColumn:
+
 	CellGetSizeTreeViewColumn() (xOffset int, yOffset int, width int, height int)
-	// CellIsVisibleTreeViewColumn:
+
 	CellIsVisibleTreeViewColumn() bool
-	// CellSetCellDataTreeViewColumn:
+
 	CellSetCellDataTreeViewColumn(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
-	// ClearTreeViewColumn:
+
 	ClearTreeViewColumn()
-	// ClearAttributesTreeViewColumn:
+
 	ClearAttributesTreeViewColumn(cellRenderer CellRenderer)
-	// ClickedTreeViewColumn:
+
 	ClickedTreeViewColumn()
-	// FocusCellTreeViewColumn:
+
 	FocusCellTreeViewColumn(cell CellRenderer)
-	// Alignment:
+
 	Alignment() float32
-	// Button:
+
 	Button() Widget
-	// Clickable:
+
 	Clickable() bool
-	// Expand:
+
 	Expand() bool
-	// FixedWidth:
+
 	FixedWidth() int
-	// MaxWidth:
+
 	MaxWidth() int
-	// MinWidth:
+
 	MinWidth() int
-	// Reorderable:
+
 	Reorderable() bool
-	// Resizable:
+
 	Resizable() bool
-	// Sizing:
+
 	Sizing() TreeViewColumnSizing
-	// SortColumnID:
+
 	SortColumnID() int
-	// SortIndicator:
+
 	SortIndicator() bool
-	// SortOrder:
+
 	SortOrder() SortType
-	// Spacing:
+
 	Spacing() int
-	// Title:
+
 	Title() string
-	// TreeView:
+
 	TreeView() Widget
-	// Visible:
+
 	Visible() bool
-	// Widget:
+
 	Widget() Widget
-	// Width:
+
 	Width() int
-	// XOffset:
+
 	XOffset() int
-	// PackEndTreeViewColumn:
+
 	PackEndTreeViewColumn(cell CellRenderer, expand bool)
-	// PackStartTreeViewColumn:
+
 	PackStartTreeViewColumn(cell CellRenderer, expand bool)
-	// QueueResizeTreeViewColumn:
+
 	QueueResizeTreeViewColumn()
-	// SetAlignmentTreeViewColumn:
+
 	SetAlignmentTreeViewColumn(xalign float32)
-	// SetClickableTreeViewColumn:
+
 	SetClickableTreeViewColumn(clickable bool)
-	// SetExpandTreeViewColumn:
+
 	SetExpandTreeViewColumn(expand bool)
-	// SetFixedWidthTreeViewColumn:
+
 	SetFixedWidthTreeViewColumn(fixedWidth int)
-	// SetMaxWidthTreeViewColumn:
+
 	SetMaxWidthTreeViewColumn(maxWidth int)
-	// SetMinWidthTreeViewColumn:
+
 	SetMinWidthTreeViewColumn(minWidth int)
-	// SetReorderableTreeViewColumn:
+
 	SetReorderableTreeViewColumn(reorderable bool)
-	// SetResizableTreeViewColumn:
+
 	SetResizableTreeViewColumn(resizable bool)
-	// SetSizingTreeViewColumn:
+
 	SetSizingTreeViewColumn(typ TreeViewColumnSizing)
-	// SetSortColumnIDTreeViewColumn:
+
 	SetSortColumnIDTreeViewColumn(sortColumnId int)
-	// SetSortIndicatorTreeViewColumn:
+
 	SetSortIndicatorTreeViewColumn(setting bool)
-	// SetSortOrderTreeViewColumn:
+
 	SetSortOrderTreeViewColumn(order SortType)
-	// SetSpacingTreeViewColumn:
+
 	SetSpacingTreeViewColumn(spacing int)
-	// SetTitleTreeViewColumn:
+
 	SetTitleTreeViewColumn(title string)
-	// SetVisibleTreeViewColumn:
+
 	SetVisibleTreeViewColumn(visible bool)
-	// SetWidgetTreeViewColumn:
+
 	SetWidgetTreeViewColumn(widget Widget)
 }
 
@@ -174,7 +205,6 @@ func marshalTreeViewColumn(p uintptr) (interface{}, error) {
 	return WrapTreeViewColumn(obj), nil
 }
 
-// NewTreeViewColumn:
 func NewTreeViewColumn() TreeViewColumn {
 	var _cret *C.GtkTreeViewColumn // in
 
@@ -187,7 +217,6 @@ func NewTreeViewColumn() TreeViewColumn {
 	return _treeViewColumn
 }
 
-// NewTreeViewColumnWithArea:
 func NewTreeViewColumnWithArea(area CellArea) TreeViewColumn {
 	var _arg1 *C.GtkCellArea       // out
 	var _cret *C.GtkTreeViewColumn // in

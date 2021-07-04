@@ -39,7 +39,6 @@ func init() {
 type TCPWrapperConnection interface {
 	TCPConnection
 
-	// BaseIOStream:
 	BaseIOStream() IOStream
 }
 
@@ -62,7 +61,6 @@ func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
 	return WrapTCPWrapperConnection(obj), nil
 }
 
-// NewTCPWrapperConnection:
 func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) TCPWrapperConnection {
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GSocket           // out

@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -85,7 +87,6 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	return WrapScrollbar(obj), nil
 }
 
-// NewScrollbar:
 func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
@@ -109,6 +110,18 @@ func (b scrollbar) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b scrollbar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b scrollbar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b scrollbar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b scrollbar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b scrollbar) InternalChild(builder Builder, childname string) gextras.Objector {

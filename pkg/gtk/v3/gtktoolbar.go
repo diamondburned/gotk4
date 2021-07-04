@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -71,35 +73,34 @@ type Toolbar interface {
 	Orientable
 	ToolShell
 
-	// DropIndex:
 	DropIndex(x int, y int) int
-	// GetIconSize:
+
 	GetIconSize() IconSize
-	// ItemIndex:
+
 	ItemIndex(item ToolItem) int
-	// NItems:
+
 	NItems() int
-	// NthItem:
+
 	NthItem(n int) ToolItem
-	// GetReliefStyle:
+
 	GetReliefStyle() ReliefStyle
-	// ShowArrow:
+
 	ShowArrow() bool
-	// GetStyle:
+
 	GetStyle() ToolbarStyle
-	// InsertToolbar:
+
 	InsertToolbar(item ToolItem, pos int)
-	// SetDropHighlightItemToolbar:
+
 	SetDropHighlightItemToolbar(toolItem ToolItem, index_ int)
-	// SetIconSizeToolbar:
+
 	SetIconSizeToolbar(iconSize IconSize)
-	// SetShowArrowToolbar:
+
 	SetShowArrowToolbar(showArrow bool)
-	// SetStyleToolbar:
+
 	SetStyleToolbar(style ToolbarStyle)
-	// UnsetIconSizeToolbar:
+
 	UnsetIconSizeToolbar()
-	// UnsetStyleToolbar:
+
 	UnsetStyleToolbar()
 }
 
@@ -122,7 +123,6 @@ func marshalToolbar(p uintptr) (interface{}, error) {
 	return WrapToolbar(obj), nil
 }
 
-// NewToolbar:
 func NewToolbar() Toolbar {
 	var _cret *C.GtkWidget // in
 
@@ -345,6 +345,18 @@ func (b toolbar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b toolbar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b toolbar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b toolbar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b toolbar) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -415,6 +427,18 @@ func (b toolbar) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b toolbar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toolbar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b toolbar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b toolbar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b toolbar) InternalChild(builder Builder, childname string) gextras.Objector {

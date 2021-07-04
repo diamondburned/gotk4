@@ -44,13 +44,12 @@ type Viewport interface {
 	Widget
 	Scrollable
 
-	// Child:
 	Child() Widget
-	// ScrollToFocus:
+
 	ScrollToFocus() bool
-	// SetChildViewport:
+
 	SetChildViewport(child Widget)
-	// SetScrollToFocusViewport:
+
 	SetScrollToFocusViewport(scrollToFocus bool)
 }
 
@@ -73,7 +72,6 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return WrapViewport(obj), nil
 }
 
-// NewViewport:
 func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out

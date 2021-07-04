@@ -22,19 +22,17 @@ func init() {
 	})
 }
 
-// X11Screen:
 type X11Screen interface {
 	gextras.Objector
 
-	// CurrentDesktop:
 	CurrentDesktop() uint32
-	// NumberOfDesktops:
+
 	NumberOfDesktops() uint32
-	// ScreenNumber:
+
 	ScreenNumber() int
-	// WindowManagerName:
+
 	WindowManagerName() string
-	// SupportsNetWmHintX11Screen:
+
 	SupportsNetWmHintX11Screen(propertyName string) bool
 }
 

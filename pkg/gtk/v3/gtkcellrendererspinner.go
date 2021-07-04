@@ -56,7 +56,6 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	return WrapCellRendererSpinner(obj), nil
 }
 
-// NewCellRendererSpinner:
 func NewCellRendererSpinner() CellRendererSpinner {
 	var _cret *C.GtkCellRenderer // in
 

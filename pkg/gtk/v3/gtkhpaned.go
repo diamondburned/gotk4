@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,7 +54,6 @@ func marshalHPaned(p uintptr) (interface{}, error) {
 	return WrapHPaned(obj), nil
 }
 
-// NewHPaned:
 func NewHPaned() HPaned {
 	var _cret *C.GtkWidget // in
 
@@ -71,6 +72,18 @@ func (b hPaned) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b hPaned) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b hPaned) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b hPaned) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b hPaned) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b hPaned) InternalChild(builder Builder, childname string) gextras.Objector {

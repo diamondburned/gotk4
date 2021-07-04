@@ -5,9 +5,7 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,25 +39,20 @@ func init() {
 type Drop interface {
 	gextras.Objector
 
-	// FinishDrop:
 	FinishDrop(action DragAction)
-	// Actions:
+
 	Actions() DragAction
-	// Device:
+
 	Device() Device
-	// Display:
+
 	Display() Display
-	// Drag:
+
 	Drag() Drag
-	// Formats:
+
 	Formats() *ContentFormats
-	// Surface:
+
 	Surface() Surface
-	// ReadFinishDrop:
-	ReadFinishDrop(result gio.AsyncResult) (string, gio.InputStream, error)
-	// ReadValueFinishDrop:
-	ReadValueFinishDrop(result gio.AsyncResult) (externglib.Value, error)
-	// StatusDrop:
+
 	StatusDrop(actions DragAction, preferred DragAction)
 }
 
@@ -180,50 +173,6 @@ func (s drop) Surface() Surface {
 	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Surface)
 
 	return _surface
-}
-
-func (s drop) ReadFinishDrop(result gio.AsyncResult) (string, gio.InputStream, error) {
-	var _arg0 *C.GdkDrop      // out
-	var _arg1 *C.GAsyncResult // out
-	var _arg2 *C.char         // in
-	var _cret *C.GInputStream // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
-
-	var _outMimeType string          // out
-	var _inputStream gio.InputStream // out
-	var _goerr error                 // out
-
-	_outMimeType = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.InputStream)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _outMimeType, _inputStream, _goerr
-}
-
-func (s drop) ReadValueFinishDrop(result gio.AsyncResult) (externglib.Value, error) {
-	var _arg0 *C.GdkDrop      // out
-	var _arg1 *C.GAsyncResult // out
-	var _cret *C.GValue       // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	_cret = C.gdk_drop_read_value_finish(_arg0, _arg1, &_cerr)
-
-	var _value externglib.Value // out
-	var _goerr error            // out
-
-	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _value, _goerr
 }
 
 func (s drop) StatusDrop(actions DragAction, preferred DragAction) {

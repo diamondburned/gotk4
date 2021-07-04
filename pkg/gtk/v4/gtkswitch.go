@@ -49,13 +49,12 @@ func init() {
 type Switch interface {
 	Actionable
 
-	// Active:
 	Active() bool
-	// State:
+
 	State() bool
-	// SetActiveSwitch:
+
 	SetActiveSwitch(isActive bool)
-	// SetStateSwitch:
+
 	SetStateSwitch(state bool)
 }
 
@@ -78,7 +77,6 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	return WrapSwitch(obj), nil
 }
 
-// NewSwitch:
 func NewSwitch() Switch {
 	var _cret *C.GtkWidget // in
 

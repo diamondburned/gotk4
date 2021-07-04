@@ -62,21 +62,20 @@ type CenterBox interface {
 	Widget
 	Orientable
 
-	// BaselinePosition:
 	BaselinePosition() BaselinePosition
-	// CenterWidget:
+
 	CenterWidget() Widget
-	// EndWidget:
+
 	EndWidget() Widget
-	// StartWidget:
+
 	StartWidget() Widget
-	// SetBaselinePositionCenterBox:
+
 	SetBaselinePositionCenterBox(position BaselinePosition)
-	// SetCenterWidgetCenterBox:
+
 	SetCenterWidgetCenterBox(child Widget)
-	// SetEndWidgetCenterBox:
+
 	SetEndWidgetCenterBox(child Widget)
-	// SetStartWidgetCenterBox:
+
 	SetStartWidgetCenterBox(child Widget)
 }
 
@@ -99,7 +98,6 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 	return WrapCenterBox(obj), nil
 }
 
-// NewCenterBox:
 func NewCenterBox() CenterBox {
 	var _cret *C.GtkWidget // in
 

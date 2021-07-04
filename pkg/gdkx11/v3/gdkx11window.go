@@ -38,27 +38,25 @@ func X11GetServerTime(window X11Window) uint32 {
 	return _guint32
 }
 
-// X11Window:
 type X11Window interface {
 	gdk.Window
 
-	// Desktop:
 	Desktop() uint32
-	// MoveToCurrentDesktopX11Window:
+
 	MoveToCurrentDesktopX11Window()
-	// MoveToDesktopX11Window:
+
 	MoveToDesktopX11Window(desktop uint32)
-	// SetFrameExtentsX11Window:
+
 	SetFrameExtentsX11Window(left int, right int, top int, bottom int)
-	// SetFrameSyncEnabledX11Window:
+
 	SetFrameSyncEnabledX11Window(frameSyncEnabled bool)
-	// SetHideTitlebarWhenMaximizedX11Window:
+
 	SetHideTitlebarWhenMaximizedX11Window(hideTitlebarWhenMaximized bool)
-	// SetThemeVariantX11Window:
+
 	SetThemeVariantX11Window(variant string)
-	// SetUserTimeX11Window:
+
 	SetUserTimeX11Window(timestamp uint32)
-	// SetUTF8PropertYX11Window:
+
 	SetUTF8PropertyX11Window(name string, value string)
 }
 

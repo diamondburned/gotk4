@@ -40,21 +40,20 @@ func init() {
 type GestureSingle interface {
 	Gesture
 
-	// Button:
 	Button() uint
-	// CurrentButton:
+
 	CurrentButton() uint
-	// CurrentSequence:
+
 	CurrentSequence() *gdk.EventSequence
-	// Exclusive:
+
 	Exclusive() bool
-	// TouchOnly:
+
 	TouchOnly() bool
-	// SetButtonGestureSingle:
+
 	SetButtonGestureSingle(button uint)
-	// SetExclusiveGestureSingle:
+
 	SetExclusiveGestureSingle(exclusive bool)
-	// SetTouchOnlyGestureSingle:
+
 	SetTouchOnlyGestureSingle(touchOnly bool)
 }
 

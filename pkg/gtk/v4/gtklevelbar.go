@@ -116,31 +116,30 @@ type LevelBar interface {
 	Widget
 	Orientable
 
-	// AddOffsetValueLevelBar:
 	AddOffsetValueLevelBar(name string, value float64)
-	// Inverted:
+
 	Inverted() bool
-	// MaxValue:
+
 	MaxValue() float64
-	// MinValue:
+
 	MinValue() float64
-	// Mode:
+
 	Mode() LevelBarMode
-	// OffsetValue:
+
 	OffsetValue(name string) (float64, bool)
-	// Value:
+
 	Value() float64
-	// RemoveOffsetValueLevelBar:
+
 	RemoveOffsetValueLevelBar(name string)
-	// SetInvertedLevelBar:
+
 	SetInvertedLevelBar(inverted bool)
-	// SetMaxValueLevelBar:
+
 	SetMaxValueLevelBar(value float64)
-	// SetMinValueLevelBar:
+
 	SetMinValueLevelBar(value float64)
-	// SetModeLevelBar:
+
 	SetModeLevelBar(mode LevelBarMode)
-	// SetValueLevelBar:
+
 	SetValueLevelBar(value float64)
 }
 
@@ -163,7 +162,6 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return WrapLevelBar(obj), nil
 }
 
-// NewLevelBar:
 func NewLevelBar() LevelBar {
 	var _cret *C.GtkWidget // in
 
@@ -176,7 +174,6 @@ func NewLevelBar() LevelBar {
 	return _levelBar
 }
 
-// NewLevelBarForInterval:
 func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out

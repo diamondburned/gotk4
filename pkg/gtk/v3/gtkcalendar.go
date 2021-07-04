@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,6 +54,38 @@ func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 	return CalendarDisplayOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// CalendarDetailFunc: this kind of functions provide Pango markup with detail
+// information for the specified day. Examples for such details are holidays or
+// appointments. The function returns nil when no information is available.
+type CalendarDetailFunc func(calendar Calendar, year uint, month uint, day uint, utf8 string)
+
+//export gotk4_CalendarDetailFunc
+func _CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) *C.gchar {
+	v := box.Get(uintptr(arg4))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var calendar Calendar // out
+	var year uint         // out
+	var month uint        // out
+	var day uint          // out
+
+	calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Calendar)
+	year = uint(arg1)
+	month = uint(arg2)
+	day = uint(arg3)
+
+	fn := v.(CalendarDetailFunc)
+	utf8 := fn(calendar, year, month, day)
+
+	var cret *C.gchar // out
+
+	cret = (*C.gchar)(C.CString(utf8))
+
+	return cret
+}
+
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
 // It can be created with gtk_calendar_new().
 //
@@ -75,31 +109,30 @@ func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 type Calendar interface {
 	Widget
 
-	// ClearMarksCalendar:
 	ClearMarksCalendar()
-	// Date:
+
 	Date() (year uint, month uint, day uint)
-	// DayIsMarked:
+
 	DayIsMarked(day uint) bool
-	// DetailHeightRows:
+
 	DetailHeightRows() int
-	// DetailWidthChars:
+
 	DetailWidthChars() int
-	// DisplayOptions:
+
 	DisplayOptions() CalendarDisplayOptions
-	// MarkDayCalendar:
+
 	MarkDayCalendar(day uint)
-	// SelectDayCalendar:
+
 	SelectDayCalendar(day uint)
-	// SelectMonthCalendar:
+
 	SelectMonthCalendar(month uint, year uint)
-	// SetDetailHeightRowsCalendar:
+
 	SetDetailHeightRowsCalendar(rows int)
-	// SetDetailWidthCharsCalendar:
+
 	SetDetailWidthCharsCalendar(chars int)
-	// SetDisplayOptionsCalendar:
+
 	SetDisplayOptionsCalendar(flags CalendarDisplayOptions)
-	// UnmarkDayCalendar:
+
 	UnmarkDayCalendar(day uint)
 }
 
@@ -122,7 +155,6 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	return WrapCalendar(obj), nil
 }
 
-// NewCalendar:
 func NewCalendar() Calendar {
 	var _cret *C.GtkWidget // in
 
@@ -306,6 +338,18 @@ func (b calendar) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b calendar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b calendar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b calendar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b calendar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b calendar) InternalChild(builder Builder, childname string) gextras.Objector {

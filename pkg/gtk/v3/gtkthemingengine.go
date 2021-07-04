@@ -37,41 +37,40 @@ func init() {
 type ThemingEngine interface {
 	gextras.Objector
 
-	// BackgroundColor:
 	BackgroundColor(state StateFlags) gdk.RGBA
-	// Border:
+
 	Border(state StateFlags) Border
-	// BorderColor:
+
 	BorderColor(state StateFlags) gdk.RGBA
-	// Color:
+
 	Color(state StateFlags) gdk.RGBA
-	// Direction:
+
 	Direction() TextDirection
-	// Font:
+
 	Font(state StateFlags) *pango.FontDescription
-	// JunctionSides:
+
 	JunctionSides() JunctionSides
-	// Margin:
+
 	Margin(state StateFlags) Border
-	// Padding:
+
 	Padding(state StateFlags) Border
-	// Path:
+
 	Path() *WidgetPath
-	// Property:
+
 	Property(property string, state StateFlags) externglib.Value
-	// Screen:
+
 	Screen() gdk.Screen
-	// State:
+
 	State() StateFlags
-	// StyleProperty:
+
 	StyleProperty(propertyName string) externglib.Value
-	// HasClassThemingEngine:
+
 	HasClassThemingEngine(styleClass string) bool
-	// HasRegionThemingEngine:
+
 	HasRegionThemingEngine(styleRegion string) (RegionFlags, bool)
-	// LookupColorThemingEngine:
+
 	LookupColorThemingEngine(colorName string) (gdk.RGBA, bool)
-	// StateIsRunningThemingEngine:
+
 	StateIsRunningThemingEngine(state StateType) (float64, bool)
 }
 

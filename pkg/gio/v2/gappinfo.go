@@ -549,13 +549,12 @@ func (a appInfo) SupportsUris() bool {
 type AppLaunchContext interface {
 	gextras.Objector
 
-	// Environment:
 	Environment() []string
-	// LaunchFailedAppLaunchContext:
+
 	LaunchFailedAppLaunchContext(startupNotifyId string)
-	// SetenvAppLaunchContext:
+
 	SetenvAppLaunchContext(variable string, value string)
-	// UnsetenvAppLaunchContext:
+
 	UnsetenvAppLaunchContext(variable string)
 }
 
@@ -578,7 +577,6 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	return WrapAppLaunchContext(obj), nil
 }
 
-// NewAppLaunchContext:
 func NewAppLaunchContext() AppLaunchContext {
 	var _cret *C.GAppLaunchContext // in
 

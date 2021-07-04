@@ -34,9 +34,8 @@ func init() {
 type LayoutChild interface {
 	gextras.Objector
 
-	// ChildWidget:
 	ChildWidget() Widget
-	// LayoutManager:
+
 	LayoutManager() LayoutManager
 }
 

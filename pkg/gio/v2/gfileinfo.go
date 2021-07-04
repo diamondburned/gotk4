@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -59,123 +60,126 @@ func init() {
 type FileInfo interface {
 	gextras.Objector
 
-	// ClearStatusFileInfo:
 	ClearStatusFileInfo()
-	// CopyIntoFileInfo:
+
 	CopyIntoFileInfo(destInfo FileInfo)
-	// DupFileInfo:
+
 	DupFileInfo() FileInfo
-	// AttributeAsString:
+
 	AttributeAsString(attribute string) string
-	// AttributeBoolean:
+
 	AttributeBoolean(attribute string) bool
-	// AttributeByteString:
+
 	AttributeByteString(attribute string) string
-	// AttributeInt32:
+
+	AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
+
 	AttributeInt32(attribute string) int32
-	// AttributeInt64:
+
 	AttributeInt64(attribute string) int64
-	// AttributeObject:
+
 	AttributeObject(attribute string) gextras.Objector
-	// AttributeStatus:
+
 	AttributeStatus(attribute string) FileAttributeStatus
-	// AttributeString:
+
 	AttributeString(attribute string) string
-	// AttributeStringv:
+
 	AttributeStringv(attribute string) []string
-	// AttributeType:
+
 	AttributeType(attribute string) FileAttributeType
-	// AttributeUint32:
+
 	AttributeUint32(attribute string) uint32
-	// AttributeUint64:
+
 	AttributeUint64(attribute string) uint64
-	// ContentType:
+
 	ContentType() string
-	// DisplayName:
+
 	DisplayName() string
-	// EditName:
+
 	EditName() string
-	// Etag:
+
 	Etag() string
-	// FileType:
+
 	FileType() FileType
-	// Icon:
+
 	Icon() Icon
-	// IsBackup:
+
 	IsBackup() bool
-	// IsHidden:
+
 	IsHidden() bool
-	// IsSymlink:
+
 	IsSymlink() bool
-	// ModificationTime:
+
 	ModificationTime() glib.TimeVal
-	// Name:
+
 	Name() string
-	// Size:
+
 	Size() int64
-	// SortOrder:
+
 	SortOrder() int32
-	// SymbolicIcon:
+
 	SymbolicIcon() Icon
-	// SymlinkTarget:
+
 	SymlinkTarget() string
-	// HasAttributeFileInfo:
+
 	HasAttributeFileInfo(attribute string) bool
-	// HasNamespaceFileInfo:
+
 	HasNamespaceFileInfo(nameSpace string) bool
-	// ListAttributesFileInfo:
+
 	ListAttributesFileInfo(nameSpace string) []string
-	// RemoveAttributeFileInfo:
+
 	RemoveAttributeFileInfo(attribute string)
-	// SetAttributeBooleanFileInfo:
+
+	SetAttributeFileInfo(attribute string, typ FileAttributeType, valueP interface{})
+
 	SetAttributeBooleanFileInfo(attribute string, attrValue bool)
-	// SetAttributeByteStringFileInfo:
+
 	SetAttributeByteStringFileInfo(attribute string, attrValue string)
-	// SetAttributeInt32FileInfo:
+
 	SetAttributeInt32FileInfo(attribute string, attrValue int32)
-	// SetAttributeInt64FileInfo:
+
 	SetAttributeInt64FileInfo(attribute string, attrValue int64)
-	// SetAttributeMaskFileInfo:
+
 	SetAttributeMaskFileInfo(mask *FileAttributeMatcher)
-	// SetAttributeObjectFileInfo:
+
 	SetAttributeObjectFileInfo(attribute string, attrValue gextras.Objector)
-	// SetAttributeStatusFileInfo:
+
 	SetAttributeStatusFileInfo(attribute string, status FileAttributeStatus) bool
-	// SetAttributeStringFileInfo:
+
 	SetAttributeStringFileInfo(attribute string, attrValue string)
-	// SetAttributeStringvFileInfo:
+
 	SetAttributeStringvFileInfo(attribute string, attrValue []string)
-	// SetAttributeUint32FileInfo:
+
 	SetAttributeUint32FileInfo(attribute string, attrValue uint32)
-	// SetAttributeUint64FileInfo:
+
 	SetAttributeUint64FileInfo(attribute string, attrValue uint64)
-	// SetContentTypeFileInfo:
+
 	SetContentTypeFileInfo(contentType string)
-	// SetDisplayNameFileInfo:
+
 	SetDisplayNameFileInfo(displayName string)
-	// SetEditNameFileInfo:
+
 	SetEditNameFileInfo(editName string)
-	// SetFileTypeFileInfo:
+
 	SetFileTypeFileInfo(typ FileType)
-	// SetIconFileInfo:
+
 	SetIconFileInfo(icon Icon)
-	// SetIsHiddenFileInfo:
+
 	SetIsHiddenFileInfo(isHidden bool)
-	// SetIsSymlinkFileInfo:
+
 	SetIsSymlinkFileInfo(isSymlink bool)
-	// SetModificationTimeFileInfo:
+
 	SetModificationTimeFileInfo(mtime *glib.TimeVal)
-	// SetNameFileInfo:
+
 	SetNameFileInfo(name string)
-	// SetSizeFileInfo:
+
 	SetSizeFileInfo(size int64)
-	// SetSortOrderFileInfo:
+
 	SetSortOrderFileInfo(sortOrder int32)
-	// SetSymbolicIconFileInfo:
+
 	SetSymbolicIconFileInfo(icon Icon)
-	// SetSymlinkTargetFileInfo:
+
 	SetSymlinkTargetFileInfo(symlinkTarget string)
-	// UnsetAttributeMaskFileInfo:
+
 	UnsetAttributeMaskFileInfo()
 }
 
@@ -198,7 +202,6 @@ func marshalFileInfo(p uintptr) (interface{}, error) {
 	return WrapFileInfo(obj), nil
 }
 
-// NewFileInfo:
 func NewFileInfo() FileInfo {
 	var _cret *C.GFileInfo // in
 
@@ -299,6 +302,35 @@ func (i fileInfo) AttributeByteString(attribute string) string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+func (i fileInfo) AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool) {
+	var _arg0 *C.GFileInfo           // out
+	var _arg1 *C.char                // out
+	var _arg2 C.GFileAttributeType   // in
+	var _arg3 C.gpointer             // in
+	var _arg4 C.GFileAttributeStatus // in
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_file_info_get_attribute_data(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+
+	var _typ FileAttributeType      // out
+	var _valuePp interface{}        // out
+	var _status FileAttributeStatus // out
+	var _ok bool                    // out
+
+	_typ = FileAttributeType(_arg2)
+	_valuePp = box.Get(uintptr(_arg3))
+	_status = FileAttributeStatus(_arg4)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _typ, _valuePp, _status, _ok
 }
 
 func (i fileInfo) AttributeInt32(attribute string) int32 {
@@ -796,6 +828,21 @@ func (i fileInfo) RemoveAttributeFileInfo(attribute string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_remove_attribute(_arg0, _arg1)
+}
+
+func (i fileInfo) SetAttributeFileInfo(attribute string, typ FileAttributeType, valueP interface{}) {
+	var _arg0 *C.GFileInfo         // out
+	var _arg1 *C.char              // out
+	var _arg2 C.GFileAttributeType // out
+	var _arg3 C.gpointer           // out
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileAttributeType(typ)
+	_arg3 = C.gpointer(box.Assign(unsafe.Pointer(valueP)))
+
+	C.g_file_info_set_attribute(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (i fileInfo) SetAttributeBooleanFileInfo(attribute string, attrValue bool) {

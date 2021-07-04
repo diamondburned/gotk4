@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -27,6 +28,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -76,39 +79,42 @@ type DBusProxy interface {
 	DBusInterface
 	Initable
 
-	// CallFinishDBusProxy:
+	CallDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	CallFinishDBusProxy(res AsyncResult) (*glib.Variant, error)
-	// CallSyncDBusProxy:
+
 	CallSyncDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
-	// CallWithUnixFdListFinishDBusProxy:
+
+	CallWithUnixFdListDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
+
 	CallWithUnixFdListFinishDBusProxy(res AsyncResult) (UnixFDList, *glib.Variant, error)
-	// CallWithUnixFdListSyncDBusProxy:
+
 	CallWithUnixFdListSyncDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
-	// CachedProperty:
+
 	CachedProperty(propertyName string) *glib.Variant
-	// CachedPropertyNames:
+
 	CachedPropertyNames() []string
-	// Connection:
+
 	Connection() DBusConnection
-	// DefaultTimeout:
+
 	DefaultTimeout() int
-	// Flags:
+
 	Flags() DBusProxyFlags
-	// InterfaceInfo:
+
 	InterfaceInfo() *DBusInterfaceInfo
-	// InterfaceName:
+
 	InterfaceName() string
-	// Name:
+
 	Name() string
-	// NameOwner:
+
 	NameOwner() string
-	// ObjectPath:
+
 	ObjectPath() string
-	// SetCachedPropertyDBusProxy:
+
 	SetCachedPropertyDBusProxy(propertyName string, value *glib.Variant)
-	// SetDefaultTimeoutDBusProxy:
+
 	SetDefaultTimeoutDBusProxy(timeoutMsec int)
-	// SetInterfaceInfoDBusProxy:
+
 	SetInterfaceInfoDBusProxy(info *DBusInterfaceInfo)
 }
 
@@ -131,7 +137,6 @@ func marshalDBusProxy(p uintptr) (interface{}, error) {
 	return WrapDBusProxy(obj), nil
 }
 
-// NewDBusProxyFinish:
 func NewDBusProxyFinish(res AsyncResult) (DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
@@ -150,7 +155,6 @@ func NewDBusProxyFinish(res AsyncResult) (DBusProxy, error) {
 	return _dBusProxy, _goerr
 }
 
-// NewDBusProxyForBusFinish:
 func NewDBusProxyForBusFinish(res AsyncResult) (DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
@@ -169,7 +173,6 @@ func NewDBusProxyForBusFinish(res AsyncResult) (DBusProxy, error) {
 	return _dBusProxy, _goerr
 }
 
-// NewDBusProxyForBusSync:
 func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) (DBusProxy, error) {
 	var _arg1 C.GBusType            // out
 	var _arg2 C.GDBusProxyFlags     // out
@@ -203,7 +206,6 @@ func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInt
 	return _dBusProxy, _goerr
 }
 
-// NewDBusProxySync:
 func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) (DBusProxy, error) {
 	var _arg1 *C.GDBusConnection    // out
 	var _arg2 C.GDBusProxyFlags     // out
@@ -235,6 +237,29 @@ func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBu
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
+}
+
+func (p dBusProxy) CallDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusProxy         // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GVariant           // out
+	var _arg3 C.GDBusCallFlags      // out
+	var _arg4 C.gint                // out
+	var _arg5 *C.GCancellable       // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(methodName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = C.gpointer(box.Assign(callback))
+
+	C.g_dbus_proxy_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
 func (p dBusProxy) CallFinishDBusProxy(res AsyncResult) (*glib.Variant, error) {
@@ -290,6 +315,31 @@ func (p dBusProxy) CallSyncDBusProxy(methodName string, parameters *glib.Variant
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _variant, _goerr
+}
+
+func (p dBusProxy) CallWithUnixFdListDBusProxy(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusProxy         // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GVariant           // out
+	var _arg3 C.GDBusCallFlags      // out
+	var _arg4 C.gint                // out
+	var _arg5 *C.GUnixFDList        // out
+	var _arg6 *C.GCancellable       // out
+	var _arg7 C.GAsyncReadyCallback // out
+	var _arg8 C.gpointer
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(methodName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
+	_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg8 = C.gpointer(box.Assign(callback))
+
+	C.g_dbus_proxy_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
 func (p dBusProxy) CallWithUnixFdListFinishDBusProxy(res AsyncResult) (UnixFDList, *glib.Variant, error) {
@@ -556,6 +606,10 @@ func (p dBusProxy) SetInterfaceInfoDBusProxy(info *DBusInterfaceInfo) {
 	_arg1 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info.Native()))
 
 	C.g_dbus_proxy_set_interface_info(_arg0, _arg1)
+}
+
+func (i dBusProxy) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
 }
 
 func (i dBusProxy) InitFinish(res AsyncResult) error {

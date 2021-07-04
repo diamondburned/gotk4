@@ -64,9 +64,8 @@ func init() {
 type LockButton interface {
 	Button
 
-	// Permission:
 	Permission() gio.Permission
-	// SetPermissionLockButton:
+
 	SetPermissionLockButton(permission gio.Permission)
 }
 
@@ -89,7 +88,6 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	return WrapLockButton(obj), nil
 }
 
-// NewLockButton:
 func NewLockButton(permission gio.Permission) LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in

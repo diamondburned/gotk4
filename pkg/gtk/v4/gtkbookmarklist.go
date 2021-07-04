@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,19 +30,18 @@ func init() {
 // The `GFileInfo`s in the list have some attributes in the recent namespace
 // added: `recent::private` (boolean) and `recent:applications` (stringv).
 type BookmarkList interface {
-	gio.ListModel
+	gextras.Objector
 
-	// Attributes:
 	Attributes() string
-	// Filename:
+
 	Filename() string
-	// IOPriority:
+
 	IOPriority() int
-	// IsLoadingBookmarkList:
+
 	IsLoadingBookmarkList() bool
-	// SetAttributesBookmarkList:
+
 	SetAttributesBookmarkList(attributes string)
-	// SetIOPriorityBookmarkList:
+
 	SetIOPriorityBookmarkList(ioPriority int)
 }
 
@@ -66,7 +64,6 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 	return WrapBookmarkList(obj), nil
 }
 
-// NewBookmarkList:
 func NewBookmarkList(filename string, attributes string) BookmarkList {
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
@@ -167,20 +164,4 @@ func (s bookmarkList) SetIOPriorityBookmarkList(ioPriority int) {
 	_arg1 = C.int(ioPriority)
 
 	C.gtk_bookmark_list_set_io_priority(_arg0, _arg1)
-}
-
-func (l bookmarkList) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l bookmarkList) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l bookmarkList) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l bookmarkList) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }

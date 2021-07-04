@@ -37,10 +37,18 @@ func (eg *enumData) FormatMember(memberName string) string {
 	return strcases.PascalToGo(eg.Name) + strcases.SnakeToGo(true, memberName)
 }
 
+// CanGenerateEnum returns false if the given enum cannot be generated.
+func CanGenerateEnum(gen FileGenerator, enum *gir.Enum) bool {
+	if !enum.IsIntrospectable() || types.Filter(gen, enum.Name, enum.CType) {
+		return false
+	}
+	return true
+}
+
 // GenerateEnum generates an enum type declaration as well as the constants and
 // the type marshaler.
 func GenerateEnum(gen FileGeneratorWriter, enum *gir.Enum) bool {
-	if !enum.IsIntrospectable() || types.Filter(gen, enum.Name, enum.CType) {
+	if !CanGenerateEnum(gen, enum) {
 		return false
 	}
 

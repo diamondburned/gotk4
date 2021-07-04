@@ -55,17 +55,16 @@ func init() {
 type DBusObjectManagerServer interface {
 	DBusObjectManager
 
-	// ExportDBusObjectManagerServer:
 	ExportDBusObjectManagerServer(object DBusObjectSkeleton)
-	// ExportUniquelyDBusObjectManagerServer:
+
 	ExportUniquelyDBusObjectManagerServer(object DBusObjectSkeleton)
-	// Connection:
+
 	Connection() DBusConnection
-	// IsExportedDBusObjectManagerServer:
+
 	IsExportedDBusObjectManagerServer(object DBusObjectSkeleton) bool
-	// SetConnectionDBusObjectManagerServer:
+
 	SetConnectionDBusObjectManagerServer(connection DBusConnection)
-	// UnexportDBusObjectManagerServer:
+
 	UnexportDBusObjectManagerServer(objectPath string) bool
 }
 
@@ -88,7 +87,6 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerServer(obj), nil
 }
 
-// NewDBusObjectManagerServer:
 func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	var _arg1 *C.gchar                    // out
 	var _cret *C.GDBusObjectManagerServer // in

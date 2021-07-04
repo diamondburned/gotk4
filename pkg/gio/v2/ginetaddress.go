@@ -42,33 +42,32 @@ func init() {
 type InetAddress interface {
 	gextras.Objector
 
-	// EqualInetAddress:
 	EqualInetAddress(otherAddress InetAddress) bool
-	// Family:
+
 	Family() SocketFamily
-	// IsAny:
+
 	IsAny() bool
-	// IsLinkLocal:
+
 	IsLinkLocal() bool
-	// IsLoopback:
+
 	IsLoopback() bool
-	// IsMcGlobal:
+
 	IsMcGlobal() bool
-	// IsMcLinkLocal:
+
 	IsMcLinkLocal() bool
-	// IsMcNodeLocal:
+
 	IsMcNodeLocal() bool
-	// IsMcOrgLocal:
+
 	IsMcOrgLocal() bool
-	// IsMcSiteLocal:
+
 	IsMcSiteLocal() bool
-	// IsMulticast:
+
 	IsMulticast() bool
-	// IsSiteLocal:
+
 	IsSiteLocal() bool
-	// NativeSize:
+
 	NativeSize() uint
-	// String:
+
 	String() string
 }
 
@@ -91,7 +90,6 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 	return WrapInetAddress(obj), nil
 }
 
-// NewInetAddressAny:
 func NewInetAddressAny(family SocketFamily) InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
@@ -107,7 +105,6 @@ func NewInetAddressAny(family SocketFamily) InetAddress {
 	return _inetAddress
 }
 
-// NewInetAddressFromString:
 func NewInetAddressFromString(_string string) InetAddress {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GInetAddress // in
@@ -124,7 +121,6 @@ func NewInetAddressFromString(_string string) InetAddress {
 	return _inetAddress
 }
 
-// NewInetAddressLoopback:
 func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in

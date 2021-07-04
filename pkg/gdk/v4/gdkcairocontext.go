@@ -32,7 +32,6 @@ func init() {
 type CairoContext interface {
 	DrawContext
 
-	// CairoCreateCairoContext:
 	CairoCreateCairoContext() *cairo.Context
 }
 

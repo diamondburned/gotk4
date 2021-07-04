@@ -6,8 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,9 +39,8 @@ type RecentAction interface {
 	Action
 	RecentChooser
 
-	// ShowNumbers:
 	ShowNumbers() bool
-	// SetShowNumbersRecentAction:
+
 	SetShowNumbersRecentAction(showNumbers bool)
 }
 
@@ -62,7 +63,6 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 	return WrapRecentAction(obj), nil
 }
 
-// NewRecentAction:
 func NewRecentAction(name string, label string, tooltip string, stockId string) RecentAction {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -88,7 +88,6 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 	return _recentAction
 }
 
-// NewRecentActionForManager:
 func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) RecentAction {
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.gchar            // out
@@ -151,6 +150,18 @@ func (b recentAction) AddChild(builder Builder, child gextras.Objector, typ stri
 
 func (b recentAction) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b recentAction) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b recentAction) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b recentAction) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b recentAction) InternalChild(builder Builder, childname string) gextras.Objector {

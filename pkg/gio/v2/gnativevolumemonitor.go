@@ -31,7 +31,6 @@ func init() {
 	})
 }
 
-// NativeVolumeMonitor:
 type NativeVolumeMonitor interface {
 	VolumeMonitor
 }

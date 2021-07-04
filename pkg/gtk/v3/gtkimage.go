@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -121,43 +122,38 @@ func marshalImageType(p uintptr) (interface{}, error) {
 type Image interface {
 	Misc
 
-	// ClearImage:
 	ClearImage()
-	// Animation:
+
 	Animation() gdkpixbuf.PixbufAnimation
-	// GIcon:
-	GIcon() (gio.Icon, int)
-	// IconName:
+
 	IconName() (string, int)
-	// IconSet:
+
 	IconSet() (*IconSet, int)
-	// Pixbuf:
+
 	Pixbuf() gdkpixbuf.Pixbuf
-	// PixelSize:
+
 	PixelSize() int
-	// Stock:
+
 	Stock() (string, int)
-	// StorageType:
+
 	StorageType() ImageType
-	// SetFromAnimationImage:
+
 	SetFromAnimationImage(animation gdkpixbuf.PixbufAnimation)
-	// SetFromFileImage:
+
 	SetFromFileImage(filename string)
-	// SetFromGIconImage:
-	SetFromGIconImage(icon gio.Icon, size int)
-	// SetFromIconNameImage:
+
 	SetFromIconNameImage(iconName string, size int)
-	// SetFromIconSetImage:
+
 	SetFromIconSetImage(iconSet *IconSet, size int)
-	// SetFromPixbufImage:
+
 	SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf)
-	// SetFromResourceImage:
+
 	SetFromResourceImage(resourcePath string)
-	// SetFromStockImage:
+
 	SetFromStockImage(stockId string, size int)
-	// SetFromSurfaceImage:
+
 	SetFromSurfaceImage(surface *cairo.Surface)
-	// SetPixelSizeImage:
+
 	SetPixelSizeImage(pixelSize int)
 }
 
@@ -180,7 +176,6 @@ func marshalImage(p uintptr) (interface{}, error) {
 	return WrapImage(obj), nil
 }
 
-// NewImage:
 func NewImage() Image {
 	var _cret *C.GtkWidget // in
 
@@ -193,7 +188,6 @@ func NewImage() Image {
 	return _image
 }
 
-// NewImageFromAnimation:
 func NewImageFromAnimation(animation gdkpixbuf.PixbufAnimation) Image {
 	var _arg1 *C.GdkPixbufAnimation // out
 	var _cret *C.GtkWidget          // in
@@ -209,7 +203,6 @@ func NewImageFromAnimation(animation gdkpixbuf.PixbufAnimation) Image {
 	return _image
 }
 
-// NewImageFromFile:
 func NewImageFromFile(filename string) Image {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -226,25 +219,6 @@ func NewImageFromFile(filename string) Image {
 	return _image
 }
 
-// NewImageFromGIcon:
-func NewImageFromGIcon(icon gio.Icon, size int) Image {
-	var _arg1 *C.GIcon      // out
-	var _arg2 C.GtkIconSize // out
-	var _cret *C.GtkWidget  // in
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = C.GtkIconSize(size)
-
-	_cret = C.gtk_image_new_from_gicon(_arg1, _arg2)
-
-	var _image Image // out
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Image)
-
-	return _image
-}
-
-// NewImageFromIconName:
 func NewImageFromIconName(iconName string, size int) Image {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -263,7 +237,6 @@ func NewImageFromIconName(iconName string, size int) Image {
 	return _image
 }
 
-// NewImageFromIconSet:
 func NewImageFromIconSet(iconSet *IconSet, size int) Image {
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
@@ -281,7 +254,6 @@ func NewImageFromIconSet(iconSet *IconSet, size int) Image {
 	return _image
 }
 
-// NewImageFromPixbuf:
 func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
@@ -297,7 +269,6 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 	return _image
 }
 
-// NewImageFromResource:
 func NewImageFromResource(resourcePath string) Image {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -314,7 +285,6 @@ func NewImageFromResource(resourcePath string) Image {
 	return _image
 }
 
-// NewImageFromStock:
 func NewImageFromStock(stockId string, size int) Image {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -333,7 +303,6 @@ func NewImageFromStock(stockId string, size int) Image {
 	return _image
 }
 
-// NewImageFromSurface:
 func NewImageFromSurface(surface *cairo.Surface) Image {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.GtkWidget       // in
@@ -370,24 +339,6 @@ func (i image) Animation() gdkpixbuf.PixbufAnimation {
 	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdkpixbuf.PixbufAnimation)
 
 	return _pixbufAnimation
-}
-
-func (i image) GIcon() (gio.Icon, int) {
-	var _arg0 *C.GtkImage   // out
-	var _arg1 *C.GIcon      // in
-	var _arg2 C.GtkIconSize // in
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-
-	C.gtk_image_get_gicon(_arg0, &_arg1, &_arg2)
-
-	var _gicon gio.Icon // out
-	var _size int       // out
-
-	_gicon = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(gio.Icon)
-	_size = int(_arg2)
-
-	return _gicon, _size
 }
 
 func (i image) IconName() (string, int) {
@@ -510,18 +461,6 @@ func (i image) SetFromFileImage(filename string) {
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
 
-func (i image) SetFromGIconImage(icon gio.Icon, size int) {
-	var _arg0 *C.GtkImage   // out
-	var _arg1 *C.GIcon      // out
-	var _arg2 C.GtkIconSize // out
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = C.GtkIconSize(size)
-
-	C.gtk_image_set_from_gicon(_arg0, _arg1, _arg2)
-}
-
 func (i image) SetFromIconNameImage(iconName string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
@@ -607,6 +546,18 @@ func (b image) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b image) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b image) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b image) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b image) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b image) InternalChild(builder Builder, childname string) gextras.Objector {

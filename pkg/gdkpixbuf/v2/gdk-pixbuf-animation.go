@@ -40,15 +40,14 @@ func init() {
 type PixbufAnimation interface {
 	gextras.Objector
 
-	// Height:
 	Height() int
-	// Iter:
+
 	Iter(startTime *glib.TimeVal) PixbufAnimationIter
-	// StaticImage:
+
 	StaticImage() Pixbuf
-	// Width:
+
 	Width() int
-	// IsStaticImagePixbufAnimation:
+
 	IsStaticImagePixbufAnimation() bool
 }
 
@@ -71,7 +70,6 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 	return WrapPixbufAnimation(obj), nil
 }
 
-// NewPixbufAnimationFromFile:
 func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -91,7 +89,6 @@ func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
 	return _pixbufAnimation, _goerr
 }
 
-// NewPixbufAnimationFromResource:
 func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -111,7 +108,6 @@ func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error
 	return _pixbufAnimation, _goerr
 }
 
-// NewPixbufAnimationFromStream:
 func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancellable) (PixbufAnimation, error) {
 	var _arg1 *C.GInputStream       // out
 	var _arg2 *C.GCancellable       // out
@@ -122,25 +118,6 @@ func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancel
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
-
-	var _pixbufAnimation PixbufAnimation // out
-	var _goerr error                     // out
-
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromStreamFinish:
-func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) (PixbufAnimation, error) {
-	var _arg1 *C.GAsyncResult       // out
-	var _cret *C.GdkPixbufAnimation // in
-	var _cerr *C.GError             // in
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
-
-	_cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, &_cerr)
 
 	var _pixbufAnimation PixbufAnimation // out
 	var _goerr error                     // out
@@ -235,13 +212,12 @@ func (a pixbufAnimation) IsStaticImagePixbufAnimation() bool {
 type PixbufAnimationIter interface {
 	gextras.Objector
 
-	// AdvancePixbufAnimationIter:
 	AdvancePixbufAnimationIter(currentTime *glib.TimeVal) bool
-	// DelayTime:
+
 	DelayTime() int
-	// Pixbuf:
+
 	Pixbuf() Pixbuf
-	// OnCurrentlyLoadingFramePixbufAnimationIter:
+
 	OnCurrentlyLoadingFramePixbufAnimationIter() bool
 }
 

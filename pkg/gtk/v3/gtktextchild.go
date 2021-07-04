@@ -30,7 +30,6 @@ func init() {
 type TextChildAnchor interface {
 	gextras.Objector
 
-	// Deleted:
 	Deleted() bool
 }
 
@@ -53,7 +52,6 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	return WrapTextChildAnchor(obj), nil
 }
 
-// NewTextChildAnchor:
 func NewTextChildAnchor() TextChildAnchor {
 	var _cret *C.GtkTextChildAnchor // in
 

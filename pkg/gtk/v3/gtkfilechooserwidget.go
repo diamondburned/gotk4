@@ -5,9 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,7 +59,6 @@ func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 	return WrapFileChooserWidget(obj), nil
 }
 
-// NewFileChooserWidget:
 func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	var _arg1 C.GtkFileChooserAction // out
 	var _cret *C.GtkWidget           // in
@@ -80,6 +80,18 @@ func (b fileChooserWidget) AddChild(builder Builder, child gextras.Objector, typ
 
 func (b fileChooserWidget) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b fileChooserWidget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b fileChooserWidget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b fileChooserWidget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b fileChooserWidget) InternalChild(builder Builder, childname string) gextras.Objector {
@@ -142,10 +154,6 @@ func (c fileChooserWidget) CurrentFolder() string {
 	return WrapFileChooser(gextras.InternObject(c)).CurrentFolder()
 }
 
-func (c fileChooserWidget) CurrentFolderFile() gio.File {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolderFile()
-}
-
 func (c fileChooserWidget) CurrentFolderURI() string {
 	return WrapFileChooser(gextras.InternObject(c)).CurrentFolderURI()
 }
@@ -162,10 +170,6 @@ func (c fileChooserWidget) ExtraWidget() Widget {
 	return WrapFileChooser(gextras.InternObject(c)).ExtraWidget()
 }
 
-func (c fileChooserWidget) File() gio.File {
-	return WrapFileChooser(gextras.InternObject(c)).File()
-}
-
 func (c fileChooserWidget) Filename() string {
 	return WrapFileChooser(gextras.InternObject(c)).Filename()
 }
@@ -176,10 +180,6 @@ func (c fileChooserWidget) Filter() FileFilter {
 
 func (c fileChooserWidget) LocalOnly() bool {
 	return WrapFileChooser(gextras.InternObject(c)).LocalOnly()
-}
-
-func (c fileChooserWidget) PreviewFile() gio.File {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewFile()
 }
 
 func (c fileChooserWidget) PreviewFilename() string {
@@ -234,10 +234,6 @@ func (c fileChooserWidget) SelectAll() {
 	WrapFileChooser(gextras.InternObject(c)).SelectAll()
 }
 
-func (c fileChooserWidget) SelectFile(file gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).SelectFile(file)
-}
-
 func (c fileChooserWidget) SelectFilename(filename string) bool {
 	return WrapFileChooser(gextras.InternObject(c)).SelectFilename(filename)
 }
@@ -262,10 +258,6 @@ func (c fileChooserWidget) SetCurrentFolder(filename string) bool {
 	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolder(filename)
 }
 
-func (c fileChooserWidget) SetCurrentFolderFile(file gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolderFile(file)
-}
-
 func (c fileChooserWidget) SetCurrentFolderURI(uri string) bool {
 	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolderURI(uri)
 }
@@ -280,10 +272,6 @@ func (c fileChooserWidget) SetDoOverwriteConfirmation(doOverwriteConfirmation bo
 
 func (c fileChooserWidget) SetExtraWidget(extraWidget Widget) {
 	WrapFileChooser(gextras.InternObject(c)).SetExtraWidget(extraWidget)
-}
-
-func (c fileChooserWidget) SetFile(file gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).SetFile(file)
 }
 
 func (c fileChooserWidget) SetFilename(filename string) bool {
@@ -324,10 +312,6 @@ func (c fileChooserWidget) SetUsePreviewLabel(useLabel bool) {
 
 func (c fileChooserWidget) UnselectAll() {
 	WrapFileChooser(gextras.InternObject(c)).UnselectAll()
-}
-
-func (c fileChooserWidget) UnselectFile(file gio.File) {
-	WrapFileChooser(gextras.InternObject(c)).UnselectFile(file)
 }
 
 func (c fileChooserWidget) UnselectFilename(filename string) {

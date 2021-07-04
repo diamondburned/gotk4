@@ -466,7 +466,6 @@ func UnixMountsChangedSince(time uint64) bool {
 type UnixMountMonitor interface {
 	gextras.Objector
 
-	// SetRateLimitUnixMountMonitor:
 	SetRateLimitUnixMountMonitor(limitMsec int)
 }
 
@@ -489,7 +488,6 @@ func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
 	return WrapUnixMountMonitor(obj), nil
 }
 
-// NewUnixMountMonitor:
 func NewUnixMountMonitor() UnixMountMonitor {
 	var _cret *C.GUnixMountMonitor // in
 

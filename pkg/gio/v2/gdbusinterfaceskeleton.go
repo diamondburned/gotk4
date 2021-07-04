@@ -40,27 +40,26 @@ func init() {
 type DBusInterfaceSkeleton interface {
 	DBusInterface
 
-	// ExportDBusInterfaceSkeleton:
 	ExportDBusInterfaceSkeleton(connection DBusConnection, objectPath string) error
-	// FlushDBusInterfaceSkeleton:
+
 	FlushDBusInterfaceSkeleton()
-	// Connection:
+
 	Connection() DBusConnection
-	// Flags:
+
 	Flags() DBusInterfaceSkeletonFlags
-	// GetInfo:
+
 	GetInfo() *DBusInterfaceInfo
-	// ObjectPath:
+
 	ObjectPath() string
-	// Properties:
+
 	Properties() *glib.Variant
-	// HasConnectionDBusInterfaceSkeleton:
+
 	HasConnectionDBusInterfaceSkeleton(connection DBusConnection) bool
-	// SetFlagsDBusInterfaceSkeleton:
+
 	SetFlagsDBusInterfaceSkeleton(flags DBusInterfaceSkeletonFlags)
-	// UnexportDBusInterfaceSkeleton:
+
 	UnexportDBusInterfaceSkeleton()
-	// UnexportFromConnectionDBusInterfaceSkeleton:
+
 	UnexportFromConnectionDBusInterfaceSkeleton(connection DBusConnection)
 }
 

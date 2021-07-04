@@ -94,27 +94,26 @@ func init() {
 type PrintContext interface {
 	gextras.Objector
 
-	// CreatePangoContextPrintContext:
 	CreatePangoContextPrintContext() pango.Context
-	// CreatePangoLayoutPrintContext:
+
 	CreatePangoLayoutPrintContext() pango.Layout
-	// CairoContext:
+
 	CairoContext() *cairo.Context
-	// DPIX:
+
 	DPIX() float64
-	// DPIY:
+
 	DPIY() float64
-	// HardMargins:
+
 	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-	// Height:
+
 	Height() float64
-	// PageSetup:
+
 	PageSetup() PageSetup
-	// PangoFontmap:
+
 	PangoFontmap() pango.FontMap
-	// Width:
+
 	Width() float64
-	// SetCairoContextPrintContext:
+
 	SetCairoContextPrintContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 

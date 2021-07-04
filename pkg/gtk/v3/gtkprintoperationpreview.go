@@ -24,7 +24,6 @@ func init() {
 	})
 }
 
-// PrintOperationPreview:
 type PrintOperationPreview interface {
 	gextras.Objector
 

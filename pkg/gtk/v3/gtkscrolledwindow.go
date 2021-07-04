@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -150,69 +152,68 @@ func marshalPolicyType(p uintptr) (interface{}, error) {
 type ScrolledWindow interface {
 	Bin
 
-	// AddWithViewportScrolledWindow:
 	AddWithViewportScrolledWindow(child Widget)
-	// CaptureButtonPress:
+
 	CaptureButtonPress() bool
-	// HAdjustment:
+
 	HAdjustment() Adjustment
-	// HScrollbar:
+
 	HScrollbar() Widget
-	// KineticScrolling:
+
 	KineticScrolling() bool
-	// MaxContentHeight:
+
 	MaxContentHeight() int
-	// MaxContentWidth:
+
 	MaxContentWidth() int
-	// MinContentHeight:
+
 	MinContentHeight() int
-	// MinContentWidth:
+
 	MinContentWidth() int
-	// OverlayScrolling:
+
 	OverlayScrolling() bool
-	// Placement:
+
 	Placement() CornerType
-	// Policy:
+
 	Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
-	// PropagateNaturalHeight:
+
 	PropagateNaturalHeight() bool
-	// PropagateNaturalWidth:
+
 	PropagateNaturalWidth() bool
-	// ShadowType:
+
 	ShadowType() ShadowType
-	// VAdjustment:
+
 	VAdjustment() Adjustment
-	// VScrollbar:
+
 	VScrollbar() Widget
-	// SetCaptureButtonPressScrolledWindow:
+
 	SetCaptureButtonPressScrolledWindow(captureButtonPress bool)
-	// SetHAdjustmentScrolledWindow:
+
 	SetHAdjustmentScrolledWindow(hadjustment Adjustment)
-	// SetKineticScrollingScrolledWindow:
+
 	SetKineticScrollingScrolledWindow(kineticScrolling bool)
-	// SetMaxContentHeightScrolledWindow:
+
 	SetMaxContentHeightScrolledWindow(height int)
-	// SetMaxContentWidthScrolledWindow:
+
 	SetMaxContentWidthScrolledWindow(width int)
-	// SetMinContentHeightScrolledWindow:
+
 	SetMinContentHeightScrolledWindow(height int)
-	// SetMinContentWidthScrolledWindow:
+
 	SetMinContentWidthScrolledWindow(width int)
-	// SetOverlayScrollingScrolledWindow:
+
 	SetOverlayScrollingScrolledWindow(overlayScrolling bool)
-	// SetPlacementScrolledWindow:
+
 	SetPlacementScrolledWindow(windowPlacement CornerType)
-	// SetPolicyScrolledWindow:
+
 	SetPolicyScrolledWindow(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
-	// SetPropagateNaturalHeightScrolledWindow:
+
 	SetPropagateNaturalHeightScrolledWindow(propagate bool)
-	// SetPropagateNaturalWidthScrolledWindow:
+
 	SetPropagateNaturalWidthScrolledWindow(propagate bool)
-	// SetShadowTypeScrolledWindow:
+
 	SetShadowTypeScrolledWindow(typ ShadowType)
-	// SetVAdjustmentScrolledWindow:
+
 	SetVAdjustmentScrolledWindow(vadjustment Adjustment)
-	// UnsetPlacementScrolledWindow:
+
 	UnsetPlacementScrolledWindow()
 }
 
@@ -235,7 +236,6 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 	return WrapScrolledWindow(obj), nil
 }
 
-// NewScrolledWindow:
 func NewScrolledWindow(hadjustment Adjustment, vadjustment Adjustment) ScrolledWindow {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
@@ -682,6 +682,18 @@ func (b scrolledWindow) AddChild(builder Builder, child gextras.Objector, typ st
 
 func (b scrolledWindow) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b scrolledWindow) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b scrolledWindow) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b scrolledWindow) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b scrolledWindow) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -47,11 +47,10 @@ func init() {
 type EditableLabel interface {
 	Editable
 
-	// Editing:
 	Editing() bool
-	// StartEditingEditableLabel:
+
 	StartEditingEditableLabel()
-	// StopEditingEditableLabel:
+
 	StopEditingEditableLabel(commit bool)
 }
 
@@ -74,7 +73,6 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 	return WrapEditableLabel(obj), nil
 }
 
-// NewEditableLabel:
 func NewEditableLabel(str string) EditableLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

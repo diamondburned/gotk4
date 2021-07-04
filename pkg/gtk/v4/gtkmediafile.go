@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -35,19 +34,14 @@ func init() {
 type MediaFile interface {
 	MediaStream
 
-	// ClearMediaFile:
 	ClearMediaFile()
-	// File:
-	File() gio.File
-	// InputStream:
+
 	InputStream() gio.InputStream
-	// SetFileMediaFile:
-	SetFileMediaFile(file gio.File)
-	// SetFilenameMediaFile:
+
 	SetFilenameMediaFile(filename string)
-	// SetInputStreamMediaFile:
+
 	SetInputStreamMediaFile(stream gio.InputStream)
-	// SetResourceMediaFile:
+
 	SetResourceMediaFile(resourcePath string)
 }
 
@@ -70,7 +64,6 @@ func marshalMediaFile(p uintptr) (interface{}, error) {
 	return WrapMediaFile(obj), nil
 }
 
-// NewMediaFile:
 func NewMediaFile() MediaFile {
 	var _cret *C.GtkMediaStream // in
 
@@ -83,23 +76,6 @@ func NewMediaFile() MediaFile {
 	return _mediaFile
 }
 
-// NewMediaFileForFile:
-func NewMediaFileForFile(file gio.File) MediaFile {
-	var _arg1 *C.GFile          // out
-	var _cret *C.GtkMediaStream // in
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	_cret = C.gtk_media_file_new_for_file(_arg1)
-
-	var _mediaFile MediaFile // out
-
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
-
-	return _mediaFile
-}
-
-// NewMediaFileForFilename:
 func NewMediaFileForFilename(filename string) MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
@@ -116,7 +92,6 @@ func NewMediaFileForFilename(filename string) MediaFile {
 	return _mediaFile
 }
 
-// NewMediaFileForInputStream:
 func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
@@ -132,7 +107,6 @@ func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
 	return _mediaFile
 }
 
-// NewMediaFileForResource:
 func NewMediaFileForResource(resourcePath string) MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
@@ -157,21 +131,6 @@ func (s mediaFile) ClearMediaFile() {
 	C.gtk_media_file_clear(_arg0)
 }
 
-func (s mediaFile) File() gio.File {
-	var _arg0 *C.GtkMediaFile // out
-	var _cret *C.GFile        // in
-
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_media_file_get_file(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
-}
-
 func (s mediaFile) InputStream() gio.InputStream {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GInputStream // in
@@ -185,16 +144,6 @@ func (s mediaFile) InputStream() gio.InputStream {
 	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.InputStream)
 
 	return _inputStream
-}
-
-func (s mediaFile) SetFileMediaFile(file gio.File) {
-	var _arg0 *C.GtkMediaFile // out
-	var _arg1 *C.GFile        // out
-
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_media_file_set_file(_arg0, _arg1)
 }
 
 func (s mediaFile) SetFilenameMediaFile(filename string) {
@@ -227,40 +176,4 @@ func (s mediaFile) SetResourceMediaFile(resourcePath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_media_file_set_resource(_arg0, _arg1)
-}
-
-func (p mediaFile) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
-	return gdk.WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
-}
-
-func (p mediaFile) CurrentImage() gdk.Paintable {
-	return gdk.WrapPaintable(gextras.InternObject(p)).CurrentImage()
-}
-
-func (p mediaFile) Flags() gdk.PaintableFlags {
-	return gdk.WrapPaintable(gextras.InternObject(p)).Flags()
-}
-
-func (p mediaFile) IntrinsicAspectRatio() float64 {
-	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
-}
-
-func (p mediaFile) IntrinsicHeight() int {
-	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
-}
-
-func (p mediaFile) IntrinsicWidth() int {
-	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
-}
-
-func (p mediaFile) InvalidateContents() {
-	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateContents()
-}
-
-func (p mediaFile) InvalidateSize() {
-	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateSize()
-}
-
-func (p mediaFile) Snapshot(snapshot gdk.Snapshot, width float64, height float64) {
-	gdk.WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
 }

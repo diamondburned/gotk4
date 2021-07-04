@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -53,12 +54,13 @@ func init() {
 type SocketControlMessage interface {
 	gextras.Objector
 
-	// Level:
 	Level() int
-	// MsgType:
+
 	MsgType() int
-	// Size:
+
 	Size() uint
+
+	SerializeSocketControlMessage(data interface{})
 }
 
 // socketControlMessage implements the SocketControlMessage class.
@@ -123,4 +125,14 @@ func (m socketControlMessage) Size() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+func (m socketControlMessage) SerializeSocketControlMessage(data interface{}) {
+	var _arg0 *C.GSocketControlMessage // out
+	var _arg1 C.gpointer               // out
+
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(data)))
+
+	C.g_socket_control_message_serialize(_arg0, _arg1)
 }

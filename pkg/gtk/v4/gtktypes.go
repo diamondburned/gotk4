@@ -577,7 +577,6 @@ func (s *Bitset) Unref() {
 	C.gtk_bitset_unref(_arg0)
 }
 
-// CSSStyleChange:
 type CSSStyleChange C.GtkCssStyleChange
 
 // WrapCSSStyleChange wraps the C unsafe.Pointer to be the right type. It is

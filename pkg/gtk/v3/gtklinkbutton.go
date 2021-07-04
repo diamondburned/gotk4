@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -48,13 +49,12 @@ func init() {
 type LinkButton interface {
 	Button
 
-	// URI:
 	URI() string
-	// Visited:
+
 	Visited() bool
-	// SetURILinkButton:
+
 	SetURILinkButton(uri string)
-	// SetVisitedLinkButton:
+
 	SetVisitedLinkButton(visited bool)
 }
 
@@ -77,7 +77,6 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	return WrapLinkButton(obj), nil
 }
 
-// NewLinkButton:
 func NewLinkButton(uri string) LinkButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -94,7 +93,6 @@ func NewLinkButton(uri string) LinkButton {
 	return _linkButton
 }
 
-// NewLinkButtonWithLabel:
 func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -177,6 +175,18 @@ func (b linkButton) ConstructChild(builder Builder, name string) gextras.Objecto
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b linkButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b linkButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b linkButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b linkButton) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -223,6 +233,18 @@ func (b linkButton) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b linkButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b linkButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b linkButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b linkButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b linkButton) InternalChild(builder Builder, childname string) gextras.Objector {

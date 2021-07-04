@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -51,17 +54,18 @@ func init() {
 type SocketConnection interface {
 	IOStream
 
-	// ConnectSocketConnection:
 	ConnectSocketConnection(address SocketAddress, cancellable Cancellable) error
-	// ConnectFinishSocketConnection:
+
+	ConnectAsyncSocketConnection(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback)
+
 	ConnectFinishSocketConnection(result AsyncResult) error
-	// LocalAddress:
+
 	LocalAddress() (SocketAddress, error)
-	// RemoteAddress:
+
 	RemoteAddress() (SocketAddress, error)
-	// Socket:
+
 	Socket() Socket
-	// IsConnectedSocketConnection:
+
 	IsConnectedSocketConnection() bool
 }
 
@@ -101,6 +105,22 @@ func (c socketConnection) ConnectSocketConnection(address SocketAddress, cancell
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (c socketConnection) ConnectAsyncSocketConnection(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketConnection  // out
+	var _arg1 *C.GSocketAddress     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_socket_connection_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (c socketConnection) ConnectFinishSocketConnection(result AsyncResult) error {

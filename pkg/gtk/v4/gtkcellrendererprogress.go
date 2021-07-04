@@ -50,7 +50,6 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	return WrapCellRendererProgress(obj), nil
 }
 
-// NewCellRendererProgress:
 func NewCellRendererProgress() CellRendererProgress {
 	var _cret *C.GtkCellRenderer // in
 

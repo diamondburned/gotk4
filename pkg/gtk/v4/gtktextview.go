@@ -115,143 +115,142 @@ type TextView interface {
 	Widget
 	Scrollable
 
-	// AddChildAtAnchorTextView:
 	AddChildAtAnchorTextView(child Widget, anchor TextChildAnchor)
-	// AddOverlayTextView:
+
 	AddOverlayTextView(child Widget, xpos int, ypos int)
-	// BackwardDisplayLineTextView:
+
 	BackwardDisplayLineTextView(iter *TextIter) bool
-	// BackwardDisplayLineStartTextView:
+
 	BackwardDisplayLineStartTextView(iter *TextIter) bool
-	// BufferToWindowCoordsTextView:
+
 	BufferToWindowCoordsTextView(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int)
-	// ForwardDisplayLineTextView:
+
 	ForwardDisplayLineTextView(iter *TextIter) bool
-	// ForwardDisplayLineEndTextView:
+
 	ForwardDisplayLineEndTextView(iter *TextIter) bool
-	// AcceptsTab:
+
 	AcceptsTab() bool
-	// BottomMargin:
+
 	BottomMargin() int
-	// Buffer:
+
 	Buffer() TextBuffer
-	// CursorLocations:
+
 	CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle)
-	// CursorVisible:
+
 	CursorVisible() bool
-	// Editable:
+
 	Editable() bool
-	// ExtraMenu:
+
 	ExtraMenu() gio.MenuModel
-	// Gutter:
+
 	Gutter(win TextWindowType) Widget
-	// Indent:
+
 	Indent() int
-	// InputHints:
+
 	InputHints() InputHints
-	// InputPurpose:
+
 	InputPurpose() InputPurpose
-	// IterAtLocation:
+
 	IterAtLocation(x int, y int) (TextIter, bool)
-	// IterAtPosition:
+
 	IterAtPosition(x int, y int) (TextIter, int, bool)
-	// IterLocation:
+
 	IterLocation(iter *TextIter) gdk.Rectangle
-	// Justification:
+
 	Justification() Justification
-	// LeftMargin:
+
 	LeftMargin() int
-	// LineAtY:
+
 	LineAtY(y int) (TextIter, int)
-	// LineYrange:
+
 	LineYrange(iter *TextIter) (y int, height int)
-	// Monospace:
+
 	Monospace() bool
-	// Overwrite:
+
 	Overwrite() bool
-	// PixelsAboveLines:
+
 	PixelsAboveLines() int
-	// PixelsBelowLines:
+
 	PixelsBelowLines() int
-	// PixelsInsideWrap:
+
 	PixelsInsideWrap() int
-	// RightMargin:
+
 	RightMargin() int
-	// Tabs:
+
 	Tabs() *pango.TabArray
-	// TopMargin:
+
 	TopMargin() int
-	// VisibleRect:
+
 	VisibleRect() gdk.Rectangle
-	// WrapMode:
+
 	WrapMode() WrapMode
-	// ImContextFilterKeypressTextView:
+
 	ImContextFilterKeypressTextView(event gdk.Event) bool
-	// MoveMarkOnscreenTextView:
+
 	MoveMarkOnscreenTextView(mark TextMark) bool
-	// MoveOverlayTextView:
+
 	MoveOverlayTextView(child Widget, xpos int, ypos int)
-	// MoveVisuallyTextView:
+
 	MoveVisuallyTextView(iter *TextIter, count int) bool
-	// PlaceCursorOnscreenTextView:
+
 	PlaceCursorOnscreenTextView() bool
-	// RemoveTextView:
+
 	RemoveTextView(child Widget)
-	// ResetCursorBlinkTextView:
+
 	ResetCursorBlinkTextView()
-	// ResetImContextTextView:
+
 	ResetImContextTextView()
-	// ScrollMarkOnscreenTextView:
+
 	ScrollMarkOnscreenTextView(mark TextMark)
-	// ScrollToIterTextView:
+
 	ScrollToIterTextView(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool
-	// ScrollToMarkTextView:
+
 	ScrollToMarkTextView(mark TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64)
-	// SetAcceptsTabTextView:
+
 	SetAcceptsTabTextView(acceptsTab bool)
-	// SetBottomMarginTextView:
+
 	SetBottomMarginTextView(bottomMargin int)
-	// SetBufferTextView:
+
 	SetBufferTextView(buffer TextBuffer)
-	// SetCursorVisibleTextView:
+
 	SetCursorVisibleTextView(setting bool)
-	// SetEditableTextView:
+
 	SetEditableTextView(setting bool)
-	// SetExtraMenuTextView:
+
 	SetExtraMenuTextView(model gio.MenuModel)
-	// SetGutterTextView:
+
 	SetGutterTextView(win TextWindowType, widget Widget)
-	// SetIndentTextView:
+
 	SetIndentTextView(indent int)
-	// SetInputHintsTextView:
+
 	SetInputHintsTextView(hints InputHints)
-	// SetInputPurposeTextView:
+
 	SetInputPurposeTextView(purpose InputPurpose)
-	// SetJustificationTextView:
+
 	SetJustificationTextView(justification Justification)
-	// SetLeftMarginTextView:
+
 	SetLeftMarginTextView(leftMargin int)
-	// SetMonospaceTextView:
+
 	SetMonospaceTextView(monospace bool)
-	// SetOverwriteTextView:
+
 	SetOverwriteTextView(overwrite bool)
-	// SetPixelsAboveLinesTextView:
+
 	SetPixelsAboveLinesTextView(pixelsAboveLines int)
-	// SetPixelsBelowLinesTextView:
+
 	SetPixelsBelowLinesTextView(pixelsBelowLines int)
-	// SetPixelsInsideWrapTextView:
+
 	SetPixelsInsideWrapTextView(pixelsInsideWrap int)
-	// SetRightMarginTextView:
+
 	SetRightMarginTextView(rightMargin int)
-	// SetTabsTextView:
+
 	SetTabsTextView(tabs *pango.TabArray)
-	// SetTopMarginTextView:
+
 	SetTopMarginTextView(topMargin int)
-	// SetWrapModeTextView:
+
 	SetWrapModeTextView(wrapMode WrapMode)
-	// StartsDisplayLineTextView:
+
 	StartsDisplayLineTextView(iter *TextIter) bool
-	// WindowToBufferCoordsTextView:
+
 	WindowToBufferCoordsTextView(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
@@ -274,7 +273,6 @@ func marshalTextView(p uintptr) (interface{}, error) {
 	return WrapTextView(obj), nil
 }
 
-// NewTextView:
 func NewTextView() TextView {
 	var _cret *C.GtkWidget // in
 
@@ -287,7 +285,6 @@ func NewTextView() TextView {
 	return _textView
 }
 
-// NewTextViewWithBuffer:
 func NewTextViewWithBuffer(buffer TextBuffer) TextView {
 	var _arg1 *C.GtkTextBuffer // out
 	var _cret *C.GtkWidget     // in

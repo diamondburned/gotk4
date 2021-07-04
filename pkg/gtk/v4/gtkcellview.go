@@ -47,21 +47,20 @@ type CellView interface {
 	CellLayout
 	Orientable
 
-	// DisplayedRow:
 	DisplayedRow() *TreePath
-	// DrawSensitive:
+
 	DrawSensitive() bool
-	// FitModel:
+
 	FitModel() bool
-	// Model:
+
 	Model() TreeModel
-	// SetDisplayedRowCellView:
+
 	SetDisplayedRowCellView(path *TreePath)
-	// SetDrawSensitiveCellView:
+
 	SetDrawSensitiveCellView(drawSensitive bool)
-	// SetFitModelCellView:
+
 	SetFitModelCellView(fitModel bool)
-	// SetModelCellView:
+
 	SetModelCellView(model TreeModel)
 }
 
@@ -84,7 +83,6 @@ func marshalCellView(p uintptr) (interface{}, error) {
 	return WrapCellView(obj), nil
 }
 
-// NewCellView:
 func NewCellView() CellView {
 	var _cret *C.GtkWidget // in
 
@@ -97,7 +95,6 @@ func NewCellView() CellView {
 	return _cellView
 }
 
-// NewCellViewWithContext:
 func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	var _arg1 *C.GtkCellArea        // out
 	var _arg2 *C.GtkCellAreaContext // out
@@ -115,7 +112,6 @@ func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	return _cellView
 }
 
-// NewCellViewWithMarkup:
 func NewCellViewWithMarkup(markup string) CellView {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -132,7 +128,6 @@ func NewCellViewWithMarkup(markup string) CellView {
 	return _cellView
 }
 
-// NewCellViewWithText:
 func NewCellViewWithText(text string) CellView {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -149,7 +144,6 @@ func NewCellViewWithText(text string) CellView {
 	return _cellView
 }
 
-// NewCellViewWithTexture:
 func NewCellViewWithTexture(texture gdk.Texture) CellView {
 	var _arg1 *C.GdkTexture // out
 	var _cret *C.GtkWidget  // in

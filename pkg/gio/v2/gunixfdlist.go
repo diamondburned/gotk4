@@ -45,11 +45,10 @@ func init() {
 type UnixFDList interface {
 	gextras.Objector
 
-	// AppendUnixFDList:
 	AppendUnixFDList(fd int) (int, error)
-	// GetUnixFDList:
+
 	GetUnixFDList(index_ int) (int, error)
-	// Length:
+
 	Length() int
 }
 
@@ -72,7 +71,6 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 	return WrapUnixFDList(obj), nil
 }
 
-// NewUnixFDList:
 func NewUnixFDList() UnixFDList {
 	var _cret *C.GUnixFDList // in
 
@@ -85,7 +83,6 @@ func NewUnixFDList() UnixFDList {
 	return _unixFDList
 }
 
-// NewUnixFDListFromArray:
 func NewUnixFDListFromArray(fds []int) UnixFDList {
 	var _arg1 *C.gint
 	var _arg2 C.gint

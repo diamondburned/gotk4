@@ -65,7 +65,6 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 	return WrapFontChooserDialog(obj), nil
 }
 
-// NewFontChooserDialog:
 func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out

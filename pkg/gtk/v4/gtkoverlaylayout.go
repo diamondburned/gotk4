@@ -52,7 +52,6 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 	return WrapOverlayLayout(obj), nil
 }
 
-// NewOverlayLayout:
 func NewOverlayLayout() OverlayLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -70,13 +69,12 @@ func NewOverlayLayout() OverlayLayout {
 type OverlayLayoutChild interface {
 	LayoutChild
 
-	// ClipOverlay:
 	ClipOverlay() bool
-	// Measure:
+
 	Measure() bool
-	// SetClipOverlayOverlayLayoutChild:
+
 	SetClipOverlayOverlayLayoutChild(clipOverlay bool)
-	// SetMeasureOverlayLayoutChild:
+
 	SetMeasureOverlayLayoutChild(measure bool)
 }
 

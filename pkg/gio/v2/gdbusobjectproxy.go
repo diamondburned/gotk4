@@ -39,7 +39,6 @@ func init() {
 type DBusObjectProxy interface {
 	DBusObject
 
-	// Connection:
 	Connection() DBusConnection
 }
 
@@ -62,7 +61,6 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 	return WrapDBusObjectProxy(obj), nil
 }
 
-// NewDBusObjectProxy:
 func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObjectProxy {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out

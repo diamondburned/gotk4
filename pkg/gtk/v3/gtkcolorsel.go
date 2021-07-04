@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,43 +27,41 @@ func init() {
 	})
 }
 
-// ColorSelection:
 type ColorSelection interface {
 	Box
 
-	// CurrentAlpha:
 	CurrentAlpha() uint16
-	// CurrentColor:
+
 	CurrentColor() gdk.Color
-	// CurrentRGBA:
+
 	CurrentRGBA() gdk.RGBA
-	// HasOpacityControl:
+
 	HasOpacityControl() bool
-	// HasPalette:
+
 	HasPalette() bool
-	// PreviousAlpha:
+
 	PreviousAlpha() uint16
-	// PreviousColor:
+
 	PreviousColor() gdk.Color
-	// PreviousRGBA:
+
 	PreviousRGBA() gdk.RGBA
-	// IsAdjustingColorSelection:
+
 	IsAdjustingColorSelection() bool
-	// SetCurrentAlphaColorSelection:
+
 	SetCurrentAlphaColorSelection(alpha uint16)
-	// SetCurrentColorColorSelection:
+
 	SetCurrentColorColorSelection(color *gdk.Color)
-	// SetCurrentRGBAColorSelection:
+
 	SetCurrentRGBAColorSelection(rgba *gdk.RGBA)
-	// SetHasOpacityControlColorSelection:
+
 	SetHasOpacityControlColorSelection(hasOpacity bool)
-	// SetHasPaletteColorSelection:
+
 	SetHasPaletteColorSelection(hasPalette bool)
-	// SetPreviousAlphaColorSelection:
+
 	SetPreviousAlphaColorSelection(alpha uint16)
-	// SetPreviousColorColorSelection:
+
 	SetPreviousColorColorSelection(color *gdk.Color)
-	// SetPreviousRGBAColorSelection:
+
 	SetPreviousRGBAColorSelection(rgba *gdk.RGBA)
 }
 
@@ -84,7 +84,6 @@ func marshalColorSelection(p uintptr) (interface{}, error) {
 	return WrapColorSelection(obj), nil
 }
 
-// NewColorSelection:
 func NewColorSelection() ColorSelection {
 	var _cret *C.GtkWidget // in
 
@@ -368,6 +367,18 @@ func (b colorSelection) AddChild(builder Builder, child gextras.Objector, typ st
 
 func (b colorSelection) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b colorSelection) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b colorSelection) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b colorSelection) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b colorSelection) InternalChild(builder Builder, childname string) gextras.Objector {

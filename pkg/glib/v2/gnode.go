@@ -74,6 +74,24 @@ func (n *Node) Native() unsafe.Pointer {
 	return unsafe.Pointer(n)
 }
 
+// ChildIndex unlinks a #GNode from a tree, resulting in two separate trees.
+func (n *Node) ChildIndex(data interface{}) int {
+	var _arg0 *C.GNode   // out
+	var _arg1 C.gpointer // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(data)))
+
+	_cret = C.g_node_child_index(_arg0, _arg1)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
 // ChildPosition unlinks a #GNode from a tree, resulting in two separate trees.
 func (n *Node) ChildPosition(child *Node) int {
 	var _arg0 *C.GNode // out

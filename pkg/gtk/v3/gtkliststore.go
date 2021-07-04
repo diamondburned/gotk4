@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -17,6 +19,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -67,37 +71,36 @@ type ListStore interface {
 	TreeDragSource
 	TreeSortable
 
-	// AppendListStore:
 	AppendListStore() TreeIter
-	// ClearListStore:
+
 	ClearListStore()
-	// InsertListStore:
+
 	InsertListStore(position int) TreeIter
-	// InsertAfterListStore:
+
 	InsertAfterListStore(sibling *TreeIter) TreeIter
-	// InsertBeforeListStore:
+
 	InsertBeforeListStore(sibling *TreeIter) TreeIter
-	// InsertWithValuesvListStore:
+
 	InsertWithValuesvListStore(position int, columns []int, values []externglib.Value) TreeIter
-	// IterIsValidListStore:
+
 	IterIsValidListStore(iter *TreeIter) bool
-	// MoveAfterListStore:
+
 	MoveAfterListStore(iter *TreeIter, position *TreeIter)
-	// MoveBeforeListStore:
+
 	MoveBeforeListStore(iter *TreeIter, position *TreeIter)
-	// PrependListStore:
+
 	PrependListStore() TreeIter
-	// RemoveListStore:
+
 	RemoveListStore(iter *TreeIter) bool
-	// ReorderListStore:
+
 	ReorderListStore(newOrder []int)
-	// SetColumnTypesListStore:
+
 	SetColumnTypesListStore(types []externglib.Type)
-	// SetValueListStore:
+
 	SetValueListStore(iter *TreeIter, column int, value externglib.Value)
-	// SetValuesvListStore:
+
 	SetValuesvListStore(iter *TreeIter, columns []int, values []externglib.Value)
-	// SwapListStore:
+
 	SwapListStore(a *TreeIter, b *TreeIter)
 }
 
@@ -120,7 +123,6 @@ func marshalListStore(p uintptr) (interface{}, error) {
 	return WrapListStore(obj), nil
 }
 
-// NewListStoreV:
 func NewListStoreV(types []externglib.Type) ListStore {
 	var _arg2 *C.GType
 	var _arg1 C.gint
@@ -500,6 +502,18 @@ func (b listStore) ConstructChild(builder Builder, name string) gextras.Objector
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b listStore) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b listStore) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b listStore) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b listStore) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -558,6 +572,10 @@ func (s listStore) SortColumnChanged() {
 
 func (t listStore) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(t)).NewFilter(root)
+}
+
+func (t listStore) Foreach(fn TreeModelForeachFunc) {
+	WrapTreeModel(gextras.InternObject(t)).Foreach(fn)
 }
 
 func (t listStore) ColumnType(index_ int) externglib.Type {

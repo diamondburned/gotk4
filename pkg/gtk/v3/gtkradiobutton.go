@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -88,7 +89,6 @@ func init() {
 type RadioButton interface {
 	CheckButton
 
-	// JoinGroupRadioButton:
 	JoinGroupRadioButton(groupSource RadioButton)
 }
 
@@ -111,7 +111,6 @@ func marshalRadioButton(p uintptr) (interface{}, error) {
 	return WrapRadioButton(obj), nil
 }
 
-// NewRadioButtonFromWidget:
 func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _cret *C.GtkWidget      // in
@@ -127,7 +126,6 @@ func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
 	return _radioButton
 }
 
-// NewRadioButtonWithLabelFromWidget:
 func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label string) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
@@ -146,7 +144,6 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label strin
 	return _radioButton
 }
 
-// NewRadioButtonWithMnemonicFromWidget:
 func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label string) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
@@ -181,6 +178,18 @@ func (b radioButton) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b radioButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b radioButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b radioButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b radioButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b radioButton) InternalChild(builder Builder, childname string) gextras.Objector {
@@ -229,6 +238,18 @@ func (b radioButton) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b radioButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b radioButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b radioButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b radioButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b radioButton) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -223,29 +225,28 @@ func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
 type Dialog interface {
 	Window
 
-	// AddActionWidgetDialog:
 	AddActionWidgetDialog(child Widget, responseId int)
-	// AddButtonDialog:
+
 	AddButtonDialog(buttonText string, responseId int) Widget
-	// ActionArea:
+
 	ActionArea() Box
-	// ContentArea:
+
 	ContentArea() Box
-	// HeaderBar:
+
 	HeaderBar() HeaderBar
-	// ResponseForWidget:
+
 	ResponseForWidget(widget Widget) int
-	// WidgetForResponse:
+
 	WidgetForResponse(responseId int) Widget
-	// ResponseDialog:
+
 	ResponseDialog(responseId int)
-	// RunDialog:
+
 	RunDialog() int
-	// SetAlternativeButtonOrderFromArrayDialog:
+
 	SetAlternativeButtonOrderFromArrayDialog(newOrder []int)
-	// SetDefaultResponseDialog:
+
 	SetDefaultResponseDialog(responseId int)
-	// SetResponseSensitiveDialog:
+
 	SetResponseSensitiveDialog(responseId int, setting bool)
 }
 
@@ -268,7 +269,6 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return WrapDialog(obj), nil
 }
 
-// NewDialog:
 func NewDialog() Dialog {
 	var _cret *C.GtkWidget // in
 
@@ -459,6 +459,18 @@ func (b dialog) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b dialog) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b dialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b dialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b dialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b dialog) InternalChild(builder Builder, childname string) gextras.Objector {

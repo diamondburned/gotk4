@@ -48,13 +48,12 @@ func init() {
 type UnixSocketAddress interface {
 	SocketAddress
 
-	// AddressType:
 	AddressType() UnixSocketAddressType
-	// IsAbstract:
+
 	IsAbstract() bool
-	// Path:
+
 	Path() string
-	// PathLen:
+
 	PathLen() uint
 }
 
@@ -77,7 +76,6 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 	return WrapUnixSocketAddress(obj), nil
 }
 
-// NewUnixSocketAddress:
 func NewUnixSocketAddress(path string) UnixSocketAddress {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GSocketAddress // in
@@ -94,7 +92,6 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 	return _unixSocketAddress
 }
 
-// NewUnixSocketAddressAbstract:
 func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 	var _arg1 *C.gchar
 	var _arg2 C.gint
@@ -112,7 +109,6 @@ func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 	return _unixSocketAddress
 }
 
-// NewUnixSocketAddressWithType:
 func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSocketAddress {
 	var _arg1 *C.gchar
 	var _arg2 C.gint

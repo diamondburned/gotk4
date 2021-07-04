@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,13 +44,12 @@ func init() {
 type Misc interface {
 	Widget
 
-	// Alignment:
 	Alignment() (xalign float32, yalign float32)
-	// Padding:
+
 	Padding() (xpad int, ypad int)
-	// SetAlignmentMisc:
+
 	SetAlignmentMisc(xalign float32, yalign float32)
-	// SetPaddingMisc:
+
 	SetPaddingMisc(xpad int, ypad int)
 }
 
@@ -137,6 +138,18 @@ func (b misc) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b misc) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b misc) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b misc) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b misc) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b misc) InternalChild(builder Builder, childname string) gextras.Objector {

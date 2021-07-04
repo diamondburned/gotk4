@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -123,7 +125,6 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return WrapDrawingArea(obj), nil
 }
 
-// NewDrawingArea:
 func NewDrawingArea() DrawingArea {
 	var _cret *C.GtkWidget // in
 
@@ -142,6 +143,18 @@ func (b drawingArea) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b drawingArea) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b drawingArea) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b drawingArea) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b drawingArea) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b drawingArea) InternalChild(builder Builder, childname string) gextras.Objector {

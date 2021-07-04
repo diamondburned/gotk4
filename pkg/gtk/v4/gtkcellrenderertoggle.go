@@ -29,17 +29,16 @@ func init() {
 type CellRendererToggle interface {
 	CellRenderer
 
-	// Activatable:
 	Activatable() bool
-	// Active:
+
 	Active() bool
-	// Radio:
+
 	Radio() bool
-	// SetActivatableCellRendererToggle:
+
 	SetActivatableCellRendererToggle(setting bool)
-	// SetActiveCellRendererToggle:
+
 	SetActiveCellRendererToggle(setting bool)
-	// SetRadioCellRendererToggle:
+
 	SetRadioCellRendererToggle(radio bool)
 }
 
@@ -62,7 +61,6 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return WrapCellRendererToggle(obj), nil
 }
 
-// NewCellRendererToggle:
 func NewCellRendererToggle() CellRendererToggle {
 	var _cret *C.GtkCellRenderer // in
 

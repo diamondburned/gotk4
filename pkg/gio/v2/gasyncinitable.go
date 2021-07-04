@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -133,6 +136,9 @@ func init() {
 type AsyncInitable interface {
 	gextras.Objector
 
+	// InitAsync finishes the async construction for the various
+	// g_async_initable_new calls, returning the created object or nil on error.
+	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// InitFinish finishes the async construction for the various
 	// g_async_initable_new calls, returning the created object or nil on error.
 	InitFinish(res AsyncResult) error
@@ -160,6 +166,22 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAsyncInitable(obj), nil
+}
+
+func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GAsyncInitable     // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_async_initable_init_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (i asyncInitable) InitFinish(res AsyncResult) error {

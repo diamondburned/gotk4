@@ -40,25 +40,24 @@ type DataOutputStream interface {
 	FilterOutputStream
 	Seekable
 
-	// ByteOrder:
 	ByteOrder() DataStreamByteOrder
-	// PutByteDataOutputStream:
+
 	PutByteDataOutputStream(data byte, cancellable Cancellable) error
-	// PutInt16DataOutputStream:
+
 	PutInt16DataOutputStream(data int16, cancellable Cancellable) error
-	// PutInt32DataOutputStream:
+
 	PutInt32DataOutputStream(data int32, cancellable Cancellable) error
-	// PutInt64DataOutputStream:
+
 	PutInt64DataOutputStream(data int64, cancellable Cancellable) error
-	// PutStringDataOutputStream:
+
 	PutStringDataOutputStream(str string, cancellable Cancellable) error
-	// PutUint16DataOutputStream:
+
 	PutUint16DataOutputStream(data uint16, cancellable Cancellable) error
-	// PutUint32DataOutputStream:
+
 	PutUint32DataOutputStream(data uint32, cancellable Cancellable) error
-	// PutUint64DataOutputStream:
+
 	PutUint64DataOutputStream(data uint64, cancellable Cancellable) error
-	// SetByteOrderDataOutputStream:
+
 	SetByteOrderDataOutputStream(order DataStreamByteOrder)
 }
 
@@ -81,7 +80,6 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 	return WrapDataOutputStream(obj), nil
 }
 
-// NewDataOutputStream:
 func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 	var _arg1 *C.GOutputStream     // out
 	var _cret *C.GDataOutputStream // in

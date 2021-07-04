@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,21 +64,18 @@ func init() {
 type Tooltip interface {
 	gextras.Objector
 
-	// SetCustomTooltip:
 	SetCustomTooltip(customWidget Widget)
-	// SetIconTooltip:
+
 	SetIconTooltip(pixbuf gdkpixbuf.Pixbuf)
-	// SetIconFromGIconTooltip:
-	SetIconFromGIconTooltip(gicon gio.Icon, size int)
-	// SetIconFromIconNameTooltip:
+
 	SetIconFromIconNameTooltip(iconName string, size int)
-	// SetIconFromStockTooltip:
+
 	SetIconFromStockTooltip(stockId string, size int)
-	// SetMarkupTooltip:
+
 	SetMarkupTooltip(markup string)
-	// SetTextTooltip:
+
 	SetTextTooltip(text string)
-	// SetTipAreaTooltip:
+
 	SetTipAreaTooltip(rect *gdk.Rectangle)
 }
 
@@ -120,18 +116,6 @@ func (t tooltip) SetIconTooltip(pixbuf gdkpixbuf.Pixbuf) {
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
-}
-
-func (t tooltip) SetIconFromGIconTooltip(gicon gio.Icon, size int) {
-	var _arg0 *C.GtkTooltip // out
-	var _arg1 *C.GIcon      // out
-	var _arg2 C.GtkIconSize // out
-
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
-	_arg2 = C.GtkIconSize(size)
-
-	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1, _arg2)
 }
 
 func (t tooltip) SetIconFromIconNameTooltip(iconName string, size int) {

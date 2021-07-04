@@ -108,49 +108,48 @@ func marshalCellRendererState(p uintptr) (interface{}, error) {
 type CellRenderer interface {
 	gextras.Objector
 
-	// AlignedArea:
 	AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
-	// Alignment:
+
 	Alignment() (xalign float32, yalign float32)
-	// FixedSize:
+
 	FixedSize() (width int, height int)
-	// Padding:
+
 	Padding() (xpad int, ypad int)
-	// PreferredHeight:
+
 	PreferredHeight(widget Widget) (minimumSize int, naturalSize int)
-	// PreferredHeightForWidth:
+
 	PreferredHeightForWidth(widget Widget, width int) (minimumHeight int, naturalHeight int)
-	// PreferredSize:
+
 	PreferredSize(widget Widget) (minimumSize Requisition, naturalSize Requisition)
-	// PreferredWidth:
+
 	PreferredWidth(widget Widget) (minimumSize int, naturalSize int)
-	// PreferredWidthForHeight:
+
 	PreferredWidthForHeight(widget Widget, height int) (minimumWidth int, naturalWidth int)
-	// RequestMode:
+
 	RequestMode() SizeRequestMode
-	// Sensitive:
+
 	Sensitive() bool
-	// Size:
+
 	Size(widget Widget, cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int)
-	// State:
+
 	State(widget Widget, cellState CellRendererState) StateFlags
-	// Visible:
+
 	Visible() bool
-	// IsActivatableCellRenderer:
+
 	IsActivatableCellRenderer() bool
-	// RenderCellRenderer:
+
 	RenderCellRenderer(cr *cairo.Context, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
-	// SetAlignmentCellRenderer:
+
 	SetAlignmentCellRenderer(xalign float32, yalign float32)
-	// SetFixedSizeCellRenderer:
+
 	SetFixedSizeCellRenderer(width int, height int)
-	// SetPaddingCellRenderer:
+
 	SetPaddingCellRenderer(xpad int, ypad int)
-	// SetSensitiveCellRenderer:
+
 	SetSensitiveCellRenderer(sensitive bool)
-	// SetVisibleCellRenderer:
+
 	SetVisibleCellRenderer(visible bool)
-	// StopEditingCellRenderer:
+
 	StopEditingCellRenderer(canceled bool)
 }
 

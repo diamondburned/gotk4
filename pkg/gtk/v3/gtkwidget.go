@@ -6,11 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -50,6 +53,54 @@ const (
 
 func marshalWidgetHelpType(p uintptr) (interface{}, error) {
 	return WidgetHelpType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Callback: the type of the callback functions used for e.g. iterating over the
+// children of a container, see gtk_container_foreach().
+type Callback func(widget Widget)
+
+//export gotk4_Callback
+func _Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var widget Widget // out
+
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
+
+	fn := v.(Callback)
+	fn(widget)
+}
+
+// TickCallback: callback type for adding a function to update animations. See
+// gtk_widget_add_tick_callback().
+type TickCallback func(widget Widget, frameClock gdk.FrameClock, ok bool)
+
+//export gotk4_TickCallback
+func _TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var widget Widget             // out
+	var frameClock gdk.FrameClock // out
+
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
+	frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(gdk.FrameClock)
+
+	fn := v.(TickCallback)
+	ok := fn(widget, frameClock)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // CairoShouldDrawWindow: this function is supposed to be called in Widget::draw
@@ -195,493 +246,492 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widget, window gdk.Window)
 type Widget interface {
 	Buildable
 
-	// ActivateWidget:
 	ActivateWidget() bool
-	// AddAcceleratorWidget:
+
 	AddAcceleratorWidget(accelSignal string, accelGroup AccelGroup, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags)
-	// AddDeviceEventsWidget:
+
 	AddDeviceEventsWidget(device gdk.Device, events gdk.EventMask)
-	// AddEventsWidget:
+
 	AddEventsWidget(events int)
-	// AddMnemonicLabelWidget:
+
 	AddMnemonicLabelWidget(label Widget)
-	// CanActivateAccelWidget:
+
 	CanActivateAccelWidget(signalId uint) bool
-	// ChildFocusWidget:
+
 	ChildFocusWidget(direction DirectionType) bool
-	// ChildNotifyWidget:
+
 	ChildNotifyWidget(childProperty string)
-	// ClassPathWidget:
+
 	ClassPathWidget() (pathLength uint, path string, pathReversed string)
-	// ComputeExpandWidget:
+
 	ComputeExpandWidget(orientation Orientation) bool
-	// CreatePangoContextWidget:
+
 	CreatePangoContextWidget() pango.Context
-	// CreatePangoLayoutWidget:
+
 	CreatePangoLayoutWidget(text string) pango.Layout
-	// DestroyWidget:
+
 	DestroyWidget()
-	// DeviceIsShadowedWidget:
+
 	DeviceIsShadowedWidget(device gdk.Device) bool
-	// DragCheckThresholdWidget:
+
 	DragCheckThresholdWidget(startX int, startY int, currentX int, currentY int) bool
-	// DragDestAddImageTargetsWidget:
+
 	DragDestAddImageTargetsWidget()
-	// DragDestAddTextTargetsWidget:
+
 	DragDestAddTextTargetsWidget()
-	// DragDestAddURITargetsWidget:
+
 	DragDestAddURITargetsWidget()
-	// DragDestFindTargetWidget:
+
 	DragDestFindTargetWidget(context gdk.DragContext, targetList *TargetList) *gdk.Atom
-	// DragDestGetTargetListWidget:
+
 	DragDestGetTargetListWidget() *TargetList
-	// DragDestGetTrackMotionWidget:
+
 	DragDestGetTrackMotionWidget() bool
-	// DragDestSetWidget:
+
 	DragDestSetWidget(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction)
-	// DragDestSetProxyWidget:
+
 	DragDestSetProxyWidget(proxyWindow gdk.Window, protocol gdk.DragProtocol, useCoordinates bool)
-	// DragDestSetTargetListWidget:
+
 	DragDestSetTargetListWidget(targetList *TargetList)
-	// DragDestSetTrackMotionWidget:
+
 	DragDestSetTrackMotionWidget(trackMotion bool)
-	// DragDestUnsetWidget:
+
 	DragDestUnsetWidget()
-	// DragGetDataWidget:
+
 	DragGetDataWidget(context gdk.DragContext, target *gdk.Atom, time_ uint32)
-	// DragHighlightWidget:
+
 	DragHighlightWidget()
-	// DragSourceAddImageTargetsWidget:
+
 	DragSourceAddImageTargetsWidget()
-	// DragSourceAddTextTargetsWidget:
+
 	DragSourceAddTextTargetsWidget()
-	// DragSourceAddURITargetsWidget:
+
 	DragSourceAddURITargetsWidget()
-	// DragSourceGetTargetListWidget:
+
 	DragSourceGetTargetListWidget() *TargetList
-	// DragSourceSetWidget:
+
 	DragSourceSetWidget(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction)
-	// DragSourceSetIconGIconWidget:
-	DragSourceSetIconGIconWidget(icon gio.Icon)
-	// DragSourceSetIconNameWidget:
+
 	DragSourceSetIconNameWidget(iconName string)
-	// DragSourceSetIconPixbufWidget:
+
 	DragSourceSetIconPixbufWidget(pixbuf gdkpixbuf.Pixbuf)
-	// DragSourceSetIconStockWidget:
+
 	DragSourceSetIconStockWidget(stockId string)
-	// DragSourceSetTargetListWidget:
+
 	DragSourceSetTargetListWidget(targetList *TargetList)
-	// DragSourceUnsetWidget:
+
 	DragSourceUnsetWidget()
-	// DragUnhighlightWidget:
+
 	DragUnhighlightWidget()
-	// DrawWidget:
+
 	DrawWidget(cr *cairo.Context)
-	// EnsureStyleWidget:
+
 	EnsureStyleWidget()
-	// ErrorBellWidget:
+
 	ErrorBellWidget()
-	// FreezeChildNotifyWidget:
+
 	FreezeChildNotifyWidget()
-	// ActionGroup:
+
+	Accessible() atk.Object
+
 	ActionGroup(prefix string) gio.ActionGroup
-	// AllocatedBaseline:
+
 	AllocatedBaseline() int
-	// AllocatedHeight:
+
 	AllocatedHeight() int
-	// AllocatedWidth:
+
 	AllocatedWidth() int
-	// Ancestor:
+
 	Ancestor(widgetType externglib.Type) Widget
-	// AppPaintable:
+
 	AppPaintable() bool
-	// CanDefault:
+
 	CanDefault() bool
-	// CanFocus:
+
 	CanFocus() bool
-	// ChildRequisition:
+
 	ChildRequisition() Requisition
-	// ChildVisible:
+
 	ChildVisible() bool
-	// Clipboard:
+
 	Clipboard(selection *gdk.Atom) Clipboard
-	// CompositeName:
+
 	CompositeName() string
-	// DeviceEnabled:
+
 	DeviceEnabled(device gdk.Device) bool
-	// DeviceEvents:
+
 	DeviceEvents(device gdk.Device) gdk.EventMask
-	// Direction:
+
 	Direction() TextDirection
-	// Display:
+
 	Display() gdk.Display
-	// DoubleBuffered:
+
 	DoubleBuffered() bool
-	// Events:
+
 	Events() int
-	// FocusOnClick:
+
 	FocusOnClick() bool
-	// FontMap:
+
 	FontMap() pango.FontMap
-	// FontOptions:
+
 	FontOptions() *cairo.FontOptions
-	// FrameClock:
+
 	FrameClock() gdk.FrameClock
-	// Halign:
+
 	Halign() Align
-	// HasTooltip:
+
 	HasTooltip() bool
-	// HasWindow:
+
 	HasWindow() bool
-	// Hexpand:
+
 	Hexpand() bool
-	// HexpandSet:
+
 	HexpandSet() bool
-	// Mapped:
+
 	Mapped() bool
-	// MarginBottom:
+
 	MarginBottom() int
-	// MarginEnd:
+
 	MarginEnd() int
-	// MarginLeft:
+
 	MarginLeft() int
-	// MarginRight:
+
 	MarginRight() int
-	// MarginStart:
+
 	MarginStart() int
-	// MarginTop:
+
 	MarginTop() int
-	// ModifierMask:
+
 	ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType
-	// ModifierStyle:
+
 	ModifierStyle() RCStyle
-	// GetName:
+
 	GetName() string
-	// NoShowAll:
+
 	NoShowAll() bool
-	// Opacity:
+
 	Opacity() float64
-	// PangoContext:
+
 	PangoContext() pango.Context
-	// Parent:
+
 	Parent() Widget
-	// ParentWindow:
+
 	ParentWindow() gdk.Window
-	// GetPath:
+
 	GetPath() *WidgetPath
-	// Pointer:
+
 	Pointer() (x int, y int)
-	// PreferredHeight:
+
 	PreferredHeight() (minimumHeight int, naturalHeight int)
-	// PreferredHeightAndBaselineForWidth:
+
 	PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int)
-	// PreferredHeightForWidth:
+
 	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
-	// PreferredSize:
+
 	PreferredSize() (minimumSize Requisition, naturalSize Requisition)
-	// PreferredWidth:
+
 	PreferredWidth() (minimumWidth int, naturalWidth int)
-	// PreferredWidthForHeight:
+
 	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
-	// Realized:
+
 	Realized() bool
-	// ReceivesDefault:
+
 	ReceivesDefault() bool
-	// RequestMode:
+
 	RequestMode() SizeRequestMode
-	// Requisition:
+
 	Requisition() Requisition
-	// RootWindow:
+
 	RootWindow() gdk.Window
-	// ScaleFactor:
+
 	ScaleFactor() int
-	// Screen:
+
 	Screen() gdk.Screen
-	// Sensitive:
+
 	Sensitive() bool
-	// Settings:
+
 	Settings() Settings
-	// GetSizeRequest:
+
 	GetSizeRequest() (width int, height int)
-	// State:
+
 	State() StateType
-	// StateFlags:
+
 	StateFlags() StateFlags
-	// Style:
+
 	Style() Style
-	// StyleContext:
+
 	StyleContext() StyleContext
-	// SupportMultidevice:
+
 	SupportMultidevice() bool
-	// TemplateChild:
+
 	TemplateChild(widgetType externglib.Type, name string) gextras.Objector
-	// TooltipMarkup:
+
 	TooltipMarkup() string
-	// TooltipText:
+
 	TooltipText() string
-	// TooltipWindow:
+
 	TooltipWindow() Window
-	// Toplevel:
+
 	Toplevel() Widget
-	// Valign:
+
 	Valign() Align
-	// ValignWithBaseline:
+
 	ValignWithBaseline() Align
-	// Vexpand:
+
 	Vexpand() bool
-	// VexpandSet:
+
 	VexpandSet() bool
-	// Visible:
+
 	Visible() bool
-	// Visual:
+
 	Visual() gdk.Visual
-	// Window:
+
 	Window() gdk.Window
-	// GrabAddWidget:
+
 	GrabAddWidget()
-	// GrabDefaultWidget:
+
 	GrabDefaultWidget()
-	// GrabFocusWidget:
+
 	GrabFocusWidget()
-	// GrabRemoveWidget:
+
 	GrabRemoveWidget()
-	// HasDefaultWidget:
+
 	HasDefaultWidget() bool
-	// HasFocusWidget:
+
 	HasFocusWidget() bool
-	// HasGrabWidget:
+
 	HasGrabWidget() bool
-	// HasRCStyleWidget:
+
 	HasRCStyleWidget() bool
-	// HasScreenWidget:
+
 	HasScreenWidget() bool
-	// HasVisibleFocusWidget:
+
 	HasVisibleFocusWidget() bool
-	// HideWidget:
+
 	HideWidget()
-	// HideOnDeleteWidget:
+
 	HideOnDeleteWidget() bool
-	// InDestructionWidget:
+
 	InDestructionWidget() bool
-	// InitTemplateWidget:
+
 	InitTemplateWidget()
-	// InputShapeCombineRegionWidget:
+
 	InputShapeCombineRegionWidget(region *cairo.Region)
-	// InsertActionGroupWidget:
+
 	InsertActionGroupWidget(name string, group gio.ActionGroup)
-	// IntersectWidget:
+
 	IntersectWidget(area *gdk.Rectangle) (gdk.Rectangle, bool)
-	// IsAncestorWidget:
+
 	IsAncestorWidget(ancestor Widget) bool
-	// IsCompositedWidget:
+
 	IsCompositedWidget() bool
-	// IsDrawableWidget:
+
 	IsDrawableWidget() bool
-	// IsFocusWidget:
+
 	IsFocusWidget() bool
-	// IsSensitiveWidget:
+
 	IsSensitiveWidget() bool
-	// IsToplevelWidget:
+
 	IsToplevelWidget() bool
-	// IsVisibleWidget:
+
 	IsVisibleWidget() bool
-	// KeynavFailedWidget:
+
 	KeynavFailedWidget(direction DirectionType) bool
-	// ListActionPrefixesWidget:
+
 	ListActionPrefixesWidget() []string
-	// MapWidget:
+
 	MapWidget()
-	// MnemonicActivateWidget:
+
 	MnemonicActivateWidget(groupCycling bool) bool
-	// ModifyBaseWidget:
+
 	ModifyBaseWidget(state StateType, color *gdk.Color)
-	// ModifyBgWidget:
+
 	ModifyBgWidget(state StateType, color *gdk.Color)
-	// ModifyCursorWidget:
+
 	ModifyCursorWidget(primary *gdk.Color, secondary *gdk.Color)
-	// ModifyFgWidget:
+
 	ModifyFgWidget(state StateType, color *gdk.Color)
-	// ModifyFontWidget:
+
 	ModifyFontWidget(fontDesc *pango.FontDescription)
-	// ModifyStyleWidget:
+
 	ModifyStyleWidget(style RCStyle)
-	// ModifyTextWidget:
+
 	ModifyTextWidget(state StateType, color *gdk.Color)
-	// OverrideBackgroundColorWidget:
+
 	OverrideBackgroundColorWidget(state StateFlags, color *gdk.RGBA)
-	// OverrideColorWidget:
+
 	OverrideColorWidget(state StateFlags, color *gdk.RGBA)
-	// OverrideCursorWidget:
+
 	OverrideCursorWidget(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA)
-	// OverrideFontWidget:
+
 	OverrideFontWidget(fontDesc *pango.FontDescription)
-	// OverrideSymbolicColorWidget:
+
 	OverrideSymbolicColorWidget(name string, color *gdk.RGBA)
-	// PathWidget:
+
 	PathWidget() (pathLength uint, path string, pathReversed string)
-	// QueueAllocateWidget:
+
 	QueueAllocateWidget()
-	// QueueComputeExpandWidget:
+
 	QueueComputeExpandWidget()
-	// QueueDrawWidget:
+
 	QueueDrawWidget()
-	// QueueDrawAreaWidget:
+
 	QueueDrawAreaWidget(x int, y int, width int, height int)
-	// QueueDrawRegionWidget:
+
 	QueueDrawRegionWidget(region *cairo.Region)
-	// QueueResizeWidget:
+
 	QueueResizeWidget()
-	// QueueResizeNoRedrawWidget:
+
 	QueueResizeNoRedrawWidget()
-	// RealizeWidget:
+
 	RealizeWidget()
-	// RegionIntersectWidget:
+
 	RegionIntersectWidget(region *cairo.Region) *cairo.Region
-	// RegisterWindowWidget:
+
 	RegisterWindowWidget(window gdk.Window)
-	// RemoveAcceleratorWidget:
+
 	RemoveAcceleratorWidget(accelGroup AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool
-	// RemoveMnemonicLabelWidget:
+
 	RemoveMnemonicLabelWidget(label Widget)
-	// RemoveTickCallbackWidget:
+
 	RemoveTickCallbackWidget(id uint)
-	// RenderIconWidget:
+
 	RenderIconWidget(stockId string, size int, detail string) gdkpixbuf.Pixbuf
-	// RenderIconPixbufWidget:
+
 	RenderIconPixbufWidget(stockId string, size int) gdkpixbuf.Pixbuf
-	// ReparentWidget:
+
 	ReparentWidget(newParent Widget)
-	// ResetRCStylesWidget:
+
 	ResetRCStylesWidget()
-	// ResetStyleWidget:
+
 	ResetStyleWidget()
-	// SetAccelPathWidget:
+
 	SetAccelPathWidget(accelPath string, accelGroup AccelGroup)
-	// SetAppPaintableWidget:
+
 	SetAppPaintableWidget(appPaintable bool)
-	// SetCanDefaultWidget:
+
 	SetCanDefaultWidget(canDefault bool)
-	// SetCanFocusWidget:
+
 	SetCanFocusWidget(canFocus bool)
-	// SetChildVisibleWidget:
+
 	SetChildVisibleWidget(isVisible bool)
-	// SetCompositeNameWidget:
+
 	SetCompositeNameWidget(name string)
-	// SetDeviceEnabledWidget:
+
 	SetDeviceEnabledWidget(device gdk.Device, enabled bool)
-	// SetDeviceEventsWidget:
+
 	SetDeviceEventsWidget(device gdk.Device, events gdk.EventMask)
-	// SetDirectionWidget:
+
 	SetDirectionWidget(dir TextDirection)
-	// SetDoubleBufferedWidget:
+
 	SetDoubleBufferedWidget(doubleBuffered bool)
-	// SetEventsWidget:
+
 	SetEventsWidget(events int)
-	// SetFocusOnClickWidget:
+
 	SetFocusOnClickWidget(focusOnClick bool)
-	// SetFontMapWidget:
+
 	SetFontMapWidget(fontMap pango.FontMap)
-	// SetFontOptionsWidget:
+
 	SetFontOptionsWidget(options *cairo.FontOptions)
-	// SetHalignWidget:
+
 	SetHalignWidget(align Align)
-	// SetHasTooltipWidget:
+
 	SetHasTooltipWidget(hasTooltip bool)
-	// SetHasWindowWidget:
+
 	SetHasWindowWidget(hasWindow bool)
-	// SetHexpandWidget:
+
 	SetHexpandWidget(expand bool)
-	// SetHexpandSetWidget:
+
 	SetHexpandSetWidget(set bool)
-	// SetMappedWidget:
+
 	SetMappedWidget(mapped bool)
-	// SetMarginBottomWidget:
+
 	SetMarginBottomWidget(margin int)
-	// SetMarginEndWidget:
+
 	SetMarginEndWidget(margin int)
-	// SetMarginLeftWidget:
+
 	SetMarginLeftWidget(margin int)
-	// SetMarginRightWidget:
+
 	SetMarginRightWidget(margin int)
-	// SetMarginStartWidget:
+
 	SetMarginStartWidget(margin int)
-	// SetMarginTopWidget:
+
 	SetMarginTopWidget(margin int)
-	// SetNameWidget:
+
 	SetNameWidget(name string)
-	// SetNoShowAllWidget:
+
 	SetNoShowAllWidget(noShowAll bool)
-	// SetOpacityWidget:
+
 	SetOpacityWidget(opacity float64)
-	// SetParentWidget:
+
 	SetParentWidget(parent Widget)
-	// SetParentWindowWidget:
+
 	SetParentWindowWidget(parentWindow gdk.Window)
-	// SetRealizedWidget:
+
 	SetRealizedWidget(realized bool)
-	// SetReceivesDefaultWidget:
+
 	SetReceivesDefaultWidget(receivesDefault bool)
-	// SetRedrawOnAllocateWidget:
+
 	SetRedrawOnAllocateWidget(redrawOnAllocate bool)
-	// SetSensitiveWidget:
+
 	SetSensitiveWidget(sensitive bool)
-	// SetSizeRequestWidget:
+
 	SetSizeRequestWidget(width int, height int)
-	// SetStateWidget:
+
 	SetStateWidget(state StateType)
-	// SetStateFlagsWidget:
+
 	SetStateFlagsWidget(flags StateFlags, clear bool)
-	// SetStyleWidget:
+
 	SetStyleWidget(style Style)
-	// SetSupportMultideviceWidget:
+
 	SetSupportMultideviceWidget(supportMultidevice bool)
-	// SetTooltipMarkupWidget:
+
 	SetTooltipMarkupWidget(markup string)
-	// SetTooltipTextWidget:
+
 	SetTooltipTextWidget(text string)
-	// SetTooltipWindowWidget:
+
 	SetTooltipWindowWidget(customWindow Window)
-	// SetValignWidget:
+
 	SetValignWidget(align Align)
-	// SetVexpandWidget:
+
 	SetVexpandWidget(expand bool)
-	// SetVexpandSetWidget:
+
 	SetVexpandSetWidget(set bool)
-	// SetVisibleWidget:
+
 	SetVisibleWidget(visible bool)
-	// SetVisualWidget:
+
 	SetVisualWidget(visual gdk.Visual)
-	// SetWindowWidget:
+
 	SetWindowWidget(window gdk.Window)
-	// ShapeCombineRegionWidget:
+
 	ShapeCombineRegionWidget(region *cairo.Region)
-	// ShowWidget:
+
 	ShowWidget()
-	// ShowAllWidget:
+
 	ShowAllWidget()
-	// ShowNowWidget:
+
 	ShowNowWidget()
-	// SizeRequestWidget:
+
 	SizeRequestWidget() Requisition
-	// StyleAttachWidget:
+
 	StyleAttachWidget()
-	// StyleGetPropertyWidget:
+
 	StyleGetPropertyWidget(propertyName string, value externglib.Value)
-	// ThawChildNotifyWidget:
+
 	ThawChildNotifyWidget()
-	// TranslateCoordinatesWidget:
+
 	TranslateCoordinatesWidget(destWidget Widget, srcX int, srcY int) (destX int, destY int, ok bool)
-	// TriggerTooltipQueryWidget:
+
 	TriggerTooltipQueryWidget()
-	// UnmapWidget:
+
 	UnmapWidget()
-	// UnparentWidget:
+
 	UnparentWidget()
-	// UnrealizeWidget:
+
 	UnrealizeWidget()
-	// UnregisterWindowWidget:
+
 	UnregisterWindowWidget(window gdk.Window)
-	// UnsetStateFlagsWidget:
+
 	UnsetStateFlagsWidget(flags StateFlags)
 }
 
@@ -1181,16 +1231,6 @@ func (w widget) DragSourceSetWidget(startButtonMask gdk.ModifierType, targets []
 	C.gtk_drag_source_set(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (w widget) DragSourceSetIconGIconWidget(icon gio.Icon) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GIcon     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_drag_source_set_icon_gicon(_arg0, _arg1)
-}
-
 func (w widget) DragSourceSetIconNameWidget(iconName string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
@@ -1281,6 +1321,21 @@ func (w widget) FreezeChildNotifyWidget() {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
 	C.gtk_widget_freeze_child_notify(_arg0)
+}
+
+func (w widget) Accessible() atk.Object {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+
+	_cret = C.gtk_widget_get_accessible(_arg0)
+
+	var _object atk.Object // out
+
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(atk.Object)
+
+	return _object
 }
 
 func (w widget) ActionGroup(prefix string) gio.ActionGroup {
@@ -4121,6 +4176,18 @@ func (b widget) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b widget) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b widget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b widget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b widget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b widget) InternalChild(builder Builder, childname string) gextras.Objector {

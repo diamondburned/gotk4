@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -24,6 +25,8 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // DBusAddressEscapeValue: escape @string so it can appear in a D-Bus address as
@@ -74,6 +77,32 @@ func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string,
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
+}
+
+// DBusAddressGetStream: asynchronously connects to an endpoint specified by
+// @address and sets up the connection so it is in a state to run the
+// client-side of the D-Bus authentication conversation. @address must be in the
+// D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// When the operation is finished, @callback will be invoked. You can then call
+// g_dbus_address_get_stream_finish() to get the result of the operation.
+//
+// This is an asynchronous failable function. See
+// g_dbus_address_get_stream_sync() for the synchronous version.
+func DBusAddressGetStream(address string, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg1 = (*C.gchar)(C.CString(address))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
 }
 
 // DBusAddressGetStreamFinish finishes an operation started with

@@ -27,6 +27,30 @@ func (s *Sequence) Native() unsafe.Pointer {
 	return unsafe.Pointer(s)
 }
 
+// Append: like g_sequence_sort(), but uses a IterCompareFunc instead of a
+// DataFunc as the compare function
+//
+// @cmp_func is called with two iterators pointing into @seq. It should return 0
+// if the iterators are equal, a negative value if the first iterator comes
+// before the second, and a positive value if the second iterator comes before
+// the first.
+func (s *Sequence) Append(data interface{}) *SequenceIter {
+	var _arg0 *C.GSequence     // out
+	var _arg1 C.gpointer       // out
+	var _cret *C.GSequenceIter // in
+
+	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(data)))
+
+	_cret = C.g_sequence_append(_arg0, _arg1)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = (*SequenceIter)(unsafe.Pointer(_cret))
+
+	return _sequenceIter
+}
+
 // Free: like g_sequence_sort(), but uses a IterCompareFunc instead of a
 // DataFunc as the compare function
 //
@@ -154,6 +178,30 @@ func (s *Sequence) IsEmpty() bool {
 	}
 
 	return _ok
+}
+
+// Prepend: like g_sequence_sort(), but uses a IterCompareFunc instead of a
+// DataFunc as the compare function
+//
+// @cmp_func is called with two iterators pointing into @seq. It should return 0
+// if the iterators are equal, a negative value if the first iterator comes
+// before the second, and a positive value if the second iterator comes before
+// the first.
+func (s *Sequence) Prepend(data interface{}) *SequenceIter {
+	var _arg0 *C.GSequence     // out
+	var _arg1 C.gpointer       // out
+	var _cret *C.GSequenceIter // in
+
+	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(data)))
+
+	_cret = C.g_sequence_prepend(_arg0, _arg1)
+
+	var _sequenceIter *SequenceIter // out
+
+	_sequenceIter = (*SequenceIter)(unsafe.Pointer(_cret))
+
+	return _sequenceIter
 }
 
 // SequenceIter: the Iter struct is an opaque data type representing an iterator

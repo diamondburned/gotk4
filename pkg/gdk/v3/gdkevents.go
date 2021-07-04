@@ -802,7 +802,6 @@ func (e *EventSelection) Native() unsafe.Pointer {
 	return unsafe.Pointer(e)
 }
 
-// EventSequence:
 type EventSequence C.GdkEventSequence
 
 // WrapEventSequence wraps the C unsafe.Pointer to be the right type. It is

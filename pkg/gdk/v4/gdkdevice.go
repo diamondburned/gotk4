@@ -60,39 +60,38 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 type Device interface {
 	gextras.Objector
 
-	// CapsLockState:
 	CapsLockState() bool
-	// DeviceTool:
+
 	DeviceTool() DeviceTool
-	// Direction:
+
 	Direction() pango.Direction
-	// Display:
+
 	Display() Display
-	// HasCursor:
+
 	HasCursor() bool
-	// ModifierState:
+
 	ModifierState() ModifierType
-	// Name:
+
 	Name() string
-	// NumLockState:
+
 	NumLockState() bool
-	// NumTouches:
+
 	NumTouches() uint
-	// ProductID:
+
 	ProductID() string
-	// ScrollLockState:
+
 	ScrollLockState() bool
-	// Seat:
+
 	Seat() Seat
-	// Source:
+
 	Source() InputSource
-	// SurfaceAtPosition:
+
 	SurfaceAtPosition() (winX float64, winY float64, surface Surface)
-	// Timestamp:
+
 	Timestamp() uint32
-	// VendorID:
+
 	VendorID() string
-	// HasBidiLayoutsDevice:
+
 	HasBidiLayoutsDevice() bool
 }
 

@@ -146,6 +146,10 @@ func lowerFirstWord(paragraph string) string {
 // CommentReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go
 // comment strings. It is automatically indented.
 func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
+	if cmt == "" {
+		return ""
+	}
+
 	cmt = html.UnescapeString(cmt)
 
 	if self != "" {

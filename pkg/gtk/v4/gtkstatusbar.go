@@ -62,15 +62,14 @@ func init() {
 type Statusbar interface {
 	Widget
 
-	// ContextID:
 	ContextID(contextDescription string) uint
-	// PopStatusbar:
+
 	PopStatusbar(contextId uint)
-	// PushStatusbar:
+
 	PushStatusbar(contextId uint, text string) uint
-	// RemoveStatusbar:
+
 	RemoveStatusbar(contextId uint, messageId uint)
-	// RemoveAllStatusbar:
+
 	RemoveAllStatusbar(contextId uint)
 }
 
@@ -93,7 +92,6 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return WrapStatusbar(obj), nil
 }
 
-// NewStatusbar:
 func NewStatusbar() Statusbar {
 	var _cret *C.GtkWidget // in
 

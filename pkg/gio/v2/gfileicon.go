@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -27,6 +28,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -39,7 +42,6 @@ func init() {
 type FileIcon interface {
 	LoadableIcon
 
-	// File:
 	File() File
 }
 
@@ -62,7 +64,6 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 	return WrapFileIcon(obj), nil
 }
 
-// NewFileIcon:
 func NewFileIcon(file File) FileIcon {
 	var _arg1 *C.GFile // out
 	var _cret *C.GIcon // in
@@ -95,6 +96,10 @@ func (i fileIcon) File() File {
 
 func (i fileIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
 	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+}
+
+func (i fileIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapLoadableIcon(gextras.InternObject(i)).LoadAsync(size, cancellable, callback)
 }
 
 func (i fileIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {

@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -66,15 +67,16 @@ func init() {
 type Credentials interface {
 	gextras.Objector
 
-	// UnixPid:
 	UnixPid() (int, error)
-	// UnixUser:
+
 	UnixUser() (uint, error)
-	// IsSameUserCredentials:
+
 	IsSameUserCredentials(otherCredentials Credentials) error
-	// SetUnixUserCredentials:
+
+	SetNativeCredentials(nativeType CredentialsType, native interface{})
+
 	SetUnixUserCredentials(uid uint) error
-	// String:
+
 	String() string
 }
 
@@ -97,7 +99,6 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 	return WrapCredentials(obj), nil
 }
 
-// NewCredentials:
 func NewCredentials() Credentials {
 	var _cret *C.GCredentials // in
 
@@ -161,6 +162,18 @@ func (c credentials) IsSameUserCredentials(otherCredentials Credentials) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (c credentials) SetNativeCredentials(nativeType CredentialsType, native interface{}) {
+	var _arg0 *C.GCredentials    // out
+	var _arg1 C.GCredentialsType // out
+	var _arg2 C.gpointer         // out
+
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg1 = C.GCredentialsType(nativeType)
+	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(native)))
+
+	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }
 
 func (c credentials) SetUnixUserCredentials(uid uint) error {

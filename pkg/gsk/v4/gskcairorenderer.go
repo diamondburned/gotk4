@@ -47,7 +47,6 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 	return WrapCairoRenderer(obj), nil
 }
 
-// NewCairoRenderer:
 func NewCairoRenderer() CairoRenderer {
 	var _cret *C.GskRenderer // in
 

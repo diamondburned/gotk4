@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,15 +35,14 @@ func init() {
 type HSV interface {
 	Widget
 
-	// Color:
 	Color() (h float64, s float64, v float64)
-	// Metrics:
+
 	Metrics() (size int, ringWidth int)
-	// IsAdjustingHSV:
+
 	IsAdjustingHSV() bool
-	// SetColorHSV:
+
 	SetColorHSV(h float64, s float64, v float64)
-	// SetMetricsHSV:
+
 	SetMetricsHSV(size int, ringWidth int)
 }
 
@@ -64,7 +65,6 @@ func marshalHSV(p uintptr) (interface{}, error) {
 	return WrapHSV(obj), nil
 }
 
-// NewHSV:
 func NewHSV() HSV {
 	var _cret *C.GtkWidget // in
 
@@ -165,6 +165,18 @@ func (b hsV) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b hsV) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b hsV) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b hsV) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b hsV) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b hsV) InternalChild(builder Builder, childname string) gextras.Objector {

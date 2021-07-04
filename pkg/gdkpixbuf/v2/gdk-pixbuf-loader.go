@@ -72,17 +72,16 @@ func init() {
 type PixbufLoader interface {
 	gextras.Objector
 
-	// ClosePixbufLoader:
 	ClosePixbufLoader() error
-	// Animation:
+
 	Animation() PixbufAnimation
-	// Format:
+
 	Format() *PixbufFormat
-	// Pixbuf:
+
 	Pixbuf() Pixbuf
-	// SetSizePixbufLoader:
+
 	SetSizePixbufLoader(width int, height int)
-	// WritePixbufLoader:
+
 	WritePixbufLoader(buf []byte) error
 }
 
@@ -105,7 +104,6 @@ func marshalPixbufLoader(p uintptr) (interface{}, error) {
 	return WrapPixbufLoader(obj), nil
 }
 
-// NewPixbufLoader:
 func NewPixbufLoader() PixbufLoader {
 	var _cret *C.GdkPixbufLoader // in
 
@@ -118,7 +116,6 @@ func NewPixbufLoader() PixbufLoader {
 	return _pixbufLoader
 }
 
-// NewPixbufLoaderWithMIMEType:
 func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in
@@ -138,7 +135,6 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
 	return _pixbufLoader, _goerr
 }
 
-// NewPixbufLoaderWithType:
 func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in

@@ -12,7 +12,6 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// SIMD4F:
 type SIMD4F C.graphene_simd4f_t
 
 // WrapSIMD4F wraps the C unsafe.Pointer to be the right type. It is
@@ -26,7 +25,6 @@ func (s *SIMD4F) Native() unsafe.Pointer {
 	return unsafe.Pointer(s)
 }
 
-// SIMD4X4F:
 type SIMD4X4F C.graphene_simd4x4f_t
 
 // WrapSIMD4X4F wraps the C unsafe.Pointer to be the right type. It is

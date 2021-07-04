@@ -36,59 +36,58 @@ func init() {
 type Screen interface {
 	gextras.Objector
 
-	// ActiveWindow:
 	ActiveWindow() Window
-	// Display:
+
 	Display() Display
-	// FontOptions:
+
 	FontOptions() *cairo.FontOptions
-	// Height:
+
 	Height() int
-	// HeightMm:
+
 	HeightMm() int
-	// MonitorAtPoint:
+
 	MonitorAtPoint(x int, y int) int
-	// MonitorAtWindow:
+
 	MonitorAtWindow(window Window) int
-	// MonitorGeometry:
+
 	MonitorGeometry(monitorNum int) Rectangle
-	// MonitorHeightMm:
+
 	MonitorHeightMm(monitorNum int) int
-	// MonitorPlugName:
+
 	MonitorPlugName(monitorNum int) string
-	// MonitorScaleFactor:
+
 	MonitorScaleFactor(monitorNum int) int
-	// MonitorWidthMm:
+
 	MonitorWidthMm(monitorNum int) int
-	// MonitorWorkarea:
+
 	MonitorWorkarea(monitorNum int) Rectangle
-	// NMonitors:
+
 	NMonitors() int
-	// Number:
+
 	Number() int
-	// PrimaryMonitor:
+
 	PrimaryMonitor() int
-	// Resolution:
+
 	Resolution() float64
-	// RGBAVisual:
+
 	RGBAVisual() Visual
-	// RootWindow:
+
 	RootWindow() Window
-	// Setting:
+
 	Setting(name string, value externglib.Value) bool
-	// SystemVisual:
+
 	SystemVisual() Visual
-	// Width:
+
 	Width() int
-	// WidthMm:
+
 	WidthMm() int
-	// IsCompositedScreen:
+
 	IsCompositedScreen() bool
-	// MakeDisplayNameScreen:
+
 	MakeDisplayNameScreen() string
-	// SetFontOptionsScreen:
+
 	SetFontOptionsScreen(options *cairo.FontOptions)
-	// SetResolutionScreen:
+
 	SetResolutionScreen(dpi float64)
 }
 

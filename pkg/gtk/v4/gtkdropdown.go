@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,31 +54,26 @@ func init() {
 type DropDown interface {
 	Widget
 
-	// EnableSearch:
 	EnableSearch() bool
-	// Expression:
+
 	Expression() Expression
-	// Factory:
+
 	Factory() ListItemFactory
-	// ListFactory:
+
 	ListFactory() ListItemFactory
-	// Model:
-	Model() gio.ListModel
-	// Selected:
+
 	Selected() uint
-	// SelectedItem:
+
 	SelectedItem() gextras.Objector
-	// SetEnableSearchDropDown:
+
 	SetEnableSearchDropDown(enableSearch bool)
-	// SetExpressionDropDown:
+
 	SetExpressionDropDown(expression Expression)
-	// SetFactoryDropDown:
+
 	SetFactoryDropDown(factory ListItemFactory)
-	// SetListFactoryDropDown:
+
 	SetListFactoryDropDown(factory ListItemFactory)
-	// SetModelDropDown:
-	SetModelDropDown(model gio.ListModel)
-	// SetSelectedDropDown:
+
 	SetSelectedDropDown(position uint)
 }
 
@@ -102,25 +96,6 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 	return WrapDropDown(obj), nil
 }
 
-// NewDropDown:
-func NewDropDown(model gio.ListModel, expression Expression) DropDown {
-	var _arg1 *C.GListModel    // out
-	var _arg2 *C.GtkExpression // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	_cret = C.gtk_drop_down_new(_arg1, _arg2)
-
-	var _dropDown DropDown // out
-
-	_dropDown = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DropDown)
-
-	return _dropDown
-}
-
-// NewDropDownFromStrings:
 func NewDropDownFromStrings(strings []string) DropDown {
 	var _arg1 **C.char
 	var _cret *C.GtkWidget // in
@@ -206,21 +181,6 @@ func (s dropDown) ListFactory() ListItemFactory {
 	return _listItemFactory
 }
 
-func (s dropDown) Model() gio.ListModel {
-	var _arg0 *C.GtkDropDown // out
-	var _cret *C.GListModel  // in
-
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_drop_down_get_model(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
-}
-
 func (s dropDown) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.guint        // in
@@ -291,16 +251,6 @@ func (s dropDown) SetListFactoryDropDown(factory ListItemFactory) {
 	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_drop_down_set_list_factory(_arg0, _arg1)
-}
-
-func (s dropDown) SetModelDropDown(model gio.ListModel) {
-	var _arg0 *C.GtkDropDown // out
-	var _arg1 *C.GListModel  // out
-
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_drop_down_set_model(_arg0, _arg1)
 }
 
 func (s dropDown) SetSelectedDropDown(position uint) {

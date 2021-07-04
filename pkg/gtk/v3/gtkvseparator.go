@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,7 +54,6 @@ func marshalVSeparator(p uintptr) (interface{}, error) {
 	return WrapVSeparator(obj), nil
 }
 
-// NewVSeparator:
 func NewVSeparator() VSeparator {
 	var _cret *C.GtkWidget // in
 
@@ -71,6 +72,18 @@ func (b vSeparator) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b vSeparator) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b vSeparator) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b vSeparator) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b vSeparator) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b vSeparator) InternalChild(builder Builder, childname string) gextras.Objector {

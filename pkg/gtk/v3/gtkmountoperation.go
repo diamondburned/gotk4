@@ -31,15 +31,14 @@ func init() {
 type MountOperation interface {
 	gio.MountOperation
 
-	// Parent:
 	Parent() Window
-	// Screen:
+
 	Screen() gdk.Screen
-	// IsShowingMountOperation:
+
 	IsShowingMountOperation() bool
-	// SetParentMountOperation:
+
 	SetParentMountOperation(parent Window)
-	// SetScreenMountOperation:
+
 	SetScreenMountOperation(screen gdk.Screen)
 }
 
@@ -62,7 +61,6 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return WrapMountOperation(obj), nil
 }
 
-// NewMountOperation:
 func NewMountOperation(parent Window) MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in

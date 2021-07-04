@@ -65,9 +65,8 @@ type Scrollbar interface {
 	Widget
 	Orientable
 
-	// Adjustment:
 	Adjustment() Adjustment
-	// SetAdjustmentScrollbar:
+
 	SetAdjustmentScrollbar(adjustment Adjustment)
 }
 
@@ -90,7 +89,6 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	return WrapScrollbar(obj), nil
 }
 
-// NewScrollbar:
 func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out

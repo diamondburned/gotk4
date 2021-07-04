@@ -44,7 +44,6 @@ func init() {
 type UnixCredentialsMessage interface {
 	SocketControlMessage
 
-	// Credentials:
 	Credentials() Credentials
 }
 
@@ -67,7 +66,6 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 	return WrapUnixCredentialsMessage(obj), nil
 }
 
-// NewUnixCredentialsMessage:
 func NewUnixCredentialsMessage() UnixCredentialsMessage {
 	var _cret *C.GSocketControlMessage // in
 
@@ -80,7 +78,6 @@ func NewUnixCredentialsMessage() UnixCredentialsMessage {
 	return _unixCredentialsMessage
 }
 
-// NewUnixCredentialsMessageWithCredentials:
 func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCredentialsMessage {
 	var _arg1 *C.GCredentials          // out
 	var _cret *C.GSocketControlMessage // in

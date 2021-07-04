@@ -38,25 +38,24 @@ func init() {
 type EntryBuffer interface {
 	gextras.Objector
 
-	// DeleteTextEntryBuffer:
 	DeleteTextEntryBuffer(position uint, nChars int) uint
-	// EmitDeletedTextEntryBuffer:
+
 	EmitDeletedTextEntryBuffer(position uint, nChars uint)
-	// EmitInsertedTextEntryBuffer:
+
 	EmitInsertedTextEntryBuffer(position uint, chars string, nChars uint)
-	// Bytes:
+
 	Bytes() uint
-	// Length:
+
 	Length() uint
-	// MaxLength:
+
 	MaxLength() int
-	// Text:
+
 	Text() string
-	// InsertTextEntryBuffer:
+
 	InsertTextEntryBuffer(position uint, chars string, nChars int) uint
-	// SetMaxLengthEntryBuffer:
+
 	SetMaxLengthEntryBuffer(maxLength int)
-	// SetTextEntryBuffer:
+
 	SetTextEntryBuffer(chars string, nChars int)
 }
 
@@ -79,7 +78,6 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 	return WrapEntryBuffer(obj), nil
 }
 
-// NewEntryBuffer:
 func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.gint            // out

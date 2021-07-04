@@ -53,9 +53,8 @@ func init() {
 type StackSwitcher interface {
 	Widget
 
-	// Stack:
 	Stack() Stack
-	// SetStackStackSwitcher:
+
 	SetStackStackSwitcher(stack Stack)
 }
 
@@ -78,7 +77,6 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	return WrapStackSwitcher(obj), nil
 }
 
-// NewStackSwitcher:
 func NewStackSwitcher() StackSwitcher {
 	var _cret *C.GtkWidget // in
 

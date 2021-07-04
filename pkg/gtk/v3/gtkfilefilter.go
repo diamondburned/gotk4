@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -44,6 +45,33 @@ const (
 
 func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 	return FileFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileFilterFunc: the type of function that is used with custom filters, see
+// gtk_file_filter_add_custom().
+type FileFilterFunc func(filterInfo *FileFilterInfo, ok bool)
+
+//export gotk4_FileFilterFunc
+func _FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var filterInfo *FileFilterInfo // out
+
+	filterInfo = (*FileFilterInfo)(unsafe.Pointer(arg0))
+
+	fn := v.(FileFilterFunc)
+	ok := fn(filterInfo)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // FileFilter: a GtkFileFilter can be used to restrict the files being shown in
@@ -86,21 +114,20 @@ func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 type FileFilter interface {
 	Buildable
 
-	// AddMIMETypeFileFilter:
 	AddMIMETypeFileFilter(mimeType string)
-	// AddPatternFileFilter:
+
 	AddPatternFileFilter(pattern string)
-	// AddPixbufFormatsFileFilter:
+
 	AddPixbufFormatsFileFilter()
-	// FilterFileFilter:
+
 	FilterFileFilter(filterInfo *FileFilterInfo) bool
-	// GetName:
+
 	GetName() string
-	// Needed:
+
 	Needed() FileFilterFlags
-	// SetNameFileFilter:
+
 	SetNameFileFilter(name string)
-	// ToGVariantFileFilter:
+
 	ToGVariantFileFilter() *glib.Variant
 }
 
@@ -123,7 +150,6 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	return WrapFileFilter(obj), nil
 }
 
-// NewFileFilter:
 func NewFileFilter() FileFilter {
 	var _cret *C.GtkFileFilter // in
 
@@ -136,7 +162,6 @@ func NewFileFilter() FileFilter {
 	return _fileFilter
 }
 
-// NewFileFilterFromGVariant:
 func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
@@ -263,6 +288,18 @@ func (b fileFilter) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b fileFilter) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b fileFilter) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b fileFilter) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b fileFilter) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b fileFilter) InternalChild(builder Builder, childname string) gextras.Objector {

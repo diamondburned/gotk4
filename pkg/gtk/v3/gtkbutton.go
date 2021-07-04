@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -53,53 +54,52 @@ type Button interface {
 	Actionable
 	Activatable
 
-	// ClickedButton:
 	ClickedButton()
-	// EnterButton:
+
 	EnterButton()
-	// Alignment:
+
 	Alignment() (xalign float32, yalign float32)
-	// AlwaysShowImage:
+
 	AlwaysShowImage() bool
-	// EventWindow:
+
 	EventWindow() gdk.Window
-	// FocusOnClick:
+
 	FocusOnClick() bool
-	// Image:
+
 	Image() Widget
-	// ImagePosition:
+
 	ImagePosition() PositionType
-	// Label:
+
 	Label() string
-	// Relief:
+
 	Relief() ReliefStyle
-	// UseStock:
+
 	UseStock() bool
-	// UseUnderline:
+
 	UseUnderline() bool
-	// LeaveButton:
+
 	LeaveButton()
-	// PressedButton:
+
 	PressedButton()
-	// ReleasedButton:
+
 	ReleasedButton()
-	// SetAlignmentButton:
+
 	SetAlignmentButton(xalign float32, yalign float32)
-	// SetAlwaysShowImageButton:
+
 	SetAlwaysShowImageButton(alwaysShow bool)
-	// SetFocusOnClickButton:
+
 	SetFocusOnClickButton(focusOnClick bool)
-	// SetImageButton:
+
 	SetImageButton(image Widget)
-	// SetImagePositionButton:
+
 	SetImagePositionButton(position PositionType)
-	// SetLabelButton:
+
 	SetLabelButton(label string)
-	// SetReliefButton:
+
 	SetReliefButton(relief ReliefStyle)
-	// SetUseStockButton:
+
 	SetUseStockButton(useStock bool)
-	// SetUseUnderlineButton:
+
 	SetUseUnderlineButton(useUnderline bool)
 }
 
@@ -122,7 +122,6 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return WrapButton(obj), nil
 }
 
-// NewButton:
 func NewButton() Button {
 	var _cret *C.GtkWidget // in
 
@@ -135,7 +134,6 @@ func NewButton() Button {
 	return _button
 }
 
-// NewButtonFromIconName:
 func NewButtonFromIconName(iconName string, size int) Button {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -154,7 +152,6 @@ func NewButtonFromIconName(iconName string, size int) Button {
 	return _button
 }
 
-// NewButtonFromStock:
 func NewButtonFromStock(stockId string) Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -171,7 +168,6 @@ func NewButtonFromStock(stockId string) Button {
 	return _button
 }
 
-// NewButtonWithLabel:
 func NewButtonWithLabel(label string) Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -188,7 +184,6 @@ func NewButtonWithLabel(label string) Button {
 	return _button
 }
 
-// NewButtonWithMnemonic:
 func NewButtonWithMnemonic(label string) Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -515,6 +510,18 @@ func (b button) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b button) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b button) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b button) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b button) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -561,6 +568,18 @@ func (b button) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b button) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b button) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b button) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b button) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b button) InternalChild(builder Builder, childname string) gextras.Objector {

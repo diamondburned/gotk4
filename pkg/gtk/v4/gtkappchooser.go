@@ -5,8 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,8 +42,6 @@ func init() {
 type AppChooser interface {
 	Widget
 
-	// AppInfo reloads the list of applications.
-	AppInfo() gio.AppInfo
 	// ContentType reloads the list of applications.
 	ContentType() string
 	// Refresh reloads the list of applications.
@@ -71,21 +67,6 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAppChooser(obj), nil
-}
-
-func (s appChooser) AppInfo() gio.AppInfo {
-	var _arg0 *C.GtkAppChooser // out
-	var _cret *C.GAppInfo      // in
-
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_app_chooser_get_app_info(_arg0)
-
-	var _appInfo gio.AppInfo // out
-
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.AppInfo)
-
-	return _appInfo
 }
 
 func (s appChooser) ContentType() string {

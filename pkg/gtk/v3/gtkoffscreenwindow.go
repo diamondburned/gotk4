@@ -5,9 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,9 +47,8 @@ func init() {
 type OffscreenWindow interface {
 	Window
 
-	// Pixbuf:
 	Pixbuf() gdkpixbuf.Pixbuf
-	// Surface:
+
 	Surface() *cairo.Surface
 }
 
@@ -70,7 +71,6 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 	return WrapOffscreenWindow(obj), nil
 }
 
-// NewOffscreenWindow:
 func NewOffscreenWindow() OffscreenWindow {
 	var _cret *C.GtkWidget // in
 
@@ -119,6 +119,18 @@ func (b offscreenWindow) AddChild(builder Builder, child gextras.Objector, typ s
 
 func (b offscreenWindow) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b offscreenWindow) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b offscreenWindow) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b offscreenWindow) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b offscreenWindow) InternalChild(builder Builder, childname string) gextras.Objector {

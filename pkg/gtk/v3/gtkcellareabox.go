@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,13 +45,12 @@ type CellAreaBox interface {
 	CellArea
 	Orientable
 
-	// Spacing:
 	Spacing() int
-	// PackEndCellAreaBox:
+
 	PackEndCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool)
-	// PackStartCellAreaBox:
+
 	PackStartCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool)
-	// SetSpacingCellAreaBox:
+
 	SetSpacingCellAreaBox(spacing int)
 }
 
@@ -72,7 +73,6 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return WrapCellAreaBox(obj), nil
 }
 
-// NewCellAreaBox:
 func NewCellAreaBox() CellAreaBox {
 	var _cret *C.GtkCellArea // in
 
@@ -160,6 +160,18 @@ func (b cellAreaBox) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b cellAreaBox) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b cellAreaBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b cellAreaBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b cellAreaBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b cellAreaBox) InternalChild(builder Builder, childname string) gextras.Objector {

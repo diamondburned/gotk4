@@ -56,6 +56,23 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	return WrapNativeSocketAddress(obj), nil
 }
 
+func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
+	var _cret *C.GSocketAddress // in
+
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(native)))
+	_arg2 = C.gsize(len)
+
+	_cret = C.g_native_socket_address_new(_arg1, _arg2)
+
+	var _nativeSocketAddress NativeSocketAddress // out
+
+	_nativeSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NativeSocketAddress)
+
+	return _nativeSocketAddress
+}
+
 func (c nativeSocketAddress) Enumerate() SocketAddressEnumerator {
 	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
 }

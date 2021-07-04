@@ -44,19 +44,18 @@ func init() {
 type StyleProperties interface {
 	StyleProvider
 
-	// ClearStyleProperties:
 	ClearStyleProperties()
-	// Property:
+
 	Property(property string, state StateFlags) (externglib.Value, bool)
-	// LookupColorStyleProperties:
+
 	LookupColorStyleProperties(name string) *SymbolicColor
-	// MapColorStyleProperties:
+
 	MapColorStyleProperties(name string, color *SymbolicColor)
-	// MergeStyleProperties:
+
 	MergeStyleProperties(propsToMerge StyleProperties, replace bool)
-	// SetPropertyStyleProperties:
+
 	SetPropertyStyleProperties(property string, state StateFlags, value externglib.Value)
-	// UnsetPropertyStyleProperties:
+
 	UnsetPropertyStyleProperties(property string, state StateFlags)
 }
 
@@ -79,7 +78,6 @@ func marshalStyleProperties(p uintptr) (interface{}, error) {
 	return WrapStyleProperties(obj), nil
 }
 
-// NewStyleProperties:
 func NewStyleProperties() StyleProperties {
 	var _cret *C.GtkStyleProperties // in
 

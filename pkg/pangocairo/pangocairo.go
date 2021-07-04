@@ -5,6 +5,7 @@ package pangocairo
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -23,6 +24,31 @@ func init() {
 		{T: externglib.Type(C.pango_cairo_font_get_type()), F: marshalFont},
 		{T: externglib.Type(C.pango_cairo_font_map_get_type()), F: marshalFontMap},
 	})
+}
+
+// ShapeRendererFunc: function type for rendering attributes of type
+// PANGO_ATTR_SHAPE with Pango's Cairo renderer.
+type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool)
+
+//export gotk4_ShapeRendererFunc
+func _ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var cr *cairo.Context     // out
+	var attr *pango.AttrShape // out
+	var doPath bool           // out
+
+	cr = (*cairo.Context)(unsafe.Pointer(arg0))
+	attr = (*pango.AttrShape)(unsafe.Pointer(arg1))
+	if arg2 != 0 {
+		doPath = true
+	}
+
+	fn := v.(ShapeRendererFunc)
+	fn(cr, attr, doPath)
 }
 
 // ContextGetFontOptions retrieves any font rendering options previously set
@@ -272,20 +298,6 @@ func ShowLayout(cr *cairo.Context, layout pango.Layout) {
 	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_show_layout(_arg1, _arg2)
-}
-
-// ShowLayoutLine draws a `PangoLayoutLine` in the specified cairo context.
-//
-// The origin of the glyphs (the left edge of the line) will be drawn at the
-// current point of the cairo context.
-func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
-	var _arg1 *C.cairo_t         // out
-	var _arg2 *C.PangoLayoutLine // out
-
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
-
-	C.pango_cairo_show_layout_line(_arg1, _arg2)
 }
 
 // UpdateContext updates a `PangoContext` previously created for use with Cairo

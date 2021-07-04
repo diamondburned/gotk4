@@ -88,23 +88,22 @@ func init() {
 type DropTarget interface {
 	EventController
 
-	// Actions:
 	Actions() gdk.DragAction
-	// Drop:
+
 	Drop() gdk.Drop
-	// Formats:
+
 	Formats() *gdk.ContentFormats
-	// Preload:
+
 	Preload() bool
-	// Value:
+
 	Value() externglib.Value
-	// RejectDropTarget:
+
 	RejectDropTarget()
-	// SetActionsDropTarget:
+
 	SetActionsDropTarget(actions gdk.DragAction)
-	// SetGTypesDropTarget:
+
 	SetGTypesDropTarget(types []externglib.Type)
-	// SetPreloadDropTarget:
+
 	SetPreloadDropTarget(preload bool)
 }
 
@@ -127,7 +126,6 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 	return WrapDropTarget(obj), nil
 }
 
-// NewDropTarget:
 func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 	var _arg1 C.GType          // out
 	var _arg2 C.GdkDragAction  // out

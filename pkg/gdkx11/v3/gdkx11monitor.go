@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11Monitor:
 type X11Monitor interface {
 	gdk.Monitor
 }

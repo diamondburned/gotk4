@@ -85,11 +85,10 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 type WaylandToplevel interface {
 	WaylandSurface
 
-	// SetApplicationIDWaylandToplevel:
 	SetApplicationIDWaylandToplevel(applicationId string)
-	// SetTransientForExportedWaylandToplevel:
+
 	SetTransientForExportedWaylandToplevel(parentHandleStr string) bool
-	// UnexportHandleWaylandToplevel:
+
 	UnexportHandleWaylandToplevel()
 }
 

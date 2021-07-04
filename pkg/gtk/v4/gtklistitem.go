@@ -40,23 +40,22 @@ func init() {
 type ListItem interface {
 	gextras.Objector
 
-	// Activatable:
 	Activatable() bool
-	// Child:
+
 	Child() Widget
-	// Item:
+
 	Item() gextras.Objector
-	// Position:
+
 	Position() uint
-	// Selectable:
+
 	Selectable() bool
-	// Selected:
+
 	Selected() bool
-	// SetActivatableListItem:
+
 	SetActivatableListItem(activatable bool)
-	// SetChildListItem:
+
 	SetChildListItem(child Widget)
-	// SetSelectableListItem:
+
 	SetSelectableListItem(selectable bool)
 }
 

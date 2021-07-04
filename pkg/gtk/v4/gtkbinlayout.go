@@ -51,7 +51,6 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 	return WrapBinLayout(obj), nil
 }
 
-// NewBinLayout:
 func NewBinLayout() BinLayout {
 	var _cret *C.GtkLayoutManager // in
 

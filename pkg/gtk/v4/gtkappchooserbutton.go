@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,27 +54,24 @@ func init() {
 type AppChooserButton interface {
 	AppChooser
 
-	// AppendCustomItemAppChooserButton:
-	AppendCustomItemAppChooserButton(name string, label string, icon gio.Icon)
-	// AppendSeparatorAppChooserButton:
 	AppendSeparatorAppChooserButton()
-	// Heading:
+
 	Heading() string
-	// Modal:
+
 	Modal() bool
-	// ShowDefaultItem:
+
 	ShowDefaultItem() bool
-	// ShowDialogItem:
+
 	ShowDialogItem() bool
-	// SetActiveCustomItemAppChooserButton:
+
 	SetActiveCustomItemAppChooserButton(name string)
-	// SetHeadingAppChooserButton:
+
 	SetHeadingAppChooserButton(heading string)
-	// SetModalAppChooserButton:
+
 	SetModalAppChooserButton(modal bool)
-	// SetShowDefaultItemAppChooserButton:
+
 	SetShowDefaultItemAppChooserButton(setting bool)
-	// SetShowDialogItemAppChooserButton:
+
 	SetShowDialogItemAppChooserButton(setting bool)
 }
 
@@ -98,7 +94,6 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return WrapAppChooserButton(obj), nil
 }
 
-// NewAppChooserButton:
 func NewAppChooserButton(contentType string) AppChooserButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -113,22 +108,6 @@ func NewAppChooserButton(contentType string) AppChooserButton {
 	_appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AppChooserButton)
 
 	return _appChooserButton
-}
-
-func (s appChooserButton) AppendCustomItemAppChooserButton(name string, label string, icon gio.Icon) {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _arg1 *C.char                // out
-	var _arg2 *C.char                // out
-	var _arg3 *C.GIcon               // out
-
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (s appChooserButton) AppendSeparatorAppChooserButton() {
@@ -261,10 +240,6 @@ func (s appChooserButton) SetShowDialogItemAppChooserButton(setting bool) {
 	}
 
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
-}
-
-func (s appChooserButton) AppInfo() gio.AppInfo {
-	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
 }
 
 func (s appChooserButton) ContentType() string {

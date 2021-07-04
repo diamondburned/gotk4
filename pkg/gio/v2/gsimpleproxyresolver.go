@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -43,9 +46,8 @@ func init() {
 type SimpleProxyResolver interface {
 	ProxyResolver
 
-	// SetDefaultProxySimpleProxyResolver:
 	SetDefaultProxySimpleProxyResolver(defaultProxy string)
-	// SetURIProxySimpleProxyResolver:
+
 	SetURIProxySimpleProxyResolver(uriScheme string, proxy string)
 }
 
@@ -99,6 +101,10 @@ func (r simpleProxyResolver) IsSupported() bool {
 
 func (r simpleProxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
 	return WrapProxyResolver(gextras.InternObject(r)).Lookup(uri, cancellable)
+}
+
+func (r simpleProxyResolver) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapProxyResolver(gextras.InternObject(r)).LookupAsync(uri, cancellable, callback)
 }
 
 func (r simpleProxyResolver) LookupFinish(result AsyncResult) ([]string, error) {

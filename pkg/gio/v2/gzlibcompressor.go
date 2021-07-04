@@ -37,9 +37,8 @@ func init() {
 type ZlibCompressor interface {
 	Converter
 
-	// FileInfo:
 	FileInfo() FileInfo
-	// SetFileInfoZlibCompressor:
+
 	SetFileInfoZlibCompressor(fileInfo FileInfo)
 }
 
@@ -62,7 +61,6 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 	return WrapZlibCompressor(obj), nil
 }
 
-// NewZlibCompressor:
 func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _arg2 C.int                   // out

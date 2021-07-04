@@ -51,7 +51,6 @@ func init() {
 type Settings interface {
 	StyleProvider
 
-	// ResetPropertySettings:
 	ResetPropertySettings(name string)
 }
 

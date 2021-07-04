@@ -82,49 +82,48 @@ type Grid interface {
 	Widget
 	Orientable
 
-	// AttachGrid:
 	AttachGrid(child Widget, column int, row int, width int, height int)
-	// AttachNextToGrid:
+
 	AttachNextToGrid(child Widget, sibling Widget, side PositionType, width int, height int)
-	// BaselineRow:
+
 	BaselineRow() int
-	// ChildAt:
+
 	ChildAt(column int, row int) Widget
-	// ColumnHomogeneous:
+
 	ColumnHomogeneous() bool
-	// ColumnSpacing:
+
 	ColumnSpacing() uint
-	// RowBaselinePosition:
+
 	RowBaselinePosition(row int) BaselinePosition
-	// RowHomogeneous:
+
 	RowHomogeneous() bool
-	// RowSpacing:
+
 	RowSpacing() uint
-	// InsertColumnGrid:
+
 	InsertColumnGrid(position int)
-	// InsertNextToGrid:
+
 	InsertNextToGrid(sibling Widget, side PositionType)
-	// InsertRowGrid:
+
 	InsertRowGrid(position int)
-	// QueryChildGrid:
+
 	QueryChildGrid(child Widget) (column int, row int, width int, height int)
-	// RemoveGrid:
+
 	RemoveGrid(child Widget)
-	// RemoveColumnGrid:
+
 	RemoveColumnGrid(position int)
-	// RemoveRowGrid:
+
 	RemoveRowGrid(position int)
-	// SetBaselineRowGrid:
+
 	SetBaselineRowGrid(row int)
-	// SetColumnHomogeneousGrid:
+
 	SetColumnHomogeneousGrid(homogeneous bool)
-	// SetColumnSpacingGrid:
+
 	SetColumnSpacingGrid(spacing uint)
-	// SetRowBaselinePositionGrid:
+
 	SetRowBaselinePositionGrid(row int, pos BaselinePosition)
-	// SetRowHomogeneousGrid:
+
 	SetRowHomogeneousGrid(homogeneous bool)
-	// SetRowSpacingGrid:
+
 	SetRowSpacingGrid(spacing uint)
 }
 
@@ -147,7 +146,6 @@ func marshalGrid(p uintptr) (interface{}, error) {
 	return WrapGrid(obj), nil
 }
 
-// NewGrid:
 func NewGrid() Grid {
 	var _cret *C.GtkWidget // in
 

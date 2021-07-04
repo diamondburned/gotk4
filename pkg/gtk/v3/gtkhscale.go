@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,7 +56,6 @@ func marshalHScale(p uintptr) (interface{}, error) {
 	return WrapHScale(obj), nil
 }
 
-// NewHScale:
 func NewHScale(adjustment Adjustment) HScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -70,7 +71,6 @@ func NewHScale(adjustment Adjustment) HScale {
 	return _hScale
 }
 
-// NewHScaleWithRange:
 func NewHScaleWithRange(min float64, max float64, step float64) HScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
@@ -96,6 +96,18 @@ func (b hScale) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b hScale) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b hScale) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b hScale) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b hScale) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b hScale) InternalChild(builder Builder, childname string) gextras.Objector {

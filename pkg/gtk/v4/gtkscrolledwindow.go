@@ -156,67 +156,66 @@ func marshalPolicyType(p uintptr) (interface{}, error) {
 type ScrolledWindow interface {
 	Widget
 
-	// Child:
 	Child() Widget
-	// HAdjustment:
+
 	HAdjustment() Adjustment
-	// HasFrame:
+
 	HasFrame() bool
-	// HScrollbar:
+
 	HScrollbar() Widget
-	// KineticScrolling:
+
 	KineticScrolling() bool
-	// MaxContentHeight:
+
 	MaxContentHeight() int
-	// MaxContentWidth:
+
 	MaxContentWidth() int
-	// MinContentHeight:
+
 	MinContentHeight() int
-	// MinContentWidth:
+
 	MinContentWidth() int
-	// OverlayScrolling:
+
 	OverlayScrolling() bool
-	// Placement:
+
 	Placement() CornerType
-	// Policy:
+
 	Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
-	// PropagateNaturalHeight:
+
 	PropagateNaturalHeight() bool
-	// PropagateNaturalWidth:
+
 	PropagateNaturalWidth() bool
-	// VAdjustment:
+
 	VAdjustment() Adjustment
-	// VScrollbar:
+
 	VScrollbar() Widget
-	// SetChildScrolledWindow:
+
 	SetChildScrolledWindow(child Widget)
-	// SetHAdjustmentScrolledWindow:
+
 	SetHAdjustmentScrolledWindow(hadjustment Adjustment)
-	// SetHasFrameScrolledWindow:
+
 	SetHasFrameScrolledWindow(hasFrame bool)
-	// SetKineticScrollingScrolledWindow:
+
 	SetKineticScrollingScrolledWindow(kineticScrolling bool)
-	// SetMaxContentHeightScrolledWindow:
+
 	SetMaxContentHeightScrolledWindow(height int)
-	// SetMaxContentWidthScrolledWindow:
+
 	SetMaxContentWidthScrolledWindow(width int)
-	// SetMinContentHeightScrolledWindow:
+
 	SetMinContentHeightScrolledWindow(height int)
-	// SetMinContentWidthScrolledWindow:
+
 	SetMinContentWidthScrolledWindow(width int)
-	// SetOverlayScrollingScrolledWindow:
+
 	SetOverlayScrollingScrolledWindow(overlayScrolling bool)
-	// SetPlacementScrolledWindow:
+
 	SetPlacementScrolledWindow(windowPlacement CornerType)
-	// SetPolicyScrolledWindow:
+
 	SetPolicyScrolledWindow(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
-	// SetPropagateNaturalHeightScrolledWindow:
+
 	SetPropagateNaturalHeightScrolledWindow(propagate bool)
-	// SetPropagateNaturalWidthScrolledWindow:
+
 	SetPropagateNaturalWidthScrolledWindow(propagate bool)
-	// SetVAdjustmentScrolledWindow:
+
 	SetVAdjustmentScrolledWindow(vadjustment Adjustment)
-	// UnsetPlacementScrolledWindow:
+
 	UnsetPlacementScrolledWindow()
 }
 
@@ -239,7 +238,6 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 	return WrapScrolledWindow(obj), nil
 }
 
-// NewScrolledWindow:
 func NewScrolledWindow() ScrolledWindow {
 	var _cret *C.GtkWidget // in
 

@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,49 +74,48 @@ func marshalArrowPlacement(p uintptr) (interface{}, error) {
 type Menu interface {
 	MenuShell
 
-	// AttachMenu:
 	AttachMenu(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
-	// DetachMenu:
+
 	DetachMenu()
-	// AccelGroup:
+
 	AccelGroup() AccelGroup
-	// AccelPath:
+
 	AccelPath() string
-	// Active:
+
 	Active() Widget
-	// AttachWidget:
+
 	AttachWidget() Widget
-	// Monitor:
+
 	Monitor() int
-	// ReserveToggleSize:
+
 	ReserveToggleSize() bool
-	// TearoffState:
+
 	TearoffState() bool
-	// Title:
+
 	Title() string
-	// PlaceOnMonitorMenu:
+
 	PlaceOnMonitorMenu(monitor gdk.Monitor)
-	// PopdownMenu:
+
 	PopdownMenu()
-	// ReorderChildMenu:
+
 	ReorderChildMenu(child Widget, position int)
-	// RepositionMenu:
+
 	RepositionMenu()
-	// SetAccelGroupMenu:
+
 	SetAccelGroupMenu(accelGroup AccelGroup)
-	// SetAccelPathMenu:
+
 	SetAccelPathMenu(accelPath string)
-	// SetActiveMenu:
+
 	SetActiveMenu(index uint)
-	// SetMonitorMenu:
+
 	SetMonitorMenu(monitorNum int)
-	// SetReserveToggleSizeMenu:
+
 	SetReserveToggleSizeMenu(reserveToggleSize bool)
-	// SetScreenMenu:
+
 	SetScreenMenu(screen gdk.Screen)
-	// SetTearoffStateMenu:
+
 	SetTearoffStateMenu(tornOff bool)
-	// SetTitleMenu:
+
 	SetTitleMenu(title string)
 }
 
@@ -137,7 +138,6 @@ func marshalMenu(p uintptr) (interface{}, error) {
 	return WrapMenu(obj), nil
 }
 
-// NewMenu:
 func NewMenu() Menu {
 	var _cret *C.GtkWidget // in
 
@@ -150,7 +150,6 @@ func NewMenu() Menu {
 	return _menu
 }
 
-// NewMenuFromModel:
 func NewMenuFromModel(model gio.MenuModel) Menu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -446,6 +445,18 @@ func (b menu) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b menu) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b menu) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b menu) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b menu) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b menu) InternalChild(builder Builder, childname string) gextras.Objector {

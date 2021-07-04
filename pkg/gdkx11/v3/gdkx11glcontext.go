@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11GLContext:
 type X11GLContext interface {
 	gdk.GLContext
 }

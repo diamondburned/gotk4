@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -16,12 +17,74 @@ import (
 //
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+//
+// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_tree_model_filter_get_type()), F: marshalTreeModelFilter},
 	})
+}
+
+// TreeModelFilterModifyFunc: a function which calculates display values from
+// raw values in the model. It must fill @value with the display value for the
+// column @column in the row indicated by @iter.
+//
+// Since this function is called for each data access, it’s not a particularly
+// efficient operation.
+type TreeModelFilterModifyFunc func(model TreeModel, iter *TreeIter, value externglib.Value, column int)
+
+//export gotk4_TreeModelFilterModifyFunc
+func _TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer) {
+	v := box.Get(uintptr(arg4))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var model TreeModel // out
+	var iter *TreeIter  // out
+	var column int      // out
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TreeModel)
+	iter = (*TreeIter)(unsafe.Pointer(arg1))
+	column = int(arg3)
+
+	fn := v.(TreeModelFilterModifyFunc)
+	value := fn(model, iter, column)
+
+	var arg2 *C.GValue // out
+
+	arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+}
+
+// TreeModelFilterVisibleFunc: a function which decides whether the row
+// indicated by @iter is visible.
+type TreeModelFilterVisibleFunc func(model TreeModel, iter *TreeIter, ok bool)
+
+//export gotk4_TreeModelFilterVisibleFunc
+func _TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var model TreeModel // out
+	var iter *TreeIter  // out
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TreeModel)
+	iter = (*TreeIter)(unsafe.Pointer(arg1))
+
+	fn := v.(TreeModelFilterVisibleFunc)
+	ok := fn(model, iter)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // TreeModelFilter: a GtkTreeModel which hides parts of an underlying tree model
@@ -91,21 +154,20 @@ type TreeModelFilter interface {
 	TreeDragSource
 	TreeModel
 
-	// ClearCacheTreeModelFilter:
 	ClearCacheTreeModelFilter()
-	// ConvertChildIterToIterTreeModelFilter:
+
 	ConvertChildIterToIterTreeModelFilter(childIter *TreeIter) (TreeIter, bool)
-	// ConvertChildPathToPathTreeModelFilter:
+
 	ConvertChildPathToPathTreeModelFilter(childPath *TreePath) *TreePath
-	// ConvertIterToChildIterTreeModelFilter:
+
 	ConvertIterToChildIterTreeModelFilter(filterIter *TreeIter) TreeIter
-	// ConvertPathToChildPathTreeModelFilter:
+
 	ConvertPathToChildPathTreeModelFilter(filterPath *TreePath) *TreePath
-	// Model:
+
 	Model() TreeModel
-	// RefilterTreeModelFilter:
+
 	RefilterTreeModelFilter()
-	// SetVisibleColumnTreeModelFilter:
+
 	SetVisibleColumnTreeModelFilter(column int)
 }
 
@@ -282,6 +344,10 @@ func (d treeModelFilter) RowDraggable(path *TreePath) bool {
 
 func (t treeModelFilter) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(t)).NewFilter(root)
+}
+
+func (t treeModelFilter) Foreach(fn TreeModelForeachFunc) {
+	WrapTreeModel(gextras.InternObject(t)).Foreach(fn)
 }
 
 func (t treeModelFilter) ColumnType(index_ int) externglib.Type {

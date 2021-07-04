@@ -75,7 +75,6 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 	return WrapFixedLayout(obj), nil
 }
 
-// NewFixedLayout:
 func NewFixedLayout() FixedLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -93,9 +92,8 @@ func NewFixedLayout() FixedLayout {
 type FixedLayoutChild interface {
 	LayoutChild
 
-	// Transform:
 	Transform() *gsk.Transform
-	// SetTransformFixedLayoutChild:
+
 	SetTransformFixedLayoutChild(transform *gsk.Transform)
 }
 

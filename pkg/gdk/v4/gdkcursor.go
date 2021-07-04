@@ -59,15 +59,14 @@ func init() {
 type Cursor interface {
 	gextras.Objector
 
-	// Fallback:
 	Fallback() Cursor
-	// HotspotX:
+
 	HotspotX() int
-	// HotspotY:
+
 	HotspotY() int
-	// Name:
+
 	Name() string
-	// Texture:
+
 	Texture() Texture
 }
 
@@ -90,7 +89,6 @@ func marshalCursor(p uintptr) (interface{}, error) {
 	return WrapCursor(obj), nil
 }
 
-// NewCursorFromName:
 func NewCursorFromName(name string, fallback Cursor) Cursor {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GdkCursor // out
@@ -109,7 +107,6 @@ func NewCursorFromName(name string, fallback Cursor) Cursor {
 	return _cursor
 }
 
-// NewCursorFromTexture:
 func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback Cursor) Cursor {
 	var _arg1 *C.GdkTexture // out
 	var _arg2 C.int         // out

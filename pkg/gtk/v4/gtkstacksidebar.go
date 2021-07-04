@@ -41,9 +41,8 @@ func init() {
 type StackSidebar interface {
 	Widget
 
-	// Stack:
 	Stack() Stack
-	// SetStackStackSidebar:
+
 	SetStackStackSidebar(stack Stack)
 }
 
@@ -66,7 +65,6 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 	return WrapStackSidebar(obj), nil
 }
 
-// NewStackSidebar:
 func NewStackSidebar() StackSidebar {
 	var _cret *C.GtkWidget // in
 

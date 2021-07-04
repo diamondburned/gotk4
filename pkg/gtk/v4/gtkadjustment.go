@@ -36,35 +36,34 @@ func init() {
 type Adjustment interface {
 	gextras.Objector
 
-	// ClampPageAdjustment:
 	ClampPageAdjustment(lower float64, upper float64)
-	// ConfigureAdjustment:
+
 	ConfigureAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64)
-	// Lower:
+
 	Lower() float64
-	// MinimumIncrement:
+
 	MinimumIncrement() float64
-	// PageIncrement:
+
 	PageIncrement() float64
-	// PageSize:
+
 	PageSize() float64
-	// StepIncrement:
+
 	StepIncrement() float64
-	// Upper:
+
 	Upper() float64
-	// Value:
+
 	Value() float64
-	// SetLowerAdjustment:
+
 	SetLowerAdjustment(lower float64)
-	// SetPageIncrementAdjustment:
+
 	SetPageIncrementAdjustment(pageIncrement float64)
-	// SetPageSizeAdjustment:
+
 	SetPageSizeAdjustment(pageSize float64)
-	// SetStepIncrementAdjustment:
+
 	SetStepIncrementAdjustment(stepIncrement float64)
-	// SetUpperAdjustment:
+
 	SetUpperAdjustment(upper float64)
-	// SetValueAdjustment:
+
 	SetValueAdjustment(value float64)
 }
 
@@ -87,7 +86,6 @@ func marshalAdjustment(p uintptr) (interface{}, error) {
 	return WrapAdjustment(obj), nil
 }
 
-// NewAdjustment:
 func NewAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) Adjustment {
 	var _arg1 C.double         // out
 	var _arg2 C.double         // out

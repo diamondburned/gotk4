@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -26,6 +27,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -39,43 +42,48 @@ func init() {
 type DataInputStream interface {
 	BufferedInputStream
 
-	// ByteOrder:
 	ByteOrder() DataStreamByteOrder
-	// NewlineType:
+
 	NewlineType() DataStreamNewlineType
-	// ReadByteDataInputStream:
+
 	ReadByteDataInputStream(cancellable Cancellable) (byte, error)
-	// ReadInt16DataInputStream:
+
 	ReadInt16DataInputStream(cancellable Cancellable) (int16, error)
-	// ReadInt32DataInputStream:
+
 	ReadInt32DataInputStream(cancellable Cancellable) (int32, error)
-	// ReadInt64DataInputStream:
+
 	ReadInt64DataInputStream(cancellable Cancellable) (int64, error)
-	// ReadLineDataInputStream:
+
 	ReadLineDataInputStream(cancellable Cancellable) (uint, []byte, error)
-	// ReadLineFinishDataInputStream:
+
+	ReadLineAsyncDataInputStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	ReadLineFinishDataInputStream(result AsyncResult) (uint, []byte, error)
-	// ReadLineFinishUTF8DataInputStream:
+
 	ReadLineFinishUTF8DataInputStream(result AsyncResult) (uint, string, error)
-	// ReadLineUTF8DataInputStream:
+
 	ReadLineUTF8DataInputStream(cancellable Cancellable) (uint, string, error)
-	// ReadUint16DataInputStream:
+
 	ReadUint16DataInputStream(cancellable Cancellable) (uint16, error)
-	// ReadUint32DataInputStream:
+
 	ReadUint32DataInputStream(cancellable Cancellable) (uint32, error)
-	// ReadUint64DataInputStream:
+
 	ReadUint64DataInputStream(cancellable Cancellable) (uint64, error)
-	// ReadUntilDataInputStream:
+
 	ReadUntilDataInputStream(stopChars string, cancellable Cancellable) (uint, string, error)
-	// ReadUntilFinishDataInputStream:
+
+	ReadUntilAsyncDataInputStream(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	ReadUntilFinishDataInputStream(result AsyncResult) (uint, string, error)
-	// ReadUptoDataInputStream:
+
 	ReadUptoDataInputStream(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error)
-	// ReadUptoFinishDataInputStream:
+
+	ReadUptoAsyncDataInputStream(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	ReadUptoFinishDataInputStream(result AsyncResult) (uint, string, error)
-	// SetByteOrderDataInputStream:
+
 	SetByteOrderDataInputStream(order DataStreamByteOrder)
-	// SetNewlineTypeDataInputStream:
+
 	SetNewlineTypeDataInputStream(typ DataStreamNewlineType)
 }
 
@@ -98,7 +106,6 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 	return WrapDataInputStream(obj), nil
 }
 
-// NewDataInputStream:
 func NewDataInputStream(baseStream InputStream) DataInputStream {
 	var _arg1 *C.GInputStream     // out
 	var _cret *C.GDataInputStream // in
@@ -257,6 +264,22 @@ func (s dataInputStream) ReadLineDataInputStream(cancellable Cancellable) (uint,
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _length, _guint8s, _goerr
+}
+
+func (s dataInputStream) ReadLineAsyncDataInputStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDataInputStream   // out
+	var _arg1 C.gint                // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_data_input_stream_read_line_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (s dataInputStream) ReadLineFinishDataInputStream(result AsyncResult) (uint, []byte, error) {
@@ -429,6 +452,25 @@ func (s dataInputStream) ReadUntilDataInputStream(stopChars string, cancellable 
 	return _length, _utf8, _goerr
 }
 
+func (s dataInputStream) ReadUntilAsyncDataInputStream(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDataInputStream   // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.gint                // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(stopChars))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_data_input_stream_read_until_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (s dataInputStream) ReadUntilFinishDataInputStream(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -480,6 +522,27 @@ func (s dataInputStream) ReadUptoDataInputStream(stopChars string, stopCharsLen 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _length, _utf8, _goerr
+}
+
+func (s dataInputStream) ReadUptoAsyncDataInputStream(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDataInputStream   // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.gssize              // out
+	var _arg3 C.gint                // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(stopChars))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(stopCharsLen)
+	_arg3 = C.gint(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_data_input_stream_read_upto_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 func (s dataInputStream) ReadUptoFinishDataInputStream(result AsyncResult) (uint, string, error) {

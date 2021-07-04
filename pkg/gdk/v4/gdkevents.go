@@ -344,7 +344,6 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 type ButtonEvent interface {
 	Event
 
-	// Button:
 	Button() uint
 }
 
@@ -386,11 +385,10 @@ func (e buttonEvent) Button() uint {
 type CrossingEvent interface {
 	Event
 
-	// Detail:
 	Detail() NotifyType
-	// Focus:
+
 	Focus() bool
-	// Mode:
+
 	Mode() CrossingMode
 }
 
@@ -464,7 +462,6 @@ func (e crossingEvent) Mode() CrossingMode {
 type DNDEvent interface {
 	Event
 
-	// Drop:
 	Drop() Drop
 }
 
@@ -535,37 +532,36 @@ func marshalDeleteEvent(p uintptr) (interface{}, error) {
 type Event interface {
 	gextras.Objector
 
-	// Axes:
 	Axes() ([]float64, bool)
-	// Axis:
+
 	Axis(axisUse AxisUse) (float64, bool)
-	// Device:
+
 	Device() Device
-	// DeviceTool:
+
 	DeviceTool() DeviceTool
-	// Display:
+
 	Display() Display
-	// EventSequence:
+
 	EventSequence() *EventSequence
-	// EventType:
+
 	EventType() EventType
-	// ModifierState:
+
 	ModifierState() ModifierType
-	// PointerEmulated:
+
 	PointerEmulated() bool
-	// Position:
+
 	Position() (x float64, y float64, ok bool)
-	// Seat:
+
 	Seat() Seat
-	// Surface:
+
 	Surface() Surface
-	// Time:
+
 	Time() uint32
-	// RefEvent:
+
 	RefEvent() Event
-	// TriggersContextMenuEvent:
+
 	TriggersContextMenuEvent() bool
-	// UnrefEvent:
+
 	UnrefEvent()
 }
 
@@ -851,7 +847,6 @@ func (e event) UnrefEvent() {
 type FocusEvent interface {
 	Event
 
-	// In:
 	In() bool
 }
 
@@ -895,9 +890,8 @@ func (e focusEvent) In() bool {
 type GrabBrokenEvent interface {
 	Event
 
-	// GrabSurface:
 	GrabSurface() Surface
-	// Implicit:
+
 	Implicit() bool
 }
 
@@ -956,21 +950,20 @@ func (e grabBrokenEvent) Implicit() bool {
 type KeyEvent interface {
 	Event
 
-	// ConsumedModifiers:
 	ConsumedModifiers() ModifierType
-	// Keycode:
+
 	Keycode() uint
-	// Keyval:
+
 	Keyval() uint
-	// Layout:
+
 	Layout() uint
-	// Level:
+
 	Level() uint
-	// Match:
+
 	Match() (uint, ModifierType, bool)
-	// IsModifierKeyEvent:
+
 	IsModifierKeyEvent() bool
-	// MatchesKeyEvent:
+
 	MatchesKeyEvent(keyval uint, modifiers ModifierType) KeyMatch
 }
 
@@ -1155,11 +1148,10 @@ func marshalMotionEvent(p uintptr) (interface{}, error) {
 type PadEvent interface {
 	Event
 
-	// AxisValue:
 	AxisValue() (uint, float64)
-	// Button:
+
 	Button() uint
-	// GroupMode:
+
 	GroupMode() (group uint, mode uint)
 }
 
@@ -1261,11 +1253,10 @@ func marshalProximityEvent(p uintptr) (interface{}, error) {
 type ScrollEvent interface {
 	Event
 
-	// Deltas:
 	Deltas() (deltaX float64, deltaY float64)
-	// Direction:
+
 	Direction() ScrollDirection
-	// IsStopScrollEvent:
+
 	IsStopScrollEvent() bool
 }
 
@@ -1342,7 +1333,6 @@ func (e scrollEvent) IsStopScrollEvent() bool {
 type TouchEvent interface {
 	Event
 
-	// EmulatingPointer:
 	EmulatingPointer() bool
 }
 
@@ -1391,15 +1381,14 @@ func (e touchEvent) EmulatingPointer() bool {
 type TouchpadEvent interface {
 	Event
 
-	// Deltas:
 	Deltas() (dx float64, dy float64)
-	// GesturePhase:
+
 	GesturePhase() TouchpadGesturePhase
-	// NFingers:
+
 	NFingers() uint
-	// PinchAngleDelta:
+
 	PinchAngleDelta() float64
-	// PinchScale:
+
 	PinchScale() float64
 }
 

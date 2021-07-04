@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,11 +32,10 @@ func init() {
 type RadioAction interface {
 	ToggleAction
 
-	// CurrentValue:
 	CurrentValue() int
-	// JoinGroupRadioAction:
+
 	JoinGroupRadioAction(groupSource RadioAction)
-	// SetCurrentValueRadioAction:
+
 	SetCurrentValueRadioAction(currentValue int)
 }
 
@@ -57,7 +58,6 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 	return WrapRadioAction(obj), nil
 }
 
-// NewRadioAction:
 func NewRadioAction(name string, label string, tooltip string, stockId string, value int) RadioAction {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
@@ -126,6 +126,18 @@ func (b radioAction) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b radioAction) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b radioAction) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b radioAction) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b radioAction) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b radioAction) InternalChild(builder Builder, childname string) gextras.Objector {

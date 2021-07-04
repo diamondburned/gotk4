@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -64,7 +66,6 @@ func marshalHBox(p uintptr) (interface{}, error) {
 	return WrapHBox(obj), nil
 }
 
-// NewHBox:
 func NewHBox(homogeneous bool, spacing int) HBox {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
@@ -90,6 +91,18 @@ func (b hBox) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b hBox) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b hBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b hBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b hBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b hBox) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -43,13 +43,12 @@ type CellAreaBox interface {
 	CellArea
 	Orientable
 
-	// Spacing:
 	Spacing() int
-	// PackEndCellAreaBox:
+
 	PackEndCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool)
-	// PackStartCellAreaBox:
+
 	PackStartCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool)
-	// SetSpacingCellAreaBox:
+
 	SetSpacingCellAreaBox(spacing int)
 }
 
@@ -72,7 +71,6 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return WrapCellAreaBox(obj), nil
 }
 
-// NewCellAreaBox:
 func NewCellAreaBox() CellAreaBox {
 	var _cret *C.GtkCellArea // in
 

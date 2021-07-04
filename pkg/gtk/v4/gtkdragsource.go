@@ -81,20 +81,17 @@ func init() {
 type DragSource interface {
 	GestureSingle
 
-	// DragCancelDragSource:
 	DragCancelDragSource()
-	// Actions:
+
 	Actions() gdk.DragAction
-	// Content:
+
 	Content() gdk.ContentProvider
-	// Drag:
+
 	Drag() gdk.Drag
-	// SetActionsDragSource:
+
 	SetActionsDragSource(actions gdk.DragAction)
-	// SetContentDragSource:
+
 	SetContentDragSource(content gdk.ContentProvider)
-	// SetIconDragSource:
-	SetIconDragSource(paintable gdk.Paintable, hotX int, hotY int)
 }
 
 // dragSource implements the DragSource class.
@@ -116,7 +113,6 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 	return WrapDragSource(obj), nil
 }
 
-// NewDragSource:
 func NewDragSource() DragSource {
 	var _cret *C.GtkDragSource // in
 
@@ -200,18 +196,4 @@ func (s dragSource) SetContentDragSource(content gdk.ContentProvider) {
 	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
 
 	C.gtk_drag_source_set_content(_arg0, _arg1)
-}
-
-func (s dragSource) SetIconDragSource(paintable gdk.Paintable, hotX int, hotY int) {
-	var _arg0 *C.GtkDragSource // out
-	var _arg1 *C.GdkPaintable  // out
-	var _arg2 C.int            // out
-	var _arg3 C.int            // out
-
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-	_arg2 = C.int(hotX)
-	_arg3 = C.int(hotY)
-
-	C.gtk_drag_source_set_icon(_arg0, _arg1, _arg2, _arg3)
 }

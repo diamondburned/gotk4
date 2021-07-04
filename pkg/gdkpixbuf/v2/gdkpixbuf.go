@@ -21,7 +21,6 @@ func init() {
 	})
 }
 
-// PixbufNonAnim:
 type PixbufNonAnim interface {
 	PixbufAnimation
 }
@@ -45,7 +44,6 @@ func marshalPixbufNonAnim(p uintptr) (interface{}, error) {
 	return WrapPixbufNonAnim(obj), nil
 }
 
-// NewPixbufNonAnim:
 func NewPixbufNonAnim(pixbuf Pixbuf) PixbufNonAnim {
 	var _arg1 *C.GdkPixbuf          // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -61,7 +59,6 @@ func NewPixbufNonAnim(pixbuf Pixbuf) PixbufNonAnim {
 	return _pixbufNonAnim
 }
 
-// PixbufSimpleAnimIter:
 type PixbufSimpleAnimIter interface {
 	PixbufAnimationIter
 }

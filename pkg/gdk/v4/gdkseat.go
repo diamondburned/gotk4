@@ -54,13 +54,12 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 type Seat interface {
 	gextras.Objector
 
-	// Capabilities:
 	Capabilities() SeatCapabilities
-	// Display:
+
 	Display() Display
-	// Keyboard:
+
 	Keyboard() Device
-	// Pointer:
+
 	Pointer() Device
 }
 

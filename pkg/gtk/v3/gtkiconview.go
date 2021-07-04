@@ -6,9 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -19,6 +21,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// void gotk4_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -50,6 +54,27 @@ func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 	return IconViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// IconViewForeachFunc: a function used by gtk_icon_view_selected_foreach() to
+// map all selected rows. It will be called on every selected row in the view.
+type IconViewForeachFunc func(iconView IconView, path *TreePath)
+
+//export gotk4_IconViewForeachFunc
+func _IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var iconView IconView // out
+	var path *TreePath    // out
+
+	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(IconView)
+	path = (*TreePath)(unsafe.Pointer(arg1))
+
+	fn := v.(IconViewForeachFunc)
+	fn(iconView, path)
+}
+
 // IconView provides an alternative view on a TreeModel. It displays the model
 // as a grid of icons with labels. Like TreeView, it allows to select one or
 // multiple items (depending on the selection mode, see
@@ -73,121 +98,122 @@ type IconView interface {
 	CellLayout
 	Scrollable
 
-	// ConvertWidgetToBinWindowCoordsIconView:
 	ConvertWidgetToBinWindowCoordsIconView(wx int, wy int) (bx int, by int)
-	// CreateDragIconIconView:
+
 	CreateDragIconIconView(path *TreePath) *cairo.Surface
-	// EnableModelDragDestIconView:
+
 	EnableModelDragDestIconView(targets []TargetEntry, actions gdk.DragAction)
-	// EnableModelDragSourceIconView:
+
 	EnableModelDragSourceIconView(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction)
-	// ActivateOnSingleClick:
+
 	ActivateOnSingleClick() bool
-	// CellRect:
+
 	CellRect(path *TreePath, cell CellRenderer) (gdk.Rectangle, bool)
-	// ColumnSpacing:
+
 	ColumnSpacing() int
-	// Columns:
+
 	Columns() int
-	// Cursor:
+
 	Cursor() (*TreePath, CellRenderer, bool)
-	// DestItemAtPos:
+
 	DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool)
-	// DragDestItem:
+
 	DragDestItem() (*TreePath, IconViewDropPosition)
-	// ItemAtPos:
+
 	ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool)
-	// ItemColumn:
+
 	ItemColumn(path *TreePath) int
-	// ItemOrientation:
+
 	ItemOrientation() Orientation
-	// ItemPadding:
+
 	ItemPadding() int
-	// ItemRow:
+
 	ItemRow(path *TreePath) int
-	// ItemWidth:
+
 	ItemWidth() int
-	// Margin:
+
 	Margin() int
-	// MarkupColumn:
+
 	MarkupColumn() int
-	// Model:
+
 	Model() TreeModel
-	// PathAtPos:
+
 	PathAtPos(x int, y int) *TreePath
-	// PixbufColumn:
+
 	PixbufColumn() int
-	// Reorderable:
+
 	Reorderable() bool
-	// RowSpacing:
+
 	RowSpacing() int
-	// SelectionMode:
+
 	SelectionMode() SelectionMode
-	// Spacing:
+
 	Spacing() int
-	// TextColumn:
+
 	TextColumn() int
-	// TooltipColumn:
+
 	TooltipColumn() int
-	// VisibleRange:
+
 	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
-	// ItemActivatedIconView:
+
 	ItemActivatedIconView(path *TreePath)
-	// PathIsSelectedIconView:
+
 	PathIsSelectedIconView(path *TreePath) bool
-	// ScrollToPathIconView:
+
 	ScrollToPathIconView(path *TreePath, useAlign bool, rowAlign float32, colAlign float32)
-	// SelectAllIconView:
+
 	SelectAllIconView()
-	// SelectPathIconView:
+
 	SelectPathIconView(path *TreePath)
-	// SetActivateOnSingleClickIconView:
+
+	SelectedForeachIconView(fn IconViewForeachFunc)
+
 	SetActivateOnSingleClickIconView(single bool)
-	// SetColumnSpacingIconView:
+
 	SetColumnSpacingIconView(columnSpacing int)
-	// SetColumnsIconView:
+
 	SetColumnsIconView(columns int)
-	// SetCursorIconView:
+
 	SetCursorIconView(path *TreePath, cell CellRenderer, startEditing bool)
-	// SetDragDestItemIconView:
+
 	SetDragDestItemIconView(path *TreePath, pos IconViewDropPosition)
-	// SetItemOrientationIconView:
+
 	SetItemOrientationIconView(orientation Orientation)
-	// SetItemPaddingIconView:
+
 	SetItemPaddingIconView(itemPadding int)
-	// SetItemWidthIconView:
+
 	SetItemWidthIconView(itemWidth int)
-	// SetMarginIconView:
+
 	SetMarginIconView(margin int)
-	// SetMarkupColumnIconView:
+
 	SetMarkupColumnIconView(column int)
-	// SetModelIconView:
+
 	SetModelIconView(model TreeModel)
-	// SetPixbufColumnIconView:
+
 	SetPixbufColumnIconView(column int)
-	// SetReorderableIconView:
+
 	SetReorderableIconView(reorderable bool)
-	// SetRowSpacingIconView:
+
 	SetRowSpacingIconView(rowSpacing int)
-	// SetSelectionModeIconView:
+
 	SetSelectionModeIconView(mode SelectionMode)
-	// SetSpacingIconView:
+
 	SetSpacingIconView(spacing int)
-	// SetTextColumnIconView:
+
 	SetTextColumnIconView(column int)
-	// SetTooltipCellIconView:
+
 	SetTooltipCellIconView(tooltip Tooltip, path *TreePath, cell CellRenderer)
-	// SetTooltipColumnIconView:
+
 	SetTooltipColumnIconView(column int)
-	// SetTooltipItemIconView:
+
 	SetTooltipItemIconView(tooltip Tooltip, path *TreePath)
-	// UnselectAllIconView:
+
 	UnselectAllIconView()
-	// UnselectPathIconView:
+
 	UnselectPathIconView(path *TreePath)
-	// UnsetModelDragDestIconView:
+
 	UnsetModelDragDestIconView()
-	// UnsetModelDragSourceIconView:
+
 	UnsetModelDragSourceIconView()
 }
 
@@ -210,7 +236,6 @@ func marshalIconView(p uintptr) (interface{}, error) {
 	return WrapIconView(obj), nil
 }
 
-// NewIconView:
 func NewIconView() IconView {
 	var _cret *C.GtkWidget // in
 
@@ -223,7 +248,6 @@ func NewIconView() IconView {
 	return _iconView
 }
 
-// NewIconViewWithArea:
 func NewIconViewWithArea(area CellArea) IconView {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
@@ -239,7 +263,6 @@ func NewIconViewWithArea(area CellArea) IconView {
 	return _iconView
 }
 
-// NewIconViewWithModel:
 func NewIconViewWithModel(model TreeModel) IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -862,6 +885,18 @@ func (i iconView) SelectPathIconView(path *TreePath) {
 	C.gtk_icon_view_select_path(_arg0, _arg1)
 }
 
+func (i iconView) SelectedForeachIconView(fn IconViewForeachFunc) {
+	var _arg0 *C.GtkIconView           // out
+	var _arg1 C.GtkIconViewForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_IconViewForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.gtk_icon_view_selected_foreach(_arg0, _arg1, _arg2)
+}
+
 func (i iconView) SetActivateOnSingleClickIconView(single bool) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gboolean     // out
@@ -1120,6 +1155,18 @@ func (b iconView) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b iconView) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b iconView) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b iconView) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b iconView) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b iconView) InternalChild(builder Builder, childname string) gextras.Objector {

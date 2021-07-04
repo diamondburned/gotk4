@@ -37,51 +37,50 @@ func init() {
 type Surface interface {
 	gextras.Objector
 
-	// BeepSurface:
 	BeepSurface()
-	// CreateCairoContextSurface:
+
 	CreateCairoContextSurface() CairoContext
-	// CreateGLContextSurface:
+
 	CreateGLContextSurface() (GLContext, error)
-	// CreateSimilarSurfaceSurface:
+
 	CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) *cairo.Surface
-	// CreateVulkanContextSurface:
+
 	CreateVulkanContextSurface() (VulkanContext, error)
-	// DestroySurface:
+
 	DestroySurface()
-	// Cursor:
+
 	Cursor() Cursor
-	// DeviceCursor:
+
 	DeviceCursor(device Device) Cursor
-	// DevicePosition:
+
 	DevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool)
-	// Display:
+
 	Display() Display
-	// FrameClock:
+
 	FrameClock() FrameClock
-	// Height:
+
 	Height() int
-	// Mapped:
+
 	Mapped() bool
-	// ScaleFactor:
+
 	ScaleFactor() int
-	// Width:
+
 	Width() int
-	// HideSurface:
+
 	HideSurface()
-	// IsDestroyedSurface:
+
 	IsDestroyedSurface() bool
-	// QueueRenderSurface:
+
 	QueueRenderSurface()
-	// RequestLayoutSurface:
+
 	RequestLayoutSurface()
-	// SetCursorSurface:
+
 	SetCursorSurface(cursor Cursor)
-	// SetDeviceCursorSurface:
+
 	SetDeviceCursorSurface(device Device, cursor Cursor)
-	// SetInputRegionSurface:
+
 	SetInputRegionSurface(region *cairo.Region)
-	// SetOpaqueRegionSurface:
+
 	SetOpaqueRegionSurface(region *cairo.Region)
 }
 
@@ -104,7 +103,6 @@ func marshalSurface(p uintptr) (interface{}, error) {
 	return WrapSurface(obj), nil
 }
 
-// NewSurfacePopup:
 func NewSurfacePopup(parent Surface, autohide bool) Surface {
 	var _arg1 *C.GdkSurface // out
 	var _arg2 C.gboolean    // out
@@ -124,7 +122,6 @@ func NewSurfacePopup(parent Surface, autohide bool) Surface {
 	return _surface
 }
 
-// NewSurfaceToplevel:
 func NewSurfaceToplevel(display Display) Surface {
 	var _arg1 *C.GdkDisplay // out
 	var _cret *C.GdkSurface // in

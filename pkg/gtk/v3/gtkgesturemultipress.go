@@ -36,9 +36,8 @@ func init() {
 type GestureMultiPress interface {
 	GestureSingle
 
-	// Area:
 	Area() (gdk.Rectangle, bool)
-	// SetAreaGestureMultiPress:
+
 	SetAreaGestureMultiPress(rect *gdk.Rectangle)
 }
 
@@ -61,7 +60,6 @@ func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 	return WrapGestureMultiPress(obj), nil
 }
 
-// NewGestureMultiPress:
 func NewGestureMultiPress(widget Widget) GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

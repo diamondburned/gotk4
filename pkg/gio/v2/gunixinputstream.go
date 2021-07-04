@@ -47,11 +47,10 @@ type UnixInputStream interface {
 	FileDescriptorBased
 	PollableInputStream
 
-	// CloseFd:
 	CloseFd() bool
-	// GetFd:
+
 	GetFd() int
-	// SetCloseFdUnixInputStream:
+
 	SetCloseFdUnixInputStream(closeFd bool)
 }
 
@@ -74,7 +73,6 @@ func marshalUnixInputStream(p uintptr) (interface{}, error) {
 	return WrapUnixInputStream(obj), nil
 }
 
-// NewUnixInputStream:
 func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
 	var _arg1 C.gint          // out
 	var _arg2 C.gboolean      // out

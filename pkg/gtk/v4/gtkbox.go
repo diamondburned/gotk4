@@ -60,27 +60,26 @@ type Box interface {
 	Widget
 	Orientable
 
-	// AppendBox:
 	AppendBox(child Widget)
-	// BaselinePosition:
+
 	BaselinePosition() BaselinePosition
-	// Homogeneous:
+
 	Homogeneous() bool
-	// Spacing:
+
 	Spacing() int
-	// InsertChildAfterBox:
+
 	InsertChildAfterBox(child Widget, sibling Widget)
-	// PrependBox:
+
 	PrependBox(child Widget)
-	// RemoveBox:
+
 	RemoveBox(child Widget)
-	// ReorderChildAfterBox:
+
 	ReorderChildAfterBox(child Widget, sibling Widget)
-	// SetBaselinePositionBox:
+
 	SetBaselinePositionBox(position BaselinePosition)
-	// SetHomogeneousBox:
+
 	SetHomogeneousBox(homogeneous bool)
-	// SetSpacingBox:
+
 	SetSpacingBox(spacing int)
 }
 
@@ -103,7 +102,6 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return WrapBox(obj), nil
 }
 
-// NewBox:
 func NewBox(orientation Orientation, spacing int) Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.int            // out

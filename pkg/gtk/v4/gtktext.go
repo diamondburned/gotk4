@@ -83,71 +83,70 @@ func init() {
 type Text interface {
 	Editable
 
-	// ActivatesDefault:
 	ActivatesDefault() bool
-	// Attributes:
+
 	Attributes() *pango.AttrList
-	// Buffer:
+
 	Buffer() EntryBuffer
-	// EnableEmojiCompletion:
+
 	EnableEmojiCompletion() bool
-	// ExtraMenu:
+
 	ExtraMenu() gio.MenuModel
-	// InputHints:
+
 	InputHints() InputHints
-	// InputPurpose:
+
 	InputPurpose() InputPurpose
-	// InvisibleChar:
+
 	InvisibleChar() uint32
-	// MaxLength:
+
 	MaxLength() int
-	// OverwriteMode:
+
 	OverwriteMode() bool
-	// PlaceholderText:
+
 	PlaceholderText() string
-	// PropagateTextWidth:
+
 	PropagateTextWidth() bool
-	// Tabs:
+
 	Tabs() *pango.TabArray
-	// TextLength:
+
 	TextLength() uint16
-	// TruncateMultiline:
+
 	TruncateMultiline() bool
-	// Visibility:
+
 	Visibility() bool
-	// GrabFocusWithoutSelectingText:
+
 	GrabFocusWithoutSelectingText() bool
-	// SetActivatesDefaultText:
+
 	SetActivatesDefaultText(activates bool)
-	// SetAttributesText:
+
 	SetAttributesText(attrs *pango.AttrList)
-	// SetBufferText:
+
 	SetBufferText(buffer EntryBuffer)
-	// SetEnableEmojiCompletionText:
+
 	SetEnableEmojiCompletionText(enableEmojiCompletion bool)
-	// SetExtraMenuText:
+
 	SetExtraMenuText(model gio.MenuModel)
-	// SetInputHintsText:
+
 	SetInputHintsText(hints InputHints)
-	// SetInputPurposeText:
+
 	SetInputPurposeText(purpose InputPurpose)
-	// SetInvisibleCharText:
+
 	SetInvisibleCharText(ch uint32)
-	// SetMaxLengthText:
+
 	SetMaxLengthText(length int)
-	// SetOverwriteModeText:
+
 	SetOverwriteModeText(overwrite bool)
-	// SetPlaceholderTextText:
+
 	SetPlaceholderTextText(text string)
-	// SetPropagateTextWidthText:
+
 	SetPropagateTextWidthText(propagateTextWidth bool)
-	// SetTabsText:
+
 	SetTabsText(tabs *pango.TabArray)
-	// SetTruncateMultilineText:
+
 	SetTruncateMultilineText(truncateMultiline bool)
-	// SetVisibilityText:
+
 	SetVisibilityText(visible bool)
-	// UnsetInvisibleCharText:
+
 	UnsetInvisibleCharText()
 }
 
@@ -170,7 +169,6 @@ func marshalText(p uintptr) (interface{}, error) {
 	return WrapText(obj), nil
 }
 
-// NewText:
 func NewText() Text {
 	var _cret *C.GtkWidget // in
 
@@ -183,7 +181,6 @@ func NewText() Text {
 	return _text
 }
 
-// NewTextWithBuffer:
 func NewTextWithBuffer(buffer EntryBuffer) Text {
 	var _arg1 *C.GtkEntryBuffer // out
 	var _cret *C.GtkWidget      // in

@@ -6,8 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,7 +61,6 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 	return WrapRecentChooserWidget(obj), nil
 }
 
-// NewRecentChooserWidget:
 func NewRecentChooserWidget() RecentChooserWidget {
 	var _cret *C.GtkWidget // in
 
@@ -72,7 +73,6 @@ func NewRecentChooserWidget() RecentChooserWidget {
 	return _recentChooserWidget
 }
 
-// NewRecentChooserWidgetForManager:
 func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
@@ -94,6 +94,18 @@ func (b recentChooserWidget) AddChild(builder Builder, child gextras.Objector, t
 
 func (b recentChooserWidget) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b recentChooserWidget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b recentChooserWidget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b recentChooserWidget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b recentChooserWidget) InternalChild(builder Builder, childname string) gextras.Objector {

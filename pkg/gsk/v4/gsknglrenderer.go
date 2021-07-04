@@ -21,7 +21,6 @@ func init() {
 	})
 }
 
-// NglRenderer:
 type NglRenderer interface {
 	Renderer
 }
@@ -45,7 +44,6 @@ func marshalNglRenderer(p uintptr) (interface{}, error) {
 	return WrapNglRenderer(obj), nil
 }
 
-// NewNglRenderer:
 func NewNglRenderer() NglRenderer {
 	var _cret *C.GskRenderer // in
 

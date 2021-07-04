@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,31 +63,30 @@ type LevelBar interface {
 	Widget
 	Orientable
 
-	// AddOffsetValueLevelBar:
 	AddOffsetValueLevelBar(name string, value float64)
-	// Inverted:
+
 	Inverted() bool
-	// MaxValue:
+
 	MaxValue() float64
-	// MinValue:
+
 	MinValue() float64
-	// Mode:
+
 	Mode() LevelBarMode
-	// OffsetValue:
+
 	OffsetValue(name string) (float64, bool)
-	// Value:
+
 	Value() float64
-	// RemoveOffsetValueLevelBar:
+
 	RemoveOffsetValueLevelBar(name string)
-	// SetInvertedLevelBar:
+
 	SetInvertedLevelBar(inverted bool)
-	// SetMaxValueLevelBar:
+
 	SetMaxValueLevelBar(value float64)
-	// SetMinValueLevelBar:
+
 	SetMinValueLevelBar(value float64)
-	// SetModeLevelBar:
+
 	SetModeLevelBar(mode LevelBarMode)
-	// SetValueLevelBar:
+
 	SetValueLevelBar(value float64)
 }
 
@@ -108,7 +109,6 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return WrapLevelBar(obj), nil
 }
 
-// NewLevelBar:
 func NewLevelBar() LevelBar {
 	var _cret *C.GtkWidget // in
 
@@ -121,7 +121,6 @@ func NewLevelBar() LevelBar {
 	return _levelBar
 }
 
-// NewLevelBarForInterval:
 func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
@@ -321,6 +320,18 @@ func (b levelBar) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b levelBar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b levelBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b levelBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b levelBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b levelBar) InternalChild(builder Builder, childname string) gextras.Objector {

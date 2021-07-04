@@ -53,41 +53,36 @@ func marshalRenderPart(p uintptr) (interface{}, error) {
 type Renderer interface {
 	gextras.Objector
 
-	// ActivateRenderer:
 	ActivateRenderer()
-	// DeactivateRenderer:
+
 	DeactivateRenderer()
-	// DrawErrorUnderlineRenderer:
+
 	DrawErrorUnderlineRenderer(x int, y int, width int, height int)
-	// DrawGlyphItemRenderer:
+
 	DrawGlyphItemRenderer(text string, glyphItem *GlyphItem, x int, y int)
-	// DrawGlyphsRenderer:
+
 	DrawGlyphsRenderer(font Font, glyphs *GlyphString, x int, y int)
-	// DrawLayoutRenderer:
+
 	DrawLayoutRenderer(layout Layout, x int, y int)
-	// DrawLayoutLineRenderer:
-	DrawLayoutLineRenderer(line *LayoutLine, x int, y int)
-	// DrawRectangleRenderer:
+
 	DrawRectangleRenderer(part RenderPart, x int, y int, width int, height int)
-	// DrawTrapezoidRenderer:
+
 	DrawTrapezoidRenderer(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
-	// Alpha:
+
 	Alpha(part RenderPart) uint16
-	// Color:
+
 	Color(part RenderPart) *Color
-	// Layout:
+
 	Layout() Layout
-	// LayoutLine:
-	LayoutLine() *LayoutLine
-	// Matrix:
+
 	Matrix() *Matrix
-	// PartChangedRenderer:
+
 	PartChangedRenderer(part RenderPart)
-	// SetAlphaRenderer:
+
 	SetAlphaRenderer(part RenderPart, alpha uint16)
-	// SetColorRenderer:
+
 	SetColorRenderer(part RenderPart, color *Color)
-	// SetMatrixRenderer:
+
 	SetMatrixRenderer(matrix *Matrix)
 }
 
@@ -189,20 +184,6 @@ func (r renderer) DrawLayoutRenderer(layout Layout, x int, y int) {
 	C.pango_renderer_draw_layout(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (r renderer) DrawLayoutLineRenderer(line *LayoutLine, x int, y int) {
-	var _arg0 *C.PangoRenderer   // out
-	var _arg1 *C.PangoLayoutLine // out
-	var _arg2 C.int              // out
-	var _arg3 C.int              // out
-
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
-	_arg2 = C.int(x)
-	_arg3 = C.int(y)
-
-	C.pango_renderer_draw_layout_line(_arg0, _arg1, _arg2, _arg3)
-}
-
 func (r renderer) DrawRectangleRenderer(part RenderPart, x int, y int, width int, height int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -290,21 +271,6 @@ func (r renderer) Layout() Layout {
 	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Layout)
 
 	return _layout
-}
-
-func (r renderer) LayoutLine() *LayoutLine {
-	var _arg0 *C.PangoRenderer   // out
-	var _cret *C.PangoLayoutLine // in
-
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
-
-	_cret = C.pango_renderer_get_layout_line(_arg0)
-
-	var _layoutLine *LayoutLine // out
-
-	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-
-	return _layoutLine
 }
 
 func (r renderer) Matrix() *Matrix {

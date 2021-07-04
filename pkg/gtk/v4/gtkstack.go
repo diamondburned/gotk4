@@ -133,51 +133,48 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 type Stack interface {
 	Widget
 
-	// AddChildStack:
 	AddChildStack(child Widget) StackPage
-	// AddNamedStack:
+
 	AddNamedStack(child Widget, name string) StackPage
-	// AddTitledStack:
+
 	AddTitledStack(child Widget, name string, title string) StackPage
-	// ChildByName:
+
 	ChildByName(name string) Widget
-	// Hhomogeneous:
+
 	Hhomogeneous() bool
-	// InterpolateSize:
+
 	InterpolateSize() bool
-	// Page:
+
 	Page(child Widget) StackPage
-	// Pages:
-	Pages() SelectionModel
-	// TransitionDuration:
+
 	TransitionDuration() uint
-	// TransitionRunning:
+
 	TransitionRunning() bool
-	// TransitionType:
+
 	TransitionType() StackTransitionType
-	// Vhomogeneous:
+
 	Vhomogeneous() bool
-	// VisibleChild:
+
 	VisibleChild() Widget
-	// VisibleChildName:
+
 	VisibleChildName() string
-	// RemoveStack:
+
 	RemoveStack(child Widget)
-	// SetHhomogeneousStack:
+
 	SetHhomogeneousStack(hhomogeneous bool)
-	// SetInterpolateSizeStack:
+
 	SetInterpolateSizeStack(interpolateSize bool)
-	// SetTransitionDurationStack:
+
 	SetTransitionDurationStack(duration uint)
-	// SetTransitionTypeStack:
+
 	SetTransitionTypeStack(transition StackTransitionType)
-	// SetVhomogeneousStack:
+
 	SetVhomogeneousStack(vhomogeneous bool)
-	// SetVisibleChildStack:
+
 	SetVisibleChildStack(child Widget)
-	// SetVisibleChildFullStack:
+
 	SetVisibleChildFullStack(name string, transition StackTransitionType)
-	// SetVisibleChildNameStack:
+
 	SetVisibleChildNameStack(name string)
 }
 
@@ -200,7 +197,6 @@ func marshalStack(p uintptr) (interface{}, error) {
 	return WrapStack(obj), nil
 }
 
-// NewStack:
 func NewStack() Stack {
 	var _cret *C.GtkWidget // in
 
@@ -340,21 +336,6 @@ func (s stack) Page(child Widget) StackPage {
 	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackPage)
 
 	return _stackPage
-}
-
-func (s stack) Pages() SelectionModel {
-	var _arg0 *C.GtkStack          // out
-	var _cret *C.GtkSelectionModel // in
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_stack_get_pages(_arg0)
-
-	var _selectionModel SelectionModel // out
-
-	_selectionModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SelectionModel)
-
-	return _selectionModel
 }
 
 func (s stack) TransitionDuration() uint {
@@ -587,31 +568,30 @@ func (b stack) BuildableID() string {
 type StackPage interface {
 	Accessible
 
-	// Child:
 	Child() Widget
-	// IconName:
+
 	IconName() string
-	// Name:
+
 	Name() string
-	// NeedsAttention:
+
 	NeedsAttention() bool
-	// Title:
+
 	Title() string
-	// UseUnderline:
+
 	UseUnderline() bool
-	// Visible:
+
 	Visible() bool
-	// SetIconNameStackPage:
+
 	SetIconNameStackPage(setting string)
-	// SetNameStackPage:
+
 	SetNameStackPage(setting string)
-	// SetNeedsAttentionStackPage:
+
 	SetNeedsAttentionStackPage(setting bool)
-	// SetTitleStackPage:
+
 	SetTitleStackPage(setting string)
-	// SetUseUnderlineStackPage:
+
 	SetUseUnderlineStackPage(setting bool)
-	// SetVisibleStackPage:
+
 	SetVisibleStackPage(visible bool)
 }
 

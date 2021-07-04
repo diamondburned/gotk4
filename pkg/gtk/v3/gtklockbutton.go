@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -59,9 +60,8 @@ func init() {
 type LockButton interface {
 	Button
 
-	// Permission:
 	Permission() gio.Permission
-	// SetPermissionLockButton:
+
 	SetPermissionLockButton(permission gio.Permission)
 }
 
@@ -84,7 +84,6 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	return WrapLockButton(obj), nil
 }
 
-// NewLockButton:
 func NewLockButton(permission gio.Permission) LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
@@ -133,6 +132,18 @@ func (b lockButton) ConstructChild(builder Builder, name string) gextras.Objecto
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b lockButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b lockButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b lockButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b lockButton) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -179,6 +190,18 @@ func (b lockButton) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b lockButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b lockButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b lockButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b lockButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b lockButton) InternalChild(builder Builder, childname string) gextras.Objector {

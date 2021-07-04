@@ -30,13 +30,12 @@ func init() {
 type ShortcutLabel interface {
 	Widget
 
-	// Accelerator:
 	Accelerator() string
-	// DisabledText:
+
 	DisabledText() string
-	// SetAcceleratorShortcutLabel:
+
 	SetAcceleratorShortcutLabel(accelerator string)
-	// SetDisabledTextShortcutLabel:
+
 	SetDisabledTextShortcutLabel(disabledText string)
 }
 
@@ -59,7 +58,6 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	return WrapShortcutLabel(obj), nil
 }
 
-// NewShortcutLabel:
 func NewShortcutLabel(accelerator string) ShortcutLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

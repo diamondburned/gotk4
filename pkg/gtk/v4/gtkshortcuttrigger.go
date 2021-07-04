@@ -35,9 +35,8 @@ func init() {
 type AlternativeTrigger interface {
 	ShortcutTrigger
 
-	// First:
 	First() ShortcutTrigger
-	// Second:
+
 	Second() ShortcutTrigger
 }
 
@@ -60,7 +59,6 @@ func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
 	return WrapAlternativeTrigger(obj), nil
 }
 
-// NewAlternativeTrigger:
 func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) AlternativeTrigger {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutTrigger // out
@@ -113,9 +111,8 @@ func (s alternativeTrigger) Second() ShortcutTrigger {
 type KeyvalTrigger interface {
 	ShortcutTrigger
 
-	// Keyval:
 	Keyval() uint
-	// Modifiers:
+
 	Modifiers() gdk.ModifierType
 }
 
@@ -138,7 +135,6 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 	return WrapKeyvalTrigger(obj), nil
 }
 
-// NewKeyvalTrigger:
 func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger {
 	var _arg1 C.guint               // out
 	var _arg2 C.GdkModifierType     // out
@@ -194,7 +190,6 @@ func (s keyvalTrigger) Modifiers() gdk.ModifierType {
 type MnemonicTrigger interface {
 	ShortcutTrigger
 
-	// Keyval:
 	Keyval() uint
 }
 
@@ -217,7 +212,6 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 	return WrapMnemonicTrigger(obj), nil
 }
 
-// NewMnemonicTrigger:
 func NewMnemonicTrigger(keyval uint) MnemonicTrigger {
 	var _arg1 C.guint               // out
 	var _cret *C.GtkShortcutTrigger // in
@@ -287,17 +281,16 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 type ShortcutTrigger interface {
 	gextras.Objector
 
-	// CompareShortcutTrigger:
 	CompareShortcutTrigger(trigger2 ShortcutTrigger) int
-	// EqualShortcutTrigger:
+
 	EqualShortcutTrigger(trigger2 ShortcutTrigger) bool
-	// HashShortcutTrigger:
+
 	HashShortcutTrigger() uint
-	// ToLabelShortcutTrigger:
+
 	ToLabelShortcutTrigger(display gdk.Display) string
-	// String:
+
 	String() string
-	// TriggerShortcutTrigger:
+
 	TriggerShortcutTrigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch
 }
 
@@ -320,7 +313,6 @@ func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 	return WrapShortcutTrigger(obj), nil
 }
 
-// NewShortcutTriggerParseString:
 func NewShortcutTriggerParseString(_string string) ShortcutTrigger {
 	var _arg1 *C.char               // out
 	var _cret *C.GtkShortcutTrigger // in

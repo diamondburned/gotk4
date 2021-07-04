@@ -29,7 +29,6 @@ func init() {
 type GestureRotate interface {
 	Gesture
 
-	// AngleDelta:
 	AngleDelta() float64
 }
 
@@ -52,7 +51,6 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 	return WrapGestureRotate(obj), nil
 }
 
-// NewGestureRotate:
 func NewGestureRotate(widget Widget) GestureRotate {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

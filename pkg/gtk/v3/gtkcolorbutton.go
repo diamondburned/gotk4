@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -39,21 +40,20 @@ type ColorButton interface {
 	Button
 	ColorChooser
 
-	// Alpha:
 	Alpha() uint16
-	// Color:
+
 	Color() gdk.Color
-	// Title:
+
 	Title() string
-	// GetUseAlpha:
+
 	GetUseAlpha() bool
-	// SetAlphaColorButton:
+
 	SetAlphaColorButton(alpha uint16)
-	// SetColorColorButton:
+
 	SetColorColorButton(color *gdk.Color)
-	// SetTitleColorButton:
+
 	SetTitleColorButton(title string)
-	// SetUseAlphaColorButton:
+
 	SetUseAlphaColorButton(useAlpha bool)
 }
 
@@ -76,7 +76,6 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return WrapColorButton(obj), nil
 }
 
-// NewColorButton:
 func NewColorButton() ColorButton {
 	var _cret *C.GtkWidget // in
 
@@ -89,7 +88,6 @@ func NewColorButton() ColorButton {
 	return _colorButton
 }
 
-// NewColorButtonWithColor:
 func NewColorButtonWithColor(color *gdk.Color) ColorButton {
 	var _arg1 *C.GdkColor  // out
 	var _cret *C.GtkWidget // in
@@ -105,7 +103,6 @@ func NewColorButtonWithColor(color *gdk.Color) ColorButton {
 	return _colorButton
 }
 
-// NewColorButtonWithRGBA:
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
@@ -244,6 +241,18 @@ func (b colorButton) ConstructChild(builder Builder, name string) gextras.Object
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b colorButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b colorButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b colorButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b colorButton) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -290,6 +299,18 @@ func (b colorButton) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b colorButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b colorButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b colorButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b colorButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b colorButton) InternalChild(builder Builder, childname string) gextras.Objector {

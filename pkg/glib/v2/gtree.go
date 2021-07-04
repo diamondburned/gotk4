@@ -77,6 +77,149 @@ func (t *Tree) Height() int {
 	return _gint
 }
 
+// Insert gets the upper bound node corresponding to the given key, or nil if
+// the tree is empty or all the nodes in the tree have keys that are lower than
+// or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) Insert(key interface{}, value interface{}) {
+	var _arg0 *C.GTree   // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(key)))
+	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(value)))
+
+	C.g_tree_insert(_arg0, _arg1, _arg2)
+}
+
+// InsertNode gets the upper bound node corresponding to the given key, or nil
+// if the tree is empty or all the nodes in the tree have keys that are lower
+// than or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) InsertNode(key interface{}, value interface{}) *TreeNode {
+	var _arg0 *C.GTree     // out
+	var _arg1 C.gpointer   // out
+	var _arg2 C.gpointer   // out
+	var _cret *C.GTreeNode // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(key)))
+	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(value)))
+
+	_cret = C.g_tree_insert_node(_arg0, _arg1, _arg2)
+
+	var _treeNode *TreeNode // out
+
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
+
+	return _treeNode
+}
+
+// Lookup gets the upper bound node corresponding to the given key, or nil if
+// the tree is empty or all the nodes in the tree have keys that are lower than
+// or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) Lookup(key interface{}) interface{} {
+	var _arg0 *C.GTree        // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gpointer      // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(key)))
+
+	_cret = C.g_tree_lookup(_arg0, _arg1)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
+// LookupExtended gets the upper bound node corresponding to the given key, or
+// nil if the tree is empty or all the nodes in the tree have keys that are
+// lower than or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
+	var _arg0 *C.GTree        // out
+	var _arg1 C.gconstpointer // out
+	var _arg2 C.gpointer      // in
+	var _arg3 C.gpointer      // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(lookupKey)))
+
+	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _origKey interface{} // out
+	var _value interface{}   // out
+	var _ok bool             // out
+
+	_origKey = box.Get(uintptr(_arg2))
+	_value = box.Get(uintptr(_arg3))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _origKey, _value, _ok
+}
+
+// LookupNode gets the upper bound node corresponding to the given key, or nil
+// if the tree is empty or all the nodes in the tree have keys that are lower
+// than or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) LookupNode(key interface{}) *TreeNode {
+	var _arg0 *C.GTree        // out
+	var _arg1 C.gconstpointer // out
+	var _cret *C.GTreeNode    // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(key)))
+
+	_cret = C.g_tree_lookup_node(_arg0, _arg1)
+
+	var _treeNode *TreeNode // out
+
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
+
+	return _treeNode
+}
+
+// LowerBound gets the upper bound node corresponding to the given key, or nil
+// if the tree is empty or all the nodes in the tree have keys that are lower
+// than or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) LowerBound(key interface{}) *TreeNode {
+	var _arg0 *C.GTree        // out
+	var _arg1 C.gconstpointer // out
+	var _cret *C.GTreeNode    // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(key)))
+
+	_cret = C.g_tree_lower_bound(_arg0, _arg1)
+
+	var _treeNode *TreeNode // out
+
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
+
+	return _treeNode
+}
+
 // Nnodes gets the upper bound node corresponding to the given key, or nil if
 // the tree is empty or all the nodes in the tree have keys that are lower than
 // or equal to the searched key.
@@ -164,6 +307,99 @@ func (t *Tree) Ref() *Tree {
 	return _ret
 }
 
+// Remove gets the upper bound node corresponding to the given key, or nil if
+// the tree is empty or all the nodes in the tree have keys that are lower than
+// or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) Remove(key interface{}) bool {
+	var _arg0 *C.GTree        // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(key)))
+
+	_cret = C.g_tree_remove(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Replace gets the upper bound node corresponding to the given key, or nil if
+// the tree is empty or all the nodes in the tree have keys that are lower than
+// or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) Replace(key interface{}, value interface{}) {
+	var _arg0 *C.GTree   // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(key)))
+	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(value)))
+
+	C.g_tree_replace(_arg0, _arg1, _arg2)
+}
+
+// ReplaceNode gets the upper bound node corresponding to the given key, or nil
+// if the tree is empty or all the nodes in the tree have keys that are lower
+// than or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) ReplaceNode(key interface{}, value interface{}) *TreeNode {
+	var _arg0 *C.GTree     // out
+	var _arg1 C.gpointer   // out
+	var _arg2 C.gpointer   // out
+	var _cret *C.GTreeNode // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(key)))
+	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(value)))
+
+	_cret = C.g_tree_replace_node(_arg0, _arg1, _arg2)
+
+	var _treeNode *TreeNode // out
+
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
+
+	return _treeNode
+}
+
+// Steal gets the upper bound node corresponding to the given key, or nil if the
+// tree is empty or all the nodes in the tree have keys that are lower than or
+// equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) Steal(key interface{}) bool {
+	var _arg0 *C.GTree        // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(key)))
+
+	_cret = C.g_tree_steal(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Unref gets the upper bound node corresponding to the given key, or nil if the
 // tree is empty or all the nodes in the tree have keys that are lower than or
 // equal to the searched key.
@@ -178,6 +414,29 @@ func (t *Tree) Unref() {
 	C.g_tree_unref(_arg0)
 }
 
+// UpperBound gets the upper bound node corresponding to the given key, or nil
+// if the tree is empty or all the nodes in the tree have keys that are lower
+// than or equal to the searched key.
+//
+// The upper bound is the first node that has its key strictly greater than the
+// searched key.
+func (t *Tree) UpperBound(key interface{}) *TreeNode {
+	var _arg0 *C.GTree        // out
+	var _arg1 C.gconstpointer // out
+	var _cret *C.GTreeNode    // in
+
+	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(key)))
+
+	_cret = C.g_tree_upper_bound(_arg0, _arg1)
+
+	var _treeNode *TreeNode // out
+
+	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
+
+	return _treeNode
+}
+
 // TreeNode: an opaque type which identifies a specific node in a #GTree.
 type TreeNode C.GTreeNode
 
@@ -190,6 +449,22 @@ func WrapTreeNode(ptr unsafe.Pointer) *TreeNode {
 // Native returns the underlying C source pointer.
 func (t *TreeNode) Native() unsafe.Pointer {
 	return unsafe.Pointer(t)
+}
+
+// Key gets the value stored at a particular tree node.
+func (n *TreeNode) Key() interface{} {
+	var _arg0 *C.GTreeNode // out
+	var _cret C.gpointer   // in
+
+	_arg0 = (*C.GTreeNode)(unsafe.Pointer(n.Native()))
+
+	_cret = C.g_tree_node_key(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
 }
 
 // Next gets the value stored at a particular tree node.
@@ -222,4 +497,20 @@ func (n *TreeNode) Previous() *TreeNode {
 	_treeNode = (*TreeNode)(unsafe.Pointer(_cret))
 
 	return _treeNode
+}
+
+// Value gets the value stored at a particular tree node.
+func (n *TreeNode) Value() interface{} {
+	var _arg0 *C.GTreeNode // out
+	var _cret C.gpointer   // in
+
+	_arg0 = (*C.GTreeNode)(unsafe.Pointer(n.Native()))
+
+	_cret = C.g_tree_node_value(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
 }

@@ -131,13 +131,12 @@ func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
 type PopoverMenu interface {
 	Popover
 
-	// AddChildPopoverMenu:
 	AddChildPopoverMenu(child Widget, id string) bool
-	// MenuModel:
+
 	MenuModel() gio.MenuModel
-	// RemoveChildPopoverMenu:
+
 	RemoveChildPopoverMenu(child Widget) bool
-	// SetMenuModelPopoverMenu:
+
 	SetMenuModelPopoverMenu(model gio.MenuModel)
 }
 
@@ -160,7 +159,6 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return WrapPopoverMenu(obj), nil
 }
 
-// NewPopoverMenuFromModel:
 func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -176,7 +174,6 @@ func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 	return _popoverMenu
 }
 
-// NewPopoverMenuFromModelFull:
 func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) PopoverMenu {
 	var _arg1 *C.GMenuModel         // out
 	var _arg2 C.GtkPopoverMenuFlags // out

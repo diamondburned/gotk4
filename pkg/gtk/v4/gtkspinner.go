@@ -40,13 +40,12 @@ func init() {
 type Spinner interface {
 	Widget
 
-	// Spinning:
 	Spinning() bool
-	// SetSpinningSpinner:
+
 	SetSpinningSpinner(spinning bool)
-	// StartSpinner:
+
 	StartSpinner()
-	// StopSpinner:
+
 	StopSpinner()
 }
 
@@ -69,7 +68,6 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 	return WrapSpinner(obj), nil
 }
 
-// NewSpinner:
 func NewSpinner() Spinner {
 	var _cret *C.GtkWidget // in
 

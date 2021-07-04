@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,6 +27,21 @@ func init() {
 		{T: externglib.Type(C.gtk_property_expression_get_type()), F: marshalPropertyExpression},
 		{T: externglib.Type(C.gtk_expression_watch_get_type()), F: marshalExpressionWatch},
 	})
+}
+
+// ExpressionNotify: callback called by gtk_expression_watch() when the
+// expression value changes.
+type ExpressionNotify func()
+
+//export gotk4_ExpressionNotify
+func _ExpressionNotify(arg0 C.gpointer) {
+	v := box.Get(uintptr(arg0))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	fn := v.(ExpressionNotify)
+	fn()
 }
 
 // ValueDupExpression retrieves the `GtkExpression` stored inside the given
@@ -141,7 +157,6 @@ func marshalClosureExpression(p uintptr) (interface{}, error) {
 type ConstantExpression interface {
 	Expression
 
-	// Value:
 	Value() externglib.Value
 }
 
@@ -164,7 +179,6 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 	return WrapConstantExpression(obj), nil
 }
 
-// NewConstantExpressionForValue:
 func NewConstantExpressionForValue(value externglib.Value) ConstantExpression {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
@@ -313,17 +327,16 @@ func (e constantExpression) Value() externglib.Value {
 type Expression interface {
 	gextras.Objector
 
-	// BindExpression:
 	BindExpression(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
-	// EvaluateExpression:
+
 	EvaluateExpression(this_ gextras.Objector, value externglib.Value) bool
-	// ValueType:
+
 	ValueType() externglib.Type
-	// IsStaticExpression:
+
 	IsStaticExpression() bool
-	// RefExpression:
+
 	RefExpression() Expression
-	// UnrefExpression:
+
 	UnrefExpression()
 }
 
@@ -448,7 +461,6 @@ func (s expression) UnrefExpression() {
 type ObjectExpression interface {
 	Expression
 
-	// Object:
 	Object() gextras.Objector
 }
 
@@ -471,7 +483,6 @@ func marshalObjectExpression(p uintptr) (interface{}, error) {
 	return WrapObjectExpression(obj), nil
 }
 
-// NewObjectExpression:
 func NewObjectExpression(object gextras.Objector) ObjectExpression {
 	var _arg1 *C.GObject       // out
 	var _cret *C.GtkExpression // in
@@ -506,7 +517,6 @@ func (e objectExpression) Object() gextras.Objector {
 type PropertyExpression interface {
 	Expression
 
-	// GetExpression:
 	GetExpression() Expression
 }
 
@@ -529,7 +539,6 @@ func marshalPropertyExpression(p uintptr) (interface{}, error) {
 	return WrapPropertyExpression(obj), nil
 }
 
-// NewPropertyExpression:
 func NewPropertyExpression(thisType externglib.Type, expression Expression, propertyName string) PropertyExpression {
 	var _arg1 C.GType          // out
 	var _arg2 *C.GtkExpression // out

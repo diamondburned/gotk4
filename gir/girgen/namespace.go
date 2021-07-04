@@ -21,8 +21,9 @@ type NamespaceGenerator struct {
 	PkgName    string
 	PkgVersion string
 
-	current *gir.NamespaceFindResult
-	files   map[string]*FileGenerator
+	current    *gir.NamespaceFindResult
+	files      map[string]*FileGenerator
+	canResolve map[string]bool
 }
 
 var (
@@ -41,6 +42,7 @@ func NewNamespaceGenerator(g *Generator, n *gir.NamespaceFindResult) *NamespaceG
 		PkgVersion: gir.MajorVersion(n.Namespace.Version),
 		current:    n,
 		files:      map[string]*FileGenerator{},
+		canResolve: map[string]bool{},
 	}
 }
 
@@ -65,31 +67,43 @@ func (n *NamespaceGenerator) CanGenerate(r *types.Resolved) bool {
 		return false
 	}
 
-	// TODO: figure out a more optimized way, probably by generating schemas
-	// first and having a store of what's already generated. This will do for
-	// now.
+	publType := types.GoPublicType(n, r)
 
-	stub := generators.StubFileGeneratorWriter(n)
-
-	switch v := r.Extern.Type.(type) {
-	case *gir.Alias:
-		return generators.GenerateAlias(stub, v)
-	case *gir.Bitfield:
-		return generators.GenerateBitfield(stub, v)
-	case *gir.Callback:
-		return generators.GenerateCallback(stub, v)
-	case *gir.Enum:
-		return generators.GenerateEnum(stub, v)
-	case *gir.Function:
-		return generators.GenerateFunction(stub, v)
-	case *gir.Interface:
-		return generators.GenerateInterface(stub, v)
-	case *gir.Record:
-		return generators.GenerateRecord(stub, v)
+	// Cache the output of this to both avoid infinite recursions and improve
+	// the performance.
+	canResolve, ok := n.canResolve[publType]
+	if ok {
+		return canResolve
 	}
 
-	// Default to true.
-	return true
+	// Mark the type as resolveable to prevent infinite recursions when the
+	// generator functions call CanGenerate on its own.
+	canResolve = true
+	n.canResolve[publType] = canResolve
+
+	switch v := r.Extern.Type.(type) {
+	// Fast checks.
+	case *gir.Alias:
+		canResolve = generators.CanGenerateAlias(n, v)
+	case *gir.Bitfield:
+		canResolve = generators.CanGenerateBitfield(n, v)
+	case *gir.Enum:
+		canResolve = generators.CanGenerateEnum(n, v)
+	case *gir.Record:
+		canResolve = generators.CanGenerateRecord(n, v)
+	// Slow checks.
+	case *gir.Callback:
+		canResolve = generators.GenerateCallback(generators.StubFileGeneratorWriter(n), v)
+	case *gir.Function:
+		canResolve = generators.GenerateFunction(generators.StubFileGeneratorWriter(n), v)
+	case *gir.Interface:
+		canResolve = generators.GenerateInterface(generators.StubFileGeneratorWriter(n), v)
+	}
+
+	// Actually store the correct value once we're done.
+	n.canResolve[publType] = canResolve
+
+	return canResolve
 }
 
 // Pkgconfig returns the current repository's pkg-config names.
@@ -165,28 +179,28 @@ func (n *NamespaceGenerator) makeFile(filename string) *FileGenerator {
 // returned map maps the filename to the raw file content.
 func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	for _, v := range n.current.Namespace.Aliases {
-		n.logIfSkipped(generators.GenerateAlias(n, &v), v.Name)
+		n.logIfSkipped(generators.GenerateAlias(n, &v), "alias"+v.Name)
 	}
 	for _, v := range n.current.Namespace.Enums {
-		n.logIfSkipped(generators.GenerateEnum(n, &v), v.Name)
+		n.logIfSkipped(generators.GenerateEnum(n, &v), "enum "+v.Name)
 	}
 	for _, v := range n.current.Namespace.Bitfields {
-		n.logIfSkipped(generators.GenerateBitfield(n, &v), v.Name)
+		n.logIfSkipped(generators.GenerateBitfield(n, &v), "bitfield "+v.Name)
 	}
 	for _, v := range n.current.Namespace.Callbacks {
-		n.logIfSkipped(generators.GenerateCallback(n, &v), v.Name)
+		n.logIfSkipped(generators.GenerateCallback(n, &v), "callback "+v.Name)
 	}
 	for _, v := range n.current.Namespace.Functions {
-		n.logIfSkipped(generators.GenerateFunction(n, &v), v.Name)
+		n.logIfSkipped(generators.GenerateFunction(n, &v), "function "+v.Name)
 	}
 	for _, v := range n.current.Namespace.Interfaces {
-		n.logIfSkipped(generators.GenerateInterface(n, &v), v.Name)
+		n.logIfSkipped(generators.GenerateInterface(n, &v), "interface "+v.Name)
 	}
 	for _, v := range n.current.Namespace.Classes {
-		n.logIfSkipped(generators.GenerateClass(n, &v), v.Name)
+		n.logIfSkipped(generators.GenerateClass(n, &v), "class "+v.Name)
 	}
 	for _, v := range n.current.Namespace.Records {
-		n.logIfSkipped(generators.GenerateRecord(n, &v), v.Name)
+		n.logIfSkipped(generators.GenerateRecord(n, &v), "record "+v.Name)
 	}
 
 	// Ensure that the root file has CallbackDelete if any other files do.
@@ -217,8 +231,8 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	return files, firstErr
 }
 
-func (n *NamespaceGenerator) logIfSkipped(skipped bool, what string) {
-	if skipped {
+func (n *NamespaceGenerator) logIfSkipped(generated bool, what string) {
+	if !generated {
 		n.Logln(logger.Skip, what)
 	}
 }

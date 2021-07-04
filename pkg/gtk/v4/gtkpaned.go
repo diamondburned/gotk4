@@ -84,37 +84,36 @@ type Paned interface {
 	Widget
 	Orientable
 
-	// EndChild:
 	EndChild() Widget
-	// Position:
+
 	Position() int
-	// ResizeEndChild:
+
 	ResizeEndChild() bool
-	// ResizeStartChild:
+
 	ResizeStartChild() bool
-	// ShrinkEndChild:
+
 	ShrinkEndChild() bool
-	// ShrinkStartChild:
+
 	ShrinkStartChild() bool
-	// StartChild:
+
 	StartChild() Widget
-	// WideHandle:
+
 	WideHandle() bool
-	// SetEndChildPaned:
+
 	SetEndChildPaned(child Widget)
-	// SetPositionPaned:
+
 	SetPositionPaned(position int)
-	// SetResizeEndChildPaned:
+
 	SetResizeEndChildPaned(resize bool)
-	// SetResizeStartChildPaned:
+
 	SetResizeStartChildPaned(resize bool)
-	// SetShrinkEndChildPaned:
+
 	SetShrinkEndChildPaned(resize bool)
-	// SetShrinkStartChildPaned:
+
 	SetShrinkStartChildPaned(resize bool)
-	// SetStartChildPaned:
+
 	SetStartChildPaned(child Widget)
-	// SetWideHandlePaned:
+
 	SetWideHandlePaned(wide bool)
 }
 
@@ -137,7 +136,6 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return WrapPaned(obj), nil
 }
 
-// NewPaned:
 func NewPaned(orientation Orientation) Paned {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in

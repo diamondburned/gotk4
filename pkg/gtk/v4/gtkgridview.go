@@ -53,29 +53,24 @@ func init() {
 type GridView interface {
 	ListBase
 
-	// EnableRubberband:
 	EnableRubberband() bool
-	// Factory:
+
 	Factory() ListItemFactory
-	// MaxColumns:
+
 	MaxColumns() uint
-	// MinColumns:
+
 	MinColumns() uint
-	// Model:
-	Model() SelectionModel
-	// SingleClickActivate:
+
 	SingleClickActivate() bool
-	// SetEnableRubberbandGridView:
+
 	SetEnableRubberbandGridView(enableRubberband bool)
-	// SetFactoryGridView:
+
 	SetFactoryGridView(factory ListItemFactory)
-	// SetMaxColumnsGridView:
+
 	SetMaxColumnsGridView(maxColumns uint)
-	// SetMinColumnsGridView:
+
 	SetMinColumnsGridView(minColumns uint)
-	// SetModelGridView:
-	SetModelGridView(model SelectionModel)
-	// SetSingleClickActivateGridView:
+
 	SetSingleClickActivateGridView(singleClickActivate bool)
 }
 
@@ -96,24 +91,6 @@ func marshalGridView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGridView(obj), nil
-}
-
-// NewGridView:
-func NewGridView(model SelectionModel, factory ListItemFactory) GridView {
-	var _arg1 *C.GtkSelectionModel  // out
-	var _arg2 *C.GtkListItemFactory // out
-	var _cret *C.GtkWidget          // in
-
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
-
-	_cret = C.gtk_grid_view_new(_arg1, _arg2)
-
-	var _gridView GridView // out
-
-	_gridView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(GridView)
-
-	return _gridView
 }
 
 func (s gridView) EnableRubberband() bool {
@@ -178,21 +155,6 @@ func (s gridView) MinColumns() uint {
 	return _guint
 }
 
-func (s gridView) Model() SelectionModel {
-	var _arg0 *C.GtkGridView       // out
-	var _cret *C.GtkSelectionModel // in
-
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_grid_view_get_model(_arg0)
-
-	var _selectionModel SelectionModel // out
-
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SelectionModel)
-
-	return _selectionModel
-}
-
 func (s gridView) SingleClickActivate() bool {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.gboolean     // in
@@ -250,16 +212,6 @@ func (s gridView) SetMinColumnsGridView(minColumns uint) {
 	_arg1 = C.guint(minColumns)
 
 	C.gtk_grid_view_set_min_columns(_arg0, _arg1)
-}
-
-func (s gridView) SetModelGridView(model SelectionModel) {
-	var _arg0 *C.GtkGridView       // out
-	var _arg1 *C.GtkSelectionModel // out
-
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_grid_view_set_model(_arg0, _arg1)
 }
 
 func (s gridView) SetSingleClickActivateGridView(singleClickActivate bool) {

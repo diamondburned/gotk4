@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -48,6 +51,13 @@ type Proxy interface {
 	// destination hostname first, and then pass a Address containing the
 	// stringified IP address to g_proxy_connect() or g_proxy_connect_async().
 	ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (IOStream, error)
+	// ConnectAsync: some proxy protocols expect to be passed a hostname, which
+	// they will resolve to an IP address themselves. Others, like SOCKS4, do
+	// not allow this. This function will return false if @proxy is implementing
+	// such a protocol. When false is returned, the caller should resolve the
+	// destination hostname first, and then pass a Address containing the
+	// stringified IP address to g_proxy_connect() or g_proxy_connect_async().
+	ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback)
 	// ConnectFinish: some proxy protocols expect to be passed a hostname, which
 	// they will resolve to an IP address themselves. Others, like SOCKS4, do
 	// not allow this. This function will return false if @proxy is implementing
@@ -108,6 +118,24 @@ func (p proxy) ConnectProxy(connection IOStream, proxyAddress ProxyAddress, canc
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStream, _goerr
+}
+
+func (p proxy) ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GProxy             // out
+	var _arg1 *C.GIOStream          // out
+	var _arg2 *C.GProxyAddress      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_proxy_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (p proxy) ConnectFinish(result AsyncResult) (IOStream, error) {

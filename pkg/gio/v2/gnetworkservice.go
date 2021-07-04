@@ -42,15 +42,14 @@ func init() {
 type NetworkService interface {
 	SocketConnectable
 
-	// Domain:
 	Domain() string
-	// Protocol:
+
 	Protocol() string
-	// Scheme:
+
 	Scheme() string
-	// Service:
+
 	Service() string
-	// SetSchemeNetworkService:
+
 	SetSchemeNetworkService(scheme string)
 }
 
@@ -73,7 +72,6 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 	return WrapNetworkService(obj), nil
 }
 
-// NewNetworkService:
 func NewNetworkService(service string, protocol string, domain string) NetworkService {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out

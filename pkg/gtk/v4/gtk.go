@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// EditableProperties:
 type EditableProperties int
 
 const (
@@ -41,7 +40,6 @@ func marshalEditableProperties(p uintptr) (interface{}, error) {
 	return EditableProperties(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DebugFlags:
 type DebugFlags int
 
 const (

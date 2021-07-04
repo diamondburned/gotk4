@@ -55,135 +55,134 @@ func marshalTextBufferTargetInfo(p uintptr) (interface{}, error) {
 type TextBuffer interface {
 	gextras.Objector
 
-	// AddMarkTextBuffer:
 	AddMarkTextBuffer(mark TextMark, where *TextIter)
-	// AddSelectionClipboardTextBuffer:
+
 	AddSelectionClipboardTextBuffer(clipboard Clipboard)
-	// ApplyTagTextBuffer:
+
 	ApplyTagTextBuffer(tag TextTag, start *TextIter, end *TextIter)
-	// ApplyTagByNameTextBuffer:
+
 	ApplyTagByNameTextBuffer(name string, start *TextIter, end *TextIter)
-	// BackspaceTextBuffer:
+
 	BackspaceTextBuffer(iter *TextIter, interactive bool, defaultEditable bool) bool
-	// BeginUserActionTextBuffer:
+
 	BeginUserActionTextBuffer()
-	// CopyClipboardTextBuffer:
+
 	CopyClipboardTextBuffer(clipboard Clipboard)
-	// CreateChildAnchorTextBuffer:
+
 	CreateChildAnchorTextBuffer(iter *TextIter) TextChildAnchor
-	// CreateMarkTextBuffer:
+
 	CreateMarkTextBuffer(markName string, where *TextIter, leftGravity bool) TextMark
-	// CutClipboardTextBuffer:
+
 	CutClipboardTextBuffer(clipboard Clipboard, defaultEditable bool)
-	// DeleteTextBuffer:
+
 	DeleteTextBuffer(start *TextIter, end *TextIter)
-	// DeleteInteractiveTextBuffer:
+
 	DeleteInteractiveTextBuffer(startIter *TextIter, endIter *TextIter, defaultEditable bool) bool
-	// DeleteMarkTextBuffer:
+
 	DeleteMarkTextBuffer(mark TextMark)
-	// DeleteMarkByNameTextBuffer:
+
 	DeleteMarkByNameTextBuffer(name string)
-	// DeleteSelectionTextBuffer:
+
 	DeleteSelectionTextBuffer(interactive bool, defaultEditable bool) bool
-	// DeserializeTextBuffer:
+
 	DeserializeTextBuffer(contentBuffer TextBuffer, format *gdk.Atom, iter *TextIter, data []byte) error
-	// DeserializeGetCanCreateTagsTextBuffer:
+
 	DeserializeGetCanCreateTagsTextBuffer(format *gdk.Atom) bool
-	// DeserializeSetCanCreateTagsTextBuffer:
+
 	DeserializeSetCanCreateTagsTextBuffer(format *gdk.Atom, canCreateTags bool)
-	// EndUserActionTextBuffer:
+
 	EndUserActionTextBuffer()
-	// Bounds:
+
 	Bounds() (start TextIter, end TextIter)
-	// CharCount:
+
 	CharCount() int
-	// CopyTargetList:
+
 	CopyTargetList() *TargetList
-	// EndIter:
+
 	EndIter() TextIter
-	// HasSelection:
+
 	HasSelection() bool
-	// GetInsert:
+
 	GetInsert() TextMark
-	// IterAtChildAnchor:
+
 	IterAtChildAnchor(anchor TextChildAnchor) TextIter
-	// IterAtLine:
+
 	IterAtLine(lineNumber int) TextIter
-	// IterAtLineIndex:
+
 	IterAtLineIndex(lineNumber int, byteIndex int) TextIter
-	// IterAtLineOffset:
+
 	IterAtLineOffset(lineNumber int, charOffset int) TextIter
-	// IterAtMark:
+
 	IterAtMark(mark TextMark) TextIter
-	// IterAtOffset:
+
 	IterAtOffset(charOffset int) TextIter
-	// LineCount:
+
 	LineCount() int
-	// Mark:
+
 	Mark(name string) TextMark
-	// Modified:
+
 	Modified() bool
-	// PasteTargetList:
+
 	PasteTargetList() *TargetList
-	// SelectionBound:
+
 	SelectionBound() TextMark
-	// SelectionBounds:
+
 	SelectionBounds() (start TextIter, end TextIter, ok bool)
-	// Slice:
+
 	Slice(start *TextIter, end *TextIter, includeHiddenChars bool) string
-	// StartIter:
+
 	StartIter() TextIter
-	// TagTable:
+
 	TagTable() TextTagTable
-	// Text:
+
 	Text(start *TextIter, end *TextIter, includeHiddenChars bool) string
-	// InsertTextBuffer:
+
 	InsertTextBuffer(iter *TextIter, text string, len int)
-	// InsertAtCursorTextBuffer:
+
 	InsertAtCursorTextBuffer(text string, len int)
-	// InsertChildAnchorTextBuffer:
+
 	InsertChildAnchorTextBuffer(iter *TextIter, anchor TextChildAnchor)
-	// InsertInteractiveTextBuffer:
+
 	InsertInteractiveTextBuffer(iter *TextIter, text string, len int, defaultEditable bool) bool
-	// InsertInteractiveAtCursorTextBuffer:
+
 	InsertInteractiveAtCursorTextBuffer(text string, len int, defaultEditable bool) bool
-	// InsertMarkupTextBuffer:
+
 	InsertMarkupTextBuffer(iter *TextIter, markup string, len int)
-	// InsertPixbufTextBuffer:
+
 	InsertPixbufTextBuffer(iter *TextIter, pixbuf gdkpixbuf.Pixbuf)
-	// InsertRangeTextBuffer:
+
 	InsertRangeTextBuffer(iter *TextIter, start *TextIter, end *TextIter)
-	// InsertRangeInteractiveTextBuffer:
+
 	InsertRangeInteractiveTextBuffer(iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool
-	// MoveMarkTextBuffer:
+
 	MoveMarkTextBuffer(mark TextMark, where *TextIter)
-	// MoveMarkByNameTextBuffer:
+
 	MoveMarkByNameTextBuffer(name string, where *TextIter)
-	// PasteClipboardTextBuffer:
+
 	PasteClipboardTextBuffer(clipboard Clipboard, overrideLocation *TextIter, defaultEditable bool)
-	// PlaceCursorTextBuffer:
+
 	PlaceCursorTextBuffer(where *TextIter)
-	// RegisterDeserializeTagsetTextBuffer:
+
 	RegisterDeserializeTagsetTextBuffer(tagsetName string) *gdk.Atom
-	// RegisterSerializeTagsetTextBuffer:
+
 	RegisterSerializeTagsetTextBuffer(tagsetName string) *gdk.Atom
-	// RemoveAllTagsTextBuffer:
+
 	RemoveAllTagsTextBuffer(start *TextIter, end *TextIter)
-	// RemoveSelectionClipboardTextBuffer:
+
 	RemoveSelectionClipboardTextBuffer(clipboard Clipboard)
-	// RemoveTagTextBuffer:
+
 	RemoveTagTextBuffer(tag TextTag, start *TextIter, end *TextIter)
-	// RemoveTagByNameTextBuffer:
+
 	RemoveTagByNameTextBuffer(name string, start *TextIter, end *TextIter)
-	// SelectRangeTextBuffer:
+
 	SelectRangeTextBuffer(ins *TextIter, bound *TextIter)
-	// SetModifiedTextBuffer:
+
 	SetModifiedTextBuffer(setting bool)
-	// SetTextTextBuffer:
+
 	SetTextTextBuffer(text string, len int)
-	// UnregisterDeserializeFormatTextBuffer:
+
 	UnregisterDeserializeFormatTextBuffer(format *gdk.Atom)
-	// UnregisterSerializeFormatTextBuffer:
+
 	UnregisterSerializeFormatTextBuffer(format *gdk.Atom)
 }
 
@@ -206,7 +205,6 @@ func marshalTextBuffer(p uintptr) (interface{}, error) {
 	return WrapTextBuffer(obj), nil
 }
 
-// NewTextBuffer:
 func NewTextBuffer(table TextTagTable) TextBuffer {
 	var _arg1 *C.GtkTextTagTable // out
 	var _cret *C.GtkTextBuffer   // in
@@ -1446,7 +1444,6 @@ func (b textBuffer) UnregisterSerializeFormatTextBuffer(format *gdk.Atom) {
 	C.gtk_text_buffer_unregister_serialize_format(_arg0, _arg1)
 }
 
-// TextBTree:
 type TextBTree C.GtkTextBTree
 
 // WrapTextBTree wraps the C unsafe.Pointer to be the right type. It is

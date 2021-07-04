@@ -6,8 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,27 +50,26 @@ type CellView interface {
 	CellLayout
 	Orientable
 
-	// DisplayedRow:
 	DisplayedRow() *TreePath
-	// DrawSensitive:
+
 	DrawSensitive() bool
-	// FitModel:
+
 	FitModel() bool
-	// Model:
+
 	Model() TreeModel
-	// SizeOfRow:
+
 	SizeOfRow(path *TreePath) (Requisition, bool)
-	// SetBackgroundColorCellView:
+
 	SetBackgroundColorCellView(color *gdk.Color)
-	// SetBackgroundRGBACellView:
+
 	SetBackgroundRGBACellView(rgba *gdk.RGBA)
-	// SetDisplayedRowCellView:
+
 	SetDisplayedRowCellView(path *TreePath)
-	// SetDrawSensitiveCellView:
+
 	SetDrawSensitiveCellView(drawSensitive bool)
-	// SetFitModelCellView:
+
 	SetFitModelCellView(fitModel bool)
-	// SetModelCellView:
+
 	SetModelCellView(model TreeModel)
 }
 
@@ -91,7 +92,6 @@ func marshalCellView(p uintptr) (interface{}, error) {
 	return WrapCellView(obj), nil
 }
 
-// NewCellView:
 func NewCellView() CellView {
 	var _cret *C.GtkWidget // in
 
@@ -104,7 +104,6 @@ func NewCellView() CellView {
 	return _cellView
 }
 
-// NewCellViewWithContext:
 func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	var _arg1 *C.GtkCellArea        // out
 	var _arg2 *C.GtkCellAreaContext // out
@@ -122,7 +121,6 @@ func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	return _cellView
 }
 
-// NewCellViewWithMarkup:
 func NewCellViewWithMarkup(markup string) CellView {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -139,7 +137,6 @@ func NewCellViewWithMarkup(markup string) CellView {
 	return _cellView
 }
 
-// NewCellViewWithPixbuf:
 func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbuf) CellView {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
@@ -155,7 +152,6 @@ func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbuf) CellView {
 	return _cellView
 }
 
-// NewCellViewWithText:
 func NewCellViewWithText(text string) CellView {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -341,6 +337,18 @@ func (b cellView) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b cellView) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b cellView) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b cellView) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b cellView) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b cellView) InternalChild(builder Builder, childname string) gextras.Objector {

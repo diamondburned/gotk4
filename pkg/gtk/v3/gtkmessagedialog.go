@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -92,13 +94,12 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 type MessageDialog interface {
 	Dialog
 
-	// Image:
 	Image() Widget
-	// MessageArea:
+
 	MessageArea() Widget
-	// SetImageMessageDialog:
+
 	SetImageMessageDialog(image Widget)
-	// SetMarkupMessageDialog:
+
 	SetMarkupMessageDialog(str string)
 }
 
@@ -178,6 +179,18 @@ func (b messageDialog) AddChild(builder Builder, child gextras.Objector, typ str
 
 func (b messageDialog) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b messageDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b messageDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b messageDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b messageDialog) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -39,29 +39,28 @@ func init() {
 type GridLayout interface {
 	LayoutManager
 
-	// BaselineRow:
 	BaselineRow() int
-	// ColumnHomogeneous:
+
 	ColumnHomogeneous() bool
-	// ColumnSpacing:
+
 	ColumnSpacing() uint
-	// RowBaselinePosition:
+
 	RowBaselinePosition(row int) BaselinePosition
-	// RowHomogeneous:
+
 	RowHomogeneous() bool
-	// RowSpacing:
+
 	RowSpacing() uint
-	// SetBaselineRowGridLayout:
+
 	SetBaselineRowGridLayout(row int)
-	// SetColumnHomogeneousGridLayout:
+
 	SetColumnHomogeneousGridLayout(homogeneous bool)
-	// SetColumnSpacingGridLayout:
+
 	SetColumnSpacingGridLayout(spacing uint)
-	// SetRowBaselinePositionGridLayout:
+
 	SetRowBaselinePositionGridLayout(row int, pos BaselinePosition)
-	// SetRowHomogeneousGridLayout:
+
 	SetRowHomogeneousGridLayout(homogeneous bool)
-	// SetRowSpacingGridLayout:
+
 	SetRowSpacingGridLayout(spacing uint)
 }
 
@@ -84,7 +83,6 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 	return WrapGridLayout(obj), nil
 }
 
-// NewGridLayout:
 func NewGridLayout() GridLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -263,21 +261,20 @@ func (g gridLayout) SetRowSpacingGridLayout(spacing uint) {
 type GridLayoutChild interface {
 	LayoutChild
 
-	// Column:
 	Column() int
-	// ColumnSpan:
+
 	ColumnSpan() int
-	// Row:
+
 	Row() int
-	// RowSpan:
+
 	RowSpan() int
-	// SetColumnGridLayoutChild:
+
 	SetColumnGridLayoutChild(column int)
-	// SetColumnSpanGridLayoutChild:
+
 	SetColumnSpanGridLayoutChild(span int)
-	// SetRowGridLayoutChild:
+
 	SetRowGridLayoutChild(row int)
-	// SetRowSpanGridLayoutChild:
+
 	SetRowSpanGridLayoutChild(span int)
 }
 

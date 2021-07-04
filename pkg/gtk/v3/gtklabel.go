@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -43,101 +45,100 @@ func init() {
 type Label interface {
 	Misc
 
-	// Angle:
 	Angle() float64
-	// Attributes:
+
 	Attributes() *pango.AttrList
-	// CurrentURI:
+
 	CurrentURI() string
-	// Ellipsize:
+
 	Ellipsize() pango.EllipsizeMode
-	// Justify:
+
 	Justify() Justification
-	// Label:
+
 	Label() string
-	// Layout:
+
 	Layout() pango.Layout
-	// LayoutOffsets:
+
 	LayoutOffsets() (x int, y int)
-	// LineWrap:
+
 	LineWrap() bool
-	// LineWrapMode:
+
 	LineWrapMode() pango.WrapMode
-	// Lines:
+
 	Lines() int
-	// MaxWidthChars:
+
 	MaxWidthChars() int
-	// MnemonicKeyval:
+
 	MnemonicKeyval() uint
-	// MnemonicWidget:
+
 	MnemonicWidget() Widget
-	// Selectable:
+
 	Selectable() bool
-	// SelectionBounds:
+
 	SelectionBounds() (start int, end int, ok bool)
-	// SingleLineMode:
+
 	SingleLineMode() bool
-	// Text:
+
 	Text() string
-	// TrackVisitedLinks:
+
 	TrackVisitedLinks() bool
-	// UseMarkup:
+
 	UseMarkup() bool
-	// UseUnderline:
+
 	UseUnderline() bool
-	// WidthChars:
+
 	WidthChars() int
-	// Xalign:
+
 	Xalign() float32
-	// Yalign:
+
 	Yalign() float32
-	// SelectRegionLabel:
+
 	SelectRegionLabel(startOffset int, endOffset int)
-	// SetAngleLabel:
+
 	SetAngleLabel(angle float64)
-	// SetAttributesLabel:
+
 	SetAttributesLabel(attrs *pango.AttrList)
-	// SetEllipsizeLabel:
+
 	SetEllipsizeLabel(mode pango.EllipsizeMode)
-	// SetJustifyLabel:
+
 	SetJustifyLabel(jtype Justification)
-	// SetLabelLabel:
+
 	SetLabelLabel(str string)
-	// SetLineWrapLabel:
+
 	SetLineWrapLabel(wrap bool)
-	// SetLineWrapModeLabel:
+
 	SetLineWrapModeLabel(wrapMode pango.WrapMode)
-	// SetLinesLabel:
+
 	SetLinesLabel(lines int)
-	// SetMarkupLabel:
+
 	SetMarkupLabel(str string)
-	// SetMarkupWithMnemonicLabel:
+
 	SetMarkupWithMnemonicLabel(str string)
-	// SetMaxWidthCharsLabel:
+
 	SetMaxWidthCharsLabel(nChars int)
-	// SetMnemonicWidgetLabel:
+
 	SetMnemonicWidgetLabel(widget Widget)
-	// SetPatternLabel:
+
 	SetPatternLabel(pattern string)
-	// SetSelectableLabel:
+
 	SetSelectableLabel(setting bool)
-	// SetSingleLineModeLabel:
+
 	SetSingleLineModeLabel(singleLineMode bool)
-	// SetTextLabel:
+
 	SetTextLabel(str string)
-	// SetTextWithMnemonicLabel:
+
 	SetTextWithMnemonicLabel(str string)
-	// SetTrackVisitedLinksLabel:
+
 	SetTrackVisitedLinksLabel(trackLinks bool)
-	// SetUseMarkupLabel:
+
 	SetUseMarkupLabel(setting bool)
-	// SetUseUnderlineLabel:
+
 	SetUseUnderlineLabel(setting bool)
-	// SetWidthCharsLabel:
+
 	SetWidthCharsLabel(nChars int)
-	// SetXalignLabel:
+
 	SetXalignLabel(xalign float32)
-	// SetYalignLabel:
+
 	SetYalignLabel(yalign float32)
 }
 
@@ -160,7 +161,6 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return WrapLabel(obj), nil
 }
 
-// NewLabel:
 func NewLabel(str string) Label {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -177,7 +177,6 @@ func NewLabel(str string) Label {
 	return _label
 }
 
-// NewLabelWithMnemonic:
 func NewLabelWithMnemonic(str string) Label {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -845,6 +844,18 @@ func (b label) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b label) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b label) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b label) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b label) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -865,7 +876,6 @@ func (b label) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-// LabelSelectionInfo:
 type LabelSelectionInfo C.GtkLabelSelectionInfo
 
 // WrapLabelSelectionInfo wraps the C unsafe.Pointer to be the right type. It is

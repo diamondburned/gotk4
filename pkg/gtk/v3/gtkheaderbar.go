@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,33 +44,32 @@ func init() {
 type HeaderBar interface {
 	Container
 
-	// CustomTitle:
 	CustomTitle() Widget
-	// DecorationLayout:
+
 	DecorationLayout() string
-	// HasSubtitle:
+
 	HasSubtitle() bool
-	// ShowCloseButton:
+
 	ShowCloseButton() bool
-	// Subtitle:
+
 	Subtitle() string
-	// Title:
+
 	Title() string
-	// PackEndHeaderBar:
+
 	PackEndHeaderBar(child Widget)
-	// PackStartHeaderBar:
+
 	PackStartHeaderBar(child Widget)
-	// SetCustomTitleHeaderBar:
+
 	SetCustomTitleHeaderBar(titleWidget Widget)
-	// SetDecorationLayoutHeaderBar:
+
 	SetDecorationLayoutHeaderBar(layout string)
-	// SetHasSubtitleHeaderBar:
+
 	SetHasSubtitleHeaderBar(setting bool)
-	// SetShowCloseButtonHeaderBar:
+
 	SetShowCloseButtonHeaderBar(setting bool)
-	// SetSubtitleHeaderBar:
+
 	SetSubtitleHeaderBar(subtitle string)
-	// SetTitleHeaderBar:
+
 	SetTitleHeaderBar(title string)
 }
 
@@ -91,7 +92,6 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return WrapHeaderBar(obj), nil
 }
 
-// NewHeaderBar:
 func NewHeaderBar() HeaderBar {
 	var _cret *C.GtkWidget // in
 
@@ -291,6 +291,18 @@ func (b headerBar) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b headerBar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b headerBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b headerBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b headerBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b headerBar) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -118,23 +118,6 @@ func (s *CSSSection) EndPosition() uint {
 	return _guint
 }
 
-// File decrements the reference count on @section, freeing the structure if the
-// reference count reaches 0.
-func (s *CSSSection) File() gio.File {
-	var _arg0 *C.GtkCssSection // out
-	var _cret *C.GFile         // in
-
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_css_section_get_file(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
-}
-
 // Parent decrements the reference count on @section, freeing the structure if
 // the reference count reaches 0.
 func (s *CSSSection) Parent() *CSSSection {

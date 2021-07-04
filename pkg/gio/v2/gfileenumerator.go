@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -59,23 +62,26 @@ func init() {
 type FileEnumerator interface {
 	gextras.Objector
 
-	// CloseFileEnumerator:
 	CloseFileEnumerator(cancellable Cancellable) error
-	// CloseFinishFileEnumerator:
+
+	CloseAsyncFileEnumerator(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	CloseFinishFileEnumerator(result AsyncResult) error
-	// Child:
+
 	Child(info FileInfo) File
-	// Container:
+
 	Container() File
-	// HasPendingFileEnumerator:
+
 	HasPendingFileEnumerator() bool
-	// IsClosedFileEnumerator:
+
 	IsClosedFileEnumerator() bool
-	// IterateFileEnumerator:
+
 	IterateFileEnumerator(cancellable Cancellable) (FileInfo, File, error)
-	// NextFileFileEnumerator:
+
 	NextFileFileEnumerator(cancellable Cancellable) (FileInfo, error)
-	// SetPendingFileEnumerator:
+
+	NextFilesAsyncFileEnumerator(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	SetPendingFileEnumerator(pending bool)
 }
 
@@ -113,6 +119,22 @@ func (e fileEnumerator) CloseFileEnumerator(cancellable Cancellable) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (e fileEnumerator) CloseAsyncFileEnumerator(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_enumerator_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (e fileEnumerator) CloseFinishFileEnumerator(result AsyncResult) error {
@@ -239,6 +261,24 @@ func (e fileEnumerator) NextFileFileEnumerator(cancellable Cancellable) (FileInf
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
+}
+
+func (e fileEnumerator) NextFilesAsyncFileEnumerator(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = C.int(numFiles)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_enumerator_next_files_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (e fileEnumerator) SetPendingFileEnumerator(pending bool) {

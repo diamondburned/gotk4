@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -185,6 +186,53 @@ const (
 
 func marshalShowFlags(p uintptr) (interface{}, error) {
 	return ShowFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// AttrDataCopyFunc: type of a function that can duplicate user data for an
+// attribute.
+type AttrDataCopyFunc func(gpointer interface{})
+
+//export gotk4_AttrDataCopyFunc
+func _AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
+	v := box.Get(uintptr(arg0))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	fn := v.(AttrDataCopyFunc)
+	gpointer := fn()
+
+	var cret C.gpointer // out
+
+	cret = C.gpointer(box.Assign(unsafe.Pointer(gpointer)))
+
+	return cret
+}
+
+// AttrFilterFunc: type of a function filtering a list of attributes.
+type AttrFilterFunc func(attribute *Attribute, ok bool)
+
+//export gotk4_AttrFilterFunc
+func _AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var attribute *Attribute // out
+
+	attribute = (*Attribute)(unsafe.Pointer(arg0))
+
+	fn := v.(AttrFilterFunc)
+	ok := fn(attribute)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // NewAttrAllowBreaks: create a new allow-breaks attribute.
@@ -1165,6 +1213,42 @@ func (l *AttrList) Equal(otherList *AttrList) bool {
 	return _ok
 }
 
+// Filter: update indices of attributes in @list for a change in the text they
+// refer to.
+//
+// The change that this function applies is removing @remove bytes at position
+// @pos and inserting @add bytes instead.
+//
+// Attributes that fall entirely in the (@pos, @pos + @remove) range are
+// removed.
+//
+// Attributes that start or end inside the (@pos, @pos + @remove) range are
+// shortened to reflect the removal.
+//
+// Attributes start and end positions are updated if they are behind @pos +
+// @remove.
+func (l *AttrList) Filter(fn AttrFilterFunc) *AttrList {
+	var _arg0 *C.PangoAttrList      // out
+	var _arg1 C.PangoAttrFilterFunc // out
+	var _arg2 C.gpointer
+	var _cret *C.PangoAttrList // in
+
+	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_AttrFilterFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	_cret = C.pango_attr_list_filter(_arg0, _arg1, _arg2)
+
+	var _attrList *AttrList // out
+
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_attrList, func(v **AttrList) {
+		C.free(unsafe.Pointer(v))
+	})
+
+	return _attrList
+}
+
 // Iterator: update indices of attributes in @list for a change in the text they
 // refer to.
 //
@@ -1481,20 +1565,6 @@ func (a *Attribute) Equal(attr2 *Attribute) bool {
 	}
 
 	return _ok
-}
-
-// Init initializes @attr's klass to @klass, it's start_index to
-// PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING and end_index to
-// PANGO_ATTR_INDEX_TO_TEXT_END such that the attribute applies to the entire
-// text by default.
-func (a *Attribute) Init(klass *AttrClass) {
-	var _arg0 *C.PangoAttribute // out
-	var _arg1 *C.PangoAttrClass // out
-
-	_arg0 = (*C.PangoAttribute)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.PangoAttrClass)(unsafe.Pointer(klass.Native()))
-
-	C.pango_attribute_init(_arg0, _arg1)
 }
 
 // Color: the `PangoColor` structure is used to represent a color in an

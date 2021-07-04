@@ -15,7 +15,6 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeGetType:
 func GTypeGetType() externglib.Type {
 	var _cret C.GType // in
 

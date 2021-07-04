@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -172,19 +171,14 @@ type ConstraintLayout interface {
 	LayoutManager
 	Buildable
 
-	// AddConstraintConstraintLayout:
 	AddConstraintConstraintLayout(constraint Constraint)
-	// AddGuideConstraintLayout:
+
 	AddGuideConstraintLayout(guide ConstraintGuide)
-	// ObserveConstraintsConstraintLayout:
-	ObserveConstraintsConstraintLayout() gio.ListModel
-	// ObserveGuidesConstraintLayout:
-	ObserveGuidesConstraintLayout() gio.ListModel
-	// RemoveAllConstraintsConstraintLayout:
+
 	RemoveAllConstraintsConstraintLayout()
-	// RemoveConstraintConstraintLayout:
+
 	RemoveConstraintConstraintLayout(constraint Constraint)
-	// RemoveGuideConstraintLayout:
+
 	RemoveGuideConstraintLayout(guide ConstraintGuide)
 }
 
@@ -207,7 +201,6 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	return WrapConstraintLayout(obj), nil
 }
 
-// NewConstraintLayout:
 func NewConstraintLayout() ConstraintLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -238,36 +231,6 @@ func (l constraintLayout) AddGuideConstraintLayout(guide ConstraintGuide) {
 	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
-}
-
-func (l constraintLayout) ObserveConstraintsConstraintLayout() gio.ListModel {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _cret *C.GListModel          // in
-
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
-
-	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
-}
-
-func (l constraintLayout) ObserveGuidesConstraintLayout() gio.ListModel {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _cret *C.GListModel          // in
-
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
-
-	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (l constraintLayout) RemoveAllConstraintsConstraintLayout() {

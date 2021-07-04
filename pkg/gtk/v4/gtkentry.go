@@ -121,121 +121,112 @@ type Entry interface {
 	CellEditable
 	Editable
 
-	// ActivatesDefault:
 	ActivatesDefault() bool
-	// GetAlignment:
+
 	GetAlignment() float32
-	// Attributes:
+
 	Attributes() *pango.AttrList
-	// Buffer:
+
 	Buffer() EntryBuffer
-	// Completion:
+
 	Completion() EntryCompletion
-	// CurrentIconDragSource:
+
 	CurrentIconDragSource() int
-	// ExtraMenu:
+
 	ExtraMenu() gio.MenuModel
-	// HasFrame:
+
 	HasFrame() bool
-	// IconActivatable:
+
 	IconActivatable(iconPos EntryIconPosition) bool
-	// IconArea:
+
 	IconArea(iconPos EntryIconPosition) gdk.Rectangle
-	// IconAtPos:
+
 	IconAtPos(x int, y int) int
-	// IconGIcon:
-	IconGIcon(iconPos EntryIconPosition) gio.Icon
-	// IconName:
+
 	IconName(iconPos EntryIconPosition) string
-	// IconPaintable:
-	IconPaintable(iconPos EntryIconPosition) gdk.Paintable
-	// IconSensitive:
+
 	IconSensitive(iconPos EntryIconPosition) bool
-	// IconStorageType:
+
 	IconStorageType(iconPos EntryIconPosition) ImageType
-	// IconTooltipMarkup:
+
 	IconTooltipMarkup(iconPos EntryIconPosition) string
-	// IconTooltipText:
+
 	IconTooltipText(iconPos EntryIconPosition) string
-	// InputHints:
+
 	InputHints() InputHints
-	// InputPurpose:
+
 	InputPurpose() InputPurpose
-	// InvisibleChar:
+
 	InvisibleChar() uint32
-	// MaxLength:
+
 	MaxLength() int
-	// OverwriteMode:
+
 	OverwriteMode() bool
-	// PlaceholderText:
+
 	PlaceholderText() string
-	// ProgressFraction:
+
 	ProgressFraction() float64
-	// ProgressPulseStep:
+
 	ProgressPulseStep() float64
-	// Tabs:
+
 	Tabs() *pango.TabArray
-	// TextLength:
+
 	TextLength() uint16
-	// Visibility:
+
 	Visibility() bool
-	// GrabFocusWithoutSelectingEntry:
+
 	GrabFocusWithoutSelectingEntry() bool
-	// ProgressPulseEntry:
+
 	ProgressPulseEntry()
-	// ResetImContextEntry:
+
 	ResetImContextEntry()
-	// SetActivatesDefaultEntry:
+
 	SetActivatesDefaultEntry(setting bool)
-	// SetAlignmentEntry:
+
 	SetAlignmentEntry(xalign float32)
-	// SetAttributesEntry:
+
 	SetAttributesEntry(attrs *pango.AttrList)
-	// SetBufferEntry:
+
 	SetBufferEntry(buffer EntryBuffer)
-	// SetCompletionEntry:
+
 	SetCompletionEntry(completion EntryCompletion)
-	// SetExtraMenuEntry:
+
 	SetExtraMenuEntry(model gio.MenuModel)
-	// SetHasFrameEntry:
+
 	SetHasFrameEntry(setting bool)
-	// SetIconActivatableEntry:
+
 	SetIconActivatableEntry(iconPos EntryIconPosition, activatable bool)
-	// SetIconDragSourceEntry:
+
 	SetIconDragSourceEntry(iconPos EntryIconPosition, provider gdk.ContentProvider, actions gdk.DragAction)
-	// SetIconFromGIconEntry:
-	SetIconFromGIconEntry(iconPos EntryIconPosition, icon gio.Icon)
-	// SetIconFromIconNameEntry:
+
 	SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName string)
-	// SetIconFromPaintableEntry:
-	SetIconFromPaintableEntry(iconPos EntryIconPosition, paintable gdk.Paintable)
-	// SetIconSensitiveEntry:
+
 	SetIconSensitiveEntry(iconPos EntryIconPosition, sensitive bool)
-	// SetIconTooltipMarkupEntry:
+
 	SetIconTooltipMarkupEntry(iconPos EntryIconPosition, tooltip string)
-	// SetIconTooltipTextEntry:
+
 	SetIconTooltipTextEntry(iconPos EntryIconPosition, tooltip string)
-	// SetInputHintsEntry:
+
 	SetInputHintsEntry(hints InputHints)
-	// SetInputPurposeEntry:
+
 	SetInputPurposeEntry(purpose InputPurpose)
-	// SetInvisibleCharEntry:
+
 	SetInvisibleCharEntry(ch uint32)
-	// SetMaxLengthEntry:
+
 	SetMaxLengthEntry(max int)
-	// SetOverwriteModeEntry:
+
 	SetOverwriteModeEntry(overwrite bool)
-	// SetPlaceholderTextEntry:
+
 	SetPlaceholderTextEntry(text string)
-	// SetProgressFractionEntry:
+
 	SetProgressFractionEntry(fraction float64)
-	// SetProgressPulseStepEntry:
+
 	SetProgressPulseStepEntry(fraction float64)
-	// SetTabsEntry:
+
 	SetTabsEntry(tabs *pango.TabArray)
-	// SetVisibilityEntry:
+
 	SetVisibilityEntry(visible bool)
-	// UnsetInvisibleCharEntry:
+
 	UnsetInvisibleCharEntry()
 }
 
@@ -258,7 +249,6 @@ func marshalEntry(p uintptr) (interface{}, error) {
 	return WrapEntry(obj), nil
 }
 
-// NewEntry:
 func NewEntry() Entry {
 	var _cret *C.GtkWidget // in
 
@@ -271,7 +261,6 @@ func NewEntry() Entry {
 	return _entry
 }
 
-// NewEntryWithBuffer:
 func NewEntryWithBuffer(buffer EntryBuffer) Entry {
 	var _arg1 *C.GtkEntryBuffer // out
 	var _cret *C.GtkWidget      // in
@@ -476,23 +465,6 @@ func (e entry) IconAtPos(x int, y int) int {
 	return _gint
 }
 
-func (e entry) IconGIcon(iconPos EntryIconPosition) gio.Icon {
-	var _arg0 *C.GtkEntry            // out
-	var _arg1 C.GtkEntryIconPosition // out
-	var _cret *C.GIcon               // in
-
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GtkEntryIconPosition(iconPos)
-
-	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
-
-	var _icon gio.Icon // out
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
-
-	return _icon
-}
-
 func (e entry) IconName(iconPos EntryIconPosition) string {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -508,23 +480,6 @@ func (e entry) IconName(iconPos EntryIconPosition) string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-func (e entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintable {
-	var _arg0 *C.GtkEntry            // out
-	var _arg1 C.GtkEntryIconPosition // out
-	var _cret *C.GdkPaintable        // in
-
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GtkEntryIconPosition(iconPos)
-
-	_cret = C.gtk_entry_get_icon_paintable(_arg0, _arg1)
-
-	var _paintable gdk.Paintable // out
-
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Paintable)
-
-	return _paintable
 }
 
 func (e entry) IconSensitive(iconPos EntryIconPosition) bool {
@@ -903,18 +858,6 @@ func (e entry) SetIconDragSourceEntry(iconPos EntryIconPosition, provider gdk.Co
 	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (e entry) SetIconFromGIconEntry(iconPos EntryIconPosition, icon gio.Icon) {
-	var _arg0 *C.GtkEntry            // out
-	var _arg1 C.GtkEntryIconPosition // out
-	var _arg2 *C.GIcon               // out
-
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
-}
-
 func (e entry) SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName string) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -926,18 +869,6 @@ func (e entry) SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName stri
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_set_icon_from_icon_name(_arg0, _arg1, _arg2)
-}
-
-func (e entry) SetIconFromPaintableEntry(iconPos EntryIconPosition, paintable gdk.Paintable) {
-	var _arg0 *C.GtkEntry            // out
-	var _arg1 C.GtkEntryIconPosition // out
-	var _arg2 *C.GdkPaintable        // out
-
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-
-	C.gtk_entry_set_icon_from_paintable(_arg0, _arg1, _arg2)
 }
 
 func (e entry) SetIconSensitiveEntry(iconPos EntryIconPosition, sensitive bool) {

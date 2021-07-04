@@ -206,17 +206,16 @@ func marshalCursorType(p uintptr) (interface{}, error) {
 type Cursor interface {
 	gextras.Objector
 
-	// CursorType:
 	CursorType() CursorType
-	// Display:
+
 	Display() Display
-	// Image:
+
 	Image() gdkpixbuf.Pixbuf
-	// Surface:
+
 	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
-	// RefCursor:
+
 	RefCursor() Cursor
-	// UnrefCursor:
+
 	UnrefCursor()
 }
 
@@ -239,7 +238,6 @@ func marshalCursor(p uintptr) (interface{}, error) {
 	return WrapCursor(obj), nil
 }
 
-// NewCursor:
 func NewCursor(cursorType CursorType) Cursor {
 	var _arg1 C.GdkCursorType // out
 	var _cret *C.GdkCursor    // in
@@ -255,7 +253,6 @@ func NewCursor(cursorType CursorType) Cursor {
 	return _cursor
 }
 
-// NewCursorForDisplay:
 func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
 	var _arg1 *C.GdkDisplay   // out
 	var _arg2 C.GdkCursorType // out
@@ -273,7 +270,6 @@ func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
 	return _cursor
 }
 
-// NewCursorFromName:
 func NewCursorFromName(display Display, name string) Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out
@@ -292,7 +288,6 @@ func NewCursorFromName(display Display, name string) Cursor {
 	return _cursor
 }
 
-// NewCursorFromPixbuf:
 func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int) Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
@@ -314,7 +309,6 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 	return _cursor
 }
 
-// NewCursorFromSurface:
 func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y float64) Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out

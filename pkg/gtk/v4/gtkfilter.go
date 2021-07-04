@@ -91,11 +91,10 @@ func marshalFilterMatch(p uintptr) (interface{}, error) {
 type Filter interface {
 	gextras.Objector
 
-	// ChangedFilter:
 	ChangedFilter(change FilterChange)
-	// Strictness:
+
 	Strictness() FilterMatch
-	// MatchFilter:
+
 	MatchFilter(item gextras.Objector) bool
 }
 

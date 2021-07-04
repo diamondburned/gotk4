@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,25 +39,20 @@ func init() {
 type Video interface {
 	Widget
 
-	// Autoplay:
 	Autoplay() bool
-	// File:
-	File() gio.File
-	// Loop:
+
 	Loop() bool
-	// MediaStream:
+
 	MediaStream() MediaStream
-	// SetAutoplayVideo:
+
 	SetAutoplayVideo(autoplay bool)
-	// SetFileVideo:
-	SetFileVideo(file gio.File)
-	// SetFilenameVideo:
+
 	SetFilenameVideo(filename string)
-	// SetLoopVideo:
+
 	SetLoopVideo(loop bool)
-	// SetMediaStreamVideo:
+
 	SetMediaStreamVideo(stream MediaStream)
-	// SetResourceVideo:
+
 	SetResourceVideo(resourcePath string)
 }
 
@@ -81,7 +75,6 @@ func marshalVideo(p uintptr) (interface{}, error) {
 	return WrapVideo(obj), nil
 }
 
-// NewVideo:
 func NewVideo() Video {
 	var _cret *C.GtkWidget // in
 
@@ -94,23 +87,6 @@ func NewVideo() Video {
 	return _video
 }
 
-// NewVideoForFile:
-func NewVideoForFile(file gio.File) Video {
-	var _arg1 *C.GFile     // out
-	var _cret *C.GtkWidget // in
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	_cret = C.gtk_video_new_for_file(_arg1)
-
-	var _video Video // out
-
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Video)
-
-	return _video
-}
-
-// NewVideoForFilename:
 func NewVideoForFilename(filename string) Video {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -127,7 +103,6 @@ func NewVideoForFilename(filename string) Video {
 	return _video
 }
 
-// NewVideoForMediaStream:
 func NewVideoForMediaStream(stream MediaStream) Video {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
@@ -143,7 +118,6 @@ func NewVideoForMediaStream(stream MediaStream) Video {
 	return _video
 }
 
-// NewVideoForResource:
 func NewVideoForResource(resourcePath string) Video {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -175,21 +149,6 @@ func (s video) Autoplay() bool {
 	}
 
 	return _ok
-}
-
-func (s video) File() gio.File {
-	var _arg0 *C.GtkVideo // out
-	var _cret *C.GFile    // in
-
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_video_get_file(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
 }
 
 func (s video) Loop() bool {
@@ -234,16 +193,6 @@ func (s video) SetAutoplayVideo(autoplay bool) {
 	}
 
 	C.gtk_video_set_autoplay(_arg0, _arg1)
-}
-
-func (s video) SetFileVideo(file gio.File) {
-	var _arg0 *C.GtkVideo // out
-	var _arg1 *C.GFile    // out
-
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_video_set_file(_arg0, _arg1)
 }
 
 func (s video) SetFilenameVideo(filename string) {

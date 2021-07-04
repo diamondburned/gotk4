@@ -39,43 +39,41 @@ func X11SetSmClientID(smClientId string) {
 	C.gdk_x11_set_sm_client_id(_arg1)
 }
 
-// X11Display:
 type X11Display interface {
 	gdk.Display
 
-	// ErrorTrapPopX11Display:
 	ErrorTrapPopX11Display() int
-	// ErrorTrapPopIgnoredX11Display:
+
 	ErrorTrapPopIgnoredX11Display()
-	// ErrorTrapPushX11Display:
+
 	ErrorTrapPushX11Display()
-	// DefaultGroup:
+
 	DefaultGroup() gdk.Surface
-	// GlxVersion:
+
 	GlxVersion() (major int, minor int, ok bool)
-	// PrimaryMonitor:
+
 	PrimaryMonitor() gdk.Monitor
-	// Screen:
+
 	Screen() X11Screen
-	// StartupNotificationID:
+
 	StartupNotificationID() string
-	// UserTime:
+
 	UserTime() uint32
-	// GrabX11Display:
+
 	GrabX11Display()
-	// SetCursorThemeX11Display:
+
 	SetCursorThemeX11Display(theme string, size int)
-	// SetStartupNotificationIDX11Display:
+
 	SetStartupNotificationIDX11Display(startupId string)
-	// SetSurfaceScaleX11Display:
+
 	SetSurfaceScaleX11Display(scale int)
-	// StringToCompoundTextX11Display:
+
 	StringToCompoundTextX11Display(str string) (encoding string, format int, ctext []byte, gint int)
-	// TextPropertyToTextListX11Display:
+
 	TextPropertyToTextListX11Display(encoding string, format int, text *byte, length int, list **string) int
-	// UngrabX11Display:
+
 	UngrabX11Display()
-	// UTF8ToCompoundTextX11Display:
+
 	UTF8ToCompoundTextX11Display(str string) (string, int, []byte, bool)
 }
 

@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,43 +95,42 @@ type ToolPalette interface {
 	Orientable
 	Scrollable
 
-	// AddDragDestToolPalette:
 	AddDragDestToolPalette(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction)
-	// DragItem:
+
 	DragItem(selection *SelectionData) Widget
-	// DropGroup:
+
 	DropGroup(x int, y int) ToolItemGroup
-	// DropItem:
+
 	DropItem(x int, y int) ToolItem
-	// Exclusive:
+
 	Exclusive(group ToolItemGroup) bool
-	// Expand:
+
 	Expand(group ToolItemGroup) bool
-	// GroupPosition:
+
 	GroupPosition(group ToolItemGroup) int
-	// GetHAdjustment:
+
 	GetHAdjustment() Adjustment
-	// IconSize:
+
 	IconSize() int
-	// Style:
+
 	Style() ToolbarStyle
-	// GetVAdjustment:
+
 	GetVAdjustment() Adjustment
-	// SetDragSourceToolPalette:
+
 	SetDragSourceToolPalette(targets ToolPaletteDragTargets)
-	// SetExclusiveToolPalette:
+
 	SetExclusiveToolPalette(group ToolItemGroup, exclusive bool)
-	// SetExpandToolPalette:
+
 	SetExpandToolPalette(group ToolItemGroup, expand bool)
-	// SetGroupPositionToolPalette:
+
 	SetGroupPositionToolPalette(group ToolItemGroup, position int)
-	// SetIconSizeToolPalette:
+
 	SetIconSizeToolPalette(iconSize int)
-	// SetStyleToolPalette:
+
 	SetStyleToolPalette(style ToolbarStyle)
-	// UnsetIconSizeToolPalette:
+
 	UnsetIconSizeToolPalette()
-	// UnsetStyleToolPalette:
+
 	UnsetStyleToolPalette()
 }
 
@@ -152,7 +153,6 @@ func marshalToolPalette(p uintptr) (interface{}, error) {
 	return WrapToolPalette(obj), nil
 }
 
-// NewToolPalette:
 func NewToolPalette() ToolPalette {
 	var _cret *C.GtkWidget // in
 
@@ -443,6 +443,18 @@ func (b toolPalette) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b toolPalette) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toolPalette) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b toolPalette) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b toolPalette) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b toolPalette) InternalChild(builder Builder, childname string) gextras.Objector {

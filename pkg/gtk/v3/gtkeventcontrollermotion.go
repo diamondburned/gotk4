@@ -50,7 +50,6 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return WrapEventControllerMotion(obj), nil
 }
 
-// NewEventControllerMotion:
 func NewEventControllerMotion(widget Widget) EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in

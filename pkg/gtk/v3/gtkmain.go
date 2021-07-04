@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -20,6 +21,33 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
+
+// KeySnoopFunc: key snooper functions are called before normal event delivery.
+// They can be used to implement custom key event handling.
+type KeySnoopFunc func(grabWidget Widget, event *gdk.EventKey, gint int)
+
+//export gotk4_KeySnoopFunc
+func _KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) C.gint {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var grabWidget Widget   // out
+	var event *gdk.EventKey // out
+
+	grabWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
+	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
+
+	fn := v.(KeySnoopFunc)
+	gint := fn(grabWidget, event)
+
+	var cret C.gint // out
+
+	cret = C.gint(gint)
+
+	return cret
+}
 
 // CheckVersion checks that the GTK+ library in use is compatible with the given
 // version. Generally you would pass in the constants K_MAJOR_VERSION,

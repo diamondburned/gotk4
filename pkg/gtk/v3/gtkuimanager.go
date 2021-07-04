@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -285,35 +287,34 @@ func marshalUIManagerItemType(p uintptr) (interface{}, error) {
 type UIManager interface {
 	Buildable
 
-	// AddUiUIManager:
 	AddUiUIManager(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool)
-	// AddUiFromFileUIManager:
+
 	AddUiFromFileUIManager(filename string) (uint, error)
-	// AddUiFromResourceUIManager:
+
 	AddUiFromResourceUIManager(resourcePath string) (uint, error)
-	// AddUiFromStringUIManager:
+
 	AddUiFromStringUIManager(buffer string, length int) (uint, error)
-	// EnsureUpdateUIManager:
+
 	EnsureUpdateUIManager()
-	// AccelGroup:
+
 	AccelGroup() AccelGroup
-	// Action:
+
 	Action(path string) Action
-	// AddTearoffs:
+
 	AddTearoffs() bool
-	// Ui:
+
 	Ui() string
-	// Widget:
+
 	Widget(path string) Widget
-	// InsertActionGroupUIManager:
+
 	InsertActionGroupUIManager(actionGroup ActionGroup, pos int)
-	// NewMergeIDUIManager:
+
 	NewMergeIDUIManager() uint
-	// RemoveActionGroupUIManager:
+
 	RemoveActionGroupUIManager(actionGroup ActionGroup)
-	// RemoveUiUIManager:
+
 	RemoveUiUIManager(mergeId uint)
-	// SetAddTearoffsUIManager:
+
 	SetAddTearoffsUIManager(addTearoffs bool)
 }
 
@@ -336,7 +337,6 @@ func marshalUIManager(p uintptr) (interface{}, error) {
 	return WrapUIManager(obj), nil
 }
 
-// NewUIManager:
 func NewUIManager() UIManager {
 	var _cret *C.GtkUIManager // in
 
@@ -596,6 +596,18 @@ func (b uiManager) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b uiManager) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b uiManager) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b uiManager) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b uiManager) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b uiManager) InternalChild(builder Builder, childname string) gextras.Objector {

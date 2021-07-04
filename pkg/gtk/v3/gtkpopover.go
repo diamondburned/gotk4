@@ -5,9 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -87,39 +89,38 @@ func init() {
 type Popover interface {
 	Bin
 
-	// BindModelPopover:
 	BindModelPopover(model gio.MenuModel, actionNamespace string)
-	// ConstrainTo:
+
 	ConstrainTo() PopoverConstraint
-	// DefaultWidget:
+
 	DefaultWidget() Widget
-	// Modal:
+
 	Modal() bool
-	// PointingTo:
+
 	PointingTo() (gdk.Rectangle, bool)
-	// Position:
+
 	Position() PositionType
-	// RelativeTo:
+
 	RelativeTo() Widget
-	// TransitionsEnabled:
+
 	TransitionsEnabled() bool
-	// PopdownPopover:
+
 	PopdownPopover()
-	// PopupPopover:
+
 	PopupPopover()
-	// SetConstrainToPopover:
+
 	SetConstrainToPopover(constraint PopoverConstraint)
-	// SetDefaultWidgetPopover:
+
 	SetDefaultWidgetPopover(widget Widget)
-	// SetModalPopover:
+
 	SetModalPopover(modal bool)
-	// SetPointingToPopover:
+
 	SetPointingToPopover(rect *gdk.Rectangle)
-	// SetPositionPopover:
+
 	SetPositionPopover(position PositionType)
-	// SetRelativeToPopover:
+
 	SetRelativeToPopover(relativeTo Widget)
-	// SetTransitionsEnabledPopover:
+
 	SetTransitionsEnabledPopover(transitionsEnabled bool)
 }
 
@@ -142,7 +143,6 @@ func marshalPopover(p uintptr) (interface{}, error) {
 	return WrapPopover(obj), nil
 }
 
-// NewPopover:
 func NewPopover(relativeTo Widget) Popover {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -158,7 +158,6 @@ func NewPopover(relativeTo Widget) Popover {
 	return _popover
 }
 
-// NewPopoverFromModel:
 func NewPopoverFromModel(relativeTo Widget, model gio.MenuModel) Popover {
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 *C.GMenuModel // out
@@ -409,6 +408,18 @@ func (b popover) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b popover) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b popover) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b popover) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b popover) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b popover) InternalChild(builder Builder, childname string) gextras.Objector {

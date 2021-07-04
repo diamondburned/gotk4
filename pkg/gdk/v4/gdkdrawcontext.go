@@ -35,17 +35,16 @@ func init() {
 type DrawContext interface {
 	gextras.Objector
 
-	// BeginFrameDrawContext:
 	BeginFrameDrawContext(region *cairo.Region)
-	// EndFrameDrawContext:
+
 	EndFrameDrawContext()
-	// Display:
+
 	Display() Display
-	// FrameRegion:
+
 	FrameRegion() *cairo.Region
-	// Surface:
+
 	Surface() Surface
-	// IsInFrameDrawContext:
+
 	IsInFrameDrawContext() bool
 }
 

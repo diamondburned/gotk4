@@ -54,13 +54,12 @@ func marshalDeviceToolType(p uintptr) (interface{}, error) {
 type DeviceTool interface {
 	gextras.Objector
 
-	// Axes:
 	Axes() AxisFlags
-	// HardwareID:
+
 	HardwareID() uint64
-	// Serial:
+
 	Serial() uint64
-	// ToolType:
+
 	ToolType() DeviceToolType
 }
 

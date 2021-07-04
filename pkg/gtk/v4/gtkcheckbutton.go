@@ -77,23 +77,22 @@ func init() {
 type CheckButton interface {
 	Actionable
 
-	// Active:
 	Active() bool
-	// Inconsistent:
+
 	Inconsistent() bool
-	// Label:
+
 	Label() string
-	// UseUnderline:
+
 	UseUnderline() bool
-	// SetActiveCheckButton:
+
 	SetActiveCheckButton(setting bool)
-	// SetGroupCheckButton:
+
 	SetGroupCheckButton(group CheckButton)
-	// SetInconsistentCheckButton:
+
 	SetInconsistentCheckButton(inconsistent bool)
-	// SetLabelCheckButton:
+
 	SetLabelCheckButton(label string)
-	// SetUseUnderlineCheckButton:
+
 	SetUseUnderlineCheckButton(setting bool)
 }
 
@@ -116,7 +115,6 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	return WrapCheckButton(obj), nil
 }
 
-// NewCheckButton:
 func NewCheckButton() CheckButton {
 	var _cret *C.GtkWidget // in
 
@@ -129,7 +127,6 @@ func NewCheckButton() CheckButton {
 	return _checkButton
 }
 
-// NewCheckButtonWithLabel:
 func NewCheckButtonWithLabel(label string) CheckButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -146,7 +143,6 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 	return _checkButton
 }
 
-// NewCheckButtonWithMnemonic:
 func NewCheckButtonWithMnemonic(label string) CheckButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

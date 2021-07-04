@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -69,33 +71,32 @@ func marshalAttachOptions(p uintptr) (interface{}, error) {
 type Table interface {
 	Container
 
-	// AttachTable:
 	AttachTable(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
-	// AttachDefaultsTable:
+
 	AttachDefaultsTable(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
-	// ColSpacing:
+
 	ColSpacing(column uint) uint
-	// DefaultColSpacing:
+
 	DefaultColSpacing() uint
-	// DefaultRowSpacing:
+
 	DefaultRowSpacing() uint
-	// Homogeneous:
+
 	Homogeneous() bool
-	// RowSpacing:
+
 	RowSpacing(row uint) uint
-	// Size:
+
 	Size() (rows uint, columns uint)
-	// ResizeTable:
+
 	ResizeTable(rows uint, columns uint)
-	// SetColSpacingTable:
+
 	SetColSpacingTable(column uint, spacing uint)
-	// SetColSpacingsTable:
+
 	SetColSpacingsTable(spacing uint)
-	// SetHomogeneousTable:
+
 	SetHomogeneousTable(homogeneous bool)
-	// SetRowSpacingTable:
+
 	SetRowSpacingTable(row uint, spacing uint)
-	// SetRowSpacingsTable:
+
 	SetRowSpacingsTable(spacing uint)
 }
 
@@ -118,7 +119,6 @@ func marshalTable(p uintptr) (interface{}, error) {
 	return WrapTable(obj), nil
 }
 
-// NewTable:
 func NewTable(rows uint, columns uint, homogeneous bool) Table {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -359,6 +359,18 @@ func (b table) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b table) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b table) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b table) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b table) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -379,7 +391,6 @@ func (b table) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-// TableChild:
 type TableChild C.GtkTableChild
 
 // WrapTableChild wraps the C unsafe.Pointer to be the right type. It is
@@ -393,7 +404,6 @@ func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(t)
 }
 
-// TableRowCol:
 type TableRowCol C.GtkTableRowCol
 
 // WrapTableRowCol wraps the C unsafe.Pointer to be the right type. It is

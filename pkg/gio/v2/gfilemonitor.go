@@ -46,13 +46,12 @@ func init() {
 type FileMonitor interface {
 	gextras.Objector
 
-	// CancelFileMonitor:
 	CancelFileMonitor() bool
-	// EmitEventFileMonitor:
+
 	EmitEventFileMonitor(child File, otherFile File, eventType FileMonitorEvent)
-	// IsCancelledFileMonitor:
+
 	IsCancelledFileMonitor() bool
-	// SetRateLimitFileMonitor:
+
 	SetRateLimitFileMonitor(limitMsecs int)
 }
 

@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -45,17 +48,20 @@ func init() {
 type UnixConnection interface {
 	SocketConnection
 
-	// ReceiveCredentialsUnixConnection:
 	ReceiveCredentialsUnixConnection(cancellable Cancellable) (Credentials, error)
-	// ReceiveCredentialsFinishUnixConnection:
+
+	ReceiveCredentialsAsyncUnixConnection(cancellable Cancellable, callback AsyncReadyCallback)
+
 	ReceiveCredentialsFinishUnixConnection(result AsyncResult) (Credentials, error)
-	// ReceiveFdUnixConnection:
+
 	ReceiveFdUnixConnection(cancellable Cancellable) (int, error)
-	// SendCredentialsUnixConnection:
+
 	SendCredentialsUnixConnection(cancellable Cancellable) error
-	// SendCredentialsFinishUnixConnection:
+
+	SendCredentialsAsyncUnixConnection(cancellable Cancellable, callback AsyncReadyCallback)
+
 	SendCredentialsFinishUnixConnection(result AsyncResult) error
-	// SendFdUnixConnection:
+
 	SendFdUnixConnection(fd int, cancellable Cancellable) error
 }
 
@@ -96,6 +102,20 @@ func (c unixConnection) ReceiveCredentialsUnixConnection(cancellable Cancellable
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr
+}
+
+func (c unixConnection) ReceiveCredentialsAsyncUnixConnection(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GUnixConnection    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_unix_connection_receive_credentials_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (c unixConnection) ReceiveCredentialsFinishUnixConnection(result AsyncResult) (Credentials, error) {
@@ -153,6 +173,20 @@ func (c unixConnection) SendCredentialsUnixConnection(cancellable Cancellable) e
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (c unixConnection) SendCredentialsAsyncUnixConnection(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GUnixConnection    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_unix_connection_send_credentials_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (c unixConnection) SendCredentialsFinishUnixConnection(result AsyncResult) error {

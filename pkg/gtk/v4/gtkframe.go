@@ -58,21 +58,20 @@ func init() {
 type Frame interface {
 	Widget
 
-	// Child:
 	Child() Widget
-	// Label:
+
 	Label() string
-	// LabelAlign:
+
 	LabelAlign() float32
-	// LabelWidget:
+
 	LabelWidget() Widget
-	// SetChildFrame:
+
 	SetChildFrame(child Widget)
-	// SetLabelFrame:
+
 	SetLabelFrame(label string)
-	// SetLabelAlignFrame:
+
 	SetLabelAlignFrame(xalign float32)
-	// SetLabelWidgetFrame:
+
 	SetLabelWidgetFrame(labelWidget Widget)
 }
 
@@ -95,7 +94,6 @@ func marshalFrame(p uintptr) (interface{}, error) {
 	return WrapFrame(obj), nil
 }
 
-// NewFrame:
 func NewFrame(label string) Frame {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

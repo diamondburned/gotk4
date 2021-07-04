@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,61 +38,60 @@ type Range interface {
 	Widget
 	Orientable
 
-	// Adjustment:
 	Adjustment() Adjustment
-	// FillLevel:
+
 	FillLevel() float64
-	// Flippable:
+
 	Flippable() bool
-	// Inverted:
+
 	Inverted() bool
-	// LowerStepperSensitivity:
+
 	LowerStepperSensitivity() SensitivityType
-	// MinSliderSize:
+
 	MinSliderSize() int
-	// RangeRect:
+
 	RangeRect() gdk.Rectangle
-	// RestrictToFillLevel:
+
 	RestrictToFillLevel() bool
-	// RoundDigits:
+
 	RoundDigits() int
-	// ShowFillLevel:
+
 	ShowFillLevel() bool
-	// SliderRange:
+
 	SliderRange() (sliderStart int, sliderEnd int)
-	// SliderSizeFixed:
+
 	SliderSizeFixed() bool
-	// UpperStepperSensitivity:
+
 	UpperStepperSensitivity() SensitivityType
-	// Value:
+
 	Value() float64
-	// SetAdjustmentRange:
+
 	SetAdjustmentRange(adjustment Adjustment)
-	// SetFillLevelRange:
+
 	SetFillLevelRange(fillLevel float64)
-	// SetFlippableRange:
+
 	SetFlippableRange(flippable bool)
-	// SetIncrementsRange:
+
 	SetIncrementsRange(step float64, page float64)
-	// SetInvertedRange:
+
 	SetInvertedRange(setting bool)
-	// SetLowerStepperSensitivityRange:
+
 	SetLowerStepperSensitivityRange(sensitivity SensitivityType)
-	// SetMinSliderSizeRange:
+
 	SetMinSliderSizeRange(minSize int)
-	// SetRangeRange:
+
 	SetRangeRange(min float64, max float64)
-	// SetRestrictToFillLevelRange:
+
 	SetRestrictToFillLevelRange(restrictToFillLevel bool)
-	// SetRoundDigitsRange:
+
 	SetRoundDigitsRange(roundDigits int)
-	// SetShowFillLevelRange:
+
 	SetShowFillLevelRange(showFillLevel bool)
-	// SetSliderSizeFixedRange:
+
 	SetSliderSizeFixedRange(sizeFixed bool)
-	// SetUpperStepperSensitivityRange:
+
 	SetUpperStepperSensitivityRange(sensitivity SensitivityType)
-	// SetValueRange:
+
 	SetValueRange(value float64)
 }
 
@@ -506,6 +507,18 @@ func (b _range) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b _range) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b _range) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b _range) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b _range) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b _range) InternalChild(builder Builder, childname string) gextras.Objector {

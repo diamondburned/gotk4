@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -26,6 +27,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// gboolean gotk4_SettingsGetMapping(GVariant*, gpointer*, gpointer);
 import "C"
 
 func init() {
@@ -66,6 +69,100 @@ const (
 
 func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 	return SettingsBindFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SettingsBindGetMapping: the type for the function that is used to convert
+// from #GSettings to an object property. The @value is already initialized to
+// hold values of the appropriate type.
+type SettingsBindGetMapping func(value externglib.Value, variant *glib.Variant, ok bool)
+
+//export gotk4_SettingsBindGetMapping
+func _SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var value externglib.Value // out
+	var variant *glib.Variant  // out
+
+	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
+	variant = (*glib.Variant)(unsafe.Pointer(arg1))
+
+	fn := v.(SettingsBindGetMapping)
+	ok := fn(value, variant)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// SettingsBindSetMapping: the type for the function that is used to convert an
+// object property value to a #GVariant for storing it in #GSettings.
+type SettingsBindSetMapping func(value externglib.Value, expectedType *glib.VariantType, variant *glib.Variant)
+
+//export gotk4_SettingsBindSetMapping
+func _SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var value externglib.Value         // out
+	var expectedType *glib.VariantType // out
+
+	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
+	expectedType = (*glib.VariantType)(unsafe.Pointer(arg1))
+
+	fn := v.(SettingsBindSetMapping)
+	variant := fn(value, expectedType)
+
+	var cret *C.GVariant // out
+
+	cret = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+
+	return cret
+}
+
+// SettingsGetMapping: the type of the function that is used to convert from a
+// value stored in a #GSettings to a value that is useful to the application.
+//
+// If the value is successfully mapped, the result should be stored at @result
+// and true returned. If mapping fails (for example, if @value is not in the
+// right format) then false should be returned.
+//
+// If @value is nil then it means that the mapping function is being given a
+// "last chance" to successfully return a valid value. true must be returned in
+// this case.
+type SettingsGetMapping func(value *glib.Variant, result *interface{}, ok bool)
+
+//export gotk4_SettingsGetMapping
+func _SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var value *glib.Variant // out
+
+	value = (*glib.Variant)(unsafe.Pointer(arg0))
+
+	fn := v.(SettingsGetMapping)
+	result, ok := fn(value)
+
+	var arg1 *C.gpointer // out
+	var cret C.gboolean  // out
+
+	arg1 = *C.gpointer(box.Assign(unsafe.Pointer(result)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // Settings: the #GSettings class provides a convenient API for storing and
@@ -345,81 +442,82 @@ func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 type Settings interface {
 	gextras.Objector
 
-	// ApplySettings:
 	ApplySettings()
-	// BindSettings:
+
 	BindSettings(key string, object gextras.Objector, property string, flags SettingsBindFlags)
-	// BindWritableSettings:
+
 	BindWritableSettings(key string, object gextras.Objector, property string, inverted bool)
-	// CreateActionSettings:
+
 	CreateActionSettings(key string) Action
-	// DelaySettings:
+
 	DelaySettings()
-	// Boolean:
+
 	Boolean(key string) bool
-	// Child:
+
 	Child(name string) Settings
-	// DefaultValue:
+
 	DefaultValue(key string) *glib.Variant
-	// Double:
+
 	Double(key string) float64
-	// Enum:
+
 	Enum(key string) int
-	// Flags:
+
 	Flags(key string) uint
-	// HasUnapplied:
+
 	HasUnapplied() bool
-	// Int:
+
 	Int(key string) int
-	// Int64:
+
 	Int64(key string) int64
-	// Range:
+
+	Mapped(key string, mapping SettingsGetMapping) interface{}
+
 	Range(key string) *glib.Variant
-	// String:
+
 	String(key string) string
-	// Strv:
+
 	Strv(key string) []string
-	// Uint:
+
 	Uint(key string) uint
-	// Uint64:
+
 	Uint64(key string) uint64
-	// UserValue:
+
 	UserValue(key string) *glib.Variant
-	// Value:
+
 	Value(key string) *glib.Variant
-	// IsWritableSettings:
+
 	IsWritableSettings(name string) bool
-	// ListChildrenSettings:
+
 	ListChildrenSettings() []string
-	// ListKeysSettings:
+
 	ListKeysSettings() []string
-	// RangeCheckSettings:
+
 	RangeCheckSettings(key string, value *glib.Variant) bool
-	// ResetSettings:
+
 	ResetSettings(key string)
-	// RevertSettings:
+
 	RevertSettings()
-	// SetBooleanSettings:
+
 	SetBooleanSettings(key string, value bool) bool
-	// SetDoubleSettings:
+
 	SetDoubleSettings(key string, value float64) bool
-	// SetEnumSettings:
+
 	SetEnumSettings(key string, value int) bool
-	// SetFlagsSettings:
+
 	SetFlagsSettings(key string, value uint) bool
-	// SetIntSettings:
+
 	SetIntSettings(key string, value int) bool
-	// SetInt64Settings:
+
 	SetInt64Settings(key string, value int64) bool
-	// SetStringSettings:
+
 	SetStringSettings(key string, value string) bool
-	// SetStrvSettings:
+
 	SetStrvSettings(key string, value []string) bool
-	// SetUintSettings:
+
 	SetUintSettings(key string, value uint) bool
-	// SetUint64Settings:
+
 	SetUint64Settings(key string, value uint64) bool
-	// SetValueSettings:
+
 	SetValueSettings(key string, value *glib.Variant) bool
 }
 
@@ -442,7 +540,6 @@ func marshalSettings(p uintptr) (interface{}, error) {
 	return WrapSettings(obj), nil
 }
 
-// NewSettings:
 func NewSettings(schemaId string) Settings {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GSettings // in
@@ -459,7 +556,6 @@ func NewSettings(schemaId string) Settings {
 	return _settings
 }
 
-// NewSettingsWithPath:
 func NewSettingsWithPath(schemaId string, path string) Settings {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -715,6 +811,28 @@ func (s settings) Int64(key string) int64 {
 	_gint64 = int64(_cret)
 
 	return _gint64
+}
+
+func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
+	var _arg0 *C.GSettings          // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GSettingsGetMapping // out
+	var _arg3 C.gpointer
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
+	_arg3 = C.gpointer(box.Assign(mapping))
+
+	_cret = C.g_settings_get_mapped(_arg0, _arg1, _arg2, _arg3)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
 }
 
 func (s settings) Range(key string) *glib.Variant {

@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -66,31 +68,30 @@ type ProgressBar interface {
 	Widget
 	Orientable
 
-	// Ellipsize:
 	Ellipsize() pango.EllipsizeMode
-	// Fraction:
+
 	Fraction() float64
-	// Inverted:
+
 	Inverted() bool
-	// PulseStep:
+
 	PulseStep() float64
-	// ShowText:
+
 	ShowText() bool
-	// Text:
+
 	Text() string
-	// PulseProgressBar:
+
 	PulseProgressBar()
-	// SetEllipsizeProgressBar:
+
 	SetEllipsizeProgressBar(mode pango.EllipsizeMode)
-	// SetFractionProgressBar:
+
 	SetFractionProgressBar(fraction float64)
-	// SetInvertedProgressBar:
+
 	SetInvertedProgressBar(inverted bool)
-	// SetPulseStepProgressBar:
+
 	SetPulseStepProgressBar(fraction float64)
-	// SetShowTextProgressBar:
+
 	SetShowTextProgressBar(showText bool)
-	// SetTextProgressBar:
+
 	SetTextProgressBar(text string)
 }
 
@@ -113,7 +114,6 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 	return WrapProgressBar(obj), nil
 }
 
-// NewProgressBar:
 func NewProgressBar() ProgressBar {
 	var _cret *C.GtkWidget // in
 
@@ -299,6 +299,18 @@ func (b progressBar) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b progressBar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b progressBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b progressBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b progressBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b progressBar) InternalChild(builder Builder, childname string) gextras.Objector {

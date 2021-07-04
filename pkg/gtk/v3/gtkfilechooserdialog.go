@@ -5,9 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -200,6 +201,18 @@ func (b fileChooserDialog) ConstructChild(builder Builder, name string) gextras.
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b fileChooserDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b fileChooserDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b fileChooserDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b fileChooserDialog) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -252,10 +265,6 @@ func (c fileChooserDialog) CurrentFolder() string {
 	return WrapFileChooser(gextras.InternObject(c)).CurrentFolder()
 }
 
-func (c fileChooserDialog) CurrentFolderFile() gio.File {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolderFile()
-}
-
 func (c fileChooserDialog) CurrentFolderURI() string {
 	return WrapFileChooser(gextras.InternObject(c)).CurrentFolderURI()
 }
@@ -272,10 +281,6 @@ func (c fileChooserDialog) ExtraWidget() Widget {
 	return WrapFileChooser(gextras.InternObject(c)).ExtraWidget()
 }
 
-func (c fileChooserDialog) File() gio.File {
-	return WrapFileChooser(gextras.InternObject(c)).File()
-}
-
 func (c fileChooserDialog) Filename() string {
 	return WrapFileChooser(gextras.InternObject(c)).Filename()
 }
@@ -286,10 +291,6 @@ func (c fileChooserDialog) Filter() FileFilter {
 
 func (c fileChooserDialog) LocalOnly() bool {
 	return WrapFileChooser(gextras.InternObject(c)).LocalOnly()
-}
-
-func (c fileChooserDialog) PreviewFile() gio.File {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewFile()
 }
 
 func (c fileChooserDialog) PreviewFilename() string {
@@ -344,10 +345,6 @@ func (c fileChooserDialog) SelectAll() {
 	WrapFileChooser(gextras.InternObject(c)).SelectAll()
 }
 
-func (c fileChooserDialog) SelectFile(file gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).SelectFile(file)
-}
-
 func (c fileChooserDialog) SelectFilename(filename string) bool {
 	return WrapFileChooser(gextras.InternObject(c)).SelectFilename(filename)
 }
@@ -372,10 +369,6 @@ func (c fileChooserDialog) SetCurrentFolder(filename string) bool {
 	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolder(filename)
 }
 
-func (c fileChooserDialog) SetCurrentFolderFile(file gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolderFile(file)
-}
-
 func (c fileChooserDialog) SetCurrentFolderURI(uri string) bool {
 	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolderURI(uri)
 }
@@ -390,10 +383,6 @@ func (c fileChooserDialog) SetDoOverwriteConfirmation(doOverwriteConfirmation bo
 
 func (c fileChooserDialog) SetExtraWidget(extraWidget Widget) {
 	WrapFileChooser(gextras.InternObject(c)).SetExtraWidget(extraWidget)
-}
-
-func (c fileChooserDialog) SetFile(file gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).SetFile(file)
 }
 
 func (c fileChooserDialog) SetFilename(filename string) bool {
@@ -434,10 +423,6 @@ func (c fileChooserDialog) SetUsePreviewLabel(useLabel bool) {
 
 func (c fileChooserDialog) UnselectAll() {
 	WrapFileChooser(gextras.InternObject(c)).UnselectAll()
-}
-
-func (c fileChooserDialog) UnselectFile(file gio.File) {
-	WrapFileChooser(gextras.InternObject(c)).UnselectFile(file)
 }
 
 func (c fileChooserDialog) UnselectFilename(filename string) {

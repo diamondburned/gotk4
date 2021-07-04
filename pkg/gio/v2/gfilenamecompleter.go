@@ -38,11 +38,10 @@ func init() {
 type FilenameCompleter interface {
 	gextras.Objector
 
-	// CompletionSuffix:
 	CompletionSuffix(initialText string) string
-	// Completions:
+
 	Completions(initialText string) []string
-	// SetDirsOnlyFilenameCompleter:
+
 	SetDirsOnlyFilenameCompleter(dirsOnly bool)
 }
 
@@ -65,7 +64,6 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	return WrapFilenameCompleter(obj), nil
 }
 
-// NewFilenameCompleter:
 func NewFilenameCompleter() FilenameCompleter {
 	var _cret *C.GFilenameCompleter // in
 

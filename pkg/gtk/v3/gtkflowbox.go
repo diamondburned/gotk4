@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -16,6 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 func init() {
@@ -23,6 +27,106 @@ func init() {
 		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBox},
 		{T: externglib.Type(C.gtk_flow_box_child_get_type()), F: marshalFlowBoxChild},
 	})
+}
+
+// FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
+// gtk_flow_box_bind_model() for each item that gets added to the model.
+type FlowBoxCreateWidgetFunc func(item gextras.Objector, widget Widget)
+
+//export gotk4_FlowBoxCreateWidgetFunc
+func _FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var item gextras.Objector // out
+
+	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(gextras.Objector)
+
+	fn := v.(FlowBoxCreateWidgetFunc)
+	widget := fn(item)
+
+	var cret *C.GtkWidget // out
+
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	return cret
+}
+
+// FlowBoxFilterFunc: a function that will be called whenrever a child changes
+// or is added. It lets you control if the child should be visible or not.
+type FlowBoxFilterFunc func(child FlowBoxChild, ok bool)
+
+//export gotk4_FlowBoxFilterFunc
+func _FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var child FlowBoxChild // out
+
+	child = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(FlowBoxChild)
+
+	fn := v.(FlowBoxFilterFunc)
+	ok := fn(child)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach(). It
+// will be called on every selected child of the @box.
+type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
+
+//export gotk4_FlowBoxForeachFunc
+func _FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var box FlowBox        // out
+	var child FlowBoxChild // out
+
+	box = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(FlowBox)
+	child = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(FlowBoxChild)
+
+	fn := v.(FlowBoxForeachFunc)
+	fn(box, child)
+}
+
+// FlowBoxSortFunc: a function to compare two children to determine which should
+// come first.
+type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild, gint int)
+
+//export gotk4_FlowBoxSortFunc
+func _FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.gint {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var child1 FlowBoxChild // out
+	var child2 FlowBoxChild // out
+
+	child1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(FlowBoxChild)
+	child2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(FlowBoxChild)
+
+	fn := v.(FlowBoxSortFunc)
+	gint := fn(child1, child2)
+
+	var cret C.gint // out
+
+	cret = C.gint(gint)
+
+	return cret
 }
 
 // FlowBox: a GtkFlowBox positions child widgets in sequence according to its
@@ -68,55 +172,56 @@ type FlowBox interface {
 	Container
 	Orientable
 
-	// ActivateOnSingleClick:
 	ActivateOnSingleClick() bool
-	// ChildAtIndex:
+
 	ChildAtIndex(idx int) FlowBoxChild
-	// ChildAtPos:
+
 	ChildAtPos(x int, y int) FlowBoxChild
-	// ColumnSpacing:
+
 	ColumnSpacing() uint
-	// Homogeneous:
+
 	Homogeneous() bool
-	// MaxChildrenPerLine:
+
 	MaxChildrenPerLine() uint
-	// MinChildrenPerLine:
+
 	MinChildrenPerLine() uint
-	// RowSpacing:
+
 	RowSpacing() uint
-	// SelectionMode:
+
 	SelectionMode() SelectionMode
-	// InsertFlowBox:
+
 	InsertFlowBox(widget Widget, position int)
-	// InvalidateFilterFlowBox:
+
 	InvalidateFilterFlowBox()
-	// InvalidateSortFlowBox:
+
 	InvalidateSortFlowBox()
-	// SelectAllFlowBox:
+
 	SelectAllFlowBox()
-	// SelectChildFlowBox:
+
 	SelectChildFlowBox(child FlowBoxChild)
-	// SetActivateOnSingleClickFlowBox:
+
+	SelectedForeachFlowBox(fn FlowBoxForeachFunc)
+
 	SetActivateOnSingleClickFlowBox(single bool)
-	// SetColumnSpacingFlowBox:
+
 	SetColumnSpacingFlowBox(spacing uint)
-	// SetHAdjustmentFlowBox:
+
 	SetHAdjustmentFlowBox(adjustment Adjustment)
-	// SetHomogeneousFlowBox:
+
 	SetHomogeneousFlowBox(homogeneous bool)
-	// SetMaxChildrenPerLineFlowBox:
+
 	SetMaxChildrenPerLineFlowBox(nChildren uint)
-	// SetMinChildrenPerLineFlowBox:
+
 	SetMinChildrenPerLineFlowBox(nChildren uint)
-	// SetRowSpacingFlowBox:
+
 	SetRowSpacingFlowBox(spacing uint)
-	// SetSelectionModeFlowBox:
+
 	SetSelectionModeFlowBox(mode SelectionMode)
-	// SetVAdjustmentFlowBox:
+
 	SetVAdjustmentFlowBox(adjustment Adjustment)
-	// UnselectAllFlowBox:
+
 	UnselectAllFlowBox()
-	// UnselectChildFlowBox:
+
 	UnselectChildFlowBox(child FlowBoxChild)
 }
 
@@ -139,7 +244,6 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 	return WrapFlowBox(obj), nil
 }
 
-// NewFlowBox:
 func NewFlowBox() FlowBox {
 	var _cret *C.GtkWidget // in
 
@@ -343,6 +447,18 @@ func (b flowBox) SelectChildFlowBox(child FlowBoxChild) {
 	C.gtk_flow_box_select_child(_arg0, _arg1)
 }
 
+func (b flowBox) SelectedForeachFlowBox(fn FlowBoxForeachFunc) {
+	var _arg0 *C.GtkFlowBox           // out
+	var _arg1 C.GtkFlowBoxForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_FlowBoxForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
+}
+
 func (b flowBox) SetActivateOnSingleClickFlowBox(single bool) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.gboolean    // out
@@ -463,6 +579,18 @@ func (b flowBox) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b flowBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b flowBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b flowBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b flowBox) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -491,15 +619,13 @@ func (o flowBox) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
-// FlowBoxChild:
 type FlowBoxChild interface {
 	Bin
 
-	// ChangedFlowBoxChild:
 	ChangedFlowBoxChild()
-	// Index:
+
 	Index() int
-	// IsSelectedFlowBoxChild:
+
 	IsSelectedFlowBoxChild() bool
 }
 
@@ -522,7 +648,6 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 	return WrapFlowBoxChild(obj), nil
 }
 
-// NewFlowBoxChild:
 func NewFlowBoxChild() FlowBoxChild {
 	var _cret *C.GtkWidget // in
 
@@ -581,6 +706,18 @@ func (b flowBoxChild) AddChild(builder Builder, child gextras.Objector, typ stri
 
 func (b flowBoxChild) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b flowBoxChild) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b flowBoxChild) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b flowBoxChild) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b flowBoxChild) InternalChild(builder Builder, childname string) gextras.Objector {

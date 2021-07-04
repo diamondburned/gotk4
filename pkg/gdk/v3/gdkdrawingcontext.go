@@ -37,13 +37,12 @@ func init() {
 type DrawingContext interface {
 	gextras.Objector
 
-	// CairoContext:
 	CairoContext() *cairo.Context
-	// Clip:
+
 	Clip() *cairo.Region
-	// Window:
+
 	Window() Window
-	// IsValidDrawingContext:
+
 	IsValidDrawingContext() bool
 }
 

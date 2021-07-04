@@ -157,6 +157,24 @@ func (v *Value) Boolean() bool {
 	return _ok
 }
 
+// Boxed clears the current value in @value (if any) and "unsets" the type, this
+// releases all resources associated with this GValue. An unset value is the
+// same as an uninitialized (zero-filled) #GValue structure.
+func (v *Value) Boxed() interface{} {
+	var _arg0 *C.GValue  // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+
+	_cret = C.g_value_get_boxed(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
 // Char clears the current value in @value (if any) and "unsets" the type, this
 // releases all resources associated with this GValue. An unset value is the
 // same as an uninitialized (zero-filled) #GValue structure.
@@ -355,6 +373,24 @@ func (v *Value) Param() ParamSpec {
 	return _paramSpec
 }
 
+// Pointer clears the current value in @value (if any) and "unsets" the type,
+// this releases all resources associated with this GValue. An unset value is
+// the same as an uninitialized (zero-filled) #GValue structure.
+func (v *Value) Pointer() interface{} {
+	var _arg0 *C.GValue  // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+
+	_cret = C.g_value_get_pointer(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
 // Schar clears the current value in @value (if any) and "unsets" the type, this
 // releases all resources associated with this GValue. An unset value is the
 // same as an uninitialized (zero-filled) #GValue structure.
@@ -514,6 +550,24 @@ func (v *Value) InitFromInstance(instance TypeInstance) {
 	C.g_value_init_from_instance(_arg0, _arg1)
 }
 
+// PeekPointer clears the current value in @value (if any) and "unsets" the
+// type, this releases all resources associated with this GValue. An unset value
+// is the same as an uninitialized (zero-filled) #GValue structure.
+func (v *Value) PeekPointer() interface{} {
+	var _arg0 *C.GValue  // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+
+	_cret = C.g_value_peek_pointer(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
 // Reset clears the current value in @value (if any) and "unsets" the type, this
 // releases all resources associated with this GValue. An unset value is the
 // same as an uninitialized (zero-filled) #GValue structure.
@@ -548,6 +602,33 @@ func (v *Value) SetBoolean(vBoolean bool) {
 	}
 
 	C.g_value_set_boolean(_arg0, _arg1)
+}
+
+// SetBoxed clears the current value in @value (if any) and "unsets" the type,
+// this releases all resources associated with this GValue. An unset value is
+// the same as an uninitialized (zero-filled) #GValue structure.
+func (v *Value) SetBoxed(vBoxed interface{}) {
+	var _arg0 *C.GValue       // out
+	var _arg1 C.gconstpointer // out
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(vBoxed)))
+
+	C.g_value_set_boxed(_arg0, _arg1)
+}
+
+// SetBoxedTakeOwnership clears the current value in @value (if any) and
+// "unsets" the type, this releases all resources associated with this GValue.
+// An unset value is the same as an uninitialized (zero-filled) #GValue
+// structure.
+func (v *Value) SetBoxedTakeOwnership(vBoxed interface{}) {
+	var _arg0 *C.GValue       // out
+	var _arg1 C.gconstpointer // out
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(vBoxed)))
+
+	C.g_value_set_boxed_take_ownership(_arg0, _arg1)
 }
 
 // SetChar clears the current value in @value (if any) and "unsets" the type,
@@ -626,6 +707,19 @@ func (v *Value) SetGType(vGtype externglib.Type) {
 	_arg1 = (C.GType)(vGtype)
 
 	C.g_value_set_gtype(_arg0, _arg1)
+}
+
+// SetInstance clears the current value in @value (if any) and "unsets" the
+// type, this releases all resources associated with this GValue. An unset value
+// is the same as an uninitialized (zero-filled) #GValue structure.
+func (v *Value) SetInstance(instance interface{}) {
+	var _arg0 *C.GValue  // out
+	var _arg1 C.gpointer // out
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(instance)))
+
+	C.g_value_set_instance(_arg0, _arg1)
 }
 
 // SetInt clears the current value in @value (if any) and "unsets" the type,
@@ -707,6 +801,19 @@ func (v *Value) SetParam(param ParamSpec) {
 	C.g_value_set_param(_arg0, _arg1)
 }
 
+// SetPointer clears the current value in @value (if any) and "unsets" the type,
+// this releases all resources associated with this GValue. An unset value is
+// the same as an uninitialized (zero-filled) #GValue structure.
+func (v *Value) SetPointer(vPointer interface{}) {
+	var _arg0 *C.GValue  // out
+	var _arg1 C.gpointer // out
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(vPointer)))
+
+	C.g_value_set_pointer(_arg0, _arg1)
+}
+
 // SetSchar clears the current value in @value (if any) and "unsets" the type,
 // this releases all resources associated with this GValue. An unset value is
 // the same as an uninitialized (zero-filled) #GValue structure.
@@ -718,6 +825,19 @@ func (v *Value) SetSchar(vChar int8) {
 	_arg1 = C.gint8(vChar)
 
 	C.g_value_set_schar(_arg0, _arg1)
+}
+
+// SetStaticBoxed clears the current value in @value (if any) and "unsets" the
+// type, this releases all resources associated with this GValue. An unset value
+// is the same as an uninitialized (zero-filled) #GValue structure.
+func (v *Value) SetStaticBoxed(vBoxed interface{}) {
+	var _arg0 *C.GValue       // out
+	var _arg1 C.gconstpointer // out
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(vBoxed)))
+
+	C.g_value_set_static_boxed(_arg0, _arg1)
 }
 
 // SetStaticString clears the current value in @value (if any) and "unsets" the
@@ -826,6 +946,19 @@ func (v *Value) SetVariant(variant *glib.Variant) {
 	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
 	C.g_value_set_variant(_arg0, _arg1)
+}
+
+// TakeBoxed clears the current value in @value (if any) and "unsets" the type,
+// this releases all resources associated with this GValue. An unset value is
+// the same as an uninitialized (zero-filled) #GValue structure.
+func (v *Value) TakeBoxed(vBoxed interface{}) {
+	var _arg0 *C.GValue       // out
+	var _arg1 C.gconstpointer // out
+
+	_arg0 = (*C.GValue)(unsafe.Pointer(&v.GValue))
+	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(vBoxed)))
+
+	C.g_value_take_boxed(_arg0, _arg1)
 }
 
 // TakeString clears the current value in @value (if any) and "unsets" the type,

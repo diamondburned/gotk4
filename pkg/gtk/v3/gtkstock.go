@@ -4,6 +4,8 @@ package gtk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/core/box"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -14,8 +16,34 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// Stock:
 type Stock = string
+
+// TranslateFunc: the function used to translate messages in e.g. IconFactory
+// and ActionGroup.
+//
+// Deprecated: since version 3.10.
+type TranslateFunc func(path string, utf8 string)
+
+//export gotk4_TranslateFunc
+func _TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var path string // out
+
+	path = C.GoString(arg0)
+
+	fn := v.(TranslateFunc)
+	utf8 := fn(path)
+
+	var cret *C.gchar // out
+
+	cret = (*C.gchar)(C.CString(utf8))
+
+	return cret
+}
 
 // StockAdd registers each of the stock items in @items. If an item already
 // exists with the same stock ID as one of the @items, the old item gets

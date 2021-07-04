@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11DisplayManager:
 type X11DisplayManager interface {
 	gdk.DisplayManager
 }

@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,37 +56,36 @@ func init() {
 type Expander interface {
 	Bin
 
-	// Expanded:
 	Expanded() bool
-	// Label:
+
 	Label() string
-	// LabelFill:
+
 	LabelFill() bool
-	// LabelWidget:
+
 	LabelWidget() Widget
-	// ResizeToplevel:
+
 	ResizeToplevel() bool
-	// Spacing:
+
 	Spacing() int
-	// UseMarkup:
+
 	UseMarkup() bool
-	// UseUnderline:
+
 	UseUnderline() bool
-	// SetExpandedExpander:
+
 	SetExpandedExpander(expanded bool)
-	// SetLabelExpander:
+
 	SetLabelExpander(label string)
-	// SetLabelFillExpander:
+
 	SetLabelFillExpander(labelFill bool)
-	// SetLabelWidgetExpander:
+
 	SetLabelWidgetExpander(labelWidget Widget)
-	// SetResizeToplevelExpander:
+
 	SetResizeToplevelExpander(resizeToplevel bool)
-	// SetSpacingExpander:
+
 	SetSpacingExpander(spacing int)
-	// SetUseMarkupExpander:
+
 	SetUseMarkupExpander(useMarkup bool)
-	// SetUseUnderlineExpander:
+
 	SetUseUnderlineExpander(useUnderline bool)
 }
 
@@ -107,7 +108,6 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return WrapExpander(obj), nil
 }
 
-// NewExpander:
 func NewExpander(label string) Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -124,7 +124,6 @@ func NewExpander(label string) Expander {
 	return _expander
 }
 
-// NewExpanderWithMnemonic:
 func NewExpanderWithMnemonic(label string) Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -368,6 +367,18 @@ func (b expander) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b expander) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b expander) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b expander) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b expander) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b expander) InternalChild(builder Builder, childname string) gextras.Objector {

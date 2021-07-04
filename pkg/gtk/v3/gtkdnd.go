@@ -9,7 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -83,23 +82,6 @@ func DragSetIconDefault(context gdk.DragContext) {
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_drag_set_icon_default(_arg1)
-}
-
-// DragSetIconGIcon sets the icon for a given drag from the given @icon. See the
-// documentation for gtk_drag_set_icon_name() for more details about using icons
-// in drag and drop.
-func DragSetIconGIcon(context gdk.DragContext, icon gio.Icon, hotX int, hotY int) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 *C.GIcon          // out
-	var _arg3 C.gint            // out
-	var _arg4 C.gint            // out
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg3 = C.gint(hotX)
-	_arg4 = C.gint(hotY)
-
-	C.gtk_drag_set_icon_gicon(_arg1, _arg2, _arg3, _arg4)
 }
 
 // DragSetIconName sets the icon for a given drag from a named themed icon. See

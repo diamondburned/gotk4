@@ -37,21 +37,20 @@ type ScaleButton interface {
 	Widget
 	Orientable
 
-	// Adjustment:
 	Adjustment() Adjustment
-	// MinusButton:
+
 	MinusButton() Button
-	// PlusButton:
+
 	PlusButton() Button
-	// Popup:
+
 	Popup() Widget
-	// Value:
+
 	Value() float64
-	// SetAdjustmentScaleButton:
+
 	SetAdjustmentScaleButton(adjustment Adjustment)
-	// SetIconsScaleButton:
+
 	SetIconsScaleButton(icons []string)
-	// SetValueScaleButton:
+
 	SetValueScaleButton(value float64)
 }
 
@@ -74,7 +73,6 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 	return WrapScaleButton(obj), nil
 }
 
-// NewScaleButton:
 func NewScaleButton(min float64, max float64, step float64, icons []string) ScaleButton {
 	var _arg1 C.double // out
 	var _arg2 C.double // out

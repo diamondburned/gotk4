@@ -172,6 +172,8 @@ func (g *ClassGenerator) Header() *file.Header {
 func (cg *ClassGenerator) Use(class *gir.Class) bool {
 	cg.Reset()
 	cg.Class = class
+	cg.InterfaceName = strcases.PascalToGo(class.Name)
+	cg.StructName = strcases.UnexportPascal(cg.InterfaceName)
 
 	if !class.IsIntrospectable() || types.Filter(cg.gen, class.Name, class.CType) {
 		return false
@@ -179,12 +181,9 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 
 	// Skip generating built-in types as well as orphaned types.
 	if !cg.Tree.Resolve(class.Name) || cg.Tree.Builtin != nil {
-		cg.Logln(logger.Debug, "class", class.Name, "because unknown parent type", class.Parent)
+		cg.Logln(logger.Debug, "because unknown parent type", class.Parent)
 		return false
 	}
-
-	cg.InterfaceName = strcases.PascalToGo(class.Name)
-	cg.StructName = strcases.UnexportPascal(cg.InterfaceName)
 
 	cg.Implements = cg.Tree.PublicEmbeds()
 	cg.ParentInterface = types.GoPublicType(cg.gen, cg.Tree.Requires[0].Resolved)

@@ -63,7 +63,6 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 	return WrapSeparator(obj), nil
 }
 
-// NewSeparator:
 func NewSeparator(orientation Orientation) Separator {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in

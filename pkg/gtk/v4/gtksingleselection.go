@@ -3,11 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,25 +30,20 @@ func init() {
 // particular, this means that changing the sort order of an underlying sort
 // model will preserve the selection.
 type SingleSelection interface {
-	SelectionModel
+	gextras.Objector
 
-	// Autoselect:
 	Autoselect() bool
-	// CanUnselect:
+
 	CanUnselect() bool
-	// Model:
-	Model() gio.ListModel
-	// Selected:
+
 	Selected() uint
-	// SelectedItem:
+
 	SelectedItem() gextras.Objector
-	// SetAutoselectSingleSelection:
+
 	SetAutoselectSingleSelection(autoselect bool)
-	// SetCanUnselectSingleSelection:
+
 	SetCanUnselectSingleSelection(canUnselect bool)
-	// SetModelSingleSelection:
-	SetModelSingleSelection(model gio.ListModel)
-	// SetSelectedSingleSelection:
+
 	SetSelectedSingleSelection(position uint)
 }
 
@@ -71,22 +64,6 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSingleSelection(obj), nil
-}
-
-// NewSingleSelection:
-func NewSingleSelection(model gio.ListModel) SingleSelection {
-	var _arg1 *C.GListModel         // out
-	var _cret *C.GtkSingleSelection // in
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	_cret = C.gtk_single_selection_new(_arg1)
-
-	var _singleSelection SingleSelection // out
-
-	_singleSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SingleSelection)
-
-	return _singleSelection
 }
 
 func (s singleSelection) Autoselect() bool {
@@ -121,21 +98,6 @@ func (s singleSelection) CanUnselect() bool {
 	}
 
 	return _ok
-}
-
-func (s singleSelection) Model() gio.ListModel {
-	var _arg0 *C.GtkSingleSelection // out
-	var _cret *C.GListModel         // in
-
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_single_selection_get_model(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (s singleSelection) Selected() uint {
@@ -192,16 +154,6 @@ func (s singleSelection) SetCanUnselectSingleSelection(canUnselect bool) {
 	C.gtk_single_selection_set_can_unselect(_arg0, _arg1)
 }
 
-func (s singleSelection) SetModelSingleSelection(model gio.ListModel) {
-	var _arg0 *C.GtkSingleSelection // out
-	var _arg1 *C.GListModel         // out
-
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_single_selection_set_model(_arg0, _arg1)
-}
-
 func (s singleSelection) SetSelectedSingleSelection(position uint) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.guint               // out
@@ -210,64 +162,4 @@ func (s singleSelection) SetSelectedSingleSelection(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_single_selection_set_selected(_arg0, _arg1)
-}
-
-func (m singleSelection) Selection() *Bitset {
-	return WrapSelectionModel(gextras.InternObject(m)).Selection()
-}
-
-func (m singleSelection) SelectionInRange(position uint, nItems uint) *Bitset {
-	return WrapSelectionModel(gextras.InternObject(m)).SelectionInRange(position, nItems)
-}
-
-func (m singleSelection) IsSelected(position uint) bool {
-	return WrapSelectionModel(gextras.InternObject(m)).IsSelected(position)
-}
-
-func (m singleSelection) SelectAll() bool {
-	return WrapSelectionModel(gextras.InternObject(m)).SelectAll()
-}
-
-func (m singleSelection) SelectItem(position uint, unselectRest bool) bool {
-	return WrapSelectionModel(gextras.InternObject(m)).SelectItem(position, unselectRest)
-}
-
-func (m singleSelection) SelectRange(position uint, nItems uint, unselectRest bool) bool {
-	return WrapSelectionModel(gextras.InternObject(m)).SelectRange(position, nItems, unselectRest)
-}
-
-func (m singleSelection) SelectionChanged(position uint, nItems uint) {
-	WrapSelectionModel(gextras.InternObject(m)).SelectionChanged(position, nItems)
-}
-
-func (m singleSelection) SetSelection(selected *Bitset, mask *Bitset) bool {
-	return WrapSelectionModel(gextras.InternObject(m)).SetSelection(selected, mask)
-}
-
-func (m singleSelection) UnselectAll() bool {
-	return WrapSelectionModel(gextras.InternObject(m)).UnselectAll()
-}
-
-func (m singleSelection) UnselectItem(position uint) bool {
-	return WrapSelectionModel(gextras.InternObject(m)).UnselectItem(position)
-}
-
-func (m singleSelection) UnselectRange(position uint, nItems uint) bool {
-	return WrapSelectionModel(gextras.InternObject(m)).UnselectRange(position, nItems)
-}
-
-func (l singleSelection) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l singleSelection) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l singleSelection) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l singleSelection) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }

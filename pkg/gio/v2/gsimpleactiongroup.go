@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -40,11 +41,12 @@ type SimpleActionGroup interface {
 	ActionGroup
 	ActionMap
 
-	// InsertSimpleActionGroup:
+	AddEntriesSimpleActionGroup(entries []ActionEntry, userData interface{})
+
 	InsertSimpleActionGroup(action Action)
-	// LookupSimpleActionGroup:
+
 	LookupSimpleActionGroup(actionName string) Action
-	// RemoveSimpleActionGroup:
+
 	RemoveSimpleActionGroup(actionName string)
 }
 
@@ -67,7 +69,6 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 	return WrapSimpleActionGroup(obj), nil
 }
 
-// NewSimpleActionGroup:
 func NewSimpleActionGroup() SimpleActionGroup {
 	var _cret *C.GSimpleActionGroup // in
 
@@ -78,6 +79,20 @@ func NewSimpleActionGroup() SimpleActionGroup {
 	_simpleActionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleActionGroup)
 
 	return _simpleActionGroup
+}
+
+func (s simpleActionGroup) AddEntriesSimpleActionGroup(entries []ActionEntry, userData interface{}) {
+	var _arg0 *C.GSimpleActionGroup // out
+	var _arg1 *C.GActionEntry
+	var _arg2 C.gint
+	var _arg3 C.gpointer // out
+
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gint(len(entries))
+	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
+	_arg3 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+
+	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (s simpleActionGroup) InsertSimpleActionGroup(action Action) {
@@ -177,6 +192,10 @@ func (a simpleActionGroup) QueryAction(actionName string) (enabled bool, paramet
 
 func (a simpleActionGroup) AddAction(action Action) {
 	WrapActionMap(gextras.InternObject(a)).AddAction(action)
+}
+
+func (a simpleActionGroup) AddActionEntries(entries []ActionEntry, userData interface{}) {
+	WrapActionMap(gextras.InternObject(a)).AddActionEntries(entries, userData)
 }
 
 func (a simpleActionGroup) LookupAction(actionName string) Action {

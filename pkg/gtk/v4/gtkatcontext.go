@@ -31,9 +31,8 @@ func init() {
 type ATContext interface {
 	gextras.Objector
 
-	// Accessible:
 	Accessible() Accessible
-	// AccessibleRole:
+
 	AccessibleRole() AccessibleRole
 }
 
@@ -56,7 +55,6 @@ func marshalATContext(p uintptr) (interface{}, error) {
 	return WrapATContext(obj), nil
 }
 
-// NewATContextCreate:
 func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, display gdk.Display) ATContext {
 	var _arg1 C.GtkAccessibleRole // out
 	var _arg2 *C.GtkAccessible    // out

@@ -51,7 +51,6 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 	return WrapGestureClick(obj), nil
 }
 
-// NewGestureClick:
 func NewGestureClick() GestureClick {
 	var _cret *C.GtkGesture // in
 

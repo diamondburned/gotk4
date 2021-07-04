@@ -49,7 +49,6 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 	return WrapEventControllerLegacy(obj), nil
 }
 
-// NewEventControllerLegacy:
 func NewEventControllerLegacy() EventControllerLegacy {
 	var _cret *C.GtkEventController // in
 

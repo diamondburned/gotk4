@@ -69,7 +69,6 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	return WrapCellRendererAccel(obj), nil
 }
 
-// NewCellRendererAccel:
 func NewCellRendererAccel() CellRendererAccel {
 	var _cret *C.GtkCellRenderer // in
 

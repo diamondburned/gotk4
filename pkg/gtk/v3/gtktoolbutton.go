@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -50,29 +51,28 @@ type ToolButton interface {
 	ToolItem
 	Actionable
 
-	// IconName:
 	IconName() string
-	// IconWidget:
+
 	IconWidget() Widget
-	// Label:
+
 	Label() string
-	// LabelWidget:
+
 	LabelWidget() Widget
-	// StockID:
+
 	StockID() string
-	// UseUnderline:
+
 	UseUnderline() bool
-	// SetIconNameToolButton:
+
 	SetIconNameToolButton(iconName string)
-	// SetIconWidgetToolButton:
+
 	SetIconWidgetToolButton(iconWidget Widget)
-	// SetLabelToolButton:
+
 	SetLabelToolButton(label string)
-	// SetLabelWidgetToolButton:
+
 	SetLabelWidgetToolButton(labelWidget Widget)
-	// SetStockIDToolButton:
+
 	SetStockIDToolButton(stockId string)
-	// SetUseUnderlineToolButton:
+
 	SetUseUnderlineToolButton(useUnderline bool)
 }
 
@@ -95,7 +95,6 @@ func marshalToolButton(p uintptr) (interface{}, error) {
 	return WrapToolButton(obj), nil
 }
 
-// NewToolButton:
 func NewToolButton(iconWidget Widget, label string) ToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
@@ -114,7 +113,6 @@ func NewToolButton(iconWidget Widget, label string) ToolButton {
 	return _toolButton
 }
 
-// NewToolButtonFromStock:
 func NewToolButtonFromStock(stockId string) ToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -296,6 +294,18 @@ func (b toolButton) ConstructChild(builder Builder, name string) gextras.Objecto
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b toolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b toolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b toolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b toolButton) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -366,6 +376,18 @@ func (b toolButton) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b toolButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b toolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b toolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b toolButton) InternalChild(builder Builder, childname string) gextras.Objector {

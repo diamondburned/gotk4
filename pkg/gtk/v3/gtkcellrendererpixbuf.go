@@ -58,7 +58,6 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 	return WrapCellRendererPixbuf(obj), nil
 }
 
-// NewCellRendererPixbuf:
 func NewCellRendererPixbuf() CellRendererPixbuf {
 	var _cret *C.GtkCellRenderer // in
 

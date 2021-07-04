@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -46,7 +47,6 @@ func init() {
 type RadioMenuItem interface {
 	CheckMenuItem
 
-	// JoinGroupRadioMenuItem:
 	JoinGroupRadioMenuItem(groupSource RadioMenuItem)
 }
 
@@ -69,7 +69,6 @@ func marshalRadioMenuItem(p uintptr) (interface{}, error) {
 	return WrapRadioMenuItem(obj), nil
 }
 
-// NewRadioMenuItemFromWidget:
 func NewRadioMenuItemFromWidget(group RadioMenuItem) RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _cret *C.GtkWidget        // in
@@ -85,7 +84,6 @@ func NewRadioMenuItemFromWidget(group RadioMenuItem) RadioMenuItem {
 	return _radioMenuItem
 }
 
-// NewRadioMenuItemWithLabelFromWidget:
 func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
@@ -104,7 +102,6 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) Radi
 	return _radioMenuItem
 }
 
-// NewRadioMenuItemWithMnemonicFromWidget:
 func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
@@ -139,6 +136,18 @@ func (b radioMenuItem) AddChild(builder Builder, child gextras.Objector, typ str
 
 func (b radioMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b radioMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b radioMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b radioMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b radioMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
@@ -187,6 +196,18 @@ func (b radioMenuItem) AddChild(builder Builder, child gextras.Objector, typ str
 
 func (b radioMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b radioMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b radioMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b radioMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b radioMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {

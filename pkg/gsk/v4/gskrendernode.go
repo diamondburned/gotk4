@@ -5,6 +5,7 @@ package gsk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -25,6 +26,29 @@ func init() {
 	})
 }
 
+// ParseErrorFunc: type of callback that is called when an error occurs during
+// node deserialization.
+type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, err error)
+
+//export gotk4_ParseErrorFunc
+func _ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var start *ParseLocation // out
+	var end *ParseLocation   // out
+	var err error            // out
+
+	start = (*ParseLocation)(unsafe.Pointer(arg0))
+	end = (*ParseLocation)(unsafe.Pointer(arg1))
+	err = gerror.Take(unsafe.Pointer(arg2))
+
+	fn := v.(ParseErrorFunc)
+	fn(start, end, err)
+}
+
 // RenderNode: `GskRenderNode` is the basic block in a scene graph to be
 // rendered using `GskRenderer`.
 //
@@ -41,17 +65,16 @@ func init() {
 type RenderNode interface {
 	gextras.Objector
 
-	// DrawRenderNode:
 	DrawRenderNode(cr *cairo.Context)
-	// Bounds:
+
 	Bounds() graphene.Rect
-	// NodeType:
+
 	NodeType() RenderNodeType
-	// RefRenderNode:
+
 	RefRenderNode() RenderNode
-	// UnrefRenderNode:
+
 	UnrefRenderNode()
-	// WriteToFileRenderNode:
+
 	WriteToFileRenderNode(filename string) error
 }
 

@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,29 +49,28 @@ func init() {
 type AppChooserWidget interface {
 	AppChooser
 
-	// DefaultText:
 	DefaultText() string
-	// ShowAll:
+
 	ShowAll() bool
-	// ShowDefault:
+
 	ShowDefault() bool
-	// ShowFallback:
+
 	ShowFallback() bool
-	// ShowOther:
+
 	ShowOther() bool
-	// ShowRecommended:
+
 	ShowRecommended() bool
-	// SetDefaultTextAppChooserWidget:
+
 	SetDefaultTextAppChooserWidget(text string)
-	// SetShowAllAppChooserWidget:
+
 	SetShowAllAppChooserWidget(setting bool)
-	// SetShowDefaultAppChooserWidget:
+
 	SetShowDefaultAppChooserWidget(setting bool)
-	// SetShowFallbackAppChooserWidget:
+
 	SetShowFallbackAppChooserWidget(setting bool)
-	// SetShowOtherAppChooserWidget:
+
 	SetShowOtherAppChooserWidget(setting bool)
-	// SetShowRecommendedAppChooserWidget:
+
 	SetShowRecommendedAppChooserWidget(setting bool)
 }
 
@@ -95,7 +93,6 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return WrapAppChooserWidget(obj), nil
 }
 
-// NewAppChooserWidget:
 func NewAppChooserWidget(contentType string) AppChooserWidget {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -281,10 +278,6 @@ func (s appChooserWidget) SetShowRecommendedAppChooserWidget(setting bool) {
 	}
 
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
-}
-
-func (s appChooserWidget) AppInfo() gio.AppInfo {
-	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
 }
 
 func (s appChooserWidget) ContentType() string {

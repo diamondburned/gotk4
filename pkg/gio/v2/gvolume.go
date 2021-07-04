@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -73,8 +76,13 @@ type Volume interface {
 	CanEject() bool
 	// CanMount returns whether the volume should be automatically mounted.
 	CanMount() bool
+	// Eject returns whether the volume should be automatically mounted.
+	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectFinish returns whether the volume should be automatically mounted.
 	EjectFinish(result AsyncResult) error
+	// EjectWithOperation returns whether the volume should be automatically
+	// mounted.
+	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectWithOperationFinish returns whether the volume should be
 	// automatically mounted.
 	EjectWithOperationFinish(result AsyncResult) error
@@ -90,8 +98,8 @@ type Volume interface {
 	Icon() Icon
 	// Identifier returns whether the volume should be automatically mounted.
 	Identifier(kind string) string
-	// Mount returns whether the volume should be automatically mounted.
-	Mount() Mount
+	// GetMount returns whether the volume should be automatically mounted.
+	GetMount() Mount
 	// Name returns whether the volume should be automatically mounted.
 	Name() string
 	// SortKey returns whether the volume should be automatically mounted.
@@ -100,6 +108,8 @@ type Volume interface {
 	SymbolicIcon() Icon
 	// UUID returns whether the volume should be automatically mounted.
 	UUID() string
+	// Mount returns whether the volume should be automatically mounted.
+	Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// MountFinish returns whether the volume should be automatically mounted.
 	MountFinish(result AsyncResult) error
 	// ShouldAutomount returns whether the volume should be automatically
@@ -162,6 +172,22 @@ func (v volume) CanMount() bool {
 	return _ok
 }
 
+func (v volume) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GVolume            // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_volume_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (v volume) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -177,6 +203,24 @@ func (v volume) EjectFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (v volume) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GVolume            // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (v volume) EjectWithOperationFinish(result AsyncResult) error {
@@ -288,7 +332,7 @@ func (v volume) Identifier(kind string) string {
 	return _utf8
 }
 
-func (v volume) Mount() Mount {
+func (v volume) GetMount() Mount {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
 
@@ -363,6 +407,24 @@ func (v volume) UUID() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+func (v volume) Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GVolume            // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
+	_arg1 = C.GMountMountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_volume_mount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (v volume) MountFinish(result AsyncResult) error {

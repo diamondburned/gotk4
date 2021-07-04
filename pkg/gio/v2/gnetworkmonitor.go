@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -24,6 +25,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -43,6 +46,9 @@ type NetworkMonitor interface {
 	// CanReach checks if the network is metered. See Monitor:network-metered
 	// for more details.
 	CanReach(connectable SocketConnectable, cancellable Cancellable) error
+	// CanReachAsync checks if the network is metered. See
+	// Monitor:network-metered for more details.
+	CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
 	// CanReachFinish checks if the network is metered. See
 	// Monitor:network-metered for more details.
 	CanReachFinish(result AsyncResult) error
@@ -95,6 +101,22 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GNetworkMonitor    // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_network_monitor_can_reach_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (m networkMonitor) CanReachFinish(result AsyncResult) error {

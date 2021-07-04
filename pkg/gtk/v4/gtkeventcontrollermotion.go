@@ -33,9 +33,8 @@ func init() {
 type EventControllerMotion interface {
 	EventController
 
-	// ContainsPointerEventControllerMotion:
 	ContainsPointerEventControllerMotion() bool
-	// IsPointerEventControllerMotion:
+
 	IsPointerEventControllerMotion() bool
 }
 
@@ -58,7 +57,6 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return WrapEventControllerMotion(obj), nil
 }
 
-// NewEventControllerMotion:
 func NewEventControllerMotion() EventControllerMotion {
 	var _cret *C.GtkEventController // in
 

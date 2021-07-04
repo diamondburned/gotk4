@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -153,93 +154,98 @@ func RenderInsertionCursor(context StyleContext, cr *cairo.Context, x float64, y
 type StyleContext interface {
 	gextras.Objector
 
-	// AddClassStyleContext:
 	AddClassStyleContext(className string)
-	// AddProviderStyleContext:
+
 	AddProviderStyleContext(provider StyleProvider, priority uint)
-	// AddRegionStyleContext:
+
 	AddRegionStyleContext(regionName string, flags RegionFlags)
-	// BackgroundColor:
+
+	CancelAnimationsStyleContext(regionId interface{})
+
 	BackgroundColor(state StateFlags) gdk.RGBA
-	// Border:
+
 	Border(state StateFlags) Border
-	// BorderColor:
+
 	BorderColor(state StateFlags) gdk.RGBA
-	// Color:
+
 	Color(state StateFlags) gdk.RGBA
-	// Direction:
+
 	Direction() TextDirection
-	// Font:
+
 	Font(state StateFlags) *pango.FontDescription
-	// FrameClock:
+
 	FrameClock() gdk.FrameClock
-	// JunctionSides:
+
 	JunctionSides() JunctionSides
-	// Margin:
+
 	Margin(state StateFlags) Border
-	// Padding:
+
 	Padding(state StateFlags) Border
-	// Parent:
+
 	Parent() StyleContext
-	// Path:
+
 	Path() *WidgetPath
-	// Property:
+
 	Property(property string, state StateFlags) externglib.Value
-	// Scale:
+
 	Scale() int
-	// Screen:
+
 	Screen() gdk.Screen
-	// Section:
+
 	Section(property string) *CSSSection
-	// State:
+
 	State() StateFlags
-	// StyleProperty:
+
 	StyleProperty(propertyName string, value externglib.Value)
-	// HasClassStyleContext:
+
 	HasClassStyleContext(className string) bool
-	// HasRegionStyleContext:
+
 	HasRegionStyleContext(regionName string) (RegionFlags, bool)
-	// InvalidateStyleContext:
+
 	InvalidateStyleContext()
-	// LookupColorStyleContext:
+
 	LookupColorStyleContext(colorName string) (gdk.RGBA, bool)
-	// LookupIconSetStyleContext:
+
 	LookupIconSetStyleContext(stockId string) *IconSet
-	// PopAnimatableRegionStyleContext:
+
+	NotifyStateChangeStyleContext(window gdk.Window, regionId interface{}, state StateType, stateValue bool)
+
 	PopAnimatableRegionStyleContext()
-	// RemoveClassStyleContext:
+
+	PushAnimatableRegionStyleContext(regionId interface{})
+
 	RemoveClassStyleContext(className string)
-	// RemoveProviderStyleContext:
+
 	RemoveProviderStyleContext(provider StyleProvider)
-	// RemoveRegionStyleContext:
+
 	RemoveRegionStyleContext(regionName string)
-	// RestoreStyleContext:
+
 	RestoreStyleContext()
-	// SaveStyleContext:
+
 	SaveStyleContext()
-	// ScrollAnimationsStyleContext:
+
 	ScrollAnimationsStyleContext(window gdk.Window, dx int, dy int)
-	// SetBackgroundStyleContext:
+
 	SetBackgroundStyleContext(window gdk.Window)
-	// SetDirectionStyleContext:
+
 	SetDirectionStyleContext(direction TextDirection)
-	// SetFrameClockStyleContext:
+
 	SetFrameClockStyleContext(frameClock gdk.FrameClock)
-	// SetJunctionSidesStyleContext:
+
 	SetJunctionSidesStyleContext(sides JunctionSides)
-	// SetParentStyleContext:
+
 	SetParentStyleContext(parent StyleContext)
-	// SetPathStyleContext:
+
 	SetPathStyleContext(path *WidgetPath)
-	// SetScaleStyleContext:
+
 	SetScaleStyleContext(scale int)
-	// SetScreenStyleContext:
+
 	SetScreenStyleContext(screen gdk.Screen)
-	// SetStateStyleContext:
+
 	SetStateStyleContext(flags StateFlags)
-	// StateIsRunningStyleContext:
+
 	StateIsRunningStyleContext(state StateType) (float64, bool)
-	// String:
+
 	String(flags StyleContextPrintFlags) string
 }
 
@@ -262,7 +268,6 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 	return WrapStyleContext(obj), nil
 }
 
-// NewStyleContext:
 func NewStyleContext() StyleContext {
 	var _cret *C.GtkStyleContext // in
 
@@ -309,6 +314,16 @@ func (c styleContext) AddRegionStyleContext(regionName string, flags RegionFlags
 	_arg2 = C.GtkRegionFlags(flags)
 
 	C.gtk_style_context_add_region(_arg0, _arg1, _arg2)
+}
+
+func (c styleContext) CancelAnimationsStyleContext(regionId interface{}) {
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.gpointer         // out
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(regionId)))
+
+	C.gtk_style_context_cancel_animations(_arg0, _arg1)
 }
 
 func (c styleContext) BackgroundColor(state StateFlags) gdk.RGBA {
@@ -776,12 +791,40 @@ func (c styleContext) LookupIconSetStyleContext(stockId string) *IconSet {
 	return _iconSet
 }
 
+func (c styleContext) NotifyStateChangeStyleContext(window gdk.Window, regionId interface{}, state StateType, stateValue bool) {
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GdkWindow       // out
+	var _arg2 C.gpointer         // out
+	var _arg3 C.GtkStateType     // out
+	var _arg4 C.gboolean         // out
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(regionId)))
+	_arg3 = C.GtkStateType(state)
+	if stateValue {
+		_arg4 = C.TRUE
+	}
+
+	C.gtk_style_context_notify_state_change(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (c styleContext) PopAnimatableRegionStyleContext() {
 	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
 	C.gtk_style_context_pop_animatable_region(_arg0)
+}
+
+func (c styleContext) PushAnimatableRegionStyleContext(regionId interface{}) {
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.gpointer         // out
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(regionId)))
+
+	C.gtk_style_context_push_animatable_region(_arg0, _arg1)
 }
 
 func (c styleContext) RemoveClassStyleContext(className string) {

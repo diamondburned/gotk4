@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -243,35 +244,36 @@ func marshalBuilderError(p uintptr) (interface{}, error) {
 type Builder interface {
 	gextras.Objector
 
-	// AddFromFileBuilder:
 	AddFromFileBuilder(filename string) (uint, error)
-	// AddFromResourceBuilder:
+
 	AddFromResourceBuilder(resourcePath string) (uint, error)
-	// AddFromStringBuilder:
+
 	AddFromStringBuilder(buffer string, length uint) (uint, error)
-	// AddObjectsFromFileBuilder:
+
 	AddObjectsFromFileBuilder(filename string, objectIds []string) (uint, error)
-	// AddObjectsFromResourceBuilder:
+
 	AddObjectsFromResourceBuilder(resourcePath string, objectIds []string) (uint, error)
-	// AddObjectsFromStringBuilder:
+
 	AddObjectsFromStringBuilder(buffer string, length uint, objectIds []string) (uint, error)
-	// ExposeObjectBuilder:
+
+	ConnectSignalsBuilder(userData interface{})
+
 	ExposeObjectBuilder(name string, object gextras.Objector)
-	// ExtendWithTemplateBuilder:
+
 	ExtendWithTemplateBuilder(widget Widget, templateType externglib.Type, buffer string, length uint) (uint, error)
-	// Application:
+
 	Application() Application
-	// Object:
+
 	Object(name string) gextras.Objector
-	// TranslationDomain:
+
 	TranslationDomain() string
-	// TypeFromName:
+
 	TypeFromName(typeName string) externglib.Type
-	// SetApplicationBuilder:
+
 	SetApplicationBuilder(application Application)
-	// SetTranslationDomainBuilder:
+
 	SetTranslationDomainBuilder(domain string)
-	// ValueFromStringTypeBuilder:
+
 	ValueFromStringTypeBuilder(typ externglib.Type, _string string) (externglib.Value, error)
 }
 
@@ -294,7 +296,6 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 	return WrapBuilder(obj), nil
 }
 
-// NewBuilder:
 func NewBuilder() Builder {
 	var _cret *C.GtkBuilder // in
 
@@ -307,7 +308,6 @@ func NewBuilder() Builder {
 	return _builder
 }
 
-// NewBuilderFromFile:
 func NewBuilderFromFile(filename string) Builder {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkBuilder // in
@@ -324,7 +324,6 @@ func NewBuilderFromFile(filename string) Builder {
 	return _builder
 }
 
-// NewBuilderFromResource:
 func NewBuilderFromResource(resourcePath string) Builder {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkBuilder // in
@@ -341,7 +340,6 @@ func NewBuilderFromResource(resourcePath string) Builder {
 	return _builder
 }
 
-// NewBuilderFromString:
 func NewBuilderFromString(_string string, length int) Builder {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gssize      // out
@@ -518,6 +516,16 @@ func (b builder) AddObjectsFromStringBuilder(buffer string, length uint, objectI
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
+}
+
+func (b builder) ConnectSignalsBuilder(userData interface{}) {
+	var _arg0 *C.GtkBuilder // out
+	var _arg1 C.gpointer    // out
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+
+	C.gtk_builder_connect_signals(_arg0, _arg1)
 }
 
 func (b builder) ExposeObjectBuilder(name string, object gextras.Objector) {

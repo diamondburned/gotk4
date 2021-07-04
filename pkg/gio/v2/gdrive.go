@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -70,8 +73,12 @@ type Drive interface {
 	CanStartDegraded() bool
 	// CanStop finishes stopping a drive.
 	CanStop() bool
+	// Eject finishes stopping a drive.
+	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectFinish finishes stopping a drive.
 	EjectFinish(result AsyncResult) error
+	// EjectWithOperation finishes stopping a drive.
+	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes stopping a drive.
 	EjectWithOperationFinish(result AsyncResult) error
 	// EnumerateIdentifiers finishes stopping a drive.
@@ -98,10 +105,16 @@ type Drive interface {
 	IsMediaRemovable() bool
 	// IsRemovable finishes stopping a drive.
 	IsRemovable() bool
+	// PollForMedia finishes stopping a drive.
+	PollForMedia(cancellable Cancellable, callback AsyncReadyCallback)
 	// PollForMediaFinish finishes stopping a drive.
 	PollForMediaFinish(result AsyncResult) error
+	// Start finishes stopping a drive.
+	Start(flags DriveStartFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// StartFinish finishes stopping a drive.
 	StartFinish(result AsyncResult) error
+	// Stop finishes stopping a drive.
+	Stop(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// StopFinish finishes stopping a drive.
 	StopFinish(result AsyncResult) error
 }
@@ -212,6 +225,22 @@ func (d drive) CanStop() bool {
 	return _ok
 }
 
+func (d drive) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_drive_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (d drive) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -227,6 +256,24 @@ func (d drive) EjectFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (d drive) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_drive_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (d drive) EjectWithOperationFinish(result AsyncResult) error {
@@ -454,6 +501,20 @@ func (d drive) IsRemovable() bool {
 	return _ok
 }
 
+func (d drive) PollForMedia(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_drive_poll_for_media(_arg0, _arg1, _arg2, _arg3)
+}
+
 func (d drive) PollForMediaFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -471,6 +532,24 @@ func (d drive) PollForMediaFinish(result AsyncResult) error {
 	return _goerr
 }
 
+func (d drive) Start(flags DriveStartFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = C.GDriveStartFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_drive_start(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (d drive) StartFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -486,6 +565,24 @@ func (d drive) StartFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (d drive) Stop(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_drive_stop(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (d drive) StopFinish(result AsyncResult) error {

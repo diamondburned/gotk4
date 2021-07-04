@@ -41,49 +41,48 @@ func init() {
 type Display interface {
 	gextras.Objector
 
-	// BeepDisplay:
 	BeepDisplay()
-	// CloseDisplay:
+
 	CloseDisplay()
-	// DeviceIsGrabbedDisplay:
+
 	DeviceIsGrabbedDisplay(device Device) bool
-	// FlushDisplay:
+
 	FlushDisplay()
-	// AppLaunchContext:
+
 	AppLaunchContext() AppLaunchContext
-	// Clipboard:
+
 	Clipboard() Clipboard
-	// DefaultSeat:
+
 	DefaultSeat() Seat
-	// MonitorAtSurface:
+
 	MonitorAtSurface(surface Surface) Monitor
-	// Name:
+
 	Name() string
-	// PrimaryClipboard:
+
 	PrimaryClipboard() Clipboard
-	// Setting:
+
 	Setting(name string, value externglib.Value) bool
-	// StartupNotificationID:
+
 	StartupNotificationID() string
-	// IsClosedDisplay:
+
 	IsClosedDisplay() bool
-	// IsCompositedDisplay:
+
 	IsCompositedDisplay() bool
-	// IsRGBADisplay:
+
 	IsRGBADisplay() bool
-	// MapKeycodeDisplay:
+
 	MapKeycodeDisplay(keycode uint) ([]KeymapKey, []uint, bool)
-	// MapKeyvalDisplay:
+
 	MapKeyvalDisplay(keyval uint) ([]KeymapKey, bool)
-	// NotifyStartupCompleteDisplay:
+
 	NotifyStartupCompleteDisplay(startupId string)
-	// PutEventDisplay:
+
 	PutEventDisplay(event Event)
-	// SupportsInputShapesDisplay:
+
 	SupportsInputShapesDisplay() bool
-	// SyncDisplay:
+
 	SyncDisplay()
-	// TranslateKeyDisplay:
+
 	TranslateKeyDisplay(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 

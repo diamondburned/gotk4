@@ -37,13 +37,12 @@ func init() {
 type InetSocketAddress interface {
 	SocketAddress
 
-	// Address:
 	Address() InetAddress
-	// Flowinfo:
+
 	Flowinfo() uint32
-	// Port:
+
 	Port() uint16
-	// ScopeID:
+
 	ScopeID() uint32
 }
 
@@ -66,7 +65,6 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 	return WrapInetSocketAddress(obj), nil
 }
 
-// NewInetSocketAddress:
 func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
@@ -84,7 +82,6 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 	return _inetSocketAddress
 }
 
-// NewInetSocketAddressFromString:
 func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out

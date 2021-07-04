@@ -62,17 +62,16 @@ func init() {
 type Fixed interface {
 	Widget
 
-	// ChildPosition:
 	ChildPosition(widget Widget) (x float64, y float64)
-	// ChildTransform:
+
 	ChildTransform(widget Widget) *gsk.Transform
-	// MoveFixed:
+
 	MoveFixed(widget Widget, x float64, y float64)
-	// PutFixed:
+
 	PutFixed(widget Widget, x float64, y float64)
-	// RemoveFixed:
+
 	RemoveFixed(widget Widget)
-	// SetChildTransformFixed:
+
 	SetChildTransformFixed(widget Widget, transform *gsk.Transform)
 }
 
@@ -95,7 +94,6 @@ func marshalFixed(p uintptr) (interface{}, error) {
 	return WrapFixed(obj), nil
 }
 
-// NewFixed:
 func NewFixed() Fixed {
 	var _cret *C.GtkWidget // in
 

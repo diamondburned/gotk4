@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -20,6 +21,43 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_entry_completion_get_type()), F: marshalEntryCompletion},
 	})
+}
+
+// EntryCompletionMatchFunc: a function which decides whether the row indicated
+// by @iter matches a given @key, and should be displayed as a possible
+// completion for @key.
+//
+// Note that @key is normalized and case-folded (see g_utf8_normalize() and
+// g_utf8_casefold()). If this is not appropriate, match functions have access
+// to the unmodified key via `gtk_editable_get_text (GTK_EDITABLE
+// (gtk_entry_completion_get_entry ()))`.
+type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter *TreeIter, ok bool)
+
+//export gotk4_EntryCompletionMatchFunc
+func _EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var completion EntryCompletion // out
+	var key string                 // out
+	var iter *TreeIter             // out
+
+	completion = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(EntryCompletion)
+	key = C.GoString(arg1)
+	iter = (*TreeIter)(unsafe.Pointer(arg2))
+
+	fn := v.(EntryCompletionMatchFunc)
+	ok := fn(completion, key, iter)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // EntryCompletion: `GtkEntryCompletion` is an auxiliary object to provide
@@ -62,47 +100,46 @@ type EntryCompletion interface {
 	Buildable
 	CellLayout
 
-	// CompleteEntryCompletion:
 	CompleteEntryCompletion()
-	// ComputePrefixEntryCompletion:
+
 	ComputePrefixEntryCompletion(key string) string
-	// CompletionPrefix:
+
 	CompletionPrefix() string
-	// Entry:
+
 	Entry() Widget
-	// InlineCompletion:
+
 	InlineCompletion() bool
-	// InlineSelection:
+
 	InlineSelection() bool
-	// MinimumKeyLength:
+
 	MinimumKeyLength() int
-	// Model:
+
 	Model() TreeModel
-	// PopupCompletion:
+
 	PopupCompletion() bool
-	// PopupSetWidth:
+
 	PopupSetWidth() bool
-	// PopupSingleMatch:
+
 	PopupSingleMatch() bool
-	// TextColumn:
+
 	TextColumn() int
-	// InsertPrefixEntryCompletion:
+
 	InsertPrefixEntryCompletion()
-	// SetInlineCompletionEntryCompletion:
+
 	SetInlineCompletionEntryCompletion(inlineCompletion bool)
-	// SetInlineSelectionEntryCompletion:
+
 	SetInlineSelectionEntryCompletion(inlineSelection bool)
-	// SetMinimumKeyLengthEntryCompletion:
+
 	SetMinimumKeyLengthEntryCompletion(length int)
-	// SetModelEntryCompletion:
+
 	SetModelEntryCompletion(model TreeModel)
-	// SetPopupCompletionEntryCompletion:
+
 	SetPopupCompletionEntryCompletion(popupCompletion bool)
-	// SetPopupSetWidthEntryCompletion:
+
 	SetPopupSetWidthEntryCompletion(popupSetWidth bool)
-	// SetPopupSingleMatchEntryCompletion:
+
 	SetPopupSingleMatchEntryCompletion(popupSingleMatch bool)
-	// SetTextColumnEntryCompletion:
+
 	SetTextColumnEntryCompletion(column int)
 }
 
@@ -125,7 +162,6 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 	return WrapEntryCompletion(obj), nil
 }
 
-// NewEntryCompletion:
 func NewEntryCompletion() EntryCompletion {
 	var _cret *C.GtkEntryCompletion // in
 
@@ -138,7 +174,6 @@ func NewEntryCompletion() EntryCompletion {
 	return _entryCompletion
 }
 
-// NewEntryCompletionWithArea:
 func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
 	var _cret *C.GtkEntryCompletion // in

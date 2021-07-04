@@ -181,3 +181,98 @@ func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 
 	return _lineNumber, _charNumber
 }
+
+// Pop: temporarily redirects markup data to a sub-parser.
+//
+// This function may only be called from the start_element handler of a
+// BuildableParser. It must be matched with a corresponding call to
+// gtk_buildable_parse_context_pop() in the matching end_element handler (except
+// in the case that the parser aborts due to an error).
+//
+// All tags, text and other data between the matching tags is redirected to the
+// subparser given by @parser. @user_data is used as the user_data for that
+// parser. @user_data is also passed to the error callback in the event that an
+// error occurs. This includes errors that occur in subparsers of the subparser.
+//
+// The end tag matching the start tag for which this call was made is handled by
+// the previous parser (which is given its own user_data) which is why
+// gtk_buildable_parse_context_pop() is provided to allow "one last access" to
+// the @user_data provided to this function. In the case of error, the
+// @user_data provided here is passed directly to the error callback of the
+// subparser and gtk_buildable_parse_context_pop() should not be called. In
+// either case, if @user_data was allocated then it ought to be freed from both
+// of these locations.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
+//
+// For an example of how to use this, see g_markup_parse_context_push() which
+// has the same kind of API.
+func (c *BuildableParseContext) Pop() interface{} {
+	var _arg0 *C.GtkBuildableParseContext // out
+	var _cret C.gpointer                  // in
+
+	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
+
+	_cret = C.gtk_buildable_parse_context_pop(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
+// Push: temporarily redirects markup data to a sub-parser.
+//
+// This function may only be called from the start_element handler of a
+// BuildableParser. It must be matched with a corresponding call to
+// gtk_buildable_parse_context_pop() in the matching end_element handler (except
+// in the case that the parser aborts due to an error).
+//
+// All tags, text and other data between the matching tags is redirected to the
+// subparser given by @parser. @user_data is used as the user_data for that
+// parser. @user_data is also passed to the error callback in the event that an
+// error occurs. This includes errors that occur in subparsers of the subparser.
+//
+// The end tag matching the start tag for which this call was made is handled by
+// the previous parser (which is given its own user_data) which is why
+// gtk_buildable_parse_context_pop() is provided to allow "one last access" to
+// the @user_data provided to this function. In the case of error, the
+// @user_data provided here is passed directly to the error callback of the
+// subparser and gtk_buildable_parse_context_pop() should not be called. In
+// either case, if @user_data was allocated then it ought to be freed from both
+// of these locations.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
+//
+// For an example of how to use this, see g_markup_parse_context_push() which
+// has the same kind of API.
+func (c *BuildableParseContext) Push(parser *BuildableParser, userData interface{}) {
+	var _arg0 *C.GtkBuildableParseContext // out
+	var _arg1 *C.GtkBuildableParser       // out
+	var _arg2 C.gpointer                  // out
+
+	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkBuildableParser)(unsafe.Pointer(parser.Native()))
+	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+
+	C.gtk_buildable_parse_context_push(_arg0, _arg1, _arg2)
+}
+
+// BuildableParser: a sub-parser for `GtkBuildable` implementations.
+type BuildableParser C.GtkBuildableParser
+
+// WrapBuildableParser wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBuildableParser(ptr unsafe.Pointer) *BuildableParser {
+	return (*BuildableParser)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (b *BuildableParser) Native() unsafe.Pointer {
+	return unsafe.Pointer(b)
+}

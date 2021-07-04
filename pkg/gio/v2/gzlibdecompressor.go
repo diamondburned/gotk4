@@ -37,7 +37,6 @@ func init() {
 type ZlibDecompressor interface {
 	Converter
 
-	// FileInfo:
 	FileInfo() FileInfo
 }
 
@@ -60,7 +59,6 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	return WrapZlibDecompressor(obj), nil
 }
 
-// NewZlibDecompressor:
 func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _cret *C.GZlibDecompressor    // in

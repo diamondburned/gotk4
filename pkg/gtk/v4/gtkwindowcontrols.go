@@ -67,15 +67,14 @@ func init() {
 type WindowControls interface {
 	Widget
 
-	// DecorationLayout:
 	DecorationLayout() string
-	// Empty:
+
 	Empty() bool
-	// Side:
+
 	Side() PackType
-	// SetDecorationLayoutWindowControls:
+
 	SetDecorationLayoutWindowControls(layout string)
-	// SetSideWindowControls:
+
 	SetSideWindowControls(side PackType)
 }
 
@@ -98,7 +97,6 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 	return WrapWindowControls(obj), nil
 }
 
-// NewWindowControls:
 func NewWindowControls(side PackType) WindowControls {
 	var _arg1 C.GtkPackType // out
 	var _cret *C.GtkWidget  // in

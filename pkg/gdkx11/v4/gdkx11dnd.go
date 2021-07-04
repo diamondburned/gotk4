@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11Drag:
 type X11Drag interface {
 	gdk.Drag
 }

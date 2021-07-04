@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -50,37 +51,36 @@ type MenuItem interface {
 	Actionable
 	Activatable
 
-	// ActivateMenuItem:
 	ActivateMenuItem()
-	// DeselectMenuItem:
+
 	DeselectMenuItem()
-	// AccelPath:
+
 	AccelPath() string
-	// Label:
+
 	Label() string
-	// ReserveIndicator:
+
 	ReserveIndicator() bool
-	// RightJustified:
+
 	RightJustified() bool
-	// Submenu:
+
 	Submenu() Widget
-	// UseUnderline:
+
 	UseUnderline() bool
-	// SelectMenuItem:
+
 	SelectMenuItem()
-	// SetAccelPathMenuItem:
+
 	SetAccelPathMenuItem(accelPath string)
-	// SetLabelMenuItem:
+
 	SetLabelMenuItem(label string)
-	// SetReserveIndicatorMenuItem:
+
 	SetReserveIndicatorMenuItem(reserve bool)
-	// SetRightJustifiedMenuItem:
+
 	SetRightJustifiedMenuItem(rightJustified bool)
-	// SetSubmenuMenuItem:
+
 	SetSubmenuMenuItem(submenu Menu)
-	// SetUseUnderlineMenuItem:
+
 	SetUseUnderlineMenuItem(setting bool)
-	// ToggleSizeAllocateMenuItem:
+
 	ToggleSizeAllocateMenuItem(allocation int)
 }
 
@@ -103,7 +103,6 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 	return WrapMenuItem(obj), nil
 }
 
-// NewMenuItem:
 func NewMenuItem() MenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -116,7 +115,6 @@ func NewMenuItem() MenuItem {
 	return _menuItem
 }
 
-// NewMenuItemWithLabel:
 func NewMenuItemWithLabel(label string) MenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -133,7 +131,6 @@ func NewMenuItemWithLabel(label string) MenuItem {
 	return _menuItem
 }
 
-// NewMenuItemWithMnemonic:
 func NewMenuItemWithMnemonic(label string) MenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -356,6 +353,18 @@ func (b menuItem) ConstructChild(builder Builder, name string) gextras.Objector 
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b menuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b menuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b menuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b menuItem) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -402,6 +411,18 @@ func (b menuItem) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b menuItem) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b menuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b menuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b menuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b menuItem) InternalChild(builder Builder, childname string) gextras.Objector {

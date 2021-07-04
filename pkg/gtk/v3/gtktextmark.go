@@ -54,17 +54,16 @@ func init() {
 type TextMark interface {
 	gextras.Objector
 
-	// Buffer:
 	Buffer() TextBuffer
-	// Deleted:
+
 	Deleted() bool
-	// LeftGravity:
+
 	LeftGravity() bool
-	// Name:
+
 	Name() string
-	// Visible:
+
 	Visible() bool
-	// SetVisibleTextMark:
+
 	SetVisibleTextMark(setting bool)
 }
 
@@ -87,7 +86,6 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 	return WrapTextMark(obj), nil
 }
 
-// NewTextMark:
 func NewTextMark(name string, leftGravity bool) TextMark {
 	var _arg1 *C.gchar       // out
 	var _arg2 C.gboolean     // out

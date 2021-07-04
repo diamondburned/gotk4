@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,7 +56,6 @@ func marshalVScale(p uintptr) (interface{}, error) {
 	return WrapVScale(obj), nil
 }
 
-// NewVScale:
 func NewVScale(adjustment Adjustment) VScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -70,7 +71,6 @@ func NewVScale(adjustment Adjustment) VScale {
 	return _vScale
 }
 
-// NewVScaleWithRange:
 func NewVScaleWithRange(min float64, max float64, step float64) VScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
@@ -96,6 +96,18 @@ func (b vScale) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b vScale) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b vScale) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b vScale) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b vScale) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b vScale) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -44,6 +45,34 @@ const (
 
 func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 	return ShortcutActionFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ShortcutFunc: prototype for shortcuts based on user callbacks.
+type ShortcutFunc func(widget Widget, args *glib.Variant, ok bool)
+
+//export gotk4_ShortcutFunc
+func _ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var widget Widget      // out
+	var args *glib.Variant // out
+
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
+	args = (*glib.Variant)(unsafe.Pointer(arg1))
+
+	fn := v.(ShortcutFunc)
+	ok := fn(widget, args)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ActivateAction: a `GtkShortcutAction` that calls gtk_widget_activate().
@@ -123,7 +152,6 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 type NamedAction interface {
 	ShortcutAction
 
-	// ActionName:
 	ActionName() string
 }
 
@@ -146,7 +174,6 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 	return WrapNamedAction(obj), nil
 }
 
-// NewNamedAction:
 func NewNamedAction(name string) NamedAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -232,9 +259,8 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 type ShortcutAction interface {
 	gextras.Objector
 
-	// ActivateShortcutAction:
 	ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
-	// String:
+
 	String() string
 }
 
@@ -257,7 +283,6 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 	return WrapShortcutAction(obj), nil
 }
 
-// NewShortcutActionParseString:
 func NewShortcutActionParseString(_string string) ShortcutAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -320,7 +345,6 @@ func (s shortcutAction) String() string {
 type SignalAction interface {
 	ShortcutAction
 
-	// SignalName:
 	SignalName() string
 }
 
@@ -343,7 +367,6 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 	return WrapSignalAction(obj), nil
 }
 
-// NewSignalAction:
 func NewSignalAction(signalName string) SignalAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in

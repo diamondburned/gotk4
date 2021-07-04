@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/atk"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,10 +26,10 @@ func init() {
 		{T: externglib.Type(C.gtk_resize_mode_get_type()), F: marshalResizeMode},
 		{T: externglib.Type(C.gtk_scroll_step_get_type()), F: marshalScrollStep},
 		{T: externglib.Type(C.gtk_debug_flag_get_type()), F: marshalDebugFlag},
+		{T: externglib.Type(C.gtk_entry_icon_accessible_get_type()), F: marshalEntryIconAccessible},
 	})
 }
 
-// MovementStep:
 type MovementStep int
 
 const (
@@ -57,7 +59,6 @@ func marshalMovementStep(p uintptr) (interface{}, error) {
 	return MovementStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// NotebookTab:
 type NotebookTab int
 
 const (
@@ -69,7 +70,6 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 	return NotebookTab(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ResizeMode:
 type ResizeMode int
 
 const (
@@ -85,7 +85,6 @@ func marshalResizeMode(p uintptr) (interface{}, error) {
 	return ResizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ScrollStep:
 type ScrollStep int
 
 const (
@@ -107,7 +106,6 @@ func marshalScrollStep(p uintptr) (interface{}, error) {
 	return ScrollStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DebugFlag:
 type DebugFlag int
 
 const (
@@ -137,4 +135,56 @@ const (
 
 func marshalDebugFlag(p uintptr) (interface{}, error) {
 	return DebugFlag(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+type EntryIconAccessible interface {
+	atk.Object
+	atk.Action
+}
+
+// entryIconAccessible implements the EntryIconAccessible class.
+type entryIconAccessible struct {
+	atk.Object
+}
+
+// WrapEntryIconAccessible wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEntryIconAccessible(obj *externglib.Object) EntryIconAccessible {
+	return entryIconAccessible{
+		Object: atk.WrapObject(obj),
+	}
+}
+
+func marshalEntryIconAccessible(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapEntryIconAccessible(obj), nil
+}
+
+func (a entryIconAccessible) DoAction(i int) bool {
+	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
+}
+
+func (a entryIconAccessible) Description(i int) string {
+	return atk.WrapAction(gextras.InternObject(a)).Description(i)
+}
+
+func (a entryIconAccessible) Keybinding(i int) string {
+	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
+}
+
+func (a entryIconAccessible) LocalizedName(i int) string {
+	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
+}
+
+func (a entryIconAccessible) NActions() int {
+	return atk.WrapAction(gextras.InternObject(a)).NActions()
+}
+
+func (a entryIconAccessible) Name(i int) string {
+	return atk.WrapAction(gextras.InternObject(a)).Name(i)
+}
+
+func (a entryIconAccessible) SetDescription(i int, desc string) bool {
+	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
 }

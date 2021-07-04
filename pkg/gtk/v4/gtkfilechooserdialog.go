@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -276,10 +274,6 @@ func (c fileChooserDialog) AddFilter(filter FileFilter) {
 	WrapFileChooser(gextras.InternObject(c)).AddFilter(filter)
 }
 
-func (c fileChooserDialog) AddShortcutFolder(folder gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolder(folder)
-}
-
 func (c fileChooserDialog) Action() FileChooserAction {
 	return WrapFileChooser(gextras.InternObject(c)).Action()
 }
@@ -292,36 +286,16 @@ func (c fileChooserDialog) CreateFolders() bool {
 	return WrapFileChooser(gextras.InternObject(c)).CreateFolders()
 }
 
-func (c fileChooserDialog) CurrentFolder() gio.File {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolder()
-}
-
 func (c fileChooserDialog) CurrentName() string {
 	return WrapFileChooser(gextras.InternObject(c)).CurrentName()
-}
-
-func (c fileChooserDialog) File() gio.File {
-	return WrapFileChooser(gextras.InternObject(c)).File()
-}
-
-func (c fileChooserDialog) Files() gio.ListModel {
-	return WrapFileChooser(gextras.InternObject(c)).Files()
 }
 
 func (c fileChooserDialog) Filter() FileFilter {
 	return WrapFileChooser(gextras.InternObject(c)).Filter()
 }
 
-func (c fileChooserDialog) Filters() gio.ListModel {
-	return WrapFileChooser(gextras.InternObject(c)).Filters()
-}
-
 func (c fileChooserDialog) SelectMultiple() bool {
 	return WrapFileChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c fileChooserDialog) ShortcutFolders() gio.ListModel {
-	return WrapFileChooser(gextras.InternObject(c)).ShortcutFolders()
 }
 
 func (c fileChooserDialog) RemoveChoice(id string) {
@@ -330,10 +304,6 @@ func (c fileChooserDialog) RemoveChoice(id string) {
 
 func (c fileChooserDialog) RemoveFilter(filter FileFilter) {
 	WrapFileChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c fileChooserDialog) RemoveShortcutFolder(folder gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolder(folder)
 }
 
 func (c fileChooserDialog) SetAction(action FileChooserAction) {
@@ -348,16 +318,8 @@ func (c fileChooserDialog) SetCreateFolders(createFolders bool) {
 	WrapFileChooser(gextras.InternObject(c)).SetCreateFolders(createFolders)
 }
 
-func (c fileChooserDialog) SetCurrentFolder(file gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolder(file)
-}
-
 func (c fileChooserDialog) SetCurrentName(name string) {
 	WrapFileChooser(gextras.InternObject(c)).SetCurrentName(name)
-}
-
-func (c fileChooserDialog) SetFile(file gio.File) error {
-	return WrapFileChooser(gextras.InternObject(c)).SetFile(file)
 }
 
 func (c fileChooserDialog) SetFilter(filter FileFilter) {

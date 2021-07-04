@@ -67,7 +67,6 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 	return WrapThreadedSocketService(obj), nil
 }
 
-// NewThreadedSocketService:
 func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in

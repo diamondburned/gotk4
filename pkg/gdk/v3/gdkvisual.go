@@ -104,23 +104,22 @@ func QueryVisualTypes() []VisualType {
 type Visual interface {
 	gextras.Objector
 
-	// BitsPerRGB:
 	BitsPerRGB() int
-	// BluePixelDetails:
+
 	BluePixelDetails() (mask uint32, shift int, precision int)
-	// ByteOrder:
+
 	ByteOrder() ByteOrder
-	// ColormapSize:
+
 	ColormapSize() int
-	// Depth:
+
 	Depth() int
-	// GreenPixelDetails:
+
 	GreenPixelDetails() (mask uint32, shift int, precision int)
-	// RedPixelDetails:
+
 	RedPixelDetails() (mask uint32, shift int, precision int)
-	// Screen:
+
 	Screen() Screen
-	// VisualType:
+
 	VisualType() VisualType
 }
 

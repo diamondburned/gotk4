@@ -85,7 +85,6 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 	return WrapSignalListItemFactory(obj), nil
 }
 
-// NewSignalListItemFactory:
 func NewSignalListItemFactory() SignalListItemFactory {
 	var _cret *C.GtkListItemFactory // in
 

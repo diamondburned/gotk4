@@ -31,9 +31,8 @@ func init() {
 type GestureDrag interface {
 	GestureSingle
 
-	// Offset:
 	Offset() (x float64, y float64, ok bool)
-	// StartPoint:
+
 	StartPoint() (x float64, y float64, ok bool)
 }
 
@@ -56,7 +55,6 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 	return WrapGestureDrag(obj), nil
 }
 
-// NewGestureDrag:
 func NewGestureDrag(widget Widget) GestureDrag {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

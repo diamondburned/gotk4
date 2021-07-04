@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -41,11 +40,10 @@ type AppChooserDialog interface {
 	Dialog
 	AppChooser
 
-	// Heading:
 	Heading() string
-	// Widget:
+
 	Widget() Widget
-	// SetHeadingAppChooserDialog:
+
 	SetHeadingAppChooserDialog(heading string)
 }
 
@@ -68,27 +66,6 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return WrapAppChooserDialog(obj), nil
 }
 
-// NewAppChooserDialog:
-func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppChooserDialog {
-	var _arg1 *C.GtkWindow     // out
-	var _arg2 C.GtkDialogFlags // out
-	var _arg3 *C.GFile         // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = C.GtkDialogFlags(flags)
-	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
-
-	var _appChooserDialog AppChooserDialog // out
-
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AppChooserDialog)
-
-	return _appChooserDialog
-}
-
-// NewAppChooserDialogForContentType:
 func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, contentType string) AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
@@ -212,10 +189,6 @@ func (s appChooserDialog) UpdateStateValue(states []AccessibleState, values []ex
 
 func (b appChooserDialog) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s appChooserDialog) AppInfo() gio.AppInfo {
-	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
 }
 
 func (s appChooserDialog) ContentType() string {

@@ -119,71 +119,66 @@ func marshalLicense(p uintptr) (interface{}, error) {
 type AboutDialog interface {
 	Window
 
-	// AddCreditSectionAboutDialog:
 	AddCreditSectionAboutDialog(sectionName string, people []string)
-	// Artists:
+
 	Artists() []string
-	// Authors:
+
 	Authors() []string
-	// Comments:
+
 	Comments() string
-	// Copyright:
+
 	Copyright() string
-	// Documenters:
+
 	Documenters() []string
-	// License:
+
 	License() string
-	// LicenseType:
+
 	LicenseType() License
-	// Logo:
-	Logo() gdk.Paintable
-	// LogoIconName:
+
 	LogoIconName() string
-	// ProgramName:
+
 	ProgramName() string
-	// SystemInformation:
+
 	SystemInformation() string
-	// TranslatorCredits:
+
 	TranslatorCredits() string
-	// Version:
+
 	Version() string
-	// Website:
+
 	Website() string
-	// WebsiteLabel:
+
 	WebsiteLabel() string
-	// WrapLicense:
+
 	WrapLicense() bool
-	// SetArtistsAboutDialog:
+
 	SetArtistsAboutDialog(artists []string)
-	// SetAuthorsAboutDialog:
+
 	SetAuthorsAboutDialog(authors []string)
-	// SetCommentsAboutDialog:
+
 	SetCommentsAboutDialog(comments string)
-	// SetCopyrightAboutDialog:
+
 	SetCopyrightAboutDialog(copyright string)
-	// SetDocumentersAboutDialog:
+
 	SetDocumentersAboutDialog(documenters []string)
-	// SetLicenseAboutDialog:
+
 	SetLicenseAboutDialog(license string)
-	// SetLicenseTypeAboutDialog:
+
 	SetLicenseTypeAboutDialog(licenseType License)
-	// SetLogoAboutDialog:
-	SetLogoAboutDialog(logo gdk.Paintable)
-	// SetLogoIconNameAboutDialog:
+
 	SetLogoIconNameAboutDialog(iconName string)
-	// SetProgramNameAboutDialog:
+
 	SetProgramNameAboutDialog(name string)
-	// SetSystemInformationAboutDialog:
+
 	SetSystemInformationAboutDialog(systemInformation string)
-	// SetTranslatorCreditsAboutDialog:
+
 	SetTranslatorCreditsAboutDialog(translatorCredits string)
-	// SetVersionAboutDialog:
+
 	SetVersionAboutDialog(version string)
-	// SetWebsiteAboutDialog:
+
 	SetWebsiteAboutDialog(website string)
-	// SetWebsiteLabelAboutDialog:
+
 	SetWebsiteLabelAboutDialog(websiteLabel string)
-	// SetWrapLicenseAboutDialog:
+
 	SetWrapLicenseAboutDialog(wrapLicense bool)
 }
 
@@ -206,7 +201,6 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return WrapAboutDialog(obj), nil
 }
 
-// NewAboutDialog:
 func NewAboutDialog() AboutDialog {
 	var _cret *C.GtkWidget // in
 
@@ -379,21 +373,6 @@ func (a aboutDialog) LicenseType() License {
 	_license = License(_cret)
 
 	return _license
-}
-
-func (a aboutDialog) Logo() gdk.Paintable {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.GdkPaintable   // in
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	_cret = C.gtk_about_dialog_get_logo(_arg0)
-
-	var _paintable gdk.Paintable // out
-
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Paintable)
-
-	return _paintable
 }
 
 func (a aboutDialog) LogoIconName() string {
@@ -613,16 +592,6 @@ func (a aboutDialog) SetLicenseTypeAboutDialog(licenseType License) {
 	_arg1 = C.GtkLicense(licenseType)
 
 	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
-}
-
-func (a aboutDialog) SetLogoAboutDialog(logo gdk.Paintable) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.GdkPaintable   // out
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(logo.Native()))
-
-	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }
 
 func (a aboutDialog) SetLogoIconNameAboutDialog(iconName string) {

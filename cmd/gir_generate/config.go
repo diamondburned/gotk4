@@ -13,6 +13,7 @@ var packages = []Package{
 	}},
 	{"gdk-pixbuf-2.0", nil},
 	{"graphene-1.0", nil},
+	{"atk", nil},
 	{"pango", []string{
 		"Pango-1",
 		"PangoCairo-1",

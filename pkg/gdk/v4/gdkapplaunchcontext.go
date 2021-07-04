@@ -47,15 +47,12 @@ func init() {
 type AppLaunchContext interface {
 	gio.AppLaunchContext
 
-	// Display:
 	Display() Display
-	// SetDesktopAppLaunchContext:
+
 	SetDesktopAppLaunchContext(desktop int)
-	// SetIconAppLaunchContext:
-	SetIconAppLaunchContext(icon gio.Icon)
-	// SetIconNameAppLaunchContext:
+
 	SetIconNameAppLaunchContext(iconName string)
-	// SetTimestampAppLaunchContext:
+
 	SetTimestampAppLaunchContext(timestamp uint32)
 }
 
@@ -101,16 +98,6 @@ func (c appLaunchContext) SetDesktopAppLaunchContext(desktop int) {
 	_arg1 = C.int(desktop)
 
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
-}
-
-func (c appLaunchContext) SetIconAppLaunchContext(icon gio.Icon) {
-	var _arg0 *C.GdkAppLaunchContext // out
-	var _arg1 *C.GIcon               // out
-
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }
 
 func (c appLaunchContext) SetIconNameAppLaunchContext(iconName string) {

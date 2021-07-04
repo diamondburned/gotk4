@@ -89,7 +89,6 @@ func TypeAddClassPrivate(classType externglib.Type, privateSize uint) {
 	C.g_type_add_class_private(_arg1, _arg2)
 }
 
-// TypeAddInstancePrivate:
 func TypeAddInstancePrivate(classType externglib.Type, privateSize uint) int {
 	var _arg1 C.GType // out
 	var _arg2 C.gsize // out
@@ -156,7 +155,6 @@ func TypeCheckInstance(instance *TypeInstance) bool {
 	return _ok
 }
 
-// TypeCheckInstanceIsA:
 func TypeCheckInstanceIsA(instance *TypeInstance, ifaceType externglib.Type) bool {
 	var _arg1 *C.GTypeInstance // out
 	var _arg2 C.GType          // out
@@ -176,7 +174,6 @@ func TypeCheckInstanceIsA(instance *TypeInstance, ifaceType externglib.Type) boo
 	return _ok
 }
 
-// TypeCheckInstanceIsFundamentallyA:
 func TypeCheckInstanceIsFundamentallyA(instance *TypeInstance, fundamentalType externglib.Type) bool {
 	var _arg1 *C.GTypeInstance // out
 	var _arg2 C.GType          // out
@@ -196,7 +193,6 @@ func TypeCheckInstanceIsFundamentallyA(instance *TypeInstance, fundamentalType e
 	return _ok
 }
 
-// TypeCheckIsValueType:
 func TypeCheckIsValueType(typ externglib.Type) bool {
 	var _arg1 C.GType    // out
 	var _cret C.gboolean // in
@@ -214,7 +210,6 @@ func TypeCheckIsValueType(typ externglib.Type) bool {
 	return _ok
 }
 
-// TypeCheckValue:
 func TypeCheckValue(value externglib.Value) bool {
 	var _arg1 *C.GValue  // out
 	var _cret C.gboolean // in
@@ -232,7 +227,6 @@ func TypeCheckValue(value externglib.Value) bool {
 	return _ok
 }
 
-// TypeCheckValueHolds:
 func TypeCheckValueHolds(value externglib.Value, typ externglib.Type) bool {
 	var _arg1 *C.GValue  // out
 	var _arg2 C.GType    // out
@@ -250,43 +244,6 @@ func TypeCheckValueHolds(value externglib.Value, typ externglib.Type) bool {
 	}
 
 	return _ok
-}
-
-// TypeDefaultInterfaceRef increments the reference count for the interface type
-// @g_type, and returns the default interface vtable for the type.
-//
-// If the type is not currently in use, then the default vtable for the type
-// will be created and initialized by calling the base interface init and
-// default vtable init functions for the type (the @base_init and @class_init
-// members of Info). Calling g_type_default_interface_ref() is useful when you
-// want to make sure that signals and properties for an interface have been
-// installed.
-func TypeDefaultInterfaceRef(gType externglib.Type) TypeInterface {
-	var _arg1 C.GType    // out
-	var _cret C.gpointer // in
-
-	_arg1 = (C.GType)(gType)
-
-	_cret = C.g_type_default_interface_ref(_arg1)
-
-	var _typeInterface TypeInterface // out
-
-	_typeInterface = (TypeInterface)(unsafe.Pointer(_cret))
-
-	return _typeInterface
-}
-
-// TypeDefaultInterfaceUnref decrements the reference count for the type
-// corresponding to the interface default vtable @g_iface. If the type is
-// dynamic, then when no one is using the interface and all references have been
-// released, the finalize function for the interface's default vtable (the
-// @class_finalize member of Info) will be called.
-func TypeDefaultInterfaceUnref(gIface TypeInterface) {
-	var _arg1 C.gpointer // out
-
-	_arg1 = (C.gpointer)(unsafe.Pointer(gIface.Native()))
-
-	C.g_type_default_interface_unref(_arg1)
 }
 
 // TypeDepth returns the length of the ancestry of the passed in type. This
@@ -508,23 +465,6 @@ func TypeName(typ externglib.Type) string {
 	return _utf8
 }
 
-// TypeNameFromClass:
-func TypeNameFromClass(gClass *TypeClass) string {
-	var _arg1 *C.GTypeClass // out
-	var _cret *C.gchar      // in
-
-	_arg1 = (*C.GTypeClass)(unsafe.Pointer(gClass.Native()))
-
-	_cret = C.g_type_name_from_class(_arg1)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-
-	return _utf8
-}
-
-// TypeNameFromInstance:
 func TypeNameFromInstance(instance *TypeInstance) string {
 	var _arg1 *C.GTypeInstance // out
 	var _cret *C.gchar         // in
@@ -695,7 +635,6 @@ func TypeRegisterStatic(parentType externglib.Type, typeName string, info *TypeI
 	return _gType
 }
 
-// TypeTestFlags:
 func TypeTestFlags(typ externglib.Type, flags uint) bool {
 	var _arg1 C.GType    // out
 	var _arg2 C.guint    // out
@@ -781,6 +720,23 @@ func (t *TypeInstance) Native() unsafe.Pointer {
 	return unsafe.Pointer(t)
 }
 
+func (i *TypeInstance) Private(privateType externglib.Type) interface{} {
+	var _arg0 *C.GTypeInstance // out
+	var _arg1 C.GType          // out
+	var _cret C.gpointer       // in
+
+	_arg0 = (*C.GTypeInstance)(unsafe.Pointer(i.Native()))
+	_arg1 = (C.GType)(privateType)
+
+	_cret = C.g_type_instance_get_private(_arg0, _arg1)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
 // TypeQuery: a structure holding information for a specific type. It is filled
 // in by the g_type_query() function.
 type TypeQuery C.GTypeQuery
@@ -793,5 +749,20 @@ func WrapTypeQuery(ptr unsafe.Pointer) *TypeQuery {
 
 // Native returns the underlying C source pointer.
 func (t *TypeQuery) Native() unsafe.Pointer {
+	return unsafe.Pointer(t)
+}
+
+// TypeValueTable: the ValueTable provides the functions required by the #GValue
+// implementation, to serve as a container for values of a type.
+type TypeValueTable C.GTypeValueTable
+
+// WrapTypeValueTable wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTypeValueTable(ptr unsafe.Pointer) *TypeValueTable {
+	return (*TypeValueTable)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (t *TypeValueTable) Native() unsafe.Pointer {
 	return unsafe.Pointer(t)
 }

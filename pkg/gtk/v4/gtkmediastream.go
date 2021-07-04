@@ -38,65 +38,64 @@ func init() {
 // [method@Gtk.MediaStream.seek_failed], [method@Gtk.MediaStream.gerror],
 // [method@Gtk.MediaStream.error], [method@Gtk.MediaStream.error_valist].
 type MediaStream interface {
-	gdk.Paintable
+	gextras.Objector
 
-	// EndedMediaStream:
 	EndedMediaStream()
-	// GerrorMediaStream:
+
 	GerrorMediaStream(err error)
-	// Duration:
+
 	Duration() int64
-	// Ended:
+
 	Ended() bool
-	// Error:
+
 	Error() error
-	// Loop:
+
 	Loop() bool
-	// Muted:
+
 	Muted() bool
-	// Playing:
+
 	Playing() bool
-	// Timestamp:
+
 	Timestamp() int64
-	// Volume:
+
 	Volume() float64
-	// HasAudioMediaStream:
+
 	HasAudioMediaStream() bool
-	// HasVideoMediaStream:
+
 	HasVideoMediaStream() bool
-	// IsPreparedMediaStream:
+
 	IsPreparedMediaStream() bool
-	// IsSeekableMediaStream:
+
 	IsSeekableMediaStream() bool
-	// IsSeekingMediaStream:
+
 	IsSeekingMediaStream() bool
-	// PauseMediaStream:
+
 	PauseMediaStream()
-	// PlayMediaStream:
+
 	PlayMediaStream()
-	// PreparedMediaStream:
+
 	PreparedMediaStream(hasAudio bool, hasVideo bool, seekable bool, duration int64)
-	// RealizeMediaStream:
+
 	RealizeMediaStream(surface gdk.Surface)
-	// SeekMediaStream:
+
 	SeekMediaStream(timestamp int64)
-	// SeekFailedMediaStream:
+
 	SeekFailedMediaStream()
-	// SeekSuccessMediaStream:
+
 	SeekSuccessMediaStream()
-	// SetLoopMediaStream:
+
 	SetLoopMediaStream(loop bool)
-	// SetMutedMediaStream:
+
 	SetMutedMediaStream(muted bool)
-	// SetPlayingMediaStream:
+
 	SetPlayingMediaStream(playing bool)
-	// SetVolumeMediaStream:
+
 	SetVolumeMediaStream(volume float64)
-	// UnpreparedMediaStream:
+
 	UnpreparedMediaStream()
-	// UnrealizeMediaStream:
+
 	UnrealizeMediaStream(surface gdk.Surface)
-	// UpdateMediaStream:
+
 	UpdateMediaStream(timestamp int64)
 }
 
@@ -496,40 +495,4 @@ func (s mediaStream) UpdateMediaStream(timestamp int64) {
 	_arg1 = C.gint64(timestamp)
 
 	C.gtk_media_stream_update(_arg0, _arg1)
-}
-
-func (p mediaStream) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
-	return gdk.WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
-}
-
-func (p mediaStream) CurrentImage() gdk.Paintable {
-	return gdk.WrapPaintable(gextras.InternObject(p)).CurrentImage()
-}
-
-func (p mediaStream) Flags() gdk.PaintableFlags {
-	return gdk.WrapPaintable(gextras.InternObject(p)).Flags()
-}
-
-func (p mediaStream) IntrinsicAspectRatio() float64 {
-	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
-}
-
-func (p mediaStream) IntrinsicHeight() int {
-	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
-}
-
-func (p mediaStream) IntrinsicWidth() int {
-	return gdk.WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
-}
-
-func (p mediaStream) InvalidateContents() {
-	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateContents()
-}
-
-func (p mediaStream) InvalidateSize() {
-	gdk.WrapPaintable(gextras.InternObject(p)).InvalidateSize()
-}
-
-func (p mediaStream) Snapshot(snapshot gdk.Snapshot, width float64, height float64) {
-	gdk.WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
 }

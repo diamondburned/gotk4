@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,13 +36,12 @@ func init() {
 type MenuBar interface {
 	MenuShell
 
-	// ChildPackDirection:
 	ChildPackDirection() PackDirection
-	// PackDirection:
+
 	PackDirection() PackDirection
-	// SetChildPackDirectionMenuBar:
+
 	SetChildPackDirectionMenuBar(childPackDir PackDirection)
-	// SetPackDirectionMenuBar:
+
 	SetPackDirectionMenuBar(packDir PackDirection)
 }
 
@@ -63,7 +64,6 @@ func marshalMenuBar(p uintptr) (interface{}, error) {
 	return WrapMenuBar(obj), nil
 }
 
-// NewMenuBar:
 func NewMenuBar() MenuBar {
 	var _cret *C.GtkWidget // in
 
@@ -76,7 +76,6 @@ func NewMenuBar() MenuBar {
 	return _menuBar
 }
 
-// NewMenuBarFromModel:
 func NewMenuBarFromModel(model gio.MenuModel) MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -148,6 +147,18 @@ func (b menuBar) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b menuBar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b menuBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b menuBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b menuBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b menuBar) InternalChild(builder Builder, childname string) gextras.Objector {

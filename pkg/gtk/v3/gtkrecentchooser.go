@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -61,6 +62,31 @@ const (
 
 func marshalRecentSortType(p uintptr) (interface{}, error) {
 	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+type RecentSortFunc func(a *RecentInfo, b *RecentInfo, gint int)
+
+//export gotk4_RecentSortFunc
+func _RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) C.gint {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var a *RecentInfo // out
+	var b *RecentInfo // out
+
+	a = (*RecentInfo)(unsafe.Pointer(arg0))
+	b = (*RecentInfo)(unsafe.Pointer(arg1))
+
+	fn := v.(RecentSortFunc)
+	gint := fn(a, b)
+
+	var cret C.gint // out
+
+	cret = C.gint(gint)
+
+	return cret
 }
 
 // RecentChooser is an interface that can be implemented by widgets displaying

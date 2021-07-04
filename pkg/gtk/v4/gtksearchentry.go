@@ -68,9 +68,8 @@ func init() {
 type SearchEntry interface {
 	Editable
 
-	// KeyCaptureWidget:
 	KeyCaptureWidget() Widget
-	// SetKeyCaptureWidgetSearchEntry:
+
 	SetKeyCaptureWidgetSearchEntry(widget Widget)
 }
 
@@ -93,7 +92,6 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 	return WrapSearchEntry(obj), nil
 }
 
-// NewSearchEntry:
 func NewSearchEntry() SearchEntry {
 	var _cret *C.GtkWidget // in
 

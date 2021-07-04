@@ -5,6 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -38,10 +40,11 @@ func init() {
 type SocketAddress interface {
 	SocketConnectable
 
-	// Family:
 	Family() SocketFamily
-	// NativeSize:
+
 	NativeSize() int
+
+	ToNativeSocketAddress(dest interface{}, destlen uint) error
 }
 
 // socketAddress implements the SocketAddress class.
@@ -61,6 +64,23 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSocketAddress(obj), nil
+}
+
+func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
+	var _cret *C.GSocketAddress // in
+
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(native)))
+	_arg2 = C.gsize(len)
+
+	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
+
+	var _socketAddress SocketAddress // out
+
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
+
+	return _socketAddress
 }
 
 func (a socketAddress) Family() SocketFamily {
@@ -91,6 +111,25 @@ func (a socketAddress) NativeSize() int {
 	_gssize = int(_cret)
 
 	return _gssize
+}
+
+func (a socketAddress) ToNativeSocketAddress(dest interface{}, destlen uint) error {
+	var _arg0 *C.GSocketAddress // out
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
+	var _cerr *C.GError         // in
+
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(dest)))
+	_arg2 = C.gsize(destlen)
+
+	C.g_socket_address_to_native(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 func (c socketAddress) Enumerate() SocketAddressEnumerator {

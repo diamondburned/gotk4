@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,27 +70,26 @@ type Paned interface {
 	Container
 	Orientable
 
-	// Add1Paned:
 	Add1Paned(child Widget)
-	// Add2Paned:
+
 	Add2Paned(child Widget)
-	// Child1:
+
 	Child1() Widget
-	// Child2:
+
 	Child2() Widget
-	// HandleWindow:
+
 	HandleWindow() gdk.Window
-	// Position:
+
 	Position() int
-	// WideHandle:
+
 	WideHandle() bool
-	// Pack1Paned:
+
 	Pack1Paned(child Widget, resize bool, shrink bool)
-	// Pack2Paned:
+
 	Pack2Paned(child Widget, resize bool, shrink bool)
-	// SetPositionPaned:
+
 	SetPositionPaned(position int)
-	// SetWideHandlePaned:
+
 	SetWideHandlePaned(wide bool)
 }
 
@@ -111,7 +112,6 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return WrapPaned(obj), nil
 }
 
-// NewPaned:
 func NewPaned(orientation Orientation) Paned {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
@@ -288,6 +288,18 @@ func (b paned) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b paned) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b paned) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b paned) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b paned) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b paned) InternalChild(builder Builder, childname string) gextras.Objector {

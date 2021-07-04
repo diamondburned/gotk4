@@ -56,11 +56,10 @@ func init() {
 type SocketService interface {
 	SocketListener
 
-	// IsActiveSocketService:
 	IsActiveSocketService() bool
-	// StartSocketService:
+
 	StartSocketService()
-	// StopSocketService:
+
 	StopSocketService()
 }
 
@@ -83,7 +82,6 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 	return WrapSocketService(obj), nil
 }
 
-// NewSocketService:
 func NewSocketService() SocketService {
 	var _cret *C.GSocketService // in
 

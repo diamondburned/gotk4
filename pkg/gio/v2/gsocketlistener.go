@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -48,25 +51,28 @@ func init() {
 type SocketListener interface {
 	gextras.Objector
 
-	// AcceptSocketListener:
 	AcceptSocketListener(cancellable Cancellable) (gextras.Objector, SocketConnection, error)
-	// AcceptFinishSocketListener:
+
+	AcceptAsyncSocketListener(cancellable Cancellable, callback AsyncReadyCallback)
+
 	AcceptFinishSocketListener(result AsyncResult) (gextras.Objector, SocketConnection, error)
-	// AcceptSocketSocketListener:
+
 	AcceptSocketSocketListener(cancellable Cancellable) (gextras.Objector, Socket, error)
-	// AcceptSocketFinishSocketListener:
+
+	AcceptSocketAsyncSocketListener(cancellable Cancellable, callback AsyncReadyCallback)
+
 	AcceptSocketFinishSocketListener(result AsyncResult) (gextras.Objector, Socket, error)
-	// AddAddressSocketListener:
+
 	AddAddressSocketListener(address SocketAddress, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (SocketAddress, error)
-	// AddAnyInetPortSocketListener:
+
 	AddAnyInetPortSocketListener(sourceObject gextras.Objector) (uint16, error)
-	// AddInetPortSocketListener:
+
 	AddInetPortSocketListener(port uint16, sourceObject gextras.Objector) error
-	// AddSocketSocketListener:
+
 	AddSocketSocketListener(socket Socket, sourceObject gextras.Objector) error
-	// CloseSocketListener:
+
 	CloseSocketListener()
-	// SetBacklogSocketListener:
+
 	SetBacklogSocketListener(listenBacklog int)
 }
 
@@ -89,7 +95,6 @@ func marshalSocketListener(p uintptr) (interface{}, error) {
 	return WrapSocketListener(obj), nil
 }
 
-// NewSocketListener:
 func NewSocketListener() SocketListener {
 	var _cret *C.GSocketListener // in
 
@@ -123,6 +128,20 @@ func (l socketListener) AcceptSocketListener(cancellable Cancellable) (gextras.O
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socketConnection, _goerr
+}
+
+func (l socketListener) AcceptAsyncSocketListener(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketListener    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(l.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_socket_listener_accept_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (l socketListener) AcceptFinishSocketListener(result AsyncResult) (gextras.Objector, SocketConnection, error) {
@@ -169,6 +188,20 @@ func (l socketListener) AcceptSocketSocketListener(cancellable Cancellable) (gex
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socket, _goerr
+}
+
+func (l socketListener) AcceptSocketAsyncSocketListener(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketListener    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(l.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_socket_listener_accept_socket_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (l socketListener) AcceptSocketFinishSocketListener(result AsyncResult) (gextras.Objector, Socket, error) {

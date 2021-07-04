@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -56,7 +57,6 @@ func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 	return WrapSeparatorMenuItem(obj), nil
 }
 
-// NewSeparatorMenuItem:
 func NewSeparatorMenuItem() SeparatorMenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -75,6 +75,18 @@ func (b separatorMenuItem) AddChild(builder Builder, child gextras.Objector, typ
 
 func (b separatorMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b separatorMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b separatorMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b separatorMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b separatorMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
@@ -123,6 +135,18 @@ func (b separatorMenuItem) AddChild(builder Builder, child gextras.Objector, typ
 
 func (b separatorMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b separatorMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b separatorMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b separatorMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b separatorMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {

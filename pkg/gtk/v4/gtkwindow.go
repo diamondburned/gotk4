@@ -75,113 +75,112 @@ type Window interface {
 	Root
 	ShortcutManager
 
-	// CloseWindow:
 	CloseWindow()
-	// DestroyWindow:
+
 	DestroyWindow()
-	// FullscreenWindow:
+
 	FullscreenWindow()
-	// FullscreenOnMonitorWindow:
+
 	FullscreenOnMonitorWindow(monitor gdk.Monitor)
-	// Application:
+
 	Application() Application
-	// Child:
+
 	Child() Widget
-	// Decorated:
+
 	Decorated() bool
-	// DefaultSize:
+
 	DefaultSize() (width int, height int)
-	// DefaultWidget:
+
 	DefaultWidget() Widget
-	// Deletable:
+
 	Deletable() bool
-	// DestroyWithParent:
+
 	DestroyWithParent() bool
-	// GetFocus:
+
 	GetFocus() Widget
-	// FocusVisible:
+
 	FocusVisible() bool
-	// Group:
+
 	Group() WindowGroup
-	// HandleMenubarAccel:
+
 	HandleMenubarAccel() bool
-	// HideOnClose:
+
 	HideOnClose() bool
-	// IconName:
+
 	IconName() string
-	// MnemonicsVisible:
+
 	MnemonicsVisible() bool
-	// Modal:
+
 	Modal() bool
-	// Resizable:
+
 	Resizable() bool
-	// Title:
+
 	Title() string
-	// Titlebar:
+
 	Titlebar() Widget
-	// TransientFor:
+
 	TransientFor() Window
-	// HasGroupWindow:
+
 	HasGroupWindow() bool
-	// IsActiveWindow:
+
 	IsActiveWindow() bool
-	// IsFullscreenWindow:
+
 	IsFullscreenWindow() bool
-	// IsMaximizedWindow:
+
 	IsMaximizedWindow() bool
-	// MaximizeWindow:
+
 	MaximizeWindow()
-	// MinimizeWindow:
+
 	MinimizeWindow()
-	// PresentWindow:
+
 	PresentWindow()
-	// PresentWithTimeWindow:
+
 	PresentWithTimeWindow(timestamp uint32)
-	// SetApplicationWindow:
+
 	SetApplicationWindow(application Application)
-	// SetChildWindow:
+
 	SetChildWindow(child Widget)
-	// SetDecoratedWindow:
+
 	SetDecoratedWindow(setting bool)
-	// SetDefaultSizeWindow:
+
 	SetDefaultSizeWindow(width int, height int)
-	// SetDefaultWidgetWindow:
+
 	SetDefaultWidgetWindow(defaultWidget Widget)
-	// SetDeletableWindow:
+
 	SetDeletableWindow(setting bool)
-	// SetDestroyWithParentWindow:
+
 	SetDestroyWithParentWindow(setting bool)
-	// SetDisplayWindow:
+
 	SetDisplayWindow(display gdk.Display)
-	// SetFocusWindow:
+
 	SetFocusWindow(focus Widget)
-	// SetFocusVisibleWindow:
+
 	SetFocusVisibleWindow(setting bool)
-	// SetHandleMenubarAccelWindow:
+
 	SetHandleMenubarAccelWindow(handleMenubarAccel bool)
-	// SetHideOnCloseWindow:
+
 	SetHideOnCloseWindow(setting bool)
-	// SetIconNameWindow:
+
 	SetIconNameWindow(name string)
-	// SetMnemonicsVisibleWindow:
+
 	SetMnemonicsVisibleWindow(setting bool)
-	// SetModalWindow:
+
 	SetModalWindow(modal bool)
-	// SetResizableWindow:
+
 	SetResizableWindow(resizable bool)
-	// SetStartupIDWindow:
+
 	SetStartupIDWindow(startupId string)
-	// SetTitleWindow:
+
 	SetTitleWindow(title string)
-	// SetTitlebarWindow:
+
 	SetTitlebarWindow(titlebar Widget)
-	// SetTransientForWindow:
+
 	SetTransientForWindow(parent Window)
-	// UnfullscreenWindow:
+
 	UnfullscreenWindow()
-	// UnmaximizeWindow:
+
 	UnmaximizeWindow()
-	// UnminimizeWindow:
+
 	UnminimizeWindow()
 }
 
@@ -204,7 +203,6 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return WrapWindow(obj), nil
 }
 
-// NewWindow:
 func NewWindow() Window {
 	var _cret *C.GtkWidget // in
 

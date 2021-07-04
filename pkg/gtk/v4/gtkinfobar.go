@@ -82,33 +82,32 @@ func init() {
 type InfoBar interface {
 	Widget
 
-	// AddActionWidgetInfoBar:
 	AddActionWidgetInfoBar(child Widget, responseId int)
-	// AddButtonInfoBar:
+
 	AddButtonInfoBar(buttonText string, responseId int) Button
-	// AddChildInfoBar:
+
 	AddChildInfoBar(widget Widget)
-	// MessageType:
+
 	MessageType() MessageType
-	// Revealed:
+
 	Revealed() bool
-	// ShowCloseButton:
+
 	ShowCloseButton() bool
-	// RemoveActionWidgetInfoBar:
+
 	RemoveActionWidgetInfoBar(widget Widget)
-	// RemoveChildInfoBar:
+
 	RemoveChildInfoBar(widget Widget)
-	// ResponseInfoBar:
+
 	ResponseInfoBar(responseId int)
-	// SetDefaultResponseInfoBar:
+
 	SetDefaultResponseInfoBar(responseId int)
-	// SetMessageTypeInfoBar:
+
 	SetMessageTypeInfoBar(messageType MessageType)
-	// SetResponseSensitiveInfoBar:
+
 	SetResponseSensitiveInfoBar(responseId int, setting bool)
-	// SetRevealedInfoBar:
+
 	SetRevealedInfoBar(revealed bool)
-	// SetShowCloseButtonInfoBar:
+
 	SetShowCloseButtonInfoBar(setting bool)
 }
 
@@ -131,7 +130,6 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 	return WrapInfoBar(obj), nil
 }
 
-// NewInfoBar:
 func NewInfoBar() InfoBar {
 	var _cret *C.GtkWidget // in
 

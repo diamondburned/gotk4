@@ -129,9 +129,8 @@ func init() {
 type DeviceManager interface {
 	gextras.Objector
 
-	// ClientPointer:
 	ClientPointer() Device
-	// Display:
+
 	Display() Display
 }
 

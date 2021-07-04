@@ -34,51 +34,50 @@ func init() {
 type Context interface {
 	gextras.Objector
 
-	// ChangedContext:
 	ChangedContext()
-	// BaseDir:
+
 	BaseDir() Direction
-	// BaseGravity:
+
 	BaseGravity() Gravity
-	// FontDescription:
+
 	FontDescription() *FontDescription
-	// FontMap:
+
 	FontMap() FontMap
-	// Gravity:
+
 	Gravity() Gravity
-	// GravityHint:
+
 	GravityHint() GravityHint
-	// Language:
+
 	Language() *Language
-	// Matrix:
+
 	Matrix() *Matrix
-	// Metrics:
+
 	Metrics(desc *FontDescription, language *Language) *FontMetrics
-	// RoundGlyphPositions:
+
 	RoundGlyphPositions() bool
-	// Serial:
+
 	Serial() uint
-	// ListFamiliesContext:
+
 	ListFamiliesContext() []FontFamily
-	// LoadFontContext:
+
 	LoadFontContext(desc *FontDescription) Font
-	// LoadFontsetContext:
+
 	LoadFontsetContext(desc *FontDescription, language *Language) Fontset
-	// SetBaseDirContext:
+
 	SetBaseDirContext(direction Direction)
-	// SetBaseGravityContext:
+
 	SetBaseGravityContext(gravity Gravity)
-	// SetFontDescriptionContext:
+
 	SetFontDescriptionContext(desc *FontDescription)
-	// SetFontMapContext:
+
 	SetFontMapContext(fontMap FontMap)
-	// SetGravityHintContext:
+
 	SetGravityHintContext(hint GravityHint)
-	// SetLanguageContext:
+
 	SetLanguageContext(language *Language)
-	// SetMatrixContext:
+
 	SetMatrixContext(matrix *Matrix)
-	// SetRoundGlyphPositionsContext:
+
 	SetRoundGlyphPositionsContext(roundPositions bool)
 }
 
@@ -101,7 +100,6 @@ func marshalContext(p uintptr) (interface{}, error) {
 	return WrapContext(obj), nil
 }
 
-// NewContext:
 func NewContext() Context {
 	var _cret *C.PangoContext // in
 

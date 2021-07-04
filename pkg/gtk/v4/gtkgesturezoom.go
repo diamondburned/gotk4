@@ -30,7 +30,6 @@ func init() {
 type GestureZoom interface {
 	Gesture
 
-	// ScaleDelta:
 	ScaleDelta() float64
 }
 
@@ -53,7 +52,6 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 	return WrapGestureZoom(obj), nil
 }
 
-// NewGestureZoom:
 func NewGestureZoom() GestureZoom {
 	var _cret *C.GtkGesture // in
 

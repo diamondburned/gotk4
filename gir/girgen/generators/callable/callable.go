@@ -247,7 +247,7 @@ func (g *Generator) renderBlock() bool {
 	}
 
 	// For C function calling.
-	callParams := strings.Join(typeconv.AddCCallParam(g.Conv), ", ")
+	callParams := strings.Join(g.Conv.CCallParams(), ", ")
 
 	if !hasReturn {
 		g.pen.Linef(secFnCall, "C.%s(%s)", g.CIdentifier, callParams)

@@ -43,7 +43,6 @@ type ConverterInputStream interface {
 	FilterInputStream
 	PollableInputStream
 
-	// Converter:
 	Converter() Converter
 }
 
@@ -66,7 +65,6 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 	return WrapConverterInputStream(obj), nil
 }
 
-// NewConverterInputStream:
 func NewConverterInputStream(baseStream InputStream, converter Converter) ConverterInputStream {
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.GConverter   // out

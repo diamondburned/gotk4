@@ -89,45 +89,44 @@ type Popover interface {
 	Native
 	ShortcutManager
 
-	// Autohide:
 	Autohide() bool
-	// CascadePopdown:
+
 	CascadePopdown() bool
-	// Child:
+
 	Child() Widget
-	// HasArrow:
+
 	HasArrow() bool
-	// MnemonicsVisible:
+
 	MnemonicsVisible() bool
-	// Offset:
+
 	Offset() (xOffset int, yOffset int)
-	// PointingTo:
+
 	PointingTo() (gdk.Rectangle, bool)
-	// Position:
+
 	Position() PositionType
-	// PopdownPopover:
+
 	PopdownPopover()
-	// PopupPopover:
+
 	PopupPopover()
-	// PresentPopover:
+
 	PresentPopover()
-	// SetAutohidePopover:
+
 	SetAutohidePopover(autohide bool)
-	// SetCascadePopdownPopover:
+
 	SetCascadePopdownPopover(cascadePopdown bool)
-	// SetChildPopover:
+
 	SetChildPopover(child Widget)
-	// SetDefaultWidgetPopover:
+
 	SetDefaultWidgetPopover(widget Widget)
-	// SetHasArrowPopover:
+
 	SetHasArrowPopover(hasArrow bool)
-	// SetMnemonicsVisiblePopover:
+
 	SetMnemonicsVisiblePopover(mnemonicsVisible bool)
-	// SetOffsetPopover:
+
 	SetOffsetPopover(xOffset int, yOffset int)
-	// SetPointingToPopover:
+
 	SetPointingToPopover(rect *gdk.Rectangle)
-	// SetPositionPopover:
+
 	SetPositionPopover(position PositionType)
 }
 
@@ -150,7 +149,6 @@ func marshalPopover(p uintptr) (interface{}, error) {
 	return WrapPopover(obj), nil
 }
 
-// NewPopover:
 func NewPopover() Popover {
 	var _cret *C.GtkWidget // in
 

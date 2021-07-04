@@ -27,13 +27,12 @@ func init() {
 type BoolFilter interface {
 	Filter
 
-	// Expression:
 	Expression() Expression
-	// Invert:
+
 	Invert() bool
-	// SetExpressionBoolFilter:
+
 	SetExpressionBoolFilter(expression Expression)
-	// SetInvertBoolFilter:
+
 	SetInvertBoolFilter(invert bool)
 }
 
@@ -56,7 +55,6 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 	return WrapBoolFilter(obj), nil
 }
 
-// NewBoolFilter:
 func NewBoolFilter(expression Expression) BoolFilter {
 	var _arg1 *C.GtkExpression // out
 	var _cret *C.GtkBoolFilter // in

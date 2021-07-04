@@ -49,7 +49,6 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 	return WrapVolumeButton(obj), nil
 }
 
-// NewVolumeButton:
 func NewVolumeButton() VolumeButton {
 	var _cret *C.GtkWidget // in
 

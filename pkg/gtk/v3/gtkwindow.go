@@ -5,10 +5,12 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -133,219 +135,218 @@ func marshalWindowType(p uintptr) (interface{}, error) {
 type Window interface {
 	Bin
 
-	// ActivateDefaultWindow:
 	ActivateDefaultWindow() bool
-	// ActivateFocusWindow:
+
 	ActivateFocusWindow() bool
-	// ActivateKeyWindow:
+
 	ActivateKeyWindow(event *gdk.EventKey) bool
-	// AddAccelGroupWindow:
+
 	AddAccelGroupWindow(accelGroup AccelGroup)
-	// AddMnemonicWindow:
+
 	AddMnemonicWindow(keyval uint, target Widget)
-	// BeginMoveDragWindow:
+
 	BeginMoveDragWindow(button int, rootX int, rootY int, timestamp uint32)
-	// BeginResizeDragWindow:
+
 	BeginResizeDragWindow(edge gdk.WindowEdge, button int, rootX int, rootY int, timestamp uint32)
-	// CloseWindow:
+
 	CloseWindow()
-	// DeiconifyWindow:
+
 	DeiconifyWindow()
-	// FullscreenWindow:
+
 	FullscreenWindow()
-	// FullscreenOnMonitorWindow:
+
 	FullscreenOnMonitorWindow(screen gdk.Screen, monitor int)
-	// AcceptFocus:
+
 	AcceptFocus() bool
-	// Application:
+
 	Application() Application
-	// AttachedTo:
+
 	AttachedTo() Widget
-	// Decorated:
+
 	Decorated() bool
-	// DefaultSize:
+
 	DefaultSize() (width int, height int)
-	// DefaultWidget:
+
 	DefaultWidget() Widget
-	// Deletable:
+
 	Deletable() bool
-	// DestroyWithParent:
+
 	DestroyWithParent() bool
-	// Focus:
+
 	Focus() Widget
-	// FocusOnMap:
+
 	FocusOnMap() bool
-	// FocusVisible:
+
 	FocusVisible() bool
-	// Gravity:
+
 	Gravity() gdk.Gravity
-	// Group:
+
 	Group() WindowGroup
-	// HasResizeGrip:
+
 	HasResizeGrip() bool
-	// HideTitlebarWhenMaximized:
+
 	HideTitlebarWhenMaximized() bool
-	// Icon:
+
 	Icon() gdkpixbuf.Pixbuf
-	// IconName:
+
 	IconName() string
-	// MnemonicModifier:
+
 	MnemonicModifier() gdk.ModifierType
-	// MnemonicsVisible:
+
 	MnemonicsVisible() bool
-	// Modal:
+
 	Modal() bool
-	// Opacity:
+
 	Opacity() float64
-	// Position:
+
 	Position() (rootX int, rootY int)
-	// Resizable:
+
 	Resizable() bool
-	// ResizeGripArea:
+
 	ResizeGripArea() (gdk.Rectangle, bool)
-	// Role:
+
 	Role() string
-	// Screen:
+
 	Screen() gdk.Screen
-	// Size:
+
 	Size() (width int, height int)
-	// SkipPagerHint:
+
 	SkipPagerHint() bool
-	// SkipTaskbarHint:
+
 	SkipTaskbarHint() bool
-	// Title:
+
 	Title() string
-	// Titlebar:
+
 	Titlebar() Widget
-	// TransientFor:
+
 	TransientFor() Window
-	// TypeHint:
+
 	TypeHint() gdk.WindowTypeHint
-	// UrgencyHint:
+
 	UrgencyHint() bool
-	// WindowType:
+
 	WindowType() WindowType
-	// HasGroupWindow:
+
 	HasGroupWindow() bool
-	// HasToplevelFocusWindow:
+
 	HasToplevelFocusWindow() bool
-	// IconifyWindow:
+
 	IconifyWindow()
-	// IsActiveWindow:
+
 	IsActiveWindow() bool
-	// IsMaximizedWindow:
+
 	IsMaximizedWindow() bool
-	// MaximizeWindow:
+
 	MaximizeWindow()
-	// MnemonicActivateWindow:
+
 	MnemonicActivateWindow(keyval uint, modifier gdk.ModifierType) bool
-	// MoveWindow:
+
 	MoveWindow(x int, y int)
-	// ParseGeometryWindow:
+
 	ParseGeometryWindow(geometry string) bool
-	// PresentWindow:
+
 	PresentWindow()
-	// PresentWithTimeWindow:
+
 	PresentWithTimeWindow(timestamp uint32)
-	// PropagateKeyEventWindow:
+
 	PropagateKeyEventWindow(event *gdk.EventKey) bool
-	// RemoveAccelGroupWindow:
+
 	RemoveAccelGroupWindow(accelGroup AccelGroup)
-	// RemoveMnemonicWindow:
+
 	RemoveMnemonicWindow(keyval uint, target Widget)
-	// ReshowWithInitialSizeWindow:
+
 	ReshowWithInitialSizeWindow()
-	// ResizeWindow:
+
 	ResizeWindow(width int, height int)
-	// ResizeGripIsVisibleWindow:
+
 	ResizeGripIsVisibleWindow() bool
-	// ResizeToGeometryWindow:
+
 	ResizeToGeometryWindow(width int, height int)
-	// SetAcceptFocusWindow:
+
 	SetAcceptFocusWindow(setting bool)
-	// SetApplicationWindow:
+
 	SetApplicationWindow(application Application)
-	// SetAttachedToWindow:
+
 	SetAttachedToWindow(attachWidget Widget)
-	// SetDecoratedWindow:
+
 	SetDecoratedWindow(setting bool)
-	// SetDefaultWindow:
+
 	SetDefaultWindow(defaultWidget Widget)
-	// SetDefaultGeometryWindow:
+
 	SetDefaultGeometryWindow(width int, height int)
-	// SetDefaultSizeWindow:
+
 	SetDefaultSizeWindow(width int, height int)
-	// SetDeletableWindow:
+
 	SetDeletableWindow(setting bool)
-	// SetDestroyWithParentWindow:
+
 	SetDestroyWithParentWindow(setting bool)
-	// SetFocusWindow:
+
 	SetFocusWindow(focus Widget)
-	// SetFocusOnMapWindow:
+
 	SetFocusOnMapWindow(setting bool)
-	// SetFocusVisibleWindow:
+
 	SetFocusVisibleWindow(setting bool)
-	// SetGeometryHintsWindow:
+
 	SetGeometryHintsWindow(geometryWidget Widget, geometry *gdk.Geometry, geomMask gdk.WindowHints)
-	// SetGravityWindow:
+
 	SetGravityWindow(gravity gdk.Gravity)
-	// SetHasResizeGripWindow:
+
 	SetHasResizeGripWindow(value bool)
-	// SetHasUserRefCountWindow:
+
 	SetHasUserRefCountWindow(setting bool)
-	// SetHideTitlebarWhenMaximizedWindow:
+
 	SetHideTitlebarWhenMaximizedWindow(setting bool)
-	// SetIconWindow:
+
 	SetIconWindow(icon gdkpixbuf.Pixbuf)
-	// SetIconFromFileWindow:
+
 	SetIconFromFileWindow(filename string) error
-	// SetIconNameWindow:
+
 	SetIconNameWindow(name string)
-	// SetKeepAboveWindow:
+
 	SetKeepAboveWindow(setting bool)
-	// SetKeepBelowWindow:
+
 	SetKeepBelowWindow(setting bool)
-	// SetMnemonicModifierWindow:
+
 	SetMnemonicModifierWindow(modifier gdk.ModifierType)
-	// SetMnemonicsVisibleWindow:
+
 	SetMnemonicsVisibleWindow(setting bool)
-	// SetModalWindow:
+
 	SetModalWindow(modal bool)
-	// SetOpacityWindow:
+
 	SetOpacityWindow(opacity float64)
-	// SetPositionWindow:
+
 	SetPositionWindow(position WindowPosition)
-	// SetResizableWindow:
+
 	SetResizableWindow(resizable bool)
-	// SetRoleWindow:
+
 	SetRoleWindow(role string)
-	// SetScreenWindow:
+
 	SetScreenWindow(screen gdk.Screen)
-	// SetSkipPagerHintWindow:
+
 	SetSkipPagerHintWindow(setting bool)
-	// SetSkipTaskbarHintWindow:
+
 	SetSkipTaskbarHintWindow(setting bool)
-	// SetStartupIDWindow:
+
 	SetStartupIDWindow(startupId string)
-	// SetTitleWindow:
+
 	SetTitleWindow(title string)
-	// SetTitlebarWindow:
+
 	SetTitlebarWindow(titlebar Widget)
-	// SetTransientForWindow:
+
 	SetTransientForWindow(parent Window)
-	// SetTypeHintWindow:
+
 	SetTypeHintWindow(hint gdk.WindowTypeHint)
-	// SetUrgencyHintWindow:
+
 	SetUrgencyHintWindow(setting bool)
-	// SetWmclassWindow:
+
 	SetWmclassWindow(wmclassName string, wmclassClass string)
-	// StickWindow:
+
 	StickWindow()
-	// UnfullscreenWindow:
+
 	UnfullscreenWindow()
-	// UnmaximizeWindow:
+
 	UnmaximizeWindow()
-	// UnstickWindow:
+
 	UnstickWindow()
 }
 
@@ -368,7 +369,6 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return WrapWindow(obj), nil
 }
 
-// NewWindow:
 func NewWindow(typ WindowType) Window {
 	var _arg1 C.GtkWindowType // out
 	var _cret *C.GtkWidget    // in
@@ -1839,6 +1839,18 @@ func (b window) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b window) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b window) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b window) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b window) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -1859,7 +1871,6 @@ func (b window) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-// WindowGeometryInfo:
 type WindowGeometryInfo C.GtkWindowGeometryInfo
 
 // WrapWindowGeometryInfo wraps the C unsafe.Pointer to be the right type. It is

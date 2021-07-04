@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,23 +76,22 @@ func init() {
 type ComboBoxText interface {
 	ComboBox
 
-	// AppendComboBoxText:
 	AppendComboBoxText(id string, text string)
-	// AppendTextComboBoxText:
+
 	AppendTextComboBoxText(text string)
-	// ActiveText:
+
 	ActiveText() string
-	// InsertComboBoxText:
+
 	InsertComboBoxText(position int, id string, text string)
-	// InsertTextComboBoxText:
+
 	InsertTextComboBoxText(position int, text string)
-	// PrependComboBoxText:
+
 	PrependComboBoxText(id string, text string)
-	// PrependTextComboBoxText:
+
 	PrependTextComboBoxText(text string)
-	// RemoveComboBoxText:
+
 	RemoveComboBoxText(position int)
-	// RemoveAllComboBoxText:
+
 	RemoveAllComboBoxText()
 }
 
@@ -113,7 +114,6 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 	return WrapComboBoxText(obj), nil
 }
 
-// NewComboBoxText:
 func NewComboBoxText() ComboBoxText {
 	var _cret *C.GtkWidget // in
 
@@ -126,7 +126,6 @@ func NewComboBoxText() ComboBoxText {
 	return _comboBoxText
 }
 
-// NewComboBoxTextWithEntry:
 func NewComboBoxTextWithEntry() ComboBoxText {
 	var _cret *C.GtkWidget // in
 
@@ -260,6 +259,18 @@ func (b comboBoxText) ConstructChild(builder Builder, name string) gextras.Objec
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b comboBoxText) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b comboBoxText) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b comboBoxText) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b comboBoxText) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -294,6 +305,18 @@ func (b comboBoxText) AddChild(builder Builder, child gextras.Objector, typ stri
 
 func (b comboBoxText) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b comboBoxText) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b comboBoxText) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b comboBoxText) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b comboBoxText) InternalChild(builder Builder, childname string) gextras.Objector {

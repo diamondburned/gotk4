@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,12 +25,7 @@ func init() {
 // SelectionFilterModel: `GtkSelectionFilterModel` is a list model that presents
 // the selection from a `GtkSelectionModel`.
 type SelectionFilterModel interface {
-	gio.ListModel
-
-	// Model:
-	Model() SelectionModel
-	// SetModelSelectionFilterModel:
-	SetModelSelectionFilterModel(model SelectionModel)
+	gextras.Objector
 }
 
 // selectionFilterModel implements the SelectionFilterModel class.
@@ -51,61 +45,4 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSelectionFilterModel(obj), nil
-}
-
-// NewSelectionFilterModel:
-func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
-	var _arg1 *C.GtkSelectionModel       // out
-	var _cret *C.GtkSelectionFilterModel // in
-
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	_cret = C.gtk_selection_filter_model_new(_arg1)
-
-	var _selectionFilterModel SelectionFilterModel // out
-
-	_selectionFilterModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SelectionFilterModel)
-
-	return _selectionFilterModel
-}
-
-func (s selectionFilterModel) Model() SelectionModel {
-	var _arg0 *C.GtkSelectionFilterModel // out
-	var _cret *C.GtkSelectionModel       // in
-
-	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_selection_filter_model_get_model(_arg0)
-
-	var _selectionModel SelectionModel // out
-
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SelectionModel)
-
-	return _selectionModel
-}
-
-func (s selectionFilterModel) SetModelSelectionFilterModel(model SelectionModel) {
-	var _arg0 *C.GtkSelectionFilterModel // out
-	var _arg1 *C.GtkSelectionModel       // out
-
-	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
-}
-
-func (l selectionFilterModel) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l selectionFilterModel) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l selectionFilterModel) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l selectionFilterModel) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }

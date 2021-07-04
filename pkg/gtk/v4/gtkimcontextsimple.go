@@ -48,7 +48,6 @@ func init() {
 type IMContextSimple interface {
 	IMContext
 
-	// AddComposeFileIMContextSimple:
 	AddComposeFileIMContextSimple(composeFile string)
 }
 
@@ -71,7 +70,6 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 	return WrapIMContextSimple(obj), nil
 }
 
-// NewIMContextSimple:
 func NewIMContextSimple() IMContextSimple {
 	var _cret *C.GtkIMContext // in
 

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -16,6 +17,8 @@ import (
 //
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+//
+// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -55,39 +58,38 @@ type TreeStore interface {
 	TreeDragSource
 	TreeSortable
 
-	// AppendTreeStore:
 	AppendTreeStore(parent *TreeIter) TreeIter
-	// ClearTreeStore:
+
 	ClearTreeStore()
-	// InsertTreeStore:
+
 	InsertTreeStore(parent *TreeIter, position int) TreeIter
-	// InsertAfterTreeStore:
+
 	InsertAfterTreeStore(parent *TreeIter, sibling *TreeIter) TreeIter
-	// InsertBeforeTreeStore:
+
 	InsertBeforeTreeStore(parent *TreeIter, sibling *TreeIter) TreeIter
-	// InsertWithValuesvTreeStore:
+
 	InsertWithValuesvTreeStore(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter
-	// IsAncestorTreeStore:
+
 	IsAncestorTreeStore(iter *TreeIter, descendant *TreeIter) bool
-	// IterDepthTreeStore:
+
 	IterDepthTreeStore(iter *TreeIter) int
-	// IterIsValidTreeStore:
+
 	IterIsValidTreeStore(iter *TreeIter) bool
-	// MoveAfterTreeStore:
+
 	MoveAfterTreeStore(iter *TreeIter, position *TreeIter)
-	// MoveBeforeTreeStore:
+
 	MoveBeforeTreeStore(iter *TreeIter, position *TreeIter)
-	// PrependTreeStore:
+
 	PrependTreeStore(parent *TreeIter) TreeIter
-	// RemoveTreeStore:
+
 	RemoveTreeStore(iter *TreeIter) bool
-	// SetColumnTypesTreeStore:
+
 	SetColumnTypesTreeStore(types []externglib.Type)
-	// SetValueTreeStore:
+
 	SetValueTreeStore(iter *TreeIter, column int, value externglib.Value)
-	// SetValuesvTreeStore:
+
 	SetValuesvTreeStore(iter *TreeIter, columns []int, values []externglib.Value)
-	// SwapTreeStore:
+
 	SwapTreeStore(a *TreeIter, b *TreeIter)
 }
 
@@ -110,7 +112,6 @@ func marshalTreeStore(p uintptr) (interface{}, error) {
 	return WrapTreeStore(obj), nil
 }
 
-// NewTreeStoreV:
 func NewTreeStoreV(types []externglib.Type) TreeStore {
 	var _arg2 *C.GType
 	var _arg1 C.int
@@ -560,6 +561,10 @@ func (s treeStore) SortColumnChanged() {
 
 func (t treeStore) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(t)).NewFilter(root)
+}
+
+func (t treeStore) Foreach(fn TreeModelForeachFunc) {
+	WrapTreeModel(gextras.InternObject(t)).Foreach(fn)
 }
 
 func (t treeStore) ColumnType(index_ int) externglib.Type {

@@ -5,6 +5,9 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,6 +34,314 @@ func init() {
 		{T: externglib.Type(C.g_resource_get_type()), F: marshalResource},
 		{T: externglib.Type(C.g_srv_target_get_type()), F: marshalSrvTarget},
 	})
+}
+
+// AsyncReadyCallback: type definition for a function that will be called back
+// when an asynchronous operation within GIO has been completed. ReadyCallback
+// callbacks from #GTask are guaranteed to be invoked in a later iteration of
+// the [thread-default main context][g-main-context-push-thread-default] where
+// the #GTask was created. All other users of ReadyCallback must likewise call
+// it asynchronously in a later iteration of the main context.
+type AsyncReadyCallback func(sourceObject gextras.Objector, res AsyncResult)
+
+//export gotk4_AsyncReadyCallback
+func _AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var sourceObject gextras.Objector // out
+	var res AsyncResult               // out
+
+	sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(gextras.Objector)
+	res = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(AsyncResult)
+
+	fn := v.(AsyncReadyCallback)
+	fn(sourceObject, res)
+}
+
+// CancellableSourceFunc: this is the function type of the callback used for the
+// #GSource returned by g_cancellable_source_new().
+type CancellableSourceFunc func(cancellable Cancellable, ok bool)
+
+//export gotk4_CancellableSourceFunc
+func _CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var cancellable Cancellable // out
+
+	cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Cancellable)
+
+	fn := v.(CancellableSourceFunc)
+	ok := fn(cancellable)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// DBusProxyTypeFunc: function signature for a function used to determine the
+// #GType to use for an interface proxy (if @interface_name is not nil) or
+// object proxy (if @interface_name is nil).
+//
+// This function is called in the [thread-default main
+// loop][g-main-context-push-thread-default] that @manager was constructed in.
+type DBusProxyTypeFunc func(manager DBusObjectManagerClient, objectPath string, interfaceName string, gType externglib.Type)
+
+//export gotk4_DBusProxyTypeFunc
+func _DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) C.GType {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var manager DBusObjectManagerClient // out
+	var objectPath string               // out
+	var interfaceName string            // out
+
+	manager = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(DBusObjectManagerClient)
+	objectPath = C.GoString(arg1)
+	interfaceName = C.GoString(arg2)
+
+	fn := v.(DBusProxyTypeFunc)
+	gType := fn(manager, objectPath, interfaceName)
+
+	var cret C.GType // out
+
+	cret = (C.GType)(gType)
+
+	return cret
+}
+
+// DatagramBasedSourceFunc: this is the function type of the callback used for
+// the #GSource returned by g_datagram_based_create_source().
+type DatagramBasedSourceFunc func(datagramBased DatagramBased, condition glib.IOCondition, ok bool)
+
+//export gotk4_DatagramBasedSourceFunc
+func _DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var datagramBased DatagramBased // out
+	var condition glib.IOCondition  // out
+
+	datagramBased = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(DatagramBased)
+	condition = glib.IOCondition(arg1)
+
+	fn := v.(DatagramBasedSourceFunc)
+	ok := fn(datagramBased, condition)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// FileMeasureProgressCallback: this callback type is used by
+// g_file_measure_disk_usage() to make periodic progress reports when measuring
+// the amount of disk spaced used by a directory.
+//
+// These calls are made on a best-effort basis and not all types of #GFile will
+// support them. At the minimum, however, one call will always be made
+// immediately.
+//
+// In the case that there is no support, @reporting will be set to false (and
+// the other values undefined) and no further calls will be made. Otherwise, the
+// @reporting will be true and the other values all-zeros during the first
+// (immediate) call. In this way, you can know which type of progress UI to show
+// without a delay.
+//
+// For g_file_measure_disk_usage() the callback is made directly. For
+// g_file_measure_disk_usage_async() the callback is made via the default main
+// context of the calling thread (ie: the same way that the final async result
+// would be reported).
+//
+// @current_size is in the same units as requested by the operation (see
+// G_FILE_MEASURE_APPARENT_SIZE).
+//
+// The frequency of the updates is implementation defined, but is ideally about
+// once every 200ms.
+//
+// The last progress callback may or may not be equal to the final result.
+// Always check the async result to get the final value.
+type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDirs uint64, numFiles uint64)
+
+//export gotk4_FileMeasureProgressCallback
+func _FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
+	v := box.Get(uintptr(arg4))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var reporting bool     // out
+	var currentSize uint64 // out
+	var numDirs uint64     // out
+	var numFiles uint64    // out
+
+	if arg0 != 0 {
+		reporting = true
+	}
+	currentSize = uint64(arg1)
+	numDirs = uint64(arg2)
+	numFiles = uint64(arg3)
+
+	fn := v.(FileMeasureProgressCallback)
+	fn(reporting, currentSize, numDirs, numFiles)
+}
+
+// FileProgressCallback: when doing file operations that may take a while, such
+// as moving a file or copying a file, a progress callback is used to pass how
+// far along that operation is to the application.
+type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64)
+
+//export gotk4_FileProgressCallback
+func _FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var currentNumBytes int64 // out
+	var totalNumBytes int64   // out
+
+	currentNumBytes = int64(arg0)
+	totalNumBytes = int64(arg1)
+
+	fn := v.(FileProgressCallback)
+	fn(currentNumBytes, totalNumBytes)
+}
+
+// FileReadMoreCallback: when loading the partial contents of a file with
+// g_file_load_partial_contents_async(), it may become necessary to determine if
+// any more data from the file should be loaded. A ReadMoreCallback function
+// facilitates this by returning true if more data should be read, or false
+// otherwise.
+type FileReadMoreCallback func(fileContents string, fileSize int64, ok bool)
+
+//export gotk4_FileReadMoreCallback
+func _FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var fileContents string // out
+	var fileSize int64      // out
+
+	fileContents = C.GoString(arg0)
+	fileSize = int64(arg1)
+
+	fn := v.(FileReadMoreCallback)
+	ok := fn(fileContents, fileSize)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// IOSchedulerJobFunc: i/O Job function.
+//
+// Long-running jobs should periodically check the @cancellable to see if they
+// have been cancelled.
+type IOSchedulerJobFunc func(job *IOSchedulerJob, cancellable Cancellable, ok bool)
+
+//export gotk4_IOSchedulerJobFunc
+func _IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var job *IOSchedulerJob     // out
+	var cancellable Cancellable // out
+
+	job = (*IOSchedulerJob)(unsafe.Pointer(arg0))
+	cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(Cancellable)
+
+	fn := v.(IOSchedulerJobFunc)
+	ok := fn(job, cancellable)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// PollableSourceFunc: this is the function type of the callback used for the
+// #GSource returned by g_pollable_input_stream_create_source() and
+// g_pollable_output_stream_create_source().
+type PollableSourceFunc func(pollableStream gextras.Objector, ok bool)
+
+//export gotk4_PollableSourceFunc
+func _PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var pollableStream gextras.Objector // out
+
+	pollableStream = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(gextras.Objector)
+
+	fn := v.(PollableSourceFunc)
+	ok := fn(pollableStream)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// SocketSourceFunc: this is the function type of the callback used for the
+// #GSource returned by g_socket_create_source().
+type SocketSourceFunc func(socket Socket, condition glib.IOCondition, ok bool)
+
+//export gotk4_SocketSourceFunc
+func _SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var socket Socket              // out
+	var condition glib.IOCondition // out
+
+	socket = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Socket)
+	condition = glib.IOCondition(arg1)
+
+	fn := v.(SocketSourceFunc)
+	ok := fn(socket, condition)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // FileAttributeMatcher determines if a string matches a file attribute.
@@ -369,7 +680,6 @@ func (i *IOSchedulerJob) Native() unsafe.Pointer {
 	return unsafe.Pointer(i)
 }
 
-// IOStreamAdapter:
 type IOStreamAdapter C.GIOStreamAdapter
 
 // WrapIOStreamAdapter wraps the C unsafe.Pointer to be the right type. It is

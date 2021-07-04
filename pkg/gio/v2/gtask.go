@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -187,48 +188,55 @@ func init() {
 type Task interface {
 	AsyncResult
 
-	// Cancellable:
 	Cancellable() Cancellable
-	// CheckCancellable:
+
 	CheckCancellable() bool
-	// Completed:
+
 	Completed() bool
-	// Context:
+
 	Context() *glib.MainContext
-	// Name:
+
 	Name() string
-	// Priority:
+
 	Priority() int
-	// ReturnOnCancel:
+
 	ReturnOnCancel() bool
-	// GetSourceObject:
+
 	GetSourceObject() gextras.Objector
-	// HadErrorTask:
+
+	SourceTag() interface{}
+
+	TaskData() interface{}
+
 	HadErrorTask() bool
-	// PropagateBooleanTask:
+
 	PropagateBooleanTask() error
-	// PropagateIntTask:
+
 	PropagateIntTask() (int, error)
-	// PropagateValueTask:
+
+	PropagatePointerTask() (interface{}, error)
+
 	PropagateValueTask() (externglib.Value, error)
-	// ReturnBooleanTask:
+
 	ReturnBooleanTask(result bool)
-	// ReturnErrorTask:
+
 	ReturnErrorTask(err error)
-	// ReturnErrorIfCancelledTask:
+
 	ReturnErrorIfCancelledTask() bool
-	// ReturnIntTask:
+
 	ReturnIntTask(result int)
-	// ReturnValueTask:
+
 	ReturnValueTask(result externglib.Value)
-	// SetCheckCancellableTask:
+
 	SetCheckCancellableTask(checkCancellable bool)
-	// SetNameTask:
+
 	SetNameTask(name string)
-	// SetPriorityTask:
+
 	SetPriorityTask(priority int)
-	// SetReturnOnCancelTask:
+
 	SetReturnOnCancelTask(returnOnCancel bool) bool
+
+	SetSourceTagTask(sourceTag interface{})
 }
 
 // task implements the Task class.
@@ -248,6 +256,27 @@ func marshalTask(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTask(obj), nil
+}
+
+func NewTask(sourceObject gextras.Objector, cancellable Cancellable, callback AsyncReadyCallback) Task {
+	var _arg1 C.gpointer            // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+	var _cret *C.GTask // in
+
+	_arg1 = (C.gpointer)(unsafe.Pointer(sourceObject.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	_cret = C.g_task_new(_arg1, _arg2, _arg3, _arg4)
+
+	var _task Task // out
+
+	_task = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Task)
+
+	return _task
 }
 
 func (t task) Cancellable() Cancellable {
@@ -376,6 +405,36 @@ func (t task) GetSourceObject() gextras.Objector {
 	return _object
 }
 
+func (t task) SourceTag() interface{} {
+	var _arg0 *C.GTask   // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+
+	_cret = C.g_task_get_source_tag(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
+func (t task) TaskData() interface{} {
+	var _arg0 *C.GTask   // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+
+	_cret = C.g_task_get_task_data(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
 func (t task) HadErrorTask() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -424,6 +483,24 @@ func (t task) PropagateIntTask() (int, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
+}
+
+func (t task) PropagatePointerTask() (interface{}, error) {
+	var _arg0 *C.GTask   // out
+	var _cret C.gpointer // in
+	var _cerr *C.GError  // in
+
+	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+
+	_cret = C.g_task_propagate_pointer(_arg0, &_cerr)
+
+	var _gpointer interface{} // out
+	var _goerr error          // out
+
+	_gpointer = box.Get(uintptr(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gpointer, _goerr
 }
 
 func (t task) PropagateValueTask() (externglib.Value, error) {
@@ -567,8 +644,26 @@ func (t task) SetReturnOnCancelTask(returnOnCancel bool) bool {
 	return _ok
 }
 
+func (t task) SetSourceTagTask(sourceTag interface{}) {
+	var _arg0 *C.GTask   // out
+	var _arg1 C.gpointer // out
+
+	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(sourceTag)))
+
+	C.g_task_set_source_tag(_arg0, _arg1)
+}
+
 func (r task) SourceObject() gextras.Objector {
 	return WrapAsyncResult(gextras.InternObject(r)).SourceObject()
+}
+
+func (r task) UserData() interface{} {
+	return WrapAsyncResult(gextras.InternObject(r)).UserData()
+}
+
+func (r task) IsTagged(sourceTag interface{}) bool {
+	return WrapAsyncResult(gextras.InternObject(r)).IsTagged(sourceTag)
 }
 
 func (r task) LegacyPropagateError() error {

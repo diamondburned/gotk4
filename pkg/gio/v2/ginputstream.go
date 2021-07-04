@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -47,25 +50,30 @@ func init() {
 type InputStream interface {
 	gextras.Objector
 
-	// ClearPendingInputStream:
 	ClearPendingInputStream()
-	// CloseInputStream:
+
 	CloseInputStream(cancellable Cancellable) error
-	// CloseFinishInputStream:
+
+	CloseAsyncInputStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	CloseFinishInputStream(result AsyncResult) error
-	// HasPendingInputStream:
+
 	HasPendingInputStream() bool
-	// IsClosedInputStream:
+
 	IsClosedInputStream() bool
-	// ReadAllFinishInputStream:
+
 	ReadAllFinishInputStream(result AsyncResult) (uint, error)
-	// ReadFinishInputStream:
+
+	ReadBytesAsyncInputStream(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	ReadFinishInputStream(result AsyncResult) (int, error)
-	// SetPendingInputStream:
+
 	SetPendingInputStream() error
-	// SkipInputStream:
+
 	SkipInputStream(count uint, cancellable Cancellable) (int, error)
-	// SkipFinishInputStream:
+
+	SkipAsyncInputStream(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	SkipFinishInputStream(result AsyncResult) (int, error)
 }
 
@@ -111,6 +119,22 @@ func (s inputStream) CloseInputStream(cancellable Cancellable) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (s inputStream) CloseAsyncInputStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream       // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_input_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (s inputStream) CloseFinishInputStream(result AsyncResult) error {
@@ -184,6 +208,24 @@ func (s inputStream) ReadAllFinishInputStream(result AsyncResult) (uint, error) 
 	return _bytesRead, _goerr
 }
 
+func (s inputStream) ReadBytesAsyncInputStream(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream       // out
+	var _arg1 C.gsize               // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_input_stream_read_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (s inputStream) ReadFinishInputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -239,6 +281,24 @@ func (s inputStream) SkipInputStream(count uint, cancellable Cancellable) (int, 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
+}
+
+func (s inputStream) SkipAsyncInputStream(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream       // out
+	var _arg1 C.gsize               // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_input_stream_skip_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (s inputStream) SkipFinishInputStream(result AsyncResult) (int, error) {

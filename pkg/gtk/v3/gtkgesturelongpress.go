@@ -52,7 +52,6 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return WrapGestureLongPress(obj), nil
 }
 
-// NewGestureLongPress:
 func NewGestureLongPress(widget Widget) GestureLongPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

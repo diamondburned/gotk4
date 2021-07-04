@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11DeviceXI2:
 type X11DeviceXI2 interface {
 	gdk.Device
 }

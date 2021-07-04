@@ -33,25 +33,24 @@ func init() {
 type CenterLayout interface {
 	LayoutManager
 
-	// BaselinePosition:
 	BaselinePosition() BaselinePosition
-	// CenterWidget:
+
 	CenterWidget() Widget
-	// EndWidget:
+
 	EndWidget() Widget
-	// Orientation:
+
 	Orientation() Orientation
-	// StartWidget:
+
 	StartWidget() Widget
-	// SetBaselinePositionCenterLayout:
+
 	SetBaselinePositionCenterLayout(baselinePosition BaselinePosition)
-	// SetCenterWidgetCenterLayout:
+
 	SetCenterWidgetCenterLayout(widget Widget)
-	// SetEndWidgetCenterLayout:
+
 	SetEndWidgetCenterLayout(widget Widget)
-	// SetOrientationCenterLayout:
+
 	SetOrientationCenterLayout(orientation Orientation)
-	// SetStartWidgetCenterLayout:
+
 	SetStartWidgetCenterLayout(widget Widget)
 }
 
@@ -74,7 +73,6 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 	return WrapCenterLayout(obj), nil
 }
 
-// NewCenterLayout:
 func NewCenterLayout() CenterLayout {
 	var _cret *C.GtkLayoutManager // in
 

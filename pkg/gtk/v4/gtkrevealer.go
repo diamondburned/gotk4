@@ -81,23 +81,22 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 type Revealer interface {
 	Widget
 
-	// Child:
 	Child() Widget
-	// ChildRevealed:
+
 	ChildRevealed() bool
-	// RevealChild:
+
 	RevealChild() bool
-	// TransitionDuration:
+
 	TransitionDuration() uint
-	// TransitionType:
+
 	TransitionType() RevealerTransitionType
-	// SetChildRevealer:
+
 	SetChildRevealer(child Widget)
-	// SetRevealChildRevealer:
+
 	SetRevealChildRevealer(revealChild bool)
-	// SetTransitionDurationRevealer:
+
 	SetTransitionDurationRevealer(duration uint)
-	// SetTransitionTypeRevealer:
+
 	SetTransitionTypeRevealer(transition RevealerTransitionType)
 }
 
@@ -120,7 +119,6 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 	return WrapRevealer(obj), nil
 }
 
-// NewRevealer:
 func NewRevealer() Revealer {
 	var _cret *C.GtkWidget // in
 

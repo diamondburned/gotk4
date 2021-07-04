@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -148,73 +149,72 @@ type Application interface {
 	ActionGroup
 	ActionMap
 
-	// ActivateApplication:
 	ActivateApplication()
-	// AddMainOptionApplication:
+
 	AddMainOptionApplication(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
-	// AddMainOptionEntriesApplication:
+
 	AddMainOptionEntriesApplication(entries []glib.OptionEntry)
-	// AddOptionGroupApplication:
+
 	AddOptionGroupApplication(group *glib.OptionGroup)
-	// BindBusyPropertyApplication:
+
 	BindBusyPropertyApplication(object gextras.Objector, property string)
-	// ApplicationID:
+
 	ApplicationID() string
-	// DBusConnection:
+
 	DBusConnection() DBusConnection
-	// DBusObjectPath:
+
 	DBusObjectPath() string
-	// Flags:
+
 	Flags() ApplicationFlags
-	// InactivityTimeout:
+
 	InactivityTimeout() uint
-	// IsBusy:
+
 	IsBusy() bool
-	// IsRegistered:
+
 	IsRegistered() bool
-	// IsRemote:
+
 	IsRemote() bool
-	// ResourceBasePath:
+
 	ResourceBasePath() string
-	// HoldApplication:
+
 	HoldApplication()
-	// MarkBusyApplication:
+
 	MarkBusyApplication()
-	// OpenApplication:
+
 	OpenApplication(files []File, hint string)
-	// QuitApplication:
+
 	QuitApplication()
-	// RegisterApplication:
+
 	RegisterApplication(cancellable Cancellable) error
-	// ReleaseApplication:
+
 	ReleaseApplication()
-	// RunApplication:
+
 	RunApplication(argv []string) int
-	// SendNotificationApplication:
+
 	SendNotificationApplication(id string, notification Notification)
-	// SetActionGroupApplication:
+
 	SetActionGroupApplication(actionGroup ActionGroup)
-	// SetApplicationIDApplication:
+
 	SetApplicationIDApplication(applicationId string)
-	// SetDefaultApplication:
+
 	SetDefaultApplication()
-	// SetFlagsApplication:
+
 	SetFlagsApplication(flags ApplicationFlags)
-	// SetInactivityTimeoutApplication:
+
 	SetInactivityTimeoutApplication(inactivityTimeout uint)
-	// SetOptionContextDescriptionApplication:
+
 	SetOptionContextDescriptionApplication(description string)
-	// SetOptionContextParameterStringApplication:
+
 	SetOptionContextParameterStringApplication(parameterString string)
-	// SetOptionContextSummaryApplication:
+
 	SetOptionContextSummaryApplication(summary string)
-	// SetResourceBasePathApplication:
+
 	SetResourceBasePathApplication(resourcePath string)
-	// UnbindBusyPropertyApplication:
+
 	UnbindBusyPropertyApplication(object gextras.Objector, property string)
-	// UnmarkBusyApplication:
+
 	UnmarkBusyApplication()
-	// WithdrawNotificationApplication:
+
 	WithdrawNotificationApplication(id string)
 }
 
@@ -237,7 +237,6 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
-// NewApplication:
 func NewApplication(applicationId string, flags ApplicationFlags) Application {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GApplicationFlags // out
@@ -759,6 +758,10 @@ func (a application) QueryAction(actionName string) (enabled bool, parameterType
 
 func (a application) AddAction(action Action) {
 	WrapActionMap(gextras.InternObject(a)).AddAction(action)
+}
+
+func (a application) AddActionEntries(entries []ActionEntry, userData interface{}) {
+	WrapActionMap(gextras.InternObject(a)).AddActionEntries(entries, userData)
 }
 
 func (a application) LookupAction(actionName string) Action {

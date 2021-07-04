@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11Visual:
 type X11Visual interface {
 	gdk.Visual
 }

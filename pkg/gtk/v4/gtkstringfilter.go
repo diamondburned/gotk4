@@ -56,21 +56,20 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 type StringFilter interface {
 	Filter
 
-	// Expression:
 	Expression() Expression
-	// IgnoreCase:
+
 	IgnoreCase() bool
-	// MatchMode:
+
 	MatchMode() StringFilterMatchMode
-	// Search:
+
 	Search() string
-	// SetExpressionStringFilter:
+
 	SetExpressionStringFilter(expression Expression)
-	// SetIgnoreCaseStringFilter:
+
 	SetIgnoreCaseStringFilter(ignoreCase bool)
-	// SetMatchModeStringFilter:
+
 	SetMatchModeStringFilter(mode StringFilterMatchMode)
-	// SetSearchStringFilter:
+
 	SetSearchStringFilter(search string)
 }
 
@@ -93,7 +92,6 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 	return WrapStringFilter(obj), nil
 }
 
-// NewStringFilter:
 func NewStringFilter(expression Expression) StringFilter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringFilter // in

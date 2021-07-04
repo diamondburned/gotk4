@@ -41,27 +41,26 @@ func init() {
 type Cancellable interface {
 	gextras.Objector
 
-	// CancelCancellable:
 	CancelCancellable()
-	// DisconnectCancellable:
+
 	DisconnectCancellable(handlerId uint32)
-	// Fd:
+
 	Fd() int
-	// IsCancelledCancellable:
+
 	IsCancelledCancellable() bool
-	// MakePollfdCancellable:
+
 	MakePollfdCancellable(pollfd *glib.PollFD) bool
-	// PopCurrentCancellable:
+
 	PopCurrentCancellable()
-	// PushCurrentCancellable:
+
 	PushCurrentCancellable()
-	// ReleaseFdCancellable:
+
 	ReleaseFdCancellable()
-	// ResetCancellable:
+
 	ResetCancellable()
-	// SetErrorIfCancelledCancellable:
+
 	SetErrorIfCancelledCancellable() error
-	// NewSourceCancellable:
+
 	NewSourceCancellable() *glib.Source
 }
 
@@ -84,7 +83,6 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 	return WrapCancellable(obj), nil
 }
 
-// NewCancellable:
 func NewCancellable() Cancellable {
 	var _cret *C.GCancellable // in
 

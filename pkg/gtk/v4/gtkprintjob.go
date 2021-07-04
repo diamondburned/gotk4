@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -24,6 +25,29 @@ func init() {
 	})
 }
 
+// PrintJobCompleteFunc: the type of callback that is passed to
+// gtk_print_job_send().
+//
+// It is called when the print job has been completely sent.
+type PrintJobCompleteFunc func(printJob PrintJob, err error)
+
+//export gotk4_PrintJobCompleteFunc
+func _PrintJobCompleteFunc(arg0 *C.GtkPrintJob, arg1 C.gpointer, arg2 *C.GError) {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var printJob PrintJob // out
+	var err error         // out
+
+	printJob = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(PrintJob)
+	err = gerror.Take(unsafe.Pointer(arg2))
+
+	fn := v.(PrintJobCompleteFunc)
+	fn(printJob, err)
+}
+
 // PrintJob: a `GtkPrintJob` object represents a job that is sent to a printer.
 //
 // You only need to deal directly with print jobs if you use the non-portable
@@ -37,61 +61,60 @@ func init() {
 type PrintJob interface {
 	gextras.Objector
 
-	// Collate:
 	Collate() bool
-	// NUp:
+
 	NUp() uint
-	// NUpLayout:
+
 	NUpLayout() NumberUpLayout
-	// NumCopies:
+
 	NumCopies() int
-	// PageSet:
+
 	PageSet() PageSet
-	// Pages:
+
 	Pages() PrintPages
-	// Printer:
+
 	Printer() Printer
-	// Reverse:
+
 	Reverse() bool
-	// Rotate:
+
 	Rotate() bool
-	// Scale:
+
 	Scale() float64
-	// Settings:
+
 	Settings() PrintSettings
-	// Status:
+
 	Status() PrintStatus
-	// Surface:
+
 	Surface() (*cairo.Surface, error)
-	// Title:
+
 	Title() string
-	// TrackPrintStatus:
+
 	TrackPrintStatus() bool
-	// SetCollatePrintJob:
+
 	SetCollatePrintJob(collate bool)
-	// SetNUpPrintJob:
+
 	SetNUpPrintJob(nUp uint)
-	// SetNUpLayoutPrintJob:
+
 	SetNUpLayoutPrintJob(layout NumberUpLayout)
-	// SetNumCopiesPrintJob:
+
 	SetNumCopiesPrintJob(numCopies int)
-	// SetPageRangesPrintJob:
+
 	SetPageRangesPrintJob(ranges []PageRange)
-	// SetPageSetPrintJob:
+
 	SetPageSetPrintJob(pageSet PageSet)
-	// SetPagesPrintJob:
+
 	SetPagesPrintJob(pages PrintPages)
-	// SetReversePrintJob:
+
 	SetReversePrintJob(reverse bool)
-	// SetRotatePrintJob:
+
 	SetRotatePrintJob(rotate bool)
-	// SetScalePrintJob:
+
 	SetScalePrintJob(scale float64)
-	// SetSourceFdPrintJob:
+
 	SetSourceFdPrintJob(fd int) error
-	// SetSourceFilePrintJob:
+
 	SetSourceFilePrintJob(filename string) error
-	// SetTrackPrintStatusPrintJob:
+
 	SetTrackPrintStatusPrintJob(trackStatus bool)
 }
 
@@ -114,7 +137,6 @@ func marshalPrintJob(p uintptr) (interface{}, error) {
 	return WrapPrintJob(obj), nil
 }
 
-// NewPrintJob:
 func NewPrintJob(title string, printer Printer, settings PrintSettings, pageSetup PageSetup) PrintJob {
 	var _arg1 *C.char             // out
 	var _arg2 *C.GtkPrinter       // out

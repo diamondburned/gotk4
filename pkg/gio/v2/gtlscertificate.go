@@ -39,11 +39,10 @@ func init() {
 type TLSCertificate interface {
 	gextras.Objector
 
-	// Issuer:
 	Issuer() TLSCertificate
-	// IsSameTLSCertificate:
+
 	IsSameTLSCertificate(certTwo TLSCertificate) bool
-	// VerifyTLSCertificate:
+
 	VerifyTLSCertificate(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
 }
 
@@ -66,7 +65,6 @@ func marshalTLSCertificate(p uintptr) (interface{}, error) {
 	return WrapTLSCertificate(obj), nil
 }
 
-// NewTLSCertificateFromFile:
 func NewTLSCertificateFromFile(file string) (TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
@@ -86,7 +84,6 @@ func NewTLSCertificateFromFile(file string) (TLSCertificate, error) {
 	return _tlsCertificate, _goerr
 }
 
-// NewTLSCertificateFromFiles:
 func NewTLSCertificateFromFiles(certFile string, keyFile string) (TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -109,7 +106,6 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (TLSCertificate
 	return _tlsCertificate, _goerr
 }
 
-// NewTLSCertificateFromPem:
 func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gssize           // out
@@ -131,7 +127,6 @@ func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 	return _tlsCertificate, _goerr
 }
 
-// NewTLSCertificateFromPkcs11Uris:
 func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri string) (TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out

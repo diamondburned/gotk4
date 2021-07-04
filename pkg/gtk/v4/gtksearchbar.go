@@ -65,23 +65,22 @@ func init() {
 type SearchBar interface {
 	Widget
 
-	// ConnectEntrySearchBar:
 	ConnectEntrySearchBar(entry Editable)
-	// Child:
+
 	Child() Widget
-	// KeyCaptureWidget:
+
 	KeyCaptureWidget() Widget
-	// SearchMode:
+
 	SearchMode() bool
-	// ShowCloseButton:
+
 	ShowCloseButton() bool
-	// SetChildSearchBar:
+
 	SetChildSearchBar(child Widget)
-	// SetKeyCaptureWidgetSearchBar:
+
 	SetKeyCaptureWidgetSearchBar(widget Widget)
-	// SetSearchModeSearchBar:
+
 	SetSearchModeSearchBar(searchMode bool)
-	// SetShowCloseButtonSearchBar:
+
 	SetShowCloseButtonSearchBar(visible bool)
 }
 
@@ -104,7 +103,6 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	return WrapSearchBar(obj), nil
 }
 
-// NewSearchBar:
 func NewSearchBar() SearchBar {
 	var _cret *C.GtkWidget // in
 

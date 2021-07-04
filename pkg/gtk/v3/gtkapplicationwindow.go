@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -123,17 +124,15 @@ func init() {
 type ApplicationWindow interface {
 	Window
 	gio.ActionGroup
-	gio.ActionMap
 
-	// HelpOverlay:
 	HelpOverlay() ShortcutsWindow
-	// ID:
+
 	ID() uint
-	// ShowMenubar:
+
 	ShowMenubar() bool
-	// SetHelpOverlayApplicationWindow:
+
 	SetHelpOverlayApplicationWindow(helpOverlay ShortcutsWindow)
-	// SetShowMenubarApplicationWindow:
+
 	SetShowMenubarApplicationWindow(showMenubar bool)
 }
 
@@ -156,7 +155,6 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return WrapApplicationWindow(obj), nil
 }
 
-// NewApplicationWindow:
 func NewApplicationWindow(application Application) ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -249,6 +247,18 @@ func (b applicationWindow) ConstructChild(builder Builder, name string) gextras.
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b applicationWindow) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b applicationWindow) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b applicationWindow) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b applicationWindow) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -323,16 +333,4 @@ func (a applicationWindow) ListActions() []string {
 
 func (a applicationWindow) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
 	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (a applicationWindow) AddAction(action gio.Action) {
-	gio.WrapActionMap(gextras.InternObject(a)).AddAction(action)
-}
-
-func (a applicationWindow) LookupAction(actionName string) gio.Action {
-	return gio.WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
-}
-
-func (a applicationWindow) RemoveAction(actionName string) {
-	gio.WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }

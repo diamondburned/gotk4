@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,7 +76,6 @@ func init() {
 type Socket interface {
 	Container
 
-	// PlugWindow:
 	PlugWindow() gdk.Window
 }
 
@@ -97,7 +98,6 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	return WrapSocket(obj), nil
 }
 
-// NewSocket:
 func NewSocket() Socket {
 	var _cret *C.GtkWidget // in
 
@@ -131,6 +131,18 @@ func (b socket) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b socket) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b socket) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b socket) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b socket) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b socket) InternalChild(builder Builder, childname string) gextras.Objector {

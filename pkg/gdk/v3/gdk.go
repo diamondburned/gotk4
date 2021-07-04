@@ -24,7 +24,6 @@ func init() {
 	})
 }
 
-// Status:
 type Status int
 
 const (
@@ -39,15 +38,13 @@ func marshalStatus(p uintptr) (interface{}, error) {
 	return Status(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DeviceTool:
 type DeviceTool interface {
 	gextras.Objector
 
-	// HardwareID:
 	HardwareID() uint64
-	// Serial:
+
 	Serial() uint64
-	// ToolType:
+
 	ToolType() DeviceToolType
 }
 
@@ -115,31 +112,29 @@ func (t deviceTool) ToolType() DeviceToolType {
 	return _deviceToolType
 }
 
-// DragContext:
 type DragContext interface {
 	gextras.Objector
 
-	// Actions:
 	Actions() DragAction
-	// DestWindow:
+
 	DestWindow() Window
-	// Device:
+
 	Device() Device
-	// DragWindow:
+
 	DragWindow() Window
-	// Protocol:
+
 	Protocol() DragProtocol
-	// SelectedAction:
+
 	SelectedAction() DragAction
-	// SourceWindow:
+
 	SourceWindow() Window
-	// SuggestedAction:
+
 	SuggestedAction() DragAction
-	// ManageDndDragContext:
+
 	ManageDndDragContext(ipcWindow Window, actions DragAction) bool
-	// SetDeviceDragContext:
+
 	SetDeviceDragContext(device Device)
-	// SetHotspotDragContext:
+
 	SetHotspotDragContext(hotX int, hotY int)
 }
 

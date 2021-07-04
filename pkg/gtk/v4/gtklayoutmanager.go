@@ -65,17 +65,16 @@ func init() {
 type LayoutManager interface {
 	gextras.Objector
 
-	// AllocateLayoutManager:
 	AllocateLayoutManager(widget Widget, width int, height int, baseline int)
-	// LayoutChild:
+
 	LayoutChild(child Widget) LayoutChild
-	// RequestMode:
+
 	RequestMode() SizeRequestMode
-	// Widget:
+
 	Widget() Widget
-	// LayoutChangedLayoutManager:
+
 	LayoutChangedLayoutManager()
-	// MeasureLayoutManager:
+
 	MeasureLayoutManager(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 

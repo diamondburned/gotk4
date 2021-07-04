@@ -39,29 +39,28 @@ func init() {
 type EventController interface {
 	gextras.Objector
 
-	// CurrentEvent:
 	CurrentEvent() gdk.Event
-	// CurrentEventDevice:
+
 	CurrentEventDevice() gdk.Device
-	// CurrentEventState:
+
 	CurrentEventState() gdk.ModifierType
-	// CurrentEventTime:
+
 	CurrentEventTime() uint32
-	// Name:
+
 	Name() string
-	// PropagationLimit:
+
 	PropagationLimit() PropagationLimit
-	// PropagationPhase:
+
 	PropagationPhase() PropagationPhase
-	// Widget:
+
 	Widget() Widget
-	// ResetEventController:
+
 	ResetEventController()
-	// SetNameEventController:
+
 	SetNameEventController(name string)
-	// SetPropagationLimitEventController:
+
 	SetPropagationLimitEventController(limit PropagationLimit)
-	// SetPropagationPhaseEventController:
+
 	SetPropagationPhaseEventController(phase PropagationPhase)
 }
 

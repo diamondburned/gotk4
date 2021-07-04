@@ -72,31 +72,30 @@ type ProgressBar interface {
 	Widget
 	Orientable
 
-	// Ellipsize:
 	Ellipsize() pango.EllipsizeMode
-	// Fraction:
+
 	Fraction() float64
-	// Inverted:
+
 	Inverted() bool
-	// PulseStep:
+
 	PulseStep() float64
-	// ShowText:
+
 	ShowText() bool
-	// Text:
+
 	Text() string
-	// PulseProgressBar:
+
 	PulseProgressBar()
-	// SetEllipsizeProgressBar:
+
 	SetEllipsizeProgressBar(mode pango.EllipsizeMode)
-	// SetFractionProgressBar:
+
 	SetFractionProgressBar(fraction float64)
-	// SetInvertedProgressBar:
+
 	SetInvertedProgressBar(inverted bool)
-	// SetPulseStepProgressBar:
+
 	SetPulseStepProgressBar(fraction float64)
-	// SetShowTextProgressBar:
+
 	SetShowTextProgressBar(showText bool)
-	// SetTextProgressBar:
+
 	SetTextProgressBar(text string)
 }
 
@@ -119,7 +118,6 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 	return WrapProgressBar(obj), nil
 }
 
-// NewProgressBar:
 func NewProgressBar() ProgressBar {
 	var _cret *C.GtkWidget // in
 

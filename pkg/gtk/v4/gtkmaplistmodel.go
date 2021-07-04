@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,6 +21,34 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModel},
 	})
+}
+
+// MapListModelMapFunc: user function that is called to map an @item of the
+// original model to an item expected by the map model.
+//
+// The returned items must conform to the item type of the model they are used
+// with.
+type MapListModelMapFunc func(item gextras.Objector, object gextras.Objector)
+
+//export gotk4_MapListModelMapFunc
+func _MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var item gextras.Objector // out
+
+	item = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg0))).(gextras.Objector)
+
+	fn := v.(MapListModelMapFunc)
+	object := fn(item)
+
+	var cret C.gpointer // out
+
+	cret = (C.gpointer)(unsafe.Pointer(object.Native()))
+
+	return cret
 }
 
 // MapListModel: a `GtkMapListModel` maps the items in a list model to different
@@ -44,14 +72,9 @@ func init() {
 // `GtkMapListModel` will attempt to discard the mapped objects as soon as they
 // are no longer needed and recreate them if necessary.
 type MapListModel interface {
-	gio.ListModel
+	gextras.Objector
 
-	// Model:
-	Model() gio.ListModel
-	// HasMapMapListModel:
 	HasMapMapListModel() bool
-	// SetModelMapListModel:
-	SetModelMapListModel(model gio.ListModel)
 }
 
 // mapListModel implements the MapListModel class.
@@ -73,21 +96,6 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 	return WrapMapListModel(obj), nil
 }
 
-func (s mapListModel) Model() gio.ListModel {
-	var _arg0 *C.GtkMapListModel // out
-	var _cret *C.GListModel      // in
-
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_map_list_model_get_model(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
-}
-
 func (s mapListModel) HasMapMapListModel() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
@@ -103,30 +111,4 @@ func (s mapListModel) HasMapMapListModel() bool {
 	}
 
 	return _ok
-}
-
-func (s mapListModel) SetModelMapListModel(model gio.ListModel) {
-	var _arg0 *C.GtkMapListModel // out
-	var _arg1 *C.GListModel      // out
-
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_map_list_model_set_model(_arg0, _arg1)
-}
-
-func (l mapListModel) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l mapListModel) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l mapListModel) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l mapListModel) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }

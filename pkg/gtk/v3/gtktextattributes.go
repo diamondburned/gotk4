@@ -23,7 +23,6 @@ func init() {
 	})
 }
 
-// TextAppearance:
 type TextAppearance C.GtkTextAppearance
 
 // WrapTextAppearance wraps the C unsafe.Pointer to be the right type. It is

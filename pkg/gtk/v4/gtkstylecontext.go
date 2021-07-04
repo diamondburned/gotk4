@@ -90,43 +90,42 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 type StyleContext interface {
 	gextras.Objector
 
-	// AddClassStyleContext:
 	AddClassStyleContext(className string)
-	// AddProviderStyleContext:
+
 	AddProviderStyleContext(provider StyleProvider, priority uint)
-	// Border:
+
 	Border() Border
-	// Color:
+
 	Color() gdk.RGBA
-	// Display:
+
 	Display() gdk.Display
-	// Margin:
+
 	Margin() Border
-	// Padding:
+
 	Padding() Border
-	// Scale:
+
 	Scale() int
-	// State:
+
 	State() StateFlags
-	// HasClassStyleContext:
+
 	HasClassStyleContext(className string) bool
-	// LookupColorStyleContext:
+
 	LookupColorStyleContext(colorName string) (gdk.RGBA, bool)
-	// RemoveClassStyleContext:
+
 	RemoveClassStyleContext(className string)
-	// RemoveProviderStyleContext:
+
 	RemoveProviderStyleContext(provider StyleProvider)
-	// RestoreStyleContext:
+
 	RestoreStyleContext()
-	// SaveStyleContext:
+
 	SaveStyleContext()
-	// SetDisplayStyleContext:
+
 	SetDisplayStyleContext(display gdk.Display)
-	// SetScaleStyleContext:
+
 	SetScaleStyleContext(scale int)
-	// SetStateStyleContext:
+
 	SetStateStyleContext(flags StateFlags)
-	// String:
+
 	String(flags StyleContextPrintFlags) string
 }
 

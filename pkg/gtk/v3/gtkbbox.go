@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,21 +55,19 @@ func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
 	return ButtonBoxStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ButtonBox:
 type ButtonBox interface {
 	Box
 
-	// ChildNonHomogeneous:
 	ChildNonHomogeneous(child Widget) bool
-	// ChildSecondary:
+
 	ChildSecondary(child Widget) bool
-	// Layout:
+
 	Layout() ButtonBoxStyle
-	// SetChildNonHomogeneousButtonBox:
+
 	SetChildNonHomogeneousButtonBox(child Widget, nonHomogeneous bool)
-	// SetChildSecondaryButtonBox:
+
 	SetChildSecondaryButtonBox(child Widget, isSecondary bool)
-	// SetLayoutButtonBox:
+
 	SetLayoutButtonBox(layoutStyle ButtonBoxStyle)
 }
 
@@ -90,7 +90,6 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 	return WrapButtonBox(obj), nil
 }
 
-// NewButtonBox:
 func NewButtonBox(orientation Orientation) ButtonBox {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
@@ -203,6 +202,18 @@ func (b buttonBox) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b buttonBox) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b buttonBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b buttonBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b buttonBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b buttonBox) InternalChild(builder Builder, childname string) gextras.Objector {

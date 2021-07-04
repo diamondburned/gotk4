@@ -23,15 +23,13 @@ func init() {
 	})
 }
 
-// IMMulticontext:
 type IMMulticontext interface {
 	IMContext
 
-	// AppendMenuitemsIMMulticontext:
 	AppendMenuitemsIMMulticontext(menushell MenuShell)
-	// ContextID:
+
 	ContextID() string
-	// SetContextIDIMMulticontext:
+
 	SetContextIDIMMulticontext(contextId string)
 }
 
@@ -54,7 +52,6 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	return WrapIMMulticontext(obj), nil
 }
 
-// NewIMMulticontext:
 func NewIMMulticontext() IMMulticontext {
 	var _cret *C.GtkIMContext // in
 

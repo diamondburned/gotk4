@@ -41,85 +41,84 @@ func init() {
 type Display interface {
 	gextras.Objector
 
-	// BeepDisplay:
 	BeepDisplay()
-	// CloseDisplay:
+
 	CloseDisplay()
-	// DeviceIsGrabbedDisplay:
+
 	DeviceIsGrabbedDisplay(device Device) bool
-	// FlushDisplay:
+
 	FlushDisplay()
-	// AppLaunchContext:
+
 	AppLaunchContext() AppLaunchContext
-	// DefaultCursorSize:
+
 	DefaultCursorSize() uint
-	// DefaultGroup:
+
 	DefaultGroup() Window
-	// DefaultScreen:
+
 	DefaultScreen() Screen
-	// DefaultSeat:
+
 	DefaultSeat() Seat
-	// DeviceManager:
+
 	DeviceManager() DeviceManager
-	// MaximalCursorSize:
+
 	MaximalCursorSize() (width uint, height uint)
-	// Monitor:
+
 	Monitor(monitorNum int) Monitor
-	// MonitorAtPoint:
+
 	MonitorAtPoint(x int, y int) Monitor
-	// MonitorAtWindow:
+
 	MonitorAtWindow(window Window) Monitor
-	// NMonitors:
+
 	NMonitors() int
-	// NScreens:
+
 	NScreens() int
-	// Name:
+
 	Name() string
-	// Pointer:
+
 	Pointer() (screen Screen, x int, y int, mask ModifierType)
-	// PrimaryMonitor:
+
 	PrimaryMonitor() Monitor
-	// Screen:
+
 	Screen(screenNum int) Screen
-	// WindowAtPointer:
+
 	WindowAtPointer() (winX int, winY int, window Window)
-	// HasPendingDisplay:
+
 	HasPendingDisplay() bool
-	// IsClosedDisplay:
+
 	IsClosedDisplay() bool
-	// KeyboardUngrabDisplay:
+
 	KeyboardUngrabDisplay(time_ uint32)
-	// NotifyStartupCompleteDisplay:
+
 	NotifyStartupCompleteDisplay(startupId string)
-	// PointerIsGrabbedDisplay:
+
 	PointerIsGrabbedDisplay() bool
-	// PointerUngrabDisplay:
+
 	PointerUngrabDisplay(time_ uint32)
-	// RequestSelectionNotificationDisplay:
+
 	RequestSelectionNotificationDisplay(selection *Atom) bool
-	// SetDoubleClickDistanceDisplay:
+
 	SetDoubleClickDistanceDisplay(distance uint)
-	// SetDoubleClickTimeDisplay:
+
 	SetDoubleClickTimeDisplay(msec uint)
-	// StoreClipboardDisplay:
+
 	StoreClipboardDisplay(clipboardWindow Window, time_ uint32, targets []*Atom)
-	// SupportsClipboardPersistenceDisplay:
+
 	SupportsClipboardPersistenceDisplay() bool
-	// SupportsCompositeDisplay:
+
 	SupportsCompositeDisplay() bool
-	// SupportsCursorAlphaDisplay:
+
 	SupportsCursorAlphaDisplay() bool
-	// SupportsCursorColorDisplay:
+
 	SupportsCursorColorDisplay() bool
-	// SupportsInputShapesDisplay:
+
 	SupportsInputShapesDisplay() bool
-	// SupportsSelectionNotificationDisplay:
+
 	SupportsSelectionNotificationDisplay() bool
-	// SupportsShapesDisplay:
+
 	SupportsShapesDisplay() bool
-	// SyncDisplay:
+
 	SyncDisplay()
-	// WarpPointerDisplay:
+
 	WarpPointerDisplay(screen Screen, x int, y int)
 }
 

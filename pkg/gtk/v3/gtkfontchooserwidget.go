@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -67,7 +69,6 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 	return WrapFontChooserWidget(obj), nil
 }
 
-// NewFontChooserWidget:
 func NewFontChooserWidget() FontChooserWidget {
 	var _cret *C.GtkWidget // in
 
@@ -86,6 +87,18 @@ func (b fontChooserWidget) AddChild(builder Builder, child gextras.Objector, typ
 
 func (b fontChooserWidget) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b fontChooserWidget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b fontChooserWidget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b fontChooserWidget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b fontChooserWidget) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -39,33 +39,31 @@ func X11GetServerTime(surface X11Surface) uint32 {
 	return _guint32
 }
 
-// X11Surface:
 type X11Surface interface {
 	gdk.Surface
 
-	// Desktop:
 	Desktop() uint32
-	// Group:
+
 	Group() gdk.Surface
-	// MoveToCurrentDesktopX11Surface:
+
 	MoveToCurrentDesktopX11Surface()
-	// MoveToDesktopX11Surface:
+
 	MoveToDesktopX11Surface(desktop uint32)
-	// SetFrameSyncEnabledX11Surface:
+
 	SetFrameSyncEnabledX11Surface(frameSyncEnabled bool)
-	// SetGroupX11Surface:
+
 	SetGroupX11Surface(leader gdk.Surface)
-	// SetSkipPagerHintX11Surface:
+
 	SetSkipPagerHintX11Surface(skipsPager bool)
-	// SetSkipTaskbarHintX11Surface:
+
 	SetSkipTaskbarHintX11Surface(skipsTaskbar bool)
-	// SetThemeVariantX11Surface:
+
 	SetThemeVariantX11Surface(variant string)
-	// SetUrgencyHintX11Surface:
+
 	SetUrgencyHintX11Surface(urgent bool)
-	// SetUserTimeX11Surface:
+
 	SetUserTimeX11Surface(timestamp uint32)
-	// SetUTF8PropertYX11Surface:
+
 	SetUTF8PropertyX11Surface(name string, value string)
 }
 

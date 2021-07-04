@@ -36,9 +36,8 @@ func init() {
 type TCPConnection interface {
 	SocketConnection
 
-	// GracefulDisconnect:
 	GracefulDisconnect() bool
-	// SetGracefulDisconnectTCPConnection:
+
 	SetGracefulDisconnectTCPConnection(gracefulDisconnect bool)
 }
 

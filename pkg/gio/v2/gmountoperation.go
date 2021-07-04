@@ -55,43 +55,42 @@ func init() {
 type MountOperation interface {
 	gextras.Objector
 
-	// Anonymous:
 	Anonymous() bool
-	// Choice:
+
 	Choice() int
-	// Domain:
+
 	Domain() string
-	// IsTcryptHiddenVolume:
+
 	IsTcryptHiddenVolume() bool
-	// IsTcryptSystemVolume:
+
 	IsTcryptSystemVolume() bool
-	// Password:
+
 	Password() string
-	// PasswordSave:
+
 	PasswordSave() PasswordSave
-	// Pim:
+
 	Pim() uint
-	// Username:
+
 	Username() string
-	// ReplyMountOperation:
+
 	ReplyMountOperation(result MountOperationResult)
-	// SetAnonymousMountOperation:
+
 	SetAnonymousMountOperation(anonymous bool)
-	// SetChoiceMountOperation:
+
 	SetChoiceMountOperation(choice int)
-	// SetDomainMountOperation:
+
 	SetDomainMountOperation(domain string)
-	// SetIsTcryptHiddenVolumeMountOperation:
+
 	SetIsTcryptHiddenVolumeMountOperation(hiddenVolume bool)
-	// SetIsTcryptSystemVolumeMountOperation:
+
 	SetIsTcryptSystemVolumeMountOperation(systemVolume bool)
-	// SetPasswordMountOperation:
+
 	SetPasswordMountOperation(password string)
-	// SetPasswordSaveMountOperation:
+
 	SetPasswordSaveMountOperation(save PasswordSave)
-	// SetPimMountOperation:
+
 	SetPimMountOperation(pim uint)
-	// SetUsernameMountOperation:
+
 	SetUsernameMountOperation(username string)
 }
 
@@ -114,7 +113,6 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return WrapMountOperation(obj), nil
 }
 
-// NewMountOperation:
 func NewMountOperation() MountOperation {
 	var _cret *C.GMountOperation // in
 

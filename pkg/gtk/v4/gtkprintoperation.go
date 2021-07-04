@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -15,6 +16,8 @@ import (
 //
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+//
+// void gotk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
 import "C"
 
 func init() {
@@ -125,6 +128,28 @@ func marshalPrintStatus(p uintptr) (interface{}, error) {
 	return PrintStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PageSetupDoneFunc: the type of function that is passed to
+// gtk_print_run_page_setup_dialog_async().
+//
+// This function will be called when the page setup dialog is dismissed, and
+// also serves as destroy notify for @data.
+type PageSetupDoneFunc func(pageSetup PageSetup)
+
+//export gotk4_PageSetupDoneFunc
+func _PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var pageSetup PageSetup // out
+
+	pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(PageSetup)
+
+	fn := v.(PageSetupDoneFunc)
+	fn(pageSetup)
+}
+
 // PrintRunPageSetupDialog runs a page setup dialog, letting the user modify the
 // values from @page_setup. If the user cancels the dialog, the returned
 // PageSetup is identical to the passed in @page_setup, otherwise it contains
@@ -149,6 +174,28 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
+}
+
+// PrintRunPageSetupDialogAsync runs a page setup dialog, letting the user
+// modify the values from @page_setup.
+//
+// In contrast to gtk_print_run_page_setup_dialog(), this function returns after
+// showing the page setup dialog on platforms that support this, and calls
+// @done_cb from a signal handler for the ::response signal of the dialog.
+func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings PrintSettings, doneCb PageSetupDoneFunc) {
+	var _arg1 *C.GtkWindow           // out
+	var _arg2 *C.GtkPageSetup        // out
+	var _arg3 *C.GtkPrintSettings    // out
+	var _arg4 C.GtkPageSetupDoneFunc // out
+	var _arg5 C.gpointer
+
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
+	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_PageSetupDoneFunc)
+	_arg5 = C.gpointer(box.Assign(doneCb))
+
+	C.gtk_print_run_page_setup_dialog_async(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // PrintOperation: `GtkPrintOperation` is the high-level, portable printing API.
@@ -212,63 +259,62 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 type PrintOperation interface {
 	PrintOperationPreview
 
-	// CancelPrintOperation:
 	CancelPrintOperation()
-	// DrawPageFinishPrintOperation:
+
 	DrawPageFinishPrintOperation()
-	// DefaultPageSetup:
+
 	DefaultPageSetup() PageSetup
-	// EmbedPageSetup:
+
 	EmbedPageSetup() bool
-	// Error:
+
 	Error() error
-	// HasSelection:
+
 	HasSelection() bool
-	// NPagesToPrint:
+
 	NPagesToPrint() int
-	// PrintSettings:
+
 	PrintSettings() PrintSettings
-	// Status:
+
 	Status() PrintStatus
-	// StatusString:
+
 	StatusString() string
-	// SupportSelection:
+
 	SupportSelection() bool
-	// IsFinishedPrintOperation:
+
 	IsFinishedPrintOperation() bool
-	// RunPrintOperation:
+
 	RunPrintOperation(action PrintOperationAction, parent Window) (PrintOperationResult, error)
-	// SetAllowAsyncPrintOperation:
+
 	SetAllowAsyncPrintOperation(allowAsync bool)
-	// SetCurrentPagePrintOperation:
+
 	SetCurrentPagePrintOperation(currentPage int)
-	// SetCustomTabLabelPrintOperation:
+
 	SetCustomTabLabelPrintOperation(label string)
-	// SetDefaultPageSetupPrintOperation:
+
 	SetDefaultPageSetupPrintOperation(defaultPageSetup PageSetup)
-	// SetDeferDrawingPrintOperation:
+
 	SetDeferDrawingPrintOperation()
-	// SetEmbedPageSetupPrintOperation:
+
 	SetEmbedPageSetupPrintOperation(embed bool)
-	// SetExportFilenamePrintOperation:
+
 	SetExportFilenamePrintOperation(filename string)
-	// SetHasSelectionPrintOperation:
+
 	SetHasSelectionPrintOperation(hasSelection bool)
-	// SetJobNamePrintOperation:
+
 	SetJobNamePrintOperation(jobName string)
-	// SetNPagesPrintOperation:
+
 	SetNPagesPrintOperation(nPages int)
-	// SetPrintSettingsPrintOperation:
+
 	SetPrintSettingsPrintOperation(printSettings PrintSettings)
-	// SetShowProgressPrintOperation:
+
 	SetShowProgressPrintOperation(showProgress bool)
-	// SetSupportSelectionPrintOperation:
+
 	SetSupportSelectionPrintOperation(supportSelection bool)
-	// SetTrackPrintStatusPrintOperation:
+
 	SetTrackPrintStatusPrintOperation(trackStatus bool)
-	// SetUnitPrintOperation:
+
 	SetUnitPrintOperation(unit Unit)
-	// SetUseFullPagePrintOperation:
+
 	SetUseFullPagePrintOperation(fullPage bool)
 }
 
@@ -291,7 +337,6 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 	return WrapPrintOperation(obj), nil
 }
 
-// NewPrintOperation:
 func NewPrintOperation() PrintOperation {
 	var _cret *C.GtkPrintOperation // in
 

@@ -42,13 +42,12 @@ func init() {
 type WindowGroup interface {
 	gextras.Objector
 
-	// AddWindowWindowGroup:
 	AddWindowWindowGroup(window Window)
-	// CurrentDeviceGrab:
+
 	CurrentDeviceGrab(device gdk.Device) Widget
-	// CurrentGrab:
+
 	CurrentGrab() Widget
-	// RemoveWindowWindowGroup:
+
 	RemoveWindowWindowGroup(window Window)
 }
 
@@ -71,7 +70,6 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 	return WrapWindowGroup(obj), nil
 }
 
-// NewWindowGroup:
 func NewWindowGroup() WindowGroup {
 	var _cret *C.GtkWindowGroup // in
 

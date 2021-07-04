@@ -73,49 +73,48 @@ type ComboBox interface {
 	CellEditable
 	CellLayout
 
-	// Active:
 	Active() int
-	// ActiveID:
+
 	ActiveID() string
-	// ActiveIter:
+
 	ActiveIter() (TreeIter, bool)
-	// ButtonSensitivity:
+
 	ButtonSensitivity() SensitivityType
-	// Child:
+
 	Child() Widget
-	// EntryTextColumn:
+
 	EntryTextColumn() int
-	// HasEntry:
+
 	HasEntry() bool
-	// IDColumn:
+
 	IDColumn() int
-	// Model:
+
 	Model() TreeModel
-	// PopupFixedWidth:
+
 	PopupFixedWidth() bool
-	// PopdownComboBox:
+
 	PopdownComboBox()
-	// PopupComboBox:
+
 	PopupComboBox()
-	// PopupForDeviceComboBox:
+
 	PopupForDeviceComboBox(device gdk.Device)
-	// SetActiveComboBox:
+
 	SetActiveComboBox(index_ int)
-	// SetActiveIDComboBox:
+
 	SetActiveIDComboBox(activeId string) bool
-	// SetActiveIterComboBox:
+
 	SetActiveIterComboBox(iter *TreeIter)
-	// SetButtonSensitivityComboBox:
+
 	SetButtonSensitivityComboBox(sensitivity SensitivityType)
-	// SetChildComboBox:
+
 	SetChildComboBox(child Widget)
-	// SetEntryTextColumnComboBox:
+
 	SetEntryTextColumnComboBox(textColumn int)
-	// SetIDColumnComboBox:
+
 	SetIDColumnComboBox(idColumn int)
-	// SetModelComboBox:
+
 	SetModelComboBox(model TreeModel)
-	// SetPopupFixedWidthComboBox:
+
 	SetPopupFixedWidthComboBox(fixed bool)
 }
 
@@ -138,7 +137,6 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 	return WrapComboBox(obj), nil
 }
 
-// NewComboBox:
 func NewComboBox() ComboBox {
 	var _cret *C.GtkWidget // in
 
@@ -151,7 +149,6 @@ func NewComboBox() ComboBox {
 	return _comboBox
 }
 
-// NewComboBoxWithEntry:
 func NewComboBoxWithEntry() ComboBox {
 	var _cret *C.GtkWidget // in
 
@@ -164,7 +161,6 @@ func NewComboBoxWithEntry() ComboBox {
 	return _comboBox
 }
 
-// NewComboBoxWithModel:
 func NewComboBoxWithModel(model TreeModel) ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -180,7 +176,6 @@ func NewComboBoxWithModel(model TreeModel) ComboBox {
 	return _comboBox
 }
 
-// NewComboBoxWithModelAndEntry:
 func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in

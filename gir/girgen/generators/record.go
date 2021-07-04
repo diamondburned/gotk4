@@ -74,6 +74,65 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 `)
 
+// CanGenerateRecord returns false if the record cannot be generated.
+func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
+	log := func(v ...interface{}) {
+		p := fmt.Sprintf("record %s (C.%s)", rec.Name, rec.CType)
+		gen.Logln(logger.Debug, logger.Prefix(v, p)...)
+	}
+
+	if !rec.IsIntrospectable() {
+		log("not introspectable")
+		return false
+	}
+
+	// GLibIsGTypeStructFor seems to be records used in addition to classes due
+	// to C? Not sure, but we likely don't need it.
+	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
+		log("IsGTypeStructFor or has underscore prefixed")
+		return false
+	}
+
+	for _, suffix := range recordIgnoreSuffixes {
+		if strings.HasSuffix(rec.Name, suffix) {
+			log("contains forbidden suffix", suffix)
+			return false
+		}
+	}
+
+	// Ignore non-type/array fields.
+	for _, field := range rec.Fields {
+		if ignoreField(&field) {
+			continue
+		}
+
+		// Check the type against the ignored list, since ignores are usually
+		// important, and CGo might still try to resolve an ignored type.
+		if mustIgnoreAny(gen, field.AnyType) {
+			log("ignored because field", field.Name)
+			return false
+		}
+	}
+
+	if types.Filter(gen, rec.Name, rec.CType) {
+		log("filtered out")
+	}
+
+	return true
+}
+
+// mustIgnoreAny banished here because it disregards type renamers.
+func mustIgnoreAny(gen FileGenerator, any gir.AnyType) bool {
+	switch {
+	case any.Type != nil:
+		return types.Filter(gen, any.Type.Name, any.Type.CType)
+	case any.Array != nil:
+		return mustIgnoreAny(gen, any.Array.AnyType)
+	default:
+		return true
+	}
+}
+
 // GenerateRecord generates the records.
 func GenerateRecord(gen FileGeneratorWriter, record *gir.Record) bool {
 	recordGen := NewRecordGenerator(gen)
@@ -121,49 +180,6 @@ func NewRecordGenerator(gen FileGenerator) RecordGenerator {
 	}
 }
 
-// canRecord returns true if this record is allowed.
-func canRecord(gen FileGenerator, rec *gir.Record, l logger.LineLogger) bool {
-	if !rec.IsIntrospectable() || types.Filter(gen, rec.Name, rec.CType) {
-		return false
-	}
-
-	// GLibIsGTypeStructFor seems to be records used in addition to classes due
-	// to C? Not sure, but we likely don't need it.
-	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
-		return false
-	}
-
-	for _, suffix := range recordIgnoreSuffixes {
-		if strings.HasSuffix(rec.Name, suffix) {
-			return false
-		}
-	}
-
-	// Ignore non-type/array fields.
-	for _, field := range rec.Fields {
-		// Check the type against the ignored list, since ignores are usually
-		// important, and CGo might still try to resolve an ignored type.
-		if mustIgnoreAny(gen, field.AnyType) {
-			l.Logln(logger.Debug, "ignored because field", field.Name)
-			return false
-		}
-	}
-
-	return true
-}
-
-// mustIgnoreAny banished here because it disregards type renamers.
-func mustIgnoreAny(gen FileGenerator, any gir.AnyType) bool {
-	switch {
-	case any.Type != nil:
-		return types.Filter(gen, any.Type.Name, any.Type.CType)
-	case any.Array != nil:
-		return mustIgnoreAny(gen, any.Array.AnyType)
-	default:
-		return true
-	}
-}
-
 // hHeader returns the RecordGenerator's current file header.
 func (rg *RecordGenerator) Header() *file.Header {
 	return &rg.hdr
@@ -171,12 +187,12 @@ func (rg *RecordGenerator) Header() *file.Header {
 
 func (rg *RecordGenerator) Use(rec *gir.Record) bool {
 	rg.hdr.Reset()
-	rg.Record = rec
 
-	if !canRecord(rg.gen, rec, rg) {
+	if !CanGenerateRecord(rg.gen, rec) {
 		return false
 	}
 
+	rg.Record = rec
 	rg.GoName = strcases.PascalToGo(rec.Name)
 	rg.Methods = rg.methods()
 	rg.Getters = rg.getters()
@@ -230,7 +246,7 @@ func (rg *RecordGenerator) getters() []recordGetter {
 	for _, field := range rg.Fields {
 		// For "Bits > 0", we can't safely do this in Go (and probably not CGo
 		// either?) so we're not doing it.
-		if field.Private || field.Bits > 0 || !field.Readable && !field.Writable {
+		if ignoreField(&field) {
 			continue
 		}
 
@@ -268,6 +284,13 @@ func (rg *RecordGenerator) getters() []recordGetter {
 	}
 
 	return getters
+}
+
+// ignoreField returns true if the given field should be ignored.
+func ignoreField(field *gir.Field) bool {
+	// For "Bits > 0", we can't safely do this in Go (and probably not CGo
+	// either?) so we're not doing it.
+	return field.Private || field.Bits > 0 || (!field.Readable && !field.Writable)
 }
 
 func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {

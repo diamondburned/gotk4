@@ -94,25 +94,24 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 type FrameClock interface {
 	gextras.Objector
 
-	// BeginUpdatingFrameClock:
 	BeginUpdatingFrameClock()
-	// EndUpdatingFrameClock:
+
 	EndUpdatingFrameClock()
-	// CurrentTimings:
+
 	CurrentTimings() *FrameTimings
-	// Fps:
+
 	Fps() float64
-	// FrameCounter:
+
 	FrameCounter() int64
-	// FrameTime:
+
 	FrameTime() int64
-	// HistoryStart:
+
 	HistoryStart() int64
-	// RefreshInfo:
+
 	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
-	// Timings:
+
 	Timings(frameCounter int64) *FrameTimings
-	// RequestPhaseFrameClock:
+
 	RequestPhaseFrameClock(phase FrameClockPhase)
 }
 

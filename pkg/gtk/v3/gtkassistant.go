@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -64,6 +66,33 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// AssistantPageFunc: a function used by gtk_assistant_set_forward_page_func()
+// to know which is the next page given a current one. It’s called both for
+// computing the next page when the user presses the “forward” button and for
+// handling the behavior of the “last” button.
+type AssistantPageFunc func(currentPage int, gint int)
+
+//export gotk4_AssistantPageFunc
+func _AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) C.gint {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var currentPage int // out
+
+	currentPage = int(arg0)
+
+	fn := v.(AssistantPageFunc)
+	gint := fn(currentPage)
+
+	var cret C.gint // out
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
 // Assistant: a Assistant is a widget used to represent a generally complex
 // operation splitted in several steps, guiding the user through its pages and
 // controlling the page flow to collect the necessary data.
@@ -94,57 +123,56 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 type Assistant interface {
 	Window
 
-	// AddActionWidgetAssistant:
 	AddActionWidgetAssistant(child Widget)
-	// AppendPageAssistant:
+
 	AppendPageAssistant(page Widget) int
-	// CommitAssistant:
+
 	CommitAssistant()
-	// CurrentPage:
+
 	CurrentPage() int
-	// NPages:
+
 	NPages() int
-	// NthPage:
+
 	NthPage(pageNum int) Widget
-	// PageComplete:
+
 	PageComplete(page Widget) bool
-	// PageHasPadding:
+
 	PageHasPadding(page Widget) bool
-	// PageHeaderImage:
+
 	PageHeaderImage(page Widget) gdkpixbuf.Pixbuf
-	// PageSideImage:
+
 	PageSideImage(page Widget) gdkpixbuf.Pixbuf
-	// PageTitle:
+
 	PageTitle(page Widget) string
-	// PageType:
+
 	PageType(page Widget) AssistantPageType
-	// InsertPageAssistant:
+
 	InsertPageAssistant(page Widget, position int) int
-	// NextPageAssistant:
+
 	NextPageAssistant()
-	// PrependPageAssistant:
+
 	PrependPageAssistant(page Widget) int
-	// PreviousPageAssistant:
+
 	PreviousPageAssistant()
-	// RemoveActionWidgetAssistant:
+
 	RemoveActionWidgetAssistant(child Widget)
-	// RemovePageAssistant:
+
 	RemovePageAssistant(pageNum int)
-	// SetCurrentPageAssistant:
+
 	SetCurrentPageAssistant(pageNum int)
-	// SetPageCompleteAssistant:
+
 	SetPageCompleteAssistant(page Widget, complete bool)
-	// SetPageHasPaddingAssistant:
+
 	SetPageHasPaddingAssistant(page Widget, hasPadding bool)
-	// SetPageHeaderImageAssistant:
+
 	SetPageHeaderImageAssistant(page Widget, pixbuf gdkpixbuf.Pixbuf)
-	// SetPageSideImageAssistant:
+
 	SetPageSideImageAssistant(page Widget, pixbuf gdkpixbuf.Pixbuf)
-	// SetPageTitleAssistant:
+
 	SetPageTitleAssistant(page Widget, title string)
-	// SetPageTypeAssistant:
+
 	SetPageTypeAssistant(page Widget, typ AssistantPageType)
-	// UpdateButtonsStateAssistant:
+
 	UpdateButtonsStateAssistant()
 }
 
@@ -167,7 +195,6 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return WrapAssistant(obj), nil
 }
 
-// NewAssistant:
 func NewAssistant() Assistant {
 	var _cret *C.GtkWidget // in
 
@@ -541,6 +568,18 @@ func (b assistant) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b assistant) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b assistant) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b assistant) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b assistant) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b assistant) InternalChild(builder Builder, childname string) gextras.Objector {

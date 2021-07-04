@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,33 +28,31 @@ func init() {
 	})
 }
 
-// FontSelection:
 type FontSelection interface {
 	Box
 
-	// Face:
 	Face() pango.FontFace
-	// FaceList:
+
 	FaceList() Widget
-	// Family:
+
 	Family() pango.FontFamily
-	// FamilyList:
+
 	FamilyList() Widget
-	// FontName:
+
 	FontName() string
-	// PreviewEntry:
+
 	PreviewEntry() Widget
-	// PreviewText:
+
 	PreviewText() string
-	// Size:
+
 	Size() int
-	// SizeEntry:
+
 	SizeEntry() Widget
-	// SizeList:
+
 	SizeList() Widget
-	// SetFontNameFontSelection:
+
 	SetFontNameFontSelection(fontname string) bool
-	// SetPreviewTextFontSelection:
+
 	SetPreviewTextFontSelection(text string)
 }
 
@@ -75,7 +75,6 @@ func marshalFontSelection(p uintptr) (interface{}, error) {
 	return WrapFontSelection(obj), nil
 }
 
-// NewFontSelection:
 func NewFontSelection() FontSelection {
 	var _cret *C.GtkWidget // in
 
@@ -278,6 +277,18 @@ func (b fontSelection) ConstructChild(builder Builder, name string) gextras.Obje
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b fontSelection) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b fontSelection) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b fontSelection) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b fontSelection) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -306,23 +317,21 @@ func (o fontSelection) SetOrientation(orientation Orientation) {
 	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
-// FontSelectionDialog:
 type FontSelectionDialog interface {
 	Dialog
 
-	// CancelButton:
 	CancelButton() Widget
-	// FontName:
+
 	FontName() string
-	// FontSelection:
+
 	FontSelection() Widget
-	// OkButton:
+
 	OkButton() Widget
-	// PreviewText:
+
 	PreviewText() string
-	// SetFontNameFontSelectionDialog:
+
 	SetFontNameFontSelectionDialog(fontname string) bool
-	// SetPreviewTextFontSelectionDialog:
+
 	SetPreviewTextFontSelectionDialog(text string)
 }
 
@@ -345,7 +354,6 @@ func marshalFontSelectionDialog(p uintptr) (interface{}, error) {
 	return WrapFontSelectionDialog(obj), nil
 }
 
-// NewFontSelectionDialog:
 func NewFontSelectionDialog(title string) FontSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -475,6 +483,18 @@ func (b fontSelectionDialog) AddChild(builder Builder, child gextras.Objector, t
 
 func (b fontSelectionDialog) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b fontSelectionDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b fontSelectionDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b fontSelectionDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b fontSelectionDialog) InternalChild(builder Builder, childname string) gextras.Objector {

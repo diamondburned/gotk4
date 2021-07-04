@@ -41,11 +41,10 @@ func init() {
 type TextTag interface {
 	gextras.Objector
 
-	// ChangedTextTag:
 	ChangedTextTag(sizeChanged bool)
-	// Priority:
+
 	Priority() int
-	// SetPriorityTextTag:
+
 	SetPriorityTextTag(priority int)
 }
 
@@ -68,7 +67,6 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 	return WrapTextTag(obj), nil
 }
 
-// NewTextTag:
 func NewTextTag(name string) TextTag {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkTextTag // in

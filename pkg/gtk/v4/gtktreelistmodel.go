@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,19 +26,16 @@ func init() {
 // TreeListModel: `GtkTreeListModel` is a list model that can create child
 // models on demand.
 type TreeListModel interface {
-	gio.ListModel
+	gextras.Objector
 
-	// Autoexpand:
 	Autoexpand() bool
-	// ChildRow:
+
 	ChildRow(position uint) TreeListRow
-	// Model:
-	Model() gio.ListModel
-	// Passthrough:
+
 	Passthrough() bool
-	// Row:
+
 	Row(position uint) TreeListRow
-	// SetAutoexpandTreeListModel:
+
 	SetAutoexpandTreeListModel(autoexpand bool)
 }
 
@@ -96,21 +92,6 @@ func (s treeListModel) ChildRow(position uint) TreeListRow {
 	return _treeListRow
 }
 
-func (s treeListModel) Model() gio.ListModel {
-	var _arg0 *C.GtkTreeListModel // out
-	var _cret *C.GListModel       // in
-
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_tree_list_model_get_model(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
-}
-
 func (s treeListModel) Passthrough() bool {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret C.gboolean          // in
@@ -157,22 +138,6 @@ func (s treeListModel) SetAutoexpandTreeListModel(autoexpand bool) {
 	C.gtk_tree_list_model_set_autoexpand(_arg0, _arg1)
 }
 
-func (l treeListModel) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l treeListModel) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l treeListModel) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l treeListModel) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
-}
-
 // TreeListRow: `GtkTreeListRow` is used by `GtkTreeListModel` to represent
 // items.
 //
@@ -188,23 +153,20 @@ func (l treeListModel) ItemsChanged(position uint, removed uint, added uint) {
 type TreeListRow interface {
 	gextras.Objector
 
-	// ChildRow:
 	ChildRow(position uint) TreeListRow
-	// Children:
-	Children() gio.ListModel
-	// Depth:
+
 	Depth() uint
-	// Expanded:
+
 	Expanded() bool
-	// Item:
+
 	Item() gextras.Objector
-	// Parent:
+
 	Parent() TreeListRow
-	// Position:
+
 	Position() uint
-	// IsExpandableTreeListRow:
+
 	IsExpandableTreeListRow() bool
-	// SetExpandedTreeListRow:
+
 	SetExpandedTreeListRow(expanded bool)
 }
 
@@ -242,21 +204,6 @@ func (s treeListRow) ChildRow(position uint) TreeListRow {
 	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
 
 	return _treeListRow
-}
-
-func (s treeListRow) Children() gio.ListModel {
-	var _arg0 *C.GtkTreeListRow // out
-	var _cret *C.GListModel     // in
-
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_tree_list_row_get_children(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (s treeListRow) Depth() uint {

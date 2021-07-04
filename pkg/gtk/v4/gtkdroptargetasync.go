@@ -59,15 +59,14 @@ func init() {
 type DropTargetAsync interface {
 	EventController
 
-	// Actions:
 	Actions() gdk.DragAction
-	// Formats:
+
 	Formats() *gdk.ContentFormats
-	// RejectDropDropTargetAsync:
+
 	RejectDropDropTargetAsync(drop gdk.Drop)
-	// SetActionsDropTargetAsync:
+
 	SetActionsDropTargetAsync(actions gdk.DragAction)
-	// SetFormatsDropTargetAsync:
+
 	SetFormatsDropTargetAsync(formats *gdk.ContentFormats)
 }
 
@@ -90,7 +89,6 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	return WrapDropTargetAsync(obj), nil
 }
 
-// NewDropTargetAsync:
 func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) DropTargetAsync {
 	var _arg1 *C.GdkContentFormats  // out
 	var _arg2 C.GdkDragAction       // out

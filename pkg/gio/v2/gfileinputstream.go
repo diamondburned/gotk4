@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -26,6 +27,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -47,9 +50,10 @@ type FileInputStream interface {
 	InputStream
 	Seekable
 
-	// QueryInfoFileInputStream:
 	QueryInfoFileInputStream(attributes string, cancellable Cancellable) (FileInfo, error)
-	// QueryInfoFinishFileInputStream:
+
+	QueryInfoAsyncFileInputStream(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	QueryInfoFinishFileInputStream(result AsyncResult) (FileInfo, error)
 }
 
@@ -93,6 +97,25 @@ func (s fileInputStream) QueryInfoFileInputStream(attributes string, cancellable
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
+}
+
+func (s fileInputStream) QueryInfoAsyncFileInputStream(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFileInputStream   // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_input_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (s fileInputStream) QueryInfoFinishFileInputStream(result AsyncResult) (FileInfo, error) {

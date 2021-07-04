@@ -21,7 +21,6 @@ func init() {
 	})
 }
 
-// X11DeviceManagerXI2:
 type X11DeviceManagerXI2 interface {
 	X11DeviceManagerCore
 }

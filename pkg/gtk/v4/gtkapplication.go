@@ -3,12 +3,10 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -116,34 +114,31 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 // Getting Started with GTK: Basics (getting_started.html#basics)
 type Application interface {
 	gio.Application
-	gio.ActionGroup
-	gio.ActionMap
 
-	// AddWindowApplication:
 	AddWindowApplication(window Window)
-	// AccelsForAction:
+
 	AccelsForAction(detailedActionName string) []string
-	// ActionsForAccel:
+
 	ActionsForAccel(accel string) []string
-	// ActiveWindow:
+
 	ActiveWindow() Window
-	// MenuByID:
+
 	MenuByID(id string) gio.Menu
-	// Menubar:
+
 	Menubar() gio.MenuModel
-	// WindowByID:
+
 	WindowByID(id uint) Window
-	// InhibitApplication:
+
 	InhibitApplication(window Window, flags ApplicationInhibitFlags, reason string) uint
-	// ListActionDescriptionsApplication:
+
 	ListActionDescriptionsApplication() []string
-	// RemoveWindowApplication:
+
 	RemoveWindowApplication(window Window)
-	// SetAccelsForActionApplication:
+
 	SetAccelsForActionApplication(detailedActionName string, accels []string)
-	// SetMenubarApplication:
+
 	SetMenubarApplication(menubar gio.MenuModel)
-	// UninhibitApplication:
+
 	UninhibitApplication(cookie uint)
 }
 
@@ -166,7 +161,6 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
-// NewApplication:
 func NewApplication(applicationId string, flags gio.ApplicationFlags) Application {
 	var _arg1 *C.char             // out
 	var _arg2 C.GApplicationFlags // out
@@ -421,72 +415,4 @@ func (a application) UninhibitApplication(cookie uint) {
 	_arg1 = C.guint(cookie)
 
 	C.gtk_application_uninhibit(_arg0, _arg1)
-}
-
-func (a application) ActionAdded(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
-}
-
-func (a application) ActionEnabledChanged(actionName string, enabled bool) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a application) ActionRemoved(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a application) ActionStateChanged(actionName string, state *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a application) ActivateAction(actionName string, parameter *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a application) ChangeActionState(actionName string, value *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a application) ActionEnabled(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
-}
-
-func (a application) ActionParameterType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
-}
-
-func (a application) ActionState(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
-}
-
-func (a application) ActionStateHint(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
-}
-
-func (a application) ActionStateType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
-}
-
-func (a application) HasAction(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a application) ListActions() []string {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a application) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (a application) AddAction(action gio.Action) {
-	gio.WrapActionMap(gextras.InternObject(a)).AddAction(action)
-}
-
-func (a application) LookupAction(actionName string) gio.Action {
-	return gio.WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
-}
-
-func (a application) RemoveAction(actionName string) {
-	gio.WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }

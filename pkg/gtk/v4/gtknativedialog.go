@@ -40,25 +40,24 @@ func init() {
 type NativeDialog interface {
 	gextras.Objector
 
-	// DestroyNativeDialog:
 	DestroyNativeDialog()
-	// Modal:
+
 	Modal() bool
-	// Title:
+
 	Title() string
-	// TransientFor:
+
 	TransientFor() Window
-	// Visible:
+
 	Visible() bool
-	// HideNativeDialog:
+
 	HideNativeDialog()
-	// SetModalNativeDialog:
+
 	SetModalNativeDialog(modal bool)
-	// SetTitleNativeDialog:
+
 	SetTitleNativeDialog(title string)
-	// SetTransientForNativeDialog:
+
 	SetTransientForNativeDialog(parent Window)
-	// ShowNativeDialog:
+
 	ShowNativeDialog()
 }
 

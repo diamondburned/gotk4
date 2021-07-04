@@ -187,23 +187,22 @@ func marshalDialogFlags(p uintptr) (interface{}, error) {
 type Dialog interface {
 	Window
 
-	// AddActionWidgetDialog:
 	AddActionWidgetDialog(child Widget, responseId int)
-	// AddButtonDialog:
+
 	AddButtonDialog(buttonText string, responseId int) Widget
-	// ContentArea:
+
 	ContentArea() Box
-	// HeaderBar:
+
 	HeaderBar() HeaderBar
-	// ResponseForWidget:
+
 	ResponseForWidget(widget Widget) int
-	// WidgetForResponse:
+
 	WidgetForResponse(responseId int) Widget
-	// ResponseDialog:
+
 	ResponseDialog(responseId int)
-	// SetDefaultResponseDialog:
+
 	SetDefaultResponseDialog(responseId int)
-	// SetResponseSensitiveDialog:
+
 	SetResponseSensitiveDialog(responseId int, setting bool)
 }
 
@@ -226,7 +225,6 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return WrapDialog(obj), nil
 }
 
-// NewDialog:
 func NewDialog() Dialog {
 	var _cret *C.GtkWidget // in
 

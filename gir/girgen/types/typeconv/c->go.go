@@ -237,6 +237,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	}
 
 	switch {
+	case value.resolved.IsBuiltin("interface{}"):
+		value.header.ImportCore("box")
+		value.p.Linef("%s = box.Get(uintptr(%s))", value.OutName, value.InName)
+		return true
+
 	case value.resolved.IsBuiltin("string"):
 		if !value.isPtr(1) {
 			return conv.convertRef(value, 1, 0)
@@ -304,11 +309,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	// Resolve special-case GLib types.
 	switch types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name) {
-	case "gpointer":
-		value.header.ImportCore("box")
-		value.p.Linef("%s = box.Get(uintptr(%s))", value.OutName, value.InName)
-		return true
-
 	case "GObject.Type", "GType":
 		value.header.NeedsExternGLib()
 		value.header.NeedsGLibObject()

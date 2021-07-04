@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11DeviceType:
 type X11DeviceType int
 
 const (
@@ -31,7 +30,6 @@ const (
 	X11DeviceTypeFloating X11DeviceType = 2
 )
 
-// X11DeviceXI2:
 type X11DeviceXI2 interface {
 	gdk.Device
 }

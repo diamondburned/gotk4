@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -40,21 +41,20 @@ type ScaleButton interface {
 	Button
 	Orientable
 
-	// Adjustment:
 	Adjustment() Adjustment
-	// MinusButton:
+
 	MinusButton() Button
-	// PlusButton:
+
 	PlusButton() Button
-	// Popup:
+
 	Popup() Widget
-	// Value:
+
 	Value() float64
-	// SetAdjustmentScaleButton:
+
 	SetAdjustmentScaleButton(adjustment Adjustment)
-	// SetIconsScaleButton:
+
 	SetIconsScaleButton(icons []string)
-	// SetValueScaleButton:
+
 	SetValueScaleButton(value float64)
 }
 
@@ -77,7 +77,6 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 	return WrapScaleButton(obj), nil
 }
 
-// NewScaleButton:
 func NewScaleButton(size int, min float64, max float64, step float64, icons []string) ScaleButton {
 	var _arg1 C.GtkIconSize // out
 	var _arg2 C.gdouble     // out
@@ -230,6 +229,18 @@ func (b scaleButton) ConstructChild(builder Builder, name string) gextras.Object
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b scaleButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b scaleButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b scaleButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b scaleButton) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -276,6 +287,18 @@ func (b scaleButton) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b scaleButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b scaleButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b scaleButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b scaleButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b scaleButton) InternalChild(builder Builder, childname string) gextras.Objector {

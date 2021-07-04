@@ -80,23 +80,22 @@ func init() {
 type HeaderBar interface {
 	Widget
 
-	// DecorationLayout:
 	DecorationLayout() string
-	// ShowTitleButtons:
+
 	ShowTitleButtons() bool
-	// TitleWidget:
+
 	TitleWidget() Widget
-	// PackEndHeaderBar:
+
 	PackEndHeaderBar(child Widget)
-	// PackStartHeaderBar:
+
 	PackStartHeaderBar(child Widget)
-	// RemoveHeaderBar:
+
 	RemoveHeaderBar(child Widget)
-	// SetDecorationLayoutHeaderBar:
+
 	SetDecorationLayoutHeaderBar(layout string)
-	// SetShowTitleButtonsHeaderBar:
+
 	SetShowTitleButtonsHeaderBar(setting bool)
-	// SetTitleWidgetHeaderBar:
+
 	SetTitleWidgetHeaderBar(titleWidget Widget)
 }
 
@@ -119,7 +118,6 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return WrapHeaderBar(obj), nil
 }
 
-// NewHeaderBar:
 func NewHeaderBar() HeaderBar {
 	var _cret *C.GtkWidget // in
 

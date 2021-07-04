@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,45 +47,44 @@ type Grid interface {
 	Container
 	Orientable
 
-	// AttachGrid:
 	AttachGrid(child Widget, left int, top int, width int, height int)
-	// AttachNextToGrid:
+
 	AttachNextToGrid(child Widget, sibling Widget, side PositionType, width int, height int)
-	// BaselineRow:
+
 	BaselineRow() int
-	// ChildAt:
+
 	ChildAt(left int, top int) Widget
-	// ColumnHomogeneous:
+
 	ColumnHomogeneous() bool
-	// ColumnSpacing:
+
 	ColumnSpacing() uint
-	// RowBaselinePosition:
+
 	RowBaselinePosition(row int) BaselinePosition
-	// RowHomogeneous:
+
 	RowHomogeneous() bool
-	// RowSpacing:
+
 	RowSpacing() uint
-	// InsertColumnGrid:
+
 	InsertColumnGrid(position int)
-	// InsertNextToGrid:
+
 	InsertNextToGrid(sibling Widget, side PositionType)
-	// InsertRowGrid:
+
 	InsertRowGrid(position int)
-	// RemoveColumnGrid:
+
 	RemoveColumnGrid(position int)
-	// RemoveRowGrid:
+
 	RemoveRowGrid(position int)
-	// SetBaselineRowGrid:
+
 	SetBaselineRowGrid(row int)
-	// SetColumnHomogeneousGrid:
+
 	SetColumnHomogeneousGrid(homogeneous bool)
-	// SetColumnSpacingGrid:
+
 	SetColumnSpacingGrid(spacing uint)
-	// SetRowBaselinePositionGrid:
+
 	SetRowBaselinePositionGrid(row int, pos BaselinePosition)
-	// SetRowHomogeneousGrid:
+
 	SetRowHomogeneousGrid(homogeneous bool)
-	// SetRowSpacingGrid:
+
 	SetRowSpacingGrid(spacing uint)
 }
 
@@ -106,7 +107,6 @@ func marshalGrid(p uintptr) (interface{}, error) {
 	return WrapGrid(obj), nil
 }
 
-// NewGrid:
 func NewGrid() Grid {
 	var _cret *C.GtkWidget // in
 
@@ -394,6 +394,18 @@ func (b grid) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b grid) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b grid) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b grid) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b grid) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b grid) InternalChild(builder Builder, childname string) gextras.Objector {

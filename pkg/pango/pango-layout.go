@@ -120,117 +120,112 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 type Layout interface {
 	gextras.Objector
 
-	// ContextChangedLayout:
 	ContextChangedLayout()
-	// CopyLayout:
+
 	CopyLayout() Layout
-	// Alignment:
+
 	Alignment() Alignment
-	// Attributes:
+
 	Attributes() *AttrList
-	// AutoDir:
+
 	AutoDir() bool
-	// Baseline:
+
 	Baseline() int
-	// CharacterCount:
+
 	CharacterCount() int
-	// Context:
+
 	Context() Context
-	// CursorPos:
+
 	CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle)
-	// Direction:
+
 	Direction(index int) Direction
-	// Ellipsize:
+
 	Ellipsize() EllipsizeMode
-	// Extents:
+
 	Extents() (inkRect Rectangle, logicalRect Rectangle)
-	// FontDescription:
+
 	FontDescription() *FontDescription
-	// Height:
+
 	Height() int
-	// Indent:
+
 	Indent() int
-	// Iter:
+
 	Iter() *LayoutIter
-	// Justify:
+
 	Justify() bool
-	// Line:
-	Line(line int) *LayoutLine
-	// LineCount:
+
 	LineCount() int
-	// LineReadonly:
-	LineReadonly(line int) *LayoutLine
-	// LineSpacing:
+
 	LineSpacing() float32
-	// LogAttrs:
+
 	LogAttrs() []LogAttr
-	// PixelExtents:
+
 	PixelExtents() (inkRect Rectangle, logicalRect Rectangle)
-	// PixelSize:
+
 	PixelSize() (width int, height int)
-	// Serial:
+
 	Serial() uint
-	// SingleParagraphMode:
+
 	SingleParagraphMode() bool
-	// Size:
+
 	Size() (width int, height int)
-	// Spacing:
+
 	Spacing() int
-	// Tabs:
+
 	Tabs() *TabArray
-	// Text:
+
 	Text() string
-	// UnknownGlyphsCount:
+
 	UnknownGlyphsCount() int
-	// Width:
+
 	Width() int
-	// Wrap:
+
 	Wrap() WrapMode
-	// IndexToLineXLayout:
+
 	IndexToLineXLayout(index_ int, trailing bool) (line int, xPos int)
-	// IndexToPosLayout:
+
 	IndexToPosLayout(index_ int) Rectangle
-	// IsEllipsizedLayout:
+
 	IsEllipsizedLayout() bool
-	// IsWrappedLayout:
+
 	IsWrappedLayout() bool
-	// MoveCursorVisuallyLayout:
+
 	MoveCursorVisuallyLayout(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
-	// SetAlignmentLayout:
+
 	SetAlignmentLayout(alignment Alignment)
-	// SetAttributesLayout:
+
 	SetAttributesLayout(attrs *AttrList)
-	// SetAutoDirLayout:
+
 	SetAutoDirLayout(autoDir bool)
-	// SetEllipsizeLayout:
+
 	SetEllipsizeLayout(ellipsize EllipsizeMode)
-	// SetFontDescriptionLayout:
+
 	SetFontDescriptionLayout(desc *FontDescription)
-	// SetHeightLayout:
+
 	SetHeightLayout(height int)
-	// SetIndentLayout:
+
 	SetIndentLayout(indent int)
-	// SetJustifyLayout:
+
 	SetJustifyLayout(justify bool)
-	// SetLineSpacingLayout:
+
 	SetLineSpacingLayout(factor float32)
-	// SetMarkupLayout:
+
 	SetMarkupLayout(markup string, length int)
-	// SetMarkupWithAccelLayout:
+
 	SetMarkupWithAccelLayout(markup string, length int, accelMarker uint32) uint32
-	// SetSingleParagraphModeLayout:
+
 	SetSingleParagraphModeLayout(setting bool)
-	// SetSpacingLayout:
+
 	SetSpacingLayout(spacing int)
-	// SetTabsLayout:
+
 	SetTabsLayout(tabs *TabArray)
-	// SetTextLayout:
+
 	SetTextLayout(text string, length int)
-	// SetWidthLayout:
+
 	SetWidthLayout(width int)
-	// SetWrapLayout:
+
 	SetWrapLayout(wrap WrapMode)
-	// XYToIndexLayout:
+
 	XYToIndexLayout(x int, y int) (index_ int, trailing int, ok bool)
 }
 
@@ -253,7 +248,6 @@ func marshalLayout(p uintptr) (interface{}, error) {
 	return WrapLayout(obj), nil
 }
 
-// NewLayout:
 func NewLayout(context Context) Layout {
 	var _arg1 *C.PangoContext // out
 	var _cret *C.PangoLayout  // in
@@ -574,23 +568,6 @@ func (l layout) Justify() bool {
 	return _ok
 }
 
-func (l layout) Line(line int) *LayoutLine {
-	var _arg0 *C.PangoLayout     // out
-	var _arg1 C.int              // out
-	var _cret *C.PangoLayoutLine // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = C.int(line)
-
-	_cret = C.pango_layout_get_line(_arg0, _arg1)
-
-	var _layoutLine *LayoutLine // out
-
-	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-
-	return _layoutLine
-}
-
 func (l layout) LineCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -604,23 +581,6 @@ func (l layout) LineCount() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-func (l layout) LineReadonly(line int) *LayoutLine {
-	var _arg0 *C.PangoLayout     // out
-	var _arg1 C.int              // out
-	var _cret *C.PangoLayoutLine // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = C.int(line)
-
-	_cret = C.pango_layout_get_line_readonly(_arg0, _arg1)
-
-	var _layoutLine *LayoutLine // out
-
-	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-
-	return _layoutLine
 }
 
 func (l layout) LineSpacing() float32 {
@@ -1421,23 +1381,6 @@ func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) 
 	return _inkRect, _logicalRect
 }
 
-// Line moves @iter forward to the next run in visual order. If @iter was
-// already at the end of the layout, returns false.
-func (i *LayoutIter) Line() *LayoutLine {
-	var _arg0 *C.PangoLayoutIter // out
-	var _cret *C.PangoLayoutLine // in
-
-	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
-
-	_cret = C.pango_layout_iter_get_line(_arg0)
-
-	var _layoutLine *LayoutLine // out
-
-	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-
-	return _layoutLine
-}
-
 // LineExtents moves @iter forward to the next run in visual order. If @iter was
 // already at the end of the layout, returns false.
 func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
@@ -1476,23 +1419,6 @@ func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	}
 
 	return _inkRect, _logicalRect
-}
-
-// LineReadonly moves @iter forward to the next run in visual order. If @iter
-// was already at the end of the layout, returns false.
-func (i *LayoutIter) LineReadonly() *LayoutLine {
-	var _arg0 *C.PangoLayoutIter // out
-	var _cret *C.PangoLayoutLine // in
-
-	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
-
-	_cret = C.pango_layout_iter_get_line_readonly(_arg0)
-
-	var _layoutLine *LayoutLine // out
-
-	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-
-	return _layoutLine
 }
 
 // LineYrange moves @iter forward to the next run in visual order. If @iter was

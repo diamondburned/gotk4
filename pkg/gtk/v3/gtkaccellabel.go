@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,17 +62,16 @@ func init() {
 type AccelLabel interface {
 	Label
 
-	// Accel:
 	Accel() (uint, gdk.ModifierType)
-	// AccelWidget:
+
 	AccelWidget() Widget
-	// AccelWidth:
+
 	AccelWidth() uint
-	// RefetchAccelLabel:
+
 	RefetchAccelLabel() bool
-	// SetAccelAccelLabel:
+
 	SetAccelAccelLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType)
-	// SetAccelWidgetAccelLabel:
+
 	SetAccelWidgetAccelLabel(accelWidget Widget)
 }
 
@@ -93,7 +94,6 @@ func marshalAccelLabel(p uintptr) (interface{}, error) {
 	return WrapAccelLabel(obj), nil
 }
 
-// NewAccelLabel:
 func NewAccelLabel(_string string) AccelLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -203,6 +203,18 @@ func (b accelLabel) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b accelLabel) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b accelLabel) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b accelLabel) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b accelLabel) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b accelLabel) InternalChild(builder Builder, childname string) gextras.Objector {

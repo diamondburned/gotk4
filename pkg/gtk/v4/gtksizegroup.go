@@ -82,13 +82,12 @@ func init() {
 type SizeGroup interface {
 	Buildable
 
-	// AddWidgetSizeGroup:
 	AddWidgetSizeGroup(widget Widget)
-	// Mode:
+
 	Mode() SizeGroupMode
-	// RemoveWidgetSizeGroup:
+
 	RemoveWidgetSizeGroup(widget Widget)
-	// SetModeSizeGroup:
+
 	SetModeSizeGroup(mode SizeGroupMode)
 }
 
@@ -111,7 +110,6 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return WrapSizeGroup(obj), nil
 }
 
-// NewSizeGroup:
 func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in

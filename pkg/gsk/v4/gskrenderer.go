@@ -40,17 +40,16 @@ func init() {
 type Renderer interface {
 	gextras.Objector
 
-	// Surface:
 	Surface() gdk.Surface
-	// IsRealizedRenderer:
+
 	IsRealizedRenderer() bool
-	// RealizeRenderer:
+
 	RealizeRenderer(surface gdk.Surface) error
-	// RenderRenderer:
+
 	RenderRenderer(root RenderNode, region *cairo.Region)
-	// RenderTextureRenderer:
+
 	RenderTextureRenderer(root RenderNode, viewport *graphene.Rect) gdk.Texture
-	// UnrealizeRenderer:
+
 	UnrealizeRenderer()
 }
 
@@ -73,7 +72,6 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return WrapRenderer(obj), nil
 }
 
-// NewRendererForSurface:
 func NewRendererForSurface(surface gdk.Surface) Renderer {
 	var _arg1 *C.GdkSurface  // out
 	var _cret *C.GskRenderer // in

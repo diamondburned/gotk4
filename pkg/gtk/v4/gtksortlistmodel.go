@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,21 +34,16 @@ func init() {
 // issues with `GtkSortListModel`, it is strongly recommended that you write
 // your own sorting list model.
 type SortListModel interface {
-	gio.ListModel
+	gextras.Objector
 
-	// Incremental:
 	Incremental() bool
-	// Model:
-	Model() gio.ListModel
-	// Pending:
+
 	Pending() uint
-	// Sorter:
+
 	Sorter() Sorter
-	// SetIncrementalSortListModel:
+
 	SetIncrementalSortListModel(incremental bool)
-	// SetModelSortListModel:
-	SetModelSortListModel(model gio.ListModel)
-	// SetSorterSortListModel:
+
 	SetSorterSortListModel(sorter Sorter)
 }
 
@@ -72,24 +66,6 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 	return WrapSortListModel(obj), nil
 }
 
-// NewSortListModel:
-func NewSortListModel(model gio.ListModel, sorter Sorter) SortListModel {
-	var _arg1 *C.GListModel       // out
-	var _arg2 *C.GtkSorter        // out
-	var _cret *C.GtkSortListModel // in
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
-
-	_cret = C.gtk_sort_list_model_new(_arg1, _arg2)
-
-	var _sortListModel SortListModel // out
-
-	_sortListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SortListModel)
-
-	return _sortListModel
-}
-
 func (s sortListModel) Incremental() bool {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret C.gboolean          // in
@@ -105,21 +81,6 @@ func (s sortListModel) Incremental() bool {
 	}
 
 	return _ok
-}
-
-func (s sortListModel) Model() gio.ListModel {
-	var _arg0 *C.GtkSortListModel // out
-	var _cret *C.GListModel       // in
-
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_sort_list_model_get_model(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (s sortListModel) Pending() uint {
@@ -164,16 +125,6 @@ func (s sortListModel) SetIncrementalSortListModel(incremental bool) {
 	C.gtk_sort_list_model_set_incremental(_arg0, _arg1)
 }
 
-func (s sortListModel) SetModelSortListModel(model gio.ListModel) {
-	var _arg0 *C.GtkSortListModel // out
-	var _arg1 *C.GListModel       // out
-
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_sort_list_model_set_model(_arg0, _arg1)
-}
-
 func (s sortListModel) SetSorterSortListModel(sorter Sorter) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 *C.GtkSorter        // out
@@ -182,20 +133,4 @@ func (s sortListModel) SetSorterSortListModel(sorter Sorter) {
 	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	C.gtk_sort_list_model_set_sorter(_arg0, _arg1)
-}
-
-func (l sortListModel) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l sortListModel) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l sortListModel) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l sortListModel) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }

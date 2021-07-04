@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -43,19 +44,18 @@ func init() {
 type CheckMenuItem interface {
 	MenuItem
 
-	// Active:
 	Active() bool
-	// DrawAsRadio:
+
 	DrawAsRadio() bool
-	// Inconsistent:
+
 	Inconsistent() bool
-	// SetActiveCheckMenuItem:
+
 	SetActiveCheckMenuItem(isActive bool)
-	// SetDrawAsRadioCheckMenuItem:
+
 	SetDrawAsRadioCheckMenuItem(drawAsRadio bool)
-	// SetInconsistentCheckMenuItem:
+
 	SetInconsistentCheckMenuItem(setting bool)
-	// ToggledCheckMenuItem:
+
 	ToggledCheckMenuItem()
 }
 
@@ -78,7 +78,6 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 	return WrapCheckMenuItem(obj), nil
 }
 
-// NewCheckMenuItem:
 func NewCheckMenuItem() CheckMenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -91,7 +90,6 @@ func NewCheckMenuItem() CheckMenuItem {
 	return _checkMenuItem
 }
 
-// NewCheckMenuItemWithLabel:
 func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -108,7 +106,6 @@ func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 	return _checkMenuItem
 }
 
-// NewCheckMenuItemWithMnemonic:
 func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -228,6 +225,18 @@ func (b checkMenuItem) ConstructChild(builder Builder, name string) gextras.Obje
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b checkMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b checkMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b checkMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b checkMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -274,6 +283,18 @@ func (b checkMenuItem) AddChild(builder Builder, child gextras.Objector, typ str
 
 func (b checkMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b checkMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b checkMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b checkMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b checkMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {

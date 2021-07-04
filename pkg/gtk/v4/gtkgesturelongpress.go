@@ -38,9 +38,8 @@ func init() {
 type GestureLongPress interface {
 	GestureSingle
 
-	// DelayFactor:
 	DelayFactor() float64
-	// SetDelayFactorGestureLongPress:
+
 	SetDelayFactorGestureLongPress(delayFactor float64)
 }
 
@@ -63,7 +62,6 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return WrapGestureLongPress(obj), nil
 }
 
-// NewGestureLongPress:
 func NewGestureLongPress() GestureLongPress {
 	var _cret *C.GtkGesture // in
 

@@ -42,9 +42,8 @@ func init() {
 type Emblem interface {
 	Icon
 
-	// GetIcon:
 	GetIcon() Icon
-	// Origin:
+
 	Origin() EmblemOrigin
 }
 
@@ -67,7 +66,6 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 	return WrapEmblem(obj), nil
 }
 
-// NewEmblem:
 func NewEmblem(icon Icon) Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
@@ -83,7 +81,6 @@ func NewEmblem(icon Icon) Emblem {
 	return _emblem
 }
 
-// NewEmblemWithOrigin:
 func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 	var _arg1 *C.GIcon        // out
 	var _arg2 C.GEmblemOrigin // out

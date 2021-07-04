@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -16,12 +18,31 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// void gotk4_TextTagTableForeach(GtkTextTag*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_text_tag_table_get_type()), F: marshalTextTagTable},
 	})
+}
+
+type TextTagTableForeach func(tag TextTag)
+
+//export gotk4_TextTagTableForeach
+func _TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var tag TextTag // out
+
+	tag = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TextTag)
+
+	fn := v.(TextTagTableForeach)
+	fn(tag)
 }
 
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
@@ -44,13 +65,14 @@ func init() {
 type TextTagTable interface {
 	Buildable
 
-	// AddTextTagTable:
 	AddTextTagTable(tag TextTag) bool
-	// Size:
+
+	ForeachTextTagTable(fn TextTagTableForeach)
+
 	Size() int
-	// LookupTextTagTable:
+
 	LookupTextTagTable(name string) TextTag
-	// RemoveTextTagTable:
+
 	RemoveTextTagTable(tag TextTag)
 }
 
@@ -73,7 +95,6 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 	return WrapTextTagTable(obj), nil
 }
 
-// NewTextTagTable:
 func NewTextTagTable() TextTagTable {
 	var _cret *C.GtkTextTagTable // in
 
@@ -103,6 +124,18 @@ func (t textTagTable) AddTextTagTable(tag TextTag) bool {
 	}
 
 	return _ok
+}
+
+func (t textTagTable) ForeachTextTagTable(fn TextTagTableForeach) {
+	var _arg0 *C.GtkTextTagTable       // out
+	var _arg1 C.GtkTextTagTableForeach // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_TextTagTableForeach)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.gtk_text_tag_table_foreach(_arg0, _arg1, _arg2)
 }
 
 func (t textTagTable) Size() int {
@@ -154,6 +187,18 @@ func (b textTagTable) AddChild(builder Builder, child gextras.Objector, typ stri
 
 func (b textTagTable) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b textTagTable) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b textTagTable) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b textTagTable) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b textTagTable) InternalChild(builder Builder, childname string) gextras.Objector {

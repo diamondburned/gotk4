@@ -161,53 +161,52 @@ type SpinButton interface {
 	Editable
 	Orientable
 
-	// ConfigureSpinButton:
 	ConfigureSpinButton(adjustment Adjustment, climbRate float64, digits uint)
-	// Adjustment:
+
 	Adjustment() Adjustment
-	// ClimbRate:
+
 	ClimbRate() float64
-	// Digits:
+
 	Digits() uint
-	// Increments:
+
 	Increments() (step float64, page float64)
-	// Numeric:
+
 	Numeric() bool
-	// Range:
+
 	Range() (min float64, max float64)
-	// SnapToTicks:
+
 	SnapToTicks() bool
-	// UpdatePolicy:
+
 	UpdatePolicy() SpinButtonUpdatePolicy
-	// Value:
+
 	Value() float64
-	// ValueAsInt:
+
 	ValueAsInt() int
-	// Wrap:
+
 	Wrap() bool
-	// SetAdjustmentSpinButton:
+
 	SetAdjustmentSpinButton(adjustment Adjustment)
-	// SetClimbRateSpinButton:
+
 	SetClimbRateSpinButton(climbRate float64)
-	// SetDigitsSpinButton:
+
 	SetDigitsSpinButton(digits uint)
-	// SetIncrementsSpinButton:
+
 	SetIncrementsSpinButton(step float64, page float64)
-	// SetNumericSpinButton:
+
 	SetNumericSpinButton(numeric bool)
-	// SetRangeSpinButton:
+
 	SetRangeSpinButton(min float64, max float64)
-	// SetSnapToTicksSpinButton:
+
 	SetSnapToTicksSpinButton(snapToTicks bool)
-	// SetUpdatePolicySpinButton:
+
 	SetUpdatePolicySpinButton(policy SpinButtonUpdatePolicy)
-	// SetValueSpinButton:
+
 	SetValueSpinButton(value float64)
-	// SetWrapSpinButton:
+
 	SetWrapSpinButton(wrap bool)
-	// SpinSpinButton:
+
 	SpinSpinButton(direction SpinType, increment float64)
-	// UpdateSpinButton:
+
 	UpdateSpinButton()
 }
 
@@ -230,7 +229,6 @@ func marshalSpinButton(p uintptr) (interface{}, error) {
 	return WrapSpinButton(obj), nil
 }
 
-// NewSpinButton:
 func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinButton {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.double         // out
@@ -250,7 +248,6 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinBu
 	return _spinButton
 }
 
-// NewSpinButtonWithRange:
 func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out

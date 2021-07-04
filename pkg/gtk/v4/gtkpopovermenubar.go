@@ -50,13 +50,12 @@ func init() {
 type PopoverMenuBar interface {
 	Widget
 
-	// AddChildPopoverMenuBar:
 	AddChildPopoverMenuBar(child Widget, id string) bool
-	// MenuModel:
+
 	MenuModel() gio.MenuModel
-	// RemoveChildPopoverMenuBar:
+
 	RemoveChildPopoverMenuBar(child Widget) bool
-	// SetMenuModelPopoverMenuBar:
+
 	SetMenuModelPopoverMenuBar(model gio.MenuModel)
 }
 
@@ -79,7 +78,6 @@ func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
 	return WrapPopoverMenuBar(obj), nil
 }
 
-// NewPopoverMenuBarFromModel:
 func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in

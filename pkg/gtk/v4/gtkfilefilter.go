@@ -60,19 +60,18 @@ type FileFilter interface {
 	Filter
 	Buildable
 
-	// AddMIMETypeFileFilter:
 	AddMIMETypeFileFilter(mimeType string)
-	// AddPatternFileFilter:
+
 	AddPatternFileFilter(pattern string)
-	// AddPixbufFormatsFileFilter:
+
 	AddPixbufFormatsFileFilter()
-	// Attributes:
+
 	Attributes() []string
-	// Name:
+
 	Name() string
-	// SetNameFileFilter:
+
 	SetNameFileFilter(name string)
-	// ToGVariantFileFilter:
+
 	ToGVariantFileFilter() *glib.Variant
 }
 
@@ -95,7 +94,6 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	return WrapFileFilter(obj), nil
 }
 
-// NewFileFilter:
 func NewFileFilter() FileFilter {
 	var _cret *C.GtkFileFilter // in
 
@@ -108,7 +106,6 @@ func NewFileFilter() FileFilter {
 	return _fileFilter
 }
 
-// NewFileFilterFromGVariant:
 func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in

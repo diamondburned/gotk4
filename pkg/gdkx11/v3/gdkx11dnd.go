@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11DragContext:
 type X11DragContext interface {
 	gdk.DragContext
 }

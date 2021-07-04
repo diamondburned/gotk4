@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -17,12 +18,33 @@ import (
 //
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+//
+// void gotk4_PrintSettingsFunc(char*, char*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_print_settings_get_type()), F: marshalPrintSettings},
 	})
+}
+
+type PrintSettingsFunc func(key string, value string)
+
+//export gotk4_PrintSettingsFunc
+func _PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var key string   // out
+	var value string // out
+
+	key = C.GoString(arg0)
+	value = C.GoString(arg1)
+
+	fn := v.(PrintSettingsFunc)
+	fn(key, value)
 }
 
 // PrintSettings: a `GtkPrintSettings` object represents the settings of a print
@@ -40,145 +62,146 @@ func init() {
 type PrintSettings interface {
 	gextras.Objector
 
-	// CopyPrintSettings:
 	CopyPrintSettings() PrintSettings
-	// GetPrintSettings:
+
+	ForeachPrintSettings(fn PrintSettingsFunc)
+
 	GetPrintSettings(key string) string
-	// Bool:
+
 	Bool(key string) bool
-	// Collate:
+
 	Collate() bool
-	// DefaultSource:
+
 	DefaultSource() string
-	// Dither:
+
 	Dither() string
-	// Double:
+
 	Double(key string) float64
-	// DoubleWithDefault:
+
 	DoubleWithDefault(key string, def float64) float64
-	// Duplex:
+
 	Duplex() PrintDuplex
-	// Finishings:
+
 	Finishings() string
-	// Int:
+
 	Int(key string) int
-	// IntWithDefault:
+
 	IntWithDefault(key string, def int) int
-	// Length:
+
 	Length(key string, unit Unit) float64
-	// MediaType:
+
 	MediaType() string
-	// NCopies:
+
 	NCopies() int
-	// NumberUp:
+
 	NumberUp() int
-	// NumberUpLayout:
+
 	NumberUpLayout() NumberUpLayout
-	// Orientation:
+
 	Orientation() PageOrientation
-	// OutputBin:
+
 	OutputBin() string
-	// PageSet:
+
 	PageSet() PageSet
-	// PaperHeight:
+
 	PaperHeight(unit Unit) float64
-	// PaperSize:
+
 	PaperSize() *PaperSize
-	// PaperWidth:
+
 	PaperWidth(unit Unit) float64
-	// PrintPages:
+
 	PrintPages() PrintPages
-	// Printer:
+
 	Printer() string
-	// PrinterLpi:
+
 	PrinterLpi() float64
-	// Quality:
+
 	Quality() PrintQuality
-	// Resolution:
+
 	Resolution() int
-	// ResolutionX:
+
 	ResolutionX() int
-	// ResolutionY:
+
 	ResolutionY() int
-	// Reverse:
+
 	Reverse() bool
-	// Scale:
+
 	Scale() float64
-	// UseColor:
+
 	UseColor() bool
-	// HasKeyPrintSettings:
+
 	HasKeyPrintSettings(key string) bool
-	// LoadFilePrintSettings:
+
 	LoadFilePrintSettings(fileName string) error
-	// LoadKeyFilePrintSettings:
+
 	LoadKeyFilePrintSettings(keyFile *glib.KeyFile, groupName string) error
-	// SetPrintSettings:
+
 	SetPrintSettings(key string, value string)
-	// SetBoolPrintSettings:
+
 	SetBoolPrintSettings(key string, value bool)
-	// SetCollatePrintSettings:
+
 	SetCollatePrintSettings(collate bool)
-	// SetDefaultSourcePrintSettings:
+
 	SetDefaultSourcePrintSettings(defaultSource string)
-	// SetDitherPrintSettings:
+
 	SetDitherPrintSettings(dither string)
-	// SetDoublePrintSettings:
+
 	SetDoublePrintSettings(key string, value float64)
-	// SetDuplexPrintSettings:
+
 	SetDuplexPrintSettings(duplex PrintDuplex)
-	// SetFinishingsPrintSettings:
+
 	SetFinishingsPrintSettings(finishings string)
-	// SetIntPrintSettings:
+
 	SetIntPrintSettings(key string, value int)
-	// SetLengthPrintSettings:
+
 	SetLengthPrintSettings(key string, value float64, unit Unit)
-	// SetMediaTypePrintSettings:
+
 	SetMediaTypePrintSettings(mediaType string)
-	// SetNCopiesPrintSettings:
+
 	SetNCopiesPrintSettings(numCopies int)
-	// SetNumberUpPrintSettings:
+
 	SetNumberUpPrintSettings(numberUp int)
-	// SetNumberUpLayoutPrintSettings:
+
 	SetNumberUpLayoutPrintSettings(numberUpLayout NumberUpLayout)
-	// SetOrientationPrintSettings:
+
 	SetOrientationPrintSettings(orientation PageOrientation)
-	// SetOutputBinPrintSettings:
+
 	SetOutputBinPrintSettings(outputBin string)
-	// SetPageRangesPrintSettings:
+
 	SetPageRangesPrintSettings(pageRanges []PageRange)
-	// SetPageSetPrintSettings:
+
 	SetPageSetPrintSettings(pageSet PageSet)
-	// SetPaperHeightPrintSettings:
+
 	SetPaperHeightPrintSettings(height float64, unit Unit)
-	// SetPaperSizePrintSettings:
+
 	SetPaperSizePrintSettings(paperSize *PaperSize)
-	// SetPaperWidthPrintSettings:
+
 	SetPaperWidthPrintSettings(width float64, unit Unit)
-	// SetPrintPagesPrintSettings:
+
 	SetPrintPagesPrintSettings(pages PrintPages)
-	// SetPrinterPrintSettings:
+
 	SetPrinterPrintSettings(printer string)
-	// SetPrinterLpiPrintSettings:
+
 	SetPrinterLpiPrintSettings(lpi float64)
-	// SetQualityPrintSettings:
+
 	SetQualityPrintSettings(quality PrintQuality)
-	// SetResolutionPrintSettings:
+
 	SetResolutionPrintSettings(resolution int)
-	// SetResolutionXYPrintSettings:
+
 	SetResolutionXYPrintSettings(resolutionX int, resolutionY int)
-	// SetReversePrintSettings:
+
 	SetReversePrintSettings(reverse bool)
-	// SetScalePrintSettings:
+
 	SetScalePrintSettings(scale float64)
-	// SetUseColorPrintSettings:
+
 	SetUseColorPrintSettings(useColor bool)
-	// ToFilePrintSettings:
+
 	ToFilePrintSettings(fileName string) error
-	// ToGVariantPrintSettings:
+
 	ToGVariantPrintSettings() *glib.Variant
-	// ToKeyFilePrintSettings:
+
 	ToKeyFilePrintSettings(keyFile *glib.KeyFile, groupName string)
-	// UnsetPrintSettings:
+
 	UnsetPrintSettings(key string)
 }
 
@@ -201,7 +224,6 @@ func marshalPrintSettings(p uintptr) (interface{}, error) {
 	return WrapPrintSettings(obj), nil
 }
 
-// NewPrintSettings:
 func NewPrintSettings() PrintSettings {
 	var _cret *C.GtkPrintSettings // in
 
@@ -214,7 +236,6 @@ func NewPrintSettings() PrintSettings {
 	return _printSettings
 }
 
-// NewPrintSettingsFromFile:
 func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
 	var _arg1 *C.char             // out
 	var _cret *C.GtkPrintSettings // in
@@ -234,7 +255,6 @@ func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
 	return _printSettings, _goerr
 }
 
-// NewPrintSettingsFromGVariant:
 func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 	var _arg1 *C.GVariant         // out
 	var _cret *C.GtkPrintSettings // in
@@ -250,7 +270,6 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 	return _printSettings
 }
 
-// NewPrintSettingsFromKeyFile:
 func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (PrintSettings, error) {
 	var _arg1 *C.GKeyFile         // out
 	var _arg2 *C.char             // out
@@ -285,6 +304,18 @@ func (o printSettings) CopyPrintSettings() PrintSettings {
 	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintSettings)
 
 	return _printSettings
+}
+
+func (s printSettings) ForeachPrintSettings(fn PrintSettingsFunc) {
+	var _arg0 *C.GtkPrintSettings    // out
+	var _arg1 C.GtkPrintSettingsFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_PrintSettingsFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.gtk_print_settings_foreach(_arg0, _arg1, _arg2)
 }
 
 func (s printSettings) GetPrintSettings(key string) string {

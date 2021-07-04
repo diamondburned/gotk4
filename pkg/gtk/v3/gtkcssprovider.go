@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,15 +75,12 @@ func marshalCSSProviderError(p uintptr) (interface{}, error) {
 type CSSProvider interface {
 	StyleProvider
 
-	// LoadFromDataCSSProvider:
 	LoadFromDataCSSProvider(data []byte) error
-	// LoadFromFileCSSProvider:
-	LoadFromFileCSSProvider(file gio.File) error
-	// LoadFromPathCSSProvider:
+
 	LoadFromPathCSSProvider(path string) error
-	// LoadFromResourceCSSProvider:
+
 	LoadFromResourceCSSProvider(resourcePath string)
-	// String:
+
 	String() string
 }
 
@@ -107,7 +103,6 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return WrapCSSProvider(obj), nil
 }
 
-// NewCSSProvider:
 func NewCSSProvider() CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
@@ -131,23 +126,6 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
 	_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
-func (c cssProvider) LoadFromFileCSSProvider(file gio.File) error {
-	var _arg0 *C.GtkCssProvider // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_css_provider_load_from_file(_arg0, _arg1, &_cerr)
 
 	var _goerr error // out
 

@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -117,67 +119,66 @@ func marshalLicense(p uintptr) (interface{}, error) {
 type AboutDialog interface {
 	Dialog
 
-	// AddCreditSectionAboutDialog:
 	AddCreditSectionAboutDialog(sectionName string, people []string)
-	// Artists:
+
 	Artists() []string
-	// Authors:
+
 	Authors() []string
-	// Comments:
+
 	Comments() string
-	// Copyright:
+
 	Copyright() string
-	// Documenters:
+
 	Documenters() []string
-	// License:
+
 	License() string
-	// LicenseType:
+
 	LicenseType() License
-	// Logo:
+
 	Logo() gdkpixbuf.Pixbuf
-	// LogoIconName:
+
 	LogoIconName() string
-	// ProgramName:
+
 	ProgramName() string
-	// TranslatorCredits:
+
 	TranslatorCredits() string
-	// Version:
+
 	Version() string
-	// Website:
+
 	Website() string
-	// WebsiteLabel:
+
 	WebsiteLabel() string
-	// WrapLicense:
+
 	WrapLicense() bool
-	// SetArtistsAboutDialog:
+
 	SetArtistsAboutDialog(artists []string)
-	// SetAuthorsAboutDialog:
+
 	SetAuthorsAboutDialog(authors []string)
-	// SetCommentsAboutDialog:
+
 	SetCommentsAboutDialog(comments string)
-	// SetCopyrightAboutDialog:
+
 	SetCopyrightAboutDialog(copyright string)
-	// SetDocumentersAboutDialog:
+
 	SetDocumentersAboutDialog(documenters []string)
-	// SetLicenseAboutDialog:
+
 	SetLicenseAboutDialog(license string)
-	// SetLicenseTypeAboutDialog:
+
 	SetLicenseTypeAboutDialog(licenseType License)
-	// SetLogoAboutDialog:
+
 	SetLogoAboutDialog(logo gdkpixbuf.Pixbuf)
-	// SetLogoIconNameAboutDialog:
+
 	SetLogoIconNameAboutDialog(iconName string)
-	// SetProgramNameAboutDialog:
+
 	SetProgramNameAboutDialog(name string)
-	// SetTranslatorCreditsAboutDialog:
+
 	SetTranslatorCreditsAboutDialog(translatorCredits string)
-	// SetVersionAboutDialog:
+
 	SetVersionAboutDialog(version string)
-	// SetWebsiteAboutDialog:
+
 	SetWebsiteAboutDialog(website string)
-	// SetWebsiteLabelAboutDialog:
+
 	SetWebsiteLabelAboutDialog(websiteLabel string)
-	// SetWrapLicenseAboutDialog:
+
 	SetWrapLicenseAboutDialog(wrapLicense bool)
 }
 
@@ -200,7 +201,6 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return WrapAboutDialog(obj), nil
 }
 
-// NewAboutDialog:
 func NewAboutDialog() AboutDialog {
 	var _cret *C.GtkWidget // in
 
@@ -688,6 +688,18 @@ func (b aboutDialog) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b aboutDialog) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b aboutDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b aboutDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b aboutDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b aboutDialog) InternalChild(builder Builder, childname string) gextras.Objector {

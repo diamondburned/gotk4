@@ -36,19 +36,18 @@ func init() {
 type ProxyAddress interface {
 	InetSocketAddress
 
-	// DestinationHostname:
 	DestinationHostname() string
-	// DestinationPort:
+
 	DestinationPort() uint16
-	// DestinationProtocol:
+
 	DestinationProtocol() string
-	// Password:
+
 	Password() string
-	// Protocol:
+
 	Protocol() string
-	// URI:
+
 	URI() string
-	// Username:
+
 	Username() string
 }
 
@@ -71,7 +70,6 @@ func marshalProxyAddress(p uintptr) (interface{}, error) {
 	return WrapProxyAddress(obj), nil
 }
 
-// NewProxyAddress:
 func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out

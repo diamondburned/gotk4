@@ -5,9 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -66,6 +66,36 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// AssistantPageFunc: type of callback used to calculate the next page in a
+// `GtkAssistant`.
+//
+// It’s called both for computing the next page when the user presses the
+// “forward” button and for handling the behavior of the “last” button.
+//
+// See [method@Gtk.Assistant.set_forward_page_func].
+type AssistantPageFunc func(currentPage int, gint int)
+
+//export gotk4_AssistantPageFunc
+func _AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var currentPage int // out
+
+	currentPage = int(arg0)
+
+	fn := v.(AssistantPageFunc)
+	gint := fn(currentPage)
+
+	var cret C.int // out
+
+	cret = C.int(gint)
+
+	return cret
+}
+
 // Assistant: `GtkAssistant` is used to represent a complex as a series of
 // steps.
 //
@@ -107,49 +137,46 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 type Assistant interface {
 	Window
 
-	// AddActionWidgetAssistant:
 	AddActionWidgetAssistant(child Widget)
-	// AppendPageAssistant:
+
 	AppendPageAssistant(page Widget) int
-	// CommitAssistant:
+
 	CommitAssistant()
-	// CurrentPage:
+
 	CurrentPage() int
-	// NPages:
+
 	NPages() int
-	// NthPage:
+
 	NthPage(pageNum int) Widget
-	// Page:
+
 	Page(child Widget) AssistantPage
-	// PageComplete:
+
 	PageComplete(page Widget) bool
-	// PageTitle:
+
 	PageTitle(page Widget) string
-	// PageType:
+
 	PageType(page Widget) AssistantPageType
-	// Pages:
-	Pages() gio.ListModel
-	// InsertPageAssistant:
+
 	InsertPageAssistant(page Widget, position int) int
-	// NextPageAssistant:
+
 	NextPageAssistant()
-	// PrependPageAssistant:
+
 	PrependPageAssistant(page Widget) int
-	// PreviousPageAssistant:
+
 	PreviousPageAssistant()
-	// RemoveActionWidgetAssistant:
+
 	RemoveActionWidgetAssistant(child Widget)
-	// RemovePageAssistant:
+
 	RemovePageAssistant(pageNum int)
-	// SetCurrentPageAssistant:
+
 	SetCurrentPageAssistant(pageNum int)
-	// SetPageCompleteAssistant:
+
 	SetPageCompleteAssistant(page Widget, complete bool)
-	// SetPageTitleAssistant:
+
 	SetPageTitleAssistant(page Widget, title string)
-	// SetPageTypeAssistant:
+
 	SetPageTypeAssistant(page Widget, typ AssistantPageType)
-	// UpdateButtonsStateAssistant:
+
 	UpdateButtonsStateAssistant()
 }
 
@@ -172,7 +199,6 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return WrapAssistant(obj), nil
 }
 
-// NewAssistant:
 func NewAssistant() Assistant {
 	var _cret *C.GtkWidget // in
 
@@ -335,21 +361,6 @@ func (a assistant) PageType(page Widget) AssistantPageType {
 	_assistantPageType = AssistantPageType(_cret)
 
 	return _assistantPageType
-}
-
-func (a assistant) Pages() gio.ListModel {
-	var _arg0 *C.GtkAssistant // out
-	var _cret *C.GListModel   // in
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-
-	_cret = C.gtk_assistant_get_pages(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (a assistant) InsertPageAssistant(page Widget, position int) int {
@@ -550,7 +561,6 @@ func (b assistant) BuildableID() string {
 type AssistantPage interface {
 	gextras.Objector
 
-	// Child:
 	Child() Widget
 }
 

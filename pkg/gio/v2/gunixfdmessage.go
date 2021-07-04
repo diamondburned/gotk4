@@ -48,9 +48,8 @@ func init() {
 type UnixFDMessage interface {
 	SocketControlMessage
 
-	// AppendFdUnixFDMessage:
 	AppendFdUnixFDMessage(fd int) error
-	// FdList:
+
 	FdList() UnixFDList
 }
 
@@ -73,7 +72,6 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	return WrapUnixFDMessage(obj), nil
 }
 
-// NewUnixFDMessage:
 func NewUnixFDMessage() UnixFDMessage {
 	var _cret *C.GSocketControlMessage // in
 
@@ -86,7 +84,6 @@ func NewUnixFDMessage() UnixFDMessage {
 	return _unixFDMessage
 }
 
-// NewUnixFDMessageWithFdList:
 func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in

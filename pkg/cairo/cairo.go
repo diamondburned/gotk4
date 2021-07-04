@@ -52,7 +52,6 @@ func init() {
 	})
 }
 
-// Status:
 type Status int
 
 const (
@@ -101,7 +100,6 @@ func marshalStatus(p uintptr) (interface{}, error) {
 	return Status(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Content:
 type Content int
 
 const (
@@ -114,7 +112,6 @@ func marshalContent(p uintptr) (interface{}, error) {
 	return Content(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Operator:
 type Operator int
 
 const (
@@ -153,7 +150,6 @@ func marshalOperator(p uintptr) (interface{}, error) {
 	return Operator(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Antialias:
 type Antialias int
 
 const (
@@ -170,7 +166,6 @@ func marshalAntialias(p uintptr) (interface{}, error) {
 	return Antialias(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FillRule:
 type FillRule int
 
 const (
@@ -182,7 +177,6 @@ func marshalFillRule(p uintptr) (interface{}, error) {
 	return FillRule(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// LineCap:
 type LineCap int
 
 const (
@@ -195,7 +189,6 @@ func marshalLineCap(p uintptr) (interface{}, error) {
 	return LineCap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// LineJoin:
 type LineJoin int
 
 const (
@@ -208,7 +201,6 @@ func marshalLineJoin(p uintptr) (interface{}, error) {
 	return LineJoin(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TextClusterFlags:
 type TextClusterFlags int
 
 const (
@@ -219,7 +211,6 @@ func marshalTextClusterFlags(p uintptr) (interface{}, error) {
 	return TextClusterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FontSlant:
 type FontSlant int
 
 const (
@@ -232,7 +223,6 @@ func marshalFontSlant(p uintptr) (interface{}, error) {
 	return FontSlant(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FontWeight:
 type FontWeight int
 
 const (
@@ -244,7 +234,6 @@ func marshalFontWeight(p uintptr) (interface{}, error) {
 	return FontWeight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SubpixelOrder:
 type SubpixelOrder int
 
 const (
@@ -259,7 +248,6 @@ func marshalSubpixelOrder(p uintptr) (interface{}, error) {
 	return SubpixelOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// HintStyle:
 type HintStyle int
 
 const (
@@ -274,7 +262,6 @@ func marshalHintStyle(p uintptr) (interface{}, error) {
 	return HintStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// HintMetrics:
 type HintMetrics int
 
 const (
@@ -287,7 +274,6 @@ func marshalHintMetrics(p uintptr) (interface{}, error) {
 	return HintMetrics(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FontType:
 type FontType int
 
 const (
@@ -302,7 +288,6 @@ func marshalFontType(p uintptr) (interface{}, error) {
 	return FontType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PathDataType:
 type PathDataType int
 
 const (
@@ -316,7 +301,6 @@ func marshalPathDataType(p uintptr) (interface{}, error) {
 	return PathDataType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DeviceType:
 type DeviceType int
 
 const (
@@ -335,7 +319,6 @@ func marshalDeviceType(p uintptr) (interface{}, error) {
 	return DeviceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SurfaceType:
 type SurfaceType int
 
 const (
@@ -370,7 +353,6 @@ func marshalSurfaceType(p uintptr) (interface{}, error) {
 	return SurfaceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Format:
 type Format int
 
 const (
@@ -387,7 +369,6 @@ func marshalFormat(p uintptr) (interface{}, error) {
 	return Format(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PatternType:
 type PatternType int
 
 const (
@@ -403,7 +384,6 @@ func marshalPatternType(p uintptr) (interface{}, error) {
 	return PatternType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Extend:
 type Extend int
 
 const (
@@ -417,7 +397,6 @@ func marshalExtend(p uintptr) (interface{}, error) {
 	return Extend(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Filter:
 type Filter int
 
 const (
@@ -433,7 +412,6 @@ func marshalFilter(p uintptr) (interface{}, error) {
 	return Filter(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RegionOverlap:
 type RegionOverlap int
 
 const (
@@ -446,7 +424,6 @@ func marshalRegionOverlap(p uintptr) (interface{}, error) {
 	return RegionOverlap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Context:
 type Context C.cairo_t
 
 // WrapContext wraps the C unsafe.Pointer to be the right type. It is
@@ -465,7 +442,6 @@ func (c *Context) Native() unsafe.Pointer {
 	return unsafe.Pointer(c)
 }
 
-// Device:
 type Device C.cairo_device_t
 
 // WrapDevice wraps the C unsafe.Pointer to be the right type. It is
@@ -484,7 +460,6 @@ func (d *Device) Native() unsafe.Pointer {
 	return unsafe.Pointer(d)
 }
 
-// Surface:
 type Surface C.cairo_surface_t
 
 // WrapSurface wraps the C unsafe.Pointer to be the right type. It is
@@ -503,7 +478,6 @@ func (s *Surface) Native() unsafe.Pointer {
 	return unsafe.Pointer(s)
 }
 
-// Matrix:
 type Matrix C.cairo_matrix_t
 
 // WrapMatrix wraps the C unsafe.Pointer to be the right type. It is
@@ -517,7 +491,6 @@ func (m *Matrix) Native() unsafe.Pointer {
 	return unsafe.Pointer(m)
 }
 
-// Pattern:
 type Pattern C.cairo_pattern_t
 
 // WrapPattern wraps the C unsafe.Pointer to be the right type. It is
@@ -536,7 +509,6 @@ func (p *Pattern) Native() unsafe.Pointer {
 	return unsafe.Pointer(p)
 }
 
-// Region:
 type Region C.cairo_region_t
 
 // WrapRegion wraps the C unsafe.Pointer to be the right type. It is
@@ -555,7 +527,6 @@ func (r *Region) Native() unsafe.Pointer {
 	return unsafe.Pointer(r)
 }
 
-// FontOptions:
 type FontOptions C.cairo_font_options_t
 
 // WrapFontOptions wraps the C unsafe.Pointer to be the right type. It is
@@ -574,7 +545,6 @@ func (f *FontOptions) Native() unsafe.Pointer {
 	return unsafe.Pointer(f)
 }
 
-// FontFace:
 type FontFace C.cairo_font_face_t
 
 // WrapFontFace wraps the C unsafe.Pointer to be the right type. It is
@@ -593,7 +563,6 @@ func (f *FontFace) Native() unsafe.Pointer {
 	return unsafe.Pointer(f)
 }
 
-// ScaledFont:
 type ScaledFont C.cairo_scaled_font_t
 
 // WrapScaledFont wraps the C unsafe.Pointer to be the right type. It is
@@ -612,7 +581,6 @@ func (s *ScaledFont) Native() unsafe.Pointer {
 	return unsafe.Pointer(s)
 }
 
-// Path:
 type Path C.cairo_path_t
 
 // WrapPath wraps the C unsafe.Pointer to be the right type. It is
@@ -626,7 +594,6 @@ func (p *Path) Native() unsafe.Pointer {
 	return unsafe.Pointer(p)
 }
 
-// Rectangle:
 type Rectangle C.cairo_rectangle_t
 
 // WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
@@ -645,7 +612,6 @@ func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(r)
 }
 
-// RectangleInt:
 type RectangleInt C.cairo_rectangle_int_t
 
 // WrapRectangleInt wraps the C unsafe.Pointer to be the right type. It is

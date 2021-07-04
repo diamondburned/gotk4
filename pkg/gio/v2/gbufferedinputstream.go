@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -26,6 +27,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -52,19 +55,20 @@ type BufferedInputStream interface {
 	FilterInputStream
 	Seekable
 
-	// FillBufferedInputStream:
 	FillBufferedInputStream(count int, cancellable Cancellable) (int, error)
-	// FillFinishBufferedInputStream:
+
+	FillAsyncBufferedInputStream(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	FillFinishBufferedInputStream(result AsyncResult) (int, error)
-	// Available:
+
 	Available() uint
-	// BufferSize:
+
 	BufferSize() uint
-	// PeekBufferedInputStream:
+
 	PeekBufferedInputStream(buffer []byte, offset uint) uint
-	// ReadByteBufferedInputStream:
+
 	ReadByteBufferedInputStream(cancellable Cancellable) (int, error)
-	// SetBufferSizeBufferedInputStream:
+
 	SetBufferSizeBufferedInputStream(size uint)
 }
 
@@ -87,7 +91,6 @@ func marshalBufferedInputStream(p uintptr) (interface{}, error) {
 	return WrapBufferedInputStream(obj), nil
 }
 
-// NewBufferedInputStream:
 func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _cret *C.GInputStream // in
@@ -103,7 +106,6 @@ func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
 	return _bufferedInputStream
 }
 
-// NewBufferedInputStreamSized:
 func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gsize         // out
@@ -141,6 +143,24 @@ func (s bufferedInputStream) FillBufferedInputStream(count int, cancellable Canc
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
+}
+
+func (s bufferedInputStream) FillAsyncBufferedInputStream(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg1 C.gssize                // out
+	var _arg2 C.int                   // out
+	var _arg3 *C.GCancellable         // out
+	var _arg4 C.GAsyncReadyCallback   // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gssize(count)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_buffered_input_stream_fill_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (s bufferedInputStream) FillFinishBufferedInputStream(result AsyncResult) (int, error) {

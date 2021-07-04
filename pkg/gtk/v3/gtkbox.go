@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,31 +75,30 @@ type Box interface {
 	Container
 	Orientable
 
-	// BaselinePosition:
 	BaselinePosition() BaselinePosition
-	// CenterWidget:
+
 	CenterWidget() Widget
-	// Homogeneous:
+
 	Homogeneous() bool
-	// Spacing:
+
 	Spacing() int
-	// PackEndBox:
+
 	PackEndBox(child Widget, expand bool, fill bool, padding uint)
-	// PackStartBox:
+
 	PackStartBox(child Widget, expand bool, fill bool, padding uint)
-	// QueryChildPackingBox:
+
 	QueryChildPackingBox(child Widget) (expand bool, fill bool, padding uint, packType PackType)
-	// ReorderChildBox:
+
 	ReorderChildBox(child Widget, position int)
-	// SetBaselinePositionBox:
+
 	SetBaselinePositionBox(position BaselinePosition)
-	// SetCenterWidgetBox:
+
 	SetCenterWidgetBox(widget Widget)
-	// SetChildPackingBox:
+
 	SetChildPackingBox(child Widget, expand bool, fill bool, padding uint, packType PackType)
-	// SetHomogeneousBox:
+
 	SetHomogeneousBox(homogeneous bool)
-	// SetSpacingBox:
+
 	SetSpacingBox(spacing int)
 }
 
@@ -120,7 +121,6 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return WrapBox(obj), nil
 }
 
-// NewBox:
 func NewBox(orientation Orientation, spacing int) Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gint           // out
@@ -352,6 +352,18 @@ func (b box) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b box) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b box) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b box) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b box) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b box) InternalChild(builder Builder, childname string) gextras.Objector {

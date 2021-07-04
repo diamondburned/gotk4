@@ -33,7 +33,6 @@ func init() {
 type CellRendererText interface {
 	CellRenderer
 
-	// SetFixedHeightFromFontCellRendererText:
 	SetFixedHeightFromFontCellRendererText(numberOfRows int)
 }
 
@@ -56,7 +55,6 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 	return WrapCellRendererText(obj), nil
 }
 
-// NewCellRendererText:
 func NewCellRendererText() CellRendererText {
 	var _cret *C.GtkCellRenderer // in
 

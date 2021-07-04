@@ -639,7 +639,6 @@ func RCSetDefaultFiles(filenames []string) {
 type RCStyle interface {
 	gextras.Objector
 
-	// CopyRCStyle:
 	CopyRCStyle() RCStyle
 }
 
@@ -662,7 +661,6 @@ func marshalRCStyle(p uintptr) (interface{}, error) {
 	return WrapRCStyle(obj), nil
 }
 
-// NewRCStyle:
 func NewRCStyle() RCStyle {
 	var _cret *C.GtkRcStyle // in
 
@@ -690,7 +688,6 @@ func (o rcStyle) CopyRCStyle() RCStyle {
 	return _rcStyle
 }
 
-// RCContext:
 type RCContext C.GtkRcContext
 
 // WrapRCContext wraps the C unsafe.Pointer to be the right type. It is

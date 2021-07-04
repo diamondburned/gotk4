@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -20,11 +21,39 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_main_context_get_type()), F: marshalMainContext},
 		{T: externglib.Type(C.g_main_loop_get_type()), F: marshalMainLoop},
+		{T: externglib.Type(C.g_source_get_type()), F: marshalSource},
 	})
 }
 
 // MainContextPusher: opaque type. See g_main_context_pusher_new() for details.
 type MainContextPusher = C.void
+
+// SourceFunc specifies the type of function passed to g_timeout_add(),
+// g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
+//
+// When calling g_source_set_callback(), you may need to cast a function of a
+// different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
+// incompatible function types.
+type SourceFunc func(ok bool)
+
+//export gotk4_SourceFunc
+func _SourceFunc(arg0 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg0))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	fn := v.(SourceFunc)
+	ok := fn()
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
 //
@@ -78,6 +107,24 @@ func GetRealTime() int64 {
 	_gint64 = int64(_cret)
 
 	return _gint64
+}
+
+// IdleRemoveByData removes the idle function with the given data.
+func IdleRemoveByData(data interface{}) bool {
+	var _arg1 C.gpointer // out
+	var _cret C.gboolean // in
+
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(data)))
+
+	_cret = C.g_idle_remove_by_data(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // NewIdleSource creates a new idle source.
@@ -392,6 +439,40 @@ func (c *MainContext) Dispatch() {
 	C.g_main_context_dispatch(_arg0)
 }
 
+// FindSourceByFuncsUserData: if @context is currently blocking in
+// g_main_context_iteration() waiting for a source to become ready, cause it to
+// stop blocking and return. Otherwise, cause the next invocation of
+// g_main_context_iteration() to return without blocking.
+//
+// This API is useful for low-level control over Context; for example,
+// integrating it with main loop implementations such as Loop.
+//
+// Another related use for this function is when implementing a main loop with a
+// termination condition, computed from multiple threads:
+//
+//      perform_work();
+//
+//      if (g_atomic_int_dec_and_test (&tasks_remaining))
+//        g_main_context_wakeup (NULL);
+func (c *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData interface{}) *Source {
+	var _arg0 *C.GMainContext // out
+	var _arg1 *C.GSourceFuncs // out
+	var _arg2 C.gpointer      // out
+	var _cret *C.GSource      // in
+
+	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs.Native()))
+	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+
+	_cret = C.g_main_context_find_source_by_funcs_user_data(_arg0, _arg1, _arg2)
+
+	var _source *Source // out
+
+	_source = (*Source)(unsafe.Pointer(_cret))
+
+	return _source
+}
+
 // FindSourceByID: if @context is currently blocking in
 // g_main_context_iteration() waiting for a source to become ready, cause it to
 // stop blocking and return. Otherwise, cause the next invocation of
@@ -416,6 +497,38 @@ func (c *MainContext) FindSourceByID(sourceId uint) *Source {
 	_arg1 = C.guint(sourceId)
 
 	_cret = C.g_main_context_find_source_by_id(_arg0, _arg1)
+
+	var _source *Source // out
+
+	_source = (*Source)(unsafe.Pointer(_cret))
+
+	return _source
+}
+
+// FindSourceByUserData: if @context is currently blocking in
+// g_main_context_iteration() waiting for a source to become ready, cause it to
+// stop blocking and return. Otherwise, cause the next invocation of
+// g_main_context_iteration() to return without blocking.
+//
+// This API is useful for low-level control over Context; for example,
+// integrating it with main loop implementations such as Loop.
+//
+// Another related use for this function is when implementing a main loop with a
+// termination condition, computed from multiple threads:
+//
+//      perform_work();
+//
+//      if (g_atomic_int_dec_and_test (&tasks_remaining))
+//        g_main_context_wakeup (NULL);
+func (c *MainContext) FindSourceByUserData(userData interface{}) *Source {
+	var _arg0 *C.GMainContext // out
+	var _arg1 C.gpointer      // out
+	var _cret *C.GSource      // in
+
+	_arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+
+	_cret = C.g_main_context_find_source_by_user_data(_arg0, _arg1)
 
 	var _source *Source // out
 
@@ -859,4 +972,506 @@ func (l *MainLoop) Unref() {
 	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
 
 	C.g_main_loop_unref(_arg0)
+}
+
+// Source: the `GSource` struct is an opaque data type representing an event
+// source.
+type Source C.GSource
+
+// WrapSource wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSource(ptr unsafe.Pointer) *Source {
+	return (*Source)(ptr)
+}
+
+func marshalSource(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return (*Source)(unsafe.Pointer(b)), nil
+}
+
+// NewSource constructs a struct Source.
+func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
+	var _arg1 *C.GSourceFuncs // out
+	var _arg2 C.guint         // out
+	var _cret *C.GSource      // in
+
+	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(sourceFuncs.Native()))
+	_arg2 = C.guint(structSize)
+
+	_cret = C.g_source_new(_arg1, _arg2)
+
+	var _source *Source // out
+
+	_source = (*Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_source, func(v **Source) {
+		C.free(unsafe.Pointer(v))
+	})
+
+	return _source
+}
+
+// Native returns the underlying C source pointer.
+func (s *Source) Native() unsafe.Pointer {
+	return unsafe.Pointer(s)
+}
+
+// AddChildSource decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) AddChildSource(childSource *Source) {
+	var _arg0 *C.GSource // out
+	var _arg1 *C.GSource // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GSource)(unsafe.Pointer(childSource.Native()))
+
+	C.g_source_add_child_source(_arg0, _arg1)
+}
+
+// AddPoll decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) AddPoll(fd *PollFD) {
+	var _arg0 *C.GSource // out
+	var _arg1 *C.GPollFD // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd.Native()))
+
+	C.g_source_add_poll(_arg0, _arg1)
+}
+
+// AddUnixFd decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) AddUnixFd(fd int, events IOCondition) interface{} {
+	var _arg0 *C.GSource     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GIOCondition // out
+	var _cret C.gpointer     // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(fd)
+	_arg2 = C.GIOCondition(events)
+
+	_cret = C.g_source_add_unix_fd(_arg0, _arg1, _arg2)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
+// Attach decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) Attach(context *MainContext) uint {
+	var _arg0 *C.GSource      // out
+	var _arg1 *C.GMainContext // out
+	var _cret C.guint         // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GMainContext)(unsafe.Pointer(context.Native()))
+
+	_cret = C.g_source_attach(_arg0, _arg1)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Destroy decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) Destroy() {
+	var _arg0 *C.GSource // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	C.g_source_destroy(_arg0)
+}
+
+// CanRecurse decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) CanRecurse() bool {
+	var _arg0 *C.GSource // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_get_can_recurse(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Context decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) Context() *MainContext {
+	var _arg0 *C.GSource      // out
+	var _cret *C.GMainContext // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_get_context(_arg0)
+
+	var _mainContext *MainContext // out
+
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+
+	return _mainContext
+}
+
+// CurrentTime decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) CurrentTime(timeval *TimeVal) {
+	var _arg0 *C.GSource  // out
+	var _arg1 *C.GTimeVal // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GTimeVal)(unsafe.Pointer(timeval.Native()))
+
+	C.g_source_get_current_time(_arg0, _arg1)
+}
+
+// ID decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) ID() uint {
+	var _arg0 *C.GSource // out
+	var _cret C.guint    // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_get_id(_arg0)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Name decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) Name() string {
+	var _arg0 *C.GSource // out
+	var _cret *C.char    // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_get_name(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+
+	return _utf8
+}
+
+// Priority decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) Priority() int {
+	var _arg0 *C.GSource // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_get_priority(_arg0)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// ReadyTime decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) ReadyTime() int64 {
+	var _arg0 *C.GSource // out
+	var _cret C.gint64   // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_get_ready_time(_arg0)
+
+	var _gint64 int64 // out
+
+	_gint64 = int64(_cret)
+
+	return _gint64
+}
+
+// Time decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) Time() int64 {
+	var _arg0 *C.GSource // out
+	var _cret C.gint64   // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_get_time(_arg0)
+
+	var _gint64 int64 // out
+
+	_gint64 = int64(_cret)
+
+	return _gint64
+}
+
+// IsDestroyed decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) IsDestroyed() bool {
+	var _arg0 *C.GSource // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_is_destroyed(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ModifyUnixFd decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) ModifyUnixFd(tag interface{}, newEvents IOCondition) {
+	var _arg0 *C.GSource     // out
+	var _arg1 C.gpointer     // out
+	var _arg2 C.GIOCondition // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(tag)))
+	_arg2 = C.GIOCondition(newEvents)
+
+	C.g_source_modify_unix_fd(_arg0, _arg1, _arg2)
+}
+
+// QueryUnixFd decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) QueryUnixFd(tag interface{}) IOCondition {
+	var _arg0 *C.GSource     // out
+	var _arg1 C.gpointer     // out
+	var _cret C.GIOCondition // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(tag)))
+
+	_cret = C.g_source_query_unix_fd(_arg0, _arg1)
+
+	var _ioCondition IOCondition // out
+
+	_ioCondition = IOCondition(_cret)
+
+	return _ioCondition
+}
+
+// Ref decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) Ref() *Source {
+	var _arg0 *C.GSource // out
+	var _cret *C.GSource // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	_cret = C.g_source_ref(_arg0)
+
+	var _ret *Source // out
+
+	_ret = (*Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(&_ret, func(v **Source) {
+		C.free(unsafe.Pointer(v))
+	})
+
+	return _ret
+}
+
+// RemoveChildSource decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) RemoveChildSource(childSource *Source) {
+	var _arg0 *C.GSource // out
+	var _arg1 *C.GSource // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GSource)(unsafe.Pointer(childSource.Native()))
+
+	C.g_source_remove_child_source(_arg0, _arg1)
+}
+
+// RemovePoll decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) RemovePoll(fd *PollFD) {
+	var _arg0 *C.GSource // out
+	var _arg1 *C.GPollFD // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd.Native()))
+
+	C.g_source_remove_poll(_arg0, _arg1)
+}
+
+// RemoveUnixFd decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) RemoveUnixFd(tag interface{}) {
+	var _arg0 *C.GSource // out
+	var _arg1 C.gpointer // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(tag)))
+
+	C.g_source_remove_unix_fd(_arg0, _arg1)
+}
+
+// SetCallbackIndirect decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) SetCallbackIndirect(callbackData interface{}, callbackFuncs *SourceCallbackFuncs) {
+	var _arg0 *C.GSource              // out
+	var _arg1 C.gpointer              // out
+	var _arg2 *C.GSourceCallbackFuncs // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(callbackData)))
+	_arg2 = (*C.GSourceCallbackFuncs)(unsafe.Pointer(callbackFuncs.Native()))
+
+	C.g_source_set_callback_indirect(_arg0, _arg1, _arg2)
+}
+
+// SetCanRecurse decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) SetCanRecurse(canRecurse bool) {
+	var _arg0 *C.GSource // out
+	var _arg1 C.gboolean // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	if canRecurse {
+		_arg1 = C.TRUE
+	}
+
+	C.g_source_set_can_recurse(_arg0, _arg1)
+}
+
+// SetFuncs decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) SetFuncs(funcs *SourceFuncs) {
+	var _arg0 *C.GSource      // out
+	var _arg1 *C.GSourceFuncs // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs.Native()))
+
+	C.g_source_set_funcs(_arg0, _arg1)
+}
+
+// SetName decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) SetName(name string) {
+	var _arg0 *C.GSource // out
+	var _arg1 *C.char    // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.g_source_set_name(_arg0, _arg1)
+}
+
+// SetPriority decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) SetPriority(priority int) {
+	var _arg0 *C.GSource // out
+	var _arg1 C.gint     // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(priority)
+
+	C.g_source_set_priority(_arg0, _arg1)
+}
+
+// SetReadyTime decreases the reference count of a source by one. If the
+// resulting reference count is zero the source and associated memory will be
+// destroyed.
+func (s *Source) SetReadyTime(readyTime int64) {
+	var _arg0 *C.GSource // out
+	var _arg1 C.gint64   // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint64(readyTime)
+
+	C.g_source_set_ready_time(_arg0, _arg1)
+}
+
+// Unref decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (s *Source) Unref() {
+	var _arg0 *C.GSource // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
+
+	C.g_source_unref(_arg0)
+}
+
+// SourceCallbackFuncs: the `GSourceCallbackFuncs` struct contains functions for
+// managing callback objects.
+type SourceCallbackFuncs C.GSourceCallbackFuncs
+
+// WrapSourceCallbackFuncs wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSourceCallbackFuncs(ptr unsafe.Pointer) *SourceCallbackFuncs {
+	return (*SourceCallbackFuncs)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
+	return unsafe.Pointer(s)
+}
+
+// SourceFuncs: the `GSourceFuncs` struct contains a table of functions used to
+// handle event sources in a generic manner.
+//
+// For idle sources, the prepare and check functions always return true to
+// indicate that the source is always ready to be processed. The prepare
+// function also returns a timeout value of 0 to ensure that the poll() call
+// doesn't block (since that would be time wasted which could have been spent
+// running the idle function).
+//
+// For timeout sources, the prepare and check functions both return true if the
+// timeout interval has expired. The prepare function also returns a timeout
+// value to ensure that the poll() call doesn't block too long and miss the next
+// timeout.
+//
+// For file descriptor sources, the prepare function typically returns false,
+// since it must wait until poll() has been called before it knows whether any
+// events need to be processed. It sets the returned timeout to -1 to indicate
+// that it doesn't mind how long the poll() call blocks. In the check function,
+// it tests the results of the poll() call to see if the required condition has
+// been met, and returns true if so.
+type SourceFuncs C.GSourceFuncs
+
+// WrapSourceFuncs wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSourceFuncs(ptr unsafe.Pointer) *SourceFuncs {
+	return (*SourceFuncs)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (s *SourceFuncs) Native() unsafe.Pointer {
+	return unsafe.Pointer(s)
 }

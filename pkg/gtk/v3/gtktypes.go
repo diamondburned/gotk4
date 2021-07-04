@@ -26,7 +26,6 @@ func init() {
 	})
 }
 
-// IconSet:
 type IconSet C.GtkIconSet
 
 // WrapIconSet wraps the C unsafe.Pointer to be the right type. It is
@@ -258,7 +257,6 @@ func (i *IconSet) Unref() {
 	C.gtk_icon_set_unref(_arg0)
 }
 
-// IconSource:
 type IconSource C.GtkIconSource
 
 // WrapIconSource wraps the C unsafe.Pointer to be the right type. It is
@@ -838,7 +836,6 @@ func (s *IconSource) SetStateWildcarded(setting bool) {
 	C.gtk_icon_source_set_state_wildcarded(_arg0, _arg1)
 }
 
-// SelectionData:
 type SelectionData C.GtkSelectionData
 
 // WrapSelectionData wraps the C unsafe.Pointer to be the right type. It is

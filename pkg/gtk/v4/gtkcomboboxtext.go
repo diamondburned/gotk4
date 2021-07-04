@@ -71,23 +71,22 @@ func init() {
 type ComboBoxText interface {
 	ComboBox
 
-	// AppendComboBoxText:
 	AppendComboBoxText(id string, text string)
-	// AppendTextComboBoxText:
+
 	AppendTextComboBoxText(text string)
-	// ActiveText:
+
 	ActiveText() string
-	// InsertComboBoxText:
+
 	InsertComboBoxText(position int, id string, text string)
-	// InsertTextComboBoxText:
+
 	InsertTextComboBoxText(position int, text string)
-	// PrependComboBoxText:
+
 	PrependComboBoxText(id string, text string)
-	// PrependTextComboBoxText:
+
 	PrependTextComboBoxText(text string)
-	// RemoveComboBoxText:
+
 	RemoveComboBoxText(position int)
-	// RemoveAllComboBoxText:
+
 	RemoveAllComboBoxText()
 }
 
@@ -110,7 +109,6 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 	return WrapComboBoxText(obj), nil
 }
 
-// NewComboBoxText:
 func NewComboBoxText() ComboBoxText {
 	var _cret *C.GtkWidget // in
 
@@ -123,7 +121,6 @@ func NewComboBoxText() ComboBoxText {
 	return _comboBoxText
 }
 
-// NewComboBoxTextWithEntry:
 func NewComboBoxTextWithEntry() ComboBoxText {
 	var _cret *C.GtkWidget // in
 

@@ -5,6 +5,8 @@ package gobject
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,4 +51,38 @@ const (
 
 func marshalBindingFlags(p uintptr) (interface{}, error) {
 	return BindingFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// BindingTransformFunc: a function to be called to transform @from_value to
+// @to_value. If this is the @transform_to function of a binding, then
+// @from_value is the @source_property on the @source object, and @to_value is
+// the @target_property on the @target object. If this is the @transform_from
+// function of a G_BINDING_BIDIRECTIONAL binding, then those roles are reversed.
+type BindingTransformFunc func(binding Binding, fromValue externglib.Value, toValue externglib.Value, ok bool)
+
+//export gotk4_BindingTransformFunc
+func _BindingTransformFunc(arg0 *C.GBinding, arg1 *C.GValue, arg2 *C.GValue, arg3 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var binding Binding            // out
+	var fromValue externglib.Value // out
+	var toValue externglib.Value   // out
+
+	binding = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Binding)
+	fromValue = externglib.ValueFromNative(unsafe.Pointer(arg1))
+	toValue = externglib.ValueFromNative(unsafe.Pointer(arg2))
+
+	fn := v.(BindingTransformFunc)
+	ok := fn(binding, fromValue, toValue)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }

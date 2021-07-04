@@ -5,9 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -104,53 +105,42 @@ func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 type PlacesSidebar interface {
 	ScrolledWindow
 
-	// AddShortcutPlacesSidebar:
-	AddShortcutPlacesSidebar(location gio.File)
-	// LocalOnly:
 	LocalOnly() bool
-	// Location:
-	Location() gio.File
-	// NthBookmark:
-	NthBookmark(n int) gio.File
-	// OpenFlags:
+
 	OpenFlags() PlacesOpenFlags
-	// ShowConnectToServer:
+
 	ShowConnectToServer() bool
-	// ShowDesktop:
+
 	ShowDesktop() bool
-	// ShowEnterLocation:
+
 	ShowEnterLocation() bool
-	// ShowOtherLocations:
+
 	ShowOtherLocations() bool
-	// ShowRecent:
+
 	ShowRecent() bool
-	// ShowStarredLocation:
+
 	ShowStarredLocation() bool
-	// ShowTrash:
+
 	ShowTrash() bool
-	// RemoveShortcutPlacesSidebar:
-	RemoveShortcutPlacesSidebar(location gio.File)
-	// SetDropTargetsVisiblePlacesSidebar:
+
 	SetDropTargetsVisiblePlacesSidebar(visible bool, context gdk.DragContext)
-	// SetLocalOnlyPlacesSidebar:
+
 	SetLocalOnlyPlacesSidebar(localOnly bool)
-	// SetLocationPlacesSidebar:
-	SetLocationPlacesSidebar(location gio.File)
-	// SetOpenFlagsPlacesSidebar:
+
 	SetOpenFlagsPlacesSidebar(flags PlacesOpenFlags)
-	// SetShowConnectToServerPlacesSidebar:
+
 	SetShowConnectToServerPlacesSidebar(showConnectToServer bool)
-	// SetShowDesktopPlacesSidebar:
+
 	SetShowDesktopPlacesSidebar(showDesktop bool)
-	// SetShowEnterLocationPlacesSidebar:
+
 	SetShowEnterLocationPlacesSidebar(showEnterLocation bool)
-	// SetShowOtherLocationsPlacesSidebar:
+
 	SetShowOtherLocationsPlacesSidebar(showOtherLocations bool)
-	// SetShowRecentPlacesSidebar:
+
 	SetShowRecentPlacesSidebar(showRecent bool)
-	// SetShowStarredLocationPlacesSidebar:
+
 	SetShowStarredLocationPlacesSidebar(showStarredLocation bool)
-	// SetShowTrashPlacesSidebar:
+
 	SetShowTrashPlacesSidebar(showTrash bool)
 }
 
@@ -173,7 +163,6 @@ func marshalPlacesSidebar(p uintptr) (interface{}, error) {
 	return WrapPlacesSidebar(obj), nil
 }
 
-// NewPlacesSidebar:
 func NewPlacesSidebar() PlacesSidebar {
 	var _cret *C.GtkWidget // in
 
@@ -184,16 +173,6 @@ func NewPlacesSidebar() PlacesSidebar {
 	_placesSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PlacesSidebar)
 
 	return _placesSidebar
-}
-
-func (s placesSidebar) AddShortcutPlacesSidebar(location gio.File) {
-	var _arg0 *C.GtkPlacesSidebar // out
-	var _arg1 *C.GFile            // out
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
-
-	C.gtk_places_sidebar_add_shortcut(_arg0, _arg1)
 }
 
 func (s placesSidebar) LocalOnly() bool {
@@ -211,38 +190,6 @@ func (s placesSidebar) LocalOnly() bool {
 	}
 
 	return _ok
-}
-
-func (s placesSidebar) Location() gio.File {
-	var _arg0 *C.GtkPlacesSidebar // out
-	var _cret *C.GFile            // in
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_places_sidebar_get_location(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
-}
-
-func (s placesSidebar) NthBookmark(n int) gio.File {
-	var _arg0 *C.GtkPlacesSidebar // out
-	var _arg1 C.gint              // out
-	var _cret *C.GFile            // in
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(n)
-
-	_cret = C.gtk_places_sidebar_get_nth_bookmark(_arg0, _arg1)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
 }
 
 func (s placesSidebar) OpenFlags() PlacesOpenFlags {
@@ -379,16 +326,6 @@ func (s placesSidebar) ShowTrash() bool {
 	return _ok
 }
 
-func (s placesSidebar) RemoveShortcutPlacesSidebar(location gio.File) {
-	var _arg0 *C.GtkPlacesSidebar // out
-	var _arg1 *C.GFile            // out
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
-
-	C.gtk_places_sidebar_remove_shortcut(_arg0, _arg1)
-}
-
 func (s placesSidebar) SetDropTargetsVisiblePlacesSidebar(visible bool, context gdk.DragContext) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -413,16 +350,6 @@ func (s placesSidebar) SetLocalOnlyPlacesSidebar(localOnly bool) {
 	}
 
 	C.gtk_places_sidebar_set_local_only(_arg0, _arg1)
-}
-
-func (s placesSidebar) SetLocationPlacesSidebar(location gio.File) {
-	var _arg0 *C.GtkPlacesSidebar // out
-	var _arg1 *C.GFile            // out
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
-
-	C.gtk_places_sidebar_set_location(_arg0, _arg1)
 }
 
 func (s placesSidebar) SetOpenFlagsPlacesSidebar(flags PlacesOpenFlags) {
@@ -525,6 +452,18 @@ func (b placesSidebar) AddChild(builder Builder, child gextras.Objector, typ str
 
 func (b placesSidebar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b placesSidebar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b placesSidebar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b placesSidebar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b placesSidebar) InternalChild(builder Builder, childname string) gextras.Objector {

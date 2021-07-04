@@ -36,21 +36,20 @@ func init() {
 type TLSPassword interface {
 	gextras.Objector
 
-	// Description:
 	Description() string
-	// Flags:
+
 	Flags() TLSPasswordFlags
-	// Value:
+
 	Value(length *uint) *byte
-	// Warning:
+
 	Warning() string
-	// SetDescriptionTLSPassword:
+
 	SetDescriptionTLSPassword(description string)
-	// SetFlagsTLSPassword:
+
 	SetFlagsTLSPassword(flags TLSPasswordFlags)
-	// SetValueTLSPassword:
+
 	SetValueTLSPassword(value []byte)
-	// SetWarningTLSPassword:
+
 	SetWarningTLSPassword(warning string)
 }
 
@@ -73,7 +72,6 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 	return WrapTLSPassword(obj), nil
 }
 
-// NewTLSPassword:
 func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 	var _arg1 C.GTlsPasswordFlags // out
 	var _arg2 *C.gchar            // out

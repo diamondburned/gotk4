@@ -63,7 +63,6 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 	return WrapMemoryInputStream(obj), nil
 }
 
-// NewMemoryInputStream:
 func NewMemoryInputStream() MemoryInputStream {
 	var _cret *C.GInputStream // in
 

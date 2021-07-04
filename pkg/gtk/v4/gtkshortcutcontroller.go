@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,20 +58,18 @@ func init() {
 // more about the syntax for triggers.
 type ShortcutController interface {
 	EventController
-	gio.ListModel
 	Buildable
 
-	// AddShortcutShortcutController:
 	AddShortcutShortcutController(shortcut Shortcut)
-	// MnemonicsModifiers:
+
 	MnemonicsModifiers() gdk.ModifierType
-	// Scope:
+
 	Scope() ShortcutScope
-	// RemoveShortcutShortcutController:
+
 	RemoveShortcutShortcutController(shortcut Shortcut)
-	// SetMnemonicsModifiersShortcutController:
+
 	SetMnemonicsModifiersShortcutController(modifiers gdk.ModifierType)
-	// SetScopeShortcutController:
+
 	SetScopeShortcutController(scope ShortcutScope)
 }
 
@@ -95,27 +92,10 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 	return WrapShortcutController(obj), nil
 }
 
-// NewShortcutController:
 func NewShortcutController() ShortcutController {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_shortcut_controller_new()
-
-	var _shortcutController ShortcutController // out
-
-	_shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ShortcutController)
-
-	return _shortcutController
-}
-
-// NewShortcutControllerForModel:
-func NewShortcutControllerForModel(model gio.ListModel) ShortcutController {
-	var _arg1 *C.GListModel         // out
-	var _cret *C.GtkEventController // in
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
 
 	var _shortcutController ShortcutController // out
 
@@ -192,22 +172,6 @@ func (s shortcutController) SetScopeShortcutController(scope ShortcutScope) {
 	_arg1 = C.GtkShortcutScope(scope)
 
 	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
-}
-
-func (l shortcutController) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l shortcutController) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l shortcutController) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l shortcutController) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 func (b shortcutController) BuildableID() string {

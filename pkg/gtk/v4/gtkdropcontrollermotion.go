@@ -34,11 +34,10 @@ func init() {
 type DropControllerMotion interface {
 	EventController
 
-	// ContainsPointerDropControllerMotion:
 	ContainsPointerDropControllerMotion() bool
-	// Drop:
+
 	Drop() gdk.Drop
-	// IsPointerDropControllerMotion:
+
 	IsPointerDropControllerMotion() bool
 }
 
@@ -61,7 +60,6 @@ func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 	return WrapDropControllerMotion(obj), nil
 }
 
-// NewDropControllerMotion:
 func NewDropControllerMotion() DropControllerMotion {
 	var _cret *C.GtkEventController // in
 

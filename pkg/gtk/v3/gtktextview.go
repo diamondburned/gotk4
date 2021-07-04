@@ -6,8 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -119,147 +121,146 @@ type TextView interface {
 	Container
 	Scrollable
 
-	// AddChildAtAnchorTextView:
 	AddChildAtAnchorTextView(child Widget, anchor TextChildAnchor)
-	// AddChildInWindowTextView:
+
 	AddChildInWindowTextView(child Widget, whichWindow TextWindowType, xpos int, ypos int)
-	// BackwardDisplayLineTextView:
+
 	BackwardDisplayLineTextView(iter *TextIter) bool
-	// BackwardDisplayLineStartTextView:
+
 	BackwardDisplayLineStartTextView(iter *TextIter) bool
-	// BufferToWindowCoordsTextView:
+
 	BufferToWindowCoordsTextView(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int)
-	// ForwardDisplayLineTextView:
+
 	ForwardDisplayLineTextView(iter *TextIter) bool
-	// ForwardDisplayLineEndTextView:
+
 	ForwardDisplayLineEndTextView(iter *TextIter) bool
-	// AcceptsTab:
+
 	AcceptsTab() bool
-	// BorderWindowSize:
+
 	BorderWindowSize(typ TextWindowType) int
-	// BottomMargin:
+
 	BottomMargin() int
-	// Buffer:
+
 	Buffer() TextBuffer
-	// CursorLocations:
+
 	CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle)
-	// CursorVisible:
+
 	CursorVisible() bool
-	// DefaultAttributes:
+
 	DefaultAttributes() *TextAttributes
-	// Editable:
+
 	Editable() bool
-	// GetHAdjustment:
+
 	GetHAdjustment() Adjustment
-	// Indent:
+
 	Indent() int
-	// InputHints:
+
 	InputHints() InputHints
-	// InputPurpose:
+
 	InputPurpose() InputPurpose
-	// IterAtLocation:
+
 	IterAtLocation(x int, y int) (TextIter, bool)
-	// IterAtPosition:
+
 	IterAtPosition(x int, y int) (TextIter, int, bool)
-	// IterLocation:
+
 	IterLocation(iter *TextIter) gdk.Rectangle
-	// Justification:
+
 	Justification() Justification
-	// LeftMargin:
+
 	LeftMargin() int
-	// LineAtY:
+
 	LineAtY(y int) (TextIter, int)
-	// LineYrange:
+
 	LineYrange(iter *TextIter) (y int, height int)
-	// Monospace:
+
 	Monospace() bool
-	// Overwrite:
+
 	Overwrite() bool
-	// PixelsAboveLines:
+
 	PixelsAboveLines() int
-	// PixelsBelowLines:
+
 	PixelsBelowLines() int
-	// PixelsInsideWrap:
+
 	PixelsInsideWrap() int
-	// RightMargin:
+
 	RightMargin() int
-	// Tabs:
+
 	Tabs() *pango.TabArray
-	// TopMargin:
+
 	TopMargin() int
-	// GetVAdjustment:
+
 	GetVAdjustment() Adjustment
-	// VisibleRect:
+
 	VisibleRect() gdk.Rectangle
-	// Window:
+
 	Window(win TextWindowType) gdk.Window
-	// WindowType:
+
 	WindowType(window gdk.Window) TextWindowType
-	// WrapMode:
+
 	WrapMode() WrapMode
-	// ImContextFilterKeypressTextView:
+
 	ImContextFilterKeypressTextView(event *gdk.EventKey) bool
-	// MoveChildTextView:
+
 	MoveChildTextView(child Widget, xpos int, ypos int)
-	// MoveMarkOnscreenTextView:
+
 	MoveMarkOnscreenTextView(mark TextMark) bool
-	// MoveVisuallyTextView:
+
 	MoveVisuallyTextView(iter *TextIter, count int) bool
-	// PlaceCursorOnscreenTextView:
+
 	PlaceCursorOnscreenTextView() bool
-	// ResetCursorBlinkTextView:
+
 	ResetCursorBlinkTextView()
-	// ResetImContextTextView:
+
 	ResetImContextTextView()
-	// ScrollMarkOnscreenTextView:
+
 	ScrollMarkOnscreenTextView(mark TextMark)
-	// ScrollToIterTextView:
+
 	ScrollToIterTextView(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool
-	// ScrollToMarkTextView:
+
 	ScrollToMarkTextView(mark TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64)
-	// SetAcceptsTabTextView:
+
 	SetAcceptsTabTextView(acceptsTab bool)
-	// SetBorderWindowSizeTextView:
+
 	SetBorderWindowSizeTextView(typ TextWindowType, size int)
-	// SetBottomMarginTextView:
+
 	SetBottomMarginTextView(bottomMargin int)
-	// SetBufferTextView:
+
 	SetBufferTextView(buffer TextBuffer)
-	// SetCursorVisibleTextView:
+
 	SetCursorVisibleTextView(setting bool)
-	// SetEditableTextView:
+
 	SetEditableTextView(setting bool)
-	// SetIndentTextView:
+
 	SetIndentTextView(indent int)
-	// SetInputHintsTextView:
+
 	SetInputHintsTextView(hints InputHints)
-	// SetInputPurposeTextView:
+
 	SetInputPurposeTextView(purpose InputPurpose)
-	// SetJustificationTextView:
+
 	SetJustificationTextView(justification Justification)
-	// SetLeftMarginTextView:
+
 	SetLeftMarginTextView(leftMargin int)
-	// SetMonospaceTextView:
+
 	SetMonospaceTextView(monospace bool)
-	// SetOverwriteTextView:
+
 	SetOverwriteTextView(overwrite bool)
-	// SetPixelsAboveLinesTextView:
+
 	SetPixelsAboveLinesTextView(pixelsAboveLines int)
-	// SetPixelsBelowLinesTextView:
+
 	SetPixelsBelowLinesTextView(pixelsBelowLines int)
-	// SetPixelsInsideWrapTextView:
+
 	SetPixelsInsideWrapTextView(pixelsInsideWrap int)
-	// SetRightMarginTextView:
+
 	SetRightMarginTextView(rightMargin int)
-	// SetTabsTextView:
+
 	SetTabsTextView(tabs *pango.TabArray)
-	// SetTopMarginTextView:
+
 	SetTopMarginTextView(topMargin int)
-	// SetWrapModeTextView:
+
 	SetWrapModeTextView(wrapMode WrapMode)
-	// StartsDisplayLineTextView:
+
 	StartsDisplayLineTextView(iter *TextIter) bool
-	// WindowToBufferCoordsTextView:
+
 	WindowToBufferCoordsTextView(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
@@ -282,7 +283,6 @@ func marshalTextView(p uintptr) (interface{}, error) {
 	return WrapTextView(obj), nil
 }
 
-// NewTextView:
 func NewTextView() TextView {
 	var _cret *C.GtkWidget // in
 
@@ -295,7 +295,6 @@ func NewTextView() TextView {
 	return _textView
 }
 
-// NewTextViewWithBuffer:
 func NewTextViewWithBuffer(buffer TextBuffer) TextView {
 	var _arg1 *C.GtkTextBuffer // out
 	var _cret *C.GtkWidget     // in
@@ -1475,6 +1474,18 @@ func (b textView) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b textView) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b textView) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b textView) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b textView) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b textView) InternalChild(builder Builder, childname string) gextras.Objector {

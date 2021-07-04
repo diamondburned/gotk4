@@ -40,15 +40,14 @@ func init() {
 type DBusObjectSkeleton interface {
 	DBusObject
 
-	// AddInterfaceDBusObjectSkeleton:
 	AddInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton)
-	// FlushDBusObjectSkeleton:
+
 	FlushDBusObjectSkeleton()
-	// RemoveInterfaceDBusObjectSkeleton:
+
 	RemoveInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton)
-	// RemoveInterfaceByNameDBusObjectSkeleton:
+
 	RemoveInterfaceByNameDBusObjectSkeleton(interfaceName string)
-	// SetObjectPathDBusObjectSkeleton:
+
 	SetObjectPathDBusObjectSkeleton(objectPath string)
 }
 
@@ -71,7 +70,6 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 	return WrapDBusObjectSkeleton(obj), nil
 }
 
-// NewDBusObjectSkeleton:
 func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 	var _arg1 *C.gchar               // out
 	var _cret *C.GDBusObjectSkeleton // in

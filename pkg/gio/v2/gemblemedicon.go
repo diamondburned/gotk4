@@ -43,11 +43,10 @@ func init() {
 type EmblemedIcon interface {
 	Icon
 
-	// AddEmblemEmblemedIcon:
 	AddEmblemEmblemedIcon(emblem Emblem)
-	// ClearEmblemsEmblemedIcon:
+
 	ClearEmblemsEmblemedIcon()
-	// GetIcon:
+
 	GetIcon() Icon
 }
 
@@ -70,7 +69,6 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	return WrapEmblemedIcon(obj), nil
 }
 
-// NewEmblemedIcon:
 func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out

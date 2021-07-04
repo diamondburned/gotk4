@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -65,6 +66,35 @@ func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 	return PrintCapabilities(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrinterFunc: the type of function passed to gtk_enumerate_printers().
+//
+// Note that you need to ref @printer, if you want to keep a reference to it
+// after the function has returned.
+type PrinterFunc func(printer Printer, ok bool)
+
+//export gotk4_PrinterFunc
+func _PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var printer Printer // out
+
+	printer = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Printer)
+
+	fn := v.(PrinterFunc)
+	ok := fn(printer)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // Printer: a `GtkPrinter` object represents a printer.
 //
 // You only need to deal directly with printers if you use the non-portable
@@ -77,47 +107,46 @@ func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 type Printer interface {
 	gextras.Objector
 
-	// AcceptsPDFPrinter:
 	AcceptsPDFPrinter() bool
-	// AcceptsPSPrinter:
+
 	AcceptsPSPrinter() bool
-	// ComparePrinter:
+
 	ComparePrinter(b Printer) int
-	// Backend:
+
 	Backend() *PrintBackend
-	// Capabilities:
+
 	Capabilities() PrintCapabilities
-	// DefaultPageSize:
+
 	DefaultPageSize() PageSetup
-	// Description:
+
 	Description() string
-	// HardMargins:
+
 	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-	// HardMarginsForPaperSize:
+
 	HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool)
-	// IconName:
+
 	IconName() string
-	// JobCount:
+
 	JobCount() int
-	// Location:
+
 	Location() string
-	// Name:
+
 	Name() string
-	// StateMessage:
+
 	StateMessage() string
-	// HasDetailsPrinter:
+
 	HasDetailsPrinter() bool
-	// IsAcceptingJobsPrinter:
+
 	IsAcceptingJobsPrinter() bool
-	// IsActivePrinter:
+
 	IsActivePrinter() bool
-	// IsDefaultPrinter:
+
 	IsDefaultPrinter() bool
-	// IsPausedPrinter:
+
 	IsPausedPrinter() bool
-	// IsVirtualPrinter:
+
 	IsVirtualPrinter() bool
-	// RequestDetailsPrinter:
+
 	RequestDetailsPrinter()
 }
 
@@ -140,7 +169,6 @@ func marshalPrinter(p uintptr) (interface{}, error) {
 	return WrapPrinter(obj), nil
 }
 
-// NewPrinter:
 func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
 	var _arg1 *C.char            // out
 	var _arg2 *C.GtkPrintBackend // out
@@ -519,7 +547,6 @@ func (p printer) RequestDetailsPrinter() {
 	C.gtk_printer_request_details(_arg0)
 }
 
-// PrintBackend:
 type PrintBackend C.GtkPrintBackend
 
 // WrapPrintBackend wraps the C unsafe.Pointer to be the right type. It is

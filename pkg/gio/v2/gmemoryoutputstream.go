@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -44,10 +45,13 @@ type MemoryOutputStream interface {
 	PollableOutputStream
 	Seekable
 
-	// DataSize:
+	Data() interface{}
+
 	DataSize() uint
-	// Size:
+
 	Size() uint
+
+	StealDataMemoryOutputStream() interface{}
 }
 
 // memoryOutputStream implements the MemoryOutputStream class.
@@ -69,7 +73,6 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 	return WrapMemoryOutputStream(obj), nil
 }
 
-// NewMemoryOutputStreamResizable:
 func NewMemoryOutputStreamResizable() MemoryOutputStream {
 	var _cret *C.GOutputStream // in
 
@@ -80,6 +83,21 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MemoryOutputStream)
 
 	return _memoryOutputStream
+}
+
+func (o memoryOutputStream) Data() interface{} {
+	var _arg0 *C.GMemoryOutputStream // out
+	var _cret C.gpointer             // in
+
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+
+	_cret = C.g_memory_output_stream_get_data(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
 }
 
 func (o memoryOutputStream) DataSize() uint {
@@ -110,6 +128,21 @@ func (o memoryOutputStream) Size() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+func (o memoryOutputStream) StealDataMemoryOutputStream() interface{} {
+	var _arg0 *C.GMemoryOutputStream // out
+	var _cret C.gpointer             // in
+
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+
+	_cret = C.g_memory_output_stream_steal_data(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
 }
 
 func (s memoryOutputStream) CanPoll() bool {

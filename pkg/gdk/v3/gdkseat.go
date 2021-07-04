@@ -5,6 +5,7 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -47,20 +48,41 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 	return SeatCapabilities(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SeatGrabPrepareFunc: type of the callback used to set up @window so it can be
+// grabbed. A typical action would be ensuring the window is visible, although
+// there's room for other initialization actions.
+type SeatGrabPrepareFunc func(seat Seat, window Window)
+
+//export gotk4_SeatGrabPrepareFunc
+func _SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var seat Seat     // out
+	var window Window // out
+
+	seat = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Seat)
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(Window)
+
+	fn := v.(SeatGrabPrepareFunc)
+	fn(seat, window)
+}
+
 // Seat: the Seat object represents a collection of input devices that belong to
 // a user.
 type Seat interface {
 	gextras.Objector
 
-	// Capabilities:
 	Capabilities() SeatCapabilities
-	// Display:
+
 	Display() Display
-	// Keyboard:
+
 	Keyboard() Device
-	// Pointer:
+
 	Pointer() Device
-	// UngrabSeat:
+
 	UngrabSeat()
 }
 

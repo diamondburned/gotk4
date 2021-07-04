@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -66,21 +68,20 @@ func init() {
 type Frame interface {
 	Bin
 
-	// Label:
 	Label() string
-	// LabelAlign:
+
 	LabelAlign() (xalign float32, yalign float32)
-	// LabelWidget:
+
 	LabelWidget() Widget
-	// ShadowType:
+
 	ShadowType() ShadowType
-	// SetLabelFrame:
+
 	SetLabelFrame(label string)
-	// SetLabelAlignFrame:
+
 	SetLabelAlignFrame(xalign float32, yalign float32)
-	// SetLabelWidgetFrame:
+
 	SetLabelWidgetFrame(labelWidget Widget)
-	// SetShadowTypeFrame:
+
 	SetShadowTypeFrame(typ ShadowType)
 }
 
@@ -103,7 +104,6 @@ func marshalFrame(p uintptr) (interface{}, error) {
 	return WrapFrame(obj), nil
 }
 
-// NewFrame:
 func NewFrame(label string) Frame {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -232,6 +232,18 @@ func (b frame) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b frame) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b frame) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b frame) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b frame) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b frame) InternalChild(builder Builder, childname string) gextras.Objector {

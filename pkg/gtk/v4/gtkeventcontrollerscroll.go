@@ -85,9 +85,8 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 type EventControllerScroll interface {
 	EventController
 
-	// Flags:
 	Flags() EventControllerScrollFlags
-	// SetFlagsEventControllerScroll:
+
 	SetFlagsEventControllerScroll(flags EventControllerScrollFlags)
 }
 
@@ -110,7 +109,6 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	return WrapEventControllerScroll(obj), nil
 }
 
-// NewEventControllerScroll:
 func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerScroll {
 	var _arg1 C.GtkEventControllerScrollFlags // out
 	var _cret *C.GtkEventController           // in

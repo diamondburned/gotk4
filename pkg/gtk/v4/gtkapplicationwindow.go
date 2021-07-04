@@ -3,13 +3,10 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -87,18 +84,15 @@ func init() {
 // GtkWidget *window = gtk_application_window_new (app); “`
 type ApplicationWindow interface {
 	Window
-	gio.ActionGroup
-	gio.ActionMap
 
-	// HelpOverlay:
 	HelpOverlay() ShortcutsWindow
-	// ID:
+
 	ID() uint
-	// ShowMenubar:
+
 	ShowMenubar() bool
-	// SetHelpOverlayApplicationWindow:
+
 	SetHelpOverlayApplicationWindow(helpOverlay ShortcutsWindow)
-	// SetShowMenubarApplicationWindow:
+
 	SetShowMenubarApplicationWindow(showMenubar bool)
 }
 
@@ -121,7 +115,6 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return WrapApplicationWindow(obj), nil
 }
 
-// NewApplicationWindow:
 func NewApplicationWindow(application Application) ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -268,72 +261,4 @@ func (s applicationWindow) UpdateStateValue(states []AccessibleState, values []e
 
 func (b applicationWindow) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (a applicationWindow) ActionAdded(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
-}
-
-func (a applicationWindow) ActionEnabledChanged(actionName string, enabled bool) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a applicationWindow) ActionRemoved(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a applicationWindow) ActionStateChanged(actionName string, state *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a applicationWindow) ActivateAction(actionName string, parameter *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a applicationWindow) ChangeActionState(actionName string, value *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a applicationWindow) ActionEnabled(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
-}
-
-func (a applicationWindow) ActionParameterType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
-}
-
-func (a applicationWindow) ActionState(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
-}
-
-func (a applicationWindow) ActionStateHint(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
-}
-
-func (a applicationWindow) ActionStateType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
-}
-
-func (a applicationWindow) HasAction(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a applicationWindow) ListActions() []string {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a applicationWindow) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (a applicationWindow) AddAction(action gio.Action) {
-	gio.WrapActionMap(gextras.InternObject(a)).AddAction(action)
-}
-
-func (a applicationWindow) LookupAction(actionName string) gio.Action {
-	return gio.WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
-}
-
-func (a applicationWindow) RemoveAction(actionName string) {
-	gio.WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }

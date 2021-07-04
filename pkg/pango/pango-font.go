@@ -162,19 +162,18 @@ func marshalFontMask(p uintptr) (interface{}, error) {
 type Font interface {
 	gextras.Objector
 
-	// DescribeFont:
 	DescribeFont() *FontDescription
-	// DescribeWithAbsoluteSizeFont:
+
 	DescribeWithAbsoluteSizeFont() *FontDescription
-	// Coverage:
+
 	Coverage(language *Language) Coverage
-	// Face:
+
 	Face() FontFace
-	// FontMap:
+
 	FontMap() FontMap
-	// Metrics:
+
 	Metrics(language *Language) *FontMetrics
-	// HasCharFont:
+
 	HasCharFont(wc uint32) bool
 }
 
@@ -324,15 +323,14 @@ func (f font) HasCharFont(wc uint32) bool {
 type FontFace interface {
 	gextras.Objector
 
-	// DescribeFontFace:
 	DescribeFontFace() *FontDescription
-	// FaceName:
+
 	FaceName() string
-	// Family:
+
 	Family() FontFamily
-	// IsSynthesizedFontFace:
+
 	IsSynthesizedFontFace() bool
-	// ListSizesFontFace:
+
 	ListSizesFontFace() []int
 }
 
@@ -447,15 +445,14 @@ func (f fontFace) ListSizesFontFace() []int {
 type FontFamily interface {
 	gextras.Objector
 
-	// Face:
 	Face(name string) FontFace
-	// Name:
+
 	Name() string
-	// IsMonospaceFontFamily:
+
 	IsMonospaceFontFamily() bool
-	// IsVariableFontFamily:
+
 	IsVariableFontFamily() bool
-	// ListFacesFontFamily:
+
 	ListFacesFontFamily() []FontFace
 }
 

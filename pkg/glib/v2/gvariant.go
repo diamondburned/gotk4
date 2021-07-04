@@ -479,6 +479,28 @@ func NewVariantDouble(value float64) *Variant {
 	return _variant
 }
 
+// NewVariantFixedArray constructs a struct Variant.
+func NewVariantFixedArray(elementType *VariantType, elements interface{}, nElements uint, elementSize uint) *Variant {
+	var _arg1 *C.GVariantType // out
+	var _arg2 C.gconstpointer // out
+	var _arg3 C.gsize         // out
+	var _arg4 C.gsize         // out
+	var _cret *C.GVariant     // in
+
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(elementType.Native()))
+	_arg2 = C.gconstpointer(box.Assign(unsafe.Pointer(elements)))
+	_arg3 = C.gsize(nElements)
+	_arg4 = C.gsize(elementSize)
+
+	_cret = C.g_variant_new_fixed_array(_arg1, _arg2, _arg3, _arg4)
+
+	var _variant *Variant // out
+
+	_variant = (*Variant)(unsafe.Pointer(_cret))
+
+	return _variant
+}
+
 // NewVariantHandle constructs a struct Variant.
 func NewVariantHandle(value int32) *Variant {
 	var _arg1 C.gint32    // out
@@ -962,6 +984,23 @@ func (v *Variant) ChildValue(index_ uint) *Variant {
 	return _variant
 }
 
+// Data decreases the reference count of @value. When its reference count drops
+// to 0, the memory used by the variant is freed.
+func (v *Variant) Data() interface{} {
+	var _arg0 *C.GVariant     // out
+	var _cret C.gconstpointer // in
+
+	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
+
+	_cret = C.g_variant_get_data(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
 // Double decreases the reference count of @value. When its reference count
 // drops to 0, the memory used by the variant is freed.
 func (v *Variant) Double() float64 {
@@ -1426,6 +1465,18 @@ func (v *Variant) RefSink() *Variant {
 	})
 
 	return _variant
+}
+
+// Store decreases the reference count of @value. When its reference count drops
+// to 0, the memory used by the variant is freed.
+func (v *Variant) Store(data interface{}) {
+	var _arg0 *C.GVariant // out
+	var _arg1 C.gpointer  // out
+
+	_arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(data)))
+
+	C.g_variant_store(_arg0, _arg1)
 }
 
 // TakeRef decreases the reference count of @value. When its reference count

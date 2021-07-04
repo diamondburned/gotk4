@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -125,6 +126,24 @@ type AsyncResult interface {
 	// new code; Result errors that are set by virtual methods should also be
 	// extracted by virtual methods, to enable subclasses to chain up correctly.
 	SourceObject() gextras.Objector
+	// UserData: if @res is a AsyncResult, this is equivalent to
+	// g_simple_async_result_propagate_error(). Otherwise it returns false.
+	//
+	// This can be used for legacy error handling in async *_finish() wrapper
+	// functions that traditionally handled AsyncResult error returns themselves
+	// rather than calling into the virtual method. This should not be used in
+	// new code; Result errors that are set by virtual methods should also be
+	// extracted by virtual methods, to enable subclasses to chain up correctly.
+	UserData() interface{}
+	// IsTagged: if @res is a AsyncResult, this is equivalent to
+	// g_simple_async_result_propagate_error(). Otherwise it returns false.
+	//
+	// This can be used for legacy error handling in async *_finish() wrapper
+	// functions that traditionally handled AsyncResult error returns themselves
+	// rather than calling into the virtual method. This should not be used in
+	// new code; Result errors that are set by virtual methods should also be
+	// extracted by virtual methods, to enable subclasses to chain up correctly.
+	IsTagged(sourceTag interface{}) bool
 	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
 	// g_simple_async_result_propagate_error(). Otherwise it returns false.
 	//
@@ -170,6 +189,40 @@ func (r asyncResult) SourceObject() gextras.Objector {
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
 
 	return _object
+}
+
+func (r asyncResult) UserData() interface{} {
+	var _arg0 *C.GAsyncResult // out
+	var _cret C.gpointer      // in
+
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+
+	_cret = C.g_async_result_get_user_data(_arg0)
+
+	var _gpointer interface{} // out
+
+	_gpointer = box.Get(uintptr(_cret))
+
+	return _gpointer
+}
+
+func (r asyncResult) IsTagged(sourceTag interface{}) bool {
+	var _arg0 *C.GAsyncResult // out
+	var _arg1 C.gpointer      // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(sourceTag)))
+
+	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 func (r asyncResult) LegacyPropagateError() error {

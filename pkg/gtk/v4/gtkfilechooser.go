@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -122,12 +120,6 @@ type FileChooser interface {
 	// This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	AddFilter(filter FileFilter)
-	// AddShortcutFolder sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	AddShortcutFolder(folder gio.File) error
 	// Action sets whether multiple files can be selected in the file chooser.
 	//
 	// This is only relevant if the action is set to be
@@ -144,50 +136,23 @@ type FileChooser interface {
 	// This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	CreateFolders() bool
-	// CurrentFolder sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	CurrentFolder() gio.File
 	// CurrentName sets whether multiple files can be selected in the file
 	// chooser.
 	//
 	// This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	CurrentName() string
-	// File sets whether multiple files can be selected in the file chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	File() gio.File
-	// Files sets whether multiple files can be selected in the file chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	Files() gio.ListModel
 	// Filter sets whether multiple files can be selected in the file chooser.
 	//
 	// This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	Filter() FileFilter
-	// Filters sets whether multiple files can be selected in the file chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	Filters() gio.ListModel
 	// SelectMultiple sets whether multiple files can be selected in the file
 	// chooser.
 	//
 	// This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	SelectMultiple() bool
-	// ShortcutFolders sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	ShortcutFolders() gio.ListModel
 	// RemoveChoice sets whether multiple files can be selected in the file
 	// chooser.
 	//
@@ -200,12 +165,6 @@ type FileChooser interface {
 	// This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	RemoveFilter(filter FileFilter)
-	// RemoveShortcutFolder sets whether multiple files can be selected in the
-	// file chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	RemoveShortcutFolder(folder gio.File) error
 	// SetAction sets whether multiple files can be selected in the file
 	// chooser.
 	//
@@ -224,23 +183,12 @@ type FileChooser interface {
 	// This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	SetCreateFolders(createFolders bool)
-	// SetCurrentFolder sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	SetCurrentFolder(file gio.File) error
 	// SetCurrentName sets whether multiple files can be selected in the file
 	// chooser.
 	//
 	// This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	SetCurrentName(name string)
-	// SetFile sets whether multiple files can be selected in the file chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	SetFile(file gio.File) error
 	// SetFilter sets whether multiple files can be selected in the file
 	// chooser.
 	//
@@ -320,23 +268,6 @@ func (c fileChooser) AddFilter(filter FileFilter) {
 	C.gtk_file_chooser_add_filter(_arg0, _arg1)
 }
 
-func (c fileChooser) AddShortcutFolder(folder gio.File) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
-
-	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 func (c fileChooser) Action() FileChooserAction {
 	var _arg0 *C.GtkFileChooser      // out
 	var _cret C.GtkFileChooserAction // in
@@ -387,21 +318,6 @@ func (c fileChooser) CreateFolders() bool {
 	return _ok
 }
 
-func (c fileChooser) CurrentFolder() gio.File {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GFile          // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
-}
-
 func (c fileChooser) CurrentName() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.char           // in
@@ -416,36 +332,6 @@ func (c fileChooser) CurrentName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-func (c fileChooser) File() gio.File {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GFile          // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_file_chooser_get_file(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
-}
-
-func (c fileChooser) Files() gio.ListModel {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GListModel     // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_file_chooser_get_files(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (c fileChooser) Filter() FileFilter {
@@ -463,21 +349,6 @@ func (c fileChooser) Filter() FileFilter {
 	return _fileFilter
 }
 
-func (c fileChooser) Filters() gio.ListModel {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GListModel     // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_file_chooser_get_filters(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
-}
-
 func (c fileChooser) SelectMultiple() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
@@ -493,21 +364,6 @@ func (c fileChooser) SelectMultiple() bool {
 	}
 
 	return _ok
-}
-
-func (c fileChooser) ShortcutFolders() gio.ListModel {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GListModel     // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_file_chooser_get_shortcut_folders(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (c fileChooser) RemoveChoice(id string) {
@@ -529,23 +385,6 @@ func (c fileChooser) RemoveFilter(filter FileFilter) {
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_remove_filter(_arg0, _arg1)
-}
-
-func (c fileChooser) RemoveShortcutFolder(folder gio.File) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
-
-	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 func (c fileChooser) SetAction(action FileChooserAction) {
@@ -584,23 +423,6 @@ func (c fileChooser) SetCreateFolders(createFolders bool) {
 	C.gtk_file_chooser_set_create_folders(_arg0, _arg1)
 }
 
-func (c fileChooser) SetCurrentFolder(file gio.File) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_file_chooser_set_current_folder(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 func (c fileChooser) SetCurrentName(name string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -610,23 +432,6 @@ func (c fileChooser) SetCurrentName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_set_current_name(_arg0, _arg1)
-}
-
-func (c fileChooser) SetFile(file gio.File) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 func (c fileChooser) SetFilter(filter FileFilter) {

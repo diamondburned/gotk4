@@ -108,25 +108,24 @@ func init() {
 type ApplicationCommandLine interface {
 	gextras.Objector
 
-	// CreateFileForArgApplicationCommandLine:
 	CreateFileForArgApplicationCommandLine(arg string) File
-	// Cwd:
+
 	Cwd() string
-	// Environ:
+
 	Environ() []string
-	// ExitStatus:
+
 	ExitStatus() int
-	// IsRemote:
+
 	IsRemote() bool
-	// OptionsDict:
+
 	OptionsDict() *glib.VariantDict
-	// PlatformData:
+
 	PlatformData() *glib.Variant
-	// Stdin:
+
 	Stdin() InputStream
-	// env:
+
 	env(name string) string
-	// SetExitStatusApplicationCommandLine:
+
 	SetExitStatusApplicationCommandLine(exitStatus int)
 }
 

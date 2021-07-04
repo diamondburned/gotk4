@@ -30,9 +30,8 @@ func init() {
 type MediaControls interface {
 	Widget
 
-	// MediaStream:
 	MediaStream() MediaStream
-	// SetMediaStreamMediaControls:
+
 	SetMediaStreamMediaControls(stream MediaStream)
 }
 
@@ -55,7 +54,6 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 	return WrapMediaControls(obj), nil
 }
 
-// NewMediaControls:
 func NewMediaControls(stream MediaStream) MediaControls {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in

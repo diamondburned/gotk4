@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -39,29 +40,28 @@ type FontButton interface {
 	Button
 	FontChooser
 
-	// FontName:
 	FontName() string
-	// ShowSize:
+
 	ShowSize() bool
-	// ShowStyle:
+
 	ShowStyle() bool
-	// Title:
+
 	Title() string
-	// UseFont:
+
 	UseFont() bool
-	// UseSize:
+
 	UseSize() bool
-	// SetFontNameFontButton:
+
 	SetFontNameFontButton(fontname string) bool
-	// SetShowSizeFontButton:
+
 	SetShowSizeFontButton(showSize bool)
-	// SetShowStyleFontButton:
+
 	SetShowStyleFontButton(showStyle bool)
-	// SetTitleFontButton:
+
 	SetTitleFontButton(title string)
-	// SetUseFontFontButton:
+
 	SetUseFontFontButton(useFont bool)
-	// SetUseSizeFontButton:
+
 	SetUseSizeFontButton(useSize bool)
 }
 
@@ -84,7 +84,6 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return WrapFontButton(obj), nil
 }
 
-// NewFontButton:
 func NewFontButton() FontButton {
 	var _cret *C.GtkWidget // in
 
@@ -97,7 +96,6 @@ func NewFontButton() FontButton {
 	return _fontButton
 }
 
-// NewFontButtonWithFont:
 func NewFontButtonWithFont(fontname string) FontButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -299,6 +297,18 @@ func (b fontButton) ConstructChild(builder Builder, name string) gextras.Objecto
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b fontButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b fontButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b fontButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b fontButton) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -345,6 +355,18 @@ func (b fontButton) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b fontButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b fontButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b fontButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b fontButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b fontButton) InternalChild(builder Builder, childname string) gextras.Objector {

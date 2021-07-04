@@ -47,11 +47,10 @@ type UnixOutputStream interface {
 	FileDescriptorBased
 	PollableOutputStream
 
-	// CloseFd:
 	CloseFd() bool
-	// GetFd:
+
 	GetFd() int
-	// SetCloseFdUnixOutputStream:
+
 	SetCloseFdUnixOutputStream(closeFd bool)
 }
 
@@ -74,7 +73,6 @@ func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 	return WrapUnixOutputStream(obj), nil
 }
 
-// NewUnixOutputStream:
 func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 	var _arg1 C.gint           // out
 	var _arg2 C.gboolean       // out

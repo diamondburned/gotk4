@@ -30,9 +30,8 @@ func init() {
 type GestureStylus interface {
 	GestureSingle
 
-	// Axis:
 	Axis(axis gdk.AxisUse) (float64, bool)
-	// DeviceTool:
+
 	DeviceTool() gdk.DeviceTool
 }
 
@@ -55,7 +54,6 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return WrapGestureStylus(obj), nil
 }
 
-// NewGestureStylus:
 func NewGestureStylus(widget Widget) GestureStylus {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

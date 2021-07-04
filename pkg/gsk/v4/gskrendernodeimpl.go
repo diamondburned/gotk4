@@ -56,11 +56,10 @@ func init() {
 type BlendNode interface {
 	RenderNode
 
-	// BlendMode:
 	BlendMode() BlendMode
-	// BottomChild:
+
 	BottomChild() RenderNode
-	// TopChild:
+
 	TopChild() RenderNode
 }
 
@@ -83,7 +82,6 @@ func marshalBlendNode(p uintptr) (interface{}, error) {
 	return WrapBlendNode(obj), nil
 }
 
-// NewBlendNode:
 func NewBlendNode(bottom RenderNode, top RenderNode, blendMode BlendMode) BlendNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
@@ -152,9 +150,8 @@ func (n blendNode) TopChild() RenderNode {
 type BlurNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// Radius:
+
 	Radius() float32
 }
 
@@ -177,7 +174,6 @@ func marshalBlurNode(p uintptr) (interface{}, error) {
 	return WrapBlurNode(obj), nil
 }
 
-// NewBlurNode:
 func NewBlurNode(child RenderNode, radius float32) BlurNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 C.float          // out
@@ -229,11 +225,10 @@ func (n blurNode) Radius() float32 {
 type BorderNode interface {
 	RenderNode
 
-	// Colors:
 	Colors() *gdk.RGBA
-	// Outline:
+
 	Outline() *RoundedRect
-	// Widths:
+
 	Widths() [4]float32
 }
 
@@ -256,7 +251,6 @@ func marshalBorderNode(p uintptr) (interface{}, error) {
 	return WrapBorderNode(obj), nil
 }
 
-// NewBorderNode:
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.float
@@ -325,9 +319,8 @@ func (n borderNode) Widths() [4]float32 {
 type CairoNode interface {
 	RenderNode
 
-	// DrawContext:
 	DrawContext() *cairo.Context
-	// Surface:
+
 	Surface() *cairo.Surface
 }
 
@@ -350,7 +343,6 @@ func marshalCairoNode(p uintptr) (interface{}, error) {
 	return WrapCairoNode(obj), nil
 }
 
-// NewCairoNode:
 func NewCairoNode(bounds *graphene.Rect) CairoNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
@@ -403,9 +395,8 @@ func (n cairoNode) Surface() *cairo.Surface {
 type ClipNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// Clip:
+
 	Clip() *graphene.Rect
 }
 
@@ -428,7 +419,6 @@ func marshalClipNode(p uintptr) (interface{}, error) {
 	return WrapClipNode(obj), nil
 }
 
-// NewClipNode:
 func NewClipNode(child RenderNode, clip *graphene.Rect) ClipNode {
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -481,11 +471,10 @@ func (n clipNode) Clip() *graphene.Rect {
 type ColorMatrixNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// ColorMatrix:
+
 	ColorMatrix() *graphene.Matrix
-	// ColorOffset:
+
 	ColorOffset() *graphene.Vec4
 }
 
@@ -508,7 +497,6 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 	return WrapColorMatrixNode(obj), nil
 }
 
-// NewColorMatrixNode:
 func NewColorMatrixNode(child RenderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) ColorMatrixNode {
 	var _arg1 *C.GskRenderNode     // out
 	var _arg2 *C.graphene_matrix_t // out
@@ -577,7 +565,6 @@ func (n colorMatrixNode) ColorOffset() *graphene.Vec4 {
 type ColorNode interface {
 	RenderNode
 
-	// Color:
 	Color() *gdk.RGBA
 }
 
@@ -600,7 +587,6 @@ func marshalColorNode(p uintptr) (interface{}, error) {
 	return WrapColorNode(obj), nil
 }
 
-// NewColorNode:
 func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) ColorNode {
 	var _arg1 *C.GdkRGBA         // out
 	var _arg2 *C.graphene_rect_t // out
@@ -637,13 +623,12 @@ func (n colorNode) Color() *gdk.RGBA {
 type ConicGradientNode interface {
 	RenderNode
 
-	// Angle:
 	Angle() float32
-	// Center:
+
 	Center() *graphene.Point
-	// NColorStops:
+
 	NColorStops() uint
-	// Rotation:
+
 	Rotation() float32
 }
 
@@ -666,7 +651,6 @@ func marshalConicGradientNode(p uintptr) (interface{}, error) {
 	return WrapConicGradientNode(obj), nil
 }
 
-// NewConicGradientNode:
 func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -754,9 +738,8 @@ func (n conicGradientNode) Rotation() float32 {
 type ContainerNode interface {
 	RenderNode
 
-	// Child:
 	Child(idx uint) RenderNode
-	// NChildren:
+
 	NChildren() uint
 }
 
@@ -779,7 +762,6 @@ func marshalContainerNode(p uintptr) (interface{}, error) {
 	return WrapContainerNode(obj), nil
 }
 
-// NewContainerNode:
 func NewContainerNode(children []RenderNode) ContainerNode {
 	var _arg1 **C.GskRenderNode
 	var _arg2 C.guint
@@ -840,11 +822,10 @@ func (n containerNode) NChildren() uint {
 type CrossFadeNode interface {
 	RenderNode
 
-	// EndChild:
 	EndChild() RenderNode
-	// Progress:
+
 	Progress() float32
-	// StartChild:
+
 	StartChild() RenderNode
 }
 
@@ -867,7 +848,6 @@ func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 	return WrapCrossFadeNode(obj), nil
 }
 
-// NewCrossFadeNode:
 func NewCrossFadeNode(start RenderNode, end RenderNode, progress float32) CrossFadeNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
@@ -937,9 +917,8 @@ func (n crossFadeNode) StartChild() RenderNode {
 type DebugNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// Message:
+
 	Message() string
 }
 
@@ -962,7 +941,6 @@ func marshalDebugNode(p uintptr) (interface{}, error) {
 	return WrapDebugNode(obj), nil
 }
 
-// NewDebugNode:
 func NewDebugNode(child RenderNode, message string) DebugNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.char          // out
@@ -1015,11 +993,10 @@ func (n debugNode) Message() string {
 type GLShaderNode interface {
 	RenderNode
 
-	// Child:
 	Child(idx uint) RenderNode
-	// NChildren:
+
 	NChildren() uint
-	// Shader:
+
 	Shader() GLShader
 }
 
@@ -1093,17 +1070,16 @@ func (n glShaderNode) Shader() GLShader {
 type InsetShadowNode interface {
 	RenderNode
 
-	// BlurRadius:
 	BlurRadius() float32
-	// Color:
+
 	Color() *gdk.RGBA
-	// Dx:
+
 	Dx() float32
-	// Dy:
+
 	Dy() float32
-	// Outline:
+
 	Outline() *RoundedRect
-	// Spread:
+
 	Spread() float32
 }
 
@@ -1126,7 +1102,6 @@ func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 	return WrapInsetShadowNode(obj), nil
 }
 
-// NewInsetShadowNode:
 func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -1246,11 +1221,10 @@ func (n insetShadowNode) Spread() float32 {
 type LinearGradientNode interface {
 	RenderNode
 
-	// End:
 	End() *graphene.Point
-	// NColorStops:
+
 	NColorStops() uint
-	// Start:
+
 	Start() *graphene.Point
 }
 
@@ -1273,7 +1247,6 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 	return WrapLinearGradientNode(obj), nil
 }
 
-// NewLinearGradientNode:
 func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -1346,9 +1319,8 @@ func (n linearGradientNode) Start() *graphene.Point {
 type OpacityNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// Opacity:
+
 	Opacity() float32
 }
 
@@ -1371,7 +1343,6 @@ func marshalOpacityNode(p uintptr) (interface{}, error) {
 	return WrapOpacityNode(obj), nil
 }
 
-// NewOpacityNode:
 func NewOpacityNode(child RenderNode, opacity float32) OpacityNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 C.float          // out
@@ -1423,17 +1394,16 @@ func (n opacityNode) Opacity() float32 {
 type OutsetShadowNode interface {
 	RenderNode
 
-	// BlurRadius:
 	BlurRadius() float32
-	// Color:
+
 	Color() *gdk.RGBA
-	// Dx:
+
 	Dx() float32
-	// Dy:
+
 	Dy() float32
-	// Outline:
+
 	Outline() *RoundedRect
-	// Spread:
+
 	Spread() float32
 }
 
@@ -1456,7 +1426,6 @@ func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 	return WrapOutsetShadowNode(obj), nil
 }
 
-// NewOutsetShadowNode:
 func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -1576,17 +1545,16 @@ func (n outsetShadowNode) Spread() float32 {
 type RadialGradientNode interface {
 	RenderNode
 
-	// Center:
 	Center() *graphene.Point
-	// End:
+
 	End() float32
-	// Hradius:
+
 	Hradius() float32
-	// NColorStops:
+
 	NColorStops() uint
-	// Start:
+
 	Start() float32
-	// Vradius:
+
 	Vradius() float32
 }
 
@@ -1609,7 +1577,6 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 	return WrapRadialGradientNode(obj), nil
 }
 
-// NewRadialGradientNode:
 func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -1733,9 +1700,8 @@ func (n radialGradientNode) Vradius() float32 {
 type RepeatNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// ChildBounds:
+
 	ChildBounds() *graphene.Rect
 }
 
@@ -1758,7 +1724,6 @@ func marshalRepeatNode(p uintptr) (interface{}, error) {
 	return WrapRepeatNode(obj), nil
 }
 
-// NewRepeatNode:
 func NewRepeatNode(bounds *graphene.Rect, child RenderNode, childBounds *graphene.Rect) RepeatNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 *C.GskRenderNode   // out
@@ -1832,7 +1797,6 @@ func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 	return WrapRepeatingLinearGradientNode(obj), nil
 }
 
-// NewRepeatingLinearGradientNode:
 func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -1880,7 +1844,6 @@ func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 	return WrapRepeatingRadialGradientNode(obj), nil
 }
 
-// NewRepeatingRadialGradientNode:
 func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -1915,9 +1878,8 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 type RoundedClipNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// Clip:
+
 	Clip() *RoundedRect
 }
 
@@ -1940,7 +1902,6 @@ func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 	return WrapRoundedClipNode(obj), nil
 }
 
-// NewRoundedClipNode:
 func NewRoundedClipNode(child RenderNode, clip *RoundedRect) RoundedClipNode {
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.GskRoundedRect // out
@@ -1993,11 +1954,10 @@ func (n roundedClipNode) Clip() *RoundedRect {
 type ShadowNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// NShadows:
+
 	NShadows() uint
-	// Shadow:
+
 	Shadow(i uint) *Shadow
 }
 
@@ -2020,7 +1980,6 @@ func marshalShadowNode(p uintptr) (interface{}, error) {
 	return WrapShadowNode(obj), nil
 }
 
-// NewShadowNode:
 func NewShadowNode(child RenderNode, shadows []Shadow) ShadowNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskShadow
@@ -2091,15 +2050,14 @@ func (n shadowNode) Shadow(i uint) *Shadow {
 type TextNode interface {
 	RenderNode
 
-	// Color:
 	Color() *gdk.RGBA
-	// Font:
+
 	Font() pango.Font
-	// NumGlyphs:
+
 	NumGlyphs() uint
-	// Offset:
+
 	Offset() *graphene.Point
-	// HasColorGlyphsTextNode:
+
 	HasColorGlyphsTextNode() bool
 }
 
@@ -2122,7 +2080,6 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 	return WrapTextNode(obj), nil
 }
 
-// NewTextNode:
 func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode {
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -2225,7 +2182,6 @@ func (n textNode) HasColorGlyphsTextNode() bool {
 type TextureNode interface {
 	RenderNode
 
-	// Texture:
 	Texture() gdk.Texture
 }
 
@@ -2248,7 +2204,6 @@ func marshalTextureNode(p uintptr) (interface{}, error) {
 	return WrapTextureNode(obj), nil
 }
 
-// NewTextureNode:
 func NewTextureNode(texture gdk.Texture, bounds *graphene.Rect) TextureNode {
 	var _arg1 *C.GdkTexture      // out
 	var _arg2 *C.graphene_rect_t // out
@@ -2286,9 +2241,8 @@ func (n textureNode) Texture() gdk.Texture {
 type TransformNode interface {
 	RenderNode
 
-	// Child:
 	Child() RenderNode
-	// Transform:
+
 	Transform() *Transform
 }
 
@@ -2311,7 +2265,6 @@ func marshalTransformNode(p uintptr) (interface{}, error) {
 	return WrapTransformNode(obj), nil
 }
 
-// NewTransformNode:
 func NewTransformNode(child RenderNode, transform *Transform) TransformNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskTransform  // out

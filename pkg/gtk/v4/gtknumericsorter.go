@@ -29,13 +29,12 @@ func init() {
 type NumericSorter interface {
 	Sorter
 
-	// Expression:
 	Expression() Expression
-	// SortOrder:
+
 	SortOrder() SortType
-	// SetExpressionNumericSorter:
+
 	SetExpressionNumericSorter(expression Expression)
-	// SetSortOrderNumericSorter:
+
 	SetSortOrderNumericSorter(sortOrder SortType)
 }
 
@@ -58,7 +57,6 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 	return WrapNumericSorter(obj), nil
 }
 
-// NewNumericSorter:
 func NewNumericSorter(expression Expression) NumericSorter {
 	var _arg1 *C.GtkExpression    // out
 	var _cret *C.GtkNumericSorter // in

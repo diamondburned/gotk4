@@ -22,13 +22,11 @@ func init() {
 	})
 }
 
-// X11Keymap:
 type X11Keymap interface {
 	gdk.Keymap
 
-	// GroupForState:
 	GroupForState(state uint) int
-	// KeyIsModifierX11Keymap:
+
 	KeyIsModifierX11Keymap(keycode uint) bool
 }
 

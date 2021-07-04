@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,6 +46,31 @@ const (
 
 func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+type TextCharPredicate func(ch uint32, ok bool)
+
+//export gotk4_TextCharPredicate
+func _TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var ch uint32 // out
+
+	ch = uint32(arg0)
+
+	fn := v.(TextCharPredicate)
+	ok := fn(ch)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // TextIter: you may wish to begin by reading the [text widget conceptual
@@ -155,6 +181,32 @@ func (i *TextIter) BackwardCursorPositions(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_cursor_positions(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// BackwardFindChar: this is equivalent to (gtk_text_iter_starts_tag() ||
+// gtk_text_iter_ends_tag()), i.e. it tells you whether a range with @tag
+// applied to it begins or ends at @iter.
+func (i *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
+	var _arg0 *C.GtkTextIter         // out
+	var _arg1 C.GtkTextCharPredicate // out
+	var _arg2 C.gpointer
+	var _arg3 *C.GtkTextIter // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
+	_arg2 = C.gpointer(box.Assign(pred))
+	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit.Native()))
+
+	_cret = C.gtk_text_iter_backward_find_char(_arg0, _arg1, _arg2, _arg3)
 
 	var _ok bool // out
 
@@ -781,6 +833,32 @@ func (i *TextIter) ForwardCursorPositions(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_cursor_positions(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ForwardFindChar: this is equivalent to (gtk_text_iter_starts_tag() ||
+// gtk_text_iter_ends_tag()), i.e. it tells you whether a range with @tag
+// applied to it begins or ends at @iter.
+func (i *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
+	var _arg0 *C.GtkTextIter         // out
+	var _arg1 C.GtkTextCharPredicate // out
+	var _arg2 C.gpointer
+	var _arg3 *C.GtkTextIter // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
+	_arg2 = C.gpointer(box.Assign(pred))
+	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit.Native()))
+
+	_cret = C.gtk_text_iter_forward_find_char(_arg0, _arg1, _arg2, _arg3)
 
 	var _ok bool // out
 

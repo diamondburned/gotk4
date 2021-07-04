@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,6 +23,42 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_tree_sortable_get_type()), F: marshalTreeSortable},
 	})
+}
+
+// TreeIterCompareFunc: a GtkTreeIterCompareFunc should return a negative
+// integer, zero, or a positive integer if @a sorts before @b, @a sorts with @b,
+// or @a sorts after @b respectively. If two iters compare as equal, their order
+// in the sorted model is undefined. In order to ensure that the TreeSortable
+// behaves as expected, the GtkTreeIterCompareFunc must define a partial order
+// on the model, i.e. it must be reflexive, antisymmetric and transitive.
+//
+// For example, if @model is a product catalogue, then a compare function for
+// the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
+type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter, gint int)
+
+//export gotk4_TreeIterCompareFunc
+func _TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gint {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var model TreeModel // out
+	var a *TreeIter     // out
+	var b *TreeIter     // out
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TreeModel)
+	a = (*TreeIter)(unsafe.Pointer(arg1))
+	b = (*TreeIter)(unsafe.Pointer(arg2))
+
+	fn := v.(TreeIterCompareFunc)
+	gint := fn(model, a, b)
+
+	var cret C.gint // out
+
+	cret = C.gint(gint)
+
+	return cret
 }
 
 // TreeSortable is an interface to be implemented by tree models which support

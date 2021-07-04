@@ -5,6 +5,7 @@ package gobject
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -109,6 +110,93 @@ func ClearSignalHandler(handlerIdPtr *uint32, instance gextras.Objector) {
 	_arg2 = (C.gpointer)(unsafe.Pointer(instance.Native()))
 
 	C.g_clear_signal_handler(_arg1, _arg2)
+}
+
+// SignalAccumulatorFirstWins: a predefined Accumulator for signals intended to
+// be used as a hook for application code to provide a particular value. Usually
+// only one such value is desired and multiple handlers for the same signal
+// don't make much sense (except for the case of the default handler defined in
+// the class structure, in which case you will usually want the signal
+// connection to override the class handler).
+//
+// This accumulator will use the return value from the first signal handler that
+// is run as the return value for the signal and not run any further handlers
+// (ie: the first handler "wins").
+func SignalAccumulatorFirstWins(ihint *SignalInvocationHint, returnAccu externglib.Value, handlerReturn externglib.Value, dummy interface{}) bool {
+	var _arg1 *C.GSignalInvocationHint // out
+	var _arg2 *C.GValue                // out
+	var _arg3 *C.GValue                // out
+	var _arg4 C.gpointer               // out
+	var _cret C.gboolean               // in
+
+	_arg1 = (*C.GSignalInvocationHint)(unsafe.Pointer(ihint.Native()))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&returnAccu.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(&handlerReturn.GValue))
+	_arg4 = C.gpointer(box.Assign(unsafe.Pointer(dummy)))
+
+	_cret = C.g_signal_accumulator_first_wins(_arg1, _arg2, _arg3, _arg4)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SignalAccumulatorTrueHandled: a predefined Accumulator for signals that
+// return a boolean values. The behavior that this accumulator gives is that a
+// return of true stops the signal emission: no further callbacks will be
+// invoked, while a return of false allows the emission to continue. The idea
+// here is that a true return indicates that the callback handled the signal,
+// and no further handling is needed.
+func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu externglib.Value, handlerReturn externglib.Value, dummy interface{}) bool {
+	var _arg1 *C.GSignalInvocationHint // out
+	var _arg2 *C.GValue                // out
+	var _arg3 *C.GValue                // out
+	var _arg4 C.gpointer               // out
+	var _cret C.gboolean               // in
+
+	_arg1 = (*C.GSignalInvocationHint)(unsafe.Pointer(ihint.Native()))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&returnAccu.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(&handlerReturn.GValue))
+	_arg4 = C.gpointer(box.Assign(unsafe.Pointer(dummy)))
+
+	_cret = C.g_signal_accumulator_true_handled(_arg1, _arg2, _arg3, _arg4)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SignalConnectClosure connects a closure to a signal for a particular object.
+func SignalConnectClosure(instance gextras.Objector, detailedSignal string, closure *Closure, after bool) uint32 {
+	var _arg1 C.gpointer  // out
+	var _arg2 *C.gchar    // out
+	var _arg3 *C.GClosure // out
+	var _arg4 C.gboolean  // out
+	var _cret C.gulong    // in
+
+	_arg1 = (C.gpointer)(unsafe.Pointer(instance.Native()))
+	_arg2 = (*C.gchar)(C.CString(detailedSignal))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GClosure)(unsafe.Pointer(closure.Native()))
+	if after {
+		_arg4 = C.TRUE
+	}
+
+	_cret = C.g_signal_connect_closure(_arg1, _arg2, _arg3, _arg4)
+
+	var _gulong uint32 // out
+
+	_gulong = uint32(_cret)
+
+	return _gulong
 }
 
 // SignalGetInvocationHint returns the invocation hint of the innermost signal

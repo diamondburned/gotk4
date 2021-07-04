@@ -94,11 +94,10 @@ func SetAllowedBackends(backends string) {
 type DisplayManager interface {
 	gextras.Objector
 
-	// DefaultDisplay:
 	DefaultDisplay() Display
-	// OpenDisplayDisplayManager:
+
 	OpenDisplayDisplayManager(name string) Display
-	// SetDefaultDisplayDisplayManager:
+
 	SetDefaultDisplayDisplayManager(display Display)
 }
 

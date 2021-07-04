@@ -33,13 +33,12 @@ func init() {
 type StringSorter interface {
 	Sorter
 
-	// Expression:
 	Expression() Expression
-	// IgnoreCase:
+
 	IgnoreCase() bool
-	// SetExpressionStringSorter:
+
 	SetExpressionStringSorter(expression Expression)
-	// SetIgnoreCaseStringSorter:
+
 	SetIgnoreCaseStringSorter(ignoreCase bool)
 }
 
@@ -62,7 +61,6 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 	return WrapStringSorter(obj), nil
 }
 
-// NewStringSorter:
 func NewStringSorter(expression Expression) StringSorter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringSorter // in

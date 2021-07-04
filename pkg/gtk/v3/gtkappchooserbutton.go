@@ -5,8 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,23 +51,20 @@ type AppChooserButton interface {
 	ComboBox
 	AppChooser
 
-	// AppendCustomItemAppChooserButton:
-	AppendCustomItemAppChooserButton(name string, label string, icon gio.Icon)
-	// AppendSeparatorAppChooserButton:
 	AppendSeparatorAppChooserButton()
-	// Heading:
+
 	Heading() string
-	// ShowDefaultItem:
+
 	ShowDefaultItem() bool
-	// ShowDialogItem:
+
 	ShowDialogItem() bool
-	// SetActiveCustomItemAppChooserButton:
+
 	SetActiveCustomItemAppChooserButton(name string)
-	// SetHeadingAppChooserButton:
+
 	SetHeadingAppChooserButton(heading string)
-	// SetShowDefaultItemAppChooserButton:
+
 	SetShowDefaultItemAppChooserButton(setting bool)
-	// SetShowDialogItemAppChooserButton:
+
 	SetShowDialogItemAppChooserButton(setting bool)
 }
 
@@ -89,7 +87,6 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return WrapAppChooserButton(obj), nil
 }
 
-// NewAppChooserButton:
 func NewAppChooserButton(contentType string) AppChooserButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -104,22 +101,6 @@ func NewAppChooserButton(contentType string) AppChooserButton {
 	_appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AppChooserButton)
 
 	return _appChooserButton
-}
-
-func (s appChooserButton) AppendCustomItemAppChooserButton(name string, label string, icon gio.Icon) {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _arg1 *C.gchar               // out
-	var _arg2 *C.gchar               // out
-	var _arg3 *C.GIcon               // out
-
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (s appChooserButton) AppendSeparatorAppChooserButton() {
@@ -233,6 +214,18 @@ func (b appChooserButton) ConstructChild(builder Builder, name string) gextras.O
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b appChooserButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b appChooserButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b appChooserButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b appChooserButton) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -267,6 +260,18 @@ func (b appChooserButton) AddChild(builder Builder, child gextras.Objector, typ 
 
 func (b appChooserButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b appChooserButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b appChooserButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b appChooserButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b appChooserButton) InternalChild(builder Builder, childname string) gextras.Objector {
@@ -317,10 +322,6 @@ func (c appChooserButton) Reorder(cell CellRenderer, position int) {
 	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
 }
 
-func (s appChooserButton) AppInfo() gio.AppInfo {
-	return WrapAppChooser(gextras.InternObject(s)).AppInfo()
-}
-
 func (s appChooserButton) ContentType() string {
 	return WrapAppChooser(gextras.InternObject(s)).ContentType()
 }
@@ -335,6 +336,18 @@ func (b appChooserButton) AddChild(builder Builder, child gextras.Objector, typ 
 
 func (b appChooserButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b appChooserButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b appChooserButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b appChooserButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b appChooserButton) InternalChild(builder Builder, childname string) gextras.Objector {

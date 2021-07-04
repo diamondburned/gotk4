@@ -45,7 +45,6 @@ func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 	return WrapVulkanRenderer(obj), nil
 }
 
-// NewVulkanRenderer:
 func NewVulkanRenderer() VulkanRenderer {
 	var _cret *C.GskRenderer // in
 

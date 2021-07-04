@@ -39,39 +39,38 @@ func init() {
 type ColumnViewColumn interface {
 	gextras.Objector
 
-	// ColumnView:
 	ColumnView() ColumnView
-	// Expand:
+
 	Expand() bool
-	// Factory:
+
 	Factory() ListItemFactory
-	// FixedWidth:
+
 	FixedWidth() int
-	// HeaderMenu:
+
 	HeaderMenu() gio.MenuModel
-	// Resizable:
+
 	Resizable() bool
-	// Sorter:
+
 	Sorter() Sorter
-	// Title:
+
 	Title() string
-	// Visible:
+
 	Visible() bool
-	// SetExpandColumnViewColumn:
+
 	SetExpandColumnViewColumn(expand bool)
-	// SetFactoryColumnViewColumn:
+
 	SetFactoryColumnViewColumn(factory ListItemFactory)
-	// SetFixedWidthColumnViewColumn:
+
 	SetFixedWidthColumnViewColumn(fixedWidth int)
-	// SetHeaderMenuColumnViewColumn:
+
 	SetHeaderMenuColumnViewColumn(menu gio.MenuModel)
-	// SetResizableColumnViewColumn:
+
 	SetResizableColumnViewColumn(resizable bool)
-	// SetSorterColumnViewColumn:
+
 	SetSorterColumnViewColumn(sorter Sorter)
-	// SetTitleColumnViewColumn:
+
 	SetTitleColumnViewColumn(title string)
-	// SetVisibleColumnViewColumn:
+
 	SetVisibleColumnViewColumn(visible bool)
 }
 
@@ -94,7 +93,6 @@ func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 	return WrapColumnViewColumn(obj), nil
 }
 
-// NewColumnViewColumn:
 func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn {
 	var _arg1 *C.char                // out
 	var _arg2 *C.GtkListItemFactory  // out

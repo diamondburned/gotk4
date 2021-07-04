@@ -70,51 +70,50 @@ func init() {
 type PageSetup interface {
 	gextras.Objector
 
-	// CopyPageSetup:
 	CopyPageSetup() PageSetup
-	// BottomMargin:
+
 	BottomMargin(unit Unit) float64
-	// LeftMargin:
+
 	LeftMargin(unit Unit) float64
-	// Orientation:
+
 	Orientation() PageOrientation
-	// PageHeight:
+
 	PageHeight(unit Unit) float64
-	// PageWidth:
+
 	PageWidth(unit Unit) float64
-	// PaperHeight:
+
 	PaperHeight(unit Unit) float64
-	// PaperSize:
+
 	PaperSize() *PaperSize
-	// PaperWidth:
+
 	PaperWidth(unit Unit) float64
-	// RightMargin:
+
 	RightMargin(unit Unit) float64
-	// TopMargin:
+
 	TopMargin(unit Unit) float64
-	// LoadFilePageSetup:
+
 	LoadFilePageSetup(fileName string) error
-	// LoadKeyFilePageSetup:
+
 	LoadKeyFilePageSetup(keyFile *glib.KeyFile, groupName string) error
-	// SetBottomMarginPageSetup:
+
 	SetBottomMarginPageSetup(margin float64, unit Unit)
-	// SetLeftMarginPageSetup:
+
 	SetLeftMarginPageSetup(margin float64, unit Unit)
-	// SetOrientationPageSetup:
+
 	SetOrientationPageSetup(orientation PageOrientation)
-	// SetPaperSizePageSetup:
+
 	SetPaperSizePageSetup(size *PaperSize)
-	// SetPaperSizeAndDefaultMarginsPageSetup:
+
 	SetPaperSizeAndDefaultMarginsPageSetup(size *PaperSize)
-	// SetRightMarginPageSetup:
+
 	SetRightMarginPageSetup(margin float64, unit Unit)
-	// SetTopMarginPageSetup:
+
 	SetTopMarginPageSetup(margin float64, unit Unit)
-	// ToFilePageSetup:
+
 	ToFilePageSetup(fileName string) error
-	// ToGVariantPageSetup:
+
 	ToGVariantPageSetup() *glib.Variant
-	// ToKeyFilePageSetup:
+
 	ToKeyFilePageSetup(keyFile *glib.KeyFile, groupName string)
 }
 
@@ -137,7 +136,6 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 	return WrapPageSetup(obj), nil
 }
 
-// NewPageSetup:
 func NewPageSetup() PageSetup {
 	var _cret *C.GtkPageSetup // in
 
@@ -150,7 +148,6 @@ func NewPageSetup() PageSetup {
 	return _pageSetup
 }
 
-// NewPageSetupFromFile:
 func NewPageSetupFromFile(fileName string) (PageSetup, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkPageSetup // in
@@ -170,7 +167,6 @@ func NewPageSetupFromFile(fileName string) (PageSetup, error) {
 	return _pageSetup, _goerr
 }
 
-// NewPageSetupFromGVariant:
 func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPageSetup // in
@@ -186,7 +182,6 @@ func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 	return _pageSetup
 }
 
-// NewPageSetupFromKeyFile:
 func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (PageSetup, error) {
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.gchar        // out

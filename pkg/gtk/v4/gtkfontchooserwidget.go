@@ -67,7 +67,6 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 	return WrapFontChooserWidget(obj), nil
 }
 
-// NewFontChooserWidget:
 func NewFontChooserWidget() FontChooserWidget {
 	var _cret *C.GtkWidget // in
 

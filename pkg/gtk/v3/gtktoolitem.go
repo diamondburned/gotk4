@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -39,59 +41,58 @@ type ToolItem interface {
 	Bin
 	Activatable
 
-	// EllipsizeMode:
 	EllipsizeMode() pango.EllipsizeMode
-	// Expand:
+
 	Expand() bool
-	// Homogeneous:
+
 	Homogeneous() bool
-	// IconSize:
+
 	IconSize() int
-	// IsImportant:
+
 	IsImportant() bool
-	// Orientation:
+
 	Orientation() Orientation
-	// ProxyMenuItem:
+
 	ProxyMenuItem(menuItemId string) Widget
-	// ReliefStyle:
+
 	ReliefStyle() ReliefStyle
-	// TextAlignment:
+
 	TextAlignment() float32
-	// TextOrientation:
+
 	TextOrientation() Orientation
-	// TextSizeGroup:
+
 	TextSizeGroup() SizeGroup
-	// ToolbarStyle:
+
 	ToolbarStyle() ToolbarStyle
-	// UseDragWindow:
+
 	UseDragWindow() bool
-	// VisibleHorizontal:
+
 	VisibleHorizontal() bool
-	// VisibleVertical:
+
 	VisibleVertical() bool
-	// RebuildMenuToolItem:
+
 	RebuildMenuToolItem()
-	// RetrieveProxyMenuItemToolItem:
+
 	RetrieveProxyMenuItemToolItem() Widget
-	// SetExpandToolItem:
+
 	SetExpandToolItem(expand bool)
-	// SetHomogeneousToolItem:
+
 	SetHomogeneousToolItem(homogeneous bool)
-	// SetIsImportantToolItem:
+
 	SetIsImportantToolItem(isImportant bool)
-	// SetProxyMenuItemToolItem:
+
 	SetProxyMenuItemToolItem(menuItemId string, menuItem Widget)
-	// SetTooltipMarkupToolItem:
+
 	SetTooltipMarkupToolItem(markup string)
-	// SetTooltipTextToolItem:
+
 	SetTooltipTextToolItem(text string)
-	// SetUseDragWindowToolItem:
+
 	SetUseDragWindowToolItem(useDragWindow bool)
-	// SetVisibleHorizontalToolItem:
+
 	SetVisibleHorizontalToolItem(visibleHorizontal bool)
-	// SetVisibleVerticalToolItem:
+
 	SetVisibleVerticalToolItem(visibleVertical bool)
-	// ToolbarReconfiguredToolItem:
+
 	ToolbarReconfiguredToolItem()
 }
 
@@ -114,7 +115,6 @@ func marshalToolItem(p uintptr) (interface{}, error) {
 	return WrapToolItem(obj), nil
 }
 
-// NewToolItem:
 func NewToolItem() ToolItem {
 	var _cret *C.GtkToolItem // in
 
@@ -511,6 +511,18 @@ func (b toolItem) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b toolItem) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toolItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b toolItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b toolItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b toolItem) InternalChild(builder Builder, childname string) gextras.Objector {

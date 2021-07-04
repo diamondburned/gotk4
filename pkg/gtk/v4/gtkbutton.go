@@ -58,25 +58,24 @@ func init() {
 type Button interface {
 	Actionable
 
-	// Child:
 	Child() Widget
-	// HasFrame:
+
 	HasFrame() bool
-	// IconName:
+
 	IconName() string
-	// Label:
+
 	Label() string
-	// UseUnderline:
+
 	UseUnderline() bool
-	// SetChildButton:
+
 	SetChildButton(child Widget)
-	// SetHasFrameButton:
+
 	SetHasFrameButton(hasFrame bool)
-	// SetIconNameButton:
+
 	SetIconNameButton(iconName string)
-	// SetLabelButton:
+
 	SetLabelButton(label string)
-	// SetUseUnderlineButton:
+
 	SetUseUnderlineButton(useUnderline bool)
 }
 
@@ -99,7 +98,6 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return WrapButton(obj), nil
 }
 
-// NewButton:
 func NewButton() Button {
 	var _cret *C.GtkWidget // in
 
@@ -112,7 +110,6 @@ func NewButton() Button {
 	return _button
 }
 
-// NewButtonFromIconName:
 func NewButtonFromIconName(iconName string) Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -129,7 +126,6 @@ func NewButtonFromIconName(iconName string) Button {
 	return _button
 }
 
-// NewButtonWithLabel:
 func NewButtonWithLabel(label string) Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -146,7 +142,6 @@ func NewButtonWithLabel(label string) Button {
 	return _button
 }
 
-// NewButtonWithMnemonic:
 func NewButtonWithMnemonic(label string) Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -47,6 +48,37 @@ const (
 
 func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 	return FontChooserLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FontFilterFunc: the type of function that is used for deciding what fonts get
+// shown in a `GtkFontChooser`.
+//
+// See [method@Gtk.FontChooser.set_filter_func].
+type FontFilterFunc func(family pango.FontFamily, face pango.FontFace, ok bool)
+
+//export gotk4_FontFilterFunc
+func _FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var family pango.FontFamily // out
+	var face pango.FontFace     // out
+
+	family = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(pango.FontFamily)
+	face = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(pango.FontFace)
+
+	fn := v.(FontFilterFunc)
+	ok := fn(family, face)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // FontChooser: `GtkFontChooser` is an interface that can be implemented by

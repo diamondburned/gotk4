@@ -35,19 +35,17 @@ func X11GetDefaultScreen() int {
 	return _gint
 }
 
-// X11Screen:
 type X11Screen interface {
 	gdk.Screen
 
-	// CurrentDesktop:
 	CurrentDesktop() uint32
-	// NumberOfDesktops:
+
 	NumberOfDesktops() uint32
-	// ScreenNumber:
+
 	ScreenNumber() int
-	// WindowManagerName:
+
 	WindowManagerName() string
-	// SupportsNetWmHintX11Screen:
+
 	SupportsNetWmHintX11Screen(property *gdk.Atom) bool
 }
 

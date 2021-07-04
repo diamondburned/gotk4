@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -17,6 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -85,21 +88,20 @@ type TreeModelSort interface {
 	TreeDragSource
 	TreeSortable
 
-	// ClearCacheTreeModelSort:
 	ClearCacheTreeModelSort()
-	// ConvertChildIterToIterTreeModelSort:
+
 	ConvertChildIterToIterTreeModelSort(childIter *TreeIter) (TreeIter, bool)
-	// ConvertChildPathToPathTreeModelSort:
+
 	ConvertChildPathToPathTreeModelSort(childPath *TreePath) *TreePath
-	// ConvertIterToChildIterTreeModelSort:
+
 	ConvertIterToChildIterTreeModelSort(sortedIter *TreeIter) TreeIter
-	// ConvertPathToChildPathTreeModelSort:
+
 	ConvertPathToChildPathTreeModelSort(sortedPath *TreePath) *TreePath
-	// Model:
+
 	Model() TreeModel
-	// IterIsValidTreeModelSort:
+
 	IterIsValidTreeModelSort(iter *TreeIter) bool
-	// ResetDefaultSortFuncTreeModelSort:
+
 	ResetDefaultSortFuncTreeModelSort()
 }
 
@@ -122,7 +124,6 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 	return WrapTreeModelSort(obj), nil
 }
 
-// NewTreeModelSortWithModel:
 func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
@@ -317,6 +318,10 @@ func (s treeModelSort) SortColumnChanged() {
 
 func (t treeModelSort) NewFilter(root *TreePath) TreeModel {
 	return WrapTreeModel(gextras.InternObject(t)).NewFilter(root)
+}
+
+func (t treeModelSort) Foreach(fn TreeModelForeachFunc) {
+	WrapTreeModel(gextras.InternObject(t)).Foreach(fn)
 }
 
 func (t treeModelSort) ColumnType(index_ int) externglib.Type {

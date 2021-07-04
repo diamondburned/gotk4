@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,21 +49,20 @@ type Viewport interface {
 	Bin
 	Scrollable
 
-	// BinWindow:
 	BinWindow() gdk.Window
-	// GetHAdjustment:
+
 	GetHAdjustment() Adjustment
-	// ShadowType:
+
 	ShadowType() ShadowType
-	// GetVAdjustment:
+
 	GetVAdjustment() Adjustment
-	// ViewWindow:
+
 	ViewWindow() gdk.Window
-	// SetHAdjustmentViewport:
+
 	SetHAdjustmentViewport(adjustment Adjustment)
-	// SetShadowTypeViewport:
+
 	SetShadowTypeViewport(typ ShadowType)
-	// SetVAdjustmentViewport:
+
 	SetVAdjustmentViewport(adjustment Adjustment)
 }
 
@@ -84,7 +85,6 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return WrapViewport(obj), nil
 }
 
-// NewViewport:
 func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
@@ -213,6 +213,18 @@ func (b viewport) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b viewport) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b viewport) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b viewport) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b viewport) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b viewport) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -56,6 +59,9 @@ type DTLSConnection interface {
 	// Close: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
 	Close(cancellable Cancellable) error
+	// CloseAsync: finish an asynchronous TLS shutdown operation. See
+	// g_dtls_connection_shutdown() for more information.
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CloseFinish: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
 	CloseFinish(result AsyncResult) error
@@ -92,6 +98,9 @@ type DTLSConnection interface {
 	// Handshake: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
 	Handshake(cancellable Cancellable) error
+	// HandshakeAsync: finish an asynchronous TLS shutdown operation. See
+	// g_dtls_connection_shutdown() for more information.
+	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
 	HandshakeFinish(result AsyncResult) error
@@ -116,6 +125,9 @@ type DTLSConnection interface {
 	// Shutdown: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
 	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) error
+	// ShutdownAsync: finish an asynchronous TLS shutdown operation. See
+	// g_dtls_connection_shutdown() for more information.
+	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
 	ShutdownFinish(result AsyncResult) error
@@ -157,6 +169,22 @@ func (c dtlsConnection) Close(cancellable Cancellable) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (c dtlsConnection) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDtlsConnection    // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_dtls_connection_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (c dtlsConnection) CloseFinish(result AsyncResult) error {
@@ -357,6 +385,22 @@ func (c dtlsConnection) Handshake(cancellable Cancellable) error {
 	return _goerr
 }
 
+func (c dtlsConnection) HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDtlsConnection    // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_dtls_connection_handshake_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (c dtlsConnection) HandshakeFinish(result AsyncResult) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -467,6 +511,30 @@ func (c dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancella
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (c dtlsConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDtlsConnection    // out
+	var _arg1 C.gboolean            // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.int                 // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
+	if shutdownRead {
+		_arg1 = C.TRUE
+	}
+	if shutdownWrite {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_dtls_connection_shutdown_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 func (c dtlsConnection) ShutdownFinish(result AsyncResult) error {

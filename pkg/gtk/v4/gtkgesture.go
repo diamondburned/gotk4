@@ -113,35 +113,34 @@ func init() {
 type Gesture interface {
 	EventController
 
-	// BoundingBox:
 	BoundingBox() (gdk.Rectangle, bool)
-	// BoundingBoxCenter:
+
 	BoundingBoxCenter() (x float64, y float64, ok bool)
-	// Device:
+
 	Device() gdk.Device
-	// LastEvent:
+
 	LastEvent(sequence *gdk.EventSequence) gdk.Event
-	// LastUpdatedSequence:
+
 	LastUpdatedSequence() *gdk.EventSequence
-	// Point:
+
 	Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
-	// SequenceState:
+
 	SequenceState(sequence *gdk.EventSequence) EventSequenceState
-	// GroupGesture:
+
 	GroupGesture(gesture Gesture)
-	// HandlesSequenceGesture:
+
 	HandlesSequenceGesture(sequence *gdk.EventSequence) bool
-	// IsActiveGesture:
+
 	IsActiveGesture() bool
-	// IsGroupedWithGesture:
+
 	IsGroupedWithGesture(other Gesture) bool
-	// IsRecognizedGesture:
+
 	IsRecognizedGesture() bool
-	// SetSequenceStateGesture:
+
 	SetSequenceStateGesture(sequence *gdk.EventSequence, state EventSequenceState) bool
-	// SetStateGesture:
+
 	SetStateGesture(state EventSequenceState) bool
-	// UngroupGesture:
+
 	UngroupGesture()
 }
 

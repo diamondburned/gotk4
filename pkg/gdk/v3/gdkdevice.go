@@ -108,57 +108,56 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 type Device interface {
 	gextras.Objector
 
-	// AssociatedDevice:
 	AssociatedDevice() Device
-	// Axes:
+
 	Axes() AxisFlags
-	// AxisUse:
+
 	AxisUse(index_ uint) AxisUse
-	// DeviceType:
+
 	DeviceType() DeviceType
-	// Display:
+
 	Display() Display
-	// HasCursor:
+
 	HasCursor() bool
-	// Key:
+
 	Key(index_ uint) (uint, ModifierType, bool)
-	// LastEventWindow:
+
 	LastEventWindow() Window
-	// Mode:
+
 	Mode() InputMode
-	// NAxes:
+
 	NAxes() int
-	// NKeys:
+
 	NKeys() int
-	// Name:
+
 	Name() string
-	// Position:
+
 	Position() (screen Screen, x int, y int)
-	// PositionDouble:
+
 	PositionDouble() (screen Screen, x float64, y float64)
-	// ProductID:
+
 	ProductID() string
-	// Seat:
+
 	Seat() Seat
-	// Source:
+
 	Source() InputSource
-	// VendorID:
+
 	VendorID() string
-	// WindowAtPosition:
+
 	WindowAtPosition() (winX int, winY int, window Window)
-	// WindowAtPositionDouble:
+
 	WindowAtPositionDouble() (winX float64, winY float64, window Window)
-	// GrabDevice:
+
 	GrabDevice(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus
-	// SetAxisUseDevice:
+
 	SetAxisUseDevice(index_ uint, use AxisUse)
-	// SetKeyDevice:
+
 	SetKeyDevice(index_ uint, keyval uint, modifiers ModifierType)
-	// SetModeDevice:
+
 	SetModeDevice(mode InputMode) bool
-	// UngrabDevice:
+
 	UngrabDevice(time_ uint32)
-	// WarpDevice:
+
 	WarpDevice(screen Screen, x int, y int)
 }
 

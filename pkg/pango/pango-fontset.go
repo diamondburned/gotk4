@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -15,6 +16,8 @@ import (
 //
 // #include <glib-object.h>
 // #include <pango/pango.h>
+//
+// gboolean gotk4_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 func init() {
@@ -22,6 +25,35 @@ func init() {
 		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontset},
 		{T: externglib.Type(C.pango_fontset_simple_get_type()), F: marshalFontsetSimple},
 	})
+}
+
+// FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
+// fonts in a fontset.
+type FontsetForeachFunc func(fontset Fontset, font Font, ok bool)
+
+//export gotk4_FontsetForeachFunc
+func _FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var fontset Fontset // out
+	var font Font       // out
+
+	fontset = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Fontset)
+	font = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(Font)
+
+	fn := v.(FontsetForeachFunc)
+	ok := fn(fontset, font)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // Fontset: a `PangoFontset` represents a set of `PangoFont` to use when
@@ -34,9 +66,10 @@ func init() {
 type Fontset interface {
 	gextras.Objector
 
-	// Font:
+	ForeachFontset(fn FontsetForeachFunc)
+
 	Font(wc uint) Font
-	// Metrics:
+
 	Metrics() *FontMetrics
 }
 
@@ -57,6 +90,18 @@ func marshalFontset(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontset(obj), nil
+}
+
+func (f fontset) ForeachFontset(fn FontsetForeachFunc) {
+	var _arg0 *C.PangoFontset           // out
+	var _arg1 C.PangoFontsetForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
 }
 
 func (f fontset) Font(wc uint) Font {
@@ -102,9 +147,8 @@ func (f fontset) Metrics() *FontMetrics {
 type FontsetSimple interface {
 	Fontset
 
-	// AppendFontsetSimple:
 	AppendFontsetSimple(font Font)
-	// SizeFontsetSimple:
+
 	SizeFontsetSimple() int
 }
 
@@ -127,7 +171,6 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 	return WrapFontsetSimple(obj), nil
 }
 
-// NewFontsetSimple:
 func NewFontsetSimple(language *Language) FontsetSimple {
 	var _arg1 *C.PangoLanguage      // out
 	var _cret *C.PangoFontsetSimple // in

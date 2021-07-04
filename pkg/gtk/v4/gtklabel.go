@@ -184,95 +184,94 @@ func init() {
 type Label interface {
 	Widget
 
-	// Attributes:
 	Attributes() *pango.AttrList
-	// CurrentURI:
+
 	CurrentURI() string
-	// Ellipsize:
+
 	Ellipsize() pango.EllipsizeMode
-	// ExtraMenu:
+
 	ExtraMenu() gio.MenuModel
-	// Justify:
+
 	Justify() Justification
-	// Label:
+
 	Label() string
-	// Layout:
+
 	Layout() pango.Layout
-	// LayoutOffsets:
+
 	LayoutOffsets() (x int, y int)
-	// Lines:
+
 	Lines() int
-	// MaxWidthChars:
+
 	MaxWidthChars() int
-	// MnemonicKeyval:
+
 	MnemonicKeyval() uint
-	// MnemonicWidget:
+
 	MnemonicWidget() Widget
-	// Selectable:
+
 	Selectable() bool
-	// SelectionBounds:
+
 	SelectionBounds() (start int, end int, ok bool)
-	// SingleLineMode:
+
 	SingleLineMode() bool
-	// Text:
+
 	Text() string
-	// UseMarkup:
+
 	UseMarkup() bool
-	// UseUnderline:
+
 	UseUnderline() bool
-	// WidthChars:
+
 	WidthChars() int
-	// Wrap:
+
 	Wrap() bool
-	// WrapMode:
+
 	WrapMode() pango.WrapMode
-	// Xalign:
+
 	Xalign() float32
-	// Yalign:
+
 	Yalign() float32
-	// SelectRegionLabel:
+
 	SelectRegionLabel(startOffset int, endOffset int)
-	// SetAttributesLabel:
+
 	SetAttributesLabel(attrs *pango.AttrList)
-	// SetEllipsizeLabel:
+
 	SetEllipsizeLabel(mode pango.EllipsizeMode)
-	// SetExtraMenuLabel:
+
 	SetExtraMenuLabel(model gio.MenuModel)
-	// SetJustifyLabel:
+
 	SetJustifyLabel(jtype Justification)
-	// SetLabelLabel:
+
 	SetLabelLabel(str string)
-	// SetLinesLabel:
+
 	SetLinesLabel(lines int)
-	// SetMarkupLabel:
+
 	SetMarkupLabel(str string)
-	// SetMarkupWithMnemonicLabel:
+
 	SetMarkupWithMnemonicLabel(str string)
-	// SetMaxWidthCharsLabel:
+
 	SetMaxWidthCharsLabel(nChars int)
-	// SetMnemonicWidgetLabel:
+
 	SetMnemonicWidgetLabel(widget Widget)
-	// SetSelectableLabel:
+
 	SetSelectableLabel(setting bool)
-	// SetSingleLineModeLabel:
+
 	SetSingleLineModeLabel(singleLineMode bool)
-	// SetTextLabel:
+
 	SetTextLabel(str string)
-	// SetTextWithMnemonicLabel:
+
 	SetTextWithMnemonicLabel(str string)
-	// SetUseMarkupLabel:
+
 	SetUseMarkupLabel(setting bool)
-	// SetUseUnderlineLabel:
+
 	SetUseUnderlineLabel(setting bool)
-	// SetWidthCharsLabel:
+
 	SetWidthCharsLabel(nChars int)
-	// SetWrapLabel:
+
 	SetWrapLabel(wrap bool)
-	// SetWrapModeLabel:
+
 	SetWrapModeLabel(wrapMode pango.WrapMode)
-	// SetXalignLabel:
+
 	SetXalignLabel(xalign float32)
-	// SetYalignLabel:
+
 	SetYalignLabel(yalign float32)
 }
 
@@ -295,7 +294,6 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return WrapLabel(obj), nil
 }
 
-// NewLabel:
 func NewLabel(str string) Label {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -312,7 +310,6 @@ func NewLabel(str string) Label {
 	return _label
 }
 
-// NewLabelWithMnemonic:
 func NewLabelWithMnemonic(str string) Label {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

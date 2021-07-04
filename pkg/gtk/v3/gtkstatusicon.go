@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,59 +64,54 @@ func init() {
 type StatusIcon interface {
 	gextras.Objector
 
-	// Geometry:
 	Geometry() (gdk.Screen, gdk.Rectangle, Orientation, bool)
-	// GIcon:
-	GIcon() gio.Icon
-	// HasTooltip:
+
 	HasTooltip() bool
-	// IconName:
+
 	IconName() string
-	// Pixbuf:
+
 	Pixbuf() gdkpixbuf.Pixbuf
-	// Screen:
+
 	Screen() gdk.Screen
-	// Size:
+
 	Size() int
-	// Stock:
+
 	Stock() string
-	// StorageType:
+
 	StorageType() ImageType
-	// Title:
+
 	Title() string
-	// TooltipMarkup:
+
 	TooltipMarkup() string
-	// TooltipText:
+
 	TooltipText() string
-	// Visible:
+
 	Visible() bool
-	// X11WindowID:
+
 	X11WindowID() uint32
-	// IsEmbeddedStatusIcon:
+
 	IsEmbeddedStatusIcon() bool
-	// SetFromFileStatusIcon:
+
 	SetFromFileStatusIcon(filename string)
-	// SetFromGIconStatusIcon:
-	SetFromGIconStatusIcon(icon gio.Icon)
-	// SetFromIconNameStatusIcon:
+
 	SetFromIconNameStatusIcon(iconName string)
-	// SetFromPixbufStatusIcon:
+
 	SetFromPixbufStatusIcon(pixbuf gdkpixbuf.Pixbuf)
-	// SetFromStockStatusIcon:
+
 	SetFromStockStatusIcon(stockId string)
-	// SetHasTooltipStatusIcon:
+
 	SetHasTooltipStatusIcon(hasTooltip bool)
-	// SetNameStatusIcon:
+
 	SetNameStatusIcon(name string)
-	// SetScreenStatusIcon:
+
 	SetScreenStatusIcon(screen gdk.Screen)
-	// SetTitleStatusIcon:
+
 	SetTitleStatusIcon(title string)
-	// SetTooltipMarkupStatusIcon:
+
 	SetTooltipMarkupStatusIcon(markup string)
-	// SetTooltipTextStatusIcon:
+
 	SetTooltipTextStatusIcon(text string)
-	// SetVisibleStatusIcon:
+
 	SetVisibleStatusIcon(visible bool)
 }
 
@@ -140,7 +134,6 @@ func marshalStatusIcon(p uintptr) (interface{}, error) {
 	return WrapStatusIcon(obj), nil
 }
 
-// NewStatusIcon:
 func NewStatusIcon() StatusIcon {
 	var _cret *C.GtkStatusIcon // in
 
@@ -153,7 +146,6 @@ func NewStatusIcon() StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromFile:
 func NewStatusIconFromFile(filename string) StatusIcon {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GtkStatusIcon // in
@@ -170,23 +162,6 @@ func NewStatusIconFromFile(filename string) StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromGIcon:
-func NewStatusIconFromGIcon(icon gio.Icon) StatusIcon {
-	var _arg1 *C.GIcon         // out
-	var _cret *C.GtkStatusIcon // in
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	_cret = C.gtk_status_icon_new_from_gicon(_arg1)
-
-	var _statusIcon StatusIcon // out
-
-	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StatusIcon)
-
-	return _statusIcon
-}
-
-// NewStatusIconFromIconName:
 func NewStatusIconFromIconName(iconName string) StatusIcon {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GtkStatusIcon // in
@@ -203,7 +178,6 @@ func NewStatusIconFromIconName(iconName string) StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromPixbuf:
 func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbuf) StatusIcon {
 	var _arg1 *C.GdkPixbuf     // out
 	var _cret *C.GtkStatusIcon // in
@@ -219,7 +193,6 @@ func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbuf) StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromStock:
 func NewStatusIconFromStock(stockId string) StatusIcon {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GtkStatusIcon // in
@@ -270,21 +243,6 @@ func (s statusIcon) Geometry() (gdk.Screen, gdk.Rectangle, Orientation, bool) {
 	}
 
 	return _screen, _area, _orientation, _ok
-}
-
-func (s statusIcon) GIcon() gio.Icon {
-	var _arg0 *C.GtkStatusIcon // out
-	var _cret *C.GIcon         // in
-
-	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_status_icon_get_gicon(_arg0)
-
-	var _icon gio.Icon // out
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
-
-	return _icon
 }
 
 func (s statusIcon) HasTooltip() bool {
@@ -499,16 +457,6 @@ func (s statusIcon) SetFromFileStatusIcon(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_file(_arg0, _arg1)
-}
-
-func (s statusIcon) SetFromGIconStatusIcon(icon gio.Icon) {
-	var _arg0 *C.GtkStatusIcon // out
-	var _arg1 *C.GIcon         // out
-
-	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_status_icon_set_from_gicon(_arg0, _arg1)
 }
 
 func (s statusIcon) SetFromIconNameStatusIcon(iconName string) {

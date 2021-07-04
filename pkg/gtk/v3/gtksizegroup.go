@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -90,17 +92,16 @@ func init() {
 type SizeGroup interface {
 	Buildable
 
-	// AddWidgetSizeGroup:
 	AddWidgetSizeGroup(widget Widget)
-	// IgnoreHidden:
+
 	IgnoreHidden() bool
-	// Mode:
+
 	Mode() SizeGroupMode
-	// RemoveWidgetSizeGroup:
+
 	RemoveWidgetSizeGroup(widget Widget)
-	// SetIgnoreHiddenSizeGroup:
+
 	SetIgnoreHiddenSizeGroup(ignoreHidden bool)
-	// SetModeSizeGroup:
+
 	SetModeSizeGroup(mode SizeGroupMode)
 }
 
@@ -123,7 +124,6 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return WrapSizeGroup(obj), nil
 }
 
-// NewSizeGroup:
 func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in
@@ -219,6 +219,18 @@ func (b sizeGroup) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b sizeGroup) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b sizeGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b sizeGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b sizeGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b sizeGroup) InternalChild(builder Builder, childname string) gextras.Objector {

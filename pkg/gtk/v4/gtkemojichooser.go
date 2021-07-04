@@ -68,7 +68,6 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 	return WrapEmojiChooser(obj), nil
 }
 
-// NewEmojiChooser:
 func NewEmojiChooser() EmojiChooser {
 	var _cret *C.GtkWidget // in
 

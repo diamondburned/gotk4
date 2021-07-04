@@ -81,9 +81,8 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 type PadController interface {
 	EventController
 
-	// SetActionPadController:
 	SetActionPadController(typ PadActionType, index int, mode int, label string, actionName string)
-	// SetActionEntriesPadController:
+
 	SetActionEntriesPadController(entries []PadActionEntry)
 }
 
@@ -104,24 +103,6 @@ func marshalPadController(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPadController(obj), nil
-}
-
-// NewPadController:
-func NewPadController(group gio.ActionGroup, pad gdk.Device) PadController {
-	var _arg1 *C.GActionGroup     // out
-	var _arg2 *C.GdkDevice        // out
-	var _cret *C.GtkPadController // in
-
-	_arg1 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
-
-	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
-
-	var _padController PadController // out
-
-	_padController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PadController)
-
-	return _padController
 }
 
 func (c padController) SetActionPadController(typ PadActionType, index int, mode int, label string, actionName string) {

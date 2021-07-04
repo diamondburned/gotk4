@@ -120,37 +120,36 @@ func init() {
 type GLArea interface {
 	Widget
 
-	// AttachBuffersGLArea:
 	AttachBuffersGLArea()
-	// AutoRender:
+
 	AutoRender() bool
-	// Context:
+
 	Context() gdk.GLContext
-	// Error:
+
 	Error() error
-	// HasDepthBuffer:
+
 	HasDepthBuffer() bool
-	// HasStencilBuffer:
+
 	HasStencilBuffer() bool
-	// RequiredVersion:
+
 	RequiredVersion() (major int, minor int)
-	// UseES:
+
 	UseES() bool
-	// MakeCurrentGLArea:
+
 	MakeCurrentGLArea()
-	// QueueRenderGLArea:
+
 	QueueRenderGLArea()
-	// SetAutoRenderGLArea:
+
 	SetAutoRenderGLArea(autoRender bool)
-	// SetErrorGLArea:
+
 	SetErrorGLArea(err error)
-	// SetHasDepthBufferGLArea:
+
 	SetHasDepthBufferGLArea(hasDepthBuffer bool)
-	// SetHasStencilBufferGLArea:
+
 	SetHasStencilBufferGLArea(hasStencilBuffer bool)
-	// SetRequiredVersionGLArea:
+
 	SetRequiredVersionGLArea(major int, minor int)
-	// SetUseESGLArea:
+
 	SetUseESGLArea(useEs bool)
 }
 
@@ -173,7 +172,6 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return WrapGLArea(obj), nil
 }
 
-// NewGLArea:
 func NewGLArea() GLArea {
 	var _cret *C.GtkWidget // in
 

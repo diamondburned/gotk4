@@ -68,39 +68,38 @@ func init() {
 type PrintUnixDialog interface {
 	Dialog
 
-	// AddCustomTabPrintUnixDialog:
 	AddCustomTabPrintUnixDialog(child Widget, tabLabel Widget)
-	// CurrentPage:
+
 	CurrentPage() int
-	// EmbedPageSetup:
+
 	EmbedPageSetup() bool
-	// HasSelection:
+
 	HasSelection() bool
-	// ManualCapabilities:
+
 	ManualCapabilities() PrintCapabilities
-	// PageSetup:
+
 	PageSetup() PageSetup
-	// PageSetupSet:
+
 	PageSetupSet() bool
-	// SelectedPrinter:
+
 	SelectedPrinter() Printer
-	// Settings:
+
 	Settings() PrintSettings
-	// SupportSelection:
+
 	SupportSelection() bool
-	// SetCurrentPagePrintUnixDialog:
+
 	SetCurrentPagePrintUnixDialog(currentPage int)
-	// SetEmbedPageSetupPrintUnixDialog:
+
 	SetEmbedPageSetupPrintUnixDialog(embed bool)
-	// SetHasSelectionPrintUnixDialog:
+
 	SetHasSelectionPrintUnixDialog(hasSelection bool)
-	// SetManualCapabilitiesPrintUnixDialog:
+
 	SetManualCapabilitiesPrintUnixDialog(capabilities PrintCapabilities)
-	// SetPageSetupPrintUnixDialog:
+
 	SetPageSetupPrintUnixDialog(pageSetup PageSetup)
-	// SetSettingsPrintUnixDialog:
+
 	SetSettingsPrintUnixDialog(settings PrintSettings)
-	// SetSupportSelectionPrintUnixDialog:
+
 	SetSupportSelectionPrintUnixDialog(supportSelection bool)
 }
 
@@ -123,7 +122,6 @@ func marshalPrintUnixDialog(p uintptr) (interface{}, error) {
 	return WrapPrintUnixDialog(obj), nil
 }
 
-// NewPrintUnixDialog:
 func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out

@@ -14,6 +14,21 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// SourceSetClosure: set the callback for a source as a #GClosure.
+//
+// If the source is not one of the standard GLib types, the @closure_callback
+// and @closure_marshal fields of the Funcs structure must have been filled in
+// with pointers to appropriate functions.
+func SourceSetClosure(source *glib.Source, closure *Closure) {
+	var _arg1 *C.GSource  // out
+	var _arg2 *C.GClosure // out
+
+	_arg1 = (*C.GSource)(unsafe.Pointer(source.Native()))
+	_arg2 = (*C.GClosure)(unsafe.Pointer(closure.Native()))
+
+	C.g_source_set_closure(_arg1, _arg2)
+}
+
 // SourceSetDummyCallback sets a dummy callback for @source. The callback will
 // do nothing, and if the source expects a #gboolean return value, it will
 // return true. (If the source expects any other type of return value, it will

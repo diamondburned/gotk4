@@ -6,8 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,9 +51,8 @@ type RecentChooserMenu interface {
 	Activatable
 	RecentChooser
 
-	// ShowNumbers:
 	ShowNumbers() bool
-	// SetShowNumbersRecentChooserMenu:
+
 	SetShowNumbersRecentChooserMenu(showNumbers bool)
 }
 
@@ -74,7 +75,6 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 	return WrapRecentChooserMenu(obj), nil
 }
 
-// NewRecentChooserMenu:
 func NewRecentChooserMenu() RecentChooserMenu {
 	var _cret *C.GtkWidget // in
 
@@ -87,7 +87,6 @@ func NewRecentChooserMenu() RecentChooserMenu {
 	return _recentChooserMenu
 }
 
-// NewRecentChooserMenuForManager:
 func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
@@ -138,6 +137,18 @@ func (b recentChooserMenu) AddChild(builder Builder, child gextras.Objector, typ
 
 func (b recentChooserMenu) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b recentChooserMenu) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b recentChooserMenu) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b recentChooserMenu) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b recentChooserMenu) InternalChild(builder Builder, childname string) gextras.Objector {

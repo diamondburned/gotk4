@@ -58,21 +58,20 @@ func init() {
 type Overlay interface {
 	Widget
 
-	// AddOverlayOverlay:
 	AddOverlayOverlay(widget Widget)
-	// Child:
+
 	Child() Widget
-	// ClipOverlay:
+
 	ClipOverlay(widget Widget) bool
-	// MeasureOverlay:
+
 	MeasureOverlay(widget Widget) bool
-	// RemoveOverlayOverlay:
+
 	RemoveOverlayOverlay(widget Widget)
-	// SetChildOverlay:
+
 	SetChildOverlay(child Widget)
-	// SetClipOverlayOverlay:
+
 	SetClipOverlayOverlay(widget Widget, clipOverlay bool)
-	// SetMeasureOverlayOverlay:
+
 	SetMeasureOverlayOverlay(widget Widget, measure bool)
 }
 
@@ -95,7 +94,6 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return WrapOverlay(obj), nil
 }
 
-// NewOverlay:
 func NewOverlay() Overlay {
 	var _cret *C.GtkWidget // in
 

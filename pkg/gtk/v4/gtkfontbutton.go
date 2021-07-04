@@ -42,21 +42,20 @@ type FontButton interface {
 	Widget
 	FontChooser
 
-	// Modal:
 	Modal() bool
-	// Title:
+
 	Title() string
-	// UseFont:
+
 	UseFont() bool
-	// UseSize:
+
 	UseSize() bool
-	// SetModalFontButton:
+
 	SetModalFontButton(modal bool)
-	// SetTitleFontButton:
+
 	SetTitleFontButton(title string)
-	// SetUseFontFontButton:
+
 	SetUseFontFontButton(useFont bool)
-	// SetUseSizeFontButton:
+
 	SetUseSizeFontButton(useSize bool)
 }
 
@@ -79,7 +78,6 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return WrapFontButton(obj), nil
 }
 
-// NewFontButton:
 func NewFontButton() FontButton {
 	var _cret *C.GtkWidget // in
 
@@ -92,7 +90,6 @@ func NewFontButton() FontButton {
 	return _fontButton
 }
 
-// NewFontButtonWithFont:
 func NewFontButtonWithFont(fontname string) FontButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

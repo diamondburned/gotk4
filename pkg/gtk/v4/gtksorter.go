@@ -89,11 +89,10 @@ func marshalSorterOrder(p uintptr) (interface{}, error) {
 type Sorter interface {
 	gextras.Objector
 
-	// ChangedSorter:
 	ChangedSorter(change SorterChange)
-	// CompareSorter:
+
 	CompareSorter(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// Order:
+
 	Order() SorterOrder
 }
 

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -21,6 +22,29 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButton},
 	})
+}
+
+// MenuButtonCreatePopupFunc: user-provided callback function to create a popup
+// for a `GtkMenuButton` on demand.
+//
+// This function is called when the popup of @menu_button is shown, but none has
+// been provided via [method@Gtk.MenuButton.set_popover] or
+// [method@Gtk.MenuButton.set_menu_model].
+type MenuButtonCreatePopupFunc func(menuButton MenuButton)
+
+//export gotk4_MenuButtonCreatePopupFunc
+func _MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var menuButton MenuButton // out
+
+	menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(MenuButton)
+
+	fn := v.(MenuButtonCreatePopupFunc)
+	fn(menuButton)
 }
 
 // MenuButton: the `GtkMenuButton` widget is used to display a popup when
@@ -80,37 +104,36 @@ func init() {
 type MenuButton interface {
 	Widget
 
-	// Direction:
 	Direction() ArrowType
-	// HasFrame:
+
 	HasFrame() bool
-	// IconName:
+
 	IconName() string
-	// Label:
+
 	Label() string
-	// MenuModel:
+
 	MenuModel() gio.MenuModel
-	// Popover:
+
 	Popover() Popover
-	// UseUnderline:
+
 	UseUnderline() bool
-	// PopdownMenuButton:
+
 	PopdownMenuButton()
-	// PopupMenuButton:
+
 	PopupMenuButton()
-	// SetDirectionMenuButton:
+
 	SetDirectionMenuButton(direction ArrowType)
-	// SetHasFrameMenuButton:
+
 	SetHasFrameMenuButton(hasFrame bool)
-	// SetIconNameMenuButton:
+
 	SetIconNameMenuButton(iconName string)
-	// SetLabelMenuButton:
+
 	SetLabelMenuButton(label string)
-	// SetMenuModelMenuButton:
+
 	SetMenuModelMenuButton(menuModel gio.MenuModel)
-	// SetPopoverMenuButton:
+
 	SetPopoverMenuButton(popover Widget)
-	// SetUseUnderlineMenuButton:
+
 	SetUseUnderlineMenuButton(useUnderline bool)
 }
 
@@ -133,7 +156,6 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 	return WrapMenuButton(obj), nil
 }
 
-// NewMenuButton:
 func NewMenuButton() MenuButton {
 	var _cret *C.GtkWidget // in
 

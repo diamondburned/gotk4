@@ -36,7 +36,6 @@ func init() {
 type GestureSwipe interface {
 	GestureSingle
 
-	// Velocity:
 	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
@@ -59,7 +58,6 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	return WrapGestureSwipe(obj), nil
 }
 
-// NewGestureSwipe:
 func NewGestureSwipe(widget Widget) GestureSwipe {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

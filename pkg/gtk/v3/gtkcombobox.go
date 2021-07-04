@@ -5,8 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,69 +70,70 @@ type ComboBox interface {
 	CellEditable
 	CellLayout
 
-	// Active:
 	Active() int
-	// ActiveID:
+
 	ActiveID() string
-	// ActiveIter:
+
 	ActiveIter() (TreeIter, bool)
-	// AddTearoffs:
+
 	AddTearoffs() bool
-	// ButtonSensitivity:
+
 	ButtonSensitivity() SensitivityType
-	// ColumnSpanColumn:
+
 	ColumnSpanColumn() int
-	// EntryTextColumn:
+
 	EntryTextColumn() int
-	// FocusOnClick:
+
 	FocusOnClick() bool
-	// HasEntry:
+
 	HasEntry() bool
-	// IDColumn:
+
 	IDColumn() int
-	// Model:
+
 	Model() TreeModel
-	// PopupFixedWidth:
+
+	PopupAccessible() atk.Object
+
 	PopupFixedWidth() bool
-	// RowSpanColumn:
+
 	RowSpanColumn() int
-	// Title:
+
 	Title() string
-	// WrapWidth:
+
 	WrapWidth() int
-	// PopdownComboBox:
+
 	PopdownComboBox()
-	// PopupComboBox:
+
 	PopupComboBox()
-	// PopupForDeviceComboBox:
+
 	PopupForDeviceComboBox(device gdk.Device)
-	// SetActiveComboBox:
+
 	SetActiveComboBox(index_ int)
-	// SetActiveIDComboBox:
+
 	SetActiveIDComboBox(activeId string) bool
-	// SetActiveIterComboBox:
+
 	SetActiveIterComboBox(iter *TreeIter)
-	// SetAddTearoffsComboBox:
+
 	SetAddTearoffsComboBox(addTearoffs bool)
-	// SetButtonSensitivityComboBox:
+
 	SetButtonSensitivityComboBox(sensitivity SensitivityType)
-	// SetColumnSpanColumnComboBox:
+
 	SetColumnSpanColumnComboBox(columnSpan int)
-	// SetEntryTextColumnComboBox:
+
 	SetEntryTextColumnComboBox(textColumn int)
-	// SetFocusOnClickComboBox:
+
 	SetFocusOnClickComboBox(focusOnClick bool)
-	// SetIDColumnComboBox:
+
 	SetIDColumnComboBox(idColumn int)
-	// SetModelComboBox:
+
 	SetModelComboBox(model TreeModel)
-	// SetPopupFixedWidthComboBox:
+
 	SetPopupFixedWidthComboBox(fixed bool)
-	// SetRowSpanColumnComboBox:
+
 	SetRowSpanColumnComboBox(rowSpan int)
-	// SetTitleComboBox:
+
 	SetTitleComboBox(title string)
-	// SetWrapWidthComboBox:
+
 	SetWrapWidthComboBox(width int)
 }
 
@@ -152,7 +156,6 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 	return WrapComboBox(obj), nil
 }
 
-// NewComboBox:
 func NewComboBox() ComboBox {
 	var _cret *C.GtkWidget // in
 
@@ -165,7 +168,6 @@ func NewComboBox() ComboBox {
 	return _comboBox
 }
 
-// NewComboBoxWithArea:
 func NewComboBoxWithArea(area CellArea) ComboBox {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
@@ -181,7 +183,6 @@ func NewComboBoxWithArea(area CellArea) ComboBox {
 	return _comboBox
 }
 
-// NewComboBoxWithAreaAndEntry:
 func NewComboBoxWithAreaAndEntry(area CellArea) ComboBox {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
@@ -197,7 +198,6 @@ func NewComboBoxWithAreaAndEntry(area CellArea) ComboBox {
 	return _comboBox
 }
 
-// NewComboBoxWithEntry:
 func NewComboBoxWithEntry() ComboBox {
 	var _cret *C.GtkWidget // in
 
@@ -210,7 +210,6 @@ func NewComboBoxWithEntry() ComboBox {
 	return _comboBox
 }
 
-// NewComboBoxWithModel:
 func NewComboBoxWithModel(model TreeModel) ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -226,7 +225,6 @@ func NewComboBoxWithModel(model TreeModel) ComboBox {
 	return _comboBox
 }
 
-// NewComboBoxWithModelAndEntry:
 func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -426,6 +424,21 @@ func (c comboBox) Model() TreeModel {
 	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
+}
+
+func (c comboBox) PopupAccessible() atk.Object {
+	var _arg0 *C.GtkComboBox // out
+	var _cret *C.AtkObject   // in
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
+
+	_cret = C.gtk_combo_box_get_popup_accessible(_arg0)
+
+	var _object atk.Object // out
+
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(atk.Object)
+
+	return _object
 }
 
 func (c comboBox) PopupFixedWidth() bool {
@@ -681,6 +694,18 @@ func (b comboBox) ConstructChild(builder Builder, name string) gextras.Objector 
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b comboBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b comboBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b comboBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b comboBox) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -715,6 +740,18 @@ func (b comboBox) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b comboBox) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b comboBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b comboBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b comboBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b comboBox) InternalChild(builder Builder, childname string) gextras.Objector {

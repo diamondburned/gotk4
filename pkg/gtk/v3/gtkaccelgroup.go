@@ -317,15 +317,14 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 type AccelGroup interface {
 	gextras.Objector
 
-	// DisconnectKeyAccelGroup:
 	DisconnectKeyAccelGroup(accelKey uint, accelMods gdk.ModifierType) bool
-	// IsLocked:
+
 	IsLocked() bool
-	// ModifierMask:
+
 	ModifierMask() gdk.ModifierType
-	// LockAccelGroup:
+
 	LockAccelGroup()
-	// UnlockAccelGroup:
+
 	UnlockAccelGroup()
 }
 
@@ -348,7 +347,6 @@ func marshalAccelGroup(p uintptr) (interface{}, error) {
 	return WrapAccelGroup(obj), nil
 }
 
-// NewAccelGroup:
 func NewAccelGroup() AccelGroup {
 	var _cret *C.GtkAccelGroup // in
 
@@ -430,7 +428,6 @@ func (a accelGroup) UnlockAccelGroup() {
 	C.gtk_accel_group_unlock(_arg0)
 }
 
-// AccelKey:
 type AccelKey C.GtkAccelKey
 
 // WrapAccelKey wraps the C unsafe.Pointer to be the right type. It is

@@ -54,13 +54,12 @@ func init() {
 type LinkButton interface {
 	Button
 
-	// URI:
 	URI() string
-	// Visited:
+
 	Visited() bool
-	// SetURILinkButton:
+
 	SetURILinkButton(uri string)
-	// SetVisitedLinkButton:
+
 	SetVisitedLinkButton(visited bool)
 }
 
@@ -83,7 +82,6 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	return WrapLinkButton(obj), nil
 }
 
-// NewLinkButton:
 func NewLinkButton(uri string) LinkButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -100,7 +98,6 @@ func NewLinkButton(uri string) LinkButton {
 	return _linkButton
 }
 
-// NewLinkButtonWithLabel:
 func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out

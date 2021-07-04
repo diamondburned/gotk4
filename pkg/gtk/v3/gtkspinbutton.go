@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -115,49 +117,48 @@ type SpinButton interface {
 	Entry
 	Orientable
 
-	// ConfigureSpinButton:
 	ConfigureSpinButton(adjustment Adjustment, climbRate float64, digits uint)
-	// Adjustment:
+
 	Adjustment() Adjustment
-	// Digits:
+
 	Digits() uint
-	// Increments:
+
 	Increments() (step float64, page float64)
-	// Numeric:
+
 	Numeric() bool
-	// Range:
+
 	Range() (min float64, max float64)
-	// SnapToTicks:
+
 	SnapToTicks() bool
-	// UpdatePolicy:
+
 	UpdatePolicy() SpinButtonUpdatePolicy
-	// Value:
+
 	Value() float64
-	// ValueAsInt:
+
 	ValueAsInt() int
-	// Wrap:
+
 	Wrap() bool
-	// SetAdjustmentSpinButton:
+
 	SetAdjustmentSpinButton(adjustment Adjustment)
-	// SetDigitsSpinButton:
+
 	SetDigitsSpinButton(digits uint)
-	// SetIncrementsSpinButton:
+
 	SetIncrementsSpinButton(step float64, page float64)
-	// SetNumericSpinButton:
+
 	SetNumericSpinButton(numeric bool)
-	// SetRangeSpinButton:
+
 	SetRangeSpinButton(min float64, max float64)
-	// SetSnapToTicksSpinButton:
+
 	SetSnapToTicksSpinButton(snapToTicks bool)
-	// SetUpdatePolicySpinButton:
+
 	SetUpdatePolicySpinButton(policy SpinButtonUpdatePolicy)
-	// SetValueSpinButton:
+
 	SetValueSpinButton(value float64)
-	// SetWrapSpinButton:
+
 	SetWrapSpinButton(wrap bool)
-	// SpinSpinButton:
+
 	SpinSpinButton(direction SpinType, increment float64)
-	// UpdateSpinButton:
+
 	UpdateSpinButton()
 }
 
@@ -180,7 +181,6 @@ func marshalSpinButton(p uintptr) (interface{}, error) {
 	return WrapSpinButton(obj), nil
 }
 
-// NewSpinButton:
 func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinButton {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.gdouble        // out
@@ -200,7 +200,6 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinBu
 	return _spinButton
 }
 
-// NewSpinButtonWithRange:
 func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
@@ -530,6 +529,18 @@ func (b spinButton) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b spinButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b spinButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b spinButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b spinButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b spinButton) InternalChild(builder Builder, childname string) gextras.Objector {

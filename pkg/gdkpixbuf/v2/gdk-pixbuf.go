@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -18,6 +19,8 @@ import (
 //
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
+//
+// gboolean gotk4_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
 import "C"
 
 func init() {
@@ -153,67 +156,68 @@ func init() {
 type Pixbuf interface {
 	gextras.Objector
 
-	// AddAlphaPixbuf:
 	AddAlphaPixbuf(substituteColor bool, r byte, g byte, b byte) Pixbuf
-	// ApplyEmbeddedOrientationPixbuf:
+
 	ApplyEmbeddedOrientationPixbuf() Pixbuf
-	// CompositePixbuf:
+
 	CompositePixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
-	// CompositeColorPixbuf:
+
 	CompositeColorPixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
-	// CompositeColorSimplePixbuf:
+
 	CompositeColorSimplePixbuf(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf
-	// CopyPixbuf:
+
 	CopyPixbuf() Pixbuf
-	// CopyAreaPixbuf:
+
 	CopyAreaPixbuf(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int)
-	// CopyOptionsPixbuf:
+
 	CopyOptionsPixbuf(destPixbuf Pixbuf) bool
-	// FillPixbuf:
+
 	FillPixbuf(pixel uint32)
-	// FlipPixbuf:
+
 	FlipPixbuf(horizontal bool) Pixbuf
-	// BitsPerSample:
+
 	BitsPerSample() int
-	// ByteLength:
+
 	ByteLength() uint
-	// Colorspace:
+
 	Colorspace() Colorspace
-	// HasAlpha:
+
 	HasAlpha() bool
-	// Height:
+
 	Height() int
-	// NChannels:
+
 	NChannels() int
-	// Option:
+
 	Option(key string) string
-	// Options:
+
 	Options() *glib.HashTable
-	// Rowstride:
+
 	Rowstride() int
-	// Width:
+
 	Width() int
-	// NewSubpixbufPixbuf:
+
 	NewSubpixbufPixbuf(srcX int, srcY int, width int, height int) Pixbuf
-	// ReadPixelsPixbuf:
+
 	ReadPixelsPixbuf() *byte
-	// RemoveOptionPixbuf:
+
 	RemoveOptionPixbuf(key string) bool
-	// RotateSimplePixbuf:
+
 	RotateSimplePixbuf(angle PixbufRotation) Pixbuf
-	// SaturateAndPixelatePixbuf:
+
 	SaturateAndPixelatePixbuf(dest Pixbuf, saturation float32, pixelate bool)
-	// SaveToBuffervPixbuf:
+
 	SaveToBuffervPixbuf(typ string, optionKeys []string, optionValues []string) ([]byte, error)
-	// SaveToStreamvPixbuf:
+
+	SaveToCallbackvPixbuf(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error
+
 	SaveToStreamvPixbuf(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error
-	// SavevPixbuf:
+
 	SavevPixbuf(filename string, typ string, optionKeys []string, optionValues []string) error
-	// ScalePixbuf:
+
 	ScalePixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
-	// ScaleSimplePixbuf:
+
 	ScaleSimplePixbuf(destWidth int, destHeight int, interpType InterpType) Pixbuf
-	// SetOptionPixbuf:
+
 	SetOptionPixbuf(key string, value string) bool
 }
 
@@ -236,7 +240,6 @@ func marshalPixbuf(p uintptr) (interface{}, error) {
 	return WrapPixbuf(obj), nil
 }
 
-// NewPixbuf:
 func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int) Pixbuf {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out
@@ -262,7 +265,6 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 	return _pixbuf
 }
 
-// NewPixbufFromFile:
 func NewPixbufFromFile(filename string) (Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
@@ -282,7 +284,6 @@ func NewPixbufFromFile(filename string) (Pixbuf, error) {
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromFileAtScale:
 func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAspectRatio bool) (Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -310,7 +311,6 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromFileAtSize:
 func NewPixbufFromFileAtSize(filename string, width int, height int) (Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -334,7 +334,6 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (Pixbuf, er
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromInline:
 func NewPixbufFromInline(data []byte, copyPixels bool) (Pixbuf, error) {
 	var _arg2 *C.guint8
 	var _arg1 C.gint
@@ -359,7 +358,6 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (Pixbuf, error) {
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromResource:
 func NewPixbufFromResource(resourcePath string) (Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
@@ -379,7 +377,6 @@ func NewPixbufFromResource(resourcePath string) (Pixbuf, error) {
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromResourceAtScale:
 func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, preserveAspectRatio bool) (Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -407,7 +404,6 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromStream:
 func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (Pixbuf, error) {
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.GCancellable // out
@@ -428,7 +424,6 @@ func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (P
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromStreamAtScale:
 func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, preserveAspectRatio bool, cancellable gio.Cancellable) (Pixbuf, error) {
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gint          // out
@@ -457,7 +452,6 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromXpmData:
 func NewPixbufFromXpmData(data []string) Pixbuf {
 	var _arg1 **C.char
 	var _cret *C.GdkPixbuf // in
@@ -997,6 +991,48 @@ func (p pixbuf) SaveToBuffervPixbuf(typ string, optionKeys []string, optionValue
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _buffer, _goerr
+}
+
+func (p pixbuf) SaveToCallbackvPixbuf(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
+	var _arg0 *C.GdkPixbuf        // out
+	var _arg1 C.GdkPixbufSaveFunc // out
+	var _arg2 C.gpointer
+	var _arg3 *C.char // out
+	var _arg4 **C.char
+	var _arg5 **C.char
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_PixbufSaveFunc)
+	_arg2 = C.gpointer(box.Assign(saveFunc))
+	_arg3 = (*C.char)(C.CString(typ))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (**C.char)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg4))
+	{
+		out := unsafe.Slice(_arg4, len(optionKeys))
+		for i := range optionKeys {
+			out[i] = (*C.char)(C.CString(optionKeys[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg5 = (**C.char)(C.malloc(C.ulong(len(optionValues)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg5))
+	{
+		out := unsafe.Slice(_arg5, len(optionValues))
+		for i := range optionValues {
+			out[i] = (*C.char)(C.CString(optionValues[i]))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+
+	C.gdk_pixbuf_save_to_callbackv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 func (p pixbuf) SaveToStreamvPixbuf(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error {

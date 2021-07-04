@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -103,93 +105,92 @@ func init() {
 type Notebook interface {
 	Container
 
-	// AppendPageNotebook:
 	AppendPageNotebook(child Widget, tabLabel Widget) int
-	// AppendPageMenuNotebook:
+
 	AppendPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget) int
-	// DetachTabNotebook:
+
 	DetachTabNotebook(child Widget)
-	// ActionWidget:
+
 	ActionWidget(packType PackType) Widget
-	// CurrentPage:
+
 	CurrentPage() int
-	// GroupName:
+
 	GroupName() string
-	// MenuLabel:
+
 	MenuLabel(child Widget) Widget
-	// MenuLabelText:
+
 	MenuLabelText(child Widget) string
-	// NPages:
+
 	NPages() int
-	// NthPage:
+
 	NthPage(pageNum int) Widget
-	// Scrollable:
+
 	Scrollable() bool
-	// ShowBorder:
+
 	ShowBorder() bool
-	// ShowTabs:
+
 	ShowTabs() bool
-	// TabDetachable:
+
 	TabDetachable(child Widget) bool
-	// TabHborder:
+
 	TabHborder() uint16
-	// TabLabel:
+
 	TabLabel(child Widget) Widget
-	// TabLabelText:
+
 	TabLabelText(child Widget) string
-	// TabPos:
+
 	TabPos() PositionType
-	// TabReorderable:
+
 	TabReorderable(child Widget) bool
-	// TabVborder:
+
 	TabVborder() uint16
-	// InsertPageNotebook:
+
 	InsertPageNotebook(child Widget, tabLabel Widget, position int) int
-	// InsertPageMenuNotebook:
+
 	InsertPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget, position int) int
-	// NextPageNotebook:
+
 	NextPageNotebook()
-	// PageNumNotebook:
+
 	PageNumNotebook(child Widget) int
-	// PopupDisableNotebook:
+
 	PopupDisableNotebook()
-	// PopupEnableNotebook:
+
 	PopupEnableNotebook()
-	// PrependPageNotebook:
+
 	PrependPageNotebook(child Widget, tabLabel Widget) int
-	// PrependPageMenuNotebook:
+
 	PrependPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget) int
-	// PrevPageNotebook:
+
 	PrevPageNotebook()
-	// RemovePageNotebook:
+
 	RemovePageNotebook(pageNum int)
-	// ReorderChildNotebook:
+
 	ReorderChildNotebook(child Widget, position int)
-	// SetActionWidgetNotebook:
+
 	SetActionWidgetNotebook(widget Widget, packType PackType)
-	// SetCurrentPageNotebook:
+
 	SetCurrentPageNotebook(pageNum int)
-	// SetGroupNameNotebook:
+
 	SetGroupNameNotebook(groupName string)
-	// SetMenuLabelNotebook:
+
 	SetMenuLabelNotebook(child Widget, menuLabel Widget)
-	// SetMenuLabelTextNotebook:
+
 	SetMenuLabelTextNotebook(child Widget, menuText string)
-	// SetScrollableNotebook:
+
 	SetScrollableNotebook(scrollable bool)
-	// SetShowBorderNotebook:
+
 	SetShowBorderNotebook(showBorder bool)
-	// SetShowTabsNotebook:
+
 	SetShowTabsNotebook(showTabs bool)
-	// SetTabDetachableNotebook:
+
 	SetTabDetachableNotebook(child Widget, detachable bool)
-	// SetTabLabelNotebook:
+
 	SetTabLabelNotebook(child Widget, tabLabel Widget)
-	// SetTabLabelTextNotebook:
+
 	SetTabLabelTextNotebook(child Widget, tabText string)
-	// SetTabPosNotebook:
+
 	SetTabPosNotebook(pos PositionType)
-	// SetTabReorderableNotebook:
+
 	SetTabReorderableNotebook(child Widget, reorderable bool)
 }
 
@@ -212,7 +213,6 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return WrapNotebook(obj), nil
 }
 
-// NewNotebook:
 func NewNotebook() Notebook {
 	var _cret *C.GtkWidget // in
 
@@ -874,6 +874,18 @@ func (b notebook) AddChild(builder Builder, child gextras.Objector, typ string) 
 
 func (b notebook) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b notebook) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b notebook) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b notebook) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b notebook) InternalChild(builder Builder, childname string) gextras.Objector {

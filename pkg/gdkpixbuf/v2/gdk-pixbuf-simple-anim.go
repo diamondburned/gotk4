@@ -25,11 +25,10 @@ func init() {
 type PixbufSimpleAnim interface {
 	PixbufAnimation
 
-	// AddFramePixbufSimpleAnim:
 	AddFramePixbufSimpleAnim(pixbuf Pixbuf)
-	// Loop:
+
 	Loop() bool
-	// SetLoopPixbufSimpleAnim:
+
 	SetLoopPixbufSimpleAnim(loop bool)
 }
 
@@ -52,7 +51,6 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 	return WrapPixbufSimpleAnim(obj), nil
 }
 
-// NewPixbufSimpleAnim:
 func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out

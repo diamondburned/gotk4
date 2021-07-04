@@ -98,33 +98,32 @@ func init() {
 type Expander interface {
 	Widget
 
-	// Child:
 	Child() Widget
-	// Expanded:
+
 	Expanded() bool
-	// Label:
+
 	Label() string
-	// LabelWidget:
+
 	LabelWidget() Widget
-	// ResizeToplevel:
+
 	ResizeToplevel() bool
-	// UseMarkup:
+
 	UseMarkup() bool
-	// UseUnderline:
+
 	UseUnderline() bool
-	// SetChildExpander:
+
 	SetChildExpander(child Widget)
-	// SetExpandedExpander:
+
 	SetExpandedExpander(expanded bool)
-	// SetLabelExpander:
+
 	SetLabelExpander(label string)
-	// SetLabelWidgetExpander:
+
 	SetLabelWidgetExpander(labelWidget Widget)
-	// SetResizeToplevelExpander:
+
 	SetResizeToplevelExpander(resizeToplevel bool)
-	// SetUseMarkupExpander:
+
 	SetUseMarkupExpander(useMarkup bool)
-	// SetUseUnderlineExpander:
+
 	SetUseUnderlineExpander(useUnderline bool)
 }
 
@@ -147,7 +146,6 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return WrapExpander(obj), nil
 }
 
-// NewExpander:
 func NewExpander(label string) Expander {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -164,7 +162,6 @@ func NewExpander(label string) Expander {
 	return _expander
 }
 
-// NewExpanderWithMnemonic:
 func NewExpanderWithMnemonic(label string) Expander {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

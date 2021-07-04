@@ -37,9 +37,8 @@ func init() {
 type GesturePan interface {
 	GestureDrag
 
-	// Orientation:
 	Orientation() Orientation
-	// SetOrientationGesturePan:
+
 	SetOrientationGesturePan(orientation Orientation)
 }
 
@@ -62,7 +61,6 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 	return WrapGesturePan(obj), nil
 }
 
-// NewGesturePan:
 func NewGesturePan(orientation Orientation) GesturePan {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkGesture    // in

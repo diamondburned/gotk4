@@ -89,13 +89,12 @@ func init() {
 type ToggleButton interface {
 	Button
 
-	// Active:
 	Active() bool
-	// SetActiveToggleButton:
+
 	SetActiveToggleButton(isActive bool)
-	// SetGroupToggleButton:
+
 	SetGroupToggleButton(group ToggleButton)
-	// ToggledToggleButton:
+
 	ToggledToggleButton()
 }
 
@@ -118,7 +117,6 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 	return WrapToggleButton(obj), nil
 }
 
-// NewToggleButton:
 func NewToggleButton() ToggleButton {
 	var _cret *C.GtkWidget // in
 
@@ -131,7 +129,6 @@ func NewToggleButton() ToggleButton {
 	return _toggleButton
 }
 
-// NewToggleButtonWithLabel:
 func NewToggleButtonWithLabel(label string) ToggleButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -148,7 +145,6 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 	return _toggleButton
 }
 
-// NewToggleButtonWithMnemonic:
 func NewToggleButtonWithMnemonic(label string) ToggleButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

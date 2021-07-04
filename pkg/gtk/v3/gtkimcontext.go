@@ -69,27 +69,26 @@ func init() {
 type IMContext interface {
 	gextras.Objector
 
-	// DeleteSurroundingIMContext:
 	DeleteSurroundingIMContext(offset int, nChars int) bool
-	// FilterKeypressIMContext:
+
 	FilterKeypressIMContext(event *gdk.EventKey) bool
-	// FocusInIMContext:
+
 	FocusInIMContext()
-	// FocusOutIMContext:
+
 	FocusOutIMContext()
-	// PreeditString:
+
 	PreeditString() (string, *pango.AttrList, int)
-	// Surrounding:
+
 	Surrounding() (string, int, bool)
-	// ResetIMContext:
+
 	ResetIMContext()
-	// SetClientWindowIMContext:
+
 	SetClientWindowIMContext(window gdk.Window)
-	// SetCursorLocationIMContext:
+
 	SetCursorLocationIMContext(area *gdk.Rectangle)
-	// SetSurroundingIMContext:
+
 	SetSurroundingIMContext(text string, len int, cursorIndex int)
-	// SetUsePreeditIMContext:
+
 	SetUsePreeditIMContext(usePreedit bool)
 }
 

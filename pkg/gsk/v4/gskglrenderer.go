@@ -45,7 +45,6 @@ func marshalGLRenderer(p uintptr) (interface{}, error) {
 	return WrapGLRenderer(obj), nil
 }
 
-// NewGLRenderer:
 func NewGLRenderer() GLRenderer {
 	var _cret *C.GskRenderer // in
 

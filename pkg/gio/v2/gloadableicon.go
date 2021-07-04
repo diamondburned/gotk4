@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -41,6 +44,9 @@ type LoadableIcon interface {
 	// Load finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
 	Load(size int, cancellable Cancellable) (string, InputStream, error)
+	// LoadAsync finishes an asynchronous icon load started in
+	// g_loadable_icon_load_async().
+	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
 	LoadFinish(res AsyncResult) (string, InputStream, error)
@@ -91,6 +97,22 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStre
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _typ, _inputStream, _goerr
+}
+
+func (i loadableIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GLoadableIcon      // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
+	_arg1 = C.int(size)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_loadable_icon_load_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {

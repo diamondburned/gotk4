@@ -4,7 +4,6 @@ import (
 	"path"
 	"strconv"
 	"strings"
-	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
@@ -457,31 +456,6 @@ var BuiltinHandledTypes = []FilterMatcher{
 	AbsoluteFilter("C.intern"),
 }
 
-var (
-	selfResolved  = map[string]struct{}{}
-	selfResolveMu sync.Mutex
-)
-
-// isSelfResolving returns true if the given resolved type is  currently being
-// checked using CanGenerate. This is to prevent cases where the checker calls
-// Resolve on itself, causing an infinite recursion. This map assures that types
-// that are being checked, when checking itself, will skip further checking and
-// assume a yes.
-func isSelfResolving(resolved *Resolved) bool {
-	publType := resolved.PublicType(true)
-
-	selfResolveMu.Lock()
-	defer selfResolveMu.Unlock()
-
-	_, ok := selfResolved[publType]
-	if ok {
-		return true
-	}
-
-	selfResolved[publType] = struct{}{}
-	return false
-}
-
 // Resolve resolves the given type from the GIR type field. It returns nil if
 // the type is not known. It does not recursively traverse the type.
 func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
@@ -512,12 +486,14 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		return builtinType("", prim, typ)
 	}
 
+	switch typ.Name {
+	case "gpointer":
+		return builtinType("", "interface{}", typ)
+	}
+
 	// Resolve the unknown namespace that is GLib and primitive types.
 	switch EnsureNamespace(gen.Namespace(), typ.Name) {
 	// TODO: ignore field
-	// TODO: aaaaaaaaaaaaaaaaaaaaaaa
-	case "gpointer":
-		return builtinType("", "interface{}", typ)
 	case "GLib.Error":
 		return builtinType("", "error", typ)
 	case "GLib.List":
@@ -561,7 +537,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 
 	resolved := typeFromResult(gen, typ, result)
 
-	if !isSelfResolving(resolved) && !gen.CanGenerate(resolved) {
+	if !gen.CanGenerate(resolved) {
 		return nil
 	}
 

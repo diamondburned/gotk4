@@ -57,27 +57,26 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 type Monitor interface {
 	gextras.Objector
 
-	// Display:
 	Display() Display
-	// Geometry:
+
 	Geometry() Rectangle
-	// HeightMm:
+
 	HeightMm() int
-	// Manufacturer:
+
 	Manufacturer() string
-	// Model:
+
 	Model() string
-	// RefreshRate:
+
 	RefreshRate() int
-	// ScaleFactor:
+
 	ScaleFactor() int
-	// SubpixelLayout:
+
 	SubpixelLayout() SubpixelLayout
-	// WidthMm:
+
 	WidthMm() int
-	// Workarea:
+
 	Workarea() Rectangle
-	// IsPrimaryMonitor:
+
 	IsPrimaryMonitor() bool
 }
 

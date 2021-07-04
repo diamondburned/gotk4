@@ -234,39 +234,38 @@ func marshalBuilderError(p uintptr) (interface{}, error) {
 type Builder interface {
 	gextras.Objector
 
-	// AddFromFileBuilder:
 	AddFromFileBuilder(filename string) error
-	// AddFromResourceBuilder:
+
 	AddFromResourceBuilder(resourcePath string) error
-	// AddFromStringBuilder:
+
 	AddFromStringBuilder(buffer string, length int) error
-	// AddObjectsFromFileBuilder:
+
 	AddObjectsFromFileBuilder(filename string, objectIds []string) error
-	// AddObjectsFromResourceBuilder:
+
 	AddObjectsFromResourceBuilder(resourcePath string, objectIds []string) error
-	// AddObjectsFromStringBuilder:
+
 	AddObjectsFromStringBuilder(buffer string, length int, objectIds []string) error
-	// ExposeObjectBuilder:
+
 	ExposeObjectBuilder(name string, object gextras.Objector)
-	// ExtendWithTemplateBuilder:
+
 	ExtendWithTemplateBuilder(object gextras.Objector, templateType externglib.Type, buffer string, length int) error
-	// CurrentObject:
+
 	CurrentObject() gextras.Objector
-	// Object:
+
 	Object(name string) gextras.Objector
-	// Scope:
+
 	Scope() BuilderScope
-	// TranslationDomain:
+
 	TranslationDomain() string
-	// TypeFromName:
+
 	TypeFromName(typeName string) externglib.Type
-	// SetCurrentObjectBuilder:
+
 	SetCurrentObjectBuilder(currentObject gextras.Objector)
-	// SetScopeBuilder:
+
 	SetScopeBuilder(scope BuilderScope)
-	// SetTranslationDomainBuilder:
+
 	SetTranslationDomainBuilder(domain string)
-	// ValueFromStringTypeBuilder:
+
 	ValueFromStringTypeBuilder(typ externglib.Type, _string string) (externglib.Value, error)
 }
 
@@ -289,7 +288,6 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 	return WrapBuilder(obj), nil
 }
 
-// NewBuilder:
 func NewBuilder() Builder {
 	var _cret *C.GtkBuilder // in
 
@@ -302,7 +300,6 @@ func NewBuilder() Builder {
 	return _builder
 }
 
-// NewBuilderFromFile:
 func NewBuilderFromFile(filename string) Builder {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkBuilder // in
@@ -319,7 +316,6 @@ func NewBuilderFromFile(filename string) Builder {
 	return _builder
 }
 
-// NewBuilderFromResource:
 func NewBuilderFromResource(resourcePath string) Builder {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkBuilder // in
@@ -336,7 +332,6 @@ func NewBuilderFromResource(resourcePath string) Builder {
 	return _builder
 }
 
-// NewBuilderFromString:
 func NewBuilderFromString(_string string, length int) Builder {
 	var _arg1 *C.char       // out
 	var _arg2 C.gssize      // out

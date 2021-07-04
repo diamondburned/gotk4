@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -198,10 +197,6 @@ type FileChooser interface {
 	// in the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
 	CurrentFolder() string
-	// CurrentFolderFile unselects the file referred to by @uri. If the file is
-	// not in the current directory, does not exist, or is otherwise not
-	// currently selected, does nothing.
-	CurrentFolderFile() gio.File
 	// CurrentFolderURI unselects the file referred to by @uri. If the file is
 	// not in the current directory, does not exist, or is otherwise not
 	// currently selected, does nothing.
@@ -218,10 +213,6 @@ type FileChooser interface {
 	// the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
 	ExtraWidget() Widget
-	// File unselects the file referred to by @uri. If the file is not in the
-	// current directory, does not exist, or is otherwise not currently
-	// selected, does nothing.
-	File() gio.File
 	// Filename unselects the file referred to by @uri. If the file is not in
 	// the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
@@ -234,10 +225,6 @@ type FileChooser interface {
 	// the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
 	LocalOnly() bool
-	// PreviewFile unselects the file referred to by @uri. If the file is not in
-	// the current directory, does not exist, or is otherwise not currently
-	// selected, does nothing.
-	PreviewFile() gio.File
 	// PreviewFilename unselects the file referred to by @uri. If the file is
 	// not in the current directory, does not exist, or is otherwise not
 	// currently selected, does nothing.
@@ -290,10 +277,6 @@ type FileChooser interface {
 	// the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
 	SelectAll()
-	// SelectFile unselects the file referred to by @uri. If the file is not in
-	// the current directory, does not exist, or is otherwise not currently
-	// selected, does nothing.
-	SelectFile(file gio.File) error
 	// SelectFilename unselects the file referred to by @uri. If the file is not
 	// in the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
@@ -318,10 +301,6 @@ type FileChooser interface {
 	// not in the current directory, does not exist, or is otherwise not
 	// currently selected, does nothing.
 	SetCurrentFolder(filename string) bool
-	// SetCurrentFolderFile unselects the file referred to by @uri. If the file
-	// is not in the current directory, does not exist, or is otherwise not
-	// currently selected, does nothing.
-	SetCurrentFolderFile(file gio.File) error
 	// SetCurrentFolderURI unselects the file referred to by @uri. If the file
 	// is not in the current directory, does not exist, or is otherwise not
 	// currently selected, does nothing.
@@ -338,10 +317,6 @@ type FileChooser interface {
 	// in the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
 	SetExtraWidget(extraWidget Widget)
-	// SetFile unselects the file referred to by @uri. If the file is not in the
-	// current directory, does not exist, or is otherwise not currently
-	// selected, does nothing.
-	SetFile(file gio.File) error
 	// SetFilename unselects the file referred to by @uri. If the file is not in
 	// the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
@@ -382,10 +357,6 @@ type FileChooser interface {
 	// the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
 	UnselectAll()
-	// UnselectFile unselects the file referred to by @uri. If the file is not
-	// in the current directory, does not exist, or is otherwise not currently
-	// selected, does nothing.
-	UnselectFile(file gio.File)
 	// UnselectFilename unselects the file referred to by @uri. If the file is
 	// not in the current directory, does not exist, or is otherwise not
 	// currently selected, does nothing.
@@ -563,21 +534,6 @@ func (c fileChooser) CurrentFolder() string {
 	return _filename
 }
 
-func (c fileChooser) CurrentFolderFile() gio.File {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GFile          // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_file_chooser_get_current_folder_file(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
-}
-
 func (c fileChooser) CurrentFolderURI() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.gchar          // in
@@ -642,21 +598,6 @@ func (c fileChooser) ExtraWidget() Widget {
 	return _widget
 }
 
-func (c fileChooser) File() gio.File {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GFile          // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_file_chooser_get_file(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
-}
-
 func (c fileChooser) Filename() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.gchar          // in
@@ -703,21 +644,6 @@ func (c fileChooser) LocalOnly() bool {
 	}
 
 	return _ok
-}
-
-func (c fileChooser) PreviewFile() gio.File {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GFile          // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_file_chooser_get_preview_file(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
 }
 
 func (c fileChooser) PreviewFilename() string {
@@ -916,23 +842,6 @@ func (c fileChooser) SelectAll() {
 	C.gtk_file_chooser_select_all(_arg0)
 }
 
-func (c fileChooser) SelectFile(file gio.File) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_file_chooser_select_file(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 func (c fileChooser) SelectFilename(filename string) bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -1029,23 +938,6 @@ func (c fileChooser) SetCurrentFolder(filename string) bool {
 	return _ok
 }
 
-func (c fileChooser) SetCurrentFolderFile(file gio.File) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_file_chooser_set_current_folder_file(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
-}
-
 func (c fileChooser) SetCurrentFolderURI(uri string) bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.gchar          // out
@@ -1097,23 +989,6 @@ func (c fileChooser) SetExtraWidget(extraWidget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(extraWidget.Native()))
 
 	C.gtk_file_chooser_set_extra_widget(_arg0, _arg1)
-}
-
-func (c fileChooser) SetFile(file gio.File) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
-
-	var _goerr error // out
-
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _goerr
 }
 
 func (c fileChooser) SetFilename(filename string) bool {
@@ -1242,16 +1117,6 @@ func (c fileChooser) UnselectAll() {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	C.gtk_file_chooser_unselect_all(_arg0)
-}
-
-func (c fileChooser) UnselectFile(file gio.File) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_file_chooser_unselect_file(_arg0, _arg1)
 }
 
 func (c fileChooser) UnselectFilename(filename string) {

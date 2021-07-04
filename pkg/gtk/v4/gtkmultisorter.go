@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,12 +29,10 @@ func init() {
 // and so on.
 type MultiSorter interface {
 	Sorter
-	gio.ListModel
 	Buildable
 
-	// AppendMultiSorter:
 	AppendMultiSorter(sorter Sorter)
-	// RemoveMultiSorter:
+
 	RemoveMultiSorter(position uint)
 }
 
@@ -58,7 +55,6 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 	return WrapMultiSorter(obj), nil
 }
 
-// NewMultiSorter:
 func NewMultiSorter() MultiSorter {
 	var _cret *C.GtkMultiSorter // in
 
@@ -89,22 +85,6 @@ func (s multiSorter) RemoveMultiSorter(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)
-}
-
-func (l multiSorter) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l multiSorter) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l multiSorter) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l multiSorter) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 func (b multiSorter) BuildableID() string {

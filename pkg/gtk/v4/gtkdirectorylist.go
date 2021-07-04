@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,27 +47,22 @@ func init() {
 // `GtkDirectoryList`, but can access the `GFile` directly from the `GFileInfo`
 // when operating with a `GtkListView` or similar.
 type DirectoryList interface {
-	gio.ListModel
+	gextras.Objector
 
-	// Attributes:
 	Attributes() string
-	// Error:
+
 	Error() error
-	// File:
-	File() gio.File
-	// IOPriority:
+
 	IOPriority() int
-	// Monitored:
+
 	Monitored() bool
-	// IsLoadingDirectoryList:
+
 	IsLoadingDirectoryList() bool
-	// SetAttributesDirectoryList:
+
 	SetAttributesDirectoryList(attributes string)
-	// SetFileDirectoryList:
-	SetFileDirectoryList(file gio.File)
-	// SetIOPriorityDirectoryList:
+
 	SetIOPriorityDirectoryList(ioPriority int)
-	// SetMonitoredDirectoryList:
+
 	SetMonitoredDirectoryList(monitored bool)
 }
 
@@ -89,25 +83,6 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDirectoryList(obj), nil
-}
-
-// NewDirectoryList:
-func NewDirectoryList(attributes string, file gio.File) DirectoryList {
-	var _arg1 *C.char             // out
-	var _arg2 *C.GFile            // out
-	var _cret *C.GtkDirectoryList // in
-
-	_arg1 = (*C.char)(C.CString(attributes))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	_cret = C.gtk_directory_list_new(_arg1, _arg2)
-
-	var _directoryList DirectoryList // out
-
-	_directoryList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DirectoryList)
-
-	return _directoryList
 }
 
 func (s directoryList) Attributes() string {
@@ -138,21 +113,6 @@ func (s directoryList) Error() error {
 	_err = gerror.Take(unsafe.Pointer(_cret))
 
 	return _err
-}
-
-func (s directoryList) File() gio.File {
-	var _arg0 *C.GtkDirectoryList // out
-	var _cret *C.GFile            // in
-
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_directory_list_get_file(_arg0)
-
-	var _file gio.File // out
-
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.File)
-
-	return _file
 }
 
 func (s directoryList) IOPriority() int {
@@ -215,16 +175,6 @@ func (s directoryList) SetAttributesDirectoryList(attributes string) {
 	C.gtk_directory_list_set_attributes(_arg0, _arg1)
 }
 
-func (s directoryList) SetFileDirectoryList(file gio.File) {
-	var _arg0 *C.GtkDirectoryList // out
-	var _arg1 *C.GFile            // out
-
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	C.gtk_directory_list_set_file(_arg0, _arg1)
-}
-
 func (s directoryList) SetIOPriorityDirectoryList(ioPriority int) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.int               // out
@@ -245,20 +195,4 @@ func (s directoryList) SetMonitoredDirectoryList(monitored bool) {
 	}
 
 	C.gtk_directory_list_set_monitored(_arg0, _arg1)
-}
-
-func (l directoryList) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l directoryList) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l directoryList) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l directoryList) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }

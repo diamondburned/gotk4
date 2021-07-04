@@ -50,11 +50,19 @@ func (b *bitfieldData) FormatMember(memberName string) string {
 	return strcases.PascalToGo(b.Name) + strcases.SnakeToGo(true, memberName)
 }
 
+// CanGenerateBitfield returns false if the bitfield cannot be generated.
+func CanGenerateBitfield(gen FileGenerator, bitfield *gir.Bitfield) bool {
+	if !bitfield.IsIntrospectable() || types.Filter(gen, bitfield.Name, bitfield.CType) {
+		return false
+	}
+	return true
+}
+
 // GenerateBitfield generates a bitfield type declaration as well as the
 // constants and the type marshaler into the given file generator. If the
 // generation fails or is ignored, then false is returned.
 func GenerateBitfield(gen FileGeneratorWriter, bitfield *gir.Bitfield) bool {
-	if !bitfield.IsIntrospectable() || types.Filter(gen, bitfield.Name, bitfield.CType) {
+	if !CanGenerateBitfield(gen, bitfield) {
 		return false
 	}
 

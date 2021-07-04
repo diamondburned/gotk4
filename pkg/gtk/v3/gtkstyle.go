@@ -695,23 +695,22 @@ func PaintVline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 type Style interface {
 	gextras.Objector
 
-	// ApplyDefaultBackgroundStyle:
 	ApplyDefaultBackgroundStyle(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int)
-	// CopyStyle:
+
 	CopyStyle() Style
-	// DetachStyle:
+
 	DetachStyle()
-	// StyleProperty:
+
 	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
-	// HasContextStyle:
+
 	HasContextStyle() bool
-	// LookupColorStyle:
+
 	LookupColorStyle(colorName string) (gdk.Color, bool)
-	// LookupIconSetStyle:
+
 	LookupIconSetStyle(stockId string) *IconSet
-	// RenderIconStyle:
+
 	RenderIconStyle(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf
-	// SetBackgroundStyle:
+
 	SetBackgroundStyle(window gdk.Window, stateType StateType)
 }
 
@@ -734,7 +733,6 @@ func marshalStyle(p uintptr) (interface{}, error) {
 	return WrapStyle(obj), nil
 }
 
-// NewStyle:
 func NewStyle() Style {
 	var _cret *C.GtkStyle // in
 
@@ -930,7 +928,6 @@ func (s style) SetBackgroundStyle(window gdk.Window, stateType StateType) {
 	C.gtk_style_set_background(_arg0, _arg1, _arg2)
 }
 
-// ThemeEngine:
 type ThemeEngine C.GtkThemeEngine
 
 // WrapThemeEngine wraps the C unsafe.Pointer to be the right type. It is

@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,12 +26,34 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_simple_async_result_get_type()), F: marshalSimpleAsyncResult},
 	})
+}
+
+// SimpleAsyncReportGerrorInIdle reports an error in an idle function. Similar
+// to g_simple_async_report_error_in_idle(), but takes a #GError rather than
+// building a new one.
+//
+// Deprecated: since version 2.46.
+func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, err error) {
+	var _arg1 *C.GObject            // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+	var _arg4 *C.GError // out
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+	_arg4 = (*C.GError)(gerror.New(err))
+	defer C.g_error_free(_arg4)
+
+	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
 }
 
 // SimpleAsyncResult as of GLib 2.46, AsyncResult is deprecated in favor of
@@ -193,25 +216,24 @@ func init() {
 type SimpleAsyncResult interface {
 	AsyncResult
 
-	// CompleteSimpleAsyncResult:
 	CompleteSimpleAsyncResult()
-	// CompleteInIdleSimpleAsyncResult:
+
 	CompleteInIdleSimpleAsyncResult()
-	// OpResGboolean:
+
 	OpResGboolean() bool
-	// OpResGssize:
+
 	OpResGssize() int
-	// PropagateErrorSimpleAsyncResult:
+
 	PropagateErrorSimpleAsyncResult() error
-	// SetCheckCancellableSimpleAsyncResult:
+
 	SetCheckCancellableSimpleAsyncResult(checkCancellable Cancellable)
-	// SetFromErrorSimpleAsyncResult:
+
 	SetFromErrorSimpleAsyncResult(err error)
-	// SetHandleCancellationSimpleAsyncResult:
+
 	SetHandleCancellationSimpleAsyncResult(handleCancellation bool)
-	// SetOpResGbooleanSimpleAsyncResult:
+
 	SetOpResGbooleanSimpleAsyncResult(opRes bool)
-	// SetOpResGssizeSimpleAsyncResult:
+
 	SetOpResGssizeSimpleAsyncResult(opRes int)
 }
 
@@ -232,6 +254,49 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSimpleAsyncResult(obj), nil
+}
+
+func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag interface{}) SimpleAsyncResult {
+	var _arg1 *C.GObject            // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+	var _arg4 C.gpointer            // out
+	var _cret *C.GSimpleAsyncResult // in
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(box.Assign(unsafe.Pointer(sourceTag)))
+
+	_cret = C.g_simple_async_result_new(_arg1, _arg2, _arg3, _arg4)
+
+	var _simpleAsyncResult SimpleAsyncResult // out
+
+	_simpleAsyncResult = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleAsyncResult)
+
+	return _simpleAsyncResult
+}
+
+func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback AsyncReadyCallback, err error) SimpleAsyncResult {
+	var _arg1 *C.GObject            // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+	var _arg4 *C.GError             // out
+	var _cret *C.GSimpleAsyncResult // in
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+	_arg4 = (*C.GError)(gerror.New(err))
+	defer C.g_error_free(_arg4)
+
+	_cret = C.g_simple_async_result_new_from_error(_arg1, _arg2, _arg3, _arg4)
+
+	var _simpleAsyncResult SimpleAsyncResult // out
+
+	_simpleAsyncResult = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleAsyncResult)
+
+	return _simpleAsyncResult
 }
 
 func (s simpleAsyncResult) CompleteSimpleAsyncResult() {
@@ -354,6 +419,14 @@ func (s simpleAsyncResult) SetOpResGssizeSimpleAsyncResult(opRes int) {
 
 func (r simpleAsyncResult) SourceObject() gextras.Objector {
 	return WrapAsyncResult(gextras.InternObject(r)).SourceObject()
+}
+
+func (r simpleAsyncResult) UserData() interface{} {
+	return WrapAsyncResult(gextras.InternObject(r)).UserData()
+}
+
+func (r simpleAsyncResult) IsTagged(sourceTag interface{}) bool {
+	return WrapAsyncResult(gextras.InternObject(r)).IsTagged(sourceTag)
 }
 
 func (r simpleAsyncResult) LegacyPropagateError() error {

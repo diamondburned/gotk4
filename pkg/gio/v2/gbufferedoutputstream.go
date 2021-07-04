@@ -52,13 +52,12 @@ type BufferedOutputStream interface {
 	FilterOutputStream
 	Seekable
 
-	// AutoGrow:
 	AutoGrow() bool
-	// BufferSize:
+
 	BufferSize() uint
-	// SetAutoGrowBufferedOutputStream:
+
 	SetAutoGrowBufferedOutputStream(autoGrow bool)
-	// SetBufferSizeBufferedOutputStream:
+
 	SetBufferSizeBufferedOutputStream(size uint)
 }
 
@@ -81,7 +80,6 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 	return WrapBufferedOutputStream(obj), nil
 }
 
-// NewBufferedOutputStream:
 func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
@@ -97,7 +95,6 @@ func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 	return _bufferedOutputStream
 }
 
-// NewBufferedOutputStreamSized:
 func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 C.gsize          // out

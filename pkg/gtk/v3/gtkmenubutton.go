@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -110,29 +111,28 @@ func init() {
 type MenuButton interface {
 	ToggleButton
 
-	// AlignWidget:
 	AlignWidget() Widget
-	// Direction:
+
 	Direction() ArrowType
-	// MenuModel:
+
 	MenuModel() gio.MenuModel
-	// Popover:
+
 	Popover() Popover
-	// Popup:
+
 	Popup() Menu
-	// UsePopover:
+
 	UsePopover() bool
-	// SetAlignWidgetMenuButton:
+
 	SetAlignWidgetMenuButton(alignWidget Widget)
-	// SetDirectionMenuButton:
+
 	SetDirectionMenuButton(direction ArrowType)
-	// SetMenuModelMenuButton:
+
 	SetMenuModelMenuButton(menuModel gio.MenuModel)
-	// SetPopoverMenuButton:
+
 	SetPopoverMenuButton(popover Widget)
-	// SetPopupMenuButton:
+
 	SetPopupMenuButton(menu Widget)
-	// SetUsePopoverMenuButton:
+
 	SetUsePopoverMenuButton(usePopover bool)
 }
 
@@ -155,7 +155,6 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 	return WrapMenuButton(obj), nil
 }
 
-// NewMenuButton:
 func NewMenuButton() MenuButton {
 	var _cret *C.GtkWidget // in
 
@@ -330,6 +329,18 @@ func (b menuButton) ConstructChild(builder Builder, name string) gextras.Objecto
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b menuButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b menuButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b menuButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b menuButton) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -376,6 +387,18 @@ func (b menuButton) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b menuButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b menuButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b menuButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b menuButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b menuButton) InternalChild(builder Builder, childname string) gextras.Objector {

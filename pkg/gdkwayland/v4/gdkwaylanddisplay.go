@@ -34,13 +34,12 @@ func init() {
 type WaylandDisplay interface {
 	gdk.Display
 
-	// StartupNotificationID:
 	StartupNotificationID() string
-	// QueryRegistryWaylandDisplay:
+
 	QueryRegistryWaylandDisplay(global string) bool
-	// SetCursorThemeWaylandDisplay:
+
 	SetCursorThemeWaylandDisplay(name string, size int)
-	// SetStartupNotificationIDWaylandDisplay:
+
 	SetStartupNotificationIDWaylandDisplay(startupId string)
 }
 

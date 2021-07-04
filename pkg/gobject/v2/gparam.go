@@ -60,6 +60,28 @@ const (
 	ParamFlagsDeprecated ParamFlags = 0b10000000000000000000000000000000
 )
 
+// ParamTypeRegisterStatic registers @name as the name of a new static type
+// derived from TYPE_PARAM. The type system uses the information contained in
+// the SpecTypeInfo structure pointed to by @info to manage the Spec type and
+// its instances.
+func ParamTypeRegisterStatic(name string, pspecInfo *ParamSpecTypeInfo) externglib.Type {
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GParamSpecTypeInfo // out
+	var _cret C.GType               // in
+
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GParamSpecTypeInfo)(unsafe.Pointer(pspecInfo.Native()))
+
+	_cret = C.g_param_type_register_static(_arg1, _arg2)
+
+	var _gType externglib.Type // out
+
+	_gType = externglib.Type(_cret)
+
+	return _gType
+}
+
 // ParamValueConvert transforms @src_value into @dest_value if possible, and
 // then validates @dest_value, in order for it to conform to @pspec. If
 // @strict_validation is true this function will only succeed if the transformed
@@ -271,6 +293,25 @@ func (p *ParamSpecPool) Remove(pspec ParamSpec) {
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
 	C.g_param_spec_pool_remove(_arg0, _arg1)
+}
+
+// ParamSpecTypeInfo: this structure is used to provide the type system with the
+// information required to initialize and destruct (finalize) a parameter's
+// class and instances thereof. The initialized structure is passed to the
+// g_param_type_register_static() The type system will perform a deep copy of
+// this structure, so its memory does not need to be persistent across
+// invocation of g_param_type_register_static().
+type ParamSpecTypeInfo C.GParamSpecTypeInfo
+
+// WrapParamSpecTypeInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapParamSpecTypeInfo(ptr unsafe.Pointer) *ParamSpecTypeInfo {
+	return (*ParamSpecTypeInfo)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (p *ParamSpecTypeInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p)
 }
 
 // Parameter: the GParameter struct is an auxiliary structure used to hand

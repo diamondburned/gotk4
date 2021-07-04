@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -17,6 +18,8 @@ import (
 //
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+//
+// gboolean gotk4_WindowChildFunc(GdkWindow*, gpointer);
 import "C"
 
 func init() {
@@ -318,6 +321,34 @@ func marshalWindowHints(p uintptr) (interface{}, error) {
 	return WindowHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// WindowChildFunc: a function of this type is passed to
+// gdk_window_invalidate_maybe_recurse(). It gets called for each child of the
+// window to determine whether to recursively invalidate it or now.
+type WindowChildFunc func(window Window, ok bool)
+
+//export gotk4_WindowChildFunc
+func _WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var window Window // out
+
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Window)
+
+	fn := v.(WindowChildFunc)
+	ok := fn(window)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // GetDefaultRootWindow obtains the root window (parent all other windows are
 // inside) for the default display and screen.
 func GetDefaultRootWindow() Window {
@@ -382,303 +413,305 @@ func OffscreenWindowSetEmbedder(window Window, embedder Window) {
 	C.gdk_offscreen_window_set_embedder(_arg1, _arg2)
 }
 
-// Window:
 type Window interface {
 	gextras.Objector
 
-	// BeepWindow:
 	BeepWindow()
-	// BeginDrawFrameWindow:
+
 	BeginDrawFrameWindow(region *cairo.Region) DrawingContext
-	// BeginMoveDragWindow:
+
 	BeginMoveDragWindow(button int, rootX int, rootY int, timestamp uint32)
-	// BeginMoveDragForDeviceWindow:
+
 	BeginMoveDragForDeviceWindow(device Device, button int, rootX int, rootY int, timestamp uint32)
-	// BeginPaintRectWindow:
+
 	BeginPaintRectWindow(rectangle *Rectangle)
-	// BeginPaintRegionWindow:
+
 	BeginPaintRegionWindow(region *cairo.Region)
-	// BeginResizeDragWindow:
+
 	BeginResizeDragWindow(edge WindowEdge, button int, rootX int, rootY int, timestamp uint32)
-	// BeginResizeDragForDeviceWindow:
+
 	BeginResizeDragForDeviceWindow(edge WindowEdge, device Device, button int, rootX int, rootY int, timestamp uint32)
-	// ConfigureFinishedWindow:
+
 	ConfigureFinishedWindow()
-	// CoordsFromParentWindow:
+
 	CoordsFromParentWindow(parentX float64, parentY float64) (x float64, y float64)
-	// CoordsToParentWindow:
+
 	CoordsToParentWindow(x float64, y float64) (parentX float64, parentY float64)
-	// CreateGLContextWindow:
+
 	CreateGLContextWindow() (GLContext, error)
-	// CreateSimilarImageSurfaceWindow:
+
 	CreateSimilarImageSurfaceWindow(format cairo.Format, width int, height int, scale int) *cairo.Surface
-	// CreateSimilarSurfaceWindow:
+
 	CreateSimilarSurfaceWindow(content cairo.Content, width int, height int) *cairo.Surface
-	// DeiconifyWindow:
+
 	DeiconifyWindow()
-	// DestroyWindow:
+
 	DestroyWindow()
-	// DestroyNotifyWindow:
+
 	DestroyNotifyWindow()
-	// EnableSynchronizedConfigureWindow:
+
 	EnableSynchronizedConfigureWindow()
-	// EndDrawFrameWindow:
+
 	EndDrawFrameWindow(context DrawingContext)
-	// EndPaintWindow:
+
 	EndPaintWindow()
-	// EnsureNativeWindow:
+
 	EnsureNativeWindow() bool
-	// FlushWindow:
+
 	FlushWindow()
-	// FocusWindow:
+
 	FocusWindow(timestamp uint32)
-	// FreezeToplevelUpdatesLibgtkOnlyWindow:
+
 	FreezeToplevelUpdatesLibgtkOnlyWindow()
-	// FreezeUpdatesWindow:
+
 	FreezeUpdatesWindow()
-	// FullscreenWindow:
+
 	FullscreenWindow()
-	// FullscreenOnMonitorWindow:
+
 	FullscreenOnMonitorWindow(monitor int)
-	// GeometryChangedWindow:
+
 	GeometryChangedWindow()
-	// AcceptFocus:
+
 	AcceptFocus() bool
-	// BackgroundPattern:
+
 	BackgroundPattern() *cairo.Pattern
-	// ClipRegion:
+
 	ClipRegion() *cairo.Region
-	// Composited:
+
 	Composited() bool
-	// Cursor:
+
 	Cursor() Cursor
-	// Decorations:
+
 	Decorations() (WMDecoration, bool)
-	// DeviceCursor:
+
 	DeviceCursor(device Device) Cursor
-	// DeviceEvents:
+
 	DeviceEvents(device Device) EventMask
-	// DevicePosition:
+
 	DevicePosition(device Device) (x int, y int, mask ModifierType, ret Window)
-	// DevicePositionDouble:
+
 	DevicePositionDouble(device Device) (x float64, y float64, mask ModifierType, ret Window)
-	// Display:
+
 	Display() Display
-	// DragProtocol:
+
 	DragProtocol() (Window, DragProtocol)
-	// EffectiveParent:
+
 	EffectiveParent() Window
-	// EffectiveToplevel:
+
 	EffectiveToplevel() Window
-	// EventCompression:
+
 	EventCompression() bool
-	// Events:
+
 	Events() EventMask
-	// FocusOnMap:
+
 	FocusOnMap() bool
-	// FrameClock:
+
 	FrameClock() FrameClock
-	// FrameExtents:
+
 	FrameExtents() Rectangle
-	// FullscreenMode:
+
 	FullscreenMode() FullscreenMode
-	// Geometry:
+
 	Geometry() (x int, y int, width int, height int)
-	// Group:
+
 	Group() Window
-	// Height:
+
 	Height() int
-	// ModalHint:
+
 	ModalHint() bool
-	// Origin:
+
 	Origin() (x int, y int, gint int)
-	// Parent:
+
 	Parent() Window
-	// PassThrough:
+
 	PassThrough() bool
-	// Pointer:
+
 	Pointer() (x int, y int, mask ModifierType, ret Window)
-	// Position:
+
 	Position() (x int, y int)
-	// RootCoords:
+
 	RootCoords(x int, y int) (rootX int, rootY int)
-	// RootOrigin:
+
 	RootOrigin() (x int, y int)
-	// ScaleFactor:
+
 	ScaleFactor() int
-	// Screen:
+
 	Screen() Screen
-	// SourceEvents:
+
 	SourceEvents(source InputSource) EventMask
-	// State:
+
 	State() WindowState
-	// SupportMultidevice:
+
 	SupportMultidevice() bool
-	// Toplevel:
+
 	Toplevel() Window
-	// TypeHint:
+
 	TypeHint() WindowTypeHint
-	// UpdateArea:
+
 	UpdateArea() *cairo.Region
-	// VisibleRegion:
+
+	UserData() interface{}
+
 	VisibleRegion() *cairo.Region
-	// Visual:
+
 	Visual() Visual
-	// Width:
+
 	Width() int
-	// WindowType:
+
 	WindowType() WindowType
-	// HasNativeWindow:
+
 	HasNativeWindow() bool
-	// HideWindow:
+
 	HideWindow()
-	// IconifyWindow:
+
 	IconifyWindow()
-	// InputShapeCombineRegionWindow:
+
 	InputShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX int, offsetY int)
-	// InvalidateRectWindow:
+
+	InvalidateMaybeRecurseWindow(region *cairo.Region, childFunc WindowChildFunc)
+
 	InvalidateRectWindow(rect *Rectangle, invalidateChildren bool)
-	// InvalidateRegionWindow:
+
 	InvalidateRegionWindow(region *cairo.Region, invalidateChildren bool)
-	// IsDestroyedWindow:
+
 	IsDestroyedWindow() bool
-	// IsInputOnlyWindow:
+
 	IsInputOnlyWindow() bool
-	// IsShapedWindow:
+
 	IsShapedWindow() bool
-	// IsViewableWindow:
+
 	IsViewableWindow() bool
-	// IsVisibleWindow:
+
 	IsVisibleWindow() bool
-	// LowerWindow:
+
 	LowerWindow()
-	// MarkPaintFromClipWindow:
+
 	MarkPaintFromClipWindow(cr *cairo.Context)
-	// MaximizeWindow:
+
 	MaximizeWindow()
-	// MergeChildInputShapesWindow:
+
 	MergeChildInputShapesWindow()
-	// MergeChildShapesWindow:
+
 	MergeChildShapesWindow()
-	// MoveWindow:
+
 	MoveWindow(x int, y int)
-	// MoveRegionWindow:
+
 	MoveRegionWindow(region *cairo.Region, dx int, dy int)
-	// MoveResizeWindow:
+
 	MoveResizeWindow(x int, y int, width int, height int)
-	// MoveToRectWindow:
+
 	MoveToRectWindow(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int)
-	// ProcessUpdatesWindow:
+
 	ProcessUpdatesWindow(updateChildren bool)
-	// RaiseWindow:
+
 	RaiseWindow()
-	// RegisterDndWindow:
+
 	RegisterDndWindow()
-	// ReparentWindow:
+
 	ReparentWindow(newParent Window, x int, y int)
-	// ResizeWindow:
+
 	ResizeWindow(width int, height int)
-	// RestackWindow:
+
 	RestackWindow(sibling Window, above bool)
-	// ScrollWindow:
+
 	ScrollWindow(dx int, dy int)
-	// SetAcceptFocusWindow:
+
 	SetAcceptFocusWindow(acceptFocus bool)
-	// SetBackgroundWindow:
+
 	SetBackgroundWindow(color *Color)
-	// SetBackgroundPatternWindow:
+
 	SetBackgroundPatternWindow(pattern *cairo.Pattern)
-	// SetBackgroundRGBAWindow:
+
 	SetBackgroundRGBAWindow(rgba *RGBA)
-	// SetChildInputShapesWindow:
+
 	SetChildInputShapesWindow()
-	// SetChildShapesWindow:
+
 	SetChildShapesWindow()
-	// SetCompositedWindow:
+
 	SetCompositedWindow(composited bool)
-	// SetCursorWindow:
+
 	SetCursorWindow(cursor Cursor)
-	// SetDecorationsWindow:
+
 	SetDecorationsWindow(decorations WMDecoration)
-	// SetDeviceCursorWindow:
+
 	SetDeviceCursorWindow(device Device, cursor Cursor)
-	// SetDeviceEventsWindow:
+
 	SetDeviceEventsWindow(device Device, eventMask EventMask)
-	// SetEventCompressionWindow:
+
 	SetEventCompressionWindow(eventCompression bool)
-	// SetEventsWindow:
+
 	SetEventsWindow(eventMask EventMask)
-	// SetFocusOnMapWindow:
+
 	SetFocusOnMapWindow(focusOnMap bool)
-	// SetFullscreenModeWindow:
+
 	SetFullscreenModeWindow(mode FullscreenMode)
-	// SetFunctionsWindow:
+
 	SetFunctionsWindow(functions WMFunction)
-	// SetGeometryHintsWindow:
+
 	SetGeometryHintsWindow(geometry *Geometry, geomMask WindowHints)
-	// SetGroupWindow:
+
 	SetGroupWindow(leader Window)
-	// SetIconNameWindow:
+
 	SetIconNameWindow(name string)
-	// SetKeepAboveWindow:
+
 	SetKeepAboveWindow(setting bool)
-	// SetKeepBelowWindow:
+
 	SetKeepBelowWindow(setting bool)
-	// SetModalHintWindow:
+
 	SetModalHintWindow(modal bool)
-	// SetOpacityWindow:
+
 	SetOpacityWindow(opacity float64)
-	// SetOpaqueRegionWindow:
+
 	SetOpaqueRegionWindow(region *cairo.Region)
-	// SetOverrideRedirectWindow:
+
 	SetOverrideRedirectWindow(overrideRedirect bool)
-	// SetPassThroughWindow:
+
 	SetPassThroughWindow(passThrough bool)
-	// SetRoleWindow:
+
 	SetRoleWindow(role string)
-	// SetShadowWidthWindow:
+
 	SetShadowWidthWindow(left int, right int, top int, bottom int)
-	// SetSkipPagerHintWindow:
+
 	SetSkipPagerHintWindow(skipsPager bool)
-	// SetSkipTaskbarHintWindow:
+
 	SetSkipTaskbarHintWindow(skipsTaskbar bool)
-	// SetSourceEventsWindow:
+
 	SetSourceEventsWindow(source InputSource, eventMask EventMask)
-	// SetStartupIDWindow:
+
 	SetStartupIDWindow(startupId string)
-	// SetStaticGravitiesWindow:
+
 	SetStaticGravitiesWindow(useStatic bool) bool
-	// SetSupportMultideviceWindow:
+
 	SetSupportMultideviceWindow(supportMultidevice bool)
-	// SetTitleWindow:
+
 	SetTitleWindow(title string)
-	// SetTransientForWindow:
+
 	SetTransientForWindow(parent Window)
-	// SetTypeHintWindow:
+
 	SetTypeHintWindow(hint WindowTypeHint)
-	// SetUrgencyHintWindow:
+
 	SetUrgencyHintWindow(urgent bool)
-	// SetUserDataWindow:
+
 	SetUserDataWindow(userData gextras.Objector)
-	// ShapeCombineRegionWindow:
+
 	ShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX int, offsetY int)
-	// ShowWindow:
+
 	ShowWindow()
-	// ShowUnraisedWindow:
+
 	ShowUnraisedWindow()
-	// StickWindow:
+
 	StickWindow()
-	// ThawToplevelUpdatesLibgtkOnlyWindow:
+
 	ThawToplevelUpdatesLibgtkOnlyWindow()
-	// ThawUpdatesWindow:
+
 	ThawUpdatesWindow()
-	// UnfullscreenWindow:
+
 	UnfullscreenWindow()
-	// UnmaximizeWindow:
+
 	UnmaximizeWindow()
-	// UnstickWindow:
+
 	UnstickWindow()
-	// WithdrawWindow:
+
 	WithdrawWindow()
 }
 
@@ -701,7 +734,6 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return WrapWindow(obj), nil
 }
 
-// NewWindow:
 func NewWindow(parent Window, attributes *WindowAttr, attributesMask WindowAttributesType) Window {
 	var _arg1 *C.GdkWindow     // out
 	var _arg2 *C.GdkWindowAttr // out
@@ -1773,6 +1805,21 @@ func (w window) UpdateArea() *cairo.Region {
 	return _region
 }
 
+func (w window) UserData() interface{} {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gpointer   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+
+	C.gdk_window_get_user_data(_arg0, &_arg1)
+
+	var _data interface{} // out
+
+	_data = box.Get(uintptr(_arg1))
+
+	return _data
+}
+
 func (w window) VisibleRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
@@ -1881,6 +1928,20 @@ func (w window) InputShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX
 	_arg3 = C.gint(offsetY)
 
 	C.gdk_window_input_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
+}
+
+func (w window) InvalidateMaybeRecurseWindow(region *cairo.Region, childFunc WindowChildFunc) {
+	var _arg0 *C.GdkWindow         // out
+	var _arg1 *C.cairo_region_t    // out
+	var _arg2 C.GdkWindowChildFunc // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_WindowChildFunc)
+	_arg3 = C.gpointer(box.Assign(childFunc))
+
+	C.gdk_window_invalidate_maybe_recurse(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (w window) InvalidateRectWindow(rect *Rectangle, invalidateChildren bool) {
@@ -2786,7 +2847,6 @@ func (w *WindowAttr) Native() unsafe.Pointer {
 	return unsafe.Pointer(w)
 }
 
-// WindowRedirect:
 type WindowRedirect C.GdkWindowRedirect
 
 // WrapWindowRedirect wraps the C unsafe.Pointer to be the right type. It is

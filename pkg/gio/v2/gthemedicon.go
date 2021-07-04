@@ -43,11 +43,10 @@ func init() {
 type ThemedIcon interface {
 	Icon
 
-	// AppendNameThemedIcon:
 	AppendNameThemedIcon(iconname string)
-	// Names:
+
 	Names() []string
-	// PrependNameThemedIcon:
+
 	PrependNameThemedIcon(iconname string)
 }
 
@@ -70,7 +69,6 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 	return WrapThemedIcon(obj), nil
 }
 
-// NewThemedIcon:
 func NewThemedIcon(iconname string) ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -87,7 +85,6 @@ func NewThemedIcon(iconname string) ThemedIcon {
 	return _themedIcon
 }
 
-// NewThemedIconFromNames:
 func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 	var _arg1 **C.char
 	var _arg2 C.int
@@ -113,7 +110,6 @@ func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 	return _themedIcon
 }
 
-// NewThemedIconWithDefaultFallbacks:
 func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in

@@ -40,17 +40,16 @@ func init() {
 type InetAddressMask interface {
 	Initable
 
-	// EqualInetAddressMask:
 	EqualInetAddressMask(mask2 InetAddressMask) bool
-	// Address:
+
 	Address() InetAddress
-	// Family:
+
 	Family() SocketFamily
-	// Length:
+
 	Length() uint
-	// MatchesInetAddressMask:
+
 	MatchesInetAddressMask(address InetAddress) bool
-	// String:
+
 	String() string
 }
 
@@ -73,7 +72,6 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 	return WrapInetAddressMask(obj), nil
 }
 
-// NewInetAddressMask:
 func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) {
 	var _arg1 *C.GInetAddress     // out
 	var _arg2 C.guint             // out
@@ -94,7 +92,6 @@ func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) 
 	return _inetAddressMask, _goerr
 }
 
-// NewInetAddressMaskFromString:
 func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GInetAddressMask // in

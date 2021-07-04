@@ -38,11 +38,10 @@ type CharsetConverter interface {
 	Converter
 	Initable
 
-	// NumFallbacks:
 	NumFallbacks() uint
-	// UseFallback:
+
 	UseFallback() bool
-	// SetUseFallbackCharsetConverter:
+
 	SetUseFallbackCharsetConverter(useFallback bool)
 }
 
@@ -65,7 +64,6 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 	return WrapCharsetConverter(obj), nil
 }
 
-// NewCharsetConverter:
 func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter, error) {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out

@@ -41,19 +41,18 @@ func init() {
 type ActionBar interface {
 	Widget
 
-	// CenterWidget:
 	CenterWidget() Widget
-	// Revealed:
+
 	Revealed() bool
-	// PackEndActionBar:
+
 	PackEndActionBar(child Widget)
-	// PackStartActionBar:
+
 	PackStartActionBar(child Widget)
-	// RemoveActionBar:
+
 	RemoveActionBar(child Widget)
-	// SetCenterWidgetActionBar:
+
 	SetCenterWidgetActionBar(centerWidget Widget)
-	// SetRevealedActionBar:
+
 	SetRevealedActionBar(revealed bool)
 }
 
@@ -76,7 +75,6 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 	return WrapActionBar(obj), nil
 }
 
-// NewActionBar:
 func NewActionBar() ActionBar {
 	var _cret *C.GtkWidget // in
 

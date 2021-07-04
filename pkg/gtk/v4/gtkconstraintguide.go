@@ -36,25 +36,24 @@ func init() {
 type ConstraintGuide interface {
 	ConstraintTarget
 
-	// MaxSize:
 	MaxSize(width *int, height *int)
-	// MinSize:
+
 	MinSize(width *int, height *int)
-	// Name:
+
 	Name() string
-	// NatSize:
+
 	NatSize(width *int, height *int)
-	// Strength:
+
 	Strength() ConstraintStrength
-	// SetMaxSizeConstraintGuide:
+
 	SetMaxSizeConstraintGuide(width int, height int)
-	// SetMinSizeConstraintGuide:
+
 	SetMinSizeConstraintGuide(width int, height int)
-	// SetNameConstraintGuide:
+
 	SetNameConstraintGuide(name string)
-	// SetNatSizeConstraintGuide:
+
 	SetNatSizeConstraintGuide(width int, height int)
-	// SetStrengthConstraintGuide:
+
 	SetStrengthConstraintGuide(strength ConstraintStrength)
 }
 
@@ -77,7 +76,6 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 	return WrapConstraintGuide(obj), nil
 }
 
-// NewConstraintGuide:
 func NewConstraintGuide() ConstraintGuide {
 	var _cret *C.GtkConstraintGuide // in
 

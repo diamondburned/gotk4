@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11DeviceCore:
 type X11DeviceCore interface {
 	gdk.Device
 }

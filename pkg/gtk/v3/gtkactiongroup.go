@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,31 +78,30 @@ func init() {
 type ActionGroup interface {
 	Buildable
 
-	// AddActionActionGroup:
 	AddActionActionGroup(action Action)
-	// AddActionWithAccelActionGroup:
+
 	AddActionWithAccelActionGroup(action Action, accelerator string)
-	// AccelGroup:
+
 	AccelGroup() AccelGroup
-	// Action:
+
 	Action(actionName string) Action
-	// GetName:
+
 	GetName() string
-	// Sensitive:
+
 	Sensitive() bool
-	// Visible:
+
 	Visible() bool
-	// RemoveActionActionGroup:
+
 	RemoveActionActionGroup(action Action)
-	// SetAccelGroupActionGroup:
+
 	SetAccelGroupActionGroup(accelGroup AccelGroup)
-	// SetSensitiveActionGroup:
+
 	SetSensitiveActionGroup(sensitive bool)
-	// SetTranslationDomainActionGroup:
+
 	SetTranslationDomainActionGroup(domain string)
-	// SetVisibleActionGroup:
+
 	SetVisibleActionGroup(visible bool)
-	// TranslateStringActionGroup:
+
 	TranslateStringActionGroup(_string string) string
 }
 
@@ -123,7 +124,6 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 	return WrapActionGroup(obj), nil
 }
 
-// NewActionGroup:
 func NewActionGroup(name string) ActionGroup {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkActionGroup // in
@@ -324,6 +324,18 @@ func (b actionGroup) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b actionGroup) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b actionGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b actionGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b actionGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b actionGroup) InternalChild(builder Builder, childname string) gextras.Objector {

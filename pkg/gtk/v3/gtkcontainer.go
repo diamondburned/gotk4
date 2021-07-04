@@ -6,8 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,6 +20,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// void gotk4_Callback(GtkWidget*, gpointer);
 import "C"
 
 func init() {
@@ -201,49 +205,52 @@ func init() {
 type Container interface {
 	Widget
 
-	// AddContainer:
 	AddContainer(widget Widget)
-	// CheckResizeContainer:
+
 	CheckResizeContainer()
-	// ChildGetPropertyContainer:
+
 	ChildGetPropertyContainer(child Widget, propertyName string, value externglib.Value)
-	// ChildNotifyContainer:
+
 	ChildNotifyContainer(child Widget, childProperty string)
-	// ChildSetPropertyContainer:
+
 	ChildSetPropertyContainer(child Widget, propertyName string, value externglib.Value)
-	// ChildTypeContainer:
+
 	ChildTypeContainer() externglib.Type
-	// BorderWidth:
+
+	ForallContainer(callback Callback)
+
+	ForeachContainer(callback Callback)
+
 	BorderWidth() uint
-	// FocusChild:
+
 	FocusChild() Widget
-	// FocusHAdjustment:
+
 	FocusHAdjustment() Adjustment
-	// FocusVAdjustment:
+
 	FocusVAdjustment() Adjustment
-	// PathForChild:
+
 	PathForChild(child Widget) *WidgetPath
-	// ResizeMode:
+
 	ResizeMode() ResizeMode
-	// PropagateDrawContainer:
+
 	PropagateDrawContainer(child Widget, cr *cairo.Context)
-	// RemoveContainer:
+
 	RemoveContainer(widget Widget)
-	// ResizeChildrenContainer:
+
 	ResizeChildrenContainer()
-	// SetBorderWidthContainer:
+
 	SetBorderWidthContainer(borderWidth uint)
-	// SetFocusChildContainer:
+
 	SetFocusChildContainer(child Widget)
-	// SetFocusHAdjustmentContainer:
+
 	SetFocusHAdjustmentContainer(adjustment Adjustment)
-	// SetFocusVAdjustmentContainer:
+
 	SetFocusVAdjustmentContainer(adjustment Adjustment)
-	// SetReallocateRedrawsContainer:
+
 	SetReallocateRedrawsContainer(needsRedraws bool)
-	// SetResizeModeContainer:
+
 	SetResizeModeContainer(resizeMode ResizeMode)
-	// UnsetFocusChainContainer:
+
 	UnsetFocusChainContainer()
 }
 
@@ -340,6 +347,30 @@ func (c container) ChildTypeContainer() externglib.Type {
 	_gType = externglib.Type(_cret)
 
 	return _gType
+}
+
+func (c container) ForallContainer(callback Callback) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 C.GtkCallback   // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_Callback)
+	_arg2 = C.gpointer(box.Assign(callback))
+
+	C.gtk_container_forall(_arg0, _arg1, _arg2)
+}
+
+func (c container) ForeachContainer(callback Callback) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 C.GtkCallback   // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_Callback)
+	_arg2 = C.gpointer(box.Assign(callback))
+
+	C.gtk_container_foreach(_arg0, _arg1, _arg2)
 }
 
 func (c container) BorderWidth() uint {
@@ -543,6 +574,18 @@ func (b container) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b container) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b container) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b container) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b container) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b container) InternalChild(builder Builder, childname string) gextras.Objector {

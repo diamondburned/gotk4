@@ -30,13 +30,12 @@ func init() {
 type EventController interface {
 	gextras.Objector
 
-	// PropagationPhase:
 	PropagationPhase() PropagationPhase
-	// Widget:
+
 	Widget() Widget
-	// ResetEventController:
+
 	ResetEventController()
-	// SetPropagationPhaseEventController:
+
 	SetPropagationPhaseEventController(phase PropagationPhase)
 }
 

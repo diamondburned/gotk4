@@ -5,10 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
@@ -33,6 +33,35 @@ func init() {
 // Allocation: the rectangle representing the area allocated for a widget by its
 // parent.
 type Allocation = gdk.Rectangle
+
+// TickCallback: callback type for adding a function to update animations. See
+// gtk_widget_add_tick_callback().
+type TickCallback func(widget Widget, frameClock gdk.FrameClock, ok bool)
+
+//export gotk4_TickCallback
+func _TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var widget Widget             // out
+	var frameClock gdk.FrameClock // out
+
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
+	frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(gdk.FrameClock)
+
+	fn := v.(TickCallback)
+	ok := fn(widget, frameClock)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 // Widget: the base class for all widgets.
 //
@@ -313,313 +342,306 @@ type Widget interface {
 	Buildable
 	ConstraintTarget
 
-	// ActionSetEnabledWidget:
 	ActionSetEnabledWidget(actionName string, enabled bool)
-	// ActivateWidget:
+
 	ActivateWidget() bool
-	// ActivateActionVariantWidget:
+
 	ActivateActionVariantWidget(name string, args *glib.Variant) bool
-	// ActivateDefaultWidget:
+
 	ActivateDefaultWidget()
-	// AddControllerWidget:
+
 	AddControllerWidget(controller EventController)
-	// AddCSSClassWidget:
+
 	AddCSSClassWidget(cssClass string)
-	// AddMnemonicLabelWidget:
+
 	AddMnemonicLabelWidget(label Widget)
-	// AllocateWidget:
+
 	AllocateWidget(width int, height int, baseline int, transform *gsk.Transform)
-	// ChildFocusWidget:
+
 	ChildFocusWidget(direction DirectionType) bool
-	// ComputeBoundsWidget:
+
 	ComputeBoundsWidget(target Widget) (graphene.Rect, bool)
-	// ComputeExpandWidget:
+
 	ComputeExpandWidget(orientation Orientation) bool
-	// ComputePointWidget:
+
 	ComputePointWidget(target Widget, point *graphene.Point) (graphene.Point, bool)
-	// ComputeTransformWidget:
+
 	ComputeTransformWidget(target Widget) (graphene.Matrix, bool)
-	// ContainsWidget:
+
 	ContainsWidget(x float64, y float64) bool
-	// CreatePangoContextWidget:
+
 	CreatePangoContextWidget() pango.Context
-	// CreatePangoLayoutWidget:
+
 	CreatePangoLayoutWidget(text string) pango.Layout
-	// DragCheckThresholdWidget:
+
 	DragCheckThresholdWidget(startX int, startY int, currentX int, currentY int) bool
-	// ErrorBellWidget:
+
 	ErrorBellWidget()
-	// AllocatedBaseline:
+
 	AllocatedBaseline() int
-	// AllocatedHeight:
+
 	AllocatedHeight() int
-	// AllocatedWidth:
+
 	AllocatedWidth() int
-	// Ancestor:
+
 	Ancestor(widgetType externglib.Type) Widget
-	// CanFocus:
+
 	CanFocus() bool
-	// CanTarget:
+
 	CanTarget() bool
-	// ChildVisible:
+
 	ChildVisible() bool
-	// Clipboard:
+
 	Clipboard() gdk.Clipboard
-	// CSSClasses:
+
 	CSSClasses() []string
-	// CSSName:
+
 	CSSName() string
-	// Cursor:
+
 	Cursor() gdk.Cursor
-	// Direction:
+
 	Direction() TextDirection
-	// Display:
+
 	Display() gdk.Display
-	// FirstChild:
+
 	FirstChild() Widget
-	// FocusChild:
+
 	FocusChild() Widget
-	// FocusOnClick:
+
 	FocusOnClick() bool
-	// Focusable:
+
 	Focusable() bool
-	// FontMap:
+
 	FontMap() pango.FontMap
-	// FontOptions:
+
 	FontOptions() *cairo.FontOptions
-	// FrameClock:
+
 	FrameClock() gdk.FrameClock
-	// Halign:
+
 	Halign() Align
-	// HasTooltip:
+
 	HasTooltip() bool
-	// Height:
+
 	Height() int
-	// Hexpand:
+
 	Hexpand() bool
-	// HexpandSet:
+
 	HexpandSet() bool
-	// LastChild:
+
 	LastChild() Widget
-	// LayoutManager:
+
 	LayoutManager() LayoutManager
-	// Mapped:
+
 	Mapped() bool
-	// MarginBottom:
+
 	MarginBottom() int
-	// MarginEnd:
+
 	MarginEnd() int
-	// MarginStart:
+
 	MarginStart() int
-	// MarginTop:
+
 	MarginTop() int
-	// Name:
+
 	Name() string
-	// GetNative:
+
 	GetNative() Native
-	// NextSibling:
+
 	NextSibling() Widget
-	// Opacity:
+
 	Opacity() float64
-	// Overflow:
+
 	Overflow() Overflow
-	// PangoContext:
+
 	PangoContext() pango.Context
-	// Parent:
+
 	Parent() Widget
-	// PreferredSize:
+
 	PreferredSize() (minimumSize Requisition, naturalSize Requisition)
-	// PrevSibling:
+
 	PrevSibling() Widget
-	// PrimaryClipboard:
+
 	PrimaryClipboard() gdk.Clipboard
-	// Realized:
+
 	Realized() bool
-	// ReceivesDefault:
+
 	ReceivesDefault() bool
-	// RequestMode:
+
 	RequestMode() SizeRequestMode
-	// Root:
+
 	Root() Root
-	// ScaleFactor:
+
 	ScaleFactor() int
-	// Sensitive:
+
 	Sensitive() bool
-	// Settings:
+
 	Settings() Settings
-	// Size:
+
 	Size(orientation Orientation) int
-	// SizeRequest:
+
 	SizeRequest() (width int, height int)
-	// StateFlags:
+
 	StateFlags() StateFlags
-	// StyleContext:
+
 	StyleContext() StyleContext
-	// TemplateChild:
+
 	TemplateChild(widgetType externglib.Type, name string) gextras.Objector
-	// TooltipMarkup:
+
 	TooltipMarkup() string
-	// TooltipText:
+
 	TooltipText() string
-	// Valign:
+
 	Valign() Align
-	// Vexpand:
+
 	Vexpand() bool
-	// VexpandSet:
+
 	VexpandSet() bool
-	// Visible:
+
 	Visible() bool
-	// Width:
+
 	Width() int
-	// GrabFocusWidget:
+
 	GrabFocusWidget() bool
-	// HasCSSClassWidget:
+
 	HasCSSClassWidget(cssClass string) bool
-	// HasDefaultWidget:
+
 	HasDefaultWidget() bool
-	// HasFocusWidget:
+
 	HasFocusWidget() bool
-	// HasVisibleFocusWidget:
+
 	HasVisibleFocusWidget() bool
-	// HideWidget:
+
 	HideWidget()
-	// InDestructionWidget:
+
 	InDestructionWidget() bool
-	// InitTemplateWidget:
+
 	InitTemplateWidget()
-	// InsertActionGroupWidget:
-	InsertActionGroupWidget(name string, group gio.ActionGroup)
-	// InsertAfterWidget:
+
 	InsertAfterWidget(parent Widget, previousSibling Widget)
-	// InsertBeforeWidget:
+
 	InsertBeforeWidget(parent Widget, nextSibling Widget)
-	// IsAncestorWidget:
+
 	IsAncestorWidget(ancestor Widget) bool
-	// IsDrawableWidget:
+
 	IsDrawableWidget() bool
-	// IsFocusWidget:
+
 	IsFocusWidget() bool
-	// IsSensitiveWidget:
+
 	IsSensitiveWidget() bool
-	// IsVisibleWidget:
+
 	IsVisibleWidget() bool
-	// KeynavFailedWidget:
+
 	KeynavFailedWidget(direction DirectionType) bool
-	// MapWidget:
+
 	MapWidget()
-	// MeasureWidget:
+
 	MeasureWidget(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
-	// MnemonicActivateWidget:
+
 	MnemonicActivateWidget(groupCycling bool) bool
-	// ObserveChildrenWidget:
-	ObserveChildrenWidget() gio.ListModel
-	// ObserveControllersWidget:
-	ObserveControllersWidget() gio.ListModel
-	// PickWidget:
+
 	PickWidget(x float64, y float64, flags PickFlags) Widget
-	// QueueAllocateWidget:
+
 	QueueAllocateWidget()
-	// QueueDrawWidget:
+
 	QueueDrawWidget()
-	// QueueResizeWidget:
+
 	QueueResizeWidget()
-	// RealizeWidget:
+
 	RealizeWidget()
-	// RemoveControllerWidget:
+
 	RemoveControllerWidget(controller EventController)
-	// RemoveCSSClassWidget:
+
 	RemoveCSSClassWidget(cssClass string)
-	// RemoveMnemonicLabelWidget:
+
 	RemoveMnemonicLabelWidget(label Widget)
-	// RemoveTickCallbackWidget:
+
 	RemoveTickCallbackWidget(id uint)
-	// SetCanFocusWidget:
+
 	SetCanFocusWidget(canFocus bool)
-	// SetCanTargetWidget:
+
 	SetCanTargetWidget(canTarget bool)
-	// SetChildVisibleWidget:
+
 	SetChildVisibleWidget(childVisible bool)
-	// SetCSSClassesWidget:
+
 	SetCSSClassesWidget(classes []string)
-	// SetCursorWidget:
+
 	SetCursorWidget(cursor gdk.Cursor)
-	// SetCursorFromNameWidget:
+
 	SetCursorFromNameWidget(name string)
-	// SetDirectionWidget:
+
 	SetDirectionWidget(dir TextDirection)
-	// SetFocusChildWidget:
+
 	SetFocusChildWidget(child Widget)
-	// SetFocusOnClickWidget:
+
 	SetFocusOnClickWidget(focusOnClick bool)
-	// SetFocusableWidget:
+
 	SetFocusableWidget(focusable bool)
-	// SetFontMapWidget:
+
 	SetFontMapWidget(fontMap pango.FontMap)
-	// SetFontOptionsWidget:
+
 	SetFontOptionsWidget(options *cairo.FontOptions)
-	// SetHalignWidget:
+
 	SetHalignWidget(align Align)
-	// SetHasTooltipWidget:
+
 	SetHasTooltipWidget(hasTooltip bool)
-	// SetHexpandWidget:
+
 	SetHexpandWidget(expand bool)
-	// SetHexpandSetWidget:
+
 	SetHexpandSetWidget(set bool)
-	// SetLayoutManagerWidget:
+
 	SetLayoutManagerWidget(layoutManager LayoutManager)
-	// SetMarginBottomWidget:
+
 	SetMarginBottomWidget(margin int)
-	// SetMarginEndWidget:
+
 	SetMarginEndWidget(margin int)
-	// SetMarginStartWidget:
+
 	SetMarginStartWidget(margin int)
-	// SetMarginTopWidget:
+
 	SetMarginTopWidget(margin int)
-	// SetNameWidget:
+
 	SetNameWidget(name string)
-	// SetOpacityWidget:
+
 	SetOpacityWidget(opacity float64)
-	// SetOverflowWidget:
+
 	SetOverflowWidget(overflow Overflow)
-	// SetParentWidget:
+
 	SetParentWidget(parent Widget)
-	// SetReceivesDefaultWidget:
+
 	SetReceivesDefaultWidget(receivesDefault bool)
-	// SetSensitiveWidget:
+
 	SetSensitiveWidget(sensitive bool)
-	// SetSizeRequestWidget:
+
 	SetSizeRequestWidget(width int, height int)
-	// SetStateFlagsWidget:
+
 	SetStateFlagsWidget(flags StateFlags, clear bool)
-	// SetTooltipMarkupWidget:
+
 	SetTooltipMarkupWidget(markup string)
-	// SetTooltipTextWidget:
+
 	SetTooltipTextWidget(text string)
-	// SetValignWidget:
+
 	SetValignWidget(align Align)
-	// SetVexpandWidget:
+
 	SetVexpandWidget(expand bool)
-	// SetVexpandSetWidget:
+
 	SetVexpandSetWidget(set bool)
-	// SetVisibleWidget:
+
 	SetVisibleWidget(visible bool)
-	// ShouldLayoutWidget:
+
 	ShouldLayoutWidget() bool
-	// ShowWidget:
+
 	ShowWidget()
-	// SnapshotChildWidget:
+
 	SnapshotChildWidget(child Widget, snapshot Snapshot)
-	// TranslateCoordinatesWidget:
+
 	TranslateCoordinatesWidget(destWidget Widget, srcX float64, srcY float64) (destX float64, destY float64, ok bool)
-	// TriggerTooltipQueryWidget:
+
 	TriggerTooltipQueryWidget()
-	// UnmapWidget:
+
 	UnmapWidget()
-	// UnparentWidget:
+
 	UnparentWidget()
-	// UnrealizeWidget:
+
 	UnrealizeWidget()
-	// UnsetStateFlagsWidget:
+
 	UnsetStateFlagsWidget(flags StateFlags)
 }
 
@@ -2088,19 +2110,6 @@ func (w widget) InitTemplateWidget() {
 	C.gtk_widget_init_template(_arg0)
 }
 
-func (w widget) InsertActionGroupWidget(name string, group gio.ActionGroup) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 *C.char         // out
-	var _arg2 *C.GActionGroup // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
-
-	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
-}
-
 func (w widget) InsertAfterWidget(parent Widget, previousSibling Widget) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -2286,36 +2295,6 @@ func (w widget) MnemonicActivateWidget(groupCycling bool) bool {
 	}
 
 	return _ok
-}
-
-func (w widget) ObserveChildrenWidget() gio.ListModel {
-	var _arg0 *C.GtkWidget  // out
-	var _cret *C.GListModel // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-
-	_cret = C.gtk_widget_observe_children(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
-}
-
-func (w widget) ObserveControllersWidget() gio.ListModel {
-	var _arg0 *C.GtkWidget  // out
-	var _cret *C.GListModel // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-
-	_cret = C.gtk_widget_observe_controllers(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (w widget) PickWidget(x float64, y float64, flags PickFlags) Widget {

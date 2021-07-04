@@ -31,13 +31,12 @@ func init() {
 type EventControllerKey interface {
 	EventController
 
-	// ForwardEventControllerKey:
 	ForwardEventControllerKey(widget Widget) bool
-	// Group:
+
 	Group() uint
-	// ImContext:
+
 	ImContext() IMContext
-	// SetImContextEventControllerKey:
+
 	SetImContextEventControllerKey(imContext IMContext)
 }
 
@@ -60,7 +59,6 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	return WrapEventControllerKey(obj), nil
 }
 
-// NewEventControllerKey:
 func NewEventControllerKey(widget Widget) EventControllerKey {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in

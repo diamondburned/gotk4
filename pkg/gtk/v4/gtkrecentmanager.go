@@ -94,19 +94,18 @@ func marshalRecentManagerError(p uintptr) (interface{}, error) {
 type RecentManager interface {
 	gextras.Objector
 
-	// AddFullRecentManager:
 	AddFullRecentManager(uri string, recentData *RecentData) bool
-	// AddItemRecentManager:
+
 	AddItemRecentManager(uri string) bool
-	// HasItemRecentManager:
+
 	HasItemRecentManager(uri string) bool
-	// LookupItemRecentManager:
+
 	LookupItemRecentManager(uri string) (*RecentInfo, error)
-	// MoveItemRecentManager:
+
 	MoveItemRecentManager(uri string, newUri string) error
-	// PurgeItemsRecentManager:
+
 	PurgeItemsRecentManager() (int, error)
-	// RemoveItemRecentManager:
+
 	RemoveItemRecentManager(uri string) error
 }
 
@@ -129,7 +128,6 @@ func marshalRecentManager(p uintptr) (interface{}, error) {
 	return WrapRecentManager(obj), nil
 }
 
-// NewRecentManager:
 func NewRecentManager() RecentManager {
 	var _cret *C.GtkRecentManager // in
 
@@ -320,31 +318,6 @@ func (r *RecentInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(r)
 }
 
-// CreateAppInfo decreases the reference count of @info by one.
-//
-// If the reference count reaches zero, @info is deallocated, and the memory
-// freed.
-func (i *RecentInfo) CreateAppInfo(appName string) (gio.AppInfo, error) {
-	var _arg0 *C.GtkRecentInfo // out
-	var _arg1 *C.char          // out
-	var _cret *C.GAppInfo      // in
-	var _cerr *C.GError        // in
-
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.char)(C.CString(appName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
-
-	var _appInfo gio.AppInfo // out
-	var _goerr error         // out
-
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.AppInfo)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _appInfo, _goerr
-}
-
 // Exists decreases the reference count of @info by one.
 //
 // If the reference count reaches zero, @info is deallocated, and the memory
@@ -421,25 +394,6 @@ func (i *RecentInfo) DisplayName() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// GIcon decreases the reference count of @info by one.
-//
-// If the reference count reaches zero, @info is deallocated, and the memory
-// freed.
-func (i *RecentInfo) GIcon() gio.Icon {
-	var _arg0 *C.GtkRecentInfo // out
-	var _cret *C.GIcon         // in
-
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
-
-	_cret = C.gtk_recent_info_get_gicon(_arg0)
-
-	var _icon gio.Icon // out
-
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.Icon)
-
-	return _icon
 }
 
 // MIMEType decreases the reference count of @info by one.

@@ -61,15 +61,14 @@ func init() {
 type TreeExpander interface {
 	Widget
 
-	// Child:
 	Child() Widget
-	// Item:
+
 	Item() gextras.Objector
-	// ListRow:
+
 	ListRow() TreeListRow
-	// SetChildTreeExpander:
+
 	SetChildTreeExpander(child Widget)
-	// SetListRowTreeExpander:
+
 	SetListRowTreeExpander(listRow TreeListRow)
 }
 
@@ -92,7 +91,6 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 	return WrapTreeExpander(obj), nil
 }
 
-// NewTreeExpander:
 func NewTreeExpander() TreeExpander {
 	var _cret *C.GtkWidget // in
 

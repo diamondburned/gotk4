@@ -83,7 +83,6 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path 
 	return _ok
 }
 
-// TreeDragDest:
 type TreeDragDest interface {
 	gextras.Objector
 
@@ -164,7 +163,6 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *Selecti
 	return _ok
 }
 
-// TreeDragSource:
 type TreeDragSource interface {
 	gextras.Objector
 

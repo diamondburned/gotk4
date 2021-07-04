@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,9 +44,8 @@ func init() {
 type StackSidebar interface {
 	Bin
 
-	// Stack:
 	Stack() Stack
-	// SetStackStackSidebar:
+
 	SetStackStackSidebar(stack Stack)
 }
 
@@ -67,7 +68,6 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 	return WrapStackSidebar(obj), nil
 }
 
-// NewStackSidebar:
 func NewStackSidebar() StackSidebar {
 	var _cret *C.GtkWidget // in
 
@@ -111,6 +111,18 @@ func (b stackSidebar) AddChild(builder Builder, child gextras.Objector, typ stri
 
 func (b stackSidebar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b stackSidebar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b stackSidebar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b stackSidebar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b stackSidebar) InternalChild(builder Builder, childname string) gextras.Objector {

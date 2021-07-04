@@ -35,13 +35,12 @@ func init() {
 type PageSetupUnixDialog interface {
 	Dialog
 
-	// PageSetup:
 	PageSetup() PageSetup
-	// PrintSettings:
+
 	PrintSettings() PrintSettings
-	// SetPageSetupPageSetupUnixDialog:
+
 	SetPageSetupPageSetupUnixDialog(pageSetup PageSetup)
-	// SetPrintSettingsPageSetupUnixDialog:
+
 	SetPrintSettingsPageSetupUnixDialog(printSettings PrintSettings)
 }
 
@@ -64,7 +63,6 @@ func marshalPageSetupUnixDialog(p uintptr) (interface{}, error) {
 	return WrapPageSetupUnixDialog(obj), nil
 }
 
-// NewPageSetupUnixDialog:
 func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out

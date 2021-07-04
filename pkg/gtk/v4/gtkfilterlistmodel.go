@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,22 +32,17 @@ func init() {
 // lists doesn't block the UI. See [method@Gtk.FilterListModel.set_incremental]
 // for details.
 type FilterListModel interface {
-	gio.ListModel
+	gextras.Objector
 
-	// Filter:
 	Filter() Filter
-	// Incremental:
+
 	Incremental() bool
-	// Model:
-	Model() gio.ListModel
-	// Pending:
+
 	Pending() uint
-	// SetFilterFilterListModel:
+
 	SetFilterFilterListModel(filter Filter)
-	// SetIncrementalFilterListModel:
+
 	SetIncrementalFilterListModel(incremental bool)
-	// SetModelFilterListModel:
-	SetModelFilterListModel(model gio.ListModel)
 }
 
 // filterListModel implements the FilterListModel class.
@@ -68,24 +62,6 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFilterListModel(obj), nil
-}
-
-// NewFilterListModel:
-func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel {
-	var _arg1 *C.GListModel         // out
-	var _arg2 *C.GtkFilter          // out
-	var _cret *C.GtkFilterListModel // in
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
-
-	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)
-
-	var _filterListModel FilterListModel // out
-
-	_filterListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FilterListModel)
-
-	return _filterListModel
 }
 
 func (s filterListModel) Filter() Filter {
@@ -118,21 +94,6 @@ func (s filterListModel) Incremental() bool {
 	}
 
 	return _ok
-}
-
-func (s filterListModel) Model() gio.ListModel {
-	var _arg0 *C.GtkFilterListModel // out
-	var _cret *C.GListModel         // in
-
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_filter_list_model_get_model(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (s filterListModel) Pending() uint {
@@ -170,30 +131,4 @@ func (s filterListModel) SetIncrementalFilterListModel(incremental bool) {
 	}
 
 	C.gtk_filter_list_model_set_incremental(_arg0, _arg1)
-}
-
-func (s filterListModel) SetModelFilterListModel(model gio.ListModel) {
-	var _arg0 *C.GtkFilterListModel // out
-	var _arg1 *C.GListModel         // out
-
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_filter_list_model_set_model(_arg0, _arg1)
-}
-
-func (l filterListModel) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l filterListModel) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l filterListModel) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l filterListModel) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }

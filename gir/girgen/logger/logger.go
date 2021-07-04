@@ -76,25 +76,6 @@ func Prefix(list []interface{}, p interface{}) []interface{} {
 	return list
 }
 
-// // Logln Logs using the Logger.
-// func (g *Generator) Logln(level LogLevel, v ...interface{}) {
-// 	if g.Logger == nil || g.LogLevel > level {
-// 		return
-// 	}
-
-// 	prefix := level.prefix()
-// 	if prefix != "" {
-// 		if g.Color {
-// 			prefix = level.colorf(prefix)
-// 		}
-// 		v = append(v, nil)
-// 		copy(v[1:], v)
-// 		v[0] = prefix
-// 	}
-
-// 	g.Logger.Println(v...)
-// }
-
 // Stdlog renders the given log entry into the stdlib logger.
 func Stdlog(logger *log.Logger, minlevel, level Level, v ...interface{}) {
 	if logger == nil || minlevel > level {

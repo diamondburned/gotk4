@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -32,21 +33,51 @@ func init() {
 	})
 }
 
+// VFSFileLookupFunc: this function type is used by g_vfs_register_uri_scheme()
+// to make it possible for a client to associate an URI scheme to a different
+// #GFile implementation.
+//
+// The client should return a reference to the new file that has been created
+// for @uri, or nil to continue with the default implementation.
+type VFSFileLookupFunc func(vfs VFS, identifier string, file File)
+
+//export gotk4_VFSFileLookupFunc
+func _VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var vfs VFS           // out
+	var identifier string // out
+
+	vfs = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(VFS)
+	identifier = C.GoString(arg1)
+
+	fn := v.(VFSFileLookupFunc)
+	file := fn(vfs, identifier)
+
+	var cret *C.GFile // out
+
+	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	return cret
+}
+
 // VFS: entry point for using GIO functionality.
 type VFS interface {
 	gextras.Objector
 
-	// FileForPath:
 	FileForPath(path string) File
-	// FileForURI:
+
 	FileForURI(uri string) File
-	// SupportedURISchemes:
+
 	SupportedURISchemes() []string
-	// IsActiveVFS:
+
 	IsActiveVFS() bool
-	// ParseNameVFS:
+
 	ParseNameVFS(parseName string) File
-	// UnregisterURISchemeVFS:
+
 	UnregisterURISchemeVFS(scheme string) bool
 }
 

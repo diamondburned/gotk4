@@ -5,10 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -114,153 +115,148 @@ type Entry interface {
 	CellEditable
 	Editable
 
-	// ActivatesDefault:
 	ActivatesDefault() bool
-	// Alignment:
+
 	Alignment() float32
-	// Attributes:
+
 	Attributes() *pango.AttrList
-	// Buffer:
+
 	Buffer() EntryBuffer
-	// Completion:
+
 	Completion() EntryCompletion
-	// CurrentIconDragSource:
+
 	CurrentIconDragSource() int
-	// CursorHAdjustment:
+
 	CursorHAdjustment() Adjustment
-	// HasFrame:
+
 	HasFrame() bool
-	// IconActivatable:
+
 	IconActivatable(iconPos EntryIconPosition) bool
-	// IconArea:
+
 	IconArea(iconPos EntryIconPosition) gdk.Rectangle
-	// IconAtPos:
+
 	IconAtPos(x int, y int) int
-	// IconGIcon:
-	IconGIcon(iconPos EntryIconPosition) gio.Icon
-	// IconName:
+
 	IconName(iconPos EntryIconPosition) string
-	// IconPixbuf:
+
 	IconPixbuf(iconPos EntryIconPosition) gdkpixbuf.Pixbuf
-	// IconSensitive:
+
 	IconSensitive(iconPos EntryIconPosition) bool
-	// IconStock:
+
 	IconStock(iconPos EntryIconPosition) string
-	// IconStorageType:
+
 	IconStorageType(iconPos EntryIconPosition) ImageType
-	// IconTooltipMarkup:
+
 	IconTooltipMarkup(iconPos EntryIconPosition) string
-	// IconTooltipText:
+
 	IconTooltipText(iconPos EntryIconPosition) string
-	// InnerBorder:
+
 	InnerBorder() *Border
-	// InputHints:
+
 	InputHints() InputHints
-	// InputPurpose:
+
 	InputPurpose() InputPurpose
-	// InvisibleChar:
+
 	InvisibleChar() uint32
-	// Layout:
+
 	Layout() pango.Layout
-	// LayoutOffsets:
+
 	LayoutOffsets() (x int, y int)
-	// MaxLength:
+
 	MaxLength() int
-	// MaxWidthChars:
+
 	MaxWidthChars() int
-	// OverwriteMode:
+
 	OverwriteMode() bool
-	// PlaceholderText:
+
 	PlaceholderText() string
-	// ProgressFraction:
+
 	ProgressFraction() float64
-	// ProgressPulseStep:
+
 	ProgressPulseStep() float64
-	// Tabs:
+
 	Tabs() *pango.TabArray
-	// Text:
+
 	Text() string
-	// TextArea:
+
 	TextArea() gdk.Rectangle
-	// TextLength:
+
 	TextLength() uint16
-	// Visibility:
+
 	Visibility() bool
-	// WidthChars:
+
 	WidthChars() int
-	// GrabFocusWithoutSelectingEntry:
+
 	GrabFocusWithoutSelectingEntry()
-	// ImContextFilterKeypressEntry:
+
 	ImContextFilterKeypressEntry(event *gdk.EventKey) bool
-	// LayoutIndexToTextIndexEntry:
+
 	LayoutIndexToTextIndexEntry(layoutIndex int) int
-	// ProgressPulseEntry:
+
 	ProgressPulseEntry()
-	// ResetImContextEntry:
+
 	ResetImContextEntry()
-	// SetActivatesDefaultEntry:
+
 	SetActivatesDefaultEntry(setting bool)
-	// SetAlignmentEntry:
+
 	SetAlignmentEntry(xalign float32)
-	// SetAttributesEntry:
+
 	SetAttributesEntry(attrs *pango.AttrList)
-	// SetBufferEntry:
+
 	SetBufferEntry(buffer EntryBuffer)
-	// SetCompletionEntry:
+
 	SetCompletionEntry(completion EntryCompletion)
-	// SetCursorHAdjustmentEntry:
+
 	SetCursorHAdjustmentEntry(adjustment Adjustment)
-	// SetHasFrameEntry:
+
 	SetHasFrameEntry(setting bool)
-	// SetIconActivatableEntry:
+
 	SetIconActivatableEntry(iconPos EntryIconPosition, activatable bool)
-	// SetIconDragSourceEntry:
+
 	SetIconDragSourceEntry(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction)
-	// SetIconFromGIconEntry:
-	SetIconFromGIconEntry(iconPos EntryIconPosition, icon gio.Icon)
-	// SetIconFromIconNameEntry:
+
 	SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName string)
-	// SetIconFromPixbufEntry:
+
 	SetIconFromPixbufEntry(iconPos EntryIconPosition, pixbuf gdkpixbuf.Pixbuf)
-	// SetIconFromStockEntry:
+
 	SetIconFromStockEntry(iconPos EntryIconPosition, stockId string)
-	// SetIconSensitiveEntry:
+
 	SetIconSensitiveEntry(iconPos EntryIconPosition, sensitive bool)
-	// SetIconTooltipMarkupEntry:
+
 	SetIconTooltipMarkupEntry(iconPos EntryIconPosition, tooltip string)
-	// SetIconTooltipTextEntry:
+
 	SetIconTooltipTextEntry(iconPos EntryIconPosition, tooltip string)
-	// SetInnerBorderEntry:
+
 	SetInnerBorderEntry(border *Border)
-	// SetInputHintsEntry:
+
 	SetInputHintsEntry(hints InputHints)
-	// SetInputPurposeEntry:
+
 	SetInputPurposeEntry(purpose InputPurpose)
-	// SetInvisibleCharEntry:
+
 	SetInvisibleCharEntry(ch uint32)
-	// SetMaxLengthEntry:
+
 	SetMaxLengthEntry(max int)
-	// SetMaxWidthCharsEntry:
+
 	SetMaxWidthCharsEntry(nChars int)
-	// SetOverwriteModeEntry:
+
 	SetOverwriteModeEntry(overwrite bool)
-	// SetPlaceholderTextEntry:
+
 	SetPlaceholderTextEntry(text string)
-	// SetProgressFractionEntry:
+
 	SetProgressFractionEntry(fraction float64)
-	// SetProgressPulseStepEntry:
+
 	SetProgressPulseStepEntry(fraction float64)
-	// SetTabsEntry:
+
 	SetTabsEntry(tabs *pango.TabArray)
-	// SetTextEntry:
+
 	SetTextEntry(text string)
-	// SetVisibilityEntry:
+
 	SetVisibilityEntry(visible bool)
-	// SetWidthCharsEntry:
+
 	SetWidthCharsEntry(nChars int)
-	// TextIndexToLayoutIndexEntry:
+
 	TextIndexToLayoutIndexEntry(textIndex int) int
-	// UnsetInvisibleCharEntry:
+
 	UnsetInvisibleCharEntry()
 }
 
@@ -283,7 +279,6 @@ func marshalEntry(p uintptr) (interface{}, error) {
 	return WrapEntry(obj), nil
 }
 
-// NewEntry:
 func NewEntry() Entry {
 	var _cret *C.GtkWidget // in
 
@@ -296,7 +291,6 @@ func NewEntry() Entry {
 	return _entry
 }
 
-// NewEntryWithBuffer:
 func NewEntryWithBuffer(buffer EntryBuffer) Entry {
 	var _arg1 *C.GtkEntryBuffer // out
 	var _cret *C.GtkWidget      // in
@@ -499,23 +493,6 @@ func (e entry) IconAtPos(x int, y int) int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-func (e entry) IconGIcon(iconPos EntryIconPosition) gio.Icon {
-	var _arg0 *C.GtkEntry            // out
-	var _arg1 C.GtkEntryIconPosition // out
-	var _cret *C.GIcon               // in
-
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GtkEntryIconPosition(iconPos)
-
-	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
-
-	var _icon gio.Icon // out
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
-
-	return _icon
 }
 
 func (e entry) IconName(iconPos EntryIconPosition) string {
@@ -1090,18 +1067,6 @@ func (e entry) SetIconDragSourceEntry(iconPos EntryIconPosition, targetList *Tar
 	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (e entry) SetIconFromGIconEntry(iconPos EntryIconPosition, icon gio.Icon) {
-	var _arg0 *C.GtkEntry            // out
-	var _arg1 C.GtkEntryIconPosition // out
-	var _arg2 *C.GIcon               // out
-
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
-}
-
 func (e entry) SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName string) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -1365,6 +1330,18 @@ func (b entry) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b entry) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b entry) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b entry) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b entry) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b entry) InternalChild(builder Builder, childname string) gextras.Objector {

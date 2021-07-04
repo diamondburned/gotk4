@@ -3,12 +3,10 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,27 +35,21 @@ func init() {
 // Typical numerable icons: ! (numerableicon.png) ! (numerableicon2.png)
 type NumerableIcon interface {
 	gio.EmblemedIcon
-	gio.Icon
 
-	// BackgroundGIcon:
-	BackgroundGIcon() gio.Icon
-	// BackgroundIconName:
 	BackgroundIconName() string
-	// Count:
+
 	Count() int
-	// Label:
+
 	Label() string
-	// StyleContext:
+
 	StyleContext() StyleContext
-	// SetBackgroundGIconNumerableIcon:
-	SetBackgroundGIconNumerableIcon(icon gio.Icon)
-	// SetBackgroundIconNameNumerableIcon:
+
 	SetBackgroundIconNameNumerableIcon(iconName string)
-	// SetCountNumerableIcon:
+
 	SetCountNumerableIcon(count int)
-	// SetLabelNumerableIcon:
+
 	SetLabelNumerableIcon(label string)
-	// SetStyleContextNumerableIcon:
+
 	SetStyleContextNumerableIcon(style StyleContext)
 }
 
@@ -78,21 +70,6 @@ func marshalNumerableIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNumerableIcon(obj), nil
-}
-
-func (s numerableIcon) BackgroundGIcon() gio.Icon {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _cret *C.GIcon            // in
-
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
-
-	var _icon gio.Icon // out
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
-
-	return _icon
 }
 
 func (s numerableIcon) BackgroundIconName() string {
@@ -155,16 +132,6 @@ func (s numerableIcon) StyleContext() StyleContext {
 	return _styleContext
 }
 
-func (s numerableIcon) SetBackgroundGIconNumerableIcon(icon gio.Icon) {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _arg1 *C.GIcon            // out
-
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_numerable_icon_set_background_gicon(_arg0, _arg1)
-}
-
 func (s numerableIcon) SetBackgroundIconNameNumerableIcon(iconName string) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.gchar            // out
@@ -205,16 +172,4 @@ func (s numerableIcon) SetStyleContextNumerableIcon(style StyleContext) {
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(style.Native()))
 
 	C.gtk_numerable_icon_set_style_context(_arg0, _arg1)
-}
-
-func (i numerableIcon) Equal(icon2 gio.Icon) bool {
-	return gio.WrapIcon(gextras.InternObject(i)).Equal(icon2)
-}
-
-func (i numerableIcon) Serialize() *glib.Variant {
-	return gio.WrapIcon(gextras.InternObject(i)).Serialize()
-}
-
-func (i numerableIcon) String() string {
-	return gio.WrapIcon(gextras.InternObject(i)).String()
 }

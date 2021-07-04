@@ -40,17 +40,16 @@ type BoxLayout interface {
 	LayoutManager
 	Orientable
 
-	// BaselinePosition:
 	BaselinePosition() BaselinePosition
-	// Homogeneous:
+
 	Homogeneous() bool
-	// Spacing:
+
 	Spacing() uint
-	// SetBaselinePositionBoxLayout:
+
 	SetBaselinePositionBoxLayout(position BaselinePosition)
-	// SetHomogeneousBoxLayout:
+
 	SetHomogeneousBoxLayout(homogeneous bool)
-	// SetSpacingBoxLayout:
+
 	SetSpacingBoxLayout(spacing uint)
 }
 
@@ -73,7 +72,6 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 	return WrapBoxLayout(obj), nil
 }
 
-// NewBoxLayout:
 func NewBoxLayout(orientation Orientation) BoxLayout {
 	var _arg1 C.GtkOrientation    // out
 	var _cret *C.GtkLayoutManager // in

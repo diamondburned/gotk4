@@ -72,35 +72,34 @@ func init() {
 type GLContext interface {
 	gextras.Objector
 
-	// DebugEnabled:
 	DebugEnabled() bool
-	// Display:
+
 	Display() Display
-	// ForwardCompatible:
+
 	ForwardCompatible() bool
-	// RequiredVersion:
+
 	RequiredVersion() (major int, minor int)
-	// SharedContext:
+
 	SharedContext() GLContext
-	// UseES:
+
 	UseES() bool
-	// Version:
+
 	Version() (major int, minor int)
-	// Window:
+
 	Window() Window
-	// IsLegacyGLContext:
+
 	IsLegacyGLContext() bool
-	// MakeCurrentGLContext:
+
 	MakeCurrentGLContext()
-	// RealizeGLContext:
+
 	RealizeGLContext() error
-	// SetDebugEnabledGLContext:
+
 	SetDebugEnabledGLContext(enabled bool)
-	// SetForwardCompatibleGLContext:
+
 	SetForwardCompatibleGLContext(compatible bool)
-	// SetRequiredVersionGLContext:
+
 	SetRequiredVersionGLContext(major int, minor int)
-	// SetUseESGLContext:
+
 	SetUseESGLContext(useEs int)
 }
 

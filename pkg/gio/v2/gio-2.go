@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -27,6 +28,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -118,6 +121,10 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 
 func (i bytesIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
 	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+}
+
+func (i bytesIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapLoadableIcon(gextras.InternObject(i)).LoadAsync(size, cancellable, callback)
 }
 
 func (i bytesIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
@@ -263,9 +270,8 @@ func (a dBusActionGroup) QueryAction(actionName string) (enabled bool, parameter
 type DBusAuthObserver interface {
 	gextras.Objector
 
-	// AllowMechanismDBusAuthObserver:
 	AllowMechanismDBusAuthObserver(mechanism string) bool
-	// AuthorizeAuthenticatedPeerDBusAuthObserver:
+
 	AuthorizeAuthenticatedPeerDBusAuthObserver(stream IOStream, credentials Credentials) bool
 }
 
@@ -288,7 +294,6 @@ func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 	return WrapDBusAuthObserver(obj), nil
 }
 
-// NewDBusAuthObserver:
 func NewDBusAuthObserver() DBusAuthObserver {
 	var _cret *C.GDBusAuthObserver // in
 
@@ -397,67 +402,76 @@ type DBusConnection interface {
 	AsyncInitable
 	Initable
 
-	// CallFinishDBusConnection:
+	CallDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	CallFinishDBusConnection(res AsyncResult) (*glib.Variant, error)
-	// CallSyncDBusConnection:
+
 	CallSyncDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error)
-	// CallWithUnixFdListFinishDBusConnection:
+
+	CallWithUnixFdListDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
+
 	CallWithUnixFdListFinishDBusConnection(res AsyncResult) (UnixFDList, *glib.Variant, error)
-	// CallWithUnixFdListSyncDBusConnection:
+
 	CallWithUnixFdListSyncDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
-	// CloseFinishDBusConnection:
+
+	CloseDBusConnection(cancellable Cancellable, callback AsyncReadyCallback)
+
 	CloseFinishDBusConnection(res AsyncResult) error
-	// CloseSyncDBusConnection:
+
 	CloseSyncDBusConnection(cancellable Cancellable) error
-	// EmitSignalDBusConnection:
+
 	EmitSignalDBusConnection(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
-	// ExportActionGroupDBusConnection:
+
 	ExportActionGroupDBusConnection(objectPath string, actionGroup ActionGroup) (uint, error)
-	// ExportMenuModelDBusConnection:
+
 	ExportMenuModelDBusConnection(objectPath string, menu MenuModel) (uint, error)
-	// FlushFinishDBusConnection:
+
+	FlushDBusConnection(cancellable Cancellable, callback AsyncReadyCallback)
+
 	FlushFinishDBusConnection(res AsyncResult) error
-	// FlushSyncDBusConnection:
+
 	FlushSyncDBusConnection(cancellable Cancellable) error
-	// Capabilities:
+
 	Capabilities() DBusCapabilityFlags
-	// ExitOnClose:
+
 	ExitOnClose() bool
-	// Flags:
+
 	Flags() DBusConnectionFlags
-	// Guid:
+
 	Guid() string
-	// LastSerial:
+
 	LastSerial() uint32
-	// PeerCredentials:
+
 	PeerCredentials() Credentials
-	// Stream:
+
 	Stream() IOStream
-	// UniqueName:
+
 	UniqueName() string
-	// IsClosedDBusConnection:
+
 	IsClosedDBusConnection() bool
-	// RemoveFilterDBusConnection:
+
 	RemoveFilterDBusConnection(filterId uint)
-	// SendMessageDBusConnection:
+
 	SendMessageDBusConnection(message DBusMessage, flags DBusSendMessageFlags) (uint32, error)
-	// SendMessageWithReplyFinishDBusConnection:
+
+	SendMessageWithReplyDBusConnection(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) uint32
+
 	SendMessageWithReplyFinishDBusConnection(res AsyncResult) (DBusMessage, error)
-	// SendMessageWithReplySyncDBusConnection:
+
 	SendMessageWithReplySyncDBusConnection(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage, error)
-	// SetExitOnCloseDBusConnection:
+
 	SetExitOnCloseDBusConnection(exitOnClose bool)
-	// SignalUnsubscribeDBusConnection:
+
 	SignalUnsubscribeDBusConnection(subscriptionId uint)
-	// StartMessageProcessingDBusConnection:
+
 	StartMessageProcessingDBusConnection()
-	// UnexportActionGroupDBusConnection:
+
 	UnexportActionGroupDBusConnection(exportId uint)
-	// UnexportMenuModelDBusConnection:
+
 	UnexportMenuModelDBusConnection(exportId uint)
-	// UnregisterObjectDBusConnection:
+
 	UnregisterObjectDBusConnection(registrationId uint) bool
-	// UnregisterSubtreeDBusConnection:
+
 	UnregisterSubtreeDBusConnection(registrationId uint) bool
 }
 
@@ -480,7 +494,6 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 	return WrapDBusConnection(obj), nil
 }
 
-// NewDBusConnectionFinish:
 func NewDBusConnectionFinish(res AsyncResult) (DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
@@ -499,7 +512,6 @@ func NewDBusConnectionFinish(res AsyncResult) (DBusConnection, error) {
 	return _dBusConnection, _goerr
 }
 
-// NewDBusConnectionForAddressFinish:
 func NewDBusConnectionForAddressFinish(res AsyncResult) (DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
@@ -518,7 +530,6 @@ func NewDBusConnectionForAddressFinish(res AsyncResult) (DBusConnection, error) 
 	return _dBusConnection, _goerr
 }
 
-// NewDBusConnectionForAddressSync:
 func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) (DBusConnection, error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 C.GDBusConnectionFlags // out
@@ -544,7 +555,6 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 	return _dBusConnection, _goerr
 }
 
-// NewDBusConnectionSync:
 func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) (DBusConnection, error) {
 	var _arg1 *C.GIOStream           // out
 	var _arg2 *C.gchar               // out
@@ -570,6 +580,40 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
+}
+
+func (c dBusConnection) CallDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusConnection     // out
+	var _arg1 *C.gchar               // out
+	var _arg2 *C.gchar               // out
+	var _arg3 *C.gchar               // out
+	var _arg4 *C.gchar               // out
+	var _arg5 *C.GVariant            // out
+	var _arg6 *C.GVariantType        // out
+	var _arg7 C.GDBusCallFlags       // out
+	var _arg8 C.gint                 // out
+	var _arg9 *C.GCancellable        // out
+	var _arg10 C.GAsyncReadyCallback // out
+	var _arg11 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(busName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(interfaceName))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(methodName))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType.Native()))
+	_arg7 = C.GDBusCallFlags(flags)
+	_arg8 = C.gint(timeoutMsec)
+	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg10 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg11 = C.gpointer(box.Assign(callback))
+
+	C.g_dbus_connection_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
 }
 
 func (c dBusConnection) CallFinishDBusConnection(res AsyncResult) (*glib.Variant, error) {
@@ -636,6 +680,42 @@ func (c dBusConnection) CallSyncDBusConnection(busName string, objectPath string
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _variant, _goerr
+}
+
+func (c dBusConnection) CallWithUnixFdListDBusConnection(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusConnection     // out
+	var _arg1 *C.gchar               // out
+	var _arg2 *C.gchar               // out
+	var _arg3 *C.gchar               // out
+	var _arg4 *C.gchar               // out
+	var _arg5 *C.GVariant            // out
+	var _arg6 *C.GVariantType        // out
+	var _arg7 C.GDBusCallFlags       // out
+	var _arg8 C.gint                 // out
+	var _arg9 *C.GUnixFDList         // out
+	var _arg10 *C.GCancellable       // out
+	var _arg11 C.GAsyncReadyCallback // out
+	var _arg12 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(busName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(interfaceName))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(methodName))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
+	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType.Native()))
+	_arg7 = C.GDBusCallFlags(flags)
+	_arg8 = C.gint(timeoutMsec)
+	_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg10 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg11 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg12 = C.gpointer(box.Assign(callback))
+
+	C.g_dbus_connection_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12)
 }
 
 func (c dBusConnection) CallWithUnixFdListFinishDBusConnection(res AsyncResult) (UnixFDList, *glib.Variant, error) {
@@ -710,6 +790,20 @@ func (c dBusConnection) CallWithUnixFdListSyncDBusConnection(busName string, obj
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outFdList, _variant, _goerr
+}
+
+func (c dBusConnection) CloseDBusConnection(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusConnection    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_dbus_connection_close(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (c dBusConnection) CloseFinishDBusConnection(res AsyncResult) error {
@@ -819,6 +913,20 @@ func (c dBusConnection) ExportMenuModelDBusConnection(objectPath string, menu Me
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
+}
+
+func (c dBusConnection) FlushDBusConnection(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusConnection    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_dbus_connection_flush(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (c dBusConnection) FlushFinishDBusConnection(res AsyncResult) error {
@@ -1026,6 +1134,33 @@ func (c dBusConnection) SendMessageDBusConnection(message DBusMessage, flags DBu
 	return _outSerial, _goerr
 }
 
+func (c dBusConnection) SendMessageWithReplyDBusConnection(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) uint32 {
+	var _arg0 *C.GDBusConnection      // out
+	var _arg1 *C.GDBusMessage         // out
+	var _arg2 C.GDBusSendMessageFlags // out
+	var _arg3 C.gint                  // out
+	var _arg4 C.guint32               // in
+	var _arg5 *C.GCancellable         // out
+	var _arg6 C.GAsyncReadyCallback   // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg2 = C.GDBusSendMessageFlags(flags)
+	_arg3 = C.gint(timeoutMsec)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = C.gpointer(box.Assign(callback))
+
+	C.g_dbus_connection_send_message_with_reply(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5, _arg6, _arg7)
+
+	var _outSerial uint32 // out
+
+	_outSerial = uint32(_arg4)
+
+	return _outSerial
+}
+
 func (c dBusConnection) SendMessageWithReplyFinishDBusConnection(res AsyncResult) (DBusMessage, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -1163,6 +1298,10 @@ func (c dBusConnection) UnregisterSubtreeDBusConnection(registrationId uint) boo
 	return _ok
 }
 
+func (i dBusConnection) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
+}
+
 func (i dBusConnection) InitFinish(res AsyncResult) error {
 	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
 }
@@ -1206,87 +1345,86 @@ func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 type DBusMessage interface {
 	gextras.Objector
 
-	// CopyDBusMessage:
 	CopyDBusMessage() (DBusMessage, error)
-	// Arg0:
+
 	Arg0() string
-	// Body:
+
 	Body() *glib.Variant
-	// ByteOrder:
+
 	ByteOrder() DBusMessageByteOrder
-	// Destination:
+
 	Destination() string
-	// ErrorName:
+
 	ErrorName() string
-	// Flags:
+
 	Flags() DBusMessageFlags
-	// Header:
+
 	Header(headerField DBusMessageHeaderField) *glib.Variant
-	// HeaderFields:
+
 	HeaderFields() []byte
-	// Interface:
+
 	Interface() string
-	// Locked:
+
 	Locked() bool
-	// Member:
+
 	Member() string
-	// MessageType:
+
 	MessageType() DBusMessageType
-	// NumUnixFds:
+
 	NumUnixFds() uint32
-	// Path:
+
 	Path() string
-	// ReplySerial:
+
 	ReplySerial() uint32
-	// Sender:
+
 	Sender() string
-	// Serial:
+
 	Serial() uint32
-	// Signature:
+
 	Signature() string
-	// UnixFdList:
+
 	UnixFdList() UnixFDList
-	// LockDBusMessage:
+
 	LockDBusMessage()
-	// NewMethodErrorLiteralDBusMessage:
+
 	NewMethodErrorLiteralDBusMessage(errorName string, errorMessage string) DBusMessage
-	// NewMethodReplyDBusMessage:
+
 	NewMethodReplyDBusMessage() DBusMessage
-	// PrintDBusMessage:
+
 	PrintDBusMessage(indent uint) string
-	// SetBodyDBusMessage:
+
 	SetBodyDBusMessage(body *glib.Variant)
-	// SetByteOrderDBusMessage:
+
 	SetByteOrderDBusMessage(byteOrder DBusMessageByteOrder)
-	// SetDestinationDBusMessage:
+
 	SetDestinationDBusMessage(value string)
-	// SetErrorNameDBusMessage:
+
 	SetErrorNameDBusMessage(value string)
-	// SetFlagsDBusMessage:
+
 	SetFlagsDBusMessage(flags DBusMessageFlags)
-	// SetHeaderDBusMessage:
+
 	SetHeaderDBusMessage(headerField DBusMessageHeaderField, value *glib.Variant)
-	// SetInterfaceDBusMessage:
+
 	SetInterfaceDBusMessage(value string)
-	// SetMemberDBusMessage:
+
 	SetMemberDBusMessage(value string)
-	// SetMessageTypeDBusMessage:
+
 	SetMessageTypeDBusMessage(typ DBusMessageType)
-	// SetNumUnixFdsDBusMessage:
+
 	SetNumUnixFdsDBusMessage(value uint32)
-	// SetPathDBusMessage:
+
 	SetPathDBusMessage(value string)
-	// SetReplySerialDBusMessage:
+
 	SetReplySerialDBusMessage(value uint32)
-	// SetSenderDBusMessage:
+
 	SetSenderDBusMessage(value string)
-	// SetSerialDBusMessage:
+
 	SetSerialDBusMessage(serial uint32)
-	// SetSignatureDBusMessage:
+
 	SetSignatureDBusMessage(value string)
-	// SetUnixFdListDBusMessage:
+
 	SetUnixFdListDBusMessage(fdList UnixFDList)
-	// ToGerrorDBusMessage:
+
 	ToGerrorDBusMessage() error
 }
 
@@ -1309,7 +1447,6 @@ func marshalDBusMessage(p uintptr) (interface{}, error) {
 	return WrapDBusMessage(obj), nil
 }
 
-// NewDBusMessage:
 func NewDBusMessage() DBusMessage {
 	var _cret *C.GDBusMessage // in
 
@@ -1322,7 +1459,6 @@ func NewDBusMessage() DBusMessage {
 	return _dBusMessage
 }
 
-// NewDBusMessageFromBlob:
 func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (DBusMessage, error) {
 	var _arg1 *C.guchar
 	var _arg2 C.gsize
@@ -1345,7 +1481,6 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (DBus
 	return _dBusMessage, _goerr
 }
 
-// NewDBusMessageMethodCall:
 func NewDBusMessageMethodCall(name string, path string, interface_ string, method string) DBusMessage {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -1371,7 +1506,6 @@ func NewDBusMessageMethodCall(name string, path string, interface_ string, metho
 	return _dBusMessage
 }
 
-// NewDBusMessageSignal:
 func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMessage {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -1969,31 +2103,30 @@ func (m dBusMessage) ToGerrorDBusMessage() error {
 type DBusMethodInvocation interface {
 	gextras.Objector
 
-	// Connection:
 	Connection() DBusConnection
-	// InterfaceName:
+
 	InterfaceName() string
-	// Message:
+
 	Message() DBusMessage
-	// MethodInfo:
+
 	MethodInfo() *DBusMethodInfo
-	// MethodName:
+
 	MethodName() string
-	// ObjectPath:
+
 	ObjectPath() string
-	// Parameters:
+
 	Parameters() *glib.Variant
-	// PropertyInfo:
+
 	PropertyInfo() *DBusPropertyInfo
-	// Sender:
+
 	Sender() string
-	// ReturnDBusErrorDBusMethodInvocation:
+
 	ReturnDBusErrorDBusMethodInvocation(errorName string, errorMessage string)
-	// ReturnGerrorDBusMethodInvocation:
+
 	ReturnGerrorDBusMethodInvocation(err error)
-	// ReturnValueDBusMethodInvocation:
+
 	ReturnValueDBusMethodInvocation(parameters *glib.Variant)
-	// ReturnValueWithUnixFdListDBusMethodInvocation:
+
 	ReturnValueWithUnixFdListDBusMethodInvocation(parameters *glib.Variant, fdList UnixFDList)
 }
 
@@ -2220,17 +2353,16 @@ func (i dBusMethodInvocation) ReturnValueWithUnixFdListDBusMethodInvocation(para
 type DBusServer interface {
 	Initable
 
-	// ClientAddress:
 	ClientAddress() string
-	// Flags:
+
 	Flags() DBusServerFlags
-	// Guid:
+
 	Guid() string
-	// IsActiveDBusServer:
+
 	IsActiveDBusServer() bool
-	// StartDBusServer:
+
 	StartDBusServer()
-	// StopDBusServer:
+
 	StopDBusServer()
 }
 
@@ -2253,7 +2385,6 @@ func marshalDBusServer(p uintptr) (interface{}, error) {
 	return WrapDBusServer(obj), nil
 }
 
-// NewDBusServerSync:
 func NewDBusServerSync(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) (DBusServer, error) {
 	var _arg1 *C.gchar             // out
 	var _arg2 C.GDBusServerFlags   // out
@@ -2374,35 +2505,34 @@ func (i dBusServer) Init(cancellable Cancellable) error {
 type Menu interface {
 	MenuModel
 
-	// AppendMenu:
 	AppendMenu(label string, detailedAction string)
-	// AppendItemMenu:
+
 	AppendItemMenu(item MenuItem)
-	// AppendSectionMenu:
+
 	AppendSectionMenu(label string, section MenuModel)
-	// AppendSubmenuMenu:
+
 	AppendSubmenuMenu(label string, submenu MenuModel)
-	// FreezeMenu:
+
 	FreezeMenu()
-	// InsertMenu:
+
 	InsertMenu(position int, label string, detailedAction string)
-	// InsertItemMenu:
+
 	InsertItemMenu(position int, item MenuItem)
-	// InsertSectionMenu:
+
 	InsertSectionMenu(position int, label string, section MenuModel)
-	// InsertSubmenuMenu:
+
 	InsertSubmenuMenu(position int, label string, submenu MenuModel)
-	// PrependMenu:
+
 	PrependMenu(label string, detailedAction string)
-	// PrependItemMenu:
+
 	PrependItemMenu(item MenuItem)
-	// PrependSectionMenu:
+
 	PrependSectionMenu(label string, section MenuModel)
-	// PrependSubmenuMenu:
+
 	PrependSubmenuMenu(label string, submenu MenuModel)
-	// RemoveMenu:
+
 	RemoveMenu(position int)
-	// RemoveAllMenu:
+
 	RemoveAllMenu()
 }
 
@@ -2425,7 +2555,6 @@ func marshalMenu(p uintptr) (interface{}, error) {
 	return WrapMenu(obj), nil
 }
 
-// NewMenu:
 func NewMenu() Menu {
 	var _cret *C.GMenu // in
 
@@ -2627,25 +2756,24 @@ func (m menu) RemoveAllMenu() {
 type MenuItem interface {
 	gextras.Objector
 
-	// AttributeValue:
 	AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
-	// Link:
+
 	Link(link string) MenuModel
-	// SetActionAndTargetValueMenuItem:
+
 	SetActionAndTargetValueMenuItem(action string, targetValue *glib.Variant)
-	// SetAttributeValueMenuItem:
+
 	SetAttributeValueMenuItem(attribute string, value *glib.Variant)
-	// SetDetailedActionMenuItem:
+
 	SetDetailedActionMenuItem(detailedAction string)
-	// SetIconMenuItem:
+
 	SetIconMenuItem(icon Icon)
-	// SetLabelMenuItem:
+
 	SetLabelMenuItem(label string)
-	// SetLinkMenuItem:
+
 	SetLinkMenuItem(link string, model MenuModel)
-	// SetSectionMenuItem:
+
 	SetSectionMenuItem(section MenuModel)
-	// SetSubmenuMenuItem:
+
 	SetSubmenuMenuItem(submenu MenuModel)
 }
 
@@ -2668,7 +2796,6 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 	return WrapMenuItem(obj), nil
 }
 
-// NewMenuItem:
 func NewMenuItem(label string, detailedAction string) MenuItem {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -2688,7 +2815,6 @@ func NewMenuItem(label string, detailedAction string) MenuItem {
 	return _menuItem
 }
 
-// NewMenuItemFromModel:
 func NewMenuItemFromModel(model MenuModel, itemIndex int) MenuItem {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 C.gint        // out
@@ -2706,7 +2832,6 @@ func NewMenuItemFromModel(model MenuModel, itemIndex int) MenuItem {
 	return _menuItem
 }
 
-// NewMenuItemSection:
 func NewMenuItemSection(label string, section MenuModel) MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -2725,7 +2850,6 @@ func NewMenuItemSection(label string, section MenuModel) MenuItem {
 	return _menuItem
 }
 
-// NewMenuItemSubmenu:
 func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -2899,23 +3023,22 @@ func (m menuItem) SetSubmenuMenuItem(submenu MenuModel) {
 type Notification interface {
 	gextras.Objector
 
-	// AddButtonNotification:
 	AddButtonNotification(label string, detailedAction string)
-	// AddButtonWithTargetValueNotification:
+
 	AddButtonWithTargetValueNotification(label string, action string, target *glib.Variant)
-	// SetBodyNotification:
+
 	SetBodyNotification(body string)
-	// SetDefaultActionNotification:
+
 	SetDefaultActionNotification(detailedAction string)
-	// SetDefaultActionAndTargetValueNotification:
+
 	SetDefaultActionAndTargetValueNotification(action string, target *glib.Variant)
-	// SetIconNotification:
+
 	SetIconNotification(icon Icon)
-	// SetPriorityNotification:
+
 	SetPriorityNotification(priority NotificationPriority)
-	// SetTitleNotification:
+
 	SetTitleNotification(title string)
-	// SetUrgentNotification:
+
 	SetUrgentNotification(urgent bool)
 }
 
@@ -2938,7 +3061,6 @@ func marshalNotification(p uintptr) (interface{}, error) {
 	return WrapNotification(obj), nil
 }
 
-// NewNotification:
 func NewNotification(title string) Notification {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GNotification // in
@@ -3134,7 +3256,6 @@ func marshalPropertyAction(p uintptr) (interface{}, error) {
 	return WrapPropertyAction(obj), nil
 }
 
-// NewPropertyAction:
 func NewPropertyAction(name string, object gextras.Objector, propertyName string) PropertyAction {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gpointer         // out
@@ -3196,11 +3317,10 @@ func (a propertyAction) StateType() *glib.VariantType {
 type SimpleAction interface {
 	Action
 
-	// SetEnabledSimpleAction:
 	SetEnabledSimpleAction(enabled bool)
-	// SetStateSimpleAction:
+
 	SetStateSimpleAction(value *glib.Variant)
-	// SetStateHintSimpleAction:
+
 	SetStateHintSimpleAction(stateHint *glib.Variant)
 }
 
@@ -3223,7 +3343,6 @@ func marshalSimpleAction(p uintptr) (interface{}, error) {
 	return WrapSimpleAction(obj), nil
 }
 
-// NewSimpleAction:
 func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariantType  // out
@@ -3242,7 +3361,6 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction 
 	return _simpleAction
 }
 
-// NewSimpleActionStateful:
 func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) SimpleAction {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariantType  // out
@@ -3358,7 +3476,6 @@ func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 	return WrapSimpleIOStream(obj), nil
 }
 
-// NewSimpleIOStream:
 func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) SimpleIOStream {
 	var _arg1 *C.GInputStream  // out
 	var _arg2 *C.GOutputStream // out
@@ -3404,7 +3521,6 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 	return WrapSimplePermission(obj), nil
 }
 
-// NewSimplePermission:
 func NewSimplePermission(allowed bool) SimplePermission {
 	var _arg1 C.gboolean     // out
 	var _cret *C.GPermission // in
@@ -3473,41 +3589,46 @@ func NewSimplePermission(allowed bool) SimplePermission {
 type Subprocess interface {
 	Initable
 
-	// CommunicateUTF8Subprocess:
 	CommunicateUTF8Subprocess(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error)
-	// CommunicateUTF8FinishSubprocess:
+
+	CommunicateUTF8AsyncSubprocess(stdinBuf string, cancellable Cancellable, callback AsyncReadyCallback)
+
 	CommunicateUTF8FinishSubprocess(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error)
-	// ForceExitSubprocess:
+
 	ForceExitSubprocess()
-	// ExitStatus:
+
 	ExitStatus() int
-	// Identifier:
+
 	Identifier() string
-	// IfExited:
+
 	IfExited() bool
-	// IfSignaled:
+
 	IfSignaled() bool
-	// Status:
+
 	Status() int
-	// StderrPipe:
+
 	StderrPipe() InputStream
-	// StdinPipe:
+
 	StdinPipe() OutputStream
-	// StdoutPipe:
+
 	StdoutPipe() InputStream
-	// Successful:
+
 	Successful() bool
-	// TermSig:
+
 	TermSig() int
-	// SendSignalSubprocess:
+
 	SendSignalSubprocess(signalNum int)
-	// WaitSubprocess:
+
 	WaitSubprocess(cancellable Cancellable) error
-	// WaitCheckSubprocess:
+
+	WaitAsyncSubprocess(cancellable Cancellable, callback AsyncReadyCallback)
+
 	WaitCheckSubprocess(cancellable Cancellable) error
-	// WaitCheckFinishSubprocess:
+
+	WaitCheckAsyncSubprocess(cancellable Cancellable, callback AsyncReadyCallback)
+
 	WaitCheckFinishSubprocess(result AsyncResult) error
-	// WaitFinishSubprocess:
+
 	WaitFinishSubprocess(result AsyncResult) error
 }
 
@@ -3530,7 +3651,6 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 	return WrapSubprocess(obj), nil
 }
 
-// NewSubprocessV:
 func NewSubprocessV(argv []string, flags SubprocessFlags) (Subprocess, error) {
 	var _arg1 **C.gchar
 	var _arg2 C.GSubprocessFlags // out
@@ -3585,6 +3705,23 @@ func (s subprocess) CommunicateUTF8Subprocess(stdinBuf string, cancellable Cance
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _stdoutBuf, _stderrBuf, _goerr
+}
+
+func (s subprocess) CommunicateUTF8AsyncSubprocess(stdinBuf string, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GSubprocess        // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(stdinBuf))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_subprocess_communicate_utf8_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (s subprocess) CommunicateUTF8FinishSubprocess(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error) {
@@ -3803,6 +3940,20 @@ func (s subprocess) WaitSubprocess(cancellable Cancellable) error {
 	return _goerr
 }
 
+func (s subprocess) WaitAsyncSubprocess(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GSubprocess        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_subprocess_wait_async(_arg0, _arg1, _arg2, _arg3)
+}
+
 func (s subprocess) WaitCheckSubprocess(cancellable Cancellable) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
@@ -3818,6 +3969,20 @@ func (s subprocess) WaitCheckSubprocess(cancellable Cancellable) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (s subprocess) WaitCheckAsyncSubprocess(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GSubprocess        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_subprocess_wait_check_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (s subprocess) WaitCheckFinishSubprocess(result AsyncResult) error {
@@ -3868,35 +4033,34 @@ func (i subprocess) Init(cancellable Cancellable) error {
 type SubprocessLauncher interface {
 	gextras.Objector
 
-	// CloseSubprocessLauncher:
 	CloseSubprocessLauncher()
-	// env:
+
 	env(variable string) string
-	// SetCwdSubprocessLauncher:
+
 	SetCwdSubprocessLauncher(cwd string)
-	// SetEnvironSubprocessLauncher:
+
 	SetEnvironSubprocessLauncher(env []string)
-	// SetFlagsSubprocessLauncher:
+
 	SetFlagsSubprocessLauncher(flags SubprocessFlags)
-	// SetStderrFilePathSubprocessLauncher:
+
 	SetStderrFilePathSubprocessLauncher(path string)
-	// SetStdinFilePathSubprocessLauncher:
+
 	SetStdinFilePathSubprocessLauncher(path string)
-	// SetStdoutFilePathSubprocessLauncher:
+
 	SetStdoutFilePathSubprocessLauncher(path string)
-	// SetenvSubprocessLauncher:
+
 	SetenvSubprocessLauncher(variable string, value string, overwrite bool)
-	// SpawnvSubprocessLauncher:
+
 	SpawnvSubprocessLauncher(argv []string) (Subprocess, error)
-	// TakeFdSubprocessLauncher:
+
 	TakeFdSubprocessLauncher(sourceFd int, targetFd int)
-	// TakeStderrFdSubprocessLauncher:
+
 	TakeStderrFdSubprocessLauncher(fd int)
-	// TakeStdinFdSubprocessLauncher:
+
 	TakeStdinFdSubprocessLauncher(fd int)
-	// TakeStdoutFdSubprocessLauncher:
+
 	TakeStdoutFdSubprocessLauncher(fd int)
-	// UnsetenvSubprocessLauncher:
+
 	UnsetenvSubprocessLauncher(variable string)
 }
 
@@ -3919,7 +4083,6 @@ func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
 	return WrapSubprocessLauncher(obj), nil
 }
 
-// NewSubprocessLauncher:
 func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 	var _arg1 C.GSubprocessFlags     // out
 	var _cret *C.GSubprocessLauncher // in
@@ -4206,17 +4369,16 @@ func (s subprocessLauncher) UnsetenvSubprocessLauncher(variable string) {
 type TestDBus interface {
 	gextras.Objector
 
-	// AddServiceDirTestDBus:
 	AddServiceDirTestDBus(path string)
-	// DownTestDBus:
+
 	DownTestDBus()
-	// BusAddress:
+
 	BusAddress() string
-	// Flags:
+
 	Flags() TestDBusFlags
-	// StopTestDBus:
+
 	StopTestDBus()
-	// UpTestDBus:
+
 	UpTestDBus()
 }
 
@@ -4239,7 +4401,6 @@ func marshalTestDBus(p uintptr) (interface{}, error) {
 	return WrapTestDBus(obj), nil
 }
 
-// NewTestDBus:
 func NewTestDBus(flags TestDBusFlags) TestDBus {
 	var _arg1 C.GTestDBusFlags // out
 	var _cret *C.GTestDBus     // in

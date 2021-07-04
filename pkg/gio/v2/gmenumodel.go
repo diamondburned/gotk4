@@ -41,13 +41,12 @@ func init() {
 type MenuAttributeIter interface {
 	gextras.Objector
 
-	// Name:
 	Name() string
-	// GetNext:
+
 	GetNext() (string, *glib.Variant, bool)
-	// Value:
+
 	Value() *glib.Variant
-	// NextMenuAttributeIter:
+
 	NextMenuAttributeIter() bool
 }
 
@@ -151,13 +150,12 @@ func (i menuAttributeIter) NextMenuAttributeIter() bool {
 type MenuLinkIter interface {
 	gextras.Objector
 
-	// Name:
 	Name() string
-	// GetNext:
+
 	GetNext() (string, MenuModel, bool)
-	// Value:
+
 	Value() MenuModel
-	// NextMenuLinkIter:
+
 	NextMenuLinkIter() bool
 }
 
@@ -363,19 +361,18 @@ func (i menuLinkIter) NextMenuLinkIter() bool {
 type MenuModel interface {
 	gextras.Objector
 
-	// ItemAttributeValue:
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
-	// ItemLink:
+
 	ItemLink(itemIndex int, link string) MenuModel
-	// NItems:
+
 	NItems() int
-	// IsMutableMenuModel:
+
 	IsMutableMenuModel() bool
-	// ItemsChangedMenuModel:
+
 	ItemsChangedMenuModel(position int, removed int, added int)
-	// IterateItemAttributesMenuModel:
+
 	IterateItemAttributesMenuModel(itemIndex int) MenuAttributeIter
-	// IterateItemLinksMenuModel:
+
 	IterateItemLinksMenuModel(itemIndex int) MenuLinkIter
 }
 

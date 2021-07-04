@@ -36,49 +36,48 @@ type Range interface {
 	Widget
 	Orientable
 
-	// Adjustment:
 	Adjustment() Adjustment
-	// FillLevel:
+
 	FillLevel() float64
-	// Flippable:
+
 	Flippable() bool
-	// Inverted:
+
 	Inverted() bool
-	// RangeRect:
+
 	RangeRect() gdk.Rectangle
-	// RestrictToFillLevel:
+
 	RestrictToFillLevel() bool
-	// RoundDigits:
+
 	RoundDigits() int
-	// ShowFillLevel:
+
 	ShowFillLevel() bool
-	// SliderRange:
+
 	SliderRange() (sliderStart int, sliderEnd int)
-	// SliderSizeFixed:
+
 	SliderSizeFixed() bool
-	// Value:
+
 	Value() float64
-	// SetAdjustmentRange:
+
 	SetAdjustmentRange(adjustment Adjustment)
-	// SetFillLevelRange:
+
 	SetFillLevelRange(fillLevel float64)
-	// SetFlippableRange:
+
 	SetFlippableRange(flippable bool)
-	// SetIncrementsRange:
+
 	SetIncrementsRange(step float64, page float64)
-	// SetInvertedRange:
+
 	SetInvertedRange(setting bool)
-	// SetRangeRange:
+
 	SetRangeRange(min float64, max float64)
-	// SetRestrictToFillLevelRange:
+
 	SetRestrictToFillLevelRange(restrictToFillLevel bool)
-	// SetRoundDigitsRange:
+
 	SetRoundDigitsRange(roundDigits int)
-	// SetShowFillLevelRange:
+
 	SetShowFillLevelRange(showFillLevel bool)
-	// SetSliderSizeFixedRange:
+
 	SetSliderSizeFixedRange(sizeFixed bool)
-	// SetValueRange:
+
 	SetValueRange(value float64)
 }
 

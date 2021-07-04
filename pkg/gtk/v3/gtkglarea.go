@@ -5,9 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -84,41 +86,40 @@ func init() {
 type GLArea interface {
 	Widget
 
-	// AttachBuffersGLArea:
 	AttachBuffersGLArea()
-	// AutoRender:
+
 	AutoRender() bool
-	// Context:
+
 	Context() gdk.GLContext
-	// Error:
+
 	Error() error
-	// HasAlpha:
+
 	HasAlpha() bool
-	// HasDepthBuffer:
+
 	HasDepthBuffer() bool
-	// HasStencilBuffer:
+
 	HasStencilBuffer() bool
-	// RequiredVersion:
+
 	RequiredVersion() (major int, minor int)
-	// UseES:
+
 	UseES() bool
-	// MakeCurrentGLArea:
+
 	MakeCurrentGLArea()
-	// QueueRenderGLArea:
+
 	QueueRenderGLArea()
-	// SetAutoRenderGLArea:
+
 	SetAutoRenderGLArea(autoRender bool)
-	// SetErrorGLArea:
+
 	SetErrorGLArea(err error)
-	// SetHasAlphaGLArea:
+
 	SetHasAlphaGLArea(hasAlpha bool)
-	// SetHasDepthBufferGLArea:
+
 	SetHasDepthBufferGLArea(hasDepthBuffer bool)
-	// SetHasStencilBufferGLArea:
+
 	SetHasStencilBufferGLArea(hasStencilBuffer bool)
-	// SetRequiredVersionGLArea:
+
 	SetRequiredVersionGLArea(major int, minor int)
-	// SetUseESGLArea:
+
 	SetUseESGLArea(useEs bool)
 }
 
@@ -141,7 +142,6 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return WrapGLArea(obj), nil
 }
 
-// NewGLArea:
 func NewGLArea() GLArea {
 	var _cret *C.GtkWidget // in
 
@@ -400,6 +400,18 @@ func (b glArea) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b glArea) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b glArea) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b glArea) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b glArea) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b glArea) InternalChild(builder Builder, childname string) gextras.Objector {

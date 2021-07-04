@@ -53,25 +53,24 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 type Drag interface {
 	gextras.Objector
 
-	// DropDoneDrag:
 	DropDoneDrag(success bool)
-	// Actions:
+
 	Actions() DragAction
-	// Content:
+
 	Content() ContentProvider
-	// Device:
+
 	Device() Device
-	// Display:
+
 	Display() Display
-	// DragSurface:
+
 	DragSurface() Surface
-	// Formats:
+
 	Formats() *ContentFormats
-	// SelectedAction:
+
 	SelectedAction() DragAction
-	// Surface:
+
 	Surface() Surface
-	// SetHotspotDrag:
+
 	SetHotspotDrag(hotX int, hotY int)
 }
 

@@ -43,11 +43,10 @@ func init() {
 type NetworkAddress interface {
 	SocketConnectable
 
-	// Hostname:
 	Hostname() string
-	// Port:
+
 	Port() uint16
-	// Scheme:
+
 	Scheme() string
 }
 
@@ -70,7 +69,6 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	return WrapNetworkAddress(obj), nil
 }
 
-// NewNetworkAddress:
 func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -89,7 +87,6 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 	return _networkAddress
 }
 
-// NewNetworkAddressLoopback:
 func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 	var _arg1 C.guint16             // out
 	var _cret *C.GSocketConnectable // in

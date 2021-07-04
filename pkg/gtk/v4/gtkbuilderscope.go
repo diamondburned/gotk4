@@ -120,7 +120,6 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	return WrapBuilderCScope(obj), nil
 }
 
-// NewBuilderCScope:
 func NewBuilderCScope() BuilderCScope {
 	var _cret *C.GtkBuilderScope // in
 

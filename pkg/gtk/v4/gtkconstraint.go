@@ -68,27 +68,26 @@ func marshalConstraintTarget(p uintptr) (interface{}, error) {
 type Constraint interface {
 	gextras.Objector
 
-	// Constant:
 	Constant() float64
-	// Multiplier:
+
 	Multiplier() float64
-	// Relation:
+
 	Relation() ConstraintRelation
-	// Source:
+
 	Source() ConstraintTarget
-	// SourceAttribute:
+
 	SourceAttribute() ConstraintAttribute
-	// Strength:
+
 	Strength() int
-	// Target:
+
 	Target() ConstraintTarget
-	// TargetAttribute:
+
 	TargetAttribute() ConstraintAttribute
-	// IsAttachedConstraint:
+
 	IsAttachedConstraint() bool
-	// IsConstantConstraint:
+
 	IsConstantConstraint() bool
-	// IsRequiredConstraint:
+
 	IsRequiredConstraint() bool
 }
 
@@ -111,7 +110,6 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 	return WrapConstraint(obj), nil
 }
 
-// NewConstraint:
 func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTarget, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
@@ -141,7 +139,6 @@ func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute,
 	return _constraint
 }
 
-// NewConstraintConstant:
 func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out

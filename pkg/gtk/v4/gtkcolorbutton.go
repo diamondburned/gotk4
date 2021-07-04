@@ -42,13 +42,12 @@ type ColorButton interface {
 	Widget
 	ColorChooser
 
-	// Modal:
 	Modal() bool
-	// Title:
+
 	Title() string
-	// SetModalColorButton:
+
 	SetModalColorButton(modal bool)
-	// SetTitleColorButton:
+
 	SetTitleColorButton(title string)
 }
 
@@ -71,7 +70,6 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return WrapColorButton(obj), nil
 }
 
-// NewColorButton:
 func NewColorButton() ColorButton {
 	var _cret *C.GtkWidget // in
 
@@ -84,7 +82,6 @@ func NewColorButton() ColorButton {
 	return _colorButton
 }
 
-// NewColorButtonWithRGBA:
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in

@@ -33,9 +33,8 @@ func init() {
 type EventControllerFocus interface {
 	EventController
 
-	// ContainsFocusEventControllerFocus:
 	ContainsFocusEventControllerFocus() bool
-	// IsFocusEventControllerFocus:
+
 	IsFocusEventControllerFocus() bool
 }
 
@@ -58,7 +57,6 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 	return WrapEventControllerFocus(obj), nil
 }
 
-// NewEventControllerFocus:
 func NewEventControllerFocus() EventControllerFocus {
 	var _cret *C.GtkEventController // in
 

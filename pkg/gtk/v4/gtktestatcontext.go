@@ -12,7 +12,6 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// TestAccessibleAssertionMessageRole:
 func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn string, expr string, accessible Accessible, expectedRole AccessibleRole, actualRole AccessibleRole) {
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out

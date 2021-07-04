@@ -26,7 +26,6 @@ func init() {
 type GLTexture interface {
 	Texture
 
-	// ReleaseGLTexture:
 	ReleaseGLTexture()
 }
 

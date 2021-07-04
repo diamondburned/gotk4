@@ -32,7 +32,6 @@ func init() {
 type WaylandDevice interface {
 	gdk.Device
 
-	// NodePath:
 	NodePath() string
 }
 

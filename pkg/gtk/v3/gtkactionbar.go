@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,13 +42,12 @@ func init() {
 type ActionBar interface {
 	Bin
 
-	// CenterWidget:
 	CenterWidget() Widget
-	// PackEndActionBar:
+
 	PackEndActionBar(child Widget)
-	// PackStartActionBar:
+
 	PackStartActionBar(child Widget)
-	// SetCenterWidgetActionBar:
+
 	SetCenterWidgetActionBar(centerWidget Widget)
 }
 
@@ -69,7 +70,6 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 	return WrapActionBar(obj), nil
 }
 
-// NewActionBar:
 func NewActionBar() ActionBar {
 	var _cret *C.GtkWidget // in
 
@@ -133,6 +133,18 @@ func (b actionBar) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b actionBar) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b actionBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b actionBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b actionBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b actionBar) InternalChild(builder Builder, childname string) gextras.Objector {

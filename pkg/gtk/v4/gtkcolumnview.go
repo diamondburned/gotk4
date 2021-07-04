@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -87,41 +86,34 @@ type ColumnView interface {
 	Widget
 	Scrollable
 
-	// AppendColumnColumnView:
 	AppendColumnColumnView(column ColumnViewColumn)
-	// Columns:
-	Columns() gio.ListModel
-	// EnableRubberband:
+
 	EnableRubberband() bool
-	// Model:
-	Model() SelectionModel
-	// Reorderable:
+
 	Reorderable() bool
-	// ShowColumnSeparators:
+
 	ShowColumnSeparators() bool
-	// ShowRowSeparators:
+
 	ShowRowSeparators() bool
-	// SingleClickActivate:
+
 	SingleClickActivate() bool
-	// Sorter:
+
 	Sorter() Sorter
-	// InsertColumnColumnView:
+
 	InsertColumnColumnView(position uint, column ColumnViewColumn)
-	// RemoveColumnColumnView:
+
 	RemoveColumnColumnView(column ColumnViewColumn)
-	// SetEnableRubberbandColumnView:
+
 	SetEnableRubberbandColumnView(enableRubberband bool)
-	// SetModelColumnView:
-	SetModelColumnView(model SelectionModel)
-	// SetReorderableColumnView:
+
 	SetReorderableColumnView(reorderable bool)
-	// SetShowColumnSeparatorsColumnView:
+
 	SetShowColumnSeparatorsColumnView(showColumnSeparators bool)
-	// SetShowRowSeparatorsColumnView:
+
 	SetShowRowSeparatorsColumnView(showRowSeparators bool)
-	// SetSingleClickActivateColumnView:
+
 	SetSingleClickActivateColumnView(singleClickActivate bool)
-	// SortByColumnColumnView:
+
 	SortByColumnColumnView(column ColumnViewColumn, direction SortType)
 }
 
@@ -144,22 +136,6 @@ func marshalColumnView(p uintptr) (interface{}, error) {
 	return WrapColumnView(obj), nil
 }
 
-// NewColumnView:
-func NewColumnView(model SelectionModel) ColumnView {
-	var _arg1 *C.GtkSelectionModel // out
-	var _cret *C.GtkWidget         // in
-
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	_cret = C.gtk_column_view_new(_arg1)
-
-	var _columnView ColumnView // out
-
-	_columnView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColumnView)
-
-	return _columnView
-}
-
 func (s columnView) AppendColumnColumnView(column ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
@@ -168,21 +144,6 @@ func (s columnView) AppendColumnColumnView(column ColumnViewColumn) {
 	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
 
 	C.gtk_column_view_append_column(_arg0, _arg1)
-}
-
-func (s columnView) Columns() gio.ListModel {
-	var _arg0 *C.GtkColumnView // out
-	var _cret *C.GListModel    // in
-
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_column_view_get_columns(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (s columnView) EnableRubberband() bool {
@@ -200,21 +161,6 @@ func (s columnView) EnableRubberband() bool {
 	}
 
 	return _ok
-}
-
-func (s columnView) Model() SelectionModel {
-	var _arg0 *C.GtkColumnView     // out
-	var _cret *C.GtkSelectionModel // in
-
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_column_view_get_model(_arg0)
-
-	var _selectionModel SelectionModel // out
-
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SelectionModel)
-
-	return _selectionModel
 }
 
 func (s columnView) Reorderable() bool {
@@ -332,16 +278,6 @@ func (s columnView) SetEnableRubberbandColumnView(enableRubberband bool) {
 	}
 
 	C.gtk_column_view_set_enable_rubberband(_arg0, _arg1)
-}
-
-func (s columnView) SetModelColumnView(model SelectionModel) {
-	var _arg0 *C.GtkColumnView     // out
-	var _arg1 *C.GtkSelectionModel // out
-
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_column_view_set_model(_arg0, _arg1)
 }
 
 func (s columnView) SetReorderableColumnView(reorderable bool) {

@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -100,47 +102,46 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 type Stack interface {
 	Container
 
-	// AddNamedStack:
 	AddNamedStack(child Widget, name string)
-	// AddTitledStack:
+
 	AddTitledStack(child Widget, name string, title string)
-	// ChildByName:
+
 	ChildByName(name string) Widget
-	// Hhomogeneous:
+
 	Hhomogeneous() bool
-	// Homogeneous:
+
 	Homogeneous() bool
-	// InterpolateSize:
+
 	InterpolateSize() bool
-	// TransitionDuration:
+
 	TransitionDuration() uint
-	// TransitionRunning:
+
 	TransitionRunning() bool
-	// TransitionType:
+
 	TransitionType() StackTransitionType
-	// Vhomogeneous:
+
 	Vhomogeneous() bool
-	// VisibleChild:
+
 	VisibleChild() Widget
-	// VisibleChildName:
+
 	VisibleChildName() string
-	// SetHhomogeneousStack:
+
 	SetHhomogeneousStack(hhomogeneous bool)
-	// SetHomogeneousStack:
+
 	SetHomogeneousStack(homogeneous bool)
-	// SetInterpolateSizeStack:
+
 	SetInterpolateSizeStack(interpolateSize bool)
-	// SetTransitionDurationStack:
+
 	SetTransitionDurationStack(duration uint)
-	// SetTransitionTypeStack:
+
 	SetTransitionTypeStack(transition StackTransitionType)
-	// SetVhomogeneousStack:
+
 	SetVhomogeneousStack(vhomogeneous bool)
-	// SetVisibleChildStack:
+
 	SetVisibleChildStack(child Widget)
-	// SetVisibleChildFullStack:
+
 	SetVisibleChildFullStack(name string, transition StackTransitionType)
-	// SetVisibleChildNameStack:
+
 	SetVisibleChildNameStack(name string)
 }
 
@@ -163,7 +164,6 @@ func marshalStack(p uintptr) (interface{}, error) {
 	return WrapStack(obj), nil
 }
 
-// NewStack:
 func NewStack() Stack {
 	var _cret *C.GtkWidget // in
 
@@ -476,6 +476,18 @@ func (b stack) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b stack) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b stack) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b stack) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b stack) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b stack) InternalChild(builder Builder, childname string) gextras.Objector {

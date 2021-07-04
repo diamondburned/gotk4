@@ -34,25 +34,24 @@ func init() {
 type AspectFrame interface {
 	Widget
 
-	// Child:
 	Child() Widget
-	// ObeyChild:
+
 	ObeyChild() bool
-	// Ratio:
+
 	Ratio() float32
-	// Xalign:
+
 	Xalign() float32
-	// Yalign:
+
 	Yalign() float32
-	// SetChildAspectFrame:
+
 	SetChildAspectFrame(child Widget)
-	// SetObeyChildAspectFrame:
+
 	SetObeyChildAspectFrame(obeyChild bool)
-	// SetRatioAspectFrame:
+
 	SetRatioAspectFrame(ratio float32)
-	// SetXalignAspectFrame:
+
 	SetXalignAspectFrame(xalign float32)
-	// SetYalignAspectFrame:
+
 	SetYalignAspectFrame(yalign float32)
 }
 
@@ -75,7 +74,6 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	return WrapAspectFrame(obj), nil
 }
 
-// NewAspectFrame:
 func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
 	var _arg1 C.float      // out
 	var _arg2 C.float      // out

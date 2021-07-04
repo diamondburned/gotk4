@@ -30,9 +30,8 @@ func init() {
 type IMMulticontext interface {
 	IMContext
 
-	// ContextID:
 	ContextID() string
-	// SetContextIDIMMulticontext:
+
 	SetContextIDIMMulticontext(contextId string)
 }
 
@@ -55,7 +54,6 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	return WrapIMMulticontext(obj), nil
 }
 
-// NewIMMulticontext:
 func NewIMMulticontext() IMMulticontext {
 	var _cret *C.GtkIMContext // in
 

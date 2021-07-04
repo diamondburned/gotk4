@@ -37,25 +37,24 @@ func init() {
 type CellAreaContext interface {
 	gextras.Objector
 
-	// AllocateCellAreaContext:
 	AllocateCellAreaContext(width int, height int)
-	// Allocation:
+
 	Allocation() (width int, height int)
-	// Area:
+
 	Area() CellArea
-	// PreferredHeight:
+
 	PreferredHeight() (minimumHeight int, naturalHeight int)
-	// PreferredHeightForWidth:
+
 	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
-	// PreferredWidth:
+
 	PreferredWidth() (minimumWidth int, naturalWidth int)
-	// PreferredWidthForHeight:
+
 	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
-	// PushPreferredHeightCellAreaContext:
+
 	PushPreferredHeightCellAreaContext(minimumHeight int, naturalHeight int)
-	// PushPreferredWidthCellAreaContext:
+
 	PushPreferredWidthCellAreaContext(minimumWidth int, naturalWidth int)
-	// ResetCellAreaContext:
+
 	ResetCellAreaContext()
 }
 

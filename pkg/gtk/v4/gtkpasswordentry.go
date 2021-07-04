@@ -56,13 +56,12 @@ func init() {
 type PasswordEntry interface {
 	Editable
 
-	// ExtraMenu:
 	ExtraMenu() gio.MenuModel
-	// ShowPeekIcon:
+
 	ShowPeekIcon() bool
-	// SetExtraMenuPasswordEntry:
+
 	SetExtraMenuPasswordEntry(model gio.MenuModel)
-	// SetShowPeekIconPasswordEntry:
+
 	SetShowPeekIconPasswordEntry(showPeekIcon bool)
 }
 
@@ -85,7 +84,6 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	return WrapPasswordEntry(obj), nil
 }
 
-// NewPasswordEntry:
 func NewPasswordEntry() PasswordEntry {
 	var _cret *C.GtkWidget // in
 

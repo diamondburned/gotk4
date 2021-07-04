@@ -61,19 +61,18 @@ func marshalCoverageLevel(p uintptr) (interface{}, error) {
 type Coverage interface {
 	gextras.Objector
 
-	// CopyCoverage:
 	CopyCoverage() Coverage
-	// GetCoverage:
+
 	GetCoverage(index_ int) CoverageLevel
-	// MaxCoverage:
+
 	MaxCoverage(other Coverage)
-	// RefCoverage:
+
 	RefCoverage() Coverage
-	// SetCoverage:
+
 	SetCoverage(index_ int, level CoverageLevel)
-	// ToBytesCoverage:
+
 	ToBytesCoverage() []byte
-	// UnrefCoverage:
+
 	UnrefCoverage()
 }
 
@@ -96,7 +95,6 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 	return WrapCoverage(obj), nil
 }
 
-// NewCoverage:
 func NewCoverage() Coverage {
 	var _cret *C.PangoCoverage // in
 

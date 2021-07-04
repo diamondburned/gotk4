@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,6 +51,33 @@ const (
 
 func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 	return RecentFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RecentFilterFunc: the type of function that is used with custom filters, see
+// gtk_recent_filter_add_custom().
+type RecentFilterFunc func(filterInfo *RecentFilterInfo, ok bool)
+
+//export gotk4_RecentFilterFunc
+func _RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var filterInfo *RecentFilterInfo // out
+
+	filterInfo = (*RecentFilterInfo)(unsafe.Pointer(arg0))
+
+	fn := v.(RecentFilterFunc)
+	ok := fn(filterInfo)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // RecentFilter: a RecentFilter can be used to restrict the files being shown in
@@ -100,25 +129,24 @@ func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 type RecentFilter interface {
 	Buildable
 
-	// AddAgeRecentFilter:
 	AddAgeRecentFilter(days int)
-	// AddApplicationRecentFilter:
+
 	AddApplicationRecentFilter(application string)
-	// AddGroupRecentFilter:
+
 	AddGroupRecentFilter(group string)
-	// AddMIMETypeRecentFilter:
+
 	AddMIMETypeRecentFilter(mimeType string)
-	// AddPatternRecentFilter:
+
 	AddPatternRecentFilter(pattern string)
-	// AddPixbufFormatsRecentFilter:
+
 	AddPixbufFormatsRecentFilter()
-	// FilterRecentFilter:
+
 	FilterRecentFilter(filterInfo *RecentFilterInfo) bool
-	// GetName:
+
 	GetName() string
-	// Needed:
+
 	Needed() RecentFilterFlags
-	// SetNameRecentFilter:
+
 	SetNameRecentFilter(name string)
 }
 
@@ -141,7 +169,6 @@ func marshalRecentFilter(p uintptr) (interface{}, error) {
 	return WrapRecentFilter(obj), nil
 }
 
-// NewRecentFilter:
 func NewRecentFilter() RecentFilter {
 	var _cret *C.GtkRecentFilter // in
 
@@ -282,6 +309,18 @@ func (b recentFilter) AddChild(builder Builder, child gextras.Objector, typ stri
 
 func (b recentFilter) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b recentFilter) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b recentFilter) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b recentFilter) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b recentFilter) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -83,9 +83,8 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 type PadController interface {
 	EventController
 
-	// SetActionPadController:
 	SetActionPadController(typ PadActionType, index int, mode int, label string, actionName string)
-	// SetActionEntriesPadController:
+
 	SetActionEntriesPadController(entries []PadActionEntry)
 }
 
@@ -108,7 +107,6 @@ func marshalPadController(p uintptr) (interface{}, error) {
 	return WrapPadController(obj), nil
 }
 
-// NewPadController:
 func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadController {
 	var _arg1 *C.GtkWindow        // out
 	var _arg2 *C.GActionGroup     // out

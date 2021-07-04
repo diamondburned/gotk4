@@ -17,17 +17,23 @@ type aliasData struct {
 	GoType string
 }
 
-// GenerateAlias generates an alias declaration into the given file generator.
-// If the generation fails or is ignored, then false is returned.
-func GenerateAlias(gen FileGeneratorWriter, alias *gir.Alias) bool {
+// CanGenerateAlias returns false if this alias cannot be generated.
+func CanGenerateAlias(gen FileGenerator, alias *gir.Alias) bool {
 	if !alias.IsIntrospectable() || types.Filter(gen, alias.Name, alias.CType) {
 		return false
 	}
 
-	resolved := types.Resolve(gen, alias.Type)
-	if resolved == nil {
+	return types.Resolve(gen, alias.Type) != nil
+}
+
+// GenerateAlias generates an alias declaration into the given file generator.
+// If the generation fails or is ignored, then false is returned.
+func GenerateAlias(gen FileGeneratorWriter, alias *gir.Alias) bool {
+	if !CanGenerateAlias(gen, alias) {
 		return false
 	}
+
+	resolved := types.Resolve(gen, alias.Type)
 
 	goType := resolved.PublicType(resolved.NeedsNamespace(gen.Namespace()))
 	if goType == "" {

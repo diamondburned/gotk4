@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -20,6 +22,34 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_drawing_area_get_type()), F: marshalDrawingArea},
 	})
+}
+
+// DrawingAreaDrawFunc: whenever @drawing_area needs to redraw, this function
+// will be called.
+//
+// This function should exclusively redraw the contents of the drawing area and
+// must not call any widget functions that cause changes.
+type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr *cairo.Context, width int, height int)
+
+//export gotk4_DrawingAreaDrawFunc
+func _DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
+	v := box.Get(uintptr(arg4))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var drawingArea DrawingArea // out
+	var cr *cairo.Context       // out
+	var width int               // out
+	var height int              // out
+
+	drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(DrawingArea)
+	cr = (*cairo.Context)(unsafe.Pointer(arg1))
+	width = int(arg2)
+	height = int(arg3)
+
+	fn := v.(DrawingAreaDrawFunc)
+	fn(drawingArea, cr, width, height)
 }
 
 // DrawingArea: `GtkDrawingArea` is a widget that allows drawing with cairo.
@@ -94,13 +124,12 @@ func init() {
 type DrawingArea interface {
 	Widget
 
-	// ContentHeight:
 	ContentHeight() int
-	// ContentWidth:
+
 	ContentWidth() int
-	// SetContentHeightDrawingArea:
+
 	SetContentHeightDrawingArea(height int)
-	// SetContentWidthDrawingArea:
+
 	SetContentWidthDrawingArea(width int)
 }
 
@@ -123,7 +152,6 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return WrapDrawingArea(obj), nil
 }
 
-// NewDrawingArea:
 func NewDrawingArea() DrawingArea {
 	var _cret *C.GtkWidget // in
 

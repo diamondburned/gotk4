@@ -58,13 +58,12 @@ func init() {
 type Settings interface {
 	StyleProvider
 
-	// ResetPropertySettings:
 	ResetPropertySettings(name string)
-	// SetDoublePropertySettings:
+
 	SetDoublePropertySettings(name string, vDouble float64, origin string)
-	// SetLongPropertySettings:
+
 	SetLongPropertySettings(name string, vLong int32, origin string)
-	// SetStringPropertySettings:
+
 	SetStringPropertySettings(name string, vString string, origin string)
 }
 

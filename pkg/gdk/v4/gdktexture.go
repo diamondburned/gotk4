@@ -38,11 +38,10 @@ func init() {
 type Texture interface {
 	Paintable
 
-	// Height:
 	Height() int
-	// Width:
+
 	Width() int
-	// SaveToPngTexture:
+
 	SaveToPngTexture(filename string) bool
 }
 
@@ -65,7 +64,6 @@ func marshalTexture(p uintptr) (interface{}, error) {
 	return WrapTexture(obj), nil
 }
 
-// NewTextureForPixbuf:
 func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GdkTexture // in
@@ -81,26 +79,6 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 	return _texture
 }
 
-// NewTextureFromFile:
-func NewTextureFromFile(file gio.File) (Texture, error) {
-	var _arg1 *C.GFile      // out
-	var _cret *C.GdkTexture // in
-	var _cerr *C.GError     // in
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
-
-	var _texture Texture // out
-	var _goerr error     // out
-
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Texture)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _texture, _goerr
-}
-
-// NewTextureFromResource:
 func NewTextureFromResource(resourcePath string) Texture {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkTexture // in

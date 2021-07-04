@@ -45,9 +45,8 @@ func init() {
 type VolumeMonitor interface {
 	gextras.Objector
 
-	// MountForUUID:
 	MountForUUID(uuid string) Mount
-	// VolumeForUUID:
+
 	VolumeForUUID(uuid string) Volume
 }
 

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -53,19 +54,18 @@ func init() {
 type ImageMenuItem interface {
 	MenuItem
 
-	// AlwaysShowImage:
 	AlwaysShowImage() bool
-	// Image:
+
 	Image() Widget
-	// UseStock:
+
 	UseStock() bool
-	// SetAccelGroupImageMenuItem:
+
 	SetAccelGroupImageMenuItem(accelGroup AccelGroup)
-	// SetAlwaysShowImageImageMenuItem:
+
 	SetAlwaysShowImageImageMenuItem(alwaysShow bool)
-	// SetImageImageMenuItem:
+
 	SetImageImageMenuItem(image Widget)
-	// SetUseStockImageMenuItem:
+
 	SetUseStockImageMenuItem(useStock bool)
 }
 
@@ -88,7 +88,6 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 	return WrapImageMenuItem(obj), nil
 }
 
-// NewImageMenuItem:
 func NewImageMenuItem() ImageMenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -101,7 +100,6 @@ func NewImageMenuItem() ImageMenuItem {
 	return _imageMenuItem
 }
 
-// NewImageMenuItemFromStock:
 func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuItem {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkAccelGroup // out
@@ -120,7 +118,6 @@ func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuI
 	return _imageMenuItem
 }
 
-// NewImageMenuItemWithLabel:
 func NewImageMenuItemWithLabel(label string) ImageMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -137,7 +134,6 @@ func NewImageMenuItemWithLabel(label string) ImageMenuItem {
 	return _imageMenuItem
 }
 
-// NewImageMenuItemWithMnemonic:
 func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -255,6 +251,18 @@ func (b imageMenuItem) ConstructChild(builder Builder, name string) gextras.Obje
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b imageMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b imageMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b imageMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b imageMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -301,6 +309,18 @@ func (b imageMenuItem) AddChild(builder Builder, child gextras.Objector, typ str
 
 func (b imageMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b imageMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b imageMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b imageMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b imageMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {

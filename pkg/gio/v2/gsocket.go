@@ -87,107 +87,106 @@ type Socket interface {
 	DatagramBased
 	Initable
 
-	// AcceptSocket:
 	AcceptSocket(cancellable Cancellable) (Socket, error)
-	// BindSocket:
+
 	BindSocket(address SocketAddress, allowReuse bool) error
-	// CheckConnectResultSocket:
+
 	CheckConnectResultSocket() error
-	// CloseSocket:
+
 	CloseSocket() error
-	// ConditionCheckSocket:
+
 	ConditionCheckSocket(condition glib.IOCondition) glib.IOCondition
-	// ConditionTimedWaitSocket:
+
 	ConditionTimedWaitSocket(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error
-	// ConditionWaitSocket:
+
 	ConditionWaitSocket(condition glib.IOCondition, cancellable Cancellable) error
-	// ConnectSocket:
+
 	ConnectSocket(address SocketAddress, cancellable Cancellable) error
-	// ConnectionFactoryCreateConnectionSocket:
+
 	ConnectionFactoryCreateConnectionSocket() SocketConnection
-	// AvailableBytes:
+
 	AvailableBytes() int
-	// Blocking:
+
 	Blocking() bool
-	// Broadcast:
+
 	Broadcast() bool
-	// Credentials:
+
 	Credentials() (Credentials, error)
-	// Family:
+
 	Family() SocketFamily
-	// Fd:
+
 	Fd() int
-	// Keepalive:
+
 	Keepalive() bool
-	// ListenBacklog:
+
 	ListenBacklog() int
-	// LocalAddress:
+
 	LocalAddress() (SocketAddress, error)
-	// MulticastLoopback:
+
 	MulticastLoopback() bool
-	// MulticastTTL:
+
 	MulticastTTL() uint
-	// Option:
+
 	Option(level int, optname int) (int, error)
-	// Protocol:
+
 	Protocol() SocketProtocol
-	// RemoteAddress:
+
 	RemoteAddress() (SocketAddress, error)
-	// SocketType:
+
 	SocketType() SocketType
-	// Timeout:
+
 	Timeout() uint
-	// TTL:
+
 	TTL() uint
-	// IsClosedSocket:
+
 	IsClosedSocket() bool
-	// IsConnectedSocket:
+
 	IsConnectedSocket() bool
-	// JoinMulticastGroupSocket:
+
 	JoinMulticastGroupSocket(group InetAddress, sourceSpecific bool, iface string) error
-	// JoinMulticastGroupSSMSocket:
+
 	JoinMulticastGroupSSMSocket(group InetAddress, sourceSpecific InetAddress, iface string) error
-	// LeaveMulticastGroupSocket:
+
 	LeaveMulticastGroupSocket(group InetAddress, sourceSpecific bool, iface string) error
-	// LeaveMulticastGroupSSMSocket:
+
 	LeaveMulticastGroupSSMSocket(group InetAddress, sourceSpecific InetAddress, iface string) error
-	// ListenSocket:
+
 	ListenSocket() error
-	// ReceiveMessagesSocket:
+
 	ReceiveMessagesSocket(messages []InputMessage, flags int, cancellable Cancellable) (int, error)
-	// SendSocket:
+
 	SendSocket(buffer []byte, cancellable Cancellable) (int, error)
-	// SendMessageSocket:
+
 	SendMessageSocket(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (int, error)
-	// SendMessageWithTimeoutSocket:
+
 	SendMessageWithTimeoutSocket(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (uint, PollableReturn, error)
-	// SendMessagesSocket:
+
 	SendMessagesSocket(messages []OutputMessage, flags int, cancellable Cancellable) (int, error)
-	// SendToSocket:
+
 	SendToSocket(address SocketAddress, buffer []byte, cancellable Cancellable) (int, error)
-	// SendWithBlockingSocket:
+
 	SendWithBlockingSocket(buffer []byte, blocking bool, cancellable Cancellable) (int, error)
-	// SetBlockingSocket:
+
 	SetBlockingSocket(blocking bool)
-	// SetBroadcastSocket:
+
 	SetBroadcastSocket(broadcast bool)
-	// SetKeepaliveSocket:
+
 	SetKeepaliveSocket(keepalive bool)
-	// SetListenBacklogSocket:
+
 	SetListenBacklogSocket(backlog int)
-	// SetMulticastLoopbackSocket:
+
 	SetMulticastLoopbackSocket(loopback bool)
-	// SetMulticastTTLSocket:
+
 	SetMulticastTTLSocket(ttl uint)
-	// SetOptionSocket:
+
 	SetOptionSocket(level int, optname int, value int) error
-	// SetTimeoutSocket:
+
 	SetTimeoutSocket(timeout uint)
-	// SetTTLSocket:
+
 	SetTTLSocket(ttl uint)
-	// ShutdownSocket:
+
 	ShutdownSocket(shutdownRead bool, shutdownWrite bool) error
-	// SpeaksIPv4Socket:
+
 	SpeaksIPv4Socket() bool
 }
 
@@ -210,7 +209,6 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	return WrapSocket(obj), nil
 }
 
-// NewSocket:
 func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (Socket, error) {
 	var _arg1 C.GSocketFamily   // out
 	var _arg2 C.GSocketType     // out
@@ -233,7 +231,6 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (So
 	return _socket, _goerr
 }
 
-// NewSocketFromFd:
 func NewSocketFromFd(fd int) (Socket, error) {
 	var _arg1 C.gint     // out
 	var _cret *C.GSocket // in

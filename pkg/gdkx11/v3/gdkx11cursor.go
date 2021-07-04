@@ -22,7 +22,6 @@ func init() {
 	})
 }
 
-// X11Cursor:
 type X11Cursor interface {
 	gdk.Cursor
 }

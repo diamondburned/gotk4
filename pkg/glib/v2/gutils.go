@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/core/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -636,6 +638,15 @@ func GetUserSpecialDir(directory UserDirectory) string {
 	_filename = C.GoString(_cret)
 
 	return _filename
+}
+
+// NullifyPointer: set the pointer at the specified location to nil.
+func NullifyPointer(nullifyLocation *interface{}) {
+	var _arg1 *C.gpointer // out
+
+	_arg1 = *C.gpointer(box.Assign(unsafe.Pointer(nullifyLocation)))
+
+	C.g_nullify_pointer(_arg1)
 }
 
 // ParseDebugString parses a string containing debugging options into a guint

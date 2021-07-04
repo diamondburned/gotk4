@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -15,6 +16,8 @@ import (
 //
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+//
+// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -44,6 +47,37 @@ const (
 
 func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 	return TreeModelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TreeModelForeachFunc: type of the callback passed to gtk_tree_model_foreach()
+// to iterate over the rows in a tree model.
+type TreeModelForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter, ok bool)
+
+//export gotk4_TreeModelForeachFunc
+func _TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var model TreeModel // out
+	var path *TreePath  // out
+	var iter *TreeIter  // out
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TreeModel)
+	path = (*TreePath)(unsafe.Pointer(arg1))
+	iter = (*TreeIter)(unsafe.Pointer(arg2))
+
+	fn := v.(TreeModelForeachFunc)
+	ok := fn(model, path, iter)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // TreeModel: the tree interface used by GtkTreeView
@@ -219,6 +253,15 @@ type TreeModel interface {
 	//
 	// Please note that nodes that are deleted are not unreffed.
 	NewFilter(root *TreePath) TreeModel
+	// Foreach lets the tree unref the node.
+	//
+	// This is an optional method for models to implement. To be more specific,
+	// models may ignore this call as it exists primarily for performance
+	// reasons. For more information on what this means, see
+	// gtk_tree_model_ref_node().
+	//
+	// Please note that nodes that are deleted are not unreffed.
+	Foreach(fn TreeModelForeachFunc)
 	// ColumnType lets the tree unref the node.
 	//
 	// This is an optional method for models to implement. To be more specific,
@@ -464,6 +507,18 @@ func (t treeModel) NewFilter(root *TreePath) TreeModel {
 	_treeModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeModel)
 
 	return _treeModel
+}
+
+func (t treeModel) Foreach(fn TreeModelForeachFunc) {
+	var _arg0 *C.GtkTreeModel           // out
+	var _arg1 C.GtkTreeModelForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(m.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_TreeModelForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.gtk_tree_model_foreach(_arg0, _arg1, _arg2)
 }
 
 func (t treeModel) ColumnType(index_ int) externglib.Type {

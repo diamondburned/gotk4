@@ -6,9 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -95,35 +93,26 @@ func marshalImageType(p uintptr) (interface{}, error) {
 type Image interface {
 	Widget
 
-	// ClearImage:
 	ClearImage()
-	// GIcon:
-	GIcon() gio.Icon
-	// IconName:
+
 	IconName() string
-	// IconSize:
+
 	IconSize() IconSize
-	// Paintable:
-	Paintable() gdk.Paintable
-	// PixelSize:
+
 	PixelSize() int
-	// StorageType:
+
 	StorageType() ImageType
-	// SetFromFileImage:
+
 	SetFromFileImage(filename string)
-	// SetFromGIconImage:
-	SetFromGIconImage(icon gio.Icon)
-	// SetFromIconNameImage:
+
 	SetFromIconNameImage(iconName string)
-	// SetFromPaintableImage:
-	SetFromPaintableImage(paintable gdk.Paintable)
-	// SetFromPixbufImage:
+
 	SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf)
-	// SetFromResourceImage:
+
 	SetFromResourceImage(resourcePath string)
-	// SetIconSizeImage:
+
 	SetIconSizeImage(iconSize IconSize)
-	// SetPixelSizeImage:
+
 	SetPixelSizeImage(pixelSize int)
 }
 
@@ -146,7 +135,6 @@ func marshalImage(p uintptr) (interface{}, error) {
 	return WrapImage(obj), nil
 }
 
-// NewImage:
 func NewImage() Image {
 	var _cret *C.GtkWidget // in
 
@@ -159,7 +147,6 @@ func NewImage() Image {
 	return _image
 }
 
-// NewImageFromFile:
 func NewImageFromFile(filename string) Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -176,23 +163,6 @@ func NewImageFromFile(filename string) Image {
 	return _image
 }
 
-// NewImageFromGIcon:
-func NewImageFromGIcon(icon gio.Icon) Image {
-	var _arg1 *C.GIcon     // out
-	var _cret *C.GtkWidget // in
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	_cret = C.gtk_image_new_from_gicon(_arg1)
-
-	var _image Image // out
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Image)
-
-	return _image
-}
-
-// NewImageFromIconName:
 func NewImageFromIconName(iconName string) Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -209,23 +179,6 @@ func NewImageFromIconName(iconName string) Image {
 	return _image
 }
 
-// NewImageFromPaintable:
-func NewImageFromPaintable(paintable gdk.Paintable) Image {
-	var _arg1 *C.GdkPaintable // out
-	var _cret *C.GtkWidget    // in
-
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-
-	_cret = C.gtk_image_new_from_paintable(_arg1)
-
-	var _image Image // out
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Image)
-
-	return _image
-}
-
-// NewImageFromPixbuf:
 func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
@@ -241,7 +194,6 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 	return _image
 }
 
-// NewImageFromResource:
 func NewImageFromResource(resourcePath string) Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -264,21 +216,6 @@ func (i image) ClearImage() {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	C.gtk_image_clear(_arg0)
-}
-
-func (i image) GIcon() gio.Icon {
-	var _arg0 *C.GtkImage // out
-	var _cret *C.GIcon    // in
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-
-	_cret = C.gtk_image_get_gicon(_arg0)
-
-	var _icon gio.Icon // out
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
-
-	return _icon
 }
 
 func (i image) IconName() string {
@@ -309,21 +246,6 @@ func (i image) IconSize() IconSize {
 	_iconSize = IconSize(_cret)
 
 	return _iconSize
-}
-
-func (i image) Paintable() gdk.Paintable {
-	var _arg0 *C.GtkImage     // out
-	var _cret *C.GdkPaintable // in
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-
-	_cret = C.gtk_image_get_paintable(_arg0)
-
-	var _paintable gdk.Paintable // out
-
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Paintable)
-
-	return _paintable
 }
 
 func (i image) PixelSize() int {
@@ -367,16 +289,6 @@ func (i image) SetFromFileImage(filename string) {
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
 
-func (i image) SetFromGIconImage(icon gio.Icon) {
-	var _arg0 *C.GtkImage // out
-	var _arg1 *C.GIcon    // out
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_image_set_from_gicon(_arg0, _arg1)
-}
-
 func (i image) SetFromIconNameImage(iconName string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
@@ -386,16 +298,6 @@ func (i image) SetFromIconNameImage(iconName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_icon_name(_arg0, _arg1)
-}
-
-func (i image) SetFromPaintableImage(paintable gdk.Paintable) {
-	var _arg0 *C.GtkImage     // out
-	var _arg1 *C.GdkPaintable // out
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-
-	C.gtk_image_set_from_paintable(_arg0, _arg1)
 }
 
 func (i image) SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf) {

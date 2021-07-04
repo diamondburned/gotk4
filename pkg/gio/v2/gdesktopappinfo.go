@@ -101,35 +101,34 @@ func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
 type DesktopAppInfo interface {
 	AppInfo
 
-	// ActionName:
 	ActionName(actionName string) string
-	// Boolean:
+
 	Boolean(key string) bool
-	// Categories:
+
 	Categories() string
-	// Filename:
+
 	Filename() string
-	// GenericName:
+
 	GenericName() string
-	// IsHidden:
+
 	IsHidden() bool
-	// Keywords:
+
 	Keywords() []string
-	// LocaleString:
+
 	LocaleString(key string) string
-	// Nodisplay:
+
 	Nodisplay() bool
-	// ShowIn:
+
 	ShowIn(desktopEnv string) bool
-	// StartupWmClass:
+
 	StartupWmClass() string
-	// String:
+
 	String(key string) string
-	// HasKeyDesktopAppInfo:
+
 	HasKeyDesktopAppInfo(key string) bool
-	// LaunchActionDesktopAppInfo:
+
 	LaunchActionDesktopAppInfo(actionName string, launchContext AppLaunchContext)
-	// ListActionsDesktopAppInfo:
+
 	ListActionsDesktopAppInfo() []string
 }
 
@@ -152,7 +151,6 @@ func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 	return WrapDesktopAppInfo(obj), nil
 }
 
-// NewDesktopAppInfo:
 func NewDesktopAppInfo(desktopId string) DesktopAppInfo {
 	var _arg1 *C.char            // out
 	var _cret *C.GDesktopAppInfo // in
@@ -169,7 +167,6 @@ func NewDesktopAppInfo(desktopId string) DesktopAppInfo {
 	return _desktopAppInfo
 }
 
-// NewDesktopAppInfoFromFilename:
 func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
 	var _arg1 *C.char            // out
 	var _cret *C.GDesktopAppInfo // in
@@ -186,7 +183,6 @@ func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
 	return _desktopAppInfo
 }
 
-// NewDesktopAppInfoFromKeyfile:
 func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 	var _arg1 *C.GKeyFile        // out
 	var _cret *C.GDesktopAppInfo // in

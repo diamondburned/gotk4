@@ -205,3 +205,29 @@ func (v *ValueArray) Remove(index_ uint) *ValueArray {
 
 	return _valueArray
 }
+
+// SortWithData: sort @value_array using @compare_func to compare the elements
+// according to the semantics of DataFunc.
+//
+// The current implementation uses the same sorting algorithm as standard C
+// qsort() function.
+//
+// Deprecated: since version 2.32.
+func (v *ValueArray) SortWithData(compareFunc glib.CompareDataFunc) *ValueArray {
+	var _arg0 *C.GValueArray     // out
+	var _arg1 C.GCompareDataFunc // out
+	var _arg2 C.gpointer
+	var _cret *C.GValueArray // in
+
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	_arg2 = C.gpointer(box.Assign(compareFunc))
+
+	_cret = C.g_value_array_sort_with_data(_arg0, _arg1, _arg2)
+
+	var _valueArray *ValueArray // out
+
+	_valueArray = (*ValueArray)(unsafe.Pointer(_cret))
+
+	return _valueArray
+}

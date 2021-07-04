@@ -58,7 +58,6 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 	return WrapCellRendererCombo(obj), nil
 }
 
-// NewCellRendererCombo:
 func NewCellRendererCombo() CellRendererCombo {
 	var _cret *C.GtkCellRenderer // in
 

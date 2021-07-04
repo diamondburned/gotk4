@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,7 +51,6 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 	return WrapAnyFilter(obj), nil
 }
 
-// NewAnyFilter:
 func NewAnyFilter() AnyFilter {
 	var _cret *C.GtkAnyFilter // in
 
@@ -63,22 +61,6 @@ func NewAnyFilter() AnyFilter {
 	_anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AnyFilter)
 
 	return _anyFilter
-}
-
-func (l anyFilter) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l anyFilter) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l anyFilter) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l anyFilter) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 func (b anyFilter) BuildableID() string {
@@ -112,7 +94,6 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 	return WrapEveryFilter(obj), nil
 }
 
-// NewEveryFilter:
 func NewEveryFilter() EveryFilter {
 	var _cret *C.GtkEveryFilter // in
 
@@ -125,22 +106,6 @@ func NewEveryFilter() EveryFilter {
 	return _everyFilter
 }
 
-func (l everyFilter) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l everyFilter) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l everyFilter) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l everyFilter) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
-}
-
 func (b everyFilter) BuildableID() string {
 	return WrapBuildable(gextras.InternObject(b)).BuildableID()
 }
@@ -149,12 +114,10 @@ func (b everyFilter) BuildableID() string {
 // multiple filters.
 type MultiFilter interface {
 	Filter
-	gio.ListModel
 	Buildable
 
-	// AppendMultiFilter:
 	AppendMultiFilter(filter Filter)
-	// RemoveMultiFilter:
+
 	RemoveMultiFilter(position uint)
 }
 
@@ -195,22 +158,6 @@ func (s multiFilter) RemoveMultiFilter(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)
-}
-
-func (l multiFilter) ItemType() externglib.Type {
-	return gio.WrapListModel(gextras.InternObject(l)).ItemType()
-}
-
-func (l multiFilter) NItems() uint {
-	return gio.WrapListModel(gextras.InternObject(l)).NItems()
-}
-
-func (l multiFilter) Object(position uint) gextras.Objector {
-	return gio.WrapListModel(gextras.InternObject(l)).Object(position)
-}
-
-func (l multiFilter) ItemsChanged(position uint, removed uint, added uint) {
-	gio.WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
 }
 
 func (b multiFilter) BuildableID() string {

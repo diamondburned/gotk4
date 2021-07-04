@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -64,11 +67,21 @@ type Mount interface {
 	// g_mount_is_shadowed() for more information. The caller will need to emit
 	// the #GMount::changed signal on @mount manually.
 	CanUnmount() bool
+	// Eject decrements the shadow count on @mount. Usually used by Monitor
+	// implementations when destroying a shadow mount for @mount, see
+	// g_mount_is_shadowed() for more information. The caller will need to emit
+	// the #GMount::changed signal on @mount manually.
+	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectFinish decrements the shadow count on @mount. Usually used by
 	// Monitor implementations when destroying a shadow mount for @mount, see
 	// g_mount_is_shadowed() for more information. The caller will need to emit
 	// the #GMount::changed signal on @mount manually.
 	EjectFinish(result AsyncResult) error
+	// EjectWithOperation decrements the shadow count on @mount. Usually used by
+	// Monitor implementations when destroying a shadow mount for @mount, see
+	// g_mount_is_shadowed() for more information. The caller will need to emit
+	// the #GMount::changed signal on @mount manually.
+	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectWithOperationFinish decrements the shadow count on @mount. Usually
 	// used by Monitor implementations when destroying a shadow mount for
 	// @mount, see g_mount_is_shadowed() for more information. The caller will
@@ -119,6 +132,11 @@ type Mount interface {
 	// g_mount_is_shadowed() for more information. The caller will need to emit
 	// the #GMount::changed signal on @mount manually.
 	Volume() Volume
+	// GuessContentType decrements the shadow count on @mount. Usually used by
+	// Monitor implementations when destroying a shadow mount for @mount, see
+	// g_mount_is_shadowed() for more information. The caller will need to emit
+	// the #GMount::changed signal on @mount manually.
+	GuessContentType(forceRescan bool, cancellable Cancellable, callback AsyncReadyCallback)
 	// GuessContentTypeFinish decrements the shadow count on @mount. Usually
 	// used by Monitor implementations when destroying a shadow mount for
 	// @mount, see g_mount_is_shadowed() for more information. The caller will
@@ -134,6 +152,11 @@ type Mount interface {
 	// g_mount_is_shadowed() for more information. The caller will need to emit
 	// the #GMount::changed signal on @mount manually.
 	IsShadowed() bool
+	// Remount decrements the shadow count on @mount. Usually used by Monitor
+	// implementations when destroying a shadow mount for @mount, see
+	// g_mount_is_shadowed() for more information. The caller will need to emit
+	// the #GMount::changed signal on @mount manually.
+	Remount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// RemountFinish decrements the shadow count on @mount. Usually used by
 	// Monitor implementations when destroying a shadow mount for @mount, see
 	// g_mount_is_shadowed() for more information. The caller will need to emit
@@ -144,11 +167,21 @@ type Mount interface {
 	// g_mount_is_shadowed() for more information. The caller will need to emit
 	// the #GMount::changed signal on @mount manually.
 	Shadow()
+	// Unmount decrements the shadow count on @mount. Usually used by Monitor
+	// implementations when destroying a shadow mount for @mount, see
+	// g_mount_is_shadowed() for more information. The caller will need to emit
+	// the #GMount::changed signal on @mount manually.
+	Unmount(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// UnmountFinish decrements the shadow count on @mount. Usually used by
 	// Monitor implementations when destroying a shadow mount for @mount, see
 	// g_mount_is_shadowed() for more information. The caller will need to emit
 	// the #GMount::changed signal on @mount manually.
 	UnmountFinish(result AsyncResult) error
+	// UnmountWithOperation decrements the shadow count on @mount. Usually used
+	// by Monitor implementations when destroying a shadow mount for @mount, see
+	// g_mount_is_shadowed() for more information. The caller will need to emit
+	// the #GMount::changed signal on @mount manually.
+	UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// UnmountWithOperationFinish decrements the shadow count on @mount. Usually
 	// used by Monitor implementations when destroying a shadow mount for
 	// @mount, see g_mount_is_shadowed() for more information. The caller will
@@ -216,6 +249,22 @@ func (m mount) CanUnmount() bool {
 	return _ok
 }
 
+func (m mount) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_mount_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (m mount) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -231,6 +280,24 @@ func (m mount) EjectFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (m mount) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_mount_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (m mount) EjectWithOperationFinish(result AsyncResult) error {
@@ -387,6 +454,24 @@ func (m mount) Volume() Volume {
 	return _volume
 }
 
+func (m mount) GuessContentType(forceRescan bool, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg1 C.gboolean            // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	if forceRescan {
+		_arg1 = C.TRUE
+	}
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_mount_guess_content_type(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -474,6 +559,24 @@ func (m mount) IsShadowed() bool {
 	return _ok
 }
 
+func (m mount) Remount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg1 = C.GMountMountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_mount_remount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (m mount) RemountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -499,6 +602,22 @@ func (m mount) Shadow() {
 	C.g_mount_shadow(_arg0)
 }
 
+func (m mount) Unmount(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_mount_unmount(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (m mount) UnmountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -514,6 +633,24 @@ func (m mount) UnmountFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (m mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_mount_unmount_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (m mount) UnmountWithOperationFinish(result AsyncResult) error {

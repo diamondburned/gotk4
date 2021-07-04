@@ -73,7 +73,6 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	return WrapColorChooserWidget(obj), nil
 }
 
-// NewColorChooserWidget:
 func NewColorChooserWidget() ColorChooserWidget {
 	var _cret *C.GtkWidget // in
 

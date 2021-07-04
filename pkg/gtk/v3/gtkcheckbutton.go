@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -64,7 +65,6 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	return WrapCheckButton(obj), nil
 }
 
-// NewCheckButton:
 func NewCheckButton() CheckButton {
 	var _cret *C.GtkWidget // in
 
@@ -77,7 +77,6 @@ func NewCheckButton() CheckButton {
 	return _checkButton
 }
 
-// NewCheckButtonWithLabel:
 func NewCheckButtonWithLabel(label string) CheckButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -94,7 +93,6 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 	return _checkButton
 }
 
-// NewCheckButtonWithMnemonic:
 func NewCheckButtonWithMnemonic(label string) CheckButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -117,6 +115,18 @@ func (b checkButton) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b checkButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b checkButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b checkButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b checkButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b checkButton) InternalChild(builder Builder, childname string) gextras.Objector {
@@ -165,6 +175,18 @@ func (b checkButton) AddChild(builder Builder, child gextras.Objector, typ strin
 
 func (b checkButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b checkButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b checkButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b checkButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b checkButton) InternalChild(builder Builder, childname string) gextras.Objector {

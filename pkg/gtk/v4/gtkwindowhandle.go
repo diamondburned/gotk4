@@ -39,9 +39,8 @@ func init() {
 type WindowHandle interface {
 	Widget
 
-	// Child:
 	Child() Widget
-	// SetChildWindowHandle:
+
 	SetChildWindowHandle(child Widget)
 }
 
@@ -64,7 +63,6 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 	return WrapWindowHandle(obj), nil
 }
 
-// NewWindowHandle:
 func NewWindowHandle() WindowHandle {
 	var _cret *C.GtkWidget // in
 

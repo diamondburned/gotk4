@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -26,6 +27,9 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void gotk4_FileProgressCallback(goffset, goffset, gpointer);
 import "C"
 
 func init() {
@@ -120,6 +124,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
+	// AppendToAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	AppendToAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// AppendToFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -132,6 +142,18 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancellable) (string, error)
+	// Copy finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error
+	// CopyAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	CopyAsync(destination File, flags FileCopyFlags, ioPriority int, cancellable Cancellable)
 	// CopyAttributes finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -150,6 +172,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	Create(flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
+	// CreateAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	CreateAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CreateFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -162,6 +190,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error)
+	// CreateReadwriteAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	CreateReadwriteAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CreateReadwriteFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -174,6 +208,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	Delete(cancellable Cancellable) error
+	// DeleteAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	DeleteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// DeleteFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -186,12 +226,24 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	Dup() File
+	// EjectMountable finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	EjectMountable(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	EjectMountableFinish(result AsyncResult) error
+	// EjectMountableWithOperation finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	EjectMountableWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectMountableWithOperationFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -204,6 +256,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileEnumerator, error)
+	// EnumerateChildrenAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	EnumerateChildrenAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// EnumerateChildrenFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -222,6 +280,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	FindEnclosingMount(cancellable Cancellable) (Mount, error)
+	// FindEnclosingMountAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// FindEnclosingMountFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -312,12 +376,24 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	IsNative() bool
+	// LoadBytesAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	LoadBytesAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// LoadContents finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	LoadContents(cancellable Cancellable) ([]byte, string, error)
+	// LoadContentsAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	LoadContentsAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// LoadContentsFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -336,6 +412,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	MakeDirectory(cancellable Cancellable) error
+	// MakeDirectoryAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	MakeDirectoryAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// MakeDirectoryFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -378,24 +460,48 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (FileMonitor, error)
+	// MountEnclosingVolume finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	MountEnclosingVolume(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// MountEnclosingVolumeFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	MountEnclosingVolumeFinish(result AsyncResult) error
+	// MountMountable finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	MountMountable(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// MountMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	MountMountableFinish(result AsyncResult) (File, error)
+	// Move finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error
 	// OpenReadwrite finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	OpenReadwrite(cancellable Cancellable) (FileIOStream, error)
+	// OpenReadwriteAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	OpenReadwriteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// OpenReadwriteFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -408,6 +514,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	PeekPath() string
+	// PollMountable finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	PollMountable(cancellable Cancellable, callback AsyncReadyCallback)
 	// PollMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -420,6 +532,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	QueryDefaultHandler(cancellable Cancellable) (AppInfo, error)
+	// QueryDefaultHandlerAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryDefaultHandlerFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -444,6 +562,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	QueryFilesystemInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryFilesystemInfoAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	QueryFilesystemInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryFilesystemInfoFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -456,6 +580,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	QueryInfoAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -480,6 +610,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	Read(cancellable Cancellable) (FileInputStream, error)
+	// ReadAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -492,12 +628,24 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileOutputStream, error)
+	// ReplaceAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	ReplaceAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReplaceContents finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	ReplaceContents(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (string, error)
+	// ReplaceContentsAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	ReplaceContentsAsync(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReplaceContentsFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -516,6 +664,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (FileIOStream, error)
+	// ReplaceReadwriteAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReplaceReadwriteFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -528,6 +682,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	ResolveRelativePath(relativePath string) File
+	// SetAttribute finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	SetAttribute(attribute string, typ FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetAttributeByteString finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -564,6 +724,12 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// SetAttributesAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	SetAttributesAsync(info FileInfo, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SetAttributesFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -582,18 +748,36 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	SetDisplayName(displayName string, cancellable Cancellable) (File, error)
+	// SetDisplayNameAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SetDisplayNameFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	SetDisplayNameFinish(res AsyncResult) (File, error)
+	// StartMountable finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	StartMountable(flags DriveStartFlags, startOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// StartMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	StartMountableFinish(result AsyncResult) error
+	// StopMountable finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	StopMountable(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// StopMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -612,18 +796,36 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	Trash(cancellable Cancellable) error
+	// TrashAsync finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	TrashAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// TrashFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	TrashFinish(result AsyncResult) error
+	// UnmountMountable finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	UnmountMountable(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// UnmountMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
 	UnmountMountableFinish(result AsyncResult) error
+	// UnmountMountableWithOperation finishes an unmount operation, see
+	// g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	UnmountMountableWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// UnmountMountableWithOperationFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	//
@@ -675,6 +877,24 @@ func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (FileOutp
 	return _fileOutputStream, _goerr
 }
 
+func (f file) AppendToAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_append_to_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (f file) AppendToFinish(res AsyncResult) (FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -716,6 +936,47 @@ func (f file) BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancell
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
+}
+
+func (f file) Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
+	var _arg0 *C.GFile                // out
+	var _arg1 *C.GFile                // out
+	var _arg2 C.GFileCopyFlags        // out
+	var _arg3 *C.GCancellable         // out
+	var _arg4 C.GFileProgressCallback // out
+	var _arg5 C.gpointer
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg2 = C.GFileCopyFlags(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
+	_arg5 = C.gpointer(box.Assign(progressCallback))
+
+	C.g_file_copy(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+func (f file) CopyAsync(destination File, flags FileCopyFlags, ioPriority int, cancellable Cancellable) {
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GFile         // out
+	var _arg2 C.GFileCopyFlags // out
+	var _arg3 C.int            // out
+	var _arg4 *C.GCancellable  // out
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg2 = C.GFileCopyFlags(flags)
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	C.g_file_copy_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
 func (f file) CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) error {
@@ -778,6 +1039,24 @@ func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (FileOutput
 	return _fileOutputStream, _goerr
 }
 
+func (f file) CreateAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_create_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (f file) CreateFinish(res AsyncResult) (FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -820,6 +1099,24 @@ func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (F
 	return _fileIOStream, _goerr
 }
 
+func (f file) CreateReadwriteAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_create_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (f file) CreateReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -857,6 +1154,22 @@ func (f file) Delete(cancellable Cancellable) error {
 	return _goerr
 }
 
+func (f file) DeleteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_delete_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (f file) DeleteFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -889,6 +1202,22 @@ func (f file) Dup() File {
 	return _ret
 }
 
+func (f file) EjectMountable(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_eject_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (f file) EjectMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -904,6 +1233,24 @@ func (f file) EjectMountableFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (f file) EjectMountableWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_eject_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (f file) EjectMountableWithOperationFinish(result AsyncResult) error {
@@ -946,6 +1293,27 @@ func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, can
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileEnumerator, _goerr
+}
+
+func (f file) EnumerateChildrenAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_file_enumerate_children_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 func (f file) EnumerateChildrenFinish(res AsyncResult) (FileEnumerator, error) {
@@ -1005,6 +1373,22 @@ func (f file) FindEnclosingMount(cancellable Cancellable) (Mount, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mount, _goerr
+}
+
+func (f file) FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_find_enclosing_mount_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (f file) FindEnclosingMountFinish(res AsyncResult) (Mount, error) {
@@ -1269,6 +1653,20 @@ func (f file) IsNative() bool {
 	return _ok
 }
 
+func (f file) LoadBytesAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_file_load_bytes_async(_arg0, _arg1, _arg2, _arg3)
+}
+
 func (f file) LoadContents(cancellable Cancellable) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -1295,6 +1693,20 @@ func (f file) LoadContents(cancellable Cancellable) ([]byte, string, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _contents, _etagOut, _goerr
+}
+
+func (f file) LoadContentsAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_file_load_contents_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (f file) LoadContentsFinish(res AsyncResult) ([]byte, string, error) {
@@ -1368,6 +1780,22 @@ func (f file) MakeDirectory(cancellable Cancellable) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (f file) MakeDirectoryAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_make_directory_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (f file) MakeDirectoryFinish(result AsyncResult) error {
@@ -1516,6 +1944,24 @@ func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (File
 	return _fileMonitor, _goerr
 }
 
+func (f file) MountEnclosingVolume(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(l.Native()))
+	_arg1 = C.GMountMountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_mount_enclosing_volume(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (f file) MountEnclosingVolumeFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -1531,6 +1977,24 @@ func (f file) MountEnclosingVolumeFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (f file) MountMountable(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GMountMountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_mount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (f file) MountMountableFinish(result AsyncResult) (File, error) {
@@ -1553,6 +2017,31 @@ func (f file) MountMountableFinish(result AsyncResult) (File, error) {
 	return _ret, _goerr
 }
 
+func (f file) Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
+	var _arg0 *C.GFile                // out
+	var _arg1 *C.GFile                // out
+	var _arg2 C.GFileCopyFlags        // out
+	var _arg3 *C.GCancellable         // out
+	var _arg4 C.GFileProgressCallback // out
+	var _arg5 C.gpointer
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg2 = C.GFileCopyFlags(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
+	_arg5 = C.gpointer(box.Assign(progressCallback))
+
+	C.g_file_move(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 func (f file) OpenReadwrite(cancellable Cancellable) (FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GCancellable  // out
@@ -1571,6 +2060,22 @@ func (f file) OpenReadwrite(cancellable Cancellable) (FileIOStream, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileIOStream, _goerr
+}
+
+func (f file) OpenReadwriteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_open_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (f file) OpenReadwriteFinish(res AsyncResult) (FileIOStream, error) {
@@ -1608,6 +2113,20 @@ func (f file) PeekPath() string {
 	return _filename
 }
 
+func (f file) PollMountable(cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+
+	C.g_file_poll_mountable(_arg0, _arg1, _arg2, _arg3)
+}
+
 func (f file) PollMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -1643,6 +2162,22 @@ func (f file) QueryDefaultHandler(cancellable Cancellable) (AppInfo, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
+}
+
+func (f file) QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_query_default_handler_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (f file) QueryDefaultHandlerFinish(result AsyncResult) (AppInfo, error) {
@@ -1726,6 +2261,25 @@ func (f file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (F
 	return _fileInfo, _goerr
 }
 
+func (f file) QueryFilesystemInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_query_filesystem_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (f file) QueryFilesystemInfoFinish(res AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -1769,6 +2323,27 @@ func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
+}
+
+func (f file) QueryInfoAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_file_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 func (f file) QueryInfoFinish(res AsyncResult) (FileInfo, error) {
@@ -1857,6 +2432,22 @@ func (f file) Read(cancellable Cancellable) (FileInputStream, error) {
 	return _fileInputStream, _goerr
 }
 
+func (f file) ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_read_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (f file) ReadFinish(res AsyncResult) (FileInputStream, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GAsyncResult     // out
@@ -1906,6 +2497,31 @@ func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cance
 	return _fileOutputStream, _goerr
 }
 
+func (f file) ReplaceAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.GFileCreateFlags    // out
+	var _arg4 C.int                 // out
+	var _arg5 *C.GCancellable       // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(etag))
+	defer C.free(unsafe.Pointer(_arg1))
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+	_arg4 = C.int(ioPriority)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = C.gpointer(box.Assign(callback))
+
+	C.g_file_replace_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+}
+
 func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (string, error) {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char
@@ -1938,6 +2554,33 @@ func (f file) ReplaceContents(contents []byte, etag string, makeBackup bool, fla
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _newEtag, _goerr
+}
+
+func (f file) ReplaceContentsAsync(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile // out
+	var _arg1 *C.char
+	var _arg2 C.gsize
+	var _arg3 *C.char               // out
+	var _arg4 C.gboolean            // out
+	var _arg5 C.GFileCreateFlags    // out
+	var _arg6 *C.GCancellable       // out
+	var _arg7 C.GAsyncReadyCallback // out
+	var _arg8 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg2 = C.gsize(len(contents))
+	_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+	_arg3 = (*C.char)(C.CString(etag))
+	defer C.free(unsafe.Pointer(_arg3))
+	if makeBackup {
+		_arg4 = C.TRUE
+	}
+	_arg5 = C.GFileCreateFlags(flags)
+	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg8 = C.gpointer(box.Assign(callback))
+
+	C.g_file_replace_contents_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
 func (f file) ReplaceContentsFinish(res AsyncResult) (string, error) {
@@ -2010,6 +2653,31 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 	return _fileIOStream, _goerr
 }
 
+func (f file) ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.GFileCreateFlags    // out
+	var _arg4 C.int                 // out
+	var _arg5 *C.GCancellable       // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(etag))
+	defer C.free(unsafe.Pointer(_arg1))
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+	_arg4 = C.int(ioPriority)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = C.gpointer(box.Assign(callback))
+
+	C.g_file_replace_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+}
+
 func (f file) ReplaceReadwriteFinish(res AsyncResult) (FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -2046,6 +2714,32 @@ func (f file) ResolveRelativePath(relativePath string) File {
 	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
 
 	return _ret
+}
+
+func (f file) SetAttribute(attribute string, typ FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) error {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileAttributeType  // out
+	var _arg3 C.gpointer            // out
+	var _arg4 C.GFileQueryInfoFlags // out
+	var _arg5 *C.GCancellable       // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileAttributeType(typ)
+	_arg3 = C.gpointer(box.Assign(unsafe.Pointer(valueP)))
+	_arg4 = C.GFileQueryInfoFlags(flags)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	C.g_file_set_attribute(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 func (f file) SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error {
@@ -2194,6 +2888,26 @@ func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQuery
 	return _goerr
 }
 
+func (f file) SetAttributesAsync(info FileInfo, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GFileInfo          // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_file_set_attributes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
 func (f file) SetAttributesFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2258,6 +2972,25 @@ func (f file) SetDisplayName(displayName string, cancellable Cancellable) (File,
 	return _ret, _goerr
 }
 
+func (f file) SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.char)(C.CString(displayName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_set_display_name_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (f file) SetDisplayNameFinish(res AsyncResult) (File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2278,6 +3011,24 @@ func (f file) SetDisplayNameFinish(res AsyncResult) (File, error) {
 	return _ret, _goerr
 }
 
+func (f file) StartMountable(flags DriveStartFlags, startOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GDriveStartFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(startOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_start_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 func (f file) StartMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2293,6 +3044,24 @@ func (f file) StartMountableFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (f file) StopMountable(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_stop_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (f file) StopMountableFinish(result AsyncResult) error {
@@ -2346,6 +3115,22 @@ func (f file) Trash(cancellable Cancellable) error {
 	return _goerr
 }
 
+func (f file) TrashAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_trash_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (f file) TrashFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2363,6 +3148,22 @@ func (f file) TrashFinish(result AsyncResult) error {
 	return _goerr
 }
 
+func (f file) UnmountMountable(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_file_unmount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 func (f file) UnmountMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2378,6 +3179,24 @@ func (f file) UnmountMountableFinish(result AsyncResult) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (f file) UnmountMountableWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = C.GMountUnmountFlags(flags)
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
+
+	C.g_file_unmount_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 func (f file) UnmountMountableWithOperationFinish(result AsyncResult) error {

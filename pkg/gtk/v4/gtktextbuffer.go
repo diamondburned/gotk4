@@ -31,139 +31,136 @@ func init() {
 type TextBuffer interface {
 	gextras.Objector
 
-	// AddMarkTextBuffer:
 	AddMarkTextBuffer(mark TextMark, where *TextIter)
-	// AddSelectionClipboardTextBuffer:
+
 	AddSelectionClipboardTextBuffer(clipboard gdk.Clipboard)
-	// ApplyTagTextBuffer:
+
 	ApplyTagTextBuffer(tag TextTag, start *TextIter, end *TextIter)
-	// ApplyTagByNameTextBuffer:
+
 	ApplyTagByNameTextBuffer(name string, start *TextIter, end *TextIter)
-	// BackspaceTextBuffer:
+
 	BackspaceTextBuffer(iter *TextIter, interactive bool, defaultEditable bool) bool
-	// BeginIrreversibleActionTextBuffer:
+
 	BeginIrreversibleActionTextBuffer()
-	// BeginUserActionTextBuffer:
+
 	BeginUserActionTextBuffer()
-	// CopyClipboardTextBuffer:
+
 	CopyClipboardTextBuffer(clipboard gdk.Clipboard)
-	// CreateChildAnchorTextBuffer:
+
 	CreateChildAnchorTextBuffer(iter *TextIter) TextChildAnchor
-	// CreateMarkTextBuffer:
+
 	CreateMarkTextBuffer(markName string, where *TextIter, leftGravity bool) TextMark
-	// CutClipboardTextBuffer:
+
 	CutClipboardTextBuffer(clipboard gdk.Clipboard, defaultEditable bool)
-	// DeleteTextBuffer:
+
 	DeleteTextBuffer(start *TextIter, end *TextIter)
-	// DeleteInteractiveTextBuffer:
+
 	DeleteInteractiveTextBuffer(startIter *TextIter, endIter *TextIter, defaultEditable bool) bool
-	// DeleteMarkTextBuffer:
+
 	DeleteMarkTextBuffer(mark TextMark)
-	// DeleteMarkByNameTextBuffer:
+
 	DeleteMarkByNameTextBuffer(name string)
-	// DeleteSelectionTextBuffer:
+
 	DeleteSelectionTextBuffer(interactive bool, defaultEditable bool) bool
-	// EndIrreversibleActionTextBuffer:
+
 	EndIrreversibleActionTextBuffer()
-	// EndUserActionTextBuffer:
+
 	EndUserActionTextBuffer()
-	// Bounds:
+
 	Bounds() (start TextIter, end TextIter)
-	// CanRedo:
+
 	CanRedo() bool
-	// CanUndo:
+
 	CanUndo() bool
-	// CharCount:
+
 	CharCount() int
-	// EnableUndo:
+
 	EnableUndo() bool
-	// EndIter:
+
 	EndIter() TextIter
-	// HasSelection:
+
 	HasSelection() bool
-	// GetInsert:
+
 	GetInsert() TextMark
-	// IterAtChildAnchor:
+
 	IterAtChildAnchor(anchor TextChildAnchor) TextIter
-	// IterAtLine:
+
 	IterAtLine(lineNumber int) (TextIter, bool)
-	// IterAtLineIndex:
+
 	IterAtLineIndex(lineNumber int, byteIndex int) (TextIter, bool)
-	// IterAtLineOffset:
+
 	IterAtLineOffset(lineNumber int, charOffset int) (TextIter, bool)
-	// IterAtMark:
+
 	IterAtMark(mark TextMark) TextIter
-	// IterAtOffset:
+
 	IterAtOffset(charOffset int) TextIter
-	// LineCount:
+
 	LineCount() int
-	// Mark:
+
 	Mark(name string) TextMark
-	// MaxUndoLevels:
+
 	MaxUndoLevels() uint
-	// Modified:
+
 	Modified() bool
-	// SelectionBound:
+
 	SelectionBound() TextMark
-	// SelectionBounds:
+
 	SelectionBounds() (start TextIter, end TextIter, ok bool)
-	// SelectionContent:
+
 	SelectionContent() gdk.ContentProvider
-	// Slice:
+
 	Slice(start *TextIter, end *TextIter, includeHiddenChars bool) string
-	// StartIter:
+
 	StartIter() TextIter
-	// TagTable:
+
 	TagTable() TextTagTable
-	// Text:
+
 	Text(start *TextIter, end *TextIter, includeHiddenChars bool) string
-	// InsertTextBuffer:
+
 	InsertTextBuffer(iter *TextIter, text string, len int)
-	// InsertAtCursorTextBuffer:
+
 	InsertAtCursorTextBuffer(text string, len int)
-	// InsertChildAnchorTextBuffer:
+
 	InsertChildAnchorTextBuffer(iter *TextIter, anchor TextChildAnchor)
-	// InsertInteractiveTextBuffer:
+
 	InsertInteractiveTextBuffer(iter *TextIter, text string, len int, defaultEditable bool) bool
-	// InsertInteractiveAtCursorTextBuffer:
+
 	InsertInteractiveAtCursorTextBuffer(text string, len int, defaultEditable bool) bool
-	// InsertMarkupTextBuffer:
+
 	InsertMarkupTextBuffer(iter *TextIter, markup string, len int)
-	// InsertPaintableTextBuffer:
-	InsertPaintableTextBuffer(iter *TextIter, paintable gdk.Paintable)
-	// InsertRangeTextBuffer:
+
 	InsertRangeTextBuffer(iter *TextIter, start *TextIter, end *TextIter)
-	// InsertRangeInteractiveTextBuffer:
+
 	InsertRangeInteractiveTextBuffer(iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool
-	// MoveMarkTextBuffer:
+
 	MoveMarkTextBuffer(mark TextMark, where *TextIter)
-	// MoveMarkByNameTextBuffer:
+
 	MoveMarkByNameTextBuffer(name string, where *TextIter)
-	// PasteClipboardTextBuffer:
+
 	PasteClipboardTextBuffer(clipboard gdk.Clipboard, overrideLocation *TextIter, defaultEditable bool)
-	// PlaceCursorTextBuffer:
+
 	PlaceCursorTextBuffer(where *TextIter)
-	// RedoTextBuffer:
+
 	RedoTextBuffer()
-	// RemoveAllTagsTextBuffer:
+
 	RemoveAllTagsTextBuffer(start *TextIter, end *TextIter)
-	// RemoveSelectionClipboardTextBuffer:
+
 	RemoveSelectionClipboardTextBuffer(clipboard gdk.Clipboard)
-	// RemoveTagTextBuffer:
+
 	RemoveTagTextBuffer(tag TextTag, start *TextIter, end *TextIter)
-	// RemoveTagByNameTextBuffer:
+
 	RemoveTagByNameTextBuffer(name string, start *TextIter, end *TextIter)
-	// SelectRangeTextBuffer:
+
 	SelectRangeTextBuffer(ins *TextIter, bound *TextIter)
-	// SetEnableUndoTextBuffer:
+
 	SetEnableUndoTextBuffer(enableUndo bool)
-	// SetMaxUndoLevelsTextBuffer:
+
 	SetMaxUndoLevelsTextBuffer(maxUndoLevels uint)
-	// SetModifiedTextBuffer:
+
 	SetModifiedTextBuffer(setting bool)
-	// SetTextTextBuffer:
+
 	SetTextTextBuffer(text string, len int)
-	// UndoTextBuffer:
+
 	UndoTextBuffer()
 }
 
@@ -186,7 +183,6 @@ func marshalTextBuffer(p uintptr) (interface{}, error) {
 	return WrapTextBuffer(obj), nil
 }
 
-// NewTextBuffer:
 func NewTextBuffer(table TextTagTable) TextBuffer {
 	var _arg1 *C.GtkTextTagTable // out
 	var _cret *C.GtkTextBuffer   // in
@@ -1135,18 +1131,6 @@ func (b textBuffer) InsertMarkupTextBuffer(iter *TextIter, markup string, len in
 	_arg3 = C.int(len)
 
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
-}
-
-func (b textBuffer) InsertPaintableTextBuffer(iter *TextIter, paintable gdk.Paintable) {
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextIter   // out
-	var _arg2 *C.GdkPaintable  // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-
-	C.gtk_text_buffer_insert_paintable(_arg0, _arg1, _arg2)
 }
 
 func (b textBuffer) InsertRangeTextBuffer(iter *TextIter, start *TextIter, end *TextIter) {

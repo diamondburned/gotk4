@@ -5,8 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,83 +72,78 @@ func init() {
 type Action interface {
 	Buildable
 
-	// ActivateAction:
 	ActivateAction()
-	// BlockActivateAction:
+
 	BlockActivateAction()
-	// ConnectAcceleratorAction:
+
 	ConnectAcceleratorAction()
-	// CreateIconAction:
+
 	CreateIconAction(iconSize int) Widget
-	// CreateMenuAction:
+
 	CreateMenuAction() Widget
-	// CreateMenuItemAction:
+
 	CreateMenuItemAction() Widget
-	// CreateToolItemAction:
+
 	CreateToolItemAction() Widget
-	// DisconnectAcceleratorAction:
+
 	DisconnectAcceleratorAction()
-	// AccelPath:
+
 	AccelPath() string
-	// AlwaysShowImage:
+
 	AlwaysShowImage() bool
-	// GIcon:
-	GIcon() gio.Icon
-	// IconName:
+
 	IconName() string
-	// IsImportant:
+
 	IsImportant() bool
-	// Label:
+
 	Label() string
-	// GetName:
+
 	GetName() string
-	// Sensitive:
+
 	Sensitive() bool
-	// ShortLabel:
+
 	ShortLabel() string
-	// StockID:
+
 	StockID() string
-	// Tooltip:
+
 	Tooltip() string
-	// Visible:
+
 	Visible() bool
-	// VisibleHorizontal:
+
 	VisibleHorizontal() bool
-	// VisibleVertical:
+
 	VisibleVertical() bool
-	// IsSensitiveAction:
+
 	IsSensitiveAction() bool
-	// IsVisibleAction:
+
 	IsVisibleAction() bool
-	// SetAccelGroupAction:
+
 	SetAccelGroupAction(accelGroup AccelGroup)
-	// SetAccelPathAction:
+
 	SetAccelPathAction(accelPath string)
-	// SetAlwaysShowImageAction:
+
 	SetAlwaysShowImageAction(alwaysShow bool)
-	// SetGIconAction:
-	SetGIconAction(icon gio.Icon)
-	// SetIconNameAction:
+
 	SetIconNameAction(iconName string)
-	// SetIsImportantAction:
+
 	SetIsImportantAction(isImportant bool)
-	// SetLabelAction:
+
 	SetLabelAction(label string)
-	// SetSensitiveAction:
+
 	SetSensitiveAction(sensitive bool)
-	// SetShortLabelAction:
+
 	SetShortLabelAction(shortLabel string)
-	// SetStockIDAction:
+
 	SetStockIDAction(stockId string)
-	// SetTooltipAction:
+
 	SetTooltipAction(tooltip string)
-	// SetVisibleAction:
+
 	SetVisibleAction(visible bool)
-	// SetVisibleHorizontalAction:
+
 	SetVisibleHorizontalAction(visibleHorizontal bool)
-	// SetVisibleVerticalAction:
+
 	SetVisibleVerticalAction(visibleVertical bool)
-	// UnblockActivateAction:
+
 	UnblockActivateAction()
 }
 
@@ -170,7 +166,6 @@ func marshalAction(p uintptr) (interface{}, error) {
 	return WrapAction(obj), nil
 }
 
-// NewAction:
 func NewAction(name string, label string, tooltip string, stockId string) Action {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -320,21 +315,6 @@ func (a action) AlwaysShowImage() bool {
 	}
 
 	return _ok
-}
-
-func (a action) GIcon() gio.Icon {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.GIcon     // in
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	_cret = C.gtk_action_get_gicon(_arg0)
-
-	var _icon gio.Icon // out
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.Icon)
-
-	return _icon
 }
 
 func (a action) IconName() string {
@@ -579,16 +559,6 @@ func (a action) SetAlwaysShowImageAction(alwaysShow bool) {
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
 }
 
-func (a action) SetGIconAction(icon gio.Icon) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.GIcon     // out
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_action_set_gicon(_arg0, _arg1)
-}
-
 func (a action) SetIconNameAction(iconName string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
@@ -718,6 +688,18 @@ func (b action) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b action) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b action) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b action) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b action) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b action) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -64,44 +64,6 @@ func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) Typ
 	return _info
 }
 
-// EnumGetValueByName looks up a Value by name.
-func EnumGetValueByName(enumClass *EnumClass, name string) *EnumValue {
-	var _arg1 *C.GEnumClass // out
-	var _arg2 *C.gchar      // out
-	var _cret *C.GEnumValue // in
-
-	_arg1 = (*C.GEnumClass)(unsafe.Pointer(enumClass.Native()))
-	_arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_enum_get_value_by_name(_arg1, _arg2)
-
-	var _enumValue *EnumValue // out
-
-	_enumValue = (*EnumValue)(unsafe.Pointer(_cret))
-
-	return _enumValue
-}
-
-// EnumGetValueByNick looks up a Value by nickname.
-func EnumGetValueByNick(enumClass *EnumClass, nick string) *EnumValue {
-	var _arg1 *C.GEnumClass // out
-	var _arg2 *C.gchar      // out
-	var _cret *C.GEnumValue // in
-
-	_arg1 = (*C.GEnumClass)(unsafe.Pointer(enumClass.Native()))
-	_arg2 = (*C.gchar)(C.CString(nick))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_enum_get_value_by_nick(_arg1, _arg2)
-
-	var _enumValue *EnumValue // out
-
-	_enumValue = (*EnumValue)(unsafe.Pointer(_cret))
-
-	return _enumValue
-}
-
 // EnumRegisterStatic registers a new static enumeration type with the name
 // @name.
 //
@@ -179,44 +141,6 @@ func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) 
 	}
 
 	return _info
-}
-
-// FlagsGetValueByName looks up a Value by name.
-func FlagsGetValueByName(flagsClass *FlagsClass, name string) *FlagsValue {
-	var _arg1 *C.GFlagsClass // out
-	var _arg2 *C.gchar       // out
-	var _cret *C.GFlagsValue // in
-
-	_arg1 = (*C.GFlagsClass)(unsafe.Pointer(flagsClass.Native()))
-	_arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_flags_get_value_by_name(_arg1, _arg2)
-
-	var _flagsValue *FlagsValue // out
-
-	_flagsValue = (*FlagsValue)(unsafe.Pointer(_cret))
-
-	return _flagsValue
-}
-
-// FlagsGetValueByNick looks up a Value by nickname.
-func FlagsGetValueByNick(flagsClass *FlagsClass, nick string) *FlagsValue {
-	var _arg1 *C.GFlagsClass // out
-	var _arg2 *C.gchar       // out
-	var _cret *C.GFlagsValue // in
-
-	_arg1 = (*C.GFlagsClass)(unsafe.Pointer(flagsClass.Native()))
-	_arg2 = (*C.gchar)(C.CString(nick))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_flags_get_value_by_nick(_arg1, _arg2)
-
-	var _flagsValue *FlagsValue // out
-
-	_flagsValue = (*FlagsValue)(unsafe.Pointer(_cret))
-
-	return _flagsValue
 }
 
 // FlagsRegisterStatic registers a new static flags type with the name @name.

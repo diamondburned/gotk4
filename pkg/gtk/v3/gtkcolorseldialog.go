@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,11 +26,9 @@ func init() {
 	})
 }
 
-// ColorSelectionDialog:
 type ColorSelectionDialog interface {
 	Dialog
 
-	// ColorSelection:
 	ColorSelection() Widget
 }
 
@@ -51,7 +51,6 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 	return WrapColorSelectionDialog(obj), nil
 }
 
-// NewColorSelectionDialog:
 func NewColorSelectionDialog(title string) ColorSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -89,6 +88,18 @@ func (b colorSelectionDialog) AddChild(builder Builder, child gextras.Objector, 
 
 func (b colorSelectionDialog) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b colorSelectionDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b colorSelectionDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b colorSelectionDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b colorSelectionDialog) InternalChild(builder Builder, childname string) gextras.Objector {

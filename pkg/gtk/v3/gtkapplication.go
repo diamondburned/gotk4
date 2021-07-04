@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -130,45 +131,43 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 type Application interface {
 	gio.Application
 	gio.ActionGroup
-	gio.ActionMap
 
-	// AddAcceleratorApplication:
 	AddAcceleratorApplication(accelerator string, actionName string, parameter *glib.Variant)
-	// AddWindowApplication:
+
 	AddWindowApplication(window Window)
-	// AccelsForAction:
+
 	AccelsForAction(detailedActionName string) []string
-	// ActionsForAccel:
+
 	ActionsForAccel(accel string) []string
-	// ActiveWindow:
+
 	ActiveWindow() Window
-	// AppMenu:
+
 	AppMenu() gio.MenuModel
-	// MenuByID:
+
 	MenuByID(id string) gio.Menu
-	// Menubar:
+
 	Menubar() gio.MenuModel
-	// WindowByID:
+
 	WindowByID(id uint) Window
-	// InhibitApplication:
+
 	InhibitApplication(window Window, flags ApplicationInhibitFlags, reason string) uint
-	// IsInhibitedApplication:
+
 	IsInhibitedApplication(flags ApplicationInhibitFlags) bool
-	// ListActionDescriptionsApplication:
+
 	ListActionDescriptionsApplication() []string
-	// PrefersAppMenuApplication:
+
 	PrefersAppMenuApplication() bool
-	// RemoveAcceleratorApplication:
+
 	RemoveAcceleratorApplication(actionName string, parameter *glib.Variant)
-	// RemoveWindowApplication:
+
 	RemoveWindowApplication(window Window)
-	// SetAccelsForActionApplication:
+
 	SetAccelsForActionApplication(detailedActionName string, accels []string)
-	// SetAppMenuApplication:
+
 	SetAppMenuApplication(appMenu gio.MenuModel)
-	// SetMenubarApplication:
+
 	SetMenubarApplication(menubar gio.MenuModel)
-	// UninhibitApplication:
+
 	UninhibitApplication(cookie uint)
 }
 
@@ -191,7 +190,6 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
-// NewApplication:
 func NewApplication(applicationId string, flags gio.ApplicationFlags) Application {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GApplicationFlags // out
@@ -546,6 +544,18 @@ func (b application) ConstructChild(builder Builder, name string) gextras.Object
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b application) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b application) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b application) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b application) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -620,16 +630,4 @@ func (a application) ListActions() []string {
 
 func (a application) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
 	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (a application) AddAction(action gio.Action) {
-	gio.WrapActionMap(gextras.InternObject(a)).AddAction(action)
-}
-
-func (a application) LookupAction(actionName string) gio.Action {
-	return gio.WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
-}
-
-func (a application) RemoveAction(actionName string) {
-	gio.WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
 }

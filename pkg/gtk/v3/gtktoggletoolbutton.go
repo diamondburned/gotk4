@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -37,9 +38,8 @@ func init() {
 type ToggleToolButton interface {
 	ToolButton
 
-	// Active:
 	Active() bool
-	// SetActiveToggleToolButton:
+
 	SetActiveToggleToolButton(isActive bool)
 }
 
@@ -62,7 +62,6 @@ func marshalToggleToolButton(p uintptr) (interface{}, error) {
 	return WrapToggleToolButton(obj), nil
 }
 
-// NewToggleToolButton:
 func NewToggleToolButton() ToggleToolButton {
 	var _cret *C.GtkToolItem // in
 
@@ -75,7 +74,6 @@ func NewToggleToolButton() ToggleToolButton {
 	return _toggleToolButton
 }
 
-// NewToggleToolButtonFromStock:
 func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -127,6 +125,18 @@ func (b toggleToolButton) AddChild(builder Builder, child gextras.Objector, typ 
 
 func (b toggleToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toggleToolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b toggleToolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b toggleToolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b toggleToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
@@ -199,6 +209,18 @@ func (b toggleToolButton) AddChild(builder Builder, child gextras.Objector, typ 
 
 func (b toggleToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b toggleToolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b toggleToolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b toggleToolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b toggleToolButton) InternalChild(builder Builder, childname string) gextras.Objector {

@@ -65,25 +65,24 @@ func init() {
 type Calendar interface {
 	Widget
 
-	// ClearMarksCalendar:
 	ClearMarksCalendar()
-	// DayIsMarked:
+
 	DayIsMarked(day uint) bool
-	// ShowDayNames:
+
 	ShowDayNames() bool
-	// ShowHeading:
+
 	ShowHeading() bool
-	// ShowWeekNumbers:
+
 	ShowWeekNumbers() bool
-	// MarkDayCalendar:
+
 	MarkDayCalendar(day uint)
-	// SetShowDayNamesCalendar:
+
 	SetShowDayNamesCalendar(value bool)
-	// SetShowHeadingCalendar:
+
 	SetShowHeadingCalendar(value bool)
-	// SetShowWeekNumbersCalendar:
+
 	SetShowWeekNumbersCalendar(value bool)
-	// UnmarkDayCalendar:
+
 	UnmarkDayCalendar(day uint)
 }
 
@@ -106,7 +105,6 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	return WrapCalendar(obj), nil
 }
 
-// NewCalendar:
 func NewCalendar() Calendar {
 	var _cret *C.GtkWidget // in
 

@@ -36,9 +36,8 @@ func init() {
 type BuilderListItemFactory interface {
 	ListItemFactory
 
-	// Resource:
 	Resource() string
-	// Scope:
+
 	Scope() BuilderScope
 }
 
@@ -61,7 +60,6 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 	return WrapBuilderListItemFactory(obj), nil
 }
 
-// NewBuilderListItemFactoryFromResource:
 func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.char               // out

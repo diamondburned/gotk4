@@ -60,7 +60,6 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 	return WrapColorChooserDialog(obj), nil
 }
 
-// NewColorChooserDialog:
 func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out

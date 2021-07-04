@@ -193,27 +193,26 @@ func UnicodeToKeyval(wc uint32) uint {
 type Keymap interface {
 	gextras.Objector
 
-	// CapsLockState:
 	CapsLockState() bool
-	// Direction:
+
 	Direction() pango.Direction
-	// EntriesForKeycode:
+
 	EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool)
-	// EntriesForKeyval:
+
 	EntriesForKeyval(keyval uint) ([]KeymapKey, bool)
-	// ModifierMask:
+
 	ModifierMask(intent ModifierIntent) ModifierType
-	// ModifierState:
+
 	ModifierState() uint
-	// NumLockState:
+
 	NumLockState() bool
-	// ScrollLockState:
+
 	ScrollLockState() bool
-	// HaveBidiLayoutsKeymap:
+
 	HaveBidiLayoutsKeymap() bool
-	// LookupKeyKeymap:
+
 	LookupKeyKeymap(key *KeymapKey) uint
-	// TranslateKeyboardStateKeymap:
+
 	TranslateKeyboardStateKeymap(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool)
 }
 

@@ -36,9 +36,8 @@ func init() {
 type TreeListRowSorter interface {
 	Sorter
 
-	// GetSorter:
 	GetSorter() Sorter
-	// SetSorterTreeListRowSorter:
+
 	SetSorterTreeListRowSorter(sorter Sorter)
 }
 
@@ -61,7 +60,6 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 	return WrapTreeListRowSorter(obj), nil
 }
 
-// NewTreeListRowSorter:
 func NewTreeListRowSorter(sorter Sorter) TreeListRowSorter {
 	var _arg1 *C.GtkSorter            // out
 	var _cret *C.GtkTreeListRowSorter // in

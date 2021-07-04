@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -97,29 +99,28 @@ func init() {
 type Scale interface {
 	Range
 
-	// AddMarkScale:
 	AddMarkScale(value float64, position PositionType, markup string)
-	// ClearMarksScale:
+
 	ClearMarksScale()
-	// Digits:
+
 	Digits() int
-	// DrawValue:
+
 	DrawValue() bool
-	// HasOrigin:
+
 	HasOrigin() bool
-	// Layout:
+
 	Layout() pango.Layout
-	// LayoutOffsets:
+
 	LayoutOffsets() (x int, y int)
-	// ValuePos:
+
 	ValuePos() PositionType
-	// SetDigitsScale:
+
 	SetDigitsScale(digits int)
-	// SetDrawValueScale:
+
 	SetDrawValueScale(drawValue bool)
-	// SetHasOriginScale:
+
 	SetHasOriginScale(hasOrigin bool)
-	// SetValuePosScale:
+
 	SetValuePosScale(pos PositionType)
 }
 
@@ -142,7 +143,6 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return WrapScale(obj), nil
 }
 
-// NewScale:
 func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
@@ -160,7 +160,6 @@ func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 	return _scale
 }
 
-// NewScaleWithRange:
 func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gdouble        // out
@@ -352,6 +351,18 @@ func (b scale) AddChild(builder Builder, child gextras.Objector, typ string) {
 
 func (b scale) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b scale) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b scale) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b scale) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b scale) InternalChild(builder Builder, childname string) gextras.Objector {

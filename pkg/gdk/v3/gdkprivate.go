@@ -12,7 +12,6 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// SynthesizeWindowState:
 func SynthesizeWindowState(window Window, unsetFlags WindowState, setFlags WindowState) {
 	var _arg1 *C.GdkWindow     // out
 	var _arg2 C.GdkWindowState // out

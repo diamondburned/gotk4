@@ -120,23 +120,22 @@ func init() {
 type GLShader interface {
 	gextras.Objector
 
-	// CompileGLShader:
 	CompileGLShader(renderer Renderer) error
-	// FindUniformByNameGLShader:
+
 	FindUniformByNameGLShader(name string) int
-	// ArgsSize:
+
 	ArgsSize() uint
-	// NTextures:
+
 	NTextures() int
-	// NUniforms:
+
 	NUniforms() int
-	// Resource:
+
 	Resource() string
-	// UniformName:
+
 	UniformName(idx int) string
-	// UniformOffset:
+
 	UniformOffset(idx int) int
-	// UniformType:
+
 	UniformType(idx int) GLUniformType
 }
 
@@ -159,7 +158,6 @@ func marshalGLShader(p uintptr) (interface{}, error) {
 	return WrapGLShader(obj), nil
 }
 
-// NewGLShaderFromResource:
 func NewGLShaderFromResource(resourcePath string) GLShader {
 	var _arg1 *C.char        // out
 	var _cret *C.GskGLShader // in

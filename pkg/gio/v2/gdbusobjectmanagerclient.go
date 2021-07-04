@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -101,13 +104,12 @@ type DBusObjectManagerClient interface {
 	DBusObjectManager
 	Initable
 
-	// Connection:
 	Connection() DBusConnection
-	// Flags:
+
 	Flags() DBusObjectManagerClientFlags
-	// Name:
+
 	Name() string
-	// NameOwner:
+
 	NameOwner() string
 }
 
@@ -130,7 +132,6 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerClient(obj), nil
 }
 
-// NewDBusObjectManagerClientFinish:
 func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
@@ -149,7 +150,6 @@ func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient,
 	return _dBusObjectManagerClient, _goerr
 }
 
-// NewDBusObjectManagerClientForBusFinish:
 func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
@@ -227,6 +227,10 @@ func (m dBusObjectManagerClient) NameOwner() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+func (i dBusObjectManagerClient) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
 }
 
 func (i dBusObjectManagerClient) InitFinish(res AsyncResult) error {

@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -111,93 +110,90 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 type Notebook interface {
 	Widget
 
-	// AppendPageNotebook:
 	AppendPageNotebook(child Widget, tabLabel Widget) int
-	// AppendPageMenuNotebook:
+
 	AppendPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget) int
-	// DetachTabNotebook:
+
 	DetachTabNotebook(child Widget)
-	// ActionWidget:
+
 	ActionWidget(packType PackType) Widget
-	// CurrentPage:
+
 	CurrentPage() int
-	// GroupName:
+
 	GroupName() string
-	// MenuLabel:
+
 	MenuLabel(child Widget) Widget
-	// MenuLabelText:
+
 	MenuLabelText(child Widget) string
-	// NPages:
+
 	NPages() int
-	// NthPage:
+
 	NthPage(pageNum int) Widget
-	// Page:
+
 	Page(child Widget) NotebookPage
-	// Pages:
-	Pages() gio.ListModel
-	// Scrollable:
+
 	Scrollable() bool
-	// ShowBorder:
+
 	ShowBorder() bool
-	// ShowTabs:
+
 	ShowTabs() bool
-	// TabDetachable:
+
 	TabDetachable(child Widget) bool
-	// TabLabel:
+
 	TabLabel(child Widget) Widget
-	// TabLabelText:
+
 	TabLabelText(child Widget) string
-	// TabPos:
+
 	TabPos() PositionType
-	// TabReorderable:
+
 	TabReorderable(child Widget) bool
-	// InsertPageNotebook:
+
 	InsertPageNotebook(child Widget, tabLabel Widget, position int) int
-	// InsertPageMenuNotebook:
+
 	InsertPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget, position int) int
-	// NextPageNotebook:
+
 	NextPageNotebook()
-	// PageNumNotebook:
+
 	PageNumNotebook(child Widget) int
-	// PopupDisableNotebook:
+
 	PopupDisableNotebook()
-	// PopupEnableNotebook:
+
 	PopupEnableNotebook()
-	// PrependPageNotebook:
+
 	PrependPageNotebook(child Widget, tabLabel Widget) int
-	// PrependPageMenuNotebook:
+
 	PrependPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget) int
-	// PrevPageNotebook:
+
 	PrevPageNotebook()
-	// RemovePageNotebook:
+
 	RemovePageNotebook(pageNum int)
-	// ReorderChildNotebook:
+
 	ReorderChildNotebook(child Widget, position int)
-	// SetActionWidgetNotebook:
+
 	SetActionWidgetNotebook(widget Widget, packType PackType)
-	// SetCurrentPageNotebook:
+
 	SetCurrentPageNotebook(pageNum int)
-	// SetGroupNameNotebook:
+
 	SetGroupNameNotebook(groupName string)
-	// SetMenuLabelNotebook:
+
 	SetMenuLabelNotebook(child Widget, menuLabel Widget)
-	// SetMenuLabelTextNotebook:
+
 	SetMenuLabelTextNotebook(child Widget, menuText string)
-	// SetScrollableNotebook:
+
 	SetScrollableNotebook(scrollable bool)
-	// SetShowBorderNotebook:
+
 	SetShowBorderNotebook(showBorder bool)
-	// SetShowTabsNotebook:
+
 	SetShowTabsNotebook(showTabs bool)
-	// SetTabDetachableNotebook:
+
 	SetTabDetachableNotebook(child Widget, detachable bool)
-	// SetTabLabelNotebook:
+
 	SetTabLabelNotebook(child Widget, tabLabel Widget)
-	// SetTabLabelTextNotebook:
+
 	SetTabLabelTextNotebook(child Widget, tabText string)
-	// SetTabPosNotebook:
+
 	SetTabPosNotebook(pos PositionType)
-	// SetTabReorderableNotebook:
+
 	SetTabReorderableNotebook(child Widget, reorderable bool)
 }
 
@@ -220,7 +216,6 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return WrapNotebook(obj), nil
 }
 
-// NewNotebook:
 func NewNotebook() Notebook {
 	var _cret *C.GtkWidget // in
 
@@ -411,21 +406,6 @@ func (n notebook) Page(child Widget) NotebookPage {
 	_notebookPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(NotebookPage)
 
 	return _notebookPage
-}
-
-func (n notebook) Pages() gio.ListModel {
-	var _arg0 *C.GtkNotebook // out
-	var _cret *C.GListModel  // in
-
-	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	_cret = C.gtk_notebook_get_pages(_arg0)
-
-	var _listModel gio.ListModel // out
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gio.ListModel)
-
-	return _listModel
 }
 
 func (n notebook) Scrollable() bool {
@@ -914,7 +894,6 @@ func (b notebook) BuildableID() string {
 type NotebookPage interface {
 	gextras.Objector
 
-	// Child:
 	Child() Widget
 }
 

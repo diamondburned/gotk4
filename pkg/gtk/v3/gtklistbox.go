@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -17,6 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// void gotk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 import "C"
 
 func init() {
@@ -24,6 +27,133 @@ func init() {
 		{T: externglib.Type(C.gtk_list_box_get_type()), F: marshalListBox},
 		{T: externglib.Type(C.gtk_list_box_row_get_type()), F: marshalListBoxRow},
 	})
+}
+
+// ListBoxCreateWidgetFunc: called for list boxes that are bound to a Model with
+// gtk_list_box_bind_model() for each item that gets added to the model.
+//
+// Versions of GTK+ prior to 3.18 called gtk_widget_show_all() on the rows
+// created by the GtkListBoxCreateWidgetFunc, but this forced all widgets inside
+// the row to be shown, and is no longer the case. Applications should be
+// updated to show the desired row widgets.
+type ListBoxCreateWidgetFunc func(item gextras.Objector, widget Widget)
+
+//export gotk4_ListBoxCreateWidgetFunc
+func _ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var item gextras.Objector // out
+
+	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(gextras.Objector)
+
+	fn := v.(ListBoxCreateWidgetFunc)
+	widget := fn(item)
+
+	var cret *C.GtkWidget // out
+
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	return cret
+}
+
+// ListBoxFilterFunc: will be called whenever the row changes or is added and
+// lets you control if the row should be visible or not.
+type ListBoxFilterFunc func(row ListBoxRow, ok bool)
+
+//export gotk4_ListBoxFilterFunc
+func _ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var row ListBoxRow // out
+
+	row = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(ListBoxRow)
+
+	fn := v.(ListBoxFilterFunc)
+	ok := fn(row)
+
+	var cret C.gboolean // out
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ListBoxForeachFunc: a function used by gtk_list_box_selected_foreach(). It
+// will be called on every selected child of the @box.
+type ListBoxForeachFunc func(box ListBox, row ListBoxRow)
+
+//export gotk4_ListBoxForeachFunc
+func _ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var box ListBox    // out
+	var row ListBoxRow // out
+
+	box = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(ListBox)
+	row = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(ListBoxRow)
+
+	fn := v.(ListBoxForeachFunc)
+	fn(box, row)
+}
+
+// ListBoxSortFunc: compare two rows to determine which should be first.
+type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow, gint int)
+
+//export gotk4_ListBoxSortFunc
+func _ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.gint {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var row1 ListBoxRow // out
+	var row2 ListBoxRow // out
+
+	row1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(ListBoxRow)
+	row2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(ListBoxRow)
+
+	fn := v.(ListBoxSortFunc)
+	gint := fn(row1, row2)
+
+	var cret C.gint // out
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+// ListBoxUpdateHeaderFunc: whenever @row changes or which row is before @row
+// changes this is called, which lets you update the header on @row. You may
+// remove or set a new one via gtk_list_box_row_set_header() or just change the
+// state of the current header widget.
+type ListBoxUpdateHeaderFunc func(row ListBoxRow, before ListBoxRow)
+
+//export gotk4_ListBoxUpdateHeaderFunc
+func _ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+	v := box.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var row ListBoxRow    // out
+	var before ListBoxRow // out
+
+	row = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(ListBoxRow)
+	before = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(ListBoxRow)
+
+	fn := v.(ListBoxUpdateHeaderFunc)
+	fn(row, before)
 }
 
 // ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
@@ -64,47 +194,48 @@ func init() {
 type ListBox interface {
 	Container
 
-	// DragHighlightRowListBox:
 	DragHighlightRowListBox(row ListBoxRow)
-	// DragUnhighlightRowListBox:
+
 	DragUnhighlightRowListBox()
-	// ActivateOnSingleClick:
+
 	ActivateOnSingleClick() bool
-	// Adjustment:
+
 	Adjustment() Adjustment
-	// RowAtIndex:
+
 	RowAtIndex(index_ int) ListBoxRow
-	// RowAtY:
+
 	RowAtY(y int) ListBoxRow
-	// SelectedRow:
+
 	SelectedRow() ListBoxRow
-	// SelectionMode:
+
 	SelectionMode() SelectionMode
-	// InsertListBox:
+
 	InsertListBox(child Widget, position int)
-	// InvalidateFilterListBox:
+
 	InvalidateFilterListBox()
-	// InvalidateHeadersListBox:
+
 	InvalidateHeadersListBox()
-	// InvalidateSortListBox:
+
 	InvalidateSortListBox()
-	// PrependListBox:
+
 	PrependListBox(child Widget)
-	// SelectAllListBox:
+
 	SelectAllListBox()
-	// SelectRowListBox:
+
 	SelectRowListBox(row ListBoxRow)
-	// SetActivateOnSingleClickListBox:
+
+	SelectedForeachListBox(fn ListBoxForeachFunc)
+
 	SetActivateOnSingleClickListBox(single bool)
-	// SetAdjustmentListBox:
+
 	SetAdjustmentListBox(adjustment Adjustment)
-	// SetPlaceholderListBox:
+
 	SetPlaceholderListBox(placeholder Widget)
-	// SetSelectionModeListBox:
+
 	SetSelectionModeListBox(mode SelectionMode)
-	// UnselectAllListBox:
+
 	UnselectAllListBox()
-	// UnselectRowListBox:
+
 	UnselectRowListBox(row ListBoxRow)
 }
 
@@ -127,7 +258,6 @@ func marshalListBox(p uintptr) (interface{}, error) {
 	return WrapListBox(obj), nil
 }
 
-// NewListBox:
 func NewListBox() ListBox {
 	var _cret *C.GtkWidget // in
 
@@ -318,6 +448,18 @@ func (b listBox) SelectRowListBox(row ListBoxRow) {
 	C.gtk_list_box_select_row(_arg0, _arg1)
 }
 
+func (b listBox) SelectedForeachListBox(fn ListBoxForeachFunc) {
+	var _arg0 *C.GtkListBox           // out
+	var _arg1 C.GtkListBoxForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_ListBoxForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
+
+	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
+}
+
 func (b listBox) SetActivateOnSingleClickListBox(single bool) {
 	var _arg0 *C.GtkListBox // out
 	var _arg1 C.gboolean    // out
@@ -386,6 +528,18 @@ func (b listBox) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b listBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b listBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b listBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b listBox) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -406,28 +560,26 @@ func (b listBox) SetName(name string) {
 	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
-// ListBoxRow:
 type ListBoxRow interface {
 	Bin
 	Actionable
 
-	// ChangedListBoxRow:
 	ChangedListBoxRow()
-	// Activatable:
+
 	Activatable() bool
-	// Header:
+
 	Header() Widget
-	// Index:
+
 	Index() int
-	// Selectable:
+
 	Selectable() bool
-	// IsSelectedListBoxRow:
+
 	IsSelectedListBoxRow() bool
-	// SetActivatableListBoxRow:
+
 	SetActivatableListBoxRow(activatable bool)
-	// SetHeaderListBoxRow:
+
 	SetHeaderListBoxRow(header Widget)
-	// SetSelectableListBoxRow:
+
 	SetSelectableListBoxRow(selectable bool)
 }
 
@@ -450,7 +602,6 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 	return WrapListBoxRow(obj), nil
 }
 
-// NewListBoxRow:
 func NewListBoxRow() ListBoxRow {
 	var _cret *C.GtkWidget // in
 
@@ -594,6 +745,18 @@ func (b listBoxRow) ConstructChild(builder Builder, name string) gextras.Objecto
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
 }
 
+func (b listBoxRow) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b listBoxRow) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b listBoxRow) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
 func (b listBoxRow) InternalChild(builder Builder, childname string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
 }
@@ -640,6 +803,18 @@ func (b listBoxRow) AddChild(builder Builder, child gextras.Objector, typ string
 
 func (b listBoxRow) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b listBoxRow) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b listBoxRow) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b listBoxRow) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b listBoxRow) InternalChild(builder Builder, childname string) gextras.Objector {

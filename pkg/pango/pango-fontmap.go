@@ -30,19 +30,18 @@ func init() {
 type FontMap interface {
 	gextras.Objector
 
-	// ChangedFontMap:
 	ChangedFontMap()
-	// CreateContextFontMap:
+
 	CreateContextFontMap() Context
-	// Family:
+
 	Family(name string) FontFamily
-	// Serial:
+
 	Serial() uint
-	// ListFamiliesFontMap:
+
 	ListFamiliesFontMap() []FontFamily
-	// LoadFontFontMap:
+
 	LoadFontFontMap(context Context, desc *FontDescription) Font
-	// LoadFontsetFontMap:
+
 	LoadFontsetFontMap(context Context, desc *FontDescription, language *Language) Fontset
 }
 

@@ -43,89 +43,86 @@ func init() {
 type Snapshot interface {
 	gdk.Snapshot
 
-	// AppendBorderSnapshot:
 	AppendBorderSnapshot(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA)
-	// AppendCairoSnapshot:
+
 	AppendCairoSnapshot(bounds *graphene.Rect) *cairo.Context
-	// AppendColorSnapshot:
+
 	AppendColorSnapshot(color *gdk.RGBA, bounds *graphene.Rect)
-	// AppendConicGradientSnapshot:
+
 	AppendConicGradientSnapshot(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
-	// AppendInsetShadowSnapshot:
+
 	AppendInsetShadowSnapshot(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
-	// AppendLayoutSnapshot:
+
 	AppendLayoutSnapshot(layout pango.Layout, color *gdk.RGBA)
-	// AppendLinearGradientSnapshot:
+
 	AppendLinearGradientSnapshot(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
-	// AppendNodeSnapshot:
+
 	AppendNodeSnapshot(node gsk.RenderNode)
-	// AppendOutsetShadowSnapshot:
+
 	AppendOutsetShadowSnapshot(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
-	// AppendRadialGradientSnapshot:
+
 	AppendRadialGradientSnapshot(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
-	// AppendRepeatingLinearGradientSnapshot:
+
 	AppendRepeatingLinearGradientSnapshot(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
-	// AppendRepeatingRadialGradientSnapshot:
+
 	AppendRepeatingRadialGradientSnapshot(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
-	// AppendTextureSnapshot:
+
 	AppendTextureSnapshot(texture gdk.Texture, bounds *graphene.Rect)
-	// GLShaderPopTextureSnapshot:
+
 	GLShaderPopTextureSnapshot()
-	// PerspectiveSnapshot:
+
 	PerspectiveSnapshot(depth float32)
-	// PopSnapshot:
+
 	PopSnapshot()
-	// PushBlendSnapshot:
+
 	PushBlendSnapshot(blendMode gsk.BlendMode)
-	// PushBlurSnapshot:
+
 	PushBlurSnapshot(radius float64)
-	// PushClipSnapshot:
+
 	PushClipSnapshot(bounds *graphene.Rect)
-	// PushColorMatrixSnapshot:
+
 	PushColorMatrixSnapshot(colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4)
-	// PushCrossFadeSnapshot:
+
 	PushCrossFadeSnapshot(progress float64)
-	// PushOpacitySnapshot:
+
 	PushOpacitySnapshot(opacity float64)
-	// PushRepeatSnapshot:
+
 	PushRepeatSnapshot(bounds *graphene.Rect, childBounds *graphene.Rect)
-	// PushRoundedClipSnapshot:
+
 	PushRoundedClipSnapshot(bounds *gsk.RoundedRect)
-	// PushShadowSnapshot:
+
 	PushShadowSnapshot(shadow *gsk.Shadow, nShadows uint)
-	// RenderBackgroundSnapshot:
+
 	RenderBackgroundSnapshot(context StyleContext, x float64, y float64, width float64, height float64)
-	// RenderFocusSnapshot:
+
 	RenderFocusSnapshot(context StyleContext, x float64, y float64, width float64, height float64)
-	// RenderFrameSnapshot:
+
 	RenderFrameSnapshot(context StyleContext, x float64, y float64, width float64, height float64)
-	// RenderInsertionCursorSnapshot:
+
 	RenderInsertionCursorSnapshot(context StyleContext, x float64, y float64, layout pango.Layout, index int, direction pango.Direction)
-	// RenderLayoutSnapshot:
+
 	RenderLayoutSnapshot(context StyleContext, x float64, y float64, layout pango.Layout)
-	// RestoreSnapshot:
+
 	RestoreSnapshot()
-	// RotateSnapshot:
+
 	RotateSnapshot(angle float32)
-	// Rotate3DSnapshot:
+
 	Rotate3DSnapshot(angle float32, axis *graphene.Vec3)
-	// SaveSnapshot:
+
 	SaveSnapshot()
-	// ScaleSnapshot:
+
 	ScaleSnapshot(factorX float32, factorY float32)
-	// Scale3DSnapshot:
+
 	Scale3DSnapshot(factorX float32, factorY float32, factorZ float32)
-	// ToNodeSnapshot:
+
 	ToNodeSnapshot() gsk.RenderNode
-	// ToPaintableSnapshot:
-	ToPaintableSnapshot(size *graphene.Size) gdk.Paintable
-	// TransformSnapshot:
+
 	TransformSnapshot(transform *gsk.Transform)
-	// TransformMatrixSnapshot:
+
 	TransformMatrixSnapshot(matrix *graphene.Matrix)
-	// TranslateSnapshot:
+
 	TranslateSnapshot(point *graphene.Point)
-	// Translate3DSnapshot:
+
 	Translate3DSnapshot(point *graphene.Point3D)
 }
 
@@ -148,7 +145,6 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 	return WrapSnapshot(obj), nil
 }
 
-// NewSnapshot:
 func NewSnapshot() Snapshot {
 	var _cret *C.GtkSnapshot // in
 
@@ -672,23 +668,6 @@ func (s snapshot) ToNodeSnapshot() gsk.RenderNode {
 	_renderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gsk.RenderNode)
 
 	return _renderNode
-}
-
-func (s snapshot) ToPaintableSnapshot(size *graphene.Size) gdk.Paintable {
-	var _arg0 *C.GtkSnapshot     // out
-	var _arg1 *C.graphene_size_t // out
-	var _cret *C.GdkPaintable    // in
-
-	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(size.Native()))
-
-	_cret = C.gtk_snapshot_to_paintable(_arg0, _arg1)
-
-	var _paintable gdk.Paintable // out
-
-	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdk.Paintable)
-
-	return _paintable
 }
 
 func (s snapshot) TransformSnapshot(transform *gsk.Transform) {

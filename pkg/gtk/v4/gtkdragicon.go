@@ -38,9 +38,8 @@ func init() {
 type DragIcon interface {
 	Root
 
-	// Child:
 	Child() Widget
-	// SetChildDragIcon:
+
 	SetChildDragIcon(child Widget)
 }
 

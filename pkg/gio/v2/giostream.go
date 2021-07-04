@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gerror"
 	"github.com/diamondburned/gotk4/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -80,22 +83,25 @@ func init() {
 type IOStream interface {
 	gextras.Objector
 
-	// ClearPendingIOStream:
 	ClearPendingIOStream()
-	// CloseIOStream:
+
 	CloseIOStream(cancellable Cancellable) error
-	// CloseFinishIOStream:
+
+	CloseAsyncIOStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+
 	CloseFinishIOStream(result AsyncResult) error
-	// InputStream:
+
 	InputStream() InputStream
-	// OutputStream:
+
 	OutputStream() OutputStream
-	// HasPendingIOStream:
+
 	HasPendingIOStream() bool
-	// IsClosedIOStream:
+
 	IsClosedIOStream() bool
-	// SetPendingIOStream:
+
 	SetPendingIOStream() error
+
+	SpliceAsyncIOStream(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
 // ioStream implements the IOStream class.
@@ -140,6 +146,22 @@ func (s ioStream) CloseIOStream(cancellable Cancellable) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (s ioStream) CloseAsyncIOStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GIOStream          // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
+
+	C.g_io_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (s ioStream) CloseFinishIOStream(result AsyncResult) error {
@@ -236,4 +258,24 @@ func (s ioStream) SetPendingIOStream() error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+func (s ioStream) SpliceAsyncIOStream(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GIOStream           // out
+	var _arg1 *C.GIOStream           // out
+	var _arg2 C.GIOStreamSpliceFlags // out
+	var _arg3 C.int                  // out
+	var _arg4 *C.GCancellable        // out
+	var _arg5 C.GAsyncReadyCallback  // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream2.Native()))
+	_arg2 = C.GIOStreamSpliceFlags(flags)
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_io_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

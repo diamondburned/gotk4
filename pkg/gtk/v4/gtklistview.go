@@ -106,25 +106,20 @@ func init() {
 type ListView interface {
 	ListBase
 
-	// EnableRubberband:
 	EnableRubberband() bool
-	// Factory:
+
 	Factory() ListItemFactory
-	// Model:
-	Model() SelectionModel
-	// ShowSeparators:
+
 	ShowSeparators() bool
-	// SingleClickActivate:
+
 	SingleClickActivate() bool
-	// SetEnableRubberbandListView:
+
 	SetEnableRubberbandListView(enableRubberband bool)
-	// SetFactoryListView:
+
 	SetFactoryListView(factory ListItemFactory)
-	// SetModelListView:
-	SetModelListView(model SelectionModel)
-	// SetShowSeparatorsListView:
+
 	SetShowSeparatorsListView(showSeparators bool)
-	// SetSingleClickActivateListView:
+
 	SetSingleClickActivateListView(singleClickActivate bool)
 }
 
@@ -145,24 +140,6 @@ func marshalListView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapListView(obj), nil
-}
-
-// NewListView:
-func NewListView(model SelectionModel, factory ListItemFactory) ListView {
-	var _arg1 *C.GtkSelectionModel  // out
-	var _arg2 *C.GtkListItemFactory // out
-	var _cret *C.GtkWidget          // in
-
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
-
-	_cret = C.gtk_list_view_new(_arg1, _arg2)
-
-	var _listView ListView // out
-
-	_listView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListView)
-
-	return _listView
 }
 
 func (s listView) EnableRubberband() bool {
@@ -195,21 +172,6 @@ func (s listView) Factory() ListItemFactory {
 	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListItemFactory)
 
 	return _listItemFactory
-}
-
-func (s listView) Model() SelectionModel {
-	var _arg0 *C.GtkListView       // out
-	var _cret *C.GtkSelectionModel // in
-
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_list_view_get_model(_arg0)
-
-	var _selectionModel SelectionModel // out
-
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SelectionModel)
-
-	return _selectionModel
 }
 
 func (s listView) ShowSeparators() bool {
@@ -266,16 +228,6 @@ func (s listView) SetFactoryListView(factory ListItemFactory) {
 	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_list_view_set_factory(_arg0, _arg1)
-}
-
-func (s listView) SetModelListView(model SelectionModel) {
-	var _arg0 *C.GtkListView       // out
-	var _arg1 *C.GtkSelectionModel // out
-
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	C.gtk_list_view_set_model(_arg0, _arg1)
 }
 
 func (s listView) SetShowSeparatorsListView(showSeparators bool) {

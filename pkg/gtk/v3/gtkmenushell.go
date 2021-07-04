@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/core/box"
 	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,33 +54,32 @@ func init() {
 type MenuShell interface {
 	Container
 
-	// ActivateItemMenuShell:
 	ActivateItemMenuShell(menuItem Widget, forceDeactivate bool)
-	// AppendMenuShell:
+
 	AppendMenuShell(child MenuItem)
-	// BindModelMenuShell:
+
 	BindModelMenuShell(model gio.MenuModel, actionNamespace string, withSeparators bool)
-	// CancelMenuShell:
+
 	CancelMenuShell()
-	// DeactivateMenuShell:
+
 	DeactivateMenuShell()
-	// DeselectMenuShell:
+
 	DeselectMenuShell()
-	// ParentShell:
+
 	ParentShell() Widget
-	// SelectedItem:
+
 	SelectedItem() Widget
-	// TakeFocus:
+
 	TakeFocus() bool
-	// InsertMenuShell:
+
 	InsertMenuShell(child Widget, position int)
-	// PrependMenuShell:
+
 	PrependMenuShell(child Widget)
-	// SelectFirstMenuShell:
+
 	SelectFirstMenuShell(searchSensitive bool)
-	// SelectItemMenuShell:
+
 	SelectItemMenuShell(menuItem Widget)
-	// SetTakeFocusMenuShell:
+
 	SetTakeFocusMenuShell(takeFocus bool)
 }
 
@@ -275,6 +276,18 @@ func (b menuShell) AddChild(builder Builder, child gextras.Objector, typ string)
 
 func (b menuShell) ConstructChild(builder Builder, name string) gextras.Objector {
 	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b menuShell) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b menuShell) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b menuShell) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
 }
 
 func (b menuShell) InternalChild(builder Builder, childname string) gextras.Objector {

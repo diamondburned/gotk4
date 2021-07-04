@@ -96,9 +96,8 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 type MessageDialog interface {
 	Dialog
 
-	// MessageArea:
 	MessageArea() Widget
-	// SetMarkupMessageDialog:
+
 	SetMarkupMessageDialog(str string)
 }
 

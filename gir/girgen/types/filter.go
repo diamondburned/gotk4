@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 )
 
 // TODO: refactor to add method accuracy
@@ -77,6 +78,20 @@ func Filter(gen FileGenerator, gir, c string) (omit bool) {
 // C functions and such.
 func FilterCType(gen FileGenerator, c string) (omit bool) {
 	return Filter(gen, "\x00", c)
+}
+
+// FilterMethod filters a method similarly to Filter.
+func FilterMethod(gen FileGenerator, parent string, method *gir.Method) (omit bool) {
+	girName := strcases.Dots(gen.Namespace().Namespace.Name, parent, method.Name)
+
+	cType := method.CIdentifier
+	if cType == "" {
+		// If the method is missing a C identifier for some dumb reason, we
+		// should ensure that it will never be matched incorrectly.
+		cType = "\x00"
+	}
+
+	return Filter(gen, girName, cType)
 }
 
 type absoluteFilter struct {

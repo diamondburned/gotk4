@@ -16,7 +16,6 @@ import (
 // FileGenerator describes the interface of a file generator.
 type FileGenerator interface {
 	types.FileGenerator
-	file.Headerer
 }
 
 // Generator is a generator instance that generates a GIR callable.
@@ -29,12 +28,14 @@ type Generator struct {
 	ReturnWrap string // passed to ConversionValue, ctor only
 	Converts   []string
 
-	conv   *typeconv.Converter
-	goArgs pen.Joints
-	goRets pen.Joints
+	Conv   *typeconv.Converter
+	GoArgs pen.Joints
+	GoRets pen.Joints
 
-	gen FileGenerator
+	src *gir.NamespaceFindResult
 	pen *pen.BlockSections
+	hdr file.Header
+	gen FileGenerator
 }
 
 // NewGenerator creates a new callable generator from the given generator.
@@ -43,8 +44,8 @@ func NewGenerator(gen FileGenerator) Generator {
 	pen := pen.NewBlockSections(1024, 4096, 256, 1024, 4096, 128)
 
 	return Generator{
-		gen: gen,
 		pen: pen,
+		gen: gen,
 	}
 }
 
@@ -54,17 +55,35 @@ func (g *Generator) Reset() {
 		return
 	}
 
+	g.hdr.Reset()
 	g.pen.Reset()
+	g.GoArgs.Reset(", ")
+	g.GoRets.Reset(", ")
 
 	*g = Generator{
-		gen:    g.gen,
 		pen:    g.pen,
-		goArgs: g.goArgs,
-		goRets: g.goRets,
+		gen:    g.gen,
+		hdr:    g.hdr,
+		GoArgs: g.GoArgs,
+		GoRets: g.GoRets,
 	}
 }
 
+var _ file.Headerer = (*Generator)(nil)
+
+// Header returns the generator's current headers.
+func (g *Generator) Header() *file.Header {
+	return &g.hdr
+}
+
+// Use uses the given CallableAttrs for the generator.
 func (g *Generator) Use(cattrs *gir.CallableAttrs) bool {
+	return g.UseFromNamespace(cattrs, g.gen.Namespace())
+}
+
+// UseFromNamespace uses the given CallableAttrs from the given namespace
+// instead of the current namespace.
+func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.NamespaceFindResult) bool {
 	g.Reset()
 
 	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" {
@@ -80,6 +99,7 @@ func (g *Generator) Use(cattrs *gir.CallableAttrs) bool {
 
 	g.Name = strcases.SnakeToGo(true, cattrs.Name)
 	g.CallableAttrs = cattrs
+	g.src = n
 
 	if !g.renderBlock() {
 		g.Reset()
@@ -182,23 +202,21 @@ func (g *Generator) renderBlock() bool {
 		callableValues = append(callableValues, typeconv.NewThrowValue("_cerr", "_goerr"))
 	}
 
-	g.conv = typeconv.NewConverter(g.gen, callableValues)
-	g.conv.UseLogger(cg)
+	g.Conv = typeconv.NewConverter(g.gen, callableValues)
+	g.Conv.UseLogger(g)
+	g.Conv.SourceNamespace = g.src
 
-	results := g.conv.ConvertAll()
+	results := g.Conv.ConvertAll()
 	if results == nil {
 		g.Logln(logger.Debug, "no conversion", CFunctionHeader(g.CallableAttrs))
 		return false
 	}
 
 	// Apply imports and such.
-	file.ApplyHeader(g.gen, g.conv)
+	file.ApplyHeader(g, g.Conv)
 
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
-
-	g.goArgs.Reset(", ")
-	g.goRets.Reset(", ")
 
 	for i, converted := range results {
 		if converted.Skip {
@@ -209,7 +227,7 @@ func (g *Generator) renderBlock() bool {
 		case typeconv.ConvertGoToC: // parameter
 			// Skip the instance parameter if any.
 			if i != 0 || !instanceParam {
-				g.goArgs.Addf("%s %s", converted.InName, converted.InType)
+				g.GoArgs.Addf("%s %s", converted.InName, converted.InType)
 			}
 
 			// Go inputs are declared in the parameters, so no InDeclare.
@@ -223,7 +241,7 @@ func (g *Generator) renderBlock() bool {
 			// purposes. It is not used internally at all, and so it doesn't
 			// have the underscore.
 			decoOut := strings.TrimPrefix(converted.OutName, "_")
-			g.goRets.Addf("%s %s", decoOut, converted.OutType)
+			g.GoRets.Addf("%s %s", decoOut, converted.OutType)
 
 			goReturns.Add(converted.OutName)
 
@@ -236,7 +254,7 @@ func (g *Generator) renderBlock() bool {
 	}
 
 	// For C function calling.
-	callParams := strings.Join(typeconv.AddCCallParam(g.conv), ", ")
+	callParams := strings.Join(typeconv.AddCCallParam(g.Conv), ", ")
 
 	if !hasReturn {
 		g.pen.Linef(secFnCall, "C.%s(%s)", g.CIdentifier, callParams)
@@ -250,7 +268,7 @@ func (g *Generator) renderBlock() bool {
 	}
 
 	g.Block = g.pen.String()
-	g.Tail = "(" + g.goArgs.Join() + ") " + formatReturnSig(g.goRets)
+	g.Tail = "(" + g.GoArgs.Join() + ") " + formatReturnSig(g.GoRets)
 
 	g.pen.Reset()
 	return true

@@ -189,17 +189,25 @@ func (prop *ConversionValue) isTransferring() bool {
 
 type Converter struct {
 	results []ValueConverted
-	gen     types.FileGenerator
+	fgen    types.FileGenerator
 	logger  logger.LineLogger
 	header  file.Header
+
+	// CurrentNamespace is the current namespace that this converter is
+	// generating for.
+	CurrentNamespace *gir.NamespaceFindResult
+	// SourceNamespace is the namespace that the values are from.
+	SourceNamespace *gir.NamespaceFindResult
 }
 
 // NewConverter creates a new type converter from the given file generator.
 // The converter will add no side effects to the given file generator.
-func NewConverter(gen types.FileGenerator, values []ConversionValue) *Converter {
+func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter {
 	conv := Converter{
-		gen:     gen,
-		results: make([]ValueConverted, len(values)),
+		fgen:             fgen,
+		results:          make([]ValueConverted, len(values)),
+		SourceNamespace:  fgen.Namespace(),
+		CurrentNamespace: fgen.Namespace(),
 	}
 
 	// paramAt gets the parameter at the given index.
@@ -573,7 +581,7 @@ func forceGoPtr(goType string, want int) (string, int) {
 
 func (conv *Converter) Logln(lvl logger.Level, v ...interface{}) {
 	if conv.logger == nil {
-		conv.gen.Logln(lvl, v...)
+		conv.fgen.Logln(lvl, v...)
 	} else {
 		conv.logger.Logln(lvl, v...)
 	}
@@ -661,7 +669,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	typ := *value.AnyType.Type
 
 	// Proritize hard-coded types over ignored types.
-	value.resolved = types.Resolve(conv.gen, typ)
+	value.resolved = types.Resolve(types.OverrideNamespace(conv.fgen, conv.SourceNamespace), typ)
 	if value.resolved == nil {
 		conv.Logln(logger.Debug, "can't resolve", types.AnyTypeCGo(value.AnyType), typ.Name)
 		return false
@@ -681,7 +689,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		value.resolved.Ptr--
 	}
 
-	value.needsNamespace = value.resolved.NeedsNamespace(conv.gen.Namespace())
+	value.needsNamespace = value.resolved.NeedsNamespace(conv.CurrentNamespace)
 
 	cgoType := value.resolved.CGoType()
 	goType := value.resolved.PublicType(value.needsNamespace)

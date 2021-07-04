@@ -349,7 +349,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.header.ImportPubl(value.resolved)
 	}
 
-	switch types.EnsureNamespace(conv.gen.Namespace(), value.AnyType.Type.Name) {
+	switch types.EnsureNamespace(conv.SourceNamespace, value.AnyType.Type.Name) {
 	case "gpointer":
 		value.header.Import("unsafe")
 		value.header.ImportCore("box")

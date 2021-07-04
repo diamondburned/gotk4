@@ -6,6 +6,13 @@ import (
 
 	"github.com/diamondburned/gotk4/core/pen"
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
+	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
+	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
+	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
 // recordIgnoreSuffixes is a list of suffixes that structs must not have,
@@ -25,8 +32,8 @@ var recordIgnoreSuffixes = []string{
 	"Private",
 }
 
-var recordTmpl = newGoTemplate(`
-	{{ GoDoc .Doc 0 .GoName }}
+var recordTmpl = gotmpl.NewGoTemplate(`
+	{{ GoDoc . 0 }}
 	type {{ .GoName }} C.{{ .CType }}
 
 	// Wrap{{ .GoName }} wraps the C unsafe.Pointer to be the right type. It is
@@ -62,22 +69,43 @@ var recordTmpl = newGoTemplate(`
 	{{ end }}
 
 	{{ range .Methods }}
-	{{ GoDoc .Doc 0 .Name }}
+	{{ GoDoc . 0 }}
 	func ({{ .Recv }} *{{ $.GoName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)
 
-type recordGenerator struct {
-	gir.Record
+// GenerateRecord generates the records.
+func GenerateRecord(gen FileGeneratorWriter, record *gir.Record) bool {
+	recordGen := NewRecordGenerator(gen)
+	if !recordGen.Use(record) {
+		return false
+	}
+
+	writer := FileWriterFromType(gen, record)
+	// Need unsafe for the wrapper.
+	writer.Header().Import("unsafe")
+
+	if record.GLibGetType != "" && !types.FilterCType(gen, record.GLibGetType) {
+		writer.Header().AddMarshaler(record.GLibGetType, recordGen.GoName)
+	}
+
+	writer.Pen().WriteTmpl(recordTmpl, &recordGen)
+	return true
+}
+
+type RecordGenerator struct {
+	*gir.Record
 	GoName string
 
 	// TODO: move these out of here.
-	Methods []callableGenerator
+	Methods []callable.Generator
 	Getters []recordGetter
 
-	Callable callableGenerator
+	// TODO: make a []callableGenerator for constructors
+	Callable callable.Generator
 
-	ng *NamespaceGenerator
+	hdr file.Header
+	gen FileGenerator
 }
 
 type recordGetter struct {
@@ -86,15 +114,19 @@ type recordGetter struct {
 	Block  string // assume first_letter recv
 }
 
-func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
-	return &recordGenerator{
-		Callable: newCallableGenerator(ng),
-		ng:       ng,
+func NewRecordGenerator(gen FileGenerator) RecordGenerator {
+	return RecordGenerator{
+		gen:      gen,
+		Callable: callable.NewGenerator(gen),
 	}
 }
 
 // canRecord returns true if this record is allowed.
-func canRecord(ng *NamespaceGenerator, rec gir.Record, logger LineLogger) bool {
+func canRecord(gen FileGenerator, rec *gir.Record) bool {
+	if !rec.IsIntrospectable() || types.Filter(gen, rec.Name, rec.CType) {
+		return false
+	}
+
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
 	// to C? Not sure, but we likely don't need it.
 	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
@@ -111,8 +143,8 @@ func canRecord(ng *NamespaceGenerator, rec gir.Record, logger LineLogger) bool {
 	for _, field := range rec.Fields {
 		// Check the type against the ignored list, since ignores are usually
 		// important, and CGo might still try to resolve an ignored type.
-		if mustIgnoreAny(ng, field.AnyType) {
-			tryLogln(logger, LogDebug, "ignored because field", field.Name)
+		if mustIgnoreAny(gen, field.AnyType) {
+			gen.Logln(logger.Debug, "ignored because field", field.Name)
 			return false
 		}
 	}
@@ -121,33 +153,38 @@ func canRecord(ng *NamespaceGenerator, rec gir.Record, logger LineLogger) bool {
 }
 
 // mustIgnoreAny banished here because it disregards type renamers.
-func mustIgnoreAny(ng *NamespaceGenerator, any gir.AnyType) bool {
+func mustIgnoreAny(gen FileGenerator, any gir.AnyType) bool {
 	switch {
 	case any.Type != nil:
-		name, ctype := any.Type.Name, any.Type.CType
-		return ng.mustIgnore(&name, &ctype)
+		return types.Filter(gen, any.Type.Name, any.Type.CType)
 	case any.Array != nil:
-		return mustIgnoreAny(ng, any.Array.AnyType)
+		return mustIgnoreAny(gen, any.Array.AnyType)
 	default:
 		return true
 	}
 }
 
-func (rg *recordGenerator) Use(rec gir.Record) bool {
-	if !canRecord(rg.ng, rec, rg) {
+// hHeader returns the RecordGenerator's current file header.
+func (rg *RecordGenerator) Header() *file.Header {
+	return &rg.hdr
+}
+
+func (rg *RecordGenerator) Use(rec *gir.Record) bool {
+	if !canRecord(rg.gen, rec) {
 		return false
 	}
 
+	rg.hdr.Reset()
 	rg.Record = rec
-	rg.GoName = PascalToGo(rec.Name)
+	rg.GoName = strcases.PascalToGo(rec.Name)
 	rg.Methods = rg.methods()
 	rg.Getters = rg.getters()
 
 	return true
 }
 
-func (rg *recordGenerator) UseConstructor(ctor gir.Constructor, className string) bool {
-	if !rg.Callable.Use(ctor.CallableAttrs) {
+func (rg *RecordGenerator) UseConstructor(ctor *gir.Constructor, className string) bool {
+	if !rg.Callable.Use(&ctor.CallableAttrs) {
 		return false
 	}
 
@@ -157,23 +194,23 @@ func (rg *recordGenerator) UseConstructor(ctor gir.Constructor, className string
 	return true
 }
 
-func (rg *recordGenerator) methods() []callableGenerator {
-	callables := callableGrow(rg.Methods, len(rg.Record.Methods))
+func (rg *RecordGenerator) methods() []callable.Generator {
+	callables := callable.Grow(rg.Methods, len(rg.Record.Methods))
 
 	for _, method := range rg.Record.Methods {
-		cbgen := newCallableGenerator(rg.ng)
-		if !cbgen.Use(method.CallableAttrs) {
+		cbgen := callable.NewGenerator(rg.gen)
+		if !cbgen.Use(&method.CallableAttrs) {
 			continue
 		}
 
 		callables = append(callables, cbgen)
 	}
 
-	callableRenameGetters("", callables)
+	callable.RenameGetters("", callables)
 	return callables
 }
 
-func (rg *recordGenerator) getters() []recordGetter {
+func (rg *RecordGenerator) getters() []recordGetter {
 	getters := rg.Getters[:0]
 
 	// Disguised means opaque, so we're not supposed to access these fields.
@@ -186,9 +223,8 @@ func (rg *recordGenerator) getters() []recordGetter {
 		methodNames[method.Name] = struct{}{}
 	}
 
-	recv := FirstLetter(rg.GoName)
-	fields := make([]ConversionValue, 0, len(rg.Fields))
-	goNames := make([]string, 0, len(rg.Fields))
+	recv := strcases.FirstLetter(rg.GoName)
+	fields := make([]typeconv.ConversionValue, 0, len(rg.Fields))
 
 	for _, field := range rg.Fields {
 		// For "Bits > 0", we can't safely do this in Go (and probably not CGo
@@ -197,20 +233,20 @@ func (rg *recordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		goName := SnakeToGo(true, field.Name)
-
 		// Check if we have a method with the existing name.
-		if _, collides := methodNames[goName]; collides {
+		if _, collides := methodNames[strcases.SnakeToGo(true, field.Name)]; collides {
 			// Skip generating the getter if we have a colliding method.
 			continue
 		}
 
-		fields = append(fields, NewConversionValueField(recv, "v", field))
-		goNames = append(goNames, goName)
+		fields = append(fields, typeconv.NewFieldValue(recv, "v", field))
 	}
 
-	converter := NewTypeConverter(rg.ng, fields)
+	converter := typeconv.NewConverter(rg.gen, fields)
 	converter.UseLogger(rg)
+
+	// Add all imports once we've gone over conversion of all fields.
+	defer file.ApplyHeader(rg, converter)
 
 	for i := range fields {
 		converted := converter.Convert(i)
@@ -218,15 +254,13 @@ func (rg *recordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		converted.ApplySideEffects(&rg.ng.SideEffects)
-
 		b := pen.NewBlock()
 		b.Linef(converted.OutDeclare)
 		b.Linef(converted.Conversion)
 		b.Linef("return v")
 
 		getters = append(getters, recordGetter{
-			GoName: goNames[i],
+			GoName: strcases.SnakeToGo(true, converted.Name),
 			GoType: converted.OutType,
 			Block:  b.String(),
 		})
@@ -235,35 +269,7 @@ func (rg *recordGenerator) getters() []recordGetter {
 	return getters
 }
 
-func (rg *recordGenerator) Logln(lvl LogLevel, v ...interface{}) {
-	v = append(v, nil)
-	copy(v[1:], v)
-	v[0] = fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.CType)
-
-	rg.ng.Logln(lvl, v...)
-}
-
-func (ng *NamespaceGenerator) generateRecords() {
-	rg := newRecordGenerator(ng)
-
-	for _, record := range ng.current.Namespace.Records {
-		if !record.IsIntrospectable() {
-			continue
-		}
-		if ng.mustIgnore(&record.Name, &record.CType) {
-			continue
-		}
-		if !rg.Use(record) {
-			continue
-		}
-
-		// Need unsafe for the wrapper.
-		ng.addImport("unsafe")
-
-		if record.GLibGetType != "" && !ng.mustIgnoreC(record.GLibGetType) {
-			ng.addMarshaler(record.GLibGetType, rg.GoName)
-		}
-
-		ng.pen.WriteTmpl(recordTmpl, &rg)
-	}
+func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {
+	p := fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.CType)
+	rg.gen.Logln(lvl, logger.Prefix(v, p))
 }

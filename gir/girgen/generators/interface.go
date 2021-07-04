@@ -6,6 +6,7 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
@@ -14,7 +15,7 @@ import (
 // TODO: unexported type implementation
 // TODO: methods for implementation
 
-var interfaceTmpl = newGoTemplate(`
+var interfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ if .Virtuals }}
 	// {{ .InterfaceName }}Overrider contains methods that are overridable. This
 	// interface is a subset of the interface {{ .InterfaceName }}.
@@ -23,20 +24,20 @@ var interfaceTmpl = newGoTemplate(`
 	// yet, so the interface currently has no use.
 	type {{ .InterfaceName }}Overrider interface {
 		{{ range .Virtuals -}}
-		{{ GoDoc .Doc 1 .Name }}
+		{{ GoDoc . 1 }}
 		{{ .Name }}{{ .Tail }}
 		{{ end }}
 	}
 	{{ end }}
 
-	{{ GoDoc .Doc 0 .InterfaceName }}
+	{{ GoDoc . 0 }}
 	type {{ .InterfaceName }} interface {
 		{{ range .TypeTree.PublicEmbeds -}}
 		{{ . }}
 		{{ end }}
 
 		{{ range .Methods -}}
-		{{ GoDoc .Doc 1 .Name }}
+		{{ GoDoc . 1 }}
 		{{ .Name }}{{ .Tail }}
 		{{ end }}
 	}
@@ -78,12 +79,14 @@ func GenerateInterface(gen FileGeneratorWriter, iface *gir.Interface) bool {
 		return false
 	}
 
+	writer := FileWriterFromType(gen, iface)
+
 	if iface.GLibGetType != "" && !types.FilterCType(gen, iface.GLibGetType) {
-		gen.Header().AddMarshaler(iface.GLibGetType, igen.InterfaceName)
+		writer.Header().AddMarshaler(iface.GLibGetType, igen.InterfaceName)
 	}
 
-	file.ApplyHeader(gen, &igen)
-	gen.Pen().WriteTmpl(interfaceTmpl, &igen)
+	file.ApplyHeader(writer, &igen)
+	writer.Pen().WriteTmpl(interfaceTmpl, &igen)
 	return true
 }
 
@@ -96,6 +99,7 @@ type InterfaceGenerator struct {
 	Virtuals []callable.Generator // for overrider
 	Methods  []callable.Generator // for big interface
 
+	source *gir.NamespaceFindResult
 	header file.Header
 	gen    FileGenerator
 }
@@ -135,6 +139,7 @@ func (g *InterfaceGenerator) Use(iface *gir.Interface) bool {
 	g.Interface = iface
 	g.InterfaceName = strcases.PascalToGo(iface.Name)
 	g.StructName = strcases.UnexportPascal(g.InterfaceName)
+	g.source = g.gen.Namespace()
 
 	if !g.TypeTree.Resolve(iface.Name) {
 		g.Logln(logger.Debug, "cannot be type-resolved")
@@ -150,14 +155,16 @@ func (g *InterfaceGenerator) Use(iface *gir.Interface) bool {
 	return true
 }
 
-// UseMethods sets only the VirtualMethods and Methods fields. It skips the type
-// resolving steps.
-func (g *InterfaceGenerator) UseMethods(iface *gir.Interface) {
+// UseMethods sets only the VirtualMethods and Methods fields from the given
+// interface belonging to the given namespace.. It skips the type resolving
+// steps.
+func (g *InterfaceGenerator) UseMethods(iface *gir.Interface, n *gir.NamespaceFindResult) {
 	g.TypeTree.Reset()
 
 	g.Interface = iface
 	g.InterfaceName = strcases.PascalToGo(iface.Name)
 	g.StructName = strcases.UnexportPascal(g.InterfaceName)
+	g.source = n
 
 	g.updateMethods()
 }
@@ -166,25 +173,29 @@ func (g *InterfaceGenerator) updateMethods() {
 	g.Methods = callable.Grow(g.Methods, len(g.Interface.Methods))
 	g.Virtuals = callable.Grow(g.Virtuals, len(g.Interface.VirtualMethods))
 
-	for i := range g.Interface.VirtualMethods {
+	for _, vmethod := range g.Interface.VirtualMethods {
 		gen := callable.NewGenerator(headeredFileGenerator{
 			FileGenerator: g.gen,
 			Headerer:      g,
 		})
-		if !gen.Use(&g.Interface.VirtualMethods[i].CallableAttrs) {
+		if !gen.UseFromNamespace(&vmethod.CallableAttrs, g.source) {
 			continue
 		}
+
+		file.ApplyHeader(g, &gen)
 		g.Virtuals = append(g.Virtuals, gen)
 	}
 
-	for i := range g.Interface.Methods {
+	for _, method := range g.Interface.Methods {
 		gen := callable.NewGenerator(headeredFileGenerator{
 			FileGenerator: g.gen,
 			Headerer:      g,
 		})
-		if !gen.Use(&g.Interface.Methods[i].CallableAttrs) {
+		if !gen.UseFromNamespace(&method.CallableAttrs, g.source) {
 			continue
 		}
+
+		file.ApplyHeader(g, &gen)
 		g.Methods = append(g.Methods, gen)
 	}
 

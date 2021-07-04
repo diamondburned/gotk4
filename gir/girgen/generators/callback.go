@@ -17,7 +17,7 @@ import (
 )
 
 var callbackTmpl = gotmpl.NewGoTemplate(`
-	{{ GoDoc .Doc 0 .Name }}
+	{{ GoDoc . 0 }}
 	type {{ .GoName }} func{{ .GoTail }}
 
 	//export gotk4_{{ .GoName }}
@@ -32,8 +32,10 @@ func GenerateCallback(gen FileGeneratorWriter, callback *gir.Callback) bool {
 		return false
 	}
 
-	file.ApplyHeader(gen, &generator)
-	gen.Pen().WriteTmpl(callbackTmpl, &generator)
+	writer := FileWriterFromType(gen, callback)
+	writer.Pen().WriteTmpl(callbackTmpl, &generator)
+	file.ApplyHeader(writer, &generator)
+
 	return true
 }
 

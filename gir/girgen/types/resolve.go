@@ -430,6 +430,26 @@ func ResolveName(gen FileGenerator, girType string) *Resolved {
 	return Resolve(gen, gir.Type{Name: girType})
 }
 
+// BuiltinHandledTypes contains types manually handled by Resolve and
+// typeconv.Converter, as well as types that are never supposed to be handled.
+var BuiltinHandledTypes = []FilterMatcher{
+	// These are already manually covered in the girgen code; they are
+	// provided by package gotk3/glib.
+	AbsoluteFilter("GLib.Error"),
+	// Ignore generating everything in GObject, but allow resolving its
+	// types.
+	RegexFilter("GObject..*"),
+
+	// This is not supported by Go. We might be able to support it in
+	// the future using a 16-byte data structure, but the actual size
+	// isn't well defined as far as I know.
+	AbsoluteFilter("*.long double"),
+
+	// Special marking for internal types from GLib (apparently for
+	// glib:get-type).
+	AbsoluteFilter("C.intern"),
+}
+
 // Resolve resolves the given type from the GIR type field. It returns nil if
 // the type is not known. It does not recursively traverse the type.
 func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
@@ -507,21 +527,27 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	// it's still one. Perhaps we could generate types separately first, and
 	// then generate methods and functions afterwards.
 
-	switch /* v := */ result.Type.(type) {
-	case *gir.Record:
-		panic("TODO: resolve.go/Record")
-		// if !canRecord(ng, *result.Record, nil) {
-		// 	return nil
-		// }
-
-	case *gir.Callback:
-		panic("TODO resolve.go/Callback")
-		// cbgen := newCallbackFileGenerator(ng)
-		// if !cbgen.Use(*result.Callback) {
-		// 	return nil
-		// }
-		// source = v.SourcePosition
+	resolved := typeFromResult(gen, typ, result)
+	if !gen.CanGenerate(resolved) {
+		return nil
 	}
 
-	return typeFromResult(gen, typ, result)
+	return resolved
+
+	// switch /* v := */ result.Type.(type) {
+	// case *gir.Record:
+	// 	panic("TODO: resolve.go/Record")
+	// 	// if !canRecord(ng, *result.Record, nil) {
+	// 	// 	return nil
+	// 	// }
+
+	// case *gir.Callback:
+	// 	panic("TODO resolve.go/Callback")
+	// 	// cbgen := newCallbackFileGenerator(ng)
+	// 	// if !cbgen.Use(*result.Callback) {
+	// 	// 	return nil
+	// 	// }
+	// 	// source = v.SourcePosition
+	// }
+
 }

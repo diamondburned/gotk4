@@ -3,14 +3,18 @@
 package cmt
 
 import (
+	"fmt"
 	"go/doc"
 	"html"
+	"log"
+	"reflect"
 	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 )
 
 const (
@@ -28,13 +32,71 @@ var (
 	cmtHyperlinkRegex = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
 )
 
-// GoDoc renders a Go documentation string from the given GIR doc. If doc is
-// nil, then an empty string is returned.
-func GoDoc(doc *gir.Doc, indentLvl int, self string) string {
-	if doc == nil {
-		return ""
+// InfoFields contains common fields that a GIR schema type may contain. These
+// fields should rarely be used, because they're too magical. All fields inside
+// InfoFields are optional.
+type InfoFields struct {
+	Name     *string
+	Attrs    *gir.InfoAttrs
+	Elements *gir.InfoElements
+}
+
+// GetInfoFields gets the InfoFields from the given value.
+func GetInfoFields(v interface{}) InfoFields {
+	value := reflect.Indirect(reflect.ValueOf(v))
+	if value.Kind() != reflect.Struct {
+		return InfoFields{}
 	}
-	return CommentReflowLinesIndent(indentLvl, self, doc.String)
+
+	if !strings.HasSuffix(value.Type().PkgPath(), "/gir") {
+		log.Panicf("given type %s is not from package gir", value.Type())
+	}
+
+	// getField gets the pointer to the field name.
+	getField := func(name string) interface{} {
+		v := value.FieldByName(name)
+		if v == (reflect.Value{}) {
+			return nil
+		}
+		return v.Addr().Interface()
+	}
+
+	var inf InfoFields
+
+	inf.Name, _ = getField("Name").(*string)
+	inf.Attrs, _ = getField("InfoAttrs").(*gir.InfoAttrs)
+	inf.Elements, _ = getField("InfoElements").(*gir.InfoElements)
+
+	return inf
+}
+
+// GoDoc renders a Go documentation string from the given struct. The struct
+// should contain at least the field Name, InfoAttrs and InfoElements.
+func GoDoc(v interface{}, indentLvl int) string {
+	inf := GetInfoFields(v)
+
+	var self string
+	if inf.Name != nil {
+		if strings.Contains(*inf.Name, "_") {
+			self = strcases.SnakeToGo(true, *inf.Name)
+		} else {
+			self = strcases.PascalToGo(*inf.Name)
+		}
+	}
+
+	var doc strings.Builder
+	if inf.Elements != nil && inf.Elements.Doc != nil {
+		doc.WriteString(inf.Elements.Doc.String)
+	}
+
+	if inf.Attrs != nil && inf.Attrs.Deprecated {
+		if doc.Len() > 0 {
+			doc.WriteString("\n\n")
+		}
+		fmt.Fprintf(&doc, "Deprecated: since version %s.", inf.Attrs.DeprecatedVersion)
+	}
+
+	return CommentReflowLinesIndent(indentLvl, self, doc.String())
 }
 
 // nthWord returns the nth word, or an empty string if none.
@@ -66,18 +128,19 @@ func lowerFirstWord(paragraph string) string {
 func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	cmt = html.UnescapeString(cmt)
 
-	switch {
-	case strings.HasPrefix(cmt, "#") && nthWordSimplePresent(cmt, 1):
-		// Trim the first word away and replace it with the Go name.
-		cmt = self + " " + strings.SplitN(cmt, " ", 2)[1]
-
-	case nthWordSimplePresent(cmt, 0):
-		cmt = self + " " + lowerFirstWord(cmt)
-
-	default:
-		// Trim the word "this" away to make the sentence gramatically correct.
-		cmt = strings.TrimPrefix(cmt, "this ")
-		cmt = self + ": " + lowerFirstLetter(cmt)
+	if self != "" {
+		switch {
+		case strings.HasPrefix(cmt, "#") && nthWordSimplePresent(cmt, 1):
+			// Trim the first word away and replace it with the Go name.
+			cmt = self + " " + strings.SplitN(cmt, " ", 2)[1]
+		case nthWordSimplePresent(cmt, 0):
+			cmt = self + " " + lowerFirstWord(cmt)
+		default:
+			// Trim the word "this" away to make the sentence gramatically
+			// correct.
+			cmt = strings.TrimPrefix(cmt, "this ")
+			cmt = self + ": " + lowerFirstLetter(cmt)
+		}
 	}
 
 	// Fix up the codeblocks and render it using GoDoc format.

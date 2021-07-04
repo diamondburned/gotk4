@@ -1,82 +1,87 @@
 package main
 
-import "github.com/diamondburned/gotk4/gir/girgen"
+import . "github.com/diamondburned/gotk4/gir/girgen/types"
 
 // packages lists pkg-config packages and optionally the namespaces to be
 // generated. If the list of namespaces is nil, then everything is generated.
 var packages = []Package{
 	{"gobject-introspection-1.0", []string{
-		"GLib-2.0",
-		"GObject-2.0",
-		"Gio-2.0",
-		"cairo-1.0",
+		"GLib-2",
+		"GObject-2",
+		"Gio-2",
+		"cairo-1",
 	}},
 	{"gdk-pixbuf-2.0", nil},
 	{"graphene-1.0", nil},
 	{"pango", []string{
-		"Pango-1.0",
-		"PangoCairo-1.0",
+		"Pango-1",
+		"PangoCairo-1",
 	}},
 	{"gtk4", nil},     // includes Gdk
 	{"gtk+-3.0", nil}, // includes Gdk
 }
 
+// preprocessors defines a list of preprocessors that the main generator will
+// use. It's mostly used for renaming colliding types/identifiers.
+var preprocessors = []Preprocessor{
+	// Collision due to case conversions.
+	TypeRenamer("GLib-2.file_test", "test_file"),
+}
+
 // filters defines a list of GIR types to be filtered. The map key is the
 // namespace, and the values are list of names.
-var filters = []girgen.FilterMatcher{
-	girgen.AbsoluteFilter("C.cairo_image_surface_create"),
+var filters = []FilterMatcher{
+	AbsoluteFilter("C.cairo_image_surface_create"),
 
 	// Broadway is not included, so we don't generate code for it.
-	girgen.FileFilter("../gsk/broadway/gskbroadwayrenderer.h"),
+	FileFilter("gsk/broadway/gskbroadwayrenderer.h"),
 	// Output buffer parameter is not actually array.
-	girgen.AbsoluteFilter("GLib.unichar_to_utf8"),
-	// Collision due to case conversions.
-	girgen.TypeRenamer("GLib.file_test", "test_file"),
+	AbsoluteFilter("GLib.unichar_to_utf8"),
 	// Requires special header, is optional function.
-	girgen.AbsoluteFilter("Gio.networking_init"),
+	AbsoluteFilter("Gio.networking_init"),
 	// Not an array type but expects an array.
-	girgen.AbsoluteFilter("Gio.SimpleProxyResolver.set_ignore_hosts"),
+	AbsoluteFilter("Gio.SimpleProxyResolver.set_ignore_hosts"),
 	// These are not found.
-	girgen.AbsoluteFilter("GdkPixbuf.PixbufNonAnim"),
-	girgen.AbsoluteFilter("GdkPixbuf.PixbufModulePattern"),
-	girgen.AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
+	AbsoluteFilter("GdkPixbuf.PixbufNonAnim"),
+	AbsoluteFilter("GdkPixbuf.PixbufModulePattern"),
+	AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
 
-	girgen.FileFilter("garray.h"),
-	girgen.FileFilter("gasyncqueue.h"),
-	girgen.FileFilter("gatomic.h"),
-	girgen.FileFilter("gbacktrace.h"),
-	girgen.FileFilter("gbitlock.h"),
-	girgen.FileFilter("gbytes.h"),
-	girgen.FileFilter("gdataset.h"),
-	girgen.FileFilter("gdate.h"),
-	girgen.FileFilter("gdatetime.h"),
-	girgen.FileFilter("gerror.h"), // already handled internally
-	girgen.FileFilter("ghook.h"),
-	girgen.FileFilter("glib-unix.h"),
-	girgen.FileFilter("glist.h"),
-	girgen.FileFilter("gmacros.h"),
-	girgen.FileFilter("gmem.h"),
-	girgen.FileFilter("gnetworking.h"), // needs header
-	girgen.FileFilter("gprintf.h"),
-	girgen.FileFilter("grcbox.h"),
-	girgen.FileFilter("grefcount.h"),
-	girgen.FileFilter("grefstring.h"),
-	girgen.FileFilter("gsettingsbackend.h"),
-	girgen.FileFilter("gslice.h"),
-	girgen.FileFilter("gslist.h"),
-	girgen.FileFilter("gstdio.h"),
-	girgen.FileFilter("gstrfuncs.h"),
-	girgen.FileFilter("gstringchunk.h"),
-	girgen.FileFilter("gstring.h"),
-	girgen.FileFilter("gstrvbuilder.h"),
-	girgen.FileFilter("gtestutils.h"),
-	girgen.FileFilter("gthread.h"),
-	girgen.FileFilter("gthreadpool.h"),
-	girgen.FileFilter("gtrashstack.h"),
+	FileFilter("garray.h"),
+	FileFilter("gasyncqueue.h"),
+	FileFilter("gatomic.h"),
+	FileFilter("gbacktrace.h"),
+	FileFilter("gbitlock.h"),
+	FileFilter("gbytes.h"),
+	FileFilter("gdataset.h"),
+	FileFilter("gdate.h"),
+	FileFilter("gdatetime.h"),
+	FileFilter("gerror.h"), // already handled internally
+	FileFilter("ghook.h"),
+	FileFilter("glib-unix.h"),
+	FileFilter("glist.h"),
+	FileFilter("gmacros.h"),
+	FileFilter("gmem.h"),
+	FileFilter("gnetworking.h"), // needs header
+	FileFilter("gprintf.h"),
+	FileFilter("grcbox.h"),
+	FileFilter("grefcount.h"),
+	FileFilter("grefstring.h"),
+	FileFilter("gsettingsbackend.h"),
+	FileFilter("gslice.h"),
+	FileFilter("gslist.h"),
+	FileFilter("gstdio.h"),
+	FileFilter("gstrfuncs.h"),
+	FileFilter("gstringchunk.h"),
+	FileFilter("gstring.h"),
+	FileFilter("gstrvbuilder.h"),
+	FileFilter("gtestutils.h"),
+	FileFilter("gthread.h"),
+	FileFilter("gthreadpool.h"),
+	FileFilter("gtrashstack.h"),
 
 	// These are missing on build for some reason.
-	girgen.AbsoluteFilter("C.g_array_get_type"),
-	girgen.AbsoluteFilter("C.g_byte_array_get_type"),
-	girgen.AbsoluteFilter("C.g_bytes_get_type"),
-	girgen.AbsoluteFilter("C.g_ptr_array_get_type"),
+	AbsoluteFilter("C.g_array_get_type"),
+	AbsoluteFilter("C.g_byte_array_get_type"),
+	AbsoluteFilter("C.g_bytes_get_type"),
+	AbsoluteFilter("C.g_ptr_array_get_type"),
 }

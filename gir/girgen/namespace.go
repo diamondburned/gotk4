@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/generators"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
+	"github.com/pkg/errors"
 )
 
 // NamespaceGenerator manages generation of a namespace. A namespace contains
@@ -50,8 +51,8 @@ func (n *NamespaceGenerator) Namespace() *gir.NamespaceFindResult {
 }
 
 func (n *NamespaceGenerator) Logln(lvl logger.Level, v ...interface{}) {
-	p := fmt.Sprintf("package %s/v%s", n.PkgName, gir.MajorVersion(n.current.Namespace.Version))
-	n.Generator.Logln(lvl, logger.Prefix(v, p))
+	p := fmt.Sprintf("package %s/v%s:", n.PkgName, n.PkgVersion)
+	n.Generator.Logln(lvl, logger.Prefix(v, p)...)
 }
 
 // CanGenerate checks if a type can be generated or not.
@@ -144,8 +145,10 @@ func swapFileExt(filepath, ext string) string {
 }
 
 func (n *NamespaceGenerator) makeFile(filename string) *FileGenerator {
+	var isRoot bool
 	if filename == "" {
 		filename = n.PkgName + ".go"
+		isRoot = true
 	}
 
 	f, ok := n.files[filename]
@@ -153,14 +156,14 @@ func (n *NamespaceGenerator) makeFile(filename string) *FileGenerator {
 		return f
 	}
 
-	f = NewFileGenerator(n)
+	f = NewFileGenerator(n, filename, isRoot)
 	n.files[filename] = f
 	return f
 }
 
-// GenerateAll generates everything in the current namespace into files. The
+// Generate generates everything in the current namespace into files. The
 // returned map maps the filename to the raw file content.
-func (n *NamespaceGenerator) GenerateAll() map[string][]byte {
+func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	for _, v := range n.current.Namespace.Aliases {
 		n.logIfSkipped(generators.GenerateAlias(n, &v), v.Name)
 	}
@@ -186,6 +189,32 @@ func (n *NamespaceGenerator) GenerateAll() map[string][]byte {
 		n.logIfSkipped(generators.GenerateRecord(n, &v), v.Name)
 	}
 
+	// Ensure that the root file has CallbackDelete if any other files do.
+	for _, file := range n.files {
+		if file.header.CallbackDelete {
+			n.makeFile("").header.CallbackDelete = true
+			break
+		}
+	}
+
+	files := make(map[string][]byte, len(n.files))
+
+	var firstErr error
+
+	for name, file := range n.files {
+		if file.IsEmpty() {
+			continue
+		}
+
+		b, err := file.Generate()
+		files[name] = b
+
+		if err != nil && firstErr == nil {
+			firstErr = errors.Wrapf(err, "%s/v%s/%s", n.PkgName, n.PkgVersion, name)
+		}
+	}
+
+	return files, firstErr
 }
 
 func (n *NamespaceGenerator) logIfSkipped(skipped bool, what string) {

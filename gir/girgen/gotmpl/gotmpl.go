@@ -21,7 +21,9 @@ func NewGoTemplate(block string) *template.Template {
 		"UnexportPascal": strcases.UnexportPascal,
 		"SnakeToGo":      strcases.SnakeToGo,
 		"FirstLetter":    strcases.FirstLetter,
-		"GoDoc":          cmt.GoDoc,
+
+		"GoDoc":            cmt.GoDoc,
+		"OverrideSelfName": cmt.OverrideSelfName,
 	})
 	t = template.Must(t.Parse(block))
 	return t

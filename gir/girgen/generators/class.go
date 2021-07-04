@@ -147,18 +147,20 @@ func NewClassGenerator(gen FileGenerator) ClassGenerator {
 
 func (cg *ClassGenerator) Logln(lvl logger.Level, v ...interface{}) {
 	p := fmt.Sprintf("class %s (C.%s):", cg.InterfaceName, cg.CType)
-	cg.gen.Logln(lvl, logger.Prefix(v, p))
+	cg.gen.Logln(lvl, logger.Prefix(v, p)...)
 }
 
 // Reset resets the callback generator.
 func (g *ClassGenerator) Reset() {
 	g.igen.Reset()
 	g.cgen.Reset()
+	g.Tree.Reset()
 
 	*g = ClassGenerator{
 		gen:  g.gen,
 		igen: g.igen,
 		cgen: g.cgen,
+		Tree: g.Tree,
 	}
 }
 
@@ -168,16 +170,19 @@ func (g *ClassGenerator) Header() *file.Header {
 }
 
 func (cg *ClassGenerator) Use(class *gir.Class) bool {
+	cg.Reset()
+	cg.Class = class
+
 	if !class.IsIntrospectable() || types.Filter(cg.gen, class.Name, class.CType) {
 		return false
 	}
 
-	if !cg.Tree.Resolve(class.Name) {
+	// Skip generating built-in types as well as orphaned types.
+	if !cg.Tree.Resolve(class.Name) || cg.Tree.Builtin != nil {
 		cg.Logln(logger.Debug, "class", class.Name, "because unknown parent type", class.Parent)
 		return false
 	}
 
-	cg.Class = class
 	cg.InterfaceName = strcases.PascalToGo(class.Name)
 	cg.StructName = strcases.UnexportPascal(cg.InterfaceName)
 

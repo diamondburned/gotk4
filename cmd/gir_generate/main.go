@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -13,14 +14,17 @@ import (
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen"
+	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/pkg/errors"
+	"golang.org/x/sync/semaphore"
 )
 
 var (
-	output  string
-	module  string
-	verbose bool
-	listPkg bool
+	output   string
+	module   string
+	verbose  bool
+	listPkg  bool
+	parallel = int64(runtime.GOMAXPROCS(-1))
 )
 
 func init() {
@@ -28,6 +32,7 @@ func init() {
 	flag.StringVar(&module, "m", "github.com/diamondburned/gotk4", "go module name")
 	flag.BoolVar(&verbose, "v", verbose, "log verbosely (debug mode)")
 	flag.BoolVar(&listPkg, "l", listPkg, "only list packages and exit")
+	flag.Int64Var(&parallel, "p", parallel, "number of generator goroutines to spawn")
 	flag.Parse()
 
 	if !listPkg && output == "" {
@@ -79,15 +84,12 @@ func main() {
 	var errMut sync.Mutex
 	var errors []error
 
-	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
-
 	gen := girgen.NewGenerator(repos, modulePath)
-	gen.Color = true
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
 	gen.AddFilters(filters)
 
 	if verbose {
-		gen.LogLevel = girgen.LogDebug
+		gen.LogLevel = logger.Debug
 	}
 
 	// Do a clean-up of the target directory.
@@ -95,11 +97,16 @@ func main() {
 		log.Println("non-fatal: failed to rm -rf output dir:", err)
 	}
 
+	sema := semaphore.NewWeighted(parallel)
+
 	for _, repo := range repos {
 		for _, namespace := range repo.Namespaces {
 			ng := gen.UseNamespace(namespace.Name, namespace.Version)
+			if ng == nil {
+				log.Fatalln("cannot find namespace", namespace.Name, "v"+namespace.Version)
+			}
 
-			sema <- struct{}{}
+			sema.Acquire(context.Background(), 1)
 			wg.Add(1)
 
 			go func() {
@@ -109,7 +116,7 @@ func main() {
 					errMut.Unlock()
 				}
 
-				<-sema
+				sema.Release(1)
 				wg.Done()
 			}()
 		}
@@ -127,8 +134,7 @@ func main() {
 }
 
 func writeNamespace(ng *girgen.NamespaceGenerator) error {
-	pkg := ng.PackageName()
-	dir := filepath.Join(output, pkg)
+	dir := filepath.Join(output, ng.PkgName)
 
 	if version := majorVer(ng.Namespace().Namespace); version > 1 {
 		// Follow Go's convention of a versioned package, so we can generate
@@ -140,14 +146,17 @@ func writeNamespace(ng *girgen.NamespaceGenerator) error {
 		return errors.Wrapf(err, "failed to mkdir -p %q", dir)
 	}
 
-	b, genErr := ng.Generate()
+	files, err := ng.Generate()
 
-	if err := os.WriteFile(filepath.Join(dir, pkg+".go"), b, 0666); err != nil {
-		return errors.Wrapf(err, "failed to write pkg %q", pkg)
+	for name, file := range files {
+		dst := filepath.Join(dir, name)
+		if err := os.WriteFile(dst, file, 0666); err != nil {
+			return errors.Wrapf(err, "failed to write to %s", dst)
+		}
 	}
 
 	// Preserve the generation error, but give it last priority.
-	return genErr
+	return err
 }
 
 func modulePath(namespace *gir.Namespace) string {

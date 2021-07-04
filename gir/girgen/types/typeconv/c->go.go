@@ -303,7 +303,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	}
 
 	// Resolve special-case GLib types.
-	switch types.EnsureNamespace(conv.SourceNamespace, value.AnyType.Type.Name) {
+	switch types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name) {
 	case "gpointer":
 		value.header.ImportCore("box")
 		value.p.Linef("%s = box.Get(uintptr(%s))", value.OutName, value.InName)

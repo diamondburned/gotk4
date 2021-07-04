@@ -17,9 +17,9 @@ var bitfieldTmpl = gotmpl.NewGoTemplate(`
 		{{ range .Members -}}
 		{{- $name := ($.FormatMember .Name) -}}
 		{{- if .Doc -}}
-		{{ GoDoc . 1 }}
+		{{ GoDoc . 1 (OverrideSelfName $name) }}
 		{{ end -}}
-		{{ $name }} {{ .GoName }} = {{ .Value }}
+		{{ $name }} {{ $.GoName }} = {{ $.Bits .Value }}
 		{{ end -}}
 	)
 
@@ -30,14 +30,14 @@ var bitfieldTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 `)
 
-type bitfieldGenerator struct {
+type bitfieldData struct {
 	*gir.Bitfield
 	GoName string
 
 	gen FileGenerator
 }
 
-func (eg *bitfieldGenerator) Bits(v string) string {
+func (*bitfieldData) Bits(v string) string {
 	b, err := strconv.ParseUint(v, 10, 64)
 	if err != nil {
 		return v
@@ -46,8 +46,8 @@ func (eg *bitfieldGenerator) Bits(v string) string {
 	return "0b" + strconv.FormatUint(b, 2)
 }
 
-func (eg *bitfieldGenerator) FormatMember(memberName string) string {
-	return strcases.PascalToGo(eg.Name) + strcases.SnakeToGo(true, memberName)
+func (b *bitfieldData) FormatMember(memberName string) string {
+	return strcases.PascalToGo(b.Name) + strcases.SnakeToGo(true, memberName)
 }
 
 // GenerateBitfield generates a bitfield type declaration as well as the
@@ -68,7 +68,7 @@ func GenerateBitfield(gen FileGeneratorWriter, bitfield *gir.Bitfield) bool {
 	// Need GLibObject for g_value_*.
 	writer.Header().NeedsGLibObject()
 
-	writer.Pen().WriteTmpl(bitfieldTmpl, &bitfieldGenerator{
+	writer.Pen().WriteTmpl(bitfieldTmpl, &bitfieldData{
 		Bitfield: bitfield,
 		GoName:   goName,
 		gen:      gen,

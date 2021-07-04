@@ -58,5 +58,5 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 
 // Logln writes a log line into the internal logger.
 func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
-	logger.Stdlog(g.Logger, g.LogLevel, lvl, v)
+	logger.Stdlog(g.Logger, g.LogLevel, lvl, v...)
 }

@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -40,7 +40,7 @@ func init() {
 type ClipboardImageReceivedFunc func(clipboard Clipboard, pixbuf gdkpixbuf.Pixbuf)
 
 //export gotk4_ClipboardImageReceivedFunc
-func _ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C.gpointer) {
+func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -61,7 +61,7 @@ func _ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C
 type ClipboardReceivedFunc func(clipboard Clipboard, selectionData *SelectionData)
 
 //export gotk4_ClipboardReceivedFunc
-func _ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
+func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -82,7 +82,7 @@ func _ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2
 type ClipboardRichTextReceivedFunc func(clipboard Clipboard, format *gdk.Atom, text string, length uint)
 
 //export gotk4_ClipboardRichTextReceivedFunc
-func _ClipboardRichTextReceivedFunc(arg0 *C.GtkClipboard, arg1 C.GdkAtom, arg2 *C.guint8, arg3 C.gsize, arg4 C.gpointer) {
+func gotk4_ClipboardRichTextReceivedFunc(arg0 *C.GtkClipboard, arg1 C.GdkAtom, arg2 *C.guint8, arg3 C.gsize, arg4 C.gpointer) {
 	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -117,7 +117,7 @@ func _ClipboardRichTextReceivedFunc(arg0 *C.GtkClipboard, arg1 C.GdkAtom, arg2 *
 type ClipboardTargetsReceivedFunc func(clipboard Clipboard, atoms []*gdk.Atom)
 
 //export gotk4_ClipboardTargetsReceivedFunc
-func _ClipboardTargetsReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkAtom, arg2 C.gint, arg3 C.gpointer) {
+func gotk4_ClipboardTargetsReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkAtom, arg2 C.gint, arg3 C.gpointer) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -139,7 +139,7 @@ func _ClipboardTargetsReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkAtom, arg2 C
 type ClipboardTextReceivedFunc func(clipboard Clipboard, text string)
 
 //export gotk4_ClipboardTextReceivedFunc
-func _ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpointer) {
+func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -160,7 +160,7 @@ func _ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpoi
 type ClipboardURIReceivedFunc func(clipboard Clipboard, uris []string)
 
 //export gotk4_ClipboardURIReceivedFunc
-func _ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C.gpointer) {
+func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

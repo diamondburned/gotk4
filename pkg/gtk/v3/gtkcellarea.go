@@ -5,9 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -37,7 +37,7 @@ func init() {
 type CellAllocCallback func(renderer CellRenderer, cellArea *gdk.Rectangle, cellBackground *gdk.Rectangle, ok bool)
 
 //export gotk4_CellAllocCallback
-func _CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) C.gboolean {
+func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -68,7 +68,7 @@ func _CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.G
 type CellCallback func(renderer CellRenderer, ok bool)
 
 //export gotk4_CellCallback
-func _CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
+func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

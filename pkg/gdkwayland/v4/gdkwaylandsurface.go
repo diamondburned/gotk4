@@ -5,8 +5,8 @@ package gdkwayland
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,7 +26,7 @@ import "C"
 type WaylandToplevelExported func(toplevel WaylandToplevel, handle string)
 
 //export gotk4_WaylandToplevelExported
-func _WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
+func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

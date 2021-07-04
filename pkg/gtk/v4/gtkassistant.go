@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -76,7 +76,7 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 type AssistantPageFunc func(currentPage int, gint int)
 
 //export gotk4_AssistantPageFunc
-func _AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
+func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

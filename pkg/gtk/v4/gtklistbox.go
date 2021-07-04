@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -33,7 +33,7 @@ func init() {
 type ListBoxCreateWidgetFunc func(item gextras.Objector, widget Widget)
 
 //export gotk4_ListBoxCreateWidgetFunc
-func _ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -58,7 +58,7 @@ func _ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 type ListBoxFilterFunc func(row ListBoxRow, ok bool)
 
 //export gotk4_ListBoxFilterFunc
-func _ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
+func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -86,7 +86,7 @@ func _ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
 type ListBoxForeachFunc func(box ListBox, row ListBoxRow)
 
 //export gotk4_ListBoxForeachFunc
-func _ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -106,7 +106,7 @@ func _ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpoin
 type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow, gint int)
 
 //export gotk4_ListBoxSortFunc
-func _ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.int {
+func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.int {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -136,7 +136,7 @@ func _ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpoin
 type ListBoxUpdateHeaderFunc func(row ListBoxRow, before ListBoxRow)
 
 //export gotk4_ListBoxUpdateHeaderFunc
-func _ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

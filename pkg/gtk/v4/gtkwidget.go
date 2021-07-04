@@ -5,9 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
@@ -39,7 +39,7 @@ type Allocation = gdk.Rectangle
 type TickCallback func(widget Widget, frameClock gdk.FrameClock, ok bool)
 
 //export gotk4_TickCallback
-func _TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
+func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

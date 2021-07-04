@@ -5,8 +5,8 @@ package gdkpixbuf
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,7 +45,7 @@ const (
 type PixbufModulePreparedFunc func(pixbuf Pixbuf, anim PixbufAnimation)
 
 //export gotk4_PixbufModulePreparedFunc
-func _PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
+func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -77,7 +77,7 @@ func _PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, ar
 type PixbufModuleSizeFunc func(width *int, height *int)
 
 //export gotk4_PixbufModuleSizeFunc
-func _PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
+func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -101,7 +101,7 @@ func _PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 type PixbufModuleUpdatedFunc func(pixbuf Pixbuf, x int, y int, width int, height int)
 
 //export gotk4_PixbufModuleUpdatedFunc
-func _PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
+func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
 	v := box.Get(uintptr(arg5))
 	if v == nil {
 		panic(`callback not found`)

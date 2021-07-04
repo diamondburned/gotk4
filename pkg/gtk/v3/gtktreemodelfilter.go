@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +37,7 @@ func init() {
 type TreeModelFilterModifyFunc func(model TreeModel, iter *TreeIter, value externglib.Value, column int)
 
 //export gotk4_TreeModelFilterModifyFunc
-func _TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.gint, arg4 C.gpointer) {
+func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.gint, arg4 C.gpointer) {
 	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -64,7 +64,7 @@ func _TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 
 type TreeModelFilterVisibleFunc func(model TreeModel, iter *TreeIter, ok bool)
 
 //export gotk4_TreeModelFilterVisibleFunc
-func _TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
+func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

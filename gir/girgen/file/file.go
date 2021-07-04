@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
 // CoreImportPath is the path to the core import path.
-const CoreImportPath = "github.com/diamondburned/gotk4/core"
+const CoreImportPath = "github.com/diamondburned/gotk4/pkg/core"
 
 // Headerer is an interface of something that returns its internal header.
 type Headerer interface {

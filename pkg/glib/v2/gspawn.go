@@ -5,8 +5,8 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -137,7 +137,7 @@ const (
 type SpawnChildSetupFunc func()
 
 //export gotk4_SpawnChildSetupFunc
-func _SpawnChildSetupFunc(arg0 C.gpointer) {
+func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)

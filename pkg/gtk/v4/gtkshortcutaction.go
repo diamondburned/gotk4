@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -51,7 +51,7 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 type ShortcutFunc func(widget Widget, args *glib.Variant, ok bool)
 
 //export gotk4_ShortcutFunc
-func _ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

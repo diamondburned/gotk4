@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,7 +33,7 @@ func init() {
 type TreeSelectionForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter)
 
 //export gotk4_TreeSelectionForeachFunc
-func _TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
+func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -58,7 +58,7 @@ func _TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *
 type TreeSelectionFunc func(selection TreeSelection, model TreeModel, path *TreePath, pathCurrentlySelected bool, ok bool)
 
 //export gotk4_TreeSelectionFunc
-func _TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean {
+func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)

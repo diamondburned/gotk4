@@ -5,8 +5,8 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,7 +31,7 @@ import "C"
 type BusAcquiredCallback func(connection DBusConnection, name string)
 
 //export gotk4_BusAcquiredCallback
-func _BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -51,7 +51,7 @@ func _BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointe
 type BusNameAcquiredCallback func(connection DBusConnection, name string)
 
 //export gotk4_BusNameAcquiredCallback
-func _BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -72,7 +72,7 @@ func _BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpo
 type BusNameLostCallback func(connection DBusConnection, name string)
 
 //export gotk4_BusNameLostCallback
-func _BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

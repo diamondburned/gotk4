@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -56,7 +56,7 @@ func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 type FontFilterFunc func(family pango.FontFamily, face pango.FontFace, ok bool)
 
 //export gotk4_FontFilterFunc
-func _FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
+func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

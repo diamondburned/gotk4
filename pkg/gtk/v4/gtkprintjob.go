@@ -5,10 +5,10 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gerror"
-	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,7 +32,7 @@ func init() {
 type PrintJobCompleteFunc func(printJob PrintJob, err error)
 
 //export gotk4_PrintJobCompleteFunc
-func _PrintJobCompleteFunc(arg0 *C.GtkPrintJob, arg1 C.gpointer, arg2 *C.GError) {
+func gotk4_PrintJobCompleteFunc(arg0 *C.GtkPrintJob, arg1 C.gpointer, arg2 *C.GError) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

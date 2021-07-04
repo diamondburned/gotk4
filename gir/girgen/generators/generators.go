@@ -1,7 +1,7 @@
 package generators
 
 import (
-	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/types"

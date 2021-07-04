@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0

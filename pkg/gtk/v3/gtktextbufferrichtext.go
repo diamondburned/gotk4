@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,7 +24,7 @@ import "C"
 type TextBufferDeserializeFunc func(registerBuffer TextBuffer, contentBuffer TextBuffer, iter *TextIter, data []byte, createTags bool, ok bool)
 
 //export gotk4_TextBufferDeserializeFunc
-func _TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.guint8, arg4 C.gsize, arg5 C.gboolean, arg6 C.gpointer) C.gboolean {
+func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.guint8, arg4 C.gsize, arg5 C.gboolean, arg6 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
@@ -62,7 +62,7 @@ func _TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, ar
 type TextBufferSerializeFunc func(registerBuffer TextBuffer, contentBuffer TextBuffer, start *TextIter, end *TextIter, length *uint, guint8 *byte)
 
 //export gotk4_TextBufferSerializeFunc
-func _TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) *C.guint8 {
+func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) *C.guint8 {
 	v := box.Get(uintptr(arg5))
 	if v == nil {
 		panic(`callback not found`)

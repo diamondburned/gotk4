@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -27,7 +27,7 @@ func init() {
 type ScaleFormatValueFunc func(scale Scale, value float64, utf8 string)
 
 //export gotk4_ScaleFormatValueFunc
-func _ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char {
+func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

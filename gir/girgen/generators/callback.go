@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
@@ -20,8 +20,8 @@ var callbackTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 }}
 	type {{ .GoName }} func{{ .GoTail }}
 
-	//export gotk4_{{ .GoName }}
-	func {{ .Prefix }}_{{ .GoName }}{{ .CGoTail }} {{ .Block }}
+	//export {{ .Prefix }}{{ .GoName }}
+	func {{ .Prefix }}{{ .GoName }}{{ .CGoTail }} {{ .Block }}
 `)
 
 // GenerateCallback generates a callback type declaration and handler into the
@@ -74,8 +74,9 @@ func (g *CallbackGenerator) Reset() {
 	g.pen.Reset()
 
 	*g = CallbackGenerator{
-		pen: g.pen,
-		gen: g.gen,
+		Prefix: g.Prefix,
+		pen:    g.pen,
+		gen:    g.gen,
 	}
 }
 

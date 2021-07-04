@@ -2,7 +2,7 @@ package types
 
 import (
 	"github.com/davecgh/go-spew/spew"
-	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 )

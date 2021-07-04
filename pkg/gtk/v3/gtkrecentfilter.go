@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -58,7 +58,7 @@ func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 type RecentFilterFunc func(filterInfo *RecentFilterInfo, ok bool)
 
 //export gotk4_RecentFilterFunc
-func _RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboolean {
+func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

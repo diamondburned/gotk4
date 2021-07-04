@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -57,7 +57,7 @@ func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {
 type TreeViewColumnDropFunc func(treeView TreeView, column TreeViewColumn, prevColumn TreeViewColumn, nextColumn TreeViewColumn, ok bool)
 
 //export gotk4_TreeViewColumnDropFunc
-func _TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) C.gboolean {
+func gotk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -89,7 +89,7 @@ func _TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg
 type TreeViewMappingFunc func(treeView TreeView, path *TreePath)
 
 //export gotk4_TreeViewMappingFunc
-func _TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
+func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -112,7 +112,7 @@ func _TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpoin
 type TreeViewRowSeparatorFunc func(model TreeModel, iter *TreeIter, ok bool)
 
 //export gotk4_TreeViewRowSeparatorFunc
-func _TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
+func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -143,7 +143,7 @@ func _TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C
 type TreeViewSearchEqualFunc func(model TreeModel, column int, key string, iter *TreeIter, ok bool)
 
 //export gotk4_TreeViewSearchEqualFunc
-func _TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) C.gboolean {
+func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)

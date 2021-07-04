@@ -5,8 +5,8 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -493,7 +493,7 @@ func marshalRole(p uintptr) (interface{}, error) {
 type Function func(ok bool)
 
 //export gotk4_Function
-func _Function(arg0 C.gpointer) C.gboolean {
+func gotk4_Function(arg0 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)

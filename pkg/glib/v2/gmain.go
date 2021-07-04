@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +37,7 @@ type MainContextPusher = C.void
 type SourceFunc func(ok bool)
 
 //export gotk4_SourceFunc
-func _SourceFunc(arg0 C.gpointer) C.gboolean {
+func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)

@@ -5,9 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gerror"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -135,7 +135,7 @@ func marshalPrintStatus(p uintptr) (interface{}, error) {
 type PageSetupDoneFunc func(pageSetup PageSetup)
 
 //export gotk4_PageSetupDoneFunc
-func _PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
+func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

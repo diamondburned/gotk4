@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,7 +73,7 @@ func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 type PrinterFunc func(printer Printer, ok bool)
 
 //export gotk4_PrinterFunc
-func _PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
+func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

@@ -5,8 +5,8 @@ package gobject
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,7 +61,7 @@ func marshalBindingFlags(p uintptr) (interface{}, error) {
 type BindingTransformFunc func(binding Binding, fromValue externglib.Value, toValue externglib.Value, ok bool)
 
 //export gotk4_BindingTransformFunc
-func _BindingTransformFunc(arg0 *C.GBinding, arg1 *C.GValue, arg2 *C.GValue, arg3 C.gpointer) C.gboolean {
+func gotk4_BindingTransformFunc(arg0 *C.GBinding, arg1 *C.GValue, arg2 *C.GValue, arg3 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,7 +34,7 @@ func init() {
 type ExpressionNotify func()
 
 //export gotk4_ExpressionNotify
-func _ExpressionNotify(arg0 C.gpointer) {
+func gotk4_ExpressionNotify(arg0 C.gpointer) {
 	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)

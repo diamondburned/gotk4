@@ -6,10 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gerror"
-	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -327,7 +327,7 @@ func marshalWindowHints(p uintptr) (interface{}, error) {
 type WindowChildFunc func(window Window, ok bool)
 
 //export gotk4_WindowChildFunc
-func _WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) C.gboolean {
+func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

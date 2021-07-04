@@ -5,9 +5,9 @@ package pangocairo
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -31,7 +31,7 @@ func init() {
 type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool)
 
 //export gotk4_ShapeRendererFunc
-func _ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
+func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

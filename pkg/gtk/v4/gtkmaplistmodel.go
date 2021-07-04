@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,7 +31,7 @@ func init() {
 type MapListModelMapFunc func(item gextras.Objector, object gextras.Objector)
 
 //export gotk4_MapListModelMapFunc
-func _MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
+func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

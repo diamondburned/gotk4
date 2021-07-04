@@ -2,6 +2,13 @@ package main
 
 import . "github.com/diamondburned/gotk4/gir/girgen/types"
 
+// pkgExceptions contains a list of file names that won't be deleted off of
+// pkg/.
+var pkgExceptions = []string{
+	"core",
+	"LICENSE",
+}
+
 // packages lists pkg-config packages and optionally the namespaces to be
 // generated. If the list of namespaces is nil, then everything is generated.
 var packages = []Package{

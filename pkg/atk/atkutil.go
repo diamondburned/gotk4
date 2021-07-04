@@ -5,8 +5,8 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,7 +67,7 @@ func marshalKeyEventType(p uintptr) (interface{}, error) {
 type KeySnoopFunc func(event *KeyEventStruct, gint int)
 
 //export gotk4_KeySnoopFunc
-func _KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) C.gint {
+func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) C.gint {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

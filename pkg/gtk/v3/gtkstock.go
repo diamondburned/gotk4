@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -25,7 +25,7 @@ type Stock = string
 type TranslateFunc func(path string, utf8 string)
 
 //export gotk4_TranslateFunc
-func _TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
+func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

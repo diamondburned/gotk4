@@ -5,8 +5,8 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -45,7 +45,7 @@ func init() {
 type AsyncReadyCallback func(sourceObject gextras.Objector, res AsyncResult)
 
 //export gotk4_AsyncReadyCallback
-func _AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
+func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -66,7 +66,7 @@ func _AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer)
 type CancellableSourceFunc func(cancellable Cancellable, ok bool)
 
 //export gotk4_CancellableSourceFunc
-func _CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
+func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -97,7 +97,7 @@ func _CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
 type DBusProxyTypeFunc func(manager DBusObjectManagerClient, objectPath string, interfaceName string, gType externglib.Type)
 
 //export gotk4_DBusProxyTypeFunc
-func _DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) C.GType {
+func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) C.GType {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -126,7 +126,7 @@ func _DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C
 type DatagramBasedSourceFunc func(datagramBased DatagramBased, condition glib.IOCondition, ok bool)
 
 //export gotk4_DatagramBasedSourceFunc
-func _DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
+func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -180,7 +180,7 @@ func _DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 
 type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDirs uint64, numFiles uint64)
 
 //export gotk4_FileMeasureProgressCallback
-func _FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
+func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
 	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -208,7 +208,7 @@ func _FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint6
 type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64)
 
 //export gotk4_FileProgressCallback
-func _FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
+func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -232,7 +232,7 @@ func _FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
 type FileReadMoreCallback func(fileContents string, fileSize int64, ok bool)
 
 //export gotk4_FileReadMoreCallback
-func _FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboolean {
+func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -263,7 +263,7 @@ func _FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboo
 type IOSchedulerJobFunc func(job *IOSchedulerJob, cancellable Cancellable, ok bool)
 
 //export gotk4_IOSchedulerJobFunc
-func _IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg2 C.gpointer) C.gboolean {
+func gotk4_IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -293,7 +293,7 @@ func _IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg2 C.g
 type PollableSourceFunc func(pollableStream gextras.Objector, ok bool)
 
 //export gotk4_PollableSourceFunc
-func _PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
+func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -320,7 +320,7 @@ func _PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 type SocketSourceFunc func(socket Socket, condition glib.IOCondition, ok bool)
 
 //export gotk4_SocketSourceFunc
-func _SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
+func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

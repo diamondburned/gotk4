@@ -94,12 +94,17 @@ func main() {
 
 	// Do a clean-up of the target directory.
 	oldFiles, _ := os.ReadDir(output)
+deleteLoop:
 	for _, oldFile := range oldFiles {
-		if oldFile.IsDir() {
-			fullPath := filepath.Join(output, oldFile.Name())
-			if err := os.RemoveAll(fullPath); err != nil {
-				log.Printf("non-fatal: failed to rm -rf %s/: %v", oldFile, err)
+		for _, except := range pkgExceptions {
+			if except == oldFile.Name() {
+				continue deleteLoop
 			}
+		}
+
+		fullPath := filepath.Join(output, oldFile.Name())
+		if err := os.RemoveAll(fullPath); err != nil {
+			log.Printf("non-fatal: failed to rm -rf %s/: %v", oldFile, err)
 		}
 	}
 

@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,7 +54,7 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 type TreeModelForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter, ok bool)
 
 //export gotk4_TreeModelForeachFunc
-func _TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
+func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

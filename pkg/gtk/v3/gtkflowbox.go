@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -34,7 +34,7 @@ func init() {
 type FlowBoxCreateWidgetFunc func(item gextras.Objector, widget Widget)
 
 //export gotk4_FlowBoxCreateWidgetFunc
-func _FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -59,7 +59,7 @@ func _FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 type FlowBoxFilterFunc func(child FlowBoxChild, ok bool)
 
 //export gotk4_FlowBoxFilterFunc
-func _FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
+func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -86,7 +86,7 @@ func _FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
 type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
 
 //export gotk4_FlowBoxForeachFunc
-func _FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
+func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -107,7 +107,7 @@ func _FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpo
 type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild, gint int)
 
 //export gotk4_FlowBoxSortFunc
-func _FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.gint {
+func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.gint {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

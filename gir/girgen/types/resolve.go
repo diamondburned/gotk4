@@ -11,7 +11,7 @@ import (
 )
 
 // InternalImportPath is the path to the core import path.
-const InternalImportPath = "github.com/diamondburned/gotk4/core"
+const InternalImportPath = "github.com/diamondburned/gotk4/pkg/core"
 
 // Resolved is a resolved type from a given gir.Type.
 type Resolved struct {

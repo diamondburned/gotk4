@@ -5,7 +5,7 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -21,7 +21,7 @@ import "C"
 type CompareDataFunc func(a interface{}, b interface{}, gint int)
 
 //export gotk4_CompareDataFunc
-func _CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) C.gint {
+func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) C.gint {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -48,7 +48,7 @@ func _CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointe
 type Func func(data interface{})
 
 //export gotk4_Func
-func _Func(arg0 C.gpointer, arg1 C.gpointer) {
+func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -68,7 +68,7 @@ func _Func(arg0 C.gpointer, arg1 C.gpointer) {
 type HFunc func(key interface{}, value interface{})
 
 //export gotk4_HFunc
-func _HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
+func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

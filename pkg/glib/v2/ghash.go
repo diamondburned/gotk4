@@ -5,7 +5,7 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,7 +30,7 @@ func init() {
 type HRFunc func(key interface{}, value interface{}, ok bool)
 
 //export gotk4_HRFunc
-func _HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean {
+func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

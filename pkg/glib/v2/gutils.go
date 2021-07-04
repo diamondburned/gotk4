@@ -5,7 +5,7 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0

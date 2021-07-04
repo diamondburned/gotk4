@@ -5,7 +5,7 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -73,7 +73,7 @@ const (
 type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
 
 //export gotk4_LogFunc
-func _LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
+func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -112,7 +112,7 @@ func _LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpoint
 type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField, logWriterOutput LogWriterOutput)
 
 //export gotk4_LogWriterFunc
-func _LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) C.GLogWriterOutput {
+func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) C.GLogWriterOutput {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

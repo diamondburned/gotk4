@@ -6,10 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -60,7 +60,7 @@ func marshalWidgetHelpType(p uintptr) (interface{}, error) {
 type Callback func(widget Widget)
 
 //export gotk4_Callback
-func _Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
+func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -79,7 +79,7 @@ func _Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 type TickCallback func(widget Widget, frameClock gdk.FrameClock, ok bool)
 
 //export gotk4_TickCallback
-func _TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
+func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

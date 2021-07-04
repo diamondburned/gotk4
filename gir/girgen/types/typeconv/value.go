@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/diamondburned/gotk4/core/pen"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"

@@ -5,7 +5,7 @@ package gobject
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 

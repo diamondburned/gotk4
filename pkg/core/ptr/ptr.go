@@ -8,7 +8,7 @@ import (
 // pointer.
 func Strlen(str unsafe.Pointer) int {
 	var cum int
-	for p := str; *(*byte)(p) != nil; p = unsafe.Add(p, 1) {
+	for p := str; *(*byte)(p) != 0; p = unsafe.Add(p, 1) {
 		cum++
 	}
 	return cum

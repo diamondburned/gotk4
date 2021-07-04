@@ -5,8 +5,8 @@ package gdkpixbuf
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -110,7 +110,7 @@ func marshalPixbufError(p uintptr) (interface{}, error) {
 type PixbufSaveFunc func(buf []byte, err *error, ok bool)
 
 //export gotk4_PixbufSaveFunc
-func _PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
+func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

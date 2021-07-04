@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -193,7 +193,7 @@ func marshalShowFlags(p uintptr) (interface{}, error) {
 type AttrDataCopyFunc func(gpointer interface{})
 
 //export gotk4_AttrDataCopyFunc
-func _AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
+func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
 	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
@@ -213,7 +213,7 @@ func _AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
 type AttrFilterFunc func(attribute *Attribute, ok bool)
 
 //export gotk4_AttrFilterFunc
-func _AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
+func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

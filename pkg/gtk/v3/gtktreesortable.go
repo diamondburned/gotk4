@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +37,7 @@ func init() {
 type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter, gint int)
 
 //export gotk4_TreeIterCompareFunc
-func _TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gint {
+func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gint {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

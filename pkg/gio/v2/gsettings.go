@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -77,7 +77,7 @@ func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 type SettingsBindGetMapping func(value externglib.Value, variant *glib.Variant, ok bool)
 
 //export gotk4_SettingsBindGetMapping
-func _SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -106,7 +106,7 @@ func _SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) 
 type SettingsBindSetMapping func(value externglib.Value, expectedType *glib.VariantType, variant *glib.Variant)
 
 //export gotk4_SettingsBindSetMapping
-func _SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
+func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -141,7 +141,7 @@ func _SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpoint
 type SettingsGetMapping func(value *glib.Variant, result *interface{}, ok bool)
 
 //export gotk4_SettingsGetMapping
-func _SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
+func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,7 +51,7 @@ func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 type TextCharPredicate func(ch uint32, ok bool)
 
 //export gotk4_TextCharPredicate
-func _TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
+func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

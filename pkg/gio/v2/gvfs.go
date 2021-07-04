@@ -5,8 +5,8 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,7 +42,7 @@ func init() {
 type VFSFileLookupFunc func(vfs VFS, identifier string, file File)
 
 //export gotk4_VFSFileLookupFunc
-func _VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
+func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

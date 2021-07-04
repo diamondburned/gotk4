@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/core/box"
-	"github.com/diamondburned/gotk4/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -60,7 +60,7 @@ func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 type CalendarDetailFunc func(calendar Calendar, year uint, month uint, day uint, utf8 string)
 
 //export gotk4_CalendarDetailFunc
-func _CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) *C.gchar {
+func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) *C.gchar {
 	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
